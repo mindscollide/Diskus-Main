@@ -11,9 +11,9 @@ import CommentIcon from "../../../assets/images/Comment-Icon.png";
 import VideoIcon from "../../../assets/images/Video-Icon.png";
 import member from "../../../assets/images/member.svg";
 import addmore from "../../../assets/images/addmore.png";
-import CreateModal from "./modalmeeting/ModalMeeting";
-import ViewModal from "./modalView/ModalView";
-import EditModal from "./modalUpdate/ModalUpdate";
+import CreateModal from "../../modalmeeting/ModalMeeting";
+import ViewModal from "../../modalView/ModalView";
+import EditModal from "../../modalUpdate/ModalUpdate";
 import { Col, Row, Tooltip } from "react-bootstrap";
 import { ChevronDown } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
@@ -33,6 +33,8 @@ import {
   allAssignessList,
 } from "../../../store/actions/Get_List_Of_Assignees";
 import CustomPagination from "../../../commen/functions/customPagination/Paginations";
+import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
+import { UpdateOrganizersMeeting } from "../../../store/actions/MeetingOrganizers_action";
 
 const CommitteeMeetingTab = () => {
   const { t } = useTranslation();
@@ -55,7 +57,14 @@ const CommitteeMeetingTab = () => {
   const [calendarViewModal, setCalendarViewModal] = useState(false);
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
   let ViewGroupID = localStorage.getItem("ViewGroupID");
-
+  let now = new Date();
+  let year = now.getUTCFullYear();
+  let month = (now.getUTCMonth() + 1).toString().padStart(2, "0");
+  let day = now.getUTCDate().toString().padStart(2, "0");
+  let hours = now.getUTCHours().toString().padStart(2, "0");
+  let minutes = now.getUTCMinutes().toString().padStart(2, "0");
+  let seconds = now.getUTCSeconds().toString().padStart(2, "0");
+  let currentUTCDateTime = `${year}${month}${day}${hours}${minutes}${seconds}`;
   const handleViewMeeting = async (meetingID, isQuickMeeting) => {
     let Data = { MeetingID: Number(meetingID) };
     await dispatch(
@@ -162,6 +171,13 @@ const CommitteeMeetingTab = () => {
     } catch {}
   }, [getMeetingbyGroupID]);
 
+  // onClick to download Report Api on download Icon
+  const onClickDownloadIcon = async (meetingID) => {
+    let downloadData = {
+      MeetingID: Number(meetingID),
+    };
+    dispatch(downloadAttendanceReportApi(navigate, t, downloadData));
+  };
   const MeetingColoumns = [
     {
       title: <span>{t("Title")}</span>,
@@ -169,17 +185,11 @@ const CommitteeMeetingTab = () => {
       key: "title",
       width: "115px",
       render: (text, record) => {
-        const isOrganiser = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.role === "Organizer"
-        );
         return (
           <span
             className={styles["meetingTitle"]}
             onClick={() => {
               handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
-              setIsOrganisers(isOrganiser);
             }}
           >
             {text}
@@ -200,10 +210,10 @@ const CommitteeMeetingTab = () => {
           text: t("Active"),
           value: "10",
         },
-        {
-          text: t("Start"),
-          value: "2",
-        },
+        // {
+        //   text: t("Start"),
+        //   value: "2",
+        // },
         {
           text: t("Upcoming"),
           value: "1",
@@ -236,24 +246,22 @@ const CommitteeMeetingTab = () => {
       dataIndex: "host",
       key: "host",
       width: "60px",
-      align: "center",
       sorter: (a, b) => {
         return a?.host.toLowerCase().localeCompare(b?.host.toLowerCase());
       },
       render: (text, record) => {
-        return <span className={styles["organizer-value"]}>{text}</span>;
+        return <span className={styles["meeting-start"]}>{text}</span>;
       },
     },
     {
-      title: <span className="text-center">{t("Date-time")}</span>,
+      title: t("Date-time"),
       dataIndex: "dateOfMeeting",
       key: "dateOfMeeting",
-      width: "125px",
-      align: "center",
+      width: "115px",
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           return (
-            <span className={styles["datetime-value"]}>
+            <span className={styles["meeting-start"]}>
               {newTimeFormaterAsPerUTCFullDate(
                 record.dateOfMeeting + record.meetingStartTime
               )}
@@ -283,90 +291,97 @@ const CommitteeMeetingTab = () => {
         );
         return (
           <>
-            {record.isAttachment ? (
-              <span
-                className={
-                  currentLanguage === "ar"
-                    ? "margin-left-10"
-                    : "margin-right-10"
-                }
-              >
-                <img
-                  src={ClipIcon}
-                  className="cursor-pointer"
-                  width="14.02px"
-                  height="16.03px"
-                  alt=""
-                  draggable="false"
-                />
-              </span>
-            ) : (
-              <span
-                className={
-                  currentLanguage === "ar"
-                    ? "margin-left-20"
-                    : "margin-right-20"
-                }
-              ></span>
-            )}
-            {record.isChat ? (
-              <span
-                className={
-                  currentLanguage === "ar"
-                    ? "margin-left-10"
-                    : "margin-right-10"
-                }
-                // onClick={(e) => groupChatInitiation(record)}
-              >
-                <img
-                  src={CommentIcon}
-                  className="cursor-pointer"
-                  width="20.06px"
-                  height="15.95px"
-                  alt=""
-                  draggable="false"
-                />
-              </span>
-            ) : (
-              <span
-                className={
-                  currentLanguage === "ar"
-                    ? "margin-left-20"
-                    : "margin-right-20"
-                }
-              ></span>
-            )}
-            {record.isVideoCall ? (
-              <span
-                className={
-                  currentLanguage === "ar"
-                    ? "margin-left-10"
-                    : "margin-right-10"
-                }
-              >
-                <img src={VideoIcon} alt="" draggable="false" />
-              </span>
-            ) : (
-              <span
-                className={
-                  currentLanguage === "ar"
-                    ? "margin-left-20"
-                    : "margin-right-20"
-                }
-              ></span>
-            )}
-            {record.status === "9" && isOrganiser && (
-              <Tooltip placement="topLeft" title={t("member")}>
-                <img
-                  src={member}
-                  className="cursor-pointer"
-                  width="17.1px"
-                  height="16.72px"
-                  alt=""
-                  draggable="false"
-                />
-              </Tooltip>
-            )}
+            <Row>
+              <Col sm={12} md={12} lg={12}>
+                {record.isAttachment ? (
+                  <span
+                    className={
+                      currentLanguage === "ar"
+                        ? "margin-left-10"
+                        : "margin-right-10"
+                    }
+                  >
+                    <Tooltip placement="topRight" title={t("ClipIcon")}>
+                      <img
+                        src={ClipIcon}
+                        className="cursor-pointer"
+                        alt=""
+                        draggable="false"
+                      />
+                    </Tooltip>
+                  </span>
+                ) : (
+                  <span
+                    className={
+                      currentLanguage === "ar"
+                        ? "margin-left-20"
+                        : "margin-right-20"
+                    }
+                  ></span>
+                )}
+                {record.isChat ? (
+                  <span
+                    className={
+                      currentLanguage === "ar"
+                        ? "margin-left-10"
+                        : "margin-right-10"
+                    }
+                    // onClick={(e) => groupChatInitiation(record)}
+                  >
+                    <Tooltip placement="topLeft" title={t("Chat")}>
+                      <img
+                        src={CommentIcon}
+                        className="cursor-pointer"
+                        // width="20.06px"
+                        // height="15.95px"
+                        alt=""
+                        draggable="false"
+                      />
+                    </Tooltip>
+                  </span>
+                ) : (
+                  <span
+                    className={
+                      currentLanguage === "ar"
+                        ? "margin-left-20"
+                        : "margin-right-20"
+                    }
+                  ></span>
+                )}
+                {record.isVideoCall ? (
+                  <span
+                    className={
+                      currentLanguage === "ar"
+                        ? "margin-left-10"
+                        : "margin-right-10"
+                    }
+                  >
+                    <img src={VideoIcon} alt="" draggable="false" />
+                  </span>
+                ) : (
+                  <span
+                    className={
+                      currentLanguage === "ar"
+                        ? "margin-left-20"
+                        : "margin-right-20"
+                    }
+                  ></span>
+                )}
+                {record.status === "9" && isOrganiser && (
+                  <Tooltip placement="topLeft" title={t("member")}>
+                    <img
+                      src={member}
+                      className="cursor-pointer"
+                      width="17.1px"
+                      height="16.72px"
+                      alt=""
+                      draggable="false"
+                      onClick={() => onClickDownloadIcon(record.pK_MDID)}
+                    />
+                  </Tooltip>
+                )}
+              </Col>
+            </Row>
           </>
         );
       },
@@ -379,8 +394,12 @@ const CommitteeMeetingTab = () => {
         const isParticipant = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            (attendee.meetingAttendeeRole.role === "Participant" ||
-              attendee.meetingAttendeeRole.role === "Agenda Contributor")
+            attendee.meetingAttendeeRole.role === "Participant"
+        );
+        const isAgendaContributor = record.meetingAttendees.some(
+          (attendee) =>
+            Number(attendee.user.pK_UID) === Number(currentUserId) &&
+            attendee.meetingAttendeeRole.role === "Agenda Contributor"
         );
         const isOrganiser = record.meetingAttendees.some(
           (attendee) =>
@@ -391,10 +410,40 @@ const CommitteeMeetingTab = () => {
           MeetingID: Number(record.pK_MDID),
           StatusID: 10,
         };
+        let meetingDateTime = record.dateOfMeeting + record.meetingStartTime;
+        const currentDateObj = new Date(
+          currentUTCDateTime.substring(0, 4), // Year
+          parseInt(currentUTCDateTime.substring(4, 6)) - 1, // Month (0-based)
+          currentUTCDateTime.substring(6, 8), // Day
+          currentUTCDateTime.substring(8, 10), // Hours
+          currentUTCDateTime.substring(10, 12), // Minutes
+          currentUTCDateTime.substring(12, 14) // Seconds
+        );
+
+        const meetingDateObj = new Date(
+          meetingDateTime.substring(0, 4), // Year
+          parseInt(meetingDateTime.substring(4, 6)) - 1, // Month (0-based)
+          meetingDateTime.substring(6, 8), // Day
+          meetingDateTime.substring(8, 10), // Hours
+          meetingDateTime.substring(10, 12), // Minutes
+          meetingDateTime.substring(12, 14) // Seconds
+        );
+
+        // Calculate the time difference in milliseconds
+        const timeDifference = meetingDateObj - currentDateObj;
+
+        // Convert milliseconds to minutes
+        const minutesDifference = Math.floor(timeDifference / (1000 * 60));
+
         if (Number(record.status) === 1) {
           if (isParticipant) {
+          } else if (isAgendaContributor) {
           } else {
-            if (record.isQuickMeeting === true) {
+            if (
+              record.isQuickMeeting === true &&
+              minutesDifference <= 5 &&
+              minutesDifference > 0
+            ) {
               return (
                 <Row>
                   <Col sm={12} md={12} lg={12}>
@@ -402,44 +451,20 @@ const CommitteeMeetingTab = () => {
                       text={t("Start-meeting")}
                       className={styles["Start-Meeting"]}
                       onClick={() => {
-                        // dispatch(
-                        //   UpdateOrganizersMeeting(
-                        //     navigate,
-                        //     startMeetingRequest,
-                        //     t,
-                        //     4,
-                        //     setViewFlag,
-                        //     setAdvanceMeetingModalID,
-                        //     setViewFlag,
-                        //     setEditFlag,
-                        //     setCalendarViewModal
-                        //   )
-                        // );
-                        setIsOrganisers(isOrganiser);
-                      }}
-                    />
-                  </Col>
-                </Row>
-              );
-            } else {
-              return (
-                <Row>
-                  <Col sm={12} md={12} lg={12}>
-                    <Button
-                      text={t("Start-meeting")}
-                      className={styles["Start-Meeting"]}
-                      onClick={() => {
-                        // dispatch(
-                        //   UpdateOrganizersMeeting(
-                        //     navigate,
-                        //     startMeetingRequest,
-                        //     t,
-                        //     3,
-                        //     setViewAdvanceMeetingModal,
-                        //     setAdvanceMeetingModalID
-                        //   )
-                        // );
-                        setIsOrganisers(isOrganiser);
+                        dispatch(
+                          UpdateOrganizersMeeting(
+                            navigate,
+                            t,
+                            7,
+                            startMeetingRequest
+                            // setEdiorRole,
+                            // setAdvanceMeetingModalID,
+                            // setDataroomMapFolderId,
+                            // setSceduleMeeting,
+                            // setViewFlag,
+                            // setEditFlag
+                          )
+                        );
                       }}
                     />
                   </Col>
@@ -448,8 +473,6 @@ const CommitteeMeetingTab = () => {
             }
           }
         } else if (Number(record.status) === 10) {
-          console.log("check status", record.status);
-
           if (isParticipant) {
             return (
               <Button
@@ -457,7 +480,26 @@ const CommitteeMeetingTab = () => {
                 className={styles["joining-Meeting"]}
                 onClick={() => {
                   handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
-                  setIsOrganisers(isOrganiser);
+                  // setIsOrganisers(isOrganiser);
+                  // setEdiorRole({
+                  //   status: record.status,
+                  //   role: "Participant",
+                  // });
+                }}
+              />
+            );
+          } else if (isAgendaContributor) {
+            return (
+              <Button
+                text={t("Join-meeting")}
+                className={styles["joining-Meeting"]}
+                onClick={() => {
+                  handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
+                  // setIsOrganisers(isOrganiser);
+                  // setEdiorRole({
+                  //   status: record.status,
+                  //   role: "Agenda Contributor",
+                  // });
                 }}
               />
             );
@@ -468,30 +510,18 @@ const CommitteeMeetingTab = () => {
                 className={styles["joining-Meeting"]}
                 onClick={() => {
                   handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
-                  setIsOrganisers(isOrganiser);
+                  // setIsOrganisers(isOrganiser);
+                  // setEdiorRole({
+                  //   status: record.status,
+                  //   role: "Organizer",
+                  // });
                 }}
               />
             );
           }
         } else if (Number(record.status) === 2) {
-          console.log("check status", record.status);
-
           if (isOrganiser) {
-            return (
-              <Button
-                text={t("End-Meeting")}
-                className={styles["End-Meeting"]}
-                // onClick={EndMeetingModal}
-              />
-            );
           } else if (isParticipant) {
-            return (
-              <Button
-                text={t("Leave-meeting")}
-                className={styles["End-Meeting"]}
-                // onClick={EndMeetingModal}
-              />
-            );
           }
         } else {
         }
@@ -502,13 +532,6 @@ const CommitteeMeetingTab = () => {
       key: "Edit",
       width: "33px",
       render: (text, record) => {
-        console.log("recordrecordrecord", record);
-        const isParticipant = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.role === "Participant"
-        );
-
         const isOrganiser = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
@@ -522,32 +545,39 @@ const CommitteeMeetingTab = () => {
         );
 
         const isQuickMeeting = record.isQuickMeeting;
-
-        if (isQuickMeeting) {
-          // if (isOrganiser) {
-          return (
-            <>
-              <Row>
-                <Col sm={12} md={12} lg={12}>
-                  {/* <Tooltip placement="topRight" title={t("Edit")}> */}
-                  <img
-                    src={EditIcon}
-                    className="cursor-pointer"
-                    width="17.11px"
-                    height="17.11px"
-                    alt=""
-                    draggable="false"
-                    onClick={() =>
-                      handleEditMeeting(record.pK_MDID, record.isQuickMeeting)
-                    }
-                  />
-                  {/* </Tooltip> */}
-                </Col>
-              </Row>
-            </>
-          );
-          // } else {
-          // }
+        if (record.status === "8") {
+          return null;
+        } else {
+          if (isQuickMeeting) {
+            if (isOrganiser) {
+              return (
+                <>
+                  <Row>
+                    <Col sm={12} md={12} lg={12}>
+                      {/* <Tooltip placement="topRight" title={t("Edit")}> */}
+                      <img
+                        src={EditIcon}
+                        className="cursor-pointer"
+                        width="17.11px"
+                        height="17.11px"
+                        alt=""
+                        draggable="false"
+                        onClick={() =>
+                          handleEditMeeting(
+                            record.pK_MDID,
+                            record.isQuickMeeting,
+                            isAgendaContributor,
+                            record
+                          )
+                        }
+                      />
+                      {/* </Tooltip> */}
+                    </Col>
+                  </Row>
+                </>
+              );
+            }
+          }
         }
       },
     },
@@ -612,7 +642,7 @@ const CommitteeMeetingTab = () => {
         <Col sm={12} md={12} lg={12}>
           <Table
             column={MeetingColoumns}
-            scroll={{ y: "52vh", x: true }}
+            scroll={{ y: "39vh", x: true }}
             rows={rows}
             pagination={false}
             size="small"
@@ -638,7 +668,9 @@ const CommitteeMeetingTab = () => {
             sm={12}
             md={12}
             lg={12}
-            className={"pagination-groups-table d-flex justify-content-center"}
+            className={
+              "pagination-groups-table position-absolute bottom-20 d-flex justify-content-center"
+            }
           >
             <span className="PaginationStyle-TodoList">
               <CustomPagination

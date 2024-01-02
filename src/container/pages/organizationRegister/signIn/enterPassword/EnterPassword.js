@@ -318,27 +318,23 @@ const EnterPassword = () => {
                         value={password || ""}
                         onChange={passwordChangeHandler}
                         placeholder={t("Password")}
-                        inputicon={
-                          showNewPasswordIcon ? (
-                            <img draggable="false" src={PasswordHideEyeIcon} />
-                          ) : (
-                            <img draggable="false" src={PasswordEyeIcon} />
-                          )
-                        }
                         iconClassName={styles["IconStyle"]}
                         labelClass="lightLabel"
                         autoComplete="new-password"
                         maxLength={200}
-                        // clickIcon={showNewPassowrd}
                       />
                       <span
                         className={styles["passwordIcon"]}
                         onClick={showNewPassowrd}
                       >
                         {showNewPasswordIcon ? (
-                          <img draggable="false" src={PasswordHideEyeIcon} />
+                          <img
+                            draggable="false"
+                            alt=""
+                            src={PasswordHideEyeIcon}
+                          />
                         ) : (
-                          <img draggable="false" src={PasswordEyeIcon} />
+                          <img draggable="false" alt="" src={PasswordEyeIcon} />
                         )}
                       </span>
                     </Col>

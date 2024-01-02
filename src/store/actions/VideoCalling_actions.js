@@ -1,7 +1,6 @@
 import * as actions from "../action_types";
 
 const setOpenVideoCallBox = (response) => {
-  console.log("closeButtonVideoCallFunc", response);
   return {
     type: actions.VIDEO_BOX_OPEN,
     response: response,

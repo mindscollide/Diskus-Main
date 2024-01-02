@@ -155,14 +155,12 @@ const ResolutionReducer = (state = initialState, action) => {
       };
     }
     case actions.GET_ALL_VOTING_METHOD_INIT: {
-      console.log("actionaction", action);
       return {
         ...state,
         Loading: true,
       };
     }
     case actions.GET_ALL_VOTING_METHOD_SUCCESS: {
-      console.log("actionaction", action);
       return {
         ...state,
         Loading: false,
@@ -171,7 +169,6 @@ const ResolutionReducer = (state = initialState, action) => {
       };
     }
     case actions.GET_ALL_VOTING_METHOD_FAIL: {
-      console.log("actionaction", action);
       return {
         ...state,
         Loading: false,
@@ -186,7 +183,6 @@ const ResolutionReducer = (state = initialState, action) => {
       };
     }
     case actions.GET_ALL_RESOLUTION_STATUS_SUCCESS: {
-      console.log(action.response, action.message, "actionaction111");
       return {
         ...state,
         Loading: false,
@@ -414,7 +410,6 @@ const ResolutionReducer = (state = initialState, action) => {
       };
     }
     case actions.SEARCH_VOTERRESOLUTION_SUCCESS: {
-      console.log(action, "SEARCH_VOTERRESOLUTION_SUCCESS");
       return {
         ...state,
         Loading: false,

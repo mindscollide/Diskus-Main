@@ -19,6 +19,7 @@ body[dir="rtl"] .View-Committee-Subheading {
 .Management-Heading-View-Committee {
   font-size: 30px !important;
   color: #5a5a5a;
+  word-wrap: break-word;
 }
 
 body[dir="rtl"] .Management-Heading-View-Committee {
@@ -28,6 +29,7 @@ body[dir="rtl"] .Management-Heading-View-Committee {
 .View-Committee-Head-Heading {
   font-size: 20px !important;
   color: #6172d6 !important;
+  word-wrap: break-word;
 }
 
 body[dir="rtl"] .View-Committee-Head-Heading {
@@ -50,6 +52,7 @@ body[dir="rtl"] .name-ViewCommittee-group {
 .paragraph-content-View-Committee {
   color: #5a5a5a;
   font-size: 16px !important;
+  word-wrap: break-word;
 }
 
 body[dir="rtl"] .paragraph-content-View-Committee {

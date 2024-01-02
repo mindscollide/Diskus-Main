@@ -53,7 +53,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
     postAssigneeComments,
     "postAssigneeCommentspostAssigneeCommentspostAssigneeComments"
   );
-  console.log(Comments, "CommentsCommentsComments");
+
   //To Display Modal
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -87,7 +87,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   const hour = currentDateTime.getHours().toString().padStart(2, "0");
   const minute = currentDateTime.getMinutes().toString().padStart(2, "0");
   const second = currentDateTime.getSeconds().toString().padStart(2, "0");
-  console.log("currentDateTimecurrentDateTimecurrentDateTime", currentDateTime);
+
   let getFullDateFormat = `${year}${month}${day}${hour}${minute}${second}`;
   //Current Time
   let currentTime =
@@ -154,21 +154,19 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
       });
       let deadlineDateTime = viewData.deadlineDate + viewData.deadlineTime;
       if (viewData.taskAssignedTo !== undefined) {
-        viewData.taskAssignedTo.map((data, index) => {
-          console.log("taskAssignedToMap", data);
+        viewData.taskAssignedTo.forEach((data, index) => {
           if (data.pK_UID === TaskAssignedTo) {
-            console.log("Mapping Answer", data.name);
           }
         });
       }
       let listOfAssignees = toDoListReducer.ToDoDetails.taskAssignedTo;
-      console.log("listOfAssigneeslistOfAssignees", listOfAssignees);
+
       if (listOfAssignees !== undefined) {
         let tem = [];
         let assigneedetails = [];
         let assigneeinfo = [];
         let temid = [];
-        listOfAssignees.map((data, index) => {
+        listOfAssignees.forEach((data, index) => {
           tem.push(data.name);
           temid.push(data.pK_UID);
           assigneedetails.push({
@@ -200,7 +198,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
       let filesUploaded = toDoListReducer.ToDoDetails.taskAttachments;
       if (filesUploaded !== undefined) {
         let tem = [];
-        filesUploaded.map((data, index) => {
+        filesUploaded.forEach((data, index) => {
           tem.push({
             PK_MAAID: data.pK_TAID,
             DisplayAttachmentName: data.displayAttachmentName,
@@ -218,7 +216,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
       );
       if (assgineeeComments.length > 0) {
         let assigneescommentsArr = [];
-        assgineeeComments.map((assgineeData) => {
+        assgineeeComments.forEach((assgineeData) => {
           assigneescommentsArr.push({
             userID: assgineeData.fK_UID,
             TaskID: assgineeData.fK_TID,
@@ -245,10 +243,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
     }
   }, [toDoListReducer.ToDoDetails]);
 
-  console.log(
-    taskAssigneeComments,
-    "taskAssigneeCommentstaskAssigneeCommentstaskAssigneeComments"
-  );
   // // for comment from socket
   useEffect(() => {
     if (Comments !== null) {
@@ -290,10 +284,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
 
   // for Comment delete from MQTT Notification
   useEffect(() => {
-    console.log(
-      postAssigneeComments.DeleteCommentsId,
-      "postAssigneeCommentspostAssigneeComments"
-    );
     if (
       postAssigneeComments.DeleteCommentsId !== null &&
       postAssigneeComments.DeleteCommentsId !== undefined
@@ -349,7 +339,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
       OriginalFileName: record.OriginalAttachmentName,
       DisplayFileName: record.DisplayAttachmentName,
     };
-    console.log("DownloadFile", data);
+
     dispatch(DownloadFile(navigate, data));
   };
 
@@ -499,12 +489,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
               <Row className="comment-Height" id="commentviews">
                 {taskAssigneeComments.length > 0
                   ? taskAssigneeComments.map((commentData, index) => {
-                      console.log(
-                        deleteCommentsId,
-                        toDoListReducer.deleteCommentSpinner,
-                        commentData,
-                        "commentDatacommentDatacommentData"
-                      );
                       if (Number(commentData.userID) === Number(createrID)) {
                         return (
                           <>

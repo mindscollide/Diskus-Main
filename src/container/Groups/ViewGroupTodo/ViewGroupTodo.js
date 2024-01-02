@@ -6,64 +6,35 @@ import {
   Plus,
 } from "react-bootstrap-icons";
 import { Input, Pagination, Select } from "antd";
-import {
-  Button,
-  TableToDo,
-  ResultMessage,
-  Paper,
-  Loader,
-  CustomDatePicker,
-  TextField,
-  Notification,
-} from "../../../components/elements";
+import { Button, TableToDo } from "../../../components/elements";
 import { useSelector, useDispatch } from "react-redux";
-import UserImage from "../../../assets/images/user.png";
 import TodoMessageIcon1 from "../../../assets/images/Todomsg-1.png";
 import del from "../../../assets/images/del.png";
-import { Dropdown, Space, Typography } from "antd";
-import {
-  Paragraph,
-  Search,
-  ArrowRight,
-  ArrowLeft,
-} from "react-bootstrap-icons";
+
 import {
   ViewToDoList,
-  GetTodoListByUser,
-  searchTodoListByUser,
   clearResponce,
-  SearchTodoListApi,
-  deleteGroupTaskApi,
   saveTaskDocumentsApi,
 } from "../../../store/actions/ToDoList_action";
 import "antd/dist/antd.css";
 
 import ModalToDoList from "./CreateTodo/ModalToDoList";
-import ModalViewToDo from "./ViewTodo/ModalViewToDo";
+import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
 import ModalUpdateToDo from "../../todolistupdateModal/ModalUpdateToDo";
 import {
   cleareMessage,
   getTodoStatus,
   updateTodoStatusFunc,
 } from "../../../store/actions/GetTodos";
-import Form from "react-bootstrap/Form";
-import moment from "moment";
 import "./Todolist.css";
 import { useTranslation } from "react-i18next";
 import { clearResponseMessage } from "../../../store/actions/Get_List_Of_Assignees";
-import { enGB, ar } from "date-fns/locale";
-import { registerLocale } from "react-datepicker";
 import {
-  _justShowDateformat,
-  newDateFormaterAsPerUTC,
-  newTimeFormaterAsPerUTC,
   newTimeFormaterAsPerUTCFullDate,
   utcConvertintoGMT,
 } from "../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
-import CustomPagination from "../../../commen/functions/customPagination/Paginations";
 import { getTasksByGroupIDApi } from "../../../store/actions/Polls_actions";
-import { deleteGroupTaskRM } from "../../../commen/apis/Api_config";
 
 const CreateTodoCommittee = () => {
   //For Localization

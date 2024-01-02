@@ -1,64 +1,64 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
-import moment from 'moment'
-import Keywords from 'react-keywords'
-import { Row, Col } from 'react-bootstrap'
-import { TextField } from '../../../../../../elements'
-import { Checkbox } from 'antd'
+import React, { useState, useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
+import moment from "moment";
+import Keywords from "react-keywords";
+import { Row, Col } from "react-bootstrap";
+import { TextField } from "../../../../../../elements";
+import { Checkbox } from "antd";
 import {
   newTimeFormaterAsPerUTCTalkTime,
   newTimeFormaterAsPerUTCTalkDate,
-} from '../../../../../../../commen/functions/date_formater'
-import { filesUrlTalk } from '../../../../../../../commen/apis/Api_ends_points'
-import FileImageUpload from './../file-image-upload/file_image_upload'
-import DropDownIcon from '../../../../../../../assets/images/dropdown-icon.png'
-import DocumentIcon from '../../../../../../../assets/images/Document-Icon.png'
-import DownloadIcon from '../../../../../../../assets/images/Download-Icon.png'
-import StarredMessageIcon from '../../../../../../../assets/images/Starred-Message-Icon.png'
-import DoubleTickIcon from '../../../../../../../assets/images/DoubleTick-Icon.png'
-import DoubleTickDeliveredIcon from '../../../../../../../assets/images/DoubleTickDelivered-Icon.png'
-import SingleTickIcon from '../../../../../../../assets/images/SingleTick-Icon.png'
-import TimerIcon from '../../../../../../../assets/images/Timer-Icon.png'
-import DropDownChatIcon from '../../../../../../../assets/images/dropdown-icon-chatmessage.png'
+} from "../../../../../../../commen/functions/date_formater";
+import { filesUrlTalk } from "../../../../../../../commen/apis/Api_ends_points";
+import FileImageUpload from "./../file-image-upload/file_image_upload";
+import DropDownIcon from "../../../../../../../assets/images/dropdown-icon.png";
+import DocumentIcon from "../../../../../../../assets/images/Document-Icon.png";
+import DownloadIcon from "../../../../../../../assets/images/Download-Icon.png";
+import StarredMessageIcon from "../../../../../../../assets/images/Starred-Message-Icon.png";
+import DoubleTickIcon from "../../../../../../../assets/images/DoubleTick-Icon.png";
+import DoubleTickDeliveredIcon from "../../../../../../../assets/images/DoubleTickDelivered-Icon.png";
+import SingleTickIcon from "../../../../../../../assets/images/SingleTick-Icon.png";
+import TimerIcon from "../../../../../../../assets/images/Timer-Icon.png";
+import DropDownChatIcon from "../../../../../../../assets/images/dropdown-icon-chatmessage.png";
 
 const BroadCastMessages = () => {
   //Chat Message Feature
-  const chatMessageRefs = useRef()
+  const chatMessageRefs = useRef();
 
-  const { talkStateData, talkFeatureStates } = useSelector((state) => state)
+  const { talkStateData, talkFeatureStates } = useSelector((state) => state);
 
   //Current User ID
-  let currentUserId = localStorage.getItem('userID')
+  let currentUserId = localStorage.getItem("userID");
 
-  const [searchChatWord, setSearchChatWord] = useState('')
+  const [searchChatWord, setSearchChatWord] = useState("");
 
   //Enable Chat Feature Options
-  const [chatFeatureActive, setChatFeatureActive] = useState(false)
+  const [chatFeatureActive, setChatFeatureActive] = useState(false);
 
   //all oto messages
-  const [allBroadcastMessages, setAllBroadcastMessages] = useState([])
+  const [allBroadcastMessages, setAllBroadcastMessages] = useState([]);
 
-  const [showCheckboxes, setShowCheckboxes] = useState(false)
+  const [showCheckboxes, setShowCheckboxes] = useState(false);
 
   //CURRENT DATE TIME UTC
-  let currentDateTime = new Date()
-  let changeDateFormatCurrent = moment(currentDateTime).utc()
+  let currentDateTime = new Date();
+  let changeDateFormatCurrent = moment(currentDateTime).utc();
   let currentDateTimeUtc = moment(changeDateFormatCurrent).format(
-    'YYYYMMDDHHmmss',
-  )
+    "YYYYMMDDHHmmss"
+  );
 
-  let currentUtcDate = currentDateTimeUtc.slice(0, 8)
-  let currentUtcTime = currentDateTimeUtc.slice(8, 15)
+  let currentUtcDate = currentDateTimeUtc.slice(0, 8);
+  let currentUtcTime = currentDateTimeUtc.slice(8, 15);
 
   //YESTERDAY'S DATE
-  let yesterdayDate = new Date()
-  yesterdayDate.setDate(yesterdayDate.getDate() - 1) // Subtract 1 day
-  let changeDateFormatYesterday = moment(yesterdayDate).utc()
-  let yesterdayDateUtc = moment(changeDateFormatYesterday).format('YYYYMMDD')
+  let yesterdayDate = new Date();
+  yesterdayDate.setDate(yesterdayDate.getDate() - 1); // Subtract 1 day
+  let changeDateFormatYesterday = moment(yesterdayDate).utc();
+  let yesterdayDateUtc = moment(changeDateFormatYesterday).format("YYYYMMDD");
 
   const highlight = (txt) => (
-    <span style={{ background: 'red', color: '#fff' }}>{txt}</span>
-  )
+    <span style={{ background: "red", color: "#fff" }}>{txt}</span>
+  );
 
   //Selected Option of the chat
   const chatFeatureSelected = (record, id) => {
@@ -68,7 +68,7 @@ const BroadCastMessages = () => {
     // } else {
     //   setChatFeatureActive(false)
     // }
-  }
+  };
 
   //On Click of Forward Feature
   const forwardFeatureHandler = () => {
@@ -77,16 +77,16 @@ const BroadCastMessages = () => {
     // } else {
     //   setShowCheckboxes(false)
     // }
-  }
+  };
 
   useEffect(() => {
     let allMessagesBroadcast =
-      talkStateData.BroadcastMessages.BroadcastMessagesData.broadcastMessages
+      talkStateData.BroadcastMessages.BroadcastMessagesData.broadcastMessages;
     if (allMessagesBroadcast != undefined) {
-      let allBroadcastMessagesArr = []
+      let allBroadcastMessagesArr = [];
       allMessagesBroadcast.map((messagesData) => {
-        if (messagesData.frMessages !== 'Direct Message') {
-          messagesData.frMessages = messagesData.frMessages.split('|')
+        if (messagesData.frMessages !== "Direct Message") {
+          messagesData.frMessages = messagesData.frMessages.split("|");
         }
         allBroadcastMessagesArr.push({
           messageID: messagesData.messageID,
@@ -105,17 +105,14 @@ const BroadCastMessages = () => {
           attachmentLocation: messagesData.attachmentLocation,
           sourceMessageBody: messagesData.sourceMessageBody,
           sourceMessageId: messagesData.sourceMessageId,
-        })
-      })
-      setAllBroadcastMessages([...allBroadcastMessagesArr])
+        });
+      });
+      setAllBroadcastMessages([...allBroadcastMessagesArr]);
     }
-  }, [talkStateData.BroadcastMessages.BroadcastMessagesData])
-
-  console.log('BROADCAST MESSAGES WORKING', allBroadcastMessages, talkStateData)
+  }, [talkStateData.BroadcastMessages.BroadcastMessagesData]);
 
   return allBroadcastMessages.map((messageData, index) => {
-    console.log('All Broadcast Messages', messageData)
-    var ext = messageData.attachmentLocation.split('.').pop()
+    var ext = messageData.attachmentLocation.split(".").pop();
     if (messageData.senderID === parseInt(currentUserId)) {
       return (
         <>
@@ -130,8 +127,8 @@ const BroadCastMessages = () => {
                       name="Name"
                       change={(e) => setSearchChatWord(e.target.value)}
                       value={searchChatWord}
-                      placeholder={t('Search-Chat')}
-                      labelClass={'d-none'}
+                      placeholder={t("Search-Chat")}
+                      labelClass={"d-none"}
                     />
                   </Col>
                 </Row>
@@ -147,67 +144,72 @@ const BroadCastMessages = () => {
                 }
                 ref={chatMessageRefs}
               >
-                <img draggable="false" className="dropdown-icon" src={DropDownIcon} />
+                <img
+                  draggable="false"
+                  className="dropdown-icon"
+                  src={DropDownIcon}
+                />
                 {chatFeatureActive === messageData.messageID ? (
                   <div className="dropdown-menus-chatmessage">
                     <span onClick={() => replyFeatureHandler(messageData)}>
-                      {t('Reply')}
+                      {t("Reply")}
                     </span>
                     <span onClick={forwardFeatureHandler}>Forward</span>
                     <span onClick={() => deleteFeatureHandler(messageData)}>
-                      {t('Delete')}
+                      {t("Delete")}
                     </span>
                     <span onClick={() => messageInfoHandler(messageData)}>
-                      {t('Message-Info')}
+                      {t("Message-Info")}
                     </span>
                     <span
                       onClick={() => markUnmarkStarMessageHandler(messageData)}
                       style={{
-                        borderBottom: 'none',
+                        borderBottom: "none",
                       }}
                     >
                       {messageData.isFlag === 0 ? (
-                        <>{t('Star-Message')}</>
+                        <>{t("Star-Message")}</>
                       ) : (
-                        <>{t('Unstar-Message')}</>
+                        <>{t("Unstar-Message")}</>
                       )}
                     </span>
                   </div>
                 ) : null}
               </div>
-              {messageData.frMessages === 'Direct Message' ||
-              messageData.frMessages === 'Broadcast Message' ? (
+              {messageData.frMessages === "Direct Message" ||
+              messageData.frMessages === "Broadcast Message" ? (
                 <>
-                  {messageData.attachmentLocation !== '' &&
-                  (ext === 'jpg' || ext === 'png' || ext === 'jpeg') ? (
+                  {messageData.attachmentLocation !== "" &&
+                  (ext === "jpg" || ext === "png" || ext === "jpeg") ? (
                     <div className="image-thumbnail-chat">
                       <a
                         href={filesUrlTalk + messageData.attachmentLocation}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <img draggable="false"
+                        <img
+                          draggable="false"
                           src={filesUrlTalk + messageData.attachmentLocation}
                           alt=""
                         />
                       </a>
                     </div>
-                  ) : messageData.attachmentLocation !== '' &&
-                    (ext === 'doc' ||
-                      ext === 'docx' ||
-                      ext === 'xls' ||
-                      ext === 'xlsx' ||
-                      ext === 'pdf' ||
-                      ext === 'txt' ||
-                      ext === 'gif') ? (
+                  ) : messageData.attachmentLocation !== "" &&
+                    (ext === "doc" ||
+                      ext === "docx" ||
+                      ext === "xls" ||
+                      ext === "xlsx" ||
+                      ext === "pdf" ||
+                      ext === "txt" ||
+                      ext === "gif") ? (
                     <div className="file-uploaded-chat">
                       <img draggable="false" src={DocumentIcon} alt="" />
                       <span className="attached-file">
                         {messageData.attachmentLocation
                           .substring(
-                            messageData.attachmentLocation.lastIndexOf('/') + 1,
+                            messageData.attachmentLocation.lastIndexOf("/") + 1
                           )
-                          .replace(/^\d+_/, '')}
+                          .replace(/^\d+_/, "")}
                       </span>
                       <a
                         href={filesUrlTalk + messageData.attachmentLocation}
@@ -258,23 +260,27 @@ const BroadCastMessages = () => {
                       yesterdayDateUtc ? (
                       <>
                         {newTimeFormaterAsPerUTCTalkDate(messageData.sentDate) +
-                          ' '}
-                        | {t('Yesterday')}
+                          " "}
+                        | {t("Yesterday")}
                       </>
-                    ) : messageData.sentDate === '' ? null : (
+                    ) : messageData.sentDate === "" ? null : (
                       <>
                         {newTimeFormaterAsPerUTCTalkDate(messageData.sentDate)}
                       </>
                     )}
                   </span>
                   <div className="message-status">
-                    {messageData.messageStatus === 'Sent' ? (
+                    {messageData.messageStatus === "Sent" ? (
                       <img draggable="false" src={SingleTickIcon} alt="" />
-                    ) : messageData.messageStatus === 'Delivered' ? (
-                      <img draggable="false" src={DoubleTickDeliveredIcon} alt="" />
-                    ) : messageData.messageStatus === 'Seen' ? (
+                    ) : messageData.messageStatus === "Delivered" ? (
+                      <img
+                        draggable="false"
+                        src={DoubleTickDeliveredIcon}
+                        alt=""
+                      />
+                    ) : messageData.messageStatus === "Seen" ? (
                       <img draggable="false" src={DoubleTickIcon} alt="" />
-                    ) : messageData.messageStatus === 'Undelivered' ? (
+                    ) : messageData.messageStatus === "Undelivered" ? (
                       <img draggable="false" src={TimerIcon} alt="" />
                     ) : null}
                   </div>
@@ -291,9 +297,9 @@ const BroadCastMessages = () => {
             ) : null}
           </div>
         </>
-      )
+      );
     }
-  })
-}
+  });
+};
 
-export default BroadCastMessages
+export default BroadCastMessages;

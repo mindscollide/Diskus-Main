@@ -90,7 +90,6 @@ const GetNotes = (navigate, Data, t) => {
         } else {
           dispatch(getNotes_Fail(t("Something-went-wrong")));
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
         dispatch(getNotes_Fail(t("Something-went-wrong")));
@@ -116,17 +115,11 @@ const saveNotes_Fail = (message) => {
   };
 };
 const SaveNotesAPI = (navigate, Data, t, setAddNewModal) => {
-  console.log("DataDataData", Data);
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let notesPage = localStorage.getItem("notesPage");
   let notesPagesize = localStorage.getItem("notesPageSize");
-  console.log(
-    notesPage,
-    notesPagesize,
-    "notesPagesizenotesPagesizenotesPagesize"
-  );
   let searchData = {
     UserID: parseInt(createrID),
     OrganizationID: JSON.parse(OrganizationID),
@@ -152,14 +145,11 @@ const SaveNotesAPI = (navigate, Data, t, setAddNewModal) => {
       },
     })
       .then(async (response) => {
-        console.log("checking");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(SaveNotesAPI(navigate, Data, t, setAddNewModal));
         } else if (response.data.responseCode === 200) {
-          console.log("checking");
           if (response.data.responseResult.isExecuted === true) {
-            console.log("checking");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -175,7 +165,6 @@ const SaveNotesAPI = (navigate, Data, t, setAddNewModal) => {
               );
               dispatch(GetNotes(navigate, searchData, t));
               setAddNewModal(false);
-              console.log("checking");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -191,7 +180,6 @@ const SaveNotesAPI = (navigate, Data, t, setAddNewModal) => {
               );
               dispatch(GetNotes(navigate, searchData, t));
               setAddNewModal(false);
-              console.log("checking");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -209,11 +197,9 @@ const SaveNotesAPI = (navigate, Data, t, setAddNewModal) => {
         } else {
           dispatch(saveNotes_Fail(t("Something-went-wrong")));
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
         dispatch(saveNotes_Fail(t("Something-went-wrong")));
-        console.log("responseresponse", response);
       });
   };
 };
@@ -341,10 +327,8 @@ const UpdateNotesAPI = (
         } else {
           dispatch(UpdateNotes_Fail(t("Something-went-wrong")));
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
-        console.log("responseresponse", response);
         dispatch(UpdateNotes_Fail(t("Something-went-wrong")));
       });
   };
@@ -355,7 +339,6 @@ const GetNotesById_Init = () => {
   };
 };
 const GetNotesById_Success = (response, message) => {
-  console.log("NotesReducerNotesReducer", response);
   return {
     type: actions.GET_NOTES_BY_NOTESID_SUCCESS,
     response: response,
@@ -381,7 +364,7 @@ const GetNotesByIdAPI = (
   let Data = {
     NotesID: JSON.parse(NotesID),
   };
-  console.log(Data, "navigatenavigatenavigatenavigate");
+
   return (dispatch) => {
     dispatch(GetNotesById_Init());
     let form = new FormData();
@@ -396,7 +379,6 @@ const GetNotesByIdAPI = (
       },
     })
       .then(async (response) => {
-        console.log("responseresponse", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
@@ -411,9 +393,7 @@ const GetNotesByIdAPI = (
             )
           );
         } else if (response.data.responseCode === 200) {
-          console.log("responseresponse", response);
           if (response.data.responseResult.isExecuted === true) {
-            console.log("responseresponse", response);
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -466,10 +446,8 @@ const GetNotesByIdAPI = (
         } else {
           dispatch(GetNotesById_Fail(t("Something-went-wrong")));
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
-        console.log("responseresponse", response);
         dispatch(GetNotesById_Fail(t("Something-went-wrong")));
       });
   };

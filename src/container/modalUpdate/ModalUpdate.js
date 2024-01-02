@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./ModalUpdate.css";
 import FileIcon, { defaultStyles } from "react-file-icon";
 import {
+  convertDateTimeObject,
   convertTimetoGMT,
   createConvert,
   EditmeetingDateFormat,
@@ -24,7 +25,10 @@ import {
   Loader,
   MultiDatePicker,
 } from "./../../components/elements";
-import { FileUploadToDo } from "../../store/actions/Upload_action";
+import {
+  FileUploadToDo,
+  ResetAllFilesUpload,
+} from "../../store/actions/Upload_action";
 import {
   addMinutesofMeetings,
   HideMinuteMeetingMessage,
@@ -54,15 +58,24 @@ import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import TextFieldTime from "../../components/elements/input_field_time/Input_field";
+import {
+  getCurrentDate,
+  getCurrentDateTime,
+  getHoursMinutesSec,
+  getStartTimeWithCeilFunction,
+} from "../../commen/functions/time_formatter";
+import { ConvertFileSizeInMB } from "../../commen/functions/convertFileSizeInMB";
 
 const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   //For Localization
   const { t } = useTranslation();
+  const getStartTime = getStartTimeWithCeilFunction();
+  const getCurrentDateforMeeting = getCurrentDate();
 
   let currentLanguage = localStorage.getItem("i18nextLng");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { assignees, uploadReducer, minuteofMeetingReducer, CommitteeReducer } =
+  const { assignees, uploadReducer, CommitteeReducer, GroupsReducer } =
     useSelector((state) => state);
   let OrganizationId = localStorage.getItem("organizationID");
   const [isMinutes, setIsMinutes] = useState(false);
@@ -101,7 +114,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   const [meetingAgendaAttachments, setMeetingAgendaAttachments] = useState({
     MeetingAgendaAttachments: [],
   });
-
+  console.log(
+    meetingAgendaAttachments,
+    "meetingAgendaAttachmentsmeetingAgendaAttachments"
+  );
   // for meatings  Attendees
   const [meetingAttendees, setMeetingAttendees] = useState({
     User: {
@@ -183,6 +199,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [valueDate, setValueDate] = useState("");
   const [selectedTime, setSelectedTime] = useState(null);
+  const [fileSize, setFileSize] = useState(0);
+
   useEffect(() => {
     if (currentLanguage != undefined) {
       if (currentLanguage === "en") {
@@ -210,10 +228,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     if (
       createMeeting.MeetingStartTime != "" &&
       createMeeting.MeetingEndTime != "" &&
-      createMeeting.MeetingDate != "" &&
+      createMeeting.MeetingDate != ""
       // createMeeting.MeetingReminderID.length != 0 &&
       // createMeeting.MeetingDescription != "" &&
-      createMeeting.MeetingLocation != ""
+      // createMeeting.MeetingLocation != ""
       //  &&
       // createMeeting.MeetingTitle != ""
     ) {
@@ -238,10 +256,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     if (
       createMeeting.MeetingStartTime !== "" &&
       createMeeting.MeetingEndTime !== "" &&
-      createMeeting.MeetingDate !== "" &&
+      createMeeting.MeetingDate !== ""
       // createMeeting.MeetingReminderID.length != 0 &&
       // createMeeting.MeetingDescription != "" &&
-      createMeeting.MeetingLocation !== ""
+      // createMeeting.MeetingLocation !== ""
       // &&
       // createMeeting.MeetingTitle !== ""
     ) {
@@ -267,9 +285,9 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     if (
       createMeeting.MeetingStartTime !== "" &&
       createMeeting.MeetingEndTime !== "" &&
-      createMeeting.MeetingDate !== "" &&
+      createMeeting.MeetingDate !== ""
       // createMeeting.MeetingDescription != "" &&
-      createMeeting.MeetingLocation !== ""
+      // createMeeting.MeetingLocation !== ""
       // &&
       // createMeeting.MeetingTitle != ""
     ) {
@@ -296,7 +314,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       createMeeting.MeetingEndTime !== "" &&
       createMeeting.MeetingDate !== "" &&
       // createMeeting.MeetingDescription !== "" &&
-      createMeeting.MeetingLocation !== "" &&
+      // createMeeting.MeetingLocation !== "" &&
       // createMeeting.MeetingTitle !== "" &&
       createMeetingTime !== "" &&
       meetingDate !== ""
@@ -353,8 +371,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     let finalDateTime = createConvert(
       createMeeting.MeetingDate + createMeeting.MeetingStartTime
     );
-    let newDate = finalDateTime.slice(0, 8);
-    let newTime = finalDateTime.slice(8, 14);
+    let finalDateTimeWithoutUTC =
+      createMeeting.MeetingDate + createMeeting.MeetingStartTime;
+    let newDate = finalDateTimeWithoutUTC.slice(0, 8);
+    let newTime = finalDateTimeWithoutUTC.slice(8, 14);
     let ifemptyTime = moment(newTime, "HHmmss").format("hh-mm-ss");
     let ifemptyDate = moment(newDate, "YYYYMMDD").format("MMM DD, YYYY");
 
@@ -454,9 +474,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           });
         }
       });
-    } catch (error) {
-      console.log("ReminderNameHandler error");
-    }
+    } catch (error) {}
   };
 
   // for all details handler
@@ -474,7 +492,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       setCreateMeetingTime(value);
     }
     // else if (name === "MeetingDate") {
-    //   console.log("MeetingDate", name, value);
+    //
     //   setCreateMeeting({
     //     ...createMeeting,
     //     [name]: value,
@@ -574,81 +592,118 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         ["FK_MDID"]: assignees.ViewMeetingDetails.meetingDetails.pK_MDID,
       });
     } else {
-      console.log("agendaHandler not complete");
     }
   };
 
   // for add another agenda main inputs handler
   const uploadFilesAgenda = (data) => {
-    const uploadFilePath = data.target.value;
     const uploadedFile = data.target.files[0];
-    var ext = uploadedFile.name.split(".").pop();
-    let file = meetingAgendaAttachments.MeetingAgendaAttachments;
-    if (
-      ext === "doc" ||
-      ext === "docx" ||
-      ext === "xls" ||
-      ext === "xlsx" ||
-      ext === "pdf" ||
-      ext === "png" ||
-      ext === "txt" ||
-      ext === "jpg" ||
-      ext === "jpeg" ||
-      ext === "gif" ||
-      ext === "csv"
-    ) {
-      let data;
-      let sizezero;
-      let size;
-      if (file.length > 0) {
-        file.map((filename, index) => {
-          if (filename.DisplayFileName === uploadedFile.name) {
-            data = false;
-          }
-        });
-        if (uploadedFile.size > 10485760) {
-          size = false;
-        } else if (uploadedFile.size === 0) {
-          sizezero = false;
-        }
-        if (data === false) {
-          console.log("uploadFile ReducerData");
-        } else if (size === false) {
-          console.log("uploadFile ReducerData");
-        } else if (sizezero === false) {
-          console.log("uploadFile ReducerData");
-        } else {
-          console.log("uploadFile ReducerData");
-          dispatch(FileUploadToDo(navigate, uploadedFile, t));
-        }
-      } else {
-        let size;
+    let fileSizeArr;
+    let files = meetingAgendaAttachments.MeetingAgendaAttachments;
+    let ext = uploadedFile.name.split(".").pop();
+    let fileSizeinMB = ConvertFileSizeInMB(uploadedFile.size);
+    let mergeFileSizes = ConvertFileSizeInMB(fileSize);
+    // MB;
+    if (Object.keys(files).length === 10) {
+      setTimeout(
+        setOpen({
+          flag: true,
+          message: t("You-can-not-upload-more-then-10-files"),
+        }),
+        3000
+      );
+    } else if (mergeFileSizes === 10) {
+      setTimeout(
+        setOpen({
+          open: true,
+          message: t("You-can-not-upload-more-then-100MB-files"),
+        }),
+        3000
+      );
+    } else {
+      if (
+        ext === "doc" ||
+        ext === "docx" ||
+        ext === "xls" ||
+        ext === "xlsx" ||
+        ext === "pdf" ||
+        ext === "png" ||
+        ext === "txt" ||
+        ext === "jpg" ||
+        ext === "jpeg" ||
+        ext === "gif" ||
+        ext === "csv"
+      ) {
+        let data;
         let sizezero;
-        // if (uploadedFile.size > 10000000) {
-        //   setOpen({
-        //     ...open,
-        //     flag: true,
-        //     message: "File Size is larger than 10MB",
-        //   });
-        //   console.log("uploadFile ReducerData");
-        //   size = false;
-        // }
-        if (uploadedFile.size === 0) {
-          setOpen({
-            ...open,
-            flag: true,
-            message: t("File-size-is-0mb"),
+        let size;
+        if (files.length > 0) {
+          files.forEach((filename, index) => {
+            if (filename.DisplayFileName === uploadedFile.name) {
+              data = false;
+            }
           });
-          sizezero = false;
-        }
-        if (size === false) {
-          console.log("uploadFile ReducerData");
-        } else if (sizezero === false) {
-          console.log("uploadFile ReducerData");
+          if (fileSizeinMB > 10) {
+            size = false;
+          } else if (fileSizeinMB === 0) {
+            sizezero = false;
+          }
+          if (data === false) {
+            setTimeout(
+              setOpen({
+                flag: true,
+                message: t("File-already-exisit"),
+              }),
+              3000
+            );
+          } else if (size === false) {
+            setTimeout(
+              setOpen({
+                flag: true,
+                message: t("You-can-not-upload-more-then-10MB-file"),
+              }),
+              3000
+            );
+          } else if (sizezero === false) {
+            setOpen({
+              ...open,
+              flag: true,
+              message: t("File-size-is-0mb"),
+            });
+          } else {
+            dispatch(FileUploadToDo(navigate, uploadedFile, t));
+            fileSizeArr = uploadedFile.size + fileSize;
+            setFileSize(fileSizeArr);
+          }
         } else {
-          console.log("uploadFile ReducerData");
+          let size;
+          let sizezero;
 
-          dispatch(FileUploadToDo(navigate, uploadedFile, t));
+          if (fileSizeinMB === 0) {
+            sizezero = false;
+          }
+          if (fileSizeinMB > 10) {
+            size = false;
+          }
+          if (size === false) {
+            setTimeout(
+              setOpen({
+                flag: true,
+                message: t("You-can-not-upload-more-then-10MB-file"),
+              }),
+              3000
+            );
+          } else if (sizezero === false) {
+            setOpen({
+              ...open,
+              flag: true,
+              message: t("File-size-is-0mb"),
+            });
+          } else {
+            dispatch(FileUploadToDo(navigate, uploadedFile, t));
+            fileSizeArr = uploadedFile.size + fileSize;
+            setFileSize(fileSizeArr);
+          }
         }
       }
     }
@@ -663,9 +718,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
   useEffect(() => {
     let newData = uploadReducer.uploadDocumentsList;
+    console.log(newData, "newDatanewDatanewData");
     let MeetingAgendaAttachment =
       meetingAgendaAttachments.MeetingAgendaAttachments;
-    if (newData != undefined && newData.length != 0) {
+    if (newData !== undefined && newData?.length !== 0 && newData !== null) {
       MeetingAgendaAttachment.push({
         PK_MAAID: 0,
         DisplayAttachmentName: newData.displayFileName,
@@ -677,6 +733,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         ...meetingAgendaAttachments,
         ["MeetingAgendaAttachments"]: MeetingAgendaAttachment,
       });
+      dispatch(ResetAllFilesUpload());
     }
   }, [uploadReducer.uploadDocumentsList]);
 
@@ -748,6 +805,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           setMeetingAgendaAttachments({
             MeetingAgendaAttachments: [],
           });
+          setFileSize(0);
         }
       } else {
         setModalField(true);
@@ -783,6 +841,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             setMeetingAgendaAttachments({
               MeetingAgendaAttachments: [],
             });
+            setFileSize(0);
           } else {
             setModalField(false);
             setOpen({
@@ -814,6 +873,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           setMeetingAgendaAttachments({
             MeetingAgendaAttachments: [],
           });
+          setFileSize(0);
         }
       } else {
         setModalField(true);
@@ -1002,16 +1062,45 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   // for fetch data for edit from grid
 
   const meetingDateHandler = (date, format = "YYYYMMDD") => {
-    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-    let meetingDateSaveFormat = new DateObject(date).format("YYYYMMDD");
-    let meetingDateConvertUTC = moment(meetingDateSaveFormat, "YYYYMMDD")
-      .utc()
-      .format("YYYYMMDD");
-    setMeetingDate(meetingDateValueFormat);
-    setCreateMeeting({
-      ...createMeeting,
-      MeetingDate: meetingDateConvertUTC,
-    });
+    if (createMeeting.MeetingStartTime !== "") {
+      let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+      let meetingDateSaveFormat = new DateObject(date).format("YYYYMMDD");
+      const getformattedDateTIme = getCurrentDateTime(new Date());
+      const dateTimeFormat = convertDateTimeObject(
+        `${meetingDateSaveFormat}${createMeeting.MeetingStartTime}`
+      );
+      const currentDateTime = convertDateTimeObject(getformattedDateTIme);
+      if (dateTimeFormat < currentDateTime) {
+        setOpen({
+          flag: true,
+          message: t(
+            "Date-and-time-should-be-greater-than-current-system-time"
+          ),
+        });
+        setTimeout(() => {
+          setMeetingDate(getCurrentDateforMeeting.DateGMT);
+          setCreateMeeting({
+            ...createMeeting,
+            MeetingDate: getCurrentDateforMeeting.dateFormat,
+          });
+        }, 1000);
+      } else {
+        setMeetingDate(meetingDateValueFormat);
+        setCreateMeeting({
+          ...createMeeting,
+          MeetingDate: meetingDateSaveFormat,
+        });
+      }
+    } else {
+      let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+      let meetingDateSaveFormat = new DateObject(date).format("YYYYMMDD");
+
+      setMeetingDate(meetingDateValueFormat);
+      setCreateMeeting({
+        ...createMeeting,
+        MeetingDate: meetingDateSaveFormat,
+      });
+    }
   };
 
   // for view data
@@ -1102,9 +1191,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             }
           }
           setAddedParticipantNameList(List);
-        } catch (error) {
-          console.log("error");
-        }
+        } catch (error) {}
         try {
           viewData.meetingAgendas.map((atchmenData, index) => {
             let opData = {
@@ -1134,9 +1221,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
               MeetingAgendaAttachments: file,
             });
           });
-        } catch (error) {
-          console.log("error", error);
-        }
+        } catch (error) {}
         try {
           viewData.minutesOfMeeting.map((minutesOfMeetingData, index) => {
             minutesOfMeetings.push({
@@ -1149,7 +1234,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           });
         } catch (error) {
           //  Block of code to handle errors
-          console.log("error");
         }
         try {
           viewData.externalMeetingAttendees.map(
@@ -1163,7 +1247,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           );
         } catch (error) {
           //  Block of code to handle errors
-          console.log("error");
         }
         // setMeetingDate(
         //   moment(viewData.meetingEvent.meetingDate, "YYYYMMDD").format("DD/MM/YYYY").toString()
@@ -1204,9 +1287,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         });
         setMinutesOfMeeting(minutesOfMeetings);
       }
-    } catch (error) {
-      console.log("error in responce in api");
-    }
+    } catch (error) {}
   }, [assignees.ViewMeetingDetails]);
 
   const editGrid = (datarecord, dataindex) => {
@@ -1240,39 +1321,92 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
   //Drop Down Values
   const searchFilterHandler = (value) => {
-    let getUserDetails =
-      CommitteeReducer?.getCommitteeByCommitteeID?.committeMembers;
-    if (
-      getUserDetails !== undefined &&
-      getUserDetails !== null &&
-      getUserDetails.length > 0
-    ) {
-      return getUserDetails
-        .filter((item) => {
+    if (Number(checkFlag) === 6) {
+      let CommitteeMembers =
+        CommitteeReducer?.getCommitteeByCommitteeID?.committeMembers;
+      if (
+        CommitteeMembers !== undefined &&
+        CommitteeMembers !== null &&
+        CommitteeMembers.length !== 0
+      ) {
+        return CommitteeMembers.filter((item) => {
           const searchTerm = value.toLowerCase();
           const assigneesName = item.userName.toLowerCase();
-          return (
-            searchTerm && assigneesName.startsWith(searchTerm)
-            // assigneesName !== searchTerm.toLowerCase()
-          );
+          return searchTerm && assigneesName.startsWith(searchTerm);
         })
-        .slice(0, 10)
-        .map((item) => (
-          <div
-            onClick={() => onSearch(item.userName, item.pK_UID)}
-            className="dropdown-row-assignee d-flex align-items-center flex-row"
-            key={item.pK_UID}
-          >
-            <img
-              src={`data:image/jpeg;base64,${item.userProfilePicture.displayProfilePictureName}`}
-              alt=""
-              className="user-img"
-            />
-            <p className="p-0 m-0">{item.userName}</p>
-          </div>
-        ));
+          .slice(0, 10)
+          .map((item) => (
+            <div
+              onClick={() => onSearch(item.userName, item.pK_UID)}
+              className="dropdown-row-assignee d-flex align-items-center flex-row"
+              key={item.pK_UID}
+            >
+              <img
+                src={`data:image/jpeg;base64,${item.userProfilePicture.displayProfilePictureName}`}
+                alt=""
+                className="user-img"
+              />
+              <p className="p-0 m-0">{item.userName}</p>
+            </div>
+          ));
+      }
+    } else if (Number(checkFlag) === 7) {
+      let GroupMembers = GroupsReducer?.getGroupByGroupIdResponse?.groupMembers;
+      if (
+        GroupMembers !== undefined &&
+        GroupMembers !== null &&
+        GroupMembers.length !== 0
+      ) {
+        return GroupMembers.filter((item) => {
+          const searchTerm = value.toLowerCase();
+          const assigneesName = item.userName.toLowerCase();
+          return searchTerm && assigneesName.startsWith(searchTerm);
+        })
+          .slice(0, 10)
+          .map((item) => (
+            <div
+              onClick={() => onSearch(item.userName, item.pK_UID)}
+              className="dropdown-row-assignee d-flex align-items-center flex-row"
+              key={item.pK_UID}
+            >
+              <img
+                src={`data:image/jpeg;base64,${item.userProfilePicture.displayProfilePictureName}`}
+                alt=""
+                className="user-img"
+              />
+              <p className="p-0 m-0">{item.userName}</p>
+            </div>
+          ));
+      }
     } else {
-      console.log("not found");
+      let allAssignees = assignees.user;
+      if (
+        allAssignees !== undefined &&
+        allAssignees !== null &&
+        allAssignees.length !== 0
+      ) {
+        return allAssignees
+          .filter((item) => {
+            const searchTerm = value.toLowerCase();
+            const assigneesName = item.name.toLowerCase();
+            return searchTerm && assigneesName.startsWith(searchTerm);
+          })
+          .slice(0, 10)
+          .map((item) => (
+            <div
+              onClick={() => onSearch(item.name, item.pK_UID)}
+              className="dropdown-row-assignee d-flex align-items-center flex-row"
+              key={item.pK_UID}
+            >
+              <img
+                src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
+                alt=""
+                className="user-img"
+              />
+              <p className="p-0 m-0">{item.name}</p>
+            </div>
+          ));
+      }
     }
   };
 
@@ -1362,91 +1496,110 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
   // for attendies handler
   const handleSubmit = async () => {
-    await setEditFlag(false);
-    await seteditRecordIndex(null);
-    await seteditRecordFlag(false);
-    // await
-    await setIsDetails(true);
-    await setIsMinutes(false);
-    await setIsAgenda(false);
-    await setIsAttendees(false);
-    let finalDateTime = createConvert(
-      createMeeting.MeetingDate + createMeeting.MeetingStartTime
+    let hasOrganizer = createMeeting.MeetingAttendees.some(
+      (attendee) => attendee.MeetingAttendeeRole.PK_MARID === 1
     );
-    let newDate = finalDateTime.slice(0, 8);
-    let newTime = finalDateTime.slice(8, 14);
-    let meetingID = assignees.ViewMeetingDetails.meetingDetails.pK_MDID;
-    let Data = {
-      MeetingID: meetingID,
-    };
-    let newData = {
-      MeetingID: createMeeting.MeetingID,
-      MeetingTitle: createMeeting.MeetingTitle,
-      MeetingDescription: createMeeting.MeetingDescription,
-      MeetingTypeID: 0,
-      MeetingDate: newDate,
-      OrganizationId: parseInt(OrganizationId),
-      MeetingStartTime: newTime,
-      MeetingEndTime: newTime,
-      MeetingLocation: createMeeting.MeetingLocation,
-      IsVideoCall: createMeeting.IsVideoCall,
-      IsChat: createMeeting.IsChat,
-      MeetingReminderID: createMeeting.MeetingReminderID,
-      MeetingAgendas: createMeeting.MeetingAgendas,
-      MeetingAttendees: createMeeting.MeetingAttendees,
-      ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
-    };
-    await dispatch(UpdateMeeting(navigate, t, checkFlag, newData));
-    await setObjMeetingAgenda({
-      PK_MAID: 0,
-      Title: "",
-      PresenterName: "",
-      URLs: "",
-      FK_MDID: 0,
-    });
-    await setMeetingAgendaAttachments({
-      MeetingAgendaAttachments: [],
-    });
-    await setParticipantRoleName("");
-    await setSelectedAttendeesName("");
-    await setCreateMeeting({
-      MeetingTitle: "",
-      MeetingDescription: "",
-      MeetingTypeID: 0,
-      MeetingDate: "",
-      MeetingStartTime: "",
-      MeetingEndTime: "",
-      MeetingLocation: "",
-      IsVideoCall: false,
-      IsChat: false,
-      MeetingReminderID: [],
-      MeetingAgendas: [],
-      MeetingAttendees: [],
-      ExternalMeetingAttendees: [],
-    });
-    await setMeetingAttendees({
-      User: {
-        PK_UID: 0,
-      },
-      MeetingAttendeeRole: {
-        PK_MARID: 0,
-      },
-      AttendeeAvailability: {
-        PK_AAID: 1,
-      },
-    });
-    await setRecordMinutesOfTheMeeting({
-      PK_MOMID: 0,
-      Description: "",
-      CreationDate: "",
-      CreationTime: "",
-      FK_MDID: 0,
-    });
-    // await setMeetingReminderValue("");
-    // await setMeetingReminderID([]);
-    setReminder("");
-    setReminderValue("");
-    setTaskAssignedToInput("");
+
+    if (hasOrganizer) {
+      await setEditFlag(false);
+      await seteditRecordIndex(null);
+      await seteditRecordFlag(false);
+      // await
+      await setIsDetails(true);
+      await setIsMinutes(false);
+      await setIsAgenda(false);
+      await setIsAttendees(false);
+      let finalDateTime = createConvert(
+        createMeeting.MeetingDate + createMeeting.MeetingStartTime
+      );
+      let finalDateTimeWithoutUTC =
+        createMeeting.MeetingDate + createMeeting.MeetingStartTime;
+      let newDate = finalDateTimeWithoutUTC.slice(0, 8);
+      let newTime = finalDateTimeWithoutUTC.slice(8, 14);
+      let ifemptyTime = moment(newTime, "HHmmss").format("hh-mm-ss");
+      let ifemptyDate = moment(newDate, "YYYYMMDD").format("MMM DD, YYYY");
+      // let newDate = finalDateTime.slice(0, 8);
+      // let newTime = finalDateTime.slice(8, 14);
+      // let meetingID = assignees.ViewMeetingDetails.meetingDetails.pK_MDID;
+      let newData = {
+        MeetingID: createMeeting.MeetingID,
+        MeetingTitle:
+          createMeeting.MeetingTitle !== ""
+            ? createMeeting.MeetingTitle
+            : `Untitled @ ${ifemptyDate} ${ifemptyTime}`,
+        MeetingDescription: createMeeting.MeetingDescription,
+        MeetingTypeID: 0,
+        MeetingDate: finalDateTime.slice(0, 8),
+        OrganizationId: parseInt(OrganizationId),
+        MeetingStartTime: finalDateTime.slice(8, 14),
+        MeetingEndTime: finalDateTime.slice(8, 14),
+        MeetingLocation: createMeeting.MeetingLocation,
+        IsVideoCall: createMeeting.IsVideoCall,
+        IsChat: createMeeting.IsChat,
+        MeetingReminderID: createMeeting.MeetingReminderID,
+        MeetingAgendas: createMeeting.MeetingAgendas,
+        MeetingAttendees: createMeeting.MeetingAttendees,
+        ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
+      };
+      // if (hasOrganizer) {
+      await dispatch(UpdateMeeting(navigate, t, checkFlag, newData));
+      await setObjMeetingAgenda({
+        PK_MAID: 0,
+        Title: "",
+        PresenterName: "",
+        URLs: "",
+        FK_MDID: 0,
+      });
+      await setMeetingAgendaAttachments({
+        MeetingAgendaAttachments: [],
+      });
+      await setParticipantRoleName("");
+      await setSelectedAttendeesName("");
+      await setCreateMeeting({
+        MeetingTitle: "",
+        MeetingDescription: "",
+        MeetingTypeID: 0,
+        MeetingDate: "",
+        MeetingStartTime: "",
+        MeetingEndTime: "",
+        MeetingLocation: "",
+        IsVideoCall: false,
+        IsChat: false,
+        MeetingReminderID: [],
+        MeetingAgendas: [],
+        MeetingAttendees: [],
+        ExternalMeetingAttendees: [],
+      });
+      await setMeetingAttendees({
+        User: {
+          PK_UID: 0,
+        },
+        MeetingAttendeeRole: {
+          PK_MARID: 0,
+        },
+        AttendeeAvailability: {
+          PK_AAID: 1,
+        },
+      });
+      await setRecordMinutesOfTheMeeting({
+        PK_MOMID: 0,
+        Description: "",
+        CreationDate: "",
+        CreationTime: "",
+        FK_MDID: 0,
+      });
+      // await setMeetingReminderValue("");
+      // await setMeetingReminderID([]);
+      setReminder("");
+      setReminderValue("");
+      setTaskAssignedToInput("");
+    } else {
+      setOpen({
+        ...open,
+        flag: true,
+        message: t("Please-atleast-add-one-organizer"),
+      });
+    }
   };
 
   // For Cancelling Meeting
@@ -1756,21 +1909,46 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   };
 
   const handleTimeChange = (newTime) => {
-    let newDate = new Date(newTime);
-    if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getHours()).slice(-2);
-      const minutes = ("0" + newDate.getMinutes()).slice(-2);
-      const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
-        .toString()
-        .padStart(2, "0")}${"00"}`;
-      setCreateMeeting({
-        ...createMeeting,
-        ["MeetingStartTime"]: formattedTime,
-        ["MeetingEndTime"]: formattedTime,
-      });
-      setCreateMeetingTime(newTime);
+    if (createMeeting.MeetingDate !== "") {
+      let newDate = new Date(newTime);
+      if (newDate instanceof Date && !isNaN(newDate)) {
+        const getFormattedTime = getHoursMinutesSec(newDate);
+        const getformattedDateTIme = getCurrentDateTime(new Date());
+        const dateTimeFormat = convertDateTimeObject(
+          `${createMeeting.MeetingDate}${getFormattedTime}`
+        );
+        const currentDateTime = convertDateTimeObject(getformattedDateTIme);
+
+        if (dateTimeFormat < currentDateTime) {
+          setCreateMeeting({
+            ...createMeeting,
+            MeetingStartTime: getStartTime.formattedTime,
+            MeetingEndTime: getStartTime.formattedTime,
+          });
+          setCreateMeetingTime(getStartTime.newFormatTime);
+        } else {
+          setCreateMeeting({
+            ...createMeeting,
+            MeetingStartTime: getFormattedTime,
+            MeetingEndTime: getFormattedTime,
+          });
+          setCreateMeetingTime(newTime);
+        }
+      }
+      setSelectedTime(newTime);
+    } else {
+      let newDate = new Date(newTime);
+      if (newDate instanceof Date && !isNaN(newDate)) {
+        const getFormattedTime = getHoursMinutesSec(newDate);
+        setCreateMeeting({
+          ...createMeeting,
+          MeetingStartTime: getFormattedTime,
+          MeetingEndTime: getFormattedTime,
+        });
+        setCreateMeetingTime(newTime);
+      }
+      setSelectedTime(newTime);
     }
-    setSelectedTime(newTime);
   };
 
   function CustomInput({ onFocus, value, onChange }) {
@@ -2014,9 +2192,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         name="MeetingLocation"
                         applyClass="form-control2"
                         type="text"
-                        placeholder={t("Location") + "*"}
+                        placeholder={t("Location")}
                         value={createMeeting.MeetingLocation}
                         required={true}
+                        maxLength={245}
                       />
                       {modalField === true &&
                       createMeeting.MeetingLocation === "" ? (
@@ -2058,9 +2237,9 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         applyClass={"form-control2"}
                         type="text"
                         size="small"
-                        placeholder={t("Meeting-title") + "*"}
+                        placeholder={t("Meeting-title")}
                         required={true}
-                        maxLength={200}
+                        maxLength={245}
                       />
                       {modalField === true &&
                       createMeeting.MeetingTitle === "" ? (
@@ -2088,6 +2267,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         placeholder={t("Description")}
                         value={createMeeting.MeetingDescription}
                         required={true}
+                        // maxLength={500}
                       />
                       {/* {modalField === true &&
                       createMeeting.MeetingDescription === "" ? (
@@ -2776,22 +2956,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                       </p>
                     </Col>
                   </Row>
-                  {/* <Row className="updatemeeting-publishMeeting-btn">
-                    <Col lg={6} md={6} xs={12} className="text-end">
-                      <Button
-                        className={"btn btn-primary meeting next cancel"}
-                        text={t("Cancel")}
-                        onClick={discardMeeting}
-                      />
-                    </Col>
-                    <Col lg={6} md={6} xs={12} className="text-start">
-                      <Button
-                        className={"btn btn-primary meeting next submit"}
-                        text={t("Update")}
-                        onClick={handleSubmit}
-                      />
-                    </Col>
-                  </Row> */}
                 </>
               ) : isCancelMeetingModal ? (
                 <>

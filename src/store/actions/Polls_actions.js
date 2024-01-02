@@ -109,7 +109,6 @@ const viewVotesDetailsModal = (response) => {
 };
 
 const notifyPollingSocket = (response) => {
-  console.log(response, "ALL_POLLINGS_SOCKET");
   return {
     type: actions.ALL_POLLINGS_SOCKET,
     response: response,
@@ -161,7 +160,6 @@ const searchPollsApi = (navigate, t, data) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(searchPollsApi(navigate, t, data));
@@ -200,16 +198,13 @@ const searchPollsApi = (navigate, t, data) => {
               dispatch(searchPolls_fail(t("Something-went-wrong")));
             }
           } else {
-            console.log(response, "response");
             dispatch(searchPolls_fail(t("Something-went-wrong")));
           }
         } else {
-          console.log(response, "response");
           dispatch(searchPolls_fail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(searchPolls_fail(t("Something-went-wrong")));
       });
   };
@@ -258,7 +253,6 @@ const UpdatePollStatusByPollIdApi = (navigate, t, data) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(UpdatePollStatusByPollIdApi(navigate, t, data));
@@ -281,12 +275,28 @@ const UpdatePollStatusByPollIdApi = (navigate, t, data) => {
               };
               dispatch(searchPollsApi(navigate, t, Data));
               dispatch(setDeltePollModal(false));
-              dispatch(
-                deltePollsSuccess(
-                  response.data.responseResult,
-                  t("Poll Status Updated Successfully")
-                )
-              );
+              if (data.PollStatusID === 4) {
+                dispatch(
+                  deltePollsSuccess(
+                    response.data.responseResult,
+                    t("Poll-deleted-successfully")
+                  )
+                );
+              } else {
+                dispatch(
+                  deltePollsSuccess(
+                    response.data.responseResult,
+                    t("Poll-status-updated-successfully")
+                  )
+                );
+              }
+              // dispatch(
+              //   deltePollsSuccess(
+              //     response.data.responseResult,
+
+              //     t("Poll Status Updated Successfully")
+              //   )
+              // );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -308,16 +318,13 @@ const UpdatePollStatusByPollIdApi = (navigate, t, data) => {
               dispatch(deltePollsFailed(t("Something-went-wrong")));
             }
           } else {
-            console.log(response, "response");
             dispatch(deltePollsFailed(t("Something-went-wrong")));
           }
         } else {
-          console.log(response, "response");
           dispatch(deltePollsFailed(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(deltePollsFailed(t("Something-went-wrong")));
       });
   };
@@ -349,7 +356,6 @@ const savePolls_fail = (message) => {
 
 // Save polls Api
 const SavePollsApi = (navigate, Data, t, value, currentMeeting) => {
-  console.log("tsteasdasdtsteasdasdtsteasdasd", value);
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(savePolls_init());
@@ -418,7 +424,6 @@ const SavePollsApi = (navigate, Data, t, value, currentMeeting) => {
                 };
                 await dispatch(setCommitteePollsApi(navigate, t, Data));
               } else if (value === 4) {
-                console.log("tsteasdasd");
                 let ViewGroupID = localStorage.getItem("ViewGroupID");
 
                 let Data = {
@@ -810,7 +815,6 @@ const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
               await dispatch(setVotePollModal(false));
               await dispatch(globalFlag(true));
               await dispatch(setEditpollModal(true));
-              console.log("handleEditpollModal", check);
             } else if (parseInt(check) === 2) {
               await dispatch(setviewpollModal(false));
               await dispatch(setCreatePollModal(false));
@@ -820,8 +824,6 @@ const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
               await dispatch(setVotePollModal(false));
               await dispatch(getAllCommitteesandGroups(navigate, t));
               await dispatch(setEditpollModal(true));
-
-              console.log("handleEditpollModal", check);
             } else if (parseInt(check) === 3) {
               await dispatch(setEditpollModal(false));
               await dispatch(setCreatePollModal(false));
@@ -830,7 +832,6 @@ const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
               await dispatch(globalFlag(false));
               await dispatch(setVotePollModal(false));
               await dispatch(setviewpollProgressModal(true));
-              console.log("handleEditpollModal", check);
             } else if (parseInt(check) === 4) {
               await dispatch(setEditpollModal(false));
               await dispatch(setCreatePollModal(false));
@@ -839,7 +840,6 @@ const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
               await dispatch(viewVotesDetailsModal(false));
               await dispatch(setVotePollModal(false));
               await dispatch(setviewpollModal(true));
-              console.log("handleEditpollModal", check);
             } else if (parseInt(check) === 5) {
               await dispatch(setEditpollModal(false));
               await dispatch(setCreatePollModal(false));
@@ -898,9 +898,6 @@ const viewVotesInit = () => {
 };
 
 const viewVotesSuccess = (response, message) => {
-  console.log("handleClosed", response);
-  console.log("handleClosed", message);
-
   return {
     type: actions.VIEW_VOTES_SUCCESS,
     response: response,
@@ -962,7 +959,6 @@ const viewVotesApi = (navigate, data, t, check, setviewVotes) => {
                   t("Record-found")
                 )
               );
-              console.log("handleClosed", response.data.responseResult);
 
               await dispatch(viewVotesDetailsModal(true));
             }
@@ -1161,7 +1157,9 @@ const updatePollsApi = (
                   t("Polls-due-date-update-successFully")
                 )
               );
-              setEditPolls(false);
+              if (typeof setEditPolls === "function") {
+                setEditPolls(false);
+              }
               if (value === 2) {
                 let OrganizationID = localStorage.getItem("organizationID");
                 let Data1 = {
@@ -1235,7 +1233,9 @@ const updatePollsApi = (
                   t("Poll-details-updated")
                 )
               );
-              setEditPolls(false);
+              if (typeof setEditPolls === "function") {
+                setEditPolls(false);
+              }
               dispatch(setEditpollModal(false));
 
               if (value === 2) {
@@ -1415,12 +1415,10 @@ const GetPollsByCommitteeIDapi = (navigate, t, data) => {
             dispatch(searchPollsByCommitteeID_fail(t("Something-went-wrong")));
           }
         } else {
-          console.log(response, "response");
           dispatch(searchPollsByCommitteeID_fail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(searchPollsByCommitteeID_fail(t("Something-went-wrong")));
       });
   };
@@ -1512,12 +1510,10 @@ const getPollsByGroupMainApi = (
             dispatch(getPollsByGroupFail(t("Something-went-wrong")));
           }
         } else {
-          console.log(response, "response");
           dispatch(getPollsByGroupFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(getPollsByGroupFail(t("Something-went-wrong")));
       });
   };
@@ -1611,12 +1607,10 @@ const setGroupPollsMainApi = (navigate, t, Data) => {
             dispatch(setGroupFail(t("Something-went-wrong")));
           }
         } else {
-          console.log(response, "response");
           dispatch(setGroupFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(setGroupFail(t("Something-went-wrong")));
       });
   };
@@ -1711,12 +1705,10 @@ const setCommitteePollsApi = (navigate, t, data) => {
             dispatch(setCommitteePolls_fail(t("Something-went-wrong")));
           }
         } else {
-          console.log(response, "response");
           dispatch(setCommitteePolls_fail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(setCommitteePolls_fail(t("Something-went-wrong")));
       });
   };
@@ -1802,12 +1794,10 @@ const getTasksByGroupIDApi = (navigate, t, newData) => {
             dispatch(getTaskGroupIdFail(t("Something-went-wrong")));
           }
         } else {
-          console.log(response, "response");
           dispatch(getTaskGroupIdFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(getTaskGroupIdFail(t("Something-went-wrong")));
       });
   };
@@ -1899,12 +1889,10 @@ const setTasksByGroupApi = (navigate, t, data) => {
             dispatch(setTaskGroupFail(t("Something-went-wrong")));
           }
         } else {
-          console.log(response, "response");
           dispatch(setTaskGroupFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(setTaskGroupFail(t("Something-went-wrong")));
       });
   };
@@ -1990,12 +1978,10 @@ const getTaskCommitteeIDApi = (navigate, t, newData) => {
             dispatch(getTaskCommitteeIdFail(t("Something-went-wrong")));
           }
         } else {
-          console.log(response, "response");
           dispatch(getTaskCommitteeIdFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(getTaskCommitteeIdFail(t("Something-went-wrong")));
       });
   };
@@ -2087,12 +2073,10 @@ const setTasksByCommitteeApi = (navigate, t, data) => {
             dispatch(setTaskCommitteeFail(t("Something-went-wrong")));
           }
         } else {
-          console.log(response, "response");
           dispatch(setTaskCommitteeFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(setTaskCommitteeFail(t("Something-went-wrong")));
       });
   };
@@ -2194,7 +2178,6 @@ const deleteCommitteePollApi = (navigate, t, data) => {
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(deleteCommitteePoll_fail(t("Something-went-wrong")));
       });
   };
@@ -2288,12 +2271,10 @@ const deleteGroupPollApi = (navigate, t, data) => {
             dispatch(deleteGroupPoll_fail(t("Something-went-wrong")));
           }
         } else {
-          console.log(response, "response");
           dispatch(deleteGroupPoll_fail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(deleteGroupPoll_fail(t("Something-went-wrong")));
       });
   };
@@ -2387,12 +2368,10 @@ const deleteMeetingPollApi = (navigate, t, data, currentMeeting) => {
             dispatch(deleteMeetingPoll_fail(t("Something-went-wrong")));
           }
         } else {
-          console.log(response, "response");
           dispatch(deleteMeetingPoll_fail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(deleteMeetingPoll_fail(t("Something-went-wrong")));
       });
   };
@@ -2463,7 +2442,7 @@ const getPollsByPollIdforCommitteeApi = (
             //   await dispatch(setVotePollModal(false));
             //   await dispatch(globalFlag(true));
             //   await dispatch(setEditpollModal(true));
-            //   console.log("handleEditpollModal", check);
+            //
             // } else if (parseInt(check) === 2) {
             //   await dispatch(setviewpollModal(false));
             //   await dispatch(setCreatePollModal(false));
@@ -2474,7 +2453,7 @@ const getPollsByPollIdforCommitteeApi = (
             //   await dispatch(getAllCommitteesandGroups(navigate, t));
             //   await dispatch(setEditpollModal(true));
 
-            //   console.log("handleEditpollModal", check);
+            //
             // } else if (parseInt(check) === 3) {
             //   await dispatch(setEditpollModal(false));
             //   await dispatch(setCreatePollModal(false));
@@ -2483,7 +2462,7 @@ const getPollsByPollIdforCommitteeApi = (
             //   await dispatch(globalFlag(false));
             //   await dispatch(setVotePollModal(false));
             //   await dispatch(setviewpollProgressModal(true));
-            //   console.log("handleEditpollModal", check);
+            //
             // } else if (parseInt(check) === 4) {
             //   await dispatch(setEditpollModal(false));
             //   await dispatch(setCreatePollModal(false));
@@ -2492,7 +2471,7 @@ const getPollsByPollIdforCommitteeApi = (
             //   await dispatch(viewVotesDetailsModal(false));
             //   await dispatch(setVotePollModal(false));
             //   await dispatch(setviewpollModal(true));
-            //   console.log("handleEditpollModal", check);
+            //
             // } else if (parseInt(check) === 5) {
             //   await dispatch(setEditpollModal(false));
             //   await dispatch(setCreatePollModal(false));
@@ -2607,7 +2586,7 @@ const getPollByPollIdforGroups = (
             //   await dispatch(setVotePollModal(false));
             //   await dispatch(globalFlag(true));
             //   await dispatch(setEditpollModal(true));
-            //   console.log("handleEditpollModal", check);
+            //
             // } else if (parseInt(check) === 2) {
             //   await dispatch(setviewpollModal(false));
             //   await dispatch(setCreatePollModal(false));
@@ -2618,7 +2597,7 @@ const getPollByPollIdforGroups = (
             //   await dispatch(getAllCommitteesandGroups(navigate, t));
             //   await dispatch(setEditpollModal(true));
 
-            //   console.log("handleEditpollModal", check);
+            //
             // } else if (parseInt(check) === 3) {
             //   await dispatch(setEditpollModal(false));
             //   await dispatch(setCreatePollModal(false));
@@ -2627,7 +2606,7 @@ const getPollByPollIdforGroups = (
             //   await dispatch(globalFlag(false));
             //   await dispatch(setVotePollModal(false));
             //   await dispatch(setviewpollProgressModal(true));
-            //   console.log("handleEditpollModal", check);
+            //
             // } else if (parseInt(check) === 4) {
             //   await dispatch(setEditpollModal(false));
             //   await dispatch(setCreatePollModal(false));
@@ -2636,7 +2615,7 @@ const getPollByPollIdforGroups = (
             //   await dispatch(viewVotesDetailsModal(false));
             //   await dispatch(setVotePollModal(false));
             //   await dispatch(setviewpollModal(true));
-            //   console.log("handleEditpollModal", check);
+            //
             // } else if (parseInt(check) === 5) {
             //   await dispatch(setEditpollModal(false));
             //   await dispatch(setCreatePollModal(false));
@@ -2751,7 +2730,7 @@ const getPollByPollIdforMeeting = (
             //   await dispatch(setVotePollModal(false));
             //   await dispatch(globalFlag(true));
             //   await dispatch(setEditpollModal(true));
-            //   console.log("handleEditpollModal", check);
+            //
             // } else if (parseInt(check) === 2) {
             //   await dispatch(setviewpollModal(false));
             //   await dispatch(setCreatePollModal(false));
@@ -2762,7 +2741,7 @@ const getPollByPollIdforMeeting = (
             //   await dispatch(getAllCommitteesandGroups(navigate, t));
             //   await dispatch(setEditpollModal(true));
 
-            //   console.log("handleEditpollModal", check);
+            //
             // } else if (parseInt(check) === 3) {
             //   await dispatch(setEditpollModal(false));
             //   await dispatch(setCreatePollModal(false));
@@ -2771,7 +2750,7 @@ const getPollByPollIdforMeeting = (
             //   await dispatch(globalFlag(false));
             //   await dispatch(setVotePollModal(false));
             //   await dispatch(setviewpollProgressModal(true));
-            //   console.log("handleEditpollModal", check);
+            //
             // } else if (parseInt(check) === 4) {
             //   await dispatch(setEditpollModal(false));
             //   await dispatch(setCreatePollModal(false));
@@ -2780,7 +2759,7 @@ const getPollByPollIdforMeeting = (
             //   await dispatch(viewVotesDetailsModal(false));
             //   await dispatch(setVotePollModal(false));
             //   await dispatch(setviewpollModal(true));
-            //   console.log("handleEditpollModal", check);
+            //
             // } else if (parseInt(check) === 5) {
             //   await dispatch(setEditpollModal(false));
             //   await dispatch(setCreatePollModal(false));

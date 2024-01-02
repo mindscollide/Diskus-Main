@@ -192,8 +192,6 @@ const MeetingAgendaReducer = (state = initialState, action) => {
     }
 
     case actions.GET_ADVANCEMEETINGAGENDABYMEETINGID_SUCCESS: {
-      console.log(action, "getAdvanceMeetingAgendabyMeetingID_success");
-
       return {
         ...state,
         Loading: false,

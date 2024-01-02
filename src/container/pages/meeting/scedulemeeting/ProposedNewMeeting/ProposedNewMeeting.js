@@ -7,6 +7,8 @@ import { Col, Row } from "react-bootstrap";
 import profile from "../../../../../assets/images/newprofile.png";
 import plusFaddes from "../../../../../assets/images/SVGBlackPlusIcon.svg";
 import CrossIcon from "../../../../../assets/images/CrossIcon.svg";
+import GroupIcon from "../../../../../assets/images/groupdropdown.svg";
+import committeeicon from "../../../../../assets/images/committeedropdown.svg";
 import {
   Button,
   TextField,
@@ -23,40 +25,64 @@ import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import moment from "moment";
-import { convertGMTDateintoUTC } from "../../../../../commen/functions/date_formater";
+import {
+  convertGMTDateintoUTC,
+  createConvert,
+} from "../../../../../commen/functions/date_formater";
 import { containsStringandNumericCharacters } from "../../../../../commen/functions/regex";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import makeAnimated from "react-select/animated";
+import { getAllCommitteesandGroups } from "../../../../../store/actions/Polls_actions";
+import {
+  getCurrentDate,
+  getEndTimeWitlCeilFunction,
+  getStartTimeWithCeilFunction,
+} from "../../../../../commen/functions/time_formatter";
+import { SaveMeetingDetialsNewApiFunction } from "../../../../../store/actions/NewMeetingActions";
 
-const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
+const ProposedNewMeeting = ({
+  setProposedNewMeeting,
+  setorganizers,
+  setmeetingDetails,
+  setSceduleMeeting,
+  setCurrentMeetingID,
+  currentMeeting,
+  editorRole,
+  setEditMeeting,
+  isEditMeeting,
+  setDataroomMapFolderId,
+  setEdiorRole,
+}) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const animatedComponents = makeAnimated();
   const calendRef = useRef();
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [error, seterror] = useState(false);
   const [sendResponseVal, setSendResponseVal] = useState("");
+  const [members, setMembers] = useState([]);
+  const [selectedsearch, setSelectedsearch] = useState([]);
+  const [dropdowndata, setDropdowndata] = useState([]);
+  const startTime = getStartTimeWithCeilFunction();
+  const getEndTime = getEndTimeWitlCeilFunction();
+  const getCurrentDateforMeeting = getCurrentDate();
   const [proposedMeetingDetails, setProposedMeetingDetails] = useState({
     MeetingTitle: "",
     Description: "",
   });
-  const [participantsProposedMeeting, setParticipantsProposedMeeting] =
-    useState([
-      {
-        name: "Saif ul Islam",
-      },
-      {
-        name: "Aun Naqvi",
-      },
-      {
-        name: "Ali Mamdani",
-      },
-      {
-        name: "Owais Wajid khan",
-      },
-    ]);
+
   const [open, setOpen] = useState({
     flag: false,
     message: "",
   });
+
+  //Getting Data from States
+  const { PollsReducer } = useSelector((state) => state);
 
   //Send Response By Date
   const [sendResponseBy, setSendResponseBy] = useState({
@@ -67,33 +93,285 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
   const [rows, setRows] = useState([
     {
       selectedOption: "",
+      dateForView: "",
       startDate: "",
+      startTime: "",
       endDate: "",
-      selectedOptionView: "",
-      endDateView: "",
-      startDateView: "",
+      endTime: "",
     },
   ]);
 
+  //Setting the Dates And Time Default
+  useEffect(() => {
+    const updatedRows = [...rows];
+    updatedRows[0].selectedOption = getCurrentDateforMeeting.dateFormat;
+    updatedRows[0].dateForView = getCurrentDateforMeeting.DateGMT;
+    updatedRows[0].startDate = startTime?.formattedTime;
+    updatedRows[0].startTime = startTime?.newFormatTime;
+    updatedRows[0].endDate = getEndTime?.formattedTime;
+    updatedRows[0].endTime = getEndTime?.newFormatTime;
+    setRows(updatedRows);
+  }, []);
+
+  //Getting All Groups And Committies By Organization ID
+  useEffect(() => {
+    dispatch(getAllCommitteesandGroups(navigate, t));
+    return () => {
+      setMembers([]);
+      setProposedMeetingDetails({
+        MeetingTitle: "",
+        Description: "",
+      });
+      setSendResponseBy({
+        date: "",
+      });
+    };
+  }, []);
+
+  useEffect(() => {
+    let pollsData = PollsReducer.gellAllCommittesandGroups;
+    if (pollsData !== null && pollsData !== undefined) {
+      let temp = [];
+      if (Object.keys(pollsData).length > 0) {
+        if (Object.keys(pollsData.groups).length > 0) {
+          pollsData.groups.map((a, index) => {
+            let newData = {
+              value: a.groupID,
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={GroupIcon}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.groupName}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              type: 1,
+            };
+            temp.push(newData);
+          });
+        }
+        if (Object.keys(pollsData.committees).length > 0) {
+          pollsData.committees.map((a, index) => {
+            let newData = {
+              value: a.committeeID,
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={committeeicon}
+                        width="21.71px"
+                        height="18.61px"
+                        draggable="false"
+                        alt=""
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.committeeName}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              type: 2,
+            };
+            temp.push(newData);
+          });
+        }
+        if (Object.keys(pollsData.organizationUsers).length > 0) {
+          console.log(
+            pollsData.organizationUsers,
+            "organizationUsersorganizationUsersorganizationUsers"
+          );
+          pollsData.organizationUsers.map((a, index) => {
+            let newData = {
+              value: a.userID,
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
+                        // src={}
+                        alt=""
+                        className={styles["UserProfilepic"]}
+                        width="18px"
+                        height="18px"
+                        draggable="false"
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.userName}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              type: 3,
+            };
+            temp.push(newData);
+          });
+        }
+        setDropdowndata(temp);
+      } else {
+        setDropdowndata([]);
+      }
+    }
+  }, [PollsReducer.gellAllCommittesandGroups]);
+
+  //handle Add Users
+  const handleAddUsers = () => {
+    let pollsData = PollsReducer.gellAllCommittesandGroups;
+    let tem = [...members];
+    if (Object.keys(selectedsearch).length > 0) {
+      try {
+        selectedsearch.forEach((seledtedData, index) => {
+          console.log(
+            seledtedData,
+            "seledtedDataseledtedDataseledtedDataseledtedData"
+          );
+          if (seledtedData.type === 1) {
+            let check1 = pollsData.groups.find(
+              (data, index) => data.groupID === seledtedData.value
+            );
+            if (check1 !== undefined) {
+              let groupUsers = check1.groupUsers;
+              if (Object.keys(groupUsers).length > 0) {
+                groupUsers.forEach((gUser, index) => {
+                  let check2 = members.find(
+                    (data, index) => data.UserID === gUser.userID
+                  );
+                  if (check2 !== undefined) {
+                  } else {
+                    let newUser = {
+                      userName: gUser.userName,
+                      userID: gUser.userID,
+                      displayPicture: "",
+                      Title: "",
+                      ParticipantRoleID: 2,
+                    };
+                    tem.push(newUser);
+                  }
+                });
+              }
+            }
+          } else if (seledtedData.type === 2) {
+            console.log("members check");
+            let check1 = pollsData.committees.find(
+              (data, index) => data.committeeID === seledtedData.value
+            );
+            if (check1 !== undefined) {
+              let committeesUsers = check1.committeeUsers;
+              if (Object.keys(committeesUsers).length > 0) {
+                committeesUsers.forEach((cUser, index) => {
+                  let check2 = members.find(
+                    (data, index) => data.UserID === cUser.userID
+                  );
+                  if (check2 !== undefined) {
+                  } else {
+                    let newUser = {
+                      userName: cUser.userName,
+                      userID: cUser.userID,
+                      displayPicture: "",
+                      Title: "",
+                      ParticipantRoleID: 2,
+                    };
+                    tem.push(newUser);
+                  }
+                });
+              }
+            }
+          } else if (seledtedData.type === 3) {
+            let check1 = members.find(
+              (data, index) => data.UserID === seledtedData.value
+            );
+            if (check1 !== undefined) {
+            } else {
+              let check2 = pollsData.organizationUsers.find(
+                (data, index) => data.userID === seledtedData.value
+              );
+              console.log(check2, "check2check2check2");
+              if (check2 !== undefined) {
+                let newUser = {
+                  userName: check2.userName,
+                  userID: check2.userID,
+                  displayPicture:
+                    check2.profilePicture.displayProfilePictureName,
+                  Title: "",
+                  ParticipantRoleID: 2,
+                };
+
+                tem.push(newUser);
+              }
+            }
+          } else {
+          }
+        });
+      } catch {
+        console.log("error in add");
+      }
+      console.log("members check", tem);
+      const uniqueData = new Set(tem.map(JSON.stringify));
+
+      // Convert the Set back to an array of objects
+      const result = Array.from(uniqueData).map(JSON.parse);
+      setMembers(result);
+      setSelectedsearch([]);
+    } else {
+      // setopen notionation work here
+    }
+  };
+
+  // for selection of data
+  const handleSelectValue = (value) => {
+    setSelectedsearch(value);
+  };
+
   //Removing the Added Participants
   const hanleRemovingParticipants = (index) => {
-    let removeParticipant = [...participantsProposedMeeting];
+    let removeParticipant = [...members];
     removeParticipant.splice(index, 1);
-    setParticipantsProposedMeeting(removeParticipant);
+    setMembers(removeParticipant);
   };
 
   //Adding the Dates Rows
   const addRow = () => {
-    if (rows.length < 5) {
-      const lastRow = rows[rows.length - 1];
-      if (isValidRow(lastRow)) {
-        setRows([...rows, { selectedOption: "", startDate: "", endDate: "" }]);
-      }
-    } else {
-      setOpen({
-        flag: true,
-        message: t("You-cant-enter-more-then-five-dates"),
-      });
+    const lastRow = rows[rows.length - 1];
+    if (isValidRow(lastRow)) {
+      setRows([
+        ...rows,
+        {
+          selectedOption: "",
+          dateForView: "",
+          startDate: "",
+          startTime: "",
+          endDate: "",
+          endTime: "",
+        },
+      ]);
     }
   };
 
@@ -106,19 +384,25 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
 
   //OnChange Function For Select Options
   const changeDateStartHandler = (date, index) => {
-    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-    let DateDate = new DateObject(date).format("YYYYMMDD");
-    const updatedRows = [...rows];
-    if (index > 0 && DateDate < updatedRows[index - 1].selectedOption) {
-      return;
-    } else {
-      updatedRows[index].selectedOption = DateDate.slice(0, 8);
-      updatedRows[index].selectedOptionView = meetingDateValueFormat;
-      updatedRows[index].isComing = false;
-      updatedRows[index].proposedDateID = 0;
-
-      setRows(updatedRows);
-    }
+    try {
+      let newDate = new Date(date);
+      let DateDate = new DateObject(date).format("YYYYMMDD");
+      const updatedRows = [...rows];
+      if (
+        index > 0 &&
+        Number(DateDate) < Number(updatedRows[index - 1].selectedOption)
+      ) {
+        setOpen({
+          flag: true,
+          message: t("Selected-date-should-not-be-less-than-the-previous-one"),
+        });
+        return;
+      } else {
+        updatedRows[index].selectedOption = DateDate;
+        updatedRows[index].dateForView = newDate;
+        setRows(updatedRows);
+      }
+    } catch {}
   };
 
   //OnChange Function For Start Time
@@ -126,14 +410,11 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
     let newDate = new Date(date);
     console.log(newDate, "handleStartDateChangehandleStartDateChange");
     if (newDate instanceof Date && !isNaN(newDate)) {
-      // Round up to the next hour
-      const nextHour = Math.ceil(
-        newDate.getHours() + newDate.getMinutes() / 60
-      );
-      newDate.setHours(nextHour, 0, 0, 0);
+      const hours = ("0" + newDate.getHours()).slice(-2);
+      const minutes = ("0" + newDate.getMinutes()).slice(-2);
 
       // Format the time as HH:mm:ss
-      const formattedTime = `${String(nextHour).padStart(2, "0")}0000`;
+      const formattedTime = `${hours}${minutes}${"00"}`;
 
       const updatedRows = [...rows];
 
@@ -155,7 +436,6 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
             updatedRows[index].endDate !== "" &&
             formattedTime >= updatedRows[index].endDate
           ) {
-            console.log("handleStartDateChange");
             setOpen({
               flag: true,
               message: t(
@@ -165,10 +445,7 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
             return;
           } else {
             updatedRows[index].startDate = formattedTime;
-            updatedRows[index].startDateView = newDate;
-            updatedRows[index].isComing = false;
-            updatedRows[index].proposedDateID = 0;
-
+            updatedRows[index].startTime = newDate;
             setRows(updatedRows);
           }
         }
@@ -186,10 +463,7 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
           return;
         } else {
           updatedRows[index].startDate = formattedTime;
-          updatedRows[index].startDateView = newDate;
-          updatedRows[index].isComing = false;
-          updatedRows[index].proposedDateID = 0;
-
+          updatedRows[index].startTime = newDate;
           setRows(updatedRows);
         }
       }
@@ -201,14 +475,13 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
   //OnChange Function For End Time
   const handleEndTimeChange = (index, date) => {
     let newDate = new Date(date);
+
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const nextHour = Math.ceil(
-        newDate.getHours() + newDate.getMinutes() / 60
-      );
-      newDate.setHours(nextHour, 0, 0, 0);
+      const hours = ("0" + newDate.getHours()).slice(-2);
+      const minutes = ("0" + newDate.getMinutes()).slice(-2);
 
       // Format the time as HH:mm:ss
-      const formattedTime = `${String(nextHour).padStart(2, "0")}0000`;
+      const formattedTime = `${hours}${minutes}${"00"}`;
 
       const updatedRows = [...rows];
 
@@ -227,30 +500,23 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
           return;
         } else {
           updatedRows[index].endDate = formattedTime;
-          updatedRows[index].endDateView = newDate;
-          updatedRows[index].isComing = false;
-          updatedRows[index].proposedDateID = 0;
-
+          updatedRows[index].endTime = newDate;
           setRows(updatedRows);
         }
       } else {
         if (formattedTime <= updatedRows[index].startDate) {
           setOpen({
             flag: true,
-            message: t(
-              "Selected end time should be greater than the start time."
-            ),
+            message: t("Selected-end-time-should-not-be-less-than-start-time"),
           });
           return;
         } else {
           updatedRows[index].endDate = formattedTime;
-          updatedRows[index].endDateView = newDate;
-          updatedRows[index].isComing = false;
-          updatedRows[index].proposedDateID = 0;
-
+          updatedRows[index].endTime = newDate;
           setRows(updatedRows);
         }
       }
+      // }
     } else {
       console.error("Invalid date and time object:", date);
     }
@@ -281,21 +547,74 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
 
   //For handling  Proposed button ProposedMeeting Page
   const handleProposedButtonProposedMeeting = () => {
+    let Dates = [];
+    rows.forEach((data, index) => {
+      Dates.push({
+        MeetingDate: createConvert(data.selectedOption + data.startDate).slice(
+          0,
+          8
+        ),
+        StartTime: createConvert(data.selectedOption + data.startDate).slice(
+          8,
+          14
+        ),
+        EndTime: createConvert(data.selectedOption + data.endDate).slice(8, 14),
+      });
+    });
     if (
       proposedMeetingDetails.MeetingTitle === "" ||
       proposedMeetingDetails.Description === "" ||
-      participantsProposedMeeting.length === 0 ||
+      members.length === 0 ||
       rows.length <= 1 ||
       sendResponseVal === ""
     ) {
       seterror(true);
     } else {
-      alert("YOu can proposed now ");
+      let data = {
+        MeetingDetails: {
+          MeetingID: 0,
+          MeetingTitle: proposedMeetingDetails.MeetingTitle,
+          MeetingType: { PK_MTID: 27, Type: "BoardMeetings" },
+          Location: "",
+          Description: proposedMeetingDetails.Description,
+          IsVideoChat: true,
+          IsTalkGroup: false,
+          OrganizationId: 411,
+          MeetingDates: Dates,
+          MeetingReminders: [4],
+          Notes: "",
+          AllowRSVP: true,
+          NotifyOrganizerOnRSVP: true,
+          ReucurringMeetingID: 1,
+          VideoURL: "",
+          MeetingStatusID: 11,
+        },
+      };
+      dispatch(
+        SaveMeetingDetialsNewApiFunction(
+          navigate,
+          t,
+          data,
+          setSceduleMeeting,
+          setorganizers,
+          setmeetingDetails,
+          1,
+          setCurrentMeetingID,
+          currentMeeting,
+          proposedMeetingDetails, //state in which title and description is present
+          setDataroomMapFolderId,
+          members,
+          rows,
+          sendResponseBy.date,
+          setProposedNewMeeting
+        )
+      );
+
       setProposedMeetingDetails({
         MeetingTitle: "",
         Description: "",
       });
-      setParticipantsProposedMeeting([]);
+      setMembers([]);
       setRows([...rows, { selectedOption: "", startDate: "", endDate: "" }]);
       setSendResponseBy({
         date: "",
@@ -337,10 +656,6 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
     }
   };
 
-  //for handle Add Button Adding Participants
-
-  const handleAddParitipantProposedDates = () => {};
-
   //For arabic Convertion of the Date Times
   useEffect(() => {
     if (currentLanguage !== undefined) {
@@ -360,7 +675,7 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
         MeetingTitle: "",
         Description: "",
       });
-      setParticipantsProposedMeeting([]);
+      setMembers([]);
       setRows([...rows, { selectedOption: "", startDate: "", endDate: "" }]);
       setSendResponseBy({
         date: "",
@@ -461,13 +776,26 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
                 </Row>
                 <Row>
                   <Col lg={10} md={10} sm={10}>
-                    <Select />
+                    <Select
+                      onChange={handleSelectValue}
+                      isDisabled={
+                        PollsReducer.gellAllCommittesandGroups === null
+                          ? true
+                          : false
+                      }
+                      value={selectedsearch}
+                      classNamePrefix={"selectMember"}
+                      closeMenuOnSelect={false}
+                      components={animatedComponents}
+                      isMulti
+                      options={dropdowndata}
+                    />
                   </Col>
                   <Col lg={2} md={2} sm={2} className="m-0 p-0">
                     <Button
                       text={"Add"}
                       className={styles["Add_Button_Proposed_Meeting"]}
-                      onClick={handleAddParitipantProposedDates}
+                      onClick={handleAddUsers}
                     />
                   </Col>
                 </Row>
@@ -479,81 +807,80 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
                     className={styles["Scroller_ProposedMeeting"]}
                   >
                     <Row className="mt-2">
-                      {participantsProposedMeeting.length > 0
-                        ? participantsProposedMeeting.map(
-                            (participant, index) => {
-                              return (
-                                <>
-                                  <Col
-                                    lg={6}
-                                    md={6}
-                                    sm={12}
-                                    className="mt-2"
-                                    key={index}
-                                  >
-                                    <Row className="m-0 p-0">
-                                      <Col
-                                        lg={12}
-                                        md={12}
-                                        sm={12}
-                                        className={styles["Box_for_Assignee"]}
-                                      >
-                                        <Row className="mt-1">
-                                          <Col
-                                            lg={10}
-                                            md={10}
-                                            sm={12}
-                                            className="d-flex gap-2 align-items-center"
+                      {members.length > 0
+                        ? members.map((participant, index) => {
+                            console.log(participant, "participantparticipant");
+                            return (
+                              <>
+                                <Col
+                                  lg={6}
+                                  md={6}
+                                  sm={12}
+                                  className="mt-2"
+                                  key={index}
+                                >
+                                  <Row className="m-0 p-0">
+                                    <Col
+                                      lg={12}
+                                      md={12}
+                                      sm={12}
+                                      className={styles["Box_for_Assignee"]}
+                                    >
+                                      <Row className="mt-1">
+                                        <Col
+                                          lg={10}
+                                          md={10}
+                                          sm={12}
+                                          className="d-flex gap-2 align-items-center"
+                                        >
+                                          <img
+                                            draggable={false}
+                                            src={profile}
+                                            //   src={`data:image/jpeg;base64,${data.displayPicture}`}
+                                            width="50px"
+                                            alt=""
+                                            height="50px"
+                                            className={styles["ProfilePic"]}
+                                          />
+                                          <span
+                                            className={
+                                              styles["ParticipantName"]
+                                            }
                                           >
-                                            <img
-                                              draggable={false}
-                                              src={profile}
-                                              //   src={`data:image/jpeg;base64,${data.displayPicture}`}
-                                              width="50px"
-                                              alt=""
-                                              height="50px"
-                                              className={styles["ProfilePic"]}
-                                            />
-                                            <span
-                                              className={
-                                                styles["ParticipantName"]
-                                              }
-                                            >
-                                              {participant.name}
-                                            </span>
-                                          </Col>
-                                          <Col
-                                            lg={2}
-                                            md={2}
-                                            sm={2}
-                                            className="d-flex  align-items-center"
-                                          >
-                                            <img
-                                              src={CrossIcon}
-                                              width="14px"
-                                              height="14px"
-                                              draggable="false"
-                                              style={{ cursor: "pointer" }}
-                                              alt=""
-                                              onClick={() =>
-                                                hanleRemovingParticipants(index)
-                                              }
-                                            />
-                                          </Col>
-                                        </Row>
-                                      </Col>
-                                    </Row>
-                                  </Col>
-                                </>
-                              );
-                            }
-                          )
+                                            {participant.userName}
+                                          </span>
+                                        </Col>
+                                        <Col
+                                          lg={2}
+                                          md={2}
+                                          sm={2}
+                                          className="d-flex  align-items-center"
+                                        >
+                                          <img
+                                            src={CrossIcon}
+                                            width="14px"
+                                            height="14px"
+                                            draggable="false"
+                                            style={{ cursor: "pointer" }}
+                                            alt=""
+                                            onClick={() =>
+                                              hanleRemovingParticipants(index)
+                                            }
+                                          />
+                                        </Col>
+                                      </Row>
+                                    </Col>
+                                  </Row>
+                                </Col>
+                              </>
+                            );
+                          })
                         : null}
                       <Row>
                         <Col>
                           <p
                             className={
-                              error && participantsProposedMeeting.length === 0
+                              error && members.length === 0
                                 ? ` ${styles["errorMessage-inLogin"]} `
                                 : `${styles["errorMessage-inLogin_hidden"]}`
                             }
@@ -599,9 +926,8 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
                                   <Row className="mt-2">
                                     <Col lg={4} md={4} sm={12}>
                                       <DatePicker
-                                        disabled={data.isComing ? true : false}
-                                        value={data.selectedOptionView}
                                         selected={data.selectedOption}
+                                        value={data.dateForView}
                                         format={"DD/MM/YYYY"}
                                         minDate={
                                           index > 0
@@ -651,14 +977,15 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
                                         arrowClassName="arrowClass"
                                         containerClassName="containerClassTimePicker"
                                         className="timePicker"
-                                        disabled={data.isComing ? true : false}
                                         disableDayPicker
                                         inputClass="inputTImeMeeting"
                                         calendar={calendarValue}
                                         locale={localValue}
                                         format="hh:mm A"
-                                        value={data.startDateView}
                                         selected={data.startDate}
+                                        // onOpen={() => handleOpenStartTime(index)}
+                                        value={data.startTime}
+                                        editable={false}
                                         plugins={[<TimePicker hideSeconds />]}
                                         onChange={(date) =>
                                           handleStartTimeChange(index, date)
@@ -685,18 +1012,18 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
                                       // className="d-flex justify-content-end"
                                     >
                                       <DatePicker
-                                        value={data.endDateView}
                                         arrowClassName="arrowClass"
                                         containerClassName="containerClassTimePicker"
                                         className="timePicker"
                                         disableDayPicker
-                                        disabled={data.isComing ? true : false}
                                         inputClass="inputTImeMeeting"
                                         calendar={calendarValue}
                                         locale={localValue}
+                                        value={data.endTime}
                                         format="hh:mm A"
-                                        selected={data.startDate}
+                                        selected={data.endDate}
                                         plugins={[<TimePicker hideSeconds />]}
+                                        editable={false}
                                         onChange={(date) =>
                                           handleEndTimeChange(index, date)
                                         }
@@ -791,7 +1118,7 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
                           //   rows.selectedOption === "" &&
                           //   rows.startDate === "" &&
                           //   rows.endDate === "" &&
-                          rows.length <= 1
+                          rows.length === 1
                             ? ` ${styles["errorMessage-inLogin"]} `
                             : `${styles["errorMessage-inLogin_hidden"]}`
                         }

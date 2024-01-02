@@ -901,101 +901,105 @@ const NewMeeting = () => {
         );
 
         const isQuickMeeting = record.isQuickMeeting;
-        if (isQuickMeeting) {
-          if (isOrganiser) {
-            return (
-              <>
-                <Row>
-                  <Col sm={12} md={12} lg={12}>
-                    <Tooltip placement="topRight" title={t("Edit")}>
-                      <img
-                        src={EditIcon}
-                        className="cursor-pointer"
-                        width="17.11px"
-                        height="17.11px"
-                        alt=""
-                        draggable="false"
-                        onClick={() =>
-                          handleEditMeeting(
-                            record.pK_MDID,
-                            record.isQuickMeeting,
-                            isAgendaContributor,
-                            record
-                          )
-                        }
-                      />
-                    </Tooltip>
-                  </Col>
-                </Row>
-              </>
-            );
-          }
+        if (record.status === "8") {
+          return null;
         } else {
-          if (isParticipant) {
-          } else if (isOrganiser) {
-            return (
-              <>
-                <Row>
-                  <Col sm={12} md={12} lg={12}>
-                    <Tooltip placement="topRight" title={t("Edit")}>
-                      <img
-                        src={EditIcon}
-                        className="cursor-pointer"
-                        width="17.11px"
-                        height="17.11px"
-                        alt=""
-                        draggable="false"
-                        onClick={() => {
-                          handleEditMeeting(
-                            record.pK_MDID,
-                            record.isQuickMeeting,
-                            isAgendaContributor,
-                            record
-                          );
-                          setEdiorRole({
-                            status: record.status,
-                            role: "Organizer",
-                          });
-                          setEditMeeting(true);
-                        }}
-                      />
-                    </Tooltip>
-                  </Col>
-                </Row>
-              </>
-            );
-          } else if (isAgendaContributor) {
-            return (
-              <>
-                <Row>
-                  <Col sm={12} md={12} lg={12}>
-                    <Tooltip placement="topRight" title={t("Edit")}>
-                      <img
-                        src={EditIcon}
-                        className="cursor-pointer"
-                        width="17.11px"
-                        height="17.11px"
-                        alt=""
-                        draggable="false"
-                        onClick={() => {
-                          handleEditMeeting(
-                            record.pK_MDID,
-                            record.isQuickMeeting,
-                            isAgendaContributor,
-                            record
-                          );
-                          setEdiorRole({
-                            status: record.status,
-                            role: "Agenda Contributor",
-                          });
-                          setEditMeeting(true);
-                        }}
-                      />
-                    </Tooltip>
-                  </Col>
-                </Row>
-              </>
-            );
+          if (isQuickMeeting) {
+            if (isOrganiser) {
+              return (
+                <>
+                  <Row>
+                    <Col sm={12} md={12} lg={12}>
+                      <Tooltip placement="topRight" title={t("Edit")}>
+                        <img
+                          src={EditIcon}
+                          className="cursor-pointer"
+                          width="17.11px"
+                          height="17.11px"
+                          alt=""
+                          draggable="false"
+                          onClick={() =>
+                            handleEditMeeting(
+                              record.pK_MDID,
+                              record.isQuickMeeting,
+                              isAgendaContributor,
+                              record
+                            )
+                          }
+                        />
+                      </Tooltip>
+                    </Col>
+                  </Row>
+                </>
+              );
+            }
+          } else {
+            if (isParticipant) {
+            } else if (isOrganiser) {
+              return (
+                <>
+                  <Row>
+                    <Col sm={12} md={12} lg={12}>
+                      <Tooltip placement="topRight" title={t("Edit")}>
+                        <img
+                          src={EditIcon}
+                          className="cursor-pointer"
+                          width="17.11px"
+                          height="17.11px"
+                          alt=""
+                          draggable="false"
+                          onClick={() => {
+                            handleEditMeeting(
+                              record.pK_MDID,
+                              record.isQuickMeeting,
+                              isAgendaContributor,
+                              record
+                            );
+                            setEdiorRole({
+                              status: record.status,
+                              role: "Organizer",
+                            });
+                            setEditMeeting(true);
+                          }}
+                        />
+                      </Tooltip>
+                    </Col>
+                  </Row>
+                </>
+              );
+            } else if (isAgendaContributor) {
+              return (
+                <>
+                  <Row>
+                    <Col sm={12} md={12} lg={12}>
+                      <Tooltip placement="topRight" title={t("Edit")}>
+                        <img
+                          src={EditIcon}
+                          className="cursor-pointer"
+                          width="17.11px"
+                          height="17.11px"
+                          alt=""
+                          draggable="false"
+                          onClick={() => {
+                            handleEditMeeting(
+                              record.pK_MDID,
+                              record.isQuickMeeting,
+                              isAgendaContributor,
+                              record
+                            );
+                            setEdiorRole({
+                              status: record.status,
+                              role: "Agenda Contributor",
+                            });
+                            setEditMeeting(true);
+                          }}
+                        />
+                      </Tooltip>
+                    </Col>
+                  </Row>
+                </>
+              );
+            }
           }
         }
       },
@@ -1159,17 +1163,21 @@ const NewMeeting = () => {
       meetingIdReducer.MeetingStatusSocket !== undefined &&
       meetingIdReducer.MeetingStatusSocket.length !== 0
     ) {
-      let startMeetingData = meetingIdReducer.MeetingStatusSocket.meeting;
-      const indexToUpdate = rows.findIndex(
-        (obj) => obj.pK_MDID === startMeetingData.pK_MDID
-      );
-      if (indexToUpdate !== -1) {
-        let updatedRows = [...rows];
-        updatedRows[indexToUpdate] = startMeetingData;
-        setRow(updatedRows);
-      } else {
-        let updatedRows = [...rows, startMeetingData];
-        setRow(updatedRows);
+      try {
+        let startMeetingData = meetingIdReducer.MeetingStatusSocket.meeting;
+        const indexToUpdate = rows.findIndex(
+          (obj) => obj.pK_MDID === startMeetingData.pK_MDID
+        );
+        if (indexToUpdate !== -1) {
+          let updatedRows = [...rows];
+          updatedRows[indexToUpdate] = startMeetingData;
+          setRow(updatedRows);
+        } else {
+          let updatedRows = [...rows, startMeetingData];
+          setRow(updatedRows);
+        }
+      } catch {
+        console.log("Error");
       }
     }
   }, [meetingIdReducer.MeetingStatusSocket]);
@@ -1239,17 +1247,13 @@ const NewMeeting = () => {
       ResponseMessages !== t("No-records-found") &&
       ResponseMessages !== t("No-record-found")
     ) {
-      setOpen({
-        message: ResponseMessages,
-        open: true,
-      });
       setTimeout(() => {
         setOpen({
-          message: "",
-          open: false,
+          message: ResponseMessages,
+          open: true,
         });
-        dispatch(clearResponseMessage(""));
       }, 4000);
+      dispatch(clearResponseMessage(""));
     } else {
     }
   }, [ResponseMessages]);
@@ -1260,7 +1264,8 @@ const NewMeeting = () => {
       ResponseMessage !== t("No-record-found") &&
       ResponseMessage !== t("No-records-found") &&
       ResponseMessage !== t("Record-found") &&
-      ResponseMessage !== t("List-updated-successfully")
+      ResponseMessage !== t("List-updated-successfully") &&
+      ResponseMessage !== undefined
     ) {
       setOpen({
         message: ResponseMessage,
@@ -1441,9 +1446,18 @@ const NewMeeting = () => {
           setViewProposeOrganizerPoll={setViewProposeOrganizerPoll}
           currentMeeting={currentMeetingID}
         />
-      ) : proposedNewMeeting &&
-        NewMeetingreducer.proposeNewMeetingPageFlag === true ? (
-        <ProposedNewMeeting setProposedNewMeeting={setProposedNewMeeting} />
+      ) : proposedNewMeeting ? (
+        <ProposedNewMeeting
+          setProposedNewMeeting={setProposedNewMeeting}
+          setCurrentMeetingID={setCurrentMeetingID}
+          currentMeeting={currentMeetingID}
+          editorRole={editorRole}
+          setEdiorRole={setEdiorRole}
+          setEditMeeting={setEditMeeting}
+          isEditMeeting={isEditMeeting}
+          setDataroomMapFolderId={setDataroomMapFolderId}
+          dataroomMapFolderId={dataroomMapFolderId}
+        />
       ) : (
         <>
           <Row className="mt-2">
@@ -1490,13 +1504,14 @@ const NewMeeting = () => {
                       >
                         {t("Advance-meeting")}
                       </Dropdown.Item>
-                      {/* Proposed New Meeting For the Time Being Committed */}
-                      {/* <Dropdown.Item
+                      {/* Proposed New Meeting */}
+
+                      <Dropdown.Item
                         className="dropdown-item"
                         onClick={openProposedNewMeetingPage}
                       >
                         {t("Propose-new-meeting")}
-                      </Dropdown.Item> */}
+                      </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
                 </Col>

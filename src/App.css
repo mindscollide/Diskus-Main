@@ -4157,6 +4157,7 @@ svg.MuiSvgIcon-root .ant-notification-hook-holder:before {
   border-radius: 4px !important;
   width: 550px !important;
   height: 81px !important;
+  z-index: 999999999999 !important;
 }
 
 .ant-notification-notice-icon {
@@ -6482,4 +6483,34 @@ textarea {
 
 .rmdp-container.containerClassTimePicker div {
   z-index: 1 !important;
+}
+
+.file-icon-updateMeeting.col-lg-3.col-md-3.col-sm-12 p {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.file-uploaded-section {
+  display: flex;
+  /* width: 360px !important; */
+  flex-wrap: wrap;
+}
+
+.MeetingAgendaPresented.MeetingAgendaURL.col-lg-4.col-md-4.col-12 input {
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+}
+
+.data-room-file-upload-section.mt-4.row {
+  height: 100%;
+  overflow: hidden auto !important;
+}
+
+.ant-notification {
+  z-index: 99999999 !important;
+}
+.bottom-20 {
+  bottom: 20px;
 }

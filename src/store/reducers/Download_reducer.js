@@ -14,7 +14,6 @@ const downloadReducer = (state = initialState, action) => {
       return { ...state, Loading: true };
 
     case actions.GET_DOWNLOAD_FAIL:
-      console.log("action", action);
       return {
         ...state,
         Loading: false,
@@ -35,7 +34,6 @@ const downloadReducer = (state = initialState, action) => {
       return { ...state, ShowNotification: true, Message: action.message };
 
     case actions.DOWNLOAD_DOCUMENT_FILE_SUCCESS:
-      console.log("uploadedFile", action);
       return {
         ...state,
         Loading: false,

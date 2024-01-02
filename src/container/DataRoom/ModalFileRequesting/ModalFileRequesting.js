@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ModalFileRequesting.module.css";
 import { Modal, TextField } from "../../../components/elements";
 import { useTranslation } from "react-i18next";
@@ -9,21 +9,31 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 const ModalFileRequesting = ({ RequestFile, setRequestFile }) => {
   const { t } = useTranslation();
+  const { userAvailabilityDataRoom } = useSelector(
+    (state) => state.DataRoomReducer
+  );
+
   const dispatch = useDispatch();
+  const userEmail = localStorage.getItem("userEmail");
   const navigate = useNavigate();
   const [requestAccept, setRequestAccept] = useState(false);
+  const [tokenValue, setTokenValue] = useState("");
   const [message, setMessage] = useState("");
   const handleClickRequestAccess = () => {
     if (message !== "") {
       let Data = {
-        Token: "",
+        Token: tokenValue.split("/")[1],
         Message: message,
-        EmailAddress: "",
+        EmailAddress: userEmail !== null ? userEmail : "",
       };
-      setRequestAccept(true);
-      dispatch(requestAccessApi(navigate, t, Data));
+      dispatch(requestAccessApi(navigate, t, Data, setRequestAccept));
     }
   };
+  useEffect(() => {
+    if (userAvailabilityDataRoom !== null) {
+      setTokenValue(userAvailabilityDataRoom.token);
+    }
+  }, [userAvailabilityDataRoom]);
   return (
     <Modal
       size="md"

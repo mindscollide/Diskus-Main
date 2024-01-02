@@ -2933,6 +2933,11 @@ const checkFileLinkApi = (navigate, t, data) => {
               "DataRoom_DataRoomManager_CheckLink_07".toLowerCase()
             ) {
               dispatch(checkFileLink_fail(t("Something-went-wrong")));
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "DataRoom_DataRoomManager_CheckLink_08".toLowerCase()
+            ) {
+              dispatch(checkFileLink_fail(t("Something-went-wrong")));
             } else {
               dispatch(checkFileLink_fail(t("Something-went-wrong")));
             }
@@ -2969,7 +2974,7 @@ const requestAccess_fail = (message) => {
   };
 };
 
-const requestAccessApi = (navigate, t, data) => {
+const requestAccessApi = (navigate, t, data, setRequestAccept) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
@@ -2996,6 +3001,7 @@ const requestAccessApi = (navigate, t, data) => {
               "DataRoom_DataRoomManager_RequestAccess_01".toLowerCase()
             ) {
               dispatch(requestAccess_success(t("Access-requested")));
+              setRequestAccept(true);
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "DataRoom_DataRoomManager_RequestAccess_02".toLowerCase()
@@ -3418,7 +3424,8 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
   navigate,
   Data,
   t,
-  setShareFileModal
+  setShareFileModal,
+  setRequestFile
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
@@ -3442,13 +3449,13 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
-        // Retry the API request
         await dispatch(
           validateUserAvailibilityEncryptedStringDataRoomApi(
             navigate,
             Data,
             t,
-            setShareFileModal
+            setShareFileModal,
+            setRequestFile
           )
         );
       } else if (response.data.responseCode === 200) {
@@ -3466,11 +3473,41 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
                 t("No-restrictions")
               )
             );
-            window.open(
-              `/#/DisKus/documentViewer?pdfData=${encodeURIComponent()}`,
-              "_blank",
-              "noopener noreferrer"
-            );
+            if (response.data.responseResult.isAccess) {
+              if (response.data.responseResult.data.isFolder === true) {
+                dispatch(
+                  getFolderDocumentsApi(
+                    navigate,
+                    Number(response.data.responseResult.data.id),
+                    t,
+                    1
+                  )
+                );
+              } else {
+                let ext = response.data.responseResult.data.name
+                  .split(".")
+                  .pop();
+                if (ext === "pdf") {
+                  const pdfData = {
+                    taskId: response.data.responseResult.data.id,
+                    commingFrom: 4,
+                    fileName: response.data.responseResult.data.name,
+                    attachmentID: response.data.responseResult.data.id,
+                    isPermission: response.data.responseResult.permissionID,
+                  };
+                  window.open(
+                    `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                      JSON.stringify(pdfData)
+                    )}`,
+                    "_blank",
+                    "noopener noreferrer"
+                  );
+                }
+              }
+            } else {
+              setRequestFile(true);
+            }
+            localStorage.removeItem("DataRoomEmail");
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -3479,13 +3516,48 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
               )
           ) {
             dispatch(
-              validateUserDataRoomFailed(
+              validateUserDataRoomSuccess(
+                response.data.responseResult,
                 t(
                   "Only-allowed-to-my-organization-and-user-part-of-organization"
                 )
               )
             );
-            setShareFileModal(true);
+            if (response.data.responseResult.isAccess) {
+              if (response.data.responseResult.data.isFolder === true) {
+                dispatch(
+                  getFolderDocumentsApi(
+                    navigate,
+                    Number(response.data.responseResult.data.id),
+                    t,
+                    1
+                  )
+                );
+              } else {
+                let ext = response.data.responseResult.data.name
+                  .split(".")
+                  .pop();
+                if (ext === "pdf") {
+                  const pdfData = {
+                    taskId: response.data.responseResult.data.id,
+                    commingFrom: 4,
+                    fileName: response.data.responseResult.data.name,
+                    attachmentID: response.data.responseResult.data.id,
+                    isPermission: response.data.responseResult.permissionID,
+                  };
+                  window.open(
+                    `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                      JSON.stringify(pdfData)
+                    )}`,
+                    "_blank",
+                    "noopener noreferrer"
+                  );
+                }
+              }
+            } else {
+              setRequestFile(true);
+            }
+            localStorage.removeItem("DataRoomEmail");
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -3494,13 +3566,49 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
               )
           ) {
             dispatch(
-              validateUserDataRoomFailed(
+              validateUserDataRoomSuccess(
+                response.data.responseResult,
                 t(
                   "Only-allowed-to-my-organization-and-user-not-part-of-organization"
                 )
               )
             );
-            setShareFileModal(true);
+            if (response.data.responseResult.isAccess) {
+              localStorage.removeItem("DataRoomEmail");
+              if (response.data.responseResult.data.isFolder === true) {
+                dispatch(
+                  getFolderDocumentsApi(
+                    navigate,
+                    Number(response.data.responseResult.data.id),
+                    t,
+                    1
+                  )
+                );
+              } else {
+                let ext = response.data.responseResult.data.name
+                  .split(".")
+                  .pop();
+                if (ext === "pdf") {
+                  const pdfData = {
+                    taskId: response.data.responseResult.data.id,
+                    commingFrom: 4,
+                    fileName: response.data.responseResult.data.name,
+                    attachmentID: response.data.responseResult.data.id,
+                    isPermission: response.data.responseResult.permissionID,
+                  };
+                  window.open(
+                    `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                      JSON.stringify(pdfData)
+                    )}`,
+                    "_blank",
+                    "noopener noreferrer"
+                  );
+                }
+              }
+            } else {
+              setRequestFile(true);
+            }
+            localStorage.removeItem("DataRoomEmail");
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -3509,11 +3617,47 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
               )
           ) {
             dispatch(
-              validateUserDataRoomFailed(
+              validateUserDataRoomSuccess(
+                response.data.responseResult,
                 t("File-restricted-but-this-user-has-assigned-rights")
               )
             );
-            setShareFileModal(true);
+            // setShareFileModal(true);
+            if (response.data.responseResult.isAccess) {
+              if (response.data.responseResult.data.isFolder === true) {
+                dispatch(
+                  getFolderDocumentsApi(
+                    navigate,
+                    Number(response.data.responseResult.data.id),
+                    t,
+                    1
+                  )
+                );
+              } else {
+                let ext = response.data.responseResult.data.name
+                  .split(".")
+                  .pop();
+                if (ext === "pdf") {
+                  const pdfData = {
+                    taskId: response.data.responseResult.data.id,
+                    commingFrom: 4,
+                    fileName: response.data.responseResult.data.name,
+                    attachmentID: response.data.responseResult.data.id,
+                    isPermission: response.data.responseResult.permissionID,
+                  };
+                  window.open(
+                    `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                      JSON.stringify(pdfData)
+                    )}`,
+                    "_blank",
+                    "noopener noreferrer"
+                  );
+                }
+              }
+            } else {
+              setRequestFile(true);
+            }
+            localStorage.removeItem("DataRoomEmail");
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -3522,11 +3666,13 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
               )
           ) {
             dispatch(
-              validateUserDataRoomFailed(
+              validateUserDataRoomSuccess(
+                response.data.responseResult,
                 t("File-restricted-request-is-to-ask-for-request-access")
               )
             );
-            setShareFileModal(true);
+            setRequestFile(true);
+            localStorage.removeItem("DataRoomEmail");
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -3537,7 +3683,7 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
             dispatch(
               validateUserDataRoomFailed(t("No-file-exists-in-the-system"))
             );
-            setShareFileModal(true);
+            localStorage.removeItem("DataRoomEmail");
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -3546,18 +3692,28 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
               )
           ) {
             dispatch(validateUserDataRoomFailed(t("Link-expired")));
-            setShareFileModal(true);
+            localStorage.removeItem("DataRoomEmail");
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomManager_ValidateEncryptedStringUserAvailabilityForDataRoom_08".toLowerCase()
+              )
+          ) {
+            dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
+            localStorage.removeItem("DataRoomEmail");
           } else {
             dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
+            localStorage.removeItem("DataRoomEmail");
           }
-        } else {
-          dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
         }
       } else {
         dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
+        localStorage.removeItem("DataRoomEmail");
       }
     } catch (error) {
       dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
+      localStorage.removeItem("DataRoomEmail");
     }
   };
 };

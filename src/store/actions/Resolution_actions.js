@@ -127,7 +127,6 @@ const saveFilesResolutionApi = (navigate, t, data, folderID, newFolder) => {
         } else {
           dispatch(saveFiles_fail(t("Something-went-wrong")));
         }
-        console.log(response);
       })
       .catch(() => {
         dispatch(saveFiles_fail(t("Something-went-wrong")));
@@ -535,7 +534,6 @@ const getAllVoting_Init = () => {
 };
 
 const getAllVoting_Success = (response, message) => {
-  console.log(response, message, "actionaction");
   return {
     type: actions.GET_ALL_VOTING_METHOD_SUCCESS,
     response: response,
@@ -566,7 +564,6 @@ const getAllVotingMethods = (navigate, t) => {
       },
     })
       .then(async (response) => {
-        console.log("responseresponseresponse", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(getAllVotingMethods(navigate, t));
@@ -613,7 +610,6 @@ const getAllResolutionStatus_Init = () => {
 };
 
 const getAllResolutionStatus_Success = (response, message) => {
-  console.log(response, message, "actionaction111");
   return {
     type: actions.GET_ALL_RESOLUTION_STATUS_SUCCESS,
     response: response,
@@ -644,7 +640,6 @@ const getAllResolutionStatus = (navigate, t) => {
       },
     })
       .then(async (response) => {
-        console.log("responseresponseresponse", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(getAllResolutionStatus(navigate, t));
@@ -747,7 +742,6 @@ const getResolutions = (
       },
     })
       .then(async (response) => {
-        console.log("responseresponseresponse", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(getResolutions(navigate, id, t));
@@ -1046,7 +1040,6 @@ const updateResolution = (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_03".toLowerCase()
             ) {
-              console.log("check");
               dispatch(
                 updateResolution_Success(
                   t("Resolution-details-updated-successfully")

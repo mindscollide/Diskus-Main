@@ -10,7 +10,6 @@ const initialState = {
 };
 
 const calendarReducer = (state = initialState, action) => {
-  console.log("calendar Reducer", state);
   switch (action.type) {
     case actions.GETEVENTSDETAILS_INIT: {
       return {

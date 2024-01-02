@@ -20,11 +20,9 @@ const fAQsReducer = (state = initialState, action) => {
       return { ...state, Loading: true };
 
     case actions.GET_FAQS_SUCCESS:
-      console.log("GET_FAQS_SUCCESS", action);
       let GetAllFAQsArray = action.response.listOfFAQs.map((item, index) => {
         return { ...item, key: index };
       });
-      console.log("GET_FAQS_SUCCESS", GetAllFAQsArray);
 
       return {
         ...state,

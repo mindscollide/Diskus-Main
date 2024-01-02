@@ -21,17 +21,13 @@ import {
   cleareMessage,
   validationEmailAction,
 } from "../../../../../store/actions/Auth2_actions";
-import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
-import { authReducer, Authreducer } from "../../../../../store/reducers";
 import { useTranslation } from "react-i18next"; //ya
-import Cookies from "js-cookie"; //ya
-import LanguageChangeIcon from "../../../../../assets/images/newElements/Language.svg";
 import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
 
 const EmailValidation = () => {
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation(); //ya
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const emailRef = useRef();
   const { Authreducer, adminReducer, LanguageReducer } = useSelector(
@@ -45,13 +41,6 @@ const EmailValidation = () => {
     open: false,
     message: "",
   });
-
-  // useEffect(() => {
-  //   document.body.className = "login-page" + " " + currentLocale;
-  //   return () => {
-  //     document.body.className = "";
-  //   };
-  // }, []);
 
   const emailChangeHandler = (e) => {
     let value = e.target.value;
@@ -110,6 +99,9 @@ const EmailValidation = () => {
       localStorage.getItem("remeberPassword")
     );
     let reLang = localStorage.getItem("i18nextLng");
+
+    let RSVP = localStorage.getItem("RSVP");
+    let DataRoomEmailValue = localStorage.getItem("DataRoomEmail");
     if (RememberEmailLocal === true && RememberPasswordLocal === true) {
       console.log("RememberEmailLocal 1");
       let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
@@ -117,17 +109,16 @@ const EmailValidation = () => {
       let RememberPasswordLocalValue = localStorage.getItem(
         "rememberPasswordValue"
       );
-      let RSVP = localStorage.getItem(
-        "RSVP"
-      );
-      
+
       localStorage.clear();
       if (reLang != undefined && reLang != null) {
         localStorage.setItem("i18nextLng", reLang);
       }
-      if(RSVP){
-      localStorage.setItem("RSVP", RSVP);
-
+      if (RSVP) {
+        localStorage.setItem("RSVP", RSVP);
+      }
+      if (DataRoomEmailValue) {
+        localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
       }
       localStorage.setItem("remeberPassword", RememberPasswordLocal);
       localStorage.setItem("rememberPasswordValue", RememberPasswordLocalValue);
@@ -144,6 +135,12 @@ const EmailValidation = () => {
       if (reLang != undefined && reLang != null) {
         localStorage.setItem("i18nextLng", reLang);
       }
+      if (RSVP) {
+        localStorage.setItem("RSVP", RSVP);
+      }
+      if (DataRoomEmailValue) {
+        localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
+      }
       localStorage.setItem("rememberEmail", RememberEmailLocal);
       localStorage.setItem("rememberEmailValue", RememberEmailLocalValue);
       setErrorMessage("");
@@ -158,6 +155,12 @@ const EmailValidation = () => {
       if (reLang != undefined && reLang != null) {
         localStorage.setItem("i18nextLng", reLang);
       }
+      if (RSVP) {
+        localStorage.setItem("RSVP", RSVP);
+      }
+      if (DataRoomEmailValue) {
+        localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
+      }
       localStorage.setItem("remeberPassword", RememberPasswordLocal);
       localStorage.setItem("rememberPasswordValue", RememberPasswordLocalValue);
       setErrorMessage("");
@@ -166,6 +169,12 @@ const EmailValidation = () => {
       localStorage.clear();
       if (reLang != undefined && reLang != null) {
         localStorage.setItem("i18nextLng", reLang);
+      }
+      if (RSVP) {
+        localStorage.setItem("RSVP", RSVP);
+      }
+      if (DataRoomEmailValue) {
+        localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
       }
       localStorage.setItem("rememberEmail", false);
       localStorage.setItem("rememberEmailValue", "");
@@ -182,6 +191,17 @@ const EmailValidation = () => {
 
   const goForSignUp = () => {
     navigate("/packageselection");
+  };
+
+  const handleClickFreeTrail = () => {
+    localStorage.setItem("PackageID", 4);
+    localStorage.setItem("TenureOfSuscriptionID", 2);
+
+    navigate("/signuporganization", {
+      state: {
+        freeTrail: true,
+      },
+    });
   };
 
   useEffect(() => {
@@ -434,6 +454,20 @@ const EmailValidation = () => {
                     <Button
                       text={t("Subscribe-now")}
                       onClick={goForSignUp}
+                      className={styles["subscribNow_button_EmailVerify"]}
+                    />
+                  </Col>
+                </Row>
+                <Row className="d-flex mt-3 justify-content-center">
+                  <Col
+                    sm={12}
+                    lg={12}
+                    md={12}
+                    className="w-100 d-flex justify-content-center"
+                  >
+                    <Button
+                      text={t("Free-trail")}
+                      onClick={handleClickFreeTrail}
                       className={styles["subscribNow_button_EmailVerify"]}
                     />
                   </Col>

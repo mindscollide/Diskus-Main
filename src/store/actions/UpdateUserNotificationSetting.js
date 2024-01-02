@@ -58,10 +58,9 @@ const getUserNotificationSetting = (navigate, userSettingData, t) => {
       },
     })
       .then(async (response) => {
-        console.log("updae user notification", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getUserNotificationSetting(navigate, userSettingData, t))
+          dispatch(getUserNotificationSetting(navigate, userSettingData, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             await dispatch(
@@ -80,7 +79,6 @@ const getUserNotificationSetting = (navigate, userSettingData, t) => {
       })
       .catch((response) => {
         dispatch(updateusernotificationfail(response.data.responseMessage));
-        console.log("catch response", response);
       });
   };
 };

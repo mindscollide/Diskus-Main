@@ -431,8 +431,10 @@ const Card = ({
           <div className={styles["Tagline-Committee-Group"]}>
             <p
               className={
-                StatusID === 1 || StatusID === 2
+                StatusID === 1
                   ? styles["card-heading-Committee-Group_InActive"]
+                  : StatusID === 2
+                  ? styles["card-heading-Committee-Group_InActive_Archeive"]
                   : styles["card-heading-Committee-Group"]
               }
               onClick={titleOnCLick}

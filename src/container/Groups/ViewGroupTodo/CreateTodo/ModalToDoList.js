@@ -112,12 +112,12 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //task Asignees
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
-  console.log(taskAssignedToInput, "taskAssignedToInputtaskAssignedToInput");
+
   const [TaskAssignedTo, setTaskAssignedTo] = useState([]);
-  console.log("TaskAssignedToTaskAssignedTo", TaskAssignedTo);
+
   const [taskAssignedName, setTaskAssignedName] = useState([]);
   const [assignees, setAssignees] = useState([]);
-  console.log(assignees, "assigneesassigneesassigneesassignees");
+
   const [taskAssigneeLength, setTaskAssigneeLength] = useState(false);
   const [taskAssigneeApiData, setTaskAssigneeApiData] = useState([]);
 
@@ -408,7 +408,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //Drop Down Values
   const searchFilterHandler = (value) => {
     let getUserDetails = GroupsReducer?.getGroupByGroupIdResponse?.groupMembers;
-    console.log(getUserDetails, "getUserDetailsgetUserDetailsgetUserDetails");
 
     if (
       getUserDetails !== undefined &&
@@ -417,12 +416,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     ) {
       return getUserDetails
         .filter((item) => {
-          console.log(item, "getUserDetailsgetUserDetailsgetUserDetails");
-
           const searchTerm = value.toLowerCase();
           const assigneesName = item.userName.toLowerCase();
-          console.log("Input Value in searchTerm", searchTerm);
-          console.log("Input Value in assigneesName", assigneesName);
 
           return (
             searchTerm && assigneesName.startsWith(searchTerm)
@@ -445,7 +440,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           </div>
         ));
     } else {
-      console.log("not found");
     }
   };
 
@@ -608,9 +602,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       const hours = ("0" + newDate.getUTCHours()).slice(-2);
       const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
       const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
-      console.log(hours, "Hours");
-      console.log(minutes, "hourshours");
-      console.log(seconds, "hourshours");
+
       const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
         .toString()
         .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
@@ -632,7 +624,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   // const handleBlur = (event) => {
   //   // Access the selected value when the input field loses focus
   //   const selectedValue = event.target.value;
-  //   console.log("Selected Value:", selectedValue);
+  //
   // };
   // const handleTimeSelect = () => {
   //   const inputElement = document.getElementById("timeInput");
@@ -760,7 +752,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       className="todolist-modal-fields margin-top--20 d-flex  flex-column"
                     >
                       <InputSearchFilter
-                        placeholder={t("Add-attendees") + "*"}
+                        placeholder={t("Add-attendees")}
                         value={taskAssignedToInput}
                         filteredDataHandler={searchFilterHandler(
                           taskAssignedToInput

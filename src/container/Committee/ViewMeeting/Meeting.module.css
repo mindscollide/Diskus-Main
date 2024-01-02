@@ -3,6 +3,11 @@
   color: #6172d6;
   font-size: 12px !important;
   cursor: pointer;
+  overflow: hidden !important;
+  width: 180px !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+  display: block !important;
 }
 .Start-Meeting {
   width: 118px;
@@ -116,4 +121,8 @@
   border: none !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
+}
+.meeting-start {
+  font-size: 14px;
+  font-family: "MontserratRegular" !important;
 }

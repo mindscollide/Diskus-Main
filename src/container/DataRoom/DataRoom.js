@@ -110,10 +110,12 @@ import {
   getFilesandFolderDetailsApi,
 } from "../../store/actions/DataRoom2_actions";
 import FileDetailsModal from "./FileDetailsModal/FileDetailsModal";
+import copyToClipboard from "../../hooks/useClipBoard";
 
 const DataRoom = () => {
   const currentUrl = window.location.href;
-  console.log(currentUrl, "currentUrlcurrentUrlcurrentUrl");
+  let DataRoomString = localStorage.getItem("DataRoomEmail");
+
   // tooltip
   const dispatch = useDispatch();
   const location = useLocation();
@@ -130,8 +132,6 @@ const DataRoom = () => {
   const { uploadReducer, DataRoomReducer, LanguageReducer } = useSelector(
     (state) => state
   );
-  console.log("uploadReducer", uploadReducer);
-
   const searchBarRef = useRef();
   const threedotFile = useRef();
   const threedotFolder = useRef();
@@ -215,7 +215,7 @@ const DataRoom = () => {
   // for anotantion opens in new tabb on doubble click
   const [clicks, setClicks] = useState(0);
   const [dataCheck, setDataCheck] = useState([]);
-  console.log(DataRoomReducer, "DataRoomReducerDataRoomReducerDataRoomReducer");
+
   let userID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
   const [searchDataFields, setSearchDataFields] = useState({
@@ -251,45 +251,50 @@ const DataRoom = () => {
   });
   //State For the Detail View Of File And Folder
   const [detailView, setDetailView] = useState(false);
-
   //validate User Encrypted String Api
   useEffect(() => {
     if (currentUrl.includes("DisKus/dataroom?action=")) {
       const remainingString = currentUrl.split("?action=")[1];
-      console.log(remainingString, "remainingStringremainingString");
-      if (remainingString) {
+      if (remainingString !== "") {
         setDataRoomString(remainingString);
         // APi call
-        let Data = { Link: remainingString };
+        let Data = { Link: currentUrl };
         dispatch(
           validateUserAvailibilityEncryptedStringDataRoomApi(
             navigate,
             Data,
             t,
-            setShareFileModal
+            setShareFileModal,
+            setRequestFile
           )
         );
       }
       // Save something in local storage if the condition is true
-    } else {
-      let DataRoomString = localStorage.getItem("DataRoomEmail");
-      if (DataRoomString !== undefined && DataRoomString !== null) {
-        setDataRoomString(DataRoomString);
-        let Data = { Link: DataRoomString };
-        dispatch(
-          validateUserAvailibilityEncryptedStringDataRoomApi(
-            navigate,
-            Data,
-            t,
-            setShareFileModal
-          )
-        );
-      } else {
-        navigate("/DisKus/dataroom");
-      }
     }
-  }, [currentUrl]);
+    return () => {};
+  }, []);
+  useEffect(() => {
+    if (DataRoomString !== undefined && DataRoomString !== null) {
+      // setRequestingAccess(true);
+      setDataRoomString(DataRoomString);
+      let Data = { Link: DataRoomString };
 
+      dispatch(
+        validateUserAvailibilityEncryptedStringDataRoomApi(
+          navigate,
+          Data,
+          t,
+          setShareFileModal,
+          setRequestFile
+        )
+      );
+    } else {
+      navigate("/DisKus/dataroom");
+    }
+    return () => {
+      localStorage.removeItem("DataRoomEmail");
+    };
+  }, [DataRoomString]);
   useEffect(() => {
     try {
       if (performance.navigation.type === 1) {
@@ -456,6 +461,14 @@ const DataRoom = () => {
   }, [DataRoomReducer.RecentDocuments]);
 
   useEffect(() => {
+    if (
+      DataRoomReducer.getCreateFolderLink !== null &&
+      DataRoomReducer.getCreateFolderLink !== ""
+    ) {
+      copyToClipboard(DataRoomReducer.getCreateFolderLink);
+    }
+  }, [DataRoomReducer.getCreateFolderLink]);
+  useEffect(() => {
     if (!isOnline) {
       // CanceUpload();
     }
@@ -466,7 +479,6 @@ const DataRoom = () => {
   };
 
   const showRequestingAccessModal = (record) => {
-    // setRequestingAccess(true);
     if (record.isFolder === true) {
       let data = {
         FolderID: Number(record.id),
@@ -619,7 +631,7 @@ const DataRoom = () => {
       );
     }
   };
-  // console.log(detailView, "fileOptionsSelectfileOptionsSelect");
+  //
   const folderOptionsSelect = (data, record) => {
     if (data.value === 2) {
       setShowreanmemodal(true);
@@ -669,10 +681,6 @@ const DataRoom = () => {
   };
 
   const handleSortMyDocuments = (pagination, filters, sorter) => {
-    console.log(
-      { pagination, filters, sorter },
-      "handleSortMyDocumentshandleSortMyDocuments"
-    );
     if (sorter.field === "name") {
       if (sorter.order === "ascend") {
         dispatch(
@@ -735,10 +743,6 @@ const DataRoom = () => {
   };
 
   const handleSortMyRecentTab = (pagination, filters, sorter) => {
-    console.log(
-      { pagination, filters, sorter },
-      "handleSortMyDocumentshandleSortMyDocuments"
-    );
     if (sorter.field === "name") {
       if (sorter.order === "ascend") {
         dispatch(getDocumentsAndFolderApi(navigate, 5, t, 1, 1, false));
@@ -1466,7 +1470,7 @@ const DataRoom = () => {
           attachmentID: data.id,
           isPermission: data.permissionID,
         };
-        console.log("pdfDataJson", data);
+
         const pdfDataJson = JSON.stringify(pdfData);
         if (data.isShared) {
           if (data.isFolder) {
@@ -2090,7 +2094,6 @@ const DataRoom = () => {
       key: "name",
       width: "250px",
       render: (text, record) => {
-        console.log(record, "namenamenamenamenamename");
         let ext = record.name.split(".").pop();
         const pdfData = {
           taskId: record.id,
@@ -2240,7 +2243,6 @@ const DataRoom = () => {
 
   // this is file Upload
   const handleUploadFile = async ({ file }) => {
-    console.log("filefilefilefile", file);
     const taskId = Math.floor(Math.random() * 1000000);
     const axiosCancelSource = axios.CancelToken.source();
     let newJsonCreateFile = {
@@ -2298,7 +2300,6 @@ const DataRoom = () => {
 
   // cancel file upload
   const cancelFileUpload = (data) => {
-    console.log("cancelFileUpload", data);
     setTasksAttachments((prevTasks) => ({
       ...prevTasks,
       [data.TaskId]: {
@@ -2311,9 +2312,7 @@ const DataRoom = () => {
     }));
     if (data.axiosCancelToken) {
       data.axiosCancelToken.cancel("Upload canceled");
-      console.log("cancelFileUpload", data);
     }
-    console.log("cancelFileUpload", data);
 
     // Optionally, you can also cancel the Axios request associated with this task here.
   };
@@ -2322,7 +2321,6 @@ const DataRoom = () => {
   // Handle online status changes
   const handleOnlineStatusChange = (event) => {
     let isOnline = navigator.onLine;
-    console.log("detaUplodingForFOlder isOnline", isOnline);
 
     // Loop through your attachments and update NetDisconnect
     for (const taskId in tasksAttachments) {
@@ -2372,11 +2370,9 @@ const DataRoom = () => {
 
   // this fun triger when upload folder triiger
   const handleChangeFolderUpload = ({ directoryName, fileList }) => {
-    console.log(directoryName, "handleChangeFolderUpload");
     const axiosCancelSource = axios.CancelToken.source();
 
     try {
-      console.log("handleChangeFolderUpload");
       let newJsonCreate = {
         FolderName: "",
         FolderID: 0,
@@ -2465,11 +2461,9 @@ const DataRoom = () => {
       }
     }
   }, [DataRoomReducer.FolderisExistCheck]);
-  console.log("detaUplodingForFOlder", detaUplodingForFOlder);
 
   // this function call for current files which is in the folder
   const processArraySequentially = async (folder) => {
-    console.log(folder, "folderfolderfolderfolderprocessArraySequentially");
     let isOnline = navigator.onLine;
     if (folder.UploadCancel || folder.NetDisconnect) {
       // Skip the upload for this folder if it's canceled or there's a network disconnect
@@ -2512,9 +2506,7 @@ const DataRoom = () => {
             }
 
             // Call your API for the current item
-          } catch (error) {
-            console.error("handleChangeFolderUpload API call error:", error);
-          }
+          } catch (error) {}
           // If continueUploading is false, break out of the loop
           if (!continueUploading) {
             break;
@@ -2587,17 +2579,13 @@ const DataRoom = () => {
                   }
                 }
                 processArraySequentially(detaUplodingForFOlder[existingIndex]);
-              } catch (error) {
-                console.error(error);
-              }
+              } catch (error) {}
             } else {
             }
           }
         }
       }
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   }, [DataRoomReducer.CreatedFoldersArray]);
 
   const cancelUpload = (folder) => {
@@ -2627,7 +2615,6 @@ const DataRoom = () => {
       data.axiosCancelToken.cancel("Upload canceled");
     });
     detaUplodingForFOlder.map((data, index) => {
-      console.log("datadatadatadatadatadata", data);
       data.UploadCancel = true;
       data.Uploading = false;
       return data;
@@ -2642,7 +2629,7 @@ const DataRoom = () => {
     setCanselingDetaUplodingForFOlder(false);
     // if (data.axiosCancelToken) {
     //   data.axiosCancelToken.cancel("Upload canceled");
-    //   console.log("cancelFileUpload", data);
+    //
     // }
   };
 
@@ -2750,12 +2737,6 @@ const DataRoom = () => {
   }, [searchbarshow, optionsFileisShown, optionsFolderisShown]);
 
   useEffect(() => {
-    console.log(
-      "DataRoomReducerResponseMessage",
-      DataRoomReducer.ResponseMessage,
-      DataRoomReducer.FileisExistMessage,
-      DataRoomReducer.FolderisExistMessage
-    );
     if (
       DataRoomReducer.ResponseMessage !== "" &&
       DataRoomReducer.ResponseMessage !== t("Data-available") &&
@@ -3366,15 +3347,6 @@ const DataRoom = () => {
                                     column={MyDocumentsColumns}
                                     sortDirections={["descend", "ascend"]}
                                     className={"DataRoom_Table"}
-                                    onRow={(record, rowIndex) => {
-                                      return {
-                                        onDoubleClick: (event) =>
-                                          console.log(
-                                            { event, record, rowIndex },
-                                            "onDoubleClickonDoubleClickonDoubleClick"
-                                          ),
-                                      };
-                                    }}
                                     rows={getAllData}
                                     pagination={false}
                                     onChange={handleSortMyDocuments}

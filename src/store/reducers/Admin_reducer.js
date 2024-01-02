@@ -32,7 +32,7 @@ const initialState = {
   PaymentMethods: null,
   searchPaymentHistory: null,
   Spinner: false,
-  getSubscriptiondetails: null
+  getSubscriptiondetails: null,
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -41,24 +41,24 @@ const adminReducer = (state = initialState, action) => {
     case actions.GET_PAYMENT_METHODS_INIT: {
       return {
         ...state,
-        Loading: true
-      }
+        Loading: true,
+      };
     }
     case actions.GET_PAYMENT_METHODS_SUCCESS: {
       return {
         ...state,
         Loading: false,
         PaymentMethods: action.response,
-        ResponseMessage: action.message
-      }
+        ResponseMessage: action.message,
+      };
     }
     case actions.GET_PAYMENT_METHODS_FAIL: {
       return {
         ...state,
         Loading: false,
         PaymentMethods: null,
-        ResponseMessage: action.message
-      }
+        ResponseMessage: action.message,
+      };
     }
     case actions.ADMIN_ADDUSER_INIT:
       return {
@@ -75,7 +75,6 @@ const adminReducer = (state = initialState, action) => {
       };
 
     case actions.ADMIN_ADDUSER_FAIL:
-      console.log("ADMIN_ADDUSER_FAIL", action.message);
       return {
         ...state,
         Loading: false,
@@ -92,7 +91,6 @@ const adminReducer = (state = initialState, action) => {
       };
 
     case actions.ADMIN_ALLMEETING_SUCCESS:
-      console.log(action, "statestatemeeting");
       return {
         ...state,
         Loading: false,
@@ -101,7 +99,6 @@ const adminReducer = (state = initialState, action) => {
       };
 
     case actions.ADMIN_ALLMEETING_FAIL:
-      console.log(action, "statestatemeeting");
       return {
         ...state,
         Loading: false,
@@ -206,7 +203,6 @@ const adminReducer = (state = initialState, action) => {
       };
 
     case actions.ADMIN_ORGANIZATION_SUCCESS:
-      console.log("check", action);
       return {
         ...state,
         ResponseMessage: action.message,
@@ -215,8 +211,6 @@ const adminReducer = (state = initialState, action) => {
       };
 
     case actions.ADMIN_ORGANIZATION_FAIL:
-      console.log("check", action);
-
       return {
         ...state,
         ResponseMessage: action.message,
@@ -231,7 +225,6 @@ const adminReducer = (state = initialState, action) => {
       };
 
     case actions.ADMIN_EMAILVARIFICATION_SUCCESS:
-      console.log("check", action);
       return {
         ...state,
         ResponseMessage: action.message,
@@ -363,7 +356,7 @@ const adminReducer = (state = initialState, action) => {
         DeleteOrganizationMessageResponseMessage: "",
         AllOrganizationResponseMessage: "",
         revokeResponseMessege: "",
-        DeleteOrganizationResponseMessage: ""
+        DeleteOrganizationResponseMessage: "",
       };
     case actions.ADMIN_ALLUSERLIST_INIT:
       return {
@@ -468,37 +461,37 @@ const adminReducer = (state = initialState, action) => {
     case actions.ALL_MEETINGS_MQTT: {
       return {
         ...state,
-        AllOrganizationMeetingMQTT: action.response
-      }
+        AllOrganizationMeetingMQTT: action.response,
+      };
     }
     case actions.DELETE_ORGANIZATION_INIT: {
       return {
         ...state,
-        Loading: true
-      }
+        Loading: true,
+      };
     }
     case actions.DELETE_ORGANIZATION_SUCCESS: {
       return {
         ...state,
         Loading: false,
         DeleteOrganizationResponse: action.response,
-        DeleteOrganizationResponseMessage: action.message
-      }
+        DeleteOrganizationResponseMessage: action.message,
+      };
     }
     case actions.DELETE_ORGANIZATION_FAIL: {
       return {
         ...state,
         Loading: false,
         DeleteOrganizationResponse: null,
-        DeleteOrganizationResponseMessage: action.message
-      }
+        DeleteOrganizationResponseMessage: action.message,
+      };
     }
     case actions.SEARCH_PAYMENT_HISTORY_INIT: {
       return {
         ...state,
         Loading: true,
         Spinner: true,
-      }
+      };
     }
     case actions.SEARCH_PAYMENT_HISTORY_SUCCESS: {
       return {
@@ -506,8 +499,8 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         Spinner: false,
         searchPaymentHistory: action.response,
-        ResponseMessage: action.message
-      }
+        ResponseMessage: action.message,
+      };
     }
     case actions.SEARCH_PAYMENT_HISTORY_FAIL: {
       return {
@@ -515,8 +508,8 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         Spinner: false,
         searchPaymentHistory: null,
-        ResponseMessage: action.message
-      }
+        ResponseMessage: action.message,
+      };
     }
     default:
       return { ...state };

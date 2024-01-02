@@ -80,7 +80,6 @@ const RoleListReducer = (state = initialState, action) => {
     }
 
     case actions.ADMIN_USERSTATUSLIST_SUCCESS: {
-      console.log("userRoles", action.response);
       return {
         ...state,
         UserStatusList: action.response,

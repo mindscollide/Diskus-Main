@@ -70,7 +70,6 @@ const clearState = () => {
 
 //get meetinguser Socket
 const allMeetingsSocket = (response) => {
-  console.log("responseresponseresponse", response);
   return {
     type: actions.ALL_MEETINGS_SOCKET,
     response: response,
@@ -78,7 +77,6 @@ const allMeetingsSocket = (response) => {
 };
 
 const getMeetingStatusfromSocket = (response) => {
-  console.log("responseresponseresponse", response);
   return {
     type: actions.MEETING_STATUS_SOCKET,
     response: response,
@@ -86,7 +84,6 @@ const getMeetingStatusfromSocket = (response) => {
 };
 
 const mqttCurrentMeetingEnded = (response) => {
-  console.log("responseresponseresponse", response);
   return {
     type: actions.MEETING_STATUS_ENDED,
     response: response,
@@ -100,8 +97,6 @@ const meetingCount = (response) => {
   };
 };
 const setMQTTRequestUpcomingEvents = (response) => {
-  console.log("NEW_UPCOMING123", response);
-
   return {
     type: actions.UPCOMINGEVENTS_MQTT,
     response: response,
@@ -342,7 +337,6 @@ const GetWeeklyMeetingsCount = (navigate, id, t) => {
       })
 
       .catch((response) => {
-        console.log(response.message);
         dispatch(getWeeklyMeetingsCountFail(t("Something-went-wrong")));
         dispatch(SetSpinnerFalse());
       });
@@ -383,7 +377,6 @@ const GetUpcomingEvents = (navigate, data, t) => {
       },
     })
       .then(async (response) => {
-        console.log("GetUpcomingEvents", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(GetUpcomingEvents(navigate, data, t));
@@ -462,7 +455,6 @@ const SearchMeeting_Fail = (message) => {
 };
 
 const searchUserMeeting = (navigate, searchData, t) => {
-  console.log(searchData, "searchData");
   let token = JSON.parse(localStorage.getItem("token"));
   let userID = JSON.parse(localStorage.getItem("userID"));
   let meetingpageRow = JSON.parse(localStorage.getItem("MeetingPageRows"));
@@ -497,7 +489,6 @@ const searchUserMeeting = (navigate, searchData, t) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "responseresponseresponse");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(searchUserMeeting(navigate, searchData, t));

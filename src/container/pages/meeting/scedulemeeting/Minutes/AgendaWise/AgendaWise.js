@@ -281,6 +281,7 @@ const AgendaWise = ({
         { list: "bullet" },
       ],
       handlers: {},
+      clipboard: { matchVisual: false },
     },
   };
 
@@ -813,7 +814,7 @@ const AgendaWise = ({
         });
       }
     }
-  }, []);
+  }, [editorRef.current]);
 
   return (
     <section>
