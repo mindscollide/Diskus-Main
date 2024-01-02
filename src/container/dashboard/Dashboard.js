@@ -66,6 +66,7 @@ import {
 import {
   meetingStatusProposedMqtt,
   meetingStatusPublishedMqtt,
+  meetingNotConductedMQTT,
 } from "../../store/actions/NewMeetingActions";
 import {
   meetingAgendaStartedMQTT,
@@ -378,6 +379,22 @@ const Dashboard = () => {
             ...notification,
             notificationShow: true,
             message: t("NEW_MEETING_AGENDA_ADDED"),
+          });
+        }
+      } else if (
+        data.payload.message.toLowerCase() ===
+        "MEETING_STATUS_EDITED_NOTCONDUCTED".toLowerCase()
+      ) {
+        dispatch(meetingNotConductedMQTT(data.payload.meeting));
+        if (data.viewable) {
+          setNotification({
+            ...notification,
+            notificationShow: true,
+            message: changeMQTTJSONOne(
+              t("MEETING_STATUS_EDITED_NOTCONDUCTED"),
+              "[Meeting Title]",
+              data.payload.meetingTitle.substring(0, 100)
+            ),
           });
         }
       }

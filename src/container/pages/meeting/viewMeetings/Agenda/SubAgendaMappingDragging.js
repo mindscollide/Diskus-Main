@@ -36,6 +36,7 @@ import {
   getFileExtension,
   getIconSource,
 } from "../../../../DataRoom/SearchFunctionality/option";
+import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
 
 const SubAgendaMappingDragging = ({
   data,
@@ -271,6 +272,20 @@ const SubAgendaMappingDragging = ({
     await dispatch(GetAgendaAndVotingInfo(Data, navigate, t));
     dispatch(showCastVoteAgendaModal(true));
     dispatch(GetCurrentAgendaDetails(record));
+  };
+
+  const downloadDocument = (record) => {
+    let data = {
+      FileID: Number(record.originalAttachmentName),
+    };
+    dispatch(
+      DataRoomDownloadFileApiFunc(
+        navigate,
+        data,
+        t,
+        record.displayAttachmentName
+      )
+    );
   };
 
   const startVoting = (record) => {
@@ -751,9 +766,17 @@ const SubAgendaMappingDragging = ({
                                                                       )}
                                                                       alt=""
                                                                     />{" "}
-                                                                    {
-                                                                      filesData.displayAttachmentName
-                                                                    }
+                                                                    <span
+                                                                      onClick={() =>
+                                                                        downloadDocument(
+                                                                          filesData
+                                                                        )
+                                                                      }
+                                                                    >
+                                                                      {
+                                                                        filesData?.displayAttachmentName
+                                                                      }
+                                                                    </span>
                                                                   </span>
                                                                 </div>
                                                               </Col>

@@ -816,9 +816,9 @@ const Home = () => {
                     upcomingEventsData.meetingDetails.participantRoleID ===
                       1 ? (
                       upcomingEventsData.meetingDetails.isQuickMeeting ===
-                        true &&
-                      minutesDifference <= 5 &&
-                      minutesDifference > 0 ? (
+                        true && minutesDifference <= 15 ? (
+                        // &&
+                        // minutesDifference > 0
                         //   &&
                         //   minutesDifference <= 99999999 &&
                         //   minutesDifference > 0
@@ -832,9 +832,9 @@ const Home = () => {
                           />
                         </div>
                       ) : upcomingEventsData.meetingDetails.isQuickMeeting ===
-                          false &&
-                        minutesDifference <= 5 &&
-                        minutesDifference > 0 ? (
+                          false && minutesDifference <= 15 ? (
+                        // &&
+                        // minutesDifference > 0
                         //   &&
                         //     minutesDifference <= 99999999 &&
                         //     minutesDifference > 0
@@ -913,9 +913,9 @@ const Home = () => {
                       upcomingEventsData.meetingDetails.participantRoleID ===
                         1 ? (
                         upcomingEventsData.meetingDetails.isQuickMeeting ===
-                          true &&
-                        minutesDifference <= 5 &&
-                        minutesDifference > 0 ? (
+                          true && minutesDifference <= 15 ? (
+                          // &&
+                          // minutesDifference > 0
                           //   &&
                           //   minutesDifference <= 99999999 &&
                           //   minutesDifference > 0
@@ -927,9 +927,9 @@ const Home = () => {
                             }
                           />
                         ) : upcomingEventsData.meetingDetails.isQuickMeeting ===
-                            false &&
-                          minutesDifference <= 5 &&
-                          minutesDifference > 0 ? (
+                            false && minutesDifference <= 15 ? (
+                          // &&
+                          // minutesDifference > 0
                           //   &&
                           //     minutesDifference <= 99999999 &&
                           //     minutesDifference > 0
@@ -999,9 +999,9 @@ const Home = () => {
                     upcomingEventsData.meetingDetails.participantRoleID ===
                       1 ? (
                       upcomingEventsData.meetingDetails.isQuickMeeting ===
-                        true &&
-                      minutesDifference <= 5 &&
-                      minutesDifference > 0 ? (
+                        true && minutesDifference <= 15 ? (
+                        // &&
+                        // minutesDifference > 0
                         //   &&
                         //   minutesDifference <= 99999999 &&
                         //   minutesDifference > 0
@@ -1013,9 +1013,9 @@ const Home = () => {
                           }
                         />
                       ) : upcomingEventsData.meetingDetails.isQuickMeeting ===
-                          false &&
-                        minutesDifference <= 5 &&
-                        minutesDifference > 0 ? (
+                          false && minutesDifference <= 15 ? (
+                        // &&
+                        // minutesDifference > 0
                         //   &&
                         //     minutesDifference <= 99999999 &&
                         //     minutesDifference > 0

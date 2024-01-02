@@ -269,20 +269,18 @@ const UnpublishedProposedMeeting = ({
       render: (text, record) => {
         console.log(record, "maxValuemaxValuemaxValue");
         let maxValue = record.meetingPoll?.totalNoOfDirectors;
-        let value = +record.meetingPoll?.totalNoOfDirectorsVoted;
+        let value = record.meetingPoll?.totalNoOfDirectorsVoted;
         if (record.meetingPoll) {
           console.log(record.meetingPoll, "meetingPollmeetingPoll");
           return (
             <>
               <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex justify-content-center"
-                >
-                  {value === maxValue ? null : record.totalNoOfDirectors ===
-                    record.totalNoOfDirectorsVoted ? (
+                <Col lg={12} md={12} sm={12} className="text-center">
+                  {value === maxValue &&
+                  value === 0 &&
+                  maxValue === 0 ? null : record.meetingPoll
+                      ?.totalNoOfDirectors ===
+                    record.meetingPoll?.totalNoOfDirectorsVoted ? (
                     <img
                       src={rspvGreenIcon}
                       height="17.06px"
@@ -292,14 +290,6 @@ const UnpublishedProposedMeeting = ({
                     />
                   ) : (
                     <>
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="d-flex flex-column flex-wrap justify-content-center align-items-center"
-                        ></Col>
-                      </Row>
                       <span className={styles["RatioClass"]}>
                         {record.meetingPoll?.totalNoOfDirectorsVoted}/
                         {record.meetingPoll?.totalNoOfDirectors}
