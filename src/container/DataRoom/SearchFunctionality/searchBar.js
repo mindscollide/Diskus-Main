@@ -92,7 +92,7 @@ const SearchBarComponent = ({
       }
     }
   }, [lang]);
-  console.log("searchDataFields", searchDataFields);
+
   // Transform the API response to match the options structure
   const transformedOptions = assignessList.map((user) => ({
     value: user.pK_UID,
@@ -1246,6 +1246,27 @@ const SearchBarComponent = ({
       Type: null,
       Location: null,
       People: null,
+    });
+    setSearchResultBoxFields({
+      documentType: {
+        value: 0,
+        label: "",
+      },
+      lastModifedDate: {
+        value: 0,
+        label: "",
+      },
+      documetLocation: {
+        value: 0,
+        label: "",
+      },
+      itemname: "",
+      haswords: "",
+      owner: {
+        value: 0,
+        label: "",
+      },
+      specifiPeople: "",
     });
   };
 

@@ -62,7 +62,7 @@ const Polling = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { state } = useLocation();
-  const { PollsReducer, LanguageReducer } = useSelector((state) => state);
+  const { PollsReducer } = useSelector((state) => state);
   const [enterpressed, setEnterpressed] = useState(false);
   const [updatePublished, setUpdatePublished] = useState(false);
   const [open, setOpen] = useState({
@@ -132,7 +132,6 @@ const Polling = () => {
 
   useEffect(() => {
     if (state !== null) {
-      console.log(state, "statestatestate");
       let check = 0;
       let data = {
         PollID: Number(state.record.pollID),
@@ -158,7 +157,6 @@ const Polling = () => {
   }, [state]);
 
   useEffect(() => {
-    console.log("PollsReducerPollsReducer", PollsReducer.SearchPolls);
     try {
       if (
         PollsReducer.SearchPolls !== null &&
@@ -194,31 +192,27 @@ const Polling = () => {
       ) {
         if (Object.keys(PollsReducer.pollingSocket).length > 0) {
           let pollData = PollsReducer.pollingSocket;
-          console.log("Mqtt", pollData);
+
           let rowCopy = [...rows];
           let findIndex = rowCopy.findIndex(
             (rowData, index) => rowData?.pollID === pollData?.pollID
           );
           if (findIndex !== -1) {
-            console.log("Mqtt");
             const newState = rowCopy.map((obj, index) => {
               // 👇️ if id equals 2 replace object
               if (
                 findIndex === index &&
                 Number(pollData.pollStatus.pollStatusId) === 4
               ) {
-                console.log("Mqtt");
                 rowCopy.splice(findIndex, 1);
                 // return rowCopy;
               } else if (
                 findIndex === index &&
                 Number(pollData.pollStatus.pollStatusId) === 3
               ) {
-                console.log("Mqtt");
                 rowCopy[index] = pollData;
                 // return rowCopy;
               } else {
-                console.log("Mqtt");
                 // return obj;
               }
             });
@@ -228,9 +222,7 @@ const Polling = () => {
           }
         }
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }, [PollsReducer.pollingSocket]);
 
   const handleEditpollModal = (record) => {
@@ -406,8 +398,6 @@ const Polling = () => {
       key: "vote",
       width: "69px",
       render: (text, record) => {
-        console.log("votevotevotevote", record);
-        console.log("votevotevotevote", record.isVoter);
         if (record.pollStatus.pollStatusId === 2) {
           if (record.isVoter) {
             if (record.voteStatus === "Not Voted") {
@@ -602,8 +592,8 @@ const Polling = () => {
         OrganizationID: parseInt(organizationID),
         CreatorName: "",
         PollTitle: pollsState.searchValue,
-        PageNumber: JSON.parse(currentPage),
-        Length: JSON.parse(currentPageSize),
+        PageNumber: 1,
+        Length: 50,
       };
       dispatch(searchPollsApi(navigate, t, data));
     }
@@ -627,7 +617,7 @@ const Polling = () => {
       }
     }
     if (name === "seachbyname") {
-      let UpdateValue = regexOnlyCharacters(value);
+      let UpdateValue = regexOnlyForNumberNCharacters(value);
       if (UpdateValue !== "") {
         setsearchBoxState({
           ...searchBoxState,
@@ -654,8 +644,8 @@ const Polling = () => {
       OrganizationID: parseInt(organizationID),
       CreatorName: "",
       PollTitle: "",
-      PageNumber: JSON.parse(currentPage),
-      Length: JSON.parse(currentPageSize),
+      PageNumber: 1,
+      Length: 50,
     };
     dispatch(searchPollsApi(navigate, t, data));
   };
@@ -724,13 +714,14 @@ const Polling = () => {
       searchByTitle: "",
     });
     setSearchpoll(false);
+
     let data = {
       UserID: parseInt(userID),
       OrganizationID: parseInt(organizationID),
       CreatorName: "",
       PollTitle: "",
-      PageNumber: JSON.parse(currentPage),
-      Length: JSON.parse(currentPageSize),
+      PageNumber: 1,
+      Length: 50,
     };
     dispatch(searchPollsApi(navigate, t, data));
     // setSearchpoll(false);
@@ -747,6 +738,15 @@ const Polling = () => {
       ...pollsState,
       searchValue: "",
     });
+    let data = {
+      UserID: parseInt(userID),
+      OrganizationID: parseInt(organizationID),
+      CreatorName: "",
+      PollTitle: "",
+      PageNumber: 1,
+      Length: 50,
+    };
+    dispatch(searchPollsApi(navigate, t, data));
   };
 
   return (
@@ -841,6 +841,7 @@ const Polling = () => {
                             height="16px"
                             onClick={HandleCloseSearchModal}
                             draggable="false"
+                            alt=""
                           />
                         </Col>
                       </Row>
@@ -899,7 +900,7 @@ const Polling = () => {
             {rows.length > 0 ? (
               <Table
                 column={PollTableColumns}
-                scroll={{ y: "60vh" }}
+                scroll={{ y: "53vh" }}
                 pagination={false}
                 className="Polling_table"
                 rows={rows}

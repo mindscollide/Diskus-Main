@@ -1715,5 +1715,6 @@
   "Poll-deleted-successfully": "Poll deleted successfully",
   "Poll-status-updated-successfully": "Poll status updated successfully",
   "Meeting-title": "Meeting Title",
-  "Meeting-ended-successfully": "Meeting ended successfully"
+  "Meeting-ended-successfully": "Meeting ended successfully",
+  "There-are-no-minutes-available": "There are No Minutes Available"
 }

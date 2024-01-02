@@ -146,7 +146,7 @@ const Dashboard = () => {
   let createrID = localStorage.getItem("userID");
   let currentOrganization = localStorage.getItem("organizationID");
   let currentUserName = localStorage.getItem("name");
-
+  const { Header, Footer, Sider, Content } = Layout;
   //Translation
   const { t } = useTranslation();
 
@@ -1687,9 +1687,88 @@ const Dashboard = () => {
           <div className="overlay-incoming-videocall" />
         )}
         <Layout>
+          {location.pathname === "/DisKus/videochat" ? null : <Header2 />}
+          <Layout>
+            <Sider width={"4%"}>
+              <Sidebar />
+            </Sider>
+            <Content>
+              <div className="dashbaord_data">
+                <Outlet />
+              </div>
+              <div className="talk_features_home">
+                {activateBlur ? null : <Talk />}
+              </div>
+            </Content>
+          </Layout>
+          <NotificationBar
+            iconName={
+              <img src={IconMetroAttachment} alt="" draggable="false" />
+            }
+            notificationMessage={notification.message}
+            notificationState={notification.notificationShow}
+            setNotification={setNotification}
+            handleClose={closeNotification}
+            id={notificationID}
+          />
+          {videoFeatureReducer.IncomingVideoCallFlag === true ? (
+            <VideoMaxIncoming />
+          ) : null}
+          {videoFeatureReducer.VideoChatMessagesFlag === true ? (
+            <TalkChat2
+              chatParentHead="chat-messenger-head-video"
+              chatMessageClass="chat-messenger-head-video"
+            />
+          ) : null}
+          {videoFeatureReducer.NormalizeVideoFlag === true ||
+          videoFeatureReducer.MinimizeVideoFlag === true ||
+          videoFeatureReducer.MaximizeVideoFlag === true ? (
+            <VideoCallScreen />
+          ) : null}
+
+          {NewMeetingreducer.Loading ||
+          assignees.Loading ||
+          MeetingOrganizersReducer.LoadingMeetingOrganizer ||
+          MeetingOrganizersReducer.Loading ||
+          PollsReducer.Loading ||
+          CommitteeReducer.Loading ||
+          toDoListReducer.Loading ||
+          todoStatus.Loading ||
+          getTodosStatus.Loading ||
+          MeetingAgendaReducer.Loading ||
+          actionMeetingReducer.Loading ||
+          AgendaWiseAgendaListReducer.loading ||
+          downloadReducer.Loading ||
+          attendanceMeetingReducer.Loading ||
+          webViewer.Loading ||
+          LanguageReducer.Loading ||
+          uploadReducer.Loading ||
+          settingReducer.Loading ||
+          fAQsReducer.Loading ||
+          meetingIdReducer.Loading ||
+          calendarReducer.Loading ||
+          OnBoardModal.Loading ||
+          postAssigneeComments.Loading ||
+          VideoChatReducer.Loading ||
+          minuteofMeetingReducer.Loading ||
+          countryNamesReducer.Loading ||
+          GetSubscriptionPackage.Loading ||
+          Authreducer.Loading ||
+          roleListReducer.Loading ||
+          NotesReducer.Loading ||
+          GroupsReducer.Loading ||
+          GroupsReducer.getAllLoading ||
+          ResolutionReducer.Loading ||
+          RealtimeNotification.Loading ||
+          OrganizationBillingReducer.Loading ||
+          DataRoomReducer.Loading ||
+          DataRoomFileAndFoldersDetailsReducer.Loading ? (
+            <Loader />
+          ) : null}
+        </Layout>
+        {/* <Layout>
           <Sidebar />
           {location.pathname === "/DisKus/videochat" ? null : <Header2 />}
-          {/* <Content className="MainContainer"> */}
           <Layout className="positionRelative">
             <NotificationBar
               iconName={
@@ -1758,8 +1837,7 @@ const Dashboard = () => {
               <Loader />
             ) : null}
           </Layout>
-          {/* </Content> */}
-        </Layout>
+        </Layout> */}
       </ConfigProvider>
     </>
   );

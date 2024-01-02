@@ -1677,5 +1677,6 @@
   "You-can-not-upload-more-then-10MB-file": "You can not upload more then 10MB file",
   "Poll-deleted-successfully": "Poll deleted successfully",
   "Poll-status-updated-successfully": "Poll status updated successfully",
-  "Meeting-ended-successfully": "Meeting ended successfully"
+  "Meeting-ended-successfully": "Meeting ended successfully",
+  "There-are-no-minutes-available": "There are No Minutes Available"
 }

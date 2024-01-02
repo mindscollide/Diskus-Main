@@ -1,5 +1,5 @@
 .NewMeeting_container {
-  width: 90% !important;
+  width: 98% !important;
   /* height: 80vh !important; */
   margin: 0 auto !important;
 }
@@ -240,7 +240,7 @@ body[dir="rtl"] .PaginationStyle-Committee {
 .PaperStylesMeetingTwoPage {
   width: 100% !important;
   /* min-height: 78vh !important;*/
-  height: auto !important; 
+  height: auto !important;
   position: relative;
   padding: 20px 20px !important;
 }
