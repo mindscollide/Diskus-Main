@@ -5582,7 +5582,7 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
             ) {
               await dispatch(
                 showCreateUpdateMeetingDataRoomSuccess(
-                  response.data.responseResult,
+                  response.data.responseResult.folderID,
                   ""
                 )
               );
