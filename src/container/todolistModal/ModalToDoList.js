@@ -739,7 +739,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       className="todolist-modal-fields margin-top--20 d-flex  flex-column"
                     >
                       <InputSearchFilter
-                        placeholder={t("Add-attendees") + "*"}
+                        placeholder={t("Add-attendees")}
                         value={taskAssignedToInput}
                         filteredDataHandler={searchFilterHandler(
                           taskAssignedToInput

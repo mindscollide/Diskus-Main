@@ -54,7 +54,6 @@ const GetAllVideoCallUsers = (Data, navigate, t) => {
       },
     })
       .then(async (response) => {
-        console.log("GetAllVideoCallUsers", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(GetAllVideoCallUsers(Data, navigate, t));
@@ -143,7 +142,6 @@ const InitiateVideoCall = (Data, navigate, t) => {
       },
     })
       .then(async (response) => {
-        console.log("InitiateVideoCall", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(InitiateVideoCall(Data, navigate, t));
@@ -253,7 +251,6 @@ const VideoCallResponse = (Data, navigate, t) => {
       },
     })
       .then(async (response) => {
-        console.log("VideoCallResponse", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(VideoCallResponse(Data, navigate, t));
@@ -349,7 +346,6 @@ const GetUserRecentCalls = (Data, navigate, t) => {
       },
     })
       .then(async (response) => {
-        console.log("GetUserRecentCalls", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(GetUserRecentCalls(Data, navigate, t));
@@ -420,7 +416,6 @@ const GetUserRecentCallsScroll = (Data, navigate, t) => {
       },
     })
       .then(async (response) => {
-        console.log("GetUserRecentCalls", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(GetUserRecentCalls(Data, navigate, t));
@@ -506,7 +501,6 @@ const CallRequestReceived = (Data, navigate, t) => {
       },
     })
       .then(async (response) => {
-        console.log("CallRequestReceived", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(CallRequestReceived(Data, navigate, t));
@@ -601,7 +595,6 @@ const GetUserMissedCallCount = (navigate, t) => {
       },
     })
       .then(async (response) => {
-        console.log("GetUserMissedCallCount", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(GetUserMissedCallCount(navigate, t));
@@ -681,7 +674,6 @@ const LeaveCall = (Data, navigate, t) => {
       },
     })
       .then(async (response) => {
-        console.log("LeaveCall", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(LeaveCall(Data, navigate, t));

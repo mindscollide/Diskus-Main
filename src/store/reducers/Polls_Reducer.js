@@ -277,8 +277,6 @@ const PollsReducer = (state = initialState, action) => {
     }
 
     case actions.VIEW_VOTES_SUCCESS: {
-      console.log("handleClosed", action.response);
-
       return {
         ...state,
         Loading: false,
@@ -319,7 +317,6 @@ const PollsReducer = (state = initialState, action) => {
     }
 
     case actions.ALL_POLLINGS_SOCKET: {
-      console.log(action, "ALL_POLLINGS_SOCKET");
       return {
         ...state,
         pollingSocket: action.response,

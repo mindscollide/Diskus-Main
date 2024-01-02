@@ -321,8 +321,12 @@ const UpdateOrganizersMeeting = (
                     response.data.responseResult,
                     route === 5
                       ? t("Meeting-published-successfully")
-                      : route === 4 || route === 6 || route === 7
+                      : (route === 4 || route === 6 || route === 7) &&
+                        Data.StatusID === 10
                       ? t("Meeting-started-successfully")
+                      : (route === 4 || route === 6 || route === 7) &&
+                        Data.StatusID === 9
+                      ? t("Meeting-ended-successfully")
                       : ""
                   )
                 );

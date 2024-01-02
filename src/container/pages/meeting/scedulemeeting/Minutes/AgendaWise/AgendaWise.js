@@ -814,7 +814,7 @@ const AgendaWise = ({
         });
       }
     }
-  }, []);
+  }, [editorRef.current]);
 
   return (
     <section>

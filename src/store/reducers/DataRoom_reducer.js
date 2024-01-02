@@ -127,7 +127,6 @@ const DataRoomReducer = (state = initialState, action) => {
       };
     }
     case actions.GET_FOLDER_DOCUMENTS_DATAROOM_SUCCESS: {
-      console.log(action);
       return {
         ...state,
         Loading: false,
@@ -397,7 +396,6 @@ const DataRoomReducer = (state = initialState, action) => {
       };
     }
     case actions.DATAROOM_TABLE_SCROLL_BAR: {
-      console.log(action, "sssasasasasas");
       return {
         ...state,
         TableSpinner: action.response,
@@ -412,8 +410,6 @@ const DataRoomReducer = (state = initialState, action) => {
       };
     }
     case actions.FOLDER_UPLOAD_DATA: {
-      console.log("DataRoomReducer.folderUploadData", action.response);
-      console.log("DataRoomReducer.folderUploadData", state.folderUploadData);
       let newData = [...state.folderUploadData];
       newData.push(action.response);
       return {
@@ -434,7 +430,6 @@ const DataRoomReducer = (state = initialState, action) => {
       };
     }
     case actions.SEARCHDOCUMENTSANDFOLDERSAPI_DATAROOM_SUCCESS: {
-      console.log("DataRoomReducer.SearchFilesAndFoldersResponse", action);
       return {
         ...state,
         Loading: false,

@@ -25,7 +25,10 @@ import {
   Loader,
   MultiDatePicker,
 } from "./../../components/elements";
-import { FileUploadToDo } from "../../store/actions/Upload_action";
+import {
+  FileUploadToDo,
+  ResetAllFilesUpload,
+} from "../../store/actions/Upload_action";
 import {
   addMinutesofMeetings,
   HideMinuteMeetingMessage,
@@ -61,6 +64,7 @@ import {
   getHoursMinutesSec,
   getStartTimeWithCeilFunction,
 } from "../../commen/functions/time_formatter";
+import { ConvertFileSizeInMB } from "../../commen/functions/convertFileSizeInMB";
 
 const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   //For Localization
@@ -110,7 +114,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   const [meetingAgendaAttachments, setMeetingAgendaAttachments] = useState({
     MeetingAgendaAttachments: [],
   });
-
+  console.log(
+    meetingAgendaAttachments,
+    "meetingAgendaAttachmentsmeetingAgendaAttachments"
+  );
   // for meatings  Attendees
   const [meetingAttendees, setMeetingAttendees] = useState({
     User: {
@@ -192,6 +199,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [valueDate, setValueDate] = useState("");
   const [selectedTime, setSelectedTime] = useState(null);
+  const [fileSize, setFileSize] = useState(0);
+
   useEffect(() => {
     if (currentLanguage != undefined) {
       if (currentLanguage === "en") {
@@ -588,11 +597,30 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
   // for add another agenda main inputs handler
   const uploadFilesAgenda = (data) => {
-    const uploadFilePath = data.target.value;
     const uploadedFile = data.target.files[0];
-    var ext = uploadedFile.name.split(".").pop();
-    let file = meetingAgendaAttachments.MeetingAgendaAttachments;
-    if (file.length <= 9) {
+    let fileSizeArr;
+    let files = meetingAgendaAttachments.MeetingAgendaAttachments;
+    let ext = uploadedFile.name.split(".").pop();
+    let fileSizeinMB = ConvertFileSizeInMB(uploadedFile.size);
+    let mergeFileSizes = ConvertFileSizeInMB(fileSize);
+    // MB;
+    if (Object.keys(files).length === 10) {
+      setTimeout(
+        setOpen({
+          flag: true,
+          message: t("You-can-not-upload-more-then-10-files"),
+        }),
+        3000
+      );
+    } else if (mergeFileSizes === 10) {
+      setTimeout(
+        setOpen({
+          open: true,
+          message: t("You-can-not-upload-more-then-100MB-files"),
+        }),
+        3000
+      );
+    } else {
       if (
         ext === "doc" ||
         ext === "docx" ||
@@ -609,58 +637,75 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         let data;
         let sizezero;
         let size;
-        if (file.length > 0) {
-          file.map((filename, index) => {
+        if (files.length > 0) {
+          files.forEach((filename, index) => {
             if (filename.DisplayFileName === uploadedFile.name) {
               data = false;
             }
           });
-          if (uploadedFile.size > 10485760) {
+          if (fileSizeinMB > 10) {
             size = false;
-          } else if (uploadedFile.size === 0) {
+          } else if (fileSizeinMB === 0) {
             sizezero = false;
           }
           if (data === false) {
+            setTimeout(
+              setOpen({
+                flag: true,
+                message: t("File-already-exisit"),
+              }),
+              3000
+            );
           } else if (size === false) {
+            setTimeout(
+              setOpen({
+                flag: true,
+                message: t("You-can-not-upload-more-then-10MB-file"),
+              }),
+              3000
+            );
           } else if (sizezero === false) {
-          } else {
-            dispatch(FileUploadToDo(navigate, uploadedFile, t));
-          }
-        } else {
-          let size;
-          let sizezero;
-          // if (uploadedFile.size > 10000000) {
-          //   setOpen({
-          //     ...open,
-          //     flag: true,
-          //     message: "File Size is larger than 10MB",
-          //   });
-          //
-          //   size = false;
-          // }
-          if (uploadedFile.size === 0) {
             setOpen({
               ...open,
               flag: true,
               message: t("File-size-is-0mb"),
             });
-            sizezero = false;
-          }
-          if (size === false) {
-          } else if (sizezero === false) {
           } else {
             dispatch(FileUploadToDo(navigate, uploadedFile, t));
+            fileSizeArr = uploadedFile.size + fileSize;
+            setFileSize(fileSizeArr);
+          }
+        } else {
+          let size;
+          let sizezero;
+
+          if (fileSizeinMB === 0) {
+            sizezero = false;
+          }
+          if (fileSizeinMB > 10) {
+            size = false;
+          }
+          if (size === false) {
+            setTimeout(
+              setOpen({
+                flag: true,
+                message: t("You-can-not-upload-more-then-10MB-file"),
+              }),
+              3000
+            );
+          } else if (sizezero === false) {
+            setOpen({
+              ...open,
+              flag: true,
+              message: t("File-size-is-0mb"),
+            });
+          } else {
+            dispatch(FileUploadToDo(navigate, uploadedFile, t));
+            fileSizeArr = uploadedFile.size + fileSize;
+            setFileSize(fileSizeArr);
           }
         }
       }
-    } else {
-      setTimeout(
-        setOpen({
-          flag: true,
-          message: t("You-can-not-upload-more-then-10-files"),
-        }),
-        3000
-      );
     }
   };
   const downloadClick = (e, record) => {
@@ -673,9 +718,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
   useEffect(() => {
     let newData = uploadReducer.uploadDocumentsList;
+    console.log(newData, "newDatanewDatanewData");
     let MeetingAgendaAttachment =
       meetingAgendaAttachments.MeetingAgendaAttachments;
-    if (newData != undefined && newData.length != 0) {
+    if (newData !== undefined && newData?.length !== 0 && newData !== null) {
       MeetingAgendaAttachment.push({
         PK_MAAID: 0,
         DisplayAttachmentName: newData.displayFileName,
@@ -687,6 +733,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         ...meetingAgendaAttachments,
         ["MeetingAgendaAttachments"]: MeetingAgendaAttachment,
       });
+      dispatch(ResetAllFilesUpload());
     }
   }, [uploadReducer.uploadDocumentsList]);
 
@@ -758,6 +805,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           setMeetingAgendaAttachments({
             MeetingAgendaAttachments: [],
           });
+          setFileSize(0);
         }
       } else {
         setModalField(true);
@@ -793,6 +841,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             setMeetingAgendaAttachments({
               MeetingAgendaAttachments: [],
             });
+            setFileSize(0);
           } else {
             setModalField(false);
             setOpen({
@@ -824,6 +873,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           setMeetingAgendaAttachments({
             MeetingAgendaAttachments: [],
           });
+          setFileSize(0);
         }
       } else {
         setModalField(true);
@@ -1462,15 +1512,21 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       let finalDateTime = createConvert(
         createMeeting.MeetingDate + createMeeting.MeetingStartTime
       );
-      let newDate = finalDateTime.slice(0, 8);
-      let newTime = finalDateTime.slice(8, 14);
-      let meetingID = assignees.ViewMeetingDetails.meetingDetails.pK_MDID;
-      let Data = {
-        MeetingID: meetingID,
-      };
+      let finalDateTimeWithoutUTC =
+        createMeeting.MeetingDate + createMeeting.MeetingStartTime;
+      let newDate = finalDateTimeWithoutUTC.slice(0, 8);
+      let newTime = finalDateTimeWithoutUTC.slice(8, 14);
+      let ifemptyTime = moment(newTime, "HHmmss").format("hh-mm-ss");
+      let ifemptyDate = moment(newDate, "YYYYMMDD").format("MMM DD, YYYY");
+      // let newDate = finalDateTime.slice(0, 8);
+      // let newTime = finalDateTime.slice(8, 14);
+      // let meetingID = assignees.ViewMeetingDetails.meetingDetails.pK_MDID;
       let newData = {
         MeetingID: createMeeting.MeetingID,
-        MeetingTitle: createMeeting.MeetingTitle,
+        MeetingTitle:
+          createMeeting.MeetingTitle !== ""
+            ? createMeeting.MeetingTitle
+            : `Untitled @ ${ifemptyDate} ${ifemptyTime}`,
         MeetingDescription: createMeeting.MeetingDescription,
         MeetingTypeID: 0,
         MeetingDate: finalDateTime.slice(0, 8),
@@ -2211,7 +2267,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         placeholder={t("Description")}
                         value={createMeeting.MeetingDescription}
                         required={true}
-                        maxLength={500}
+                        // maxLength={500}
                       />
                       {/* {modalField === true &&
                       createMeeting.MeetingDescription === "" ? (

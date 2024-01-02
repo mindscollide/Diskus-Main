@@ -30,11 +30,15 @@ import Cookies from "js-cookie";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 import { subscriptionPaymentApi } from "../../../../store/actions/Admin_PackageDetail";
 const PaymentForm = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [annualPackageShow, setAnnualPackageShow] = useState(false);
   const [monthlyPackageShow, setMonthlyPackageShow] = useState(false);
+  let currentLangugage =
+    localStorage.getItem("i18nextLng") !== null
+      ? localStorage.getItem("i18nextLng")
+      : "en";
   const { Authreducer, LanguageReducer } = useSelector((state) => state);
-  console.log("AuthreducerAuthreducer", Authreducer);
+
   const [isSelectedPacakage, setSelectedPackage] = useState({
     PackageCategory: "",
     MonthlyAmount: "",
@@ -53,62 +57,16 @@ const PaymentForm = () => {
   });
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const goBack = () => {
-    navigate("/selectedpackage");
-  };
-  const handleManualPackage = () => {
-    setAnnualPackageShow(false);
-    setMonthlyPackageShow(true);
-  };
-  const handleAnnualPackage = () => {
-    setAnnualPackageShow(true);
-    setMonthlyPackageShow(false);
-  };
 
   const handleSubmit = async () => {
-    dispatch(subscriptionPaymentApi(navigate, BillDetails, t));
+    if (BillDetails.InvoiceID !== 0) {
+      dispatch(subscriptionPaymentApi(navigate, BillDetails, t));
+    }
   };
-  console.log("test");
 
   useEffect(() => {
     dispatch(getSelectedPacakgeDetail(navigate, t));
   }, []);
-  // Languages
-  const languages = [
-    { name: "English", code: "en" },
-    { name: "Français", code: "fr" },
-    { name: "العربية", code: "ar", dir: "rtl" },
-  ];
-
-  const currentLocale = Cookies.get("i18next") || "en";
-
-  const [language, setLanguage] = useState(currentLocale);
-
-  const handleChangeLocale = (e) => {
-    const lang = e.target.value;
-    setLanguage(lang);
-    localStorage.setItem("i18nextLng", lang);
-    i18n.changeLanguage(lang);
-  };
-
-  const currentLangObj = languages.find((lang) => lang.code === currentLocale);
-
-  useEffect(() => {
-    document.body.dir = currentLangObj.dir || "ltr";
-  }, [currentLangObj, t]);
-
-  console.log("currentLocale", currentLocale);
-
-  let currentLanguage = localStorage.getItem("i18nextLng");
-  /// calcuate Anually price
-  const calculateAnnuallyPrice = (ActualPrice, YearlyDiscountPercentage) => {
-    let calculateAnnuallyPerAmount =
-      (ActualPrice * 12 * YearlyDiscountPercentage) / 100;
-    let calculateActualYearlyAmount = ActualPrice * 12;
-    let annuallyAmount =
-      calculateActualYearlyAmount - calculateAnnuallyPerAmount;
-    return annuallyAmount.toFixed() / 12;
-  };
 
   useEffect(() => {
     if (Authreducer.getSubscriptiondetails !== null) {
@@ -186,7 +144,7 @@ const PaymentForm = () => {
                 lg={2}
                 className="mx-auto text-capatlize text-center my-3 d-flex justify-content-center align-items-center fs-3  bg-white"
               >
-                {currentLangObj.dir === "rtl" ? (
+                {currentLangugage === "rtl" ? (
                   <ChevronRight
                     fontWeight="100px"
                     className={`${styles["goBackChevRon"]}`}

@@ -1116,7 +1116,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                               className="group-fields"
                             >
                               <InputSearchFilter
-                                placeholder={t("Search-member-here")}
+                                placeholder={t("Search-member-here") + " *"}
                                 value={taskAssignedToInput}
                                 filteredDataHandler={searchFilterHandler(
                                   taskAssignedToInput

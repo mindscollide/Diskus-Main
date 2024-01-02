@@ -122,3 +122,7 @@
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
 }
+.meeting-start {
+  font-size: 14px;
+  font-family: "MontserratRegular" !important;
+}

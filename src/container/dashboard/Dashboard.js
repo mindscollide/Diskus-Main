@@ -190,7 +190,6 @@ const Dashboard = () => {
   };
 
   const onMessageArrived = (msg) => {
-    console.log("IncomingVideoFlag", videoFeatureReducer.IncomingVideoCallFlag);
     var min = 10000;
     var max = 90000;
     var id = min + Math.random() * (max - min);
@@ -909,7 +908,7 @@ const Dashboard = () => {
           message: `You have been added in Talk Group for ${data.payload.data[0].fullName}`,
         });
         dispatch(mqttGroupCreated(data.payload));
-        console.log("reciver check dashboard", data.payload);
+
         setNotificationID(id);
       } else if (
         data.payload.message.toLowerCase() === "GROUP_MODIFIED".toLowerCase()
@@ -1110,7 +1109,6 @@ const Dashboard = () => {
         data.payload.message.toLowerCase() ===
         "NEW_VIDEO_CALL_INITIATED".toLowerCase()
       ) {
-        console.log("VideoFeatureIncoming Dashboard", videoFeatureReducer);
         let callStatus = JSON.parse(localStorage.getItem("activeCall"));
         localStorage.setItem("callType", data.payload.callType);
         localStorage.setItem("callTypeID", data.payload.callTypeID);
@@ -1121,10 +1119,6 @@ const Dashboard = () => {
         };
         dispatch(CallRequestReceived(Dataa, navigate, t));
         if (callStatus === true) {
-          console.log(
-            "VideoFeatureIncoming Dashboard CallStatusTrue",
-            videoFeatureReducer
-          );
           dispatch(incomingVideoCallMQTT(data.payload, data.payload.message));
           dispatch(incomingVideoCallFlag(true));
           let timeValue = Number(localStorage.getItem("callRingerTimeout"));
@@ -1140,7 +1134,6 @@ const Dashboard = () => {
             };
             if (videoFeatureReducer.IncomingVideoCallFlag === true) {
               dispatch(VideoCallResponse(Data, navigate, t));
-              console.log("VideoCallResponse Dashboard HIT");
             }
           }, timeValue);
           localStorage.setItem("activeRoomID", data.payload.roomID);
@@ -1355,7 +1348,6 @@ const Dashboard = () => {
           videoFeatureReducer.IncomingVideoCallFlag === true &&
           callStatus === false
         ) {
-          console.log("WENT IN TO THE FALSE CHECK");
           let callerID = Number(localStorage.getItem("callerID"));
           let newCallerID = Number(localStorage.getItem("newCallerID"));
           if (callerID === newCallerID) {
@@ -1366,12 +1358,6 @@ const Dashboard = () => {
           let roomID = Number(localStorage.getItem("NewRoomID"));
           let acceptedRoomID = Number(localStorage.getItem("acceptedRoomID"));
           let activeRoomID = Number(localStorage.getItem("activeRoomID"));
-          console.log(
-            "Current Room, New Room, Accepted Room",
-            roomID,
-            activeRoomID,
-            acceptedRoomID
-          );
           dispatch(incomingVideoCallFlag(false));
           if (activeRoomID !== acceptedRoomID) {
             dispatch(incomingVideoCallFlag(false));
@@ -1399,7 +1385,6 @@ const Dashboard = () => {
           videoFeatureReducer.IncomingVideoCallFlag === false &&
           callStatus === true
         ) {
-          console.log("WENT IN TO THE FALSE CHECK");
           let callerID = Number(localStorage.getItem("callerID"));
           let newCallerID = Number(localStorage.getItem("newCallerID"));
           if (callerID === newCallerID) {
@@ -1410,12 +1395,6 @@ const Dashboard = () => {
           let roomID = Number(localStorage.getItem("NewRoomID"));
           let acceptedRoomID = Number(localStorage.getItem("acceptedRoomID"));
           let activeRoomID = Number(localStorage.getItem("activeRoomID"));
-          console.log(
-            "Current Room, New Room, Accepted Room",
-            roomID,
-            activeRoomID,
-            acceptedRoomID
-          );
           dispatch(incomingVideoCallFlag(false));
           if (activeRoomID !== acceptedRoomID) {
             dispatch(incomingVideoCallFlag(false));
@@ -1443,7 +1422,6 @@ const Dashboard = () => {
           videoFeatureReducer.IncomingVideoCallFlag === true &&
           callStatus === true
         ) {
-          console.log("WENT IN TO THE TRUE CHECK");
           if (
             data.payload.callerID === callerID &&
             data.payload.callerID === newCallerID
@@ -1585,7 +1563,6 @@ const Dashboard = () => {
           },
           key: 0,
         };
-        console.log("hello", data2);
 
         dispatch(setRecentActivityDataNotification(data2));
       }
@@ -1593,7 +1570,6 @@ const Dashboard = () => {
   };
 
   const onConnectionLost = () => {
-    console.log("Connected to MQTT broker onConnectionLost");
     setTimeout(mqttConnection, 3000);
   };
 
@@ -1603,8 +1579,6 @@ const Dashboard = () => {
       mqttConnection(userID);
     }
     if (newClient !== null) {
-      console.log("onMessageArrived 1");
-
       newClient.onConnectionLost = onConnectionLost;
       newClient.onMessageArrived = onMessageArrived;
     }
@@ -1616,13 +1590,10 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (Blur !== undefined && Blur !== null) {
-      console.log("Blur", Blur);
       setActivateBlur(true);
     } else {
-      console.log("Blur", Blur);
       setActivateBlur(false);
     }
-    console.log("Blur", Blur);
   }, [Blur]);
 
   let videoGroupPanel = localStorage.getItem("VideoPanelGroup");
@@ -1663,13 +1634,10 @@ const Dashboard = () => {
     localStorage.setItem("activeOtoChatID", 0);
   }, []);
 
-  console.log("VideoMainReducer", VideoMainReducer);
-
   let i18nextLng = localStorage.getItem("i18nextLng");
 
   useEffect(() => {
     setCurrentLanguage(i18nextLng);
-    console.log("Current Language UseEffect", currentLanguage);
   }, [i18nextLng]);
 
   useEffect(() => {
@@ -1704,7 +1672,6 @@ const Dashboard = () => {
         if (navigationType === "reload" && activeCall === true) {
           dispatch(normalizeVideoPanelFlag(true));
         } else {
-          console.log("This page is not reloaded");
         }
       }
     }
