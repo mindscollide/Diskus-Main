@@ -25,8 +25,8 @@ msalInstance.addEventCallback((event) => {
     msalInstance.setActiveAccount(account);
   }
 });
-const root = ReactDOM.createRoot(document.getElementById("root"));
 
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <MsalProvider instance={msalInstance}>
     <GoogleOAuthProvider clientId="509020224191-pst82a2kqjq33phenb35b0bg1i0q762o.apps.googleusercontent.com">
