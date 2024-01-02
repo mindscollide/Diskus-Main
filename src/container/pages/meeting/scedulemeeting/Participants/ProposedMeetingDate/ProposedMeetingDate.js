@@ -24,6 +24,7 @@ import {
   GetAllMeetingDetailsApiFunc,
 } from "../../../../../../store/actions/NewMeetingActions";
 import {
+  convertDateTimetoGMTMeetingDetail,
   convertGMTDateintoUTC,
   createConvert,
   resolutionResultTable,
@@ -441,6 +442,10 @@ const ProposedMeetingDate = ({
             setSendResponseVal(
               resolutionResultTable(proposedMeetingData.deadLineDate + "000000")
             );
+            setSendResponseBy({
+              ...sendResponseBy,
+              date: proposedMeetingData.deadLineDate,
+            });
           }
 
           const newDataforView = proposedMeetingData.meetingProposedDates.map(
@@ -462,9 +467,15 @@ const ProposedMeetingDate = ({
                 };
               } else {
                 return {
-                  endDate: dates.endTime,
-                  startDate: dates.startTime,
-                  selectedOption: dates.proposedDate,
+                  endDate: convertDateTimetoGMTMeetingDetail(
+                    dates.proposedDate + dates.endTime
+                  ).slice(8, 14),
+                  startDate: convertDateTimetoGMTMeetingDetail(
+                    dates.proposedDate + dates.startTime
+                  ).slice(8, 14),
+                  selectedOption: convertDateTimetoGMTMeetingDetail(
+                    dates.proposedDate + dates.startTime
+                  ).slice(0, 8),
                   endDateView: resolutionResultTable(
                     dates.proposedDate + dates.endTime
                   ),
@@ -759,6 +770,7 @@ const ProposedMeetingDate = ({
                 >
                   <DatePicker
                     value={sendResponseVal}
+                    selected={sendResponseBy.date}
                     format={"DD/MM/YYYY"}
                     minDate={moment().toDate()}
                     placeholder="DD/MM/YYYY"
