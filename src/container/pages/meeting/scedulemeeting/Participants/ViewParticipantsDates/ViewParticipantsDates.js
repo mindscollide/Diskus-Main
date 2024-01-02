@@ -361,9 +361,11 @@ const ViewParticipantsDates = ({
                           );
 
                           // Check if the current data isSelected and matches the logged-in userID
-                          const isChecked =
-                            data.isSelected &&
-                            loggedInUserID === Number(apiUserID);
+                          // const isChecked =
+                          //   data.isSelected &&
+                          //   loggedInUserID === Number(apiUserID);
+
+                          const isChecked = data.isSelected;
 
                           return (
                             <Row className="m-0 p-0 mt-2" key={index}>
