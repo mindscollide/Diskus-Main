@@ -1,0 +1,17 @@
+{
+  "MeetingID": 0,
+  "ProposedDates": [
+    {
+      "ProposedDateID": 928,
+      "ProposedDate": "20240102",
+      "StartTime": "100000",
+      "EndTime": "110000"
+    },
+    {
+      "ProposedDateID": 929,
+      "ProposedDate": "20240104",
+      "StartTime": "095300",
+      "EndTime": "125300"
+    }
+  ]
+}
