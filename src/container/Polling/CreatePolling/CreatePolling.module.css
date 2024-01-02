@@ -425,11 +425,10 @@ body[dir="rtl"] .errorMessage-inLogin_1 {
   margin-top: 10px;
 }
 
-/* Common styles for all browsers */
-.polling_Options_backGround,
-.CreatePolling_polling_Options_backGround__6-6qw {
-  position: relative !important;
+/* Common styles for all browsers except Firefox */
+.polling_Options_backGround {
   display: block !important;
+  position: absolute !important; /* Default position for non-Firefox browsers */
   width: auto !important;
   right: 0;
   margin-top: 0 !important;
@@ -443,10 +442,10 @@ body[dir="rtl"] .errorMessage-inLogin_1 {
   align-items: center;
 }
 
-.Cross-icon-Create_poll,
-.CreatePolling_Cross-icon-Create_poll__xU71L {
-  padding: 5px 5px !important;
-  cursor: pointer !important;
+.CreatePolling_polling_Options_backGround__6-6qw {
+  display: block !important;
+  position: absolute !important; /* Default position for non-Firefox browsers */
+  /* Other shared styles here */
 }
 
 /* Firefox-specific CSS */
@@ -454,41 +453,16 @@ body[dir="rtl"] .errorMessage-inLogin_1 {
   .polling_Options_backGround {
     /* Firefox-specific styles here */
     background: #f16b6b !important;
-    position: relative !important;
+    position: relative !important; /* Change position for Firefox */
+    width: 6% !important;
+    left: 94% !important;
+    margin-top: -40px !important;
+    padding: 2px 0px !important;
   }
 
   .CreatePolling_polling_Options_backGround__6-6qw {
     /* Firefox-specific styles here */
     background: #f16b6b !important;
-    position: relative !important;
-    width: 34px !important;
-    top: -50%;
-    left: 93%;
-    bottom: 50%;
-  }
-
-  .Cross-icon-Create_poll,
-  .CreatePolling_Cross-icon-Create_poll__xU71L {
-    /* Firefox-specific styles here */
-    margin-top: 4px !important;
-  }
-}
-
-/* Chrome-specific CSS */
-@media screen and (-webkit-min-device-pixel-ratio: 0) {
-  .polling_Options_backGround,
-  .CreatePolling_polling_Options_backGround__6-6qw {
-    /* Chrome-specific styles here */
-    background: #f16b6b !important;
-    position: relative !important;
-    width: 8% !important;
-    left: 92% !important;
-    top: -50% !important;
-  }
-
-  .Cross-icon-Create_poll,
-  .CreatePolling_Cross-icon-Create_poll__xU71L {
-    /* Chrome-specific styles here */
-    margin-top: 7px !important;
+    position: relative !important; /* Change position for Firefox */
   }
 }
