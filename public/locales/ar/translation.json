@@ -1679,5 +1679,8 @@
   "Poll-status-updated-successfully": "Poll status updated successfully",
   "Meeting-ended-successfully": "Meeting ended successfully",
   "There-are-no-minutes-available": "There are No Minutes Available",
-  "Agenda-description": "Agenda description"
+  "Agenda-description": "Agenda description",
+  "Message-for-organizer": "Message for Organizer",
+  "Message-for-agenda-contributor": "Message for Agenda Contributor",
+  "All-agenda-contributors": "All Agenda Contributors"
 }

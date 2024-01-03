@@ -190,7 +190,7 @@ const SendNotificationOrganizer = () => {
                   type="text"
                   as={"textarea"}
                   rows="4"
-                  placeholder={t("Message")}
+                  placeholder={t("Message-for-organizer")}
                   change={HandleChange}
                   value={notifyOrganizerData.Messege}
                   required={true}
@@ -210,7 +210,7 @@ const SendNotificationOrganizer = () => {
                 ) : null} */}
               </Col>
             </Row>
-            <Row className="mt-2">
+            {/* <Row className="mt-2">
               <Col
                 lg={6}
                 md={6}
@@ -242,7 +242,7 @@ const SendNotificationOrganizer = () => {
                   onClick={handleHideItems}
                 />
               </Col>
-            </Row>
+            </Row> */}
             {membersHide ? null : (
               <>
                 <Row>
@@ -252,7 +252,7 @@ const SendNotificationOrganizer = () => {
                     sm={12}
                     className={styles["Scroller_notify"]}
                   >
-                    <Row>
+                    <Row className="mt-3">
                       {membersOrganizers.map((data, index) => (
                         <Col lg={6} md={6} sm={12} className="mt-2" key={index}>
                           <Row className="m-0 p-0">

@@ -29,7 +29,6 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
-  console.log(NewMeetingreducer, "statestatestate");
   // let currentMeetingID = Number(localStorage.getItem("meetingID"));
   const [addParticipantDropdown, setAddParticipantDropdown] = useState([]);
   const [selectedsearch, setSelectedsearch] = useState([]);
@@ -38,10 +37,6 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
     message: "",
   });
   const [membersParticipants, setMembersParticipants] = useState([]);
-  console.log(
-    { membersParticipants },
-    "membersParticipantsmembersParticipants"
-  );
   const RemovedParticipant = (index) => {
     const updatedPartipants = [...membersParticipants];
     updatedPartipants.splice(index, 1);
@@ -63,10 +58,6 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
     if (Object.keys(selectedsearch).length > 0) {
       try {
         selectedsearch.map((seledtedData, index) => {
-          console.log(
-            seledtedData,
-            "seledtedDataseledtedDataseledtedDataseledtedData"
-          );
           if (seledtedData.type === 1) {
             let check1 = newOrganizersData.groups.find(
               (data, index) => data.groupID === seledtedData.value
@@ -74,7 +65,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
             if (check1 !== undefined) {
               let groupUsers = check1.groupUsers;
               if (Object.keys(groupUsers).length > 0) {
-                groupUsers.map((gUser, index) => {
+                groupUsers.forEach((gUser, index) => {
                   let check2 = membersParticipants.find(
                     (data, index) => data.UserID === gUser.userID
                   );
@@ -90,7 +81,10 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
                       IsOrganizerNotified: false,
                       Title: "",
                       isRSVP: false,
-                      participantRole: {},
+                      participantRole: {
+                        participantRole: "Participant",
+                        participantRoleID: 2,
+                      },
                       isComingApi: false,
                     };
                     tem.push(newUser);
@@ -99,18 +93,17 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
               }
             }
           } else if (seledtedData.type === 2) {
-            console.log("membersOrganizers check");
             let check1 = newOrganizersData.committees.find(
               (data, index) => data.committeeID === seledtedData.value
             );
-            if (check1 != undefined) {
+            if (check1 !== undefined) {
               let committeesUsers = check1.committeeUsers;
               if (Object.keys(committeesUsers).length > 0) {
-                committeesUsers.map((cUser, index) => {
+                committeesUsers.forEach((cUser, index) => {
                   let check2 = membersParticipants.find(
                     (data, index) => data.UserID === cUser.userID
                   );
-                  if (check2 != undefined) {
+                  if (check2 !== undefined) {
                   } else {
                     let newUser = {
                       userName: cUser.userName,
@@ -122,7 +115,10 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
                       IsOrganizerNotified: false,
                       Title: "",
                       isRSVP: false,
-                      participantRole: {},
+                      participantRole: {
+                        participantRole: "Participant",
+                        participantRoleID: 2,
+                      },
                       isComingApi: false,
                     };
                     tem.push(newUser);
@@ -134,12 +130,12 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
             let check1 = membersParticipants.find(
               (data, index) => data.UserID === seledtedData.value
             );
-            if (check1 != undefined) {
+            if (check1 !== undefined) {
             } else {
               let check2 = newOrganizersData.organizationUsers.find(
                 (data, index) => data.userID === seledtedData.value
               );
-              console.log(check2, "check2check2check2");
+
               if (check2 !== undefined) {
                 let newUser = {
                   userName: check2.userName,
@@ -151,7 +147,10 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
                   IsOrganizerNotified: false,
                   Title: "",
                   isRSVP: false,
-                  participantRole: {},
+                  participantRole: {
+                    participantRole: "Participant",
+                    participantRoleID: 2,
+                  },
                   isComingApi: false,
                 };
                 tem.push(newUser);
@@ -160,17 +159,14 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
           } else {
           }
         });
-      } catch {
-        console.log("error in add");
-      }
-      console.log("membersOrganizers check", tem);
+      } catch {}
+
       const uniqueData = new Set(tem.map(JSON.stringify));
 
       // Convert the Set back to an array of objects
       const result = Array.from(uniqueData).map(JSON.parse);
       setMembersParticipants(result);
       setSelectedsearch([]);
-      console.log("Add Button output", membersParticipants);
     } else {
       // setopen notionation work here
     }
@@ -395,7 +391,6 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
                 <Row className={styles["Scroller_For_CreatePollModal2"]}>
                   {membersParticipants.length > 0
                     ? membersParticipants.map((data, index) => {
-                        console.log(data, "indexindexindexindex");
                         return (
                           <>
                             <Col lg={6} md={6} sm={12} className="mt-2">
