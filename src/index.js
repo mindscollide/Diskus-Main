@@ -28,13 +28,15 @@ import { MsalProvider } from "@azure/msal-react";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <GoogleOAuthProvider clientId="509020224191-pst82a2kqjq33phenb35b0bg1i0q762o.apps.googleusercontent.com">
-    <Provider store={store}>
-      <Suspense
-      // fallback={<Loader />}
-      >
-        <RouterProvider router={router} />
-      </Suspense>
-    </Provider>
-  </GoogleOAuthProvider>
+  <MsalProvider instance={msalInstance}>
+    <GoogleOAuthProvider clientId="509020224191-pst82a2kqjq33phenb35b0bg1i0q762o.apps.googleusercontent.com">
+      <Provider store={store}>
+        <Suspense
+        // fallback={<Loader />}
+        >
+          <RouterProvider router={router} />
+        </Suspense>
+      </Provider>
+    </GoogleOAuthProvider>
+  </MsalProvider>
 );
