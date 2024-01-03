@@ -1379,7 +1379,7 @@ const NewMeeting = () => {
         if (row.pK_MDID === meetingDetailsMqtt.pK_MDID) {
           return {
             ...row,
-            status: String(test.meetingDetails.statusID),
+            status: String(meetingDetailsMqtt.statusID),
           };
         }
         return row;

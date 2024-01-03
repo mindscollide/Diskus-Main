@@ -189,8 +189,6 @@ const Agenda = ({
     }
   }, [allPresenters]);
 
-  console.log("allSavedPresenters", allSavedPresenters);
-
   const [rows, setRows] = useState([
     {
       iD: getRandomUniqueNumber().toString() + "A",
@@ -213,8 +211,6 @@ const Agenda = ({
       subAgenda: [],
     },
   ]);
-
-  console.log("result Dropped files", rows);
 
   const [currentState, setCurrentState] = useState(rows);
 
@@ -246,7 +242,7 @@ const Agenda = ({
   const addRow = () => {
     const updatedRows = [...rows];
     const nextID = updatedRows.length.toString();
-    console.log("addrow", (nextID + 1).toString());
+
     const newMainAgenda = {
       iD: getRandomUniqueNumber().toString() + "A",
       title: "",
@@ -269,7 +265,6 @@ const Agenda = ({
     };
     updatedRows.push(newMainAgenda);
     setRows(updatedRows);
-    console.log(updatedRows, "updatedRowsupdatedRows");
   };
 
   //SubAgenda Statemanagement
@@ -372,7 +367,6 @@ const Agenda = ({
 
       // Check conditions for the parent objects
       if (row.title === "") {
-        console.log(`Parent object title is missing at index ${rowIndex}`);
         setTimeout(
           setOpen({
             ...open,
@@ -390,7 +384,7 @@ const Agenda = ({
           setOpen({
             ...open,
             flag: true,
-            message: `Start Date is missing in Agenda  ${rowIndex + 1} `,
+            message: `Start Time is missing in Agenda  ${rowIndex + 1} `,
           }),
           3000
         );
@@ -403,7 +397,7 @@ const Agenda = ({
           setOpen({
             ...open,
             flag: true,
-            message: `End Date is missing in Agenda  ${rowIndex + 1} `,
+            message: `End Time is missing in Agenda  ${rowIndex + 1} `,
           }),
           3000
         );
@@ -579,9 +573,9 @@ const Agenda = ({
 
     if (isValid) {
       // All conditions are met, apply your feature here
-      console.log("All conditions met. Applying your feature...");
+
       let newFolder = [];
-      console.log("fileForSendfileForSend", fileForSend);
+
       const uploadPromises = fileForSend.map(async (newData) => {
         await dispatch(
           UploadDocumentsAgendaApi(
@@ -674,11 +668,8 @@ const Agenda = ({
         )
       );
     } else {
-      console.log("Some conditions not met. Feature not applied.");
     }
   };
-
-  console.log(open, "openopenopen");
 
   useEffect(() => {
     if (
@@ -817,359 +808,13 @@ const Agenda = ({
         return updatedRows;
       });
     } else {
-      setRows([
-        {
-          iD: getRandomUniqueNumber().toString() + "A",
-          title: "",
-          agendaVotingID: 0,
-          presenterID: allSavedPresenters[0]?.value,
-          presenterName: allSavedPresenters[0]?.label,
-          description: "",
-          startDate: "",
-          endDate: "",
-          selectedRadio: 1,
-          urlFieldMain: "",
-          mainNote: "",
-          requestContributorURlName: "",
-          files: [],
-          isLocked: false,
-          voteOwner: null,
-          isAttachment: false,
-          userID: 0,
-          subAgenda: [],
-        },
-      ]);
+      setRows(rows);
     }
   }, [
     MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData,
     allSavedPresenters,
     allUsersRC,
   ]);
-
-  // useEffect(() => {
-  //   if (
-  //     MeetingAgendaReducer.GetAgendaWithMeetingIDForImportData !== null &&
-  //     MeetingAgendaReducer.GetAgendaWithMeetingIDForImportData !== undefined &&
-  //     MeetingAgendaReducer.GetAgendaWithMeetingIDForImportData.length !== 0
-  //   ) {
-  //     let newData =
-  //       MeetingAgendaReducer.GetAgendaWithMeetingIDForImportData.agendaList;
-
-  //     let areSubAgendasEmpty;
-
-  //     let allRowsAndSubAgendasEmpty;
-
-  //     let isAgendaEmpty;
-
-  //     allRowsAndSubAgendasEmpty = rows.every((agendaItem) => {
-  //       isAgendaEmpty =
-  //         agendaItem.title === "" &&
-  //         agendaItem.description === "" &&
-  //         agendaItem.presenterID === 0 &&
-  //         agendaItem.presenterName === "" &&
-  //         agendaItem.startDate === "" &&
-  //         agendaItem.endDate === "" &&
-  //         agendaItem.urlFieldMain === "" &&
-  //         agendaItem.mainNote === "" &&
-  //         agendaItem.requestContributorURlName === "" &&
-  //         agendaItem.files.length === 0 &&
-  //         agendaItem.isLocked === false &&
-  //         agendaItem.voteOwner === null &&
-  //         agendaItem.isAttachment === false &&
-  //         agendaItem.userID === 0 &&
-  //         (!agendaItem.subAgenda || agendaItem.subAgenda.length === 0);
-  //       if (agendaItem.subAgenda.length > 0) {
-  //         areSubAgendasEmpty =
-  //           !agendaItem.subAgenda ||
-  //           (agendaItem.subAgenda.length > 0 &&
-  //             agendaItem.subAgenda.every((subAgendaItem) => {
-  //               return (
-  //                 subAgendaItem.subTitle === "" &&
-  //                 subAgendaItem.description === "" &&
-  //                 subAgendaItem.presenterID === 0 &&
-  //                 subAgendaItem.presenterName === "" &&
-  //                 subAgendaItem.startDate === "" &&
-  //                 subAgendaItem.endDate === "" &&
-  //                 subAgendaItem.subAgendarequestContributorUrlName === "" &&
-  //                 subAgendaItem.subAgendarequestContributorEnterNotes === "" &&
-  //                 subAgendaItem.subAgendaUrlFieldRadio === "" &&
-  //                 subAgendaItem.subfiles.length === 0 &&
-  //                 subAgendaItem.isLocked === false &&
-  //                 subAgendaItem.voteOwner === null &&
-  //                 subAgendaItem.isAttachment === false &&
-  //                 subAgendaItem.userID === 0
-  //               );
-  //             }));
-  //         if (areSubAgendasEmpty === true) {
-  //           isAgendaEmpty = true;
-  //         }
-  //       } else {
-  //         areSubAgendasEmpty = true;
-  //       }
-
-  //       console.log(
-  //         "allRowsAndSubAgendasEmpty ",
-  //         isAgendaEmpty,
-  //         areSubAgendasEmpty
-  //       );
-
-  //       return isAgendaEmpty && areSubAgendasEmpty;
-  //     });
-
-  //     console.log("allRowsAndSubAgendasEmpty", allRowsAndSubAgendasEmpty);
-
-  //     setRows((prevRows) => {
-  //       const updatedRows = newData.map((agendaItem) => {
-  //         const {
-  //           id,
-  //           title,
-  //           agendaVotingID,
-  //           presenterID,
-  //           description,
-  //           presenterName,
-  //           startDate,
-  //           endDate,
-  //           selectedRadio,
-  //           urlFieldMain,
-  //           mainNote,
-  //           requestContributorURlName,
-  //           files,
-  //           isLocked,
-  //           voteOwner,
-  //           isAttachment,
-  //           userID,
-  //           subAgenda,
-  //           ...rest
-  //         } = agendaItem;
-  //         const updatedSubAgenda = subAgenda
-  //           ? subAgenda.map((subAgendaItem) => {
-  //               const {
-  //                 subAgendaID,
-  //                 agendaVotingID,
-  //                 subTitle,
-  //                 description,
-  //                 presenterID,
-  //                 presenterName,
-  //                 startDate,
-  //                 endDate,
-  //                 subSelectRadio,
-  //                 subAgendaUrlFieldRadio,
-  //                 subAgendarequestContributorUrlName,
-  //                 subAgendarequestContributorEnterNotes,
-  //                 subfiles,
-  //                 isLocked,
-  //                 voteOwner,
-  //                 isAttachment,
-  //                 userID,
-  //                 ...subAgendaRest
-  //               } = subAgendaItem;
-  //               return {
-  //                 ...subAgendaRest,
-  //                 subAgendaID,
-  //                 agendaVotingID: 0,
-  //                 subTitle,
-  //                 description,
-  //                 presenterID: 0,
-  //                 presenterName: "",
-  //                 startDate: subAgendaItem.startDate
-  //                   ? convertUtcToGmt(subAgendaItem.startDate)
-  //                   : null,
-  //                 endDate: subAgendaItem.endDate
-  //                   ? convertUtcToGmt(subAgendaItem.endDate)
-  //                   : null,
-  //                 subSelectRadio: 1,
-  //                 subAgendaUrlFieldRadio: "",
-  //                 subAgendarequestContributorUrlName: "",
-  //                 subAgendarequestContributorEnterNotes: "",
-  //                 subfiles: [],
-  //                 isLocked,
-  //                 voteOwner: null,
-  //                 isAttachment: false,
-  //                 userID: 0,
-  //               };
-  //             })
-  //           : null;
-
-  //         return {
-  //           ...rest,
-  //           iD: id,
-  //           title,
-  //           agendaVotingID: 0,
-  //           presenterID: 0,
-  //           description,
-  //           presenterName: "",
-  //           startDate: agendaItem.startDate
-  //             ? convertUtcToGmt(agendaItem.startDate)
-  //             : null,
-  //           endDate: agendaItem.endDate
-  //             ? convertUtcToGmt(agendaItem.endDate)
-  //             : null,
-  //           selectedRadio: 1,
-  //           urlFieldMain: "",
-  //           mainNote: "",
-  //           requestContributorURlName: "",
-  //           files: [],
-  //           isLocked: false,
-  //           voteOwner: null,
-  //           isAttachment: false,
-  //           userID: 0,
-  //           subAgenda: updatedSubAgenda,
-  //         };
-  //       });
-  //       return allRowsAndSubAgendasEmpty
-  //         ? updatedRows
-  //         : [...prevRows, ...updatedRows];
-  //     });
-  //     setCurrentState((prevRows) => {
-  //       const updatedRows = newData.map((agendaItem) => {
-  //         const {
-  //           id,
-  //           title,
-  //           agendaVotingID,
-  //           presenterID,
-  //           description,
-  //           presenterName,
-  //           startDate,
-  //           endDate,
-  //           selectedRadio,
-  //           urlFieldMain,
-  //           mainNote,
-  //           requestContributorURlName,
-  //           files,
-  //           isLocked,
-  //           voteOwner,
-  //           isAttachment,
-  //           userID,
-  //           subAgenda,
-  //           ...rest
-  //         } = agendaItem;
-  //         const updatedSubAgenda = subAgenda
-  //           ? subAgenda.map((subAgendaItem) => {
-  //               const {
-  //                 subAgendaID,
-  //                 agendaVotingID,
-  //                 subTitle,
-  //                 description,
-  //                 presenterID,
-  //                 presenterName,
-  //                 startDate,
-  //                 endDate,
-  //                 subSelectRadio,
-  //                 subAgendaUrlFieldRadio,
-  //                 subAgendarequestContributorUrlName,
-  //                 subAgendarequestContributorEnterNotes,
-  //                 subfiles,
-  //                 isLocked,
-  //                 voteOwner,
-  //                 isAttachment,
-  //                 userID,
-  //                 ...subAgendaRest
-  //               } = subAgendaItem;
-  //               return {
-  //                 ...subAgendaRest,
-  //                 subAgendaID,
-  //                 agendaVotingID: 0,
-  //                 subTitle,
-  //                 description,
-  //                 presenterID: 0,
-  //                 presenterName: "",
-  //                 startDate: subAgendaItem.startDate
-  //                   ? convertUtcToGmt(subAgendaItem.startDate)
-  //                   : null,
-  //                 endDate: subAgendaItem.endDate
-  //                   ? convertUtcToGmt(subAgendaItem.endDate)
-  //                   : null,
-  //                 subSelectRadio: 1,
-  //                 subAgendaUrlFieldRadio: "",
-  //                 subAgendarequestContributorUrlName: "",
-  //                 subAgendarequestContributorEnterNotes: "",
-  //                 subfiles: [],
-  //                 isLocked,
-  //                 voteOwner: null,
-  //                 isAttachment: false,
-  //                 userID: 0,
-  //               };
-  //             })
-  //           : null;
-
-  //         return {
-  //           ...rest,
-  //           iD: id,
-  //           title,
-  //           agendaVotingID: 0,
-  //           presenterID: 0,
-  //           description,
-  //           presenterName: "",
-  //           startDate: agendaItem.startDate
-  //             ? convertUtcToGmt(agendaItem.startDate)
-  //             : null,
-  //           endDate: agendaItem.endDate
-  //             ? convertUtcToGmt(agendaItem.endDate)
-  //             : null,
-  //           selectedRadio: 1,
-  //           urlFieldMain: "",
-  //           mainNote: "",
-  //           requestContributorURlName: "",
-  //           files: [],
-  //           isLocked: false,
-  //           voteOwner: null,
-  //           isAttachment: false,
-  //           userID: 0,
-  //           subAgenda: updatedSubAgenda,
-  //         };
-  //       });
-
-  //       // If all rows and sub-agendas are empty, replace the entire state; otherwise, push new data
-  //       return allRowsAndSubAgendasEmpty
-  //         ? updatedRows
-  //         : [...prevRows, ...updatedRows];
-  //     });
-  //   } else {
-  //     // Your existing logic for handling other cases
-  //     setRows([
-  //       {
-  //         iD: getRandomUniqueNumber().toString() + "A",
-  //         title: "",
-  //         agendaVotingID: 0,
-  //         presenterID: 0,
-  //         description: "",
-  //         presenterName: "",
-  //         startDate: "",
-  //         endDate: "",
-  //         selectedRadio: 1,
-  //         urlFieldMain: "",
-  //         mainNote: "",
-  //         requestContributorURlName: "",
-  //         files: [],
-  //         isLocked: false,
-  //         voteOwner: null,
-  //         isAttachment: false,
-  //         userID: 0,
-  //         subAgenda: [
-  //           {
-  //             subAgendaID: getRandomUniqueNumber().toString() + "A",
-  //             agendaVotingID: 0,
-  //             subTitle: "",
-  //             description: "",
-  //             presenterID: 0,
-  //             presenterName: "",
-  //             startDate: "",
-  //             endDate: "",
-  //             subSelectRadio: 1,
-  //             subAgendaUrlFieldRadio: "",
-  //             subAgendarequestContributorUrlName: "",
-  //             subAgendarequestContributorEnterNotes: "",
-  //             subfiles: [],
-  //             isLocked: false,
-  //             voteOwner: null,
-  //             isAttachment: false,
-  //             userID: 0,
-  //           },
-  //         ],
-  //       },
-  //     ]);
-  //   }
-  // }, [MeetingAgendaReducer.GetAgendaWithMeetingIDForImportData]);
 
   useEffect(() => {
     if (
@@ -1302,7 +947,7 @@ const Agenda = ({
             agendaItem.userID === 0 &&
             (!agendaItem.subAgenda || agendaItem.subAgenda.length === 0);
           areSubAgendasEmpty = true;
-          console.log("result isAgendaEmpty", isAgendaEmpty);
+
           if (agendaItem.subAgenda.length > 0 && isAgendaEmpty === false) {
             areSubAgendasEmpty =
               !agendaItem.subAgenda ||
@@ -1330,7 +975,6 @@ const Agenda = ({
             } else {
               isAgendaEmpty = false;
             }
-            console.log("result isAgendaEmpty", isAgendaEmpty);
           } else {
             areSubAgendasEmpty = true;
           }
@@ -1389,7 +1033,6 @@ const Agenda = ({
             } else {
               isAgendaEmptyCR = false;
             }
-            console.log("result isAgendaEmptyCR", isAgendaEmptyCR);
           } else {
             areSubAgendasEmptyCR = true;
           }
@@ -1402,10 +1045,6 @@ const Agenda = ({
           // Include only non-empty items
           return !(isAgendaEmptyCR && areSubAgendasEmptyCR);
         });
-
-        console.log("result nonEmptyRows", nonEmptyRows);
-
-        console.log("result nonEmptyCurrentRows", nonEmptyCurrentRows);
 
         return [...nonEmptyCurrentRows, ...nonEmptyRows];
       });
@@ -1531,7 +1170,7 @@ const Agenda = ({
             agendaItem.userID === 0 &&
             (!agendaItem.subAgenda || agendaItem.subAgenda.length === 0);
           areSubAgendasEmpty = true;
-          console.log("result isAgendaEmpty", isAgendaEmpty);
+
           if (agendaItem.subAgenda.length > 0 && isAgendaEmpty === false) {
             areSubAgendasEmpty =
               !agendaItem.subAgenda ||
@@ -1559,7 +1198,6 @@ const Agenda = ({
             } else {
               isAgendaEmpty = false;
             }
-            console.log("result isAgendaEmpty", isAgendaEmpty);
           } else {
             areSubAgendasEmpty = true;
           }
@@ -1618,7 +1256,6 @@ const Agenda = ({
             } else {
               isAgendaEmptyCR = false;
             }
-            console.log("result isAgendaEmptyCR", isAgendaEmptyCR);
           } else {
             areSubAgendasEmptyCR = true;
           }
@@ -1632,10 +1269,6 @@ const Agenda = ({
           return !(isAgendaEmptyCR && areSubAgendasEmptyCR);
         });
 
-        console.log("result nonEmptyRows", nonEmptyRows);
-
-        console.log("result nonEmptyCurrentRows", nonEmptyCurrentRows);
-
         return [...nonEmptyCurrentRows, ...nonEmptyRows];
       });
     } else {
@@ -1644,21 +1277,7 @@ const Agenda = ({
     }
   }, [MeetingAgendaReducer.GetAgendaWithMeetingIDForImportData]);
 
-  // useEffect(() => {
-  //   console.log("State changed:", currentState);
-
-  //   if (JSON.stringify(currentState) !== JSON.stringify(rows)) {
-  //     console.log("Rows have changed");
-  //   } else {
-  //     console.log("Rows Have Not Changed");
-  //   }
-  // }, [currentState, rows]);
-
-  console.log("allSavedPresenters", allSavedPresenters);
-  console.log("allRCUSERS", allUsersRC);
-
   useEffect(() => {
-    console.log("openopenopen", MeetingAgendaReducer.ResponseMessage);
     if (MeetingAgendaReducer.ResponseMessage === t("Record-saved")) {
       setTimeout(
         setOpen({
@@ -1717,15 +1336,6 @@ const Agenda = ({
     }
     dispatch(clearResponseMessage(""));
   }, [MeetingAgendaReducer.ResponseMessage]);
-
-  console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
-  console.log(
-    "MeetingAgendaReducerMeetingAgendaReducer",
-    MeetingAgendaReducer,
-    DataRoomReducer
-  );
-
-  console.log("dataroomMapFolderIddataroomMapFolderId", folderDataRoomMeeting);
 
   useEffect(() => {
     if (
