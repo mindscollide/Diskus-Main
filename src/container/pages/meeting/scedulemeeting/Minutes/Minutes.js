@@ -150,25 +150,25 @@ const Minutes = ({
     },
   };
 
-  useEffect(() => {
-    if (editorRef.current) {
-      const editor = editorRef.current.getEditor();
+  // useEffect(() => {
+  //   if (editorRef.current) {
+  //     const editor = editorRef.current.getEditor();
 
-      if (editor) {
-        editor.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
-          const plaintext = node.innerText || node.textContent || "";
-          const isImage = node.nodeName === "IMG";
+  //     if (editor) {
+  //       editor.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
+  //         const plaintext = node.innerText || node.textContent || "";
+  //         const isImage = node.nodeName === "IMG";
 
-          if (isImage) {
-            // Block image paste by returning an empty delta
-            return new Delta();
-          }
+  //         if (isImage) {
+  //           // Block image paste by returning an empty delta
+  //           return new Delta();
+  //         }
 
-          return delta.compose(new Delta().insert(plaintext));
-        });
-      }
-    }
-  }, [editorRef.current]);
+  //         return delta.compose(new Delta().insert(plaintext));
+  //       });
+  //     }
+  //   }
+  // }, [editorRef.current]);
 
   useEffect(() => {
     let Data = {
@@ -222,18 +222,34 @@ const Minutes = ({
   }, [generalMinutes, generalminutesDocumentForMeeting]);
 
   const onTextChange = (content, delta, source) => {
-    const plainText = content.replace(/(<([^>]+)>)/gi, "");
-    if (source === "user" && plainText) {
+    const deltaOps = delta.ops || [];
+
+    // Check if any image is being pasted
+    const containsImage = deltaOps.some((op) => op.insert && op.insert.image);
+    if (containsImage) {
       setAddNoteFields({
         ...addNoteFields,
         Description: {
-          value: content,
+          value: "",
           errorMessage: "",
           errorStatus: false,
         },
       });
+    } else {
+      if (source === "user") {
+        // Update state only if no image is detected in the content
+        setAddNoteFields({
+          ...addNoteFields,
+          Description: {
+            value: content,
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      }
     }
   };
+
   //Props for File Dragger
   const props = {
     name: "file",
@@ -353,11 +369,10 @@ const Minutes = ({
 
   //Edit Button Function
   const handleEditFunc = async (data) => {
-    setupdateData(data);
-    console.log(data, "handleEditFunccalled");
-    console.log(data, "dataminutesDetails");
+    console.log(data, "handleEditFunchandleEditFunc");
+    // setupdateData(data);
+    // const strippedMinutesDetails = data.minutesDetails.replace(/<[^>]*>/g, "");
     if (data.minutesDetails !== "") {
-      console.log(data, "addNoteFieldsaddNoteFieldsaddNoteFields");
       setAddNoteFields({
         Description: {
           value: data.minutesDetails,
@@ -365,6 +380,13 @@ const Minutes = ({
           errorStatus: false,
         },
       });
+
+      console.log(data.minutesDetails, "addNoteFieldsaddNoteFields");
+      console.log(
+        addNoteFields.Description.value,
+        "addNoteFieldsaddNoteFields"
+      );
+
       setisEdit(true);
     } else {
       console.log("data.minutesDetails is undefined or null");
