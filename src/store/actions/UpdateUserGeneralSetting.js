@@ -648,7 +648,8 @@ const MicrosoftValidTokenFailed = (message) => {
 
 const getMicrosoftValidToken = (
   navigate,
-  data,
+  authMicrosoftAccessToken,
+  authMicrosoftRefreshToken,
   userOptionsSettings,
   AllowMicrosoftCalenderSyncCall,
   t
@@ -659,7 +660,9 @@ const getMicrosoftValidToken = (
   let Data = {
     UserID: parseInt(currentUserID),
     OrganizationID: parseInt(OrganizationID),
-    accessToken: data,
+    accessToken: authMicrosoftAccessToken,
+    refreshToken: authMicrosoftRefreshToken,
+    
   };
 
   return async (dispatch) => {
@@ -681,7 +684,8 @@ const getMicrosoftValidToken = (
           dispatch(
             getMicrosoftValidToken(
               navigate,
-              data,
+              authMicrosoftAccessToken,
+              authMicrosoftRefreshToken,
               userOptionsSettings,
               AllowMicrosoftCalenderSyncCall,
               t
