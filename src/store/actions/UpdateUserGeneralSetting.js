@@ -4,6 +4,7 @@ import {
   updateOrganizationUserSetting,
   googleValidToken,
   revoketoken,
+  validateMicrosoftToken,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "../actions/Auth_action";
 import axios from "axios";
@@ -29,7 +30,13 @@ const updateUserSettingFail = (message) => {
   };
 };
 
-const updateUserSettingFunc = (navigate, userOptionsSettings, t, flag) => {
+const updateUserSettingFunc = (
+  navigate,
+  userOptionsSettings,
+  t,
+  flag,
+  AllowMicrosoftCalenderSyncCall
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentUserID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
@@ -98,8 +105,7 @@ const updateUserSettingFunc = (navigate, userOptionsSettings, t, flag) => {
         userOptionsSettings.PushNotificationWhenNewResolutionIsCancelledAfterCirculated,
       UserAllowGoogleCalendarSynch:
         flag === undefined || flag === null ? false : flag,
-      UserAllowMicrosoftCalendarSynch:
-        userOptionsSettings.AllowMicrosoftCalenderSync,
+      UserAllowMicrosoftCalendarSynch: AllowMicrosoftCalenderSyncCall,
       GoogleEventColor: userOptionsSettings.GoogleCalenderColor,
       OfficeEventColor: userOptionsSettings.MicrosoftCalenderColor,
       EmailWhenNewPollIsPublished:
@@ -159,7 +165,13 @@ const updateUserSettingFunc = (navigate, userOptionsSettings, t, flag) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            updateUserSettingFunc(navigate, userOptionsSettings, t, flag)
+            updateUserSettingFunc(
+              navigate,
+              userOptionsSettings,
+              t,
+              flag,
+              AllowMicrosoftCalenderSyncCall
+            )
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -230,7 +242,13 @@ const googleValidTokenFail = (message) => {
   };
 };
 
-const getGoogleValidToken = (navigate, data, userOptionsSettings, t) => {
+const getGoogleValidToken = (
+  navigate,
+  data,
+  userOptionsSettings,
+  t,
+  AllowMicrosoftCalenderSyncCall
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentUserID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
@@ -256,7 +274,15 @@ const getGoogleValidToken = (navigate, data, userOptionsSettings, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getGoogleValidToken(navigate, data, userOptionsSettings, t));
+          dispatch(
+            getGoogleValidToken(
+              navigate,
+              data,
+              userOptionsSettings,
+              t,
+              AllowMicrosoftCalenderSyncCall
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -272,7 +298,13 @@ const getGoogleValidToken = (navigate, data, userOptionsSettings, t) => {
                 )
               );
               dispatch(
-                updateUserSettingFunc(navigate, userOptionsSettings, t, true)
+                updateUserSettingFunc(
+                  navigate,
+                  userOptionsSettings,
+                  t,
+                  true,
+                  AllowMicrosoftCalenderSyncCall
+                )
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -287,7 +319,13 @@ const getGoogleValidToken = (navigate, data, userOptionsSettings, t) => {
                 )
               );
               dispatch(
-                updateUserSettingFunc(navigate, userOptionsSettings, t, false)
+                updateUserSettingFunc(
+                  navigate,
+                  userOptionsSettings,
+                  t,
+                  false,
+                  AllowMicrosoftCalenderSyncCall
+                )
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -302,7 +340,13 @@ const getGoogleValidToken = (navigate, data, userOptionsSettings, t) => {
                 )
               );
               dispatch(
-                updateUserSettingFunc(navigate, userOptionsSettings, t, true)
+                updateUserSettingFunc(
+                  navigate,
+                  userOptionsSettings,
+                  t,
+                  true,
+                  AllowMicrosoftCalenderSyncCall
+                )
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -313,7 +357,13 @@ const getGoogleValidToken = (navigate, data, userOptionsSettings, t) => {
             ) {
               dispatch(googleValidTokenFail(t("No-email-exist")));
               dispatch(
-                updateUserSettingFunc(navigate, userOptionsSettings, t, false)
+                updateUserSettingFunc(
+                  navigate,
+                  userOptionsSettings,
+                  t,
+                  false,
+                  AllowMicrosoftCalenderSyncCall
+                )
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -326,7 +376,13 @@ const getGoogleValidToken = (navigate, data, userOptionsSettings, t) => {
                 googleValidTokenFail(t("Failed-to-insert-configuration"))
               );
               dispatch(
-                updateUserSettingFunc(navigate, userOptionsSettings, t, false)
+                updateUserSettingFunc(
+                  navigate,
+                  userOptionsSettings,
+                  t,
+                  false,
+                  AllowMicrosoftCalenderSyncCall
+                )
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -337,7 +393,13 @@ const getGoogleValidToken = (navigate, data, userOptionsSettings, t) => {
             ) {
               dispatch(googleValidTokenFail(t("Code-is-invalid")));
               dispatch(
-                updateUserSettingFunc(navigate, userOptionsSettings, t, false)
+                updateUserSettingFunc(
+                  navigate,
+                  userOptionsSettings,
+                  t,
+                  false,
+                  AllowMicrosoftCalenderSyncCall
+                )
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -348,26 +410,50 @@ const getGoogleValidToken = (navigate, data, userOptionsSettings, t) => {
             ) {
               dispatch(googleValidTokenFail(t("Something-went-wrong")));
               dispatch(
-                updateUserSettingFunc(navigate, userOptionsSettings, t, false)
+                updateUserSettingFunc(
+                  navigate,
+                  userOptionsSettings,
+                  t,
+                  false,
+                  AllowMicrosoftCalenderSyncCall
+                )
               );
             }
           } else {
             dispatch(googleValidTokenFail(t("Something-went-wrong")));
             dispatch(
-              updateUserSettingFunc(navigate, userOptionsSettings, t, false)
+              updateUserSettingFunc(
+                navigate,
+                userOptionsSettings,
+                t,
+                false,
+                AllowMicrosoftCalenderSyncCall
+              )
             );
           }
         } else {
           dispatch(googleValidTokenFail(t("Something-went-wrong")));
           dispatch(
-            updateUserSettingFunc(navigate, userOptionsSettings, t, false)
+            updateUserSettingFunc(
+              navigate,
+              userOptionsSettings,
+              t,
+              false,
+              AllowMicrosoftCalenderSyncCall
+            )
           );
         }
       })
       .catch((response) => {
         dispatch(googleValidTokenFail(t("Something-went-wrong")));
         dispatch(
-          updateUserSettingFunc(navigate, userOptionsSettings, t, false)
+          updateUserSettingFunc(
+            navigate,
+            userOptionsSettings,
+            t,
+            false,
+            AllowMicrosoftCalenderSyncCall
+          )
         );
       });
   };
@@ -392,7 +478,12 @@ const revokeTokenFail = (message) => {
   };
 };
 
-const revokeToken = (navigate, userOptionsSettings, t) => {
+const revokeToken = (
+  navigate,
+  userOptionsSettings,
+  t,
+  AllowMicrosoftCalenderSyncCall
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentUserID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
@@ -416,7 +507,14 @@ const revokeToken = (navigate, userOptionsSettings, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(revokeToken(navigate, userOptionsSettings, t));
+          dispatch(
+            revokeToken(
+              navigate,
+              userOptionsSettings,
+              t,
+              AllowMicrosoftCalenderSyncCall
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -428,7 +526,13 @@ const revokeToken = (navigate, userOptionsSettings, t) => {
             ) {
               dispatch(revokeTokenSuccess(t("Successful")));
               dispatch(
-                updateUserSettingFunc(navigate, userOptionsSettings, t, false)
+                updateUserSettingFunc(
+                  navigate,
+                  userOptionsSettings,
+                  t,
+                  false,
+                  AllowMicrosoftCalenderSyncCall
+                )
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -439,7 +543,13 @@ const revokeToken = (navigate, userOptionsSettings, t) => {
             ) {
               dispatch(revokeTokenFail(t("UnSuccessful")));
               dispatch(
-                updateUserSettingFunc(navigate, userOptionsSettings, t, true)
+                updateUserSettingFunc(
+                  navigate,
+                  userOptionsSettings,
+                  t,
+                  true,
+                  AllowMicrosoftCalenderSyncCall
+                )
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -450,30 +560,62 @@ const revokeToken = (navigate, userOptionsSettings, t) => {
             ) {
               dispatch(revokeTokenFail(t("Something-went-wrong")));
               dispatch(
-                updateUserSettingFunc(navigate, userOptionsSettings, t, true)
+                updateUserSettingFunc(
+                  navigate,
+                  userOptionsSettings,
+                  t,
+                  true,
+                  AllowMicrosoftCalenderSyncCall
+                )
               );
             } else {
               dispatch(revokeTokenFail(t("Something-went-wrong")));
               dispatch(
-                updateUserSettingFunc(navigate, userOptionsSettings, t, true)
+                updateUserSettingFunc(
+                  navigate,
+                  userOptionsSettings,
+                  t,
+                  true,
+                  AllowMicrosoftCalenderSyncCall
+                )
               );
             }
           } else {
             dispatch(revokeTokenFail(t("Something-went-wrong")));
             dispatch(
-              updateUserSettingFunc(navigate, userOptionsSettings, t, true)
+              updateUserSettingFunc(
+                navigate,
+                userOptionsSettings,
+                t,
+                true,
+                AllowMicrosoftCalenderSyncCall
+              )
             );
           }
         } else {
           dispatch(revokeTokenFail(t("Something-went-wrong")));
           dispatch(
-            updateUserSettingFunc(navigate, userOptionsSettings, t, true)
+            updateUserSettingFunc(
+              navigate,
+              userOptionsSettings,
+              t,
+              true,
+              AllowMicrosoftCalenderSyncCall
+            )
           );
         }
       })
       .catch((response) => {
         dispatch(revokeTokenFail(t("Something-went-wrong")));
-        dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t, true));
+        dispatch(
+          updateUserSettingFunc(
+            navigate,
+            userOptionsSettings,
+            t,
+            true,
+            AllowMicrosoftCalenderSyncCall
+          )
+        );
       });
   };
 };
@@ -483,9 +625,172 @@ const updateUserMessageCleare = () => {
     type: actions.UDPATEUSERSETTING_MESSAGE_CLEARE,
   };
 };
+
+const MicrosoftValidTokeninit = () => {
+  return {
+    type: actions.MICROSOFT_VALIDATE_TOKEN_INIT,
+  };
+};
+
+const MicrosoftValidTokenSuccess = (message) => {
+  return {
+    type: actions.MICROSOFT_VALIDATE_TOKEN_SUCCESS,
+    message: message,
+  };
+};
+
+const MicrosoftValidTokenFailed = (message) => {
+  return {
+    type: actions.MICROSOFT_VALIDATE_TOKEN_FAIL,
+    message: message,
+  };
+};
+
+const getMicrosoftValidToken = (
+  navigate,
+  authMicrosoftAccessToken,
+  authMicrosoftRefreshToken,
+  userOptionsSettings,
+  AllowMicrosoftCalenderSyncCall,
+  t
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentUserID = localStorage.getItem("userID");
+  let OrganizationID = localStorage.getItem("organizationID");
+  let Data = {
+    UserID: parseInt(currentUserID),
+    OrganizationID: parseInt(OrganizationID),
+    accessToken: authMicrosoftAccessToken,
+    refreshToken: authMicrosoftRefreshToken,
+    
+  };
+
+  return async (dispatch) => {
+    dispatch(MicrosoftValidTokeninit());
+    let form = new FormData();
+    form.append("RequestMethod", validateMicrosoftToken.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    await axios({
+      method: "post",
+      url: getCalender,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            getMicrosoftValidToken(
+              navigate,
+              authMicrosoftAccessToken,
+              authMicrosoftRefreshToken,
+              userOptionsSettings,
+              AllowMicrosoftCalenderSyncCall,
+              t
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Calender_CalenderServiceManager_GetMicrosoftValidToken_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                MicrosoftValidTokenSuccess(
+                  t("Token-updated-and-calender-list-saved-successful")
+                )
+              );
+              AllowMicrosoftCalenderSyncCall = true;
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Calender_CalenderServiceManager_GetMicrosoftValidToken_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                MicrosoftValidTokenSuccess(
+                  t("Token-updated-but-failed-to-save-calender")
+                )
+              );
+              AllowMicrosoftCalenderSyncCall = true;
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Calender_CalenderServiceManager_GetMicrosoftValidToken_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                MicrosoftValidTokenSuccess(
+                  t("Token-updated-but-no-event-found-in-the-calendar")
+                )
+              );
+              AllowMicrosoftCalenderSyncCall = true;
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Calender_CalenderServiceManager_GetMicrosoftValidToken_04".toLowerCase()
+                )
+            ) {
+              dispatch(MicrosoftValidTokenFailed(t("No-email-exist")));
+              AllowMicrosoftCalenderSyncCall = false;
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Calender_CalenderServiceManager_GetMicrosoftValidToken_05".toLowerCase()
+                )
+            ) {
+              dispatch(
+                MicrosoftValidTokenFailed(t("Failed-to-insert-configuration"))
+              );
+              AllowMicrosoftCalenderSyncCall = false;
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Calender_CalenderServiceManager_GetMicrosoftValidToken_06".toLowerCase()
+                )
+            ) {
+              dispatch(MicrosoftValidTokenFailed(t("Code-is-invalid")));
+              AllowMicrosoftCalenderSyncCall = false;
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Calender_CalenderServiceManager_GetMicrosoftValidToken_07".toLowerCase()
+                )
+            ) {
+              dispatch(MicrosoftValidTokenFailed(t("Something-went-wrong")));
+              AllowMicrosoftCalenderSyncCall = false;
+            }
+          } else {
+            dispatch(MicrosoftValidTokenFailed(t("Something-went-wrong")));
+            AllowMicrosoftCalenderSyncCall = false;
+          }
+        } else {
+          dispatch(MicrosoftValidTokenFailed(t("Something-went-wrong")));
+          AllowMicrosoftCalenderSyncCall = false;
+        }
+      })
+      .catch((response) => {
+        dispatch(MicrosoftValidTokenFailed(t("Something-went-wrong")));
+        AllowMicrosoftCalenderSyncCall = false;
+      });
+  };
+};
+
 export {
   updateUserSettingFunc,
   updateUserMessageCleare,
   getGoogleValidToken,
   revokeToken,
+  getMicrosoftValidToken,
 };

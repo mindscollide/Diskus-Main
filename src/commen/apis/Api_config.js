@@ -1333,6 +1333,10 @@ const validateEncyptedStringUserDataRoom = {
     "ServiceManager.ValidateEncryptedStringUserAvailabilityForDataRoom",
 };
 
+const validateMicrosoftToken = {
+  RequestMethod: "ServiceManager.GetMicrosoftValidToken",
+};
+
 export {
   getDataAnalyticsCountRM,
   updateAndOpenByAndDescriptionRM,
@@ -1689,4 +1693,6 @@ export {
   validateEncryptedStringUserAvailabilityForMeeting,
   //Validate userAvailibility Encrypted String
   validateEncyptedStringUserDataRoom,
+  //Validate Microsoft Token
+  validateMicrosoftToken,
 };
