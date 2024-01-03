@@ -60,7 +60,6 @@ const GroupViewPolls = ({
   let userID = localStorage.getItem("userID");
   let ViewGroupID = localStorage.getItem("ViewGroupID");
 
-  console.log(GroupsReducer, "GroupsReducerGroupsReducerGroupsReducer");
   const enableAfterSavedViewPolls = () => {
     setafterViewPolls(true);
   };
@@ -104,10 +103,9 @@ const GroupViewPolls = ({
         let pollsData = PollsReducer.getPollByGroupID.polls;
         let newPollsArray = [];
         pollsData.forEach((data, index) => {
-          console.log(data, "datadatadatadata");
           newPollsArray.push(data);
         });
-        console.log(newPollsArray, "newPollsArraynewPollsArray");
+
         setPollsRows(newPollsArray);
       } else {
         setPollsRows([]);
@@ -181,7 +179,7 @@ const GroupViewPolls = ({
       );
     }
   };
-  console.log(pollsRows, "pollsRowspollsRowspollsRows");
+
   const handleClickVoteCast = (record) => {
     let data = {
       PollID: record.pollID,
@@ -247,13 +245,16 @@ const GroupViewPolls = ({
       onFilter: (value, record) =>
         record.pollStatus.status.indexOf(value) === 0,
       render: (text, record) => {
-        console.log(record, "recordrecord");
         if (record.pollStatus?.pollStatusId === 2) {
-          return <span className="text-success">{t("Published")}</span>;
+          return (
+            <span className={styles["poll_status"]}>{t("Published")}</span>
+          );
         } else if (record.pollStatus?.pollStatusId === 1) {
-          return <span className="text-success">{t("Unpublished")}</span>;
+          return (
+            <span className={styles["poll_status"]}>{t("Unpublished")}</span>
+          );
         } else if (record.pollStatus?.pollStatusId === 3) {
-          return <span className="text-success">{t("Expired")}</span>;
+          return <span className={styles["poll_status"]}>{t("Expired")}</span>;
         }
       },
     },
@@ -275,7 +276,11 @@ const GroupViewPolls = ({
         ),
       sortDirections: ["ascend", "descend"],
       render: (text, record) => {
-        return _justShowDateformatBilling(text + "000000");
+        return (
+          <span className={styles["poll_status"]}>
+            {_justShowDateformatBilling(text + "000000")}
+          </span>
+        );
       },
     },
 
@@ -291,14 +296,15 @@ const GroupViewPolls = ({
       key: "pollCreator",
       width: "110px",
       sorter: (a, b) => a.pollCreator.localeCompare(b.pollCreator),
+      render: (text, record) => {
+        return <span className={styles["poll_status"]}>{text}</span>;
+      },
     },
     {
       title: t("Vote"),
       dataIndex: "Vote",
       width: "70px",
       render: (text, record) => {
-        console.log("votevotevotevote", record);
-        console.log("votevotevotevote", record.isVoter);
         if (record.pollStatus.pollStatusId === 2) {
           if (record.isVoter) {
             if (record.voteStatus === "Not Voted") {

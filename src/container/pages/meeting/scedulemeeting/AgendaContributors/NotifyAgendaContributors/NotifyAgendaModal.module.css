@@ -1,7 +1,7 @@
 .Notify_organisors {
   font-size: 16px !important;
   font-family: "MontserratSemiBold" !important;
-  color: #5f78d6 !important;
+  color: #6172d6 !important;
 }
 
 .Check_box_title {
@@ -63,9 +63,9 @@
 .Send_Notify {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  border: 1px solid #e1e1e1;
+  /* border: 1px solid #e1e1e1; */
   border-radius: 4px !important;
-  background: #5f78d6;
+  background: #6172d6;
   color: #fff;
 }
 
@@ -75,15 +75,15 @@
 .Send_Notify:focus-visible {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  border: none !important;
+  /* border: 1px solid transparent !important; */
   border-radius: 4px !important;
-  background: #5f78d6 !important;
+  background: #6172d6 !important;
   color: #fff !important;
 }
 
 .Hide_names {
   font-size: 12px !important;
-  color: #5f78d6;
+  color: #6172d6;
   font-family: "MontserratMedium-500";
 }
 

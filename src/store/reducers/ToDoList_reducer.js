@@ -29,6 +29,12 @@ const initialState = {
 
 const toDoListReducer = (state = initialState, action) => {
   switch (action.type) {
+    case actions.TASK_FOLDER_MAPPING_ID: {
+      return {
+        ...state,
+        todoDocumentsMapping: 0,
+      };
+    }
     // Mapping for Task create
     case actions.CREATEUPDATETASKDATAROOMMAP_INIT: {
       return {
@@ -63,7 +69,7 @@ const toDoListReducer = (state = initialState, action) => {
     case actions.UPLOAD_DOCUMENTS_TASKS_SUCCESS: {
       return {
         ...state,
-        Loading: true,
+        Loading: false,
         todoDocumentsUpload: [...state.todoDocumentsUpload, action.response],
         ResponseMessage: action.message,
       };
@@ -86,7 +92,7 @@ const toDoListReducer = (state = initialState, action) => {
     case actions.SAVEFILES_TASKS_SUCCESS: {
       return {
         ...state,
-        Loading: true,
+        Loading: false,
         todoSaveFilesTodo: [...state.todoSaveFilesTodo, action.response],
         ResponseMessage: action.message,
       };
@@ -254,7 +260,7 @@ const toDoListReducer = (state = initialState, action) => {
     case actions.SETTODO_RECENT_ACTIVITY_DATA: {
       return {
         ...state,
-        Loading: false,
+        // Loading: ,
         TableSpinner: false,
         SocketTodoActivityData: action.response,
       };
@@ -264,6 +270,42 @@ const toDoListReducer = (state = initialState, action) => {
         ...state,
         socketTodoStatusData: action.response,
         ResponseMessage: action.message,
+      };
+    }
+    case actions.DELETEGROUPTASK_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.DELETEGROUPTASK_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+    case actions.DELETEGROUPTASK_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+    case actions.DELETECOMMITTEETASK_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.DELETECOMMITTEETASK_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+    case actions.DELETECOMMITTEETASK_FAIL: {
+      return {
+        ...state,
+        Loading: false,
       };
     }
     case actions.GET_TODOLIST_FAIL:
