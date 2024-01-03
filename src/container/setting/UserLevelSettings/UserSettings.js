@@ -23,6 +23,13 @@ import {
   revokeToken,
   updateUserSettingFunc,
 } from "../../../store/actions/UpdateUserGeneralSetting";
+import {
+  AuthenticatedTemplate,
+  UnauthenticatedTemplate,
+  useMsal,
+} from "@azure/msal-react";
+import { loginRequest } from "../../../auth-config";
+
 const UserSettings = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -101,6 +108,9 @@ const UserSettings = () => {
     EmailWhenNewTODODeleted: false,
     EmailWhenNewTODOEdited: false,
   });
+  const { instance } = useMsal();
+  const activeAccount = instance.getActiveAccount();
+  const [authMicrosoftCode, setAuthMicrosoftCode] = useState("");
 
   useEffect(() => {
     dispatch(getUserSetting(navigate, t));
@@ -435,12 +445,28 @@ const UserSettings = () => {
     }
   };
 
+  const signInMicrowSoft = async (value) => {
+    const response = await instance.loginPopup(loginRequest);
+    if (response) {
+      setUserOptionsSettings({
+        ...userOptionsSettings,
+        AllowMicrosoftCalenderSync: value,
+      });
+    } else {
+    }
+  };
+
   const onChangeAllowMicrosoftCalenderSync = (e) => {
-    let value = e.target.checked;
-    setUserOptionsSettings({
-      ...userOptionsSettings,
-      AllowMicrosoftCalenderSync: value,
-    });
+    const value = e.target.checked;
+    if (value) {
+      signInMicrowSoft(value);
+    } else {
+      instance.logoutPopup();
+      setUserOptionsSettings({
+        ...userOptionsSettings,
+        AllowMicrosoftCalenderSync: value,
+      });
+    }
   };
 
   const onChangeEmailWhenAddedToCommittee = (e) => {
@@ -739,6 +765,23 @@ const UserSettings = () => {
   };
 
   const updateOrganizationLevelSettings = async () => {
+    let AllowMicrosoftCalenderSyncCall =
+      userOptionsSettings.AllowMicrosoftCalenderSync;
+    if (userOptionsSettings.AllowGoogleCalenderSync) {
+      if (authMicrosoftCode !== "") {
+        // const tokenValidate=await dispatch(
+        //   getMicroSoftValidToken(navigate, signUpCodeToken, userOptionsSettings, t,2)
+        // );
+        // AllowMicrosoftCalenderSyncCall=tokenValidate
+      }
+    }
+    // global is tru and update local state is false then call revoke token api
+    // else if(){
+    // const tokenRevoke=await dispatch(
+    //   getMicroSoftRevokeToken(navigate, signUpCodeToken, userOptionsSettings, t,2)
+    // );
+    // AllowMicrosoftCalenderSyncCall=tokenRevoke
+    // }
     if (signUpCodeToken !== "") {
       if (userOptionsSettings.AllowGoogleCalenderSync) {
         await dispatch(
