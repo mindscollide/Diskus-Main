@@ -98,7 +98,7 @@ const Organizers = ({
   const [editState, setEditState] = useState(false);
   // const [editFlag, setEditFlag] = useState(0);
   const [notificationMessage, setNotificationMessage] = useState("");
-  console.log(notificationMessage, "notificationMessagenotificationMessage");
+
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
     (state) => state
   );
@@ -134,7 +134,6 @@ const Organizers = ({
   };
 
   const [rowsData, setRowsData] = useState([currentOrganizerData]);
-  console.log(rowsData, "rowsDatarowsDatarowsDatarowsData");
 
   const [transformedData, setTransformedData] = useState({
     MeetingOrganizers: [],
@@ -223,7 +222,6 @@ const Organizers = ({
       width: "250px",
       align: "center",
       render: (text, record) => {
-        console.log(text, record, "organizerTitleorganizerTitleorganizerTitle");
         if (
           (Number(editorRole.status) === 9 ||
             Number(editorRole.status) === 8 ||
@@ -242,7 +240,7 @@ const Organizers = ({
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <TextField
-                  placeholder={t("Content-title")}
+                  placeholder={t("Organizer-title")}
                   labelClass={"d-none"}
                   applyClass={"Organizer_table"}
                   maxLength={140}
@@ -739,8 +737,6 @@ const Organizers = ({
     }
   }, [MeetingOrganizersReducer.AllMeetingOrganizersData]);
 
-  console.log(rowsData, "setRowsDatasetRowsData");
-
   useEffect(() => {
     if (
       MeetingOrganizersReducer.MeetingOrganizersData !== undefined &&
@@ -832,7 +828,7 @@ const Organizers = ({
   //   } else {
   //     setIsEdit(false);
   //   }
-  //   console.log("Console is running");
+  //
   // }, [rowsData]);
 
   useEffect(() => {

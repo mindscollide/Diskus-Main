@@ -379,16 +379,31 @@ const AgendaWise = ({
   };
 
   const onTextChange = (content, delta, source) => {
-    const plainText = content.replace(/(<([^>]+)>)/gi, "");
-    if (source === "user" && plainText) {
+    const deltaOps = delta.ops || [];
+
+    // Check if any image is being pasted
+    const containsImage = deltaOps.some((op) => op.insert && op.insert.image);
+    if (containsImage) {
       setAddNoteFields({
         ...addNoteFields,
         Description: {
-          value: content,
+          value: "",
           errorMessage: "",
           errorStatus: false,
         },
       });
+    } else {
+      if (source === "user") {
+        // Update state only if no image is detected in the content
+        setAddNoteFields({
+          ...addNoteFields,
+          Description: {
+            value: content,
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      }
     }
   };
 
@@ -749,26 +764,6 @@ const AgendaWise = ({
       dispatch(CleareMessegeNewMeeting());
     }
   }, [NewMeetingreducer.ResponseMessage]);
-
-  useEffect(() => {
-    if (editorRef.current) {
-      const editor = editorRef.current.getEditor();
-
-      if (editor) {
-        editor.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
-          const plaintext = node.innerText || node.textContent || "";
-          const isImage = node.nodeName === "IMG";
-
-          if (isImage) {
-            // Block image paste by returning an empty delta
-            return new Delta();
-          }
-
-          return delta.compose(new Delta().insert(plaintext));
-        });
-      }
-    }
-  }, []);
 
   return (
     <section>

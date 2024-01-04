@@ -441,8 +441,9 @@ const CommitteeMeetingTab = () => {
           } else {
             if (
               record.isQuickMeeting === true &&
-              minutesDifference <= 5 &&
-              minutesDifference > 0
+              minutesDifference <= 15
+              // &&
+              // minutesDifference > 0
             ) {
               return (
                 <Row>

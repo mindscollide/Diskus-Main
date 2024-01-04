@@ -28,6 +28,11 @@ import {
 } from "./Polls_actions";
 import { updateTodoStatusFunc } from "./GetTodos";
 
+const ClearMappingFolderID = () => {
+  return {
+    type: actions.TASK_FOLDER_MAPPING_ID,
+  };
+};
 const ShowNotification = (message) => {
   return {
     type: actions.SHOW,
@@ -1602,144 +1607,149 @@ const saveTaskDocuments_fail = (message) => {
 const saveTaskDocumentsApi = (navigate, Data, t, value, setShow) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
-    dispatch(saveTaskDocuments_init());
-    let form = new FormData();
-    form.append("RequestMethod", saveTaskDocuments.RequestMethod);
-    form.append("RequestData", JSON.stringify(Data));
-    await axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(saveTaskDocumentsApi(navigate, Data, t, value, setShow));
-        } else if (
-          response.data.responseCode === 200 &&
-          response.data.responseResult.isExecuted === true
-        ) {
-          if (
-            response.data.responseResult.responseMessage
-              .toLowerCase()
-              .includes(
-                "DataRoom_DataRoomManager_SaveToDoDocuments_01".toLowerCase()
-              )
+    try {
+      dispatch(saveTaskDocuments_init());
+      let form = new FormData();
+      form.append("RequestMethod", saveTaskDocuments.RequestMethod);
+      form.append("RequestData", JSON.stringify(Data));
+      await axios({
+        method: "post",
+        url: dataRoomApi,
+        data: form,
+        headers: {
+          _token: token,
+        },
+      })
+        .then(async (response) => {
+          if (response.data.responseCode === 417) {
+            await dispatch(RefreshToken(navigate, t));
+            dispatch(saveTaskDocumentsApi(navigate, Data, t, value, setShow));
+          } else if (
+            response.data.responseCode === 200 &&
+            response.data.responseResult.isExecuted === true
           ) {
-            dispatch(
-              saveTaskDocuments_success(
-                response.data.responseResult,
-                t("Update-successful")
-              )
-            );
-
-            // Create Task from main TOdo list
-            if (value === 1) {
-              let TodoListPage =
-                localStorage.getItem("todoListPage") !== null
-                  ? localStorage.getItem("todoListPage")
-                  : 1;
-
-              let todoLength =
-                localStorage.getItem("todoListRow") !== null
-                  ? localStorage.getItem("todoListRow")
-                  : 50;
-
-              let dataForList = {
-                Date: "",
-                Title: "",
-                AssignedToName: "",
-              };
-              await dispatch(
-                SearchTodoListApi(
-                  navigate,
-                  dataForList,
-                  Number(TodoListPage),
-                  Number(todoLength),
-                  t
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_SaveToDoDocuments_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                saveTaskDocuments_success(
+                  response.data.responseResult,
+                  t("Update-successful")
                 )
               );
-              dispatch(createUpdateTaskDataRoom_fail(""));
-              setShow(false);
-            }
-            // Delete Task from main Task
-            if (value === 2) {
-              await dispatch(
-                updateTodoStatusFunc(navigate, 6, Data.ToDoID, t, false)
-              );
-            }
-            // Create Task from Group
-            if (value === 3) {
-              let ViewGroupID = localStorage.getItem("ViewGroupID");
-              let data = {
-                FK_TID: Number(Data.ToDoID),
-                GroupID: Number(ViewGroupID),
-              };
-              dispatch(setTasksByGroupApi(navigate, t, data));
-              dispatch(createUpdateTaskDataRoom_fail(""));
-              setShow(false);
-            }
-            // Delete Task from Group
-            if (value === 4) {
-              let ViewGroupID = localStorage.getItem("ViewGroupID");
 
-              let data = {
-                FK_TID: Number(Data.ToDoID),
-                GroupID: Number(ViewGroupID),
-              };
-              dispatch(deleteGroupTaskApi(navigate, t, data));
-            }
-            // Create Task from Committee
-            if (value === 5) {
-              let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
-              let data = {
-                FK_TID: Number(Data.ToDoID),
-                CommitteeID: Number(ViewCommitteeID),
-              };
-              dispatch(setTasksByCommitteeApi(navigate, t, data));
+              // Create Task from main TOdo list
+              if (value === 1) {
+                let TodoListPage =
+                  localStorage.getItem("todoListPage") !== null
+                    ? localStorage.getItem("todoListPage")
+                    : 1;
+
+                let todoLength =
+                  localStorage.getItem("todoListRow") !== null
+                    ? localStorage.getItem("todoListRow")
+                    : 50;
+
+                let dataForList = {
+                  Date: "",
+                  Title: "",
+                  AssignedToName: "",
+                };
+                await dispatch(
+                  SearchTodoListApi(
+                    navigate,
+                    dataForList,
+                    Number(TodoListPage),
+                    Number(todoLength),
+                    t
+                  )
+                );
+                // dispatch(createUpdateTaskDataRoom_fail(""));
+                setShow(false);
+              }
+              // Delete Task from main Task
+              if (value === 2) {
+                await dispatch(
+                  updateTodoStatusFunc(navigate, 6, Data.ToDoID, t, false)
+                );
+              }
+              // Create Task from Group
+              if (value === 3) {
+                let ViewGroupID = localStorage.getItem("ViewGroupID");
+                let data = {
+                  FK_TID: Number(Data.ToDoID),
+                  GroupID: Number(ViewGroupID),
+                };
+                dispatch(ClearMappingFolderID());
+                dispatch(setTasksByGroupApi(navigate, t, data));
+                setShow(false);
+              }
+              // Delete Task from Group
+              if (value === 4) {
+                let ViewGroupID = localStorage.getItem("ViewGroupID");
+
+                let data = {
+                  FK_TID: Number(Data.ToDoID),
+                  GroupID: Number(ViewGroupID),
+                };
+                dispatch(deleteGroupTaskApi(navigate, t, data));
+              }
+              // Create Task from Committee
+              if (value === 5) {
+                let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+                let data = {
+                  FK_TID: Number(Data.ToDoID),
+                  CommitteeID: Number(ViewCommitteeID),
+                };
+                dispatch(ClearMappingFolderID());
+
+                dispatch(setTasksByCommitteeApi(navigate, t, data));
+                setShow(false);
+              }
+              // Delete Task from Committee
+              if (value === 6) {
+                let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+                let data = {
+                  FK_TID: Number(Data.ToDoID),
+                  CommitteeID: Number(ViewCommitteeID),
+                };
+                dispatch(deleteCommitteeTaskApi(navigate, t, data));
+              }
+              // Create Task from Meeting Actions
+              if (value === 7) {
+              }
+              // Delete Task from Meetin Actions
+              if (value === 8) {
+              }
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_SaveToDoDocuments_02".toLowerCase()
+                )
+            ) {
+              dispatch(saveTaskDocuments_fail(t("Something-went-wrong")));
               dispatch(createUpdateTaskDataRoom_fail(""));
-              setShow(false);
+            } else {
+              dispatch(saveTaskDocuments_fail(t("Something-went-wrong")));
+              dispatch(createUpdateTaskDataRoom_fail(""));
             }
-            // Delete Task from Committee
-            if (value === 6) {
-              let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
-              let data = {
-                FK_TID: Number(Data.ToDoID),
-                CommitteeID: Number(ViewCommitteeID),
-              };
-              dispatch(deleteCommitteeTaskApi(navigate, t, data));
-            }
-            // Create Task from Meeting Actions
-            if (value === 7) {
-            }
-            // Delete Task from Meetin Actions
-            if (value === 8) {
-            }
-          } else if (
-            response.data.responseResult.responseMessage
-              .toLowerCase()
-              .includes(
-                "DataRoom_DataRoomManager_SaveToDoDocuments_02".toLowerCase()
-              )
-          ) {
-            dispatch(saveTaskDocuments_fail(t("Something-went-wrong")));
-            dispatch(createUpdateTaskDataRoom_fail(""));
           } else {
             dispatch(saveTaskDocuments_fail(t("Something-went-wrong")));
             dispatch(createUpdateTaskDataRoom_fail(""));
           }
-        } else {
+        })
+        .catch(() => {
           dispatch(saveTaskDocuments_fail(t("Something-went-wrong")));
           dispatch(createUpdateTaskDataRoom_fail(""));
-        }
-      })
-      .catch(() => {
-        dispatch(saveTaskDocuments_fail(t("Something-went-wrong")));
-        dispatch(createUpdateTaskDataRoom_fail(""));
-      });
+        });
+    } catch (error) {
+      console.log("error", error);
+    }
   };
 };
 

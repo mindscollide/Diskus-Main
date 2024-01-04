@@ -126,6 +126,7 @@ const NotesReducer = (state = initialState, action) => {
         deleteNoteResponse: null,
       };
     }
+
     default:
       return {
         ...state,

@@ -29,15 +29,15 @@
   padding-right: 20px;
   padding-left: 0;
   /* margin-left: 90px; */
-  width: 90% !important;
+  width: 99% !important;
 }
 
 body[dir="rtl"] .Dashboard-Main-Container.container-fluid {
   height: 90vh !important;
   /* padding-left : 20px !important; */
   padding-right: 0 !important;
-  margin-right: 70px !important;
-  width: 89% !important;
+  /* margin-right: 70px !important; */
+  width: 97% !important;
 }
 
 .overlay-incoming-videocall {
@@ -49,4 +49,11 @@ body[dir="rtl"] .Dashboard-Main-Container.container-fluid {
   background: transparent;
   pointer-events: auto;
   z-index: 8;
+}
+
+.dashbaord_data {
+  width: 95%;
+}
+.talk_features_home {
+  width: 5%;
 }

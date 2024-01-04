@@ -512,8 +512,8 @@ body[dir="rtl"] .Edit_Icon_moderator {
 }
 
 .resolution_container {
-  max-width: 90%;
-  width: 90%;
+  /* max-width: 90%; */
+  width: 98%;
   margin: 0 auto;
   height: 91vh;
 }

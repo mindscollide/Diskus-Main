@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Col, Container, Form, Row } from "react-bootstrap";
-import styles from "./ModalRenameFile.module.css"
+import styles from "./ModalRenameFile.module.css";
 import { useTranslation } from "react-i18next";
 import { Button, Modal, TextField } from "../../../components/elements";
-import { FileisExist2, FolderisExistRename } from "../../../store/actions/DataRoom_actions";
+import {
+  FileisExist2,
+  FolderisExistRename,
+} from "../../../store/actions/DataRoom_actions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -14,30 +17,26 @@ const ModalRenameFile = ({
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [fileData, setFileData] = useState({
     FileName: "",
-    FileId: 0
-  })
-  console.log(isRenameFileData, "folderDatafolderDatafolderData")
+    FileId: 0,
+  });
+  console.log(isRenameFileData, "folderDatafolderDatafolderData");
   useEffect(() => {
     try {
       if (isRenameFileData !== null && isRenameFileData !== undefined) {
         setFileData({
           FileName: isRenameFileData.name,
-          FileId: isRenameFileData.id
-        })
+          FileId: isRenameFileData.id,
+        });
       }
-    } catch (error) {
-
-    }
-
-  }, [isRenameFileData])
+    } catch (error) {}
+  }, [isRenameFileData]);
 
   const saveButton = () => {
     if (fileData.FileName !== "") {
-      dispatch(FileisExist2(navigate, fileData, t, setShowRenameFile))
-
+      dispatch(FileisExist2(navigate, fileData, t, setShowRenameFile));
     }
   };
 
@@ -76,10 +75,13 @@ const ModalRenameFile = ({
                       value={fileData.FileName}
                       placeholder={t("Rename")}
                       labelClass="textFieldSearch d-none"
-                      change={(e) => setFileData({
-                        ...fileData,
-                        FileName: e.target.value
-                      })}
+                      maxLength={290}
+                      change={(e) =>
+                        setFileData({
+                          ...fileData,
+                          FileName: e.target.value,
+                        })
+                      }
                     />
                   </Col>
                   {/* <Col lg={2} md={2} sm={2}></Col> */}

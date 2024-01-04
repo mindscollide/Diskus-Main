@@ -102,6 +102,7 @@ const initialState = {
   SaveFolderResponse: null,
   meetingStatusProposedMqttData: null,
   meetingStatusPublishedMqttData: null,
+  meetingStatusNotConductedMqttData: null,
   userAvailibilityData: null,
   CalendarDashboardEventData: null,
 
@@ -1823,6 +1824,13 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         meetingStatusPublishedMqttData: action.response,
+      };
+    }
+
+    case actions.MQTT_MEETING_STATUS_NOTCONDUCTED: {
+      return {
+        ...state,
+        meetingStatusNotConductedMqttData: action.response,
       };
     }
 

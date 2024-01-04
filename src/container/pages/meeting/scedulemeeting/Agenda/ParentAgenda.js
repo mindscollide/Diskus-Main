@@ -15,7 +15,10 @@ import {
   showVoteAgendaModal,
   UpateMeetingStatusLockApiFunc,
 } from "../../../../../store/actions/NewMeetingActions";
-import { resolutionResultTable } from "../../../../../commen/functions/date_formater";
+import {
+  convertDateTimetoGMTMeetingDetail,
+  resolutionResultTable,
+} from "../../../../../commen/functions/date_formater";
 import styles from "./Agenda.module.css";
 import Cast from "../../../../../assets/images/CAST.svg";
 import profile from "../../../../../assets/images/newprofile.png";
@@ -76,6 +79,9 @@ const ParentAgenda = ({
   const { t } = useTranslation();
   const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
     (state) => state
+  );
+  const getAllMeetingDetails = useSelector(
+    (state) => state.NewMeetingreducer.getAllMeetingDetails
   );
   let currentMeetingIDLS = Number(localStorage.getItem("currentMeetingLS"));
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -236,7 +242,6 @@ const ParentAgenda = ({
         return prevRows;
       });
     } else {
-      console.log("UpateMeetingStatusLockApiFunc");
     }
   };
 
@@ -291,7 +296,6 @@ const ParentAgenda = ({
       updatedRows[index].startDate = dateObject;
       setRows(updatedRows);
     } else {
-      console.error("Invalid date and time object:", date);
     }
   };
 
@@ -307,7 +311,6 @@ const ParentAgenda = ({
       setRows(updatedRows);
       // You can use 'formattedTime' as needed.
     } else {
-      console.error("Invalid date and time object:", date);
     }
   };
 
@@ -319,11 +322,13 @@ const ParentAgenda = ({
       updatedRows[index].urlFieldMain = "";
       updatedRows[index].mainNote = "";
       updatedRows[index].requestContributorURlName = "";
+      updatedRows[index].requestContributorURl = 0;
       updatedRows[index].userID = 0;
     } else if (updatedRows[index].selectedRadio === 2) {
       updatedRows[index].files = [];
       updatedRows[index].mainNote = "";
       updatedRows[index].requestContributorURlName = "";
+      updatedRows[index].requestContributorURl = 0;
       updatedRows[index].userID = 0;
     } else if (updatedRows[index].selectedRadio === 3) {
       updatedRows[index].files = [];
@@ -341,6 +346,27 @@ const ParentAgenda = ({
     }
     setRows(updatedAgendaItems);
   };
+
+  useEffect(() => {
+    if (
+      getAllMeetingDetails !== null &&
+      getAllMeetingDetails !== undefined &&
+      getAllMeetingDetails.length !== 0 &&
+      Object.keys(getAllMeetingDetails) !== 0
+    ) {
+      const updatedAgendaItems = [...rows];
+      let meetingStartTime =
+        getAllMeetingDetails.advanceMeetingDetails.meetingDates[0].meetingDate +
+        getAllMeetingDetails.advanceMeetingDetails.meetingDates[0].startTime;
+      let meetingEndTime =
+        getAllMeetingDetails.advanceMeetingDetails.meetingDates[0].meetingDate +
+        getAllMeetingDetails.advanceMeetingDetails.meetingDates[0].endTime;
+      updatedAgendaItems[index].startDate =
+        resolutionResultTable(meetingStartTime);
+      updatedAgendaItems[index].endDate = resolutionResultTable(meetingEndTime);
+      setRows(updatedAgendaItems);
+    }
+  }, [getAllMeetingDetails]);
 
   useEffect(() => {
     if (currentLanguage !== undefined) {
@@ -418,8 +444,9 @@ const ParentAgenda = ({
     updatedAgendaItems[index].presenterID = allSavedPresenters[0]?.value;
     updatedAgendaItems[index].presenterName = allSavedPresenters[0]?.label;
     setRows(updatedAgendaItems);
-    console.log("presenterspresenters", presenters);
   }, [presenters]);
+
+  console.log("Agenda Data", rows);
 
   return (
     <>
@@ -698,7 +725,7 @@ const ParentAgenda = ({
                                     handleAgendaDescription(index, e)
                                   }
                                   rows="4"
-                                  placeholder={t("Enter-description")}
+                                  placeholder={t("Agenda-description")}
                                   required={true}
                                   disable={
                                     data.isLocked

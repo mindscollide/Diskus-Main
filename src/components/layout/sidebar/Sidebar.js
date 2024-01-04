@@ -545,7 +545,7 @@ const Sidebar = () => {
                 : "diskus-sidebar m-0 p-0"
             }
           >
-            <Nav className="new_sidebar p-0 d-flex justify-content-center mt-5 gap-3 align-items-center flex-column">
+            <Nav className="new_sidebar p-0 d-flex justify-content-center  gap-3 align-items-center flex-column">
               {/* <Nav.Link as={Link} to="home" eventKey="link-1">
               <img src={Logo} className="mb-5" />
             </Nav.Link> */}

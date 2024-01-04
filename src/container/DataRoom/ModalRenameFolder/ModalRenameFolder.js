@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Col, Container, Form, Row } from "react-bootstrap";
-import styles from "./ModalRenameFolder.module.css"
+import styles from "./ModalRenameFolder.module.css";
 import { useTranslation } from "react-i18next";
 import { Button, Modal, TextField } from "../../../components/elements";
 import { FolderisExistRename } from "../../../store/actions/DataRoom_actions";
@@ -13,23 +13,26 @@ const ModalRenameFolder = ({
   setnotification,
   isRenameFolderData,
 }) => {
-  console.log(isRenameFolderData, "isRenameFolderDataisRenameFolderDataisRenameFolderData")
+  console.log(
+    isRenameFolderData,
+    "isRenameFolderDataisRenameFolderDataisRenameFolderData"
+  );
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [folderData, setFolderData] = useState({
     FolderName: "",
-    folderId: 0
-  })
-  console.log(folderData, "folderDatafolderDatafolderData")
+    folderId: 0,
+  });
+  console.log(folderData, "folderDatafolderDatafolderData");
   useEffect(() => {
     if (isRenameFolderData !== null) {
       setFolderData({
         FolderName: isRenameFolderData.name,
-        folderId: isRenameFolderData.id
-      })
+        folderId: isRenameFolderData.id,
+      });
     }
-  }, [isRenameFolderData])
+  }, [isRenameFolderData]);
   const closebtn = async () => {
     setRenamefolder(false);
   };
@@ -37,8 +40,7 @@ const ModalRenameFolder = ({
     // setRenamefolder(false);
     if (folderData.FolderName !== "") {
       // setnotification(true);
-      dispatch(FolderisExistRename(navigate, folderData, t, setRenamefolder))
-
+      dispatch(FolderisExistRename(navigate, folderData, t, setRenamefolder));
     }
   };
 
@@ -77,10 +79,13 @@ const ModalRenameFolder = ({
                       value={folderData.FolderName}
                       placeholder={t("Rename")}
                       labelClass="textFieldSearch d-none"
-                      change={(e) => setFolderData({
-                        ...folderData,
-                        FolderName: e.target.value
-                      })}
+                      maxLength={290}
+                      change={(e) =>
+                        setFolderData({
+                          ...folderData,
+                          FolderName: e.target.value,
+                        })
+                      }
                     />
                   </Col>
                   {/* <Col lg={2} md={2} sm={2}></Col> */}
