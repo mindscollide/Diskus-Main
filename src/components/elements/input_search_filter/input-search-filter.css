@@ -103,3 +103,6 @@
 .ImportPreviousMinutesSearch {
   height: 39px !important;
 }
+.searchFilterAgendaContributorLabel {
+  display: none !important;
+}

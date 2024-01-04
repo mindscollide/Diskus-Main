@@ -277,3 +277,6 @@
   resize: none;
   overflow-y: auto;
 }
+.searchFilterAgendaContributor {
+  padding: 12px 30px !important;
+}

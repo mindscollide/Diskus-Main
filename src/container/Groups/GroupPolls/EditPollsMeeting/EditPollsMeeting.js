@@ -447,7 +447,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                               <span className="position-relative">
                                 <TextField
                                   placeholder={
-                                    "Option" + " " + parseInt(index + 1)
+                                    "Option" + " " + parseInt(index + 1) + "*"
                                   }
                                   applyClass={"PollingCreateModal"}
                                   labelClass="d-none"
@@ -466,7 +466,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                               <span className="position-relative">
                                 <TextField
                                   placeholder={
-                                    "Option" + " " + parseInt(index + 1)
+                                    "Option" + " " + parseInt(index + 1) + "*"
                                   }
                                   applyClass={"PollingCreateModal"}
                                   labelClass="d-none"
@@ -539,7 +539,9 @@ const EditPollsMeeting = ({ setEditPolls }) => {
               sm={6}
               className="d-flex align-items-start flex-column justify-content-start"
             >
-              <span className={styles["Title_heading"]}>{t("Due-date")}</span>
+              <span className={styles["Title_heading"]}>
+                {t("Due-date") + "*"}
+              </span>
               <DatePicker
                 value={meetingDate}
                 format={"DD/MM/YYYY"}

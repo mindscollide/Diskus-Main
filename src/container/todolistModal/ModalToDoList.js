@@ -96,9 +96,9 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //task Asignees
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
-  console.log(taskAssignedToInput, "taskAssignedToInputtaskAssignedToInput");
+
   const [TaskAssignedTo, setTaskAssignedTo] = useState([]);
-  console.log("TaskAssignedToTaskAssignedTo", TaskAssignedTo);
+
   const [taskAssignedName, setTaskAssignedName] = useState([]);
   const [assignees, setAssignees] = useState([]);
   const [taskAssigneeLength, setTaskAssigneeLength] = useState(false);
@@ -194,10 +194,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //Upload File Handler
   const uploadFilesToDo = (data) => {
-    console.log(
-      data.target.files[0],
-      "uploadFilesToDouploadFilesToDouploadFilesToDo"
-    );
     let fileSizeArr;
     if (Object.keys(tasksAttachments.TasksAttachments).length === 10) {
       setTimeout(
@@ -421,7 +417,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           </div>
         ));
     } else {
-      console.log("not found");
     }
   };
 
@@ -447,7 +442,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       taskAssignedTO.push(Number(createrID));
       setTaskAssignedTo(taskAssignedTO);
     }
-    console.log(taskAssignedTO, "taskAssignedTOtaskAssignedTO");
+
     let newDate = createTodoDate;
     let newTime = task.DeadLineTime;
     let finalDateTime;
@@ -584,15 +579,13 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const handleTimeChange = (newTime) => {
     let newDate = new Date(newTime);
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getUTCHours()).slice(-2);
-      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
-      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
-      console.log(hours, "Hours");
-      console.log(minutes, "hourshours");
-      console.log(seconds, "hourshours");
+      const hours = ("0" + newDate.getUHours()).slice(-2);
+      const minutes = ("0" + newDate.getMinutes()).slice(-2);
+      const seconds = ("0" + newDate.getSeconds()).slice(-2);
+
       const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
         .toString()
-        .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
+        .padStart(2, "0")}${"00"}`;
       setTask({
         ...task,
         DeadLineTime: formattedTime,
@@ -611,7 +604,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   // const handleBlur = (event) => {
   //   // Access the selected value when the input field loses focus
   //   const selectedValue = event.target.value;
-  //   console.log("Selected Value:", selectedValue);
+  //
   // };
   // const handleTimeSelect = () => {
   //   const inputElement = document.getElementById("timeInput");
@@ -751,7 +744,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     </Col>
                   </Row>
                   <Row className="create_todo_assignee d-flex justify-content-end">
-                    {assignees ? (
+                    {assignees.length > 0 ? (
                       <>
                         {assignees.map((taskAssignedName, index) => (
                           <Col sm={12} md={6} lg={6}>

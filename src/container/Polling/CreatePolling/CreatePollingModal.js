@@ -98,7 +98,6 @@ const CreatePolling = () => {
     </div>
   );
   const handleIconClick = () => {
-    console.log("handleIconClick");
     if (datePickerRef.current) {
       datePickerRef.current.openCalendar();
     }
@@ -256,7 +255,7 @@ const CreatePolling = () => {
   const handleSelectValue = (value) => {
     setSelectedsearch(value);
   };
-  console.log(members, "temtemtemtemtem");
+
   // for add user for assignes
   const handleAddUsers = () => {
     let pollsData = PollsReducer.gellAllCommittesandGroups;
@@ -292,7 +291,6 @@ const CreatePolling = () => {
               }
             }
           } else if (seledtedData.type === 2) {
-            console.log("members check");
             let check1 = pollsData.committees.find(
               (data, index) => data.committeeID === seledtedData.value
             );
@@ -324,7 +322,7 @@ const CreatePolling = () => {
               let check2 = pollsData.organizationUsers.find(
                 (data, index) => data.userID === seledtedData.value
               );
-              console.log(check2, "check2check2check2");
+
               if (check2 !== undefined) {
                 let newUser = {
                   userName: check2.userName,
@@ -338,10 +336,8 @@ const CreatePolling = () => {
           } else {
           }
         });
-      } catch {
-        console.log("error in add");
-      }
-      console.log("members check", tem);
+      } catch {}
+
       const uniqueData = new Set(tem.map(JSON.stringify));
 
       // Convert the Set back to an array of objects
@@ -354,8 +350,6 @@ const CreatePolling = () => {
   };
 
   const changeDateStartHandler = (date) => {
-    console.log("handleIconClick");
-
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let DateDate = new Date(date);
     setMeetingDate(meetingDateValueFormat);
@@ -370,14 +364,6 @@ const CreatePolling = () => {
     return newDate;
   };
 
-  const checkOptions = (data) => {
-    if (data[0].value === "" || data[1].value === "") {
-      return false;
-    } else {
-      return true;
-    }
-  };
-
   // for create polls
   const SavePollsButtonFunc = async (value) => {
     const organizationid = localStorage.getItem("organizationID");
@@ -385,17 +371,17 @@ const CreatePolling = () => {
     let users = [];
     let optionsListData = [];
     if (
-      createPollData.date != "" &&
-      createPollData.TypingTitle != "" &&
+      createPollData.date !== "" &&
+      createPollData.TypingTitle !== "" &&
       Object.keys(members).length > 0 &&
       Object.keys(options).length >= 2 &&
       allValuesNotEmpty
     ) {
-      members.map((userdata, index) => {
+      members.forEach((userdata, index) => {
         users.push(userdata.userID);
       });
-      options.map((optionData, index) => {
-        if (optionData.value != "") {
+      options.forEach((optionData, index) => {
+        if (optionData.value !== "") {
           optionsListData.push(optionData.value);
         }
       });
@@ -490,7 +476,7 @@ const CreatePolling = () => {
     if (options.length > 1) {
       if (allValuesNotEmpty) {
         let lastIndex = options.length - 1;
-        if (options[lastIndex].value != "") {
+        if (options[lastIndex].value !== "") {
           const randomNumber = Math.floor(Math.random() * 100) + 1;
           let newOptions = { name: randomNumber, value: "" };
           setOptions([...options, newOptions]);
@@ -577,7 +563,8 @@ const CreatePolling = () => {
                               className={styles["Due_Date_heading"]}
                               onClick={handleIconClick}
                             >
-                              {t("Due-date")}{" "}
+                              {t("Due-date")}
+                              {"* "}
                               {createPollData.date !== ""
                                 ? changeDateStartHandler2(createPollData.date)
                                 : ""}
@@ -688,7 +675,7 @@ const CreatePolling = () => {
                       <Row className="mt-2">
                         <Col lg={12} md={12} sm={12}>
                           <TextField
-                            placeholder={t("Title")}
+                            placeholder={t("Title") + "*"}
                             applyClass={"PollingCreateModal"}
                             labelClass="d-none"
                             maxLength={490}
@@ -730,7 +717,8 @@ const CreatePolling = () => {
                                               placeholder={
                                                 "Option" +
                                                 " " +
-                                                parseInt(index + 1)
+                                                parseInt(index + 1) +
+                                                "*"
                                               }
                                               applyClass={"PollingCreateModal"}
                                               labelClass="d-none"
@@ -752,7 +740,8 @@ const CreatePolling = () => {
                                               placeholder={
                                                 "Option" +
                                                 " " +
-                                                parseInt(index + 1)
+                                                parseInt(index + 1) +
+                                                "*"
                                               }
                                               applyClass={"PollingCreateModal"}
                                               labelClass="d-none"

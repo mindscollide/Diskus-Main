@@ -53,7 +53,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
   const [meetingDate, setMeetingDate] = useState("");
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [memberSelect, setmemberSelect] = useState([]);
-  console.log(memberSelect, "memberSelectmemberSelectmemberSelect");
+
   const [pollsData, setPollsData] = useState({
     Title: "",
     AllowMultipleAnswer: false,
@@ -106,11 +106,10 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
   const allValuesNotEmpty = options.every((item) => item.value !== "");
 
   const addNewRow = () => {
-    console.log("iam clicked");
     if (options.length > 1) {
       if (allValuesNotEmpty) {
         let lastIndex = options.length - 1;
-        if (options[lastIndex].value != "") {
+        if (options[lastIndex].value !== "") {
           const randomNumber = Math.floor(Math.random() * 100) + 1;
           let newOptions = { name: randomNumber, value: "" };
           setOptions([...options, newOptions]);
@@ -305,7 +304,6 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
           );
         }
       }
-      console.log(newmembersArray, "pollMeetingDatapollMeetingData");
 
       setmemberSelect(newmembersArray);
     } else {
@@ -320,7 +318,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
 
   const handleAddUsers = () => {
     let pollsData = NewMeetingreducer.getMeetingusers;
-    console.log(pollsData, "pollsDatapollsData");
+
     let tem = [...members];
     let newarr = [];
     try {
@@ -335,23 +333,18 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
               let check1 = pollsData.meetingOrganizers.find(
                 (data, index) => data.userID === seledtedData.value
               );
-              console.log(check1, "check1check1");
+
               if (check1 !== undefined) {
-                console.log(check1, "check1check1");
                 newarr.push(check1);
-                console.log(newarr, "newarrnewarr");
 
                 let meetingOrganizers = check1;
-                console.log(meetingOrganizers, "check1check1");
 
                 if (newarr.length > 0) {
                   newarr.map((morganizer, index) => {
-                    console.log(morganizer, "UserIDUserID");
                     let check2 = newarr.find(
                       (data, index) => data.UserID === morganizer.userID
                     );
                     if (check2 !== undefined) {
-                      console.log(check2, "check2check2");
                     } else {
                       let newUser = {
                         userName: morganizer.userName,
@@ -361,7 +354,6 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                             .displayProfilePictureName,
                       };
                       tem.push(newUser);
-                      console.log(tem, "temtemtemtemtem");
                     }
                   });
                 }
@@ -370,23 +362,18 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
               let check1 = pollsData.meetingAgendaContributors.find(
                 (data, index) => data.userID === seledtedData.value
               );
-              console.log(check1, "check1check1");
+
               if (check1 !== undefined) {
-                console.log(check1, "check1check1");
                 newarr.push(check1);
-                console.log(newarr, "newarrnewarr");
 
                 let meetingOrganizers = check1;
-                console.log(meetingOrganizers, "check1check1");
 
                 if (newarr.length > 0) {
                   newarr.map((morganizer, index) => {
-                    console.log(morganizer, "UserIDUserID");
                     let check2 = newarr.find(
                       (data, index) => data.UserID === morganizer.userID
                     );
                     if (check2 !== undefined) {
-                      console.log(check2, "check2check2");
                     } else {
                       let newUser = {
                         userName: morganizer.userName,
@@ -396,7 +383,6 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                             .displayProfilePictureName,
                       };
                       tem.push(newUser);
-                      console.log(tem, "temtemtemtemtem");
                     }
                   });
                 }
@@ -412,12 +398,10 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
 
                 if (newarr.length > 0) {
                   newarr.map((morganizer, index) => {
-                    console.log(morganizer, "UserIDUserID");
                     let check2 = newarr.find(
                       (data, index) => data.UserID === morganizer.userID
                     );
                     if (check2 !== undefined) {
-                      console.log(check2, "check2check2");
                     } else {
                       let newUser = {
                         userName: morganizer.userName,
@@ -427,7 +411,6 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                             .displayProfilePictureName,
                       };
                       tem.push(newUser);
-                      console.log(tem, "temtemtemtemtem");
                     }
                   });
                 }
@@ -435,10 +418,8 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
             } else {
             }
           });
-        } catch {
-          console.log("error in add");
-        }
-        console.log("members check", tem);
+        } catch {}
+
         const uniqueData = new Set(tem.map(JSON.stringify));
         // Convert the Set back to an array of objects
         const result = Array.from(uniqueData).map(JSON.parse);
@@ -459,8 +440,8 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
     let users = [];
     let optionsListData = [];
     if (
-      pollsData.date != "" &&
-      pollsData.Title != "" &&
+      pollsData.date !== "" &&
+      pollsData.Title !== "" &&
       Object.keys(members).length > 0 &&
       Object.keys(options).length >= 2 &&
       allValuesNotEmpty
@@ -469,7 +450,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
         users.push(userdata.userID);
       });
       options.map((optionData, index) => {
-        if (optionData.value != "") {
+        if (optionData.value !== "") {
           optionsListData.push(optionData.value);
         }
       });
@@ -789,7 +770,6 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                     <Row>
                       {members.length > 0
                         ? members.map((data, index) => {
-                            console.log(data, "membersmembersmembers");
                             return (
                               <>
                                 <Col lg={6} md={6} sm={6} className="mt-3">

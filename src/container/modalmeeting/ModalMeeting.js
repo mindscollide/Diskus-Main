@@ -1054,7 +1054,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         setMeetingAgendaAttachments({
           MeetingAgendaAttachments: [],
         });
-        setParticipantRoleName("");
+        setParticipantRoleName("Participant");
         setCreateMeeting({
           MeetingTitle: "",
           MeetingDescription: "",
@@ -1076,7 +1076,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
             PK_UID: 0,
           },
           MeetingAttendeeRole: {
-            PK_MARID: 0,
+            PK_MARID: 2,
           },
           AttendeeAvailability: {
             PK_AAID: 1,
@@ -1253,6 +1253,18 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         setTaskAssignedTo(0);
         setTaskAssignedName("");
         setParticipantRoleName("Participant");
+        let newData = {
+          User: {
+            PK_UID: 0,
+          },
+          MeetingAttendeeRole: {
+            PK_MARID: 2,
+          },
+          AttendeeAvailability: {
+            PK_AAID: 1,
+          },
+        };
+        setMeetingAttendees(newData);
         setParticipantRoleID(2);
         setTaskAssignedToInput("");
       } else {
@@ -1318,6 +1330,18 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         setTaskAssignedTo(0);
         setTaskAssignedName("");
         setParticipantRoleName("Participant");
+        let newData = {
+          User: {
+            PK_UID: 0,
+          },
+          MeetingAttendeeRole: {
+            PK_MARID: 2,
+          },
+          AttendeeAvailability: {
+            PK_AAID: 1,
+          },
+        };
+        setMeetingAttendees(newData);
         // setParticipantRoleID(2);
         setTaskAssignedToInput("");
       }
@@ -1370,7 +1394,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     setMeetingAgendaAttachments({
       MeetingAgendaAttachments: [],
     });
-    setParticipantRoleName("");
+    setParticipantRoleName("Participant");
     setCreateMeeting({
       MeetingTitle: "",
       MeetingDescription: "",
@@ -1393,7 +1417,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         PK_UID: 0,
       },
       MeetingAttendeeRole: {
-        PK_MARID: 0,
+        PK_MARID: 2,
       },
       AttendeeAvailability: {
         PK_AAID: 1,
