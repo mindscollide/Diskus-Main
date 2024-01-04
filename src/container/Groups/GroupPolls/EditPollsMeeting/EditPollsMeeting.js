@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import styles from "./EditPollsMeeting.module.css";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
-import { Button, TextField, Checkbox } from "../../../../components/elements";
+import {
+  Button,
+  TextField,
+  Checkbox,
+  Notification,
+} from "../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -95,7 +100,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
   };
 
   const allValuesNotEmpty = options.every((item) => item.value !== "");
-
+  console.log(allValuesNotEmpty, "allValuesNotEmpty");
   const addNewRow = () => {
     if (options.length > 1) {
       if (allValuesNotEmpty) {
@@ -697,6 +702,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
       {NewMeetingreducer.unsavedEditPollsMeeting && (
         <UnsavedEditPollsMeeting setEditPolls={setEditPolls} />
       )}
+      <Notification message={open.message} open={open.flag} setOpen={setOpen} />
     </section>
   );
 };
