@@ -53,14 +53,6 @@ export const getCurrentDate = () => {
   return { DateGMT: newDate, dateFormat: DateDate };
 };
 
-export const getCurrentDatewithIndexIncrement = (getLastIndex) => {
-  console.log(getLastIndex, "getLastIndexgetLastIndex");
-  // let newDate = new Date();
-  // newDate.setDate(newDate.getDate() + offset);
-  // let dateFormat = newDate.toISOString().slice(0, 10).replace(/-/g, "");
-  // return { DateGMT: newDate, dateFormat };
-};
-
 //Newly Time Added For Converting Time into GMT Format
 export function convertToGMT(dateString, timeString) {
   // Combine date and time strings into a single string

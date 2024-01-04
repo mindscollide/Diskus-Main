@@ -1,17 +1,26 @@
 {
-  "MeetingID": 0,
-  "ProposedDates": [
-    {
-      "ProposedDateID": 928,
-      "ProposedDate": "20240102",
-      "StartTime": "100000",
-      "EndTime": "110000"
-    },
-    {
-      "ProposedDateID": 929,
-      "ProposedDate": "20240104",
-      "StartTime": "095300",
-      "EndTime": "125300"
-    }
-  ]
+  "MeetingDetails": {
+    "MeetingID": 0,
+    "MeetingTitle": "Testing Meeting ",
+    "MeetingType": { "PK_MTID": 4, "Type": "Board Meetings" },
+    "Location": "karachi ",
+    "Description": "i am description ",
+    "IsVideoChat": true,
+    "IsTalkGroup": false,
+    "OrganizationId": 417,
+    "MeetingDates": [
+      { "MeetingDate": "20240104", "StartTime": "150000", "EndTime": "160000" },
+      { "MeetingDate": "20240105", "StartTime": "150000", "EndTime": "160000" },
+      { "MeetingDate": "20240105", "StartTime": "150000", "EndTime": "180400" },
+      { "MeetingDate": "20240106", "StartTime": "150000", "EndTime": "160000" },
+      { "MeetingDate": "20240107", "StartTime": "150000", "EndTime": "160000" }
+    ],
+    "MeetingReminders": [4],
+    "Notes": "i am notes ",
+    "AllowRSVP": true,
+    "NotifyOrganizerOnRSVP": true,
+    "ReucurringMeetingID": 1,
+    "VideoURL": "",
+    "MeetingStatusID": 11
+  }
 }
