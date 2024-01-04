@@ -810,6 +810,7 @@ const CreatePolling = () => {
                                           src={plusFaddes}
                                           width="15.87px"
                                           height="15.87px"
+                                          alt=""
                                           draggable="false"
                                         />
                                         <span>{t("Add-another-field")}</span>

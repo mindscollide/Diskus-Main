@@ -767,6 +767,7 @@ const Polling = () => {
                   src={plusbutton}
                   height="7.6px"
                   width="7.6px"
+                  alt=""
                   className="align-items-center"
                   draggable="false"
                 />
@@ -803,12 +804,14 @@ const Polling = () => {
                               src={BlackCrossIcon}
                               className="cursor-pointer"
                               draggable="false"
+                              alt=""
                               onClick={handleResettingPage}
                             />
                           </>
                         ) : null}
                         <img
                           src={searchicon}
+                          alt=""
                           className={styles["Search_Bar_icon_class"]}
                           draggable="false"
                         />
@@ -839,6 +842,7 @@ const Polling = () => {
                             className={styles["Cross_Icon_Styling"]}
                             width="16px"
                             height="16px"
+                            alt=""
                             onClick={HandleCloseSearchModal}
                             draggable="false"
                             alt=""

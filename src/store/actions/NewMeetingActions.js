@@ -5582,7 +5582,7 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
             ) {
               await dispatch(
                 showCreateUpdateMeetingDataRoomSuccess(
-                  response.data.responseResult,
+                  response.data.responseResult.folderID,
                   ""
                 )
               );
@@ -6939,6 +6939,13 @@ const meetingStatusPublishedMqtt = (response) => {
   };
 };
 
+const meetingNotConductedMQTT = (response) => {
+  return {
+    type: actions.MQTT_MEETING_STATUS_NOTCONDUCTED,
+    response: response,
+  };
+};
+
 //Validate Empty String User Availibility For Meeting
 
 const validateEmptyStringUserAvailibilityInit = () => {
@@ -7248,4 +7255,5 @@ export {
   viewAdvanceMeetingUnpublishPageFlag,
   viewProposeOrganizerMeetingPageFlag,
   proposeNewMeetingPageFlag,
+  meetingNotConductedMQTT,
 };

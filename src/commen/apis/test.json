@@ -1,24 +1,17 @@
 {
-  "ChannelID": 1,
-  "UID": "oto10",
-  "ChatType": 1,
-  "ChatID": "2",
-  "SenderID": "1",
-  "FileName": "",
-  "FileGeneratedName": "",
-  "FileExtension": "",
-  "AttachmentLocation": "",
-  "FRMessages": "Direct Message",
-  "MessageBody": "Hello OTO 10",
-  "MessageDate": "2023-06-16T11:50:29.393Z",
-  "MessageType": "Direct Message",
-  "MessageStatus": 1,
-  "BroadcastID": "0",
-  "HasTagUser": false,
-  "TagUserEmails": "",
-  "TagUserIds": "",
-  "isForThisWindowOnly": true,
-  "SenderName": "Muhammad Ovais",
-  "isAttempedFail": false,
-  "retyCount": 3
+  "MeetingID": 0,
+  "ProposedDates": [
+    {
+      "ProposedDateID": 928,
+      "ProposedDate": "20240102",
+      "StartTime": "100000",
+      "EndTime": "110000"
+    },
+    {
+      "ProposedDateID": 929,
+      "ProposedDate": "20240104",
+      "StartTime": "095300",
+      "EndTime": "125300"
+    }
+  ]
 }

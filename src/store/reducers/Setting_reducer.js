@@ -27,6 +27,7 @@ const initialState = {
   UpdateUserProfileResponse: null,
   UpdateUserProfileResponseMessege: "",
   recentActivityDataFromMQTT: [],
+  microsoftToken: null,
 };
 
 const settingReducer = (state = initialState, action) => {
@@ -392,6 +393,29 @@ const settingReducer = (state = initialState, action) => {
         message: action.message,
       };
     }
+
+    case actions.MICROSOFT_VALIDATE_TOKEN_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.MICROSOFT_VALIDATE_TOKEN_SUCCESS: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.MICROSOFT_VALIDATE_TOKEN_FAIL: {
+      return {
+        ...state,
+        Loading: true,
+        message: action.message,
+      };
+    }
+
     default:
       return {
         ...state,

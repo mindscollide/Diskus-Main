@@ -20,9 +20,17 @@ import { useEffect } from "react";
 import { useGoogleLogin } from "@react-oauth/google";
 import {
   getGoogleValidToken,
+  getMicrosoftValidToken,
   revokeToken,
   updateUserSettingFunc,
 } from "../../../store/actions/UpdateUserGeneralSetting";
+import {
+  AuthenticatedTemplate,
+  UnauthenticatedTemplate,
+  useMsal,
+} from "@azure/msal-react";
+import { loginRequest } from "../../../auth-config";
+
 const UserSettings = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -101,6 +109,10 @@ const UserSettings = () => {
     EmailWhenNewTODODeleted: false,
     EmailWhenNewTODOEdited: false,
   });
+  const { instance } = useMsal();
+  const activeAccount = instance.getActiveAccount();
+  const [authMicrosoftAccessToken, setAuthMicrosoftAccessToken] = useState("");
+  const [authMicrosoftRefreshToken, setAuthMicrosoftRefreshToken] = useState("");
 
   useEffect(() => {
     dispatch(getUserSetting(navigate, t));
@@ -435,12 +447,28 @@ const UserSettings = () => {
     }
   };
 
+  const signInMicrowSoft = async (value) => {
+    const response = await instance.loginPopup(loginRequest);
+    if (response) {
+      setUserOptionsSettings({
+        ...userOptionsSettings,
+        AllowMicrosoftCalenderSync: value,
+      });
+    } else {
+    }
+  };
+
   const onChangeAllowMicrosoftCalenderSync = (e) => {
-    let value = e.target.checked;
-    setUserOptionsSettings({
-      ...userOptionsSettings,
-      AllowMicrosoftCalenderSync: value,
-    });
+    const value = e.target.checked;
+    if (value) {
+      signInMicrowSoft(value);
+    } else {
+      instance.logoutPopup();
+      setUserOptionsSettings({
+        ...userOptionsSettings,
+        AllowMicrosoftCalenderSync: value,
+      });
+    }
   };
 
   const onChangeEmailWhenAddedToCommittee = (e) => {
@@ -738,15 +766,81 @@ const UserSettings = () => {
     });
   };
 
+  useEffect(() => {
+    try {
+      const storedDataAssecc = JSON.parse(sessionStorage.getItem(
+        "c1b5568d-27a5-4a25-a8f9-fb5e788cd5af.c5978316-9241-4527-b8f3-b75023242cf3-login.windows.net-accesstoken-545933ff-407a-44e5-b3ac-a73ace252364-c5978316-9241-4527-b8f3-b75023242cf3-openid profile email calendars.readwrite user.read--"
+      ));
+      const storedDataRefresh = JSON.parse(sessionStorage.getItem(
+        "c1b5568d-27a5-4a25-a8f9-fb5e788cd5af.c5978316-9241-4527-b8f3-b75023242cf3-login.windows.net-refreshtoken-545933ff-407a-44e5-b3ac-a73ace252364----"
+      ));
+      if(userOptionsSettings.AllowMicrosoftCalenderSync){
+          if (storedDataAssecc !== null &&storedDataAssecc !== undefined) {
+          setAuthMicrosoftAccessToken(storedDataAssecc.secret);
+          setAuthMicrosoftRefreshToken(storedDataRefresh.secret)
+        } else {
+          console.log("Data not found in session storage");
+        }
+      }else{
+        
+        setAuthMicrosoftAccessToken("");
+        setAuthMicrosoftRefreshToken("")
+      }
+     
+    } catch (error) {
+      console.log(error, "errorerrorerror");
+    }
+  }, [userOptionsSettings.AllowMicrosoftCalenderSync]);
+
   const updateOrganizationLevelSettings = async () => {
+    let AllowMicrosoftCalenderSyncCall =
+      userOptionsSettings.AllowMicrosoftCalenderSync;
+
+    if (userOptionsSettings.AllowMicrosoftCalenderSync !== false) {
+      if (authMicrosoftAccessToken !== "") {
+        await dispatch(
+          getMicrosoftValidToken(
+            navigate,
+            authMicrosoftAccessToken,
+            authMicrosoftRefreshToken,
+            userOptionsSettings,
+            AllowMicrosoftCalenderSyncCall,
+            t
+          )
+        );
+      }
+    }
+    console.log(
+      "AllowMicrosoftCalenderSyncCall",
+      AllowMicrosoftCalenderSyncCall
+    );
+    // global is tru and update local state is false then call revoke token api
+    // else if(){
+    // const tokenRevoke=await dispatch(
+    //   getMicroSoftRevokeToken(navigate, signUpCodeToken, userOptionsSettings, t,2)
+    // );
+    // AllowMicrosoftCalenderSyncCall=tokenRevoke
+    // }
     if (signUpCodeToken !== "") {
       if (userOptionsSettings.AllowGoogleCalenderSync) {
         await dispatch(
-          getGoogleValidToken(navigate, signUpCodeToken, userOptionsSettings, t)
+          getGoogleValidToken(
+            navigate,
+            signUpCodeToken,
+            userOptionsSettings,
+            t,
+            AllowMicrosoftCalenderSyncCall
+          )
         );
       } else {
         await dispatch(
-          updateUserSettingFunc(navigate, userOptionsSettings, t, true)
+          updateUserSettingFunc(
+            navigate,
+            userOptionsSettings,
+            t,
+            true,
+            AllowMicrosoftCalenderSyncCall
+          )
         );
       }
       setSignUpCodeToken("");
@@ -754,14 +848,33 @@ const UserSettings = () => {
       if (settingReducer.UserProfileData.userAllowGoogleCalendarSynch) {
         if (userOptionsSettings.AllowGoogleCalenderSync) {
           await dispatch(
-            updateUserSettingFunc(navigate, userOptionsSettings, t, true)
+            updateUserSettingFunc(
+              navigate,
+              userOptionsSettings,
+              t,
+              true,
+              AllowMicrosoftCalenderSyncCall
+            )
           );
         } else {
-          await dispatch(revokeToken(navigate, userOptionsSettings, t));
+          await dispatch(
+            revokeToken(
+              navigate,
+              userOptionsSettings,
+              t,
+              AllowMicrosoftCalenderSyncCall
+            )
+          );
         }
       } else {
         await dispatch(
-          updateUserSettingFunc(navigate, userOptionsSettings, t, false)
+          updateUserSettingFunc(
+            navigate,
+            userOptionsSettings,
+            t,
+            false,
+            AllowMicrosoftCalenderSyncCall
+          )
         );
       }
     }
