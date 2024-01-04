@@ -51,14 +51,12 @@ const NotifyAgendaModal = ({
       }
     }
   };
-  console.log(notifyMessageField, "notifyMessageFieldnotifyMessageField");
 
   const handleExpandNames = () => {
     setHidemembes(!hidemembes);
   };
 
   const handleCheckAll = (e) => {
-    console.log(e.target.checked, "checkedcheckedcheckedhandleCheckAll");
     setRowsData((prevRowsData) => {
       return prevRowsData.map((row, index) => {
         return {
@@ -86,7 +84,6 @@ const NotifyAgendaModal = ({
   const [NotifyMessageError, setNotifyMessaegError] = useState(false);
 
   const handleSendIcon = () => {
-    console.log("hellloooooo");
     if (specificUser !== 0) {
       // if (notifyMessageField === "") {
       // Corrected variable name
@@ -95,7 +92,7 @@ const NotifyAgendaModal = ({
         Message: notifyMessageField,
         IsAgendaContributor: false,
       };
-      console.log(Data, "notifyMessageFieldnotifyMessageField");
+
       dispatch(SendNotificationApiFunc(Data, navigate, t));
       dispatch(showAgendaContributorsModals(false));
       setSpecifiUser(0);
@@ -149,7 +146,7 @@ const NotifyAgendaModal = ({
                   type="text"
                   as={"textarea"}
                   rows="4"
-                  placeholder={t("AgendaMessege")}
+                  placeholder={t("Message-for-agenda-contributor")}
                   name={"AgendaMessege"}
                   value={notifyMessageField}
                   change={HandleChange}
@@ -168,47 +165,52 @@ const NotifyAgendaModal = ({
                 ) : null} */}
               </Col>
             </Row>
-            <Row className="mt-4">
-              <Col
-                lg={6}
-                md={6}
-                sm={6}
-                className="d-flex justify-content-start align-items-center gap-2"
-              >
-                {specificUser === 0 && (
-                  <>
-                    <Checkbox
-                      checked={notifiedMembersData.every(
-                        (data) => data.isContributedNotified === true
-                      )}
-                      onChange={handleCheckAll}
+            {specificUser === 0 && (
+              <>
+                {" "}
+                <Row className="mt-4">
+                  <Col
+                    lg={6}
+                    md={6}
+                    sm={6}
+                    className="d-flex justify-content-start align-items-center gap-2"
+                  >
+                    {/* {specificUser === 0 && ( */}
+                    <>
+                      <Checkbox
+                        checked={notifiedMembersData.every(
+                          (data) => data.isContributedNotified === true
+                        )}
+                        onChange={handleCheckAll}
+                      />
+                      <p className={styles["Check_box_title"]}>
+                        {t("All-agenda-contributors")}
+                      </p>
+                    </>
+                    {/* )} */}
+                  </Col>
+                  <Col
+                    lg={6}
+                    md={6}
+                    sm={6}
+                    className="d-flex justify-content-end align-items-center gap-2"
+                  >
+                    <span className={styles["Hide_names"]}>
+                      {hidemembes ? t("Show-names") : t("Hide-names")}
+                    </span>
+                    <img
+                      draggable={false}
+                      src={hidemembes ? BlueDownArrow : UpperArrow}
+                      width="18.4px"
+                      height="9.2px"
+                      alt=""
+                      className="cursor-pointer"
+                      onClick={handleExpandNames}
                     />
-                    <p className={styles["Check_box_title"]}>
-                      {t("All-agenda-organizer")}
-                    </p>
-                  </>
-                )}
-              </Col>
-              <Col
-                lg={6}
-                md={6}
-                sm={6}
-                className="d-flex justify-content-end align-items-center gap-2"
-              >
-                <span className={styles["Hide_names"]}>
-                  {hidemembes ? t("Show-names") : t("Hide-names")}
-                </span>
-                <img
-                  draggable={false}
-                  src={hidemembes ? BlueDownArrow : UpperArrow}
-                  width="18.4px"
-                  height="9.2px"
-                  alt=""
-                  className="cursor-pointer"
-                  onClick={handleExpandNames}
-                />
-              </Col>
-            </Row>
+                  </Col>
+                </Row>
+              </>
+            )}
 
             {hidemembes ? null : (
               <>
@@ -226,7 +228,6 @@ const NotifyAgendaModal = ({
                               (data, index) => data.userID === specificUser
                             )
                             .map((mapData, index) => {
-                              console.log(mapData, "mapDatamapData");
                               return (
                                 <Col lg={6} md={6} sm={12} className="mt-2">
                                   <Row className="m-0 p-0">
@@ -281,7 +282,6 @@ const NotifyAgendaModal = ({
                         : notifiedMembersData
                             .filter((data, index) => data.isEdit === false)
                             .map((data, index) => {
-                              console.log(data, "datadatadata");
                               return (
                                 <Col lg={6} md={6} sm={12} className="mt-2">
                                   <Row className="m-0 p-0">

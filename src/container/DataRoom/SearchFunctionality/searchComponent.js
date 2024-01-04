@@ -329,7 +329,7 @@ const SearchComponent = ({
       await dispatch(searchDocumentsAndFoldersApi(navigate, t, data, 1));
     }
   };
-  console.log(searchResultsFields, "searchResultsFieldssearchResultsFields");
+
   // this is onchange envent of search modal Documnet
   const handleChangeDocumentsOptions = (event) => {
     setSearchResultFields((prevState) => ({

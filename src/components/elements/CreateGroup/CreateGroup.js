@@ -47,7 +47,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
     message: "",
   });
   const { assignees, GroupsReducer } = useSelector((state) => state);
-  console.log("GroupsReducerGroupsReducer", GroupsReducer);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   let creatorID = JSON.parse(localStorage.getItem("userID"));
@@ -71,7 +71,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
     GroupStatusID: 0,
     GroupMembers: [],
   });
-  console.log("createGroupDetails", createGroupDetails);
+
   const GroupeTitle = useRef(null);
   const [groupMembers, setGroupMembers] = useState([]);
   // for   select participant Role Name
@@ -83,7 +83,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
   const [groupTypeValue, setGroupTypeValue] = useState("");
   const [organizationGroupType, setOrganizationGroupType] = useState([]);
   const [meetingAttendees, setMeetingAttendees] = useState([]);
-  console.log(meetingAttendees, "attendeesattendeesattendees");
+
   const [onclickFlag, setOnclickFlag] = useState(false);
   // for Participant id's
   const participantOptionsWithIDs = [
@@ -140,8 +140,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
         .filter((item) => {
           const searchTerm = value.toLowerCase();
           const assigneesName = item.name.toLowerCase();
-          console.log("Input Value in searchTerm", searchTerm);
-          console.log("Input Value in assigneesName", assigneesName);
 
           return (
             searchTerm && assigneesName.startsWith(searchTerm)
@@ -155,7 +153,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
             className="dropdown-row-assignee d-flex align-items-center flex-row"
             key={item.pK_UID}
           >
-            {console.log("itemitem", item)}
+            {}
             <img
               src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
               alt=""
@@ -166,23 +164,19 @@ const CreateGroup = ({ setCreategrouppage }) => {
           </div>
         ));
     } else {
-      console.log("not found");
     }
   };
   const onSearch = (name, id) => {
-    console.log("name id", name, id);
     setOnclickFlag(true);
     setTaskAssignedToInput(name);
     setTaskAssignedTo(id);
     setTaskAssignedName(name);
   };
-  console.log("name id", taskAssignedTo);
 
   // for meatings  Attendees
 
   // for attendies Role handler
   const assigntRoleAttendies = (e, value) => {
-    console.log(value, "valuevaluevaluevalue");
     setParticipantRoleName(value);
   };
 
@@ -224,7 +218,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
       let newArr = [];
       let newArrGroupType = [];
       GroupsReducer.getOrganizationGroupTypes.map((data, index) => {
-        console.log("datadatagetOrganizationGroupTypes", data);
         newArr.push({
           label: data.type,
           id: data.groupTypeID,
@@ -390,11 +383,11 @@ const CreateGroup = ({ setCreategrouppage }) => {
   // Group type Change Handler
   const groupTypeChangeHandler = (e, value) => {
     setGroupTypeValue(value);
-    console.log(e.target.name, value, "groupTypeChangeHandler");
+
     let findID = organizationGroupType.find(
       (data, index) => data.label === value
     );
-    console.log(findID, "findIDfindIDfindIDfindID");
+
     setCreateGroupDetails({
       ...createGroupDetails,
       GroupTypeID: findID.id,
@@ -410,14 +403,13 @@ const CreateGroup = ({ setCreategrouppage }) => {
       setTaskAssignedTo(0);
       setTaskAssignedName("");
     }
-    console.log("setTaskAssignedToInput", e.target.value.trimStart());
   };
 
   // onChange Function for set input values in state
   const onChangeFunc = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-    console.log(name, value, "onChangeFunconChangeFunconChangeFunc");
+
     if (name === "tasktitle") {
       setCreateGroupDetails({
         ...createGroupDetails,
@@ -452,7 +444,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
       (item) => item.FK_UID !== id
     );
     setMeetingAttendees(meeetingAttendeesdata);
-    console.log(id, "updatedCreateGroupDetailsupdatedCreateGroupDetails");
+
     console.log(
       updatedCreateGroupDetails,
       "updatedCreateGroupDetailsupdatedCreateGroupDetails"
@@ -467,9 +459,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
     );
     setGroupMembers(updatedGroupMembers);
   };
-  console.log(groupMembers, "attendeesattendeesattendees 3");
-  console.log(meetingAttendees, "attendeesattendeesattendees 1");
-  console.log(createGroupDetails.GroupMembers, "attendeesattendeesattendees 5");
 
   const checkGroupMembers = (GroupMembers) => {
     if (Object.keys(GroupMembers).length > 0) {
@@ -513,7 +502,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
           },
           GroupMembers: meetingAttendees,
         };
-        console.log("createGroupecheck", Data);
+
         dispatch(createGroup(navigate, Data, t, setCreategrouppage));
       }
     } else {
@@ -638,8 +627,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
     customRequest() {},
   };
 
-  console.log(fileAttachments, "fileAttachmentsfileAttachments");
-
   //Sliders For Attachments
 
   const SlideLeft = () => {
@@ -661,7 +648,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
   const GroupsDocumentCallUpload = async (folderID) => {
     let newfile = [];
     const uploadPromises = fileForSend.map(async (newData) => {
-      console.log(newData, "newDatanewDatanewData");
       await dispatch(
         uploadDocumentsGroupsApi(navigate, t, newData, folderID, newfile)
       );
@@ -674,7 +660,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
     let Data = {
       GroupID: Number(groupID),
       UpdateFileList: newfile.map((data, index) => {
-        console.log(data, "datadatadata");
         return { PK_FileID: data.pK_FileID };
       }),
     };
@@ -683,14 +668,11 @@ const CreateGroup = ({ setCreategrouppage }) => {
 
   useEffect(() => {
     if (GroupsReducer.FolderID !== 0) {
-      console.log(GroupsReducer.FolderID.folderID, "GroupsDocumentCallUpload");
       setFolderID(GroupsReducer.FolderID);
       let folderIDCreated = GroupsReducer.FolderID;
       GroupsDocumentCallUpload(folderIDCreated);
     }
   }, [GroupsReducer.FolderID]);
-
-  console.log(folderID, "folderIDfolderIDfolderID");
 
   return (
     <>
@@ -867,7 +849,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           <Row className="mt-2">
                             {groupMembers.length > 0 ? (
                               groupMembers.map((renderdata, index) => {
-                                console.log(renderdata, "renderdatarenderdata");
                                 if (renderdata.role === 2) {
                                   return (
                                     <>
@@ -1104,7 +1085,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           <Row>
                             <Col lg={12} md={12} sm={12}>
                               <span className={styles["Addmembers-class"]}>
-                                {t("Add-members")}
+                                {t("Add-members") + "*"}
                               </span>
                             </Col>
                           </Row>
@@ -1318,7 +1299,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
                             >
                               {fileAttachments.length > 0
                                 ? fileAttachments.map((data, index) => {
-                                    console.log(data, "datadatadata");
                                     return (
                                       <>
                                         <Col

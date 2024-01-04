@@ -669,13 +669,18 @@ const ViewMeetingDetails = ({
                         alt=""
                         className={styles["blue-icon"]}
                       /> */}
-                        <img
+                        {/* <img
                           src={ClipboardIcon}
                           height="40px"
                           width="40px"
                           alt=""
                           onClick={() => copyToClipboardd()}
                           className={styles["clipboard-icon"]}
+                        /> */}
+                        <Button
+                          text={t("Copy-link")}
+                          className={styles["JoinMeetingButton"]}
+                          onClick={() => copyToClipboardd()}
                         />
                         <Button
                           text={t("Join-Video-Call")}

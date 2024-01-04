@@ -202,7 +202,7 @@ const Participants = ({
       setIsEditClicked(true);
     }
   };
-
+  console.log(rspvRows, "rspvRowsrspvRowsrspvRowsrspvRows");
   // Table coloumn
   const ParticipantsColoumn = [
     {
@@ -241,7 +241,6 @@ const Participants = ({
             isEditMeeting === true) ||
           (editorRole.role === "Agenda Contributor" && isEditMeeting === true)
         ) {
-          console.log("recordrecord", record);
           return <p>{record.Title}</p>;
         } else {
           return (
@@ -304,7 +303,10 @@ const Participants = ({
                             value: record?.participantRole?.participantRoleID,
                             label: record?.participantRole?.participantRole,
                           }
-                        : record.selectedOption
+                        : {
+                            value: record?.participantRole?.participantRoleID,
+                            label: record?.participantRole?.participantRole,
+                          }
                     }
                     onChange={(selectedOption) =>
                       handleSelectChange(record.userID, selectedOption)

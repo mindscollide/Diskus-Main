@@ -309,6 +309,10 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           setMinutesOftheMeatingStatus(true);
           setEndMeetingStatus(true);
           setStartMeetingStatus(true);
+        } else if (meetingStatus === "8") {
+          setMinutesOftheMeatingStatus(true);
+          setEndMeetingStatus(false);
+          setStartMeetingStatus(false);
         } else {
           setEndMeetingStatus(false);
           setStartMeetingStatus(false);
@@ -372,9 +376,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
             }
           }
           setAddedParticipantNameList(List);
-        } catch (error) {
-          console.log("error");
-        }
+        } catch (error) {}
 
         try {
           viewData.meetingAgendas.map((atchmenData, index) => {
@@ -412,9 +414,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
               MeetingAgendaAttachments: file,
             });
           });
-        } catch (error) {
-          console.log("error", error);
-        }
+        } catch (error) {}
         try {
           viewData.minutesOfMeeting.map((minutesOfMeetingData, index) => {
             minutesOfMeeting.push({
@@ -427,7 +427,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           });
         } catch (error) {
           //  Block of code to handle errors
-          console.log("error");
         }
         try {
           viewData.externalMeetingAttendees.map(
@@ -441,7 +440,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           );
         } catch (error) {
           //  Block of code to handle errors
-          console.log("error");
         }
         setattachmentsList(meetingAgenAtclis);
         setCreateMeeting({
@@ -469,14 +467,11 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           ExternalMeetingAttendees: externalMeetingAttendiesList,
           MinutesOfMeeting: minutesOfMeeting,
         });
-        console.log("data filter from api responce error", List);
+
         setAllMeetingDetails(assignees.ViewMeetingDetails);
       }
-    } catch (error) {
-      console.log("data filter from api responce error");
-    }
+    } catch (error) {}
   }, [assignees.ViewMeetingDetails]);
-  console.log("meetingDifferencemeetingDifference", meetingDifference);
 
   useEffect(() => {
     if (
@@ -565,9 +560,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         setMeetingReminderValue("");
         setMeetingReminderID([]);
       }
-    } catch (error) {
-      console.log("viewFlag error");
-    }
+    } catch (error) {}
   }, [viewFlag]);
 
   // for api reponce of list of all assignees
@@ -576,9 +569,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       if (Object.keys(assignees.user).length > 0) {
         setMeetingAttendeesList(assignees.user);
       }
-    } catch (error) {
-      console.log("assignees user error");
-    }
+    } catch (error) {}
   }, [assignees.user]);
 
   // for  list of all assignees  drop down
@@ -594,9 +585,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           );
         }
       }
-    } catch (error) {
-      console.log("meetingAttendeesList error");
-    }
+    } catch (error) {}
   }, [meetingAttendeesList]);
 
   // for  list of all assignees  drop down
@@ -606,9 +595,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         if (addedParticipantNameList.length > 0) {
         }
       }
-    } catch (error) {
-      console.log("addedParticipantNameList error");
-    }
+    } catch (error) {}
   }, [addedParticipantNameList]);
 
   let meetingDateTime =
@@ -868,20 +855,14 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                                   <Col
                                     lg={7}
                                     md={7}
+                                    sm={7}
                                     xs={12}
                                     className="MeetingAgendaView p-0"
                                   >
                                     <p className="MontserratSemiBold-600 agendaTitle">
                                       {data.ObjMeetingAgenda.Title}
                                     </p>
-                                    {/* <TextField
-                                    disable={true}
-                                    name={"Title"}
-                                    value={data.ObjMeetingAgenda.Title}
-                                    applyClass="form-control2"
-                                    type="text"
-                                    placeholder={"Agenda Title"}
-                                  /> */}
+
                                     <div className="file-uploaded-section">
                                       {data.MeetingAgendaAttachments.length > 0
                                         ? data.MeetingAgendaAttachments.map(
@@ -1011,26 +992,29 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                                         : null}
                                     </div>
                                   </Col>
-                                  <Col
-                                    lg={4}
-                                    md={4}
-                                    xs={12}
-                                    className="MeetingAgendaPresented MeetingAgendaURL"
-                                  >
-                                    <TextField
-                                      disable={true}
-                                      name={"PresenterName"}
-                                      value={
-                                        data.ObjMeetingAgenda.PresenterName
-                                      }
-                                      applyClass="form-control2"
-                                      type="text"
-                                      label={t("Presented-by")}
-                                    />
-                                    <p className="url">
-                                      {data.ObjMeetingAgenda.URLs}
-                                    </p>
-                                  </Col>
+                                  {data.ObjMeetingAgenda.PresenterName !==
+                                    "" && (
+                                    <Col
+                                      lg={4}
+                                      md={4}
+                                      xs={12}
+                                      className="MeetingAgendaPresented MeetingAgendaURL"
+                                    >
+                                      <TextField
+                                        disable={true}
+                                        name={"PresenterName"}
+                                        value={
+                                          data.ObjMeetingAgenda.PresenterName
+                                        }
+                                        applyClass="form-control2"
+                                        type="text"
+                                        label={t("Presented-by")}
+                                      />
+                                      <p className="url">
+                                        {data.ObjMeetingAgenda.URLs}
+                                      </p>
+                                    </Col>
+                                  )}
                                 </Row>
                               </>
                             </div>
@@ -1165,7 +1149,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                               xs={12}
                               className="d-flex justify-content-center align-items-center"
                             >
-                              <h3>{t("There-is-no-minutes-of-meeting")}</h3>
+                              <h3>{t("There-are-no-minutes-available")}</h3>
                             </Col>
                           </Row>
                         )}

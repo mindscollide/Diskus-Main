@@ -65,7 +65,7 @@ const Groups = () => {
   const [ViewGroupPage, setViewGroupPage] = useState(true);
   const [creategrouppage, setCreategrouppage] = useState(false);
   const [groupsData, setgroupsData] = useState([]);
-  console.log(groupsData, "groupsDatagroupsDatagroupsData");
+
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -233,7 +233,6 @@ const Groups = () => {
 
   const discussionGroupChat = (data) => {
     if (data.talkGroupID !== 0) {
-      console.log("discussionGroupChat", data);
       let allChatMessages =
         talkStateData.AllUserChats.AllUserChatsData.allMessages;
       const foundRecord = allChatMessages.find(
@@ -353,12 +352,6 @@ const Groups = () => {
     }
   }, [GroupsReducer.ResponseMessage]);
 
-  console.log("Groups talkReducer", talkStateData);
-
-  console.log("Groups talkFeatures", talkFeatureStates);
-
-  console.log("Groups Data", groupsData);
-
   const isCurrentUserCreator = (data) => {
     return (
       data.creatorID === Number(currentUserId) && isCurrentUserMember(data)
@@ -386,10 +379,7 @@ const Groups = () => {
       });
     }, 3000);
   };
-  console.log(
-    GroupsReducer.updateGroupPageFlag,
-    "GroupsReducer.updateGroupPageFlag"
-  );
+
   return (
     <>
       <div className={styles["Groupscontainer"]}>
@@ -413,7 +403,12 @@ const Groups = () => {
         ) : (
           <>
             <Row className="mt-3">
-              <Col md={4} sm={4} lg={4} className="d-flex gap-3 ">
+              <Col
+                md={4}
+                sm={4}
+                lg={4}
+                className="d-flex gap-3 align-items-center "
+              >
                 <span className={styles["Groups-heading-size"]}>
                   {t("Groups")}
                 </span>
@@ -429,7 +424,7 @@ const Groups = () => {
                 lg={8}
                 md={8}
                 sm={8}
-                className="d-flex justify-content-end gap-1 mt-2 "
+                className="d-flex justify-content-end align-items-center gap-1 mt-2 "
               >
                 <Button
                   className={styles["Archived-Group-btn"]}
@@ -440,6 +435,7 @@ const Groups = () => {
                       draggable="false"
                       src={archivedbtn}
                       className={styles["archivedbtnIcon"]}
+                      alt=""
                     />
                   }
                 />
@@ -487,6 +483,7 @@ const Groups = () => {
                                     src={GroupIcon}
                                     height="29.23px"
                                     width="32.39px"
+                                    alt=""
                                   />
                                 }
                                 handleClickDiscussion={

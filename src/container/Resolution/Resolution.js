@@ -332,7 +332,7 @@ const Resolution = () => {
             VotingDeadlineDate: "",
           };
           dispatch(getResolutions(navigate, buttonTab, t, Data.Title));
-          setAllSearchInput("");
+          // setAllSearchInput("");
         } else {
           dispatch(getResolutions(navigate, buttonTab, t));
         }
@@ -348,7 +348,7 @@ const Resolution = () => {
             VotingDeadlineDate: "",
           };
           dispatch(getVoterResolution(navigate, buttonTab, t, Data.Title));
-          setAllSearchInput("");
+          // setAllSearchInput("");
         } else {
           dispatch(getVoterResolution(navigate, buttonTab, t));
         }

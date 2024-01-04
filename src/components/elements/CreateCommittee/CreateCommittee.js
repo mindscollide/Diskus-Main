@@ -58,7 +58,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   const [fileAttachments, setFileAttachments] = useState([]);
   const [fileSize, setFileSize] = useState(0);
   const [fileForSend, setFileForSend] = useState([]);
-  console.log(fileForSend, "fileForSendfileForSendfileForSendfileForSend");
+
   const [committeeMemberRolesOptions, setCommitteeMemberRolesOptions] =
     useState([]);
   const [committeeMemberRolesValues, setCommitteeMemberRolesValues] = useState(
@@ -895,6 +895,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                                 )
                                               }
                                               draggable="false"
+                                              alt=""
                                             />
                                           </Col>
                                         </Row>
@@ -1015,6 +1016,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                                 )
                                               }
                                               draggable="false"
+                                              alt=""
                                             />
                                           </Col>
                                         </Row>
@@ -1135,6 +1137,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                                   data.data.pK_UID
                                                 )
                                               }
+                                              alt=""
                                               draggable="false"
                                             />
                                           </Col>
@@ -1256,6 +1259,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                                   data.data.pK_UID
                                                 )
                                               }
+                                              alt=""
                                               draggable="false"
                                             />
                                           </Col>
@@ -1377,6 +1381,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                                   data.data.pK_UID
                                                 )
                                               }
+                                              alt=""
                                               draggable="false"
                                             />
                                           </Col>
@@ -1415,7 +1420,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                   styles["Addmembers-class-Create-Committee"]
                                 }
                               >
-                                {t("Add-members")}
+                                {t("Add-members") + "*"}
                               </span>
                             </Col>
                           </Row>
@@ -1428,7 +1433,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                             >
                               <InputSearchFilter
                                 applyClass={"createCommittee_searchMember"}
-                                placeholder={t("Search-member-here")}
+                                placeholder={t("Search-member-here") + "*"}
                                 value={taskAssignedToInput}
                                 filteredDataHandler={searchFilterHandler(
                                   taskAssignedToInput
@@ -1636,7 +1641,6 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                             >
                               {fileAttachments.length > 0
                                 ? fileAttachments.map((data, index) => {
-                                    console.log(data, "datadatadata");
                                     return (
                                       <>
                                         <Col

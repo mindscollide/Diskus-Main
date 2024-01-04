@@ -196,3 +196,7 @@ body[dir="rtl"] .PaginationStyle-Resolution {
   width: auto !important;
   padding: 12px 10px !important;
 }
+.poll_status {
+  font-size: 14px;
+  font-family: "MontserratRegular" !important;
+}

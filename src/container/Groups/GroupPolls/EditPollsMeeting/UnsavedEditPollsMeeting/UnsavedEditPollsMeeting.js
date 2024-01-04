@@ -11,7 +11,6 @@ import { showunsavedEditPollsMeetings } from "../../../../../store/actions/NewMe
 const UnsavedEditPollsMeeting = ({ setEditPolls }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
 
   const handleNOFunctionality = () => {
@@ -19,6 +18,8 @@ const UnsavedEditPollsMeeting = ({ setEditPolls }) => {
   };
 
   const handleYesFunctionality = () => {
+    dispatch(showunsavedEditPollsMeetings(false));
+
     setEditPolls(false);
   };
 
