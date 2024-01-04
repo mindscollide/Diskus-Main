@@ -37,6 +37,7 @@ import makeAnimated from "react-select/animated";
 import { getAllCommitteesandGroups } from "../../../../../store/actions/Polls_actions";
 import {
   getCurrentDate,
+  getCurrentDatewithIndexIncrement,
   getEndTimeWitlCeilFunction,
   getStartTimeWithCeilFunction,
 } from "../../../../../commen/functions/time_formatter";
@@ -102,16 +103,39 @@ const ProposedNewMeeting = ({
   ]);
 
   //Setting the Dates And Time Default
+  // useEffect(() => {
+  //   const updatedRows = [...rows];
+  //   updatedRows[0].selectedOption = getCurrentDateforMeeting.dateFormat;
+  //   updatedRows[0].dateForView = getCurrentDateforMeeting.DateGMT;
+  //   updatedRows[0].startDate = startTime?.formattedTime;
+  //   updatedRows[0].startTime = startTime?.newFormatTime;
+  //   updatedRows[0].endDate = getEndTime?.formattedTime;
+  //   updatedRows[0].endTime = getEndTime?.newFormatTime;
+  //   setRows(updatedRows);
+  // }, []);
+
   useEffect(() => {
-    const updatedRows = [...rows];
-    updatedRows[0].selectedOption = getCurrentDateforMeeting.dateFormat;
-    updatedRows[0].dateForView = getCurrentDateforMeeting.DateGMT;
-    updatedRows[0].startDate = startTime?.formattedTime;
-    updatedRows[0].startTime = startTime?.newFormatTime;
-    updatedRows[0].endDate = getEndTime?.formattedTime;
-    updatedRows[0].endTime = getEndTime?.newFormatTime;
+    const updatedRows = rows.map((row, index) => {
+      const currentDate = getCurrentDatewithIndexIncrement(index);
+      return {
+        ...row,
+        selectedOption: currentDate.dateFormat,
+        dateForView: currentDate.DateGMT,
+        startDate: startTime?.formattedTime,
+        startTime: startTime?.newFormatTime,
+        endDate: getEndTime?.formattedTime,
+        endTime: getEndTime?.newFormatTime,
+      };
+    });
     setRows(updatedRows);
-  }, []);
+  }, [rows.length]); // Run on every render due to the absence of specific dependencies
+
+  // Later in your component, modify rows as needed:
+  const handleRowModification = (index, newData) => {
+    const updatedRows = [...rows];
+    updatedRows[index] = { ...updatedRows[index], ...newData };
+    setRows(updatedRows);
+  };
 
   //Getting All Groups And Committies By Organization ID
   useEffect(() => {
