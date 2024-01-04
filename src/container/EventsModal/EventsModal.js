@@ -137,8 +137,9 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
                             {eventData.statusID === 1 &&
                             eventData.participantRoleID === 1 ? (
                               eventData.isQuickMeeting === true &&
-                              minutesDifference <= 5 &&
-                              minutesDifference > 0 ? (
+                              minutesDifference <= 15 ? (
+                                // &&
+                                // minutesDifference > 0
                                 <Button
                                   text={t("Start-meeting")}
                                   className={styles["Start-Meeting"]}
@@ -147,8 +148,9 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
                                   }
                                 />
                               ) : eventData.isQuickMeeting === false &&
-                                minutesDifference <= 5 &&
-                                minutesDifference > 0 ? (
+                                minutesDifference <= 15 ? (
+                                // &&
+                                // minutesDifference > 0
                                 //   &&
                                 //     minutesDifference <= 99999999 &&
                                 //     minutesDifference > 0

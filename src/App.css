@@ -6514,3 +6514,6 @@ textarea {
 .bottom-20 {
   bottom: 20px;
 }
+.Polling_main_table {
+  height: calc(91vh - 30vh) !important;
+}

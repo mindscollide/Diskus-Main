@@ -762,8 +762,9 @@ const NewMeeting = () => {
           } else {
             if (
               record.isQuickMeeting === true &&
-              minutesDifference <= 5 &&
-              minutesDifference > 0
+              minutesDifference <= 15
+              // &&
+              // minutesDifference > 0
             ) {
               return (
                 <Row>
@@ -793,8 +794,9 @@ const NewMeeting = () => {
               );
             } else if (
               record.isQuickMeeting === false &&
-              minutesDifference <= 5 &&
-              minutesDifference > 0
+              minutesDifference <= 15
+              // &&
+              // minutesDifference > 0
             ) {
               return (
                 <Row>
@@ -901,7 +903,7 @@ const NewMeeting = () => {
         );
 
         const isQuickMeeting = record.isQuickMeeting;
-        if (record.status === "8") {
+        if (record.status === "8" || record.status === "4") {
           return null;
         } else {
           if (isQuickMeeting) {
@@ -1364,6 +1366,27 @@ const NewMeeting = () => {
       setDashboardEventData(null);
     }
   }, [dashboardEventData, rows]);
+
+  useEffect(() => {
+    if (
+      NewMeetingreducer.meetingStatusNotConductedMqttData !== null &&
+      NewMeetingreducer.meetingStatusNotConductedMqttData !== undefined &&
+      NewMeetingreducer.meetingStatusNotConductedMqttData.length !== 0
+    ) {
+      let meetingDetailsMqtt =
+        NewMeetingreducer.meetingStatusNotConductedMqttData.meetingDetails;
+      const updatedRows = rows.map((row) => {
+        if (row.pK_MDID === meetingDetailsMqtt.pK_MDID) {
+          return {
+            ...row,
+            status: String(meetingDetailsMqtt.statusID),
+          };
+        }
+        return row;
+      });
+      setRow(updatedRows);
+    }
+  }, [NewMeetingreducer.meetingStatusNotConductedMqttData, rows]);
 
   console.log("Meeting Table Data", rows);
 

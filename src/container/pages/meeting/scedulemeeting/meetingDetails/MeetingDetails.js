@@ -131,7 +131,7 @@ const MeetingDetails = ({
   const calendRef = useRef();
   const [error, seterror] = useState(false);
   const [publishedFlag, setPublishedFlag] = useState(null);
-  console.log(publishedFlag, "publishedFlagpublishedFlag");
+
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -276,7 +276,7 @@ const MeetingDetails = ({
 
   const handleStartDateChange = (index, date) => {
     let newDate = new Date(date);
-    console.log(newDate, "handleStartDateChangehandleStartDateChange");
+
     if (newDate instanceof Date && !isNaN(newDate)) {
       const hours = ("0" + newDate.getHours()).slice(-2);
       const minutes = ("0" + newDate.getMinutes()).slice(-2);
@@ -336,7 +336,6 @@ const MeetingDetails = ({
         }
       }
     } else {
-      console.error("Invalid date and time object:", date);
     }
   };
 
@@ -385,7 +384,6 @@ const MeetingDetails = ({
       }
       // }
     } else {
-      console.error("Invalid date and time object:", date);
     }
   };
 
@@ -935,8 +933,6 @@ const MeetingDetails = ({
     }
   }, [ResponseMessage]);
 
-  console.log("ResponseMessageResponseMessageResponseMessage", ResponseMessage);
-
   //Fetching All Saved Data
   useEffect(() => {
     try {
@@ -1119,16 +1115,12 @@ const MeetingDetails = ({
           meetingDetails.RecurringOptions.value &&
         MeetingData.isVideo === meetingDetails.IsVideoCall
       ) {
-        console.log("hello");
         setmeetingDetails(false);
         setorganizers(true);
       } else {
-        console.log("hello");
         dispatch(ShowNextConfirmationModal(true));
       }
-    } catch (error) {
-      console.error("Error in handleUpdateNext:", error);
-    }
+    } catch (error) {}
 
     // dispatch(ShowNextConfirmationModal(true));
     // setmeetingDetails(false);
@@ -1452,7 +1444,6 @@ const MeetingDetails = ({
                 >
                   {rows.length > 0
                     ? rows.map((data, index) => {
-                        console.log(data, "datadatadatadatadatadata");
                         return (
                           <>
                             <Row key={index}>

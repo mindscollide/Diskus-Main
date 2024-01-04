@@ -1211,5 +1211,9 @@
   "You-can-not-upload-more-then-100MB-file": "You can not upload more then 100MB file",
   "You-can-not-upload-more-then-10MB-file": "You can not upload more then 10MB file",
   "Poll-deleted-successfully": "Poll deleted successfully",
-  "Poll-status-updated-successfully": "Poll status updated successfully"
+  "Poll-status-updated-successfully": "Poll status updated successfully",
+  "There-are-no-minutes-available": "There are No Minutes Available",
+  "Message-for-organizer": "Message for Organizer",
+  "Message-for-agenda-contributor": "Message for Agenda Contributor",
+  "All-agenda-contributors": "All Agenda Contributors"
 }

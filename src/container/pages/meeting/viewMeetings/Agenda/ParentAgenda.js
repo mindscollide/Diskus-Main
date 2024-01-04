@@ -36,6 +36,7 @@ import {
   getFileExtension,
   getIconSource,
 } from "../../../../DataRoom/SearchFunctionality/option";
+import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
 
 const ParentAgenda = ({
   data,
@@ -170,6 +171,22 @@ const ParentAgenda = ({
     };
     dispatch(
       AgendaVotingStatusUpdate(Data, navigate, t, advanceMeetingModalID)
+    );
+  };
+
+  const downloadDocument = (record) => {
+    console.log("filesDatafilesData", record);
+
+    let data = {
+      FileID: Number(record.originalAttachmentName),
+    };
+    dispatch(
+      DataRoomDownloadFileApiFunc(
+        navigate,
+        data,
+        t,
+        record.displayAttachmentName
+      )
     );
   };
 
@@ -458,9 +475,15 @@ const ParentAgenda = ({
                                                   )}
                                                   alt=""
                                                 />{" "}
-                                                {
-                                                  filesData?.displayAttachmentName
-                                                }
+                                                <span
+                                                  onClick={() =>
+                                                    downloadDocument(filesData)
+                                                  }
+                                                >
+                                                  {
+                                                    filesData?.displayAttachmentName
+                                                  }
+                                                </span>
                                               </span>
                                             </div>
                                           </Col>

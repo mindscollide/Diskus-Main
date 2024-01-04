@@ -78,7 +78,6 @@ const AgendaContributers = ({
   });
 
   const [rowsData, setRowsData] = useState([]);
-  console.log(rowsData, "rowsDatarowsDatarowsData");
 
   const [notifiedMembersData, setNotificedMembersData] = useState(null);
 
@@ -105,10 +104,10 @@ const AgendaContributers = ({
   }, []);
 
   const handleInputChange = (userID, newValue) => {
-    setInputValues((prevInputValues) => ({
-      ...prevInputValues,
-      [userID]: newValue,
-    }));
+    // setInputValues((prevInputValues) => ({
+    //   ...prevInputValues,
+    //   [userID]: newValue,
+    // }));
     setRowsData((prevRowsData) => {
       return prevRowsData.map((row) => {
         if (row.userID === userID) {
@@ -169,16 +168,12 @@ const AgendaContributers = ({
               <Col lg={12} md={12} sm={12}>
                 <TextField
                   disable={record.isEdit ? true : false}
-                  placeholder={t("Organization-title")}
+                  placeholder={t("Contributor-title")}
                   labelClass={"d-none"}
                   width={"100%"}
                   maxLength={140}
                   applyClass={"Organizer_table"}
-                  value={
-                    record.isEdit === true
-                      ? record.Title
-                      : inputValues[record.userID] || ""
-                  } // Use the controlled value
+                  value={record.Title !== "" ? record.Title : ""} // Use the controlled value
                   change={(e) =>
                     handleInputChange(record.userID, e.target.value)
                   } // Update the inputValues when the user types
@@ -292,7 +287,7 @@ const AgendaContributers = ({
                     draggable={false}
                     src={RspvIcon}
                     className={
-                      record.isEdit === true ? "cursor-pointer" : "pe-none"
+                      record.isEdit === true ? "cursor-default" : "pe-none"
                     }
                     height="30px"
                     width="30px"
@@ -303,7 +298,7 @@ const AgendaContributers = ({
                     draggable={false}
                     src={RspvIcon}
                     className={
-                      record.isEdit === true ? "cursor-pointer" : "pe-none"
+                      record.isEdit === true ? "cursor-default" : "pe-none"
                     }
                     height="30px"
                     width="30px"
@@ -517,8 +512,8 @@ const AgendaContributers = ({
   const handleSaveBtn = async () => {
     let newData = [];
     let copyData = [...rowsData];
-    console.log(copyData, "copyDatacopyDatacopyData");
-    copyData.map((agendamembersData, agendamembersIndex) => {
+
+    copyData.forEach((agendamembersData, agendamembersIndex) => {
       newData.push(agendamembersData.userID);
     });
 
@@ -553,13 +548,13 @@ const AgendaContributers = ({
         ...NewMeetingreducer.getAllAgendaContributors,
       ];
 
-      // Initial values
-      const initialValues = {};
-      agendaContributorData.forEach((organizer) => {
-        initialValues[organizer.userID] = organizer.contributorTitle;
-      });
+      // // Initial values
+      // const initialValues = {};
+      // agendaContributorData.forEach((organizer) => {
+      //   initialValues[organizer.userID] = organizer.contributorTitle;
+      // });
 
-      setInputValues({ ...initialValues });
+      // setInputValues({ ...initialValues });
 
       let newArr = [];
       agendaContributorData.forEach((AgConData, index) => {
@@ -580,11 +575,6 @@ const AgendaContributers = ({
       setRowsData([]);
     }
   }, [NewMeetingreducer.getAllAgendaContributors]);
-
-  console.log(
-    NewMeetingreducer.getAllAgendaContributor,
-    "gdjvwgjvwjehvcjhwevc"
-  );
 
   useEffect(() => {
     if (rowsData.length > 0) {

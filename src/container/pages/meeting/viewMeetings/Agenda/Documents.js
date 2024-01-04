@@ -8,6 +8,7 @@ import {
   getFileExtension,
   getIconSource,
 } from "../../../../DataRoom/SearchFunctionality/option";
+import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
 
 const Documents = ({ data, index, setRows, rows, parentId }) => {
   const [files, setfiles] = useState([]);
@@ -19,6 +20,7 @@ const Documents = ({ data, index, setRows, rows, parentId }) => {
     // setfiles(optionscross);
     setRows(optionscross);
   };
+
   return (
     <>
       <Row key={index + 5}>
@@ -26,6 +28,7 @@ const Documents = ({ data, index, setRows, rows, parentId }) => {
           <div className="d-flex gap-2 flex-wrap  mt-2">
             {data?.files?.length > 0
               ? data?.files?.map((filesData, Fileindex) => {
+                  console.log("filesDatafilesData", filesData);
                   return (
                     <Draggable
                       key={filesData.FileID}

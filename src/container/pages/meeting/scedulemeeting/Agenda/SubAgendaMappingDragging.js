@@ -14,6 +14,7 @@ import {
   GetAllMeetingUserApiFunc,
   UpateMeetingStatusLockApiFunc,
 } from "../../../../../store/actions/NewMeetingActions";
+import { resolutionResultTable } from "../../../../../commen/functions/date_formater";
 import { clearResponseMessage } from "../../../../../store/actions/MeetingAgenda_action";
 import { useDispatch } from "react-redux";
 import desh from "../../../../../assets/images/desh.svg";
@@ -69,6 +70,11 @@ const SubAgendaMappingDragging = ({
   const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
     (state) => state
   );
+
+  const getAllMeetingDetails = useSelector(
+    (state) => state.NewMeetingreducer.getAllMeetingDetails
+  );
+
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [allPresenters, setAllPresenters] = useState([]);
@@ -289,6 +295,33 @@ const SubAgendaMappingDragging = ({
     } else {
     }
   };
+
+  useEffect(() => {
+    if (
+      getAllMeetingDetails !== null &&
+      getAllMeetingDetails !== undefined &&
+      getAllMeetingDetails.length !== 0 &&
+      Object.keys(getAllMeetingDetails) !== 0
+    ) {
+      const updatedAgendaItems = [...rows];
+
+      let meetingStartTime =
+        getAllMeetingDetails.advanceMeetingDetails.meetingDates[0].meetingDate +
+        getAllMeetingDetails.advanceMeetingDetails.meetingDates[0].startTime;
+      let meetingEndTime =
+        getAllMeetingDetails.advanceMeetingDetails.meetingDates[0].meetingDate +
+        getAllMeetingDetails.advanceMeetingDetails.meetingDates[0].endTime;
+
+      if (updatedAgendaItems[index].subAgenda.length > 0) {
+        updatedAgendaItems[index].subAgenda[expandSubIndex].startDate =
+          resolutionResultTable(meetingStartTime);
+        updatedAgendaItems[index].subAgenda[expandSubIndex].endDate =
+          resolutionResultTable(meetingEndTime);
+
+        setRows(updatedAgendaItems);
+      }
+    }
+  }, [getAllMeetingDetails]);
 
   useEffect(() => {
     if (currentLanguage !== undefined) {
@@ -747,7 +780,7 @@ const SubAgendaMappingDragging = ({
                                                     }
                                                     rows="4"
                                                     placeholder={t(
-                                                      "Enter-description"
+                                                      "Agenda-description"
                                                     )}
                                                     required={true}
                                                   />

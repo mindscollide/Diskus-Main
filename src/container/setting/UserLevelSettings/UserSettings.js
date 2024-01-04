@@ -111,7 +111,8 @@ const UserSettings = () => {
   });
   const { instance } = useMsal();
   const activeAccount = instance.getActiveAccount();
-  const [authMicrosoftCode, setAuthMicrosoftCode] = useState("");
+  const [authMicrosoftAccessToken, setAuthMicrosoftAccessToken] = useState("");
+  const [authMicrosoftRefreshToken, setAuthMicrosoftRefreshToken] = useState("");
 
   useEffect(() => {
     dispatch(getUserSetting(navigate, t));
@@ -767,39 +768,41 @@ const UserSettings = () => {
 
   useEffect(() => {
     try {
-      const storedData = sessionStorage.getItem(
-        "msal.token.keys.545933ff-407a-44e5-b3ac-a73ace252364"
-      );
-
-      console.log("Stored Data:", storedData);
-
-      if (storedData !== null) {
-        const dataObject = JSON.parse(storedData);
-        console.log("Parsed Data:", dataObject);
-
-        const accessToken = dataObject.accessToken[0];
-        console.log("Access Token:", accessToken);
-        setAuthMicrosoftCode(accessToken);
-      } else {
-        console.log("Data not found in session storage");
+      const storedDataAssecc = JSON.parse(sessionStorage.getItem(
+        "c1b5568d-27a5-4a25-a8f9-fb5e788cd5af.c5978316-9241-4527-b8f3-b75023242cf3-login.windows.net-accesstoken-545933ff-407a-44e5-b3ac-a73ace252364-c5978316-9241-4527-b8f3-b75023242cf3-openid profile email calendars.readwrite user.read--"
+      ));
+      const storedDataRefresh = JSON.parse(sessionStorage.getItem(
+        "c1b5568d-27a5-4a25-a8f9-fb5e788cd5af.c5978316-9241-4527-b8f3-b75023242cf3-login.windows.net-refreshtoken-545933ff-407a-44e5-b3ac-a73ace252364----"
+      ));
+      if(userOptionsSettings.AllowMicrosoftCalenderSync){
+          if (storedDataAssecc !== null &&storedDataAssecc !== undefined) {
+          setAuthMicrosoftAccessToken(storedDataAssecc.secret);
+          setAuthMicrosoftRefreshToken(storedDataRefresh.secret)
+        } else {
+          console.log("Data not found in session storage");
+        }
+      }else{
+        
+        setAuthMicrosoftAccessToken("");
+        setAuthMicrosoftRefreshToken("")
       }
+     
     } catch (error) {
       console.log(error, "errorerrorerror");
     }
-  }, []);
-
-  console.log(authMicrosoftCode, "authMicrosoftCodeauthMicrosoftCode");
+  }, [userOptionsSettings.AllowMicrosoftCalenderSync]);
 
   const updateOrganizationLevelSettings = async () => {
     let AllowMicrosoftCalenderSyncCall =
       userOptionsSettings.AllowMicrosoftCalenderSync;
 
     if (userOptionsSettings.AllowMicrosoftCalenderSync !== false) {
-      if (authMicrosoftCode !== "") {
+      if (authMicrosoftAccessToken !== "") {
         await dispatch(
           getMicrosoftValidToken(
             navigate,
-            authMicrosoftCode,
+            authMicrosoftAccessToken,
+            authMicrosoftRefreshToken,
             userOptionsSettings,
             AllowMicrosoftCalenderSyncCall,
             t
