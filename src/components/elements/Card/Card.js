@@ -226,38 +226,41 @@ const Card = ({
                   >
                     {editItems.length > 0
                       ? editItems.map((editItem, index) => {
-                          return (
-                            <>
-                              <Row className="mt-1" key={index}>
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className="d-flex justify-content-center cursor-pointer Saved_money_Tagline "
-                                >
-                                  <span
-                                    className={styles["dropdown-text"]}
-                                    onClick={() =>
-                                      changeHandleStatus(
-                                        editItem,
-                                        CardID,
-                                        setEditdropdown
-                                      )
-                                    }
+                          if (editItem.value !== StatusID) {
+                            return (
+                              <>
+                                <Row className="mt-1" key={index}>
+                                  <Col
+                                    lg={12}
+                                    md={12}
+                                    sm={12}
+                                    className="d-flex justify-content-center cursor-pointer Saved_money_Tagline "
                                   >
-                                    {editItem.key}
-                                  </span>
-                                </Col>
-                              </Row>
-                              <hr
-                                className={
-                                  index === 2
-                                    ? "d-none"
-                                    : styles["HR-line-Committee-group"]
-                                }
-                              />
-                            </>
-                          );
+                                    <span
+                                      className={styles["dropdown-text"]}
+                                      onClick={() =>
+                                        changeHandleStatus(
+                                          editItem,
+                                          CardID,
+                                          setEditdropdown
+                                        )
+                                      }
+                                    >
+                                      {editItem.key}
+                                    </span>
+                                  </Col>
+                                </Row>
+                                <hr
+                                  className={
+                                    (index === 2 || index === 3) &&
+                                    (index === 2 || index === 1)
+                                      ? "d-none"
+                                      : styles["HR-line-Committee-group"]
+                                  }
+                                />
+                              </>
+                            );
+                          }
                         })
                       : null}
                   </Container>
