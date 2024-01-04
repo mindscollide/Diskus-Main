@@ -40,6 +40,7 @@ import {
   getCurrentDatewithIndexIncrement,
   getEndTimeWitlCeilFunction,
   getStartTimeWithCeilFunction,
+  incrementDateforPropsedMeeting,
 } from "../../../../../commen/functions/time_formatter";
 import { SaveMeetingDetialsNewApiFunction } from "../../../../../store/actions/NewMeetingActions";
 
@@ -93,42 +94,14 @@ const ProposedNewMeeting = ({
   //state for adding Date and Time Rows
   const [rows, setRows] = useState([
     {
-      selectedOption: "",
-      dateForView: "",
-      startDate: "",
-      startTime: "",
-      endDate: "",
-      endTime: "",
+      selectedOption: getCurrentDateforMeeting.dateFormat,
+      dateForView: getCurrentDateforMeeting.DateGMT,
+      startDate: startTime?.formattedTime,
+      startTime: startTime?.newFormatTime,
+      endDate: getEndTime?.formattedTime,
+      endTime: getEndTime?.newFormatTime,
     },
   ]);
-
-  //Setting the Dates And Time Default
-  // useEffect(() => {
-  //   const updatedRows = [...rows];
-  //   updatedRows[0].selectedOption = getCurrentDateforMeeting.dateFormat;
-  //   updatedRows[0].dateForView = getCurrentDateforMeeting.DateGMT;
-  //   updatedRows[0].startDate = startTime?.formattedTime;
-  //   updatedRows[0].startTime = startTime?.newFormatTime;
-  //   updatedRows[0].endDate = getEndTime?.formattedTime;
-  //   updatedRows[0].endTime = getEndTime?.newFormatTime;
-  //   setRows(updatedRows);
-  // }, []);
-
-  useEffect(() => {
-    const updatedRows = rows.map((row, index) => {
-      const currentDate = getCurrentDatewithIndexIncrement(index);
-      return {
-        ...row,
-        selectedOption: currentDate.dateFormat,
-        dateForView: currentDate.DateGMT,
-        startDate: startTime?.formattedTime,
-        startTime: startTime?.newFormatTime,
-        endDate: getEndTime?.formattedTime,
-        endTime: getEndTime?.newFormatTime,
-      };
-    });
-    setRows(updatedRows);
-  }, [rows.length]); // Run on every render due to the absence of specific dependencies
 
   // Later in your component, modify rows as needed:
   const handleRowModification = (index, newData) => {
@@ -384,16 +357,20 @@ const ProposedNewMeeting = ({
   //Adding the Dates Rows
   const addRow = () => {
     const lastRow = rows[rows.length - 1];
+
     if (isValidRow(lastRow)) {
+      let { DateGMT, dateFormat } = incrementDateforPropsedMeeting(
+        lastRow.dateForView
+      );
       setRows([
         ...rows,
         {
-          selectedOption: "",
-          dateForView: "",
-          startDate: "",
-          startTime: "",
-          endDate: "",
-          endTime: "",
+          selectedOption: dateFormat,
+          dateForView: DateGMT,
+          startDate: startTime?.formattedTime,
+          startTime: startTime?.newFormatTime,
+          endDate: getEndTime?.formattedTime,
+          endTime: getEndTime?.newFormatTime,
         },
       ]);
     }
@@ -401,6 +378,7 @@ const ProposedNewMeeting = ({
 
   //Validation For Checking that the Row Should Not Be Empty Before Inserting the Another
   const isValidRow = (row) => {
+    console.log(row, "isValidRowisValidRowisValidRow");
     return (
       row.selectedOption !== "" && row.startDate !== "" && row.endDate !== ""
     );

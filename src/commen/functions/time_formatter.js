@@ -53,13 +53,12 @@ export const getCurrentDate = () => {
   return { DateGMT: newDate, dateFormat: DateDate };
 };
 
-export const getCurrentDatewithIndexIncrement = (offset = 0) => {
-  let newDate = new Date();
-  newDate.setDate(newDate.getDate() + offset);
-
-  let dateFormat = newDate.toISOString().slice(0, 10).replace(/-/g, "");
-
-  return { DateGMT: newDate, dateFormat };
+export const getCurrentDatewithIndexIncrement = (getLastIndex) => {
+  console.log(getLastIndex, "getLastIndexgetLastIndex");
+  // let newDate = new Date();
+  // newDate.setDate(newDate.getDate() + offset);
+  // let dateFormat = newDate.toISOString().slice(0, 10).replace(/-/g, "");
+  // return { DateGMT: newDate, dateFormat };
 };
 
 //Newly Time Added For Converting Time into GMT Format
@@ -108,5 +107,14 @@ export const getHoursMinutesSec = (date) => {
       "0"
     )}${"00"}`;
     return formattedTime;
+  }
+};
+
+export const incrementDateforPropsedMeeting = (date) => {
+  if (date instanceof Date && !isNaN(date)) {
+    let newDate = new Date();
+    newDate.setDate(date.getDate() + 1);
+    let dateFormat = newDate.toISOString().slice(0, 10).replace(/-/g, "");
+    return { DateGMT: newDate, dateFormat };
   }
 };
