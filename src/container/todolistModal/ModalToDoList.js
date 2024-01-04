@@ -436,19 +436,19 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //Save To-Do List Function
   const createToDoList = async () => {
-    let TasksAttachments = tasksAttachments.TasksAttachments;
     let taskAssignedTO = [...TaskAssignedTo];
     if (taskAssignedTO.length === 0) {
       taskAssignedTO.push(Number(createrID));
       setTaskAssignedTo(taskAssignedTO);
     }
 
-    let newDate = createTodoDate;
-    let newTime = task.DeadLineTime;
+    let newDate;
+    let newTime;
     let finalDateTime;
     if (createTodoDate !== "" && task.DeadLineTime !== "") {
       finalDateTime = createConvert(createTodoDate + task.DeadLineTime);
       newDate = finalDateTime.slice(0, 8);
+      newTime = finalDateTime.slice(8, 14);
     }
 
     let Task = {
@@ -457,7 +457,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       Description: task.Description,
       IsMainTask: task.IsMainTask,
       DeadLineDate: newDate,
-      DeadLineTime: task.DeadLineTime,
+      DeadLineTime: newTime,
       CreationDateTime: "",
     };
     if (finalDateTime === undefined) {
@@ -561,27 +561,16 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     let newDataTaskAssignedTo = [...TaskAssignedTo];
     newDataTaskAssignedTo.splice(index, 1);
 
-    // TaskAssignedTo.splice(index, 1)
-    // taskAssignedName.splice(index, 1)
     setAssignees(newDataAssignees);
     setTaskAssignedName([]);
     setTaskAssignedTo(newDataTaskAssignedTo);
   };
-
-  // const createTodoTimeChangeHandler = (e) => {
-  //   let getValue = e.target.value;
-  //   setTask({
-  //     ...task,
-  //     DeadLineTime: getValue,
-  //   });
-  // };
 
   const handleTimeChange = (newTime) => {
     let newDate = new Date(newTime);
     if (newDate instanceof Date && !isNaN(newDate)) {
       const hours = ("0" + newDate.getUHours()).slice(-2);
       const minutes = ("0" + newDate.getMinutes()).slice(-2);
-      const seconds = ("0" + newDate.getSeconds()).slice(-2);
 
       const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
         .toString()
@@ -594,24 +583,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     }
   };
 
-  const handleFocusCreateTodo = () => {
-    setTask({
-      ...task,
-      DeadLineTime: getcurrentTime,
-    });
-  };
-
-  // const handleBlur = (event) => {
-  //   // Access the selected value when the input field loses focus
-  //   const selectedValue = event.target.value;
-  //
-  // };
-  // const handleTimeSelect = () => {
-  //   const inputElement = document.getElementById("timeInput");
-  //   if (inputElement) {
-  //     inputElement.blur();
-  //   }
-  // };
   function CustomInput({ onFocus, value, onChange }) {
     return (
       <input

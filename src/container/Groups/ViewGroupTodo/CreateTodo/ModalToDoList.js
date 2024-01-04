@@ -56,10 +56,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const [createTodoDate, setCreateTodoDate] = useState("");
   const state = useSelector((state) => state);
   const { toDoListReducer, GroupsReducer } = state;
-  const currentDate = new Date();
-  const currentHours = currentDate.getHours().toString().padStart(2, "0");
-  const currentMinutes = currentDate.getMinutes().toString().padStart(2, "0");
-  const getcurrentTime = `${currentHours}:${currentMinutes}`;
+
   //To Display Modal
 
   const dispatch = useDispatch();
@@ -401,10 +398,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const onChangeSearch = (e) => {
     setTaskAssignedToInput(e.target.value.trimStart());
   };
-  console.log(
-    GroupsReducer?.getGroupByGroupIdResponse?.groupMembers,
-    "getUserDetailsgetUserDetailsgetUserDetails"
-  );
+
   //Drop Down Values
   const searchFilterHandler = (value) => {
     let getUserDetails = GroupsReducer?.getGroupByGroupIdResponse?.groupMembers;
@@ -466,9 +460,11 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     }
     let newDate = createTodoDate;
     let finalDateTime;
+    let newTime;
     if (createTodoDate !== "" && task.DeadLineTime !== "") {
       finalDateTime = createConvert(createTodoDate + task.DeadLineTime);
       newDate = finalDateTime.slice(0, 8);
+      newTime = finalDateTime.slice(8, 14);
     }
 
     let Task = {
@@ -477,7 +473,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       Description: task.Description,
       IsMainTask: task.IsMainTask,
       DeadLineDate: newDate,
-      DeadLineTime: task.DeadLineTime,
+      DeadLineTime: newTime,
       CreationDateTime: "",
     };
     if (finalDateTime === undefined) {
@@ -581,27 +577,17 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     let newDataTaskAssignedTo = [...TaskAssignedTo];
     newDataTaskAssignedTo.splice(index, 1);
 
-    // TaskAssignedTo.splice(index, 1)
-    // taskAssignedName.splice(index, 1)
     setAssignees(newDataAssignees);
     setTaskAssignedName([]);
     setTaskAssignedTo(newDataTaskAssignedTo);
   };
 
-  // const createTodoTimeChangeHandler = (e) => {
-  //   let getValue = e.target.value;
-  //   setTask({
-  //     ...task,
-  //     DeadLineTime: getValue,
-  //   });
-  // };
-
   const handleTimeChange = (newTime) => {
     let newDate = new Date(newTime);
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getUTCHours()).slice(-2);
-      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
-      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
+      const hours = ("0" + newDate.getHours()).slice(-2);
+      const minutes = ("0" + newDate.getMinutes()).slice(-2);
+      const seconds = ("0" + newDate.getSeconds()).slice(-2);
 
       const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
         .toString()
@@ -614,24 +600,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     }
   };
 
-  const handleFocusCreateTodo = () => {
-    setTask({
-      ...task,
-      DeadLineTime: getcurrentTime,
-    });
-  };
-
-  // const handleBlur = (event) => {
-  //   // Access the selected value when the input field loses focus
-  //   const selectedValue = event.target.value;
-  //
-  // };
-  // const handleTimeSelect = () => {
-  //   const inputElement = document.getElementById("timeInput");
-  //   if (inputElement) {
-  //     inputElement.blur();
-  //   }
-  // };
   function CustomInput({ onFocus, value, onChange }) {
     return (
       <input
@@ -672,19 +640,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       xs={12}
                       className="CreateMeetingTime d-flex align-items-center gap-2 h-100"
                     >
-                      {/* <TextFieldTime
-                        type="time"
-                        labelClass="d-none"
-                        value={task.DeadLineTime}
-                        change={createTodoTimeChangeHandler}
-                        placeholder={"00:00"}
-                        name="DeadLineTime"
-                        applyClass={"createTodo_timePicker"}
-                        inputRef={timePickerRef}
-                        onClick={handleFocusCreateTodo}
-                        id="timeInput"
-                      /> */}
-
                       <DatePicker
                         arrowClassName="arrowClass"
                         value={task.timeforView}

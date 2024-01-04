@@ -459,7 +459,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
                     className="group-fields d-flex align-items-center gap-2"
                   >
                     <InputSearchFilter
-                      placeholder={t("Add-agenda-contributor")}
+                      placeholder={t("Add-participant")}
                       value={participantUsers}
                       filteredDataHandler={searchFilterHandler(
                         participantUsers

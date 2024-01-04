@@ -463,10 +463,12 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       setTaskAssignedTo(taskAssignedTO);
     }
     let newDate = createTodoDate;
+    let newTime;
     let finalDateTime;
     if (createTodoDate !== "" && task.DeadLineTime !== "") {
       finalDateTime = createConvert(createTodoDate + task.DeadLineTime);
       newDate = finalDateTime.slice(0, 8);
+      newTime = finalDateTime.slice(8, 14);
     }
 
     let Task = {
@@ -475,7 +477,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       Description: task.Description,
       IsMainTask: task.IsMainTask,
       DeadLineDate: newDate,
-      DeadLineTime: task.DeadLineTime,
+      DeadLineTime: newTime,
       CreationDateTime: "",
     };
     if (finalDateTime === undefined) {
@@ -597,26 +599,18 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const handleTimeChange = (newTime) => {
     let newDate = new Date(newTime);
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getUTCHours()).slice(-2);
-      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
-      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
+      const hours = ("0" + newDate.getHours()).slice(-2);
+      const minutes = ("0" + newDate.getMinutes()).slice(-2);
 
       const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
         .toString()
-        .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
+        .padStart(2, "0")}${"00"}`;
       setTask({
         ...task,
         DeadLineTime: formattedTime,
         timeforView: newTime,
       });
     }
-  };
-
-  const handleFocusCreateTodo = () => {
-    setTask({
-      ...task,
-      DeadLineTime: getcurrentTime,
-    });
   };
 
   // const handleBlur = (event) => {
