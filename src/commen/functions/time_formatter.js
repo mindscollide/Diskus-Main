@@ -101,3 +101,12 @@ export const getHoursMinutesSec = (date) => {
     return formattedTime;
   }
 };
+
+export const incrementDateforPropsedMeeting = (date) => {
+  if (date instanceof Date && !isNaN(date)) {
+    let newDate = new Date();
+    newDate.setDate(date.getDate() + 1);
+    let dateFormat = newDate.toISOString().slice(0, 10).replace(/-/g, "");
+    return { DateGMT: newDate, dateFormat };
+  }
+};

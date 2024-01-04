@@ -64,6 +64,7 @@ import {
   getEndTimeWitlCeilFunction,
   getStartTimeWithCeilFunction,
   getTimeWithCeilFunction,
+  incrementDateforPropsedMeeting,
 } from "../../../../../commen/functions/time_formatter";
 import { endDateTimeMeetingCalender } from "../../../../../commen/functions/date_formater";
 
@@ -115,12 +116,12 @@ const MeetingDetails = ({
   const getCurrentDateforMeeting = getCurrentDate();
   const [rows, setRows] = useState([
     {
-      selectedOption: "",
-      dateForView: "",
-      startDate: "",
-      startTime: "",
-      endDate: "",
-      endTime: "",
+      selectedOption: getCurrentDateforMeeting.dateFormat,
+      dateForView: getCurrentDateforMeeting.DateGMT,
+      startDate: startTime?.formattedTime,
+      startTime: startTime?.newFormatTime,
+      endDate: getEndTime?.formattedTime,
+      endTime: getEndTime?.newFormatTime,
     },
   ]);
   //For Custom language datepicker
@@ -412,22 +413,28 @@ const MeetingDetails = ({
 
   const addRow = () => {
     const lastRow = rows[rows.length - 1];
+
     if (isValidRow(lastRow)) {
+      let { DateGMT, dateFormat } = incrementDateforPropsedMeeting(
+        lastRow.dateForView
+      );
       setRows([
         ...rows,
         {
-          selectedOption: "",
-          dateForView: "",
-          startDate: "",
-          startTime: "",
-          endDate: "",
-          endTime: "",
+          selectedOption: dateFormat,
+          dateForView: DateGMT,
+          startDate: startTime?.formattedTime,
+          startTime: startTime?.newFormatTime,
+          endDate: getEndTime?.formattedTime,
+          endTime: getEndTime?.newFormatTime,
         },
       ]);
     }
   };
 
+  //Validation For Checking that the Row Should Not Be Empty Before Inserting the Another
   const isValidRow = (row) => {
+    console.log(row, "isValidRowisValidRowisValidRow");
     return (
       row.selectedOption !== "" && row.startDate !== "" && row.endDate !== ""
     );

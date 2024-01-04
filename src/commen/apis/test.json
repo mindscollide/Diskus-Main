@@ -1,17 +1,13 @@
 {
-  "MeetingID": 0,
+  "MeetingID": 2599,
+  "SendResponsebyDate": "",
   "ProposedDates": [
     {
-      "ProposedDateID": 928,
-      "ProposedDate": "20240102",
-      "StartTime": "100000",
-      "EndTime": "110000"
-    },
-    {
-      "ProposedDateID": 929,
       "ProposedDate": "20240104",
-      "StartTime": "095300",
-      "EndTime": "125300"
-    }
+      "StartTime": "160000",
+      "EndTime": "165800",
+      "proposedDateID": 0
+    },
+    { "ProposedDate": "20240105", "StartTime": "160000", "EndTime": "170000" }
   ]
 }
