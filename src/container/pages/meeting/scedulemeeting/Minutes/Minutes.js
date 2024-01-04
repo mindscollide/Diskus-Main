@@ -256,9 +256,10 @@ const Minutes = ({
     multiple: true,
     showUploadList: false,
     onChange(data) {
-      const { status } = data.file;
+      console.log(data, "multiplemultiple");
       let fileSizeArr;
       if (fileAttachments.length > 9) {
+        console.log(fileAttachments, "fileAttachmentsfileAttachments");
         setOpen({
           flag: true,
           message: t("Not-allowed-more-than-10-files"),
@@ -370,7 +371,7 @@ const Minutes = ({
   //Edit Button Function
   const handleEditFunc = async (data) => {
     console.log(data, "handleEditFunchandleEditFunc");
-    // setupdateData(data);
+    setupdateData(data);
     // const strippedMinutesDetails = data.minutesDetails.replace(/<[^>]*>/g, "");
     if (data.minutesDetails !== "") {
       setAddNoteFields({
@@ -956,6 +957,10 @@ const Minutes = ({
                           >
                             {fileAttachments.length > 0
                               ? fileAttachments.map((data, index) => {
+                                  console.log(
+                                    fileAttachments,
+                                    "fileAttachmentsfileAttachments"
+                                  );
                                   return (
                                     <>
                                       <Col
