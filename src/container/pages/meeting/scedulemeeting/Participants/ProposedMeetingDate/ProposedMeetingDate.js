@@ -49,7 +49,7 @@ const ProposedMeetingDate = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const calendRef = useRef();
-  const startTime = getStartTimeWithCeilFunction();
+  const getStartTime = getStartTimeWithCeilFunction();
   const getEndTime = getEndTimeWitlCeilFunction();
   const getCurrentDateforMeeting = getCurrentDate();
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -68,10 +68,7 @@ const ProposedMeetingDate = ({
   const prposedMeetingUnsavedModal = useSelector(
     (state) => state.NewMeetingreducer.prposedMeetingUnsavedModal
   );
-  console.log(
-    getCurrentDateforMeeting,
-    "getCurrentDateforMeetinggetCurrentDateforMeeting"
-  );
+
   const [viewProposedModal, setViewProposedModal] = useState({
     Title: "",
     Description: "",
@@ -91,10 +88,6 @@ const ProposedMeetingDate = ({
   });
 
   const [endDateError, setEndDateError] = useState(false);
-  console.log({ getCurrentDateforMeeting }, "getCurrentDateforMeeting");
-  console.log({ getEndTime }, "getCurrentDateforMeeting");
-
-  console.log({ startTime }, "getCurrentDateforMeeting");
 
   const [rows, setRows] = useState([
     {
@@ -171,14 +164,14 @@ const ProposedMeetingDate = ({
   }, [getAllMeetingDetails]);
 
   const changeDateStartHandler = (date, index) => {
-    let meetingDateValueFormat = new DateObject(date);
+    let newDateFormat = new Date(date);
     let DateDate = new DateObject(date).format("YYYYMMDD");
     const updatedRows = [...rows];
     if (index > 0 && DateDate < updatedRows[index - 1].selectedOption) {
       return;
     } else {
       updatedRows[index].selectedOption = DateDate.slice(0, 8);
-      updatedRows[index].selectedOptionView = meetingDateValueFormat;
+      updatedRows[index].selectedOptionView = newDateFormat;
       updatedRows[index].isComing = false;
       updatedRows[index].proposedDateID = 0;
 
@@ -188,9 +181,11 @@ const ProposedMeetingDate = ({
 
   const handleStartTimeChange = (index, date) => {
     let newDate = new Date(date);
-    console.log(newDate, "handleStartDateChangehandleStartDateChange");
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const getFormattedTime = getHoursMinutesSec(newDate);
+      const hours = ("0" + newDate.getHours()).slice(-2);
+      const minutes = ("0" + newDate.getMinutes()).slice(-2);
+      // Format the time as HH:mm:ss
+      const formattedTime = `${hours}${minutes}${"00"}`;
 
       const updatedRows = [...rows];
 
@@ -199,7 +194,7 @@ const ProposedMeetingDate = ({
         updatedRows[index - 1].selectedOption ===
           updatedRows[index].selectedOption
       ) {
-        if (getFormattedTime <= updatedRows[index - 1].endDate) {
+        if (formattedTime <= updatedRows[index - 1].endDate) {
           setOpen({
             flag: true,
             message: t(
@@ -210,7 +205,7 @@ const ProposedMeetingDate = ({
         } else {
           if (
             updatedRows[index].endDate !== "" &&
-            getFormattedTime >= updatedRows[index].endDate
+            formattedTime >= updatedRows[index].endDate
           ) {
             console.log("handleStartDateChange");
             setOpen({
@@ -221,7 +216,7 @@ const ProposedMeetingDate = ({
             });
             return;
           } else {
-            updatedRows[index].startDate = getFormattedTime;
+            updatedRows[index].startDate = formattedTime;
             updatedRows[index].startDateView = newDate;
             updatedRows[index].isComing = false;
             updatedRows[index].proposedDateID = 0;
@@ -232,7 +227,7 @@ const ProposedMeetingDate = ({
       } else {
         if (
           updatedRows[index].endDate !== "" &&
-          getFormattedTime >= updatedRows[index].endDate
+          formattedTime >= updatedRows[index].endDate
         ) {
           setOpen({
             flag: true,
@@ -242,7 +237,7 @@ const ProposedMeetingDate = ({
           });
           return;
         } else {
-          updatedRows[index].startDate = getFormattedTime;
+          updatedRows[index].startDate = formattedTime;
           updatedRows[index].startDateView = newDate;
           updatedRows[index].isComing = false;
           updatedRows[index].proposedDateID = 0;
@@ -309,7 +304,6 @@ const ProposedMeetingDate = ({
   const addRow = () => {
     if (rows.length < 5) {
       const lastRow = rows[rows.length - 1];
-      console.log(lastRow, "lastRowlastRowlastRow");
       if (isValidRow(lastRow)) {
         let { dateFormat, DateGMT } = incrementDateforPropsedMeeting(
           lastRow.selectedOptionView
@@ -318,11 +312,11 @@ const ProposedMeetingDate = ({
           ...rows,
           {
             selectedOption: dateFormat,
-            startDate: startTime?.formattedTime,
+            startDate: getStartTime?.formattedTime,
             endDate: getEndTime?.formattedTime,
             selectedOptionView: DateGMT,
             endDateView: getEndTime?.newFormatTime,
-            startDateView: startTime?.newFormatTime,
+            startDateView: getStartTime?.newFormatTime,
           },
         ]);
       }
@@ -473,14 +467,14 @@ const ProposedMeetingDate = ({
           setRows(newDataforView);
         }
       } else {
-        const updatedRows = [...rows];
-        updatedRows[0].selectedOption = getCurrentDateforMeeting?.dateFormat;
-        updatedRows[0].selectedOptionView = getCurrentDateforMeeting?.DateGMT;
-        updatedRows[0].startDate = startTime?.formattedTime;
-        updatedRows[0].startDateView = startTime?.newFormatTime;
-        updatedRows[0].endDate = getEndTime?.formattedTime;
-        updatedRows[0].endDateView = getEndTime?.newFormatTime;
-        setRows(updatedRows);
+        // const updatedRows = [...rows];
+        // updatedRows[0].selectedOption = getCurrentDateforMeeting?.dateFormat;
+        // updatedRows[0].selectedOptionView = getCurrentDateforMeeting?.DateGMT;
+        // updatedRows[0].startDate = getStartTime?.formattedTime;
+        // updatedRows[0].startDateView = getStartTime?.newFormatTime;
+        // updatedRows[0].endDate = getEndTime?.formattedTime;
+        // updatedRows[0].endDateView = getEndTime?.newFormatTime;
+        // setRows(updatedRows);
       }
     } catch (error) {
       console.error(error);
@@ -495,8 +489,8 @@ const ProposedMeetingDate = ({
       const updatedRows = [...rows];
       updatedRows[0].selectedOption = getCurrentDateforMeeting?.dateFormat;
       updatedRows[0].selectedOptionView = getCurrentDateforMeeting?.DateGMT;
-      updatedRows[0].startDate = startTime?.formattedTime;
-      updatedRows[0].startDateView = startTime?.newFormatTime;
+      updatedRows[0].startDate = getStartTime?.formattedTime;
+      updatedRows[0].startDateView = getStartTime?.newFormatTime;
       updatedRows[0].endDate = getEndTime?.formattedTime;
       updatedRows[0].endDateView = getEndTime?.newFormatTime;
       setRows(updatedRows);

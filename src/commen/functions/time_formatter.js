@@ -18,7 +18,8 @@ export const getStartTimeWithCeilFunction = () => {
 
   // Calculate the next hour using the ceil function
   const nextHour = Math.ceil(newDate.getHours() + newDate.getMinutes() / 60);
-  const formattedTime = `${String(nextHour).padStart(2, "0")}0000`;
+  const formattedTime =
+    nextHour === 24 ? `000000` : `${String(nextHour).padStart(2, "0")}0000`;
 
   // Set the new hour and minutes in the Date object
   let newFormatTime = new Date(newDate.setHours(nextHour, 0, 0, 0));
@@ -39,7 +40,8 @@ export const getEndTimeWitlCeilFunction = () => {
   // Set the new hour and minutes in the Date object
 
   // Format the time as HH:mm:ss
-  const formattedTime = `${String(nextHour).padStart(2, "0")}0000`;
+  const formattedTime =
+    nextHour === 24 ? `000000` : `${String(nextHour).padStart(2, "0")}0000`;
   let newFormatTime = new Date(newDate.setHours(nextHour, 0, 0, 0));
 
   return { newFormatTime, formattedTime };
@@ -106,7 +108,10 @@ export const incrementDateforPropsedMeeting = (date) => {
   if (date instanceof Date && !isNaN(date)) {
     let newDate = new Date();
     newDate.setDate(date.getDate() + 1);
-    let dateFormat = newDate.toISOString().slice(0, 10).replace(/-/g, "");
+    let year = newDate.getFullYear();
+    let month = `0${newDate.getMonth() + 1}`.slice(-2); // Months are 0-indexed, so adding 1
+    let day = `0${newDate.getDate()}`.slice(-2);
+    let dateFormat = `${year}${month}${day}`;
     return { DateGMT: newDate, dateFormat };
   }
 };

@@ -458,7 +458,7 @@ const EmailValidation = () => {
                     />
                   </Col>
                 </Row>
-                <Row className="d-flex mt-3 justify-content-center">
+                {/* <Row className="d-flex mt-3 justify-content-center">
                   <Col
                     sm={12}
                     lg={12}
@@ -471,7 +471,7 @@ const EmailValidation = () => {
                       className={styles["subscribNow_button_EmailVerify"]}
                     />
                   </Col>
-                </Row>
+                </Row> */}
               </Col>
             </Paper>
           </Col>

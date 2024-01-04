@@ -233,7 +233,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
         setDropdowndata([]);
       }
     }
-  }, [NewMeetingreducer.AllUserCommitteesGroupsData]);
+  }, [NewMeetingreducer.getAllCommitteeAndGroupPartcipants]);
 
   const onChangeSearch = (e) => {
     setParticipantUsers(e.target.value.trimStart());

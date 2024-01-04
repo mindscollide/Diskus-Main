@@ -26,6 +26,7 @@ import {
   TimeSendingFormat,
   DateSendingFormat,
   createConvert,
+  get_CurrentDateTime,
 } from "../../../../commen/functions/date_formater";
 import CustomUpload from "../../../../components/elements/upload/Upload";
 import { Row, Col, Container } from "react-bootstrap";
@@ -47,13 +48,15 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //For Localization
   const { t } = useTranslation();
   const timePickerRef = useRef();
+  const { currentTime, current_Date, dateObject, current_value } =
+    get_CurrentDateTime();
   const [fileSize, setFileSize] = useState(0);
   const [visible, setVisible] = useState(false);
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
   const [isCreateTodo, setIsCreateTodo] = useState(true);
   const [fileForSend, setFileForSend] = useState([]);
   const [createTodoTime, setCreateTodoTime] = useState("");
-  const [createTodoDate, setCreateTodoDate] = useState("");
+  const [createTodoDate, setCreateTodoDate] = useState(current_Date);
   const state = useSelector((state) => state);
   const { toDoListReducer, CommitteeReducer } = state;
   const currentDate = new Date();
@@ -71,7 +74,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     message: "",
   });
 
-  const [toDoDate, setToDoDate] = useState("");
+  const [toDoDate, setToDoDate] = useState(current_value);
   const [createTaskID, setCreateTaskID] = useState(0);
 
   //For Custom language datepicker
@@ -102,10 +105,10 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     Title: "",
     Description: "",
     IsMainTask: true,
-    DeadLineDate: "",
-    DeadLineTime: "",
+    DeadLineDate: current_Date,
+    DeadLineTime: currentTime,
     CreationDateTime: "",
-    timeforView: "",
+    timeforView: dateObject,
   });
   //To Set task Creater ID
   const [TaskCreatorID, setTaskCreatorID] = useState(0);

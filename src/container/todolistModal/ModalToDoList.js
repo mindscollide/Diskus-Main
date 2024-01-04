@@ -17,7 +17,10 @@ import {
   Notification,
   InputSearchFilter,
 } from "./../../components/elements";
-import { createConvert } from "./../../commen/functions/date_formater";
+import {
+  createConvert,
+  get_CurrentDateTime,
+} from "./../../commen/functions/date_formater";
 import CustomUpload from "./../../components/elements/upload/Upload";
 import { Row, Col, Container } from "react-bootstrap";
 import {
@@ -35,10 +38,12 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const { t } = useTranslation();
   const [fileSize, setFileSize] = useState(0);
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
+  const { currentTime, current_Date, dateObject, current_value } =
+    get_CurrentDateTime();
   const [isCreateTodo, setIsCreateTodo] = useState(true);
   const [fileForSend, setFileForSend] = useState([]);
   const [createTodoTime, setCreateTodoTime] = useState("");
-  const [createTodoDate, setCreateTodoDate] = useState("");
+  const [createTodoDate, setCreateTodoDate] = useState(current_Date);
   const state = useSelector((state) => state);
   const { toDoListReducer } = state;
   const currentDate = new Date();
@@ -56,7 +61,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     message: "",
   });
 
-  const [toDoDate, setToDoDate] = useState("");
+  const [toDoDate, setToDoDate] = useState(current_value);
 
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -86,10 +91,10 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     Title: "",
     Description: "",
     IsMainTask: true,
-    DeadLineDate: "",
-    DeadLineTime: "",
+    DeadLineDate: current_Date,
+    DeadLineTime: currentTime,
     CreationDateTime: "",
-    timeforView: "",
+    timeforView: dateObject,
   });
   //To Set task Creater ID
   const [TaskCreatorID, setTaskCreatorID] = useState(0);
@@ -569,7 +574,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const handleTimeChange = (newTime) => {
     let newDate = new Date(newTime);
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getUHours()).slice(-2);
+      const hours = ("0" + newDate.getHours()).slice(-2);
       const minutes = ("0" + newDate.getMinutes()).slice(-2);
 
       const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
@@ -646,7 +651,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         calendar={calendarValue}
                         locale={localValue}
                         format="hh:mm A"
-                        selected={task.timeforView}
+                        // selected={task.timeforView}
                         render={<CustomInput />}
                         plugins={[<TimePicker hideSeconds />]}
                         onChange={handleTimeChange}
