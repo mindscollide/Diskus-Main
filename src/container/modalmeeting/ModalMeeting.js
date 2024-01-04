@@ -101,7 +101,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       PK_UID: 0,
     },
     MeetingAttendeeRole: {
-      PK_MARID: 0,
+      PK_MARID: 2,
     },
     AttendeeAvailability: {
       PK_AAID: 1,
@@ -116,7 +116,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
 
   // for   select participant Role Name
-  const [participantRoleName, setParticipantRoleName] = useState("");
+  const [participantRoleName, setParticipantRoleName] = useState("Participant");
+  const [participantRoleID, setParticipantRoleID] = useState(2);
 
   // for   added participant  Name list
   const [addedParticipantNameList, setAddedParticipantNameList] = useState([]);
@@ -997,15 +998,19 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       });
     } catch (error) {}
   }, [assignees.RemindersData]);
-
+  console.log(
+    participantRoleID,
+    "addedParticipantNameListaddedParticipantNameListaddedParticipantNameListaddedParticipantNameList"
+  );
   // for attendies Role handler
   const assigntRoleAttendies = (e, value) => {
     setParticipantRoleName(value);
     let user = participantOptionsWithIDs;
     if (user !== undefined) {
       if (participantOptionsWithIDs.length > 0) {
-        participantOptionsWithIDs.map((data, index) => {
+        participantOptionsWithIDs.forEach((data, index) => {
           if (data.label === value) {
+            // setParticipantRoleID(data.id);
             let newData = {
               User: {
                 PK_UID: meetingAttendees.User.PK_UID,
@@ -1140,7 +1145,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     setOnclickFlag(false);
     setTaskAssignedToInput(e.target.value.trimStart());
   };
-
+  console.log(meetingAttendees, "meetingAttendeesmeetingAttendees");
   const searchFilterHandler = (value) => {
     // let allAssignees;
     if (Number(checkFlag) === 6) {
@@ -1231,6 +1236,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       }
     }
   };
+
   // for add Attendees handler
   const addAttendees = () => {
     let user1 = createMeeting.MeetingAttendees;
@@ -1246,7 +1252,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         });
         setTaskAssignedTo(0);
         setTaskAssignedName("");
-        setParticipantRoleName("");
+        setParticipantRoleName("Participant");
+        setParticipantRoleID(2);
         setTaskAssignedToInput("");
       } else {
         user1.push({
@@ -1254,14 +1261,14 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
             PK_UID: taskAssignedTo,
           },
           MeetingAttendeeRole: {
-            PK_MARID: meetingAttendees.MeetingAttendeeRole.PK_MARID,
+            PK_MARID: participantRoleID,
           },
           AttendeeAvailability: {
             PK_AAID: 1,
           },
         });
         if (meetingAttendeesList.length > 0) {
-          meetingAttendeesList.map((data, index) => {
+          meetingAttendeesList.forEach((data, index) => {
             if (data.pK_UID === taskAssignedTo) {
               List.push({
                 name: data.name,
@@ -1275,14 +1282,14 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           });
         }
 
-        setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
+        setCreateMeeting({ ...createMeeting, MeetingAttendees: user1 });
         setAddedParticipantNameList(List);
         let newData = {
           User: {
             PK_UID: 0,
           },
           MeetingAttendeeRole: {
-            PK_MARID: 0,
+            PK_MARID: 2,
           },
           AttendeeAvailability: {
             PK_AAID: 1,
@@ -1291,7 +1298,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         setMeetingAttendees(newData);
         setTaskAssignedTo(0);
         setTaskAssignedName("");
-        setParticipantRoleName("");
+        setParticipantRoleName("Participant");
+        // setParticipantRoleID(2);
         setTaskAssignedToInput("");
       }
     } else {
@@ -1309,7 +1317,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         }, 4000);
         setTaskAssignedTo(0);
         setTaskAssignedName("");
-        setParticipantRoleName("");
+        setParticipantRoleName("Participant");
+        // setParticipantRoleID(2);
         setTaskAssignedToInput("");
       }
     }

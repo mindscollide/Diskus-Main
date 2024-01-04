@@ -124,7 +124,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       PK_UID: 0,
     },
     MeetingAttendeeRole: {
-      PK_MARID: 0,
+      PK_MARID: 2,
     },
     AttendeeAvailability: {
       PK_AAID: 1,
@@ -142,7 +142,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   const [selectedAttendeesName, setSelectedAttendeesName] = useState("");
 
   // for   select participant Role Name
-  const [participantRoleName, setParticipantRoleName] = useState("");
+  const [participantRoleName, setParticipantRoleName] = useState("Participant");
 
   //Reminder Stats
   const [reminderValue, setReminderValue] = useState("");
@@ -165,10 +165,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
   // for   added participant  Name list
   const [addedParticipantNameList, setAddedParticipantNameList] = useState([]);
-  console.log(
-    addedParticipantNameList,
-    "addedParticipantNameListaddedParticipantNameList"
-  );
   //Attendees States
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
@@ -413,7 +409,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     await setMeetingAgendaAttachments({
       MeetingAgendaAttachments: [],
     });
-    await setParticipantRoleName("");
+    await setParticipantRoleName("Participant");
     await setSelectedAttendeesName("");
     await setCreateMeeting({
       MeetingTitle: "",
@@ -435,7 +431,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         PK_UID: 0,
       },
       MeetingAttendeeRole: {
-        PK_MARID: 0,
+        PK_MARID: 2,
       },
       AttendeeAvailability: {
         PK_AAID: 1,
@@ -722,7 +718,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
   useEffect(() => {
     let newData = uploadReducer.uploadDocumentsList;
-    console.log(newData, "newDatanewDatanewData");
+
     let MeetingAgendaAttachment =
       meetingAgendaAttachments.MeetingAgendaAttachments;
     if (newData !== undefined && newData?.length !== 0 && newData !== null) {
@@ -917,7 +913,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     // let value = e.target.value;
     setParticipantRoleName(value);
     let user = participantOptionsWithIDs;
-    if (user != undefined) {
+    if (user !== undefined) {
       if (participantOptionsWithIDs.length > 0) {
         participantOptionsWithIDs.map((data, index) => {
           if (data.label === value) {
@@ -992,7 +988,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       setMeetingAgendaAttachments({
         MeetingAgendaAttachments: [],
       });
-      setParticipantRoleName("");
+      setParticipantRoleName(t("Participant"));
       setSelectedAttendeesName("");
       setCreateMeeting({
         MeetingTitle: "",
@@ -1021,7 +1017,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           PK_UID: 0,
         },
         MeetingAttendeeRole: {
-          PK_MARID: 0,
+          PK_MARID: 2,
         },
         AttendeeAvailability: {
           PK_AAID: 1,
@@ -1430,8 +1426,20 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         });
         setTaskAssignedTo(0);
         setTaskAssignedName("");
-        setParticipantRoleName("");
+        setParticipantRoleName("Participant");
         setTaskAssignedToInput("");
+        let newData = {
+          User: {
+            PK_UID: 0,
+          },
+          MeetingAttendeeRole: {
+            PK_MARID: 2,
+          },
+          AttendeeAvailability: {
+            PK_AAID: 1,
+          },
+        };
+        setMeetingAttendees(newData);
       } else {
         user1.push({
           User: {
@@ -1465,7 +1473,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             PK_UID: 0,
           },
           MeetingAttendeeRole: {
-            PK_MARID: 0,
+            PK_MARID: 2,
           },
           AttendeeAvailability: {
             PK_AAID: 1,
@@ -1474,7 +1482,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         setMeetingAttendees(newData);
         setTaskAssignedTo(0);
         setTaskAssignedName("");
-        setParticipantRoleName("");
+        setParticipantRoleName("Participant");
         setTaskAssignedToInput("");
       }
     } else {
@@ -1492,7 +1500,19 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         }, 4000);
         setTaskAssignedTo(0);
         setTaskAssignedName("");
-        setParticipantRoleName("");
+        setParticipantRoleName("Participant");
+        let newData = {
+          User: {
+            PK_UID: 0,
+          },
+          MeetingAttendeeRole: {
+            PK_MARID: 2,
+          },
+          AttendeeAvailability: {
+            PK_AAID: 1,
+          },
+        };
+        setMeetingAttendees(newData);
         setTaskAssignedToInput("");
       }
     }
@@ -1557,7 +1577,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       await setMeetingAgendaAttachments({
         MeetingAgendaAttachments: [],
       });
-      await setParticipantRoleName("");
+      await setParticipantRoleName("Participant");
       await setSelectedAttendeesName("");
       await setCreateMeeting({
         MeetingTitle: "",
@@ -1579,7 +1599,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           PK_UID: 0,
         },
         MeetingAttendeeRole: {
-          PK_MARID: 0,
+          PK_MARID: 2,
         },
         AttendeeAvailability: {
           PK_AAID: 1,
@@ -1630,7 +1650,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     setMeetingAgendaAttachments({
       MeetingAgendaAttachments: [],
     });
-    setParticipantRoleName("");
+    setParticipantRoleName("Participant");
     setSelectedAttendeesName("");
     setCreateMeeting({
       MeetingTitle: "",
@@ -1659,7 +1679,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         PK_UID: 0,
       },
       MeetingAttendeeRole: {
-        PK_MARID: 0,
+        PK_MARID: 2,
       },
       AttendeeAvailability: {
         PK_AAID: 1,
@@ -1702,7 +1722,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     setMeetingAgendaAttachments({
       MeetingAgendaAttachments: [],
     });
-    setParticipantRoleName("");
+    setParticipantRoleName("Participant");
     setSelectedAttendeesName("");
     setCreateMeeting({
       MeetingTitle: "",
@@ -1731,7 +1751,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         PK_UID: 0,
       },
       MeetingAttendeeRole: {
-        PK_MARID: 0,
+        PK_MARID: 2,
       },
       AttendeeAvailability: {
         PK_AAID: 1,
@@ -1766,7 +1786,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         await setMeetingAgendaAttachments({
           MeetingAgendaAttachments: [],
         });
-        await setParticipantRoleName("");
+        await setParticipantRoleName("Participant");
         await setSelectedAttendeesName("");
         await setCreateMeeting({
           MeetingTitle: "",
@@ -1788,7 +1808,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             PK_UID: 0,
           },
           MeetingAttendeeRole: {
-            PK_MARID: 0,
+            PK_MARID: 2,
           },
           AttendeeAvailability: {
             PK_AAID: 1,
@@ -1827,7 +1847,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         await setMeetingAgendaAttachments({
           MeetingAgendaAttachments: [],
         });
-        await setParticipantRoleName("");
+        await setParticipantRoleName("Participant");
         await setSelectedAttendeesName("");
         await setCreateMeeting({
           MeetingTitle: "",
@@ -1849,7 +1869,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             PK_UID: 0,
           },
           MeetingAttendeeRole: {
-            PK_MARID: 0,
+            PK_MARID: 2,
           },
           AttendeeAvailability: {
             PK_AAID: 1,
