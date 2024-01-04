@@ -350,7 +350,7 @@ const ProposedMeetingDate = ({
       date: DateDate.slice(0, 8),
     });
   };
-
+  console.log(rows, "rowsrows");
   // Function to handle the save Proposed button click
   const handleSave = () => {
     let newArr = [];
@@ -369,7 +369,7 @@ const ProposedMeetingDate = ({
         proposedDateID: data.proposedDateID,
       });
     });
-
+    console.log(newArr, "newArrnewArrnewArr");
     // if (isAscendingOrder()) {
     let Data = {
       MeetingID: currentMeeting,
