@@ -19,7 +19,10 @@ import {
 import deleteButtonCreateMeeting from "../../assets/images/cancel_meeting_icon.svg";
 import CustomUpload from "./../../components/elements/upload/Upload";
 import moment from "moment";
-import { SaveNotesAPI } from "../../store/actions/Notes_actions";
+import {
+  SaveNotesAPI,
+  openAddNotesModal,
+} from "../../store/actions/Notes_actions";
 import { useTranslation } from "react-i18next";
 import StarIcon from "../../assets/images/Star.svg";
 import hollowstar from "../../assets/images/Hollowstar.svg";
@@ -518,7 +521,9 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
             setIsCreateNote(false);
             setIsAddNote(false);
           }}
-          setShow={setAddNewModal}
+          setShow={(value) => {
+            setAddNewModal(value);
+          }}
           ButtonTitle={ModalTitle}
           modalHeaderClassName={
             isCreateNote === true

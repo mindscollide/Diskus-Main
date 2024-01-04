@@ -42,6 +42,17 @@
   border: 2px;
 }
 
+/* Css Implemented on Notes Inner lines  */
+.talk-nav-icons:hover .talk_subIcon svg rect#Rectangle_830 {
+  fill: #fff !important;
+}
+.talk-nav-icons:hover .talk_subIcon svg rect#Rectangle_831 {
+  fill: #fff !important;
+}
+.talk-nav-icons:hover .talk_subIcon svg rect#Rectangle_832 {
+  fill: #fff !important;
+}
+
 .talk_subIcon_hidden {
   display: none;
   transition: 0.5s;

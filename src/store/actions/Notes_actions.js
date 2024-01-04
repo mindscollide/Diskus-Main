@@ -554,6 +554,7 @@ const ClearNotesResponseMessage = () => {
     type: actions.CLEAR_NOTES_RESPONSEMESSAGE,
   };
 };
+
 export {
   GetNotes,
   SaveNotesAPI,
