@@ -112,7 +112,8 @@ const UserSettings = () => {
   const { instance } = useMsal();
   const activeAccount = instance.getActiveAccount();
   const [authMicrosoftAccessToken, setAuthMicrosoftAccessToken] = useState("");
-  const [authMicrosoftRefreshToken, setAuthMicrosoftRefreshToken] = useState("");
+  const [authMicrosoftRefreshToken, setAuthMicrosoftRefreshToken] =
+    useState("");
 
   useEffect(() => {
     dispatch(getUserSetting(navigate, t));
@@ -450,6 +451,19 @@ const UserSettings = () => {
   const signInMicrowSoft = async (value) => {
     const response = await instance.loginPopup(loginRequest);
     if (response) {
+      const gettingKeyForSessionStorage = response.idTokenClaims.aud;
+      if (gettingKeyForSessionStorage) {
+        const sessionStorageKey =
+          "msal.token.keys." + gettingKeyForSessionStorage;
+        const sessionStorageKeyResponce = JSON.parse(
+          sessionStorage.getItem(sessionStorageKey)
+        );
+        const getSessionStorageRefreshToken = JSON.parse(
+          sessionStorage.getItem(sessionStorageKeyResponce.refreshToken[0])
+        );
+        setAuthMicrosoftRefreshToken(getSessionStorageRefreshToken.secret);
+      }
+      setAuthMicrosoftAccessToken(response.accessToken);
       setUserOptionsSettings({
         ...userOptionsSettings,
         AllowMicrosoftCalenderSync: value,
@@ -458,16 +472,35 @@ const UserSettings = () => {
     }
   };
 
-  const onChangeAllowMicrosoftCalenderSync = (e) => {
+  const onChangeAllowMicrosoftCalenderSync = async (e) => {
     const value = e.target.checked;
     if (value) {
       signInMicrowSoft(value);
     } else {
-      instance.logoutPopup();
-      setUserOptionsSettings({
-        ...userOptionsSettings,
-        AllowMicrosoftCalenderSync: value,
-      });
+      try {
+        // Initiate the logout process
+        await instance.logoutPopup();
+
+        // Check if the user is still authenticated after logout
+        const isAuthenticated = !!instance.getAllAccounts().length;
+
+        if (!isAuthenticated) {
+          setAuthMicrosoftAccessToken("");
+          setAuthMicrosoftRefreshToken("");
+
+          setUserOptionsSettings({
+            ...userOptionsSettings,
+            AllowMicrosoftCalenderSync: value,
+          });
+          // Perform any additional actions after successful logout
+        } else {
+          console.error("Logout failed: User is still authenticated");
+          // Handle the case where the user is still authenticated after logout
+        }
+      } catch (error) {
+        console.error("Logout failed:", error);
+        // Handle any errors that occur during logout
+      }
     }
   };
 
@@ -765,32 +798,6 @@ const UserSettings = () => {
       MicrosoftCalenderColor: e.target.value,
     });
   };
-
-  useEffect(() => {
-    try {
-      const storedDataAssecc = JSON.parse(sessionStorage.getItem(
-        "c1b5568d-27a5-4a25-a8f9-fb5e788cd5af.c5978316-9241-4527-b8f3-b75023242cf3-login.windows.net-accesstoken-545933ff-407a-44e5-b3ac-a73ace252364-c5978316-9241-4527-b8f3-b75023242cf3-openid profile email calendars.readwrite user.read--"
-      ));
-      const storedDataRefresh = JSON.parse(sessionStorage.getItem(
-        "c1b5568d-27a5-4a25-a8f9-fb5e788cd5af.c5978316-9241-4527-b8f3-b75023242cf3-login.windows.net-refreshtoken-545933ff-407a-44e5-b3ac-a73ace252364----"
-      ));
-      if(userOptionsSettings.AllowMicrosoftCalenderSync){
-          if (storedDataAssecc !== null &&storedDataAssecc !== undefined) {
-          setAuthMicrosoftAccessToken(storedDataAssecc.secret);
-          setAuthMicrosoftRefreshToken(storedDataRefresh.secret)
-        } else {
-          console.log("Data not found in session storage");
-        }
-      }else{
-        
-        setAuthMicrosoftAccessToken("");
-        setAuthMicrosoftRefreshToken("")
-      }
-     
-    } catch (error) {
-      console.log(error, "errorerrorerror");
-    }
-  }, [userOptionsSettings.AllowMicrosoftCalenderSync]);
 
   const updateOrganizationLevelSettings = async () => {
     let AllowMicrosoftCalenderSyncCall =
