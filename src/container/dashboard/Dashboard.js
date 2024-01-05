@@ -99,6 +99,7 @@ import {
   resolutionMQTTClosed,
   resolutionMQTTCreate,
 } from "../../store/actions/Resolution_actions";
+import { useWindowSize } from "../../commen/functions/test";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -143,11 +144,12 @@ const Dashboard = () => {
     DataRoomFileAndFoldersDetailsReducer,
   } = useSelector((state) => state);
   // const [socket, setSocket] = useState(Helper.socket);
+
   const navigate = useNavigate();
   let createrID = localStorage.getItem("userID");
   let currentOrganization = localStorage.getItem("organizationID");
   let currentUserName = localStorage.getItem("name");
-  const { Header, Footer, Sider, Content } = Layout;
+  const { Sider, Content } = Layout;
   //Translation
   const { t } = useTranslation();
 

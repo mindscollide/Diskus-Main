@@ -60,7 +60,7 @@ const CalendarPage = () => {
     LanguageReducer,
   } = state;
   const [calenderData, setCalenderDatae] = useState([]);
-  console.log("calenderDatacalenderData", calenderData);
+
   const [calendarView, setCalendarView] = useState(false);
   const [calendarViewModal, setCalendarViewModal] = useState(false);
   const [open, setOpen] = useState(false);
@@ -88,7 +88,6 @@ const CalendarPage = () => {
       ),
     currentDate.getDate()
   );
-  console.log("DateDate startDate", startDate);
 
   // Calculate the end date
   let endDate = new Date(
@@ -99,8 +98,6 @@ const CalendarPage = () => {
       ),
     currentDate.getDate()
   );
-
-  console.log("DateDate currentDatecurrentDate", currentDate);
 
   // for view modal  handler
   const viewModalHandler = async (value) => {
@@ -114,15 +111,13 @@ const CalendarPage = () => {
   };
   // calling Api for getting data for calendar
   useEffect(() => {
-    console.log("DateDate startDate", startDate);
-    console.log("DateDate endDate", endDate);
     let calendarData = {
       UserID: parseInt(userID),
       OrganizationID: parseInt(OrganizationID),
       StartDate: newDateFormaterAsPerUTC(startDate) + "000000",
       EndDate: newDateFormaterAsPerUTC(endDate) + "000000",
     };
-    console.log("DateDate calendarData", calendarData);
+
     setStartDataUpdate(newDateFormaterAsPerUTC(startDate));
     setEndDataUpdate(newDateFormaterAsPerUTC(endDate));
     dispatch(getCalendarDataResponse(navigate, t, calendarData, true));
@@ -162,9 +157,9 @@ const CalendarPage = () => {
         body === clsname
       ) {
         // setCalendarView(true);
-        // console.log("handleAddEventhandleAddEvent 5", open);
+        //
       } else {
-        // console.log("dx", clsname);
+        //
 
         if (open) {
         } else {
@@ -181,7 +176,6 @@ const CalendarPage = () => {
     let newDAte = moment(value._d).format("YYYY-MM-DD");
     setCalendarView(false);
     if (startDataUpdate > value._d) {
-      console.log("navigate", value._d);
       const date = new Date(value._d);
       let updateStartDate = new Date(
         date.getFullYear(),
@@ -202,7 +196,6 @@ const CalendarPage = () => {
       setStartDataUpdate(updateStartDate);
       dispatch(getCalendarDataResponse(navigate, t, calendarData, false));
     } else if (endDataUpdate < value._d) {
-      console.log("navigate", value._d);
       const date = new Date(value._d);
       let updateEndDate = new Date(
         date.getFullYear(),
@@ -234,7 +227,7 @@ const CalendarPage = () => {
     let officeEventColor = localStorage.getItem("officeEventColor");
     let googleEventColor = localStorage.getItem("googleEventColor");
     let diskusEventColor = localStorage.getItem("diskusEventColor");
-    console.log("Data", Data);
+
     let newList;
     if (Object.keys(calenderData).length > 0) {
       if (defaultState) {
@@ -248,7 +241,6 @@ const CalendarPage = () => {
     }
     if (Object.keys(Data).length > 0) {
       Data.map((cData, index) => {
-        console.log("cData", cData);
         let StartingTime = forMainCalendar(cData.eventDate + cData.startTime);
         let EndingTime = forMainCalendar(cData.eventDate + cData.endTime);
         let meetingStartTime = newTimeFormaterAsPerUTC(
@@ -459,15 +451,12 @@ const CalendarPage = () => {
 
       dispatch(clearResponseMessage());
     } else {
-      console.log("ResponseMessage Meeting");
       dispatch(HideNotificationMeetings());
       dispatch(clearResponseMessage());
     }
   }, [meetingIdReducer.ResponseMessage, assignees.ResponseMessage]);
 
   useEffect(() => {
-    console.log("Setopen", toDoListReducer.ResponseMessage);
-    console.log("Setopen", assignees.ResponseMessage);
     if (
       toDoListReducer.ResponseMessage != "" &&
       toDoListReducer.ResponseMessage != undefined &&
@@ -514,9 +503,6 @@ const CalendarPage = () => {
   }, [toDoListReducer.ResponseMessage, assignees.ResponseMessage]);
 
   useEffect(() => {
-    console.log("Setopen", getTodosStatus.ResponseMessage);
-    console.log("Setopen", getTodosStatus.UpdateTodoStatusMessage);
-    console.log("Setopen", getTodosStatus.UpdateTodoStatus);
     if (
       getTodosStatus.ResponseMessage != "" &&
       getTodosStatus.ResponseMessage != undefined &&
