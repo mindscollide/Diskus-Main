@@ -80,9 +80,9 @@ const ParentAgenda = ({
   const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
     (state) => state
   );
-  const getAllMeetingDetails = useSelector(
-    (state) => state.NewMeetingreducer.getAllMeetingDetails
-  );
+  // const getAllMeetingDetails = useSelector(
+  //   (state) => state.NewMeetingreducer.getAllMeetingDetails
+  // );
   let currentMeetingIDLS = Number(localStorage.getItem("currentMeetingLS"));
   let currentLanguage = localStorage.getItem("i18nextLng");
   const dispatch = useDispatch();
@@ -148,8 +148,8 @@ const ParentAgenda = ({
       agendaVotingID: 0,
       presenterID: allSavedPresenters[0]?.value,
       presenterName: allSavedPresenters[0]?.label,
-      startDate: "",
-      endDate: "",
+      startDate: rows[index].startDate,
+      endDate: rows[index].endDate,
       subSelectRadio: 1,
       subAgendaUrlFieldRadio: "",
       subAgendarequestContributorUrlName: "",
@@ -349,24 +349,26 @@ const ParentAgenda = ({
 
   useEffect(() => {
     if (
-      getAllMeetingDetails !== null &&
-      getAllMeetingDetails !== undefined &&
-      getAllMeetingDetails.length !== 0 &&
-      Object.keys(getAllMeetingDetails) !== 0
+      NewMeetingreducer.getAllMeetingDetails !== null &&
+      NewMeetingreducer.getAllMeetingDetails !== undefined &&
+      NewMeetingreducer.getAllMeetingDetails.length !== 0 &&
+      Object.keys(NewMeetingreducer.getAllMeetingDetails) !== 0
     ) {
       const updatedAgendaItems = [...rows];
+      let advanceMeetingDetails =
+        NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails;
       let meetingStartTime =
-        getAllMeetingDetails.advanceMeetingDetails.meetingDates[0].meetingDate +
-        getAllMeetingDetails.advanceMeetingDetails.meetingDates[0].startTime;
+        advanceMeetingDetails.meetingDates[0].meetingDate +
+        advanceMeetingDetails.meetingDates[0].startTime;
       let meetingEndTime =
-        getAllMeetingDetails.advanceMeetingDetails.meetingDates[0].meetingDate +
-        getAllMeetingDetails.advanceMeetingDetails.meetingDates[0].endTime;
+        advanceMeetingDetails.meetingDates[0].meetingDate +
+        advanceMeetingDetails.meetingDates[0].endTime;
+      updatedAgendaItems[index].endDate = resolutionResultTable(meetingEndTime);
       updatedAgendaItems[index].startDate =
         resolutionResultTable(meetingStartTime);
-      updatedAgendaItems[index].endDate = resolutionResultTable(meetingEndTime);
       setRows(updatedAgendaItems);
     }
-  }, [getAllMeetingDetails]);
+  }, [NewMeetingreducer.getAllMeetingDetails]);
 
   useEffect(() => {
     if (currentLanguage !== undefined) {
@@ -659,8 +661,8 @@ const ParentAgenda = ({
                                   format="hh:mm A"
                                   calendar={calendarValue}
                                   locale={localValue}
-                                  value={data.endDate}
                                   selected={data.endDate}
+                                  value={data.endDate}
                                   plugins={[<TimePicker hideSeconds />]}
                                   onChange={(date) =>
                                     handleEndDateChange(index, date)
@@ -768,13 +770,13 @@ const ParentAgenda = ({
                                       {t("URL")}
                                     </span>
                                   </Radio>
-                                  <Radio value={3}>
+                                  {/* <Radio value={3}>
                                     <span
                                       className={styles["Radio_Button_options"]}
                                     >
                                       {t("Request from contributor")}
                                     </span>
-                                  </Radio>
+                                  </Radio> */}
                                 </Radio.Group>
                               </Col>
                               <Col

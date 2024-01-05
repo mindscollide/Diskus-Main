@@ -296,32 +296,64 @@ const SubAgendaMappingDragging = ({
     }
   };
 
-  useEffect(() => {
-    if (
-      getAllMeetingDetails !== null &&
-      getAllMeetingDetails !== undefined &&
-      getAllMeetingDetails.length !== 0 &&
-      Object.keys(getAllMeetingDetails) !== 0
-    ) {
-      const updatedAgendaItems = [...rows];
+  // useEffect(() => {
+  //   if (
+  //     getAllMeetingDetails !== null &&
+  //     getAllMeetingDetails !== undefined &&
+  //     getAllMeetingDetails.length !== 0 &&
+  //     Object.keys(getAllMeetingDetails) !== 0
+  //   ) {
+  //     const updatedAgendaItems = [...rows];
 
-      let meetingStartTime =
-        getAllMeetingDetails.advanceMeetingDetails.meetingDates[0].meetingDate +
-        getAllMeetingDetails.advanceMeetingDetails.meetingDates[0].startTime;
-      let meetingEndTime =
-        getAllMeetingDetails.advanceMeetingDetails.meetingDates[0].meetingDate +
-        getAllMeetingDetails.advanceMeetingDetails.meetingDates[0].endTime;
+  //     let meetingStartTime =
+  //       getAllMeetingDetails.advanceMeetingDetails.meetingDates[0].meetingDate +
+  //       getAllMeetingDetails.advanceMeetingDetails.meetingDates[0].startTime;
+  //     let meetingEndTime =
+  //       getAllMeetingDetails.advanceMeetingDetails.meetingDates[0].meetingDate +
+  //       getAllMeetingDetails.advanceMeetingDetails.meetingDates[0].endTime;
 
-      if (updatedAgendaItems[index].subAgenda.length > 0) {
-        updatedAgendaItems[index].subAgenda[expandSubIndex].startDate =
-          resolutionResultTable(meetingStartTime);
-        updatedAgendaItems[index].subAgenda[expandSubIndex].endDate =
-          resolutionResultTable(meetingEndTime);
+  //     if (updatedAgendaItems[index].subAgenda.length > 0) {
+  //       updatedAgendaItems[index].subAgenda[expandSubIndex].startDate =
+  //         resolutionResultTable(meetingStartTime);
+  //       updatedAgendaItems[index].subAgenda[expandSubIndex].endDate =
+  //         resolutionResultTable(meetingEndTime);
 
-        setRows(updatedAgendaItems);
-      }
-    }
-  }, [getAllMeetingDetails]);
+  //       setRows(updatedAgendaItems);
+  //     }
+  //   }
+  // }, [getAllMeetingDetails]);
+
+  // useEffect(() => {
+  //   if (
+  //     getAllMeetingDetails !== null &&
+  //     getAllMeetingDetails !== undefined &&
+  //     getAllMeetingDetails.length !== 0 &&
+  //     Object.keys(getAllMeetingDetails) !== 0
+  //   ) {
+  //     const updatedAgendaItems = [...rows];
+
+  //     if (updatedAgendaItems[index].subAgenda.length > 0) {
+  //       updatedAgendaItems[index].subAgenda.forEach((subAgenda, subIndex) => {
+  //         let meetingStartTime =
+  //           getAllMeetingDetails.advanceMeetingDetails.meetingDates[0]
+  //             .meetingDate +
+  //           getAllMeetingDetails.advanceMeetingDetails.meetingDates[0]
+  //             .startTime;
+  //         let meetingEndTime =
+  //           getAllMeetingDetails.advanceMeetingDetails.meetingDates[0]
+  //             .meetingDate +
+  //           getAllMeetingDetails.advanceMeetingDetails.meetingDates[0].endTime;
+
+  //         updatedAgendaItems[index].subAgenda[subIndex].startDate =
+  //           resolutionResultTable(meetingStartTime);
+  //         updatedAgendaItems[index].subAgenda[subIndex].endDate =
+  //           resolutionResultTable(meetingEndTime);
+  //       });
+  //     }
+
+  //     setRows(updatedAgendaItems);
+  //   }
+  // }, [getAllMeetingDetails]);
 
   useEffect(() => {
     if (currentLanguage !== undefined) {
@@ -839,7 +871,7 @@ const SubAgendaMappingDragging = ({
                                                         {t("URL")}
                                                       </span>
                                                     </Radio>
-                                                    <Radio value={3}>
+                                                    {/* <Radio value={3}>
                                                       <span
                                                         className={
                                                           styles[
@@ -851,7 +883,7 @@ const SubAgendaMappingDragging = ({
                                                           "Request from contributor"
                                                         )}
                                                       </span>
-                                                    </Radio>
+                                                    </Radio> */}
                                                   </Radio.Group>
                                                 </Col>
                                                 <Col

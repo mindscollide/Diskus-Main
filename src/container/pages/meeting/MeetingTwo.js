@@ -33,6 +33,7 @@ import NoMeetingsIcon from "../../../assets/images/No-Meetings.png";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import { useTranslation } from "react-i18next";
 import { Tooltip } from "antd";
+import { truncateString } from "../../../commen/functions/regex";
 import {
   Button,
   Table,
@@ -513,7 +514,8 @@ const NewMeeting = () => {
               // setIsOrganisers(isOrganiser);
             }}
           >
-            {text}
+            {/* {text} */}
+            {truncateString(text, 30)}
           </span>
         );
       },
