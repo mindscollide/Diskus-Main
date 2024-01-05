@@ -2,7 +2,8 @@ import React, { useRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Spin } from "antd";
 import { Container, Row, Col } from "react-bootstrap";
-import TodoMessageIcon1 from "../../../assets/images/Todomsg-1.png";
+import TodoMessageIcon1 from "../../../assets/images/DashboardNewTodo.svg";
+import noTask from "../../../assets/images/DashBoardTask.svg";
 import NoRecentActivity from "../../../assets/images/No-Recent-Activity.png";
 import IconAttachment from "../../../assets/images/AttachmentNotes.svg";
 import PlusButton from "../../../assets/images/PlusButton.svg";
@@ -1262,10 +1263,19 @@ const Home = () => {
                               0 ? (
                                 <ResultMessage
                                   icon={
-                                    <Mailbox className="notification-icon" />
+                                    <img
+                                      src={noTask}
+                                      alt=""
+                                      width={350}
+                                      draggable="false"
+                                    />
                                   }
-                                  subTitle={t("No-upcoming-events")}
-                                  className="notification-text"
+                                  subTitle={
+                                    <span className="UpcomingEvent">
+                                      {t("No-upcoming-events")}
+                                    </span>
+                                  }
+                                  // className="notification-text"
                                 />
                               ) : (
                                 upcomingEventsHandler(meetingIdReducer)
@@ -1381,14 +1391,26 @@ const Home = () => {
                     <ResultMessage
                       icon={
                         <img
-                          src={TodoMessageIcon1}
-                          height={210}
-                          width={250}
+                          src={noTask}
+                          width={450}
                           alt=""
                           draggable="false"
                         />
                       }
-                      title={t("No-task")}
+                      title={
+                        <span className="MainTitleClass">{t("No-task")}</span>
+                      }
+                      subTitle={
+                        <span className="SubtitleTodoMessege">
+                          {t("There-is-no-pending-task")}
+                        </span>
+                      }
+                      extra={[
+                        <Button
+                          text={t("Create-new-task")}
+                          className={styles["CreateNewTaskButton"]}
+                        />,
+                      ]}
                       className="NoTask"
                     />
                   </Paper>
@@ -1414,13 +1436,13 @@ const Home = () => {
                   <ResultMessage
                     icon={
                       <img
-                        src={NoRecentActivity}
-                        className="recent-activity-icon"
+                        src={TodoMessageIcon1}
+                        // className="recent-activity-icon"
+                        width={200}
                         alt=""
                         draggable="false"
                       />
                     }
-                    subTitle={t("No-activity")}
                     className="recent-activity-text"
                   />
                 ) : recentActivityData !== null &&
@@ -1840,15 +1862,15 @@ const Home = () => {
                           className="d-flex justify-content-center align-items-center flex-column"
                         >
                           <img
-                            src={NotesMainEmpty}
-                            width={150}
+                            src={noTask}
+                            width={450}
                             alt=""
                             draggable="false"
-                            height={150}
+                            height={350}
                           />
-                          <p className="emptystateNotesDashboard">
+                          {/* <p className="emptystateNotesDashboard">
                             {t("You-dont-have-any-notes")}
-                          </p>
+                          </p> */}
                         </Col>
                       </Row>
                     )}
