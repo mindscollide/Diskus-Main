@@ -284,7 +284,7 @@ body[dir="rtl"] label.MontserratSemiBold-600.todo-employee-name-card {
   overflow: hidden !important;
   word-wrap: break-word !important;
   text-overflow: ellipsis !important;
-  white-space: normal !important;
+  white-space: pre-wrap !important;
 }
 
 .crossIconTodoComment {

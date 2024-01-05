@@ -64,7 +64,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
   Quill.register(Size, true);
-  console.log("fileSizefileSize", fileSize);
+
   var FontAttributor = Quill.import("formats/font");
   var fonts = ["impact", "courier", "comic"];
   FontAttributor.whitelist = fonts;
@@ -86,7 +86,6 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   });
 
   const deleteFilefromAttachments = (data, index) => {
-    console.log(data, "datadatadatadatadatadata");
     let searchIndex = tasksAttachments.TasksAttachments;
     setFileForSend((prev) => {
       return prev.filter((fileData, index) => {
@@ -99,16 +98,14 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
       TasksAttachments: searchIndex,
     });
   };
-  console.log({ fileForSend, tasksAttachments }, "datadatadatadatadatadata");
 
   //for textfields validation
   const addNotesFieldHandler = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-    console.log("values", name, value);
+
     if (name === "Title" && value !== "") {
       let valueCheck = validateInput(value);
-      console.log(value, "Titlellee");
 
       if (valueCheck !== "") {
         setAddNoteFields({
@@ -230,7 +227,6 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   const uploadFilesToDo = (data) => {
     let fileSizeArr;
     if (Object.keys(tasksAttachments.TasksAttachments).length === 10) {
-      console.log("uploadedFile");
       setTimeout(
         setOpen({
           open: true,
@@ -250,10 +246,9 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
       const uploadFilePath = data.target.value;
       const uploadedFile = data.target.files[0];
       var ext = uploadedFile.name.split(".").pop();
-      console.log("uploadedFile12", uploadedFile.name, ext, uploadedFile.size);
+
       let file = tasksAttachments.TasksAttachments;
-      console.log("daatadaad", file);
-      console.log(uploadedFile, "daatadaad");
+
       if (
         ext === "doc" ||
         ext === "docx" ||
@@ -272,12 +267,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
         let size;
         if (file.length > 0) {
           file.map((filename, index) => {
-            console.log("uploadedFile", filename);
             if (filename.DisplayAttachmentName === uploadedFile.name) {
-              console.log(
-                "uploadedFile",
-                filename.DisplayAttachmentName === uploadedFile.name
-              );
               data = false;
             }
           });
@@ -429,7 +419,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           FK_OrganizationID: JSON.parse(OrganizationID),
           NotesAttachments: newData,
         };
-        console.log(Data, "addNoteFieldsaddNoteFieldsaddNoteFields");
+
         dispatch(SaveNotesAPI(navigate, Data, t, setAddNewModal));
       } else {
         setAddNewModal(false);
@@ -443,7 +433,6 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           NotesAttachments: notesAttachment,
         };
 
-        console.log(Data, "addNoteFieldsaddNoteFieldsaddNoteFields");
         dispatch(SaveNotesAPI(navigate, Data, t, setAddNewModal));
       }
     } else {
@@ -701,9 +690,9 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                                           data.DisplayAttachmentName.split(
                                             " "
                                           )[0];
-                                        console.log("extextext", ext);
+
                                         // let newext = JSON.parse(ext)
-                                        // console.log("extextext", newext)
+                                        //
 
                                         return (
                                           <Col

@@ -116,15 +116,15 @@ const MeetingDetails = ({
   const getCurrentDateforMeeting = getCurrentDate();
   const [rows, setRows] = useState([
     {
-      selectedOption: "",
-      dateForView: "",
-      startDate: "",
-      startTime: "",
-      endDate: "",
-      endTime: "",
+      selectedOption: getCurrentDateforMeeting.dateFormat,
+      dateForView: getCurrentDateforMeeting.DateGMT,
+      startDate: getStartTime?.formattedTime,
+      startTime: getStartTime?.newFormatTime,
+      endDate: getEndTime?.formattedTime,
+      endTime: getEndTime?.newFormatTime,
     },
   ]);
-  console.log({ rows }, "rowsrowsrowsrowsrowsrows");
+
   //For Custom language datepicker
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -170,24 +170,24 @@ const MeetingDetails = ({
     IsVideoCall: true,
   });
 
-  useEffect(() => {
-    if (Number(currentMeeting) === 0) {
-      const updatedRows = [...rows];
-      updatedRows[0].selectedOption =
-        currentMeeting === 0 ? getCurrentDateforMeeting.dateFormat : "";
-      updatedRows[0].dateForView =
-        currentMeeting === 0 ? getCurrentDateforMeeting.DateGMT : "";
-      updatedRows[0].startDate =
-        currentMeeting === 0 ? getStartTime?.formattedTime : "";
-      updatedRows[0].startTime =
-        currentMeeting === 0 ? getStartTime?.newFormatTime : "";
-      updatedRows[0].endDate =
-        currentMeeting === 0 ? getEndTime?.formattedTime : "";
-      updatedRows[0].endTime =
-        currentMeeting === 0 ? getEndTime?.newFormatTime : "";
-      setRows(updatedRows);
-    }
-  }, [currentMeeting]);
+  // useEffect(() => {
+  //   if (Number(currentMeeting) === 0) {
+  //     const updatedRows = [...rows];
+  //     updatedRows[0].selectedOption =
+  //       currentMeeting === 0 ? getCurrentDateforMeeting.dateFormat : "";
+  //     updatedRows[0].dateForView =
+  //       currentMeeting === 0 ? getCurrentDateforMeeting.DateGMT : "";
+  //     updatedRows[0].startDate =
+  //       currentMeeting === 0 ? getStartTime?.formattedTime : "";
+  //     updatedRows[0].startTime =
+  //       currentMeeting === 0 ? getStartTime?.newFormatTime : "";
+  //     updatedRows[0].endDate =
+  //       currentMeeting === 0 ? getEndTime?.formattedTime : "";
+  //     updatedRows[0].endTime =
+  //       currentMeeting === 0 ? getEndTime?.newFormatTime : "";
+  //     setRows(updatedRows);
+  //   }
+  // }, [currentMeeting]);
   // custom react select styles recurring
   const customStyles = {
     menuPortal: (base) => ({
@@ -287,6 +287,8 @@ const MeetingDetails = ({
 
       // Format the time as HH:mm:ss
       const formattedTime = `${hours}${minutes}${"00"}`;
+
+      console.log(formattedTime, "formattedTimeformattedTime");
 
       const updatedRows = [...rows];
 
@@ -437,7 +439,6 @@ const MeetingDetails = ({
 
   //Validation For Checking that the Row Should Not Be Empty Before Inserting the Another
   const isValidRow = (row) => {
-    console.log(row, "isValidRowisValidRowisValidRow");
     return (
       row.selectedOption !== "" && row.startDate !== "" && row.endDate !== ""
     );
@@ -563,6 +564,8 @@ const MeetingDetails = ({
         // EndTime: data.endDate,
       });
     });
+
+    console.log(rows, "rowsrowsrowsrowsrows");
     if (
       meetingDetails.MeetingTitle !== "" &&
       meetingDetails.MeetingType !== 0 &&

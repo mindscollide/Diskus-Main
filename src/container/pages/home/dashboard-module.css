@@ -1333,3 +1333,33 @@ body[dir="rtl"] h1.noteheading {
   width: 100%;
   text-align: right;
 }
+
+.MainTitleClass {
+  color: #49598c !important;
+}
+
+.SubtitleTodoMessege {
+  color: #767d9b !important;
+}
+
+.CreateNewTaskButton {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  color: #ffffff !important;
+  background: #2299ea !important;
+  border: none !important;
+}
+
+.CreateNewTaskButton:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  color: #ffffff !important;
+  background: #2299ea !important;
+  border: none !important;
+}
+
+.UpcomingEvent {
+  color: #2299ea !important;
+}

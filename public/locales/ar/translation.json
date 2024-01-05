@@ -1685,5 +1685,7 @@
   "All-agenda-contributors": "All Agenda Contributors",
   "Add-organizer": "Add Organizer",
   "Add-participant": "Add Participant",
-  "Add-agenda-contributor": "Add Agenda Contributor"
+  "Add-agenda-contributor": "Add Agenda Contributor",
+  "There-is-no-pending-task": "There is no pending task",
+  "Create-new-task": "Create new task"
 }
