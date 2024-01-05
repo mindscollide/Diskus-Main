@@ -250,7 +250,6 @@ const CreateToDoList = (navigate, object, t, setCreateTaskID, value) => {
                 };
                 await dispatch(createUpdateTaskDataRoomApi(navigate, Data, t));
               }
-              return Number(response.data.responseResult.tid);
               // if (value === 1) {
               //   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
 
