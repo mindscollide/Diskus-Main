@@ -288,6 +288,8 @@ const MeetingDetails = ({
       // Format the time as HH:mm:ss
       const formattedTime = `${hours}${minutes}${"00"}`;
 
+      console.log(formattedTime, "formattedTimeformattedTime");
+
       const updatedRows = [...rows];
 
       if (
@@ -563,6 +565,8 @@ const MeetingDetails = ({
         // EndTime: data.endDate,
       });
     });
+
+    console.log(rows, "rowsrowsrowsrowsrows");
     if (
       meetingDetails.MeetingTitle !== "" &&
       meetingDetails.MeetingType !== 0 &&

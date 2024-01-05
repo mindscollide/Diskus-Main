@@ -98,14 +98,16 @@ const ProposedMeetingDate = ({
 
   const [rows, setRows] = useState([
     {
-      selectedOption: "",
-      startDate: "",
-      endDate: "",
-      selectedOptionView: "",
-      endDateView: "",
-      startDateView: "",
+      selectedOption: getCurrentDateforMeeting?.dateFormat,
+      startDate: getStartTime?.formattedTime,
+      endDate: getEndTime?.formattedTime,
+      selectedOptionView: getCurrentDateforMeeting?.DateGMT,
+      endDateView: getEndTime?.newFormatTime,
+      startDateView: getStartTime?.newFormatTime,
     },
   ]);
+
+  console.log(rows, "");
 
   const callApis = async () => {
     let Data = {
@@ -191,6 +193,8 @@ const ProposedMeetingDate = ({
     console.log(newDate, "handleStartDateChangehandleStartDateChange");
     if (newDate instanceof Date && !isNaN(newDate)) {
       const getFormattedTime = getHoursMinutesSec(newDate);
+
+      console.log(getFormattedTime, "newArrnewArrnewArrnewArrnewArr");
 
       const updatedRows = [...rows];
 
@@ -357,10 +361,11 @@ const ProposedMeetingDate = ({
     });
   };
 
+  console.log(rows, "newArrnewArrnewArrnewArrnewArr");
+
   // Function to handle the save Proposed button click
   const handleSave = () => {
     let newArr = [];
-
     rows.forEach((data) => {
       newArr.push({
         ProposedDate: createConvert(data.selectedOption + data.startDate).slice(
@@ -375,6 +380,7 @@ const ProposedMeetingDate = ({
         proposedDateID: data.proposedDateID,
       });
     });
+    console.log(newArr, "newArrnewArrnewArrnewArrnewArr");
 
     // if (isAscendingOrder()) {
     let Data = {
@@ -382,7 +388,7 @@ const ProposedMeetingDate = ({
       SendResponsebyDate: sendResponseBy.date,
       ProposedDates: newArr,
     };
-    console.log(Data, "setProposedMeetingDateApiFunc");
+    console.log(Data, "newArrnewArrnewArrnewArrnewArr");
     dispatch(setProposedMeetingDateApiFunc(Data, navigate, t));
   };
 
@@ -490,18 +496,18 @@ const ProposedMeetingDate = ({
   console.log(rows, "rowsrowsrowsrowsrowsrowsrows");
 
   // Setting the Dates And Time Default
-  useEffect(() => {
-    if (isApiData === false) {
-      const updatedRows = [...rows];
-      updatedRows[0].selectedOption = getCurrentDateforMeeting?.dateFormat;
-      updatedRows[0].selectedOptionView = getCurrentDateforMeeting?.DateGMT;
-      updatedRows[0].startDate = getStartTime?.formattedTime;
-      updatedRows[0].startDateView = getStartTime?.newFormatTime;
-      updatedRows[0].endDate = getEndTime?.formattedTime;
-      updatedRows[0].endDateView = getEndTime?.newFormatTime;
-      setRows(updatedRows);
-    }
-  }, [isApiData]);
+  // useEffect(() => {
+  //   if (isApiData === false) {
+  //     const updatedRows = [...rows];
+  //     updatedRows[0].selectedOption = getCurrentDateforMeeting?.dateFormat;
+  //     updatedRows[0].selectedOptionView = getCurrentDateforMeeting?.DateGMT;
+  //     updatedRows[0].startDate = getStartTime?.formattedTime;
+  //     updatedRows[0].startDateView = getStartTime?.newFormatTime;
+  //     updatedRows[0].endDate = getEndTime?.formattedTime;
+  //     updatedRows[0].endDateView = getEndTime?.newFormatTime;
+  //     setRows(updatedRows);
+  //   }
+  // }, [isApiData]);
 
   return (
     <section>
