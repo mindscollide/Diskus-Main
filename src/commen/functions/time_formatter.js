@@ -18,8 +18,7 @@ export const getStartTimeWithCeilFunction = () => {
 
   // Calculate the next hour using the ceil function
   const nextHour = Math.ceil(newDate.getHours() + newDate.getMinutes() / 60);
-  const formattedTime =
-    nextHour === 24 ? `000000` : `${String(nextHour).padStart(2, "0")}0000`;
+  const formattedTime = `${String(nextHour).padStart(2, "0")}0000`;
 
   // Set the new hour and minutes in the Date object
   let newFormatTime = new Date(newDate.setHours(nextHour, 0, 0, 0));
@@ -40,8 +39,7 @@ export const getEndTimeWitlCeilFunction = () => {
   // Set the new hour and minutes in the Date object
 
   // Format the time as HH:mm:ss
-  const formattedTime =
-    nextHour === 24 ? `000000` : `${String(nextHour).padStart(2, "0")}0000`;
+  const formattedTime = `${String(nextHour).padStart(2, "0")}0000`;
   let newFormatTime = new Date(newDate.setHours(nextHour, 0, 0, 0));
 
   return { newFormatTime, formattedTime };
