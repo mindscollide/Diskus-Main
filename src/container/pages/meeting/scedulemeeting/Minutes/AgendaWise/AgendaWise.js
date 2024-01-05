@@ -669,36 +669,46 @@ const AgendaWise = ({
     dispatch(UpdateAgendaWiseMinutesApiFunc(navigate, UpdateDataAgendaWise, t));
 
     let newfile = [...previousFileIDs];
-    const uploadPromises = fileForSend.map(async (newData) => {
-      await dispatch(
-        uploadDocumentsMeetingAgendaWiseMinutesApi(
-          navigate,
-          t,
-          newData,
-          folderID,
-          newfile
-        )
+    if (Object.keys(fileForSend).length > 0) {
+      const uploadPromises = fileForSend.map(async (newData) => {
+        await dispatch(
+          uploadDocumentsMeetingAgendaWiseMinutesApi(
+            navigate,
+            t,
+            newData,
+            folderID,
+            newfile
+          )
+        );
+      });
+      // Wait for all promises to resolve
+      await Promise.all(uploadPromises);
+
+      let docsData = {
+        FK_MeetingAgendaMinutesID: Number(updateData.MinutesID),
+        FK_MDID: currentMeeting,
+        UpdateFileList: newfile.map((data, index) => {
+          return { PK_FileID: Number(data.pK_FileID) };
+        }),
+      };
+
+      dispatch(
+        SaveAgendaWiseDocumentsApiFunc(navigate, docsData, t, currentMeeting)
       );
-    });
+    } else if (newfile.length > 0) {
+      let docsData = {
+        FK_MeetingAgendaMinutesID: Number(updateData.MinutesID),
+        FK_MDID: currentMeeting,
+        UpdateFileList: newfile.map((data, index) => {
+          return { PK_FileID: Number(data.pK_FileID) };
+        }),
+      };
 
-    // Wait for all promises to resolve
-    await Promise.all(uploadPromises);
-    console.log(messages, "messagesmessages");
-    console.log(currentMeeting, "messagesmessages");
-
-    console.log(newfile, "messagesmessages");
-
-    let docsData = {
-      FK_MeetingAgendaMinutesID: Number(updateData.MinutesID),
-      FK_MDID: currentMeeting,
-      UpdateFileList: newfile.map((data, index) => {
-        return { PK_FileID: Number(data.pK_FileID) };
-      }),
-    };
-    console.log(docsData, "messagesmessages");
-    dispatch(
-      SaveAgendaWiseDocumentsApiFunc(navigate, docsData, t, currentMeeting)
-    );
+      dispatch(
+        SaveAgendaWiseDocumentsApiFunc(navigate, docsData, t, currentMeeting)
+      );
+    } else {
+    }
 
     setAgendaOptionValue({
       label: "",
