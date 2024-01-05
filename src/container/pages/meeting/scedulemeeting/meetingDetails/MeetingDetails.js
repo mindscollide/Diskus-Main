@@ -116,16 +116,14 @@ const MeetingDetails = ({
   const getCurrentDateforMeeting = getCurrentDate();
   const [rows, setRows] = useState([
     {
-      selectedOption:
-        currentMeeting === 0 ? getCurrentDateforMeeting.dateFormat : "",
-      dateForView: currentMeeting === 0 ? getCurrentDateforMeeting.DateGMT : "",
-      startDate: currentMeeting === 0 ? getStartTime?.formattedTime : "",
-      startTime: currentMeeting === 0 ? getStartTime?.newFormatTime : "",
-      endDate: currentMeeting === 0 ? getEndTime?.formattedTime : "",
-      endTime: currentMeeting === 0 ? getEndTime?.newFormatTime : "",
+      selectedOption: getCurrentDateforMeeting.dateFormat,
+      dateForView: getCurrentDateforMeeting.DateGMT,
+      startDate: getStartTime?.formattedTime,
+      startTime: getStartTime?.newFormatTime,
+      endDate: getEndTime?.formattedTime,
+      endTime: getEndTime?.newFormatTime,
     },
   ]);
-  console.log(rows, "rowsrowsrowsrows");
   //For Custom language datepicker
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -171,6 +169,22 @@ const MeetingDetails = ({
     IsVideoCall: true,
   });
 
+  // useEffect(() => {
+  //   const updatedRows = [...rows];
+  //   updatedRows[0].selectedOption =
+  //     currentMeeting === 0 ? getCurrentDateforMeeting.dateFormat : "";
+  //   updatedRows[0].dateForView =
+  //     currentMeeting === 0 ? getCurrentDateforMeeting.DateGMT : "";
+  //   updatedRows[0].startDate =
+  //     currentMeeting === 0 ? startTime?.formattedTime : "";
+  //   updatedRows[0].startTime =
+  //     currentMeeting === 0 ? startTime?.newFormatTime : "";
+  //   updatedRows[0].endDate =
+  //     currentMeeting === 0 ? getEndTime?.formattedTime : "";
+  //   updatedRows[0].endTime =
+  //     currentMeeting === 0 ? getEndTime?.newFormatTime : "";
+  //   setRows(updatedRows);
+  // }, []);
   // custom react select styles recurring
   const customStyles = {
     menuPortal: (base) => ({
@@ -265,12 +279,11 @@ const MeetingDetails = ({
     let newDate = new Date(date);
 
     if (newDate instanceof Date && !isNaN(newDate)) {
-      console.log(newDate, "handleStartDateChangehandleStartDateChange");
       const hours = ("0" + newDate.getHours()).slice(-2);
       const minutes = ("0" + newDate.getMinutes()).slice(-2);
+
       // Format the time as HH:mm:ss
       const formattedTime = `${hours}${minutes}${"00"}`;
-      console.log(formattedTime, "formattedTimeformattedTime");
 
       const updatedRows = [...rows];
 
