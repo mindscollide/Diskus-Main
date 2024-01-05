@@ -1,13 +1,24 @@
 {
-  "MeetingID": 2599,
-  "SendResponsebyDate": "",
-  "ProposedDates": [
-    {
-      "ProposedDate": "20240104",
-      "StartTime": "160000",
-      "EndTime": "165800",
-      "proposedDateID": 0
-    },
-    { "ProposedDate": "20240105", "StartTime": "160000", "EndTime": "170000" }
-  ]
+  "MeetingDetails": {
+    "MeetingID": 0,
+    "MeetingTitle": "Saif Meeting",
+    "MeetingType": { "PK_MTID": 4, "Type": "Board Meetings" },
+    "Location": "asdasd",
+    "Description": "asdasdasd",
+    "IsVideoChat": true,
+    "IsTalkGroup": false,
+    "OrganizationId": 417,
+    "MeetingDates": [
+      { "MeetingDate": "20240105", "StartTime": "060000", "EndTime": "070000" },
+      { "MeetingDate": "20240105", "StartTime": "060000", "EndTime": "080500" },
+      { "MeetingDate": "20240106", "StartTime": "060000", "EndTime": "070000" }
+    ],
+    "MeetingReminders": [4],
+    "Notes": "assaasas",
+    "AllowRSVP": true,
+    "NotifyOrganizerOnRSVP": true,
+    "ReucurringMeetingID": 1,
+    "VideoURL": "",
+    "MeetingStatusID": 11
+  }
 }
