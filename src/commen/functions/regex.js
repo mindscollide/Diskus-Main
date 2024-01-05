@@ -38,3 +38,7 @@ export const containsStringandNumericCharacters = (value) => {
   // Return the cleaned value
   return cleanedValue;
 };
+
+export const truncateString = (string, length) => {
+  return string.length < length ? string : `${string.slice(0, length - 3)}...`;
+};

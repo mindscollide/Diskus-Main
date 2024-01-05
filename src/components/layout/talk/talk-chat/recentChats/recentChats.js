@@ -833,7 +833,7 @@ const RecentChats = () => {
           </Col>
         </Row>
       ) : null}
-      {talkStateData.AllUserChats.Loading === true ||
+      {talkStateData.AllUserChats.Loading === true &&
       allChatData.length === 0 ? (
         <>
           {/* <Spin className="talk-overallchat-spinner" /> */}
