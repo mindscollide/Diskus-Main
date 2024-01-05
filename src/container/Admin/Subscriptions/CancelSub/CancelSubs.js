@@ -27,8 +27,6 @@ import { isHTML } from "../../../../commen/functions/html_formater";
 const CancelSubs = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const state = useSelector((state) => state);
-  // const {revokeprocess} = useSelector((state) => state);
   let revokeCancellationCheck = JSON.parse(
     localStorage.getItem("revokeCancellation")
   );
@@ -36,19 +34,17 @@ const CancelSubs = () => {
   const [revokeCancellation, setRevokeCancellation] = useState(
     revokeCancellationCheck ? true : false
   );
-  const [showalert, setShowalert] = useState(true);
   const [open, setOpen] = useState({
     open: false,
     message: "",
   });
   const [forrevokeCancel, setForRevokeCancel] = useState(false);
-  const [isCompletionOfContract, setCompletionOfContract] = useState(false);
   const [enableTextArea, setEnableTextArea] = useState(false);
   const [isReason, setReason] = useState("");
   const { GetSubscriptionPackage, adminReducer, LanguageReducer } = useSelector(
     (state) => state
   );
-  console.log("adminReduceradminReducer", GetSubscriptionPackage);
+
   const [maxAdminUser, setMaxAdminUser] = useState(0);
   const [maxBoardMembers, setBoardMembers] = useState(0);
   const [maxOtherUsers, setOtherUsers] = useState(0);
@@ -71,7 +67,6 @@ const CancelSubs = () => {
     setForRevokeCancel(false);
   };
   const modalClose = () => {
-    console.log("Bahar Click hua");
     setCancelDailogBox(false);
     setForRevokeCancel(false);
     setEnableTextArea(false);
@@ -99,7 +94,7 @@ const CancelSubs = () => {
   useEffect(() => {
     dispatch(getSubscribeOrganizationPackage(navigate, t));
   }, []);
-  console.log("revokeCancellation", revokeCancellation === false);
+
   useEffect(() => {
     let packageDetails =
       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage;

@@ -42,7 +42,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
   const { countryNamesReducer, adminReducer, LanguageReducer } = useSelector(
     (state) => state
   );
-  console.log(adminReducer, "adminReducer");
+
   const [countryNames, setCountryNames] = useState([]);
   const Name = useRef(null);
   const CountryDropdowns = useRef(null);
@@ -74,7 +74,6 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
     fK_NumberWorldCountryID: 0,
   });
 
-  console.log(customerSection, "DataData");
   const [selected, setSelected] = useState("US");
   const [selectedCountry, setSelectedCountry] = useState({});
   const [selectedNonEditCountry, setSelectedNonEditCountry] = useState("");
@@ -163,7 +162,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
     let a = Object.values(countryNameforPhoneNumber).find((obj) => {
       return obj.primary == country;
     });
-    console.log("Selected-Values", a, country);
+
     setCustomerSection({
       ...customerSection,
       fK_NumberWorldCountryID: a.id,
@@ -263,7 +262,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
 
     if (name === "ContactName" && value !== "") {
       let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
-      console.log(valueCheck, "valueCheckvalueCheckvalueCheck");
+
       if (valueCheck !== "") {
         setCustomerSection({
           ...customerSection,
@@ -359,7 +358,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       setCountryNames(countryNamesReducer.CountryNamesData);
       let customerdata = adminReducer.CustomerInformationData;
       let countryNamesArray = countryNamesReducer.CountryNamesData;
-      console.log("DataDatacheck", customerdata);
+
       let Data = {
         OrganizationName: customerdata.organization.organizationName,
         FK_WorldCountryID: customerdata.organization.fK_WorldCountryID,
@@ -380,21 +379,17 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
           obj.pK_WorldCountryID == customerdata.organization.fK_WorldCountryID
         );
       });
-      console.log(
-        "countryNamesCodecountryNamesCodecountryNamesCode",
-        countryNamesCode
-      );
+
       setSelectCountryFullName(countryNamesCode.countryName);
       setSelect(countryNamesCode.shortCode);
 
       let a = Object.values(countryNameforPhoneNumber).find((obj) => {
-        console.log("aaaaaaaaaaaaaaaa", obj);
         return (
           obj.id ==
           customerdata.organization.numberWorldCountry.fK_NumberWorldCountryID
         );
       });
-      console.log("aaa212", a);
+
       setSelected(a.primary);
       setSelectedCountry(a.secondary);
       if (a != undefined) {
@@ -424,10 +419,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       OrganizationID: OrganizationID,
       fK_NumberWorldCountryID: customerSection.fK_NumberWorldCountryID,
     };
-    console.log(
-      "customerInformationcustomerInformationcustomerInformation",
-      customerInformation
-    );
+
     dispatch(
       updateCustomerOrganizationProfileDetail(navigate, customerInformation, t)
     );
@@ -484,14 +476,10 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
     let a;
     try {
       a = Object.values(countryNames).find((obj) => {
-        console.log("obj", obj);
         return obj.shortCode == value;
       });
     } catch {}
 
-    console.log("CountryNamesData", a);
-    console.log("CountryNamesData", a.pK_WorldCountryID);
-    console.log("CountryNamesData", countryNames);
     setCustomerSection({
       ...customerSection,
       ["FK_WorldCountryID"]: parseInt(a.pK_WorldCountryID),
@@ -517,7 +505,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       setCountryNames(countryNamesReducer.CountryNamesData);
       let customerdata = adminReducer.CustomerInformationData;
       let countryNamesArray = countryNamesReducer.CountryNamesData;
-      console.log("DataDatacheck", customerdata);
+
       let Data = {
         OrganizationName: customerdata.organization.organizationName,
         FK_WorldCountryID: customerdata.organization.fK_WorldCountryID,
@@ -538,21 +526,17 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
           obj.pK_WorldCountryID == customerdata.organization.fK_WorldCountryID
         );
       });
-      console.log(
-        "countryNamesCodecountryNamesCodecountryNamesCode",
-        countryNamesCode
-      );
+
       setSelectCountryFullName(countryNamesCode.countryName);
       setSelect(countryNamesCode.shortCode);
 
       let a = Object.values(countryNameforPhoneNumber).find((obj) => {
-        console.log("aaaaaaaaaaaaaaaa", obj);
         return (
           obj.id ==
           customerdata.organization.numberWorldCountry.fK_NumberWorldCountryID
         );
       });
-      console.log("aaa212", a);
+
       setSelected(a.primary);
       setSelectedCountry(a.secondary);
       if (a != undefined) {

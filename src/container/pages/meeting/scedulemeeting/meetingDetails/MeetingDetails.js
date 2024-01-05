@@ -124,7 +124,7 @@ const MeetingDetails = ({
       endTime: getEndTime?.newFormatTime,
     },
   ]);
-  console.log({ rows }, "rowsrowsrowsrowsrowsrows");
+
   //For Custom language datepicker
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -437,7 +437,6 @@ const MeetingDetails = ({
 
   //Validation For Checking that the Row Should Not Be Empty Before Inserting the Another
   const isValidRow = (row) => {
-    console.log(row, "isValidRowisValidRowisValidRow");
     return (
       row.selectedOption !== "" && row.startDate !== "" && row.endDate !== ""
     );
@@ -448,7 +447,7 @@ const MeetingDetails = ({
     optionscross.splice(index, 1);
     setRows(optionscross);
   };
-  console.log({ rows }, "rowsrowsrowsrowsrows 12");
+
   const handlePublish = () => {
     //Enable the Error Handling From here
     // setSaveMeeting(!saveMeeting);
@@ -600,7 +599,7 @@ const MeetingDetails = ({
             publishedFlag !== null && publishedFlag === true ? 1 : 11,
         },
       };
-      console.log({ data }, "savemeetingdatadatadata");
+
       dispatch(
         SaveMeetingDetialsNewApiFunction(
           navigate,
