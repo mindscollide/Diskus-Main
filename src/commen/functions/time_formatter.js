@@ -109,6 +109,7 @@ export const incrementDateforPropsedMeeting = (date) => {
     let year = newDate.getFullYear();
     let month = `0${newDate.getMonth() + 1}`.slice(-2); // Months are 0-indexed, so adding 1
     let day = `0${newDate.getDate()}`.slice(-2);
+
     let dateFormat = `${year}${month}${day}`;
     return { DateGMT: newDate, dateFormat };
   }

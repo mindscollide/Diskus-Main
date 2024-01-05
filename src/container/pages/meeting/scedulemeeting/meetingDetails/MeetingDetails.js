@@ -116,12 +116,12 @@ const MeetingDetails = ({
   const getCurrentDateforMeeting = getCurrentDate();
   const [rows, setRows] = useState([
     {
-      selectedOption: "",
-      dateForView: "",
-      startDate: "",
-      startTime: "",
-      endDate: "",
-      endTime: "",
+      selectedOption: getCurrentDateforMeeting.dateFormat,
+      dateForView: getCurrentDateforMeeting.DateGMT,
+      startDate: getStartTime?.formattedTime,
+      startTime: getStartTime?.newFormatTime,
+      endDate: getEndTime?.formattedTime,
+      endTime: getEndTime?.newFormatTime,
     },
   ]);
   console.log({ rows }, "rowsrowsrowsrowsrowsrows");
@@ -170,24 +170,24 @@ const MeetingDetails = ({
     IsVideoCall: true,
   });
 
-  useEffect(() => {
-    if (Number(currentMeeting) === 0) {
-      const updatedRows = [...rows];
-      updatedRows[0].selectedOption =
-        currentMeeting === 0 ? getCurrentDateforMeeting.dateFormat : "";
-      updatedRows[0].dateForView =
-        currentMeeting === 0 ? getCurrentDateforMeeting.DateGMT : "";
-      updatedRows[0].startDate =
-        currentMeeting === 0 ? getStartTime?.formattedTime : "";
-      updatedRows[0].startTime =
-        currentMeeting === 0 ? getStartTime?.newFormatTime : "";
-      updatedRows[0].endDate =
-        currentMeeting === 0 ? getEndTime?.formattedTime : "";
-      updatedRows[0].endTime =
-        currentMeeting === 0 ? getEndTime?.newFormatTime : "";
-      setRows(updatedRows);
-    }
-  }, [currentMeeting]);
+  // useEffect(() => {
+  //   if (Number(currentMeeting) === 0) {
+  //     const updatedRows = [...rows];
+  //     updatedRows[0].selectedOption =
+  //       currentMeeting === 0 ? getCurrentDateforMeeting.dateFormat : "";
+  //     updatedRows[0].dateForView =
+  //       currentMeeting === 0 ? getCurrentDateforMeeting.DateGMT : "";
+  //     updatedRows[0].startDate =
+  //       currentMeeting === 0 ? getStartTime?.formattedTime : "";
+  //     updatedRows[0].startTime =
+  //       currentMeeting === 0 ? getStartTime?.newFormatTime : "";
+  //     updatedRows[0].endDate =
+  //       currentMeeting === 0 ? getEndTime?.formattedTime : "";
+  //     updatedRows[0].endTime =
+  //       currentMeeting === 0 ? getEndTime?.newFormatTime : "";
+  //     setRows(updatedRows);
+  //   }
+  // }, [currentMeeting]);
   // custom react select styles recurring
   const customStyles = {
     menuPortal: (base) => ({
@@ -448,7 +448,7 @@ const MeetingDetails = ({
     optionscross.splice(index, 1);
     setRows(optionscross);
   };
-
+  console.log({ rows }, "rowsrowsrowsrowsrows 12");
   const handlePublish = () => {
     //Enable the Error Handling From here
     // setSaveMeeting(!saveMeeting);
@@ -600,7 +600,7 @@ const MeetingDetails = ({
             publishedFlag !== null && publishedFlag === true ? 1 : 11,
         },
       };
-
+      console.log({ data }, "savemeetingdatadatadata");
       dispatch(
         SaveMeetingDetialsNewApiFunction(
           navigate,
