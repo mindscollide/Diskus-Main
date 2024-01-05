@@ -17,7 +17,10 @@ import {
   Notification,
   InputSearchFilter,
 } from "./../../components/elements";
-import { createConvert } from "./../../commen/functions/date_formater";
+import {
+  createConvert,
+  get_CurrentDateTime,
+} from "./../../commen/functions/date_formater";
 import CustomUpload from "./../../components/elements/upload/Upload";
 import { Row, Col, Container } from "react-bootstrap";
 import {
@@ -35,10 +38,12 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const { t } = useTranslation();
   const [fileSize, setFileSize] = useState(0);
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
+  const { currentTime, current_Date, dateObject, current_value } =
+    get_CurrentDateTime();
   const [isCreateTodo, setIsCreateTodo] = useState(true);
   const [fileForSend, setFileForSend] = useState([]);
   const [createTodoTime, setCreateTodoTime] = useState("");
-  const [createTodoDate, setCreateTodoDate] = useState("");
+  const [createTodoDate, setCreateTodoDate] = useState(current_Date);
   const state = useSelector((state) => state);
   const { toDoListReducer } = state;
   const currentDate = new Date();
@@ -56,7 +61,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     message: "",
   });
 
-  const [toDoDate, setToDoDate] = useState("");
+  const [toDoDate, setToDoDate] = useState(current_value);
 
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -86,19 +91,19 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     Title: "",
     Description: "",
     IsMainTask: true,
-    DeadLineDate: "",
-    DeadLineTime: "",
+    DeadLineDate: current_Date,
+    DeadLineTime: currentTime,
     CreationDateTime: "",
-    timeforView: "",
+    timeforView: dateObject,
   });
   //To Set task Creater ID
   const [TaskCreatorID, setTaskCreatorID] = useState(0);
 
   //task Asignees
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
-  console.log(taskAssignedToInput, "taskAssignedToInputtaskAssignedToInput");
+
   const [TaskAssignedTo, setTaskAssignedTo] = useState([]);
-  console.log("TaskAssignedToTaskAssignedTo", TaskAssignedTo);
+
   const [taskAssignedName, setTaskAssignedName] = useState([]);
   const [assignees, setAssignees] = useState([]);
   const [taskAssigneeLength, setTaskAssigneeLength] = useState(false);
@@ -194,10 +199,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //Upload File Handler
   const uploadFilesToDo = (data) => {
-    console.log(
-      data.target.files[0],
-      "uploadFilesToDouploadFilesToDouploadFilesToDo"
-    );
     let fileSizeArr;
     if (Object.keys(tasksAttachments.TasksAttachments).length === 10) {
       setTimeout(
@@ -421,7 +422,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           </div>
         ));
     } else {
-      console.log("not found");
     }
   };
 
@@ -441,19 +441,19 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //Save To-Do List Function
   const createToDoList = async () => {
-    let TasksAttachments = tasksAttachments.TasksAttachments;
     let taskAssignedTO = [...TaskAssignedTo];
     if (taskAssignedTO.length === 0) {
       taskAssignedTO.push(Number(createrID));
       setTaskAssignedTo(taskAssignedTO);
     }
-    console.log(taskAssignedTO, "taskAssignedTOtaskAssignedTO");
-    let newDate = createTodoDate;
-    let newTime = task.DeadLineTime;
+
+    let newDate;
+    let newTime;
     let finalDateTime;
     if (createTodoDate !== "" && task.DeadLineTime !== "") {
       finalDateTime = createConvert(createTodoDate + task.DeadLineTime);
       newDate = finalDateTime.slice(0, 8);
+      newTime = finalDateTime.slice(8, 14);
     }
 
     let Task = {
@@ -462,7 +462,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       Description: task.Description,
       IsMainTask: task.IsMainTask,
       DeadLineDate: newDate,
-      DeadLineTime: task.DeadLineTime,
+      DeadLineTime: newTime,
       CreationDateTime: "",
     };
     if (finalDateTime === undefined) {
@@ -566,33 +566,20 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     let newDataTaskAssignedTo = [...TaskAssignedTo];
     newDataTaskAssignedTo.splice(index, 1);
 
-    // TaskAssignedTo.splice(index, 1)
-    // taskAssignedName.splice(index, 1)
     setAssignees(newDataAssignees);
     setTaskAssignedName([]);
     setTaskAssignedTo(newDataTaskAssignedTo);
   };
 
-  // const createTodoTimeChangeHandler = (e) => {
-  //   let getValue = e.target.value;
-  //   setTask({
-  //     ...task,
-  //     DeadLineTime: getValue,
-  //   });
-  // };
-
   const handleTimeChange = (newTime) => {
     let newDate = new Date(newTime);
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getUTCHours()).slice(-2);
-      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
-      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
-      console.log(hours, "Hours");
-      console.log(minutes, "hourshours");
-      console.log(seconds, "hourshours");
+      const hours = ("0" + newDate.getHours()).slice(-2);
+      const minutes = ("0" + newDate.getMinutes()).slice(-2);
+
       const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
         .toString()
-        .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
+        .padStart(2, "0")}${"00"}`;
       setTask({
         ...task,
         DeadLineTime: formattedTime,
@@ -601,24 +588,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     }
   };
 
-  const handleFocusCreateTodo = () => {
-    setTask({
-      ...task,
-      DeadLineTime: getcurrentTime,
-    });
-  };
-
-  // const handleBlur = (event) => {
-  //   // Access the selected value when the input field loses focus
-  //   const selectedValue = event.target.value;
-  //   console.log("Selected Value:", selectedValue);
-  // };
-  // const handleTimeSelect = () => {
-  //   const inputElement = document.getElementById("timeInput");
-  //   if (inputElement) {
-  //     inputElement.blur();
-  //   }
-  // };
   function CustomInput({ onFocus, value, onChange }) {
     return (
       <input
@@ -682,7 +651,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         calendar={calendarValue}
                         locale={localValue}
                         format="hh:mm A"
-                        selected={task.timeforView}
+                        // selected={task.timeforView}
                         render={<CustomInput />}
                         plugins={[<TimePicker hideSeconds />]}
                         onChange={handleTimeChange}
@@ -751,7 +720,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     </Col>
                   </Row>
                   <Row className="create_todo_assignee d-flex justify-content-end">
-                    {assignees ? (
+                    {assignees.length > 0 ? (
                       <>
                         {assignees.map((taskAssignedName, index) => (
                           <Col sm={12} md={6} lg={6}>

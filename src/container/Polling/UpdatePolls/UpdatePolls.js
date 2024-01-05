@@ -58,7 +58,7 @@ const UpdatePolls = () => {
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [dropdowndata, setDropdowndata] = useState([]);
   const [pollmembers, setPollmembers] = useState([]);
-  console.log(pollmembers, "pollmemberspollmembers");
+
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -105,7 +105,7 @@ const UpdatePolls = () => {
 
   useEffect(() => {
     let pollsData = PollsReducer.gellAllCommittesandGroups;
-    console.log({ pollsData }, "pollsDatapollsDatapollsData");
+
     if (pollsData !== null && pollsData !== undefined) {
       let temp = [];
       if (Object.keys(pollsData).length > 0) {
@@ -346,9 +346,7 @@ const UpdatePolls = () => {
           } else {
           }
         });
-      } catch {
-        console.log("error in add");
-      }
+      } catch {}
       const uniqueData = new Set(tem.map(JSON.stringify));
 
       // Convert the Set back to an array of objects
@@ -598,7 +596,8 @@ const UpdatePolls = () => {
                               className={styles["Due_Date_heading"]}
                               onClick={handleIconClick}
                             >
-                              {t("Due-date-on")}{" "}
+                              {t("Due-date-on")}
+                              {"* "}
                               <span className={styles["Date_update_poll"]}>
                                 {changeDateStartHandler2(UpdatePolls.date)}
                               </span>
@@ -745,7 +744,7 @@ const UpdatePolls = () => {
                         <Row className="mt-2">
                           <Col lg={12} md={12} sm={12}>
                             <TextField
-                              placeholder={t("Title")}
+                              placeholder={t("Title") + "*"}
                               applyClass={"PollingCreateModal"}
                               labelClass="d-none"
                               name={"TypingTitle"}
@@ -829,7 +828,8 @@ const UpdatePolls = () => {
                                                   placeholder={
                                                     "Option" +
                                                     " " +
-                                                    parseInt(index + 1)
+                                                    parseInt(index + 1) +
+                                                    "*"
                                                   }
                                                   applyClass={
                                                     "PollingCreateModal"
@@ -855,7 +855,8 @@ const UpdatePolls = () => {
                                                   placeholder={
                                                     "Option" +
                                                     " " +
-                                                    parseInt(index + 1)
+                                                    parseInt(index + 1) +
+                                                    "*"
                                                   }
                                                   applyClass={
                                                     "PollingCreateModal"

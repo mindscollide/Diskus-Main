@@ -426,3 +426,10 @@ body[dir="rtl"] .Edit_icon_styles {
   font-size: 9px;
   white-space: nowrap;
 }
+.dropdown-text {
+  cursor: pointer;
+}
+.dropdown-text-disable {
+  opacity: 50%;
+  cursor: default;
+}

@@ -777,3 +777,19 @@ export const convertDateTimeObject = (date) => {
 
   return new Date(year, month, day, hour, minute, second);
 };
+
+export const get_CurrentDateTime = () => {
+  let currentDate = new Date();
+
+  // Get the UTC versions of the year, month, day, hours, minutes, seconds
+  const year = currentDate.getFullYear();
+  const month = `0${currentDate.getMonth() + 1}`.slice(-2); // Months are 0-indexed, so adding 1
+  const day = `0${currentDate.getDate()}`.slice(-2);
+  const hours = `0${currentDate.getHours()}`.slice(-2);
+  const minutes = `0${currentDate.getMinutes()}`.slice(-2);
+
+  const currentTime = `${hours}${minutes}${"00"}`;
+  const current_Date = `${year}${month}${day}`;
+  const current_value = `${day}/${month}/${year}`;
+  return { currentTime, current_Date, dateObject: currentDate, current_value };
+};

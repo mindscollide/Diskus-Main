@@ -553,7 +553,10 @@ const Createpolls = ({ setCreatepoll }) => {
                                     <span className="position-relative">
                                       <TextField
                                         placeholder={
-                                          "Option" + " " + parseInt(index + 1)
+                                          "Option" +
+                                          " " +
+                                          parseInt(index + 1) +
+                                          "*"
                                         }
                                         applyClass={"pollingCreateTitle"}
                                         labelClass="d-none"
@@ -571,7 +574,10 @@ const Createpolls = ({ setCreatepoll }) => {
                                     <span className="position-relative">
                                       <TextField
                                         placeholder={
-                                          "Option" + " " + parseInt(index + 1)
+                                          "Option" +
+                                          " " +
+                                          parseInt(index + 1) +
+                                          "*"
                                         }
                                         applyClass={"pollingCreateTitle"}
                                         labelClass="d-none"
@@ -645,7 +651,7 @@ const Createpolls = ({ setCreatepoll }) => {
                     className="d-flex align-items-start flex-column justify-content-start"
                   >
                     <span className={styles["Title_heading"]}>
-                      {t("Due-date")}
+                      {t("Due-date") + "*"}
                     </span>
                     <DatePicker
                       value={meetingDate}

@@ -345,7 +345,7 @@ const Organizers = ({
                     width="30px"
                     // onClick={() => sendRecentNotification(record)}
                     alt=""
-                    className="cursor-pointer"
+                    // className="cursor-pointer"
                   />
                 ) : (
                   <img
@@ -354,7 +354,7 @@ const Organizers = ({
                     height="30px"
                     width="30px"
                     onClick={() => sendRecentNotification(record)}
-                    className="cursor-pointer"
+                    // className="cursor-pointer"
                     alt=""
                   />
                 )}
@@ -376,7 +376,7 @@ const Organizers = ({
                     src={redMailIcon}
                     height="30px"
                     width="30px"
-                    className="cursor-pointer"
+                    // className="cursor-pointer"
                     alt=""
                   />
                 ) : (

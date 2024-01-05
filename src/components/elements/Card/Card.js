@@ -233,11 +233,22 @@ const Card = ({
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className="d-flex justify-content-center cursor-pointer Saved_money_Tagline "
+                                  className="d-flex justify-content-center  Saved_money_Tagline "
                                 >
                                   <span
-                                    className={styles["dropdown-text"]}
+                                    className={
+                                      Number(editItem.value) ===
+                                      Number(StatusID)
+                                        ? styles["dropdown-text-disable"]
+                                        : styles["dropdown-text"]
+                                    }
+                                    onKeyDown={(e) =>
+                                      Number(editItem.value) ===
+                                        Number(StatusID) && e.preventDefault()
+                                    }
                                     onClick={() =>
+                                      Number(editItem.value) !==
+                                        Number(StatusID) &&
                                       changeHandleStatus(
                                         editItem,
                                         CardID,

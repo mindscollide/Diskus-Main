@@ -54,7 +54,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
   const [meetingDate, setMeetingDate] = useState("");
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [memberSelect, setmemberSelect] = useState([]);
-  console.log(memberSelect, "memberSelectmemberSelectmemberSelect");
+
   let currentMeetingID = Number(localStorage.getItem("meetingID"));
   const [pollsData, setPollsData] = useState({
     Title: "",
@@ -108,7 +108,6 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
   const allValuesNotEmpty = options.every((item) => item.value !== "");
 
   const addNewRow = () => {
-    console.log("iam clicked");
     if (options.length > 1) {
       if (allValuesNotEmpty) {
         let lastIndex = options.length - 1;
@@ -243,7 +242,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
 
   const handleAddUsers = () => {
     let getUserDetails = GroupsReducer.getGroupByGroupIdResponse.groupMembers;
-    console.log(pollsData, "pollsDatapollsData");
+
     let tem = [...members];
     let newarr = [];
     try {
@@ -258,23 +257,18 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
               let check1 = getUserDetails.find(
                 (data, index) => data.pK_UID === seledtedData.value
               );
-              console.log(check1, "check1check1");
+
               if (check1 !== undefined) {
-                console.log(check1, "check1check1");
                 newarr.push(check1);
-                console.log(newarr, "newarrnewarr");
 
                 let meetingOrganizers = check1;
-                console.log(meetingOrganizers, "check1check1");
 
                 if (newarr.length > 0) {
                   newarr.map((morganizer, index) => {
-                    console.log(morganizer, "UserIDUserID");
                     let check2 = newarr.find(
                       (data, index) => data.UserID === morganizer.pK_UID
                     );
                     if (check2 !== undefined) {
-                      console.log(check2, "check2check2");
                     } else {
                       let newUser = {
                         userName: morganizer.userName,
@@ -284,17 +278,14 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
                             .displayProfilePictureName,
                       };
                       tem.push(newUser);
-                      console.log(tem, "temtemtemtemtem");
                     }
                   });
                 }
               }
             }
           });
-        } catch {
-          console.log("error in add");
-        }
-        console.log("members check", tem);
+        } catch {}
+
         const uniqueData = new Set(tem.map(JSON.stringify));
         // Convert the Set back to an array of objects
         const result = Array.from(uniqueData).map(JSON.parse);
@@ -442,7 +433,10 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
                                     <span className="position-relative">
                                       <TextField
                                         placeholder={
-                                          "Option" + " " + parseInt(index + 1)
+                                          "Option" +
+                                          " " +
+                                          parseInt(index + 1) +
+                                          ""
                                         }
                                         applyClass={"PollingCreateModal"}
                                         labelClass="d-none"
@@ -460,7 +454,10 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
                                     <span className="position-relative">
                                       <TextField
                                         placeholder={
-                                          "Option" + " " + parseInt(index + 1)
+                                          "Option" +
+                                          " " +
+                                          parseInt(index + 1) +
+                                          "*"
                                         }
                                         applyClass={"PollingCreateModal"}
                                         labelClass="d-none"
@@ -536,7 +533,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
                     className="d-flex align-items-start flex-column justify-content-start"
                   >
                     <span className={styles["Title_heading"]}>
-                      {t("Due-date")}
+                      {t("Due-date") + "*"}
                     </span>
                     <DatePicker
                       value={meetingDate}
@@ -627,7 +624,6 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
                     <Row>
                       {members.length > 0
                         ? members.map((data, index) => {
-                            console.log(data, "membersmembersmembers");
                             return (
                               <>
                                 <Col lg={6} md={6} sm={6} className="mt-3">

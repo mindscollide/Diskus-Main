@@ -34,6 +34,7 @@ import {
   getEndTimeWitlCeilFunction,
   getHoursMinutesSec,
   getStartTimeWithCeilFunction,
+  incrementDateforPropsedMeeting,
 } from "../../../../../../commen/functions/time_formatter";
 const ProposedMeetingDate = ({
   setProposedMeetingDates,
@@ -48,7 +49,7 @@ const ProposedMeetingDate = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const calendRef = useRef();
-  const startTime = getStartTimeWithCeilFunction();
+  const getStartTime = getStartTimeWithCeilFunction();
   const getEndTime = getEndTimeWitlCeilFunction();
   const getCurrentDateforMeeting = getCurrentDate();
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -57,6 +58,7 @@ const ProposedMeetingDate = ({
   const [error, seterror] = useState(false);
   const [selectError, setSelectError] = useState(false);
   const [startDateError, setStartDateError] = useState(false);
+  const [isApiData, setIsApiData] = useState(false);
   const getAllMeetingDetails = useSelector(
     (state) => state.NewMeetingreducer.getAllMeetingDetails
   );
@@ -66,7 +68,10 @@ const ProposedMeetingDate = ({
   const prposedMeetingUnsavedModal = useSelector(
     (state) => state.NewMeetingreducer.prposedMeetingUnsavedModal
   );
-
+  console.log(
+    getCurrentDateforMeeting,
+    "getCurrentDateforMeetinggetCurrentDateforMeeting"
+  );
   const [viewProposedModal, setViewProposedModal] = useState({
     Title: "",
     Description: "",
@@ -86,6 +91,11 @@ const ProposedMeetingDate = ({
   });
 
   const [endDateError, setEndDateError] = useState(false);
+  console.log({ getCurrentDateforMeeting }, "getCurrentDateforMeeting");
+  console.log({ getEndTime }, "getCurrentDateforMeeting");
+
+  // console.log({ startTime }, "getCurrentDateforMeeting");
+
   const [rows, setRows] = useState([
     {
       selectedOption: "",
@@ -144,18 +154,6 @@ const ProposedMeetingDate = ({
     }
   }, [currentLanguage]);
 
-  // Setting the Dates And Time Default
-  useEffect(() => {
-    const updatedRows = [...rows];
-    updatedRows[0].selectedOption = getCurrentDateforMeeting.dateFormat;
-    updatedRows[0].selectedOptionView = getCurrentDateforMeeting.DateGMT;
-    updatedRows[0].startDate = startTime?.formattedTime;
-    updatedRows[0].startDateView = startTime?.newFormatTime;
-    updatedRows[0].endDate = getEndTime?.formattedTime;
-    updatedRows[0].endDateView = getEndTime?.newFormatTime;
-    setRows(updatedRows);
-  }, []);
-
   useEffect(() => {
     try {
       if (getAllMeetingDetails) {
@@ -173,7 +171,7 @@ const ProposedMeetingDate = ({
   }, [getAllMeetingDetails]);
 
   const changeDateStartHandler = (date, index) => {
-    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+    let meetingDateValueFormat = new DateObject(date);
     let DateDate = new DateObject(date).format("YYYYMMDD");
     const updatedRows = [...rows];
     if (index > 0 && DateDate < updatedRows[index - 1].selectedOption) {
@@ -193,15 +191,6 @@ const ProposedMeetingDate = ({
     console.log(newDate, "handleStartDateChangehandleStartDateChange");
     if (newDate instanceof Date && !isNaN(newDate)) {
       const getFormattedTime = getHoursMinutesSec(newDate);
-
-      // // Round up to the next hour
-      // const nextHour = Math.ceil(
-      //   newDate.getHours() + newDate.getMinutes() / 60
-      // );
-      // newDate.setHours(nextHour, 0, 0, 0);
-
-      // // Format the time as HH:mm:ss
-      // const formattedTime = `${String(nextHour).padStart(2, "0")}0000`;
 
       const updatedRows = [...rows];
 
@@ -271,14 +260,6 @@ const ProposedMeetingDate = ({
     if (newDate instanceof Date && !isNaN(newDate)) {
       const getFormattedTime = getHoursMinutesSec(newDate);
 
-      // const nextHour = Math.ceil(
-      //   newDate.getHours() + newDate.getMinutes() / 60
-      // );
-      // newDate.setHours(nextHour, 0, 0, 0);
-
-      // // Format the time as HH:mm:ss
-      // const formattedTime = `${String(nextHour).padStart(2, "0")}0000`;
-
       const updatedRows = [...rows];
 
       if (
@@ -328,8 +309,22 @@ const ProposedMeetingDate = ({
   const addRow = () => {
     if (rows.length < 5) {
       const lastRow = rows[rows.length - 1];
+      console.log(lastRow, "lastRowlastRowlastRow");
       if (isValidRow(lastRow)) {
-        setRows([...rows, { selectedOption: "", startDate: "", endDate: "" }]);
+        let { dateFormat, DateGMT } = incrementDateforPropsedMeeting(
+          lastRow.selectedOptionView
+        );
+        setRows([
+          ...rows,
+          {
+            selectedOption: dateFormat,
+            startDate: getStartTime?.formattedTime,
+            endDate: getEndTime?.formattedTime,
+            selectedOptionView: DateGMT,
+            endDateView: getEndTime?.newFormatTime,
+            startDateView: getStartTime?.newFormatTime,
+          },
+        ]);
       }
     } else {
       setOpen({
@@ -406,23 +401,6 @@ const ProposedMeetingDate = ({
     validate();
   }, [rows]);
 
-  // useEffect(() => {
-  //   if (rows.length > 0) {
-  //     if (
-  //       rows[0].selectedOption === "" &&
-  //       rows[0].startDate === "" &&
-  //       rows[0].endDate === ""
-  //     ) {
-  //       let getifTrue = rows.some((data, index) => data.isComing === false);
-  //       setIsEdit(getifTrue);
-  //     } else {
-  //       setIsEdit(false);
-  //     }
-  //   } else {
-  //     setIsEdit(false);
-  //   }
-  // }, [rows]);
-
   const CancelModal = () => {
     setProposedMeetingDates(false);
     // setParticipants(true);
@@ -491,14 +469,39 @@ const ProposedMeetingDate = ({
               }
             }
           );
-
+          setIsApiData(true);
           setRows(newDataforView);
         }
+      } else {
+        const updatedRows = [...rows];
+        updatedRows[0].selectedOption = getCurrentDateforMeeting?.dateFormat;
+        updatedRows[0].selectedOptionView = getCurrentDateforMeeting?.DateGMT;
+        updatedRows[0].startDate = getStartTime?.formattedTime;
+        updatedRows[0].startDateView = getStartTime?.newFormatTime;
+        updatedRows[0].endDate = getEndTime?.formattedTime;
+        updatedRows[0].endDateView = getEndTime?.newFormatTime;
+        setRows(updatedRows);
       }
     } catch (error) {
       console.error(error);
     }
   }, [getAllProposedDates]);
+
+  console.log(rows, "rowsrowsrowsrowsrowsrowsrows");
+
+  // Setting the Dates And Time Default
+  useEffect(() => {
+    if (isApiData === false) {
+      const updatedRows = [...rows];
+      updatedRows[0].selectedOption = getCurrentDateforMeeting?.dateFormat;
+      updatedRows[0].selectedOptionView = getCurrentDateforMeeting?.DateGMT;
+      updatedRows[0].startDate = getStartTime?.formattedTime;
+      updatedRows[0].startDateView = getStartTime?.newFormatTime;
+      updatedRows[0].endDate = getEndTime?.formattedTime;
+      updatedRows[0].endDateView = getEndTime?.newFormatTime;
+      setRows(updatedRows);
+    }
+  }, [isApiData]);
 
   return (
     <section>

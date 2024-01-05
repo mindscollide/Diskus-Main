@@ -1682,5 +1682,8 @@
   "Agenda-description": "Agenda description",
   "Message-for-organizer": "Message for Organizer",
   "Message-for-agenda-contributor": "Message for Agenda Contributor",
-  "All-agenda-contributors": "All Agenda Contributors"
+  "All-agenda-contributors": "All Agenda Contributors",
+  "Add-organizer": "Add Organizer",
+  "Add-participant": "Add Participant",
+  "Add-agenda-contributor": "Add Agenda Contributor"
 }
