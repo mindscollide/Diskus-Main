@@ -43,13 +43,10 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const [isCreateTodo, setIsCreateTodo] = useState(true);
   const [fileForSend, setFileForSend] = useState([]);
   const [createTodoTime, setCreateTodoTime] = useState("");
-  const [createTodoDate, setCreateTodoDate] = useState(current_Date);
+  const [createTodoDate, setCreateTodoDate] = useState("");
   const state = useSelector((state) => state);
   const { toDoListReducer } = state;
-  const currentDate = new Date();
-  const currentHours = currentDate.getHours().toString().padStart(2, "0");
-  const currentMinutes = currentDate.getMinutes().toString().padStart(2, "0");
-  const getcurrentTime = `${currentHours}:${currentMinutes}`;
+
   //To Display Modal
 
   const dispatch = useDispatch();
@@ -61,7 +58,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     message: "",
   });
 
-  const [toDoDate, setToDoDate] = useState(current_value);
+  const [toDoDate, setToDoDate] = useState("");
 
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -91,11 +88,12 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     Title: "",
     Description: "",
     IsMainTask: true,
-    DeadLineDate: current_Date,
-    DeadLineTime: currentTime,
+    DeadLineDate: "",
+    DeadLineTime: "",
     CreationDateTime: "",
-    timeforView: dateObject,
+    timeforView: "",
   });
+  console.log(task, "tasktasktask");
   //To Set task Creater ID
   const [TaskCreatorID, setTaskCreatorID] = useState(0);
 
@@ -118,6 +116,19 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //To Set task Creater ID
   useEffect(() => {
     setTaskCreatorID(parseInt(createrID));
+    setTask({
+      ...task,
+      DeadLineDate: current_Date,
+      DeadLineTime: currentTime,
+      CreationDateTime: "",
+      timeforView: dateObject,
+    });
+    setCreateTodoDate(current_Date);
+    setToDoDate(current_value);
+    return () => {
+      setCloseConfirmationBox(false);
+      setIsCreateTodo(true);
+    };
   }, []);
 
   //To Set task Creater ID
@@ -598,7 +609,11 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       />
     );
   }
-
+  const handleCloseConfirmationModal = () => {
+    setShow(false);
+    setCloseConfirmationBox(false);
+    setIsCreateTodo(true);
+  };
   return (
     <>
       <Container>
@@ -991,15 +1006,12 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     <Button
                       onClick={() => setIsCreateTodo(true)}
                       className={"cancelButton_createTodo"}
-                      text={"Cancel"}
+                      text={t("Cancel")}
                     />
                     <Button
-                      onClick={() => {
-                        setShow(false);
-                        setIsCreateTodo(true);
-                      }}
+                      onClick={handleCloseConfirmationModal}
                       className={"todocreate-createbtn"}
-                      text={"Close"}
+                      text={t("Close")}
                     />
                   </Col>
                 </Row>
