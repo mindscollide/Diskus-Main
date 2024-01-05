@@ -150,26 +150,6 @@ const Minutes = ({
     },
   };
 
-  // useEffect(() => {
-  //   if (editorRef.current) {
-  //     const editor = editorRef.current.getEditor();
-
-  //     if (editor) {
-  //       editor.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
-  //         const plaintext = node.innerText || node.textContent || "";
-  //         const isImage = node.nodeName === "IMG";
-
-  //         if (isImage) {
-  //           // Block image paste by returning an empty delta
-  //           return new Delta();
-  //         }
-
-  //         return delta.compose(new Delta().insert(plaintext));
-  //       });
-  //     }
-  //   }
-  // }, [editorRef.current]);
-
   useEffect(() => {
     let Data = {
       MeetingID: Number(currentMeeting),
@@ -179,6 +159,7 @@ const Minutes = ({
       setMessages([]);
       setFileAttachments([]);
       setPreviousFileIDs([]);
+      setFileForSend([]);
       dispatch(cleareAllState());
       setUseCase(null);
     };
@@ -372,7 +353,6 @@ const Minutes = ({
   const handleEditFunc = async (data) => {
     console.log(data, "handleEditFunchandleEditFunc");
     setupdateData(data);
-    // const strippedMinutesDetails = data.minutesDetails.replace(/<[^>]*>/g, "");
     if (data.minutesDetails !== "") {
       setAddNoteFields({
         Description: {
@@ -547,6 +527,7 @@ const Minutes = ({
 
   //UPloading the Documents
   const handleRemoveFile = (data) => {
+    // console.log(data, "handleRemoveFilehandleRemoveFilehandleRemoveFile");
     setFileForSend((prevFiles) =>
       prevFiles.filter(
         (fileSend) => fileSend.name !== data.DisplayAttachmentName
@@ -605,6 +586,17 @@ const Minutes = ({
       // Wait for all promises to resolve
       await Promise.all(uploadPromises);
 
+      let docsData = {
+        FK_MeetingGeneralMinutesID: updateData.minuteID,
+        FK_MDID: currentMeeting,
+        UpdateFileList: newfile.map((data, index) => {
+          return { PK_FileID: Number(data.pK_FileID) };
+        }),
+      };
+      await dispatch(
+        SaveMinutesDocumentsApiFunc(navigate, docsData, t, currentMeeting)
+      );
+    } else if (newfile.length > 0) {
       let docsData = {
         FK_MeetingGeneralMinutesID: updateData.minuteID,
         FK_MDID: currentMeeting,
@@ -806,6 +798,11 @@ const Minutes = ({
       dispatch(CleareMessegeNewMeeting());
     }
   }, [ResponseMessage]);
+
+  console.log(
+    { fileForSend, fileAttachments, previousFileIDs },
+    "handleRemoveFilehandleRemoveFilehandleRemoveFile"
+  );
 
   return (
     <section>
