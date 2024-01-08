@@ -1,13 +1,5 @@
 {
-  "MeetingID": 2606,
-  "SendResponsebyDate": "20240124",
-  "ProposedDates": [
-    { "ProposedDate": "20240105", "StartTime": "090000", "EndTime": "100000" },
-    {
-      "ProposedDate": "20240105",
-      "StartTime": "090000",
-      "EndTime": "140000",
-      "proposedDateID": 0
-    }
-  ]
+  "FK_MeetingAgendaMinutesID": 150,
+  "FK_MDID": 2624,
+  "UpdateFileList": [{ "PK_FileID": 7531 }]
 }
