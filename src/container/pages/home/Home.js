@@ -1405,12 +1405,12 @@ const Home = () => {
                           {t("There-is-no-pending-task")}
                         </span>
                       }
-                      extra={[
-                        <Button
-                          text={t("Create-new-task")}
-                          className={styles["CreateNewTaskButton"]}
-                        />,
-                      ]}
+                      // extra={[
+                      //   <Button
+                      //     text={t("Create-new-task")}
+                      //     className={styles["CreateNewTaskButton"]}
+                      //   />,
+                      // ]}
                       className="NoTask"
                     />
                   </Paper>
@@ -1973,6 +1973,7 @@ const Home = () => {
           setViewFlagToDo={setTodoViewModal}
         />
       ) : null}
+
       {(NotesReducer.Loading && getNoteID !== 0) ||
       (toDoListReducer.Loading && getTodoID !== 0) ? (
         <Loader />
