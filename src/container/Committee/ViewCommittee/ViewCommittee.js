@@ -21,7 +21,7 @@ import {
   getFileExtension,
   getIconSource,
 } from "../../DataRoom/SearchFunctionality/option";
-const ViewCommitteeDetails = ({ setViewGroupPage }) => {
+const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
   const { Dragger } = Upload;
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -719,6 +719,7 @@ const ViewCommitteeDetails = ({ setViewGroupPage }) => {
             <Row className="mt-2">
               <Col lg={12} md={12} sm={12}>
                 <Dragger
+                  disabled={committeeStatus === 3 ? false : true}
                   {...props}
                   className={styles["dragdrop_attachment_create_resolution"]}
                 >

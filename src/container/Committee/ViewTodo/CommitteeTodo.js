@@ -68,7 +68,7 @@ import {
 } from "../../../store/actions/Polls_actions";
 import { deleteCommitteeTaskRM } from "../../../commen/apis/Api_config";
 
-const CreateTodoCommittee = () => {
+const CreateTodoCommittee = ({ committeeStatus }) => {
   //For Localization
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -679,12 +679,14 @@ const CreateTodoCommittee = () => {
       <div className="todolistContainer_Committee">
         <Row className="my-3">
           <Col lg={12} md={12} sm={12} className="d-flex justify-content-end ">
-            <Button
-              text={t("Create-a-Task")}
-              onClick={modalHandler}
-              icon={<Plus width={20} height={20} fontWeight={800} />}
-              className={"Create_TodoBtn_Button"}
-            />
+            {committeeStatus === 3 && (
+              <Button
+                text={t("Create-a-Task")}
+                onClick={modalHandler}
+                icon={<Plus width={20} height={20} fontWeight={800} />}
+                className={"Create_TodoBtn_Button"}
+              />
+            )}
           </Col>
         </Row>
         <Row>

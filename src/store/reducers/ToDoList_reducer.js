@@ -45,7 +45,7 @@ const toDoListReducer = (state = initialState, action) => {
     case actions.CREATEUPDATETASKDATAROOMMAP_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         todoDocumentsMapping: action.response,
         ResponseMessage: action.message,
       };
@@ -92,7 +92,7 @@ const toDoListReducer = (state = initialState, action) => {
     case actions.SAVEFILES_TASKS_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         todoSaveFilesTodo: [...state.todoSaveFilesTodo, action.response],
         ResponseMessage: action.message,
       };

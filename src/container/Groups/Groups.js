@@ -164,7 +164,10 @@ const Groups = () => {
       setgroupsData([newData, ...groupsData]);
     }
   }, [GroupsReducer.realtimeGroupCreateResponse]);
-
+  console.log(
+    GroupsReducer.getAllGroupsResponse,
+    "GroupsReducerGroupsReducerGroupsReducer"
+  );
   useEffect(() => {
     try {
       if (

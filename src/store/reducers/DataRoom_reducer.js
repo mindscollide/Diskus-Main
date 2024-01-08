@@ -356,6 +356,12 @@ const DataRoomReducer = (state = initialState, action) => {
         FolderisExistMessage: "",
       };
     }
+    case actions.FOLDERISEXIST_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
     // huzeifa
     case actions.FOLDERISEXIST_SUCCESS: {
       return {

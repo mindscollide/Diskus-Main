@@ -13,10 +13,6 @@ const ModalRenameFolder = ({
   setnotification,
   isRenameFolderData,
 }) => {
-  console.log(
-    isRenameFolderData,
-    "isRenameFolderDataisRenameFolderDataisRenameFolderData"
-  );
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -24,7 +20,7 @@ const ModalRenameFolder = ({
     FolderName: "",
     folderId: 0,
   });
-  console.log(folderData, "folderDatafolderDatafolderData");
+
   useEffect(() => {
     if (isRenameFolderData !== null) {
       setFolderData({
@@ -33,9 +29,7 @@ const ModalRenameFolder = ({
       });
     }
   }, [isRenameFolderData]);
-  const closebtn = async () => {
-    setRenamefolder(false);
-  };
+
   const saveButton = () => {
     // setRenamefolder(false);
     if (folderData.FolderName !== "") {
