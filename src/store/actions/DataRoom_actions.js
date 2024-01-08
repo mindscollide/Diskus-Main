@@ -2080,7 +2080,7 @@ const FileisExist2 = (navigate, fileData, t, setShowRenameFile) => {
                   "DataRoom_DataRoomServiceManager_FileExist_03".toLowerCase()
                 )
             ) {
-              await dispatch(FileisExist_fail(t("No-duplicate-found")));
+              // await dispatch(FileisExist_fail(t("No-duplicate-found")));
               dispatch(renameFileApi(navigate, fileData, t, setShowRenameFile));
             } else if (
               response.data.responseResult.responseMessage

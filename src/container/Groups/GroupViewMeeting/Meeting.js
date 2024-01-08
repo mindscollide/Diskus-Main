@@ -36,7 +36,8 @@ import CustomPagination from "../../../commen/functions/customPagination/Paginat
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
 import { UpdateOrganizersMeeting } from "../../../store/actions/MeetingOrganizers_action";
 
-const CommitteeMeetingTab = () => {
+const CommitteeMeetingTab = ({ groupStatus }) => {
+  console.log(groupStatus, "groupStatusgroupStatusgroupStatus");
   const { t } = useTranslation();
   const getMeetingbyGroupID = useSelector(
     (state) => state.NewMeetingreducer.getMeetingbyGroupID
@@ -556,22 +557,25 @@ const CommitteeMeetingTab = () => {
                   <Row>
                     <Col sm={12} md={12} lg={12}>
                       {/* <Tooltip placement="topRight" title={t("Edit")}> */}
-                      <img
-                        src={EditIcon}
-                        className="cursor-pointer"
-                        width="17.11px"
-                        height="17.11px"
-                        alt=""
-                        draggable="false"
-                        onClick={() =>
-                          handleEditMeeting(
-                            record.pK_MDID,
-                            record.isQuickMeeting,
-                            isAgendaContributor,
-                            record
-                          )
-                        }
-                      />
+                      {groupStatus === 3 && (
+                        <img
+                          src={EditIcon}
+                          className="cursor-pointer"
+                          width="17.11px"
+                          height="17.11px"
+                          alt=""
+                          draggable="false"
+                          onClick={() =>
+                            handleEditMeeting(
+                              record.pK_MDID,
+                              record.isQuickMeeting,
+                              isAgendaContributor,
+                              record
+                            )
+                          }
+                        />
+                      )}
+
                       {/* </Tooltip> */}
                     </Col>
                   </Row>
@@ -631,12 +635,14 @@ const CommitteeMeetingTab = () => {
       )}
       <Row>
         <Col sm={12} md={12} lg={12} className="d-flex justify-content-end">
-          <Button
-            text={t("Create-Meeting")}
-            icon={<img draggable={false} src={addmore} alt="" />}
-            className={styles["Create_Meeting_Button"]}
-            onClick={handelCreateMeeting}
-          />
+          {groupStatus === 3 && (
+            <Button
+              text={t("Create-Meeting")}
+              icon={<img draggable={false} src={addmore} alt="" />}
+              className={styles["Create_Meeting_Button"]}
+              onClick={handelCreateMeeting}
+            />
+          )}
         </Col>
       </Row>
       <Row>

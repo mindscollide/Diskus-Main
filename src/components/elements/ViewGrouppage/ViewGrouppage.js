@@ -31,11 +31,11 @@ import GroupMeeting from "../../../container/Groups/GroupViewMeeting/Meeting";
 const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { GroupsReducer } = useSelector((state) => state);
   const dispatch = useDispatch();
-
+  const [groupStatus, setGroupStatus] = useState(null);
   let ViewGroupID = localStorage.getItem("ViewGroupID");
 
-  console.log("currentTabcurrentTab", currentTab);
   const [currentViewGroup, setCurrentViewGroup] = useState(
     viewGroupTab !== undefined && viewGroupTab !== 0 ? viewGroupTab : 1
   );
@@ -49,8 +49,19 @@ const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
   const handleClose = () => {
     localStorage.removeItem("ViewGroupID");
     setViewGroupPage(false);
-    console.log("Close Btn");
   };
+
+  useEffect(() => {
+    try {
+      if (GroupsReducer.getGroupByGroupIdResponse !== null) {
+        let groupStatus =
+          GroupsReducer.getGroupByGroupIdResponse.groupStatus.groupStatusID;
+        setGroupStatus(groupStatus);
+      } else {
+        setGroupStatus(null);
+      }
+    } catch {}
+  }, [GroupsReducer.getGroupByGroupIdResponse]);
   return (
     <>
       <section className="MontserratSemiBold-600 color-5a5a5a">
@@ -114,17 +125,20 @@ const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
           </Row>
 
           {currentViewGroup === 1 ? (
-            <ViewUpdateGroup setViewGroupPage={setViewGroupPage} />
+            <ViewUpdateGroup
+              setViewGroupPage={setViewGroupPage}
+              groupStatus={groupStatus}
+            />
           ) : currentViewGroup === 2 ? (
             <>
-              <ViewGroupTodo />
+              <ViewGroupTodo groupStatus={groupStatus} />
             </>
           ) : currentViewGroup === 3 ? (
             <>
-              <Polls view={2} />
+              <Polls view={2} groupStatus={groupStatus} />
             </>
           ) : currentViewGroup === 4 ? (
-            <GroupMeeting />
+            <GroupMeeting groupStatus={groupStatus} />
           ) : null}
         </Paper>
       </section>

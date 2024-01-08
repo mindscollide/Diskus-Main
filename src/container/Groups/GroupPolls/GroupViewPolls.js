@@ -33,15 +33,12 @@ import {
   getPollsByPollIdApi,
 } from "../../../store/actions/Polls_actions";
 import CustomPagination from "../../../commen/functions/customPagination/Paginations";
-const GroupViewPolls = ({
-  setSceduleMeeting,
-  setPolls,
-  setAttendance,
-  view,
-}) => {
+const GroupViewPolls = ({ groupStatus }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  console.log(groupStatus, "groupStatusgroupStatusgroupStatus");
+
   const { NewMeetingreducer, GroupsReducer, PollsReducer } = useSelector(
     (state) => state
   );
@@ -307,7 +304,7 @@ const GroupViewPolls = ({
       render: (text, record) => {
         if (record.pollStatus.pollStatusId === 2) {
           if (record.isVoter) {
-            if (record.voteStatus === "Not Voted") {
+            if (record.voteStatus === "Not Voted" && groupStatus === 3) {
               return (
                 <Button
                   className={styles["Not_Vote_Button_Polls"]}
@@ -382,7 +379,8 @@ const GroupViewPolls = ({
       render: (text, record) => {
         return (
           <>
-            {Number(record.pollCreatorID) === Number(userID) ? (
+            {Number(record.pollCreatorID) === Number(userID) &&
+            groupStatus === 3 ? (
               <>
                 <Row>
                   {record.pollStatus.pollStatusId === 3 ? (
@@ -508,12 +506,14 @@ const GroupViewPolls = ({
                     sm={12}
                     className="d-flex justify-content-end "
                   >
-                    <Button
-                      text={t("Create-polls")}
-                      icon={<img draggable={false} src={addmore} alt="" />}
-                      className={styles["Create_polls_Button"]}
-                      onClick={handleCreatepolls}
-                    />
+                    {groupStatus === 3 && (
+                      <Button
+                        text={t("Create-polls")}
+                        icon={<img draggable={false} src={addmore} alt="" />}
+                        className={styles["Create_polls_Button"]}
+                        onClick={handleCreatepolls}
+                      />
+                    )}
                   </Col>
                 </Row>
                 <Row>

@@ -1188,6 +1188,9 @@ const uploadDocumentsTaskApi = (navigate, t, data, folderID, newFolder) => {
                 )
             ) {
               await dispatch(
+                uploadDocument_success(response.data.responseResult, "")
+              );
+              await dispatch(
                 saveFilesTaskApi(
                   navigate,
                   t,
@@ -1195,9 +1198,6 @@ const uploadDocumentsTaskApi = (navigate, t, data, folderID, newFolder) => {
                   folderID,
                   newFolder
                 )
-              );
-              await dispatch(
-                uploadDocument_success(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage

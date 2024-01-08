@@ -30,9 +30,9 @@ import {
   getFileExtension,
   getIconSource,
 } from "../../../container/DataRoom/SearchFunctionality/option";
-const ViewUpdateGroup = ({ setViewGroupPage }) => {
+const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
   let userID = localStorage.getItem("userID");
-  console.log(userID, "userIDuserIDuserID");
+
   const { Dragger } = Upload;
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -62,7 +62,6 @@ const ViewUpdateGroup = ({ setViewGroupPage }) => {
 
   useEffect(() => {
     if (GroupsReducer.getGroupByGroupIdResponse !== null) {
-      console.log(GroupsReducer, "getGroupByGroupIdResponse");
       let groupDetails = GroupsReducer.getGroupByGroupIdResponse;
       let groupHeadsData = groupDetails.groupMembers.filter(
         (data, index) => data.groupRole.groupRoleID === 2
@@ -187,9 +186,6 @@ const ViewUpdateGroup = ({ setViewGroupPage }) => {
     onDrop(e) {},
     customRequest() {},
   };
-  console.log(fileAttachments, "fileAttachmentsfileAttachments1212");
-
-  console.log(fileAttachments, "fileAttachmentsfileAttachments");
 
   const handleDoubleCLickFile = (data) => {
     let ext = data.DisplayAttachmentName.split(".").pop();
@@ -214,13 +210,11 @@ const ViewUpdateGroup = ({ setViewGroupPage }) => {
       GroupsReducer.groupDocuments !== null &&
       GroupsReducer.groupDocuments !== undefined
     ) {
-      console.log(GroupsReducer.groupDocuments, "groupDocumentsgroupDocuments");
       if (GroupsReducer.groupDocuments.data.length > 0) {
         setFolderID(GroupsReducer.groupDocuments.folderID);
         let retirveArray = [];
         let PrevIds = [];
         GroupsReducer.groupDocuments.data.map((docsData, docsDataindex) => {
-          console.log(docsData, "docsDatadocsDatadocsDatassss");
           retirveArray.push({
             pK_FileID: docsData.pK_FileID,
             DisplayAttachmentName: docsData.displayFileName,
@@ -460,6 +454,7 @@ const ViewUpdateGroup = ({ setViewGroupPage }) => {
             <Row className="mt-2">
               <Col lg={12} md={12} sm={12}>
                 <Dragger
+                  disabled={groupStatus === 3 ? false : true}
                   {...props}
                   className={styles["dragdrop_attachment_create_resolution"]}
                 >
@@ -488,7 +483,6 @@ const ViewUpdateGroup = ({ setViewGroupPage }) => {
               <Col lg={12} md={12} sm={12} className={styles["Scroller_files"]}>
                 {fileAttachments.length > 0
                   ? fileAttachments.map((data, index) => {
-                      console.log(data, "fileAttachmentsfileAttachments");
                       return (
                         <>
                           <Col
