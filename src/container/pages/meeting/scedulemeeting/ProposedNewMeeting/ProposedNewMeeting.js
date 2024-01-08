@@ -560,14 +560,12 @@ const ProposedNewMeeting = ({
       });
     });
     if (
-      proposedMeetingDetails.MeetingTitle === "" ||
-      proposedMeetingDetails.Description === "" ||
-      membersParticipants.length === 0 ||
-      rows.length <= 1 ||
-      sendResponseVal === ""
+      proposedMeetingDetails.MeetingTitle !== "" ||
+      proposedMeetingDetails.Description !== "" ||
+      membersParticipants.length !== 0 ||
+      // rows.length <= 1 ||
+      sendResponseVal !== ""
     ) {
-      seterror(true);
-    } else {
       let data = {
         MeetingDetails: {
           MeetingID: 0,
@@ -613,10 +611,12 @@ const ProposedNewMeeting = ({
         Description: "",
       });
       setMembersParticipants([]);
-      setRows([...rows, { selectedOption: "", startDate: "", endDate: "" }]);
       setSendResponseBy({
         date: "",
       });
+      seterror(false);
+    } else {
+      seterror(true);
     }
   };
 
@@ -856,7 +856,7 @@ const ProposedNewMeeting = ({
                         <Col>
                           <p
                             className={
-                              error && members.length === 0
+                              error && membersParticipants.length === 0
                                 ? ` ${styles["errorMessage-inLogin"]} `
                                 : `${styles["errorMessage-inLogin_hidden"]}`
                             }
