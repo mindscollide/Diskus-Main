@@ -26,7 +26,7 @@
   color: #fff !important;
   border-radius: 4px !important;
   font-family: "MontserratSemiBold" !important;
-  margin-right: 10px;
+  /* margin-right: 10px; */
 }
 
 .JoinMeetingButton:is(:active, :hover, :focus, :focus-visible) {
@@ -37,8 +37,31 @@
   color: #fff !important;
   border-radius: 4px !important;
   font-family: "MontserratSemiBold" !important;
-  margin-left: 10px;
-  margin-right: auto !important;
+  /* margin-left: 10px; */
+  /* margin-right: auto !important; */
+}
+
+.CopyLinkButton {
+  padding: 8px 24px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  border: 1px solid#6172d6 !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+  margin-right: 10px;
+}
+
+.CopyLinkButton:is(:active, :hover, :focus, :focus-visible) {
+  padding: 8px 24px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  border: 1px solid#6172d6 !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+  /* margin-left: 10px; */
+  /* margin-right: auto !important; */
 }
 
 .ScrollerMeeting_Active {

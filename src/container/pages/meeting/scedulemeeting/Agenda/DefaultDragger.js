@@ -121,27 +121,9 @@ const DefaultDragger = ({
           newRows[index].files.push(file);
           setFileForSend([...fileForSend, data.file.originFileObj]);
           setRows(newRows);
-          // dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
         }
       }
     },
-    // onDrop(e) {
-    //   let list = e.dataTransfer.files;
-    //   let newRows = [...rows];
-    //   console.log("DATADATADATA", list);
-    //   list.map((fileDatas, fileindex) => {
-    //     let fileData = {
-    //       agendaAttachmentsID: getRandomUniqueNumber().toString(),
-    //       displayAttachmentName: fileDatas.file.originFileObj.name,
-    //       originalAttachmentName: fileDatas.file.originFileObj.name,
-    //       fK_MAID: 0,
-    //     };
-    //     newRows[index].files.push(fileData);
-    //   });
-    //   setRows(newRows);
-    //   setFileForSend([...fileForSend, fileDatas.file.originFileObj]);
-    //   console.log("Dropped files", e.dataTransfer.files);
-    // },
     customRequest() {},
   };
 
