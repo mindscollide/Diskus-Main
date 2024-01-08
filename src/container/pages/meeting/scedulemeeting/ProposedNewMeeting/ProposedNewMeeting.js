@@ -667,20 +667,6 @@ const ProposedNewMeeting = ({
     }
   }, [currentLanguage]);
 
-  useEffect(() => {
-    return () => {
-      setProposedMeetingDetails({
-        MeetingTitle: "",
-        Description: "",
-      });
-      setMembers([]);
-      setRows([...rows, { selectedOption: "", startDate: "", endDate: "" }]);
-      setSendResponseBy({
-        date: "",
-      });
-    };
-  }, []);
-
   return (
     <section>
       <Row>
@@ -1034,9 +1020,7 @@ const ProposedNewMeeting = ({
                                               width="23px"
                                               height="23px"
                                               alt=""
-                                              className={
-                                                styles["Cross_icon_class"]
-                                              }
+                                              className="cursor-pointer"
                                               onClick={() => {
                                                 HandleCancelFunction(index);
                                               }}
