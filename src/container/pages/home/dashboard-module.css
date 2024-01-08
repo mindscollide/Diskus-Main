@@ -459,8 +459,8 @@ body[dir="rtl"] .desc-notification-user {
 }
 
 .Upcoming-Events-Box .ant-result.ant-result-info.notification-text {
-  padding: 0;
-  margin-top: 20px;
+  padding: 8px 32px !important;
+  /* margin-top: 20px; */
 }
 
 .Upcoming-Events-Box .ant-result-icon {

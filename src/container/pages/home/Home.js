@@ -1275,7 +1275,7 @@ const Home = () => {
                                       {t("No-upcoming-events")}
                                     </span>
                                   }
-                                  // className="notification-text"
+                                  className="notification-text"
                                 />
                               ) : (
                                 upcomingEventsHandler(meetingIdReducer)
