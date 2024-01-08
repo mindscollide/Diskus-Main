@@ -436,7 +436,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
                                           "Option" +
                                           " " +
                                           parseInt(index + 1) +
-                                          ""
+                                          "*"
                                         }
                                         applyClass={"PollingCreateModal"}
                                         labelClass="d-none"
