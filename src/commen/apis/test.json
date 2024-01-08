@@ -1,23 +1,18 @@
 {
-  "MeetingDetails": {
-    "MeetingID": 0,
-    "MeetingTitle": "Second time proposed meeting dates testing ",
-    "MeetingType": { "PK_MTID": 27, "Type": "BoardMeetings" },
-    "Location": "",
-    "Description": "asdasdasdasdasdasd",
-    "IsVideoChat": true,
-    "IsTalkGroup": false,
-    "OrganizationId": 411,
-    "MeetingDates": [
-      { "MeetingDate": "20240108", "StartTime": "110000", "EndTime": "120000" },
-      { "MeetingDate": "20240108", "StartTime": "130000", "EndTime": "140000" }
-    ],
-    "MeetingReminders": [4],
-    "Notes": "",
-    "AllowRSVP": true,
-    "NotifyOrganizerOnRSVP": true,
-    "ReucurringMeetingID": 1,
-    "VideoURL": "",
-    "MeetingStatusID": 11
-  }
+  "MeetingID": 2647,
+  "SendResponsebyDate": "",
+  "ProposedDates": [
+    {
+      "ProposedDate": "20240109",
+      "StartTime": "130000",
+      "EndTime": "140000",
+      "proposedDateID": 0
+    },
+    {
+      "ProposedDate": "20240109",
+      "StartTime": "151100",
+      "EndTime": "160000",
+      "proposedDateID": 0
+    }
+  ]
 }

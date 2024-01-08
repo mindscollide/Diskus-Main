@@ -274,6 +274,10 @@ const Polling = () => {
   };
 
   const handleSearchEvent = () => {
+    setPollsState({
+      ...pollsState,
+      searchValue: searchBoxState.searchByTitle,
+    });
     setSearchpoll(false);
     setsearchBoxState({
       ...searchBoxState,
@@ -845,7 +849,6 @@ const Polling = () => {
                             alt=""
                             onClick={HandleCloseSearchModal}
                             draggable="false"
-                            alt=""
                           />
                         </Col>
                       </Row>
