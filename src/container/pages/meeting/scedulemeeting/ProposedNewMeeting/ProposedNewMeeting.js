@@ -562,7 +562,7 @@ const ProposedNewMeeting = ({
     if (
       proposedMeetingDetails.MeetingTitle === "" ||
       proposedMeetingDetails.Description === "" ||
-      members.length === 0 ||
+      membersParticipants.length === 0 ||
       rows.length <= 1 ||
       sendResponseVal === ""
     ) {
@@ -601,7 +601,7 @@ const ProposedNewMeeting = ({
           currentMeeting,
           proposedMeetingDetails, //state in which title and description is present
           setDataroomMapFolderId,
-          members,
+          membersParticipants,
           rows,
           sendResponseBy.date,
           setProposedNewMeeting
@@ -612,7 +612,7 @@ const ProposedNewMeeting = ({
         MeetingTitle: "",
         Description: "",
       });
-      setMembers([]);
+      setMembersParticipants([]);
       setRows([...rows, { selectedOption: "", startDate: "", endDate: "" }]);
       setSendResponseBy({
         date: "",
@@ -625,11 +625,11 @@ const ProposedNewMeeting = ({
     let name = e.target.name;
     let value = e.target.value;
     if (name === "MeetingTitle") {
-      let valueCheck = containsStringandNumericCharacters(value);
-      if (valueCheck !== "") {
+      // let valueCheck = containsStringandNumericCharacters(value);
+      if (value !== "") {
         setProposedMeetingDetails({
           ...proposedMeetingDetails,
-          MeetingTitle: valueCheck.trimStart(),
+          MeetingTitle: value.trimStart(),
         });
       } else {
         setProposedMeetingDetails({
@@ -710,6 +710,7 @@ const ProposedNewMeeting = ({
                       name={"MeetingTitle"}
                       change={HandleChange}
                       value={proposedMeetingDetails.MeetingTitle}
+                      maxLength={250}
                     />
                     <Row>
                       <Col>
@@ -739,7 +740,7 @@ const ProposedNewMeeting = ({
                   <Col lg={12} md={12} sm={12}>
                     <TextField
                       name="MeetingDescription"
-                      applyClass="form-control2 textbox-height-details-view"
+                      applyClass="TextAreaProposedMeetingDetails"
                       type="text"
                       as={"textarea"}
                       labelClass={"d-none"}
