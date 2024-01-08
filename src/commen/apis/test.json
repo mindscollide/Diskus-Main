@@ -1,5 +1,23 @@
 {
-  "FK_MeetingAgendaMinutesID": 150,
-  "FK_MDID": 2624,
-  "UpdateFileList": [{ "PK_FileID": 7531 }]
+  "MeetingDetails": {
+    "MeetingID": 0,
+    "MeetingTitle": "eren yeagers meeting ",
+    "MeetingType": { "PK_MTID": 27, "Type": "BoardMeetings" },
+    "Location": "",
+    "Description": "coffee alaska ",
+    "IsVideoChat": true,
+    "IsTalkGroup": false,
+    "OrganizationId": 411,
+    "MeetingDates": [
+      { "MeetingDate": "20240108", "StartTime": "080000", "EndTime": "090000" },
+      { "MeetingDate": "20240108", "StartTime": "080000", "EndTime": "120000" }
+    ],
+    "MeetingReminders": [4],
+    "Notes": "",
+    "AllowRSVP": true,
+    "NotifyOrganizerOnRSVP": true,
+    "ReucurringMeetingID": 1,
+    "VideoURL": "",
+    "MeetingStatusID": 11
+  }
 }
