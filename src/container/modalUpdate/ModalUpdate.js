@@ -639,7 +639,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         let size;
         if (files.length > 0) {
           files.forEach((filename, index) => {
-            if (filename.DisplayFileName === uploadedFile.name) {
+            if (filename.DisplayAttachmentName === uploadedFile.name) {
               data = false;
             }
           });
@@ -652,7 +652,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             setTimeout(
               setOpen({
                 flag: true,
-                message: t("File-already-exisit"),
+                message: t("File-already-exist"),
               }),
               3000
             );
