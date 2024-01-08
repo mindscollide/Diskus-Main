@@ -274,6 +274,11 @@ const Polling = () => {
   };
 
   const handleSearchEvent = () => {
+    setSearchpoll(true);
+    setPollsState({
+      ...pollsState,
+      searchValue: searchBoxState.searchByTitle,
+    });
     setSearchpoll(false);
     setsearchBoxState({
       ...searchBoxState,
@@ -599,6 +604,32 @@ const Polling = () => {
     }
   };
 
+  const handleKeyDownSearchModal = (e) => {
+    if (e.key === "Enter" && searchBoxState.searchByTitle !== "") {
+      setSearchpoll(true);
+      setPollsState({
+        ...pollsState,
+        searchValue: searchBoxState.searchByTitle,
+      });
+      setSearchpoll(false);
+      setsearchBoxState({
+        ...searchBoxState,
+        searchByName: "",
+        searchByTitle: "",
+      });
+      let data = {
+        UserID: parseInt(userID),
+        OrganizationID: parseInt(organizationID),
+        PollTitle: searchBoxState.searchByTitle,
+        CreatorName: searchBoxState.searchByName,
+        Title: searchBoxState.searchByTitle,
+        PageNumber: 1,
+        Length: 50,
+      };
+      dispatch(searchPollsApi(navigate, t, data));
+    }
+  };
+
   const HandleSearchboxNameTitle = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -845,7 +876,6 @@ const Polling = () => {
                             alt=""
                             onClick={HandleCloseSearchModal}
                             draggable="false"
-                            alt=""
                           />
                         </Col>
                       </Row>
@@ -855,6 +885,7 @@ const Polling = () => {
                             placeholder={t("Search-by-title")}
                             applyClass={"Search_Modal_Fields"}
                             labelClass="d-none"
+                            onKeyDown={handleKeyDownSearchModal}
                             name={"searchbytitle"}
                             value={searchBoxState.searchByTitle}
                             change={HandleSearchboxNameTitle}

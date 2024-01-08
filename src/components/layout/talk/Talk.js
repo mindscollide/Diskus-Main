@@ -308,7 +308,6 @@ const Talk = () => {
               />
             </g>
           </svg> */}
-
             <svg
               id="Group_2034"
               data-name="Group 2034"

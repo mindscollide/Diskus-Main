@@ -13,6 +13,7 @@ import {
   Button,
   TextField,
   Notification,
+  InputSearchFilter,
 } from "../../../../../components/elements";
 import { useState } from "react";
 import DatePicker from "react-multi-date-picker";
@@ -67,7 +68,9 @@ const ProposedNewMeeting = ({
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [error, seterror] = useState(false);
   const [sendResponseVal, setSendResponseVal] = useState("");
+  const [participantUsers, setParticipantUsers] = useState("");
   const [members, setMembers] = useState([]);
+  const [membersParticipants, setMembersParticipants] = useState([]);
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [dropdowndata, setDropdowndata] = useState([]);
   const startTime = getStartTimeWithCeilFunction();
@@ -126,107 +129,40 @@ const ProposedNewMeeting = ({
   }, []);
 
   useEffect(() => {
-    let pollsData = PollsReducer.gellAllCommittesandGroups;
-    if (pollsData !== null && pollsData !== undefined) {
+    let newParticpantData = PollsReducer.gellAllCommittesandGroups;
+    console.log(newParticpantData, "newParticpantDatanewParticpantData");
+    if (newParticpantData !== null && newParticpantData !== undefined) {
       let temp = [];
-      if (Object.keys(pollsData).length > 0) {
-        if (Object.keys(pollsData.groups).length > 0) {
-          pollsData.groups.map((a, index) => {
+      if (Object.keys(newParticpantData).length > 0) {
+        if (Object.keys(newParticpantData.groups).length > 0) {
+          newParticpantData.groups.forEach((a, index) => {
             let newData = {
               value: a.groupID,
-              label: (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
-                      <img
-                        src={GroupIcon}
-                        height="16.45px"
-                        width="18.32px"
-                        draggable="false"
-                        alt=""
-                      />
-                      <span className={styles["NameDropDown"]}>
-                        {a.groupName}
-                      </span>
-                    </Col>
-                  </Row>
-                </>
-              ),
+              label: a.groupName,
+              profilePic: GroupIcon,
               type: 1,
             };
             temp.push(newData);
           });
         }
-        if (Object.keys(pollsData.committees).length > 0) {
-          pollsData.committees.map((a, index) => {
+        if (Object.keys(newParticpantData.committees).length > 0) {
+          newParticpantData.committees.forEach((a, index) => {
             let newData = {
               value: a.committeeID,
-              label: (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
-                      <img
-                        src={committeeicon}
-                        width="21.71px"
-                        height="18.61px"
-                        draggable="false"
-                        alt=""
-                      />
-                      <span className={styles["NameDropDown"]}>
-                        {a.committeeName}
-                      </span>
-                    </Col>
-                  </Row>
-                </>
-              ),
+              label: a.committeeName,
+              profilePic: committeeicon,
+
               type: 2,
             };
             temp.push(newData);
           });
         }
-        if (Object.keys(pollsData.organizationUsers).length > 0) {
-          console.log(
-            pollsData.organizationUsers,
-            "organizationUsersorganizationUsersorganizationUsers"
-          );
-          pollsData.organizationUsers.map((a, index) => {
+        if (Object.keys(newParticpantData.organizationUsers).length > 0) {
+          newParticpantData.organizationUsers.forEach((a, index) => {
             let newData = {
               value: a.userID,
-              label: (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
-                      <img
-                        src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
-                        // src={}
-                        alt=""
-                        className={styles["UserProfilepic"]}
-                        width="18px"
-                        height="18px"
-                        draggable="false"
-                      />
-                      <span className={styles["NameDropDown"]}>
-                        {a.userName}
-                      </span>
-                    </Col>
-                  </Row>
-                </>
-              ),
+              label: a.userName,
+              profilePic: a?.profilePicture?.displayProfilePictureName,
               type: 3,
             };
             temp.push(newData);
@@ -239,106 +175,166 @@ const ProposedNewMeeting = ({
     }
   }, [PollsReducer.gellAllCommittesandGroups]);
 
-  //handle Add Users
-  const handleAddUsers = () => {
-    let pollsData = PollsReducer.gellAllCommittesandGroups;
-    let tem = [...members];
-    if (Object.keys(selectedsearch).length > 0) {
-      try {
-        selectedsearch.forEach((seledtedData, index) => {
-          console.log(
-            seledtedData,
-            "seledtedDataseledtedDataseledtedDataseledtedData"
-          );
-          if (seledtedData.type === 1) {
-            let check1 = pollsData.groups.find(
-              (data, index) => data.groupID === seledtedData.value
+  //onChange function Search
+  const onChangeSearch = (e) => {
+    setParticipantUsers(e.target.value.trimStart());
+  };
+
+  //onSearch function
+  const onSearch = (name, id, type, item) => {
+    let newOrganizersData = PollsReducer.gellAllCommittesandGroups;
+    let tem = [...membersParticipants];
+    if (type === 1) {
+      // Groups Search
+      let check1 = newOrganizersData.groups.find(
+        (data, index) => data.groupID === id
+      );
+      if (check1 !== undefined) {
+        let groupUsers = check1.groupUsers;
+        if (Object.keys(groupUsers).length > 0) {
+          groupUsers.forEach((gUser, index) => {
+            let check2 = membersParticipants.find(
+              (data, index) => data.UserID === gUser.userID
             );
-            if (check1 !== undefined) {
-              let groupUsers = check1.groupUsers;
-              if (Object.keys(groupUsers).length > 0) {
-                groupUsers.forEach((gUser, index) => {
-                  let check2 = members.find(
-                    (data, index) => data.UserID === gUser.userID
-                  );
-                  if (check2 !== undefined) {
-                  } else {
-                    let newUser = {
-                      userName: gUser.userName,
-                      userID: gUser.userID,
-                      displayPicture: "",
-                      Title: "",
-                      ParticipantRoleID: 2,
-                    };
-                    tem.push(newUser);
-                  }
-                });
-              }
-            }
-          } else if (seledtedData.type === 2) {
-            console.log("members check");
-            let check1 = pollsData.committees.find(
-              (data, index) => data.committeeID === seledtedData.value
-            );
-            if (check1 !== undefined) {
-              let committeesUsers = check1.committeeUsers;
-              if (Object.keys(committeesUsers).length > 0) {
-                committeesUsers.forEach((cUser, index) => {
-                  let check2 = members.find(
-                    (data, index) => data.UserID === cUser.userID
-                  );
-                  if (check2 !== undefined) {
-                  } else {
-                    let newUser = {
-                      userName: cUser.userName,
-                      userID: cUser.userID,
-                      displayPicture: "",
-                      Title: "",
-                      ParticipantRoleID: 2,
-                    };
-                    tem.push(newUser);
-                  }
-                });
-              }
-            }
-          } else if (seledtedData.type === 3) {
-            let check1 = members.find(
-              (data, index) => data.UserID === seledtedData.value
-            );
-            if (check1 !== undefined) {
+            if (check2 !== undefined) {
             } else {
-              let check2 = pollsData.organizationUsers.find(
-                (data, index) => data.userID === seledtedData.value
-              );
-              console.log(check2, "check2check2check2");
-              if (check2 !== undefined) {
-                let newUser = {
-                  userName: check2.userName,
-                  userID: check2.userID,
-                  displayPicture:
-                    check2.profilePicture.displayProfilePictureName,
-                  Title: "",
-                  ParticipantRoleID: 2,
-                };
-
-                tem.push(newUser);
-              }
+              let newUser = {
+                userName: gUser.userName,
+                userID: gUser.userID,
+                displayPicture: gUser.profilePicture.displayProfilePictureName,
+                email: gUser.emailAddress,
+                IsPrimaryOrganizer: false,
+                IsOrganizerNotified: false,
+                Title: "",
+                isRSVP: false,
+                participantRole: {
+                  participantRole: "Participant",
+                  participantRoleID: 2,
+                },
+                isComingApi: false,
+              };
+              tem.push(newUser);
             }
-          } else {
-          }
-        });
-      } catch {
-        console.log("error in add");
+          });
+        }
       }
-      console.log("members check", tem);
-      const uniqueData = new Set(tem.map(JSON.stringify));
+    } else if (type === 2) {
+      // Committees Search
+      let check1 = newOrganizersData.committees.find(
+        (data, index) => data.committeeID === id
+      );
 
-      // Convert the Set back to an array of objects
-      const result = Array.from(uniqueData).map(JSON.parse);
-      setMembers(result);
-      setSelectedsearch([]);
-    } else {
-      // setopen notionation work here
+      if (check1 !== undefined) {
+        let committeesUsers = check1.committeeUsers;
+        if (Object.keys(committeesUsers).length > 0) {
+          committeesUsers.forEach((cUser, index) => {
+            let check2 = membersParticipants.find(
+              (data, index) => data.UserID === cUser.userID
+            );
+            if (check2 !== undefined) {
+            } else {
+              let newUser = {
+                userName: cUser.userName,
+                userID: cUser.userID,
+                displayPicture: cUser.profilePicture.displayProfilePictureName,
+                email: cUser.emailAddress,
+                IsPrimaryOrganizer: false,
+                IsOrganizerNotified: false,
+                Title: "",
+                isRSVP: false,
+                participantRole: {
+                  participantRole: "Participant",
+                  participantRoleID: 2,
+                },
+                isComingApi: false,
+              };
+              tem.push(newUser);
+            }
+          });
+        }
+      }
+    } else if (type === 3) {
+      // User Search
+      let check1 = membersParticipants.find(
+        (data, index) => data.UserID === id
+      );
+
+      if (check1 !== undefined) {
+      } else {
+        let check2 = newOrganizersData.organizationUsers.find(
+          (data, index) => data.userID === id
+        );
+        if (check2 !== undefined) {
+          let newUser = {
+            userName: check2.userName,
+            userID: check2.userID,
+            displayPicture: check2.profilePicture.displayProfilePictureName,
+            email: check2.emailAddress,
+            IsPrimaryOrganizer: false,
+            IsOrganizerNotified: false,
+            Title: "",
+            isRSVP: false,
+            participantRole: {
+              participantRole: "Participant",
+              participantRoleID: 2,
+            },
+            isComingApi: false,
+          };
+          tem.push(newUser);
+        }
+      }
+    }
+    const uniqueData = new Set(tem.map(JSON.stringify));
+
+    const result = Array.from(uniqueData).map(JSON.parse);
+    setMembersParticipants(result);
+    setParticipantUsers("");
+  };
+
+  //Drop Down Values Search Filter Participants
+  const searchFilterHandler = (value) => {
+    console.log(value, "valuevaluevaluevalue");
+    let allAssignees = dropdowndata;
+    console.log(allAssignees, "allAssigneesallAssigneesallAssignees");
+    try {
+      if (
+        allAssignees !== undefined &&
+        allAssignees !== null &&
+        allAssignees !== []
+      ) {
+        return allAssignees
+          .filter((item) => {
+            console.log(item, "itemitemitemitemitem");
+            const searchValue = value.toLowerCase();
+            const agendaContributorValue = item.label.toLowerCase();
+            return (
+              searchValue && agendaContributorValue.startsWith(searchValue)
+            );
+          })
+          .slice(0, 10)
+          .map((item) => (
+            <div
+              onClick={() => onSearch(item.label, item.value, item.type, item)}
+              className="dropdown-row-assignee d-flex align-items-center flex-row"
+              key={item.pK_UID}
+            >
+              <img
+                draggable="false"
+                src={
+                  item.type === 3
+                    ? `data:image/jpeg;base64,${item?.profilePic}`
+                    : item.profilePic
+                }
+                alt=""
+                className="user-img"
+              />
+              <p className="p-0 m-0">{item.label}</p>
+            </div>
+          ));
+      } else {
+      }
+    } catch (error) {
+      console.log(error, "errorerrorerror");
     }
   };
 
@@ -564,14 +560,12 @@ const ProposedNewMeeting = ({
       });
     });
     if (
-      proposedMeetingDetails.MeetingTitle === "" ||
-      proposedMeetingDetails.Description === "" ||
-      members.length === 0 ||
-      rows.length <= 1 ||
-      sendResponseVal === ""
+      proposedMeetingDetails.MeetingTitle !== "" ||
+      proposedMeetingDetails.Description !== "" ||
+      membersParticipants.length !== 0 ||
+      // rows.length <= 1 ||
+      sendResponseVal !== ""
     ) {
-      seterror(true);
-    } else {
       let data = {
         MeetingDetails: {
           MeetingID: 0,
@@ -605,7 +599,7 @@ const ProposedNewMeeting = ({
           currentMeeting,
           proposedMeetingDetails, //state in which title and description is present
           setDataroomMapFolderId,
-          members,
+          membersParticipants,
           rows,
           sendResponseBy.date,
           setProposedNewMeeting
@@ -616,11 +610,13 @@ const ProposedNewMeeting = ({
         MeetingTitle: "",
         Description: "",
       });
-      setMembers([]);
-      setRows([...rows, { selectedOption: "", startDate: "", endDate: "" }]);
+      setMembersParticipants([]);
       setSendResponseBy({
         date: "",
       });
+      seterror(false);
+    } else {
+      seterror(true);
     }
   };
 
@@ -629,11 +625,11 @@ const ProposedNewMeeting = ({
     let name = e.target.name;
     let value = e.target.value;
     if (name === "MeetingTitle") {
-      let valueCheck = containsStringandNumericCharacters(value);
-      if (valueCheck !== "") {
+      // let valueCheck = containsStringandNumericCharacters(value);
+      if (value !== "") {
         setProposedMeetingDetails({
           ...proposedMeetingDetails,
-          MeetingTitle: valueCheck.trimStart(),
+          MeetingTitle: value.trimStart(),
         });
       } else {
         setProposedMeetingDetails({
@@ -671,20 +667,6 @@ const ProposedNewMeeting = ({
     }
   }, [currentLanguage]);
 
-  useEffect(() => {
-    return () => {
-      setProposedMeetingDetails({
-        MeetingTitle: "",
-        Description: "",
-      });
-      setMembers([]);
-      setRows([...rows, { selectedOption: "", startDate: "", endDate: "" }]);
-      setSendResponseBy({
-        date: "",
-      });
-    };
-  }, []);
-
   return (
     <section>
       <Row>
@@ -714,6 +696,7 @@ const ProposedNewMeeting = ({
                       name={"MeetingTitle"}
                       change={HandleChange}
                       value={proposedMeetingDetails.MeetingTitle}
+                      maxLength={250}
                     />
                     <Row>
                       <Col>
@@ -743,7 +726,7 @@ const ProposedNewMeeting = ({
                   <Col lg={12} md={12} sm={12}>
                     <TextField
                       name="MeetingDescription"
-                      applyClass="form-control2 textbox-height-details-view"
+                      applyClass="TextAreaProposedMeetingDetails"
                       type="text"
                       as={"textarea"}
                       labelClass={"d-none"}
@@ -777,27 +760,18 @@ const ProposedNewMeeting = ({
                   </Col>
                 </Row>
                 <Row>
-                  <Col lg={10} md={10} sm={10}>
-                    <Select
-                      onChange={handleSelectValue}
-                      isDisabled={
-                        PollsReducer.gellAllCommittesandGroups === null
-                          ? true
-                          : false
-                      }
-                      value={selectedsearch}
-                      classNamePrefix={"selectMember"}
-                      closeMenuOnSelect={false}
-                      components={animatedComponents}
-                      isMulti
-                      options={dropdowndata}
-                    />
-                  </Col>
-                  <Col lg={2} md={2} sm={2} className="m-0 p-0">
-                    <Button
-                      text={"Add"}
-                      className={styles["Add_Button_Proposed_Meeting"]}
-                      onClick={handleAddUsers}
+                  <Col lg={12} md={12} sm={12}>
+                    <InputSearchFilter
+                      placeholder={t("Add-participant")}
+                      value={participantUsers}
+                      filteredDataHandler={searchFilterHandler(
+                        participantUsers
+                      )}
+                      // applyClass="assigneeFindInCreateToDo"
+                      applyClass={"searchFilterAgendaContributor"}
+                      labelClass={"searchFilterAgendaContributorLabel"}
+                      disable={dropdowndata.length === 0 ? true : false}
+                      change={onChangeSearch}
                     />
                   </Col>
                 </Row>
@@ -809,8 +783,8 @@ const ProposedNewMeeting = ({
                     className={styles["Scroller_ProposedMeeting"]}
                   >
                     <Row className="mt-2">
-                      {members.length > 0
-                        ? members.map((participant, index) => {
+                      {membersParticipants.length > 0
+                        ? membersParticipants.map((participant, index) => {
                             console.log(participant, "participantparticipant");
                             return (
                               <>
@@ -882,7 +856,7 @@ const ProposedNewMeeting = ({
                         <Col>
                           <p
                             className={
-                              error && members.length === 0
+                              error && membersParticipants.length === 0
                                 ? ` ${styles["errorMessage-inLogin"]} `
                                 : `${styles["errorMessage-inLogin_hidden"]}`
                             }
@@ -1046,9 +1020,7 @@ const ProposedNewMeeting = ({
                                               width="23px"
                                               height="23px"
                                               alt=""
-                                              className={
-                                                styles["Cross_icon_class"]
-                                              }
+                                              className="cursor-pointer"
                                               onClick={() => {
                                                 HandleCancelFunction(index);
                                               }}
