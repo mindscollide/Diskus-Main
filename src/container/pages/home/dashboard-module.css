@@ -1336,6 +1336,7 @@ body[dir="rtl"] h1.noteheading {
 
 .MainTitleClass {
   color: #49598c !important;
+  font-weight: bold !important;
 }
 
 .SubtitleTodoMessege {
