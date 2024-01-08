@@ -1,16 +1,16 @@
 {
   "MeetingDetails": {
     "MeetingID": 0,
-    "MeetingTitle": "eren yeagers meeting ",
+    "MeetingTitle": "Second time proposed meeting dates testing ",
     "MeetingType": { "PK_MTID": 27, "Type": "BoardMeetings" },
     "Location": "",
-    "Description": "coffee alaska ",
+    "Description": "asdasdasdasdasdasd",
     "IsVideoChat": true,
     "IsTalkGroup": false,
     "OrganizationId": 411,
     "MeetingDates": [
-      { "MeetingDate": "20240108", "StartTime": "080000", "EndTime": "090000" },
-      { "MeetingDate": "20240108", "StartTime": "080000", "EndTime": "120000" }
+      { "MeetingDate": "20240108", "StartTime": "110000", "EndTime": "120000" },
+      { "MeetingDate": "20240108", "StartTime": "130000", "EndTime": "140000" }
     ],
     "MeetingReminders": [4],
     "Notes": "",
