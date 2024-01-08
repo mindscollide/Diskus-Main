@@ -113,6 +113,7 @@ const updateOrganizationLevelSettingFail = (message) => {
     message: message,
   };
 };
+
 const updateOrganizationLevelSetting = (navigate, updateData, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let data = {
@@ -144,18 +145,18 @@ const updateOrganizationLevelSetting = (navigate, updateData, t) => {
               response.data.responseResult.responseMessage ===
               "Settings_SettingsServiceManager_UpdateOrganizationSettings_01"
             ) {
-              dispatch(getOrganizationLevelSetting(navigate, t));
               dispatch(
                 updateOrganizationLevelSettingSuccess(
                   t("Organization-configurations-updated-successfully")
                 )
               );
+              dispatch(getOrganizationLevelSetting(navigate, t));
             } else if (
               response.data.responseResult.responseMessage ===
               "Settings_SettingsServiceManager_UpdateOrganizationSettings_02"
             ) {
               dispatch(
-                updateOrganizationLevelSettingSuccess(
+                updateOrganizationLevelSettingFail(
                   t("Organization-configurations-updates-not-successfully")
                 )
               );

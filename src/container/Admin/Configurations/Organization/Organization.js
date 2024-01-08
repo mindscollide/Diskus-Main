@@ -1909,7 +1909,7 @@ const Organization = () => {
           </Row>
         </Col>
       </Container>
-      {settingReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
+      {/* {settingReducer.Loading || LanguageReducer.Loading ? <Loader /> : null} */}
     </>
   );
 };
