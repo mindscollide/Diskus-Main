@@ -36,7 +36,9 @@ import {
 import { useNavigate } from "react-router-dom";
 import { getTasksByGroupIDApi } from "../../../store/actions/Polls_actions";
 
-const CreateTodoCommittee = () => {
+const CreateTodoCommittee = ({ groupStatus }) => {
+  console.log(groupStatus, "groupStatusgroupStatusgroupStatus");
+
   //For Localization
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -625,12 +627,14 @@ const CreateTodoCommittee = () => {
       <div className="todolistContainer_Committee">
         <Row className="my-3">
           <Col lg={12} md={12} sm={12} className="d-flex justify-content-end ">
-            <Button
-              text={t("Create-a-Task")}
-              onClick={modalHandler}
-              icon={<Plus width={20} height={20} fontWeight={800} />}
-              className={"Create_TodoBtn_Button"}
-            />
+            {groupStatus === 3 && (
+              <Button
+                text={t("Create-a-Task")}
+                onClick={modalHandler}
+                icon={<Plus width={20} height={20} fontWeight={800} />}
+                className={"Create_TodoBtn_Button"}
+              />
+            )}
           </Col>
         </Row>
         <Row>

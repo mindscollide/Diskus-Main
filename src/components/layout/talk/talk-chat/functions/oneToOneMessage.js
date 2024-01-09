@@ -1,27 +1,31 @@
 export const oneToOneMessages = (setAllOtoMessages, allotomessages) => {
   let allMessagesArr = [];
+
   if (
     allotomessages !== undefined &&
     allotomessages !== null &&
     allotomessages.length !== 0
   ) {
-    allotomessages.map((messagesData) => {
+    allMessagesArr = allotomessages.map((messagesData) => {
+      let frMessages = messagesData.frMessages;
+
       if (
-        messagesData.frMessages !== "Direct Message" &&
-        messagesData.frMessages.length > 0 &&
-        messagesData.frMessages !== undefined &&
-        typeof messagesData.frMessages !== "object"
+        frMessages !== "Direct Message" &&
+        frMessages.length > 0 &&
+        frMessages !== undefined &&
+        typeof frMessages !== "object"
       ) {
-        messagesData.frMessages = messagesData.frMessages.split("|");
+        frMessages = frMessages.split("|");
       }
-      allMessagesArr.push({
+
+      return {
         attachmentLocation: messagesData.attachmentLocation,
         blockCount: messagesData.blockCount,
         broadcastName: messagesData.broadcastName,
         currDate: messagesData.currDate,
         fileGeneratedName: messagesData.fileGeneratedName,
         fileName: messagesData.fileName,
-        frMessages: messagesData.frMessages,
+        frMessages: frMessages,
         isFlag: messagesData.isFlag,
         messageBody: messagesData.messageBody,
         messageCount: messagesData.messageCount,
@@ -39,7 +43,7 @@ export const oneToOneMessages = (setAllOtoMessages, allotomessages) => {
         sourceMessageBody: messagesData.sourceMessageBody,
         sourceMessageId: messagesData.sourceMessageId,
         isRetry: false,
-      });
+      };
     });
   } else {
     allMessagesArr = [];

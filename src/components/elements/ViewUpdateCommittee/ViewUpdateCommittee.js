@@ -12,10 +12,12 @@ import Polls from "../../../container/Committee/ViewPolls/Polls/Polls";
 import CommitteeTodo from "../../../container/Committee/ViewTodo/CommitteeTodo.js";
 import { XLg } from "react-bootstrap-icons";
 import CommitteeMeetingTab from "../../../container/Committee/ViewMeeting/Meeting";
+import { useSelector } from "react-redux";
 const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-
+  const [committeeStatus, setCommitteeStatus] = useState(null);
+  const { CommitteeReducer } = useSelector((state) => state);
   const dispatch = useDispatch();
   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
   const [currentView, setCurrentView] = useState(
@@ -37,6 +39,25 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
     setViewGroupPage(false);
     localStorage.removeItem("ViewCommitteeID");
   };
+  useEffect(() => {
+    try {
+      if (
+        CommitteeReducer.getCommitteeByCommitteeID !== null &&
+        CommitteeReducer.getCommitteeByCommitteeID !== undefined
+      ) {
+        let committeeStatusID =
+          CommitteeReducer.getCommitteeByCommitteeID.committeeStatus
+            .committeeStatusID;
+        setCommitteeStatus(committeeStatusID);
+        console.log(
+          committeeStatusID,
+          "committeeStatusIDcommitteeStatusIDcommitteeStatusID"
+        );
+      } else {
+        setCommitteeStatus(null);
+      }
+    } catch {}
+  }, [CommitteeReducer.getCommitteeByCommitteeID]);
   return (
     <>
       <section className="MontserratSemiBold-600 color-5a5a5a">
@@ -99,10 +120,13 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
             </Col>
           </Row>
           {currentView === 1 ? (
-            <ViewCommitteeDetails setViewGroupPage={setViewGroupPage} />
+            <ViewCommitteeDetails
+              setViewGroupPage={setViewGroupPage}
+              committeeStatus={committeeStatus}
+            />
           ) : currentView === 2 ? (
             <>
-              <CommitteeTodo />
+              <CommitteeTodo committeeStatus={committeeStatus} />
               {/* <Row className="my-3">
                 <Col
                   sm={12}
@@ -121,7 +145,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
           ) : // <TableToDo />
           currentView === 3 ? (
             <>
-              <Polls />
+              <Polls committeeStatus={committeeStatus} />
               {/* <Row>
                 <Col
                   sm={12}
@@ -139,7 +163,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
             </>
           ) : currentView === 4 ? (
             <>
-              <CommitteeMeetingTab />
+              <CommitteeMeetingTab committeeStatus={committeeStatus} />
               {/* <Meeting /> */}
               {/* <Row>
                 <Col
