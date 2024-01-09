@@ -94,9 +94,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   const [externalMeetingAttendees, setExternalMeetingAttendees] = useState([]);
   const [editRecordFlag, seteditRecordFlag] = useState(false);
   const [editRecordIndex, seteditRecordIndex] = useState(null);
-
+  const [closeConfirmationModal, setCloseConfirmationModal] = useState(false);
+  console.log(closeConfirmationModal, "closeConfirmationModal");
   // for modal fields error
-  const [modalField, setModalField] = useState(false);
+  const [, set] = useState(false);
 
   const [objMeetingAgenda, setObjMeetingAgenda] = useState({
     PK_MAID: 0,
@@ -222,11 +223,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     setIsAttendees(false);
     setIsPublishMeeting(false);
     setCancelMeetingModal(false);
-    setModalField(false);
+    set(false);
   };
 
   const changeSelectAgenda = () => {
-    setModalField(false);
+    set(false);
     if (
       createMeeting.MeetingStartTime !== "" &&
       createMeeting.MeetingEndTime !== "" &&
@@ -238,7 +239,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       // createMeeting.MeetingTitle != ""
     ) {
       setCurrentStep(2);
-      setModalField(false);
+      set(false);
       setIsDetails(false);
       setIsAgenda(true);
       setIsAttendees(false);
@@ -247,7 +248,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     } else {
       setCurrentStep(1);
 
-      setModalField(true);
+      set(true);
       setIsDetails(true);
       setIsAgenda(false);
       setIsAttendees(false);
@@ -257,7 +258,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   };
 
   const changeSelectAttendees = () => {
-    setModalField(false);
+    set(false);
     if (
       createMeeting.MeetingStartTime !== "" &&
       createMeeting.MeetingEndTime !== "" &&
@@ -270,7 +271,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     ) {
       setCurrentStep(3);
 
-      setModalField(false);
+      set(false);
       setIsDetails(false);
       setIsAgenda(false);
       setIsAttendees(true);
@@ -278,7 +279,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       setIsPublishMeeting(false);
       setCancelMeetingModal(false);
     } else {
-      setModalField(true);
+      set(true);
       setIsDetails(true);
       setCurrentStep(1);
 
@@ -300,7 +301,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       // &&
       // createMeeting.MeetingTitle != ""
     ) {
-      setModalField(false);
+      set(false);
       setIsDetails(false);
       setIsAgenda(false);
       setIsAttendees(false);
@@ -308,7 +309,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
       setIsMinutes(true);
     } else {
-      setModalField(true);
+      set(true);
       setCurrentStep(1);
 
       setIsDetails(true);
@@ -321,7 +322,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   };
 
   const navigateToAgenda = async () => {
-    setModalField(false);
+    set(false);
     if (
       createMeeting.MeetingStartTime !== "" &&
       createMeeting.MeetingEndTime !== "" &&
@@ -332,7 +333,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       createMeetingTime !== "" &&
       meetingDate !== ""
     ) {
-      setModalField(false);
+      set(false);
       setIsDetails(false);
       setIsMinutes(false);
       setIsPublishMeeting(false);
@@ -341,7 +342,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       setIsAttendees(false);
       setCurrentStep(2);
     } else {
-      setModalField(true);
+      set(true);
       setIsDetails(true);
       setCurrentStep(1);
       setIsAgenda(false);
@@ -501,7 +502,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     let name = e.target.name;
     let value = e.target.value;
     let valueCheck = value.replace(/^\s/g, "");
-    // setModalField(true);
+    // set(true);
     if (name === "MeetingStartTime") {
       setCreateMeeting({
         ...createMeeting,
@@ -538,7 +539,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         [name]: parseInt(0),
       });
     } else {
-      setModalField(false);
+      set(false);
       setCreateMeeting({
         ...createMeeting,
         [name]: value,
@@ -794,7 +795,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
               MeetingAgendaAttachments: [],
             });
           } else {
-            setModalField(false);
+            set(false);
             setOpen({
               ...open,
               flag: true,
@@ -827,7 +828,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           setFileSize(0);
         }
       } else {
-        setModalField(true);
+        set(true);
         setOpen({
           ...open,
           flag: true,
@@ -838,7 +839,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       if (objMeetingAgenda.Title !== "") {
         if (objMeetingAgenda.URLs !== "") {
           if (urlPatternValidation(objMeetingAgenda.URLs)) {
-            setModalField(false);
+            set(false);
             let previousAdendas = createMeeting.MeetingAgendas;
             let newData = {
               ObjMeetingAgenda: objMeetingAgenda,
@@ -862,7 +863,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             });
             setFileSize(0);
           } else {
-            setModalField(false);
+            set(false);
             setOpen({
               ...open,
               flag: true,
@@ -870,7 +871,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             });
           }
         } else {
-          setModalField(false);
+          set(false);
           let previousAdendas = createMeeting.MeetingAgendas;
           let newData = {
             ObjMeetingAgenda: objMeetingAgenda,
@@ -895,7 +896,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           setFileSize(0);
         }
       } else {
-        setModalField(true);
+        set(true);
         setOpen({
           ...open,
           flag: true,
@@ -1785,7 +1786,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     if (minutesOftheMeatingStatus) {
       if (endMeetingStatus2) {
         // let Data = { MinutesOfMeeting: minutesOfMeeting };
-        await setModalField(false);
+        await set(false);
         await setIsPublishMeeting(false);
         await setCancelMeetingModal(false);
         await setEditFlag(false);
@@ -1846,7 +1847,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         setReminderValue("");
       } else {
         // let Data = { MinutesOfMeeting: minutesOfMeeting };
-        await setModalField(false);
+        await set(false);
         await setIsPublishMeeting(false);
         await setCancelMeetingModal(false);
         await setEditFlag(false);
@@ -1908,7 +1909,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         setTaskAssignedToInput("");
       }
     } else {
-      setModalField(false);
+      set(false);
       setIsDetails(false);
       setIsAgenda(false);
       setIsAttendees(false);
@@ -2004,8 +2005,50 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       />
     );
   }
-  const onHideHandleModal = () => {};
+  const onHideHandleModal = () => {
+    setCloseConfirmationModal(true);
+    // set(false);
+    setIsDetails(false);
+    setIsAgenda(false);
+    setIsAttendees(false);
+    setIsMinutes(false);
+    setIsPublishMeeting(false);
+    setCancelMeetingModal(false);
+  };
+  const onHideCancelButton = () => {
+    if (currentStep === 1) {
+      setIsDetails(true);
+      setIsAgenda(false);
+      setIsAttendees(false);
+      setCloseConfirmationModal(false);
 
+      setIsMinutes(false);
+    } else if (currentStep === 2) {
+      setIsDetails(false);
+      setIsAgenda(true);
+      setCloseConfirmationModal(false);
+
+      setIsAttendees(false);
+      setIsMinutes(false);
+    } else if (currentStep === 3) {
+      setIsDetails(false);
+      setCloseConfirmationModal(false);
+
+      setIsAgenda(false);
+      setIsAttendees(true);
+      setIsMinutes(false);
+    } else if (currentStep === 4) {
+      setIsDetails(false);
+      setIsAgenda(false);
+      setCloseConfirmationModal(false);
+
+      setIsAttendees(false);
+      setIsMinutes(true);
+    }
+  };
+  const handleCloseUpdateMeeting = () => {
+    setEditFlag(false);
+  };
   return (
     <>
       <Container>
@@ -2013,31 +2056,31 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           onHide={onHideHandleModal}
           show={editFlag}
           setShow={setEditFlag}
-          className="modaldialog createModalMeeting"
+          className={closeConfirmationModal ? null : "meeting_update"}
           ButtonTitle={ModalTitle}
-          setModalField={setModalField}
-          modalField={modalField}
-          modalBodyClassName="modalMeetingUpdateBody"
+          // modalBodyClassName="modalMeetingUpdateBody"
           modalFooterClassName={
             isDetails
-              ? "d-flex mt-4 "
+              ? "d-flex "
               : isAgenda
-              ? "d-block mt-4"
+              ? "d-block "
               : isCancelMeetingModal
               ? "d-block"
-              : "modalMeetingUpdateFooter"
+              : closeConfirmationModal
+              ? "d-block"
+              : ""
           }
-          modalHeaderClassName={
-            isPublishMeeting === true
-              ? "d-none"
-              : isCancelMeetingModal === true
-              ? "d-none"
-              : "modalMeetingUpdateHeader"
+          modalHeaderClassName={"d-none"}
+          size={
+            isPublishMeeting || isCancelMeetingModal || closeConfirmationModal
+              ? null
+              : "md"
           }
-          size={isPublishMeeting || isCancelMeetingModal ? null : "lg"}
           ModalBody={
             <>
-              {isPublishMeeting === false && isCancelMeetingModal === false ? (
+              {isPublishMeeting === false &&
+              isCancelMeetingModal === false &&
+              closeConfirmationModal === false ? (
                 <Row>
                   <Col lg={12} md={12} sm={12} xs={12} className="d-flex gap-4">
                     <Button
@@ -2132,8 +2175,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         value={createMeeting.MeetingStartTime}
                         required
                       /> */}
-                      {modalField === true &&
-                      createMeeting.MeetingStartTime === "" ? (
+                      {createMeeting.MeetingStartTime === "" ? (
                         <ErrorBar errorText={t("Select-time")} />
                       ) : null}
                     </Col>
@@ -2173,8 +2215,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         locale={localValue}
                         disabled={endMeetingStatus}
                       /> */}
-                      {modalField === true &&
-                      createMeeting.MeetingDate === "" ? (
+                      {createMeeting.MeetingDate === "" ? (
                         <ErrorBar errorText={t("Select-date")} />
                       ) : null}
                     </Col>
@@ -2196,7 +2237,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         className="MeetingReminder"
                         required
                       />
-                      {/* {modalField === true && reminderValue === "" ? (
+                      {/* {  reminderValue === "" ? (
                         <ErrorBar errorText={"Select Reminder"} />
                       ) : null} */}
                     </Col>
@@ -2241,8 +2282,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         required={true}
                         maxLength={245}
                       />
-                      {modalField === true &&
-                      createMeeting.MeetingLocation === "" ? (
+                      {createMeeting.MeetingLocation === "" ? (
                         <ErrorBar errorText={t("This-field-is-empty")} />
                       ) : null}
                     </Col>
@@ -2285,8 +2325,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         required={true}
                         maxLength={245}
                       />
-                      {modalField === true &&
-                      createMeeting.MeetingTitle === "" ? (
+                      {createMeeting.MeetingTitle === "" ? (
                         <ErrorBar errorText={t("This-field-is-empty")} />
                       ) : null}
                     </Col>
@@ -2313,7 +2352,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         required={true}
                         // maxLength={500}
                       />
-                      {/* {modalField === true &&
+                      {/* { 
                       createMeeting.MeetingDescription === "" ? (
                         <ErrorBar errorText={t("This-field-is-empty")} />
                       ) : null} */}
@@ -2358,8 +2397,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                               type="text"
                               placeholder={t("Agenda-title") + "*"}
                             />
-                            {modalField === true &&
-                            objMeetingAgenda.Title === "" ? (
+                            {objMeetingAgenda.Title === "" ? (
                               <ErrorBar errorText={t("This-field-is-empty")} />
                             ) : null}
                           </Col>
@@ -3012,6 +3050,19 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                     </Col>
                   </Row>
                 </>
+              ) : closeConfirmationModal ? (
+                <>
+                  <Row>
+                    <Col
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className="Confirmationmodal_body_text_meeting_update"
+                    >
+                      {t("Are-you-sure-note-reset-closed")}
+                    </Col>
+                  </Row>
+                </>
               ) : null}
             </>
           }
@@ -3227,6 +3278,32 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                     />
                   </Col>
                 </Row>
+              ) : closeConfirmationModal ? (
+                <>
+                  <Row>
+                    <Col
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className="d-flex justify-content-center gap-3"
+                    >
+                      <Button
+                        onClick={onHideCancelButton}
+                        className={
+                          "Confirmationmodal_cancel_btn_meeting_update_"
+                        }
+                        text={t("Cancel")}
+                      />
+                      <Button
+                        onClick={handleCloseUpdateMeeting}
+                        className={
+                          "Confirmationmodal_close_btn_meeting_update_"
+                        }
+                        text={t("Close")}
+                      />
+                    </Col>
+                  </Row>
+                </>
               ) : null}
             </>
           }
