@@ -78,29 +78,31 @@ const SceduleMeeting = ({
     let Data = {
       MeetingID: Number(currentMeeting),
     };
-    dispatch(
-      GetAllMeetingDetailsApiFunc(
-        navigate,
-        t,
-        Data,
-        true,
-        setCurrentMeetingID,
-        setSceduleMeeting,
-        setDataroomMapFolderId,
-        0,
-        1
-      )
-    );
-    setmeetingDetails(true);
-    setorganizers(false);
-    setAgendaContributors(false);
-    setParticipants(false);
-    setAgenda(false);
-    setMinutes(false);
-    setactionsPage(false);
-    setAttendance(false);
-    setPolls(false);
-    setMeetingMaterial(false);
+    if (Data.MeetingID !== 0) {
+      dispatch(
+        GetAllMeetingDetailsApiFunc(
+          navigate,
+          t,
+          Data,
+          true,
+          setCurrentMeetingID,
+          setSceduleMeeting,
+          setDataroomMapFolderId,
+          0,
+          1
+        )
+      );
+      setmeetingDetails(true);
+      setorganizers(false);
+      setAgendaContributors(false);
+      setParticipants(false);
+      setAgenda(false);
+      setMinutes(false);
+      setactionsPage(false);
+      setAttendance(false);
+      setPolls(false);
+      setMeetingMaterial(false);
+    }
   };
 
   const showOrganizers = () => {

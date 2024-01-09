@@ -78,6 +78,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   const { assignees, uploadReducer, CommitteeReducer, GroupsReducer } =
     useSelector((state) => state);
   let OrganizationId = localStorage.getItem("organizationID");
+  const [currentStep, setCurrentStep] = useState(1);
   const [isMinutes, setIsMinutes] = useState(false);
   const [isDetails, setIsDetails] = useState(true);
   const [isAttendees, setIsAttendees] = useState(false);
@@ -214,6 +215,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   }, [currentLanguage]);
 
   const changeSelectDetails = () => {
+    setCurrentStep(1);
     setIsDetails(true);
     setIsAgenda(false);
     setIsMinutes(false);
@@ -226,15 +228,16 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   const changeSelectAgenda = () => {
     setModalField(false);
     if (
-      createMeeting.MeetingStartTime != "" &&
-      createMeeting.MeetingEndTime != "" &&
-      createMeeting.MeetingDate != ""
+      createMeeting.MeetingStartTime !== "" &&
+      createMeeting.MeetingEndTime !== "" &&
+      createMeeting.MeetingDate !== ""
       // createMeeting.MeetingReminderID.length != 0 &&
       // createMeeting.MeetingDescription != "" &&
       // createMeeting.MeetingLocation != ""
       //  &&
       // createMeeting.MeetingTitle != ""
     ) {
+      setCurrentStep(2);
       setModalField(false);
       setIsDetails(false);
       setIsAgenda(true);
@@ -242,6 +245,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       setIsMinutes(false);
       setCancelMeetingModal(false);
     } else {
+      setCurrentStep(1);
+
       setModalField(true);
       setIsDetails(true);
       setIsAgenda(false);
@@ -263,6 +268,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       // &&
       // createMeeting.MeetingTitle !== ""
     ) {
+      setCurrentStep(3);
+
       setModalField(false);
       setIsDetails(false);
       setIsAgenda(false);
@@ -273,6 +280,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     } else {
       setModalField(true);
       setIsDetails(true);
+      setCurrentStep(1);
+
       setIsAgenda(false);
       setIsAttendees(false);
       setIsMinutes(false);
@@ -295,9 +304,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       setIsDetails(false);
       setIsAgenda(false);
       setIsAttendees(false);
+      setCurrentStep(4);
+
       setIsMinutes(true);
     } else {
       setModalField(true);
+      setCurrentStep(1);
+
       setIsDetails(true);
       setIsAgenda(false);
       setIsAttendees(false);
@@ -326,9 +339,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       setCancelMeetingModal(false);
       setIsAgenda(true);
       setIsAttendees(false);
+      setCurrentStep(2);
     } else {
       setModalField(true);
       setIsDetails(true);
+      setCurrentStep(1);
       setIsAgenda(false);
       setIsMinutes(false);
       setIsPublishMeeting(false);
@@ -341,8 +356,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     if (createMeeting.MeetingAgendas.length > 0) {
       setIsAgenda(false);
       setIsAttendees(true);
+      setCurrentStep(3);
     } else {
       setIsAgenda(true);
+      setCurrentStep(2);
+
       setIsAttendees(false);
       setOpen({
         ...open,
@@ -357,6 +375,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     setIsAgenda(false);
     setIsAttendees(false);
     setIsMinutes(true);
+    setCurrentStep(4);
   };
 
   const navigateToPublish = async () => {
@@ -639,7 +658,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         let size;
         if (files.length > 0) {
           files.forEach((filename, index) => {
-            if (filename.DisplayFileName === uploadedFile.name) {
+            if (filename.DisplayAttachmentName === uploadedFile.name) {
               data = false;
             }
           });
@@ -652,7 +671,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             setTimeout(
               setOpen({
                 flag: true,
-                message: t("File-already-exisit"),
+                message: t("File-already-exist"),
               }),
               3000
             );
@@ -1985,12 +2004,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       />
     );
   }
+  const onHideHandleModal = () => {};
 
   return (
     <>
       <Container>
         <Modal
-          onHide={() => setEditFlag(false)}
+          onHide={onHideHandleModal}
           show={editFlag}
           setShow={setEditFlag}
           className="modaldialog createModalMeeting"

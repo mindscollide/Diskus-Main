@@ -26,8 +26,6 @@ const ModalArchivedCommittee = ({
   setViewGroupPage,
   setUpdateComponentpage,
 }) => {
-  const [archivedgroup, setArchivedGroups] = useState(true);
-  const [dropdownthreedots, setdropdownthreedots] = useState(false);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -44,10 +42,15 @@ const ModalArchivedCommittee = ({
       dispatch(getArcheivedGroups(navigate, t, 1));
     }
   }, []);
-
+  console.log(
+    GroupsReducer.getAllGroupsResponse,
+    "GroupsReducerGroupsReducerGroupsReducer"
+  );
   useEffect(() => {
+    // try{}catch{}
     if (GroupsReducer.realtimeGroupStatus !== null) {
       let status = GroupsReducer.realtimeGroupStatus.groupStatusID;
+
       if (status === 2) {
         let findGroupIndex =
           GroupsReducer.getAllGroupsResponse.groups.findIndex((data, index) => {
@@ -204,7 +207,6 @@ const ModalArchivedCommittee = ({
                     {groupsArheivedData.length > 0 &&
                     Object.values(groupsArheivedData).length > 0 ? (
                       groupsArheivedData.map((data, index) => {
-                        console.log(data, "datadatadata1111");
                         // if(index+1===Lastpostindex||index+1>=)
                         return (
                           <Col sm={12} md={4} lg={4} className="mb-3">
