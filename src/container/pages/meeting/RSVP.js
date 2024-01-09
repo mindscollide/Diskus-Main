@@ -214,9 +214,8 @@ const RSVP = () => {
                     labelClass={"d-none"}
                     name={"MeetingDateAndTime"}
                     value={convertDateTimeRangeToGMT(
-                      rsvpData.meetingDate,
-                      rsvpData.startTime,
-                      rsvpData.endTime
+                      rsvpData.meetingDate + rsvpData.startTime,
+                      rsvpData.meetingDate + rsvpData.endTime
                     )}
                     disable={true}
                   />

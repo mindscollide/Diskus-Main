@@ -743,28 +743,45 @@ export const newTimeFormaterForImportMeetingAgenda = (dateTime) => {
 };
 
 //Converting to GMT Having Date Plus StartTime And End Time
-export const convertDateTimeRangeToGMT = (date, startTime, endTime) => {
-  const startDateTime = moment
-    .utc(
-      `${date}T${startTime.slice(0, 2)}:${startTime.slice(
-        2,
-        4
-      )}:${startTime.slice(4, 6)}Z`,
-      "YYYYMMDDTHHmmssZ"
-    )
-    .format("Do MMM, YYYY h:mm A");
+export const convertDateTimeRangeToGMT = (startTime, endTime) => {
+  console.log(
+    startTime,
+    endTime,
+    "convertDateTimeRangeToGMTconvertDateTimeRangeToGMT"
+  );
+  let StartTimeFormat =
+    startTime?.slice(0, 4) +
+    "-" +
+    startTime?.slice(4, 6) +
+    "-" +
+    startTime?.slice(6, 8) +
+    "T" +
+    startTime?.slice(8, 10) +
+    ":" +
+    startTime?.slice(10, 12) +
+    ":" +
+    startTime?.slice(12, 14) +
+    ".000Z";
+  let endTimeFormat =
+    endTime?.slice(0, 4) +
+    "-" +
+    endTime?.slice(4, 6) +
+    "-" +
+    endTime?.slice(6, 8) +
+    "T" +
+    endTime?.slice(8, 10) +
+    ":" +
+    endTime?.slice(10, 12) +
+    ":" +
+    endTime?.slice(12, 14) +
+    ".000Z";
+  let convertDateIntoGMT = new Date(StartTimeFormat);
+  let convertIntoGMTStartTime = new Date(StartTimeFormat);
+  let convertIntoGMTEndTime = new Date(endTimeFormat);
 
-  const endDateTime = moment
-    .utc(
-      `${date}T${endTime.slice(0, 2)}:${endTime.slice(2, 4)}:${endTime.slice(
-        4,
-        6
-      )}Z`,
-      "YYYYMMDDTHHmmssZ"
-    )
-    .format("h:mm A");
-
-  return `${startDateTime} - ${endDateTime}`;
+  return `${moment(convertDateIntoGMT).format("Do MMM, YYYY")} ${moment(
+    convertIntoGMTStartTime
+  ).format("h:mm A")} - ${moment(convertIntoGMTEndTime).format("h:mm A")}`;
 };
 
 export const convertDateTimeObject = (date) => {
