@@ -21,6 +21,7 @@ import {
   saveCommitteeDocumentsRM,
   reteriveCommitteeDocumentsRM,
 } from "../../commen/apis/Api_config";
+import { GetAllUserChats } from "./Talk_action";
 
 // Upload Documents Init
 const uploadDocument_init = () => {
@@ -668,6 +669,10 @@ const createcommittee_fail = (message) => {
 
 const createcommittee = (navigate, Data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
+
+  let createrID = localStorage.getItem("userID");
+  let OrganizationID = localStorage.getItem("organizationID");
+
   return (dispatch) => {
     dispatch(createcommittee_init());
     let form = new FormData();
@@ -713,6 +718,7 @@ const createcommittee = (navigate, Data, t) => {
                 ),
               };
               dispatch(createUpdateCommitteeApi(navigate, t, newData));
+              dispatch(GetAllUserChats(navigate, createrID, OrganizationID, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

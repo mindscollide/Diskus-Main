@@ -247,42 +247,55 @@ const Committee = () => {
       );
       if (foundRecord) {
         dispatch(activeChat(foundRecord));
+        localStorage.setItem("activeOtoChatID", data.talkGroupID);
+        dispatch(createShoutAllScreen(false));
+        dispatch(addNewChatScreen(false));
+        dispatch(footerActionStatus(false));
+        dispatch(createGroupScreen(false));
+        dispatch(chatBoxActiveFlag(false));
+        dispatch(recentChatFlag(true));
+        dispatch(activeChatBoxGS(true));
+        dispatch(chatBoxActiveFlag(true));
+        dispatch(headerShowHideStatus(true));
+        dispatch(footerShowHideStatus(true));
+        let chatGroupData = {
+          UserID: parseInt(currentUserId),
+          ChannelID: currentOrganizationId,
+          GroupID: data.talkGroupID,
+          NumberOfMessages: 50,
+          OffsetMessage: 0,
+        };
+        dispatch(GetGroupMessages(navigate, chatGroupData, t));
+        dispatch(
+          GetAllUsers(
+            navigate,
+            parseInt(currentUserId),
+            parseInt(currentOrganizationId),
+            t
+          )
+        );
+        dispatch(
+          GetAllUsersGroupsRoomsList(
+            navigate,
+            parseInt(currentUserId),
+            parseInt(currentOrganizationId),
+            t
+          )
+        );
+      } else {
+        setOpen({
+          ...open,
+          flag: true,
+          message: "No Talk Group Created",
+        });
+        setTimeout(() => {
+          setOpen({
+            ...open,
+            flag: false,
+            message: "",
+          });
+        }, 3000);
       }
-      localStorage.setItem("activeOtoChatID", data.talkGroupID);
-      dispatch(createShoutAllScreen(false));
-      dispatch(addNewChatScreen(false));
-      dispatch(footerActionStatus(false));
-      dispatch(createGroupScreen(false));
-      dispatch(chatBoxActiveFlag(false));
-      dispatch(recentChatFlag(true));
-      dispatch(activeChatBoxGS(true));
-      dispatch(chatBoxActiveFlag(true));
-      dispatch(headerShowHideStatus(true));
-      dispatch(footerShowHideStatus(true));
-      let chatGroupData = {
-        UserID: parseInt(currentUserId),
-        ChannelID: currentOrganizationId,
-        GroupID: data.talkGroupID,
-        NumberOfMessages: 50,
-        OffsetMessage: 0,
-      };
-      dispatch(GetGroupMessages(navigate, chatGroupData, t));
-      dispatch(
-        GetAllUsers(
-          navigate,
-          parseInt(currentUserId),
-          parseInt(currentOrganizationId),
-          t
-        )
-      );
-      dispatch(
-        GetAllUsersGroupsRoomsList(
-          navigate,
-          parseInt(currentUserId),
-          parseInt(currentOrganizationId),
-          t
-        )
-      );
     } else {
       setOpen({
         ...open,

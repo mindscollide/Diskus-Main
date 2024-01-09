@@ -758,13 +758,15 @@ const NewMeeting = () => {
         // Convert milliseconds to minutes
         const minutesDifference = Math.floor(timeDifference / (1000 * 60));
 
+        console.log("minutesDifference", minutesDifference);
+
         if (Number(record.status) === 1) {
           if (isParticipant) {
           } else if (isAgendaContributor) {
           } else {
             if (
               record.isQuickMeeting === true &&
-              minutesDifference <= 15
+              minutesDifference <= 2
               // &&
               // minutesDifference > 0
             ) {
@@ -796,7 +798,7 @@ const NewMeeting = () => {
               );
             } else if (
               record.isQuickMeeting === false &&
-              minutesDifference <= 15
+              minutesDifference <= 2
               // &&
               // minutesDifference > 0
             ) {
