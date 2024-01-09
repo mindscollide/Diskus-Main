@@ -459,7 +459,7 @@ body[dir="rtl"] .desc-notification-user {
 }
 
 .Upcoming-Events-Box .ant-result.ant-result-info.notification-text {
-  padding: 8px 32px !important;
+  padding: 0px 41px !important;
   /* margin-top: 20px; */
 }
 
@@ -636,6 +636,10 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
 
 .ant-result.ant-result-info.NoTask {
   padding: 32px !important;
+}
+
+.ant-result-extra {
+  margin: 5px 0 0 0 !important;
 }
 
 .desc-notification-user {
@@ -1348,7 +1352,9 @@ body[dir="rtl"] h1.noteheading {
   font-size: 12px !important;
   border-radius: 4px !important;
   color: #ffffff !important;
-  background: #2299ea !important;
+  /* background: #2299ea !important; */
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border-radius: 4px !important;
   border: none !important;
 }
 
@@ -1357,8 +1363,14 @@ body[dir="rtl"] h1.noteheading {
   font-size: 12px !important;
   border-radius: 4px !important;
   color: #ffffff !important;
-  background: #2299ea !important;
+  /* background: #2299ea !important; */
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: none !important;
+  border-radius: 4px !important;
+}
+
+body[dir="rtl"] svg.DatePickerIcon {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 .UpcomingEvent {
