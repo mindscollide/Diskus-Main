@@ -218,6 +218,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     messageID: 0,
     senderName: "",
     messageBody: "",
+    fileName: "",
   });
 
   const [messagesChecked, setMessagesChecked] = useState([]);
@@ -1013,7 +1014,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
   };
 
   const replyFeatureHandler = (record) => {
-    chatMessages.current?.scrollIntoView({ behavior: "auto" });
+    // chatMessages.current?.scrollIntoView({ behavior: "auto" });
     let senderNameReply;
     if (record.senderName === currentUserName) {
       senderNameReply = "You";
@@ -1027,6 +1028,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
         messageID: record.messageID,
         senderName: record.senderName,
         messageBody: record.messageBody,
+        fileName: record.fileName,
       });
       setMessageSendData({
         ...messageSendData,
@@ -1052,6 +1054,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
         messageID: 0,
         senderName: "",
         messageBody: "",
+        fileName: "",
       });
       setMessageSendData({
         ...messageSendData,
@@ -1515,6 +1518,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
     }
   }, [talkStateData.AllMessagesData]);
 
+  console.log("messagesData.frMessages", allMessages);
+
   const chatSearchChange = (e) => {
     const searchedKeyword = e.target.value.toLowerCase();
     const allChatMessages = talkStateData.AllMessagesData;
@@ -1876,7 +1881,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
           attachmentLocation: "",
           uid: uniqueId,
           blockCount: 0,
-          sourceMessageBody: "Direct Message",
+          sourceMessageBody: "",
           sourceMessageId: 0,
           isRetry: false,
         };
@@ -1903,7 +1908,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
           attachmentLocation: "",
           uid: uniqueId,
           blockCount: 0,
-          sourceMessageBody: "Direct Message",
+          sourceMessageBody: "",
           sourceMessageId: 0,
           isRetry: true,
         };
@@ -2204,6 +2209,16 @@ const ChatMainBody = ({ chatMessageClass }) => {
         talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
           .receiverID
       ) {
+        let frMessages = mqttResponseSingleMessage.frMessages;
+
+        if (
+          frMessages !== "Direct Message" &&
+          frMessages.length > 0 &&
+          frMessages !== undefined &&
+          typeof frMessages !== "object"
+        ) {
+          frMessages = frMessages.split("|");
+        }
         let insertMqttOtoMessageData = {
           attachmentLocation: mqttResponseSingleMessage.attachmentLocation,
           blockCount: 0,
@@ -2211,7 +2226,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
           currDate: mqttResponseSingleMessage.currDate,
           fileGeneratedName: mqttResponseSingleMessage.fileGeneratedName,
           fileName: mqttResponseSingleMessage.fileName,
-          frMessages: mqttResponseSingleMessage.frMessages,
+          frMessages: frMessages,
           isFlag: 0,
           messageBody: mqttResponseSingleMessage.messageBody,
           messageCount: 0,
@@ -2226,6 +2241,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
           sentDate: mqttResponseSingleMessage.sentDate,
           shoutAll: mqttResponseSingleMessage.shoutAll,
           uid: mqttResponseSingleMessage.uid,
+          sourceMessageBody: mqttResponseSingleMessage.sourceMessageBody,
           isRetry: false,
         };
 
@@ -2257,6 +2273,16 @@ const ChatMainBody = ({ chatMessageClass }) => {
           talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
             .senderID
       ) {
+        let frMessages = mqttResponseSingleMessage.frMessages;
+
+        if (
+          frMessages !== "Direct Message" &&
+          frMessages.length > 0 &&
+          frMessages !== undefined &&
+          typeof frMessages !== "object"
+        ) {
+          frMessages = frMessages.split("|");
+        }
         let insertMqttOtoMessageData = {
           attachmentLocation: mqttResponseSingleMessage.attachmentLocation,
           blockCount: 0,
@@ -2264,7 +2290,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
           currDate: mqttResponseSingleMessage.currDate,
           fileGeneratedName: mqttResponseSingleMessage.fileGeneratedName,
           fileName: mqttResponseSingleMessage.fileName,
-          frMessages: mqttResponseSingleMessage.frMessages,
+          frMessages: frMessages,
           isFlag: 0,
           messageBody: mqttResponseSingleMessage.messageBody,
           messageCount: 0,
@@ -3646,9 +3672,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     {messageData.frMessages[3]}
                                                   </p>
                                                   <p className="replied-message m-0">
-                                                    {
-                                                      messageData.sourceMessageBody
-                                                    }
+                                                    {messageData.sourceMessageBody !==
+                                                    ""
+                                                      ? messageData.sourceMessageBody
+                                                      : messageData
+                                                          .frMessages[4]}
                                                   </p>
                                                 </div>
                                               )}
@@ -3664,9 +3692,10 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   {messageData.frMessages[3]}
                                                 </p>
                                                 <p className="replied-message m-0">
-                                                  {
-                                                    messageData.sourceMessageBody
-                                                  }
+                                                  {messageData.sourceMessageBody !==
+                                                  ""
+                                                    ? messageData.sourceMessageBody
+                                                    : messageData.frMessages[4]}
                                                 </p>
                                               </div>
                                               <span className="direct-chat-body color-5a5a5a">
@@ -3851,7 +3880,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                           <img
                                             draggable="false"
                                             className="dropdown-icon"
-                                            src={DropDownChatIcon}
+                                            src={DropDownIcon}
                                           />
                                           {chatFeatureActive != 0 &&
                                           Number(chatFeatureActive) ===
@@ -3988,7 +4017,10 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 {messageData.frMessages[3]}
                                               </p>
                                               <p className="replied-message m-0">
-                                                {messageData.sourceMessageBody}
+                                                {messageData.sourceMessageBody !==
+                                                ""
+                                                  ? messageData.sourceMessageBody
+                                                  : messageData.frMessages[4]}
                                               </p>
                                             </div>
                                             <span className="direct-chat-body color-white">
@@ -4221,7 +4253,10 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 {messageData.frMessages[3]}
                                               </p>
                                               <p className="replied-message m-0">
-                                                {messageData.sourceMessageBody}
+                                                {messageData.sourceMessageBody !==
+                                                ""
+                                                  ? messageData.sourceMessageBody
+                                                  : messageData.frMessages[4]}
                                               </p>
                                             </div>
                                             <span className="direct-chat-body color-5a5a5a">
@@ -4372,7 +4407,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                           <img
                                             draggable="false"
                                             className="dropdown-icon"
-                                            src={DropDownChatIcon}
+                                            src={DropDownIcon}
                                           />
                                           {chatFeatureActive != 0 &&
                                           Number(chatFeatureActive) ===
@@ -4451,7 +4486,10 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 {messageData.frMessages[3]}
                                               </p>
                                               <p className="replied-message m-0">
-                                                {messageData.sourceMessageBody}
+                                                {messageData.sourceMessageBody !==
+                                                ""
+                                                  ? messageData.sourceMessageBody
+                                                  : messageData.frMessages[4]}
                                               </p>
                                             </div>
                                             <span className="direct-chat-body color-white">
@@ -4684,9 +4722,10 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   {messageData.frMessages[3]}
                                                 </p>
                                                 <p className="replied-message m-0">
-                                                  {
-                                                    messageData.sourceMessageBody
-                                                  }
+                                                  {messageData.sourceMessageBody !==
+                                                  ""
+                                                    ? messageData.sourceMessageBody
+                                                    : messageData.frMessages[4]}
                                                 </p>
                                               </div>
                                               <span className="direct-chat-body color-5a5a5a">
@@ -4837,7 +4876,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                     : replyData.senderName}
                                   <br />
                                 </span>
-                                {replyData.messageBody}
+                                {replyData.messageBody !== ""
+                                  ? replyData.messageBody
+                                  : replyData.fileName}
                               </p>
                               <div className="positionRelative"></div>
                             </div>

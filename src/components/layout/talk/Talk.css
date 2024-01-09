@@ -42,16 +42,28 @@
   border: 2px;
 }
 
+.talk_subIcon:hover svg rect#Rectangle_830 {
+  fill: #fff !important;
+}
+
+.talk_subIcon:hover svg rect#Rectangle_831 {
+  fill: #fff !important;
+}
+
+.talk_subIcon:hover svg rect#Rectangle_832 {
+  fill: #fff !important;
+}
+
 /* Css Implemented on Notes Inner lines  */
-.talk-nav-icons:hover .talk_subIcon svg rect#Rectangle_830 {
+/* .talk_subIcon:hover .talk_subIcon svg rect#Rectangle_830 {
   fill: #fff !important;
 }
-.talk-nav-icons:hover .talk_subIcon svg rect#Rectangle_831 {
+.talk_subIcon:hover .talk_subIcon svg rect#Rectangle_831 {
   fill: #fff !important;
 }
-.talk-nav-icons:hover .talk_subIcon svg rect#Rectangle_832 {
+.talk_subIcon:hover .talk_subIcon svg rect#Rectangle_832 {
   fill: #fff !important;
-}
+} */
 
 .talk_subIcon_hidden {
   display: none;

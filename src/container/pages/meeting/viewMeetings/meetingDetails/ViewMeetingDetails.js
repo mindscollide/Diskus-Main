@@ -540,25 +540,14 @@ const ViewMeetingDetails = ({
                   <Button
                     text={t("Leave-meeting")}
                     className={styles["LeaveMeetinButton"]}
-                    onClick={() => {
-                      setViewAdvanceMeetingModal(false);
-                      dispatch(viewAdvanceMeetingPublishPageFlag(false));
-                      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-
-                      setAdvanceMeetingModalID(null);
-                    }}
+                    onClick={handleCancelMeetingNoPopup}
                   />
                 </>
               ) : (
                 <Button
                   text={t("Leave-meeting")}
                   className={styles["LeaveMeetinButton"]}
-                  onClick={() => {
-                    setViewAdvanceMeetingModal(false);
-                    dispatch(viewAdvanceMeetingPublishPageFlag(false));
-                    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-                    setAdvanceMeetingModalID(null);
-                  }}
+                  onClick={handleCancelMeetingNoPopup}
                 />
               )}
             </Col>
@@ -679,7 +668,7 @@ const ViewMeetingDetails = ({
                         /> */}
                         <Button
                           text={t("Copy-link")}
-                          className={styles["JoinMeetingButton"]}
+                          className={styles["CopyLinkButton"]}
                           onClick={() => copyToClipboardd()}
                         />
                         <Button

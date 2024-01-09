@@ -371,6 +371,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
   //Drop Down Values
   const searchFilterHandler = (value) => {
     let allAssignees = dropdowndata;
+    console.log(allAssignees, "searchFilterHandlersearchFilterHandler");
     try {
       if (
         allAssignees !== undefined &&

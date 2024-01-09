@@ -122,9 +122,9 @@ const Agenda = ({
     let Data = {
       MeetingID: currentMeetingIDLS,
     };
-    dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
     dispatch(GetAdvanceMeetingAgendabyMeetingID(getMeetingData, navigate, t));
     dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
+    dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
   }, []);
 
   useEffect(() => {
@@ -570,6 +570,8 @@ const Agenda = ({
     if (shouldResetFileForSend) {
       setFileForSend([]);
     }
+
+    console.log("File For Send File", fileForSend);
 
     if (isValid) {
       // All conditions are met, apply your feature here

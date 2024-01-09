@@ -28,6 +28,10 @@ const OrganizationLevelSetting = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { settingReducer, LanguageReducer } = useSelector((state) => state);
+  console.log(
+    settingReducer.Loading,
+    "settingReducersettingReducersettingReducer"
+  );
   const [securitystate, setSecuritystate] = useState(true);
   const [todo, setTodo] = useState(false);
   const [meetingsState, setmeetingsState] = useState(false);

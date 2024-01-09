@@ -80,9 +80,7 @@ const ParentAgenda = ({
   const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
     (state) => state
   );
-  // const getAllMeetingDetails = useSelector(
-  //   (state) => state.NewMeetingreducer.getAllMeetingDetails
-  // );
+
   let currentMeetingIDLS = Number(localStorage.getItem("currentMeetingLS"));
   let currentLanguage = localStorage.getItem("i18nextLng");
   const dispatch = useDispatch();
@@ -446,7 +444,7 @@ const ParentAgenda = ({
     updatedAgendaItems[index].presenterID = allSavedPresenters[0]?.value;
     updatedAgendaItems[index].presenterName = allSavedPresenters[0]?.label;
     setRows(updatedAgendaItems);
-  }, [presenters]);
+  }, [presenters, allPresenters]);
 
   console.log("Agenda Data", rows);
 
