@@ -822,145 +822,145 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       setModalField(false);
     } else {
       if (objMeetingAgenda.Title !== "") {
-        if (objMeetingAgenda.URLs !== "") {
-          if (urlPatternValidation(objMeetingAgenda.URLs)) {
-            if (fileForSend.length > 0) {
-              setModalField(false);
-              let fileforSend = [];
-              let newfile = [];
-              const uploadPromises = fileForSend.map((newData) => {
-                // Return the promise from FileUploadToDo
-                return dispatch(FileUploadToDo(navigate, newData, t, newfile));
-              });
-              // Wait for all uploadPromises to resolve
-              await Promise.all(uploadPromises);
-              newfile.forEach((fileData, index) => {
-                fileforSend.push({
-                  PK_MAAID: 0,
-                  DisplayAttachmentName: fileData.DisplayAttachmentName,
-                  OriginalAttachmentName: fileData.OriginalAttachmentName,
-                  CreationDateTime: "111111",
-                  FK_MAID: 0,
-                });
-              });
-              let previousAdendas = [...createMeeting.MeetingAgendas];
+        // if (objMeetingAgenda.URLs !== "") {
+        //   if (urlPatternValidation(objMeetingAgenda.URLs)) {
+        //     if (fileForSend.length > 0) {
+        //       setModalField(false);
+        //       let fileforSend = [];
+        //       let newfile = [];
+        //       const uploadPromises = fileForSend.map((newData) => {
+        //         // Return the promise from FileUploadToDo
+        //         return dispatch(FileUploadToDo(navigate, newData, t, newfile));
+        //       });
+        //       // Wait for all uploadPromises to resolve
+        //       await Promise.all(uploadPromises);
+        //       newfile.forEach((fileData, index) => {
+        //         fileforSend.push({
+        //           PK_MAAID: 0,
+        //           DisplayAttachmentName: fileData.DisplayAttachmentName,
+        //           OriginalAttachmentName: fileData.OriginalAttachmentName,
+        //           CreationDateTime: "111111",
+        //           FK_MAID: 0,
+        //         });
+        //       });
+        //       let previousAdendas = [...createMeeting.MeetingAgendas];
 
-              let newData = {
-                ObjMeetingAgenda: objMeetingAgenda,
-                MeetingAgendaAttachments: fileforSend,
-              };
-              previousAdendas.push(newData);
-              setCreateMeeting({
-                ...createMeeting,
-                MeetingAgendas: previousAdendas,
-              });
-              setObjMeetingAgenda({
-                Title: "",
-                PresenterName: "",
-                URLs: "",
-                FK_MDID: 0,
-              });
-              setFileForSend([]);
-              setMeetingAgendaAttachments({
-                ...meetingAgendaAttachments,
-                MeetingAgendaAttachments: [],
-              });
-              setAttachments([]);
-            } else {
-              setModalField(false);
-              let previousAdendas = [...createMeeting.MeetingAgendas];
-              let newData = {
-                ObjMeetingAgenda: objMeetingAgenda,
-                MeetingAgendaAttachments: [],
-              };
-              previousAdendas.push(newData);
-              setCreateMeeting({
-                ...createMeeting,
-                MeetingAgendas: previousAdendas,
-              });
-              setObjMeetingAgenda({
-                Title: "",
-                PresenterName: "",
-                URLs: "",
-                FK_MDID: 0,
-              });
-            }
-          } else {
-            setModalField(false);
-            setOpen({
-              ...open,
-              flag: true,
-              message: t("Enter-valid-url"),
+        //       let newData = {
+        //         ObjMeetingAgenda: objMeetingAgenda,
+        //         MeetingAgendaAttachments: fileforSend,
+        //       };
+        //       previousAdendas.push(newData);
+        //       setCreateMeeting({
+        //         ...createMeeting,
+        //         MeetingAgendas: previousAdendas,
+        //       });
+        //       setObjMeetingAgenda({
+        //         Title: "",
+        //         PresenterName: "",
+        //         URLs: "",
+        //         FK_MDID: 0,
+        //       });
+        //       setFileForSend([]);
+        //       setMeetingAgendaAttachments({
+        //         ...meetingAgendaAttachments,
+        //         MeetingAgendaAttachments: [],
+        //       });
+        //       setAttachments([]);
+        //     } else {
+        //       setModalField(false);
+        //       let previousAdendas = [...createMeeting.MeetingAgendas];
+        //       let newData = {
+        //         ObjMeetingAgenda: objMeetingAgenda,
+        //         MeetingAgendaAttachments: [],
+        //       };
+        //       previousAdendas.push(newData);
+        //       setCreateMeeting({
+        //         ...createMeeting,
+        //         MeetingAgendas: previousAdendas,
+        //       });
+        //       setObjMeetingAgenda({
+        //         Title: "",
+        //         PresenterName: "",
+        //         URLs: "",
+        //         FK_MDID: 0,
+        //       });
+        //     }
+        //   } else {
+        //     setModalField(false);
+        //     setOpen({
+        //       ...open,
+        //       flag: true,
+        //       message: t("Enter-valid-url"),
+        //     });
+        //   }
+        // } else {
+        if (fileForSend.length > 0) {
+          setModalField(false);
+          setObjMeetingAgenda({
+            Title: "",
+            PresenterName: "",
+            URLs: "",
+            FK_MDID: 0,
+          });
+          setFileForSend([]);
+          setMeetingAgendaAttachments({
+            ...meetingAgendaAttachments,
+            MeetingAgendaAttachments: [],
+          });
+          setAttachments([]);
+          let fileforSend = [];
+          let newfile = [];
+
+          const uploadPromises = fileForSend.map((newData) => {
+            // Return the promise from FileUploadToDo
+            return dispatch(FileUploadToDo(navigate, newData, t, newfile));
+          });
+          // Wait for all uploadPromises to resolve
+          await Promise.all(uploadPromises);
+          newfile.forEach((fileData, index) => {
+            fileforSend.push({
+              PK_MAAID: 0,
+              DisplayAttachmentName: fileData.DisplayAttachmentName,
+              OriginalAttachmentName: fileData.OriginalAttachmentName,
+              CreationDateTime: "111111",
+              FK_MAID: 0,
             });
-          }
+          });
+          let previousAdendas = [...createMeeting.MeetingAgendas];
+          let newData = {
+            ObjMeetingAgenda: objMeetingAgenda,
+            MeetingAgendaAttachments: fileforSend,
+          };
+          previousAdendas.push(newData);
+          setCreateMeeting({
+            ...createMeeting,
+            MeetingAgendas: previousAdendas,
+          });
         } else {
-          if (fileForSend.length > 0) {
-            setModalField(false);
-            let fileforSend = [];
-            let newfile = [];
-
-            const uploadPromises = fileForSend.map((newData) => {
-              // Return the promise from FileUploadToDo
-              return dispatch(FileUploadToDo(navigate, newData, t, newfile));
-            });
-            // Wait for all uploadPromises to resolve
-            await Promise.all(uploadPromises);
-            newfile.forEach((fileData, index) => {
-              fileforSend.push({
-                PK_MAAID: 0,
-                DisplayAttachmentName: fileData.DisplayAttachmentName,
-                OriginalAttachmentName: fileData.OriginalAttachmentName,
-                CreationDateTime: "111111",
-                FK_MAID: 0,
-              });
-            });
-            let previousAdendas = [...createMeeting.MeetingAgendas];
-            let newData = {
-              ObjMeetingAgenda: objMeetingAgenda,
-              MeetingAgendaAttachments: fileforSend,
-            };
-            previousAdendas.push(newData);
-            setCreateMeeting({
-              ...createMeeting,
-              MeetingAgendas: previousAdendas,
-            });
-            setObjMeetingAgenda({
-              Title: "",
-              PresenterName: "",
-              URLs: "",
-              FK_MDID: 0,
-            });
-            setFileForSend([]);
-            setMeetingAgendaAttachments({
-              ...meetingAgendaAttachments,
-              MeetingAgendaAttachments: [],
-            });
-            setAttachments([]);
-          } else {
-            setModalField(false);
-            let previousAdendas = [...createMeeting.MeetingAgendas];
-            let newData = {
-              ObjMeetingAgenda: objMeetingAgenda,
-              MeetingAgendaAttachments: [],
-            };
-            previousAdendas.push(newData);
-            setCreateMeeting({
-              ...createMeeting,
-              MeetingAgendas: previousAdendas,
-            });
-            setObjMeetingAgenda({
-              Title: "",
-              PresenterName: "",
-              URLs: "",
-              FK_MDID: 0,
-            });
-            setMeetingAgendaAttachments({
-              ...meetingAgendaAttachments,
-              MeetingAgendaAttachments: [],
-            });
-            setAttachments([]);
-          }
+          setModalField(false);
+          let previousAdendas = [...createMeeting.MeetingAgendas];
+          let newData = {
+            ObjMeetingAgenda: objMeetingAgenda,
+            MeetingAgendaAttachments: [],
+          };
+          previousAdendas.push(newData);
+          setCreateMeeting({
+            ...createMeeting,
+            MeetingAgendas: previousAdendas,
+          });
+          setObjMeetingAgenda({
+            Title: "",
+            PresenterName: "",
+            URLs: "",
+            FK_MDID: 0,
+          });
+          setMeetingAgendaAttachments({
+            ...meetingAgendaAttachments,
+            MeetingAgendaAttachments: [],
+          });
+          setAttachments([]);
         }
+        // }
       } else {
         setModalField(true);
         setOpen({
@@ -998,10 +998,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       });
     } catch (error) {}
   }, [assignees.RemindersData]);
-  console.log(
-    participantRoleID,
-    "addedParticipantNameListaddedParticipantNameListaddedParticipantNameListaddedParticipantNameList"
-  );
+
   // for attendies Role handler
   const assigntRoleAttendies = (e, value) => {
     setParticipantRoleName(value);
@@ -1145,7 +1142,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     setOnclickFlag(false);
     setTaskAssignedToInput(e.target.value.trimStart());
   };
-  console.log(meetingAttendees, "meetingAttendeesmeetingAttendees");
+
   const searchFilterHandler = (value) => {
     // let allAssignees;
     if (Number(checkFlag) === 6) {
@@ -1478,7 +1475,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           modalFooterClassName="modalMeetingCreateFooter"
           modalHeaderClassName={"modalMeetingCreateHeader"}
           centered
-          size={"lg"}
+          size={"md"}
           ModalBody={
             <>
               <Row>
@@ -1660,9 +1657,9 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                       <Button
                         text={
                           createMeeting.IsVideoCall === false ? (
-                            <img src={MeetingVideoChatIcon} />
+                            <img src={MeetingVideoChatIcon} alt="" />
                           ) : (
-                            <img src={MeetingVideoChatIconActive} />
+                            <img src={MeetingVideoChatIconActive} alt="" />
                           )
                         }
                         name="IsVideoCall"
