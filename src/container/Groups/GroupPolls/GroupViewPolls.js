@@ -57,27 +57,6 @@ const GroupViewPolls = ({ groupStatus }) => {
   let userID = localStorage.getItem("userID");
   let ViewGroupID = localStorage.getItem("ViewGroupID");
 
-  const enableAfterSavedViewPolls = () => {
-    setafterViewPolls(true);
-  };
-
-  const handleCastVotePollMeeting = () => {
-    setvotePolls(true);
-  };
-
-  const handleEditPollsMeeting = () => {
-    setEditPolls(true);
-  };
-
-  const handleCacnelbutton = () => {
-    dispatch(showCancelPolls(true));
-  };
-
-  const handleSaveAndnext = () => {
-    setPolls(false);
-    setAttendance(true);
-  };
-
   useEffect(() => {
     let Data = {
       GroupID: Number(ViewGroupID),
@@ -486,7 +465,7 @@ const GroupViewPolls = ({ groupStatus }) => {
         <>
           <section>
             {createpoll ? (
-              <Createpolls setCreatepoll={setCreatepoll} view={view} />
+              <Createpolls setCreatepoll={setCreatepoll} />
             ) : votePolls ? (
               <CastVotePollsMeeting setvotePolls={setvotePolls} />
             ) : editPolls ? (
@@ -644,9 +623,7 @@ const GroupViewPolls = ({ groupStatus }) => {
                 )}
               </>
             )}
-            {NewMeetingreducer.cancelPolls && (
-              <CancelPolls setSceduleMeeting={setSceduleMeeting} />
-            )}
+            {NewMeetingreducer.cancelPolls && <CancelPolls />}
           </section>
         </>
       )}

@@ -934,34 +934,28 @@ const TodoList = () => {
           <Col>
             <Row className="row-scroll-todolist">
               <Col className="">
-                {rowsToDo.length > 0 &&
+                {/* {rowsToDo.length > 0 &&
                 rowsToDo !== undefined &&
-                rowsToDo !== null ? (
-                  <TableToDo
-                    sortDirections={["descend", "ascend"]}
-                    column={columnsToDo}
-                    className={"ToDo"}
-                    rows={rowsToDo}
-                    scroll={scroll}
-                    // onChange={tableTodoChange}
-                    pagination={false}
-                  />
-                ) : (
-                  <Paper>
-                    <ResultMessage
-                      icon={
-                        <img
-                          draggable="false"
-                          src={TodoMessageIcon1}
-                          width={250}
-                          alt=""
-                        />
-                      }
-                      title={t("No-Task")}
-                      className="NoTaskTodo"
-                    />
-                  </Paper>
-                )}
+                rowsToDo !== null ? ( */}
+                <TableToDo
+                  sortDirections={["descend", "ascend"]}
+                  column={columnsToDo}
+                  className={"ToDo"}
+                  rows={rowsToDo}
+                  scroll={scroll}
+                  locale={{
+                    emptyText: (
+                      <>
+                        <section className="d-flex flex-column align-items-center justify-content-center ">
+                          <img src={TodoMessageIcon1} width={"250px"} alt="" />
+                          <span className="NotaskTodolist">{t("No-Task")}</span>
+                        </section>
+                      </>
+                    ), // Set your custom empty text here
+                  }}
+                  pagination={false}
+                />
+
                 {rowsToDo.length > 0 && (
                   <Row className="">
                     <Col

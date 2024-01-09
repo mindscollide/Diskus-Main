@@ -239,7 +239,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       });
       setAttendees([]);
       setTaskAssignedTo(0);
-      setParticipantRoleName("");
+      setParticipantRoleName("Regular");
       setTaskAssignedToInput("");
     } else if (taskAssignedTo !== 0) {
       var foundIndex = meetingAttendees.findIndex(
@@ -276,7 +276,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
           }
           setAttendees([]);
           setTaskAssignedTo(0);
-          setParticipantRoleName("");
+          setParticipantRoleName("Regular");
           setTaskAssignedToInput("");
         } else {
           setOpen({
@@ -286,7 +286,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
 
           setAttendees([]);
           setTaskAssignedTo(0);
-          setParticipantRoleName("");
+          setParticipantRoleName("Regular");
           setTaskAssignedToInput("");
         }
       } else {
@@ -315,7 +315,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
           message: t("User-already-exist"),
         });
         setAttendees([]);
-        setParticipantRoleName("");
+        setParticipantRoleName("Regular");
       } else {
         if (participantOptionsWithID !== undefined) {
           attendees.forEach((dataID, index) => {
@@ -340,7 +340,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
             });
             setAttendees([]);
             setTaskAssignedTo(0);
-            setParticipantRoleName("");
+            setParticipantRoleName("Regular");
             setTaskAssignedToInput("");
           });
         } else {
@@ -357,7 +357,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       });
       setAttendees([]);
       setTaskAssignedTo(0);
-      setParticipantRoleName("");
+      setParticipantRoleName("Regular");
       setTaskAssignedToInput("");
     }
   };

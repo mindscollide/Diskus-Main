@@ -137,7 +137,7 @@ const ScheduleNewResolution = () => {
     dateValue: "",
     timeDecisionforView: "",
   });
-  console.log("votingDateTime", votingDateTime);
+
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
   const [taskAssignedName, setTaskAssignedName] = useState("");
@@ -442,19 +442,7 @@ const ScheduleNewResolution = () => {
     setTaskAssignedName("");
     setEmailValue("");
   };
-  console.log(
-    createResolutionData.Title,
-    circulationDateTime.dateValue,
-    decisionDateTime.dateValue,
-    votingDateTime.dateValue,
-    decisionDateTime.time,
-    circulationDateTime.time,
-    votingDateTime.time,
-    createResolutionData.NotesToVoter,
-    createResolutionData.FK_ResolutionVotingMethodID,
-    createResolutionData.FK_ResolutionReminderFrequency_ID,
-    "resolutionSaveHandlerresolutionSaveHandler"
-  );
+
   const resolutionSaveHandler = async () => {
     if (
       createResolutionData.Title !== "" &&
@@ -656,6 +644,7 @@ const ScheduleNewResolution = () => {
     multiple: true,
     showUploadList: false,
     onChange(data) {
+      console.log(data, data.fileList, "propspropspropspropspropsprops");
       const { status } = data.file;
       let fileSizeArr;
       if (tasksAttachments.length > 9) {
@@ -854,7 +843,6 @@ const ScheduleNewResolution = () => {
       ResolutionReducer.ResponseMessage !== undefined &&
       ResolutionReducer.ResponseMessage !== t("No-data-available")
     ) {
-      console.log("check why ", ResolutionReducer.ResponseMessage);
       setOpen({
         flag: true,
         message: ResolutionReducer.ResponseMessage,
@@ -882,10 +870,6 @@ const ScheduleNewResolution = () => {
       setVotingMethods(newArr);
     }
   }, [ResolutionReducer.GetAllVotingMethods]);
-  console.log(circulationDateTime, "circulationDateTimecirculationDateTime");
-  console.log(votingDateTime, "circulationDateTimecirculationDateTime");
-
-  console.log(decisionDateTime, "circulationDateTimecirculationDateTime");
 
   //Circulation Time
   const handleCirculationTimeChange = (date) => {
@@ -903,13 +887,11 @@ const ScheduleNewResolution = () => {
         timeCirculationforView: date,
       });
     } else {
-      console.error("Invalid date object:", date);
     }
   };
 
   //Voting Time
   const handleVotingTimeChange = (date) => {
-    console.log("changeDateStartHandler", date);
     let newDate = new Date(date);
 
     if (newDate instanceof Date && !isNaN(newDate)) {
@@ -925,7 +907,6 @@ const ScheduleNewResolution = () => {
         timeVotingforView: date,
       });
     } else {
-      console.error("Invalid date object:", date);
     }
   };
 
@@ -945,7 +926,6 @@ const ScheduleNewResolution = () => {
         timeCirculationforView: date,
       });
     } else {
-      console.error("Invalid date object:", date);
     }
   };
 
@@ -962,7 +942,7 @@ const ScheduleNewResolution = () => {
   const votingDateChangeHandler = (date) => {
     let meetingDateSaveFormat = new DateObject(date).format("YYYY-MM-DD");
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-    console.log("meetingDateSaveFormat", meetingDateSaveFormat);
+
     setVotingDateTime({
       ...votingDateTime,
       date: meetingDateSaveFormat,
@@ -1245,11 +1225,17 @@ const ScheduleNewResolution = () => {
                             locale={localValue}
                             format="hh:mm A"
                             editable={false}
-                            plugins={[<TimePicker hideSeconds />]}
+                            plugins={[
+                              <TimePicker
+                                hideSeconds
+                                position="bottom"
+                                onFocusCapture={false}
+                              />,
+                            ]}
                             render={<CustomInput />}
-                            selected={
-                              circulationDateTime.timeCirculationforView
-                            }
+                            // selected={
+                            //   circulationDateTime.timeCirculationforView
+                            // }
                             value={circulationDateTime.timeCirculationforView}
                             onChange={(date) =>
                               handleCirculationTimeChange(date)
@@ -1369,9 +1355,11 @@ const ScheduleNewResolution = () => {
                             locale={localValue}
                             format="hh:mm A"
                             editable={false}
-                            plugins={[<TimePicker hideSeconds />]}
+                            plugins={[
+                              <TimePicker hideSeconds onFocusCapture={false} />,
+                            ]}
                             render={<CustomInput />}
-                            selected={votingDateTime.timeVotingforView}
+                            // selected={votingDateTime.timeVotingforView}
                             value={votingDateTime.timeVotingforView}
                             onChange={(date) => handleVotingTimeChange(date)}
                           />
@@ -1487,10 +1475,13 @@ const ScheduleNewResolution = () => {
                             calendar={calendarValue}
                             locale={localValue}
                             format="hh:mm A"
+                            // shouldCloseOnSelect={true}
                             editable={false}
-                            plugins={[<TimePicker hideSeconds />]}
+                            plugins={[
+                              <TimePicker hideSeconds onFocusCapture={false} />,
+                            ]}
                             render={<CustomInput />}
-                            selected={decisionDateTime.timeDecisionforView}
+                            // selected={decisionDateTime.timeDecisionforView}
                             value={decisionDateTime.timeDecisionforView}
                             onChange={(date) => handleDecisionTimeChange(date)}
                           />
@@ -2064,6 +2055,7 @@ const ScheduleNewResolution = () => {
                             <Col lg={12} md={12} sm={12}>
                               <Dragger
                                 {...props}
+                                fileList={[]}
                                 className={
                                   styles[
                                     "dragdrop_attachment_create_resolution"
