@@ -1225,11 +1225,17 @@ const ScheduleNewResolution = () => {
                             locale={localValue}
                             format="hh:mm A"
                             editable={false}
-                            plugins={[<TimePicker hideSeconds />]}
+                            plugins={[
+                              <TimePicker
+                                hideSeconds
+                                position="bottom"
+                                onFocusCapture={false}
+                              />,
+                            ]}
                             render={<CustomInput />}
-                            selected={
-                              circulationDateTime.timeCirculationforView
-                            }
+                            // selected={
+                            //   circulationDateTime.timeCirculationforView
+                            // }
                             value={circulationDateTime.timeCirculationforView}
                             onChange={(date) =>
                               handleCirculationTimeChange(date)
@@ -1349,9 +1355,11 @@ const ScheduleNewResolution = () => {
                             locale={localValue}
                             format="hh:mm A"
                             editable={false}
-                            plugins={[<TimePicker hideSeconds />]}
+                            plugins={[
+                              <TimePicker hideSeconds onFocusCapture={false} />,
+                            ]}
                             render={<CustomInput />}
-                            selected={votingDateTime.timeVotingforView}
+                            // selected={votingDateTime.timeVotingforView}
                             value={votingDateTime.timeVotingforView}
                             onChange={(date) => handleVotingTimeChange(date)}
                           />
@@ -1467,10 +1475,13 @@ const ScheduleNewResolution = () => {
                             calendar={calendarValue}
                             locale={localValue}
                             format="hh:mm A"
+                            // shouldCloseOnSelect={true}
                             editable={false}
-                            plugins={[<TimePicker hideSeconds />]}
+                            plugins={[
+                              <TimePicker hideSeconds onFocusCapture={false} />,
+                            ]}
                             render={<CustomInput />}
-                            selected={decisionDateTime.timeDecisionforView}
+                            // selected={decisionDateTime.timeDecisionforView}
                             value={decisionDateTime.timeDecisionforView}
                             onChange={(date) => handleDecisionTimeChange(date)}
                           />

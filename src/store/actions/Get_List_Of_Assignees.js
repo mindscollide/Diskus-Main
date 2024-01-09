@@ -586,18 +586,7 @@ const CancelMeetingFail = (message) => {
 const CancelMeeting = (navigate, object, t, value) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = JSON.parse(localStorage.getItem("userID"));
-  let meetingpageRow = JSON.parse(localStorage.getItem("MeetingPageRows"));
-  let meetingPageCurrent = JSON.parse(
-    localStorage.getItem("MeetingPageCurrent")
-  );
-  let Data = {
-    Date: "",
-    Title: "",
-    HostName: "",
-    UserID: createrID,
-    PageNumber: meetingPageCurrent,
-    Length: meetingpageRow,
-  };
+
   // let dataForList = { UserID: JSON.parse(createrID), NumberOfRecords: 300 }
   return (dispatch) => {
     dispatch(CancelMeetingInit());
@@ -631,7 +620,7 @@ const CancelMeeting = (navigate, object, t, value) => {
                   t("The-meeting-has-been-cancelled")
                 )
               );
-              if (value === 1) {
+              if (value === 6) {
                 let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
                 let Data = {
                   CommitteeID: Number(ViewCommitteeID),
@@ -644,7 +633,7 @@ const CancelMeeting = (navigate, object, t, value) => {
                   PublishedMeetings: true,
                 };
                 dispatch(getMeetingByCommitteeIDApi(navigate, t, Data));
-              } else if (value === 2) {
+              } else if (value === 7) {
                 let ViewGroupID = localStorage.getItem("ViewGroupID");
                 let Data = {
                   GroupID: Number(ViewGroupID),
@@ -657,8 +646,23 @@ const CancelMeeting = (navigate, object, t, value) => {
                   PublishedMeetings: true,
                 };
                 dispatch(getMeetingbyGroupApi(navigate, t, Data));
-              } else {
-                await dispatch(searchUserMeeting(navigate, Data, t));
+              } else if (value === 4) {
+                let meetingpageRow = JSON.parse(
+                  localStorage.getItem("MeetingPageRows")
+                );
+                let meetingPageCurrent = JSON.parse(
+                  localStorage.getItem("MeetingPageCurrent")
+                );
+                let Data = {
+                  Date: "",
+                  Title: "",
+                  HostName: "",
+                  UserID: createrID,
+                  PageNumber: meetingPageCurrent,
+                  Length: meetingpageRow,
+                  PublishedMeetings: true,
+                };
+                dispatch(searchUserMeeting(navigate, Data, t));
               }
             } else if (
               response.data.responseResult.responseMessage

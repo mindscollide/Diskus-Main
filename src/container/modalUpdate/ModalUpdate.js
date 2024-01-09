@@ -97,7 +97,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   const [closeConfirmationModal, setCloseConfirmationModal] = useState(false);
   console.log(closeConfirmationModal, "closeConfirmationModal");
   // for modal fields error
-  const [, set] = useState(false);
+  const [modalField, setModalField] = useState(false);
 
   const [objMeetingAgenda, setObjMeetingAgenda] = useState({
     PK_MAID: 0,
@@ -223,11 +223,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     setIsAttendees(false);
     setIsPublishMeeting(false);
     setCancelMeetingModal(false);
-    set(false);
+    setModalField(false);
   };
 
   const changeSelectAgenda = () => {
-    set(false);
+    setModalField(false);
     if (
       createMeeting.MeetingStartTime !== "" &&
       createMeeting.MeetingEndTime !== "" &&
@@ -239,7 +239,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       // createMeeting.MeetingTitle != ""
     ) {
       setCurrentStep(2);
-      set(false);
+      setModalField(false);
       setIsDetails(false);
       setIsAgenda(true);
       setIsAttendees(false);
@@ -248,7 +248,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     } else {
       setCurrentStep(1);
 
-      set(true);
+      setModalField(true);
       setIsDetails(true);
       setIsAgenda(false);
       setIsAttendees(false);
@@ -258,7 +258,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   };
 
   const changeSelectAttendees = () => {
-    set(false);
+    setModalField(false);
     if (
       createMeeting.MeetingStartTime !== "" &&
       createMeeting.MeetingEndTime !== "" &&
@@ -271,7 +271,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     ) {
       setCurrentStep(3);
 
-      set(false);
+      setModalField(false);
       setIsDetails(false);
       setIsAgenda(false);
       setIsAttendees(true);
@@ -279,7 +279,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       setIsPublishMeeting(false);
       setCancelMeetingModal(false);
     } else {
-      set(true);
+      setModalField(true);
       setIsDetails(true);
       setCurrentStep(1);
 
@@ -301,7 +301,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       // &&
       // createMeeting.MeetingTitle != ""
     ) {
-      set(false);
+      setModalField(false);
       setIsDetails(false);
       setIsAgenda(false);
       setIsAttendees(false);
@@ -309,7 +309,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
       setIsMinutes(true);
     } else {
-      set(true);
+      setModalField(true);
       setCurrentStep(1);
 
       setIsDetails(true);
@@ -322,7 +322,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   };
 
   const navigateToAgenda = async () => {
-    set(false);
+    setModalField(false);
     if (
       createMeeting.MeetingStartTime !== "" &&
       createMeeting.MeetingEndTime !== "" &&
@@ -333,7 +333,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       createMeetingTime !== "" &&
       meetingDate !== ""
     ) {
-      set(false);
+      setModalField(false);
       setIsDetails(false);
       setIsMinutes(false);
       setIsPublishMeeting(false);
@@ -342,7 +342,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       setIsAttendees(false);
       setCurrentStep(2);
     } else {
-      set(true);
+      setModalField(true);
       setIsDetails(true);
       setCurrentStep(1);
       setIsAgenda(false);
@@ -502,7 +502,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     let name = e.target.name;
     let value = e.target.value;
     let valueCheck = value.replace(/^\s/g, "");
-    // set(true);
+    // setModalField(true);
     if (name === "MeetingStartTime") {
       setCreateMeeting({
         ...createMeeting,
@@ -539,7 +539,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         [name]: parseInt(0),
       });
     } else {
-      set(false);
+      setModalField(false);
       setCreateMeeting({
         ...createMeeting,
         [name]: value,
@@ -795,7 +795,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
               MeetingAgendaAttachments: [],
             });
           } else {
-            set(false);
+            setModalField(false);
             setOpen({
               ...open,
               flag: true,
@@ -828,7 +828,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           setFileSize(0);
         }
       } else {
-        set(true);
+        setModalField(true);
         setOpen({
           ...open,
           flag: true,
@@ -839,7 +839,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       if (objMeetingAgenda.Title !== "") {
         if (objMeetingAgenda.URLs !== "") {
           if (urlPatternValidation(objMeetingAgenda.URLs)) {
-            set(false);
+            setModalField(false);
             let previousAdendas = createMeeting.MeetingAgendas;
             let newData = {
               ObjMeetingAgenda: objMeetingAgenda,
@@ -863,7 +863,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             });
             setFileSize(0);
           } else {
-            set(false);
+            setModalField(false);
             setOpen({
               ...open,
               flag: true,
@@ -871,7 +871,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             });
           }
         } else {
-          set(false);
+          setModalField(false);
           let previousAdendas = createMeeting.MeetingAgendas;
           let newData = {
             ObjMeetingAgenda: objMeetingAgenda,
@@ -896,7 +896,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           setFileSize(0);
         }
       } else {
-        set(true);
+        setModalField(true);
         setOpen({
           ...open,
           flag: true,
@@ -1659,7 +1659,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     let Data = {
       MeetingID: meetingID,
     };
-    await dispatch(CancelMeeting(navigate, Data, t, 1));
+    await dispatch(CancelMeeting(navigate, Data, t, checkFlag));
     setObjMeetingAgenda({
       PK_MAID: 0,
       Title: "",
@@ -1786,7 +1786,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     if (minutesOftheMeatingStatus) {
       if (endMeetingStatus2) {
         // let Data = { MinutesOfMeeting: minutesOfMeeting };
-        await set(false);
+        await setModalField(false);
         await setIsPublishMeeting(false);
         await setCancelMeetingModal(false);
         await setEditFlag(false);
@@ -1847,7 +1847,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         setReminderValue("");
       } else {
         // let Data = { MinutesOfMeeting: minutesOfMeeting };
-        await set(false);
+        await setModalField(false);
         await setIsPublishMeeting(false);
         await setCancelMeetingModal(false);
         await setEditFlag(false);
@@ -1909,7 +1909,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         setTaskAssignedToInput("");
       }
     } else {
-      set(false);
+      setModalField(false);
       setIsDetails(false);
       setIsAgenda(false);
       setIsAttendees(false);
@@ -2007,7 +2007,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   }
   const onHideHandleModal = () => {
     setCloseConfirmationModal(true);
-    // set(false);
+    // setModalField(false);
     setIsDetails(false);
     setIsAgenda(false);
     setIsAttendees(false);
@@ -2175,7 +2175,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         value={createMeeting.MeetingStartTime}
                         required
                       /> */}
-                      {createMeeting.MeetingStartTime === "" ? (
+                      {modalField === true &&
+                      createMeeting.MeetingStartTime === "" ? (
                         <ErrorBar errorText={t("Select-time")} />
                       ) : null}
                     </Col>
@@ -2215,7 +2216,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         locale={localValue}
                         disabled={endMeetingStatus}
                       /> */}
-                      {createMeeting.MeetingDate === "" ? (
+                      {modalField === true &&
+                      createMeeting.MeetingDate === "" ? (
                         <ErrorBar errorText={t("Select-date")} />
                       ) : null}
                     </Col>
@@ -2282,7 +2284,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         required={true}
                         maxLength={245}
                       />
-                      {createMeeting.MeetingLocation === "" ? (
+                      {modalField === true &&
+                      createMeeting.MeetingLocation === "" ? (
                         <ErrorBar errorText={t("This-field-is-empty")} />
                       ) : null}
                     </Col>
@@ -2325,7 +2328,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         required={true}
                         maxLength={245}
                       />
-                      {createMeeting.MeetingTitle === "" ? (
+                      {modalField === true &&
+                      createMeeting.MeetingTitle === "" ? (
                         <ErrorBar errorText={t("This-field-is-empty")} />
                       ) : null}
                     </Col>
@@ -2397,7 +2401,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                               type="text"
                               placeholder={t("Agenda-title") + "*"}
                             />
-                            {objMeetingAgenda.Title === "" ? (
+                            {modalField === true &&
+                            objMeetingAgenda.Title === "" ? (
                               <ErrorBar errorText={t("This-field-is-empty")} />
                             ) : null}
                           </Col>

@@ -292,6 +292,9 @@ const Notes = () => {
                     StartField={data.title}
                     isExpand={isExpanded}
                     notesID={data.pK_NotesID}
+                    handleClickTitleNotes={() =>
+                      viewNotesModal(data?.pK_NotesID)
+                    }
                     centerField={
                       <>
                         {" "}
