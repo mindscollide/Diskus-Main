@@ -92,6 +92,7 @@ import EventsModal from "../../EventsModal/EventsModal";
 import ModalViewNote from "../../modalViewNote/ModalViewNote";
 import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
 import { dashboardCalendarEvent } from "../../../store/actions/NewMeetingActions";
+import ModalToDoList from "../../todolistModal/ModalToDoList";
 // import Todolis from "../../modalView/ModalView";
 
 const Home = () => {
@@ -102,7 +103,8 @@ const Home = () => {
   const [updateNotesModalHomePage, setUpdateNotesModalHomePage] =
     useState(false);
   const [totalRecordTodo, setTotalRecordTodo] = useState(0);
-
+  //Modal Todolist State
+  const [showTodo, setShowTodo] = useState(false);
   // const [viewFlag, setViewFlag] = useState(false);
   const state = useSelector((state) => state);
   const {
@@ -461,6 +463,10 @@ const Home = () => {
     dispatch(
       ViewToDoList(navigate, Data, t, setViewFlagToDo, setTodoViewModal)
     );
+  };
+
+  const handleOpenTodoListModal = () => {
+    setShowTodo(true);
   };
 
   const columnsToDo = [
@@ -1266,7 +1272,7 @@ const Home = () => {
                                     <img
                                       src={noTask}
                                       alt=""
-                                      width={350}
+                                      width={"100%"}
                                       draggable="false"
                                     />
                                   }
@@ -1392,7 +1398,7 @@ const Home = () => {
                       icon={
                         <img
                           src={noTask}
-                          width={450}
+                          width={"100%"}
                           alt=""
                           draggable="false"
                         />
@@ -1405,12 +1411,13 @@ const Home = () => {
                           {t("There-is-no-pending-task")}
                         </span>
                       }
-                      // extra={[
-                      //   <Button
-                      //     text={t("Create-new-task")}
-                      //     className={styles["CreateNewTaskButton"]}
-                      //   />,
-                      // ]}
+                      extra={[
+                        <Button
+                          text={t("Create-new-task")}
+                          className={"CreateNewTaskButton"}
+                          onClick={handleOpenTodoListModal}
+                        />,
+                      ]}
                       className="NoTask"
                     />
                   </Paper>
@@ -1863,10 +1870,9 @@ const Home = () => {
                         >
                           <img
                             src={noTask}
-                            width={450}
+                            width={"100%"}
                             alt=""
                             draggable="false"
-                            height={350}
                           />
                           {/* <p className="emptystateNotesDashboard">
                             {t("You-dont-have-any-notes")}
@@ -1972,6 +1978,8 @@ const Home = () => {
           viewFlagToDo={todoViewModal}
           setViewFlagToDo={setTodoViewModal}
         />
+      ) : showTodo ? (
+        <ModalToDoList show={showTodo} setShow={setShowTodo} />
       ) : null}
 
       {(NotesReducer.Loading && getNoteID !== 0) ||
