@@ -9,6 +9,7 @@ import Helper from "../../../commen/functions/history_logout";
 import { getSocketConnection } from "../../../commen/apis/Api_ends_points";
 import IconMetroAttachment from "../../../assets/images/newElements/Icon metro-attachment.svg";
 import {
+  Loader,
   NotificationBar,
   Subscriptionwarningline,
 } from "../../../components/elements";
@@ -27,7 +28,8 @@ const AdminHome = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const state = useSelector((state) => state);
-  const { GetSubscriptionPackage } = state;
+  // settingReducer.Loading;
+  const { GetSubscriptionPackage, settingReducer } = state;
   const [currentLanguge, setCurrentLanguage] = useState("en");
   const { t } = useTranslation();
   const [client, setClient] = useState(null);
@@ -199,6 +201,7 @@ const AdminHome = () => {
           id={notificationID}
         />
         <Outlet />
+        {settingReducer.Loading ? <Loader /> : null}
       </ConfigProvider>
     </>
   );

@@ -280,3 +280,7 @@
 .searchFilterAgendaContributor {
   padding: 12px 30px !important;
 }
+
+.TextAreaProposedMeetingDetails {
+  font-size: 1rem !important;
+}
