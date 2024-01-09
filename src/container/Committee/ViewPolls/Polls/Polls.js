@@ -116,18 +116,18 @@ const Polls = ({ committeeStatus }) => {
     dispatch(deleteCommitteePollApi(navigate, t, data));
   };
 
-  const handleCacnelbutton = () => {
-    dispatch(showCancelPolls(true));
-  };
+  // const handleCacnelbutton = () => {
+  //   dispatch(showCancelPolls(true));
+  // };
 
-  const handleSaveAndnext = () => {
-    setPolls(false);
-    setAttendance(true);
-  };
+  // const handleSaveAndnext = () => {
+  //   setPolls(false);
+  //   setAttendance(true);
+  // };
 
-  const onClickVoteBtn = (record) => {
-    navigate("/DisKus/polling", { state: { record, isVote: false } });
-  };
+  // const onClickVoteBtn = (record) => {
+  //   navigate("/DisKus/polling", { state: { record, isVote: false } });
+  // };
 
   const handleClickonTitle = (record) => {
     // navigate("/DisKus/polling", { state: { record, isVote: false } });
@@ -642,9 +642,7 @@ const Polls = ({ committeeStatus }) => {
                 )}
               </>
             )}
-            {NewMeetingreducer.cancelPolls && (
-              <CancelPolls setSceduleMeeting={setSceduleMeeting} />
-            )}
+            {NewMeetingreducer.cancelPolls && <CancelPolls />}
           </section>
         </>
       )}
