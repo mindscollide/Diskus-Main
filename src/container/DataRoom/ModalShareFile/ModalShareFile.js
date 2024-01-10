@@ -53,14 +53,11 @@ const ModalShareFile = ({
   );
   const [showaccessrequest, setShowaccessrequest] = useState(false);
   const [showrequestsend, setShowrequestsend] = useState(false);
-  const [generalaccessdropdown, setGeneralaccessdropdown] = useState(false);
   const [linkedcopied, setLinkedcopied] = useState(false);
-  const [expirationheader, setExpirationheader] = useState(false);
-  const [calenderdate, setCalenderdate] = useState(false);
   const [inviteedit, setInviteedit] = useState(false);
   const [notifyPeople, setNotifyPeople] = useState(false);
   const [ownerInfo, setOwnerInfo] = useState(null);
-  console.log(ownerInfo, "ownerInfoownerInfoownerInfo");
+
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [meetingDate, setMeetingDate] = useState("");
@@ -92,11 +89,9 @@ const ModalShareFile = ({
   const [getAllAssignees, setGetAllAssignees] = useState([]);
 
   const [taskAssignedName, setTaskAssignedName] = useState("");
-  const [organizationMembers, setOrganizationMembers] = useState([]);
   const [isMembers, setMembers] = useState([]);
-  console.log(isMembers, "isMembersisMembersisMembersisMembers");
+
   let organizationName = localStorage.getItem("OrganizatioName");
-  let currentLanguage = localStorage.getItem("i18nextLng");
   let userID = localStorage.getItem("userID");
   const options = [
     { value: 1, label: t("Viewer") },
@@ -143,13 +138,15 @@ const ModalShareFile = ({
   // set All User in state which was coming from api
   useEffect(() => {
     if (assignees.user.length > 0) {
-      setGetAllAssignees(assignees.user);
+      let AssigeeUsers = assignees.user.filter(
+        (assignee) => assignee.pK_UID !== Number(userID)
+      );
+      setGetAllAssignees(AssigeeUsers);
     }
-  }, [assignees]);
+  }, [assignees, userID]);
 
   // set All Shared data with are coming from api
   useEffect(() => {
-    console.log(getSharedFileUsers, "getSharedFileUsersgetSharedFileUsers");
     try {
       if (getSharedFileUsers !== null && getSharedFileUsers !== undefined) {
         let ownerInfo = getSharedFileUsers.owner;
@@ -211,13 +208,11 @@ const ModalShareFile = ({
       PermissionID: Number(permissionID.value),
       isFolder: false,
     };
-    console.log("Hello NotificationForlinkCopied", Data);
 
     dispatch(createFolderLinkApi(navigate, t, Data, setLinkedcopied));
   };
 
   const onSearch = (name, id) => {
-    console.log("name id", name, id);
     setOnclickFlag(true);
     setTaskAssignedToInput(name);
     setTaskAssignedTo(id);
@@ -235,8 +230,7 @@ const ModalShareFile = ({
         .filter((item) => {
           const searchTerm = value.toLowerCase();
           const assigneesName = item.name.toLowerCase();
-          console.log("Input Value in searchTerm", searchTerm);
-          console.log("Input Value in assigneesName", assigneesName);
+
           return (
             searchTerm && assigneesName.startsWith(searchTerm)
             // assigneesName !== searchTerm.toLowerCase()
@@ -249,7 +243,6 @@ const ModalShareFile = ({
             className="dropdown-row-assignee d-flex align-items-center flex-row"
             key={item.pK_UID}
           >
-            {console.log("itemitem", item)}
             <img
               draggable="false"
               src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
@@ -260,25 +253,22 @@ const ModalShareFile = ({
           </div>
         ));
     } else {
-      console.log("not found");
     }
   };
 
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
     setOnclickFlag(false);
-    if (e.target.value.trimStart() != "") {
+    if (e.target.value.trimStart() !== "") {
       setTaskAssignedToInput(e.target.value.trimStart());
     } else {
       setTaskAssignedToInput("");
       setTaskAssignedTo(0);
       setTaskAssignedName("");
     }
-    console.log("setTaskAssignedToInput", e.target.value.trimStart());
   };
 
   const Notificationnaccessrequest = () => {
-    console.log("hnbhaiclicktuhorahahy");
     if (fileData.Files.length > 0) {
       let ShareFilesData = {
         FileID: Number(folderId),

@@ -357,6 +357,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
               <Select
                 defaultValue={text.status}
                 bordered={false}
+                disabled={committeeStatus === 3 ? false : true}
                 dropdownClassName="Status-Todo"
                 className={
                   text.pK_TSID === 1
@@ -411,6 +412,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
                   defaultValue={text.status}
                   // prefixCls="todo-status-select"
                   bordered={false}
+                  disabled={committeeStatus === 3 ? false : true}
                   dropdownClassName="Status-Todo"
                   className={
                     text.pK_TSID === 1
@@ -448,8 +450,10 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       key: "taskCreator",
       width: "120px",
       render: (record, index) => {
-        console.log(record, index, "recordrecordrecordrecordrecord");
-        if (parseInt(record?.pK_UID) === parseInt(createrID)) {
+        if (
+          parseInt(record?.pK_UID) === parseInt(createrID) &&
+          committeeStatus === 3
+        ) {
           return (
             <i
               className="meeting-editbutton cursor-pointer"

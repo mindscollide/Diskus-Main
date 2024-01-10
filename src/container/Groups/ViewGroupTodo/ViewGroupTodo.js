@@ -37,8 +37,6 @@ import { useNavigate } from "react-router-dom";
 import { getTasksByGroupIDApi } from "../../../store/actions/Polls_actions";
 
 const CreateTodoCommittee = ({ groupStatus }) => {
-  console.log(groupStatus, "groupStatusgroupStatusgroupStatus");
-
   //For Localization
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -329,6 +327,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
               <Select
                 defaultValue={text.status}
                 bordered={false}
+                disabled={groupStatus === 3 ? false : true}
                 dropdownClassName="Status-Todo"
                 className={
                   text.pK_TSID === 1
@@ -383,6 +382,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
                   defaultValue={text.status}
                   // prefixCls="todo-status-select"
                   bordered={false}
+                  disabled={groupStatus === 3 ? false : true}
                   dropdownClassName="Status-Todo"
                   className={
                     text.pK_TSID === 1
@@ -420,7 +420,10 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       key: "taskCreator",
       width: "120px",
       render: (record, index) => {
-        if (parseInt(record?.pK_UID) === parseInt(createrID)) {
+        if (
+          parseInt(record?.pK_UID) === parseInt(createrID) &&
+          Number(groupStatus) === 3
+        ) {
           return (
             <i
               className="meeting-editbutton cursor-pointer"

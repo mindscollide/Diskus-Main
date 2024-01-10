@@ -95,7 +95,7 @@ const ModalShareFolder = ({
   const [organizationMembers, setOrganizationMembers] = useState([]);
   const [isMembers, setMembers] = useState([]);
   const [ownerInfo, setOwnerInfo] = useState(null);
-  console.log(ownerInfo, "ownerInfoownerInfoownerInfo");
+
   const [flag, setFlag] = useState(1);
   const [onclickFlag, setOnclickFlag] = useState(false);
   let organizationName = localStorage.getItem("OrganizatioName");
@@ -156,13 +156,11 @@ const ModalShareFolder = ({
   };
 
   const NotificationForlinkCopied = () => {
-    console.log("Hello NotificationForlinkCopied");
     let Data = {
       ID: Number(folderId),
       PermissionID: Number(permissionID.value),
       isFolder: true,
     };
-    console.log("Hello NotificationForlinkCopied", Data);
 
     dispatch(createFolderLinkApi(navigate, t, Data, setLinkedcopied));
     // setLinkedcopied(true);
@@ -183,17 +181,17 @@ const ModalShareFolder = ({
     dispatch(allAssignessList(navigate, t));
   }, []);
 
+  // set All User in state which was coming from api
   useEffect(() => {
     if (assignees.user.length > 0) {
-      setGetAllAssignees(assignees.user);
+      let AssigeeUsers = assignees.user.filter(
+        (assignee) => assignee.pK_UID !== Number(userID)
+      );
+      setGetAllAssignees(AssigeeUsers);
     }
-  }, [assignees]);
+  }, [assignees, userID]);
 
   useEffect(() => {
-    console.log(
-      getSharedFolderUsers,
-      "getSharedFolderUsersgetSharedFolderUsersgetSharedFolderUsers"
-    );
     try {
       if (getSharedFolderUsers !== null && getSharedFolderUsers !== undefined) {
         if (assignees.user.length > 0) {
@@ -206,7 +204,7 @@ const ModalShareFolder = ({
 
             let usersList = getSharedFolderUsers.listOfUsers;
             let allMembers = assignees.user;
-            console.log(ownerInfo, usersList, "getAllAssigneesgetAllAssignees");
+
             usersList.forEach((userData, index) => {
               newData.push({
                 FK_PermissionID: userData.permissionID,
@@ -249,7 +247,7 @@ const ModalShareFolder = ({
             className="dropdown-row-assignee d-flex align-items-center flex-row"
             key={item.pK_UID}
           >
-            {console.log("itemitem", item)}
+            {}
             <img
               draggable="false"
               src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
@@ -260,13 +258,12 @@ const ModalShareFolder = ({
           </div>
         ));
     } else {
-      console.log("not found");
     }
   };
 
   const onSearch = (name, id) => {
     setOnclickFlag(true);
-    console.log("name id", name, id);
+
     setTaskAssignedToInput(name);
     setTaskAssignedTo(id);
     setTaskAssignedName(name);
@@ -282,11 +279,9 @@ const ModalShareFolder = ({
       setTaskAssignedTo(0);
       setTaskAssignedName("");
     }
-    console.log("setTaskAssignedToInput", e.target.value.trimStart());
   };
 
   const Notificationnaccessrequest = () => {
-    console.log("hnbhaiclicktuhorahahy");
     if (folderData.Folders.length > 0) {
       setShowrequestsend(true);
       let ShareFolderData = {
@@ -419,7 +414,6 @@ const ModalShareFolder = ({
   );
 
   const handleIconClick = () => {
-    console.log("handleIconClick");
     if (datePickerRef.current) {
       datePickerRef.current.openCalendar();
     }

@@ -177,7 +177,7 @@ button.updatemeetingmodalconfirmationdiscard {
   background-color: #ffffff !important;
   border: 1px solid #e1e1e1 !important;
   color: #000 !important;
-  border-radius: 2px !important;
+  border-radius: 4px !important;
 }
 
 button.cancelmeetingmodalgoBackbtn {
@@ -186,14 +186,14 @@ button.cancelmeetingmodalgoBackbtn {
   background-color: #ffffff !important;
   border: 1px solid #e1e1e1 !important;
   color: #000 !important;
-  border-radius: 2px !important;
+  border-radius: 4px !important;
 }
 
 button.cancelmeetingmodalcancelbtn {
   width: 119px !important;
   height: 46px !important;
-  background-color: #2197d7 !important;
-  border-radius: 2px !important;
+  background-color: #6172d6 !important;
+  border-radius: 4px !important;
 }
 
 button.updatemeetingmodalconfirmationsubmit {

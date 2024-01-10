@@ -205,7 +205,7 @@ const Card = ({
                 height="21px"
                 // className={StatusID === 1 ? "cursor-pointer" : ""}
                 className={
-                  StatusID === 3
+                  StatusID === 3 || StatusID === 1
                     ? styles["dot_icon_styles"]
                     : StatusID === 2
                     ? styles["dot_icon_styles_InActive"]
