@@ -153,7 +153,7 @@ const Agenda = ({
       ];
       setPresenters(allPresentersReducer);
     }
-  }, [allPresenters]);
+  }, [allPresenters, allSavedPresenters]);
 
   useEffect(() => {
     if (presenters.lenth > 0 || Object.keys(presenters).length > 0) {
@@ -187,7 +187,7 @@ const Agenda = ({
         return prevPresenters; // No change, return the current state
       });
     }
-  }, [allPresenters]);
+  }, [allPresenters, allSavedPresenters]);
 
   const [rows, setRows] = useState([
     {
@@ -571,8 +571,6 @@ const Agenda = ({
       setFileForSend([]);
     }
 
-    console.log("File For Send File", fileForSend);
-
     if (isValid) {
       // All conditions are met, apply your feature here
 
@@ -672,6 +670,13 @@ const Agenda = ({
     } else {
     }
   };
+
+  useEffect(() => {
+    let updatedRows = [...rows];
+    updatedRows[0].presenterID = allSavedPresenters[0]?.value;
+    updatedRows[0].presenterName = allSavedPresenters[0]?.label;
+    setRows(updatedRows);
+  }, [allSavedPresenters]);
 
   useEffect(() => {
     if (
@@ -1357,6 +1362,8 @@ const Agenda = ({
       }
     }
   }, [MeetingAgendaReducer.MeetingAgendaUpdatedMqtt]);
+
+  console.log("ERROR", presenters, allPresenters, allSavedPresenters);
 
   return (
     <>

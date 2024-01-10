@@ -446,8 +446,6 @@ const ParentAgenda = ({
     setRows(updatedAgendaItems);
   }, [presenters, allPresenters]);
 
-  console.log("Agenda Data", rows);
-
   return (
     <>
       <Draggable
