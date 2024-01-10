@@ -100,7 +100,7 @@ const EditResolution = ({ setCancelresolution }) => {
     }
   }, [currentLanguage]);
   const [attachments, setAttachments] = useState([]);
-  console.log(attachments, "attachmentsattachmentsattachments");
+
   const [isVoter, setVoter] = useState(true);
   const [open, setOpen] = useState({
     flag: false,
@@ -571,7 +571,6 @@ const EditResolution = ({ setCancelresolution }) => {
             3000
           );
         } else {
-          console.log(data, "datadatadata");
           let newdata = {
             displayAttachmentName: data.file.originFileObj.name,
             originalAttachmentName: data.file.originFileObj.name,
@@ -830,7 +829,7 @@ const EditResolution = ({ setCancelresolution }) => {
 
   const documentsUploadCall = async (folderID) => {
     let newfile = [...tasksAttachments];
-    console.log(newfile, fileForSend, "newfilenewfilenewfile");
+
     if (fileForSend.length > 0) {
       const uploadPromises = fileForSend.map(async (newData) => {
         await dispatch(
@@ -1253,9 +1252,7 @@ const EditResolution = ({ setCancelresolution }) => {
           // }
         }
       }
-    } catch (error) {
-      console.log(error, "errorerror");
-    }
+    } catch (error) {}
   }, [ResolutionReducer.getResolutionbyID, meetingAttendeesList]);
 
   const circulationDateChangeHandler = (date) => {
@@ -1271,7 +1268,7 @@ const EditResolution = ({ setCancelresolution }) => {
   const votingDateChangeHandler = (date) => {
     let meetingDateSaveFormat = new DateObject(date).format("YYYY-MM-DD");
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-    console.log("meetingDateSaveFormat", meetingDateSaveFormat);
+
     setVotingDateTime({
       ...votingDateTime,
       date: meetingDateSaveFormat,
@@ -1312,7 +1309,6 @@ const EditResolution = ({ setCancelresolution }) => {
 
   //Circulation Time
   const handleCirculationTimeChange = (date) => {
-    console.log("changeDateStartHandler", date);
     if (date instanceof Date && !isNaN(date)) {
       const hours = ("0" + date.getHours()).slice(-2);
       const minutes = ("0" + date.getMinutes()).slice(-2);
@@ -1326,13 +1322,11 @@ const EditResolution = ({ setCancelresolution }) => {
         timeCirculationforView: date,
       });
     } else {
-      console.error("Invalid date object:", date);
     }
   };
 
   //Voting Time
   const handleVotingTimeChange = (date) => {
-    console.log("changeDateStartHandler", date);
     if (date instanceof Date && !isNaN(date)) {
       const hours = ("0" + date.getHours()).slice(-2);
       const minutes = ("0" + date.getMinutes()).slice(-2);
@@ -1346,13 +1340,11 @@ const EditResolution = ({ setCancelresolution }) => {
         timeVotingforView: date,
       });
     } else {
-      console.error("Invalid date object:", date);
     }
   };
 
   //Decisions Time
   const handleDecisionTimeChange = (date) => {
-    console.log("changeDateStartHandler", date);
     let newData = new Date(date);
     if (newData instanceof Date && !isNaN(newData)) {
       const hours = ("0" + newData.getHours()).slice(-2);
@@ -1367,7 +1359,6 @@ const EditResolution = ({ setCancelresolution }) => {
         timeDecisionforView: date,
       });
     } else {
-      console.error("Invalid date object:", date);
     }
   };
 

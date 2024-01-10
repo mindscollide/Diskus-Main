@@ -62,7 +62,7 @@ const ChatModal = ({ setShow, show, save, print, email }) => {
   const onChangeDate = (e) => {
     let value = e.target.value;
     let name = e.target.name;
-    console.log("onChangeDate", name, value);
+
     if (name === "StartDate" && value != "") {
       setChatDateState({
         ...chatDateState,

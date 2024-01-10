@@ -63,6 +63,7 @@ import {
   viewAdvanceMeetingUnpublishPageFlag,
   viewProposeOrganizerMeetingPageFlag,
   proposeNewMeetingPageFlag,
+  meetingNotConductedMQTT,
 } from "../../../store/actions/NewMeetingActions";
 import { mqttCurrentMeetingEnded } from "../../../store/actions/GetMeetingUserId";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
@@ -150,6 +151,7 @@ const NewMeeting = () => {
   });
   const [rows, setRow] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
+  const [minutesAgo, setMinutesAgo] = useState(null);
   const [searchFields, setSearchFeilds] = useState({
     MeetingTitle: "",
     Date: "",
@@ -158,6 +160,10 @@ const NewMeeting = () => {
   });
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
+  const [startMeetingData, setStartMeetingData] = useState({
+    meetingID: null,
+    showButton: false,
+  });
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [viewProposeDatePoll, setViewProposeDatePoll] = useState(false);
   const [viewProposeOrganizerPoll, setViewProposeOrganizerPoll] =
@@ -758,15 +764,16 @@ const NewMeeting = () => {
         // Convert milliseconds to minutes
         const minutesDifference = Math.floor(timeDifference / (1000 * 60));
 
-        console.log("minutesDifference", minutesDifference);
-
         if (Number(record.status) === 1) {
           if (isParticipant) {
           } else if (isAgendaContributor) {
           } else {
             if (
-              record.isQuickMeeting === true &&
-              minutesDifference <= 2
+              // startMeetingButton === true
+              (record.isQuickMeeting === true && minutesDifference < 4) ||
+              (record.isQuickMeeting === true &&
+                record.pK_MDID === startMeetingData.meetingID &&
+                startMeetingData.showButton)
               // &&
               // minutesDifference > 0
             ) {
@@ -797,10 +804,10 @@ const NewMeeting = () => {
                 </Row>
               );
             } else if (
-              record.isQuickMeeting === false &&
-              minutesDifference <= 2
-              // &&
-              // minutesDifference > 0
+              (record.isQuickMeeting === false && minutesDifference < 4) ||
+              (record.isQuickMeeting === false &&
+                record.pK_MDID === startMeetingData.meetingID &&
+                startMeetingData.showButton)
             ) {
               return (
                 <Row>
@@ -1065,6 +1072,7 @@ const NewMeeting = () => {
     try {
       if (searchMeetings !== null && searchMeetings !== undefined) {
         setTotalRecords(searchMeetings.totalRecords);
+        setMinutesAgo(searchMeetings.meetingStartedMinuteAgo);
         if (Object.keys(searchMeetings.meetings).length > 0) {
           let newRowData = [];
           searchMeetings.meetings.map((data, index) => {
@@ -1157,9 +1165,7 @@ const NewMeeting = () => {
           let updatedRows = [...rows, meetingData];
           setRow(updatedRows);
         }
-      } catch {
-        console.log("Error");
-      }
+      } catch {}
     }
   }, [NewMeetingreducer.meetingStatusPublishedMqttData]);
 
@@ -1182,9 +1188,7 @@ const NewMeeting = () => {
           let updatedRows = [...rows, startMeetingData];
           setRow(updatedRows);
         }
-      } catch {
-        console.log("Error");
-      }
+      } catch {}
     }
   }, [meetingIdReducer.MeetingStatusSocket]);
 
@@ -1301,7 +1305,7 @@ const NewMeeting = () => {
         MeetingID: Number(dashboardEventData.pK_MDID),
         StatusID: 10,
       };
-      console.log("USE EFFECT DASHBOARD ROUTE");
+
       for (const meeting of rows) {
         if (Number(meeting.pK_MDID) === dashboardEventData.pK_MDID) {
           if (
@@ -1389,14 +1393,22 @@ const NewMeeting = () => {
         return row;
       });
       setRow(updatedRows);
+      if (meetingDetailsMqtt.statusID === 1) {
+        setStartMeetingData({
+          ...startMeetingData,
+          meetingID: meetingDetailsMqtt.pK_MDID,
+          status: true,
+        });
+      } else {
+        setStartMeetingData({
+          ...startMeetingData,
+          meetingID: null,
+          status: false,
+        });
+      }
     }
+    dispatch(meetingNotConductedMQTT(null));
   }, [NewMeetingreducer.meetingStatusNotConductedMqttData, rows]);
-
-  console.log("Meeting Table Data", rows);
-
-  console.log("dashboardEventDatadashboardEventData", dashboardEventData);
-
-  console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
 
   return (
     <section className={styles["NewMeeting_container"]}>

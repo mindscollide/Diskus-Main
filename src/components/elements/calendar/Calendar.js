@@ -131,7 +131,6 @@ function CustomCalendar({
     const handleCurrent = () => {
       let date = moment(todayDate).format("YYYY-MM-DD");
       setDefaultValue(date);
-      console.log("navigate", date, defaultValue);
     };
     const handleMonthChange = (date, dateString) => {
       // Handle the month change event here
@@ -348,9 +347,7 @@ function CustomCalendar({
     };
   };
 
-  const showMoreEvents = (dates) => {
-    console.log("datesshowMoreEvents", dates);
-  };
+  const showMoreEvents = (dates) => {};
 
   return (
     <div className="bg-white border-radius-4 border">
@@ -372,7 +369,7 @@ function CustomCalendar({
             // header: customTimeSlotHeader,
             month: false,
             // event: (eventProps) => {
-            //   console.log(eventProps.event, "eventPropseventProps");
+            //
             //   return (
             //     <div
             //       onMouseEnter={() => handleEventMouseEnter(eventProps.event)}
