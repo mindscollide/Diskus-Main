@@ -18,17 +18,11 @@ export const validateEmail = (email) => {
 };
 
 export const validationEmail = (value) => {
-  console.log("check");
   var mailformat = /^[a-zA-Z0-9._%+-]{1,64}@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  console.log("check");
 
   if (mailformat.test(value)) {
-    console.log("check");
-
     return true;
   } else {
-    console.log("check");
-
     return false;
   }
 };

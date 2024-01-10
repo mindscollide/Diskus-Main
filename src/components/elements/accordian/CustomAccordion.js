@@ -8,6 +8,7 @@ const CustomAccordion = ({
   attachmentsRow,
   isExpand,
   notesID,
+  handleClickTitleNotes,
 }) => {
   return (
     <div
@@ -17,7 +18,9 @@ const CustomAccordion = ({
       className={"accordion-custom"}
     >
       <div className="FirstRow">
-        <div className="title-cont">{StartField}</div>
+        <div className="title-cont" onClick={handleClickTitleNotes}>
+          {StartField}
+        </div>
         <div className="dateTime">{centerField}</div>
         <div className="icons">{endField}</div>
       </div>

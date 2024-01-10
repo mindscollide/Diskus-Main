@@ -60,7 +60,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
   const [taskAssignedName, setTaskAssignedName] = useState("");
-  const [participantRoleName, setParticipantRoleName] = useState("");
+  const [participantRoleName, setParticipantRoleName] = useState("Regular");
   const { t } = useTranslation();
   const [onclickFlag, setOnclickFlag] = useState(false);
   const [committeeData, setCommitteeData] = useState({
@@ -73,7 +73,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
     committeeTypeValue: null,
     CreatorID: 0,
   });
-  console.log(committeeData, "committeeDatacommitteeDatacommitteeData");
+
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -82,7 +82,6 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
     setUpdateComponentpage(false);
   };
   const InputFielsChangeHandler = (event) => {
-    console.log("eventeventevent", event);
     let name = event.target.name;
     let value = event.target.value;
     if (name === "committeeTitle") {
@@ -146,8 +145,6 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
         .filter((item) => {
           const searchTerm = value.toLowerCase();
           const assigneesName = item.name.toLowerCase();
-          console.log("Input Value in searchTerm", searchTerm);
-          console.log("Input Value in assigneesName", assigneesName);
 
           return (
             searchTerm && assigneesName.startsWith(searchTerm)
@@ -161,7 +158,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
             className="dropdown-row-assignee d-flex align-items-center flex-row"
             key={item.pK_UID}
           >
-            {console.log("itemitem", item)}
+            {}
             <img
               src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
               alt=""
@@ -172,7 +169,6 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
           </div>
         ));
     } else {
-      console.log("not found");
     }
   };
   const onSearch = (name, id) => {
@@ -213,7 +209,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
     let findID = committeeTypesOptions.find(
       (data, index) => data.label === value
     );
-    console.log("findIDfindIDfindID", findID);
+
     setCommitteeData({
       ...committeeData,
       committeeType: findID.id,
@@ -243,7 +239,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       });
       setAttendees([]);
       setTaskAssignedTo(0);
-      setParticipantRoleName("");
+      setParticipantRoleName("Regular");
       setTaskAssignedToInput("");
     } else if (taskAssignedTo !== 0) {
       var foundIndex = membersData.findIndex(
@@ -276,7 +272,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
             });
           }
           setTaskAssignedTo(0);
-          setParticipantRoleName("");
+          setParticipantRoleName("Regular");
           setTaskAssignedToInput("");
         } else {
           setOpen({
@@ -284,7 +280,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
             message: t("User-already-exist"),
           });
           setTaskAssignedTo(0);
-          setParticipantRoleName("");
+          setParticipantRoleName("Regular");
           setTaskAssignedToInput("");
         }
       } else {
@@ -313,7 +309,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
           message: t("User-already-exist"),
         });
         setAttendees([]);
-        setParticipantRoleName("");
+        setParticipantRoleName("Regular");
       } else {
         if (participantOptionsWithID !== undefined) {
           let newDataForMembers = [];
@@ -334,7 +330,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
               }
             });
             setAttendees([]);
-            setParticipantRoleName("");
+            setParticipantRoleName("Regular");
           });
         } else {
           setOpen({
@@ -386,7 +382,6 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
   }, [CommitteeReducer.getCommitteeTypes]);
 
   const checkGroupMembers = (GroupMembers) => {
-    console.log("checkGroupMembers", GroupMembers);
     if (Object.keys(GroupMembers).length > 0) {
       let flag2 = GroupMembers.find((data, index) => data.FK_CMMRID === 2);
 
@@ -408,7 +403,6 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       committeeData.CreatorID !== 0
     ) {
       if (!checkGroupMembers(membersData)) {
-        console.log("checkGroupMembers", checkGroupMembers(membersData));
         setOpen({
           flag: true,
           message: t("Please-add-atleast-one-executive-member"),
@@ -698,9 +692,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
     );
   };
 
-  const handleDoubleCLickFile = () => {
-    console.log("Hello");
-  };
+  const handleDoubleCLickFile = () => {};
 
   useEffect(() => {
     if (CommitteeReducer.createUpdateCommitteeDataroom !== 0) {
@@ -1765,7 +1757,6 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                             >
                               {fileAttachments.length > 0
                                 ? fileAttachments.map((data, index) => {
-                                    console.log(data, "datadatadata");
                                     return (
                                       <>
                                         <Col

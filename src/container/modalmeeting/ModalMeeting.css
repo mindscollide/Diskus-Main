@@ -76,7 +76,7 @@ fieldset:disabled .btn {
 }
 
 .modalMeetingCreateBody {
-  padding: 0 40px !important;
+  padding: 0 20px !important;
   /* margin: 0 20px !important; */
   max-height: 75% !important;
   height: 75% !important;

@@ -398,7 +398,6 @@ export const editResolutionTimeView = (dateTime) => {
 };
 
 export const resolutionResultTable = (dateTime) => {
-  console.log("convertTimeconvertTime", dateTime);
   let fullDateYear =
     dateTime.slice(0, 4) +
     "-" +
@@ -414,7 +413,7 @@ export const resolutionResultTable = (dateTime) => {
     ".000Z";
 
   let convertTime = new Date(fullDateYear);
-  console.log("convertTimeconvertTime", convertTime);
+
   return convertTime;
 };
 
@@ -744,11 +743,6 @@ export const newTimeFormaterForImportMeetingAgenda = (dateTime) => {
 
 //Converting to GMT Having Date Plus StartTime And End Time
 export const convertDateTimeRangeToGMT = (startTime, endTime) => {
-  console.log(
-    startTime,
-    endTime,
-    "convertDateTimeRangeToGMTconvertDateTimeRangeToGMT"
-  );
   let StartTimeFormat =
     startTime?.slice(0, 4) +
     "-" +

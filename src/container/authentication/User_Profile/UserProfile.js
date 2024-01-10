@@ -65,7 +65,7 @@ const UserProfileModal = ({
   const [erorbar, setErrorBar] = useState(false);
   const [userProfile, setUserProfile] = useState("");
   const [Base64Url, setBase64Url] = useState(null);
-  console.log(userProfile, "userProfileuserProfileuserProfile");
+
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [designationEnable, setDesignationEnable] = useState(true);
   const [selectedNonEditCountry, setSelectedNonEditCountry] = useState("");
@@ -76,20 +76,19 @@ const UserProfileModal = ({
   // const [errorMessage, setErrorMessage] = useState(false);
   const state = useSelector((state) => state);
   const { settingReducer, LanguageReducer } = state;
-  console.log("settingReducer", settingReducer);
+
   const [userPicture, setUserPicture] = useState([]);
-  console.log(userPicture, "userPictureuserPicture");
+
   const [selected, setSelected] = useState("US");
   const [selectedCountry, setSelectedCountry] = useState({});
 
   const handleSelect = (country) => {
-    console.log(country, "country");
     setSelected(country);
     setSelectedCountry(country);
     let a = Object.values(countryNameforPhoneNumber).find((obj) => {
       return obj.primary === country;
     });
-    console.log("Selected-Values", a, country);
+
     setUserProfileEdit({
       ...userProfileEdit,
       CountyCode: a.id,
@@ -185,12 +184,12 @@ const UserProfileModal = ({
         },
       };
 
-      // console.log(getimgObj, "getimgObjgetimgObjgetimgObjgetimgObj")
+      //
       setMessege("");
       setMobileEnable(true);
       setDesignationEnable(true);
       setNameEanble(true);
-      console.log("UserData", UserData);
+
       setUserProfileEdit(data);
       setSelectedCountry(
         UserData.organization.numberWorldCountry.fK_NumberWorldCountryID
@@ -203,7 +202,6 @@ const UserProfileModal = ({
       });
       setSelectedNonEditCountry(a.secondary);
       setSelected(a.primary);
-      console.log("Selected-Values", a.secondary);
     }
   };
 
@@ -256,16 +254,14 @@ const UserProfileModal = ({
             UserData.profilePicture.orignalProfilePictureName,
         },
       };
-      console.log("UserData", data);
 
       setUserProfileEdit(data);
       setSelectedCountry(UserData.numberWorldCountry.fK_NumberWorldCountryID);
       let a = Object.values(countryName).find((obj) => {
-        console.log(obj, "Selected-Values");
         return obj.secondary === UserData.numberWorldCountry.code;
       });
       setSelected(a.primary);
-      console.log("Selected-Values", a);
+
       setSelectedNonEditCountry(a.secondary);
     }
   }, [settingReducer.GetUserDetailsResponse]);

@@ -221,14 +221,14 @@ body[dir="rtl"] .todolist-heading-size {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
-/* for todolist table */
+/* for todolist table
 .NoTaskTodo .ant-result-title {
   color: #e4e4e4;
   font-size: 24px;
   line-height: 1.8;
   text-align: center;
   font-weight: 600;
-}
+} */
 
 @media screen and (max-width: 900px) {
   .row-scroll-todolist {
@@ -256,19 +256,19 @@ body[dir="rtl"] .todolist-heading-size {
   }
 }
 
-.ant-result.ant-result-info.NoTaskTodo {
+/* .ant-result.ant-result-info.NoTaskTodo {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-}
+} */
 
-.MuiPaper-root.MuiPaper-elevation0.MuiPaper-rounded:has(
+/* .MuiPaper-root.MuiPaper-elevation0.MuiPaper-rounded:has(
     .ant-result.ant-result-info.NoTaskTodo
   ) {
   background: none;
-}
+} */
 
 .iconForDatePicker.margin-right-20 svg.DatePickerIcon {
   height: 36px !important;
@@ -421,4 +421,29 @@ td.ant-table-column-sort {
 
 .ToDo .ant-table .ant-table-body {
   padding-right: 10px;
+}
+.ToDo
+  .ant-table
+  .ant-table-body
+  .ant-table-tbody
+  > tr.ant-table-placeholder:hover
+  > td {
+  background: none;
+  border: none;
+}
+.ToDo
+  .ant-table
+  .ant-table-body
+  .ant-table-tbody
+  > tr.ant-table-placeholder
+  > td {
+  border: none;
+}
+.NotaskTodolist {
+  color: #e4e4e4;
+  font-size: 24px;
+  line-height: 1.8;
+  text-align: center;
+  font-weight: 600;
+  margin-top: 20px;
 }
