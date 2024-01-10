@@ -1220,5 +1220,7 @@
   "Add-participant": "Add Participant",
   "Add-agenda-contributor": "Add Agenda Contributor",
   "There-is-no-pending-task": "There is no pending task",
-  "Create-new-task": "Create new task"
+  "Create-new-task": "Create new task",
+  "Agenda-contributor-updated": "Agenda Contributor's Updated",
+  "Agenda-contributor-added": "Agenda Contributor's Added"
 }

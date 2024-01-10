@@ -499,7 +499,7 @@ select:disabled {
   margin-left: 9px !important;
 }
 .address_bottom_line {
-  font-size: 8px !important;
+  font-size: 1em !important;
 }
 
 /* for country name drop down */
@@ -573,7 +573,7 @@ select:disabled {
   top: 4px;
 }
 
-body[dir="rtl"] .react-Country-Dropdown-span{
+body[dir="rtl"] .react-Country-Dropdown-span {
   left: 0px !important;
   right: 12px !important;
   top: 0px;

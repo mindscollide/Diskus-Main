@@ -265,6 +265,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
         });
 
         setTaskAssigneeComments(newArr);
+        dispatch(emptyCommentState());
       } else {
         // Comment does not exist, add it
         let newComment = {
@@ -278,8 +279,10 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
         };
 
         setTaskAssigneeComments((prev) => [...prev, newComment]);
+        dispatch(emptyCommentState());
       }
     }
+    return;
   }, [Comments]);
 
   // for Comment delete from MQTT Notification

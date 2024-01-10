@@ -153,16 +153,12 @@ const Notes = () => {
           });
           setNotes(notes);
         } else {
-          console.log("check note empty state");
           setNotes([]);
         }
       } else {
-        console.log("check note empty state");
         setNotes([]);
       }
-    } catch (error) {
-      console.log("check note empty state", error);
-    }
+    } catch (error) {}
   }, [NotesReducer.GetAllNotesResponse]);
 
   //for open Add User Notes Modal
@@ -204,7 +200,6 @@ const Notes = () => {
   };
 
   const toggleAcordion = (notesID) => {
-    console.log(notesID, "notesIDnotesIDnotesID");
     // setExpanded((prev) => (prev === notesID ? true : false));
     if (isExpanded === notesID) {
       setExpanded(false);
@@ -213,8 +208,6 @@ const Notes = () => {
     }
     // setExpand(!isExpand);
   };
-
-  console.log(isExpanded, "isExpandedisExpandedisExpanded");
 
   const handelChangeNotesPagination = async (current, pageSize) => {
     localStorage.setItem("notesPage", current);
@@ -237,7 +230,6 @@ const Notes = () => {
     }
   };
   useEffect(() => {
-    console.log("NotesReducerNotesReducer", NotesReducer.ResponseMessage);
     if (
       NotesReducer.ResponseMessage !== "" &&
       NotesReducer.ResponseMessage !== t("Data-available") &&
@@ -348,34 +340,43 @@ const Notes = () => {
                     }
                     endField={
                       <>
-                        {isExpanded === JSON.parse(data?.pK_NotesID) ? (
-                          <span
-                            className={styles["MinusIcon_span"]}
-                            onClick={() => handleClickExpand(data?.pK_NotesID)}
-                          >
-                            <img
-                              draggable="false"
-                              src={MinusExpand}
-                              className={styles["MinusIcon"]}
-                              alt=""
-                            />
-                          </span>
-                        ) : (
-                          <span
-                            className={styles["PlusIcon_span"]}
-                            onClick={() => handleClickExpand(data?.pK_NotesID)}
-                          >
-                            <img
-                              draggable="false"
-                              src={PlusExpand}
-                              alt=""
-                              className={styles["PlusIcon"]}
-                              onClick={() =>
-                                handleClickExpand(data?.pK_NotesID)
-                              }
-                            />
-                          </span>
+                        {data.notesAttachments.length > 0 && (
+                          <>
+                            {isExpanded === JSON.parse(data?.pK_NotesID) ? (
+                              <span
+                                className={styles["MinusIcon_span"]}
+                                onClick={() =>
+                                  handleClickExpand(data?.pK_NotesID)
+                                }
+                              >
+                                <img
+                                  draggable="false"
+                                  src={MinusExpand}
+                                  className={styles["MinusIcon"]}
+                                  alt=""
+                                />
+                              </span>
+                            ) : (
+                              <span
+                                className={styles["PlusIcon_span"]}
+                                onClick={() =>
+                                  handleClickExpand(data?.pK_NotesID)
+                                }
+                              >
+                                <img
+                                  draggable="false"
+                                  src={PlusExpand}
+                                  alt=""
+                                  className={styles["PlusIcon"]}
+                                  onClick={() =>
+                                    handleClickExpand(data?.pK_NotesID)
+                                  }
+                                />
+                              </span>
+                            )}
+                          </>
                         )}
+
                         <img
                           draggable="false"
                           src={EditIconNote}
