@@ -202,7 +202,7 @@ const Participants = ({
       setIsEditClicked(true);
     }
   };
-  console.log(rspvRows, "rspvRowsrspvRowsrspvRowsrspvRows");
+
   // Table coloumn
   const ParticipantsColoumn = [
     {

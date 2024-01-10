@@ -203,6 +203,51 @@ const Dashboard = () => {
     );
     if (data.action.toLowerCase() === "Meeting".toLowerCase()) {
       if (
+        data.message.toLowerCase() ===
+        "MeetingNotConductedNotification".toLowerCase()
+      ) {
+        try {
+          console.log(
+            "MeetingNotConductedNotificationMeetingNotConductedNotification"
+          );
+          dispatch(meetingNotConductedMQTT(data.payload));
+          console.log(
+            "MeetingNotConductedNotificationMeetingNotConductedNotification"
+          );
+          if (data.viewable) {
+            setNotification({
+              ...notification,
+              notificationShow: true,
+              message: changeMQTTJSONOne(
+                t("MEETING_STATUS_EDITED_NOTCONDUCTED"),
+                "[Meeting Title]",
+                data.payload.meetingTitle.substring(0, 100)
+              ),
+            });
+          }
+        } catch (error) {
+          console.log("ERRORERROR", error);
+        }
+      } else if (
+        data.message.toLowerCase() ===
+        "MeetingReminderNotification".toLowerCase()
+      ) {
+        console.log("MeetingReminderNotificationMeetingReminderNotification");
+        dispatch(meetingNotConductedMQTT(data.payload));
+        console.log("MeetingReminderNotificationMeetingReminderNotification");
+        if (data.viewable) {
+          setNotification({
+            ...notification,
+            notificationShow: true,
+            message: changeMQTTJSONOne(
+              t("MeetingReminderNotification"),
+              "[Meeting Title]",
+              data.payload.meetingTitle.substring(0, 100)
+            ),
+          });
+        }
+        setNotificationID(id);
+      } else if (
         data.payload.message.toLowerCase() ===
         "NEW_MEETING_CREATION".toLowerCase()
       ) {
@@ -381,22 +426,6 @@ const Dashboard = () => {
             ...notification,
             notificationShow: true,
             message: t("NEW_MEETING_AGENDA_ADDED"),
-          });
-        }
-      } else if (
-        data.payload.message.toLowerCase() ===
-        "MeetingNotConductedNotification".toLowerCase()
-      ) {
-        dispatch(meetingNotConductedMQTT(data.payload.meeting));
-        if (data.viewable) {
-          setNotification({
-            ...notification,
-            notificationShow: true,
-            message: changeMQTTJSONOne(
-              t("MEETING_STATUS_EDITED_NOTCONDUCTED"),
-              "[Meeting Title]",
-              data.payload.meetingTitle.substring(0, 100)
-            ),
           });
         }
       }

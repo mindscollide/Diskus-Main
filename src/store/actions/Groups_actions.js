@@ -17,6 +17,7 @@ import {
   SaveTheGroupsDocuments,
   RetrieveGroupDocuments,
 } from "../../commen/apis/Api_config";
+import { GetAllUserChats } from "./Talk_action";
 import axios from "axios";
 
 const clearMessagesGroup = () => {
@@ -467,6 +468,8 @@ const createGroup_Fail = (message) => {
 const createGroup = (navigate, Data, t, setCreategrouppage) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  let createrID = localStorage.getItem("userID");
+  let OrganizationID = localStorage.getItem("organizationID");
   return (dispatch) => {
     dispatch(createGroup_Init());
     let form = new FormData();
@@ -516,6 +519,7 @@ const createGroup = (navigate, Data, t, setCreategrouppage) => {
               };
               console.log({ newData }, "CreateUpdateDataRoadMapApiFunc");
               dispatch(CreateUpdateDataRoadMapApiFunc(navigate, newData, t));
+              dispatch(GetAllUserChats(navigate, createrID, OrganizationID, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

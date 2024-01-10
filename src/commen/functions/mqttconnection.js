@@ -7,13 +7,11 @@ let newClient;
 export const onConnected = (newClient, subscribeID) => {
   console.log("Connected to MQTT broker onConnected");
   newClient.subscribe(subscribeID.toString());
-  // localStorage.setItem('MqttConnectionState', true)
 };
 
 export const onConnectionLost = (subscribeID) => {
   console.log("Connected to MQTT broker onConnectionLost");
   setTimeout(mqttConnection(subscribeID), 3000);
-  // localStorage.setItem('MqttConnectionState', false)
 };
 
 export const mqttConnection = (subscribeID) => {

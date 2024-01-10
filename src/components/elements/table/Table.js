@@ -17,8 +17,6 @@ const CustomTable = ({
   prefixClassName,
   size,
 }) => {
-  console.log("CustomTable", className);
-
   return (
     <>
       <h4 className="labelTitle">{labelTitle}</h4>
