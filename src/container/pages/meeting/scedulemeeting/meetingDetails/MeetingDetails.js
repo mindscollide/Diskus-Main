@@ -124,7 +124,7 @@ const MeetingDetails = ({
       endTime: getEndTime?.newFormatTime,
     },
   ]);
-
+  console.log(rows, "rowsrowsrowsrows");
   //For Custom language datepicker
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [calendarValue, setCalendarValue] = useState(gregorian);

@@ -24,6 +24,7 @@ import NoMeetingsIcon from "../../../assets/images/No-Meetings.png";
 import {
   getMeetingByCommitteeIDApi,
   getMeetingbyGroupApi,
+  meetingNotConductedMQTT,
   searchNewUserMeeting,
 } from "../../../store/actions/NewMeetingActions";
 import { useNavigate } from "react-router-dom";
@@ -42,6 +43,10 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
   const getMeetingbyGroupID = useSelector(
     (state) => state.NewMeetingreducer.getMeetingbyGroupID
   );
+  const meetingStatusNotConductedMqttData = useSelector(
+    (state) => state.NewMeetingreducer.meetingStatusNotConductedMqttData
+  );
+
   const [isOrganisers, setIsOrganisers] = useState(false);
   const [rows, setRow] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -55,6 +60,10 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
   const [createMeetingModal, setCreateMeetingModal] = useState(false);
   const [viewMeetingModal, setViewMeetingModal] = useState(false);
   const [editMeetingModal, setEditMeetingModal] = useState(false);
+  const [startMeetingData, setStartMeetingData] = useState({
+    meetingID: null,
+    showButton: false,
+  });
   const [calendarViewModal, setCalendarViewModal] = useState(false);
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
   let ViewGroupID = localStorage.getItem("ViewGroupID");
@@ -441,8 +450,11 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
           } else if (isAgendaContributor) {
           } else {
             if (
-              record.isQuickMeeting === true &&
-              minutesDifference <= 15
+              // startMeetingButton === true
+              (record.isQuickMeeting === true && minutesDifference < 4) ||
+              (record.isQuickMeeting === true &&
+                record.pK_MDID === startMeetingData.meetingID &&
+                startMeetingData.showButton)
               // &&
               // minutesDifference > 0
             ) {
@@ -482,11 +494,6 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                 className={styles["joining-Meeting"]}
                 onClick={() => {
                   handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
-                  // setIsOrganisers(isOrganiser);
-                  // setEdiorRole({
-                  //   status: record.status,
-                  //   role: "Participant",
-                  // });
                 }}
               />
             );
@@ -497,11 +504,6 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                 className={styles["joining-Meeting"]}
                 onClick={() => {
                   handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
-                  // setIsOrganisers(isOrganiser);
-                  // setEdiorRole({
-                  //   status: record.status,
-                  //   role: "Agenda Contributor",
-                  // });
                 }}
               />
             );
@@ -512,11 +514,6 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                 className={styles["joining-Meeting"]}
                 onClick={() => {
                   handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
-                  // setIsOrganisers(isOrganiser);
-                  // setEdiorRole({
-                  //   status: record.status,
-                  //   role: "Organizer",
-                  // });
                 }}
               />
             );
@@ -587,6 +584,39 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       },
     },
   ];
+  useEffect(() => {
+    if (
+      meetingStatusNotConductedMqttData !== null &&
+      meetingStatusNotConductedMqttData !== undefined &&
+      meetingStatusNotConductedMqttData.length !== 0
+    ) {
+      let meetingDetailsMqtt = meetingStatusNotConductedMqttData.meetingDetails;
+      const updatedRows = rows.map((row) => {
+        if (row.pK_MDID === meetingDetailsMqtt.pK_MDID) {
+          return {
+            ...row,
+            status: String(meetingDetailsMqtt.statusID),
+          };
+        }
+        return row;
+      });
+      setRow(updatedRows);
+      if (meetingDetailsMqtt.statusID === 1) {
+        setStartMeetingData({
+          ...startMeetingData,
+          meetingID: meetingDetailsMqtt.pK_MDID,
+          status: true,
+        });
+      } else {
+        setStartMeetingData({
+          ...startMeetingData,
+          meetingID: null,
+          status: false,
+        });
+      }
+    }
+    dispatch(meetingNotConductedMQTT(null));
+  }, [meetingStatusNotConductedMqttData, rows]);
 
   const handelCreateMeeting = () => {
     setCreateMeetingModal(true);
