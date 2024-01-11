@@ -302,6 +302,9 @@ const MeetingDetails = ({
               "Selected-start-time-should-not-be-less-than-the-previous-endTime"
             ),
           });
+          updatedRows[index].startDate = getStartTime?.formattedTime;
+          updatedRows[index].startTime = getStartTime?.newFormatTime;
+          setRows(updatedRows);
           return;
         } else {
           if (
@@ -314,6 +317,9 @@ const MeetingDetails = ({
                 "Selected-start-time-should-not-be-greater-than-the-endTime"
               ),
             });
+            updatedRows[index].startDate = formattedTime;
+            updatedRows[index].startTime = newDate;
+            setRows(updatedRows);
             return;
           } else {
             updatedRows[index].startDate = formattedTime;
@@ -332,6 +338,9 @@ const MeetingDetails = ({
               "Selected-start-time-should-not-be-greater-than-the-endTime"
             ),
           });
+          updatedRows[index].startDate = formattedTime;
+          updatedRows[index].startTime = newDate;
+          setRows(updatedRows);
           return;
         } else {
           updatedRows[index].startDate = formattedTime;
@@ -342,6 +351,8 @@ const MeetingDetails = ({
     } else {
     }
   };
+  // startDate: getStartTime?.formattedTime,
+  //       startTime: getStartTime?.newFormatTime,
 
   const handleEndDateChange = (index, date) => {
     let newDate = new Date(date);
@@ -367,6 +378,8 @@ const MeetingDetails = ({
               "Selected-end-time-should-not-be-less-than-the-previous-one"
             ),
           });
+          updatedRows[index].endDate = formattedTime;
+          updatedRows[index].endTime = newDate;
           return;
         } else {
           updatedRows[index].endDate = formattedTime;
@@ -379,6 +392,8 @@ const MeetingDetails = ({
             flag: true,
             message: t("Selected-end-time-should-not-be-less-than-start-time"),
           });
+          updatedRows[index].endDate = formattedTime;
+          updatedRows[index].endTime = newDate;
           return;
         } else {
           updatedRows[index].endDate = formattedTime;
@@ -390,7 +405,8 @@ const MeetingDetails = ({
     } else {
     }
   };
-
+  // endDate: getEndTime?.formattedTime,
+  // endTime: getEndTime?.newFormatTime,
   //Onchange Function For DatePicker inAdd datess First
   const changeDateStartHandler = (date, index) => {
     try {
@@ -1144,8 +1160,8 @@ const MeetingDetails = ({
           meetingDetails.RecurringOptions.value &&
         MeetingData.isVideo === meetingDetails.IsVideoCall
       ) {
-        // setmeetingDetails(false);
-        // setorganizers(true);
+        setmeetingDetails(false);
+        setorganizers(true);
       } else {
         dispatch(ShowNextConfirmationModal(true));
       }

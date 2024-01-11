@@ -1,3 +1,4 @@
+import moment from "moment";
 import { DateObject } from "react-multi-date-picker";
 
 export const timeFormatforResolution = () => {
@@ -113,4 +114,53 @@ export const incrementDateforPropsedMeeting = (date) => {
     let dateFormat = `${year}${month}${day}`;
     return { DateGMT: newDate, dateFormat };
   }
+  return "";
+};
+
+export const dateforView = (date, daycount = 1) => {
+  if (date instanceof Date && !isNaN(date)) {
+    let newDate = new Date();
+    newDate.setDate(date.getDate() + daycount);
+    // let DateValforSend = moment(newDate).format("YYYY-MM-DD");
+    let DateValforView = moment(newDate).format("DD/MM/YYYY");
+    // let timeValforSend = moment(newDate).format("HH:SS");
+    // let timeValuforView = newDate;
+    return DateValforView;
+  }
+  return "";
+};
+
+export const dateforSend = (date, daycount = 1) => {
+  if (date instanceof Date && !isNaN(date)) {
+    let newDate = new Date();
+    newDate.setDate(date.getDate() + daycount);
+    let DateValforSend = moment(newDate).format("YYYY-MM-DD");
+
+    return DateValforSend;
+  }
+
+  return "";
+};
+
+export const timeforView = (date) => {
+  if (date instanceof Date && !isNaN(date)) {
+    let newDate = new Date();
+    // newDate.setDate(date.getDate() + daycount);
+
+    let timeValuforView = newDate;
+    return timeValuforView;
+  }
+  return "";
+};
+
+export const timeforSend = (date) => {
+  if (date instanceof Date && !isNaN(date)) {
+    let newDate = new Date();
+    // newDate.setDate(date.getDate() + daycount);
+
+    let timeValforSend = moment(newDate).format("HH:SS");
+
+    return timeValforSend;
+  }
+  return "";
 };

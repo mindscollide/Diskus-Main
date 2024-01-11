@@ -141,16 +141,18 @@ const Polls = ({
 
         let newPollsArray = [];
         pollsData.forEach((data, index) => {
-          console.log(data, "datadatadatadata");
           newPollsArray.push(data);
         });
-        console.log(newPollsArray, "newPollsArraynewPollsArray");
+
         setPollsRows(newPollsArray);
       }
     } catch {}
   }, [NewMeetingreducer.getPollsMeetingID]);
   const handleClickTitle = (record) => {
-    if (record.pollStatus.pollStatusId === 1) {
+    if (
+      Number(record.pollStatus.pollStatusId) === 1 ||
+      Number(record.pollStatus.pollStatusId) === 3
+    ) {
       let data = {
         PollID: record.pollID,
         UserID: parseInt(userID),
@@ -186,7 +188,7 @@ const Polls = ({
       );
     }
   };
-  console.log(pollsRows, "pollsRowspollsRowspollsRows");
+
   const voteCastModal = (record) => {
     let data = {
       PollID: record.pollID,
@@ -252,7 +254,6 @@ const Polls = ({
       onFilter: (value, record) =>
         record.pollStatus.status.indexOf(value) === 0,
       render: (text, record) => {
-        console.log(record, "recordrecord");
         if (record.pollStatus?.pollStatusId === 2) {
           return <span className="text-success">{t("Published")}</span>;
         } else if (record.pollStatus?.pollStatusId === 1) {
@@ -302,8 +303,6 @@ const Polls = ({
       dataIndex: "Vote",
       width: "70px",
       render: (text, record) => {
-        console.log("votevotevotevote", record);
-        console.log("votevotevotevote", record.isVoter);
         if (
           Number(editorRole.status) === 10 &&
           (editorRole.role === "Organizer" ||

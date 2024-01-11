@@ -16,6 +16,17 @@ input[type="checkbox"][disabled] + span:after,
   padding: 0;
 }
 
+.ant-checkbox-disabled .ant-checkbox-inner {
+  background: #d3d3d3;
+  /* filter: grayscale(0.5) !important; */
+  background-color: #d3d3d3 !important;
+  border: none !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
 body[dir="rtl"] .ant-checkbox-checked .ant-checkbox-inner {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
   border: none !important;
