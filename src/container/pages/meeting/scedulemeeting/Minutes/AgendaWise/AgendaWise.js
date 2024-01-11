@@ -569,7 +569,6 @@ const AgendaWise = ({
   };
 
   const handleResetBtnFunc = () => {
-    console.log(addAgendaWiseFields, "addNoteFieldsaddNoteFieldsaddNoteFields");
     setAgendaWiseFields({
       ...addAgendaWiseFields,
       Description: {
@@ -589,7 +588,6 @@ const AgendaWise = ({
 
   //handle Edit functionality
   const handleEditFunc = async (data) => {
-    console.log(data, "handleEditFunchandleEditFunc");
     setupdateData({
       MinutesID: data.minuteID,
     });
@@ -599,12 +597,10 @@ const AgendaWise = ({
     await dispatch(
       AgendaWiseRetriveDocumentsMeetingMinutesApiFunc(navigate, Data, t)
     );
-    console.log(data, "setAddNoteFieldssetAddNoteFields");
     if (data.minutesDetails !== undefined && data.minutesDetails !== null) {
       let findOptionValue = agendaOptions.filter(
         (agendaOption, index) => agendaOption.label === data.agendaTitle
       );
-      console.log(data.minutesDetails, "setAddNoteFieldssetAddNoteFields");
       setAgendaWiseFields({
         Description: {
           value: data.minutesDetails,
@@ -637,11 +633,6 @@ const AgendaWise = ({
         NewMeetingreducer.RetriveAgendaWiseDocuments !== undefined &&
         NewMeetingreducer.RetriveAgendaWiseDocuments.data.length > 0
       ) {
-        console.log(
-          NewMeetingreducer.RetriveAgendaWiseDocuments,
-          "RetriveAgendaWiseDocuments"
-        );
-
         let files = [];
         let prevData = [];
         NewMeetingreducer.RetriveAgendaWiseDocuments.data.map((data, index) => {
@@ -727,7 +718,6 @@ const AgendaWise = ({
   };
 
   const handleRemovingTheMinutesAgendaWise = (AgendaWiseData) => {
-    console.log(AgendaWiseData, "AgendaWiseDataAgendaWiseData");
     let minutesID = 0;
     AgendaWiseData.items.map((id, index) => {
       minutesID = Number(id.minuteID);
@@ -768,21 +758,14 @@ const AgendaWise = ({
 
   //Handling of the Response Messege
   useEffect(() => {
-    console.log(
-      "ResponseMessageResponseMessage",
-      NewMeetingreducer.ResponseMessage
-    );
     if (
       NewMeetingreducer.ResponseMessage !== "" &&
       NewMeetingreducer.ResponseMessage !== t("No-record-found") &&
       NewMeetingreducer.ResponseMessage !== t("No-records-found") &&
       NewMeetingreducer.ResponseMessage !== t("Record-found") &&
-      NewMeetingreducer.ResponseMessage !== t("List-updated-successfully")
+      NewMeetingreducer.ResponseMessage !== t("List-updated-successfully") &&
+      NewMeetingreducer.ResponseMessage !== t("No-data-available")
     ) {
-      console.log(
-        "ResponseMessageResponseMessage",
-        NewMeetingreducer.ResponseMessage
-      );
       setOpen({
         ...open,
         flag: true,
@@ -802,7 +785,6 @@ const AgendaWise = ({
   }, [NewMeetingreducer.ResponseMessage]);
 
   const toggleAcordion = (agendaID) => {
-    console.log(agendaID, "notesIDnotesIDnotesID");
     // setExpanded((prev) => (prev === notesID ? true : false));
     if (accordianExpand === agendaID) {
       setAccordianExpand(false);
