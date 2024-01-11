@@ -125,21 +125,21 @@ const ScheduleNewResolution = () => {
     },
   ]);
   const [circulationDateTime, setCirculationDateTime] = useState({
-    date: dateforSend(new Date(), 0),
-    time: timeforView(new Date()),
-    dateValue: dateforView(new Date(), 0),
-    timeCirculationforView: new Date(),
-  });
-  const [votingDateTime, setVotingDateTime] = useState({
     date: dateforSend(new Date(), 1),
     time: timeforView(new Date()),
     dateValue: dateforView(new Date(), 1),
-    timeVotingforView: new Date(),
+    timeCirculationforView: new Date(),
   });
-  const [decisionDateTime, setDecisionDateTime] = useState({
+  const [votingDateTime, setVotingDateTime] = useState({
     date: dateforSend(new Date(), 2),
     time: timeforView(new Date()),
     dateValue: dateforView(new Date(), 2),
+    timeVotingforView: new Date(),
+  });
+  const [decisionDateTime, setDecisionDateTime] = useState({
+    date: dateforSend(new Date(), 3),
+    time: timeforView(new Date()),
+    dateValue: dateforView(new Date(), 3),
     timeDecisionforView: new Date(),
   });
   // console.log(circulationDateTime, "circulationDateTimecirculationDateTime");
