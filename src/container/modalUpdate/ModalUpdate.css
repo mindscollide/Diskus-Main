@@ -708,3 +708,12 @@ body[dir="rtl"] .isMinutes-Update-btn {
   font-family: "MontserratMedium-500";
   font-size: 12px !important;
 }
+.deleteAgendaBtn {
+  background-color: #f16b6b !important;
+  width: 80px !important;
+  height: 32px !important;
+  border-radius: 4px !important;
+  color: #fff !important;
+  font-size: 14px !important;
+  font-family: "MontserratSemiBold-600";
+}

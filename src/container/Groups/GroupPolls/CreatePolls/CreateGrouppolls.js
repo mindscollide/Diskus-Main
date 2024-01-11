@@ -404,6 +404,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
                       labelClass={"d-none"}
                       name={"TitlePolls"}
                       maxLength={490}
+                      applyClass={"PollingCreateModal"}
                       value={pollsData.Title}
                       change={HandleChange}
                     />

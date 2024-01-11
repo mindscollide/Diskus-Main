@@ -181,7 +181,7 @@ const ViewVotesScreen = ({ setviewVotes }) => {
           <Row className="mt-4">
             <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
               <Button
-                text={"Cancel"}
+                text={t("Cancel")}
                 className={styles["Cacnel_styles_button_view_Votes_screen"]}
                 onClick={handleViewVotesScreen}
               />

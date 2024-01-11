@@ -59,6 +59,13 @@ import "react-datepicker/dist/react-datepicker.css";
 import TextFieldTime from "../input_field_time/Input_field";
 import { validateInput } from "../../../commen/functions/regex";
 import InputIcon from "react-multi-date-picker/components/input_icon";
+import {
+  dateTimeforResolution,
+  dateforSend,
+  dateforView,
+  timeforSend,
+  timeforView,
+} from "../../../commen/functions/time_formatter";
 
 const ScheduleNewResolution = () => {
   const { Dragger } = Upload;
@@ -68,7 +75,6 @@ const ScheduleNewResolution = () => {
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const { ResolutionReducer, assignees } = useSelector((state) => state);
-  const [sendUpdate, setSendUpdate] = useState(false);
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
   const [isVoter, setVoter] = useState(true);
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -92,7 +98,6 @@ const ScheduleNewResolution = () => {
   const [VoterID, setVoterID] = useState(0);
   const [isVoterModalRemove, setVoterModalRemove] = useState(false);
   const [isNonVoterModalRemove, setNonVoterModalRemove] = useState(false);
-  const [dateVal, setDateVal] = useState(new Date());
   const [reminderData, setReminderData] = useState([
     {
       label: "10 minutes before",
@@ -120,27 +125,28 @@ const ScheduleNewResolution = () => {
     },
   ]);
   const [circulationDateTime, setCirculationDateTime] = useState({
-    date: "",
-    time: new Date(),
-    dateValue: "",
-    timeCirculationforView: "",
+    date: dateforSend(new Date(), 0),
+    time: timeforView(new Date()),
+    dateValue: dateforView(new Date(), 0),
+    timeCirculationforView: new Date(),
   });
   const [votingDateTime, setVotingDateTime] = useState({
-    dateValue: "",
-    date: "",
-    time: new Date(),
-    timeVotingforView: "",
+    date: dateforSend(new Date(), 1),
+    time: timeforView(new Date()),
+    dateValue: dateforView(new Date(), 1),
+    timeVotingforView: new Date(),
   });
   const [decisionDateTime, setDecisionDateTime] = useState({
-    date: "",
-    time: new Date(),
-    dateValue: "",
-    timeDecisionforView: "",
+    date: dateforSend(new Date(), 2),
+    time: timeforView(new Date()),
+    dateValue: dateforView(new Date(), 2),
+    timeDecisionforView: new Date(),
   });
-
+  // console.log(circulationDateTime, "circulationDateTimecirculationDateTime");
+  // const datetimevalues = dateTimeforResolution(new Date(), 1);
+  // console.log(datetimevalues, "datetimevaluesdatetimevalues");
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
-  const [taskAssignedName, setTaskAssignedName] = useState("");
   const [emailValue, setEmailValue] = useState("");
   const [isNonVoter, setNonVoter] = useState(false);
   const [resolutioncancel, setResolutioncancel] = useState(false);
@@ -165,9 +171,7 @@ const ScheduleNewResolution = () => {
     IsResolutionPublic: false,
   });
   const currentDate = new Date();
-  const currentHours = currentDate.getHours().toString().padStart(2, "0");
-  const currentMinutes = currentDate.getMinutes().toString().padStart(2, "0");
-  const getcurrentTime = `${currentHours}:${currentMinutes}`;
+
   useEffect(() => {
     if (currentLanguage !== null && currentLanguage !== undefined) {
       if (currentLanguage === "en") {
@@ -207,7 +211,6 @@ const ScheduleNewResolution = () => {
     setNonVoter(false);
     setTaskAssignedToInput("");
     setTaskAssignedTo(0);
-    setTaskAssignedName("");
     setEmailValue("");
   };
   const ShowNonVoters = () => {
@@ -215,7 +218,6 @@ const ScheduleNewResolution = () => {
     setNonVoter(true);
     setTaskAssignedToInput("");
     setTaskAssignedTo(0);
-    setTaskAssignedName("");
     setEmailValue("");
   };
 
@@ -272,7 +274,6 @@ const ScheduleNewResolution = () => {
     setOnclickFlag(true);
     setTaskAssignedToInput(name);
     setTaskAssignedTo(id);
-    setTaskAssignedName(name);
     if (meetingAttendeesList.length > 0) {
       let findAttendeeEmail = meetingAttendeesList.find(
         (data, index) => data.pK_UID === id
@@ -287,7 +288,6 @@ const ScheduleNewResolution = () => {
       setEmailValue("");
       setTaskAssignedToInput("");
       setTaskAssignedTo(0);
-      setTaskAssignedName("");
     } else if (e.target.value !== "") {
       setOnclickFlag(false);
       setTaskAssignedToInput(e.target.value.trimStart());
@@ -394,7 +394,6 @@ const ScheduleNewResolution = () => {
 
     setTaskAssignedToInput("");
     setTaskAssignedTo(0);
-    setTaskAssignedName("");
     setEmailValue("");
   };
 
@@ -439,7 +438,6 @@ const ScheduleNewResolution = () => {
 
     setTaskAssignedToInput("");
     setTaskAssignedTo(0);
-    setTaskAssignedName("");
     setEmailValue("");
   };
 

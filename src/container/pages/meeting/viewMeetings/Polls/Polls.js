@@ -112,7 +112,10 @@ const Polls = ({
   };
 
   const handleClickTitle = (record) => {
-    if (record.pollStatus.pollStatusId === 1) {
+    if (
+      Number(record.pollStatus.pollStatusId) === 1 ||
+      Number(record.pollStatus.pollStatusId) === 3
+    ) {
       let data = {
         PollID: record.pollID,
         UserID: parseInt(userID),
