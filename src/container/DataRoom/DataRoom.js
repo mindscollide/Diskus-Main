@@ -151,15 +151,12 @@ const DataRoom = () => {
   const [sharehoverstyle, setSharehoverstyle] = useState(false);
   const [sharefoldermodal, setSharefoldermodal] = useState(false);
   // const [tasksAttachments, setTasksAttachments] = useState([]);
-  const [deltehoverstyle, setDeltehoverstyle] = useState(false);
   const [sharedwithmebtn, setSharedwithmebtn] = useState(false);
-  const [showcanceldownload, setShowcanceldownload] = useState(false);
   const [showrenamenotification, setShowrenamenotification] = useState(false);
   const [showrenamemodal, setShowreanmemodal] = useState(false);
   const [showrenameFile, setShowRenameFile] = useState(false);
   const [requestingAccess, setRequestingAccess] = useState(false);
   const [fileremoved, setFileremoved] = useState(false);
-  const [uploadCounter, setUploadCounter] = useState(0);
   const [deletenotification, setDeletenotification] = useState(false);
   const [isExistFolder, setIsExistFolder] = useState(false);
   const [isFolderExist, setIsFolderExist] = useState(false);
@@ -169,12 +166,10 @@ const DataRoom = () => {
   const [folderId, setFolderId] = useState(0);
   const [fileName, setFileName] = useState("");
   const [folderName, setFolderName] = useState("");
-  const [filterVal, setFilterVal] = useState("");
   const navigate = useNavigate();
   const [filterValue, setFilterValue] = useState(0);
   const [getAllData, setGetAllData] = useState([]);
   const currentView = JSON.parse(localStorage.getItem("setTableView"));
-  const [cancelToken, setCancelToken] = useState(axios.CancelToken.source());
 
   const [currentSort, setCurrentSort] = useState("descend"); // Initial sort order
   const [currentFilter, setCurrentFilter] = useState(t("Last-modified"));
@@ -783,10 +778,6 @@ const DataRoom = () => {
     setFilteredInfo(filters);
     setSortedInfo(sorter);
   };
-  const fetchDataWithSorting = async (sortOrder) => {
-    // Call your API with the selected sort order and current filter value
-    // Update the data state with the response data
-  };
 
   const MyRecentTab = [
     {
@@ -799,6 +790,7 @@ const DataRoom = () => {
       sortDirections: ["ascend", "descend"],
       sortOrder: sortedInfo.columnKey === "name" && sortedInfo.order,
       render: (text, data) => {
+        console.log(data, "datadatadatadata");
         let ext = data.name.split(".").pop();
         const pdfData = {
           taskId: data.id,
@@ -1462,6 +1454,8 @@ const DataRoom = () => {
       sortDirections: ["ascend", "descend"],
       sortOrder: sortedInfo.columnKey === "name" && sortedInfo.order,
       render: (text, data) => {
+        console.log(data, "datadatadatadata");
+
         let ext = data.name.split(".").pop();
         const pdfData = {
           taskId: data.id,
@@ -2094,6 +2088,8 @@ const DataRoom = () => {
       key: "name",
       width: "250px",
       render: (text, record) => {
+        console.log(record, "datadatadatadata");
+
         let ext = record.name.split(".").pop();
         const pdfData = {
           taskId: record.id,

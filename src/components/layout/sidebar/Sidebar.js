@@ -567,7 +567,10 @@ const Sidebar = () => {
                   }
                   onClick={handleMeetingSidebarClick}
                 >
-                  <div className="d-flex flex-column justify-content-center align-items-center">
+                  <div
+                    className="d-flex flex-column justify-content-center align-items-center"
+                    draggable="false"
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="37"
@@ -609,7 +612,10 @@ const Sidebar = () => {
                       : "m-0 p-0 iconSidebar"
                   }
                 >
-                  <div className="d-flex align-items-center flex-column">
+                  <div
+                    className="d-flex align-items-center flex-column"
+                    draggable="false"
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="30.63"
@@ -662,7 +668,10 @@ const Sidebar = () => {
                       : "m-0 p-0 iconSidebar"
                   }
                 >
-                  <div className="d-flex align-items-center flex-column">
+                  <div
+                    className="d-flex align-items-center flex-column"
+                    draggable="false"
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="30.628"
@@ -716,7 +725,10 @@ const Sidebar = () => {
                       : "m-0 p-0 iconSidebar"
                   }
                 >
-                  <div className="d-flex flex-column noteIcon">
+                  <div
+                    className="d-flex flex-column noteIcon"
+                    draggable="false"
+                  >
                     <svg
                       id="Group_2034"
                       data-name="Group 2034"
@@ -820,7 +832,7 @@ const Sidebar = () => {
                   ref={sidebarshow}
                   onClick={handleMoreOptions}
                 >
-                  <div className="d-flex flex-column">
+                  <div className="d-flex flex-column" draggable="false">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="30.718"

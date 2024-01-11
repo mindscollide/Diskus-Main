@@ -91,7 +91,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   const [endMeetingStatusForMinutes, setEndMeetingStatusForMinutes] =
     useState(false);
   const [isCancelMeetingModal, setCancelMeetingModal] = useState(false);
-  const [externalMeetingAttendees, setExternalMeetingAttendees] = useState([]);
   const [editRecordFlag, seteditRecordFlag] = useState(false);
   const [editRecordIndex, seteditRecordIndex] = useState(null);
   const [closeConfirmationModal, setCloseConfirmationModal] = useState(false);
@@ -150,12 +149,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   const [reminderValue, setReminderValue] = useState("");
   const [reminder, setReminder] = useState("");
 
-  //for attendees
-  const [isValid, setIsValid] = useState({
-    selectedAttendeesName: "",
-    participantRoleName: 0,
-  });
-
   // Minutes of the meeting
   const [recordsMinutesOfTheMeeting, setRecordMinutesOfTheMeeting] = useState({
     PK_MOMID: 0,
@@ -199,12 +192,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
-  const [valueDate, setValueDate] = useState("");
   const [selectedTime, setSelectedTime] = useState(null);
   const [fileSize, setFileSize] = useState(0);
 
   useEffect(() => {
-    if (currentLanguage != undefined) {
+    if (currentLanguage !== undefined) {
       if (currentLanguage === "en") {
         setCalendarValue(gregorian);
         setLocalValue(gregorian_en);

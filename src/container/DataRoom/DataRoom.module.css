@@ -17,6 +17,7 @@
   font-size: 30px !important;
   font-family: "MontserratSemiBold";
   color: #6172d6;
+  white-space: nowrap;
 }
 
 .Data_room_new_btn {

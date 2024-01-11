@@ -67,6 +67,10 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   const [isDetails, setIsDetails] = useState(true);
   const [isAttendees, setIsAttendees] = useState(false);
   const [isAgenda, setIsAgenda] = useState(false);
+  const [currentStep, setCurrentStep] = useState(1);
+
+  const [closeConfirmationModal, setCloseConfirmationModal] = useState(false);
+
   const [isPublishMeeting, setIsPublishMeeting] = useState(false);
   const [open, setOpen] = useState({
     open: false,
@@ -189,6 +193,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   }
 
   const changeSelectDetails = () => {
+    setCurrentStep(1);
     setIsDetails(true);
     setIsAgenda(false);
     setIsAttendees(false);
@@ -211,11 +216,13 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       setModalField(false);
       setIsDetails(false);
       setIsAgenda(true);
+      setCurrentStep(2);
       setIsAttendees(false);
       setIsPublishMeeting(false);
     } else {
       setModalField(true);
       setIsDetails(true);
+      setCurrentStep(1);
       setIsAgenda(false);
       setIsAttendees(false);
       setIsPublishMeeting(false);
@@ -236,6 +243,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       setIsDetails(false);
       setIsAgenda(false);
       setIsAttendees(true);
+      setCurrentStep(3);
+
       setIsPublishMeeting(false);
     } else if (
       createMeeting.MeetingStartTime === "" ||
@@ -247,6 +256,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     ) {
       setModalField(true);
       setIsDetails(true);
+      setCurrentStep(1);
+
       setIsAgenda(false);
       setIsAttendees(false);
       setIsPublishMeeting(false);
@@ -255,10 +266,14 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       setIsDetails(false);
       setIsAgenda(false);
       setIsAttendees(true);
+      setCurrentStep(3);
+
       setIsPublishMeeting(false);
     } else if (createMeeting.MeetingAgendas.length === 0) {
       setModalField(true);
       setIsAgenda(true);
+      setCurrentStep(2);
+
       setIsAttendees(false);
       setIsDetails(false);
       setIsPublishMeeting(false);
@@ -287,10 +302,14 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       setIsDetails(false);
       setIsAttendees(false);
       setIsAgenda(true);
+      setCurrentStep(2);
+
       setIsPublishMeeting(false);
     } else {
       setModalField(true);
       setIsDetails(true);
+      setCurrentStep(1);
+
       setIsAttendees(false);
       setIsAgenda(false);
       setIsPublishMeeting(false);
@@ -318,8 +337,11 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       setIsPublishMeeting(false);
       setIsAgenda(false);
       setIsAttendees(true);
+      setCurrentStep(3);
     } else {
       setIsAgenda(true);
+      setCurrentStep(2);
+
       setIsAttendees(false);
       setIsPublishMeeting(false);
       setOpen({
@@ -1039,6 +1061,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         setModalField(false);
         setShow(false);
         setIsDetails(true);
+        setCurrentStep(1);
+
         setIsAgenda(false);
         setIsAttendees(false);
         setIsPublishMeeting(false);
@@ -1378,6 +1402,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     };
     setShow(false);
     setIsDetails(true);
+    setCurrentStep(1);
+
     setIsAgenda(false);
     setIsAttendees(false);
     setIsPublishMeeting(false);
@@ -1460,87 +1486,141 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       />
     );
   }
+
+  const onHideHandleModal = () => {
+    setCloseConfirmationModal(true);
+    // setModalField(false);
+    setIsDetails(false);
+    setIsAgenda(false);
+    setIsAttendees(false);
+    // setIsMinutes(false);
+    setIsPublishMeeting(false);
+    // setCancelMeetingModal(false);
+  };
+  const onHideCancelButton = () => {
+    if (currentStep === 1) {
+      setIsDetails(true);
+
+      setIsAgenda(false);
+      setIsAttendees(false);
+      setCloseConfirmationModal(false);
+
+      // setIsMinutes(false);
+    } else if (currentStep === 2) {
+      setIsDetails(false);
+      setIsAgenda(true);
+      setCloseConfirmationModal(false);
+
+      setIsAttendees(false);
+      // setIsMinutes(false);
+    } else if (currentStep === 3) {
+      setIsDetails(false);
+      setCloseConfirmationModal(false);
+
+      setIsAgenda(false);
+      setIsAttendees(true);
+      setCurrentStep(3);
+
+      // setIsMinutes(false);
+    }
+  };
+
+  const handleCloseUpdateMeeting = () => {
+    setShow(false);
+  };
   return (
     <>
       <Container>
         <Modal
           show={show}
-          onHide={() => {
-            setShow(false);
-          }}
+          onHide={onHideHandleModal}
           setShow={setShow}
-          className="modaldialog createModalMeeting"
+          className={
+            closeConfirmationModal === true
+              ? null
+              : "modaldialog createModalMeeting"
+          }
           ButtonTitle={ModalTitle}
-          modalBodyClassName="modalMeetingCreateBody"
-          modalFooterClassName="modalMeetingCreateFooter"
+          modalBodyClassName={
+            closeConfirmationModal === true
+              ? "modalMeetingCreateBody_close_modal"
+              : "modalMeetingCreateBody"
+          }
+          modalFooterClassName={
+            closeConfirmationModal === true
+              ? "d-block"
+              : "modalMeetingCreateFooter"
+          }
           modalHeaderClassName={"modalMeetingCreateHeader"}
           centered
-          size={"md"}
+          size={closeConfirmationModal === true ? null : "md"}
           ModalBody={
             <>
-              <Row>
-                <Col
-                  lg={2}
-                  md={2}
-                  sm={3}
-                  xs={12}
-                  className={
-                    currentLanguage === "ar"
-                      ? "margin-left-10"
-                      : "p-0 margin-left-10"
-                  }
-                >
-                  <Button
+              {closeConfirmationModal === true ? null : (
+                <Row>
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={3}
+                    xs={12}
                     className={
-                      isDetails
-                        ? "btn btn-primary isDetail-Schedule-top-btn"
-                        : "btn btn-outline-primary isDetail-Schedule-top-btn-Outline"
+                      currentLanguage === "ar"
+                        ? "margin-left-10"
+                        : "p-0 margin-left-10"
                     }
-                    variant={"Primary"}
-                    text={t("Details")}
-                    onClick={changeSelectDetails}
-                  />
-                </Col>
-                <Col
-                  lg={2}
-                  md={2}
-                  sm={3}
-                  xs={12}
-                  className="agenda-upper-button"
-                >
-                  <Button
-                    className={
-                      isAgenda
-                        ? "btn btn-primary isAgenda-Schedule-top-btn"
-                        : "btn btn-outline-primary isAgenda-Schedule-top-btn-Outline"
-                    }
-                    variant={"Primary"}
-                    text={t("Agendas")}
-                    onClick={changeSelectAgenda}
-                    datatut="show-agenda"
-                  />
-                </Col>
-                <Col
-                  lg={2}
-                  md={2}
-                  sm={3}
-                  xs={12}
-                  className="attendees-upper-button"
-                >
-                  <Button
-                    className={
-                      isAttendees
-                        ? "btn btn-primary isAttendee-Schedule-top-btn"
-                        : "btn btn-outline-primary isAttendee-Schedule-top-btn-Outline"
-                    }
-                    variant={"Primary"}
-                    text={t("Attendees")}
-                    datatut="show-meeting-attendees"
-                    onClick={changeSelectAttendees}
-                  ></Button>
-                </Col>
-                <Col lg={6} md={6} sm={3} xs={12} className="p-0"></Col>
-              </Row>
+                  >
+                    <Button
+                      className={
+                        isDetails
+                          ? "btn btn-primary isDetail-Schedule-top-btn"
+                          : "btn btn-outline-primary isDetail-Schedule-top-btn-Outline"
+                      }
+                      variant={"Primary"}
+                      text={t("Details")}
+                      onClick={changeSelectDetails}
+                    />
+                  </Col>
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={3}
+                    xs={12}
+                    className="agenda-upper-button"
+                  >
+                    <Button
+                      className={
+                        isAgenda
+                          ? "btn btn-primary isAgenda-Schedule-top-btn"
+                          : "btn btn-outline-primary isAgenda-Schedule-top-btn-Outline"
+                      }
+                      variant={"Primary"}
+                      text={t("Agendas")}
+                      onClick={changeSelectAgenda}
+                      datatut="show-agenda"
+                    />
+                  </Col>
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={3}
+                    xs={12}
+                    className="attendees-upper-button"
+                  >
+                    <Button
+                      className={
+                        isAttendees
+                          ? "btn btn-primary isAttendee-Schedule-top-btn"
+                          : "btn btn-outline-primary isAttendee-Schedule-top-btn-Outline"
+                      }
+                      variant={"Primary"}
+                      text={t("Attendees")}
+                      datatut="show-meeting-attendees"
+                      onClick={changeSelectAttendees}
+                    ></Button>
+                  </Col>
+                  <Col lg={6} md={6} sm={3} xs={12} className="p-0"></Col>
+                </Row>
+              )}
 
               {isDetails ? (
                 <>
@@ -2308,6 +2388,19 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                     </Row>
                   </div>
                 </>
+              ) : closeConfirmationModal ? (
+                <>
+                  <Row>
+                    <Col
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className="Confirmationmodal_body_text_meeting_update"
+                    >
+                      {t("Are-you-sure-note-reset-closed")}
+                    </Col>
+                  </Row>
+                </>
               ) : null}
             </>
           }
@@ -2404,6 +2497,32 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         text={t("Publish")}
                         onClick={handleSubmit}
                         type="submit"
+                      />
+                    </Col>
+                  </Row>
+                </>
+              ) : closeConfirmationModal ? (
+                <>
+                  <Row>
+                    <Col
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className="d-flex justify-content-center gap-3"
+                    >
+                      <Button
+                        onClick={onHideCancelButton}
+                        className={
+                          "Confirmationmodal_cancel_btn_meeting_update_"
+                        }
+                        text={t("Cancel")}
+                      />
+                      <Button
+                        onClick={handleCloseUpdateMeeting}
+                        className={
+                          "Confirmationmodal_close_btn_meeting_update_"
+                        }
+                        text={t("Close")}
                       />
                     </Col>
                   </Row>

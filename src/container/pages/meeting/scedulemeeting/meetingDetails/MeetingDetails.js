@@ -124,7 +124,7 @@ const MeetingDetails = ({
       endTime: getEndTime?.newFormatTime,
     },
   ]);
-
+  console.log(rows, "rowsrowsrowsrows");
   //For Custom language datepicker
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -1036,6 +1036,7 @@ const MeetingDetails = ({
         }
         setRows(newDateTimeData);
         setPublishedFlag(wasPublishedFlag);
+      } else {
       }
     } catch {}
   }, [getAllMeetingDetails, currentMeeting]);
@@ -1048,7 +1049,7 @@ const MeetingDetails = ({
     for (let i = 0; i < meetingsArray1.length; i++) {
       const meeting1 = meetingsArray1[i];
       const meeting2 = meetingsArray2[i];
-
+      console.log({ meeting1, meeting2 }, "meetingDataMeetingData");
       if (
         meeting1.MeetingDate !== meeting2.meetingDate ||
         meeting1.StartTime !== meeting2.startTime ||
@@ -1104,7 +1105,25 @@ const MeetingDetails = ({
       if (meetingDetails.ReminderFrequencyThree.value !== 0) {
         newReminderData.push(meetingDetails.ReminderFrequencyThree.value);
       }
-
+      console.log(
+        MeetingData.meetingTitle === meetingDetails.MeetingTitle,
+        MeetingData.meetingType.pK_MTID === meetingDetails.MeetingType.PK_MTID,
+        MeetingData.location === meetingDetails.Location,
+        MeetingData.description === meetingDetails.Description,
+        MeetingData.isTalkGroup === meetingDetails.groupChat,
+        MeetingData.videoCallURl === meetingDetails.Link,
+        compareMeetings(MeetingData.meetingDates, newArr),
+        comparePKMRID(MeetingData.meetingReminders, newReminderData),
+        MeetingData.notes === meetingDetails.Notes,
+        MeetingData.allowRSVP === meetingDetails.AllowRSPV,
+        MeetingData.notifyAdminOnRSVP === meetingDetails.NotifyMeetingOrganizer,
+        MeetingData.meetingRecurrance.recurranceID ===
+          meetingDetails.RecurringOptions.value,
+        MeetingData.meetingRecurrance.recurranceID ===
+          meetingDetails.RecurringOptions.value,
+        MeetingData.isVideo === meetingDetails.IsVideoCall,
+        "meetingDataMeetingData"
+      );
       if (
         MeetingData.meetingTitle === meetingDetails.MeetingTitle &&
         MeetingData.meetingType.pK_MTID ===
@@ -1125,8 +1144,8 @@ const MeetingDetails = ({
           meetingDetails.RecurringOptions.value &&
         MeetingData.isVideo === meetingDetails.IsVideoCall
       ) {
-        setmeetingDetails(false);
-        setorganizers(true);
+        // setmeetingDetails(false);
+        // setorganizers(true);
       } else {
         dispatch(ShowNextConfirmationModal(true));
       }

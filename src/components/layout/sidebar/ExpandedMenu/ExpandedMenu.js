@@ -72,7 +72,7 @@ const ExpandedMenu = () => {
                 : " m-0 p-0 icon_expand"
             }
           >
-            <div>
+            <div draggable="false">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="33.519"
@@ -393,7 +393,7 @@ const ExpandedMenu = () => {
             }
             onClick={handleCommitteeLinkClick}
           >
-            <div>
+            <div draggable="false">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="44.01"
@@ -452,7 +452,7 @@ const ExpandedMenu = () => {
             }
             onClick={handleResolutionLinkClick}
           >
-            <div>
+            <div draggable="false">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="33.519"
