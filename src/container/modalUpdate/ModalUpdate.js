@@ -91,7 +91,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   const [endMeetingStatusForMinutes, setEndMeetingStatusForMinutes] =
     useState(false);
   const [isCancelMeetingModal, setCancelMeetingModal] = useState(false);
-  const [externalMeetingAttendees, setExternalMeetingAttendees] = useState([]);
   const [editRecordFlag, seteditRecordFlag] = useState(false);
   const [editRecordIndex, seteditRecordIndex] = useState(null);
   const [closeConfirmationModal, setCloseConfirmationModal] = useState(false);
@@ -150,12 +149,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   const [reminderValue, setReminderValue] = useState("");
   const [reminder, setReminder] = useState("");
 
-  //for attendees
-  const [isValid, setIsValid] = useState({
-    selectedAttendeesName: "",
-    participantRoleName: 0,
-  });
-
   // Minutes of the meeting
   const [recordsMinutesOfTheMeeting, setRecordMinutesOfTheMeeting] = useState({
     PK_MOMID: 0,
@@ -194,17 +187,17 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     ExternalMeetingAttendees: [],
     // MinutesOfMeeting: [],
   });
+  console.log(createMeeting, "createMeetingcreateMeetingcreateMeeting");
   const [minutesOfMeeting, setMinutesOfMeeting] = useState([]);
   const [createMeetingTime, setCreateMeetingTime] = useState("");
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
-  const [valueDate, setValueDate] = useState("");
   const [selectedTime, setSelectedTime] = useState(null);
   const [fileSize, setFileSize] = useState(0);
 
   useEffect(() => {
-    if (currentLanguage != undefined) {
+    if (currentLanguage !== undefined) {
       if (currentLanguage === "en") {
         setCalendarValue(gregorian);
         setLocalValue(gregorian_en);
@@ -2049,6 +2042,22 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   const handleCloseUpdateMeeting = () => {
     setEditFlag(false);
   };
+  const handleDeleteAgenda = (data, indexValue) => {
+    let copyMeetingAgenda = [...createMeeting.MeetingAgendas];
+    let findIndexofMeetingAgenda = createMeeting.MeetingAgendas.findIndex(
+      (data, index) => index === indexValue
+    );
+    if (findIndexofMeetingAgenda !== -1) {
+      copyMeetingAgenda.splice(findIndexofMeetingAgenda, 1);
+    }
+    // copyMeetingData
+    setCreateMeeting({
+      ...createMeeting,
+      MeetingAgendas: copyMeetingAgenda,
+    });
+  };
+  console.log(createMeeting, "handleDeleteAgendahandleDeleteAgenda");
+
   return (
     <>
       <Container>
@@ -2398,6 +2407,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                               name={"Title"}
                               value={objMeetingAgenda.Title}
                               applyClass="form-control2"
+                              maxLength={300}
                               type="text"
                               placeholder={t("Agenda-title") + "*"}
                             />
@@ -2420,6 +2430,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                               value={objMeetingAgenda.PresenterName}
                               applyClass="form-control2"
                               type="text"
+                              maxLength={200}
                               placeholder={t("Presenter")}
                             />
                           </Col>
@@ -2633,13 +2644,29 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                                 AccordioonBody={
                                   <>
                                     <Row>
-                                      <Col lg={2} md={2} sm={12} xs={6}>
+                                      <Col
+                                        lg={12}
+                                        md={12}
+                                        sm={12}
+                                        xs={12}
+                                        className="d-flex gap-2"
+                                      >
                                         <Button
                                           disableBtn={endMeetingStatus}
                                           className={"btn editAgendaGridBtn"}
                                           variant={"Primary"}
                                           text={t("Edit")}
                                           onClick={() => editGrid(data, index)}
+                                          datatut="show-agenda"
+                                        />
+                                        <Button
+                                          disableBtn={endMeetingStatus}
+                                          className={"btn deleteAgendaBtn"}
+                                          variant={"Primary"}
+                                          text={t("Delete")}
+                                          onClick={() =>
+                                            handleDeleteAgenda(data, index)
+                                          }
                                           datatut="show-agenda"
                                         />
                                       </Col>

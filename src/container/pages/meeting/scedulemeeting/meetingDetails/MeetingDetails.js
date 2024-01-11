@@ -124,7 +124,7 @@ const MeetingDetails = ({
       endTime: getEndTime?.newFormatTime,
     },
   ]);
-
+  console.log(rows, "rowsrowsrowsrows");
   //For Custom language datepicker
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -302,6 +302,9 @@ const MeetingDetails = ({
               "Selected-start-time-should-not-be-less-than-the-previous-endTime"
             ),
           });
+          updatedRows[index].startDate = getStartTime?.formattedTime;
+          updatedRows[index].startTime = getStartTime?.newFormatTime;
+          setRows(updatedRows);
           return;
         } else {
           if (
@@ -314,6 +317,9 @@ const MeetingDetails = ({
                 "Selected-start-time-should-not-be-greater-than-the-endTime"
               ),
             });
+            updatedRows[index].startDate = formattedTime;
+            updatedRows[index].startTime = newDate;
+            setRows(updatedRows);
             return;
           } else {
             updatedRows[index].startDate = formattedTime;
@@ -332,6 +338,9 @@ const MeetingDetails = ({
               "Selected-start-time-should-not-be-greater-than-the-endTime"
             ),
           });
+          updatedRows[index].startDate = formattedTime;
+          updatedRows[index].startTime = newDate;
+          setRows(updatedRows);
           return;
         } else {
           updatedRows[index].startDate = formattedTime;
@@ -342,6 +351,8 @@ const MeetingDetails = ({
     } else {
     }
   };
+  // startDate: getStartTime?.formattedTime,
+  //       startTime: getStartTime?.newFormatTime,
 
   const handleEndDateChange = (index, date) => {
     let newDate = new Date(date);
@@ -367,6 +378,8 @@ const MeetingDetails = ({
               "Selected-end-time-should-not-be-less-than-the-previous-one"
             ),
           });
+          updatedRows[index].endDate = formattedTime;
+          updatedRows[index].endTime = newDate;
           return;
         } else {
           updatedRows[index].endDate = formattedTime;
@@ -379,6 +392,8 @@ const MeetingDetails = ({
             flag: true,
             message: t("Selected-end-time-should-not-be-less-than-start-time"),
           });
+          updatedRows[index].endDate = formattedTime;
+          updatedRows[index].endTime = newDate;
           return;
         } else {
           updatedRows[index].endDate = formattedTime;
@@ -390,7 +405,8 @@ const MeetingDetails = ({
     } else {
     }
   };
-
+  // endDate: getEndTime?.formattedTime,
+  // endTime: getEndTime?.newFormatTime,
   //Onchange Function For DatePicker inAdd datess First
   const changeDateStartHandler = (date, index) => {
     try {
@@ -1036,6 +1052,7 @@ const MeetingDetails = ({
         }
         setRows(newDateTimeData);
         setPublishedFlag(wasPublishedFlag);
+      } else {
       }
     } catch {}
   }, [getAllMeetingDetails, currentMeeting]);
@@ -1048,7 +1065,7 @@ const MeetingDetails = ({
     for (let i = 0; i < meetingsArray1.length; i++) {
       const meeting1 = meetingsArray1[i];
       const meeting2 = meetingsArray2[i];
-
+      console.log({ meeting1, meeting2 }, "meetingDataMeetingData");
       if (
         meeting1.MeetingDate !== meeting2.meetingDate ||
         meeting1.StartTime !== meeting2.startTime ||
@@ -1104,7 +1121,25 @@ const MeetingDetails = ({
       if (meetingDetails.ReminderFrequencyThree.value !== 0) {
         newReminderData.push(meetingDetails.ReminderFrequencyThree.value);
       }
-
+      console.log(
+        MeetingData.meetingTitle === meetingDetails.MeetingTitle,
+        MeetingData.meetingType.pK_MTID === meetingDetails.MeetingType.PK_MTID,
+        MeetingData.location === meetingDetails.Location,
+        MeetingData.description === meetingDetails.Description,
+        MeetingData.isTalkGroup === meetingDetails.groupChat,
+        MeetingData.videoCallURl === meetingDetails.Link,
+        compareMeetings(MeetingData.meetingDates, newArr),
+        comparePKMRID(MeetingData.meetingReminders, newReminderData),
+        MeetingData.notes === meetingDetails.Notes,
+        MeetingData.allowRSVP === meetingDetails.AllowRSPV,
+        MeetingData.notifyAdminOnRSVP === meetingDetails.NotifyMeetingOrganizer,
+        MeetingData.meetingRecurrance.recurranceID ===
+          meetingDetails.RecurringOptions.value,
+        MeetingData.meetingRecurrance.recurranceID ===
+          meetingDetails.RecurringOptions.value,
+        MeetingData.isVideo === meetingDetails.IsVideoCall,
+        "meetingDataMeetingData"
+      );
       if (
         MeetingData.meetingTitle === meetingDetails.MeetingTitle &&
         MeetingData.meetingType.pK_MTID ===

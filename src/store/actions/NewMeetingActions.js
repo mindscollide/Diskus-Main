@@ -1726,7 +1726,7 @@ const saveAgendaContributors_fail = (message) => {
   };
 };
 
-const saveAgendaContributors = (navigate, t, data, currentMeeting) => {
+const saveAgendaContributors = (navigate, t, data, currentMeeting, flag) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   let getAllData = {
@@ -1751,7 +1751,9 @@ const saveAgendaContributors = (navigate, t, data, currentMeeting) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(saveAgendaContributors(navigate, t, data, currentMeeting));
+          dispatch(
+            saveAgendaContributors(navigate, t, data, currentMeeting, flag)
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1761,9 +1763,22 @@ const saveAgendaContributors = (navigate, t, data, currentMeeting) => {
                   "Meeting_MeetingServiceManager_SaveAgendaContributors_01".toLowerCase()
                 )
             ) {
-              await dispatch(
-                saveAgendaContributors_success(t("Record-Inserted"))
-              );
+              if (flag === 1) {
+                // Update
+                dispatch(
+                  saveAgendaContributors_success(
+                    t("Agenda-contributor-updated")
+                  )
+                );
+              } else if (flag === 0) {
+                // Added
+                dispatch(
+                  saveAgendaContributors_success(t("Agenda-contributor-added"))
+                );
+              }
+              // await dispatch(
+              //   saveAgendaContributors_success(t("Record-Inserted"))
+              // );
               dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
             } else if (
               response.data.responseResult.responseMessage
@@ -3370,7 +3385,6 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
                     "DataRoom_DataRoomManager_GetAllGeneralMiuteDocumentsForMeeting_03".toLowerCase()
                   )
               ) {
-                console.log("LoadingLoadingLoading");
                 dispatch(
                   showRetriveGeneralMinutesDocsMeetingFailed(
                     t("Something-went-wrong")
@@ -3379,7 +3393,6 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
                 reject("Something went wrong");
               }
             } else {
-              console.log("LoadingLoadingLoading");
               dispatch(
                 showRetriveGeneralMinutesDocsMeetingFailed(
                   t("Something-went-wrong")
@@ -3388,7 +3401,6 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
               reject("Something went wrong");
             }
           } else {
-            console.log("LoadingLoadingLoading");
             dispatch(
               showRetriveGeneralMinutesDocsMeetingFailed(
                 t("Something-went-wrong")
@@ -3398,7 +3410,6 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
           }
         })
         .catch((error) => {
-          console.log("LoadingLoadingLoading");
           dispatch(
             showRetriveGeneralMinutesDocsMeetingFailed(
               t("Something-went-wrong")
@@ -3944,7 +3955,6 @@ const getProposedWiseInit = () => {
 };
 
 const getProposedWiseSuccess = (response, message, loader) => {
-  console.log(response, "getProposedWiseSuccess");
   return {
     type: actions.GET_USER_WISE_PROPOSED_SUCCESS,
     response: response,
@@ -4099,7 +4109,7 @@ const GetAllAgendaWiseMinutesApiFunc = (
               MDID: Number(currentMeeting),
             };
             // Call AllDocumentsForAgendaWiseMinutesApiFunc and wait for it to complete
-            console.log("loader check");
+
             await dispatch(
               AllDocumentsForAgendaWiseMinutesApiFunc(
                 navigate,
@@ -4187,14 +4197,11 @@ const UpdateAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(UpdateAgendaWiseMinutesApiFunc(navigate, Data, t));
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -4242,20 +4249,17 @@ const UpdateAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
               );
             }
           } else {
-            console.log(response, "response");
             dispatch(
               showUpdateAgendaWiseMinutesFailed(t("Something-went-wrong"))
             );
           }
         } else {
-          console.log(response, "response");
           dispatch(
             showUpdateAgendaWiseMinutesFailed(t("Something-went-wrong"))
           );
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(showUpdateAgendaWiseMinutesFailed(t("Something-went-wrong")));
       });
   };
@@ -4307,7 +4311,6 @@ const DeleteAgendaWiseMinutesApiFunc = (
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
@@ -4320,9 +4323,7 @@ const DeleteAgendaWiseMinutesApiFunc = (
             )
           );
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -4382,20 +4383,17 @@ const DeleteAgendaWiseMinutesApiFunc = (
               );
             }
           } else {
-            console.log(response, "response");
             dispatch(
               showDeleteAgendaWiseMinutesFailed(t("Something-went-wrong"))
             );
           }
         } else {
-          console.log(response, "response");
           dispatch(
             showDeleteAgendaWiseMinutesFailed(t("Something-went-wrong"))
           );
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(showDeleteAgendaWiseMinutesFailed(t("Something-went-wrong")));
       });
   };
@@ -4442,16 +4440,13 @@ const DeleteGeneralMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
             DeleteGeneralMinutesApiFunc(navigate, Data, t, currentMeeting)
           );
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -4506,7 +4501,6 @@ const DeleteGeneralMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
               );
             }
           } else {
-            console.log(response, "response");
             dispatch(
               showRetriveGeneralMinutesDocsMeetingFailed(
                 t("Something-went-wrong")
@@ -4514,7 +4508,6 @@ const DeleteGeneralMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
             );
           }
         } else {
-          console.log(response, "response");
           dispatch(
             showRetriveGeneralMinutesDocsMeetingFailed(
               t("Something-went-wrong")
@@ -4523,7 +4516,6 @@ const DeleteGeneralMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(
           showRetriveGeneralMinutesDocsMeetingFailed(t("Something-went-wrong"))
         );
@@ -4571,14 +4563,11 @@ const AddAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(AddAgendaWiseMinutesApiFunc(navigate, Data, t));
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -4620,16 +4609,13 @@ const AddAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
               );
             }
           } else {
-            console.log(response, "response");
             dispatch(showAgendaWiseAddMinutesFailed(t("Something-went-wrong")));
           }
         } else {
-          console.log(response, "response");
           dispatch(showAgendaWiseAddMinutesFailed(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(showAgendaWiseAddMinutesFailed(t("Something-went-wrong")));
       });
   };
@@ -4676,16 +4662,12 @@ const SaveAgendaWiseDocumentsApiFunc = (navigate, Data, t, id) => {
         },
       });
 
-      console.log(response, "response");
-
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
         // Assuming RefreshToken is synchronous; otherwise, handle it accordingly
         await dispatch(SaveAgendaWiseDocumentsApiFunc(navigate, Data, t, id));
       } else if (response.data.responseCode === 200) {
-        console.log(response, "response");
         if (response.data.responseResult.isExecuted === true) {
-          console.log(response, "response");
           if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -4726,19 +4708,16 @@ const SaveAgendaWiseDocumentsApiFunc = (navigate, Data, t, id) => {
             dispatch(showAgendaWiseAddMinutesFailed(""));
           }
         } else {
-          console.log(response, "response");
           dispatch(
             showSavedAgendaWiseDocumentFailed(t("Something-went-wrong"))
           );
           dispatch(showAgendaWiseAddMinutesFailed(""));
         }
       } else {
-        console.log(response, "response");
         dispatch(showSavedAgendaWiseDocumentFailed(t("Something-went-wrong")));
         dispatch(showAgendaWiseAddMinutesFailed(""));
       }
     } catch (error) {
-      console.log(error, "error");
       dispatch(showSavedAgendaWiseDocumentFailed(t("Something-went-wrong")));
       dispatch(showAgendaWiseAddMinutesFailed(""));
     }
@@ -4824,15 +4803,12 @@ const UpdateMinutesGeneralApiFunc = (navigate, Data, t) => {
             dispatch(showUpdateMinutesFailed(t("Something-went-wrong")));
           }
         } else {
-          console.log(response, "response");
           dispatch(showUpdateMinutesFailed(t("Something-went-wrong")));
         }
       } else {
-        console.log(response, "response");
         dispatch(showUpdateMinutesFailed(t("Something-went-wrong")));
       }
     } catch (error) {
-      console.log(error, "error");
       dispatch(showUpdateMinutesFailed(t("Something-went-wrong")));
     }
   };
@@ -5069,7 +5045,6 @@ const saveFilesMeetingagendaWiseMinutesApi = (
 
           dispatch(saveFiles_fail_agenda_wise(t("Something-went-wrong")));
         }
-        console.log(response);
       })
       .catch(() => {
         dispatch(saveFiles_fail_agenda_wise(t("Something-went-wrong")));
@@ -5118,16 +5093,13 @@ const AgendaWiseRetriveDocumentsMeetingMinutesApiFunc = (navigate, Data, t) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
             AgendaWiseRetriveDocumentsMeetingMinutesApiFunc(navigate, Data, t)
           );
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -5163,20 +5135,17 @@ const AgendaWiseRetriveDocumentsMeetingMinutesApiFunc = (navigate, Data, t) => {
               );
             }
           } else {
-            console.log(response, "response");
             dispatch(
               showRetriveAgendaWiseDocumentsFailed(t("Something-went-wrong"))
             );
           }
         } else {
-          console.log(response, "response");
           dispatch(
             showRetriveAgendaWiseDocumentsFailed(t("Something-went-wrong"))
           );
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(
           showRetriveAgendaWiseDocumentsFailed(t("Something-went-wrong"))
         );
@@ -5230,7 +5199,6 @@ const DeleteGeneralMinuteDocumentsApiFunc = (
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
@@ -5243,9 +5211,7 @@ const DeleteGeneralMinuteDocumentsApiFunc = (
             )
           );
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -5295,20 +5261,17 @@ const DeleteGeneralMinuteDocumentsApiFunc = (
               );
             }
           } else {
-            console.log(response, "response");
             dispatch(
               showDeleteGeneralMeetingDocumentsFailed(t("Something-went-wrong"))
             );
           }
         } else {
-          console.log(response, "response");
           dispatch(
             showDeleteGeneralMeetingDocumentsFailed(t("Something-went-wrong"))
           );
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(
           showDeleteGeneralMeetingDocumentsFailed(t("Something-went-wrong"))
         );
@@ -5361,7 +5324,6 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
@@ -5375,9 +5337,7 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
             )
           );
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -5436,7 +5396,6 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
               );
             }
           } else {
-            console.log(response, "response");
             dispatch(
               showDeleteAgendaWiseDocumentFailed(t("Something-went-wrong"))
             );
@@ -5444,7 +5403,6 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
         } else {
           dispatch(getMeetingByCommitteeID_fail(t("Something-went-wrong")));
 
-          console.log(response, "response");
           dispatch(
             showDeleteAgendaWiseDocumentFailed(t("Something-went-wrong"))
           );
@@ -5453,7 +5411,6 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
       .catch((response) => {
         dispatch(getMeetingByCommitteeID_fail(t("Something-went-wrong")));
 
-        console.log(response, "response");
         dispatch(showDeleteAgendaWiseDocumentFailed(t("Something-went-wrong")));
       });
   };
@@ -5515,7 +5472,6 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
       },
     })
       .then(async (response) => {
-        console.log(response, "headers");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
@@ -5531,9 +5487,7 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
             )
           );
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -5554,7 +5508,6 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
               setDataroomMapFolderId(response.data.responseResult.folderID);
               let newarry = [];
               members.map((data, index) => {
-                console.log(data.userID, "newarrynewarry");
                 newarry.push(data.userID);
               });
               let Data = {
@@ -5716,14 +5669,11 @@ const getMeetingbyGroupApi = (navigate, t, Data) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(getMeetingbyGroupApi(navigate, t, Data));
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -5757,16 +5707,13 @@ const getMeetingbyGroupApi = (navigate, t, Data) => {
               dispatch(getMeetingbyGroup_fail(t("Something-went-wrong")));
             }
           } else {
-            console.log(response, "response");
             dispatch(getMeetingbyGroup_fail(t("Something-went-wrong")));
           }
         } else {
-          console.log(response, "response");
           dispatch(getMeetingbyGroup_fail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(getMeetingbyGroup_fail(t("Something-went-wrong")));
       });
   };
@@ -5807,14 +5754,11 @@ const setMeetingByGroupIDApi = (navigate, t, Data) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(setMeetingByGroupIDApi(navigate, t, Data));
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -5862,16 +5806,13 @@ const setMeetingByGroupIDApi = (navigate, t, Data) => {
               dispatch(setMeetingByGroupID_fail(t("Something-went-wrong")));
             }
           } else {
-            console.log(response, "response");
             dispatch(setMeetingByGroupID_fail(t("Something-went-wrong")));
           }
         } else {
-          console.log(response, "response");
           dispatch(setMeetingByGroupID_fail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(setMeetingByGroupID_fail(t("Something-went-wrong")));
       });
   };
@@ -5913,14 +5854,11 @@ const getMeetingByCommitteeIDApi = (navigate, t, Data) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(getMeetingByCommitteeIDApi(navigate, t, Data));
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -5954,18 +5892,13 @@ const getMeetingByCommitteeIDApi = (navigate, t, Data) => {
               dispatch(getMeetingByCommitteeID_fail(t("Something-went-wrong")));
             }
           } else {
-            console.log(response, "response");
           }
         } else {
           dispatch(getMeetingByCommitteeID_fail(t("Something-went-wrong")));
-
-          console.log(response, "response");
         }
       })
       .catch((response) => {
         dispatch(getMeetingByCommitteeID_fail(t("Something-went-wrong")));
-
-        console.log(response, "response");
       });
   };
 };
@@ -6005,14 +5938,11 @@ const setMeetingbyCommitteeIDApi = (navigate, t, Data) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(setMeetingbyCommitteeIDApi(navigate, t, Data));
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -6067,7 +5997,6 @@ const setMeetingbyCommitteeIDApi = (navigate, t, Data) => {
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(setMeetingbyCommitteeID_fail(t("Something-went-wrong")));
       });
   };
@@ -6232,7 +6161,6 @@ const UpdateMeetingUserApiFunc = (
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         try {
           if (response.data.responseCode === 417) {
             await dispatch(RefreshToken(navigate, t));
@@ -6251,9 +6179,7 @@ const UpdateMeetingUserApiFunc = (
               )
             );
           } else if (response.data.responseCode === 200) {
-            console.log(response, "response");
             if (response.data.responseResult.isExecuted === true) {
-              console.log(response, "response");
               if (
                 response.data.responseResult.responseMessage
                   .toLowerCase()
@@ -6308,7 +6234,7 @@ const UpdateMeetingUserApiFunc = (
                     IsParticipantsAddFlow: true,
                     NotificationMessage: "",
                   };
-                  console.log(Data, "SaveparticipantsApi");
+
                   dispatch(
                     SaveparticipantsApi(Data, navigate, t, currentMeeting)
                   );
@@ -6352,19 +6278,14 @@ const UpdateMeetingUserApiFunc = (
                 dispatch(UpdateMeetingUserFailed(t("Something-went-wrong")));
               }
             } else {
-              console.log(response, "response");
               dispatch(UpdateMeetingUserFailed(t("Something-went-wrong")));
             }
           } else {
-            console.log(response, "response");
             dispatch(UpdateMeetingUserFailed(t("Something-went-wrong")));
           }
-        } catch (error) {
-          console.log(error, "checksaveparticipant");
-        }
+        } catch (error) {}
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(UpdateMeetingUserFailed(t("Something-went-wrong")));
       });
   };
@@ -6418,7 +6339,6 @@ const UpdateMeetingUserForAgendaContributor = (
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
@@ -6433,9 +6353,7 @@ const UpdateMeetingUserForAgendaContributor = (
             )
           );
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -6453,7 +6371,6 @@ const UpdateMeetingUserForAgendaContributor = (
                 let newData = [];
                 let copyData = [...rowsData];
                 copyData.forEach((data, index) => {
-                  console.log(data, "rowsDatarowsDatarowsData");
                   newData.push({
                     UserID: data.userID,
                     Title: data.Title,
@@ -6470,14 +6387,18 @@ const UpdateMeetingUserForAgendaContributor = (
                   NotificationMessage: notifyMessageField,
                 };
                 dispatch(
-                  saveAgendaContributors(navigate, t, Data, currentMeeting)
+                  saveAgendaContributors(
+                    navigate,
+                    t,
+                    Data,
+                    currentMeeting,
+                    isEditFlag
+                  )
                 );
               } else {
                 let newData = [];
                 let copyData = [...rowsData];
                 copyData.forEach((data, index) => {
-                  console.log(data, "rowsDatarowsDatarowsData");
-
                   newData.push({
                     UserID: data.userID,
                     Title: data.Title,
@@ -6494,7 +6415,13 @@ const UpdateMeetingUserForAgendaContributor = (
                   NotificationMessage: notifyMessageField,
                 };
                 dispatch(
-                  saveAgendaContributors(navigate, t, Data, currentMeeting)
+                  saveAgendaContributors(
+                    navigate,
+                    t,
+                    Data,
+                    currentMeeting,
+                    isEditFlag
+                  )
                 );
               }
             } else if (
@@ -6511,7 +6438,6 @@ const UpdateMeetingUserForAgendaContributor = (
               );
             }
           } else {
-            console.log(response, "response");
             dispatch(
               UpdateMeetingUserAgendaContributorFailed(
                 t("Something-went-wrong")
@@ -6519,14 +6445,12 @@ const UpdateMeetingUserForAgendaContributor = (
             );
           }
         } else {
-          console.log(response, "response");
           dispatch(
             UpdateMeetingUserAgendaContributorFailed(t("Something-went-wrong"))
           );
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(
           UpdateMeetingUserAgendaContributorFailed(t("Something-went-wrong"))
         );
@@ -6569,7 +6493,6 @@ const UpdateMeetingUserForOrganizers = (
   notificationMessage,
   setIsEdit
 ) => {
-  console.log(notificationMessage, "notificationMessagenotificationMessage");
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
@@ -6586,7 +6509,6 @@ const UpdateMeetingUserForOrganizers = (
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
@@ -6604,9 +6526,7 @@ const UpdateMeetingUserForOrganizers = (
             )
           );
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -6623,7 +6543,6 @@ const UpdateMeetingUserForOrganizers = (
               if (editFlag === 2) {
                 let Data = {
                   MeetingOrganizers: rowsData.map((item) => {
-                    console.log(item, "itemitemitemitem");
                     return {
                       IsPrimaryOrganizer: item.isPrimaryOrganizer,
                       IsOrganizerNotified: item.isOrganizerNotified,
@@ -6635,8 +6554,8 @@ const UpdateMeetingUserForOrganizers = (
                   IsOrganizerAddFlow: false,
                   NotificationMessage: "",
                 };
-                // console.log(Data, "itemitemitemitem");
-                // console.log(notificationMessage, "itemitemitemitem");
+                //
+                //
 
                 dispatch(
                   SaveMeetingOrganizers(navigate, Data, t, currentMeeting)
@@ -6646,7 +6565,6 @@ const UpdateMeetingUserForOrganizers = (
               } else if (editFlag === 1) {
                 let Data = {
                   MeetingOrganizers: rowsData.map((item) => {
-                    console.log(item, "itemitemitemitem");
                     return {
                       IsPrimaryOrganizer: item.isPrimaryOrganizer,
                       IsOrganizerNotified: item.isOrganizerNotified,
@@ -6658,8 +6576,6 @@ const UpdateMeetingUserForOrganizers = (
                   IsOrganizerAddFlow: true,
                   NotificationMessage: notificationMessage,
                 };
-                console.log(Data, "itemitemitemitem");
-                console.log(notificationMessage, "itemitemitemitem");
 
                 dispatch(
                   SaveMeetingOrganizers(navigate, Data, t, currentMeeting)
@@ -6680,14 +6596,12 @@ const UpdateMeetingUserForOrganizers = (
               setIsEdit(true);
             }
           } else {
-            console.log(response, "response");
             dispatch(
               UpdateMeetingUserOrganizersFailed(t("Something-went-wrong"))
             );
             setIsEdit(true);
           }
         } else {
-          console.log(response, "response");
           dispatch(
             UpdateMeetingUserOrganizersFailed(t("Something-went-wrong"))
           );
@@ -6695,7 +6609,6 @@ const UpdateMeetingUserForOrganizers = (
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(UpdateMeetingUserOrganizersFailed(t("Something-went-wrong")));
         setIsEdit(true);
       });
@@ -6751,7 +6664,6 @@ const showAllDocumentsAgendaWiseMinutesInit = () => {
 };
 
 const showAllDocumentsAgendaWiseMinutesSuccess = (response, message) => {
-  console.log(response, "responseresponseresponseresponse");
   return {
     type: actions.GET_ALL_AGENDAWISE_DOCUMENT_SUCCESS,
     response: response,

@@ -31,11 +31,12 @@ const DocumentViewer = () => {
   let name = localStorage.getItem("name");
   // Parse the URL parameters to get the data
   const pdfDataJson = new URLSearchParams(location.search).get("pdfData");
-  console.log(pdfDataJson, "pdfDataJsonpdfDataJsonpdfDataJson");
+
   // Deserialize the JSON string into an object
   const pdfData = JSON.parse(pdfDataJson);
-  console.log(pdfData, "pdfDatapdfDatapdfDatapdfData");
+
   const { taskId, attachmentID, fileName, commingFrom, isPermission } = pdfData;
+
   const [pdfResponceData, setPdfResponceData] = useState({
     xfdfData: "",
     attachmentBlob: "",
@@ -43,7 +44,6 @@ const DocumentViewer = () => {
 
   useEffect(() => {
     if (taskId && attachmentID) {
-      console.log("test", { taskId, attachmentID });
       if (Number(commingFrom) === 1) {
         let data = {
           TaskID: Number(taskId),
@@ -56,7 +56,7 @@ const DocumentViewer = () => {
           NoteID: Number(taskId),
           NoteAttachementID: Number(attachmentID),
         };
-        console.log("test", { commingFrom, notesData });
+
         dispatch(getAnnotationsOfNotesAttachement(navigate, t, notesData));
         // for notes
       } else if (Number(commingFrom) === 3) {
@@ -182,7 +182,7 @@ const DocumentViewer = () => {
                   addAnnotationsOnDataroomAttachement(navigate, t, dataRoomData)
                 );
               }
-              // console.log("exportAnnotationsDocument saved successfully:", blob);
+              //
               // console.log(
               //   "exportAnnotations",
               //   await annotationManager.exportAnnotations({
@@ -193,6 +193,153 @@ const DocumentViewer = () => {
             },
           });
         });
+
+        //======================================== disable header =====================================//
+        // if (isPermission) {
+        try {
+          console.log(isPermission, "isPermissionisPermissionisPermission");
+
+          if (Number(isPermission) === 0) {
+            //  Currently for all
+            instance.UI.disableElements([
+              "thumbRotateClockwise",
+              "toolsOverlay",
+              "toolbarGroup-Shapes",
+              "toolbarGroup-Edit",
+              "toolbarGroup-Insert",
+              "shapeToolGroupButton",
+              "menuButton",
+              "freeHandHighlightToolGroupButton",
+              "underlineToolGroupButton",
+              "freeHandToolGroupButton",
+              "stickyToolGroupButton",
+              "squigglyToolGroupButton",
+              "strikeoutToolGroupButton",
+              "notesPanel",
+              "viewControlsButton",
+              "selectToolButton",
+              "toggleNotesButton",
+              "searchButton",
+              "freeTextToolGroupButton",
+              "crossStampToolButton",
+              "checkStampToolButton",
+              "dotStampToolButton",
+              "rubberStampToolGroupButton",
+              "dateFreeTextToolButton",
+              "eraserToolButton",
+              "panToolButton",
+              "signatureToolGroupButton",
+              "viewControlsOverlay",
+              "contextMenuPopup",
+            ]);
+          } else if (Number(isPermission) === 1) {
+            console.log(isPermission, "isPermissionisPermissionisPermission");
+
+            //  for Viewer
+            instance.UI.disableElements([
+              "thumbRotateClockwise",
+              "toolsOverlay",
+              "toolbarGroup-Shapes",
+              "toolbarGroup-Edit",
+              "toolbarGroup-Insert",
+              "shapeToolGroupButton",
+              "menuButton",
+              "freeHandHighlightToolGroupButton",
+              "underlineToolGroupButton",
+              "freeHandToolGroupButton",
+              "stickyToolGroupButton",
+              "squigglyToolGroupButton",
+              "strikeoutToolGroupButton",
+              "notesPanel",
+              "viewControlsButton",
+              "selectToolButton",
+              "toggleNotesButton",
+              "searchButton",
+              "freeTextToolGroupButton",
+              "crossStampToolButton",
+              "checkStampToolButton",
+              "dotStampToolButton",
+              "rubberStampToolGroupButton",
+              "dateFreeTextToolButton",
+              "eraserToolButton",
+              "panToolButton",
+              "signatureToolGroupButton",
+              "viewControlsOverlay",
+              "contextMenuPopup",
+            ]);
+          } else if (Number(isPermission) === 2) {
+            //  Editor Role
+            instance.UI.disableElements([
+              "thumbRotateClockwise",
+              "toolsOverlay",
+              "toolbarGroup-Shapes",
+              "toolbarGroup-Edit",
+              "toolbarGroup-Insert",
+              "shapeToolGroupButton",
+              "menuButton",
+              "freeHandHighlightToolGroupButton",
+              "underlineToolGroupButton",
+              "freeHandToolGroupButton",
+              "stickyToolGroupButton",
+              "squigglyToolGroupButton",
+              "strikeoutToolGroupButton",
+              "notesPanel",
+              "viewControlsButton",
+              "selectToolButton",
+              "toggleNotesButton",
+              "searchButton",
+              "freeTextToolGroupButton",
+              "crossStampToolButton",
+              "checkStampToolButton",
+              "dotStampToolButton",
+              "rubberStampToolGroupButton",
+              "dateFreeTextToolButton",
+              "eraserToolButton",
+              "panToolButton",
+              "signatureToolGroupButton",
+              "viewControlsOverlay",
+              "contextMenuPopup",
+            ]);
+          } else if (Number(isPermission) === 3) {
+            // Not Ediable
+          }
+        } catch (error) {
+          console.log(error, "errorerrorerrorerrorerror");
+        }
+
+        // }
+        // instance.UI.disableElements([
+        //   "thumbRotateClockwise",
+        //   "toolsOverlay",
+        //   "toolbarGroup-Shapes",
+        //   "toolbarGroup-Edit",
+        //   "toolbarGroup-Insert",
+        //   "shapeToolGroupButton",
+        //   "menuButton",
+        //   "freeHandHighlightToolGroupButton",
+        //   "underlineToolGroupButton",
+        //   "freeHandToolGroupButton",
+        //   "stickyToolGroupButton",
+        //   "squigglyToolGroupButton",
+        //   "strikeoutToolGroupButton",
+        //   "notesPanel",
+        //   "viewControlsButton",
+        //   "selectToolButton",
+        //   "toggleNotesButton",
+        //   "searchButton",
+        //   "freeTextToolGroupButton",
+        //   "crossStampToolButton",
+        //   "checkStampToolButton",
+        //   "dotStampToolButton",
+        //   "rubberStampToolGroupButton",
+        //   "dateFreeTextToolButton",
+        //   "eraserToolButton",
+        //   "panToolButton",
+        //   "signatureToolGroupButton",
+        //   "viewControlsOverlay",
+        //   "contextMenuPopup",
+        // ]);
+        //======================================== disable header =====================================//
 
         documentViewer.addEventListener("documentLoaded", async () => {
           annotManager.setCurrentUser(name);

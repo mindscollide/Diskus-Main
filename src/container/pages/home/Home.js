@@ -1982,10 +1982,10 @@ const Home = () => {
         <ModalToDoList show={showTodo} setShow={setShowTodo} />
       ) : null}
 
-      {(NotesReducer.Loading && getNoteID !== 0) ||
+      {/* {(NotesReducer.Loading && getNoteID !== 0) ||
       (toDoListReducer.Loading && getTodoID !== 0) ? (
         <Loader />
-      ) : null}
+      ) : null} */}
     </>
   );
 };
