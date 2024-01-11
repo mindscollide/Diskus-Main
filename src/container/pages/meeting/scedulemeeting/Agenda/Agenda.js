@@ -1449,7 +1449,9 @@ const Agenda = ({
             </DragDropContext>
             {/* Seperator For Footer */}
             {editorRole.role === "Participant" ||
-            editorRole.role === "Agenda Contributor" ? null : (
+            editorRole.role === "Agenda Contributor" ||
+            editorRole.status === "9" ||
+            editorRole.status === 9 ? null : (
               <Row className="mt-3">
                 <Col lg={12} md={12} sm={12}>
                   <Button
@@ -1489,11 +1491,13 @@ const Agenda = ({
                 sm={12}
                 className="d-flex justify-content-end gap-2"
               >
-                <Button
-                  text={t("Import-previous-agenda")}
-                  className={styles["Agenda_Buttons"]}
-                  onClick={importPreviousAgenda}
-                />
+                {editorRole.status === "9" || editorRole.status === 9 ? null : (
+                  <Button
+                    text={t("Import-previous-agenda")}
+                    className={styles["Agenda_Buttons"]}
+                    onClick={importPreviousAgenda}
+                  />
+                )}
                 <Button
                   text={t("Cancel")}
                   className={styles["Agenda_Buttons"]}
@@ -1515,13 +1519,16 @@ const Agenda = ({
                   onClick={handleNextAgenda}
                 />
 
-                <Button
-                  onClick={() => saveAgendaData(1)}
-                  text={t("Save")}
-                  className={styles["Save_Agenda_btn"]}
-                />
-                {Number(editorRole.status) === 11 ||
-                Number(editorRole.status) === 12 ? (
+                {editorRole.status === "9" || editorRole.status === 9 ? null : (
+                  <Button
+                    onClick={() => saveAgendaData(1)}
+                    text={t("Save")}
+                    className={styles["Save_Agenda_btn"]}
+                  />
+                )}
+                {(Number(editorRole.status) === 11 ||
+                  Number(editorRole.status) === 12) &&
+                (editorRole.status !== "9" || editorRole.status !== 9) ? (
                   <Button
                     disableBtn={Number(currentMeeting) === 0 ? true : false}
                     text={t("Publish")}

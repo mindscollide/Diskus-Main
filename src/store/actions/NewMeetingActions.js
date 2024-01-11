@@ -601,6 +601,21 @@ const SaveMeetingDetialsNewApiFunction = (
                     setDataroomMapFolderId
                   )
                 );
+                let Data = {
+                  MeetingID: Number(response.data.responseResult.meetingID),
+                };
+                await dispatch(
+                  GetAllMeetingDetailsApiFunc(
+                    navigate,
+                    t,
+                    Data,
+                    true,
+                    setCurrentMeetingID,
+                    setSceduleMeeting,
+                    setDataroomMapFolderId,
+                    data.MeetingDetails.MeetingStatusID
+                  )
+                );
               }
             } else if (
               response.data.responseResult.responseMessage

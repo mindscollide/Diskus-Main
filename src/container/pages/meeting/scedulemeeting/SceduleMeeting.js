@@ -288,7 +288,7 @@ const SceduleMeeting = ({
                     />
                     <Button
                       disableBtn={Number(currentMeeting) === 0 ? true : false}
-                      text={t("Agenda")}
+                      text={t("Agenda-builder")}
                       className={
                         agenda === true
                           ? styles["Schedule_meetings_options_active"]
@@ -298,7 +298,7 @@ const SceduleMeeting = ({
                     />
                     <Button
                       disableBtn={Number(currentMeeting) === 0 ? true : false}
-                      text={t("Meeting-material")}
+                      text={t("Agenda-viewer")}
                       className={
                         meetingMaterial === true
                           ? styles["Schedule_meetings_options_active"]
@@ -339,7 +339,10 @@ const SceduleMeeting = ({
                     />
                     <Button
                       disableBtn={
-                        Number(editorRole.status) === 10 ? false : true
+                        Number(editorRole.status) === 10 ||
+                        Number(editorRole.status) === 9
+                          ? false
+                          : true
                       }
                       // disableBtn={
                       //   (Number(editorRole.status) === 1 ||

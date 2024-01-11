@@ -434,7 +434,9 @@ const SubAgendaMappingDragging = ({
                       index={subIndex}
                       isDragDisabled={
                         editorRole.role === "Participant" ||
-                        editorRole.role === "Agenda Contributor"
+                        editorRole.role === "Agenda Contributor" ||
+                        editorRole.status === "9" ||
+                        editorRole.status === 9
                           ? true
                           : false
                       }
@@ -463,7 +465,9 @@ const SubAgendaMappingDragging = ({
                                     sm={11}
                                     className={
                                       parentIslockedCheck ||
-                                      subAgendaData.isLocked
+                                      subAgendaData.isLocked ||
+                                      editorRole.status === "9" ||
+                                      editorRole.status === 9
                                         ? styles["SubajendaBox_Inactive"]
                                         : styles["SubajendaBox"]
                                     }
@@ -538,12 +542,16 @@ const SubAgendaMappingDragging = ({
                                               maxLength={290}
                                               disable={
                                                 parentIslockedCheck ||
-                                                subAgendaData.isLocked
+                                                subAgendaData.isLocked ||
+                                                editorRole.status === "9" ||
+                                                editorRole.status === 9
                                                   ? true
                                                   : editorRole.role ===
                                                       "Participant" ||
                                                     editorRole.role ===
-                                                      "Agenda Contributor"
+                                                      "Agenda Contributor" ||
+                                                    editorRole.status === "9" ||
+                                                    editorRole.status === 9
                                                   ? true
                                                   : false
                                               }
@@ -589,12 +597,16 @@ const SubAgendaMappingDragging = ({
                                               }
                                               isDisabled={
                                                 parentIslockedCheck ||
-                                                subAgendaData.isLocked
+                                                subAgendaData.isLocked ||
+                                                editorRole.status === "9" ||
+                                                editorRole.status === 9
                                                   ? true
                                                   : editorRole.role ===
                                                       "Participant" ||
                                                     editorRole.role ===
-                                                      "Agenda Contributor"
+                                                      "Agenda Contributor" ||
+                                                    editorRole.status === "9" ||
+                                                    editorRole.status === 9
                                                   ? true
                                                   : false
                                               }
@@ -635,12 +647,17 @@ const SubAgendaMappingDragging = ({
                                                   inputClass="inputTImeMeeting"
                                                   disabled={
                                                     parentIslockedCheck ||
-                                                    subAgendaData.isLocked
+                                                    subAgendaData.isLocked ||
+                                                    editorRole.status === "9" ||
+                                                    editorRole.status === 9
                                                       ? true
                                                       : editorRole.role ===
                                                           "Participant" ||
                                                         editorRole.role ===
-                                                          "Agenda Contributor"
+                                                          "Agenda Contributor" ||
+                                                        editorRole.status ===
+                                                          "9" ||
+                                                        editorRole.status === 9
                                                       ? true
                                                       : false
                                                   }
@@ -701,12 +718,17 @@ const SubAgendaMappingDragging = ({
                                                   inputClass="inputTImeMeeting"
                                                   disabled={
                                                     parentIslockedCheck ||
-                                                    subAgendaData.isLocked
+                                                    subAgendaData.isLocked ||
+                                                    editorRole.status === "9" ||
+                                                    editorRole.status === 9
                                                       ? true
                                                       : editorRole.role ===
                                                           "Participant" ||
                                                         editorRole.role ===
-                                                          "Agenda Contributor"
+                                                          "Agenda Contributor" ||
+                                                        editorRole.status ===
+                                                          "9" ||
+                                                        editorRole.status === 9
                                                       ? true
                                                       : false
                                                   }
@@ -732,7 +754,9 @@ const SubAgendaMappingDragging = ({
                                             {editorRole.role ===
                                               "Participant" ||
                                             editorRole.role ===
-                                              "Agenda Contributor" ? null : (
+                                              "Agenda Contributor" ||
+                                            editorRole.status === "9" ||
+                                            editorRole.status === 9 ? null : (
                                               <img
                                                 alt=""
                                                 draggable={false}
@@ -794,12 +818,19 @@ const SubAgendaMappingDragging = ({
                                                     }
                                                     disable={
                                                       parentIslockedCheck ||
-                                                      subAgendaData.isLocked
+                                                      subAgendaData.isLocked ||
+                                                      editorRole.status ===
+                                                        "9" ||
+                                                      editorRole.status === 9
                                                         ? true
                                                         : editorRole.role ===
                                                             "Participant" ||
                                                           editorRole.role ===
-                                                            "Agenda Contributor"
+                                                            "Agenda Contributor" ||
+                                                          editorRole.status ===
+                                                            "9" ||
+                                                          editorRole.status ===
+                                                            9
                                                         ? true
                                                         : false
                                                     }
@@ -844,7 +875,10 @@ const SubAgendaMappingDragging = ({
                                                     }
                                                     disabled={
                                                       parentIslockedCheck ||
-                                                      subAgendaData.isLocked
+                                                      subAgendaData.isLocked ||
+                                                      editorRole.status ===
+                                                        "9" ||
+                                                      editorRole.status === 9
                                                         ? true
                                                         : false
                                                     }
@@ -895,7 +929,10 @@ const SubAgendaMappingDragging = ({
                                                   {editorRole.role ===
                                                     "Participant" ||
                                                   editorRole.role ===
-                                                    "Agenda Contributor" ? null : (
+                                                    "Agenda Contributor" ||
+                                                  editorRole.status === "9" ||
+                                                  editorRole.status ===
+                                                    9 ? null : (
                                                     <>
                                                       {subAgendaData.subAgendaID.includes(
                                                         "A"
@@ -909,7 +946,11 @@ const SubAgendaMappingDragging = ({
                                                             height="24.09px"
                                                             className={`cursor-pointer ${
                                                               parentIslockedCheck ||
-                                                              subAgendaData.isLocked
+                                                              subAgendaData.isLocked ||
+                                                              editorRole.status ===
+                                                                "9" ||
+                                                              editorRole.status ===
+                                                                9
                                                                 ? "disabled"
                                                                 : ""
                                                             }`}
@@ -917,7 +958,11 @@ const SubAgendaMappingDragging = ({
                                                               if (
                                                                 !(
                                                                   parentIslockedCheck ||
-                                                                  subAgendaData.isLocked
+                                                                  subAgendaData.isLocked ||
+                                                                  editorRole.status ===
+                                                                    "9" ||
+                                                                  editorRole.status ===
+                                                                    9
                                                                 )
                                                               ) {
                                                                 openAdvancePermissionModal(
@@ -935,7 +980,11 @@ const SubAgendaMappingDragging = ({
                                                             className="cursor-pointer"
                                                             onClick={() =>
                                                               parentIslockedCheck ||
-                                                              subAgendaData.isLocked
+                                                              subAgendaData.isLocked ||
+                                                              editorRole.status ===
+                                                                "9" ||
+                                                              editorRole.status ===
+                                                                9
                                                                 ? ""
                                                                 : openVoteMOdal(
                                                                     subAgendaData.subAgendaID,
@@ -957,11 +1006,19 @@ const SubAgendaMappingDragging = ({
                                                             width="18.87px"
                                                             height="26.72px"
                                                             className={
-                                                              parentIslockedCheck
+                                                              parentIslockedCheck ||
+                                                              editorRole.status ===
+                                                                "9" ||
+                                                              editorRole.status ===
+                                                                9
                                                                 ? styles[
                                                                     "lockBtn_inActive"
                                                                   ]
-                                                                : subAgendaData.isLocked
+                                                                : subAgendaData.isLocked ||
+                                                                  editorRole.status ===
+                                                                    "9" ||
+                                                                  editorRole.status ===
+                                                                    9
                                                                 ? styles[
                                                                     "lockBtn_inActive_coursor"
                                                                   ]
@@ -971,7 +1028,11 @@ const SubAgendaMappingDragging = ({
                                                             }
                                                             onClick={() => {
                                                               if (
-                                                                parentIslockedCheck
+                                                                parentIslockedCheck ||
+                                                                editorRole.status ===
+                                                                  "9" ||
+                                                                editorRole.status ===
+                                                                  9
                                                               ) {
                                                               } else {
                                                                 lockFunctionActiveSubMenus(
@@ -1025,7 +1086,11 @@ const SubAgendaMappingDragging = ({
                                                               }
                                                             />
                                                             {editorRole.role ===
-                                                            "Participant" ? null : (
+                                                              "Participant" ||
+                                                            editorRole.status ===
+                                                              "9" ||
+                                                            editorRole.status ===
+                                                              9 ? null : (
                                                               <SubDedaultDragger
                                                                 setRows={
                                                                   setRows
@@ -1048,7 +1113,11 @@ const SubAgendaMappingDragging = ({
                                                             )}
                                                           </>
                                                         ) : editorRole.role ===
-                                                          "Participant" ? null : (
+                                                            "Participant" ||
+                                                          editorRole.status ===
+                                                            "9" ||
+                                                          editorRole.status ===
+                                                            9 ? null : (
                                                           <SubDedaultDragger
                                                             setRows={setRows}
                                                             rows={rows}

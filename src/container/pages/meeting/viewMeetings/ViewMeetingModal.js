@@ -300,7 +300,7 @@ const ViewMeetingModal = ({
                     onClick={showParticipants}
                   />
                   <Button
-                    text={t("Agenda")}
+                    text={t("Agenda-builder")}
                     className={
                       agenda === true
                         ? styles["Schedule_meetings_options_active"]
@@ -309,7 +309,7 @@ const ViewMeetingModal = ({
                     onClick={showAgenda}
                   />
                   <Button
-                    text={t("Meeting-material")}
+                    text={t("Agenda-viewer")}
                     className={
                       meetingMaterial === true
                         ? styles["Schedule_meetings_options_active"]
