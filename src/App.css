@@ -2503,12 +2503,12 @@ body[dir="rtl"] button.cameraButton.Enable.btn.btn-primary:focus {
 }
 
 .Update-committee-Checkbox span.ant-checkbox-disabled.ant-checkbox-checked {
-  filter: grayscale(0.5) !important;
-  background-color: #6172d6 !important;
+  /* filter: grayscale(0.5) !important; */
+  background-color: #D3D3D3 !important;
 }
 
 .UpdateCheckbox span.ant-checkbox-disabled.ant-checkbox-checked {
-  filter: grayscale(0.5) !important;
+  /* filter: grayscale(0.5) !important; */
   background-color: #6172d6 !important;
 }
 
