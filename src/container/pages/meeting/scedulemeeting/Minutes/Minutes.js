@@ -172,11 +172,6 @@ const Minutes = ({
         (Object.keys(generalminutesDocumentForMeeting).length > 0 ||
           generalminutesDocumentForMeeting.length > 0)
       ) {
-        console.log(
-          generalMinutes.organizerID,
-          "generalMinutesgeneralMinutesgeneralMinutes"
-        );
-
         const minutesData = generalMinutes.meetingMinutes;
         const documentsData = generalminutesDocumentForMeeting.data;
         setOrganizerID(generalMinutes.organizerID);
@@ -351,7 +346,6 @@ const Minutes = ({
 
   //Edit Button Function
   const handleEditFunc = async (data) => {
-    console.log(data, "handleEditFunchandleEditFunc");
     setupdateData(data);
     if (data.minutesDetails !== "") {
       setAddNoteFields({
@@ -361,12 +355,6 @@ const Minutes = ({
           errorStatus: false,
         },
       });
-
-      console.log(data.minutesDetails, "addNoteFieldsaddNoteFields");
-      console.log(
-        addNoteFields.Description.value,
-        "addNoteFieldsaddNoteFields"
-      );
 
       setisEdit(true);
     } else {
@@ -527,7 +515,6 @@ const Minutes = ({
 
   //UPloading the Documents
   const handleRemoveFile = (data) => {
-    // console.log(data, "handleRemoveFilehandleRemoveFilehandleRemoveFile");
     setFileForSend((prevFiles) =>
       prevFiles.filter(
         (fileSend) => fileSend.name !== data.DisplayAttachmentName
@@ -770,30 +757,31 @@ const Minutes = ({
 
     // dispatch(showPreviousConfirmationModal(true));
   };
-
+  console.log(ResponseMessage, "ResponseMessageResponseMessage");
   useEffect(() => {
-    console.log("ResponseMessageResponseMessage", ResponseMessage);
     if (
-      ResponseMessage !== "" &&
+      ResponseMessage.trim() !== "" &&
       ResponseMessage !== t("No-record-found") &&
       ResponseMessage !== t("No-records-found") &&
       ResponseMessage !== t("Record-found") &&
-      ResponseMessage !== t("List-updated-successfully")
+      ResponseMessage !== t("No-record-found") &&
+      ResponseMessage !== t("List-updated-successfully") &&
+      ResponseMessage !== t("No-data-available")
     ) {
-      console.log("ResponseMessageResponseMessage", ResponseMessage);
-      setOpen({
-        ...open,
-        flag: true,
-        message: ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          flag: false,
-          message: "",
-        });
-        dispatch(CleareMessegeNewMeeting());
-      }, 3000);
+      console.log(ResponseMessage, "ResponseMessageResponseMessage");
+      // setOpen({
+      //   ...open,
+      //   flag: true,
+      //   message: ResponseMessage,
+      // });
+      // setTimeout(() => {
+      //   setOpen({
+      //     ...open,
+      //     flag: false,
+      //     message: "",
+      //   });
+      //   dispatch(CleareMessegeNewMeeting());
+      // }, 3000);
     } else {
       dispatch(CleareMessegeNewMeeting());
     }

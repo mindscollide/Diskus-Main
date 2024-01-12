@@ -745,7 +745,8 @@ const AgendaWise = ({
       NewMeetingreducer.ResponseMessage !== t("No-records-found") &&
       NewMeetingreducer.ResponseMessage !== t("Record-found") &&
       NewMeetingreducer.ResponseMessage !== t("No-record-found") &&
-      NewMeetingreducer.ResponseMessage !== t("List-updated-successfully")
+      NewMeetingreducer.ResponseMessage !== t("List-updated-successfully") &&
+      NewMeetingreducer.ResponseMessage !== t("No-data-available")
     ) {
       setOpen({
         ...open,
