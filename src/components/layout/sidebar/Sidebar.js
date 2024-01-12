@@ -819,6 +819,7 @@ const Sidebar = () => {
                 <Nav.Link
                   disabled={false}
                   eventKey="link-6"
+                  draggable="false"
                   className={
                     showMore ||
                     location.pathname === "/DisKus/dataroom" ||
@@ -897,6 +898,7 @@ const Sidebar = () => {
                           ? "Meeting_Side_bar_Tag_active"
                           : "Meeting_Side_bar_Tag"
                       }
+                      draggable="false"
                     >
                       {t("More")}
                     </span>

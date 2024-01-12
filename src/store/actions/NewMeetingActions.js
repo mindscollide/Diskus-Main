@@ -680,6 +680,18 @@ const SaveMeetingDetialsNewApiFunction = (
                   t("Add-meeting-participants-to-publish")
                 )
               );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SaveMeetingDetails_08".toLowerCase()
+                )
+            ) {
+              dispatch(
+                handleSaveMeetingFailed(
+                  t("Meeting-cannot-be-published-after-time-has-elapsed")
+                )
+              );
             } else {
               dispatch(handleSaveMeetingFailed(t("Something-went-wrong")));
             }

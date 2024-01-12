@@ -106,15 +106,17 @@ body[dir="rtl"] .subscribNow_button_EmailVerify {
 } */
 
 .Auth_Icon {
-  position: absolute;
+  position: fixed;
   right: -115px;
-  bottom: -135px;
+  bottom: -190px;
   transform: rotate(0deg);
   z-index: 0;
 }
 
 body[dir="rtl"] .Auth_Icon {
-  transform: scaleX(-1);
+  transform: rotate(0deg) scaleX(-1);
+  right: auto !important;
+  left: -190px;
 }
 
 /* .signInError {
@@ -123,9 +125,9 @@ body[dir="rtl"] .Auth_Icon {
 } */
 .Login_page_text {
   display: flex;
-  margin-top: 12%;
+  margin-top: 10%;
   flex-direction: column;
-  margin-left: 40px;
+  margin-left: 20px;
   justify-content: flex-start;
   align-items: flex-start;
 }
@@ -134,7 +136,9 @@ body[dir="rtl"] .Auth_Icon {
   font-size: calc(60px - 20%) !important;
   font-family: "MontserratSemiBold";
   margin: 0 !important;
-  width: 114%;
+  width: 100%;
+  white-space: nowrap;
+  z-index: 1;
 }
 
 .loginbox_auth_paper {
@@ -304,11 +308,10 @@ body[dir="rtl"] .languageIcon {
   position: absolute;
   right: 100px;
   z-index: 99999 !important;
-  margin-top: 50px !important;
+  margin-top: 30px !important;
   margin-right: 0 !important;
   display: flex;
   justify-content: flex-end;
-
 }
 
 body[dir="rtl"] .languageSelector {
@@ -319,4 +322,40 @@ body[dir="rtl"] .languageSelector {
   margin-right: 0 !important;
   display: flex;
   justify-content: flex-end;
+}
+.freetrail_banner {
+  position: relative;
+  background-color: #6172d6;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 8px 0;
+  margin-top: 20px;
+  border-radius: 4px;
+}
+.freetrail_heading {
+  color: #fff !important;
+  font-family: "MontserratMedium-500";
+
+  font-size: 16px !important;
+}
+.Free-Trial_btn {
+  color: #5a5a5a;
+  background-color: #fff;
+  padding: 8px 20px;
+  font-family: "MontserratSemiBold-600" !important;
+  border-radius: 4px;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.SignInEmailBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 88vh;
 }

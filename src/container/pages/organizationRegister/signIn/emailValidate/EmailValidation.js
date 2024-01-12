@@ -339,18 +339,28 @@ const EmailValidation = () => {
   return (
     <>
       <Container fluid className={styles["auth_container"]}>
+        <Row>
+          <Col sm={12} md={12} lg={12}>
+            <section className={styles["freetrail_banner"]}>
+              <span className={styles["freetrail_heading"]}>
+                {t("Start-your-Free-Trial-now")}
+              </span>
+              <span
+                className={styles["Free-Trial_btn"]}
+                onClick={handleClickFreeTrail}
+              >
+                {t("Free-Trial")}
+              </span>
+            </section>
+          </Col>
+        </Row>
         <Row className="position-relative">
           <Col className={styles["languageSelector"]}>
             <LanguageSelector />
           </Col>
         </Row>
         <Row>
-          <Col
-            lg={4}
-            md={4}
-            sm={12}
-            className="d-flex justify-content-center align-items-center min-vh-100"
-          >
+          <Col lg={4} md={4} sm={12} className={styles["SignInEmailBox"]}>
             <Paper className={styles["EmailVerifyBox"]}>
               <Col sm={12} lg={12} md={12}>
                 <Row>
@@ -458,7 +468,7 @@ const EmailValidation = () => {
                     />
                   </Col>
                 </Row>
-                <Row className="d-flex mt-3 justify-content-center">
+                {/* <Row className="d-flex mt-3 justify-content-center">
                   <Col
                     sm={12}
                     lg={12}
@@ -466,12 +476,12 @@ const EmailValidation = () => {
                     className="w-100 d-flex justify-content-center"
                   >
                     <Button
-                      text={t("Free-trail")}
+                      text={t("Free-Trial")}
                       onClick={handleClickFreeTrail}
                       className={styles["subscribNow_button_EmailVerify"]}
                     />
                   </Col>
-                </Row>
+                </Row> */}
               </Col>
             </Paper>
           </Col>

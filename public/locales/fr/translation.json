@@ -1207,7 +1207,7 @@
   "Access-requested": "Access requested",
   "Failed-to-request-access": "Failed to request access",
   "Date-and-time-should-be-greater-than-current-system-time": "Date and time should be greater than current system time",
-  "Free-trail": "Free trail",
+  "Free-Trial": "Free Trial",
   "You-can-not-upload-more-then-100MB-file": "You can not upload more then 100MB file",
   "You-can-not-upload-more-then-10MB-file": "You can not upload more then 10MB file",
   "Poll-deleted-successfully": "Poll deleted successfully",
@@ -1222,5 +1222,6 @@
   "There-is-no-pending-task": "There is no pending task",
   "Create-new-task": "Create new task",
   "Agenda-contributor-updated": "Agenda Contributor's Updated",
-  "Agenda-contributor-added": "Agenda Contributor's Added"
+  "Agenda-contributor-added": "Agenda Contributor's Added",
+  "Start-your-Free-Trial-now": "Start your free trial now"
 }
