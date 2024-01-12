@@ -593,7 +593,7 @@ const SaveMeetingDetialsNewApiFunction = (
                   MeetingTitle: meetingDetails.MeetingTitle,
                   IsUpdateFlow: true,
                 };
-                dispatch(
+                await dispatch(
                   CreateUpdateMeetingDataRoomMapeedApiFunc(
                     navigate,
                     MappedData,
