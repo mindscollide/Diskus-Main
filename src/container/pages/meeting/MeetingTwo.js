@@ -1289,12 +1289,10 @@ const NewMeeting = () => {
       ResponseMessages !== t("No-records-found") &&
       ResponseMessages !== t("No-record-found")
     ) {
-      setTimeout(() => {
-        setOpen({
-          message: ResponseMessages,
-          open: true,
-        });
-      }, 4000);
+      setOpen({
+        message: ResponseMessages,
+        open: true,
+      });
       dispatch(clearResponseMessage(""));
     } else {
     }
@@ -1307,6 +1305,7 @@ const NewMeeting = () => {
       ResponseMessage !== t("No-records-found") &&
       ResponseMessage !== t("Record-found") &&
       ResponseMessage !== t("List-updated-successfully") &&
+      ResponseMessage !== t("No-data-available") &&
       ResponseMessage !== undefined
     ) {
       setOpen({

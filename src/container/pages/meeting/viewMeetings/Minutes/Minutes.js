@@ -765,17 +765,14 @@ const Minutes = ({
   };
 
   useEffect(() => {
-    console.log(
-      ResponseMessage,
-      "ResponseMessageResponseMessageResponseMessageResponseMessage"
-    );
     if (
       ResponseMessage.trim() !== "" &&
       ResponseMessage !== t("No-record-found") &&
       ResponseMessage !== t("No-records-found") &&
       ResponseMessage !== t("Record-found") &&
       ResponseMessage !== t("No-record-found") &&
-      ResponseMessage !== t("List-updated-successfully")
+      ResponseMessage !== t("List-updated-successfully") &&
+      ResponseMessage !== t("No-data-available")
     ) {
       setOpen({
         ...open,

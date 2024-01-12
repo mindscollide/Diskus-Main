@@ -590,6 +590,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
       setFile(URL.createObjectURL(data.target.files[0]));
       setUploadOptions(false);
       setUploadFileTalk(uploadedFile);
+      file.push({
+        DisplayAttachmentName: uploadedFile.name,
+        OriginalAttachmentName: uploadFilePath,
+      });
+      setTasksAttachments({ ["TasksAttachments"]: file });
     }
   };
 
@@ -1845,8 +1850,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   const sendChat = async () => {
     if (
       messageSendData.Body !== "" ||
-      messageSendData.Body === "" ||
-      messageSendData.Body !== ""
+      (messageSendData.Body === "" &&
+        tasksAttachments.TasksAttachments.length > 0)
     ) {
       let otoMessageLocal =
         JSON.parse(localStorage.getItem("singleMessageObject")) || [];
@@ -2143,18 +2148,19 @@ const ChatMainBody = ({ chatMessageClass }) => {
           newMessageBroadcast,
         ]);
       }
-    }
-    setReplyFeature(false);
-    setInputChat(true);
-    setFile("");
-    setTasksAttachments({
-      ...tasksAttachments,
-      ["TasksAttachments"]: [],
-    });
-    setUploadFileTalk({});
-    if (inputRef.current) {
-      inputRef.current.style.height = "auto";
-      inputRef.current.style.overflowY = "hidden";
+
+      setReplyFeature(false);
+      setInputChat(true);
+      setFile("");
+      setTasksAttachments({
+        ...tasksAttachments,
+        ["TasksAttachments"]: [],
+      });
+      setUploadFileTalk({});
+      if (inputRef.current) {
+        inputRef.current.style.height = "auto";
+        inputRef.current.style.overflowY = "hidden";
+      }
     }
   };
 
@@ -2723,7 +2729,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
   const removeFileFunction = () => {
     setFile("");
-    chatMessages.current?.scrollIntoView({ behavior: "auto" });
+    setUploadFileTalk({});
+    setTasksAttachments({
+      ...tasksAttachments,
+      ["TasksAttachments"]: [],
+    });
+    // chatMessages.current?.scrollIntoView({ behavior: "auto" });
   };
 
   useEffect(() => {
@@ -3122,6 +3133,14 @@ const ChatMainBody = ({ chatMessageClass }) => {
   console.log("Talk Feature Reducer", talkFeatureStates);
 
   console.log("All The Messages", allMessages);
+
+  console.log(
+    "uploadFileTalk",
+    uploadFileTalk,
+    typeof uploadFileTalk,
+    Object.keys(uploadFileTalk).length,
+    tasksAttachments
+  );
 
   return (
     <>
@@ -4851,6 +4870,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 draggable="false"
                                 onClick={removeFileFunction}
                                 src={CrossIcon}
+                                className="cursor-pointer"
                               />
                             </div>
                             <div className="image-thumbnail">

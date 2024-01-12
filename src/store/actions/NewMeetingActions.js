@@ -680,6 +680,18 @@ const SaveMeetingDetialsNewApiFunction = (
                   t("Add-meeting-participants-to-publish")
                 )
               );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SaveMeetingDetails_08".toLowerCase()
+                )
+            ) {
+              dispatch(
+                handleSaveMeetingFailed(
+                  t("Meeting-cannot-be-published-after-time-has-elapsed")
+                )
+              );
             } else {
               dispatch(handleSaveMeetingFailed(t("Something-went-wrong")));
             }
@@ -1564,7 +1576,7 @@ const SaveparticipantsApi = (
                     EndTime: createConvert(
                       data.selectedOption + data.endDate
                     ).slice(8, 14),
-                    proposedDateID: 0,
+                    // proposedDateID: 0,
                   });
                 });
                 let Data = {

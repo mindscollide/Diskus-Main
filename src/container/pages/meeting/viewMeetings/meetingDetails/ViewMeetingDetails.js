@@ -30,6 +30,23 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { resolutionResultTable } from "../../../../../commen/functions/date_formater";
 import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
+import {
+  GetAllUsers,
+  GetAllUsersGroupsRoomsList,
+  GetGroupMessages,
+  activeChat,
+} from "../../../../../store/actions/Talk_action";
+import {
+  recentChatFlag,
+  headerShowHideStatus,
+  footerShowHideStatus,
+  createShoutAllScreen,
+  addNewChatScreen,
+  footerActionStatus,
+  createGroupScreen,
+  chatBoxActiveFlag,
+  activeChatBoxGS,
+} from "../../../../../store/actions/Talk_Feature_actions";
 import CancelButtonModal from "./CancelButtonModal/CancelButtonModal";
 import moment from "moment";
 import {
@@ -65,7 +82,7 @@ const ViewMeetingDetails = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const { NewMeetingreducer, talkStateData } = useSelector((state) => state);
   const [cancelModalView, setCancelModalView] = useState(false);
   const [meetingStatus, setMeetingStatus] = useState(0);
   // For cancel with no modal Open
@@ -463,6 +480,52 @@ const ViewMeetingDetails = ({
     }
   };
 
+  const groupChatInitiation = (data) => {
+    if (
+      data.talkGroupID !== 0 &&
+      talkStateData.AllUserChats.AllUserChatsData !== undefined &&
+      talkStateData.AllUserChats.AllUserChatsData !== null &&
+      talkStateData.AllUserChats.AllUserChatsData.length !== 0
+    ) {
+      dispatch(createShoutAllScreen(false));
+      dispatch(addNewChatScreen(false));
+      dispatch(footerActionStatus(false));
+      dispatch(createGroupScreen(false));
+      dispatch(chatBoxActiveFlag(false));
+      dispatch(recentChatFlag(true));
+      dispatch(activeChatBoxGS(true));
+      dispatch(chatBoxActiveFlag(true));
+      dispatch(headerShowHideStatus(true));
+      dispatch(footerShowHideStatus(true));
+      let chatGroupData = {
+        UserID: parseInt(userID),
+        ChannelID: currentOrganization,
+        GroupID: data.talkGroupID,
+        NumberOfMessages: 50,
+        OffsetMessage: 0,
+      };
+      dispatch(GetGroupMessages(navigate, chatGroupData, t));
+      dispatch(GetAllUsers(navigate, parseInt(userID), currentOrganization, t));
+      dispatch(
+        GetAllUsersGroupsRoomsList(
+          navigate,
+          parseInt(userID),
+          currentOrganization,
+          t
+        )
+      );
+      let allChatMessages =
+        talkStateData.AllUserChats.AllUserChatsData.allMessages;
+      const foundRecord = allChatMessages.find(
+        (item) => item.id === data.talkGroupID
+      );
+      if (foundRecord) {
+        dispatch(activeChat(foundRecord));
+      }
+      localStorage.setItem("activeOtoChatID", data.talkGroupID);
+    }
+  };
+
   useEffect(() => {
     if (
       NewMeetingreducer.ResponseMessage !== "" &&
@@ -647,6 +710,8 @@ const ViewMeetingDetails = ({
                         height="20.44px"
                         width="25.68px"
                         alt=""
+                        onClick={() => groupChatInitiation(meetingDetails)}
+                        className="cursor-pointer mx-2"
                       />
                     )}
                     {meetingDetails.IsVideoCall && (
@@ -666,16 +731,40 @@ const ViewMeetingDetails = ({
                           onClick={() => copyToClipboardd()}
                           className={styles["clipboard-icon"]}
                         /> */}
-                        <Button
-                          text={t("Copy-link")}
-                          className={styles["CopyLinkButton"]}
-                          onClick={() => copyToClipboardd()}
-                        />
-                        <Button
-                          text={t("Join-Video-Call")}
-                          className={styles["JoinMeetingButton"]}
-                          onClick={joinMeetingCall}
-                        />
+                        {editorRole.status === "10" ||
+                        editorRole.status === 10 ? (
+                          <>
+                            {" "}
+                            <Button
+                              text={t("Copy-link")}
+                              className={styles["CopyLinkButton"]}
+                              onClick={() => copyToClipboardd()}
+                            />
+                            <Button
+                              text={t("Join-Video-Call")}
+                              className={styles["JoinMeetingButton"]}
+                              onClick={joinMeetingCall}
+                            />{" "}
+                          </>
+                        ) : (
+                          <>
+                            {" "}
+                            <Button
+                              text={t("Copy-link")}
+                              className={`${
+                                styles["CopyLinkButton"]
+                              } ${"grayScaled"}`}
+                              // onClick={() => copyToClipboardd()}
+                            />
+                            <Button
+                              text={t("Join-Video-Call")}
+                              className={`${
+                                styles["JoinMeetingButton"]
+                              } ${"grayScaled"} `}
+                              // onClick={joinMeetingCall}
+                            />
+                          </>
+                        )}
                         {/* <span className={styles["LinkClass"]}>
                         {meetingDetails.Link}
                       </span> */}
