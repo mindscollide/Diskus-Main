@@ -1305,6 +1305,7 @@ const NewMeeting = () => {
       ResponseMessage !== t("No-records-found") &&
       ResponseMessage !== t("Record-found") &&
       ResponseMessage !== t("List-updated-successfully") &&
+      ResponseMessage !== t("No-data-available") &&
       ResponseMessage !== undefined
     ) {
       setOpen({

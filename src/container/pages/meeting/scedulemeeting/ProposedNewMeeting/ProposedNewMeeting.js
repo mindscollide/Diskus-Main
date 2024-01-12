@@ -63,6 +63,7 @@ const ProposedNewMeeting = ({
   const navigate = useNavigate();
   const animatedComponents = makeAnimated();
   const calendRef = useRef();
+  let OrganizationID = localStorage.getItem("organizationID");
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
@@ -345,9 +346,10 @@ const ProposedNewMeeting = ({
 
   //Removing the Added Participants
   const hanleRemovingParticipants = (index) => {
-    let removeParticipant = [...members];
+    console.log(index, "indexindexindexindex");
+    let removeParticipant = [...membersParticipants];
     removeParticipant.splice(index, 1);
-    setMembers(removeParticipant);
+    setMembersParticipants(removeParticipant);
   };
 
   //Adding the Dates Rows
@@ -575,7 +577,7 @@ const ProposedNewMeeting = ({
           Description: proposedMeetingDetails.Description,
           IsVideoChat: true,
           IsTalkGroup: false,
-          OrganizationId: 411,
+          OrganizationId: Number(OrganizationID),
           MeetingDates: Dates,
           MeetingReminders: [4],
           Notes: "",
@@ -811,8 +813,7 @@ const ProposedNewMeeting = ({
                                         >
                                           <img
                                             draggable={false}
-                                            src={profile}
-                                            //   src={`data:image/jpeg;base64,${data.displayPicture}`}
+                                            src={`data:image/jpeg;base64,${participant.displayPicture}`}
                                             width="50px"
                                             alt=""
                                             height="50px"
@@ -1168,7 +1169,7 @@ const ProposedNewMeeting = ({
                     />
 
                     <Button
-                      text={t("Proposed")}
+                      text={t("Propose")}
                       className={styles["Proposed_Button_Proposed_Meeting"]}
                       onClick={handleProposedButtonProposedMeeting}
                     />
