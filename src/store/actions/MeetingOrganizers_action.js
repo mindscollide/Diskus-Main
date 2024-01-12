@@ -491,6 +491,19 @@ const UpdateOrganizersMeeting = (
                 )
               );
               dispatch(setLoaderFalse(false));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_07".toLowerCase()
+                )
+            ) {
+              dispatch(
+                updateOrganizerMeetingStatus_fail(
+                  t("Meeting-cannot-be-published-after-time-has-elapsed")
+                )
+              );
+              dispatch(setLoaderFalse(false));
             } else {
               dispatch(
                 updateOrganizerMeetingStatus_fail(t("Something-went-wrong"))

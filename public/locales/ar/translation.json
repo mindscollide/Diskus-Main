@@ -1691,5 +1691,6 @@
   "Agenda-builder": "Agenda Builder",
   "Agenda-viewer": "Agenda Viewer",
   "Agenda-contributor-updated": "Agenda Contributor's Updated",
-  "Agenda-contributor-added": "Agenda Contributor's Added"
+  "Agenda-contributor-added": "Agenda Contributor's Added",
+  "Meeting-cannot-be-published-after-time-has-elapsed": "Meeting cannot be published after Time has elapsed"
 }
