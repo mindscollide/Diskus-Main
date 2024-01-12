@@ -948,13 +948,13 @@ const MeetingDetails = ({
       //   flag: true,
       //   message: ResponseMessage,
       // });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          flag: true,
-          message: ResponseMessage,
-        });
-      }, 3000);
+      // setTimeout(() => {
+      setOpen({
+        ...open,
+        flag: true,
+        message: ResponseMessage,
+      });
+      // }, 3000);
       dispatch(clearResponseNewMeetingReducerMessage());
     }
   }, [ResponseMessage]);

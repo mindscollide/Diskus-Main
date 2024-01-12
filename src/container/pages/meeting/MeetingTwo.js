@@ -1289,12 +1289,10 @@ const NewMeeting = () => {
       ResponseMessages !== t("No-records-found") &&
       ResponseMessages !== t("No-record-found")
     ) {
-      setTimeout(() => {
-        setOpen({
-          message: ResponseMessages,
-          open: true,
-        });
-      }, 4000);
+      setOpen({
+        message: ResponseMessages,
+        open: true,
+      });
       dispatch(clearResponseMessage(""));
     } else {
     }
