@@ -266,6 +266,7 @@ const DocumentViewer = () => {
               "signatureToolGroupButton",
               "viewControlsOverlay",
               "contextMenuPopup",
+              "header",
             ]);
           } else if (Number(isPermission) === 2) {
             //  Editor Role
@@ -299,6 +300,8 @@ const DocumentViewer = () => {
               "signatureToolGroupButton",
               "viewControlsOverlay",
               "contextMenuPopup",
+              "signatureFieldToolGroupButton",
+              "leftPanelButton",
             ]);
           } else if (Number(isPermission) === 3) {
             // Not Ediable

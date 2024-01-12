@@ -64,6 +64,7 @@ const ExpandedMenu = () => {
           <Nav.Link
             as={Link}
             to="dataroom"
+            draggable="false"
             eventKey="link-5"
             className={
               location.pathname === "/DisKus/dataroom" ||
@@ -342,6 +343,7 @@ const ExpandedMenu = () => {
             as={Link}
             to="groups"
             disabled={false}
+            draggable="false"
             eventKey="link-5"
             className={
               location.pathname === "/DisKus/groups" ||
@@ -384,6 +386,7 @@ const ExpandedMenu = () => {
             as={Link}
             to="committee"
             disabled={false}
+            draggable="false"
             eventKey="link-5"
             className={
               location.pathname === "/DisKus/committee" ||
@@ -443,6 +446,7 @@ const ExpandedMenu = () => {
             as={Link}
             to="resolution"
             disabled={false}
+            draggable="false"
             eventKey="link-5"
             className={
               location.pathname === "/DisKus/resolution" ||
@@ -499,6 +503,7 @@ const ExpandedMenu = () => {
             as={Link}
             to="polling"
             disabled={false}
+            draggable="false"
             eventKey="link-5"
             className={
               location.pathname === "/DisKus/polling" ||
