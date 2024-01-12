@@ -645,7 +645,7 @@ const Polls = ({
                       sm={12}
                       md={12}
                       lg={12}
-                      className="pagination-groups-table d-flex justify-content-center my-3"
+                      className="pagination-groups-table d-flex justify-content-center mt-5"
                     >
                       <CustomPagination
                         pageSizeOptionsValues={["30", "50", "100", "200"]}
@@ -659,7 +659,7 @@ const Polls = ({
                     </Col>
                   </Row>
                 )}
-                <Row className="mt-5">
+                <Row className="mt-2">
                   <Col
                     lg={12}
                     md={12}
