@@ -59,6 +59,8 @@ const Documents = ({
                         editorRole.role === "Participant" ||
                         editorRole.role === "Agenda Contributor"
                           ? true
+                          : editorRole.status === 9 || editorRole.status === "9"
+                          ? true
                           : false
                       }
                     >
@@ -97,8 +99,9 @@ const Documents = ({
                                     sm={12}
                                     className="d-flex justify-content-end align-items-center"
                                   >
-                                    {editorRole.role ===
-                                    "Participant" ? null : (
+                                    {editorRole.role === "Participant" ||
+                                    editorRole.status === 9 ||
+                                    editorRole.status === "9" ? null : (
                                       <img
                                         draggable={false}
                                         src={redcrossIcon}

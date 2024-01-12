@@ -304,7 +304,8 @@ const Polls = ({
       width: "70px",
       render: (text, record) => {
         if (
-          Number(editorRole.status) === 10 &&
+          (Number(editorRole.status) === 10 ||
+            Number(editorRole.status) === 9) &&
           (editorRole.role === "Organizer" ||
             editorRole.role === "Agenda Contributor" ||
             editorRole?.role === "Participant") &&
@@ -388,7 +389,8 @@ const Polls = ({
           (editorRole.role === "Organizer" ||
             editorRole.role === "Agenda Contributor" ||
             editorRole?.role === "Participant") &&
-          isEditMeeting === true
+          isEditMeeting === true &&
+          Number(editorRole.status) !== 9
         ) {
           return (
             <>

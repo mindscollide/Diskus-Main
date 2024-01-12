@@ -593,12 +593,27 @@ const SaveMeetingDetialsNewApiFunction = (
                   MeetingTitle: meetingDetails.MeetingTitle,
                   IsUpdateFlow: true,
                 };
-                dispatch(
+                await dispatch(
                   CreateUpdateMeetingDataRoomMapeedApiFunc(
                     navigate,
                     MappedData,
                     t,
                     setDataroomMapFolderId
+                  )
+                );
+                let Data = {
+                  MeetingID: Number(response.data.responseResult.meetingID),
+                };
+                await dispatch(
+                  GetAllMeetingDetailsApiFunc(
+                    navigate,
+                    t,
+                    Data,
+                    true,
+                    setCurrentMeetingID,
+                    setSceduleMeeting,
+                    setDataroomMapFolderId,
+                    data.MeetingDetails.MeetingStatusID
                   )
                 );
               }
