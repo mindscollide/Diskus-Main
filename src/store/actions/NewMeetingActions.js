@@ -1549,7 +1549,7 @@ const SaveparticipantsApi = (
                     EndTime: createConvert(
                       data.selectedOption + data.endDate
                     ).slice(8, 14),
-                    proposedDateID: 0,
+                    // proposedDateID: 0,
                   });
                 });
                 let Data = {
