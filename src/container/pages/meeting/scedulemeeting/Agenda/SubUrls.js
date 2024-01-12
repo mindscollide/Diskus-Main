@@ -44,7 +44,9 @@ const SubUrls = ({
           change={(e) => handleSubAgendaUrlEnterUrlField(index, subIndex, e)}
           disable={
             editorRole.role === "Participant" ||
-            editorRole.role === "Agenda Contributor"
+            editorRole.role === "Agenda Contributor" ||
+            editorRole.status === "9" ||
+            editorRole.status === 9
               ? true
               : false
           }

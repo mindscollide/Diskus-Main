@@ -137,6 +137,7 @@ const NewMeeting = () => {
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
   const [proposedNewMeeting, setProposedNewMeeting] = useState(false);
   const [searchMeeting, setSearchMeeting] = useState(false);
+
   const [dataroomMapFolderId, setDataroomMapFolderId] = useState(0);
   //For Search Field Only
   const [searchText, setSearchText] = useState("");
@@ -170,7 +171,11 @@ const NewMeeting = () => {
     useState(false);
   const [viewAdvanceMeetingModal, setViewAdvanceMeetingModal] = useState(false);
   const [advanceMeetingModalID, setAdvanceMeetingModalID] = useState(null);
-  const [editorRole, setEdiorRole] = useState({ status: null, role: null });
+  const [editorRole, setEdiorRole] = useState({
+    status: null,
+    role: null,
+    isPrimaryOrganizer: false,
+  });
   const [
     viewAdvanceMeetingModalUnpublish,
     setViewAdvanceMeetingModalUnpublish,
@@ -504,6 +509,12 @@ const NewMeeting = () => {
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
             attendee.meetingAttendeeRole.role === "Agenda Contributor"
         );
+        const isPrimaryOrganizer = record.meetingAttendees.some(
+          (attendee) =>
+            Number(attendee.user.pK_UID) === Number(currentUserId) &&
+            attendee.isPrimaryOrganizer === true
+        );
+        console.log("RecordRecord", record);
         return (
           <span
             className={styles["meetingTitle"]}
@@ -516,6 +527,7 @@ const NewMeeting = () => {
                   : isAgendaContributor
                   ? "Agenda Contributor"
                   : "Organizer",
+                isPrimaryOrganizer: isPrimaryOrganizer,
               });
               // setIsOrganisers(isOrganiser);
             }}
@@ -735,6 +747,11 @@ const NewMeeting = () => {
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
             attendee.meetingAttendeeRole.role === "Organizer"
         );
+        const isPrimaryOrganizer = record.meetingAttendees.some(
+          (attendee) =>
+            Number(attendee.user.pK_UID) === Number(currentUserId) &&
+            attendee.isPrimaryOrganizer === true
+        );
         const startMeetingRequest = {
           MeetingID: Number(record.pK_MDID),
           StatusID: 10,
@@ -770,7 +787,8 @@ const NewMeeting = () => {
           } else {
             if (
               // startMeetingButton === true
-              (record.isQuickMeeting === true && minutesDifference < 4) ||
+              (record.isQuickMeeting === true &&
+                minutesDifference < minutesAgo) ||
               (record.isQuickMeeting === true &&
                 record.pK_MDID === startMeetingData.meetingID &&
                 startMeetingData.showButton)
@@ -804,7 +822,8 @@ const NewMeeting = () => {
                 </Row>
               );
             } else if (
-              (record.isQuickMeeting === false && minutesDifference < 4) ||
+              (record.isQuickMeeting === false &&
+                minutesDifference < minutesAgo) ||
               (record.isQuickMeeting === false &&
                 record.pK_MDID === startMeetingData.meetingID &&
                 startMeetingData.showButton)
@@ -847,6 +866,7 @@ const NewMeeting = () => {
                   setEdiorRole({
                     status: record.status,
                     role: "Participant",
+                    isPrimaryOrganizer: false,
                   });
                 }}
               />
@@ -862,6 +882,7 @@ const NewMeeting = () => {
                   setEdiorRole({
                     status: record.status,
                     role: "Agenda Contributor",
+                    isPrimaryOrganizer: false,
                   });
                 }}
               />
@@ -877,6 +898,7 @@ const NewMeeting = () => {
                   setEdiorRole({
                     status: record.status,
                     role: "Organizer",
+                    isPrimaryOrganizer: isPrimaryOrganizer,
                   });
                 }}
               />
@@ -912,6 +934,14 @@ const NewMeeting = () => {
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
             attendee.meetingAttendeeRole.role === "Agenda Contributor"
         );
+
+        const isPrimaryOrganizer = record.meetingAttendees.some(
+          (attendee) =>
+            Number(attendee.user.pK_UID) === Number(currentUserId) &&
+            attendee.isPrimaryOrganizer === true
+        );
+
+        console.log("isPrimaryOrganizer", isPrimaryOrganizer);
 
         const isQuickMeeting = record.isQuickMeeting;
         if (record.status === "8" || record.status === "4") {
@@ -971,6 +1001,7 @@ const NewMeeting = () => {
                             setEdiorRole({
                               status: record.status,
                               role: "Organizer",
+                              isPrimaryOrganizer: isPrimaryOrganizer,
                             });
                             setEditMeeting(true);
                           }}
@@ -1003,6 +1034,7 @@ const NewMeeting = () => {
                             setEdiorRole({
                               status: record.status,
                               role: "Agenda Contributor",
+                              isPrimaryOrganizer: isPrimaryOrganizer,
                             });
                             setEditMeeting(true);
                           }}
@@ -1225,7 +1257,7 @@ const NewMeeting = () => {
           advanceMeetingModalID === endMeetingData.pK_MDID &&
           endMeetingData.status === "9"
         ) {
-          setEdiorRole({ status: null, role: null });
+          setEdiorRole({ status: null, role: null, isPrimaryOrganizer: false });
           setViewAdvanceMeetingModal(false);
           dispatch(viewAdvanceMeetingPublishPageFlag(false));
           dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
@@ -1332,6 +1364,7 @@ const NewMeeting = () => {
             dashboardEventData.participantRoleID === 1
           ) {
             handleViewMeeting(meeting.pK_MDID, meeting.isQuickMeeting);
+
             // setIsOrganisers(isOrganiser);
             setEdiorRole({
               status: meeting.status,
@@ -1376,6 +1409,7 @@ const NewMeeting = () => {
     }
   }, [dashboardEventData, rows]);
 
+  console.log("dashBoardEventData", dashboardEventData);
   useEffect(() => {
     if (
       NewMeetingreducer.meetingStatusNotConductedMqttData !== null &&

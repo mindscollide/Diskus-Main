@@ -787,6 +787,8 @@ const Minutes = ({
     }
   }, [ResponseMessage]);
 
+  console.log("editorRoleeditorRole", editorRole);
+
   return (
     <section>
       <Row className="mt-3">
@@ -831,7 +833,11 @@ const Minutes = ({
               "Organizer" &&
               Number(editorRole.status) === 9) ||
             (Number(editorRole.status) === 10 &&
-              editorRole.role === "Organizer") ? (
+              editorRole.role === "Organizer") ||
+            (editorRole.role === "Agenda Contributor" &&
+              Number(editorRole.status) === 9) ||
+            (Number(editorRole.status) === 10 &&
+              editorRole.role === "Agenda Contributor") ? (
             <Row className="mt-4">
               <Col lg={6} md={6} sm={6}>
                 <Row className={styles["Add-note-QuillRow"]}>
@@ -1193,7 +1199,13 @@ const Minutes = ({
                                           "Organizer" &&
                                           Number(editorRole.status) === 9) ||
                                         (Number(editorRole.status) === 10 &&
-                                          editorRole.role === "Organizer") ? (
+                                          editorRole.role === "Organizer") ||
+                                        (editorRole.role ===
+                                          "Agenda Contributor" &&
+                                          Number(editorRole.status) === 9) ||
+                                        (Number(editorRole.status) === 10 &&
+                                          editorRole.role ===
+                                            "Agenda Contributor") ? (
                                         <img
                                           draggable={false}
                                           src={EditIcon}
@@ -1323,6 +1335,10 @@ const Minutes = ({
                                   Number(editorRole.status) === 9) ||
                                 (Number(editorRole.status) === 10 &&
                                   editorRole.role === "Organizer") ||
+                                (editorRole.role === "Agenda Contributor" &&
+                                  Number(editorRole.status) === 9) ||
+                                (Number(editorRole.status) === 10 &&
+                                  editorRole.role === "Agenda Contributor") ||
                                 userID === organizerID ? (
                                 <img
                                   draggable={false}
@@ -1376,11 +1392,14 @@ const Minutes = ({
             className={styles["Cancel_button_Minutes"]}
             onClick={handleUNsaveChangesModal}
           />
-          <Button
-            text={t("Invite-to-collaborate")}
-            className={styles["Next_button_Minutes"]}
-            onClick={handleInvitetoCollaborate}
-          />
+
+          {editorRole.isPrimaryOrganizer === true ? (
+            <Button
+              text={t("Invite-to-collaborate")}
+              className={styles["Next_button_Minutes"]}
+              onClick={handleInvitetoCollaborate}
+            />
+          ) : null}
           <Button
             text={t("Previous")}
             className={styles["Previous_button_Minutes"]}

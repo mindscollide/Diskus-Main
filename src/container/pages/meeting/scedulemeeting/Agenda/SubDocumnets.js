@@ -78,7 +78,9 @@ const SubDocumnets = ({
                           index={subAgendaFilesIndex}
                           isDragDisabled={
                             editorRole.role === "Participant" ||
-                            editorRole.role === "Agenda Contributor"
+                            editorRole.role === "Agenda Contributor" ||
+                            editorRole.status === "9" ||
+                            editorRole.status === 9
                               ? true
                               : false
                           }
@@ -125,8 +127,9 @@ const SubDocumnets = ({
                                       </span>
                                     </Col>
                                     <Col lg={2} md={2} sm={2}>
-                                      {editorRole.role ===
-                                      "Participant" ? null : (
+                                      {editorRole.role === "Participant" ||
+                                      editorRole.status === "9" ||
+                                      editorRole.status === 9 ? null : (
                                         <img
                                           alt=""
                                           src={redcrossIcon}

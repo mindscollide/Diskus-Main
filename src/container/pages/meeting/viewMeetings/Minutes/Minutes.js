@@ -1372,11 +1372,13 @@ const Minutes = ({
             onClick={handleUNsaveChangesModal}
           />
 
-          <Button
-            text={t("Invite-to-collaborate")}
-            className={styles["Button_General"]}
-            onClick={handleInvitetoCollaborateView}
-          />
+          {editorRole.isPrimaryOrganizer === true ? (
+            <Button
+              text={t("Invite-to-collaborate")}
+              className={styles["Next_button_Minutes"]}
+              onClick={handleInvitetoCollaborateView}
+            />
+          ) : null}
 
           <Button
             text={t("Previous")}

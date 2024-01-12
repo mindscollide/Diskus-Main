@@ -168,24 +168,26 @@ const ParentAgenda = ({
   };
 
   const openAdvancePermissionModal = async (id, flag) => {
-    setSelectedID(id);
-    let meetingMaterialData = {
-      MeetingID: currentMeetingIDLS,
-    };
-    // await dispatch(
-    //   getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows, id)
-    // );
-    dispatch(
-      GetAdvanceMeetingAgendabyMeetingID(
-        meetingMaterialData,
-        navigate,
-        t,
-        rows,
-        id,
-        flag
-      )
-    );
-    dispatch(showAdvancePermissionModal(true));
+    if (editorRole.status !== 9 || editorRole.status !== "9") {
+      setSelectedID(id);
+      let meetingMaterialData = {
+        MeetingID: currentMeetingIDLS,
+      };
+      // await dispatch(
+      //   getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows, id)
+      // );
+      dispatch(
+        GetAdvanceMeetingAgendabyMeetingID(
+          meetingMaterialData,
+          navigate,
+          t,
+          rows,
+          id,
+          flag
+        )
+      );
+      dispatch(showAdvancePermissionModal(true));
+    }
   };
 
   const openVoteMOdal = async (AgendaID, agendaVotingID, agendaDetails) => {
@@ -456,6 +458,8 @@ const ParentAgenda = ({
           editorRole.role === "Participant" ||
           editorRole.role === "Agenda Contributor"
             ? true
+            : editorRole.status === 9 || editorRole.status === "9"
+            ? true
             : false
         }
       >
@@ -472,6 +476,8 @@ const ParentAgenda = ({
                   className={
                     // apllyLockOnParentAgenda(index)
                     data.isLocked
+                      ? styles["BackGround_Agenda_InActive"]
+                      : editorRole.status === 9 || editorRole.status === "9"
                       ? styles["BackGround_Agenda_InActive"]
                       : styles["BackGround_Agenda"]
                   }
@@ -543,6 +549,9 @@ const ParentAgenda = ({
                                   : editorRole.role === "Participant" ||
                                     editorRole.role === "Agenda Contributor"
                                   ? true
+                                  : editorRole.status === 9 ||
+                                    editorRole.status === "9"
+                                  ? true
                                   : false
                               }
                             />
@@ -571,6 +580,9 @@ const ParentAgenda = ({
                                   ? data.isLocked
                                   : editorRole.role === "Participant" ||
                                     editorRole.role === "Agenda Contributor"
+                                  ? true
+                                  : editorRole.status === 9 ||
+                                    editorRole.status === "9"
                                   ? true
                                   : false
                               }
@@ -617,6 +629,9 @@ const ParentAgenda = ({
                                       ? data.isLocked
                                       : editorRole.role === "Participant" ||
                                         editorRole.role === "Agenda Contributor"
+                                      ? true
+                                      : editorRole.status === 9 ||
+                                        editorRole.status === "9"
                                       ? true
                                       : false
                                   }
@@ -669,6 +684,9 @@ const ParentAgenda = ({
                                       : editorRole.role === "Participant" ||
                                         editorRole.role === "Agenda Contributor"
                                       ? true
+                                      : editorRole.status === 9 ||
+                                        editorRole.status === "9"
+                                      ? true
                                       : false
                                   }
                                   editable={false}
@@ -677,8 +695,9 @@ const ParentAgenda = ({
                             </Row>
                             {index !== 0 &&
                               (editorRole.role === "Participant" ||
-                              editorRole.role ===
-                                "Agenda Contributor" ? null : (
+                              editorRole.role === "Agenda Contributor" ||
+                              editorRole.status === "9" ||
+                              editorRole.status === 9 ? null : (
                                 <img
                                   alt=""
                                   draggable={false}
@@ -731,6 +750,9 @@ const ParentAgenda = ({
                                       : editorRole.role === "Participant" ||
                                         editorRole.role === "Agenda Contributor"
                                       ? true
+                                      : editorRole.status === 9 ||
+                                        editorRole.status === "9"
+                                      ? true
                                       : false
                                   }
                                 />
@@ -750,7 +772,14 @@ const ParentAgenda = ({
                                     handleRadioChange(index, e.target.value)
                                   }
                                   value={data.selectedRadio}
-                                  disabled={data.isLocked}
+                                  disabled={
+                                    data.isLocked
+                                      ? true
+                                      : editorRole.status === 9 ||
+                                        editorRole.status === "9"
+                                      ? true
+                                      : false
+                                  }
                                 >
                                   <Radio value={1}>
                                     <span
@@ -782,8 +811,9 @@ const ParentAgenda = ({
                                 className="d-flex justify-content-end gap-4 align-items-center"
                               >
                                 {editorRole.role === "Participant" ||
-                                editorRole.role ===
-                                  "Agenda Contributor" ? null : (
+                                editorRole.role === "Agenda Contributor" ||
+                                editorRole.status === "9" ||
+                                editorRole.status === 9 ? null : (
                                   <>
                                     {data.iD.includes("A") ? null : (
                                       <>
@@ -794,7 +824,11 @@ const ParentAgenda = ({
                                           width="24.07px"
                                           height="24.09px"
                                           className={`cursor-pointer ${
-                                            data.isLocked ? "locked-cursor" : ""
+                                            data.isLocked ||
+                                            editorRole.status === 9 ||
+                                            editorRole.status === "9"
+                                              ? "pe-none"
+                                              : ""
                                           }`}
                                           role="button"
                                           onClick={() => {
@@ -812,9 +846,17 @@ const ParentAgenda = ({
                                           src={Cast}
                                           width="25.85px"
                                           height="25.89px"
-                                          className="cursor-pointer"
+                                          className={
+                                            editorRole.status === 9 ||
+                                            editorRole.status === "9"
+                                              ? "locked-cursor"
+                                              : "cursor-pointer"
+                                          }
                                           onClick={() =>
                                             data.isLocked
+                                              ? ""
+                                              : editorRole.status === 9 ||
+                                                editorRole.status === "9"
                                               ? ""
                                               : openVoteMOdal(
                                                   data.iD,
@@ -831,14 +873,22 @@ const ParentAgenda = ({
                                           className={
                                             data.isLocked
                                               ? styles["lockBtn_inActive"]
+                                              : editorRole.status === 9 ||
+                                                editorRole.status === "9"
+                                              ? `${
+                                                  styles["lockBtn_inActive"]
+                                                } ${"pe-none"}`
                                               : styles["lockBtn"]
                                           }
                                           height="26.72px"
                                           onClick={() =>
-                                            lockFunctionActive(
-                                              data.iD,
-                                              data.isLocked
-                                            )
+                                            editorRole.status === 9 ||
+                                            editorRole.status === "9"
+                                              ? ""
+                                              : lockFunctionActive(
+                                                  data.iD,
+                                                  data.isLocked
+                                                )
                                           }
                                         />
                                       </>
@@ -957,7 +1007,9 @@ const ParentAgenda = ({
             }
             {/* sub Ajenda Button */}
             {editorRole.role === "Participant" ||
-            editorRole.role === "Agenda Contributor" ? null : (
+            editorRole.role === "Agenda Contributor" ||
+            editorRole.status === 9 ||
+            editorRole.status === "9" ? null : (
               <Row className="mt-3">
                 <Col lg={12} md={12} sm={12}>
                   <Button

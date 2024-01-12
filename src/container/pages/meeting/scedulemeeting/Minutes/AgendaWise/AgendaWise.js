@@ -801,8 +801,11 @@ const AgendaWise = ({
       Number(editorRole.status) === 12 ? null : (editorRole.role ===
           "Organizer" &&
           Number(editorRole.status) === 9) ||
+        (Number(editorRole.status) === 10 && editorRole.role === "Organizer") ||
+        (editorRole.role === "Agenda Contributor" &&
+          Number(editorRole.status) === 9) ||
         (Number(editorRole.status) === 10 &&
-          editorRole.role === "Organizer") ? (
+          editorRole.role === "Agenda Contributor") ? (
         <>
           {" "}
           <Row className="mt-4">
@@ -1316,7 +1319,17 @@ const AgendaWise = ({
                                                         editorRole.status
                                                       ) === 10 &&
                                                         editorRole.role ===
-                                                          "Organizer") ? (
+                                                          "Organizer") ||
+                                                      (editorRole.role ===
+                                                        "Agenda Contributor" &&
+                                                        Number(
+                                                          editorRole.status
+                                                        ) === 9) ||
+                                                      (Number(
+                                                        editorRole.status
+                                                      ) === 10 &&
+                                                        editorRole.role ===
+                                                          "Agenda Contributor") ? (
                                                       <img
                                                         draggable={false}
                                                         src={EditIcon}
@@ -1346,6 +1359,14 @@ const AgendaWise = ({
                                                 10 &&
                                                 editorRole.role ===
                                                   "Organizer") ||
+                                              (editorRole.role ===
+                                                "Agenda Contributor" &&
+                                                Number(editorRole.status) ===
+                                                  9) ||
+                                              (Number(editorRole.status) ===
+                                                10 &&
+                                                editorRole.role ===
+                                                  "Agenda Contributor") ||
                                               userID === organizerID ? (
                                               <img
                                                 draggable={false}
