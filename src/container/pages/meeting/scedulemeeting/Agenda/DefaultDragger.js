@@ -134,7 +134,13 @@ const DefaultDragger = ({
           <Dragger
             {...props}
             className={styles["dragdrop_attachment_create_resolution"]}
-            disabled={editorRole.role === "Participant" ? true : false}
+            disabled={
+              editorRole.role === "Participant"
+                ? true
+                : editorRole.status === 9 || editorRole.status === "9"
+                ? true
+                : false
+            }
           >
             <Row>
               <Col

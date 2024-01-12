@@ -31,6 +31,8 @@ const Urls = ({ data, index, setRows, rows, editorRole }) => {
             editorRole.role === "Participant" ||
             editorRole.role === "Agenda Contributor"
               ? true
+              : editorRole.status === 9 || editorRole.status === "9"
+              ? true
               : false
           }
         />
