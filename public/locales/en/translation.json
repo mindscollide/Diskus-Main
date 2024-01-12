@@ -1709,7 +1709,7 @@
   "Access-requested": "Access requested",
   "Failed-to-request-access": "Failed to request access",
   "Date-and-time-should-be-greater-than-current-system-time": "Date and time should be greater than current system time",
-  "Free-trail": "Free trail",
+  "Free-Trial": "Free Trial",
   "You-can-not-upload-more-then-100MB-files": "You can not upload more then 100MB files",
   "You-can-not-upload-more-then-10MB-file": "You can not upload more then 10MB file",
   "Poll-deleted-successfully": "Poll deleted successfully",
@@ -1730,5 +1730,6 @@
   "Agenda-viewer": "Agenda Viewer",
   "Agenda-contributor-updated": "Agenda Contributor's Updated",
   "Agenda-contributor-added": "Agenda Contributor's Added",
+  "Start-your-Free-Trial-now": "Start your free trial now",
   "Meeting-cannot-be-published-after-time-has-elapsed": "Meeting cannot be published after Time has elapsed"
 }
