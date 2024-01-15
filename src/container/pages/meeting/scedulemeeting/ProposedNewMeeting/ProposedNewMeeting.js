@@ -562,9 +562,9 @@ const ProposedNewMeeting = ({
       });
     });
     if (
-      proposedMeetingDetails.MeetingTitle !== "" ||
-      proposedMeetingDetails.Description !== "" ||
-      membersParticipants.length !== 0 ||
+      proposedMeetingDetails.MeetingTitle !== "" &&
+      proposedMeetingDetails.Description !== "" &&
+      membersParticipants.length !== 0 &&
       // rows.length <= 1 ||
       sendResponseVal !== ""
     ) {
@@ -617,8 +617,16 @@ const ProposedNewMeeting = ({
         date: "",
       });
       seterror(false);
-    } else {
+    } else if (
+      proposedMeetingDetails.MeetingTitle === "" &&
+      proposedMeetingDetails.Description === "" &&
+      membersParticipants.length === 0 &&
+      // rows.length <= 1 &&
+      sendResponseVal === ""
+    ) {
       seterror(true);
+    } else {
+      // seterror(true);
     }
   };
 
@@ -674,7 +682,7 @@ const ProposedNewMeeting = ({
       <Row>
         <Col lg={12} md={12} sm={12}>
           <span className={styles["ProposedMeetingHeading"]}>
-            {t("Propose-new-meeting")}
+            {t("Propose-new-meetingsss")}
           </span>
         </Col>
       </Row>

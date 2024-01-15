@@ -1497,7 +1497,7 @@
   "Published-Meeting:": "Published Meeting",
   "Published-meeting": "Published Meeting",
   "Meeting-poll": "Meeting Poll",
-  "Send-reponse-by": "Send Reponse by",
+  "Send-reponse-by": "Send Response by",
   "Are-you-sure-to-delete-this-meeting": "Are you sure to delete this meeting?",
   "Record-inserted": "Record Inserted",
   "Record-updated": "Record Updated",
@@ -1731,5 +1731,6 @@
   "Agenda-contributor-updated": "Agenda Contributor's Updated",
   "Agenda-contributor-added": "Agenda Contributor's Added",
   "Start-your-Free-Trial-now": "Start your free trial now",
-  "Meeting-cannot-be-published-after-time-has-elapsed": "Meeting cannot be published after Time has elapsed"
+  "Meeting-cannot-be-published-after-time-has-elapsed": "Meeting cannot be published after Time has elapsed",
+  "Please-select-any-of-the-given-options": "Please select any of the given options"
 }
