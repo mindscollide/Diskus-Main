@@ -19,6 +19,9 @@ const DefaultDragger = ({
 }) => {
   const { t } = useTranslation();
   console.log("ediorRoleediorRoleediorRole", editorRole);
+
+  let currentUserID = Number(localStorage.getItem("userID"));
+
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -81,6 +84,7 @@ const DefaultDragger = ({
             originalAttachmentName: data.file.originFileObj.name,
             agendaAttachmentsID: getRandomUniqueNumber(),
             fK_MAID: 0,
+            fK_UID: currentUserID,
           };
           setFileForSend([...fileForSend, data.file.originFileObj]);
           newRows[index].files.push(file);
@@ -117,6 +121,7 @@ const DefaultDragger = ({
             originalAttachmentName: data.file.originFileObj.name,
             agendaAttachmentsID: getRandomUniqueNumber(),
             fK_MAID: 0,
+            fK_UID: currentUserID,
           };
           newRows[index].files.push(file);
           setFileForSend([...fileForSend, data.file.originFileObj]);
@@ -135,7 +140,9 @@ const DefaultDragger = ({
             {...props}
             className={styles["dragdrop_attachment_create_resolution"]}
             disabled={
-              editorRole.role === "Participant"
+              editorRole.role === "Participant" ||
+              (editorRole.role === "Agenda Contributor" &&
+                rows[index].canEdit === false)
                 ? true
                 : editorRole.status === 9 || editorRole.status === "9"
                 ? true

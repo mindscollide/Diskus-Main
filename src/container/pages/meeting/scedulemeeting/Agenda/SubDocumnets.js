@@ -62,6 +62,8 @@ const SubDocumnets = ({
   //   setRows(optionscross);
   // };
 
+  let currentUserID = Number(localStorage.getItem("userID"));
+
   return (
     <Row>
       <Col lg={12} md={12} sm={12} className={styles["SubAgendaDocScroller"]}>
@@ -128,8 +130,14 @@ const SubDocumnets = ({
                                     </Col>
                                     <Col lg={2} md={2} sm={2}>
                                       {editorRole.role === "Participant" ||
+                                      editorRole.status === 9 ||
                                       editorRole.status === "9" ||
-                                      editorRole.status === 9 ? null : (
+                                      (editorRole.role ===
+                                        "Agenda Contributor" &&
+                                        (subAgendaFiles.fK_UID !==
+                                          currentUserID ||
+                                          subAgendaData.canEdit ===
+                                            false)) ? null : (
                                         <img
                                           alt=""
                                           src={redcrossIcon}

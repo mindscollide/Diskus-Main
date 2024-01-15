@@ -209,6 +209,8 @@ const Agenda = ({
       isAttachment: false,
       userID: 0,
       subAgenda: [],
+      canView: true,
+      canEdit: true,
     },
   ]);
 
@@ -235,6 +237,8 @@ const Agenda = ({
       isAttachment: false,
       userID: 0,
       subAgenda: [],
+      canView: true,
+      canEdit: true,
     });
   }, []);
 
@@ -822,6 +826,8 @@ const Agenda = ({
     allSavedPresenters,
     allUsersRC,
   ]);
+
+  console.log("MeetingAgendaReducerMeetingAgendaReducer", MeetingAgendaReducer);
 
   useEffect(() => {
     if (
@@ -1431,7 +1437,13 @@ const Agenda = ({
                                       <img
                                         draggable={false}
                                         src={line}
-                                        className={styles["LineStyles"]}
+                                        className={
+                                          data.canView === false &&
+                                          editorRole.role ===
+                                            "Agenda Contributor"
+                                            ? "d-none"
+                                            : styles["LineStyles"]
+                                        }
                                       />
                                     </Col>
                                   </Row>
