@@ -344,7 +344,7 @@ const TodoList = () => {
             <img
               draggable="false"
               className="data-img"
-              src={`data:image/jpeg;base64,${record.displayProfilePictureName}`}
+              src={`data:image/jpeg;base64,${record?.displayProfilePictureName}`}
               alt=""
             />
             {record?.name}
@@ -354,7 +354,7 @@ const TodoList = () => {
       sorter: (a, b) => {
         return a?.taskCreator?.name
           .toLowerCase()
-          .localeCompare(b?.taskCreator?.name.toLowerCase());
+          .localeCompare(b?.taskCreator?.name?.toLowerCase());
       },
     },
     {
@@ -378,7 +378,7 @@ const TodoList = () => {
                     <img
                       draggable="false"
                       className="data-img"
-                      src={`data:image/jpeg;base64,${text[0].displayProfilePictureName}`}
+                      src={`data:image/jpeg;base64,${text[0]?.displayProfilePictureName}`}
                       alt=""
                     />
 
@@ -389,7 +389,7 @@ const TodoList = () => {
                     <img
                       draggable="false"
                       className="data-img"
-                      src={`data:image/jpeg;base64,${text[0].displayProfilePictureName}`}
+                      src={`data:image/jpeg;base64,${text[0]?.displayProfilePictureName}`}
                       alt=""
                     />
                     {text[0].name}
@@ -461,10 +461,12 @@ const TodoList = () => {
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
       onFilter: (value, record) => {
-        return record.status.status.toLowerCase().includes(value.toLowerCase());
+        return record?.status?.status
+          ?.toLowerCase()
+          .includes(value.toLowerCase());
       },
       render: (text, record) => {
-        if (Number(record.taskCreator.pK_UID) === Number(createrID)) {
+        if (Number(record?.taskCreator?.pK_UID) === Number(createrID)) {
           return (
             <>
               <Select
