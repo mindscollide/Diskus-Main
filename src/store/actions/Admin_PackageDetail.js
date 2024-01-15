@@ -55,13 +55,11 @@ const getSubscribeOrganizationPackage = (navigate, t) => {
       },
     })
       .then(async (response) => {
-        console.log("getSubscribeOrganizationPackage", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(getSubscribeOrganizationPackage(navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "responseresponseresponse");
             if (
               response.data.responseResult.responseMessage ===
               "Admin_AdminServiceManager_GetOrganizationSeletedPackageByOrganizationID_01"
@@ -144,7 +142,6 @@ const getSubscriptionPaymentDetail = (navigate, TenureID, t) => {
           dispatch(getSubscriptionPaymentDetail(navigate, TenureID, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "responseresponseresponse");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -262,7 +259,6 @@ const getSubscriptionUpgradeAmountInfoApi = (
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "responseresponseresponse");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -378,7 +374,6 @@ const getSubscriptionUpgradePaymentCompleteApi = (navigate, t) => {
           dispatch(getSubscriptionUpgradePaymentCompleteApi(navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "responseresponseresponse");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -512,7 +507,6 @@ const subscriptionPayment_fail = (message) => {
 };
 
 const subscriptionPaymentApi = (navigate, data, t) => {
-  console.log(data, "datadata");
   let token = JSON.parse(localStorage.getItem("token"));
   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
   let Data = {
@@ -542,7 +536,6 @@ const subscriptionPaymentApi = (navigate, data, t) => {
           dispatch(subscriptionPaymentApi(navigate, data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "responseresponseresponse");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

@@ -36,7 +36,7 @@ const PackageSelected = () => {
     MonthlyBill: 0,
     TotalBill: 0,
   });
-  console.log(totalBillAmount, "totalBillAmounttotalBillAmounttotalBillAmount");
+
   const [organizationDataRole, setorganizationDataRole] = useState({});
   const [countryData, setCountyData] = useState("");
   const [open, setOpen] = useState({
@@ -83,8 +83,6 @@ const PackageSelected = () => {
     document.body.dir = currentLangObj.dir || "ltr";
   }, [currentLangObj, t]);
 
-  console.log("currentLocale", currentLocale);
-
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [packageSelectedData, setPackageSelectedData] = useState({
     Company: "",
@@ -96,8 +94,7 @@ const PackageSelected = () => {
     City: "",
     PostalCode: "",
   });
-  console.log(packageSelectedData, "packageSelectedDatapackageSelectedData");
-  console.log(Authreducer, countryNamesReducer, "AuthreducerAuthreducer");
+
   useEffect(() => {
     localStorage.removeItem("flagForSelectedPackeg");
   }, []);
@@ -106,7 +103,6 @@ const PackageSelected = () => {
     dispatch(getSelectedPacakgeDetail(navigate, t));
   };
 
-  console.log("test");
   useEffect(() => {
     dataCallForDetails();
   }, []);
@@ -121,12 +117,10 @@ const PackageSelected = () => {
     ) {
       countryNameValue = countryNamesReducer.CountryNamesData.find(
         (data, index) => {
-          console.log("fK_WorldCountryID", countryNameValue);
           console.log(
             "fK_WorldCountryID",
             Authreducer.GetSelectedPacakgeDetails.organization.fK_WorldCountryID
           );
-          console.log("fK_WorldCountryID", data);
 
           return (
             Authreducer.GetSelectedPacakgeDetails?.organization
@@ -134,9 +128,7 @@ const PackageSelected = () => {
           );
         }
       );
-      console.log("fK_WorldCountryID", countryNamesReducer.CountryNamesData);
 
-      console.log("fK_WorldCountryID", countryNameValue);
       setCountyData(countryNameValue?.countryName);
     }
     if (

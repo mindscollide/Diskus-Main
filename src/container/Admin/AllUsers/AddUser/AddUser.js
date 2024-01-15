@@ -156,11 +156,10 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     },
     FK_NumberWorldCountryID: 0,
   });
-  console.log(addUserSection, "addUserSectionaddUserSection");
+
   const [againCall, setAgainCall] = useState(false);
 
   const handleSelect = (country) => {
-    console.log(country, "countrycountry");
     setSelected(country);
     setSelectedCountry(country);
     let a = Object.values(countryNameforPhoneNumber).find((obj) => {
@@ -179,7 +178,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   };
 
   const handleDropdownOpen = () => {
-    console.log("handleDropdownOpen");
     if (reactFlag.current) {
       reactFlag.current.focus();
     }
@@ -190,14 +188,10 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     let name = e.target.name;
     let value = e.target.value;
     if (name === "Name" && value !== "") {
-      console.log("AddUserHandler");
       // let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
       let newValue = value.trimStart();
       if (newValue !== "") {
-        console.log("AddUserHandler", newValue.length <= 100);
-
         // if (newValue.legend <= 100) {
-        console.log("AddUserHandler");
 
         setAddUserSection({
           ...addUserSection,
@@ -208,7 +202,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
           },
         });
         // } else {
-        //   console.log("AddUserHandler");
+        //
 
         //   setAddUserSection({
         //     ...addUserSection,
@@ -220,8 +214,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         //   });
         // }
       } else {
-        console.log("AddUserHandler");
-
         setAddUserSection({
           ...addUserSection,
           Name: {
@@ -232,8 +224,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         });
       }
     } else if (name === "Name" && value === "") {
-      console.log("AddUserHandler");
-
       setAddUserSection({
         ...addUserSection,
         Name: { value: "", errorMessage: "", errorStatus: false },
@@ -262,7 +252,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       });
     }
     if (name === "Email" && value !== "") {
-      console.log("valuevalueemailvaluevalueemail", value);
       if (value !== "") {
         setAddUserSection({
           ...addUserSection,
@@ -313,8 +302,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     }
   };
 
-  console.log("Email Value", addUserSection);
-
   //  For Email Validation
   const handeEmailvlidate = () => {
     if (addUserSection.Email.value !== "") {
@@ -356,7 +343,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   // For Erroe handling of email
   useEffect(() => {
     if (companyEmailValidateError !== "") {
-      console.log("checkLoader");
       setAddUserSection({
         ...addUserSection,
         Email: {
@@ -370,7 +356,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
 
   useEffect(() => {
     if (againCall) {
-      console.log("checkLoader");
       let createData = {
         UserName: addUserSection.Name.value,
         OrganizationName: addUserSection.OrganizationName.value,
@@ -450,14 +435,11 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       setEditUserRole([]);
       setAgainCall(false);
     } else {
-      console.log("checkLoader");
       setAgainCall(false);
     }
   }, [adminReducer.EmailCheck]);
 
   const handleClick = async () => {
-    console.log("checkLoader");
-
     if (
       addUserSection.Name.value !== "" &&
       addUserSection.OrganizationName.value !== "" &&
@@ -468,14 +450,8 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       addUserSection.UserRole.value !== "" &&
       addUserSection.Email.value !== ""
     ) {
-      console.log("checkLoader");
-
       if (validateEmailEnglishAndArabicFormat(addUserSection.Email.value)) {
-        console.log("checkLoader");
-
         if (adminReducer.EmailCheck !== false) {
-          console.log("checkLoader");
-
           let createData = {
             UserName: addUserSection.Name.value,
             OrganizationName: addUserSection.OrganizationName.value,
@@ -558,7 +534,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
           setEditUserRole([]);
           dispatch(setEmailCheck(false));
         } else {
-          console.log("checkLoader", adminReducer.Loading);
           await dispatch(setLoader(true));
           await handeEmailvlidate();
           await setAgainCall(true);
@@ -1097,7 +1072,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         tem.push(op);
       });
       setOrganaizationRolesOptions(tem);
-      console.log("temtemtemOrganaizationrole", tem);
 
       if (roleListReducer.OrganaizationName.organizationName !== "") {
         setAddUserSection({
@@ -1123,7 +1097,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       });
 
       setUserRolesListNameOptions(tem);
-      console.log("temtemtemrole", tem);
     }
   }, [roleListReducer.UserRolesList]);
 

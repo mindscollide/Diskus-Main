@@ -174,7 +174,6 @@ const VideoPanelBodyRecent = () => {
   }, [VideoMainReducer?.RecentCallsData]);
 
   const fetchMoreData = async () => {
-    console.log("FetchMoreData", sRowsData, totalRecords);
     if (sRowsData <= totalRecords) {
       await dispatch(ScrollRecentCalls(true));
       let Data = {
@@ -190,7 +189,6 @@ const VideoPanelBodyRecent = () => {
     setRecentCallRecipientData(data);
     if (activeCall === false) {
       if (data.callType.callTypeID === 1) {
-        console.log("Video Called OTO DATA", data);
         let Data = {
           RecipentIDs:
             data.callerID === currentUserID
@@ -208,7 +206,6 @@ const VideoPanelBodyRecent = () => {
         dispatch(getVideoRecipentData(data));
         dispatch(normalizeVideoPanelFlag(true));
         dispatch(videoChatPanel(false));
-        console.log("Video Called OTO Request Data", Data);
       } else if (data.callType.callTypeID === 2) {
         const recipientIds =
           data.callerID !== currentUserID ? [data.callerID] : [];
@@ -228,8 +225,6 @@ const VideoPanelBodyRecent = () => {
           OrganizationID: currentOrganization,
         };
 
-        console.log("Group Recent Call Data", Data);
-
         localStorage.setItem("CallType", Data.CallTypeID);
         dispatch(InitiateVideoCall(Data, navigate, t));
         localStorage.setItem("callerID", currentUserID);
@@ -238,7 +233,6 @@ const VideoPanelBodyRecent = () => {
         dispatch(callRequestReceivedMQTT({}, ""));
         dispatch(normalizeVideoPanelFlag(true));
         dispatch(videoChatPanel(false));
-        console.log("Video Called Group Request Data", Data);
       }
     } else {
       if (data.callType.callTypeID === 1) {
@@ -322,7 +316,6 @@ const VideoPanelBodyRecent = () => {
   };
 
   const leaveCallHostGroup = () => {
-    console.log("Video Called Group DATA", recentCallRecipientData);
     const recipientIds =
       recentCallRecipientData.callerID !== currentUserID
         ? [recentCallRecipientData.callerID]
@@ -343,7 +336,6 @@ const VideoPanelBodyRecent = () => {
       OrganizationID: currentOrganization,
     };
 
-    console.log("Group Recent Call Data", Data);
     let Data2 = {
       OrganizationID: currentOrganization,
       RoomID: initiateRoomID,
@@ -364,12 +356,11 @@ const VideoPanelBodyRecent = () => {
     setInitiateVideoModalGroup(false);
     dispatch(participantPopup(false));
     dispatch(videoChatPanel(false));
-    console.log("Video Called Group Request Data", Data);
+
     localStorage.setItem("isMeetingVideo", false);
   };
 
   const leaveCallParticipantGroup = () => {
-    console.log("Video Called Group DATA", recentCallRecipientData);
     const recipientIds =
       recentCallRecipientData.callerID !== currentUserID
         ? [recentCallRecipientData.callerID]
@@ -390,7 +381,6 @@ const VideoPanelBodyRecent = () => {
       OrganizationID: currentOrganization,
     };
 
-    console.log("Group Recent Call Data", Data);
     let roomID = localStorage.getItem("acceptedRoomID");
     let Data2 = {
       OrganizationID: currentOrganization,
@@ -411,7 +401,7 @@ const VideoPanelBodyRecent = () => {
     setInitiateVideoModalGroup(false);
     dispatch(participantPopup(false));
     dispatch(videoChatPanel(false));
-    console.log("Video Called Group Request Data", Data);
+
     localStorage.setItem("isMeetingVideo", false);
   };
 

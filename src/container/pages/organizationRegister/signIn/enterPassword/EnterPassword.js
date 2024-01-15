@@ -40,7 +40,6 @@ const EnterPassword = () => {
   });
   const passwordRef = useRef();
   const showNewPassowrd = () => {
-    console.log(showNewPasswordIcon, "showNewPassowrd");
     setShowNewPasswordIcon(!showNewPasswordIcon);
   };
 
@@ -138,8 +137,6 @@ const EnterPassword = () => {
       Authreducer.VerifyOTPEmailResponseMessage != "" &&
       Authreducer.VerifyOTPEmailResponseMessage != undefined
     ) {
-      console.log("check123check", Authreducer.VerifyOTPEmailResponseMessage);
-
       setOpen({
         ...open,
         open: true,
@@ -159,8 +156,6 @@ const EnterPassword = () => {
       Authreducer.EnterPasswordResponseMessage != t("2fa-enabled") &&
       Authreducer.EnterPasswordResponseMessage != undefined
     ) {
-      console.log("check123check");
-
       setOpen({
         ...open,
         open: true,
@@ -180,8 +175,6 @@ const EnterPassword = () => {
       Authreducer.OrganizationCreateResponseMessage != t("2fa-enabled") &&
       Authreducer.OrganizationCreateResponseMessage != undefined
     ) {
-      console.log("check123check");
-
       setOpen({
         ...open,
         open: true,
@@ -201,8 +194,6 @@ const EnterPassword = () => {
       Authreducer.CreatePasswordResponseMessage != t("2fa-enabled") &&
       Authreducer.CreatePasswordResponseMessage != undefined
     ) {
-      console.log("check123check");
-
       setOpen({
         ...open,
         open: true,
@@ -222,8 +213,6 @@ const EnterPassword = () => {
       Authreducer.GetSelectedPackageResponseMessage != t("2fa-enabled") &&
       Authreducer.GetSelectedPackageResponseMessage != undefined
     ) {
-      console.log("check123check");
-
       setOpen({
         ...open,
         open: true,

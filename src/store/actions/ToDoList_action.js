@@ -1747,9 +1747,7 @@ const saveTaskDocumentsApi = (navigate, Data, t, value, setShow) => {
           dispatch(saveTaskDocuments_fail(t("Something-went-wrong")));
           dispatch(createUpdateTaskDataRoom_fail(""));
         });
-    } catch (error) {
-      console.log("error", error);
-    }
+    } catch (error) {}
   };
 };
 

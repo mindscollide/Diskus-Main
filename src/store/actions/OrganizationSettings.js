@@ -45,13 +45,11 @@ const getOrganizationLevelSetting = (navigate, t) => {
       },
     })
       .then(async (response) => {
-        console.log("responseresponseresponse", response);
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
           dispatch(getOrganizationLevelSetting(navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "responseresponseresponse");
             if (
               response.data.responseResult.responseMessage ===
               "Settings_SettingsServiceManager_GetOrganizationSettings_01"
@@ -134,13 +132,11 @@ const updateOrganizationLevelSetting = (navigate, updateData, t) => {
       },
     })
       .then(async (response) => {
-        console.log("responseresponseresponse", response);
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
           dispatch(updateOrganizationLevelSetting(navigate, updateData, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "responseresponseresponse");
             if (
               response.data.responseResult.responseMessage ===
               "Settings_SettingsServiceManager_UpdateOrganizationSettings_01"

@@ -125,7 +125,6 @@ const updateCustomerInformationSuccess = (message) => {
 };
 
 const updateCustomerInformationFail = (message) => {
-  console.log("updateCustomerInformationFailupdateCustomerInformationFail", message)
   return {
     type: actions.ADMIN_UPDATE_CUSTOMERINFORMATION_FAIL,
     message: message,
@@ -151,13 +150,13 @@ const updateCustomerOrganizationProfileDetail = (navigate, updateData, t) => {
       },
     })
       .then(async (response) => {
-        console.log("responseresponseresponse", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t))
-          dispatch(updateCustomerOrganizationProfileDetail(navigate, updateData, t))
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            updateCustomerOrganizationProfileDetail(navigate, updateData, t)
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "responseresponseresponse");
             if (
               response.data.responseResult.responseMessage ===
               "Settings_SettingsServiceManager_UpdateOrganizationProfile_01"
@@ -167,14 +166,12 @@ const updateCustomerOrganizationProfileDetail = (navigate, updateData, t) => {
                   t("Record-updated-successfully")
                 )
               );
-              dispatch(customerInfoOrganizationDetails(navigate, t))
+              dispatch(customerInfoOrganizationDetails(navigate, t));
             } else if (
               response.data.responseResult.responseMessage ===
               "Settings_SettingsServiceManager_UpdateOrganizationProfile_02"
             ) {
-              dispatch(
-                updateCustomerInformationFail(t("No-records-updated"))
-              );
+              dispatch(updateCustomerInformationFail(t("No-records-updated")));
             } else if (
               response.data.responseResult.responseMessage ===
               "Settings_SettingsServiceManager_UpdateOrganizationProfile_03"

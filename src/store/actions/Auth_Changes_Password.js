@@ -26,7 +26,6 @@ const changepasswordfail = (message, response) => {
 };
 
 const changePasswordFunc = (changePasswordData, navigate) => {
-  console.log(changePasswordData);
   let Data = {
     UserID: changePasswordData.UserID,
     Email: changePasswordData.Email,
@@ -34,11 +33,10 @@ const changePasswordFunc = (changePasswordData, navigate) => {
     ConfirmPassword: changePasswordData.ConfirmPassword,
     DeviceID: "browser",
   };
-  console.log("changePasswordFunc in", Data);
 
   return (dispatch) => {
     dispatch(changepasswordinit());
-    console.log("changePasswordFunc in 1", Data);
+
     let form = new FormData();
     form.append("RequestMethod", changepassword.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
@@ -48,7 +46,6 @@ const changePasswordFunc = (changePasswordData, navigate) => {
       data: form,
     })
       .then((response) => {
-        console.log("changePasswordFunc", response);
         if (response.data.responseResult.isExecuted === true) {
           dispatch(
             changepasswordsuccess(
@@ -62,7 +59,7 @@ const changePasswordFunc = (changePasswordData, navigate) => {
         }
       })
       .catch((response) => {
-        // console.log("error", error);
+        //
         dispatch(changepasswordfail(response.data));
       });
   };

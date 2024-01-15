@@ -10,7 +10,6 @@ const timeZoneInit = () => {
   };
 };
 const timeZoneSuccess = (response, message) => {
-  console.log(message, response);
   return {
     type: actions.GET_TIMEZONE_SUCCESS,
     response: response,
@@ -41,21 +40,39 @@ const getTimeZone = (navigate, t) => {
       },
     })
       .then(async (response) => {
-        console.log("timezone response", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t))
-          dispatch(getTimeZone((navigate, t)))
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getTimeZone((navigate, t)));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            if (response.data.responseResult.responseMessage.toLowerCase().includes("Settings_SettingsServiceManager_GetAllTimeZones_01".toLowerCase())) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Settings_SettingsServiceManager_GetAllTimeZones_01".toLowerCase()
+                )
+            ) {
               dispatch(
                 timeZoneSuccess(
                   response.data.responseResult.timeZones,
                   t("Record-found")
-                ))
-            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Settings_SettingsServiceManager_GetAllTimeZones_02".toLowerCase())) {
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Settings_SettingsServiceManager_GetAllTimeZones_02".toLowerCase()
+                )
+            ) {
               dispatch(timeZoneFail(t("No-records-found")));
-            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Settings_SettingsServiceManager_GetAllTimeZones_03".toLowerCase())) {
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Settings_SettingsServiceManager_GetAllTimeZones_03".toLowerCase()
+                )
+            ) {
               dispatch(timeZoneFail(t("Something-went-wrong")));
             }
           } else {

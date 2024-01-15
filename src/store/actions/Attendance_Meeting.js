@@ -48,13 +48,11 @@ const getAllAttendanceMeetingApi = (navigate, t, meetingData) => {
       },
     })
       .then(async (response) => {
-        console.log("responseresponseresponse", response);
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
           dispatch(getAllAttendanceMeetingApi(navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "responseresponseresponse");
             if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_GetAllMeetingAttendanceReport_01"
@@ -140,13 +138,11 @@ const saveMeetingAttendanceApi = (navigate, t, Data) => {
       },
     })
       .then(async (response) => {
-        console.log("responseresponseresponse", response);
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
           dispatch(saveMeetingAttendanceApi(navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "responseresponseresponse");
             if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_SaveMeetingAttendanceReport_01"

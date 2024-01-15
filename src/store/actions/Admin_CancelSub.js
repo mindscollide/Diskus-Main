@@ -33,7 +33,7 @@ const CancelSubscriptionPackage = (
   navigate,
   susbcriptionID,
   cancelReson,
-  t,
+  t
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
@@ -56,13 +56,13 @@ const CancelSubscriptionPackage = (
       },
     })
       .then(async (response) => {
-        console.log("CancelSubscriptionPackage", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t))
-          dispatch(CancelSubscriptionPackage(navigate, susbcriptionID, cancelReson, t,))
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            CancelSubscriptionPackage(navigate, susbcriptionID, cancelReson, t)
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "responseresponseresponse");
             if (
               response.data.responseResult.responseMessage ===
               "Admin_AdminServiceManager_CancelOrganizationSubscription_01"
@@ -180,7 +180,6 @@ const revokeprocess = (navigate, t) => {
           dispatch(revokeprocess(navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "responseresponseresponse");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -220,8 +219,8 @@ const revokeprocess = (navigate, t) => {
 
 const adminClearMessege = () => {
   return {
-    type: actions.ADMIN_CLEARE_MESSAGE
-  }
-}
+    type: actions.ADMIN_CLEARE_MESSAGE,
+  };
+};
 
 export { CancelSubscriptionPackage, revokeprocess, adminClearMessege };

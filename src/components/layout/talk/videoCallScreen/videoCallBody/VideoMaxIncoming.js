@@ -45,8 +45,6 @@ const VideoMaxIncoming = () => {
 
   let callTypeID = Number(localStorage.getItem("callTypeID"));
 
-  console.log("VideoMainReducer", VideoMainReducer);
-
   const [isVisible, setIsVisible] = useState(true);
 
   const [incomingCallerData, setIncomingCallerData] = useState([]);
@@ -78,7 +76,6 @@ const VideoMaxIncoming = () => {
     audioElement.play();
 
     const timer = setTimeout(() => {
-      console.log("Timer Initiated");
       // Dispatch action to update global state
       let Data = {
         ReciepentID: currentUserId,
@@ -87,7 +84,7 @@ const VideoMaxIncoming = () => {
         CallTypeID: callTypeID,
       };
       dispatch(VideoCallResponse(Data, navigate, t));
-      console.log("VideoCallResponse Incoming HIT");
+
       dispatch(incomingVideoCallFlag(false));
       setIsVisible(false);
       audioElement.pause();
@@ -95,10 +92,8 @@ const VideoMaxIncoming = () => {
     }, timeValue);
 
     // Clear the timer if isTimerRunning becomes false
-    console.log("isTimerRunning", isTimerRunning);
+
     if (!isTimerRunning) {
-      console.log("isTimerRunning", isTimerRunning);
-      console.log("Timer Stopped");
       clearTimeout(timer);
     }
 
@@ -106,7 +101,6 @@ const VideoMaxIncoming = () => {
       audioElement.pause();
       audioElement.currentTime = 0;
       clearTimeout(timer);
-      console.log("Timer Stopped in Return Function");
     };
   }, []);
 
@@ -180,8 +174,6 @@ const VideoMaxIncoming = () => {
       setIsTimerRunning(false); // Stop the timer
     }
   }, [videoFeatureReducer.IncomingVideoFlag]);
-
-  console.log("isTimerRunning", isTimerRunning);
 
   useEffect(() => {}, [activeCallState]);
 

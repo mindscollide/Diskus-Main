@@ -104,7 +104,6 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
       videoFeatureReducer.MinimizeParticipantPopupFlag
     ) {
       dispatch(minimizeParticipantPopup(false));
-      console.log("ParticipantPopUP");
     }
   };
 
@@ -186,8 +185,6 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
       document.removeEventListener("click", handleOutsideClick);
     };
   }, [videoFeatureReducer.MinimizeParticipantPopupFlag]);
-
-  console.log("participantStatus", participantStatus[0]);
 
   return (
     <>
