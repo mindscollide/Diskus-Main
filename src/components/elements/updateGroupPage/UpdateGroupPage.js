@@ -846,7 +846,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                               lg={12}
                               md={12}
                               sm={12}
-                              className="UpdateCheckbox Saved_money_Tagline"
+                              className="Update-committee-Checkbox Saved_money_Tagline"
                             >
                               <Checkbox
                                 className="SearchCheckbox MontserratSemiBold-600"
