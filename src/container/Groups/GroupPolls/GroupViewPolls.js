@@ -119,7 +119,10 @@ const GroupViewPolls = ({ groupStatus }) => {
 
   const handleClickonTitle = (record) => {
     // getPollsByGroupMainApi;
-    if (record.pollStatus.pollStatusId === 1) {
+    if (
+      record.pollStatus.pollStatusId === 1 ||
+      record.pollStatus.pollStatusId === 3
+    ) {
       let data = {
         PollID: record.pollID,
         UserID: parseInt(userID),
