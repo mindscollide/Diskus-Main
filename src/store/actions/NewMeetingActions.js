@@ -2362,19 +2362,19 @@ const showSetMeetingPollsInit = () => {
 
 const showSetMeetingPollsSuccess = (message) => {
   return {
-    type: actions.SET_MEETING_POLLS_INIT,
+    type: actions.SET_MEETING_POLLS_SUCCESS,
     message: message,
   };
 };
 
 const showSetMeetingPollsFailed = (message) => {
   return {
-    type: actions.SET_MEETING_POLLS_INIT,
+    type: actions.SET_MEETING_POLLS_FAILED,
     message: message,
   };
 };
 
-const SetMeetingPollsApiFunc = (Data, navigate, t) => {
+const SetMeetingPollsApiFunc = (Data, navigate, t, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(showSetMeetingPollsInit());
@@ -2402,12 +2402,17 @@ const SetMeetingPollsApiFunc = (Data, navigate, t) => {
                   "Polls_PollsServiceManager_SetMeetingPolls_01".toLowerCase()
                 )
             ) {
-              dispatch(
-                showSetMeetingPollsSuccess(
-                  response.data.responseResult.responseMessage,
-                  t("Record-found")
-                )
-              );
+              dispatch(showSetMeetingPollsSuccess(t("Record-found")));
+              let OrganizationID = localStorage.getItem("organizationID");
+              let Data1 = {
+                MeetingID: currentMeeting,
+                OrganizationID: Number(OrganizationID),
+                CreatorName: "",
+                PollTitle: "",
+                PageNumber: 1,
+                Length: 50,
+              };
+              dispatch(GetAllPollsByMeetingIdApiFunc(Data1, navigate, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

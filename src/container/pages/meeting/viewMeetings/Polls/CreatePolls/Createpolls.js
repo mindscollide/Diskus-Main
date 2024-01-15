@@ -460,17 +460,17 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
     let users = [];
     let optionsListData = [];
     if (
-      pollsData.date != "" &&
-      pollsData.Title != "" &&
+      pollsData.date !== "" &&
+      pollsData.Title !== "" &&
       Object.keys(members).length > 0 &&
       Object.keys(options).length >= 2 &&
       allValuesNotEmpty
     ) {
-      members.map((userdata, index) => {
+      members.forEach((userdata, index) => {
         users.push(userdata.userID);
       });
-      options.map((optionData, index) => {
-        if (optionData.value != "") {
+      options.forEach((optionData, index) => {
+        if (optionData.value !== "") {
           optionsListData.push(optionData.value);
         }
       });
@@ -612,9 +612,9 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                                   <Col lg={12} md={12} sm={12}>
                                     <span className="position-relative">
                                       <TextField
-                                        placeholder={
-                                          "Option" + " " + parseInt(index + 1)
-                                        }
+                                        placeholder={`${"Option"}  ${parseInt(
+                                          index + 1
+                                        )}`}
                                         applyClass={"PollingCreateModal"}
                                         labelClass="d-none"
                                         name={data.name}
@@ -704,8 +704,11 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                     lg={6}
                     md={6}
                     sm={6}
-                    className="d-flex align-items-center"
+                    className="d-flex align-items-start flex-column justify-content-start"
                   >
+                    <span className={styles["Title_heading"]}>
+                      {t("Due-date") + "*"}
+                    </span>
                     <DatePicker
                       value={meetingDate}
                       format={"DD/MM/YYYY"}

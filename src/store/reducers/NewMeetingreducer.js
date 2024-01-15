@@ -817,7 +817,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.SET_MEETING_POLLS_SUCCESS: {
       return {
         ...state,
-        Loading: true,
+        Loading: false,
         ResponseMessage: action.message,
       };
     }
@@ -825,7 +825,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.SET_MEETING_POLLS_FAILED: {
       return {
         ...state,
-        Loading: true,
+        Loading: false,
         ResponseMessage: action.message,
       };
     }
