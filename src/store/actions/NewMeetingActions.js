@@ -60,6 +60,7 @@ import {
   inviteForCollaboration,
   validateEncryptedStringUserAvailabilityForMeeting,
   getAllCommittesandGroupsforPolls,
+  getUserWiseProposeDateOrganizer,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -68,6 +69,7 @@ import {
   LeaveCall,
 } from "./VideoMain_actions";
 import {
+  maximizeVideoPanelFlag,
   normalizeVideoPanelFlag,
   videoChatPanel,
 } from "./VideoFeature_actions";
@@ -1351,7 +1353,7 @@ const FetchMeetingURLApi = (
               localStorage.setItem("acceptedRecipientID", currentUserID);
               localStorage.setItem("isMeetingVideo", true);
               dispatch(callRequestReceivedMQTT({}, ""));
-              dispatch(normalizeVideoPanelFlag(true));
+              dispatch(maximizeVideoPanelFlag(true));
               dispatch(videoChatPanel(false));
               // dispatch(groupCallRecipients(groupCallActiveUsers))
             } else if (
@@ -2761,7 +2763,7 @@ const SetMeetingResponseApiFunc = (Data, navigate, t) => {
                   "Meeting_MeetingServiceManager_SetMeetingProposedDatesResponse_02".toLowerCase()
                 )
             ) {
-              dispatch(showPrposedMeetingReponsneFailed(t("No-record-saved")));
+              dispatch(showPrposedMeetingReponsneFailed(t("No-record-found")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -7072,6 +7074,96 @@ const proposeNewMeetingPageFlag = (response) => {
   };
 };
 
+// get user wise proposed dates in unpublished meeting on organizer start
+const getUserProposedDatesInit = () => {
+  return {
+    type: actions.GET_USER_PROPOSED_DATES_INIT,
+  };
+};
+
+const getUserProposedDatesSuccess = (response, message) => {
+  return {
+    type: actions.GET_USER_PROPOSED_DATES_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getUserProposedDatesFail = (message) => {
+  return {
+    type: actions.GET_USER_PROPOSED_DATES_FAIL,
+    message: message,
+  };
+};
+
+const getUserWiseProposedDatesMainApi = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getUserProposedDatesInit());
+    let form = new FormData();
+    form.append("RequestMethod", getUserWiseProposeDateOrganizer.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getUserWiseProposedDatesMainApi(navigate, t, Data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetUserWiseProposedDates_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getUserProposedDatesSuccess(
+                  response.data.responseResult.userWiseMeetingProposedDates,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetUserWiseProposedDates_02".toLowerCase()
+                )
+            ) {
+              dispatch(getUserProposedDatesFail(t("No-record-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetUserWiseProposedDates_03".toLowerCase()
+                )
+            ) {
+              dispatch(getUserProposedDatesFail(t("Something-went-wrong")));
+            } else {
+              dispatch(getUserProposedDatesFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(getUserProposedDatesFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(getUserProposedDatesFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(getUserProposedDatesFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// get user wise proposed dates in unpublished meeting on organizer end
+
 export {
   clearResponseNewMeetingReducerMessage,
   getAllAgendaContributorApi,
@@ -7200,4 +7292,5 @@ export {
   viewProposeOrganizerMeetingPageFlag,
   proposeNewMeetingPageFlag,
   meetingNotConductedMQTT,
+  getUserWiseProposedDatesMainApi,
 };

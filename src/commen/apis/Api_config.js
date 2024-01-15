@@ -1337,6 +1337,11 @@ const validateMicrosoftToken = {
   RequestMethod: "ServiceManager.GetMicrosoftValidToken",
 };
 
+// when organizer hit the view button in unpublished meeting
+const getUserWiseProposeDateOrganizer = {
+  RequestMethod: "ServiceManager.GetUserWiseProposedDates",
+};
+
 export {
   getDataAnalyticsCountRM,
   updateAndOpenByAndDescriptionRM,
@@ -1695,4 +1700,5 @@ export {
   validateEncyptedStringUserDataRoom,
   //Validate Microsoft Token
   validateMicrosoftToken,
+  getUserWiseProposeDateOrganizer,
 };
