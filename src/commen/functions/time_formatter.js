@@ -155,10 +155,10 @@ export const timeforView = (date) => {
 
 export const timeforSend = (date) => {
   if (date instanceof Date && !isNaN(date)) {
-    let newDate = new Date();
+    // let newDate = new Date();
     // newDate.setDate(date.getDate() + daycount);
 
-    let timeValforSend = moment(newDate).format("HH:SS");
+    let timeValforSend = moment(date).format("HH:mm");
 
     return timeValforSend;
   }

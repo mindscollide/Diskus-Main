@@ -446,10 +446,10 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
       Object.keys(options).length >= 2 &&
       allValuesNotEmpty
     ) {
-      members.map((userdata, index) => {
+      members.forEach((userdata, index) => {
         users.push(userdata.userID);
       });
-      options.map((optionData, index) => {
+      options.forEach((optionData, index) => {
         if (optionData.value !== "") {
           optionsListData.push(optionData.value);
         }
@@ -513,7 +513,11 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
   };
 
   useEffect(() => {
-    if (NewMeetingreducer.ResponseMessage !== "") {
+    if (
+      NewMeetingreducer.ResponseMessage !== "" &&
+      NewMeetingreducer.ResponseMessage !== t("Record-found") &&
+      NewMeetingreducer.ResponseMessage !== t("No-record-found")
+    ) {
       setOpen({
         ...open,
         flag: true,
@@ -678,8 +682,11 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                     lg={6}
                     md={6}
                     sm={6}
-                    className="d-flex align-items-center"
+                    className="d-flex align-items-start flex-column justify-content-start"
                   >
+                    <span className={styles["Title_heading"]}>
+                      {t("Due-date") + "*"}
+                    </span>
                     <DatePicker
                       value={meetingDate}
                       format={"DD/MM/YYYY"}
