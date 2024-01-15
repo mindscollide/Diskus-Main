@@ -75,7 +75,7 @@ const saveFilesApi = (
   let folderID = JSON.parse(localStorage.getItem("folderID"));
   let currentView = localStorage.getItem("setTableView");
   let viewFolderID = localStorage.getItem("folderID");
-  console.log(folderID, "folderIDfolderIDfolderID");
+
   let Data = {
     FolderID: folderID !== null ? folderID : 0,
     Files: [
@@ -216,7 +216,6 @@ const saveFilesApi = (
             }));
             dispatch(saveFiles_fail(t("Something-went-wrong")));
           }
-          console.log(response);
         })
         .catch(() => {
           setTasksAttachments((prevTasks) => ({
@@ -300,7 +299,6 @@ const uploadDocumentsApi = (
           const percentCompleted = Math.round(
             (progressEvent.loaded * 100) / progressEvent.total
           );
-          console.log("percentCompleted", percentCompleted);
 
           setTasksAttachments((prevTasks) => ({
             ...prevTasks,
@@ -429,9 +427,7 @@ const uploadDocumentsApi = (
           // }
         })
         .catch((error) => {
-          console.log("prevTasksprevTasks");
           if (axios.isCancel(error)) {
-            console.log("Upload canceled");
             // Handle cancellation as needed
           } else {
             setTasksAttachments((prevTasks) => ({
@@ -814,8 +810,6 @@ const getDocumentsAndFolderApi = (navigate, statusID, t, no, sort, order) => {
     Length: 10,
   };
   return (dispatch) => {
-    console.log("asdasdasdasdasdasd", no);
-
     if (no === 1) {
       dispatch(getDocumentsAndFolders_init());
     }
@@ -845,7 +839,6 @@ const getDocumentsAndFolderApi = (navigate, statusID, t, no, sort, order) => {
               response.data.responseResult.responseMessage.toLowerCase() ===
               "DataRoom_DataRoomManager_GetDocumentsAndFolders_01".toLowerCase()
             ) {
-              console.log("Test one");
               dispatch(
                 getDocumentsAndFolders_success(
                   response.data.responseResult,
@@ -863,22 +856,17 @@ const getDocumentsAndFolderApi = (navigate, statusID, t, no, sort, order) => {
               response.data.responseResult.responseMessage.toLowerCase() ===
               "DataRoom_DataRoomManager_GetDocumentsAndFolders_02".toLowerCase()
             ) {
-              console.log("Test one");
               dispatch(getDocumentsAndFolders_fail(t("No-record-found")));
-              console.log("checking1212");
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "DataRoom_DataRoomManager_GetDocumentsAndFolders_03".toLowerCase()
             ) {
-              console.log("Test one");
               dispatch(getDocumentsAndFolders_fail(t("Something-went-wrong")));
             }
           } else {
-            console.log("Test one");
             dispatch(getDocumentsAndFolders_fail(t("Something-went-wrong")));
           }
         } else {
-          console.log("Test one");
           dispatch(getDocumentsAndFolders_fail(t("Something-went-wrong")));
         }
       })
@@ -970,7 +958,6 @@ const getDocumentsAndFolderApiScrollbehaviour = (
             ) {
               dispatch(getDocumentsAndFolders_fail(t("No-record-found")));
               dispatch(tableSpinner(false));
-              console.log("checking1212");
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "DataRoom_DataRoomManager_GetDocumentsAndFolders_03".toLowerCase()
@@ -1319,7 +1306,6 @@ const deleteFileDataroom_init = () => {
 
 // Delete file success
 const deleteFileDataroom_success = (response, message) => {
-  console.log(response, message);
   return {
     type: actions.DELETEFILE_DATAROOM_SUCCESS,
     response: response,
@@ -1371,7 +1357,6 @@ const deleteFileDataroom = (navigate, id, t, setSorted) => {
                   "DataRoom_DataRoomServiceManager_DeleteFile_01".toLowerCase()
                 )
             ) {
-              console.log("hello");
               if (Number(currentView) === 4) {
                 let Data = {
                   UserID: Number(createrID),
@@ -1402,7 +1387,6 @@ const deleteFileDataroom = (navigate, id, t, setSorted) => {
                   "DataRoom_DataRoomServiceManager_DeleteFile_02".toLowerCase()
                 )
             ) {
-              console.log("hello");
               dispatch(deleteFileDataroom_fail(t("Failed-to-delete-any-file")));
             } else if (
               response.data.responseResult.responseMessage
@@ -1542,7 +1526,6 @@ const FileisExist = (
                   showbarupload
                 )
               );
-              console.log("handleUploadFile");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1753,7 +1736,6 @@ const deleteFolder = (navigate, id, t, setSorted) => {
                   "DataRoom_DataRoomServiceManager_DeleteFolder_01".toLowerCase()
                 )
             ) {
-              console.log("hello");
               if (Number(currentView) === 4) {
                 let Data = {
                   UserID: Number(createrID),
@@ -1784,7 +1766,6 @@ const deleteFolder = (navigate, id, t, setSorted) => {
                   "DataRoom_DataRoomServiceManager_DeleteFolder_02".toLowerCase()
                 )
             ) {
-              console.log("hello");
               dispatch(deleteFolder_fail(t("Failed-to-delete-any-folder")));
             } else if (
               response.data.responseResult.responseMessage
@@ -1835,7 +1816,6 @@ const FolderisExistrename_fail = (message) => {
 
 // Folder Exist API
 const FolderisExistRename = (navigate, folderData, t, setRenamefolder) => {
-  console.log(folderData, "folderDatafolderDatafolderData");
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let folderID = JSON.parse(localStorage.getItem("folderID"));
@@ -2215,7 +2195,6 @@ const renameFileApi = (navigate, filedata, t, setShowRenameFile) => {
   };
 };
 const tableSpinner = (payload, value) => {
-  console.log(payload, value, "payloadpayload");
   return {
     type: actions.DATAROOM_TABLE_SCROLL_BAR,
     response: payload,
@@ -2377,7 +2356,6 @@ const getRecentDocumentsApi = (navigate, t, data) => {
       },
     })
       .then(async (response) => {
-        console.log({ response }, "responseresponseresponseresponse");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(getRecentDocumentsApi(navigate, t, data));
@@ -2770,8 +2748,6 @@ const createFileLinkApi = (navigate, t, data, setLinkedcopied) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
-    console.log(data, "datadatadata");
-
     dispatch(createFileLink_init());
     let form = new FormData();
     form.append("RequestMethod", createFileLinkRM.RequestMethod);
@@ -3216,7 +3192,7 @@ const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
   let form = new FormData();
   form.append("RequestMethod", dataRoomFileDownloadService.RequestMethod);
   form.append("RequestData", JSON.stringify(data));
-  console.log(Name, "NameNameName");
+
   let ext = Name.split(".").pop();
   let contentType;
   if (ext === "doc") {
@@ -3241,7 +3217,6 @@ const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
   } else if (ext === "jpeg") {
     contentType = "image/jpeg";
   } else {
-    console.log();
   }
   return (dispatch) => {
     dispatch(DownloadFileForDataRoomStart());
@@ -3269,7 +3244,7 @@ const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
           link.setAttribute("download", Name);
           document.body.appendChild(link);
           link.click();
-          console.log(response);
+
           dispatch(DownloadFileForDataRoomEnded(false));
         }
       })
@@ -3282,7 +3257,7 @@ const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
 // const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
 //   let token = JSON.parse(localStorage.getItem("token"));
 
-//   console.log("datadata", JSON.stringify(data));
+//
 //   let form = new FormData();
 //   form.append("RequestMethod", dataRoomFileDownloadService.RequestMethod);
 //   form.append("RequestData", JSON.stringify(data));
@@ -3312,14 +3287,14 @@ const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
 //           link.setAttribute("download", Name);
 //           document.body.appendChild(link);
 //           link.click();
-//           console.log("download", response);
+//
 //           dispatch(DownloadFileForDataRoomEnded(false));
 //         } else {
 //           dispatch(downloadFail(response));
 //         }
 //       })
 //       .catch((response) => {
-//         console.log("download err", response);
+//
 //         dispatch(downloadFail(response));
 //       });
 //   };
@@ -3347,7 +3322,6 @@ const downloadFolderFail = (response) => {
 const DataRoomDownloadFolderApiFunc = (navigate, data, t, Name) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
-  console.log("datadata", JSON.stringify(data));
   let form = new FormData();
   form.append("RequestMethod", dataRoomFolderDownloadService.RequestMethod);
   form.append("RequestData", JSON.stringify(data));
@@ -3377,14 +3351,13 @@ const DataRoomDownloadFolderApiFunc = (navigate, data, t, Name) => {
           link.setAttribute("download", `${Name}.zip`);
           document.body.appendChild(link);
           link.click();
-          console.log("download", response);
+
           dispatch(DownloadFolderForDataRoomEnded(false));
         } else {
           dispatch(downloadFail(response));
         }
       })
       .catch((response) => {
-        console.log("download err", response);
         dispatch(downloadFolderFail(response));
       });
   };

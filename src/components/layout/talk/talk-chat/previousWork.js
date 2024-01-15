@@ -205,8 +205,6 @@ const TalkChat = () => {
   //File Thumbnail States
   const [file, setFile] = useState("");
 
-  console.log("file", file);
-
   //Input Chat Autofocus state
   const [inputChat, setInputChat] = useState(true);
 
@@ -732,15 +730,13 @@ const TalkChat = () => {
 
   // }
 
-  console.log("Task Attachments", tasksAttachments);
-
   const handleFileUpload = (data, uploadType) => {
     // Your common logic for file upload
 
     // Different logic for the specific upload type
     if (uploadType === "document") {
       // Handle document upload
-      console.log("function fileUploadTalk");
+
       const uploadFilePath = data.target.value;
       const uploadedFile = data.target.files[0];
       var ext = uploadedFile.name.split(".").pop();
@@ -794,7 +790,7 @@ const TalkChat = () => {
       setUploadFileTalk(uploadedFile);
     } else if (uploadType === "image") {
       // Handle image upload
-      console.log("function fileUploadTalkImage");
+
       const uploadFilePath = data.target.value;
       const uploadedFile = data.target.files[0];
       var ext = uploadedFile.name.split(".").pop();
@@ -1460,7 +1456,6 @@ const TalkChat = () => {
 
   // for save chat
   const modalHandlerSave = async (data) => {
-    console.log("modalHandlerSave", data);
     setSave(true);
     setPrint(false);
     setEmail(false);
@@ -1560,7 +1555,7 @@ const TalkChat = () => {
       },
     };
     dispatch(DownloadChat(Data, t, navigate));
-    console.log("downloadChat", Data);
+
     setSave(false);
   };
 
@@ -1604,7 +1599,7 @@ const TalkChat = () => {
       },
     };
     dispatch(DownloadChat(Data, t, navigate));
-    console.log("downloadChat", Data);
+
     setPrint(false);
   };
 
@@ -1699,12 +1694,10 @@ const TalkChat = () => {
         [name]: DateSendingFormat(value),
       });
     }
-    console.log("Custom Dates", chatDateState.StartDate, chatDateState.EndDate);
   };
 
   //Show upload options or Hide
   const showUploadOptions = () => {
-    console.log("Upload Option Clicked");
     if (uploadOptions === false && chatClickData.isBlock === 0) {
       setUploadOptions(true);
     } else {
@@ -2363,7 +2356,6 @@ const TalkChat = () => {
     ) {
       try {
         if (talkStateData.activeChatIdData.messageType === "O") {
-          console.log("Try 1");
           if (
             talkStateData.MessageSendOTO.MessageSendResponseData
               .oneToOneMessages[0].senderID != undefined &&
@@ -2379,7 +2371,6 @@ const TalkChat = () => {
               talkStateData.MessageSendOTO.MessageSendResponseData
                 .oneToOneMessages[0].receiverID
           ) {
-            console.log("Try 2");
             let apiInsertOtoMessageData =
               talkStateData.MessageSendOTO.MessageSendResponseData
                 .oneToOneMessages[0];
@@ -2406,7 +2397,7 @@ const TalkChat = () => {
               shoutAll: apiInsertOtoMessageData.shoutAll,
               uid: apiInsertOtoMessageData.uid,
             };
-            console.log("Try 3");
+
             let allChatNewMessageOtoData = {
               id:
                 parseInt(currentUserId) === apiInsertOtoMessageData.senderID
@@ -2437,7 +2428,7 @@ const TalkChat = () => {
               senderID: apiInsertOtoMessageData.senderID,
               admin: 0,
             };
-            console.log("Try 4");
+
             if (Object.keys(insertApiOtoMessageData) !== null) {
               if (
                 insertApiOtoMessageData !== undefined &&
@@ -2455,7 +2446,6 @@ const TalkChat = () => {
                 insertApiOtoMessageData.messageBody ===
                   allOtoMessages[allOtoMessages.length - 1].messageBody
               ) {
-                console.log("Try 5");
                 setAllOtoMessages((prevState) => {
                   const updatedMessages = [...prevState];
                   updatedMessages[updatedMessages.length - 1] =
@@ -2536,12 +2526,8 @@ const TalkChat = () => {
               }
             }
           }
-          console.log("Try End Before Catch");
         }
-        console.log("Try End Before Catch");
-      } catch {
-        console.log("Error MessageSendOTO");
-      }
+      } catch {}
     }
     //
   }, [talkStateData.MessageSendOTO.MessageSendResponseData]);
@@ -4119,8 +4105,6 @@ const TalkChat = () => {
   // Generate the unique ID
   const uniqueId = generateGUID();
 
-  console.log("uploadFileTalk", uploadFileTalk);
-
   //Send Chat
   const sendChat = async () => {
     // e.preventDefault()
@@ -4129,8 +4113,6 @@ const TalkChat = () => {
       (messageSendData.Body !== "" && uploadFileTalk !== {}) ||
       messageSendData.Body !== ""
     ) {
-      console.log("uniqueId", uniqueId);
-
       if (chatClickData.messageType === "O") {
         let Data = {
           TalkRequest: {
@@ -4228,7 +4210,7 @@ const TalkChat = () => {
           JSON.parse(localStorage.getItem("messageArray")) || [];
         existingArray.push(checkLocalData);
         // localStorage.setItem('messageArray', JSON.stringify(existingArray))
-        console.log("Insert OTO Message Response", Data);
+
         dispatch(InsertOTOMessages(navigate, Data, uploadFileTalk, t));
 
         let newMessageOto = {
@@ -4475,8 +4457,6 @@ const TalkChat = () => {
     };
   }, []);
 
-  console.log("Talk State Data", talkStateData);
-
   const handleOutsideClick = (event) => {
     if (
       chatMenuRef.current &&
@@ -4544,7 +4524,7 @@ const TalkChat = () => {
         },
       },
     };
-    // console.log('editGroup', data)
+    //
     dispatch(UpdatePrivateGroup(data, t, navigate));
     setShowGroupEdit(false);
   };
@@ -4634,15 +4614,12 @@ const TalkChat = () => {
 
   const storeDataInAPI = async (counter, flag) => {
     try {
-      console.log("LocalStorageManagement Interval", counter);
       let newMessageData = [...messageSendDataLS];
       let dataItem;
       if (flag) {
         for (let i = 0; i < newMessageData.length; i++) {
           dataItem = newMessageData[i];
-          console.log("LocalStorageManagement Interval", i);
 
-          console.log("LocalStorageManagement dataItem", dataItem);
           await dispatch(
             InsertOTOMessages(navigate, dataItem, uploadFileTalk, t, counter)
           );
@@ -4650,24 +4627,19 @@ const TalkChat = () => {
       } else {
       }
 
-      console.log("Maximum retries reached. Stopping API calls.", counter);
       // Check if maximum retries reached
       if (counter >= 16) {
-        console.log("Maximum retries reached. Stopping API calls.");
         setIsRetryAttemptComplete(true);
       }
 
       // Increment retry count
     } catch (error) {
-      console.error("LocalStorageManagement Error", error);
       // Handle error if needed
     }
   };
 
   //Current MQTT Connection State
   let currentMqttState = localStorage.getItem("MqttConnectionState");
-
-  console.log("mqttState", currentMqttState);
 
   useEffect(() => {}, [currentMqttState]);
 
@@ -4676,8 +4648,6 @@ const TalkChat = () => {
     if (talkStateData.OtoMessageFlag === true) {
       let counter = 0;
       interval = setInterval(() => {
-        console.log("LocalStorageManagement Interval");
-
         storeDataInAPI(counter, false);
         counter += 4;
         if (counter >= 20) {
@@ -4697,8 +4667,6 @@ const TalkChat = () => {
     if (talkStateData.OtoMessageFlag === false) {
       let counter = 0;
       interval = setInterval(() => {
-        console.log("LocalStorageManagement Interval");
-
         storeDataInAPI(counter, true);
         counter += 4;
         if (counter >= 20) {
@@ -4722,8 +4690,6 @@ const TalkChat = () => {
     setFile("");
     chatMessages.current?.scrollIntoView({ behavior: "auto" });
   };
-
-  console.log("All OTO Messages", allOtoMessages);
 
   useEffect(() => {
     // Check the condition to trigger the link

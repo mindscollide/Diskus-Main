@@ -7,7 +7,6 @@ import { signOut } from "./Auth_Sign_Out";
 
 // Refresh Token
 const refreshtokenFail = (message) => {
-  console.log("RefreshToken", message);
   return {
     type: actions.REFRESH_TOKEN_FAIL,
     message: message,
@@ -41,7 +40,7 @@ const RefreshToken = (navigate, t) => {
       headers: { "Access-Control-Allow-Origin": "*" },
     })
       .then(async (response) => {
-        // console.log("RefreshToken", response);
+        //
         if (response.data.responseCode === 200) {
           await dispatch(
             refreshtokenSuccess(
@@ -68,7 +67,7 @@ const RefreshToken = (navigate, t) => {
         // if (response.data.responseCode === 200) {
 
         // } else {
-        //   console.log("RefreshToken", response);
+        //
         //   let message2 = t("Your-session-has-expired-please-login-again");
         //   await dispatch(signOut(navigate, message2));
         //   await dispatch(refreshtokenFail(message2));

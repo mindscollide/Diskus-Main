@@ -48,7 +48,7 @@ const Votepoll = () => {
       if (pollOptions.length > 0) {
         setPollsOption(pollOptions);
       }
-      console.log("pollOptions", pollOptions);
+
       if (Object.keys(pollDetails).length > 0) {
         setViewProgressPollsDetails({
           ...viewProgressPollsDetails,
@@ -64,8 +64,7 @@ const Votepoll = () => {
   const handleCheckBoxYes = (e) => {
     let checked = e.target.checked;
     let name = e.target.name;
-    console.log(checked, "checkedYescheckedYescheckedYes");
-    console.log(name, "checkedYescheckedYescheckedYes");
+
     let array = [...viewProgressPollsDetails.answer];
     if (checked) {
       array.push(name);
@@ -87,7 +86,6 @@ const Votepoll = () => {
 
   const handleCheckBoxForOneOnly = (e) => {
     let value = e.target.value;
-    console.log(value, "checkedYescheckedYescheckedYes");
 
     setViewProgressPollsDetails({
       ...viewProgressPollsDetails,
@@ -96,7 +94,6 @@ const Votepoll = () => {
   };
 
   const handleForCheck = (value) => {
-    console.log("handleForCheck", value);
     let findID = viewProgressPollsDetails.answer.find(
       (data, index) => data === value
     );
@@ -114,7 +111,7 @@ const Votepoll = () => {
         UserID: parseInt(userID),
         PollOptionIDs: viewProgressPollsDetails.answer,
       };
-      console.log(data, "submitvotesubmitvotesubmitvote");
+
       dispatch(castVoteApi(navigate, data, t));
     } else {
       // open sncak bar for atleast select one option

@@ -59,7 +59,6 @@ const getTodoStatus = (navigate, t) => {
       },
     })
       .then(async (response) => {
-        console.log("todo Status response", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(getTodoStatus(navigate, t));

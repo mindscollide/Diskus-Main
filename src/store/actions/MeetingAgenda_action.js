@@ -582,7 +582,6 @@ const getAdvanceMeetingAgendabyMeetingID_init = () => {
   };
 };
 const getAdvanceMeetingAgendabyMeetingID_success = (data, message) => {
-  console.log(data, message, "getAdvanceMeetingAgendabyMeetingID_success");
   return {
     type: actions.GET_ADVANCEMEETINGAGENDABYMEETINGID_SUCCESS,
     response: data,
@@ -751,7 +750,6 @@ const CreateUpdateMeetingDataRoomMap = (navigate, t, data) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(CreateUpdateMeetingDataRoomMap(navigate, t, data));
@@ -1218,8 +1216,7 @@ const AddUpdateAdvanceMeetingAgenda = (
               );
               const saveDocumentsData = Data;
               const agendaList = response.data.responseResult.agendaIds;
-              console.log("saveDocumentsData", saveDocumentsData);
-              console.log("saveDocumentsData agendaList", agendaList);
+
               // Function to replace IDs in the saveDocumentsData
               function replaceIDs(documents) {
                 documents.forEach((doc) => {
@@ -1242,8 +1239,6 @@ const AddUpdateAdvanceMeetingAgenda = (
 
               // Replace IDs in the main AgendaList
               replaceIDs(saveDocumentsData.AgendaList);
-
-              console.log("saveDocumentsData", saveDocumentsData);
 
               const newUpdateFileList = {
                 MeetingID: saveDocumentsData.MeetingID,

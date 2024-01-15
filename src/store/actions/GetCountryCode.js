@@ -40,7 +40,6 @@ const getCountryCodeFunc = () => {
     })
       .then((response) => {
         if (response.data.responseResult.isExecuted === true) {
-          console.log("response country code", response);
           dispatch(
             countryCodeSuccess(
               response.data.responseResult.countryCodes,
@@ -51,7 +50,6 @@ const getCountryCodeFunc = () => {
       })
       .catch((response) => {
         dispatch(countryCodeFail);
-        console.log(response);
       });
   };
 };

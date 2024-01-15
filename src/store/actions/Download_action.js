@@ -14,7 +14,6 @@ import {
 import Helper from "../../commen/functions/history_logout";
 
 const ShowNotification = (message) => {
-  console.log("message", message);
   return {
     type: actions.SHOW,
     message: message,
@@ -47,7 +46,6 @@ const SetAttendanceLoaderFail = () => {
 };
 
 const downloadDocumentSuccess = (response) => {
-  console.log("uploadedFile", response);
   return {
     type: actions.DOWNLOAD_DOCUMENT_FILE_SUCCESS,
     response: response,
@@ -91,7 +89,6 @@ const DownloadFile = (navigate, data, t) => {
   } else if (ext === "jpeg") {
     contentType = "image/jpeg";
   } else {
-    console.log();
   }
   return (dispatch) => {
     dispatch(DownloadLoaderStart());
@@ -119,7 +116,7 @@ const DownloadFile = (navigate, data, t) => {
           link.setAttribute("download", data.DisplayFileName);
           document.body.appendChild(link);
           link.click();
-          console.log(response);
+
           dispatch(SetLoaderFalseDownload(false));
         }
       })
@@ -143,7 +140,6 @@ const downloadAttendanceReportApi = (navigate, t, downloadData) => {
   form.append("RequestMethod", downloadAttendanceReport.RequestMethod);
   form.append("RequestData", JSON.stringify(downloadData));
   return async (dispatch) => {
-    console.log("downloadAttendanceReportApi");
     await dispatch(DownloadLoaderStart());
     axios({
       method: "post",
@@ -158,14 +154,12 @@ const downloadAttendanceReportApi = (navigate, t, downloadData) => {
       responseType: "arraybuffer",
     })
       .then(async (response) => {
-        console.log("downloadAttendanceReportApi", response);
-
         if (response.status === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(downloadAttendanceReportApi(navigate, t, downloadData));
         } else if (response.status === 200) {
           const url = window.URL.createObjectURL(new Blob([response.data]));
-          console.log("downloadAttendanceReportApi", url);
+
           const link = document.createElement("a");
           link.href = url;
           link.setAttribute("download", "download-Attendance-Report.xlsx");
@@ -175,7 +169,6 @@ const downloadAttendanceReportApi = (navigate, t, downloadData) => {
         }
       })
       .catch((response) => {
-        console.log("downloadAttendanceReportApi", response);
         dispatch(downloadFail(response));
       });
   };

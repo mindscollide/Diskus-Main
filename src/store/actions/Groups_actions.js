@@ -75,14 +75,11 @@ const getGroups = (navigate, t, currentPage) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           await dispatch(getGroups(navigate, t, currentPage));
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -103,7 +100,6 @@ const getGroups = (navigate, t, currentPage) => {
                 )
               );
               // }
-              console.log(response, "response");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -149,21 +145,17 @@ const getGroups = (navigate, t, currentPage) => {
             ) {
               dispatch(getGroup_Fail(t("Something-went-wrong")));
               dispatch(groupLoader(false));
-              console.log(response, "response");
             }
           } else {
-            console.log(response, "response");
             dispatch(getGroup_Fail(t("Something-went-wrong")));
             dispatch(groupLoader(false));
           }
         } else {
-          console.log(response, "response");
           dispatch(getGroup_Fail(t("Something-went-wrong")));
           dispatch(groupLoader(false));
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(getGroup_Fail(t("Something-went-wrong")));
         dispatch(groupLoader(false));
       });
@@ -171,7 +163,6 @@ const getGroups = (navigate, t, currentPage) => {
 };
 
 const groupLoader = (action) => {
-  console.log(action, "groupLoadergroupLoadergroupLoader");
   return {
     type: actions.GROUP_LOADER_STATE,
     response: action,
@@ -224,7 +215,6 @@ const getArcheivedGroups = (navigate, t, currentPage) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           await dispatch(getArcheivedGroups(navigate, t, currentPage));
@@ -287,16 +277,13 @@ const getArcheivedGroups = (navigate, t, currentPage) => {
               dispatch(getArchivedGroups_fail(t("Something-went-wrong")));
             }
           } else {
-            console.log(response, "response");
             dispatch(getArchivedGroups_fail(t("Something-went-wrong")));
           }
         } else {
-          console.log(response, "response");
           dispatch(getArchivedGroups_fail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(getArchivedGroups_fail(t("Something-went-wrong")));
       });
   };
@@ -329,7 +316,6 @@ const getbyGroupID = (
   no,
   setArchivedGroups
 ) => {
-  console.log(no, "getbyGroupIDgetbyGroupIDgetbyGroupIDgetbyGroupID");
   let token = JSON.parse(localStorage.getItem("token"));
   let OrganizationID = localStorage.getItem("organizationID");
   let Data = {
@@ -350,7 +336,6 @@ const getbyGroupID = (
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           await dispatch(
@@ -365,9 +350,7 @@ const getbyGroupID = (
             )
           );
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -432,16 +415,13 @@ const getbyGroupID = (
               dispatch(getbyGroupID_Fail(t("No-data-available")));
             }
           } else {
-            console.log(response, "response");
             dispatch(getbyGroupID_Fail(t("Something-went-wrong")));
           }
         } else {
-          console.log(response, "response");
           dispatch(getbyGroupID_Fail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(getbyGroupID_Fail(t("Something-went-wrong")));
       });
   };
@@ -484,14 +464,11 @@ const createGroup = (navigate, Data, t, setCreategrouppage) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(createGroup(navigate, Data, t, setCreategrouppage));
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -517,7 +494,7 @@ const createGroup = (navigate, Data, t, setCreategrouppage) => {
                   (data, index) => data.FK_UID
                 ),
               };
-              console.log({ newData }, "CreateUpdateDataRoadMapApiFunc");
+
               dispatch(CreateUpdateDataRoadMapApiFunc(navigate, newData, t));
               dispatch(GetAllUserChats(navigate, createrID, OrganizationID, t));
             } else if (
@@ -562,16 +539,13 @@ const createGroup = (navigate, Data, t, setCreategrouppage) => {
               dispatch(createGroup_Fail(t("Something-went-wrong")));
             }
           } else {
-            console.log(response, "response");
             dispatch(createGroup_Fail(t("Something-went-wrong")));
           }
         } else {
-          console.log(response, "response");
           dispatch(createGroup_Fail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(createGroup_Fail(t("Something-went-wrong")));
       });
   };
@@ -612,14 +586,11 @@ const getGroupMembersRoles = (navigate, Data, t) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(getGroupMembersRoles(navigate, Data, t));
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -650,19 +621,16 @@ const getGroupMembersRoles = (navigate, Data, t) => {
             ) {
               dispatch(getOrganiationGroupRoles_Fail(t("No-data-available")));
             } else {
-              console.log(response, "response");
               dispatch(
                 getOrganiationGroupRoles_Fail(t("Something-went-wrong"))
               );
             }
           } else {
-            console.log(response, "response");
             dispatch(getOrganiationGroupRoles_Fail(t("Something-went-wrong")));
           }
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(getOrganiationGroupRoles_Fail(t("Something-went-wrong")));
       });
   };
@@ -702,14 +670,11 @@ const getOrganizationGroupTypes = (navigate, Data, t) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(getOrganizationGroupTypes(navigate, Data, t));
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -740,19 +705,16 @@ const getOrganizationGroupTypes = (navigate, Data, t) => {
             ) {
               dispatch(getOrganizationGroupTypes_Fail(t("No-data-available")));
             } else {
-              console.log(response, "response");
               dispatch(
                 getOrganizationGroupTypes_Fail(t("Something-went-wrong"))
               );
             }
           } else {
-            console.log(response, "response");
             dispatch(getOrganizationGroupTypes_Fail(t("Something-went-wrong")));
           }
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(getOrganizationGroupTypes_Fail(t("Something-went-wrong")));
       });
   };
@@ -793,14 +755,11 @@ const updateGroup = (navigate, Data, t, setViewUpdateGroup) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(updateGroup(navigate, Data, t, setViewUpdateGroup));
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -814,7 +773,6 @@ const updateGroup = (navigate, Data, t, setViewUpdateGroup) => {
                   t("Updated-successfully")
                 )
               );
-              console.log(response.data.responseResult, "updatedupdated");
 
               let newData = {
                 GroupID: Data.GroupDetails.PK_GRID,
@@ -824,11 +782,10 @@ const updateGroup = (navigate, Data, t, setViewUpdateGroup) => {
                   (data, index) => data.FK_UID
                 ),
               };
-              console.log({ newData }, "CreateUpdateDataRoadMapApiFunc");
+
               dispatch(CreateUpdateDataRoadMapApiFunc(navigate, newData, t));
               // dispatch(getGroups(navigate, t, currentPage));
               // setViewUpdateGroup(false);
-              console.log("Group-updated");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -871,16 +828,13 @@ const updateGroup = (navigate, Data, t, setViewUpdateGroup) => {
               dispatch(updateGroup_Fail(t("Something-went-wrong")));
             }
           } else {
-            console.log(response, "response");
             dispatch(updateGroup_Fail(t("Something-went-wrong")));
           }
         } else {
-          console.log(response, "response");
           dispatch(updateGroup_Fail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(updateGroup_Fail(t("Something-went-wrong")));
       });
   };
@@ -921,14 +875,11 @@ const updateGroupStatus = (navigate, Data, t, setModalStatusChange) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(updateGroupStatus(navigate, Data, t, setModalStatusChange));
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -959,16 +910,13 @@ const updateGroupStatus = (navigate, Data, t, setModalStatusChange) => {
               dispatch(updateGroupStatus_Fail(t("Group-status-not-update")));
             }
           } else {
-            console.log(response, "response");
             dispatch(updateGroupStatus_Fail(t("Something-went-wrong")));
           }
         } else {
-          console.log(response, "response");
           dispatch(updateGroupStatus_Fail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(updateGroupStatus_Fail(t("Something-went-wrong")));
       });
   };
@@ -980,7 +928,6 @@ const realtimeGroupResponse = (response) => {
   };
 };
 const realtimeGroupStatusResponse = (response) => {
-  console.log("realtimeGroupStatusResponse", response);
   return {
     type: actions.REALTIME_GROUPS_STATUS_RESPONSE,
     response: response,
@@ -993,7 +940,6 @@ const getAllGroups_Init = () => {
   };
 };
 const getAllGroups_Success = (response, message) => {
-  console.log("GET_ALL_ORGANIZATION_GROUPS_SUCCESS", response, message);
   return {
     type: actions.GET_ALL_ORGANIZATION_GROUPS_SUCCESS,
     response: response,
@@ -1024,14 +970,11 @@ const getAllGroups = (navigate, t) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(getAllGroups(navigate, t));
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Groups_GroupServiceManager_GetAllOrganizationGroups_01".toLowerCase()
@@ -1053,13 +996,10 @@ const getAllGroups = (navigate, t) => {
             ) {
               dispatch(getAllGroups_Fail(t("Something-went-wrong")));
             }
-            console.log(response, "response");
           } else {
-            console.log(response, "response");
             dispatch(getAllGroups_Fail(t("Something-went-wrong")));
           }
         } else {
-          console.log(response, "response");
           dispatch(getAllGroups_Fail(t("Something-went-wrong")));
         }
       })
@@ -1111,14 +1051,11 @@ const CreateUpdateDataRoadMapApiFunc = (navigate, Data, t) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "headers");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(CreateUpdateDataRoadMapApiFunc(navigate, Data, t));
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1206,20 +1143,17 @@ const CreateUpdateDataRoadMapApiFunc = (navigate, Data, t) => {
               );
             }
           } else {
-            console.log(response, "response");
             dispatch(
               methodCreateUpdateDataRoadMapFailed(t("Something-went-wrong"))
             );
           }
         } else {
-          console.log(response, "response");
           dispatch(
             methodCreateUpdateDataRoadMapFailed(t("Something-went-wrong"))
           );
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(
           methodCreateUpdateDataRoadMapFailed(t("Something-went-wrong"))
         );
@@ -1483,7 +1417,6 @@ const SaveGroupsDocumentsApiFunc = (
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
@@ -1496,9 +1429,7 @@ const SaveGroupsDocumentsApiFunc = (
             )
           );
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1529,14 +1460,12 @@ const SaveGroupsDocumentsApiFunc = (
               dispatch(getGroups(navigate, t, currentPage));
             }
           } else {
-            console.log(response, "response");
             dispatch(showSaveGroupDocsFailed(t("Something-went-wrong")));
             dispatch(methodCreateUpdateDataRoadMapFailed(""));
             localStorage.removeItem("groupID");
             dispatch(getGroups(navigate, t, currentPage));
           }
         } else {
-          console.log(response, "response");
           dispatch(showSaveGroupDocsFailed(t("Something-went-wrong")));
           dispatch(methodCreateUpdateDataRoadMapFailed(""));
           localStorage.removeItem("groupID");
@@ -1544,7 +1473,6 @@ const SaveGroupsDocumentsApiFunc = (
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(showSaveGroupDocsFailed(t("Something-went-wrong")));
         dispatch(methodCreateUpdateDataRoadMapFailed(""));
       });
@@ -1591,14 +1519,11 @@ const RetriveDocumentsGroupsApiFunc = (navigate, Data, t) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(RetriveDocumentsGroupsApiFunc(navigate, Data, t));
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1630,16 +1555,13 @@ const RetriveDocumentsGroupsApiFunc = (navigate, Data, t) => {
               dispatch(showRetriveDocumentsFailed(t("Something-went-wrong")));
             }
           } else {
-            console.log(response, "response");
             dispatch(showRetriveDocumentsFailed(t("Something-went-wrong")));
           }
         } else {
-          console.log(response, "response");
           dispatch(showRetriveDocumentsFailed(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(showRetriveDocumentsFailed(t("Something-went-wrong")));
       });
   };

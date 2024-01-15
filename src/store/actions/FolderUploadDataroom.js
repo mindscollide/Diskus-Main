@@ -196,13 +196,7 @@ const uploadDocumentsApi = (
         let bytesRemaining = bytesTotal - bytesUploaded;
         let bytesPerSecond = bytesUploaded / (elapsedTime / 1000);
         let secondsRemaining = Math.ceil(bytesRemaining / bytesPerSecond);
-        console.log("secondsRemaining elapsedTime", elapsedTime);
-        console.log("secondsRemaining bytesUploaded", bytesUploaded);
-        console.log("secondsRemaining bytesTotal", bytesTotal);
-        console.log("secondsRemaining bytesRemaining", bytesRemaining);
-        console.log("secondsRemaining bytesPerSecond", bytesPerSecond);
-        console.log("secondsRemaining secondsRemaining", secondsRemaining);
-        console.log("secondsRemaining percentCompleted", percentCompleted);
+
         setProgress(percentCompleted);
         setRemainingTime(remainingTime + secondsRemaining);
       },
@@ -309,7 +303,7 @@ const saveFilesApi = (
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let folderID = JSON.parse(localStorage.getItem("folderID"));
-  console.log(folderID, "folderIDfolderIDfolderID");
+
   let Data = {
     FolderID: folderID !== null ? folderID : 0,
     Files: [
@@ -386,7 +380,6 @@ const saveFilesApi = (
         } else {
           dispatch(saveFiles_fail(t("Something-went-wrong")));
         }
-        console.log(response);
       })
       .catch(() => {
         dispatch(saveFiles_fail(t("Something-went-wrong")));
@@ -491,7 +484,6 @@ const CheckFolderisExist = (navigate, folderName, t) => {
 };
 
 const folderUploadData = (response) => {
-  console.log("DataRoomReducer.folderUploadData", response);
   return {
     type: actions.FOLDER_UPLOAD_DATA,
     response: response,
@@ -562,14 +554,14 @@ const createFolder = (
                 )
             ) {
               let id = response.data.responseResult.folderID;
-              console.log("ataRoomReducer.CreatedFolderID", id);
+
               let newDataResponceUD = {
                 FolderName: response.data.responseResult.displayFolderName,
                 FolderID: response.data.responseResult.folderID,
                 DisplayFolderNameOLD:
                   response.data.responseResult.displayFolderNameOLD,
               };
-              console.log("detaUplodingForFOlder", newDataResponceUD);
+
               await dispatch(CreateFolder_success(newDataResponceUD));
               dispatch(FolderisExist_success(null));
             } else if (
@@ -613,7 +605,6 @@ const uploadFile = (
   netDisconnect
   // axiosCancelToken
 ) => {
-  console.log("detaUplodingForFOlder", netDisconnect);
   let token = JSON.parse(localStorage.getItem("token"));
   if (!netDisconnect) {
     return async (dispatch) => {

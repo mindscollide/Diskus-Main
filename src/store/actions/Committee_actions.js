@@ -292,7 +292,6 @@ const getAllCommitteesByUserIdActions = (navigate, t, currentPage) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "committees");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(getAllCommitteesByUserIdActions(navigate, t, currentPage));
@@ -412,7 +411,6 @@ const getAllArcheivedCommittees = (navigate, t, currentPage) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "committees");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(getAllArcheivedCommittees(navigate, t, currentPage));
@@ -439,8 +437,6 @@ const getAllArcheivedCommittees = (navigate, t, currentPage) => {
                 )
             ) {
               dispatch(getArcheivedCommittees_fail(t("No-data-available")));
-
-              console.log("checking");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -542,7 +538,7 @@ const getCommitteesbyCommitteeId = (
           "getAllCommitteesByUserIdActionsgetAllCommitteesByUserIdActions",
           response
         );
-        console.log("checking");
+
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
@@ -557,9 +553,7 @@ const getCommitteesbyCommitteeId = (
             )
           );
         } else if (response.data.responseCode === 200) {
-          console.log("checking");
           if (response.data.responseResult.isExecuted === true) {
-            console.log("checking");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -596,7 +590,6 @@ const getCommitteesbyCommitteeId = (
                 dispatch(viewCommitteePageFlag(false));
                 dispatch(updateCommitteePageFlag(true));
               }
-              console.log("checking");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -636,11 +629,9 @@ const getCommitteesbyCommitteeId = (
         } else {
           dispatch(getCommitteByCommitteeID_Fail(t("Something-went-wrong")));
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
         dispatch(getCommitteByCommitteeID_Fail(t("Something-went-wrong")));
-        console.log("responseresponse", response);
       });
   };
 };
@@ -687,14 +678,11 @@ const createcommittee = (navigate, Data, t) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(createcommittee(navigate, Data, t));
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -761,16 +749,13 @@ const createcommittee = (navigate, Data, t) => {
               dispatch(createcommittee_fail(t("Something-went-wrong")));
             }
           } else {
-            console.log(response, "response");
             dispatch(createcommittee_fail(t("Something-went-wrong")));
           }
         } else {
-          console.log(response, "response");
           dispatch(createcommittee_fail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(createcommittee_fail(t("Something-went-wrong")));
       });
   };
@@ -813,14 +798,11 @@ const getCommitteeTypes = (navigate, Data, t) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(getCommitteeTypes(navigate, Data, t));
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -851,17 +833,14 @@ const getCommitteeTypes = (navigate, Data, t) => {
             ) {
               dispatch(getCommitteeTypes_Fail(t("No-data-available")));
             } else {
-              console.log(response, "response");
               dispatch(getCommitteeTypes_Fail(t("Something-went-wrong")));
             }
           } else {
-            console.log(response, "response");
             dispatch(getCommitteeTypes_Fail(t("Something-went-wrong")));
           }
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(getCommitteeTypes_Fail(t("Something-went-wrong")));
       });
   };
@@ -907,14 +886,11 @@ const getCommitteeMembersRole = (navigate, Data, t) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(getCommitteeMembersRole(navigate, Data, t));
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -945,17 +921,14 @@ const getCommitteeMembersRole = (navigate, Data, t) => {
             ) {
               dispatch(getCommitteeMembersRole_Fail(t("No-data-available")));
             } else {
-              console.log(response, "response");
               dispatch(getCommitteeMembersRole_Fail(t("Something-went-wrong")));
             }
           } else {
-            console.log(response, "response");
             dispatch(getCommitteeMembersRole_Fail(t("Something-went-wrong")));
           }
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(getCommitteeMembersRole_Fail(t("Something-went-wrong")));
       });
   };
@@ -1003,14 +976,11 @@ const committeeStatusUpdate = (navigate, Data, t, setIsActive) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(committeeStatusUpdate(navigate, Data, t, setIsActive));
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1034,17 +1004,14 @@ const committeeStatusUpdate = (navigate, Data, t, setIsActive) => {
             ) {
               dispatch(updateCommitteeStatus_Fail(t("No-record-updated")));
             } else {
-              console.log(response, "response");
               dispatch(updateCommitteeStatus_Fail(t("Something-went-wrong")));
             }
           } else {
-            console.log(response, "response");
             dispatch(updateCommitteeStatus_Fail(t("Something-went-wrong")));
           }
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(updateCommitteeStatus_Fail(t("Something-went-wrong")));
       });
   };
@@ -1088,14 +1055,11 @@ const updateCommittee = (navigate, Data, t) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(updateCommittee(navigate, Data, t));
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1163,17 +1127,14 @@ const updateCommittee = (navigate, Data, t) => {
             ) {
               dispatch(updateCommittee_Fail(t("No-committee-update")));
             } else {
-              console.log(response, "response");
               dispatch(updateCommittee_Fail(t("Something-went-wrong")));
             }
           } else {
-            console.log(response, "response");
             dispatch(updateCommittee_Fail(t("Something-went-wrong")));
           }
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(updateCommittee_Fail(t("Something-went-wrong")));
       });
   };
@@ -1233,14 +1194,11 @@ const assignGroups = (navigate, Data, t, setMarketingTeam) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(assignGroups(navigate, Data, t));
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Committees_CommitteeServiceManager_CommitteeAndGroupMapping_01".toLowerCase()
@@ -1261,13 +1219,10 @@ const assignGroups = (navigate, Data, t, setMarketingTeam) => {
             ) {
               dispatch(assignGroup_Failt(t("Something-went-wrong")));
             }
-            console.log(response, "response");
           } else {
-            console.log(response, "response");
             dispatch(assignGroup_Failt(t("Something-went-wrong")));
           }
         } else {
-          console.log(response, "response");
           dispatch(assignGroup_Failt(t("Something-went-wrong")));
         }
       })
@@ -1319,7 +1274,6 @@ const createUpdateCommitteeApi = (navigate, t, data) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(createUpdateCommitteeApi(navigate, t, data));
@@ -1449,7 +1403,6 @@ const saveCommitteeDocumentsApi = (navigate, t, data, setCreategrouppage) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(saveCommitteeDocumentsApi(navigate, t, data));
@@ -1532,7 +1485,6 @@ const reteriveCommitteeDocumentsApi = (navigate, t, data) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(reteriveCommitteeDocumentsApi(navigate, t, data));
