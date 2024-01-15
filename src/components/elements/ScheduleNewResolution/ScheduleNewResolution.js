@@ -142,9 +142,9 @@ const ScheduleNewResolution = () => {
     dateValue: dateforView(new Date(), 3),
     timeDecisionforView: new Date(),
   });
-  // console.log(circulationDateTime, "circulationDateTimecirculationDateTime");
+  //
   // const datetimevalues = dateTimeforResolution(new Date(), 1);
-  // console.log(datetimevalues, "datetimevaluesdatetimevalues");
+  //
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
   const [emailValue, setEmailValue] = useState("");
@@ -642,7 +642,6 @@ const ScheduleNewResolution = () => {
     multiple: true,
     showUploadList: false,
     onChange(data) {
-      console.log(data, data.fileList, "propspropspropspropspropsprops");
       const { status } = data.file;
       let fileSizeArr;
       if (tasksAttachments.length > 9) {

@@ -394,18 +394,15 @@ const AllUserAction = (navigate, Data, t, setIsUpdateSuccessfully) => {
               dispatch(allUserListFail(newMessage));
             }
           } else {
-            console.log("Admin_AdminServiceManager_AllOrganizationUsers_02");
             let newMessage = t("Something-went-wrong");
             dispatch(allUserListFail(newMessage));
           }
         } else {
-          console.log("Admin_AdminServiceManager_AllOrganizationUsers_02");
           let newMessage = t("Something-went-wrong");
           dispatch(allUserListFail(newMessage));
         }
       })
       .catch((response) => {
-        console.log("Admin_AdminServiceManager_AllOrganizationUsers_02");
         let newMessage = t("Something-went-wrong");
         dispatch(allUserListFail(newMessage));
       });

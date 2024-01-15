@@ -12,7 +12,6 @@ const signupInit = (response, message) => {
   };
 };
 const signUpSuccess = (response, message) => {
-  console.log("signUpSuccess", response, message);
   return {
     type: actions.SIGN_UP_SUCCESS,
     response: response,
@@ -28,7 +27,6 @@ const signUpFail = (response, message) => {
 };
 
 const signUp = (UserData, navigate, t) => {
-  console.log("signUp", UserData);
   let Data = {
     Name: UserData.name.content,
     Designation: UserData.designation.content,
@@ -40,7 +38,7 @@ const signUp = (UserData, navigate, t) => {
     CountryCode: UserData.countryCode.content,
     RoleID: 1,
   };
-  console.log("signUp", Data);
+
   return (dispatch) => {
     dispatch(signupInit());
     let form = new FormData();
@@ -52,7 +50,6 @@ const signUp = (UserData, navigate, t) => {
       data: form,
     })
       .then(async (response) => {
-        console.log("signUp", response);
         if (response.data.responseResult.isExecuted === true) {
           await dispatch(
             signUpSuccess(
@@ -65,7 +62,6 @@ const signUp = (UserData, navigate, t) => {
           navigate("/verificationSignUp/");
           // <Navigate to="/verificationSignUp/" replace={true} />;
         } else {
-          console.log("fail", response.data.responseResult.responseMessage);
           if (
             response.data.responseResult.responseMessage ===
             "ERM_AuthService_SignUpManager_SignUp_04"

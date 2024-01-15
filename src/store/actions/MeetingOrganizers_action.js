@@ -727,7 +727,6 @@ const sendNotificationOrganizer = (Data, navigate, t) => {
         } else {
           dispatch(sendNotificationOrganizerFail(t("Something-went-wrong")));
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
         dispatch(sendNotificationOrganizerFail(t("Something-went-wrong")));

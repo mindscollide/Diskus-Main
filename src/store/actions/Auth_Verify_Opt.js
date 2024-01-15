@@ -14,8 +14,6 @@ const verifyoptinit = () => {
   };
 };
 
-
-
 const verifyOTPSignUpSuccess = (response) => {
   return {
     type: actions.VERIFY_OTPSIGNUP_SUCCESS,
@@ -48,7 +46,6 @@ const VerifyOTPSignUp = (verificationData, navigate, setVerificationError) => {
     })
       .then((response) => {
         if (response.data.responseResult.isExecuted === true) {
-          console.log("SignIn Response", response);
           dispatch(
             verifyOTPSignUpSuccess(
               response.data.responseResult,
@@ -212,8 +209,4 @@ const ResendOTPForgotPasswordOTP = (verificationData, t) => {
   };
 };
 
-export {
-  VerifyOTPSignUp,
-  ResendOTP,
-  ResendOTPForgotPasswordOTP,
-};
+export { VerifyOTPSignUp, ResendOTP, ResendOTPForgotPasswordOTP };

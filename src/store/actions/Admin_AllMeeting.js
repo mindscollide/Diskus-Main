@@ -114,18 +114,13 @@ const OrganizationMeetings = (navigate, currentPage, currentPageSize, t) => {
               );
             }
           } else {
-            console.log("something");
             dispatch(allMeetingFail(t("Something-went-wrong")));
           }
         } else {
-          console.log("something");
-
           dispatch(allMeetingFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        console.log("something");
-
         dispatch(allMeetingFail(t("Something-went-wrong")));
       });
   };
@@ -164,7 +159,7 @@ const updateOrganizationMeeting = (navigate, MeetingID, MeetingStatusID, t) => {
     MeetingID: MeetingID,
     MeetingStatusID: MeetingStatusID,
   };
-  console.log(data, MeetingID, MeetingStatusID, "meetingudpateData");
+
   return async (dispatch) => {
     dispatch(updateOrganizationMeetingInit());
     let form = new FormData();
@@ -180,7 +175,6 @@ const updateOrganizationMeeting = (navigate, MeetingID, MeetingStatusID, t) => {
       },
     })
       .then(async (response) => {
-        console.log(response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
@@ -270,7 +264,6 @@ const deleteOrganizationMeetingFail = (message) => {
 };
 
 const deleteOrganiationMessage = (navigate, meetingID, MeetingStatusID, t) => {
-  console.log(meetingID, MeetingStatusID, "datadatadata");
   let userID = localStorage.getItem("userID");
   let token = JSON.parse(localStorage.getItem("token"));
   let organizationId = localStorage.getItem("organizationID");
@@ -295,7 +288,6 @@ const deleteOrganiationMessage = (navigate, meetingID, MeetingStatusID, t) => {
       },
     })
       .then(async (response) => {
-        console.log(response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
@@ -343,9 +335,7 @@ const deleteOrganiationMessage = (navigate, meetingID, MeetingStatusID, t) => {
           }
         }
       })
-      .catch((response) => {
-        console.log(response);
-      });
+      .catch((response) => {});
   };
 };
 

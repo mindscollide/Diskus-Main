@@ -80,11 +80,8 @@ const EmailValidation = () => {
 
   const rememberChangeEmail = () => {
     setRemeberEmail(!rememberEmail);
-    console.log("RememberEmailLocal 3");
 
     if (!rememberEmail === true) {
-      console.log("RememberEmailLocal 4");
-
       localStorage.setItem("rememberEmail", true);
       localStorage.setItem("rememberEmailValue", email);
     } else {
@@ -103,7 +100,6 @@ const EmailValidation = () => {
     let RSVP = localStorage.getItem("RSVP");
     let DataRoomEmailValue = localStorage.getItem("DataRoomEmail");
     if (RememberEmailLocal === true && RememberPasswordLocal === true) {
-      console.log("RememberEmailLocal 1");
       let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
 
       let RememberPasswordLocalValue = localStorage.getItem(
@@ -129,7 +125,6 @@ const EmailValidation = () => {
       setRemeberEmail(RememberEmailLocal);
       setEmail(RememberEmailLocalValue);
     } else if (RememberEmailLocal === true) {
-      console.log("RememberEmailLocal 1");
       let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
       localStorage.clear();
       if (reLang != undefined && reLang != null) {
@@ -206,7 +201,6 @@ const EmailValidation = () => {
 
   useEffect(() => {
     if (adminReducer.DeleteOrganizationResponseMessage !== "") {
-      console.log("check123check");
       setOpen({
         open: true,
         message: adminReducer.DeleteOrganizationResponseMessage,
@@ -223,8 +217,6 @@ const EmailValidation = () => {
 
   useEffect(() => {
     if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
-      console.log("check123check");
-
       setOpen({
         ...open,
         open: true,
@@ -240,8 +232,6 @@ const EmailValidation = () => {
 
       dispatch(cleareMessage());
     } else if (Authreducer.EnterPasswordResponseMessage !== "") {
-      console.log("check123check");
-
       setOpen({
         ...open,
         open: true,
@@ -257,8 +247,6 @@ const EmailValidation = () => {
 
       dispatch(cleareMessage());
     } else if (Authreducer.OrganizationCreateResponseMessage !== "") {
-      console.log("check123check");
-
       setOpen({
         ...open,
         open: true,
@@ -274,8 +262,6 @@ const EmailValidation = () => {
 
       dispatch(cleareMessage());
     } else if (Authreducer.CreatePasswordResponseMessage !== "") {
-      console.log("check123check");
-
       setOpen({
         ...open,
         open: true,
@@ -291,8 +277,6 @@ const EmailValidation = () => {
 
       dispatch(cleareMessage());
     } else if (Authreducer.GetSelectedPackageResponseMessage !== "") {
-      console.log("check123check");
-
       setOpen({
         ...open,
         open: true,
@@ -308,8 +292,6 @@ const EmailValidation = () => {
 
       dispatch(cleareMessage());
     } else if (Authreducer.EmailValidationResponseMessage !== "") {
-      console.log("check123check");
-
       setOpen({
         ...open,
         open: true,

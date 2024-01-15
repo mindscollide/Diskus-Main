@@ -228,8 +228,6 @@ const VideoCallNormalHeader = ({
     }
   };
 
-  console.log("talkStateData", talkStateData);
-
   const closeParticipantHandler = () => {
     if (videoFeatureReducer.LeaveCallModalFlag === false) {
       if (videoFeatureReducer.ParticipantPopupFlag === false) {
@@ -342,8 +340,6 @@ const VideoCallNormalHeader = ({
     videoFeatureReducer.ParticipantPopupFlag,
     // videoFeatureReducer.LeaveCallModalFlag,
   ]);
-
-  console.log("participantStatus", participantStatus[0]);
 
   return (
     <>

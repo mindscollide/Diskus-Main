@@ -51,14 +51,11 @@ const getMeetingTaskMainApi = (navigate, t, meetingTaskData) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(getMeetingTaskMainApi(navigate, t, meetingTaskData));
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -93,16 +90,13 @@ const getMeetingTaskMainApi = (navigate, t, meetingTaskData) => {
               dispatch(getMeetingTask_Fail(t("Something-went-wrong")));
             }
           } else {
-            console.log(response, "response");
             dispatch(getMeetingTask_Fail(t("Something-went-wrong")));
           }
         } else {
-          console.log(response, "response");
           dispatch(getMeetingTask_Fail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(getMeetingTask_Fail(t("Something-went-wrong")));
       });
   };
@@ -266,7 +260,6 @@ const mapTaskAgendaMainApi = (
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
@@ -279,9 +272,7 @@ const mapTaskAgendaMainApi = (
             )
           );
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -328,16 +319,13 @@ const mapTaskAgendaMainApi = (
               dispatch(mapTaskAgendaFail(t("Something-went-wrong")));
             }
           } else {
-            console.log(response, "response");
             dispatch(mapTaskAgendaFail(t("Something-went-wrong")));
           }
         } else {
-          console.log(response, "response");
           dispatch(mapTaskAgendaFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(mapTaskAgendaFail(t("Something-went-wrong")));
       });
   };
@@ -640,14 +628,11 @@ const removeMapMainApi = (navigate, t, dataDelete) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(removeMapMainApi(navigate, t, dataDelete));
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -693,16 +678,13 @@ const removeMapMainApi = (navigate, t, dataDelete) => {
               dispatch(removeMapTaskFail(t("Something-went-wrong")));
             }
           } else {
-            console.log(response, "response");
             dispatch(removeMapTaskFail(t("Something-went-wrong")));
           }
         } else {
-          console.log(response, "response");
           dispatch(removeMapTaskFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(removeMapTaskFail(t("Something-went-wrong")));
       });
   };

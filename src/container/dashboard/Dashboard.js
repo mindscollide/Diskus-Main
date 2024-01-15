@@ -225,16 +225,13 @@ const Dashboard = () => {
               ),
             });
           }
-        } catch (error) {
-          console.log("ERRORERROR", error);
-        }
+        } catch (error) {}
       } else if (
         data.message.toLowerCase() ===
         "MeetingReminderNotification".toLowerCase()
       ) {
-        console.log("MeetingReminderNotificationMeetingReminderNotification");
         dispatch(meetingNotConductedMQTT(data.payload));
-        console.log("MeetingReminderNotificationMeetingReminderNotification");
+
         if (data.viewable) {
           setNotification({
             ...notification,

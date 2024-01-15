@@ -404,7 +404,6 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
       key: "Join",
       width: "55px",
       render: (text, record) => {
-        console.log("recordrecordrecord", record);
         const isParticipant = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
@@ -547,7 +546,6 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
             attendee.meetingAttendeeRole.role === "Agenda Contributor"
         );
         const isQuickMeeting = record.isQuickMeeting;
-        console.log(isOrganiser, isQuickMeeting, "isOrganiserisOrganiser");
 
         if (record.status === "8") {
           return null;

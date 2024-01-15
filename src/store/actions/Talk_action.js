@@ -2449,7 +2449,7 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
                 )
             ) {
               await dispatch(OTOMessageSendFail(t("Something-went-wrong")));
-              console.log("Checking Error During no connection");
+
               // if (unsentMessageObject) {
               //   messageUnsent = [...unsentMessageObject];
               //   messageUnsent.push(object.TalkRequest.Message.UID);
@@ -2464,7 +2464,6 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
             }
           } else {
             await dispatch(OTOMessageSendFail(t("Something-went-wrong")));
-            console.log("Checking Error During no connection");
 
             // if (unsentMessageObject) {
             //   messageUnsent = [...unsentMessageObject];
@@ -2480,7 +2479,6 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
           }
         } else {
           await dispatch(OTOMessageSendFail(t("Something-went-wrong")));
-          console.log("Checking Error During no connection");
 
           // if (unsentMessageObject) {
           //   messageUnsent = [...unsentMessageObject];
@@ -2494,7 +2492,7 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
       })
       .catch((response) => {
         dispatch(OTOMessageSendFail(t("Something-went-wrong")));
-        console.log("Checking Error During no connection");
+
         // if (unsentMessageObject) {
         //   messageUnsent = [...unsentMessageObject];
         //   messageUnsent.push(object.TalkRequest.Message.UID);

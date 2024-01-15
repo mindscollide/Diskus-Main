@@ -65,7 +65,6 @@ const getMeetingAgendas = (navigate, data, t) => {
       },
     })
       .then(async (response) => {
-        console.log("getMeetingAgenda", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(getMeetingAgendas(navigate, data, t));
@@ -89,7 +88,6 @@ const getMeetingAgendas = (navigate, data, t) => {
         }
       })
       .catch((response) => {
-        console.log("response", response);
         dispatch(getMeetingAgendasFail());
       });
   };
@@ -101,7 +99,6 @@ const getMeetingAttachmentsInit = () => {
   };
 };
 const getMeetingAttachmentsSuccess = (response, message) => {
-  console.log("responseresponseresponseresponseresponse", response);
   return {
     type: actions.GET_ATTACHMENTSBYMEETINGID_SUCCESS,
     response: response,
@@ -130,7 +127,6 @@ const getMeetingAttachments = (navigate, data, t) => {
       },
     })
       .then(async (response) => {
-        console.log("getMeetingAgendaAttachment", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(getMeetingAttachments(navigate, data, t));
@@ -156,7 +152,6 @@ const getMeetingAttachments = (navigate, data, t) => {
         }
       })
       .catch((response) => {
-        console.log("response", response);
         dispatch(getMeetingAttachmentsFail(response.data.responseMessage));
       });
   };
@@ -202,7 +197,6 @@ const updateAgendaAttachment = (navigate, data, t) => {
       },
     })
       .then(async (response) => {
-        console.log("getMeetingAgendaAttachment123", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(updateAgendaAttachment(navigate, data, t));

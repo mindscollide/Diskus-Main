@@ -41,10 +41,9 @@ const getCountryNamesAction = (navigate, t) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "countryname");
         if (response.data.responseCode === 417) {
-          dispatch(RefreshToken(navigate, t))
-          await dispatch(getCountryNamesAction(navigate, t))
+          dispatch(RefreshToken(navigate, t));
+          await dispatch(getCountryNamesAction(navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -54,17 +53,14 @@ const getCountryNamesAction = (navigate, t) => {
                   "ERM_AuthService_SignUpManager_GetWorldCountries_01".toLowerCase()
                 )
             ) {
-
               await dispatch(
                 getCountryNameSuccess(
                   response.data.responseResult.worldCountries,
                   t("Data-available")
                 )
-              )
+              );
 
               dispatch(setLoader(false));
-
-
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

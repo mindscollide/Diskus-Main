@@ -40,7 +40,6 @@ const VideoChatReducer = (state = initialState, action) => {
       };
     }
     case actions.GET_MEETINGAGENDAS_SUCCESS: {
-      console.log("meetingattachmentsuccess", action);
       return {
         ...state,
         MeetingAgendasResponse: action.response.meetingAgendaAttachments,
@@ -60,7 +59,6 @@ const VideoChatReducer = (state = initialState, action) => {
       };
     }
     case actions.GET_ATTACHMENTSBYMEETINGID_SUCCESS: {
-      console.log("meetingattachmentaction", action);
       return {
         ...state,
         // Loading: false,

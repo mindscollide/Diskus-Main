@@ -64,27 +64,23 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
   const taskHandler = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-    console.log("taskHandler", name, value);
+
     if (name === "Title") {
-      console.log("Title", name, value);
       setTask({
         ...task,
         [name]: value,
       });
     } else if (name === "DeadLineDate") {
-      console.log("DeadLineDate", name, value);
       setTask({
         ...task,
         [name]: value,
       });
     } else if (name === "DeadLineTime") {
-      console.log("DeadLineTime", name, value);
       setTask({
         ...task,
         [name]: RemoveTimeDashes(value),
       });
     } else if (name === "Description") {
-      console.log("Description", name, value);
       setTask({
         ...task,
         [name]: value,
@@ -92,14 +88,12 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
     }
   };
 
-  console.log("Object task", task);
-
   //Upload File Handler
   const uploadFilesAgenda = (data) => {
     const uploadFilePath = data.target.value;
     const uploadedFile = data.target.files[0];
-    // console.log("uploadFilesAgenda", uploadedFile.name);
-    console.log("uploadedFile", uploadedFile.name);
+    //
+
     let file = tasksAttachments.TasksAttachments;
     file.push({
       PK_TAID: 0,
@@ -114,7 +108,6 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
   // To View To-Do List Data
   useEffect(() => {
     if (Object.keys(toDoListReducer.ToDoDetails).length > 0) {
-      console.log("ViewToDoDetails", toDoListReducer.ToDoDetails);
       let viewData = toDoListReducer.ToDoDetails;
       setTask({
         ...task,
@@ -128,9 +121,7 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
       });
       if (viewData.taskAssignedTo !== undefined) {
         viewData.taskAssignedTo.map((data, index) => {
-          console.log("taskAssignedToMap", data);
           if (data.pK_UID === TaskAssignedTo) {
-            console.log("Mapping Answer", data.name);
           }
         });
       }
@@ -142,8 +133,8 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
           tem.push(data.name);
           temid.push(data.pK_UID);
         });
-        console.log("listOfAssignees", tem);
-        // console.log("setTaskAssignedName", tem);
+
+        //
         setTaskAssignedTo(temid);
         setTaskAssignedName(tem);
       }
@@ -159,10 +150,9 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
             FK_TID: data.fK_TID,
           });
         });
-        console.log("responseaaaaa 1234", tem);
+
         setTasksAttachments({ ["TasksAttachments"]: tem });
       }
-      console.log("viewToDoData", viewData);
     }
   }, [toDoListReducer.ToDoDetails]);
 
@@ -202,13 +192,12 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
     setTaskAssignedToInput(e.target.value);
-    console.log("Input Value OnChange", e.target.value);
   };
 
   //Drop Down Values
   const searchFilterHandler = (value) => {
     let allAssignees = toDoListReducer.AllAssigneesData;
-    console.log("Input Value", value);
+
     if (
       allAssignees !== undefined &&
       allAssignees !== null &&
@@ -231,7 +220,7 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
             className="dropdown-row-assignee d-flex align-items-center flex-row"
             key={item.pK_UID}
           >
-            {console.log("itemitem", item)}
+            {}
             <img
               draggable="false"
               src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
@@ -242,14 +231,13 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
           </div>
         ));
     } else {
-      console.log("not found");
     }
   };
 
   //Save To-Do List Function
   const updateToDoList = () => {
     let TasksAttachments = tasksAttachments.TasksAttachments;
-    console.log("TasksAttachments", TasksAttachments);
+
     let Task = {
       PK_TID: task.PK_TID,
       Title: task.Title,
@@ -258,7 +246,7 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
       DeadLineDate: task.DeadLineDate,
       DeadLineTime: task.DeadLineTime,
     };
-    console.log("Task Object For Update", Task);
+
     if (Task.DeadLineDate === "") {
       setOpen({
         ...open,
@@ -308,12 +296,9 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
       OriginalFileName: record.OriginalAttachmentName,
       DisplayFileName: record.DisplayAttachmentName,
     };
-    console.log("DownloadFile", data);
+
     dispatch(DownloadFile(navigate, data));
   };
-
-  console.log("toDoListReducer", toDoListReducer);
-  console.log("uploadToDoList Task", task);
 
   useEffect(() => {
     if (
@@ -324,7 +309,7 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
         flag: true,
         message: toDoListReducer.Message,
       });
-      // console.log(toDoListReducer.Message)
+      //
     }
   }, [toDoListReducer.Message]);
 

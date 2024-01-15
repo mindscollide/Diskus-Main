@@ -1,205 +1,205 @@
-import React, { useState, useEffect } from 'react'
-import data from '@emoji-mart/data'
-import Picker from '@emoji-mart/react'
-import './TalkVideo.css'
-import { Triangle } from 'react-bootstrap-icons'
-import { allAssignessList } from '../../../../store/actions/Get_List_Of_Assignees'
-import { useDispatch, useSelector } from 'react-redux'
-import { Row, Col, Container, Form } from 'react-bootstrap'
-import { Select, Checkbox } from 'antd'
-import VideoCallScreen from '../videoCallScreen/VideoCallScreen-2'
+import React, { useState, useEffect } from "react";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
+import "./TalkVideo.css";
+import { Triangle } from "react-bootstrap-icons";
+import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignees";
+import { useDispatch, useSelector } from "react-redux";
+import { Row, Col, Container, Form } from "react-bootstrap";
+import { Select, Checkbox } from "antd";
+import VideoCallScreen from "../videoCallScreen/VideoCallScreen-2";
 import {
   DateDisplayFormat,
   DateSendingFormat,
-} from '../../../../commen/functions/date_formater'
+} from "../../../../commen/functions/date_formater";
 import {
   TextField,
   ChatModal,
   InputDatePicker,
   Button,
-} from '../../../elements'
-import CustomUploadChat from '../../../elements/chat_upload/Chat-Upload'
-import SearchIcon from '../../../../assets/images/Search-Icon.png'
-import MissedCallIcon from '../../../../assets/images/newElements/MissedCallIcon.png'
-import SecurityIcon from '../../../../assets/images/Security-Icon.png'
-import FullScreenIcon from '../../../../assets/images/Fullscreen-Icon.png'
-import DoubleTickIcon from '../../../../assets/images/DoubleTick-Icon.png'
-import CrossIcon from '../../../../assets/images/Cross-Icon.png'
-import SecurityIconMessasgeBox from '../../../../assets/images/SecurityIcon-MessasgeBox.png'
-import MenuIcon from '../../../../assets/images/Menu-Chat-Icon.png'
-import VideoCallIcon from '../../../../assets/images/VideoCall-Icon.png'
-import CloseChatIcon from '../../../../assets/images/Cross-Chat-Icon.png'
-import SearchChatIcon from '../../../../assets/images/Search-Chat-Icon.png'
-import AddChatIcon from '../../../../assets/images/Add-Plus-Icon.png'
-import EmojiIcon from '../../../../assets/images/Emoji-Select-Icon.png'
-import DeleteUploadIcon from '../../../../assets/images/Delete-Upload-Icon.png'
-import ChatSendIcon from '../../../../assets/images/Chat-Send-Icon.png'
-import DocumentIcon from '../../../../assets/images/Document-Icon.png'
-import { useTranslation } from 'react-i18next'
+} from "../../../elements";
+import CustomUploadChat from "../../../elements/chat_upload/Chat-Upload";
+import SearchIcon from "../../../../assets/images/Search-Icon.png";
+import MissedCallIcon from "../../../../assets/images/newElements/MissedCallIcon.png";
+import SecurityIcon from "../../../../assets/images/Security-Icon.png";
+import FullScreenIcon from "../../../../assets/images/Fullscreen-Icon.png";
+import DoubleTickIcon from "../../../../assets/images/DoubleTick-Icon.png";
+import CrossIcon from "../../../../assets/images/Cross-Icon.png";
+import SecurityIconMessasgeBox from "../../../../assets/images/SecurityIcon-MessasgeBox.png";
+import MenuIcon from "../../../../assets/images/Menu-Chat-Icon.png";
+import VideoCallIcon from "../../../../assets/images/VideoCall-Icon.png";
+import CloseChatIcon from "../../../../assets/images/Cross-Chat-Icon.png";
+import SearchChatIcon from "../../../../assets/images/Search-Chat-Icon.png";
+import AddChatIcon from "../../../../assets/images/Add-Plus-Icon.png";
+import EmojiIcon from "../../../../assets/images/Emoji-Select-Icon.png";
+import DeleteUploadIcon from "../../../../assets/images/Delete-Upload-Icon.png";
+import ChatSendIcon from "../../../../assets/images/Chat-Send-Icon.png";
+import DocumentIcon from "../../../../assets/images/Document-Icon.png";
+import { useTranslation } from "react-i18next";
 import {
   setOpenVideoCallBox,
   setMaximizeVideoCallBox,
   setMinimizeVideoCallBox,
   setGroupVideoPanel,
-} from '../../../../store/actions/VideoCalling_actions'
-import { useNavigate } from 'react-router-dom'
+} from "../../../../store/actions/VideoCalling_actions";
+import { useNavigate } from "react-router-dom";
 
 const TalkVideo = () => {
   //Current User ID
-  let createrID = localStorage.getItem('userID')
+  let createrID = localStorage.getItem("userID");
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   //Current language
-  let lang = localStorage.getItem('i18nextLng')
+  let lang = localStorage.getItem("i18nextLng");
 
   // Using dispatch To Call APIs
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   //Getting api result from the reducer
-  const { assignees } = useSelector((state) => state)
+  const { assignees } = useSelector((state) => state);
 
   //Opening Chat States
-  const [activeChat, setActiveChat] = useState([])
+  const [activeChat, setActiveChat] = useState([]);
 
-  const [chatOpen, setChatOpen] = useState(false)
+  const [chatOpen, setChatOpen] = useState(false);
 
   //For Opening videoScreen
-  const [openVideoScreen, setOpenVideoScreen] = useState(false)
+  const [openVideoScreen, setOpenVideoScreen] = useState(false);
 
   const onClickOpenScreen = () => {
     // setOpenVideoScreen(true);
     // OpenVideoCallBox(true);
-  }
+  };
   //search chat states
-  const [searchChatValue, setSearchChatValue] = useState('')
-  const [allChatData, setAllChatData] = useState(assignees.user)
+  const [searchChatValue, setSearchChatValue] = useState("");
+  const [allChatData, setAllChatData] = useState(assignees.user);
 
   //Opening Encryption Message
-  const [openEncryptionDialogue, setOpenEncryptionDialogue] = useState(false)
+  const [openEncryptionDialogue, setOpenEncryptionDialogue] = useState(false);
 
   //Chat Filter State
   const [chatFilter, setChatFilter] = useState({
-    value: '',
-    label: '',
-  })
+    value: "",
+    label: "",
+  });
 
   //File Upload
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
-  })
+  });
 
   //Show Emoji or Not
-  const [emojiActive, setEmojiActive] = useState(false)
+  const [emojiActive, setEmojiActive] = useState(false);
 
   //input field of chat states
-  const [input, setInput] = useState('')
+  const [input, setInput] = useState("");
 
   //Add Icon States
-  const [addNewChat, setAddNewChat] = useState(false)
+  const [addNewChat, setAddNewChat] = useState(false);
 
   //Global Search Filter
-  const [globalSearchFilter, setGlobalSearchFilter] = useState(false)
+  const [globalSearchFilter, setGlobalSearchFilter] = useState(false);
 
   // Chat Filter Options
   const chatFilterOptions = [
-    { className: 'talk-chat-filter', label: 'Contact', value: 1 },
-    { className: 'talk-chat-filter', label: 'Recent', value: 2 },
-  ]
+    { className: "talk-chat-filter", label: "Contact", value: 1 },
+    { className: "talk-chat-filter", label: "Recent", value: 2 },
+  ];
 
   //Storing all users in a variable
-  const allUsersList = assignees.user
-  const [endDatedisable, setEndDatedisable] = useState(true)
+  const allUsersList = assignees.user;
+  const [endDatedisable, setEndDatedisable] = useState(true);
   const [chatDateState, setChatDateState] = useState({
-    StartDate: '',
-    EndDate: '',
-  })
+    StartDate: "",
+    EndDate: "",
+  });
   //3 Menus of the state
-  const [save, setSave] = useState(false)
-  const [print, setPrint] = useState(false)
-  const [email, setEmail] = useState(false)
+  const [save, setSave] = useState(false);
+  const [print, setPrint] = useState(false);
+  const [email, setEmail] = useState(false);
   //Popup Options
-  const [todayCheckState, setTodayCheckState] = useState(false)
-  const [allCheckState, setAllCheckState] = useState(false)
-  const [customCheckState, setCustomCheckState] = useState(false)
+  const [todayCheckState, setTodayCheckState] = useState(false);
+  const [allCheckState, setAllCheckState] = useState(false);
+  const [customCheckState, setCustomCheckState] = useState(false);
 
-  const [isButtonClick, setIsButtonClick] = useState([])
+  const [isButtonClick, setIsButtonClick] = useState([]);
 
   const onClickGroupBtnHandler = () => {
-    setIsButtonClick(true)
-  }
+    setIsButtonClick(true);
+  };
 
   //Clicking on Security Icon
   const securityDialogue = () => {
-    setOpenEncryptionDialogue(true)
-  }
+    setOpenEncryptionDialogue(true);
+  };
 
   //Clicking on Close Security Icon
   const closeSecurityDialogue = () => {
-    setOpenEncryptionDialogue(false)
-  }
+    setOpenEncryptionDialogue(false);
+  };
 
   //Calling API
   useEffect(() => {
-    dispatch(allAssignessList(navigate, t))
-  }, [])
+    dispatch(allAssignessList(navigate, t));
+  }, []);
 
   //Emoji on click function
   const emojiClick = () => {
     if (emojiActive === false) {
-      setEmojiActive(true)
+      setEmojiActive(true);
     } else {
-      setEmojiActive(false)
+      setEmojiActive(false);
     }
-  }
+  };
 
   //Response return on click of emoji
   const selectedEmoji = (e) => {
-    let sym = e.unified.split('-')
-    let codesArray = []
-    sym.forEach((el) => codesArray.push('0x' + el))
-    let emoji = String.fromCodePoint(...codesArray)
-    setInput(input + emoji)
-    setEmojiActive(false)
-  }
+    let sym = e.unified.split("-");
+    let codesArray = [];
+    sym.forEach((el) => codesArray.push("0x" + el));
+    let emoji = String.fromCodePoint(...codesArray);
+    setInput(input + emoji);
+    setEmojiActive(false);
+  };
 
   //ChatFilter Selection Handler
   const chatFilterHandler = (event) => {
     setChatFilter({
       label: event.label,
       value: event.value,
-    })
-  }
+    });
+  };
 
   //Search Chat
   const searchChat = (e) => {
-    setSearchChatValue(e)
-    console.log('Jawad bhai', searchChatValue)
-    if (e !== '') {
+    setSearchChatValue(e);
+
+    if (e !== "") {
       let filteredData = allUsersList.filter((value) => {
-        return value.name.toLowerCase().includes(e.toLowerCase())
-      })
-      setAllChatData(filteredData)
-    } else if (e === '' || e === null) {
-      let data = allUsersList
-      setSearchChatValue('')
-      setAllChatData(data)
+        return value.name.toLowerCase().includes(e.toLowerCase());
+      });
+      setAllChatData(filteredData);
+    } else if (e === "" || e === null) {
+      let data = allUsersList;
+      setSearchChatValue("");
+      setAllChatData(data);
     }
-  }
+  };
 
   //search filter global chat
   const searchFilterChat = () => {
     if (globalSearchFilter === false) {
-      setGlobalSearchFilter(true)
+      setGlobalSearchFilter(true);
     } else {
-      setGlobalSearchFilter(false)
+      setGlobalSearchFilter(false);
     }
-  }
+  };
 
   //Dropdown state of chat menu (Dot wali)
-  const [chatMenuActive, setChatMenuActive] = useState(false)
+  const [chatMenuActive, setChatMenuActive] = useState(false);
 
   // const onClickVideoIcon = async () =>{
 
@@ -207,24 +207,23 @@ const TalkVideo = () => {
 
   // for group video call which is open on meeting icon on meeting page
   const videoHandlerforInisiateCall = (flag) => {
-    console.log('videoHandlerforInisiateCall', flag)
-    dispatch(setOpenVideoCallBox(flag))
-    dispatch(setMaximizeVideoCallBox(false))
-    dispatch(setMinimizeVideoCallBox(false))
-  }
+    dispatch(setOpenVideoCallBox(flag));
+    dispatch(setMaximizeVideoCallBox(false));
+    dispatch(setMinimizeVideoCallBox(false));
+  };
 
   //for one to one video call
   const anotherVideoPanelHandler = (flag) => {
-    localStorage.setItem('VideoPanelGroup', true)
-    console.log('openvideoHandler', flag)
-    dispatch(setGroupVideoPanel(flag))
-    dispatch(setMaximizeVideoCallBox(false))
-    dispatch(setMinimizeVideoCallBox(false))
-  }
+    localStorage.setItem("VideoPanelGroup", true);
+
+    dispatch(setGroupVideoPanel(flag));
+    dispatch(setMaximizeVideoCallBox(false));
+    dispatch(setMinimizeVideoCallBox(false));
+  };
 
   return (
     <>
-      <div className={chatOpen === true ? 'chatBox height' : 'chatBox'}>
+      <div className={chatOpen === true ? "chatBox height" : "chatBox"}>
         <div className="chat-inner-content">
           <span className="triangle-overlay-chat"></span>
           <Triangle className="pointer-video-icon" />
@@ -260,7 +259,7 @@ const TalkVideo = () => {
                       applyClass="form-control2"
                       name="Name"
                       change={(e) => {
-                        searchChat(e.target.value)
+                        searchChat(e.target.value);
                       }}
                       value={searchChatValue}
                     />
@@ -300,11 +299,11 @@ const TalkVideo = () => {
                 </Col>
                 <Col lg={7} md={7} sm={7} className="bottom-border">
                   <div
-                    className={'video-block'}
+                    className={"video-block"}
                     //   onClick={() => chatClick(dataItem)}
                   >
                     <p className="Video-chat-username m-0">
-                      {' '}
+                      {" "}
                       <img src={MissedCallIcon} />
                     </p>
 
@@ -366,11 +365,11 @@ const TalkVideo = () => {
                 </Col>
                 <Col lg={7} md={7} sm={7} className="bottom-border">
                   <div
-                    className={'video-block'}
+                    className={"video-block"}
                     //   onClick={() => chatClick(dataItem)}
                   >
                     <p className="Video-chat-username m-0">
-                      {' '}
+                      {" "}
                       <img src={MissedCallIcon} />
                     </p>
 
@@ -386,12 +385,12 @@ const TalkVideo = () => {
                   />
                 </Col>
               </Row>
-            </Container>{' '}
+            </Container>{" "}
           </>
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default TalkVideo
+export default TalkVideo;
