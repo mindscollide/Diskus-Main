@@ -171,6 +171,8 @@ const NewMeeting = () => {
     useState(false);
   const [viewAdvanceMeetingModal, setViewAdvanceMeetingModal] = useState(false);
   const [advanceMeetingModalID, setAdvanceMeetingModalID] = useState(null);
+  const [responseDate, setResponseDate] = useState("");
+  const [responseByDate, setResponseByDate] = useState("");
   const [editorRole, setEdiorRole] = useState({
     status: null,
     role: null,
@@ -1483,6 +1485,7 @@ const NewMeeting = () => {
         NewMeetingreducer.viewProposeDateMeetingPageFlag === true ? (
         <ViewParticipantsDates
           setViewProposeDatePoll={setViewProposeDatePoll}
+          responseByDate={responseByDate}
           setCurrentMeetingID={setCurrentMeetingID}
           setSceduleMeeting={setViewProposeDatePoll}
           setDataroomMapFolderId={setDataroomMapFolderId}
@@ -1766,6 +1769,7 @@ const NewMeeting = () => {
                     setViewAdvanceMeetingModalUnpublish={
                       setViewAdvanceMeetingModalUnpublish
                     }
+                    setResponseByDate={setResponseByDate}
                     setSceduleMeeting={setSceduleMeeting}
                     setEdiorRole={setEdiorRole}
                     setEditMeeting={setEditMeeting}

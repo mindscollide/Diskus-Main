@@ -124,3 +124,13 @@
   user-select: none !important;
   letter-spacing: 1px !important;
 }
+.downloadButton,
+.downloadButton:is(:hover, :visited, :active, :focus) {
+  padding: 12px 30px !important;
+  background: #6172d6;
+  border: none;
+  font-size: 12px;
+  font-family: "MontserratSemiBold" !important;
+
+  font-weight: normal;
+}

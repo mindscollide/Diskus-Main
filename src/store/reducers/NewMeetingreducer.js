@@ -112,6 +112,7 @@ const initialState = {
   viewAdvanceMeetingUnpublishPageFlag: false,
   viewProposeOrganizerMeetingPageFlag: false,
   proposeNewMeetingPageFlag: false,
+  getUserProposedOrganizerData: [],
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -816,7 +817,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.SET_MEETING_POLLS_SUCCESS: {
       return {
         ...state,
-        Loading: true,
+        Loading: false,
         ResponseMessage: action.message,
       };
     }
@@ -824,7 +825,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.SET_MEETING_POLLS_FAILED: {
       return {
         ...state,
-        Loading: true,
+        Loading: false,
         ResponseMessage: action.message,
       };
     }
@@ -1277,6 +1278,32 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: action.loader,
         userWiseMeetingProposed: [],
+        ResponseMessage: action.message,
+      };
+    }
+
+    // reducer for get proposed dates when organizer click on view poll
+    case actions.GET_USER_PROPOSED_DATES_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_USER_PROPOSED_DATES_SUCCESS: {
+      return {
+        ...state,
+        Loading: action.loader,
+        getUserProposedOrganizerData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_USER_PROPOSED_DATES_FAIL: {
+      return {
+        ...state,
+        Loading: action.loader,
+        getUserProposedOrganizerData: [],
         ResponseMessage: action.message,
       };
     }
@@ -1790,6 +1817,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         unsavedViewPollsModal: false,
         CurrentMeetingURL: "",
         getallDocumentsForAgendaWiseMinutes: [],
+        getUserProposedOrganizerData: [],
       };
     }
 

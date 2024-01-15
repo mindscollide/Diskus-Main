@@ -1,6 +1,10 @@
 import React from "react";
 import styles from "./ViewParticipantsDates.module.css";
-import { Button, Checkbox } from "../../../../../../components/elements";
+import {
+  Button,
+  Checkbox,
+  Notification,
+} from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -15,7 +19,11 @@ import {
 } from "../../../../../../store/actions/NewMeetingActions";
 import { useEffect } from "react";
 import { useState } from "react";
-import { resolutionResultTable } from "../../../../../../commen/functions/date_formater";
+import {
+  EditmeetingDateFormat,
+  newTimeFormaterAsPerUTCTalkDate,
+  resolutionResultTable,
+} from "../../../../../../commen/functions/date_formater";
 import moment from "moment";
 
 const ViewParticipantsDates = ({
@@ -23,10 +31,16 @@ const ViewParticipantsDates = ({
   setCurrentMeetingID,
   setSceduleMeeting,
   setDataroomMapFolderId,
+  responseByDate,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+  });
 
   const getAllMeetingDetails = useSelector(
     (state) => state.NewMeetingreducer.getAllMeetingDetails
@@ -272,6 +286,11 @@ const ViewParticipantsDates = ({
         ProposedDates: defaultarr,
       };
       dispatch(SetMeetingResponseApiFunc(Data, navigate, t));
+    } else if (!selectAll) {
+      setOpen({
+        flag: true,
+        message: t("Please-select-any-of-the-given-options"),
+      });
     } else {
       let newarr = [];
       prposedData.forEach((data, index) => {
@@ -355,6 +374,7 @@ const ViewParticipantsDates = ({
                   >
                     {prposedData.length > 0
                       ? prposedData.map((data, index) => {
+                          console.log(prposedData, "prposedDataprposedData");
                           // Extract the userID from localStorage
                           const loggedInUserID = Number(
                             localStorage.getItem("userID")
@@ -417,7 +437,9 @@ const ViewParticipantsDates = ({
                 <Row className="mt-1">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Date"]}>
-                      {changeDateStartHandler2(deadline)}
+                      {responseByDate !== undefined
+                        ? changeDateStartHandler2(responseByDate)
+                        : ""}
                     </span>
                   </Col>
                 </Row>
@@ -481,6 +503,7 @@ const ViewParticipantsDates = ({
           </Paper>
         </Col>
       </Row>
+      <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </section>
   );
 };

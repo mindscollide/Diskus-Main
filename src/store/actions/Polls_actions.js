@@ -405,17 +405,9 @@ const SavePollsApi = (navigate, Data, t, value, currentMeeting) => {
                   MeetingID: currentMeeting,
                   PollID: response.data.responseResult.pollID,
                 };
-                await dispatch(SetMeetingPollsApiFunc(Data, navigate, t));
-                let OrganizationID = localStorage.getItem("organizationID");
-                let Data1 = {
-                  MeetingID: currentMeeting,
-                  OrganizationID: Number(OrganizationID),
-                  CreatorName: "",
-                  PollTitle: "",
-                  PageNumber: 1,
-                  Length: 50,
-                };
-                dispatch(GetAllPollsByMeetingIdApiFunc(Data1, navigate, t));
+                await dispatch(
+                  SetMeetingPollsApiFunc(Data, navigate, t, currentMeeting)
+                );
               } else if (value === 3) {
                 let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
                 let Data = {

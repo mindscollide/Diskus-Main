@@ -53,6 +53,7 @@ const UnpublishedProposedMeeting = ({
   currentMeeting,
   editorRole,
   setDataroomMapFolderId,
+  setResponseByDate,
 }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -111,10 +112,12 @@ const UnpublishedProposedMeeting = ({
     isParticipant,
     isAgendaContributor,
     isOrganiser,
-    id
+    id,
+    responseDeadLine
   ) => {
     localStorage.setItem("viewProposeDatePollMeetingID", id);
     if (isParticipant) {
+      setResponseByDate(responseDeadLine);
       setViewProposeDatePoll(true);
       dispatch(viewProposeDateMeetingPageFlag(true));
     } else if (isAgendaContributor) {
@@ -484,7 +487,8 @@ const UnpublishedProposedMeeting = ({
                           true,
                           false,
                           false,
-                          record.pK_MDID
+                          record.pK_MDID,
+                          record.responseDeadLine
                         )
                       }
                     />
