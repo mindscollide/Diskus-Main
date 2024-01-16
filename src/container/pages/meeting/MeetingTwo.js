@@ -173,6 +173,7 @@ const NewMeeting = () => {
   const [advanceMeetingModalID, setAdvanceMeetingModalID] = useState(null);
   const [responseDate, setResponseDate] = useState("");
   const [responseByDate, setResponseByDate] = useState("");
+
   const [editorRole, setEdiorRole] = useState({
     status: null,
     role: null,
@@ -184,6 +185,16 @@ const NewMeeting = () => {
   ] = useState(false);
 
   const [dashboardEventData, setDashboardEventData] = useState(null);
+
+  useEffect(() => {
+    console.log("State before cleanup:", responseByDate);
+
+    // state clean while rendering in meetingTwo
+    return () => {
+      setResponseByDate("");
+      console.log("State before cleanup:", responseByDate);
+    };
+  }, []);
 
   useEffect(() => {
     if (currentLanguage !== undefined && currentLanguage !== null) {
