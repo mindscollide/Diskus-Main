@@ -164,3 +164,7 @@ export const timeforSend = (date) => {
   }
   return "";
 };
+
+export const getNextDay = () => {
+  return moment().add(1, "day").format("YYYYMMDD");
+};
