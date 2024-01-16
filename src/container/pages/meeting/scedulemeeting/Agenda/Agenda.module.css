@@ -451,3 +451,19 @@ body[dir="rtl"] .SubAgendaSection {
 .filter_grayscale {
   filter: grayscale(1) !important;
 }
+
+.Empty_state_heading {
+  color: #505050 !important;
+  font-size: 30px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Empty_state_Subheading {
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+  font-family: "Montserrat";
+}
+
+img.Image-Add-Agenda {
+  margin-top: 40px;
+}

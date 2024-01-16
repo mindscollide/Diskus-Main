@@ -2310,6 +2310,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
           shoutAll: mqttResponseSingleMessage.shoutAll,
           uid: mqttResponseSingleMessage.uid,
           isRetry: false,
+          sourceMessageBody: mqttResponseSingleMessage.sourceMessageBody,
         };
         setAllMessages((prevAllMessages) => {
           const updatedMessages = prevAllMessages.map((message) => {
@@ -3122,13 +3123,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     }
   }, [allMessages]);
 
-  console.log(
-    "uploadFileTalk",
-    uploadFileTalk,
-    typeof uploadFileTalk,
-    Object.keys(uploadFileTalk).length,
-    tasksAttachments
-  );
+  console.log("All Messages", allMessages);
 
   return (
     <>

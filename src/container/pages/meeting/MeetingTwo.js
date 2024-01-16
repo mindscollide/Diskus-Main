@@ -284,6 +284,7 @@ const NewMeeting = () => {
       OrganizerName: "",
     });
     setSearchMeeting(false);
+    setentereventIcon(true);
   };
 
   const HandleCloseSearchModalMeeting = () => {
