@@ -43,6 +43,8 @@ const Documents = ({
 
   console.log("fileDataPropfileDataProp", fileForSend);
 
+  let currentUserID = Number(localStorage.getItem("userID"));
+
   return (
     <>
       <Row key={index + 5}>
@@ -101,7 +103,10 @@ const Documents = ({
                                   >
                                     {editorRole.role === "Participant" ||
                                     editorRole.status === 9 ||
-                                    editorRole.status === "9" ? null : (
+                                    editorRole.status === "9" ||
+                                    (editorRole.role === "Agenda Contributor" &&
+                                      (filesData.fK_UID !== currentUserID ||
+                                        data.canEdit === false)) ? null : (
                                       <img
                                         draggable={false}
                                         src={redcrossIcon}
