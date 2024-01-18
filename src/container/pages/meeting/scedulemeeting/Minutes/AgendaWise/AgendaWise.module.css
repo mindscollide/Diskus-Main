@@ -94,6 +94,7 @@
   position: relative;
   margin-top: 10px !important;
   margin-bottom: 10px !important;
+  z-index: 0 !important;
 }
 
 .modal-Note-Title-Input :focus {
@@ -324,6 +325,7 @@ body[dir="rtl"] .header-of-collapse-material {
   color: #6172d6 !important;
   /* margin-bottom: 16px !important; */
 }
+
 body[dir="rtl"] .MinusIcon {
   margin-right: 60px !important;
 }

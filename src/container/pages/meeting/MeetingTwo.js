@@ -722,19 +722,21 @@ const NewMeeting = () => {
                     }
                   ></span>
                 )}
-                {record.status === "9" && isOrganiser && (
-                  <Tooltip placement="topLeft" title={t("member")}>
-                    <img
-                      src={member}
-                      className="cursor-pointer"
-                      width="17.1px"
-                      height="16.72px"
-                      alt=""
-                      draggable="false"
-                      onClick={() => onClickDownloadIcon(record.pK_MDID)}
-                    />
-                  </Tooltip>
-                )}
+                {record.status === "9" &&
+                  isOrganiser &&
+                  record.isQuickMeeting === false && (
+                    <Tooltip placement="topLeft" title={t("member")}>
+                      <img
+                        src={member}
+                        className="cursor-pointer"
+                        width="17.1px"
+                        height="16.72px"
+                        alt=""
+                        draggable="false"
+                        onClick={() => onClickDownloadIcon(record.pK_MDID)}
+                      />
+                    </Tooltip>
+                  )}
               </Col>
             </Row>
           </>
