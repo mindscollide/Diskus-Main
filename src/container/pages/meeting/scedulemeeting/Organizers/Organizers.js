@@ -354,7 +354,7 @@ const Organizers = ({
                     height="30px"
                     width="30px"
                     onClick={() => sendRecentNotification(record)}
-                    // className="cursor-pointer"
+                    className="cursor-pointer"
                     alt=""
                   />
                 )}
@@ -615,7 +615,11 @@ const Organizers = ({
 
     setRowsData(updatedMeetingOrganizers);
   };
-
+  console.log(
+    notificationMessage,
+    rowsData,
+    "notificationMessagenotificationMessagenotificationMessage"
+  );
   const saveMeetingOrganizers = () => {
     let newarry = [];
     rowsData.forEach((organizerData, organizerIndex) => {
@@ -1036,7 +1040,7 @@ const Organizers = ({
         />
       )}
       {NewMeetingreducer.sendNotificationOrganizerModal === true ? (
-        <SendNotificationOrganizer />
+        <SendNotificationOrganizer currentMeeting={currentMeeting} />
       ) : null}
       {NewMeetingreducer.cancelModalOrganizer && (
         <CancelModalOrganizer setSceduleMeeting={setSceduleMeeting} />

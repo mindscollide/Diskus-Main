@@ -24,7 +24,7 @@ import { Col, Row } from "react-bootstrap";
 import { validateInput } from "../../../../../../commen/functions/regex";
 import downdirect from "../../../../../../assets/images/downDirect.png";
 
-const SendNotificationOrganizer = () => {
+const SendNotificationOrganizer = ({ currentMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -136,6 +136,7 @@ const SendNotificationOrganizer = () => {
       UserID: MeetingOrganizersReducer.NotificationSendData[0].userID,
       Message: notifyOrganizerData.Messege,
       IsAgendaContributor: false,
+      MeetingID: Number(currentMeeting),
     };
     dispatch(sendNotificationOrganizer(Data, navigate, t));
     dispatch(notificationUpdateData(membersOrganizers));

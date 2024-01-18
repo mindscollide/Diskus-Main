@@ -515,9 +515,10 @@ const Polls = ({
     setAttendance(true);
     setPolls(false);
   };
+  console.log(editorRole, "editorRoleeditorRole");
   const handleClickPrev = () => {
     if (
-      Number(editorRole.status) === 10 &&
+      (Number(editorRole.status) === 10 || Number(editorRole.status) === 9) &&
       (editorRole.role === "Agenda Contributor" ||
         editorRole.role === "Participant" ||
         editorRole.role === "Organizer")

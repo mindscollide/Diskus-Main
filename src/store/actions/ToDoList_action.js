@@ -466,8 +466,13 @@ const ViewToDoList = (
             ) {
               await dispatch(ShowNotification(t("Record-found")));
               await dispatch(ViewToDoSuccess(response.data.responseResult));
-              setViewFlagToDo(true);
-              setTodoViewModal(true);
+
+              if (typeof setViewFlagToDo === "function") {
+                setViewFlagToDo(true);
+              }
+              if (typeof setTodoViewModal === "function") {
+                setTodoViewModal(true);
+              }
               await dispatch(SetLoaderFalse());
             } else if (
               response.data.responseResult.responseMessage

@@ -12,6 +12,8 @@ import { useState, useEffect } from "react";
 import EmptyStates from "../../../../../assets/images/EmptystateAction.svg";
 import CreateTask from "./CreateTask/CreateTask";
 import RemoveTableModal from "./RemoveTableModal/RemoveTableModal";
+import del from "../../../../../assets/images/del.png";
+
 import {
   searchNewUserMeeting,
   showUnsavedActionsModal,
@@ -26,6 +28,8 @@ import CancelActions from "./CancelActions/CancelActions";
 import { _justShowDateformatBilling } from "../../../../../commen/functions/date_formater";
 import CustomPagination from "../../../../../commen/functions/customPagination/Paginations";
 import { clearAttendanceState } from "../../../../../store/actions/Attendance_Meeting";
+import { ViewToDoList } from "../../../../../store/actions/ToDoList_action";
+import ModalViewToDo from "../../../../todolistviewModal/ModalViewToDo";
 
 const Actions = ({
   setViewAdvanceMeetingModal,
@@ -49,7 +53,7 @@ const Actions = ({
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let currentView = localStorage.getItem("MeetingCurrentView");
-
+  const [viewTaskModal, setViewTaskModal] = useState(false);
   const [createaTask, setCreateaTask] = useState(false);
   const [totalRecords, setTotalRecords] = useState(0);
 
@@ -102,7 +106,14 @@ const Actions = ({
       key: "title",
       width: "250px",
       render: (text, record) => {
-        return <span className={styles["Action-Date-title"]}>{text}</span>;
+        return (
+          <span
+            onClick={() => viewActionModal(record)}
+            className={styles["Action_title"]}
+          >
+            {text}
+          </span>
+        );
       },
     },
     {
@@ -142,7 +153,7 @@ const Actions = ({
           <i>
             <img
               alt={"Cross"}
-              src={CrossIcon}
+              src={del}
               className={styles["action-delete-cursor"]}
               onClick={() => deleteActionHandler(record)}
             />
@@ -230,6 +241,10 @@ const Actions = ({
   const nextTabToPolls = () => {
     setactionsPage(false);
     setPolls(true);
+  };
+  const viewActionModal = (record) => {
+    let Data = { ToDoListID: Number(record.pK_TID) };
+    dispatch(ViewToDoList(navigate, Data, t, setViewTaskModal, null));
   };
 
   // To go on Previous tab
@@ -434,6 +449,12 @@ const Actions = ({
             </Col>
           </Row>
         </>
+      )}
+      {viewTaskModal && (
+        <ModalViewToDo
+          viewFlagToDo={viewTaskModal}
+          setViewFlagToDo={setViewTaskModal}
+        />
       )}
       {NewMeetingreducer.removeTableModal && <RemoveTableModal />}
       {NewMeetingreducer.cancelActions && (
