@@ -94,7 +94,6 @@
   position: relative;
   margin-top: 10px !important;
   margin-bottom: 10px !important;
-  z-index: 0;
 }
 
 .modal-Note-Title-Input :focus {
