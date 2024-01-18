@@ -50,7 +50,6 @@ const NotificationBar = ({
   };
 
   useEffect(() => {
-    console.log("notificationTrue123", notificationState);
     // if(notificationMessage !== "") {
     //   openNotification();
     // }
