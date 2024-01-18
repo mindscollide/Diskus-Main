@@ -3121,9 +3121,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       // Do something else when at least one object has isRetry: true
       // Your code here...
     }
-  }, [allMessages]);
-
-  console.log("All Messages", allMessages);
+  }, [allMessages.length]);
 
   return (
     <>

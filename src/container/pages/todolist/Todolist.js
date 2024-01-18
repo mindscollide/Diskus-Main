@@ -529,7 +529,6 @@ const TodoList = () => {
       key: "taskCreator",
       width: "120px",
       render: (record, index) => {
-        console.log(record, index, "recordrecordrecordrecordrecord");
         if (parseInt(record?.pK_UID) === parseInt(createrID)) {
           return (
             <i
@@ -553,7 +552,6 @@ const TodoList = () => {
         setUpdateFlagToDo(true);
         setModalsflag(false);
       } else {
-        console.log("setViewFlagToDosetViewFlagToDo");
         // setViewFlagToDo(true);
       }
     }

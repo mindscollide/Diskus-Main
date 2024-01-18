@@ -17,8 +17,6 @@ const CustomTableToDo = ({
   onRow,
   sortDirections,
 }) => {
-  console.log("CustomTableToDO", className);
-
   const { Text } = Typography;
 
   return (
