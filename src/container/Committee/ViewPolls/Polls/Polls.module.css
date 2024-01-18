@@ -33,6 +33,9 @@
   color: #6172d6 !important;
   background: #ecefff !important;
   font-family: "MontserratSemiBold";
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
 }
 
 .Vote_Button_Polls:is(:hover, :active, :focus, :focus-visible) {
@@ -44,6 +47,9 @@
   color: #6172d6 !important;
   background: #ecefff !important;
   font-family: "MontserratSemiBold" !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
 }
 
 /* .Not_Vote_Button_Polls {

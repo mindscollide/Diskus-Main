@@ -105,10 +105,6 @@ const ViewParticipantsDates = ({
 
   //Previous API for Dates that have to be Inserted new
 
-  console.log(
-    userWiseMeetingProposed,
-    "userWiseMeetingProposeduserWiseMeetingProposed"
-  );
   useEffect(() => {
     try {
       if (
@@ -152,7 +148,7 @@ const ViewParticipantsDates = ({
 
           //now For Sending Data
           let SenddataObject = [];
-          datesData.selectedProposedDates.map((data, index) => {
+          datesData.selectedProposedDates.forEach((data, index) => {
             SenddataObject.push({
               EndtimeSend: data.endTime,
               ProposedDateSend: data.proposedDate,
@@ -164,7 +160,7 @@ const ViewParticipantsDates = ({
 
           // now for the default Data
           let DefaultDate = [];
-          datesData.selectedProposedDates.map((data, index) => {
+          datesData.selectedProposedDates.forEach((data, index) => {
             if (
               data.proposedDate === "10000101" &&
               data.endTime === "000000" &&
@@ -186,9 +182,7 @@ const ViewParticipantsDates = ({
         });
       } else {
       }
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   }, [userWiseMeetingProposed]);
 
   //Fetching All Saved Data
@@ -204,9 +198,7 @@ const ViewParticipantsDates = ({
             getAllMeetingDetails.advanceMeetingDetails.description,
         });
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }, [getAllMeetingDetails]);
 
   //Previous API for Dates that have to be Removed
@@ -216,9 +208,7 @@ const ViewParticipantsDates = ({
         let deadline = getAllProposedDates.deadLineDate;
         setDeadline(deadline);
       }
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   }, [getAllProposedDates]);
 
   // onChange function for CheckBoxes
@@ -271,7 +261,10 @@ const ViewParticipantsDates = ({
   };
 
   const handleSave = () => {
-    if (selectAll) {
+    let findIsanySelected = prposedData.some(
+      (data, index) => data.isSelected === true
+    );
+    if (selectAll && findIsanySelected === false) {
       let defaultarr = [];
       noneOfAbove.forEach((data, index) => {
         defaultarr.push({
@@ -286,12 +279,7 @@ const ViewParticipantsDates = ({
         ProposedDates: defaultarr,
       };
       dispatch(SetMeetingResponseApiFunc(Data, navigate, t));
-    } else if (!selectAll) {
-      setOpen({
-        flag: true,
-        message: t("Please-select-any-of-the-given-options"),
-      });
-    } else {
+    } else if (findIsanySelected) {
       let newarr = [];
       prposedData.forEach((data, index) => {
         if (data.isSelected) {
@@ -307,7 +295,13 @@ const ViewParticipantsDates = ({
         MeetingID: currentMeetingID,
         ProposedDates: newarr,
       };
+
       dispatch(SetMeetingResponseApiFunc(Data, navigate, t));
+    } else if (!selectAll) {
+      setOpen({
+        flag: true,
+        message: t("Please-select-any-of-the-given-options"),
+      });
     }
   };
 
@@ -374,7 +368,6 @@ const ViewParticipantsDates = ({
                   >
                     {prposedData.length > 0
                       ? prposedData.map((data, index) => {
-                          console.log(prposedData, "prposedDataprposedData");
                           // Extract the userID from localStorage
                           const loggedInUserID = Number(
                             localStorage.getItem("userID")

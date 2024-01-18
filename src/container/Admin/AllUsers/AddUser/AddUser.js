@@ -188,8 +188,8 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     let name = e.target.name;
     let value = e.target.value;
     if (name === "Name" && value !== "") {
-      // let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
-      let newValue = value.trimStart();
+      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      let newValue = valueCheck.trimStart();
       if (newValue !== "") {
         // if (newValue.legend <= 100) {
 
