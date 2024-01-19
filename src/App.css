@@ -6407,6 +6407,7 @@ button.grayScaled {
   filter: grayscale(0.8);
   background: #ccc !important;
   border-color: #ccc !important;
+  cursor: not-allowed;
 }
 
 button.grayScaled:hover,
@@ -6416,4 +6417,9 @@ button.grayScaled:focus-visible button.grayScaled:focus-within {
   filter: grayscale(0.8);
   background: #ccc !important;
   border-color: #ccc !important;
+  cursor: not-allowed;
+}
+
+th.ant-table-cell.notification-class-table {
+  text-align: center !important;
 }

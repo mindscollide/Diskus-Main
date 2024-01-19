@@ -9,6 +9,8 @@ import greenMailIcon from "../../../../../assets/images/greenmail.svg";
 import redMailIcon from "../../../../../assets/images/redmail.svg";
 import rspvGreenIcon from "../../../../../assets/images/rspvGreen.svg";
 import NORSVP from "../../../../../assets/images/No-RSVP.png";
+import thumbsup from "../../../../../assets/images/thumbsup.svg";
+import thumbsdown from "../../../../../assets/images/thumbsdown.svg";
 import { useTranslation } from "react-i18next";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -160,7 +162,7 @@ const Organizers = ({
           return (
             <img
               draggable={false}
-              src={rspvGreenIcon}
+              src={thumbsup}
               height="30px"
               width="30px"
               alt=""
@@ -170,7 +172,7 @@ const Organizers = ({
           return (
             <img
               draggable={false}
-              src={NORSVP}
+              src={thumbsdown}
               height="30px"
               width="30px"
               alt=""

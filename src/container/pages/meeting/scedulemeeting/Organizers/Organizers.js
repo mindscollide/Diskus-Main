@@ -12,6 +12,9 @@ import addmore from "../../../../../assets/images/addmore.png";
 import greenMailIcon from "../../../../../assets/images/greenmail.svg";
 import redMailIcon from "../../../../../assets/images/redmail.svg";
 import rspvGreenIcon from "../../../../../assets/images/rspvGreen.svg";
+import thumbsup from "../../../../../assets/images/thumbsup.svg";
+import thumbsdown from "../../../../../assets/images/thumbsdown.svg";
+import AbstainvoterIcon from "../../../../../assets/images/resolutions/Abstainvoter_icon.svg";
 import CrossResolution from "../../../../../assets/images/resolutions/cross_icon_resolution.svg";
 import NORSVP from "../../../../../assets/images/No-RSVP.png";
 import { useTranslation } from "react-i18next";
@@ -302,7 +305,7 @@ const Organizers = ({
           return (
             <img
               draggable={false}
-              src={rspvGreenIcon}
+              src={thumbsup}
               height="30px"
               width="30px"
               alt=""
@@ -312,7 +315,7 @@ const Organizers = ({
           return (
             <img
               draggable={false}
-              src={NORSVP}
+              src={thumbsdown}
               height="30px"
               width="30px"
               alt=""

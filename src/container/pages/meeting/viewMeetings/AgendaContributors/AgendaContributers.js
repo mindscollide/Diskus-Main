@@ -10,7 +10,8 @@ import {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import emptyContributorState from "../../../../../assets/images/emptyStateContributor.svg";
-
+import thumbsup from "../../../../../assets/images/thumbsup.svg";
+import thumbsdown from "../../../../../assets/images/thumbsdown.svg";
 import { useNavigate } from "react-router-dom";
 import {
   CleareMessegeNewMeeting,
@@ -157,7 +158,7 @@ const AgendaContributers = ({
           return (
             <img
               draggable={false}
-              src={rspvGreenIcon}
+              src={thumbsup}
               height="30px"
               width="30px"
               alt=""
@@ -167,7 +168,7 @@ const AgendaContributers = ({
           return (
             <img
               draggable={false}
-              src={NORSVP}
+              src={thumbsdown}
               height="30px"
               width="30px"
               alt=""

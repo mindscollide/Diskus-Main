@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styles from "./Participants.module.css";
 import rspvGreenIcon from "../../../../../assets/images/rspvGreen.svg";
+import thumbsup from "../../../../../assets/images/thumbsup.svg";
+import thumbsdown from "../../../../../assets/images/thumbsdown.svg";
 import emptyContributorState from "../../../../../assets/images/emptyStateContributor.svg";
 import { Col, Row } from "react-bootstrap";
 import {
@@ -171,7 +173,7 @@ const Participants = ({
           return (
             <img
               draggable={false}
-              src={rspvGreenIcon}
+              src={thumbsup}
               height="30px"
               width="30px"
               alt=""
@@ -181,7 +183,7 @@ const Participants = ({
           return (
             <img
               draggable={false}
-              src={NORSVP}
+              src={thumbsdown}
               height="30px"
               width="30px"
               alt=""
