@@ -1730,7 +1730,7 @@ const Home = () => {
                     className=" d-flex align-items-center gap-3 justify-content-start"
                   >
                     <h1 className="noteheading color-5a5a5a MontserratSemiBold-600">
-                      {t("Notes")}
+                      {t("Notessss")}
                     </h1>
                     <img
                       src={PlusButton}

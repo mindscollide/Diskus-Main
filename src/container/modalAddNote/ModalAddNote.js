@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   FileUploadToDo,
   ResetAllFilesUpload,
+  uploaddocumentloader,
 } from "../../store/actions/Upload_action";
 import deleteButtonCreateMeeting from "../../assets/images/cancel_meeting_icon.svg";
 import CustomUpload from "./../../components/elements/upload/Upload";
@@ -85,6 +86,11 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     isStarrted: false,
   });
 
+  console.log(
+    addNoteFields.Description.value.length,
+    "valuevaluevaluevaluevaluevalue"
+  );
+
   const deleteFilefromAttachments = (data, index) => {
     let searchIndex = tasksAttachments.TasksAttachments;
     setFileForSend((prev) => {
@@ -130,8 +136,15 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   };
 
   const onTextChange = (content, delta, source) => {
-    const plainText = content.replace(/(<([^>]+)>)/gi, "");
-    if (source === "user" && plainText) {
+    //it will remove the &nbsp tag which comes in description in
+    // request data and add space also it take only 3000 character
+    const plainText = content
+      .replace(/&nbsp;/g, " ")
+      .replace(/(<([^>]+)>)/gi, "")
+      .trim();
+
+    const plainTextLength = plainText.length;
+    if (source === "user" && plainText && plainTextLength <= 2500) {
       setAddNoteFields({
         ...addNoteFields,
         Description: {
@@ -400,11 +413,12 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
       if (Object.keys(fileForSend).length > 0) {
         let newfile = [];
         let newData = [];
-        const uploadPromises = fileForSend.map((newData, index) => {
-          return dispatch(FileUploadToDo(navigate, newData, t, newfile));
+        const uploadPromises = fileForSend.map(async (newData, index) => {
+          await dispatch(FileUploadToDo(navigate, newData, t, newfile));
         });
         await Promise.all(uploadPromises);
-        newfile.map((attachmentData, index) => {
+        await dispatch(uploaddocumentloader(false));
+        newfile.forEach((attachmentData, index) => {
           newData.push({
             DisplayAttachmentName: attachmentData.DisplayAttachmentName,
             OriginalAttachmentName: attachmentData.OriginalAttachmentName,

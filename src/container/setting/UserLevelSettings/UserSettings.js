@@ -1044,7 +1044,7 @@ const UserSettings = () => {
                             : styles["Options_headings"]
                         }
                       >
-                        {t("Todo")}
+                        {t("Tasks")}
                       </span>
                     </Col>
                   </Row>

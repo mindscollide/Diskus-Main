@@ -2381,3 +2381,6 @@ export const GET_USER_PROPOSED_DATES_INIT = "GET_USER_PROPOSED_DATES_INIT";
 export const GET_USER_PROPOSED_DATES_SUCCESS =
   "GET_USER_PROPOSED_DATES_SUCCESS";
 export const GET_USER_PROPOSED_DATES_FAIL = "GET_USER_PROPOSED_DATES_FAIL";
+
+//upload document loader on notes should not be false after uploading the documents
+export const UPLOAD_DOCUMENT_LOADER = "UPLOAD_DOCUMENT_LOADER";
