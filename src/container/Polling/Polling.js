@@ -279,12 +279,12 @@ const Polling = () => {
       ...pollsState,
       searchValue: searchBoxState.searchByTitle,
     });
-    setSearchpoll(false);
-    setsearchBoxState({
-      ...searchBoxState,
-      searchByName: "",
-      searchByTitle: "",
-    });
+    // setSearchpoll(false);
+    // setsearchBoxState({
+    //   ...searchBoxState,
+    //   searchByName: "",
+    //   searchByTitle: "",
+    // });
     let data = {
       UserID: parseInt(userID),
       OrganizationID: parseInt(organizationID),
@@ -885,7 +885,7 @@ const Polling = () => {
                             placeholder={t("Search-by-title")}
                             applyClass={"Search_Modal_Fields"}
                             labelClass="d-none"
-                            onKeyDown={handleKeyDownSearchModal}
+                            // onKeyDown={handleKeyDownSearchModal}
                             name={"searchbytitle"}
                             value={searchBoxState.searchByTitle}
                             change={HandleSearchboxNameTitle}
@@ -896,6 +896,7 @@ const Polling = () => {
                             placeholder={t("Search-by-name")}
                             applyClass={"Search_Modal_Fields"}
                             labelClass="d-none"
+                            // onKeyDown={handleKeyDownSearchModal}
                             name={"seachbyname"}
                             value={searchBoxState.searchByName}
                             change={HandleSearchboxNameTitle}
@@ -916,6 +917,7 @@ const Polling = () => {
                           />
                           <Button
                             text={t("Search")}
+                            type={"submit"}
                             className={
                               styles["Search_Button_polls_SearchModal"]
                             }

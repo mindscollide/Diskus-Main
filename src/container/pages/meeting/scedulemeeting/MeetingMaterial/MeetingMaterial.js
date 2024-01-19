@@ -233,13 +233,12 @@ const MeetingMaterial = ({
                   pointerEvents={ext === "pdf" ? "auto" : "none"}
                   onDoubleClick={() => handleDoubeClick(record)}
                 />
-                {ext !== "pdf" && (
-                  <Button
-                    text={t("Download")}
-                    className={styles["downloadButton"]}
-                    onClick={() => handleDoubeClick(record)}
-                  />
-                )}
+                <Button
+                  disableBtn={ext !== "pdf" ? false : true}
+                  text={t("Download")}
+                  className={styles["downloadButton"]}
+                  onClick={() => handleDoubeClick(record)}
+                />
               </Col>
             </Row>
           </>

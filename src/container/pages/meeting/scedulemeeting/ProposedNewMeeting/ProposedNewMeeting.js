@@ -63,6 +63,7 @@ const ProposedNewMeeting = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const animatedComponents = makeAnimated();
+  const userID = localStorage.getItem("userID");
   const calendRef = useRef();
   let OrganizationID = localStorage.getItem("organizationID");
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -141,49 +142,54 @@ const ProposedNewMeeting = ({
 
   useEffect(() => {
     let newParticpantData = PollsReducer.gellAllCommittesandGroups;
-    console.log(newParticpantData, "newParticpantDatanewParticpantData");
-    if (newParticpantData !== null && newParticpantData !== undefined) {
-      let temp = [];
-      if (Object.keys(newParticpantData).length > 0) {
-        if (Object.keys(newParticpantData.groups).length > 0) {
-          newParticpantData.groups.forEach((a, index) => {
-            let newData = {
-              value: a.groupID,
-              label: a.groupName,
-              profilePic: GroupIcon,
-              type: 1,
-            };
-            temp.push(newData);
-          });
-        }
-        if (Object.keys(newParticpantData.committees).length > 0) {
-          newParticpantData.committees.forEach((a, index) => {
-            let newData = {
-              value: a.committeeID,
-              label: a.committeeName,
-              profilePic: committeeicon,
+    try {
+      if (newParticpantData !== null && newParticpantData !== undefined) {
+        let temp = [];
+        if (Object.keys(newParticpantData).length > 0) {
+          if (Object.keys(newParticpantData.groups).length > 0) {
+            newParticpantData.groups.forEach((a, index) => {
+              let newData = {
+                value: a.groupID,
+                label: a.groupName,
+                profilePic: GroupIcon,
+                type: 1,
+              };
+              temp.push(newData);
+            });
+          }
+          if (Object.keys(newParticpantData.committees).length > 0) {
+            newParticpantData.committees.forEach((a, index) => {
+              let newData = {
+                value: a.committeeID,
+                label: a.committeeName,
+                profilePic: committeeicon,
 
-              type: 2,
-            };
-            temp.push(newData);
-          });
+                type: 2,
+              };
+              temp.push(newData);
+            });
+          }
+          if (Object.keys(newParticpantData.organizationUsers).length > 0) {
+            let filterOutCreatorUser =
+              newParticpantData?.organizationUsers?.filter(
+                (data, index) => Number(data?.userID) !== Number(userID)
+              );
+            filterOutCreatorUser.forEach((a, index) => {
+              let newData = {
+                value: a.userID,
+                label: a.userName,
+                profilePic: a?.profilePicture?.displayProfilePictureName,
+                type: 3,
+              };
+              temp.push(newData);
+            });
+          }
+          setDropdowndata(temp);
+        } else {
+          setDropdowndata([]);
         }
-        if (Object.keys(newParticpantData.organizationUsers).length > 0) {
-          newParticpantData.organizationUsers.forEach((a, index) => {
-            let newData = {
-              value: a.userID,
-              label: a.userName,
-              profilePic: a?.profilePicture?.displayProfilePictureName,
-              type: 3,
-            };
-            temp.push(newData);
-          });
-        }
-        setDropdowndata(temp);
-      } else {
-        setDropdowndata([]);
       }
-    }
+    } catch {}
   }, [PollsReducer.gellAllCommittesandGroups]);
 
   //onChange function Search

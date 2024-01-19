@@ -85,10 +85,8 @@ body[dir="rtl"] .Due_Date_heading {
 }
 
 .Scroller_For_UpdatePollModal {
-  height: 22vh !important;
+  height: 26vh !important;
   overflow-x: hidden !important;
-  overflow-y: auto;
-  margin-top: 5px;
 }
 
 .Scroller_For_UpdatePollModal::-webkit-scrollbar {
@@ -115,11 +113,12 @@ body[dir="rtl"] .Add_another_field {
 
 .polling_Options_backGround {
   background: #f16b6b !important;
-  position: absolute;
+  position: absolute !important;
   width: auto !important;
-  right: 0;
+  right: 10px !important;
+  left: auto !important;
   margin-top: 0 !important;
-  top: 0;
+  top: 0 !important;
   height: 100%;
   z-index: 1;
   display: flex !important;
