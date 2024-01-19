@@ -624,7 +624,7 @@ const ViewMeetingDetails = ({
             sm={12}
             className={styles["ScrollerMeeting_Active"]}
           >
-            <Row>
+            <Row className={meetingStatus === 10 ? "mt-4" : ""}>
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["Heading_Gray_meeting"]}>
                   {meetingDetails.MeetingType?.Type} | {meetingDetails.Location}
