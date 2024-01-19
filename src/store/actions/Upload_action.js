@@ -39,6 +39,12 @@ const ResetAllFilesUpload = () => {
   };
 };
 
+const uploaddocumentloader = (payload) => {
+  return {
+    type: actions.UPLOAD_DOCUMENT_LOADER,
+    payload,
+  };
+};
 //File Upload
 const FileUploadToDo = (navigate, data, t, newfile) => {
   let token = JSON.parse(localStorage.getItem("token"));
@@ -196,4 +202,5 @@ export {
   ResetAllFilesUpload,
   uploadResponseEmpty,
   FileUploadToDo2,
+  uploaddocumentloader,
 };

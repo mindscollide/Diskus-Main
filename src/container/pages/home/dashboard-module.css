@@ -619,7 +619,7 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
   border-top-left-radius: 5px !important;
   border-bottom-left-radius: 5px !important;
   font-size: calc(17px - 25%) !important;
-  color: #2197d7;
+  color: #6172d6;
   font-family: "MontserratSemiBold-600";
   text-transform: capitalize;
 }
@@ -1162,7 +1162,7 @@ img.recent-activity-icon {
   font-family: "MontserratSemiBold";
   cursor: pointer;
   margin: 5px 5px !important;
-  color: #5a5a5a !important;
+  color: #6172d6 !important;
   white-space: nowrap !important;
   overflow: hidden !important;
   word-wrap: break-word;
