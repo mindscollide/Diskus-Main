@@ -37,7 +37,7 @@ const uploadReducer = (state = initialState, action) => {
     case actions.UPLOAD_DOCUMNET_FILE_SUCCESS:
       return {
         ...state,
-        Loading: action.loading,
+        // Loading: action.loading,
         isSuccess: true,
         uploadDocumentsList: action.response,
         isExecuted: action.isExecuted,
@@ -60,6 +60,11 @@ const uploadReducer = (state = initialState, action) => {
     case actions.UPLOAD_RESPONSE_MESSAGE:
       return { ...state, ResponseMessage: "" };
 
+    case actions.UPLOAD_DOCUMENT_LOADER:
+      return {
+        ...state,
+        Loading: action.payload,
+      };
     default:
       return { ...state };
   }
