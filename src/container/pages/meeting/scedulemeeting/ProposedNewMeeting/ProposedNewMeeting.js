@@ -752,7 +752,7 @@ const ProposedNewMeeting = ({
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Sub_headings"]}>
                       {t("Description")}
-                      <span className={styles["res_steric"]}>*</span>
+                      {/* <span className={styles["res_steric"]}>*</span> */}
                     </span>
                   </Col>
                 </Row>
