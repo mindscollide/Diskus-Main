@@ -278,13 +278,16 @@ const MeetingMaterial = ({
                   fontSize={22}
                   cursor={ext === "pdf" ? "pointer" : "default"}
                   pointerEvents={ext === "pdf" ? "auto" : "none"}
-                  onClick={() => handleDoubeClick(record)}
+                  onDoubleClick={() => handleDoubeClick(record)}
                 />
+                {/* {ext !== "pdf" && ( */}
                 <Button
+                  disableBtn={ext !== "pdf" ? false : true}
                   text={t("Download")}
                   className={styles["downloadButton"]}
                   onClick={() => handleDoubeClick(record)}
                 />
+                {/* )} */}
               </Col>
             </Row>
           </>

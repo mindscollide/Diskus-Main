@@ -127,3 +127,13 @@
   border-radius: 4px !important;
   font-family: "MontserratSemiBold" !important;
 }
+.downloadButton {
+  padding: 12px 30px !important;
+  background: #6172d6 !important;
+  border: none !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+.downloadButton:disabled {
+  background: #ccc !important;
+}

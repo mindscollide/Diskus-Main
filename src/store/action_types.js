@@ -2382,5 +2382,6 @@ export const GET_USER_PROPOSED_DATES_SUCCESS =
   "GET_USER_PROPOSED_DATES_SUCCESS";
 export const GET_USER_PROPOSED_DATES_FAIL = "GET_USER_PROPOSED_DATES_FAIL";
 
+export const DOWNLOAD_MESSAGE = "DOWNLOAD_MESSAGE";
 //upload document loader on notes should not be false after uploading the documents
 export const UPLOAD_DOCUMENT_LOADER = "UPLOAD_DOCUMENT_LOADER";

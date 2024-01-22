@@ -198,6 +198,9 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
                                             value={
                                               viewProgressPollsDetails.answer
                                             }
+                                            className={
+                                              styles["Checked_pollmeetingBox"]
+                                            }
                                             Optios={data.pollAnswerID}
                                             onChange={handleCheckBoxForOneOnly}
 

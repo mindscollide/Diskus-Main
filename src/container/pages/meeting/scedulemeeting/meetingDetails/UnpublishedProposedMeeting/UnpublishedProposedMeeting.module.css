@@ -66,3 +66,8 @@
 .meeting-expanded-row {
   margin-left: 22px !important;
 }
+
+.align-organizer-col {
+  display: flex !important;
+  justify-content: center !important;
+}

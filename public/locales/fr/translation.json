@@ -366,13 +366,13 @@
   "Maximum-password-length-is-25-characters": "Maximum password length is 25 characters",
   "Task-title": "Task Title",
   "Note-details": "Note Details",
-  "No-archived-record-founds": "No Archive Record Found",
+  "No-archived-record-founds": "No Archived Record Found",
   "No-todo-items-found": "No ToDo Items found",
   "Group-title": "Group Title",
   "Meeting-with-agenda": "Meeting With Agenda",
   "Survey-polls": "Survey Polls",
   "Assign-remove-group": "Assign/Remove Group",
-  "Archived": "Archive",
+  "Archived": "Archived",
   "Active": "Active",
   "Committee-title": "Committee Title",
   "No-member-selected": "No member selected!",
@@ -1224,5 +1224,7 @@
   "Agenda-contributor-updated": "Agenda Contributor's Updated",
   "Agenda-contributor-added": "Agenda Contributor's Added",
   "Start-your-Free-Trial-now": "Start your free trial now",
-  "Please-select-any-of-the-given-options": "Please select any of the given options"
+  "Please-select-any-of-the-given-options": "Please select any of the given options",
+  "Downloading-file": "Downloading file",
+  "Archived-groups": "Archived groups"
 }
