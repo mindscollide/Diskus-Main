@@ -196,7 +196,7 @@ const SearchComponent = ({
       width: "90px",
       sortDirections: ["descend", "ascend"],
       render: (text, record) => {
-        return <span className={styles["ownerName"]}>{text}</span>;
+        return <span className={stylesss["ownerName"]}>{`${text} MB`}</span>;
       },
     },
     {

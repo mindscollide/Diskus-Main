@@ -106,6 +106,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   const [startMeetingStatus, setStartMeetingStatus] = useState(false);
   const [endMeetingStatus, setEndMeetingStatus] = useState(false);
   const [isOrganizer, setOrganizer] = useState(false);
+  const [isParticipant, setIsParticipant] = useState(false);
   const [minutesOftheMeatingStatus, setMinutesOftheMeatingStatus] =
     useState(false);
   // for main json for create meating
@@ -287,11 +288,15 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           const found2 = found.meetingAttendeeRole.pK_MARID;
           if (parseInt(found2) === 1 || parseInt(found2) === 3) {
             setOrganizer(true);
+          } else if (parseInt(found2) === 2) {
+            setIsParticipant(true);
           } else {
             setOrganizer(false);
+            setIsParticipant(false);
           }
         } else {
           setOrganizer(false);
+          setIsParticipant(false);
         }
         if (meetingStatus === "1") {
           setStartMeetingStatus(false);
@@ -1217,7 +1222,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                           />
                         ) : null}
 
-                        {allMeetingDetails.meetingStatus.status === "10" ? (
+                        {allMeetingDetails.meetingStatus.status === "8" ? (
                           <Button
                             onClick={endMeeting}
                             className={
@@ -1231,6 +1236,21 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                         ) : null}
                       </Col>
                     </Row>
+                  ) : isParticipant ? (
+                    <>
+                      {allMeetingDetails.meetingStatus.status === "10" ? (
+                        <Button
+                          onClick={endMeeting}
+                          className={
+                            "MontserratSemiBold-600 btn btn-primary end-meeting-btn" +
+                            " " +
+                            currentLanguage
+                          }
+                          text={t("Leave-meeting")}
+                          disableBtn={endMeetingStatus}
+                        />
+                      ) : null}
+                    </>
                   ) : null}
                 </>
               ) : null}
