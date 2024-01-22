@@ -617,7 +617,7 @@ const ViewMeetingDetails = ({
           </Row>
         )}
 
-        <Row>
+        <Row className="mt-4">
           <Col
             lg={12}
             md={12}
@@ -791,7 +791,7 @@ const ViewMeetingDetails = ({
                     <Row className="mt-2">
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["NOtes_heading"]}>
-                          {t("Reminder-frequency ")}
+                          {t("Reminder-frequency")}
                         </span>
                       </Col>
                     </Row>

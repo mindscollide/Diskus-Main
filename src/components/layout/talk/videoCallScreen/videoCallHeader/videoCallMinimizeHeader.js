@@ -464,7 +464,11 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
             <div className="leave-meeting-options__inner">
               <Button
                 className="leave-meeting-options__btn leave-meeting-red-button"
-                text="End Call for Everyone"
+                text={
+                  currentCallType === 1
+                    ? t("End-call")
+                    : t("End-call-for-everyone")
+                }
                 onClick={minimizeLeaveCall}
               />
 
