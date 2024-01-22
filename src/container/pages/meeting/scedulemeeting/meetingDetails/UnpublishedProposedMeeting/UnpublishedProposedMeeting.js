@@ -228,13 +228,13 @@ const UnpublishedProposedMeeting = ({
       title: <span> {t("Organizer")}</span>,
       dataIndex: "host",
       key: "host",
-      width: "125px",
+      width: "120px",
       align: "center",
       sorter: (a, b) => {
         return a?.host.toLowerCase().localeCompare(b?.host.toLowerCase());
       },
       render: (text, record) => {
-        return <span>{text}</span>;
+        return <span className={styles["align-organizer-col"]}>{text}</span>;
       },
     },
     {
@@ -268,7 +268,7 @@ const UnpublishedProposedMeeting = ({
       title: t("Propose-date-poll"),
       dataIndex: "getAllMeetingDetails",
       key: "MeetingPoll",
-      width: "110px",
+      width: "120px",
       render: (text, record) => {
         console.log(record, "maxValuemaxValuemaxValue");
         let maxValue = record.meetingPoll?.totalNoOfDirectors;
