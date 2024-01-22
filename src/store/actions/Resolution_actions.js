@@ -1326,7 +1326,9 @@ const getVotesDetails = (navigate, id, t, setVoteresolution) => {
                   t("Data-available")
                 )
               );
-              setVoteresolution(true);
+              if (typeof setVoteresolution === "function") {
+                setVoteresolution(true);
+              }
               dispatch(voteResolutionFlag(true));
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
@@ -1414,9 +1416,14 @@ const cancelResolutionApi = (
                   t("Resolution-cancelled")
                 )
               );
-              await setCancelresolution(false);
-              setCancelModal(false);
               dispatch(updateResolutionModal(false));
+              if (typeof setCancelresolution === "function") {
+                await setCancelresolution(false);
+              }
+              if (typeof setCancelModal === "function") {
+                setCancelModal(false);
+              }
+              setCancelModal(false);
               if (Number(resolutionView) === 1) {
                 dispatch(getResolutions(navigate, Number(currentView), t));
               } else {
@@ -1794,6 +1801,7 @@ const resultResolutionFlag = (response) => {
   return {
     type: actions.RESULT_RESOLUTION_FLAG,
     response: response,
+    payload: response,
   };
 };
 
@@ -1802,6 +1810,7 @@ const voteResolutionFlag = (response) => {
   return {
     type: actions.VOTE_RESOLUTION_FLAG,
     response: response,
+    payload: response,
   };
 };
 
@@ -1810,6 +1819,7 @@ const viewAttachmentFlag = (response) => {
   return {
     type: actions.VIEW_ATTACHMENT_FLAG,
     response: response,
+    payload: response,
   };
 };
 

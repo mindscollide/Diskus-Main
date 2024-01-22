@@ -3167,6 +3167,12 @@ const updateFolderGeneralAccessApi = (navigate, t, data) => {
   };
 };
 
+const DownloadMessage = (payload) => {
+  return {
+    type: actions.DOWNLOAD_MESSAGE,
+    payload,
+  };
+};
 const DownloadFileForDataRoomStart = () => {
   return {
     type: actions.DATA_ROOM_FILE_DOWNLOAD,
@@ -3192,7 +3198,6 @@ const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
   let form = new FormData();
   form.append("RequestMethod", dataRoomFileDownloadService.RequestMethod);
   form.append("RequestData", JSON.stringify(data));
-
   let ext = Name.split(".").pop();
   let contentType;
   if (ext === "doc") {
@@ -3219,6 +3224,7 @@ const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
   } else {
   }
   return (dispatch) => {
+    dispatch(DownloadMessage(1));
     dispatch(DownloadFileForDataRoomStart());
     axios({
       method: "post",
@@ -3246,9 +3252,12 @@ const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
           link.click();
 
           dispatch(DownloadFileForDataRoomEnded(false));
+          dispatch(DownloadMessage(0));
         }
       })
       .catch((response) => {
+        dispatch(DownloadMessage(0));
+
         dispatch(downloadFail(response));
       });
   };
@@ -3327,6 +3336,7 @@ const DataRoomDownloadFolderApiFunc = (navigate, data, t, Name) => {
   form.append("RequestData", JSON.stringify(data));
 
   return (dispatch) => {
+    dispatch(DownloadMessage(1));
     dispatch(DownloadFolderForDataRoomStart());
 
     axios({
@@ -3353,12 +3363,14 @@ const DataRoomDownloadFolderApiFunc = (navigate, data, t, Name) => {
           link.click();
 
           dispatch(DownloadFolderForDataRoomEnded(false));
+          dispatch(DownloadMessage(0));
         } else {
           dispatch(downloadFail(response));
         }
       })
       .catch((response) => {
         dispatch(downloadFolderFail(response));
+        dispatch(DownloadMessage(0));
       });
   };
 };

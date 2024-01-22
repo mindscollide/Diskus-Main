@@ -44,6 +44,7 @@ const initialState = {
   FolderFail: false,
   fileDetials: false,
   userAvailabilityDataRoom: null,
+  downloadMessage: 0,
 };
 
 const DataRoomReducer = (state = initialState, action) => {
@@ -746,6 +747,12 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         userAvailabilityDataRoom: null,
         ResponseMessage: action.message,
+      };
+    }
+    case actions.DOWNLOAD_MESSAGE: {
+      return {
+        ...state,
+        downloadMessage: action.payload,
       };
     }
 

@@ -307,6 +307,7 @@ const Resolution = () => {
   };
 
   const getVoteDetailHandler = (id, data) => {
+    console.log(id, data, "getVoteDetailHandlergetVoteDetailHandler");
     dispatch(getVotesDetails(navigate, id, t, setVoteresolution));
     setVoterID(data.voterID);
   };
@@ -1189,7 +1190,11 @@ const Resolution = () => {
       } catch {}
     }
   }, [ResolutionReducer.mqttResolutionClosed]);
-  console.log(ResolutionReducer, "ResolutionReducerResolutionReducer");
+  console.log(
+    voteresolution,
+    ResolutionReducer.voteResolutionFlag,
+    "ResolutionReducerResolutionReducer"
+  );
   return (
     <>
       <section className={styles["resolution_container"]}>
