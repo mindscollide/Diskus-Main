@@ -586,7 +586,7 @@ const Polling = () => {
   };
 
   const handleKeyDownSearch = (e) => {
-    if (e.key === "Enter" && pollsState.searchValue !== "") {
+    if (e.key === "Enter") {
       // setPollsState({
       //   ...pollsState,
       //   searchValue: "",

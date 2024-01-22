@@ -216,43 +216,40 @@ const StarredMessagesList = () => {
         allStarredMessagesData.map((dataItem, index) => {
           return (
             <>
-              <Row key={index}>
-                <Col lg={1} md={1} sm={1}>
-                  <div className="chat-profile-icon starred-message">
-                    <img draggable="false" src={SingleIcon} width={10} />
+              <Row className="single-chat">
+                <Col sm={2} md={2} lg={2}>
+                  <div className="chat-profile-icon ">
+                    <img draggable="false" src={SingleIcon} width={25} />
                   </div>
                 </Col>
-                <Col lg={7} md={7} sm={7}>
-                  <p className="chat-username starred-message m-0">
-                    {dataItem.senderName}
-                  </p>
-                </Col>
-                <Col lg={4} md={4} sm={4} className="text-end"></Col>
-              </Row>
-              <Row className="bottom-border-starred" key={index}>
-                <Col lg={12} md={12} sm={12}>
-                  <div
-                    className={
-                      dataItem.senderID === parseInt(currentUserId)
-                        ? "sender-message-star"
-                        : "reply-message"
-                    }
-                  >
-                    <p className="m-0">{dataItem.messageBody}</p>
-                    <div className="starred-icon-date">
-                      <span>
-                        <img
-                          draggable="false"
-                          src={StarredMessageIcon}
-                          alt=""
-                        />
-                      </span>
-                      <p className="m-0">
-                        {" "}
-                        {dataItem.sentDate !== ""
-                          ? newTimeFormaterAsPerUTCTalkDate(dataItem.sentDate)
-                          : ""}
-                      </p>
+                <Col sm={10} md={10} lg={10}>
+                  <div className="chat-block">
+                    <p className="chat-username starred-message m-0">
+                      {dataItem.senderName}
+                    </p>
+                    <div
+                      className={
+                        dataItem.senderID === parseInt(currentUserId)
+                          ? "sender-message-star"
+                          : "reply-message"
+                      }
+                    >
+                      <p className="m-0">{dataItem.messageBody}</p>
+                      <div className="starred-icon-date">
+                        <span>
+                          <img
+                            draggable="false"
+                            src={StarredMessageIcon}
+                            alt=""
+                          />
+                        </span>
+                        <p className="m-0">
+                          {" "}
+                          {dataItem.sentDate !== ""
+                            ? newTimeFormaterAsPerUTCTalkDate(dataItem.sentDate)
+                            : ""}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </Col>
