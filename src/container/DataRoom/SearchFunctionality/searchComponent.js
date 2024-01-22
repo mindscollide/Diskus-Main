@@ -239,9 +239,11 @@ const SearchComponent = ({
         if (DataRoomReducer.dataBehaviour) {
           dispatch(dataBehaviour(false));
           let copyData = [...searchAllData];
-          DataRoomReducer.SearchFilesAndFoldersResponse.map((data, index) => {
-            copyData.push(data);
-          });
+          DataRoomReducer.SearchFilesAndFoldersResponse.forEach(
+            (data, index) => {
+              copyData.push(data);
+            }
+          );
           setSearchAllData(copyData);
           setTotalRecords(DataRoomReducer.SearchFileListCount);
           setSRowsData(
@@ -249,12 +251,21 @@ const SearchComponent = ({
               prev + DataRoomReducer.SearchFilesAndFoldersResponse.length
           );
         } else {
-          dispatch(dataBehaviour(false));
-          setSearchAllData(DataRoomReducer.SearchFilesAndFoldersResponse);
-          setTotalRecords(DataRoomReducer.SearchFileListCount);
-          setSRowsData(DataRoomReducer.SearchFilesAndFoldersResponse.length);
+          if (DataRoomReducer.SearchFilesAndFoldersResponse.length > 0) {
+            dispatch(dataBehaviour(false));
+            setSearchAllData(DataRoomReducer.SearchFilesAndFoldersResponse);
+            setTotalRecords(DataRoomReducer.SearchFileListCount);
+            setSRowsData(DataRoomReducer.SearchFilesAndFoldersResponse.length);
+          } else {
+            setSearchAllData([]);
+            setTotalRecords(0);
+            setSRowsData(0);
+          }
         }
-      } else {
+      } else if (DataRoomReducer.dataBehaviour === false) {
+        setSearchAllData([]);
+        setTotalRecords(0);
+        setSRowsData(0);
         // setSearchAllData([]);
       }
     } catch (error) {}

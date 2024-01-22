@@ -267,7 +267,10 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       });
     }
   };
-
+  console.log(
+    allMeetingDetails,
+    "allMeetingDetailsallMeetingDetailsallMeetingDetails"
+  );
   // for view data
   useEffect(() => {
     try {
@@ -318,8 +321,13 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           setMinutesOftheMeatingStatus(true);
           setEndMeetingStatus(false);
           setStartMeetingStatus(false);
+        } else if (meetingStatus === "10") {
+          setMinutesOftheMeatingStatus(false);
+          setEndMeetingStatus(false);
+          setStartMeetingStatus(false);
         } else {
           setEndMeetingStatus(false);
+          setStartMeetingStatus(false);
           setStartMeetingStatus(false);
         }
         viewData.meetingReminders.map((rdata, index) => {
@@ -642,6 +650,24 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       PublishedMeetings: true,
     };
     await dispatch(EndMeeting(navigate, Data, t, Data2));
+  };
+  const leaveMeeting = async () => {
+    await setViewFlag(false);
+    // let meetingID = assignees.ViewMeetingDetails.meetingDetails.pK_MDID;
+    // let Data = {
+    //   MeetingID: meetingID,
+    //   UserID: parseInt(createrID),
+    // };
+    // let Data2 = {
+    //   Date: "",
+    //   Title: "",
+    //   HostName: "",
+    //   UserID: parseInt(createrID),
+    //   PageNumber: 1,
+    //   Length: 50,
+    //   PublishedMeetings: true,
+    // };
+    // await dispatch(EndMeeting(navigate, Data, t, Data2));
   };
 
   const downloadClick = (e, record) => {
@@ -1222,16 +1248,16 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                           />
                         ) : null}
 
-                        {allMeetingDetails.meetingStatus.status === "8" ? (
+                        {allMeetingDetails.meetingStatus.status === "10" ? (
                           <Button
                             onClick={endMeeting}
                             className={
-                              "MontserratSemiBold-600 btn btn-primary end-meeting-btn" +
+                              "MontserratSemiBold-600 btn btn-primary end-meeting-btn_view" +
                               " " +
                               currentLanguage
                             }
                             text={t("End-meeting")}
-                            disableBtn={endMeetingStatus}
+                            // disableBtn={endMeetingStatus}
                           />
                         ) : null}
                       </Col>
@@ -1240,14 +1266,14 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                     <>
                       {allMeetingDetails.meetingStatus.status === "10" ? (
                         <Button
-                          onClick={endMeeting}
+                          onClick={leaveMeeting}
                           className={
-                            "MontserratSemiBold-600 btn btn-primary end-meeting-btn" +
+                            "MontserratSemiBold-600  end-meeting-btn_view" +
                             " " +
                             currentLanguage
                           }
                           text={t("Leave-meeting")}
-                          disableBtn={endMeetingStatus}
+                          // disableBtn={endMeetingStatus}
                         />
                       ) : null}
                     </>
