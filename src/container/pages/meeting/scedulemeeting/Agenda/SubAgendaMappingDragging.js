@@ -25,6 +25,7 @@ import arabic from "react-date-object/calendars/arabic";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
+import AttachmentIcon from "../../../../../assets/images/Attachment.svg";
 import closedLocked from "../../../../../assets/images/CloseLocked.svg";
 import DarkLock from "../../../../../assets/images/BlackLock.svg";
 import Lock from "../../../../../assets/images/LOCK.svg";
@@ -835,6 +836,18 @@ const SubAgendaMappingDragging = ({
                                                   ? t("Hide-details")
                                                   : t("Show-more")}
                                               </span>
+                                              {subAgendaData.subfiles.length >
+                                              0 ? (
+                                                <img
+                                                  className={
+                                                    styles[
+                                                      "AttachmentIconImage"
+                                                    ]
+                                                  }
+                                                  src={AttachmentIcon}
+                                                  alt=""
+                                                />
+                                              ) : null}
                                             </Col>
                                           </Row>
                                           {/* Condition for Subajencda */}

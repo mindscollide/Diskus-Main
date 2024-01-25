@@ -547,7 +547,7 @@ const NewMeeting = () => {
             }}
           >
             {/* {text} */}
-            {truncateString(text, 30)}
+            {truncateString(text, 35)}
           </span>
         );
       },

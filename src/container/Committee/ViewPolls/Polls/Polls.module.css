@@ -77,13 +77,13 @@
 .DateClass {
   color: #2197d7 !important;
   font-family: "MontserratSemiBold";
-  font-size: 12px !important;
+  font-size: 14px !important;
   display: inline-block !important;
-  width: 80% !important;
+  /* width: 80% !important;
   overflow: hidden !important;
   white-space: nowrap !important;
   text-overflow: ellipsis !important;
-  cursor: pointer !important;
+  cursor: pointer !important; */
 }
 
 .EmptyState_heading {
@@ -181,6 +181,7 @@
 .MaintainingHeight {
   height: 55vh !important;
 }
+
 .PaginationStyle-Resolution {
   background-color: #fff !important;
   display: flex !important;
@@ -201,11 +202,13 @@ body[dir="rtl"] .PaginationStyle-Resolution {
   width: auto !important;
   padding: 12px 10px !important;
 }
+
 .text-success {
   font-size: 12px !important;
   border-radius: 4px !important;
   font-family: "MontserratMedium-500" !important;
 }
+
 .votedButton {
   color: #6172d6 !important;
   background-color: #ecefff !important;
@@ -218,6 +221,7 @@ body[dir="rtl"] .PaginationStyle-Resolution {
 
   border-radius: 4px !important;
 }
+
 .Not_Vote_Button_Polls {
   background-color: #81db86 !important;
   font-family: "MontserratSemiBold" !important;
@@ -228,6 +232,7 @@ body[dir="rtl"] .PaginationStyle-Resolution {
   white-space: nowrap;
   border-radius: 4px !important;
 }
+
 .Not-voted {
   font-size: 12px !important;
   font-family: "MontserratMedium";

@@ -8,6 +8,8 @@ import pdfIcon from "../../../../../assets/images/pdf_icon.svg";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import moment from "moment";
+import AttachmentIcon from "../../../../../assets/images/Attachment.svg";
 import {
   showAdvancePermissionModal,
   showVoteAgendaModal,
@@ -579,6 +581,18 @@ const SubAgendaMappingDragging = ({
                                                   ? t("Hide-details")
                                                   : t("Show-more")}
                                               </span>
+                                              {subAgendaData.subfiles.length >
+                                              0 ? (
+                                                <img
+                                                  className={
+                                                    styles[
+                                                      "AttachmentIconImage"
+                                                    ]
+                                                  }
+                                                  src={AttachmentIcon}
+                                                  alt=""
+                                                />
+                                              ) : null}
                                             </Col>
                                           </Row>
                                           {/* Condition for Subajencda */}
@@ -610,9 +624,21 @@ const SubAgendaMappingDragging = ({
                                                           ]
                                                         }
                                                       >
-                                                        {
+                                                        {/* {
                                                           subAgendaData?.presenterName
-                                                        }
+                                                        } */}
+                                                        {subAgendaData?.presenterName +
+                                                          " - (" +
+                                                          moment(
+                                                            subAgendaData?.startDate,
+                                                            "HHmmss"
+                                                          ).format("hh:mm a") +
+                                                          " - " +
+                                                          moment(
+                                                            subAgendaData?.endDate,
+                                                            "HHmmss"
+                                                          ).format("hh:mm a") +
+                                                          ")"}
                                                       </p>
                                                       {/* <span
                                                       className={

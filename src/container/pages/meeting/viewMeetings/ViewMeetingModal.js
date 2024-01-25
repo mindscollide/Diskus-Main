@@ -45,12 +45,22 @@ const ViewMeetingModal = ({
   console.log(editorRole, "editorRoleeditorRoleeditorRoleeditorRole");
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [meetingDetails, setmeetingDetails] = useState(true);
+  const [meetingDetails, setmeetingDetails] = useState(
+    (editorRole.role === "Organizer" || editorRole.role === "Participant") &&
+      Number(editorRole.status) === 10
+      ? false
+      : true
+  );
   const [organizers, setorganizers] = useState(false);
   const [agendaContributors, setAgendaContributors] = useState(false);
   const [participants, setParticipants] = useState(false);
   const [agenda, setAgenda] = useState(false);
-  const [meetingMaterial, setMeetingMaterial] = useState(false);
+  const [meetingMaterial, setMeetingMaterial] = useState(
+    (editorRole.role === "Organizer" || editorRole.role === "Participant") &&
+      Number(editorRole.status) === 10
+      ? true
+      : false
+  );
   const [minutes, setMinutes] = useState(false);
   const [actionsPage, setactionsPage] = useState(false);
   const [polls, setPolls] = useState(false);

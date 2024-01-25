@@ -35,6 +35,7 @@ import {
 import CustomPagination from "../../../commen/functions/customPagination/Paginations";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
 import { UpdateOrganizersMeeting } from "../../../store/actions/MeetingOrganizers_action";
+import { truncateString } from "../../../commen/functions/regex";
 
 const CommitteeMeetingTab = ({ committeeStatus }) => {
   const { t } = useTranslation();
@@ -205,7 +206,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
               handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
             }}
           >
-            {text}
+            {truncateString(text, 30)}
           </span>
         );
       },

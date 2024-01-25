@@ -71,13 +71,13 @@
 .DateClass {
   color: #2197d7 !important;
   font-family: "MontserratSemiBold";
-  font-size: 12px !important;
-  display: inline-block !important;
-  width: 80% !important;
+  font-size: 14px !important;
+  /* display: inline-block !important; */
+  /* width: 80% !important;
   overflow: hidden !important;
   white-space: nowrap !important;
   text-overflow: ellipsis !important;
-  cursor: pointer !important;
+  cursor: pointer !important; */
 }
 
 .EmptyState_heading {
@@ -196,6 +196,7 @@ body[dir="rtl"] .PaginationStyle-Resolution {
   width: auto !important;
   padding: 12px 10px !important;
 }
+
 .poll_status {
   font-size: 14px;
   font-family: "MontserratRegular" !important;
