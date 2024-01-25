@@ -732,3 +732,13 @@ span.NoFiles_Heading {
   font-family: "MontserratSemiBold" !important;
   color: #000;
 }
+
+img.AttachmentIconImage {
+  margin-left: 15px;
+  margin-right: auto;
+}
+
+body[dir="rtl"] img.AttachmentIconImage {
+  margin-left: auto;
+  margin-right: 15px;
+}

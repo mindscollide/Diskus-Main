@@ -627,7 +627,9 @@ const ViewMeetingDetails = ({
             <Row className={meetingStatus === 10 ? "mt-4" : ""}>
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["Heading_Gray_meeting"]}>
-                  {meetingDetails.MeetingType?.Type} | {meetingDetails.Location}
+                  {meetingDetails.MeetingType?.Type}{" "}
+                  {meetingDetails.Location === "" ? "" : <>|</>}{" "}
+                  {meetingDetails.Location}
                 </span>
               </Col>
             </Row>
