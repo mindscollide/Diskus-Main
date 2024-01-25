@@ -512,6 +512,14 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
     }
   };
 
+  const customFilter = (options, searchText) => {
+    if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   useEffect(() => {
     if (
       NewMeetingreducer.ResponseMessage !== "" &&
@@ -757,6 +765,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                           isMulti
                           onChange={handleSelectValue}
                           isSearchable={false}
+                          filterOption={customFilter}
                         />
                         <Button
                           text={t("ADD")}

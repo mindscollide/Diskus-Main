@@ -113,6 +113,7 @@ const UpdatePolls = () => {
           pollsData.groups.map((a, index) => {
             let newData = {
               value: a.groupID,
+              name: a.groupName,
               label: (
                 <>
                   <Row>
@@ -145,6 +146,7 @@ const UpdatePolls = () => {
           pollsData.committees.map((a, index) => {
             let newData = {
               value: a.committeeID,
+              name: a.committeeName,
               label: (
                 <>
                   <Row>
@@ -177,6 +179,7 @@ const UpdatePolls = () => {
           pollsData.organizationUsers.map((a, index) => {
             let newData = {
               value: a.userID,
+              name: a.userName,
               label: (
                 <>
                   <Row>
@@ -548,6 +551,14 @@ const UpdatePolls = () => {
           message: t("Please-fill-all-reqired-fields"),
         });
       }
+    }
+  };
+
+  const customFilter = (options, searchText) => {
+    if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
+      return true;
+    } else {
+      return false;
     }
   };
 
@@ -993,6 +1004,7 @@ const UpdatePolls = () => {
                                 closeMenuOnSelect={false}
                                 components={animatedComponents}
                                 isMulti
+                                filterOption={customFilter}
                                 options={dropdowndata}
                               />
                               <Button

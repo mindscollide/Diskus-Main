@@ -28,9 +28,11 @@ import profile from "../../../../../../assets/images/newprofile.png";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
 const ModalOrganizor = ({ currentMeeting }) => {
   const { t } = useTranslation();
+  const animatedComponents = makeAnimated();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -43,6 +45,174 @@ const ModalOrganizor = ({ currentMeeting }) => {
   const [organizersSave, setOrganizersSave] = useState([]);
   const [inputSearchValue, setInputSearchValue] = useState("");
 
+  const [selectedsearch, setSelectedsearch] = useState([]);
+
+  // for selection of data
+  const handleSelectValue = (value) => {
+    setSelectedsearch(value);
+  };
+
+  const handleAddUsers = () => {
+    let newOrganizersData =
+      MeetingOrganizersReducer.AllUserCommitteesGroupsData;
+    let tem = [...membersOrganizers];
+    let tem2 = [...organizersSave];
+    if (Object.keys(selectedsearch).length > 0) {
+      try {
+        selectedsearch.map((seledtedData, index) => {
+          console.log(
+            seledtedData,
+            "seledtedDataseledtedDataseledtedDataseledtedData"
+          );
+          if (seledtedData.type === 1) {
+            let check1 = newOrganizersData.groups.find(
+              (data, index) => data.groupID === seledtedData.value
+            );
+            if (check1 !== undefined) {
+              let groupUsers = check1.groupUsers;
+              if (Object.keys(groupUsers).length > 0) {
+                groupUsers.map((gUser, index) => {
+                  let check2 = membersOrganizers.find(
+                    (data, index) => data.UserID === gUser.userID
+                  );
+                  let check2Save = organizersSave.find(
+                    (data, index) => data.UserID === gUser.userID
+                  );
+                  if (check2 !== undefined && check2Save !== undefined) {
+                  } else {
+                    let newUser = {
+                      userName: gUser.userName,
+                      userID: gUser.userID,
+                      displayPicture:
+                        gUser.profilePicture.displayProfilePictureName,
+                      email: gUser.emailAddress,
+                      isPrimaryOrganizer: false,
+                      isOrganizerNotified: false,
+                      organizerTitle: "",
+                      rsvp: false,
+                      isDeletable: true,
+                      disabledTitle: false,
+                      disabledRSVP: true,
+                      disabledNotification: true,
+                      disabledSwitch: true,
+                      NotificationMessage: "",
+                      isEdit: false,
+                    };
+                    let newUserSave = {
+                      isPrimaryOrganizer: false,
+                      isOrganizerNotified: false,
+                      organizerTitle: "",
+                      UserID: gUser.userID,
+                    };
+                    tem.push(newUser);
+                    tem2.push(newUserSave);
+                  }
+                });
+              }
+            }
+          } else if (seledtedData.type === 2) {
+            let check1 = newOrganizersData.committees.find(
+              (data, index) => data.committeeID === seledtedData.value
+            );
+            if (check1 != undefined) {
+              let committeesUsers = check1.committeeUsers;
+              if (Object.keys(committeesUsers).length > 0) {
+                committeesUsers.map((cUser, index) => {
+                  let check2 = membersOrganizers.find(
+                    (data, index) => data.UserID === cUser.userID
+                  );
+                  let check2Save = organizersSave.find(
+                    (data, index) => data.UserID === cUser.userID
+                  );
+                  if (check2 !== undefined && check2Save !== undefined) {
+                  } else {
+                    let newUser = {
+                      userName: cUser.userName,
+                      userID: cUser.userID,
+                      displayPicture:
+                        cUser.profilePicture.displayProfilePictureName,
+                      email: cUser.emailAddress,
+                      isPrimaryOrganizer: false,
+                      isOrganizerNotified: false,
+                      organizerTitle: "",
+                      rsvp: false,
+                      isDeletable: true,
+                      disabledTitle: false,
+                      disabledRSVP: true,
+                      disabledNotification: true,
+                      disabledSwitch: true,
+                      NotificationMessage: "",
+                      isEdit: false,
+                    };
+                    let newUserSave = {
+                      isPrimaryOrganizer: false,
+                      isOrganizerNotified: false,
+                      organizerTitle: "",
+                      UserID: cUser.userID,
+                    };
+                    tem.push(newUser);
+                    tem2.push(newUserSave);
+                  }
+                });
+              }
+            }
+          } else if (seledtedData.type === 3) {
+            let check1 = membersOrganizers.find(
+              (data, index) => data.UserID === seledtedData.value
+            );
+            if (check1 != undefined) {
+            } else {
+              let check2 = newOrganizersData.organizationUsers.find(
+                (data, index) => data.userID === seledtedData.value
+              );
+              if (check2 !== undefined) {
+                let newUser = {
+                  userName: check2.userName,
+                  userID: check2.userID,
+                  displayPicture:
+                    check2.profilePicture.displayProfilePictureName,
+                  email: check2.emailAddress,
+                  isPrimaryOrganizer: false,
+                  isOrganizerNotified: false,
+                  organizerTitle: "",
+                  rsvp: false,
+                  isDeletable: true,
+                  disabledTitle: false,
+                  disabledRSVP: true,
+                  disabledNotification: true,
+                  disabledSwitch: true,
+                  NotificationMessage: "",
+                  isEdit: false,
+                };
+                let newUserSave = {
+                  isPrimaryOrganizer: false,
+                  isOrganizerNotified: false,
+                  organizerTitle: "",
+                  UserID: check2.userID,
+                };
+                tem.push(newUser);
+                tem2.push(newUserSave);
+              }
+            }
+          } else {
+          }
+        });
+      } catch {}
+
+      const uniqueData = new Set(tem.map(JSON.stringify));
+
+      const uniqueDataSave = new Set(tem2.map(JSON.stringify));
+
+      // Convert the Set back to an array of objects
+      const result = Array.from(uniqueData).map(JSON.parse);
+      const resultSave = Array.from(uniqueDataSave).map(JSON.parse);
+      setMembersOrganizers(result);
+      setOrganizersSave(resultSave);
+      setSelectedsearch([]);
+    } else {
+      // setopen notionation work here
+    }
+  };
   const handleCrossIcon = () => {
     dispatch(showAddUserModal(false));
   };
@@ -76,34 +246,104 @@ const ModalOrganizor = ({ currentMeeting }) => {
       let temp = [];
       if (Object.keys(newOrganizersData).length > 0) {
         if (Object.keys(newOrganizersData.groups).length > 0) {
-          newOrganizersData.groups.forEach((a, index) => {
+          newOrganizersData.groups.map((a, index) => {
             let newData = {
               value: a.groupID,
-              label: a.groupName,
-              profilePic: GroupIcon,
+              name: a.groupName,
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={GroupIcon}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.groupName}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
+              ),
               type: 1,
             };
             temp.push(newData);
           });
         }
         if (Object.keys(newOrganizersData.committees).length > 0) {
-          newOrganizersData.committees.forEach((a, index) => {
+          newOrganizersData.committees.map((a, index) => {
             let newData = {
               value: a.committeeID,
-              label: a.committeeName,
-              profilePic: committeeicon,
+              name: a.committeeName,
 
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={committeeicon}
+                        width="21.71px"
+                        height="18.61px"
+                        draggable="false"
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.committeeName}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
+              ),
               type: 2,
             };
             temp.push(newData);
           });
         }
         if (Object.keys(newOrganizersData.organizationUsers).length > 0) {
-          newOrganizersData.organizationUsers.forEach((a, index) => {
+          console.log(
+            newOrganizersData.organizationUsers,
+            "organizationUsersorganizationUsersorganizationUsers"
+          );
+          newOrganizersData.organizationUsers.map((a, index) => {
             let newData = {
               value: a.userID,
-              label: a.userName,
-              profilePic: a?.profilePicture?.displayProfilePictureName,
+              name: a.userName,
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
+                        // src={}
+                        alt=""
+                        className={styles["UserProfilepic"]}
+                        width="18px"
+                        height="18px"
+                        draggable="false"
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.userName}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
+              ),
               type: 3,
             };
             temp.push(newData);
@@ -115,6 +355,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
       }
     }
   }, [MeetingOrganizersReducer.AllUserCommitteesGroupsData]);
+
   //Drop Down Values
   const onChangeSearch = (e) => {
     setInputSearchValue(e.target.value.trimStart());
@@ -316,6 +557,14 @@ const ModalOrganizor = ({ currentMeeting }) => {
     dispatch(selectedMeetingOrganizers(organizersSave));
   };
 
+  const customFilter = (options, searchText) => {
+    if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
     <section>
       <Modal
@@ -364,16 +613,27 @@ const ModalOrganizor = ({ currentMeeting }) => {
                     sm={12}
                     className="group-fields d-flex align-items-center gap-2"
                   >
-                    <InputSearchFilter
-                      placeholder={t("Add-organizer")}
-                      value={inputSearchValue}
-                      filteredDataHandler={searchFilterHandler(
-                        inputSearchValue
-                      )}
-                      applyClass={"searchFilterAgendaContributor"}
-                      labelClass={"searchFilterAgendaContributorLabel"}
-                      disable={dropdowndata.length === 0 ? true : false}
-                      change={onChangeSearch}
+                    <Select
+                      onChange={handleSelectValue}
+                      isDisabled={
+                        MeetingOrganizersReducer.AllUserCommitteesGroupsData
+                          .length === 0
+                          ? true
+                          : false
+                      }
+                      value={selectedsearch}
+                      classNamePrefix={"selectMember"}
+                      closeMenuOnSelect={false}
+                      components={animatedComponents}
+                      isMulti
+                      options={dropdowndata}
+                      isSearchable={true}
+                      filterOption={customFilter}
+                    />
+                    <Button
+                      text={t("ADD")}
+                      className={styles["ADD_Btn_CreatePool_Modal"]}
+                      onClick={handleAddUsers}
                     />
                   </Col>
                 </Row>

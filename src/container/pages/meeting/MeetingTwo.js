@@ -546,8 +546,8 @@ const NewMeeting = () => {
               // setIsOrganisers(isOrganiser);
             }}
           >
-            {/* {text} */}
-            {truncateString(text, 35)}
+            {text}
+            {/* {truncateString(text, 35)} */}
           </span>
         );
       },
