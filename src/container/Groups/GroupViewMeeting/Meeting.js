@@ -5,6 +5,7 @@ import {
   newTimeFormaterAsPerUTCFullDate,
   utcConvertintoGMT,
 } from "../../../commen/functions/date_formater";
+import { truncateString } from "../../../commen/functions/regex";
 import EditIcon from "../../../assets/images/Edit-Icon.png";
 import ClipIcon from "../../../assets/images/ClipIcon.png";
 import CommentIcon from "../../../assets/images/Comment-Icon.png";
@@ -202,7 +203,8 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
               handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
             }}
           >
-            {text}
+            {truncateString(text, 30)}
+            {/* {text} */}
           </span>
         );
       },

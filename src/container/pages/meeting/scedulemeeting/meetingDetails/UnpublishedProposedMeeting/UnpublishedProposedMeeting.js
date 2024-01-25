@@ -39,6 +39,7 @@ import {
 } from "../../../../../../commen/functions/date_formater";
 import { UpdateOrganizersMeeting } from "../../../../../../store/actions/MeetingOrganizers_action";
 import moment from "moment";
+import { truncateString } from "../../../../../../commen/functions/regex";
 
 const UnpublishedProposedMeeting = ({
   setViewProposeDatePoll,
@@ -191,7 +192,7 @@ const UnpublishedProposedMeeting = ({
               handleOpenViewModal(record);
             }}
           >
-            {text}
+            {truncateString(text, 35)}
           </span>
         );
       },

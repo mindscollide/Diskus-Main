@@ -34,6 +34,7 @@ import ViewPollsPublishedScreen from "./ViewPollsPublishedScreen/ViewPollsPublis
 
 import CustomPagination from "../../../../commen/functions/customPagination/Paginations";
 import ViewPollsUnPublished from "./VIewPollsUnPublished/ViewPollsUnPublished";
+import { truncateString } from "../../../../commen/functions/regex";
 const Polls = ({ committeeStatus }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -238,7 +239,7 @@ const Polls = ({ committeeStatus }) => {
             className={styles["DateClass"]}
             onClick={() => handleClickonTitle(record)}
           >
-            {text}
+            {truncateString(text, 55)}
           </span>
         );
       },

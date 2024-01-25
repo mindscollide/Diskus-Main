@@ -7,8 +7,11 @@ import arabic from "react-date-object/calendars/arabic";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
+import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Notification } from "../../../../../components/elements";
+import { convertToGMTTime } from "../../../../../commen/functions/time_formatter";
+import AttachmentIcon from "../../../../../assets/images/Attachment.svg";
 import {
   showAdvancePermissionModal,
   showVoteAgendaModal,
@@ -359,6 +362,13 @@ const ParentAgenda = ({
                                   ? t("Hide-details")
                                   : t("Show-details")}
                               </span>
+                              {data.files.length > 0 ? (
+                                <img
+                                  className={styles["AttachmentIconImage"]}
+                                  src={AttachmentIcon}
+                                  alt=""
+                                />
+                              ) : null}
                             </Col>
                           </Row>
                           {expandIndex === index && expand ? (
@@ -375,7 +385,17 @@ const ParentAgenda = ({
                                       draggable={false}
                                     />
                                     <p className={styles["agendaCreater"]}>
-                                      {data?.presenterName}
+                                      {data?.presenterName +
+                                        " - (" +
+                                        moment(
+                                          data?.startDate,
+                                          "HHmmss"
+                                        ).format("hh:mm a") +
+                                        " - " +
+                                        moment(data?.endDate, "HHmmss").format(
+                                          "hh:mm a"
+                                        ) +
+                                        ")"}
                                     </p>
                                     {/* <span
                                     className={styles["agendaCreationTime"]}

@@ -467,3 +467,13 @@ body[dir="rtl"] .SubAgendaSection {
 img.Image-Add-Agenda {
   margin-top: 40px;
 }
+
+img.AttachmentIconImage {
+  margin-left: 15px;
+  margin-right: auto;
+}
+
+body[dir="rtl"] img.AttachmentIconImage {
+  margin-left: auto;
+  margin-right: 15px;
+}

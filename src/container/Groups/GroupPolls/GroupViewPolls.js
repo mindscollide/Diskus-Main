@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import BinIcon from "../../../assets/images/bin.svg";
+import { truncateString } from "../../../commen/functions/regex";
 import { Pagination, Tooltip } from "antd";
 import { useSelector } from "react-redux";
 import addmore from "../../../assets/images/addmore.png";
@@ -33,6 +34,7 @@ import {
   getPollsByPollIdApi,
 } from "../../../store/actions/Polls_actions";
 import CustomPagination from "../../../commen/functions/customPagination/Paginations";
+import { truncate } from "lodash";
 const GroupViewPolls = ({ groupStatus }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -192,7 +194,8 @@ const GroupViewPolls = ({ groupStatus }) => {
               // navigate("/DisKus/polling", { state: { record, isVote: false } })
             }
           >
-            {text}
+            {truncateString(text, 50)}
+            {/* {text} */}
           </span>
         );
       },

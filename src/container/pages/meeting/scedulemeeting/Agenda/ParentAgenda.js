@@ -44,6 +44,7 @@ import Lock from "../../../../../assets/images/LOCK.svg";
 import DarkLock from "../../../../../assets/images/BlackLock.svg";
 import Key from "../../../../../assets/images/KEY.svg";
 import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
+import AttachmentIcon from "../../../../../assets/images/Attachment.svg";
 import { getRandomUniqueNumber } from "./drageFunction";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -743,6 +744,13 @@ const ParentAgenda = ({
                                   ? t("Hide-details")
                                   : t("Show-details")}
                               </span>
+                              {data.files.length > 0 ? (
+                                <img
+                                  className={styles["AttachmentIconImage"]}
+                                  src={AttachmentIcon}
+                                  alt=""
+                                />
+                              ) : null}
                             </Col>
                           </Row>
                           {expandIndex === index && expand ? (
