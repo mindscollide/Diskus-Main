@@ -107,7 +107,6 @@ const updateSubscribePackageInit = () => {
   };
 };
 const updateSubscribePackageSuccess = (response, message) => {
-  console.log("GetSubscriptionPackage", response, message);
   return {
     type: actions.UPGRADESUBSRIPTIONPACKAGE_SUCCESS,
     response: response,

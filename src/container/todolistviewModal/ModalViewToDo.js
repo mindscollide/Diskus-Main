@@ -250,7 +250,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   // // for comment from socket
   useEffect(() => {
     if (Comments !== null) {
-      console.log("testcommentIndex2commentIndex2commentIndex2commentIndex2");
       let commentIndex = taskAssigneeComments.findIndex((data, index) => {
         return data?.CommentID === Comments.commentFrontEndID.toString();
       });
@@ -258,7 +257,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
         (data, index) => data?.taskCommentID === Number(Comments.pK_TCID)
       );
       if (commentIndex !== -1) {
-        console.log("testcommentIndex2commentIndex2commentIndex2commentIndex2");
         let newArr = taskAssigneeComments.map((comment, index) => {
           if (index === commentIndex) {
             console.log(
@@ -278,7 +276,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
         setTaskAssigneeComments(newArr);
         dispatch(emptyCommentState());
       } else if (commentIndex2 === undefined && commentIndex === undefined) {
-        console.log("testcommentIndex2commentIndex2commentIndex2commentIndex2");
         // Comment does not exist, add it
         let newComment = {
           userID: parseInt(Comments.fK_UID),

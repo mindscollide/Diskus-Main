@@ -307,7 +307,6 @@ const Resolution = () => {
   };
 
   const getVoteDetailHandler = (id, data) => {
-    console.log(id, data, "getVoteDetailHandlergetVoteDetailHandler");
     dispatch(getVotesDetails(navigate, id, t, setVoteresolution));
     setVoterID(data.voterID);
   };
@@ -364,7 +363,7 @@ const Resolution = () => {
 
   const changeCirculateDateHandler = (e) => {
     let toDoDateSaveFormat = new DateObject(e).format("YYYY-MM-DD");
-    console.log(toDoDateSaveFormat, "toDoDateSaveFormat");
+
     setSearchModalDates({
       ...searchModalDates,
       circulationDate: toDoDateSaveFormat,

@@ -1,0 +1,4 @@
+.customRadioButton .form-check-input:checked[type="radio"] {
+  background-image: none;
+  background-color: #6172d6;
+}

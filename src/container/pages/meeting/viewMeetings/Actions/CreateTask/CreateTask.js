@@ -97,7 +97,12 @@ const CreateTask = ({
 
   useEffect(() => {
     let createMeetingTaskData = NewMeetingreducer.getMeetingusers;
+
     if (createMeetingTaskData !== undefined && createMeetingTaskData !== null) {
+      console.log(
+        createMeetingTaskData,
+        "createMeetingTaskDatacreateMeetingTaskData"
+      );
       let newmembersArray = [];
       if (Object.keys(createMeetingTaskData).length > 0) {
         if (createMeetingTaskData.meetingOrganizers.length > 0) {
@@ -153,7 +158,7 @@ const CreateTask = ({
                           className="d-flex gap-2 align-items-center"
                         >
                           <img
-                            src={GroupIcon}
+                            src={`data:image/jpeg;base64,${meetAgendaContributor.userProfilePicture.displayProfilePictureName}`}
                             height="16.45px"
                             alt=""
                             width="18.32px"

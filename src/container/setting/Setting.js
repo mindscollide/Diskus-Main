@@ -38,7 +38,7 @@ import { async } from "q";
 const Organization = () => {
   //for translation
   const { settingReducer, LanguageReducer } = useSelector((state) => state);
-  console.log("settingReducersettingReducersettingReducer", settingReducer);
+
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -86,7 +86,7 @@ const Organization = () => {
     GoogleEventColor: "",
     OfficeEventColor: "",
   });
-  console.log(organizationStates, "organizationStatesorganizationStates");
+
   const roleID = localStorage.getItem("roleID");
 
   const { loaded, clientId } = useGoogleLogin({
@@ -100,7 +100,6 @@ const Organization = () => {
   }, []);
 
   const handleGoogleLoginSuccess = (response) => {
-    console.log(response.code);
     setSignUpCodeToken(response.code);
     setOrganizationStates({
       ...organizationStates,
@@ -109,7 +108,6 @@ const Organization = () => {
   };
 
   const handleGoogleLoginFailure = (response) => {
-    console.log(response);
     setSignUpCodeToken("");
     setOrganizationStates({
       ...organizationStates,
@@ -129,8 +127,6 @@ const Organization = () => {
     responseType: "code",
     prompt: "consent",
   });
-
-  console.log("organizationStatesorganizationStates", organizationStates);
 
   const emailOnNewMeeting = (checked) => {
     setOrganizationStates({
@@ -390,7 +386,7 @@ const Organization = () => {
         "diskusEventColor",
         userProfileData.diskusEventColor
       );
-      console.log("userProfileDatauserProfileData", userProfileData);
+
       let settingData = {
         EmailOnNewMeeting: userProfileData.emailOnNewMeeting,
         EmailOnEditMeeting: userProfileData.emailOnEditMeeting,

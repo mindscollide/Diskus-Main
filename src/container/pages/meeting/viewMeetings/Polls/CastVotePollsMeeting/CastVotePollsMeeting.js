@@ -15,6 +15,10 @@ import { Progress } from "antd";
 import moment from "moment";
 import { EditmeetingDateFormat } from "../../../../../../commen/functions/date_formater";
 import { castVoteApi } from "../../../../../../store/actions/Polls_actions";
+import {
+  Radio3,
+  RadioBox3,
+} from "../../../../../../components/elements/radio/Radio3";
 
 const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
   const { t } = useTranslation();
@@ -64,9 +68,7 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
       return false;
     }
   };
-  const handleCheckBoxForOneOnly = (e) => {
-    let value = e.target.value;
-
+  const handleCheckBoxForOneOnly = (e, id) => {
     setViewProgressPollsDetails({
       ...viewProgressPollsDetails,
       answer: [value],
@@ -209,6 +211,7 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
                                             // }
                                           />
                                         )}
+
                                         <Progress
                                           className="Progress_bar_Polls"
                                           percent={data.votePercentage}

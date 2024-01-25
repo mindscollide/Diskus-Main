@@ -406,7 +406,6 @@ const ViewPollProgress = () => {
                   >
                     <Row>
                       {viewpollMembers.map((data, index) => {
-                        console.log("datadatadata", data);
                         return (
                           <Col
                             key={index}
