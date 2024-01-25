@@ -1649,6 +1649,7 @@ const saveTaskDocumentsApi = (navigate, Data, t, value, setShow) => {
 
               // Create Task from main TOdo list
               if (value === 1) {
+                setShow(false);
                 let TodoListPage =
                   localStorage.getItem("todoListPage") !== null
                     ? localStorage.getItem("todoListPage")
@@ -1674,7 +1675,6 @@ const saveTaskDocumentsApi = (navigate, Data, t, value, setShow) => {
                   )
                 );
                 // dispatch(createUpdateTaskDataRoom_fail(""));
-                setShow(false);
               }
               // Delete Task from main Task
               if (value === 2) {

@@ -95,7 +95,7 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
       "stroke-color: #000; stroke-color:#949494;  stroke-width: 4; fill-color: #949494 ; fill-opacity:1",
     ],
   ];
-  console.log(voterID, "voterIDvoterIDvoterID");
+
   const isApprovedBtn = (statusID) => {
     setVoteId(statusID);
   };

@@ -121,7 +121,6 @@ const Signup = () => {
   const currentLocale = Cookies.get("i18next") || "en";
 
   useEffect(() => {
-    console.log(location.state, "locationlocationlocation");
     if (location.state !== null) {
       if (location.state.freeTrail) {
         setIsFreeTrail(true);

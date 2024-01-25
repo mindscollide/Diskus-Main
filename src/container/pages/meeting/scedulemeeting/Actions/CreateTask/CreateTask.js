@@ -308,7 +308,7 @@ const CreateTask = ({
                           className="d-flex gap-2 align-items-center"
                         >
                           <img
-                            src={GroupIcon}
+                            src={`data:image/jpeg;base64,${meetAgendaContributor.userProfilePicture.displayProfilePictureName}`}
                             height="16.45px"
                             alt=""
                             width="18.32px"

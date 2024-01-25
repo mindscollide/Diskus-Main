@@ -830,8 +830,6 @@ const Agenda = ({
     allUsersRC,
   ]);
 
-  console.log("MeetingAgendaReducerMeetingAgendaReducer", MeetingAgendaReducer);
-
   useEffect(() => {
     if (
       MeetingAgendaReducer.GetAgendaWithMeetingIDForImportData !== null &&
@@ -1382,9 +1380,7 @@ const Agenda = ({
     } else {
       setEmptyStateRows(false);
     }
-  }, [rows]);
-
-  console.log("ERROR", presenters, allPresenters, allSavedPresenters);
+  }, [rows.length]);
 
   return (
     <>

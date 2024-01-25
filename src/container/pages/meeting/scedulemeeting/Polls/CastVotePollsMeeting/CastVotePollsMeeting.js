@@ -15,6 +15,7 @@ import { Progress } from "antd";
 import moment from "moment";
 import { EditmeetingDateFormat } from "../../../../../../commen/functions/date_formater";
 import { castVoteApi } from "../../../../../../store/actions/Polls_actions";
+import { Radio3 } from "../../../../../../components/elements/radio/Radio3";
 
 const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
   const { t } = useTranslation();
@@ -65,6 +66,10 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
     }
   };
   const handleCheckBoxForOneOnly = (e) => {
+    console.log(
+      e,
+      "handleCheckBoxForOneOnlyhandleCheckBoxForOneOnlyhandleCheckBoxForOneOnly"
+    );
     let value = e.target.value;
 
     setViewProgressPollsDetails({
@@ -188,7 +193,7 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
                                           <Checkbox
                                             name={data.pollAnswerID}
                                             checked={handleForCheck(
-                                              data.pollAnswerID
+                                              data.pollAnswerIDW
                                             )}
                                             onChange={handleCheckBoxYes}
                                             classNameCheckBoxP="d-none"
