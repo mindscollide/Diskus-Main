@@ -19,6 +19,8 @@ import {
   getFileExtension,
   getIconSource,
 } from "../../../../DataRoom/SearchFunctionality/option"; // Remove the getFileExtensionMeeting import
+import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
+import { Eye } from "react-bootstrap-icons";
 
 const MeetingMaterial = ({
   setViewAdvanceMeetingModal,
@@ -93,35 +95,144 @@ const MeetingMaterial = ({
     }
   };
 
+  const downloadAgendaViewer = (fileID, fileName) => {
+    let data = {
+      FileID: Number(fileID),
+    };
+    dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, fileName));
+  };
+
+  const handleDoubeClick = (record) => {
+    const ext = getFileExtension(record.displayFileName);
+    if (
+      (editorRole.role.toLowerCase() === "Organizer".toLowerCase() ||
+        editorRole.role.toLowerCase() === "Agenda Contributor".toLowerCase()) &&
+      (editorRole.status === "12" ||
+        editorRole.status === "11" ||
+        editorRole.status === "10" ||
+        editorRole.status === "1")
+    ) {
+      // if meeting active , proposed, upcoming, unpublished then file should be open with editing rights and download and user should be Agenda Contributor or Organizer
+      if (ext === "pdf") {
+        const documentData = {
+          taskId: record.agendaID,
+          commingFrom: 4,
+          fileName: record.displayFileName,
+          attachmentID: Number(record.originalFileName),
+        };
+        const documentDataJson = JSON.stringify(documentData);
+        window.open(
+          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+            documentDataJson
+          )}`,
+          "_blank",
+          "noopener noreferrer"
+        );
+      } else {
+        let data = {
+          FileID: Number(record.originalFileName),
+        };
+        dispatch(
+          DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName)
+        );
+      }
+    } else if (
+      editorRole.status === "9" &&
+      (editorRole.role === "Agenda Contributor" ||
+        editorRole.role === "Organizer")
+    ) {
+      // if meeting has ended and user is Agenda Contribuor or Organizer then user just can view a document
+      if (ext === "pdf") {
+        const documentData = {
+          taskId: record.agendaID,
+          commingFrom: 4,
+          fileName: record.displayFileName,
+          attachmentID: Number(record.originalFileName),
+          isPermission: 1,
+        };
+        const documentDataJson = JSON.stringify(documentData);
+        window.open(
+          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+            documentDataJson
+          )}`,
+          "_blank",
+          "noopener noreferrer"
+        );
+      } else {
+        let data = {
+          FileID: Number(record.originalFileName),
+        };
+        dispatch(
+          DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName)
+        );
+      }
+    } else if (
+      editorRole.role === "Participant" &&
+      (editorRole.status === "10" || editorRole.status === "1")
+    ) {
+      if (ext === "pdf") {
+        const documentData = {
+          taskId: record.agendaID,
+          commingFrom: 4,
+          fileName: record.displayFileName,
+          attachmentID: Number(record.originalFileName),
+        };
+        const documentDataJson = JSON.stringify(documentData);
+        window.open(
+          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+            documentDataJson
+          )}`,
+          "_blank",
+          "noopener noreferrer"
+        );
+      } else {
+        let data = {
+          FileID: Number(record.originalFileName),
+        };
+        dispatch(
+          DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName)
+        );
+      }
+    } else if (editorRole.role === "Participant" && editorRole.status === "9") {
+      if (ext === "pdf") {
+        const documentData = {
+          taskId: record.agendaID,
+          commingFrom: 4,
+          fileName: record.displayFileName,
+          attachmentID: Number(record.originalFileName),
+          isPermission: 1,
+        };
+        const documentDataJson = JSON.stringify(documentData);
+        window.open(
+          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+            documentDataJson
+          )}`,
+          "_blank",
+          "noopener noreferrer"
+        );
+      } else {
+        let data = {
+          FileID: Number(record.originalFileName),
+        };
+        dispatch(
+          DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName)
+        );
+      }
+    }
+  };
   // Modify your materialColoumn definition to handle parent and child agendas
   const materialColoumn = [
     {
       title: "Document Name",
       dataIndex: "displayFileName",
       key: "displayFileName",
-      width: "250px",
+      width: "300px",
       render: (text, record) => {
-        const ext = getFileExtension(text);
-        const isPdf = ext.toLowerCase() === "pdf"; // Check if the file is a PDF
-
-        const documentData = {
-          taskId: record.agendaID,
-          commingFrom: 4,
-          fileName: text,
-          attachmentID: record.attachmentID,
-        };
-        const documentDataJson = JSON.stringify(documentData);
-
         return (
           <div>
             <section
               className={styles["docx-name-title"]}
-              onClick={(e) =>
-                isPdf ? viewHandlerOnclick(e, documentDataJson) : null
-              }
-              onDoubleClick={(e) =>
-                isPdf ? viewHandlerOnclick(e, documentDataJson) : null
-              }
+              onDoubleClick={() => handleDoubeClick(record)}
             >
               <img
                 src={getIconSource(getFileExtension(record.displayFileName))}
@@ -144,7 +255,44 @@ const MeetingMaterial = ({
       title: "Agenda Name",
       dataIndex: "agendaName",
       key: "agendaName",
-      width: "250px",
+      align: "center",
+    },
+    {
+      title: "",
+      dataIndex: "",
+      key: "",
+      align: "center",
+      render: (text, record) => {
+        const ext = getFileExtension(record.displayFileName);
+
+        return (
+          <>
+            <Row>
+              <Col
+                sm={12}
+                md={12}
+                lg={12}
+                className="d-flex gap-3 align-items-center justify-content-center"
+              >
+                <Eye
+                  fontSize={22}
+                  cursor={ext === "pdf" ? "pointer" : "default"}
+                  pointerEvents={ext === "pdf" ? "auto" : "none"}
+                  onDoubleClick={() => handleDoubeClick(record)}
+                />
+                {/* {ext !== "pdf" && ( */}
+                <Button
+                  disableBtn={ext !== "pdf" ? false : true}
+                  text={t("Download")}
+                  className={styles["downloadButton"]}
+                  onClick={() => handleDoubeClick(record)}
+                />
+                {/* )} */}
+              </Col>
+            </Row>
+          </>
+        );
+      },
     },
   ];
 

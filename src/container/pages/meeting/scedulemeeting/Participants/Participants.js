@@ -6,6 +6,8 @@ import addmore from "../../../../../assets/images/addmore.png";
 import rspvGreenIcon from "../../../../../assets/images/rspvGreen.svg";
 import NORSVP from "../../../../../assets/images/No-RSVP.png";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
+import thumbsup from "../../../../../assets/images/thumbsup.svg";
+import thumbsdown from "../../../../../assets/images/thumbsdown.svg";
 import { Col, Row } from "react-bootstrap";
 import {
   Button,
@@ -331,7 +333,7 @@ const Participants = ({
           return (
             <img
               draggable={false}
-              src={rspvGreenIcon}
+              src={thumbsup}
               height="30px"
               width="30px"
               alt=""
@@ -341,7 +343,7 @@ const Participants = ({
           return (
             <img
               draggable={false}
-              src={NORSVP}
+              src={thumbsdown}
               height="30px"
               width="30px"
               alt=""

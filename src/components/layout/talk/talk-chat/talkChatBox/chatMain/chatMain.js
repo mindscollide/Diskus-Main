@@ -1523,8 +1523,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
     }
   }, [talkStateData.AllMessagesData]);
 
-  console.log("messagesData.frMessages", allMessages);
-
   const chatSearchChange = (e) => {
     const searchedKeyword = e.target.value.toLowerCase();
     const allChatMessages = talkStateData.AllMessagesData;
@@ -2312,6 +2310,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
           shoutAll: mqttResponseSingleMessage.shoutAll,
           uid: mqttResponseSingleMessage.uid,
           isRetry: false,
+          sourceMessageBody: mqttResponseSingleMessage.sourceMessageBody,
         };
         setAllMessages((prevAllMessages) => {
           const updatedMessages = prevAllMessages.map((message) => {
@@ -3064,7 +3063,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
         return message;
       });
       setAllMessages(updatedAllMessages);
-      console.log("Messages updated");
     }
   }, [talkFeatureStates.RetryFlagState]);
 
@@ -3077,7 +3075,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
     if (currentConnection === false) {
       interval = setInterval(() => {
-        console.log("Checking every 5 seconds");
         if (singleMessageObject.length !== 0) {
           let otoMessageLocal = JSON.parse(
             localStorage.getItem("singleMessageObject")
@@ -3102,11 +3099,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
       setTimeout(() => {
         dispatch(retryFlagState(true));
         clearInterval(interval);
-        console.log("Checking stopped after 20 seconds");
       }, 20000);
     } else {
       clearInterval(interval);
-      console.log("Checking stopped after true connection");
     }
 
     return () => {
@@ -3121,26 +3116,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
     );
 
     if (allObjectsHaveIsRetryFalse) {
-      console.log("All objects have isRetry set to false");
       dispatch(retryFlagState(false));
     } else {
       // Do something else when at least one object has isRetry: true
-      console.log("At least one object has isRetry set to true");
       // Your code here...
     }
-  }, [allMessages]);
-
-  console.log("Talk Feature Reducer", talkFeatureStates);
-
-  console.log("All The Messages", allMessages);
-
-  console.log(
-    "uploadFileTalk",
-    uploadFileTalk,
-    typeof uploadFileTalk,
-    Object.keys(uploadFileTalk).length,
-    tasksAttachments
-  );
+  }, [allMessages.length]);
 
   return (
     <>

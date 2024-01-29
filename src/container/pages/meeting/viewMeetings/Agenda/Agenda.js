@@ -111,6 +111,9 @@ const Agenda = ({
   let currentView = localStorage.getItem("MeetingCurrentView");
 
   const [rows, setRows] = useState([]);
+  console.log(rows, "rowsrowsrowsrows");
+  const [emptyStateRows, setEmptyStateRows] = useState(false);
+
   useEffect(() => {
     let Data = {
       MeetingID: Number(advanceMeetingModalID),
@@ -375,10 +378,61 @@ const Agenda = ({
     }
   }, [MeetingAgendaReducer.MeetingAgendaUpdatedMqtt]);
 
-  console.log("MeetingAgendaReducerMeetingAgendaReducer", MeetingAgendaReducer);
+  useEffect(() => {
+    if (rows.length !== 0) {
+      // Check if any of the canView values is true
+      const anyCanViewTrue = rows.some((row) => row.canView);
+
+      // Update the emptyStateRows state based on the condition
+      setEmptyStateRows(!anyCanViewTrue);
+    } else {
+      setEmptyStateRows(false);
+    }
+  }, [rows]);
+
+  console.log(
+    "MeetingAgendaReducerMeetingAgendaReducer",
+    MeetingAgendaReducer,
+    data
+  );
 
   return (
     <>
+      {emptyStateRows === true &&
+      (editorRole.role === "Agenda Contributor" ||
+        editorRole.role === "Participant") ? (
+        <>
+          <Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex justify-content-center mt-3"
+            >
+              <img
+                draggable={false}
+                src={emptyContributorState}
+                width="274.05px"
+                alt=""
+                height="230.96px"
+                className={styles["Image-Add-Agenda"]}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex justify-content-center mt-3"
+            >
+              <span className={styles["Empty_state_heading"]}>
+                {t("No-agenda-availabe-to-discuss").toUpperCase()}
+              </span>
+            </Col>
+          </Row>
+        </>
+      ) : null}
       {savedViewAgenda ? (
         <SaveAgendaView />
       ) : agendaViewPage ? (
@@ -388,100 +442,111 @@ const Agenda = ({
       ) : (
         <>
           <section>
-            <DragDropContext
-              onDragEnd={(result) => onDragEnd(result, rows, setRows)}
-            >
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className={styles["Scroller_Agenda"]}
-                >
-                  <Droppable droppableId="board" type="PARENT">
-                    {(provided) => (
-                      <div ref={provided.innerRef} {...provided.droppableProps}>
-                        {rows.length > 0 ? (
-                          rows.map((data, index) => {
-                            return (
-                              <>
-                                <ParentAgenda
-                                  data={data}
-                                  index={index}
-                                  rows={rows}
-                                  setRows={setRows}
-                                  setMainAgendaRemovalIndex={
-                                    setMainAgendaRemovalIndex
-                                  }
-                                  agendaItemRemovedIndex={
-                                    agendaItemRemovedIndex
-                                  }
-                                  setAgendaItemRemovedIndex={
-                                    setAgendaItemRemovedIndex
-                                  }
-                                  setSubajendaRemoval={setSubajendaRemoval}
-                                  editorRole={editorRole}
-                                  advanceMeetingModalID={advanceMeetingModalID}
-                                />
-                              </>
-                            );
-                          })
-                        ) : (
-                          <>
-                            <Row>
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex justify-content-center mt-3"
-                              >
-                                <img
-                                  draggable={false}
-                                  src={emptyContributorState}
-                                  width="274.05px"
-                                  alt=""
-                                  height="230.96px"
-                                />
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex justify-content-center mt-3"
-                              >
-                                <span className={styles["Empty_state_heading"]}>
-                                  {t("Add-agenda").toUpperCase()}
-                                </span>
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex justify-content-center"
-                              >
-                                <span
-                                  className={styles["Empty_state_Subheading"]}
+            {emptyStateRows === true &&
+            (editorRole.role === "Agenda Contributor" ||
+              editorRole.role === "Participant") ? null : (
+              <DragDropContext
+                onDragEnd={(result) => onDragEnd(result, rows, setRows)}
+              >
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className={styles["Scroller_Agenda"]}
+                  >
+                    <Droppable droppableId="board" type="PARENT">
+                      {(provided) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.droppableProps}
+                        >
+                          {rows.length > 0 ? (
+                            rows.map((data, index) => {
+                              return (
+                                <>
+                                  <ParentAgenda
+                                    data={data}
+                                    index={index}
+                                    rows={rows}
+                                    setRows={setRows}
+                                    setMainAgendaRemovalIndex={
+                                      setMainAgendaRemovalIndex
+                                    }
+                                    agendaItemRemovedIndex={
+                                      agendaItemRemovedIndex
+                                    }
+                                    setAgendaItemRemovedIndex={
+                                      setAgendaItemRemovedIndex
+                                    }
+                                    setSubajendaRemoval={setSubajendaRemoval}
+                                    editorRole={editorRole}
+                                    advanceMeetingModalID={
+                                      advanceMeetingModalID
+                                    }
+                                  />
+                                </>
+                              );
+                            })
+                          ) : (
+                            <>
+                              <Row>
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="d-flex justify-content-center mt-3"
                                 >
-                                  {t(
-                                    "Add-some-purpose-start-by-creating-your-agenda"
-                                  )}
-                                </span>
-                              </Col>
-                            </Row>
-                          </>
-                        )}
+                                  <img
+                                    draggable={false}
+                                    src={emptyContributorState}
+                                    width="274.05px"
+                                    alt=""
+                                    height="230.96px"
+                                  />
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="d-flex justify-content-center mt-3"
+                                >
+                                  <span
+                                    className={styles["Empty_state_heading"]}
+                                  >
+                                    {t("Add-agenda").toUpperCase()}
+                                  </span>
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="d-flex justify-content-center"
+                                >
+                                  <span
+                                    className={styles["Empty_state_Subheading"]}
+                                  >
+                                    {t(
+                                      "Add-some-purpose-start-by-creating-your-agenda"
+                                    )}
+                                  </span>
+                                </Col>
+                              </Row>
+                            </>
+                          )}
 
-                        {provided.placeholder}
-                      </div>
-                    )}
-                  </Droppable>
-                </Col>
-              </Row>
-            </DragDropContext>
+                          {provided.placeholder}
+                        </div>
+                      )}
+                    </Droppable>
+                  </Col>
+                </Row>
+              </DragDropContext>
+            )}
             <Row className="mt-4">
               <Col
                 lg={12}

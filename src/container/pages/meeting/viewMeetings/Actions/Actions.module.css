@@ -129,11 +129,22 @@
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
+  cursor: default !important;
+  user-select: none !important;
+  margin-top: 5px;
+}
+.Action_title {
+  font-family: "MontserratSemiBold-600" !important;
+  color: #6172d6 !important;
+  font-size: 12px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  display: block;
+  white-space: nowrap !important;
   cursor: pointer !important;
   user-select: none !important;
   margin-top: 5px;
 }
-
 .action-delete-cursor {
   cursor: pointer !important;
 }

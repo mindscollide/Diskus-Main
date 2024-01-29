@@ -126,7 +126,6 @@ const OrganizationLevelSetting = () => {
   }, []);
 
   const handleGoogleLoginSuccess = (response) => {
-    console.log(response.code);
     setSignUpCodeToken(response.code);
     setOrganizationSetting({
       ...userOrganizationSetting,
@@ -135,7 +134,6 @@ const OrganizationLevelSetting = () => {
   };
 
   const handleGoogleLoginFailure = (response) => {
-    console.log(response);
     setSignUpCodeToken("");
     setOrganizationSetting({
       ...userOrganizationSetting,

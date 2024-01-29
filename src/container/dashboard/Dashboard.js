@@ -225,16 +225,13 @@ const Dashboard = () => {
               ),
             });
           }
-        } catch (error) {
-          console.log("ERRORERROR", error);
-        }
+        } catch (error) {}
       } else if (
         data.message.toLowerCase() ===
         "MeetingReminderNotification".toLowerCase()
       ) {
-        console.log("MeetingReminderNotificationMeetingReminderNotification");
         dispatch(meetingNotConductedMQTT(data.payload));
-        console.log("MeetingReminderNotificationMeetingReminderNotification");
+
         if (data.viewable) {
           setNotification({
             ...notification,
@@ -1414,7 +1411,8 @@ const Dashboard = () => {
           if (activeRoomID === acceptedRoomID) {
             if (
               videoFeatureReducer.NormalizeVideoFlag === true ||
-              videoFeatureReducer.IncomingVideoCallFlag === true
+              videoFeatureReducer.IncomingVideoCallFlag === true ||
+              videoFeatureReducer.MaximizeVideoFlag === true
             ) {
               setNotification({
                 ...notification,
@@ -1451,7 +1449,8 @@ const Dashboard = () => {
           if (activeRoomID === acceptedRoomID) {
             if (
               videoFeatureReducer.NormalizeVideoFlag === true ||
-              videoFeatureReducer.IncomingVideoCallFlag === true
+              videoFeatureReducer.IncomingVideoCallFlag === true ||
+              videoFeatureReducer.MaximizeVideoFlag === true
             ) {
               setNotification({
                 ...notification,
@@ -1634,6 +1633,7 @@ const Dashboard = () => {
     newClient,
     videoFeatureReducer.IncomingVideoCallFlag,
     videoFeatureReducer.NormalizeVideoFlag,
+    videoFeatureReducer.MaximizeVideoFlag,
   ]);
 
   useEffect(() => {

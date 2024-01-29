@@ -5,7 +5,7 @@
   width: 325px;
   height: 87.3vh;
   background: #fff;
-  border: 3px solid #4ADEDE;
+  border: 3px solid #4adede;
   overflow: hidden auto;
   border-radius: 4px;
   top: 80px;
@@ -134,7 +134,12 @@ body[dir="rtl"] .chat-block {
   background: #fff;
 }
 
-.chat-messenger-head-video .container .row .col .chat-input-section .chat-input-field {
+.chat-messenger-head-video
+  .container
+  .row
+  .col
+  .chat-input-section
+  .chat-input-field {
   margin: 5px 0px;
   width: 330px;
 }
@@ -159,7 +164,8 @@ body[dir="rtl"] .chat-block {
   width: 300px !important;
 }
 
-.chat-inner-content .ant-select-dropdown.ant-select-dropdown-placement-bottomLeft {
+.chat-inner-content
+  .ant-select-dropdown.ant-select-dropdown-placement-bottomLeft {
   width: 300px !important;
   min-width: 300px !important;
 }
@@ -175,7 +181,7 @@ body[dir="rtl"] .chat-inner-content .ant-select-selection-item {
 }
 
 .chatFilter .ant-select-selector {
-  background: linear-gradient(to left, #4ADEDE 0%, #6172D6 100%) !important;
+  background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
   border: none !important;
   border-radius: 3px !important;
   width: 140px !important;
@@ -201,21 +207,29 @@ body[dir="rtl"] .chat-inner-content span.ant-select-arrow {
   transition: 0.2s ease;
 }
 
-body[dir="rtl"] .ant-select.chatFilter.ant-select-single.ant-select-show-arrow span.ant-select-selection-item {
+body[dir="rtl"]
+  .ant-select.chatFilter.ant-select-single.ant-select-show-arrow
+  span.ant-select-selection-item {
   padding-right: 0 !important;
 }
 
-.chat-inner-content .ant-select.chatFilter.ant-select-focused.ant-select-single.ant-select-show-arrow.ant-select-open {
+.chat-inner-content
+  .ant-select.chatFilter.ant-select-focused.ant-select-single.ant-select-show-arrow.ant-select-open {
   color: #fff !important;
   font-weight: bold;
 }
 
-.chat-inner-content .ant-select.chatFilter.ant-select-focused.ant-select-single.ant-select-show-arrow.ant-select-open .ant-select-single.ant-select-open .ant-select-selection-item {
+.chat-inner-content
+  .ant-select.chatFilter.ant-select-focused.ant-select-single.ant-select-show-arrow.ant-select-open
+  .ant-select-single.ant-select-open
+  .ant-select-selection-item {
   color: #fff !important;
   font-weight: bold;
 }
 
-.chat-inner-content .ant-select-single.ant-select-open .ant-select-selection-item {
+.chat-inner-content
+  .ant-select-single.ant-select-open
+  .ant-select-selection-item {
   color: #fff !important;
 }
 
@@ -223,7 +237,8 @@ body[dir="rtl"] .ant-select.chatFilter.ant-select-single.ant-select-show-arrow s
   font-size: 12px;
 }
 
-.chat-inner-content .ant-select-item.ant-select-item-option.ant-select-item-option-selected {
+.chat-inner-content
+  .ant-select-item.ant-select-item-option.ant-select-item-option-selected {
   background-color: #4adede !important;
   font-size: 12px;
   font-weight: bold;
@@ -452,9 +467,9 @@ body[dir="rtl"] .encryption-level-chat p.level-heading {
 .chat-input-section .Ok-btn {
   width: 100px !important;
   height: 35px !important;
-  border: 1px solid #5F78D6 !important;
+  border: 1px solid #5f78d6 !important;
   border-radius: 2px;
-  background-color: #5F78D6 !important;
+  background-color: #5f78d6 !important;
   color: #fff !important;
   margin-top: 8px;
   margin-bottom: 6px;
@@ -770,9 +785,9 @@ body[dir="rtl"] svg.pointer-chat-icon {
 .Ok-btn {
   width: 100px !important;
   height: 30px !important;
-  border: 1px solid #5F78D6 !important;
+  border: 1px solid #5f78d6 !important;
   border-radius: 2px;
-  background-color: #5F78D6 !important;
+  background-color: #5f78d6 !important;
   color: #fff !important;
   font-size: 10px;
   position: relative;
@@ -787,9 +802,9 @@ body[dir="rtl"] svg.pointer-chat-icon {
 .Ok:target {
   width: 100px !important;
   height: 30px !important;
-  border: 1px solid #5F78D6 !important;
+  border: 1px solid #5f78d6 !important;
   border-radius: 2px;
-  background-color: #5F78D6 !important;
+  background-color: #5f78d6 !important;
   color: #fff !important;
   font-size: 10px;
   position: relative;
@@ -942,7 +957,10 @@ body[dir="rtl"] span.securityicon-box {
   left: 15px;
 }
 
-.ant-select-dropdown.ant-select-dropdown-placement-bottomLeft:has(.rc-virtual-list-holder-inner .ant-select-item.ant-select-item-option.talk-chat-filter) {
+.ant-select-dropdown.ant-select-dropdown-placement-bottomLeft:has(
+    .rc-virtual-list-holder-inner
+      .ant-select-item.ant-select-item-option.talk-chat-filter
+  ) {
   min-width: 300px !important;
   width: 300px !important;
 }
@@ -1010,7 +1028,8 @@ body[dir="rtl"] span.securityicon-box {
   left: 10px;
 }
 
-.upload-options span.MuiButtonBase-root.MuiButton-root.MuiButton-contained.UploadFileButton.MuiButton-containedPrimary {
+.upload-options
+  span.MuiButtonBase-root.MuiButton-root.MuiButton-contained.UploadFileButton.MuiButton-containedPrimary {
   margin: 5px 0px;
 }
 
@@ -1534,7 +1553,7 @@ p.chat-username.starred-message {
   font-size: 12px;
   font-weight: 600;
   margin-top: 8px !important;
-  margin-left: 10px !important;
+  /* margin-left: 10px !important; */
 }
 
 .reply-message {
@@ -1699,7 +1718,7 @@ p.groupinfo-groupusersname {
 }
 
 span.groupinfo-admin {
-  color: #5F78D6;
+  color: #5f78d6;
   font-weight: 600;
   font-size: 12px;
   position: absolute;
@@ -1745,7 +1764,7 @@ mark.YourHighlightClass {
 }
 
 .replied-message-receive {
-  background: #E9F6FF;
+  background: #e9f6ff;
   height: 50px;
   padding: 8px;
   border-radius: 8px;
@@ -1757,12 +1776,12 @@ p.replied-message-sender {
 
 p.replied-message-receiver {
   font-weight: bold;
-  color: #2197D7
+  color: #2197d7;
 }
 
 p.replied-message.m-0 {
   color: #505050;
-  font-family: 'MontserratMedium-500';
+  font-family: "MontserratMedium-500";
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1799,8 +1818,8 @@ input[placeholder="Search Chat"] {
 }
 
 .participant-warning {
-  font-family: 'MontserratMedium-500';
-  color: #F16B6B;
+  font-family: "MontserratMedium-500";
+  color: #f16b6b;
   font-size: 12px;
   margin-bottom: 10px !important;
 }
@@ -1896,13 +1915,13 @@ label.image-upload {
 }
 
 .file-uploaded-chat.received {
-  background: #E9F6FF !important;
+  background: #e9f6ff !important;
 }
 
 span.attached-file {
   margin-left: 10px;
   font-size: 12px;
-  color: #171D2D;
+  color: #171d2d;
   font-weight: 600;
   margin-right: 10px;
   display: inline-block;
@@ -2030,7 +2049,7 @@ span.background-close-search {
   vertical-align: middle;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(to left, #4ADEDE 0%, #6172D6 100%) !important;
+  background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
 }
 
 .options-rd {

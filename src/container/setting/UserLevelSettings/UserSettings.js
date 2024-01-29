@@ -494,11 +494,9 @@ const UserSettings = () => {
           });
           // Perform any additional actions after successful logout
         } else {
-          console.error("Logout failed: User is still authenticated");
           // Handle the case where the user is still authenticated after logout
         }
       } catch (error) {
-        console.error("Logout failed:", error);
         // Handle any errors that occur during logout
       }
     }
@@ -1044,7 +1042,7 @@ const UserSettings = () => {
                             : styles["Options_headings"]
                         }
                       >
-                        {t("Todo")}
+                        {t("Tasks")}
                       </span>
                     </Col>
                   </Row>

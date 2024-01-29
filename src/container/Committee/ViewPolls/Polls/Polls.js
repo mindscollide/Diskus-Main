@@ -34,6 +34,7 @@ import ViewPollsPublishedScreen from "./ViewPollsPublishedScreen/ViewPollsPublis
 
 import CustomPagination from "../../../../commen/functions/customPagination/Paginations";
 import ViewPollsUnPublished from "./VIewPollsUnPublished/ViewPollsUnPublished";
+import { truncateString } from "../../../../commen/functions/regex";
 const Polls = ({ committeeStatus }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -132,7 +133,10 @@ const Polls = ({ committeeStatus }) => {
   const handleClickonTitle = (record) => {
     // navigate("/DisKus/polling", { state: { record, isVote: false } });
     // if (Object.keys(record).length > 0) {
-    if (record.pollStatus.pollStatusId === 1) {
+    if (
+      record.pollStatus.pollStatusId === 1 ||
+      record.pollStatus.pollStatusId === 3
+    ) {
       let data = {
         PollID: record.pollID,
         UserID: parseInt(userID),
@@ -235,7 +239,7 @@ const Polls = ({ committeeStatus }) => {
             className={styles["DateClass"]}
             onClick={() => handleClickonTitle(record)}
           >
-            {text}
+            {truncateString(text, 55)}
           </span>
         );
       },

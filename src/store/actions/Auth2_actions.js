@@ -38,7 +38,6 @@ const createOrganizationFail = (message) => {
   };
 };
 const createOrganization = (data, navigate, t) => {
-  console.log(data, "datadatadata");
   return (dispatch) => {
     dispatch(createOrganizationInit());
     let form = new FormData();
@@ -50,7 +49,6 @@ const createOrganization = (data, navigate, t) => {
       data: form,
     })
       .then((response) => {
-        console.log(response, "signupOrganization");
         if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -214,7 +212,6 @@ const createOrganization = (data, navigate, t) => {
         }
       })
       .catch((response) => {
-        console.log(response);
         dispatch(createOrganizationFail(t("Something-went-wrong")));
       });
   };
@@ -310,7 +307,6 @@ const validationEmailAction = (email, navigate, t) => {
                   "ERM_AuthService_AuthManager_LoginWithEmail_04".toLowerCase()
                 )
             ) {
-              console.log("validationEmailAction", response);
               dispatch(
                 validationEmailSuccess(
                   response.data.responseResult,
@@ -355,7 +351,6 @@ const validationEmailAction = (email, navigate, t) => {
                   "ERM_AuthService_AuthManager_LoginWithEmail_07".toLowerCase()
                 )
             ) {
-              console.log("validationEmailAction", response);
               dispatch(
                 validationEmailSuccess(
                   response.data.responseResult,
@@ -364,7 +359,6 @@ const validationEmailAction = (email, navigate, t) => {
               );
             }
           } else {
-            console.log("validationEmailAction", response);
             let MessageResponce = "";
             if (
               response.data.responseResult.responseMessage
@@ -464,7 +458,6 @@ const enterPasswordFail = (message, response) => {
   };
 };
 const enterPasswordvalidation = (value, navigate, t) => {
-  console.log("value", value);
   let userID = localStorage.getItem("userID");
   var min = 10000;
   var max = 90000;
@@ -1377,7 +1370,6 @@ const enterPasswordvalidation = (value, navigate, t) => {
         }
       })
       .catch((response) => {
-        console.log(response);
         dispatch(enterPasswordFail(t("Something-went-wrong")));
       });
   };
@@ -1411,7 +1403,7 @@ const verificationEmailOTP = (
   let userID = localStorage.getItem("userID");
   let email = localStorage.getItem("UserEmail");
   let data = { UserID: JSON.parse(userID), Email: email, OTP: OTPValue };
-  console.log(userID, "verificationEmailOTP");
+
   // 3P3KVX
   return (dispatch) => {
     dispatch(verifyOTPInit());
@@ -1534,7 +1526,6 @@ const createPasswordAction = (value, navigate, t) => {
       data: form,
     })
       .then(async (response) => {
-        console.log(response, "createPasswordAction");
         if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (response.data.responseResult.organizationName !== undefined) {
@@ -2734,7 +2725,6 @@ const createPasswordAction = (value, navigate, t) => {
         }
       })
       .catch((response) => {
-        console.log(response);
         dispatch(createPasswordFail(t("Something-went-wrong")));
       });
   };
@@ -2790,7 +2780,7 @@ const getSelectedPacakgeDetail = (navigate, t) => {
                 response.data.responseResult.organizationSelectedPackage
                   .fK_TenureOfSubscription;
               dispatch(getSubscriptionPaymentDetail(navigate, TenureID, t));
-              console.log("test");
+
               // navigate("/paymentForm")
             } else if (
               response.data.responseResult.responseMessage
@@ -2825,7 +2815,6 @@ const getSelectedPacakgeDetail = (navigate, t) => {
         }
       })
       .catch((response) => {
-        console.log(response);
         dispatch(getSelectedPackageandDetailsFail(t("No-data-available")));
       });
   };
@@ -2870,7 +2859,6 @@ const changePasswordFunc = (navigate, oldPassword, newPassword, t) => {
       },
     })
       .then(async (response) => {
-        console.log("response", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(changePasswordFunc(navigate, oldPassword, newPassword, t));
@@ -2883,8 +2871,6 @@ const changePasswordFunc = (navigate, oldPassword, newPassword, t) => {
                   "ERM_AuthService_AuthManager_ChangePassword_01".toLowerCase()
                 )
             ) {
-              console.log("response", response);
-
               dispatch(
                 changePasswordSuccess(t("Password-updated-successfully"))
               );
@@ -2967,7 +2953,7 @@ const organizationPackageReselection = (
     SelectedPackageID: JSON.parse(ID),
     TenureOfSuscriptionID: JSON.parse(TenureOfSuscriptionID),
   };
-  console.log("flagForSelectedPackeg", data);
+
   return (dispatch) => {
     dispatch(organizationPackageReselectionInit());
     let form = new FormData();
@@ -2979,7 +2965,6 @@ const organizationPackageReselection = (
       data: form,
     })
       .then(async (response) => {
-        console.log("flagForSelectedPackeg", response);
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
           await dispatch(
@@ -3143,7 +3128,6 @@ const updatePasswordAction = (value, navigate, t) => {
       data: form,
     })
       .then(async (response) => {
-        console.log(response, "createPasswordAction");
         if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (

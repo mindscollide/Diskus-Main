@@ -108,3 +108,8 @@
   border-radius: 4px !important;
   padding: 0px 20px !important;
 }
+
+.Checked_pollmeetingBox .ant-radio-checked .ant-radio-inner {
+  background-color: #000 !important;
+  color: #6172d6 !important;
+}

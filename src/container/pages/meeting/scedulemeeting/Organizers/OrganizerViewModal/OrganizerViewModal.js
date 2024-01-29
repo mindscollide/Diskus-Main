@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   getUserProposedWiseApi,
   showSceduleProposedMeeting,
+  getUserWiseProposedDatesMainApi,
 } from "../../../../../../store/actions/NewMeetingActions";
 import { useEffect, useState } from "react";
 import SceduleProposedmeeting from "../../meetingDetails/UnpublishedProposedMeeting/SceduleProposedMeeting/SceduleProposedmeeting";
@@ -24,13 +25,56 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
   const userWiseMeetingProposed = useSelector(
     (state) => state.NewMeetingreducer.userWiseMeetingProposed
   );
+
+  const getUserProposedOrganizerData = useSelector(
+    (state) => state.NewMeetingreducer.getUserProposedOrganizerData
+  );
+
   let viewProposeDatePollMeetingID = Number(
     localStorage.getItem("viewProposeDatePollMeetingID")
+  );
+
+  console.log(
+    getUserProposedOrganizerData,
+    viewProposeDatePollMeetingID,
+    "getUserProposedOrganizerDatagetUserProposedOrganizerData"
   );
 
   const [organizerRows, setOrganizerRows] = useState([]);
   const [initialOrganizerRows, setInitialOrganizerRows] = useState([]);
   const [proposedDates, setProposedDates] = useState([]);
+
+  // dispatch Api in useEffect
+  useEffect(() => {
+    let Data = {
+      MeetingID: Number(viewProposeDatePollMeetingID),
+    };
+    dispatch(getUserWiseProposedDatesMainApi(navigate, t, Data));
+    return () => {
+      localStorage.removeItem("viewProposeDatePollMeetingID");
+    };
+  }, []);
+  // for rendering data in table
+  useEffect(() => {
+    if (
+      getUserProposedOrganizerData !== null &&
+      getUserProposedOrganizerData !== undefined &&
+      getUserProposedOrganizerData.length > 0
+    ) {
+      let ProposeDates;
+
+      getUserProposedOrganizerData.forEach((datesData, index) => {
+        const uniqueData = new Set(
+          datesData.selectedProposedDates.map(JSON.stringify)
+        );
+        ProposeDates = Array.from(uniqueData).map(JSON.parse);
+      });
+      setProposedDates(ProposeDates);
+      setInitialOrganizerRows(getUserProposedOrganizerData);
+    } else {
+      setInitialOrganizerRows([]);
+    }
+  }, [getUserProposedOrganizerData]);
 
   const organizerColumn = [
     {
@@ -72,37 +116,6 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
       ),
     },
   ];
-  // dispatch Api in useEffect
-  useEffect(() => {
-    let proposedData = {
-      MeetingID: Number(viewProposeDatePollMeetingID),
-    };
-    dispatch(getUserProposedWiseApi(navigate, t, proposedData,false));
-    return () => {
-      localStorage.removeItem("viewProposeDatePollMeetingID");
-    };
-  }, []);
-  // for rendering data in table
-  useEffect(() => {
-    if (
-      userWiseMeetingProposed !== null &&
-      userWiseMeetingProposed !== undefined &&
-      userWiseMeetingProposed.length > 0
-    ) {
-      let ProposeDates;
-
-      userWiseMeetingProposed.forEach((datesData, index) => {
-        const uniqueData = new Set(
-          datesData.selectedProposedDates.map(JSON.stringify)
-        );
-        ProposeDates = Array.from(uniqueData).map(JSON.parse);
-      });
-      setProposedDates(ProposeDates);
-      setInitialOrganizerRows(userWiseMeetingProposed);
-    } else {
-      setInitialOrganizerRows([]);
-    }
-  }, [userWiseMeetingProposed]);
 
   useEffect(() => {
     const newOrganizerRows = [...initialOrganizerRows];

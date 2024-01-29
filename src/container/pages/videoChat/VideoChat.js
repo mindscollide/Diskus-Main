@@ -20,7 +20,7 @@ const VideoChat = () => {
     let meetingID = localStorage.getItem("MeetingId");
     let obj = { MeetingID: JSON.parse(meetingID) };
     dispatch(ViewMeeting(obj));
-    console.log("States Running");
+
     let Data = {
       MeetingID: JSON.parse(meetingID),
     };

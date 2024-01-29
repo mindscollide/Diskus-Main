@@ -721,6 +721,7 @@ const Createpolls = ({ setCreatepoll }) => {
                           value={selectedsearch}
                           closeMenuOnSelect={false}
                           components={animatedComponents}
+                          placeholder="Add Members "
                           isMulti
                           onChange={handleSelectValue}
                         />

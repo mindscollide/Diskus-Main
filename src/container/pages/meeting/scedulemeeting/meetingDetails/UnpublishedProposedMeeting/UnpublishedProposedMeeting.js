@@ -39,6 +39,7 @@ import {
 } from "../../../../../../commen/functions/date_formater";
 import { UpdateOrganizersMeeting } from "../../../../../../store/actions/MeetingOrganizers_action";
 import moment from "moment";
+import { truncateString } from "../../../../../../commen/functions/regex";
 
 const UnpublishedProposedMeeting = ({
   setViewProposeDatePoll,
@@ -53,6 +54,7 @@ const UnpublishedProposedMeeting = ({
   currentMeeting,
   editorRole,
   setDataroomMapFolderId,
+  setResponseByDate,
 }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -111,10 +113,12 @@ const UnpublishedProposedMeeting = ({
     isParticipant,
     isAgendaContributor,
     isOrganiser,
-    id
+    id,
+    responseDeadLine
   ) => {
     localStorage.setItem("viewProposeDatePollMeetingID", id);
     if (isParticipant) {
+      setResponseByDate(responseDeadLine);
       setViewProposeDatePoll(true);
       dispatch(viewProposeDateMeetingPageFlag(true));
     } else if (isAgendaContributor) {
@@ -188,7 +192,7 @@ const UnpublishedProposedMeeting = ({
               handleOpenViewModal(record);
             }}
           >
-            {text}
+            {truncateString(text, 35)}
           </span>
         );
       },
@@ -225,13 +229,13 @@ const UnpublishedProposedMeeting = ({
       title: <span> {t("Organizer")}</span>,
       dataIndex: "host",
       key: "host",
-      width: "125px",
+      width: "120px",
       align: "center",
       sorter: (a, b) => {
         return a?.host.toLowerCase().localeCompare(b?.host.toLowerCase());
       },
       render: (text, record) => {
-        return <span>{text}</span>;
+        return <span className={styles["align-organizer-col"]}>{text}</span>;
       },
     },
     {
@@ -265,7 +269,7 @@ const UnpublishedProposedMeeting = ({
       title: t("Propose-date-poll"),
       dataIndex: "getAllMeetingDetails",
       key: "MeetingPoll",
-      width: "110px",
+      width: "120px",
       render: (text, record) => {
         console.log(record, "maxValuemaxValuemaxValue");
         let maxValue = record.meetingPoll?.totalNoOfDirectors;
@@ -484,7 +488,8 @@ const UnpublishedProposedMeeting = ({
                           true,
                           false,
                           false,
-                          record.pK_MDID
+                          record.pK_MDID,
+                          record.responseDeadLine
                         )
                       }
                     />

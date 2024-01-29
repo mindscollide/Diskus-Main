@@ -6,6 +6,8 @@ import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import greenMailIcon from "../../../../../assets/images/greenmail.svg";
 import redMailIcon from "../../../../../assets/images/redmail.svg";
 import RspvIcon from "../../../../../assets/images/rspvGreen.svg";
+import thumbsup from "../../../../../assets/images/thumbsup.svg";
+import thumbsdown from "../../../../../assets/images/thumbsdown.svg";
 import Select from "react-select";
 import { Col, Row } from "react-bootstrap";
 import { Button, Table, TextField } from "../../../../../components/elements";
@@ -185,9 +187,11 @@ const AgendaContributers = ({
       },
     },
     {
+      title: t("Notification"),
       dataIndex: "isNotifed",
       key: "isNotified",
       width: "80px",
+      className: "notification-class-table",
       render: (text, record) => {
         if (
           ((Number(editorRole.status) === 9 ||
@@ -268,6 +272,7 @@ const AgendaContributers = ({
       },
     },
     {
+      title: t("RSVP"),
       dataIndex: "rsvp",
       key: "rsvp",
       width: "80px",
@@ -285,7 +290,7 @@ const AgendaContributers = ({
                   isEditMeeting === true) ? (
                   <img
                     draggable={false}
-                    src={RspvIcon}
+                    src={thumbsup}
                     className={
                       record.isEdit === true ? "cursor-default" : "pe-none"
                     }
@@ -296,7 +301,7 @@ const AgendaContributers = ({
                 ) : (
                   <img
                     draggable={false}
-                    src={RspvIcon}
+                    src={thumbsup}
                     className={
                       record.isEdit === true ? "cursor-default" : "pe-none"
                     }

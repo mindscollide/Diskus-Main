@@ -23,7 +23,6 @@ const postCommentsInit = () => {
 };
 
 const postCommentsSuccess = (response, message) => {
-  console.log(response, message, "hellohello");
   return {
     type: actions.POST_ASSIGNEEECOMMENTS_SUCCESS,
     response: response,
@@ -38,7 +37,6 @@ const postCommentFail = (message) => {
   };
 };
 const postAssgineeComment = (navigate, data, t) => {
-  console.log("datadatadata", data);
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     // dispatch(postCommentsInit());
@@ -54,7 +52,6 @@ const postAssgineeComment = (navigate, data, t) => {
       },
     })
       .then(async (response) => {
-        console.log("responseresponseresponse", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(postAssgineeComment(navigate, data, t));

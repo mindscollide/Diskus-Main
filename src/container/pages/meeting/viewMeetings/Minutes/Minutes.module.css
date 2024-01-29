@@ -310,3 +310,12 @@ body[dir="rtl"] .errorNotesMessage_description {
 body[dir="rtl"] .errorNotesMessage_hidden_description {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
+.Next_button_Minutes {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}

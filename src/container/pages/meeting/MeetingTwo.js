@@ -171,6 +171,9 @@ const NewMeeting = () => {
     useState(false);
   const [viewAdvanceMeetingModal, setViewAdvanceMeetingModal] = useState(false);
   const [advanceMeetingModalID, setAdvanceMeetingModalID] = useState(null);
+  const [responseDate, setResponseDate] = useState("");
+  const [responseByDate, setResponseByDate] = useState("");
+
   const [editorRole, setEdiorRole] = useState({
     status: null,
     role: null,
@@ -182,6 +185,16 @@ const NewMeeting = () => {
   ] = useState(false);
 
   const [dashboardEventData, setDashboardEventData] = useState(null);
+
+  useEffect(() => {
+    console.log("State before cleanup:", responseByDate);
+
+    // state clean while rendering in meetingTwo
+    return () => {
+      setResponseByDate("");
+      console.log("State before cleanup:", responseByDate);
+    };
+  }, []);
 
   useEffect(() => {
     if (currentLanguage !== undefined && currentLanguage !== null) {
@@ -282,6 +295,7 @@ const NewMeeting = () => {
       OrganizerName: "",
     });
     setSearchMeeting(false);
+    setentereventIcon(true);
   };
 
   const HandleCloseSearchModalMeeting = () => {
@@ -533,7 +547,7 @@ const NewMeeting = () => {
             }}
           >
             {/* {text} */}
-            {truncateString(text, 30)}
+            {truncateString(text, 35)}
           </span>
         );
       },
@@ -708,19 +722,21 @@ const NewMeeting = () => {
                     }
                   ></span>
                 )}
-                {record.status === "9" && isOrganiser && (
-                  <Tooltip placement="topLeft" title={t("member")}>
-                    <img
-                      src={member}
-                      className="cursor-pointer"
-                      width="17.1px"
-                      height="16.72px"
-                      alt=""
-                      draggable="false"
-                      onClick={() => onClickDownloadIcon(record.pK_MDID)}
-                    />
-                  </Tooltip>
-                )}
+                {record.status === "9" &&
+                  isOrganiser &&
+                  record.isQuickMeeting === false && (
+                    <Tooltip placement="topLeft" title={t("member")}>
+                      <img
+                        src={member}
+                        className="cursor-pointer"
+                        width="17.1px"
+                        height="16.72px"
+                        alt=""
+                        draggable="false"
+                        onClick={() => onClickDownloadIcon(record.pK_MDID)}
+                      />
+                    </Tooltip>
+                  )}
               </Col>
             </Row>
           </>
@@ -1483,6 +1499,7 @@ const NewMeeting = () => {
         NewMeetingreducer.viewProposeDateMeetingPageFlag === true ? (
         <ViewParticipantsDates
           setViewProposeDatePoll={setViewProposeDatePoll}
+          responseByDate={responseByDate}
           setCurrentMeetingID={setCurrentMeetingID}
           setSceduleMeeting={setViewProposeDatePoll}
           setDataroomMapFolderId={setDataroomMapFolderId}
@@ -1766,6 +1783,7 @@ const NewMeeting = () => {
                     setViewAdvanceMeetingModalUnpublish={
                       setViewAdvanceMeetingModalUnpublish
                     }
+                    setResponseByDate={setResponseByDate}
                     setSceduleMeeting={setSceduleMeeting}
                     setEdiorRole={setEdiorRole}
                     setEditMeeting={setEditMeeting}

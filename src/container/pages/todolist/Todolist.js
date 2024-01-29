@@ -339,12 +339,12 @@ const TodoList = () => {
       // align: "left",
       render: (record, index) => {
         return (
-          <p className="m-0 MontserratRegular color-5a5a5a FontArabicRegular">
+          <p className="m-0 MontserratRegular color-5a5a5a FontArabicRegular text-nowrap">
             {" "}
             <img
               draggable="false"
               className="data-img"
-              src={`data:image/jpeg;base64,${record.displayProfilePictureName}`}
+              src={`data:image/jpeg;base64,${record?.displayProfilePictureName}`}
               alt=""
             />
             {record?.name}
@@ -354,7 +354,7 @@ const TodoList = () => {
       sorter: (a, b) => {
         return a?.taskCreator?.name
           .toLowerCase()
-          .localeCompare(b?.taskCreator?.name.toLowerCase());
+          .localeCompare(b?.taskCreator?.name?.toLowerCase());
       },
     },
     {
@@ -371,14 +371,14 @@ const TodoList = () => {
         if (text !== undefined && text !== null && text.length > 0) {
           return (
             <>
-              <p className="m-0 MontserratRegular color-505050 FontArabicRegular ">
+              <p className="m-0 MontserratRegular  color-505050 FontArabicRegular text-nowrap ">
                 {" "}
                 {currentLanguage === "ar" ? (
                   <>
                     <img
                       draggable="false"
                       className="data-img"
-                      src={`data:image/jpeg;base64,${text[0].displayProfilePictureName}`}
+                      src={`data:image/jpeg;base64,${text[0]?.displayProfilePictureName}`}
                       alt=""
                     />
 
@@ -389,7 +389,7 @@ const TodoList = () => {
                     <img
                       draggable="false"
                       className="data-img"
-                      src={`data:image/jpeg;base64,${text[0].displayProfilePictureName}`}
+                      src={`data:image/jpeg;base64,${text[0]?.displayProfilePictureName}`}
                       alt=""
                     />
                     {text[0].name}
@@ -461,10 +461,12 @@ const TodoList = () => {
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
       onFilter: (value, record) => {
-        return record.status.status.toLowerCase().includes(value.toLowerCase());
+        return record?.status?.status
+          ?.toLowerCase()
+          .includes(value.toLowerCase());
       },
       render: (text, record) => {
-        if (Number(record.taskCreator.pK_UID) === Number(createrID)) {
+        if (Number(record?.taskCreator?.pK_UID) === Number(createrID)) {
           return (
             <>
               <Select
@@ -527,7 +529,6 @@ const TodoList = () => {
       key: "taskCreator",
       width: "120px",
       render: (record, index) => {
-        console.log(record, index, "recordrecordrecordrecordrecord");
         if (parseInt(record?.pK_UID) === parseInt(createrID)) {
           return (
             <i
@@ -551,7 +552,6 @@ const TodoList = () => {
         setUpdateFlagToDo(true);
         setModalsflag(false);
       } else {
-        console.log("setViewFlagToDosetViewFlagToDo");
         // setViewFlagToDo(true);
       }
     }

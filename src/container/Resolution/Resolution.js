@@ -363,7 +363,7 @@ const Resolution = () => {
 
   const changeCirculateDateHandler = (e) => {
     let toDoDateSaveFormat = new DateObject(e).format("YYYY-MM-DD");
-    console.log(toDoDateSaveFormat, "toDoDateSaveFormat");
+
     setSearchModalDates({
       ...searchModalDates,
       circulationDate: toDoDateSaveFormat,
@@ -1189,7 +1189,11 @@ const Resolution = () => {
       } catch {}
     }
   }, [ResolutionReducer.mqttResolutionClosed]);
-  console.log(ResolutionReducer, "ResolutionReducerResolutionReducer");
+  console.log(
+    voteresolution,
+    ResolutionReducer.voteResolutionFlag,
+    "ResolutionReducerResolutionReducer"
+  );
   return (
     <>
       <section className={styles["resolution_container"]}>

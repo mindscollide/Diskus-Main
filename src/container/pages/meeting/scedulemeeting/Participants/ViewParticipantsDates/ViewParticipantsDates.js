@@ -1,6 +1,10 @@
 import React from "react";
 import styles from "./ViewParticipantsDates.module.css";
-import { Button, Checkbox } from "../../../../../../components/elements";
+import {
+  Button,
+  Checkbox,
+  Notification,
+} from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -15,7 +19,11 @@ import {
 } from "../../../../../../store/actions/NewMeetingActions";
 import { useEffect } from "react";
 import { useState } from "react";
-import { resolutionResultTable } from "../../../../../../commen/functions/date_formater";
+import {
+  EditmeetingDateFormat,
+  newTimeFormaterAsPerUTCTalkDate,
+  resolutionResultTable,
+} from "../../../../../../commen/functions/date_formater";
 import moment from "moment";
 
 const ViewParticipantsDates = ({
@@ -23,10 +31,16 @@ const ViewParticipantsDates = ({
   setCurrentMeetingID,
   setSceduleMeeting,
   setDataroomMapFolderId,
+  responseByDate,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+  });
 
   const getAllMeetingDetails = useSelector(
     (state) => state.NewMeetingreducer.getAllMeetingDetails
@@ -91,10 +105,6 @@ const ViewParticipantsDates = ({
 
   //Previous API for Dates that have to be Inserted new
 
-  console.log(
-    userWiseMeetingProposed,
-    "userWiseMeetingProposeduserWiseMeetingProposed"
-  );
   useEffect(() => {
     try {
       if (
@@ -138,7 +148,7 @@ const ViewParticipantsDates = ({
 
           //now For Sending Data
           let SenddataObject = [];
-          datesData.selectedProposedDates.map((data, index) => {
+          datesData.selectedProposedDates.forEach((data, index) => {
             SenddataObject.push({
               EndtimeSend: data.endTime,
               ProposedDateSend: data.proposedDate,
@@ -150,7 +160,7 @@ const ViewParticipantsDates = ({
 
           // now for the default Data
           let DefaultDate = [];
-          datesData.selectedProposedDates.map((data, index) => {
+          datesData.selectedProposedDates.forEach((data, index) => {
             if (
               data.proposedDate === "10000101" &&
               data.endTime === "000000" &&
@@ -172,9 +182,7 @@ const ViewParticipantsDates = ({
         });
       } else {
       }
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   }, [userWiseMeetingProposed]);
 
   //Fetching All Saved Data
@@ -190,9 +198,7 @@ const ViewParticipantsDates = ({
             getAllMeetingDetails.advanceMeetingDetails.description,
         });
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }, [getAllMeetingDetails]);
 
   //Previous API for Dates that have to be Removed
@@ -202,9 +208,7 @@ const ViewParticipantsDates = ({
         let deadline = getAllProposedDates.deadLineDate;
         setDeadline(deadline);
       }
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   }, [getAllProposedDates]);
 
   // onChange function for CheckBoxes
@@ -257,7 +261,10 @@ const ViewParticipantsDates = ({
   };
 
   const handleSave = () => {
-    if (selectAll) {
+    let findIsanySelected = prposedData.some(
+      (data, index) => data.isSelected === true
+    );
+    if (selectAll && findIsanySelected === false) {
       let defaultarr = [];
       noneOfAbove.forEach((data, index) => {
         defaultarr.push({
@@ -272,7 +279,7 @@ const ViewParticipantsDates = ({
         ProposedDates: defaultarr,
       };
       dispatch(SetMeetingResponseApiFunc(Data, navigate, t));
-    } else {
+    } else if (findIsanySelected) {
       let newarr = [];
       prposedData.forEach((data, index) => {
         if (data.isSelected) {
@@ -288,7 +295,13 @@ const ViewParticipantsDates = ({
         MeetingID: currentMeetingID,
         ProposedDates: newarr,
       };
+
       dispatch(SetMeetingResponseApiFunc(Data, navigate, t));
+    } else if (!selectAll) {
+      setOpen({
+        flag: true,
+        message: t("Please-select-any-of-the-given-options"),
+      });
     }
   };
 
@@ -417,7 +430,9 @@ const ViewParticipantsDates = ({
                 <Row className="mt-1">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Date"]}>
-                      {changeDateStartHandler2(deadline)}
+                      {responseByDate !== undefined
+                        ? changeDateStartHandler2(responseByDate)
+                        : ""}
                     </span>
                   </Col>
                 </Row>
@@ -481,6 +496,7 @@ const ViewParticipantsDates = ({
           </Paper>
         </Col>
       </Row>
+      <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </section>
   );
 };

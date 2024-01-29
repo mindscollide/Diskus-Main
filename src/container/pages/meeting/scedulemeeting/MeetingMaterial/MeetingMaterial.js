@@ -3,6 +3,7 @@ import styles from "./MeetingMaterial.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Eye } from "react-bootstrap-icons";
 import { Col, Row } from "react-bootstrap";
 import {
   Button,
@@ -27,6 +28,7 @@ import {
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 import NextModal from "../meetingDetails/NextModal/NextModal";
 import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
+import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
 
 const MeetingMaterial = ({
   setSceduleMeeting,
@@ -82,63 +84,109 @@ const MeetingMaterial = ({
     dispatch(getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows));
   }, []);
 
-  //onClick of handlerFor View PDF
-  const viewHandlerOnclick = (e, data) => {
-    e.preventDefault();
-    if (clicks === 1) {
-      if (dataCheck === data) {
-        // Perform the action you want to happen on the double-click here
+  const handleDoubeClick = (record) => {
+    const ext = getFileExtension(record.displayFileName);
+
+    if (
+      (editorRole.role.toLowerCase() === "Organizer".toLowerCase() ||
+        editorRole.role.toLowerCase() === "Agenda Contributor".toLowerCase()) &&
+      (editorRole.status === "12" ||
+        editorRole.status === "11" ||
+        editorRole.status === "10" ||
+        editorRole.status === "1")
+    ) {
+      // if meeting active , proposed, upcoming, unpublished then file should be open with editing rights and download and user should be Agenda Contributor or Organizer
+      if (ext === "pdf") {
+        const documentData = {
+          taskId: record.agendaID,
+          commingFrom: 4,
+          fileName: record.displayFileName,
+          attachmentID: Number(record.originalFileName),
+        };
+        const documentDataJson = JSON.stringify(documentData);
         window.open(
-          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(data)}`,
+          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+            documentDataJson
+          )}`,
           "_blank",
           "noopener noreferrer"
         );
       } else {
-        setDataCheck(data);
+        let data = {
+          FileID: Number(record.originalFileName),
+        };
+        dispatch(
+          DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName)
+        );
       }
-      // Reset the click count
-      setClicks(0);
-    } else {
-      // Increment the click count
-      setClicks(clicks + 1);
-      setDataCheck(data);
-      // You can add a delay here to reset the click count after a certain time if needed
-      setTimeout(() => {
-        setClicks(0);
-        setDataCheck([]);
-      }, 300); // Reset after 300 milliseconds (adjust as needed)
+    } else if (
+      editorRole.status === "9" &&
+      (editorRole.role === "Agenda Contributor" ||
+        editorRole.role === "Organizer")
+    ) {
+      // if meeting has ended and user is Agenda Contribuor or Organizer then user just can view a document
+      if (ext === "pdf") {
+        const documentData = {
+          taskId: record.agendaID,
+          commingFrom: 4,
+          fileName: record.displayFileName,
+          attachmentID: Number(record.originalFileName),
+          isPermission: 1,
+        };
+        const documentDataJson = JSON.stringify(documentData);
+        window.open(
+          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+            documentDataJson
+          )}`,
+          "_blank",
+          "noopener noreferrer"
+        );
+      } else {
+        let data = {
+          FileID: Number(record.originalFileName),
+        };
+        dispatch(
+          DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName)
+        );
+      }
     }
+    // if (ext.toLowerCase().includes("pdf")) {
+    //   const documentData = {
+    //     taskId: record.agendaID,
+    //     commingFrom: 4,
+    //     fileName: record.displayFileName,
+    //     attachmentID: Number(record.originalFileName),
+    //   };
+    //   const documentDataJson = JSON.stringify(documentData);
+    //   window.open(
+    //     `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+    //       documentDataJson
+    //     )}`,
+    //     "_blank",
+    //     "noopener noreferrer"
+    //   );
+    // } else {
+    //   let data = {
+    //     FileID: Number(record.originalFileName),
+    //   };
+    //   dispatch(
+    //     DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName)
+    //   );
+    // }
   };
-
   // Modify your materialColoumn definition to handle parent and child agendas
   const materialColoumn = [
     {
       title: "Document Name",
       dataIndex: "displayFileName",
       key: "displayFileName",
-      width: "250px",
+      width: "300px",
       render: (text, record) => {
-        const ext = getFileExtension(text);
-        const isPdf = ext.toLowerCase() === "pdf"; // Check if the file is a PDF
-
-        const documentData = {
-          taskId: record.agendaID,
-          commingFrom: 4,
-          fileName: text,
-          attachmentID: record.attachmentID,
-        };
-        const documentDataJson = JSON.stringify(documentData);
-
         return (
           <div>
             <section
               className={styles["docx-name-title"]}
-              onClick={(e) =>
-                isPdf ? viewHandlerOnclick(e, documentDataJson) : null
-              }
-              onDoubleClick={(e) =>
-                isPdf ? viewHandlerOnclick(e, documentDataJson) : null
-              }
+              onDoubleClick={() => handleDoubeClick(record)}
             >
               <img
                 src={getIconSource(getFileExtension(record.displayFileName))}
@@ -161,7 +209,41 @@ const MeetingMaterial = ({
       title: "Agenda Name",
       dataIndex: "agendaName",
       key: "agendaName",
-      width: "250px",
+      align: "center",
+    },
+    {
+      title: "",
+      dataIndex: "",
+      key: "",
+      align: "center",
+      render: (text, record) => {
+        const ext = getFileExtension(record.displayFileName);
+        return (
+          <>
+            <Row>
+              <Col
+                sm={12}
+                md={12}
+                lg={12}
+                className="d-flex gap-3 align-items-center justify-content-center"
+              >
+                <Eye
+                  fontSize={22}
+                  cursor={ext === "pdf" ? "pointer" : "default"}
+                  pointerEvents={ext === "pdf" ? "auto" : "none"}
+                  onDoubleClick={() => handleDoubeClick(record)}
+                />
+                <Button
+                  disableBtn={ext !== "pdf" ? false : true}
+                  text={t("Download")}
+                  className={styles["downloadButton"]}
+                  onClick={() => handleDoubeClick(record)}
+                />
+              </Col>
+            </Row>
+          </>
+        );
+      },
     },
   ];
 

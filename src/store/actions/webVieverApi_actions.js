@@ -29,7 +29,6 @@ const GetAnnotationsOfToDoAttachementSuccess = (
   xfdfData,
   attachmentBlob
 ) => {
-  console.log("blobToUint8Array", xfdfData, attachmentBlob);
   return {
     type: actions.GETANNOTATIONSOFTODOATTACHEMENT_SUCCESS,
     xfdfData: xfdfData,
@@ -73,10 +72,9 @@ const getAnnotationsOfToDoAttachement = (navigate, t, data) => {
                   "ToDoList_ToDoListServiceManager_GetAnnotationOfToDoAttachement_01".toLowerCase()
                 )
             ) {
-              console.log("blobToUint8Array", response.data.responseResult);
               let xfdfData = response.data.responseResult.annotationString;
               let attachmentBlob = response.data.responseResult.attachmentBlob;
-              console.log("blobToUint8Array", xfdfData, attachmentBlob);
+
               dispatch(
                 GetAnnotationsOfToDoAttachementSuccess(
                   t("Record-found"),
@@ -256,7 +254,6 @@ const GetAnnotationsOfNotesAttachementSuccess = (
   xfdfData,
   attachmentBlob
 ) => {
-  console.log("blobToUint8Array", xfdfData, attachmentBlob);
   return {
     type: actions.GETANNOTATIONSOFNOTESATTACHEMENT_SUCCESS,
     xfdfData: xfdfData,
@@ -300,10 +297,9 @@ const getAnnotationsOfNotesAttachement = (navigate, t, data) => {
                   "Notes_NotesServiceManager_GetAnnotationOfNotesAttachement_01".toLowerCase()
                 )
             ) {
-              console.log("blobToUint8Array", response.data.responseResult);
               let xfdfData = response.data.responseResult.annotationString;
               let attachmentBlob = response.data.responseResult.attachmentBlob;
-              console.log("blobToUint8Array", xfdfData, attachmentBlob);
+
               dispatch(
                 GetAnnotationsOfNotesAttachementSuccess(
                   t("Annotation-available"),
@@ -487,7 +483,6 @@ const GetAnnotationsOfResolutionAttachementSuccess = (
   xfdfData,
   attachmentBlob
 ) => {
-  console.log("blobToUint8Array", xfdfData, attachmentBlob);
   return {
     type: actions.GETANNOTATIONSOFRESOLUTIONATTACHEMENT_SUCCESS,
     xfdfData: xfdfData,
@@ -534,10 +529,9 @@ const getAnnotationsOfResolutionAttachement = (navigate, t, data) => {
                   "Resolution_ResolutionServiceManager_GetAnnotationOfResolutionAttachement_01".toLowerCase()
                 )
             ) {
-              console.log("blobToUint8Array", response.data.responseResult);
               let xfdfData = response.data.responseResult.annotationString;
               let attachmentBlob = response.data.responseResult.attachmentBlob;
-              console.log("blobToUint8Array", xfdfData, attachmentBlob);
+
               dispatch(
                 GetAnnotationsOfResolutionAttachementSuccess(
                   t("Annotation-available"),
@@ -744,7 +738,6 @@ const GetAnnotationsOfDataroomAttachementSuccess = (
   xfdfData,
   attachmentBlob
 ) => {
-  console.log("blobToUint8Array", xfdfData, attachmentBlob);
   return {
     type: actions.GETANNOTATIONSOFDATAROOMATTACHEMENT_SUCCESS,
     xfdfData: xfdfData,
@@ -791,10 +784,9 @@ const getAnnotationsOfDataroomAttachement = (navigate, t, data) => {
                   "DataRoom_DataRoomManager_GetAnnotationOfFilesAttachement_01".toLowerCase()
                 )
             ) {
-              console.log("blobToUint8Array", response.data.responseResult);
               let xfdfData = response.data.responseResult.annotationString;
               let attachmentBlob = response.data.responseResult.attachmentBlob;
-              console.log("blobToUint8Array", xfdfData, attachmentBlob);
+
               dispatch(
                 GetAnnotationsOfDataroomAttachementSuccess(
                   t("Annotation-available"),

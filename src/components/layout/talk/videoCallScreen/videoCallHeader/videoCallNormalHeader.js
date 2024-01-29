@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./videoCallHeader.css";
 import { Button, NotificationBar } from "./../../../../elements";
+import { Tooltip } from "antd";
 import MicVideo from "../../../../../assets/images/newElements/micVideo.png";
 import VideoCallIcon from "../../../../../assets/images/newElements/VideoIconExpand.png";
 import ExpandIcon from "../../../../../assets/images/ExpandColorfullIcon.png";
@@ -228,8 +229,6 @@ const VideoCallNormalHeader = ({
     }
   };
 
-  console.log("talkStateData", talkStateData);
-
   const closeParticipantHandler = () => {
     if (videoFeatureReducer.LeaveCallModalFlag === false) {
       if (videoFeatureReducer.ParticipantPopupFlag === false) {
@@ -343,8 +342,6 @@ const VideoCallNormalHeader = ({
     // videoFeatureReducer.LeaveCallModalFlag,
   ]);
 
-  console.log("participantStatus", participantStatus[0]);
-
   return (
     <>
       <Row className="mb-4">
@@ -403,15 +400,17 @@ const VideoCallNormalHeader = ({
         <>
           <Col lg={5} md={5} sm={12} className="normal-screen-top-icons">
             <div className="screenShare-Toggle flipHorizontal">
-              <img
-                className={
-                  videoFeatureReducer.LeaveCallModalFlag === true
-                    ? "grayScaleImage"
-                    : "cursor-pointer"
-                }
-                onClick={layoutCurrentChange}
-                src={LayoutIconPurple}
-              />
+              <Tooltip placement="topRight" title={t("Layout")}>
+                <img
+                  className={
+                    videoFeatureReducer.LeaveCallModalFlag === true
+                      ? "grayScaleImage"
+                      : "cursor-pointer"
+                  }
+                  onClick={layoutCurrentChange}
+                  src={LayoutIconPurple}
+                />
+              </Tooltip>
             </div>
             {callerID === currentUserID && currentCallType === 2 ? (
               <div
@@ -474,42 +473,48 @@ const VideoCallNormalHeader = ({
                     </div>
                   </>
                 ) : (
-                  <img
-                    className={
-                      videoFeatureReducer.LeaveCallModalFlag === true
-                        ? "grayScaleImage"
-                        : "cursor-pointer"
-                    }
-                    src={ParticipantsIcon}
-                    onClick={closeParticipantHandler}
-                    height={20}
-                    width={25}
-                  />
+                  <Tooltip placement="topRight" title={t("Participants")}>
+                    <img
+                      className={
+                        videoFeatureReducer.LeaveCallModalFlag === true
+                          ? "grayScaleImage"
+                          : "cursor-pointer"
+                      }
+                      src={ParticipantsIcon}
+                      onClick={closeParticipantHandler}
+                      height={20}
+                      width={25}
+                    />
+                  </Tooltip>
                 )}
               </div>
             ) : null}
             <div className="screenShare-Toggle flipHorizontal">
-              <img
-                className={
-                  videoFeatureReducer.LeaveCallModalFlag === true
-                    ? "grayScaleImage"
-                    : "cursor-pointer"
-                }
-                onClick={screenShareButton}
-                src={NonActiveScreenShare}
-              />
-            </div>
-            {currentCallType === 1 ? (
-              <div className="screenShare-Toggle flipHorizontal">
+              <Tooltip placement="topRight" title={t("Screen-share")}>
                 <img
                   className={
                     videoFeatureReducer.LeaveCallModalFlag === true
                       ? "grayScaleImage"
                       : "cursor-pointer"
                   }
-                  onClick={onClickCloseChatHandler}
-                  src={ChatIcon}
+                  onClick={screenShareButton}
+                  src={NonActiveScreenShare}
                 />
+              </Tooltip>
+            </div>
+            {currentCallType === 1 ? (
+              <div className="screenShare-Toggle flipHorizontal">
+                <Tooltip placement="topRight" title={t("Chat")}>
+                  <img
+                    className={
+                      videoFeatureReducer.LeaveCallModalFlag === true
+                        ? "grayScaleImage"
+                        : "cursor-pointer"
+                    }
+                    onClick={onClickCloseChatHandler}
+                    src={ChatIcon}
+                  />
+                </Tooltip>
               </div>
             ) : null}
             {videoFeatureReducer.LeaveCallModalFlag === true &&
@@ -538,45 +543,51 @@ const VideoCallNormalHeader = ({
                 onClick={endCallParticipant}
               />
             ) : null}
-            <div
-              onClick={minimizeVideoPanel}
-              className={
-                videoFeatureReducer.LeaveCallModalFlag === true
-                  ? "grayScaleImage"
-                  : "cursor-pointer"
-              }
-            >
-              <img src={MinimizeIcon} />
-            </div>
+            <Tooltip placement="topRight" title={t("Minimize")}>
+              <div
+                onClick={minimizeVideoPanel}
+                className={
+                  videoFeatureReducer.LeaveCallModalFlag === true
+                    ? "grayScaleImage"
+                    : "cursor-pointer"
+                }
+              >
+                <img src={MinimizeIcon} />
+              </div>
+            </Tooltip>
             {videoFeatureReducer.NormalizeVideoFlag === true &&
             videoFeatureReducer.MinimizeVideoFlag === false &&
             videoFeatureReducer.MaximizeVideoFlag === false ? (
-              <div className="video_maximize_icon">
-                <img
-                  src={ExpandIcon}
-                  onClick={otoMaximizeVideoPanel}
-                  className={
-                    videoFeatureReducer.LeaveCallModalFlag === true
-                      ? "grayScaleImage"
-                      : "cursor-pointer"
-                  }
-                />
-              </div>
+              <Tooltip placement="topRight" title={t("Expand")}>
+                <div className="video_maximize_icon">
+                  <img
+                    src={ExpandIcon}
+                    onClick={otoMaximizeVideoPanel}
+                    className={
+                      videoFeatureReducer.LeaveCallModalFlag === true
+                        ? "grayScaleImage"
+                        : "cursor-pointer"
+                    }
+                  />
+                </div>
+              </Tooltip>
             ) : videoFeatureReducer.NormalizeVideoFlag === false &&
               videoFeatureReducer.MinimizeVideoFlag === false &&
               videoFeatureReducer.MaximizeVideoFlag === true ? (
               <div className="normalize_video_icon">
-                <img
-                  width={17}
-                  src={NormalizeIcon}
-                  alt="Maximize Icon"
-                  className={
-                    videoFeatureReducer.LeaveCallModalFlag === true
-                      ? "normalize-Icon-Large grayScaleImage"
-                      : "normalize-Icon-Large cursor-pointer"
-                  }
-                  onClick={normalizeScreen}
-                />
+                <Tooltip placement="topRight" title={t("Collapse")}>
+                  <img
+                    width={17}
+                    src={NormalizeIcon}
+                    alt="Maximize Icon"
+                    className={
+                      videoFeatureReducer.LeaveCallModalFlag === true
+                        ? "normalize-Icon-Large grayScaleImage"
+                        : "normalize-Icon-Large cursor-pointer"
+                    }
+                    onClick={normalizeScreen}
+                  />
+                </Tooltip>
               </div>
             ) : null}
           </Col>
@@ -593,7 +604,11 @@ const VideoCallNormalHeader = ({
             <div className="leave-meeting-options__inner">
               <Button
                 className="leave-meeting-options__btn leave-meeting-red-button"
-                text="End Call for Everyone"
+                text={
+                  currentCallType === 1
+                    ? t("End-call")
+                    : t("End-call-for-everyone")
+                }
                 onClick={leaveCall}
               />
 

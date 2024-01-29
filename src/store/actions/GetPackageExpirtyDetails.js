@@ -2,7 +2,7 @@ import axios from "axios";
 import { IsPackageExpiryDetail } from "../../commen/apis/Api_config";
 import { getAdminURLs } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
-import { RefreshToken } from './Auth_action'
+import { RefreshToken } from "./Auth_action";
 
 const getExpiryDetailsInit = () => {
   return {
@@ -11,7 +11,6 @@ const getExpiryDetailsInit = () => {
 };
 
 const getExpiryDetailsSuccess = (response, message) => {
-  console.log("isExpiry color", response)
   return {
     type: actions.GETPACKAGEEXPIRYDETAILS_SUCCESS,
     response: response,
@@ -43,8 +42,8 @@ const getPackageExpiryDetail = (navigate, id, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t))
-          dispatch(getPackageExpiryDetail(navigate, id, t))
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getPackageExpiryDetail(navigate, id, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -151,11 +150,9 @@ const getPackageExpiryDetail = (navigate, id, t) => {
             dispatch(getExpiryDetailFail(t("User-email-doesnt-exists")));
           }
         }
-        console.log("response", response);
       })
       .catch((response) => {
         dispatch(getExpiryDetailFail(t("User-email-doesnt-exists")));
-        console.log("response", response);
       });
   };
 };

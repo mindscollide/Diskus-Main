@@ -849,51 +849,54 @@ const UpdatePolls = () => {
                                       ) : (
                                         <>
                                           <Row key={index} className="mt-2">
-                                            <Col lg={12} md={12} sm={12}>
-                                              <span className="position-relative">
-                                                <TextField
-                                                  placeholder={
-                                                    "Option" +
-                                                    " " +
-                                                    parseInt(index + 1) +
-                                                    "*"
-                                                  }
-                                                  applyClass={
-                                                    "PollingCreateModal"
-                                                  }
-                                                  labelClass="d-none"
-                                                  maxLength={490}
-                                                  name={data.name}
-                                                  value={data.value}
-                                                  change={(e) =>
-                                                    HandleOptionChange(e)
-                                                  }
-                                                  inputicon={
-                                                    <img
-                                                      draggable="false"
-                                                      src={WhiteCrossIcon}
-                                                      width="31.76px"
-                                                      height="31.76px"
-                                                      alt=""
-                                                      onClick={() =>
-                                                        HandleCancelFunction(
-                                                          index
-                                                        )
-                                                      }
-                                                      className={
-                                                        styles[
-                                                          "Cross-icon-Create_poll"
-                                                        ]
-                                                      }
-                                                    />
-                                                  }
-                                                  iconClassName={
-                                                    styles[
-                                                      "polling_Options_backGround"
-                                                    ]
-                                                  }
-                                                />
-                                              </span>
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="position-relative"
+                                            >
+                                              <TextField
+                                                placeholder={
+                                                  "Option" +
+                                                  " " +
+                                                  parseInt(index + 1) +
+                                                  "*"
+                                                }
+                                                applyClass={
+                                                  "PollingCreateModal"
+                                                }
+                                                labelClass="d-none"
+                                                maxLength={490}
+                                                name={data.name}
+                                                value={data.value}
+                                                change={(e) =>
+                                                  HandleOptionChange(e)
+                                                }
+                                                inputicon={
+                                                  <img
+                                                    draggable="false"
+                                                    src={WhiteCrossIcon}
+                                                    width="31.76px"
+                                                    height="31.76px"
+                                                    alt=""
+                                                    onClick={() =>
+                                                      HandleCancelFunction(
+                                                        index
+                                                      )
+                                                    }
+                                                    className={
+                                                      styles[
+                                                        "Cross-icon-Create_poll"
+                                                      ]
+                                                    }
+                                                  />
+                                                }
+                                                iconClassName={
+                                                  styles[
+                                                    "polling_Options_backGround"
+                                                  ]
+                                                }
+                                              />
                                             </Col>
                                           </Row>
                                         </>

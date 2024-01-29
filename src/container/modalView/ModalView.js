@@ -106,6 +106,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   const [startMeetingStatus, setStartMeetingStatus] = useState(false);
   const [endMeetingStatus, setEndMeetingStatus] = useState(false);
   const [isOrganizer, setOrganizer] = useState(false);
+  const [isParticipant, setIsParticipant] = useState(false);
   const [minutesOftheMeatingStatus, setMinutesOftheMeatingStatus] =
     useState(false);
   // for main json for create meating
@@ -266,7 +267,10 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       });
     }
   };
-
+  console.log(
+    allMeetingDetails,
+    "allMeetingDetailsallMeetingDetailsallMeetingDetails"
+  );
   // for view data
   useEffect(() => {
     try {
@@ -287,11 +291,15 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           const found2 = found.meetingAttendeeRole.pK_MARID;
           if (parseInt(found2) === 1 || parseInt(found2) === 3) {
             setOrganizer(true);
+          } else if (parseInt(found2) === 2) {
+            setIsParticipant(true);
           } else {
             setOrganizer(false);
+            setIsParticipant(false);
           }
         } else {
           setOrganizer(false);
+          setIsParticipant(false);
         }
         if (meetingStatus === "1") {
           setStartMeetingStatus(false);
@@ -313,8 +321,13 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           setMinutesOftheMeatingStatus(true);
           setEndMeetingStatus(false);
           setStartMeetingStatus(false);
+        } else if (meetingStatus === "10") {
+          setMinutesOftheMeatingStatus(false);
+          setEndMeetingStatus(false);
+          setStartMeetingStatus(false);
         } else {
           setEndMeetingStatus(false);
+          setStartMeetingStatus(false);
           setStartMeetingStatus(false);
         }
         viewData.meetingReminders.map((rdata, index) => {
@@ -637,6 +650,24 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       PublishedMeetings: true,
     };
     await dispatch(EndMeeting(navigate, Data, t, Data2));
+  };
+  const leaveMeeting = async () => {
+    await setViewFlag(false);
+    // let meetingID = assignees.ViewMeetingDetails.meetingDetails.pK_MDID;
+    // let Data = {
+    //   MeetingID: meetingID,
+    //   UserID: parseInt(createrID),
+    // };
+    // let Data2 = {
+    //   Date: "",
+    //   Title: "",
+    //   HostName: "",
+    //   UserID: parseInt(createrID),
+    //   PageNumber: 1,
+    //   Length: 50,
+    //   PublishedMeetings: true,
+    // };
+    // await dispatch(EndMeeting(navigate, Data, t, Data2));
   };
 
   const downloadClick = (e, record) => {
@@ -1221,16 +1252,31 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                           <Button
                             onClick={endMeeting}
                             className={
-                              "MontserratSemiBold-600 btn btn-primary end-meeting-btn" +
+                              "MontserratSemiBold-600 btn btn-primary end-meeting-btn_view" +
                               " " +
                               currentLanguage
                             }
                             text={t("End-meeting")}
-                            disableBtn={endMeetingStatus}
+                            // disableBtn={endMeetingStatus}
                           />
                         ) : null}
                       </Col>
                     </Row>
+                  ) : isParticipant ? (
+                    <>
+                      {allMeetingDetails.meetingStatus.status === "10" ? (
+                        <Button
+                          onClick={leaveMeeting}
+                          className={
+                            "MontserratSemiBold-600  end-meeting-btn_view" +
+                            " " +
+                            currentLanguage
+                          }
+                          text={t("Leave-meeting")}
+                          // disableBtn={endMeetingStatus}
+                        />
+                      ) : null}
+                    </>
                   ) : null}
                 </>
               ) : null}

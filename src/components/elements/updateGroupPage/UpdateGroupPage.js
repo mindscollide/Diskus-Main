@@ -70,7 +70,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     GroupTypeID: 0,
     GroupStatusID: 0,
   });
-  console.log("GroupDetailsGroupDetails", GroupDetails);
+
   const [onclickFlag, setOnclickFlag] = useState(false);
   const [membersData, setMembersData] = useState([]);
   const [groupMembers, setGroupMembers] = useState([]);
@@ -133,7 +133,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   // };
   const searchFilterHandler = (value) => {
     let allAssignees = assignees.user;
-    console.log("Input Value", allAssignees);
+
     if (
       allAssignees != undefined &&
       allAssignees != null &&
@@ -144,8 +144,6 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         .filter((item) => {
           const searchTerm = value.toLowerCase();
           const assigneesName = item.name.toLowerCase();
-          console.log("Input Value in searchTerm", searchTerm);
-          console.log("Input Value in assigneesName", assigneesName);
 
           return (
             searchTerm && assigneesName.startsWith(searchTerm)
@@ -159,7 +157,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
             className="dropdown-row-assignee d-flex align-items-center flex-row"
             key={item.pK_UID}
           >
-            {console.log("itemitem", item)}
+            {}
             <img
               src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
               alt=""
@@ -170,7 +168,6 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
           </div>
         ));
     } else {
-      console.log("not found");
     }
   };
 
@@ -189,12 +186,9 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   };
 
   const handleAddAttendees = () => {
-    console.log("taskAssignedTo", taskAssignedTo);
     const newMeetingAttendees = [...membersData];
     const newGroupMembers = [...groupMembers];
     if (taskAssignedTo !== 0 && attendees.length > 0) {
-      console.log("taskAssignedTo", taskAssignedTo);
-
       setOpen({
         flag: true,
         message: t("You-can-add-data-only-from-one-form-option-at-a-time"),
@@ -207,8 +201,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       var foundIndex = membersData.findIndex(
         (x) => x.FK_UID === taskAssignedTo
       );
-      console.log("taskAssignedTo", membersData);
-      console.log("taskAssignedTo", foundIndex);
+
       if (participantRoleName === "") {
         setOpen({
           flag: true,
@@ -218,9 +211,6 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         if (foundIndex === -1) {
           let roleID;
           participantRoles.map((data, index) => {
-            console.log("taskAssignedTo12", data);
-            console.log("taskAssignedTo12", participantRoleName);
-
             if (data.label === participantRoleName) {
               roleID = data.id;
               newMeetingAttendees.push({
@@ -242,7 +232,6 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                   data,
                   role: roleID,
                 });
-                console.log("taskAssignedTo13", newGroupMembers);
 
                 setGroupMembers(newGroupMembers);
               }
@@ -253,7 +242,6 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
           setParticipantRoleName("");
           setTaskAssignedToInput("");
         } else {
-          console.log("taskAssignedTo", foundIndex);
           setOpen({
             flag: true,
             message: t("User-already-exist"),
@@ -264,8 +252,6 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         }
       }
     } else if (attendees.length > 0) {
-      console.log("taskAssignedTo", taskAssignedTo);
-
       let check = false;
       let participantOptionsWithID =
         participantOptionsWithIDs &&
@@ -319,8 +305,6 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         }
       }
     } else {
-      console.log("taskAssignedTo", taskAssignedTo);
-
       setOpen({
         flag: true,
         message: t("Please-select-atleast-one-members"),
@@ -430,15 +414,11 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     setGroupMembers([...groupMembers]);
     setMembersData([...membersData]);
   };
-  console.log("splicesplicesplice", groupMembers);
-  console.log("splicesplicesplice", membersData);
 
   const checkGroupMembers = (GroupMembers) => {
-    console.log("checkGroupMembers", GroupMembers);
     if (Object.keys(GroupMembers).length > 0) {
       let flag1 = GroupMembers.find((data, index) => data.FK_GRMRID === 1);
       let flag2 = GroupMembers.find((data, index) => data.FK_GRMRID === 2);
-      console.log("checkGroupMembers", flag1, flag2);
 
       if (flag1 != undefined && flag2 != undefined) {
         return true;
@@ -468,7 +448,6 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         });
       } else {
         if (!checkGroupMembers(membersData)) {
-          console.log("checkGroupMembers", checkGroupMembers(membersData));
           setOpen({
             flag: true,
             message: t(
@@ -520,7 +499,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   useEffect(() => {
     if (GroupsReducer.getGroupByGroupIdResponse !== null) {
       let groupDetails = GroupsReducer.getGroupByGroupIdResponse;
-      console.log(groupDetails, "groupDetailsgroupDetailsgroupDetails");
+
       console.log(
         GroupsReducer.getGroupByGroupIdResponse.isTalk,
         "groupDetailsgroupDetailsgroupDetails"
@@ -664,8 +643,6 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     customRequest() {},
   };
 
-  console.log(fileAttachments, "fileAttachmentsfileAttachments");
-
   //Sliders For Attachments
 
   const SlideLeft = () => {
@@ -709,13 +686,11 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       GroupsReducer.groupDocuments !== null &&
       GroupsReducer.groupDocuments !== undefined
     ) {
-      console.log(GroupsReducer.groupDocuments, "groupDocumentsgroupDocuments");
       if (GroupsReducer.groupDocuments.data.length > 0) {
         setFolderID(GroupsReducer.groupDocuments.folderID);
         let retirveArray = [];
         let PrevIds = [];
         GroupsReducer.groupDocuments.data.map((docsData, docsDataindex) => {
-          console.log(docsData, "docsDatadocsDatadocsDatassss");
           retirveArray.push({
             pK_FileID: docsData.pK_FileID,
             DisplayAttachmentName: docsData.displayFileName,
@@ -756,7 +731,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   useEffect(() => {
     if (GroupsReducer.FolderID !== 0) {
       let folderIDCreated = GroupsReducer.FolderID.folderID;
-      console.log("folderIDCreatedfolderIDCreated", folderIDCreated);
+
       GroupsDocumentCallUpload(folderIDCreated);
     }
   }, [GroupsReducer.FolderID]);
@@ -871,7 +846,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                               lg={12}
                               md={12}
                               sm={12}
-                              className="UpdateCheckbox Saved_money_Tagline"
+                              className="Update-committee-Checkbox Saved_money_Tagline"
                             >
                               <Checkbox
                                 className="SearchCheckbox MontserratSemiBold-600"
@@ -1404,7 +1379,6 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                             >
                               {fileAttachments.length > 0
                                 ? fileAttachments.map((data, index) => {
-                                    console.log(data, "positionposition");
                                     return (
                                       <>
                                         <Col

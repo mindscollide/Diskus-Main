@@ -26,7 +26,6 @@ const forgotPasswordFail = (message) => {
 };
 
 const changePasswordRequest = (email, t, navigate) => {
-  console.log(email);
   var min = 10000;
   var max = 90000;
   var id = min + Math.random() * (max - min);
@@ -35,7 +34,7 @@ const changePasswordRequest = (email, t, navigate) => {
     DeviceID: "1",
     Device: "browser",
   };
-  console.log(Data);
+
   return (dispatch) => {
     dispatch(forgotPasswordInit());
     let form = new FormData();
@@ -47,7 +46,6 @@ const changePasswordRequest = (email, t, navigate) => {
       data: form,
     })
       .then((response) => {
-        console.log("changePasswordRequest", response);
         if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage

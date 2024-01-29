@@ -466,8 +466,13 @@ const ViewToDoList = (
             ) {
               await dispatch(ShowNotification(t("Record-found")));
               await dispatch(ViewToDoSuccess(response.data.responseResult));
-              setViewFlagToDo(true);
-              setTodoViewModal(true);
+
+              if (typeof setViewFlagToDo === "function") {
+                setViewFlagToDo(true);
+              }
+              if (typeof setTodoViewModal === "function") {
+                setTodoViewModal(true);
+              }
               await dispatch(SetLoaderFalse());
             } else if (
               response.data.responseResult.responseMessage
@@ -1644,6 +1649,7 @@ const saveTaskDocumentsApi = (navigate, Data, t, value, setShow) => {
 
               // Create Task from main TOdo list
               if (value === 1) {
+                setShow(false);
                 let TodoListPage =
                   localStorage.getItem("todoListPage") !== null
                     ? localStorage.getItem("todoListPage")
@@ -1669,7 +1675,6 @@ const saveTaskDocumentsApi = (navigate, Data, t, value, setShow) => {
                   )
                 );
                 // dispatch(createUpdateTaskDataRoom_fail(""));
-                setShow(false);
               }
               // Delete Task from main Task
               if (value === 2) {
@@ -1747,9 +1752,7 @@ const saveTaskDocumentsApi = (navigate, Data, t, value, setShow) => {
           dispatch(saveTaskDocuments_fail(t("Something-went-wrong")));
           dispatch(createUpdateTaskDataRoom_fail(""));
         });
-    } catch (error) {
-      console.log("error", error);
-    }
+    } catch (error) {}
   };
 };
 

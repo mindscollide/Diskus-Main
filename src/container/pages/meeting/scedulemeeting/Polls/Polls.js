@@ -61,6 +61,7 @@ const Polls = ({
   const [pageSize, setPageSize] = useState(50);
   const [totalRecords, setTotalRecords] = useState(0);
   const [viewPublishedPoll, setViewPublishedPoll] = useState(false);
+  console.log(currentMeeting, "currentMeetingcurrentMeeting");
   // Unpublished Poll
   const [unPublished, setUnPublished] = useState(false);
   const [open, setOpen] = useState({
@@ -70,26 +71,10 @@ const Polls = ({
   let OrganizationID = localStorage.getItem("organizationID");
   let userID = localStorage.getItem("userID");
 
-  const enableAfterSavedViewPolls = () => {
-    setafterViewPolls(true);
-  };
-
-  const handleCastVotePollMeeting = () => {
-    setvotePolls(true);
-  };
-
-  const handleEditPollsMeeting = () => {
-    setEditPolls(true);
-  };
-
   const handleCacnelbutton = () => {
     dispatch(showCancelPolls(true));
   };
 
-  const handleSaveAndnext = () => {
-    setPolls(false);
-    setAttendance(true);
-  };
   const handleEditMeetingPoll = (record) => {
     let data = {
       PollID: record.pollID,
@@ -105,6 +90,7 @@ const Polls = ({
     };
     dispatch(deleteMeetingPollApi(navigate, t, data, currentMeeting));
   };
+
   useEffect(() => {
     let Data = {
       MeetingID: currentMeeting,
@@ -143,8 +129,10 @@ const Polls = ({
         pollsData.forEach((data, index) => {
           newPollsArray.push(data);
         });
-
         setPollsRows(newPollsArray);
+      } else {
+        setPollsRows([]);
+        setTotalRecords(0);
       }
     } catch {}
   }, [NewMeetingreducer.getPollsMeetingID]);
@@ -481,10 +469,6 @@ const Polls = ({
     setCreatepoll(true);
   };
 
-  const handleCancelPolls = () => {
-    dispatch(showCancelPolls(true));
-  };
-
   const handleClickPrevPolls = () => {
     setactionsPage(true);
     setPolls(false);
@@ -498,8 +482,8 @@ const Polls = ({
 
   useEffect(() => {
     if (
-      NewMeetingreducer.ResponseMessage !== "" ||
-      NewMeetingreducer.ResponseMessage !== t("Record-not-found") ||
+      NewMeetingreducer.ResponseMessage !== "" &&
+      NewMeetingreducer.ResponseMessage !== t("Record-not-found") &&
       NewMeetingreducer.ResponseMessage !== t("Record-found")
     ) {
       setOpen({
@@ -676,7 +660,7 @@ const Polls = ({
 
                     <Button
                       text={t("Cancel")}
-                      className={styles["Save_Button_Polls_meeting"]}
+                      className={styles["Cancel_Button_Polls_meeting"]}
                       onClick={handleCacnelbutton}
                     />
                     <Button

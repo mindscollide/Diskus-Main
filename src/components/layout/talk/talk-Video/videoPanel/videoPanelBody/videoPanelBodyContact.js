@@ -91,8 +91,6 @@ const VideoPanelBodyContact = () => {
     }
   };
 
-  console.log("groupCallActiveUsers", groupCallActiveUsers);
-
   const searchChat = (e) => {
     setSearchChatValue(e);
     try {
@@ -126,8 +124,6 @@ const VideoPanelBodyContact = () => {
     dispatch(GetAllVideoCallUsers(Data, navigate, t));
   }, []);
 
-  console.log("VideoMainReducer", VideoMainReducer);
-
   //Setting state data of all users
   useEffect(() => {
     if (
@@ -143,7 +139,6 @@ const VideoPanelBodyContact = () => {
 
   const otoVideoCall = (userData) => {
     if (activeCall === false) {
-      console.log("Video Called User Data", userData);
       let Data = {
         RecipentIDs: [userData.userID],
         CallTypeID: 1,
@@ -159,7 +154,6 @@ const VideoPanelBodyContact = () => {
       dispatch(getVideoRecipentData(userData));
       dispatch(normalizeVideoPanelFlag(true));
       dispatch(videoChatPanel(false));
-      console.log("Video Called User Data", Data);
     } else {
       setInitiateVideoModalOto(true);
       // localStorage.setItem('callerID', currentUserID)
@@ -172,7 +166,6 @@ const VideoPanelBodyContact = () => {
   const initiateGroupCall = () => {
     if (activeCall === false) {
       if (groupCallUsers.length <= 1) {
-        console.log("Initiate Group Call Boys Less", groupCallUsers);
       } else {
         let Data = {
           RecipentIDs: groupCallUsers,
@@ -189,7 +182,6 @@ const VideoPanelBodyContact = () => {
         // dispatch(getVideoRecipentData(userData))
         dispatch(normalizeVideoPanelFlag(true));
         dispatch(videoChatPanel(false));
-        console.log("Initiate Group Call Boys More", groupCallUsers);
       }
     } else {
       setInitiateVideoModalGroup(true);
@@ -289,7 +281,7 @@ const VideoPanelBodyContact = () => {
     dispatch(minimizeVideoPanelFlag(false));
     dispatch(leaveCallModal(false));
     setInitiateVideoModalGroup(false);
-    console.log("Initiate Group Call Boys More", groupCallUsers);
+
     localStorage.setItem("isMeetingVideo", false);
   };
 
@@ -320,7 +312,7 @@ const VideoPanelBodyContact = () => {
     dispatch(minimizeVideoPanelFlag(false));
     dispatch(leaveCallModal(false));
     setInitiateVideoModalGroup(false);
-    console.log("Initiate Group Call Boys More", groupCallUsers);
+
     localStorage.setItem("isMeetingVideo", false);
   };
 
@@ -356,7 +348,6 @@ const VideoPanelBodyContact = () => {
         allUsers.length > 0 &&
         VideoMainReducer.Loading === false ? (
           allUsers.map((userData, index) => {
-            console.log("userData", userData);
             return (
               <Row className="single-chat" key={index}>
                 <Col lg={1} md={1} sm={1} className="mt-4">

@@ -38,7 +38,11 @@ const NotifyOrganizers = ({
     Messege: "",
     allOrganizersAccept: false,
   });
-
+  console.log(
+    notifyOrganizerData,
+    notificationMessage,
+    "notifyOrganizerDatanotifyOrganizerData"
+  );
   const [membersHide, setMembersHide] = useState(false);
   const [allOrganizersAccept, setAllOrganizersAccept] = useState(true);
   // const [members, setMembers] = useState([
@@ -156,7 +160,7 @@ const NotifyOrganizers = ({
     }));
     console.log(updatedMembersOrganizers, "updatedMembersOrganizers");
     dispatch(meetingOrganizers(updatedMembersOrganizers));
-    setNotificationMessage("");
+    // setNotificationMessage("");
     // } else {
     // setNotifyMessaegError(true);
     // }

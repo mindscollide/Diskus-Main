@@ -38,6 +38,7 @@ import makeAnimated from "react-select/animated";
 import { getAllCommitteesandGroups } from "../../../../../store/actions/Polls_actions";
 import {
   getCurrentDate,
+  getNextDay,
   getCurrentDatewithIndexIncrement,
   getEndTimeWitlCeilFunction,
   getStartTimeWithCeilFunction,
@@ -62,6 +63,7 @@ const ProposedNewMeeting = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const animatedComponents = makeAnimated();
+  const userID = localStorage.getItem("userID");
   const calendRef = useRef();
   let OrganizationID = localStorage.getItem("organizationID");
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -77,6 +79,10 @@ const ProposedNewMeeting = ({
   const startTime = getStartTimeWithCeilFunction();
   const getEndTime = getEndTimeWitlCeilFunction();
   const getCurrentDateforMeeting = getCurrentDate();
+  const getNextDateforMeeting = {
+    dateFormat: getNextDay(),
+  };
+
   const [proposedMeetingDetails, setProposedMeetingDetails] = useState({
     MeetingTitle: "",
     Description: "",
@@ -96,16 +102,21 @@ const ProposedNewMeeting = ({
   });
 
   //state for adding Date and Time Rows
-  const [rows, setRows] = useState([
-    {
-      selectedOption: getCurrentDateforMeeting.dateFormat,
-      dateForView: getCurrentDateforMeeting.DateGMT,
-      startDate: startTime?.formattedTime,
-      startTime: startTime?.newFormatTime,
-      endDate: getEndTime?.formattedTime,
-      endTime: getEndTime?.newFormatTime,
-    },
-  ]);
+  const [rows, setRows] = useState(() => {
+    const nextDay = getNextDay();
+    return [
+      {
+        selectedOption: nextDay,
+        dateForView: getCurrentDateforMeeting.DateGMT,
+        startDate: startTime?.formattedTime,
+        startTime: startTime?.newFormatTime,
+        endDate: getEndTime?.formattedTime,
+        endTime: getEndTime?.newFormatTime,
+      },
+    ];
+  });
+
+  console.log(rows, "rooowwwwss");
 
   // Later in your component, modify rows as needed:
   const handleRowModification = (index, newData) => {
@@ -131,49 +142,54 @@ const ProposedNewMeeting = ({
 
   useEffect(() => {
     let newParticpantData = PollsReducer.gellAllCommittesandGroups;
-    console.log(newParticpantData, "newParticpantDatanewParticpantData");
-    if (newParticpantData !== null && newParticpantData !== undefined) {
-      let temp = [];
-      if (Object.keys(newParticpantData).length > 0) {
-        if (Object.keys(newParticpantData.groups).length > 0) {
-          newParticpantData.groups.forEach((a, index) => {
-            let newData = {
-              value: a.groupID,
-              label: a.groupName,
-              profilePic: GroupIcon,
-              type: 1,
-            };
-            temp.push(newData);
-          });
-        }
-        if (Object.keys(newParticpantData.committees).length > 0) {
-          newParticpantData.committees.forEach((a, index) => {
-            let newData = {
-              value: a.committeeID,
-              label: a.committeeName,
-              profilePic: committeeicon,
+    try {
+      if (newParticpantData !== null && newParticpantData !== undefined) {
+        let temp = [];
+        if (Object.keys(newParticpantData).length > 0) {
+          if (Object.keys(newParticpantData.groups).length > 0) {
+            newParticpantData.groups.forEach((a, index) => {
+              let newData = {
+                value: a.groupID,
+                label: a.groupName,
+                profilePic: GroupIcon,
+                type: 1,
+              };
+              temp.push(newData);
+            });
+          }
+          if (Object.keys(newParticpantData.committees).length > 0) {
+            newParticpantData.committees.forEach((a, index) => {
+              let newData = {
+                value: a.committeeID,
+                label: a.committeeName,
+                profilePic: committeeicon,
 
-              type: 2,
-            };
-            temp.push(newData);
-          });
+                type: 2,
+              };
+              temp.push(newData);
+            });
+          }
+          if (Object.keys(newParticpantData.organizationUsers).length > 0) {
+            let filterOutCreatorUser =
+              newParticpantData?.organizationUsers?.filter(
+                (data, index) => Number(data?.userID) !== Number(userID)
+              );
+            filterOutCreatorUser.forEach((a, index) => {
+              let newData = {
+                value: a.userID,
+                label: a.userName,
+                profilePic: a?.profilePicture?.displayProfilePictureName,
+                type: 3,
+              };
+              temp.push(newData);
+            });
+          }
+          setDropdowndata(temp);
+        } else {
+          setDropdowndata([]);
         }
-        if (Object.keys(newParticpantData.organizationUsers).length > 0) {
-          newParticpantData.organizationUsers.forEach((a, index) => {
-            let newData = {
-              value: a.userID,
-              label: a.userName,
-              profilePic: a?.profilePicture?.displayProfilePictureName,
-              type: 3,
-            };
-            temp.push(newData);
-          });
-        }
-        setDropdowndata(temp);
-      } else {
-        setDropdowndata([]);
       }
-    }
+    } catch {}
   }, [PollsReducer.gellAllCommittesandGroups]);
 
   //onChange function Search
@@ -354,23 +370,31 @@ const ProposedNewMeeting = ({
 
   //Adding the Dates Rows
   const addRow = () => {
-    const lastRow = rows[rows.length - 1];
+    // Check if the current number of rows is less than or equal to 4
+    if (rows.length <= 4) {
+      const lastRow = rows[rows.length - 1];
 
-    if (isValidRow(lastRow)) {
-      let { DateGMT, dateFormat } = incrementDateforPropsedMeeting(
-        lastRow.dateForView
-      );
-      setRows([
-        ...rows,
-        {
-          selectedOption: dateFormat,
-          dateForView: DateGMT,
-          startDate: startTime?.formattedTime,
-          startTime: startTime?.newFormatTime,
-          endDate: getEndTime?.formattedTime,
-          endTime: getEndTime?.newFormatTime,
-        },
-      ]);
+      if (isValidRow(lastRow)) {
+        let { DateGMT, dateFormat } = incrementDateforPropsedMeeting(
+          lastRow.dateForView
+        );
+
+        setRows((prevRows) => [
+          ...prevRows,
+          {
+            selectedOption: dateFormat,
+            dateForView: DateGMT,
+            startDate: startTime?.formattedTime,
+            startTime: startTime?.newFormatTime,
+            endDate: getEndTime?.formattedTime,
+            endTime: getEndTime?.newFormatTime,
+          },
+        ]);
+      } else {
+        console.log("Invalid row. Cannot add a new row.");
+      }
+    } else {
+      console.log("Maximum number of rows reached (5). Cannot add more rows.");
     }
   };
 
@@ -562,9 +586,9 @@ const ProposedNewMeeting = ({
       });
     });
     if (
-      proposedMeetingDetails.MeetingTitle !== "" ||
-      proposedMeetingDetails.Description !== "" ||
-      membersParticipants.length !== 0 ||
+      proposedMeetingDetails.MeetingTitle !== "" &&
+      // proposedMeetingDetails.Description !== "" &&
+      membersParticipants.length !== 0 &&
       // rows.length <= 1 ||
       sendResponseVal !== ""
     ) {
@@ -617,8 +641,16 @@ const ProposedNewMeeting = ({
         date: "",
       });
       seterror(false);
-    } else {
+    } else if (
+      proposedMeetingDetails.MeetingTitle === "" &&
+      // proposedMeetingDetails.Description === "" &&
+      membersParticipants.length === 0 &&
+      // rows.length <= 1 &&
+      sendResponseVal === ""
+    ) {
       seterror(true);
+    } else {
+      // seterror(true);
     }
   };
 
@@ -720,7 +752,7 @@ const ProposedNewMeeting = ({
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Sub_headings"]}>
                       {t("Description")}
-                      <span className={styles["res_steric"]}>*</span>
+                      {/* <span className={styles["res_steric"]}>*</span> */}
                     </span>
                   </Col>
                 </Row>
@@ -738,7 +770,7 @@ const ProposedNewMeeting = ({
                       required
                     />
 
-                    <Row>
+                    {/* <Row>
                       <Col>
                         <p
                           className={
@@ -750,7 +782,7 @@ const ProposedNewMeeting = ({
                           {t("Please-enter-meeting-description")}
                         </p>
                       </Col>
-                    </Row>
+                    </Row> */}
                   </Col>
                 </Row>
                 <Row className="mt-3">
@@ -896,6 +928,7 @@ const ProposedNewMeeting = ({
                   >
                     {rows.length > 0
                       ? rows.map((data, index) => {
+                          console.log(data, "datadatadata");
                           return (
                             <>
                               <Row>
@@ -903,7 +936,7 @@ const ProposedNewMeeting = ({
                                   <Row className="mt-2">
                                     <Col lg={4} md={4} sm={12}>
                                       <DatePicker
-                                        selected={data.selectedOption}
+                                        selected={new Date(data.selectedOption)}
                                         value={data.dateForView}
                                         format={"DD/MM/YYYY"}
                                         minDate={

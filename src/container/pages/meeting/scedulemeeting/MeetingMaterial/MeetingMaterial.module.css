@@ -124,3 +124,14 @@
   user-select: none !important;
   letter-spacing: 1px !important;
 }
+.downloadButton {
+  padding: 12px 30px !important;
+  background: #6172d6 !important;
+  border: none !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  font-weight: normal !important;
+}
+.downloadButton:disabled {
+  background: #ccc !important;
+}

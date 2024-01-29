@@ -1,9 +1,8 @@
 import { Radio } from "antd";
+import "./Radio.css";
 const CustomRadio2 = ({ onChange, Optios, value, className, disabled }) => {
-  console.log("CustomRadio2", value);
-  console.log("CustomRadio2", Optios);
   return (
-    <Radio.Group onChange={onChange} value={value[0]}>
+    <Radio.Group onChange={onChange} value={value[0]} buttonStyle="solid">
       <Radio className={className} value={Optios} disabled={disabled} />
     </Radio.Group>
   );

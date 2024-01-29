@@ -159,7 +159,7 @@ const VideoPanelNormal = () => {
   const handleScreenShareButton = () => {
     if (videoFeatureReducer.LeaveCallModalFlag === false) {
       const iframe = iframeRef.current;
-      console.log("iframeiframe", iframe);
+
       if (iframe) {
         iframe.contentWindow.postMessage("ScreenShare", "*");
         setIsScreenActive(!isScreenActive);
@@ -168,12 +168,10 @@ const VideoPanelNormal = () => {
   };
 
   const layoutCurrentChange = () => {
-    console.log("layoutCurrentChange");
     let videoView = localStorage.getItem("VideoView");
     if (videoFeatureReducer.LeaveCallModalFlag === false) {
       const iframe = iframeRef.current;
-      console.log("iframeiframe", iframe);
-      console.log("iframeiframe", iframe.contentWindow);
+
       if (iframe && videoView === "Sidebar") {
         iframe.contentWindow.postMessage("TileView", "*");
         localStorage.setItem("VideoView", "TileView");
@@ -183,8 +181,6 @@ const VideoPanelNormal = () => {
       }
     }
   };
-
-  console.log("CALLER URL THEN PARTICIPANT", callerURL, participantURL);
 
   return (
     <>

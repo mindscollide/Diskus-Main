@@ -723,8 +723,22 @@ p.agendaCreater {
   font-family: "Montserrat";
 }
 
+img.Image-Add-Agenda {
+  margin-top: 40px;
+}
+
 span.NoFiles_Heading {
   font-size: 12px !important;
   font-family: "MontserratSemiBold" !important;
   color: #000;
+}
+
+img.AttachmentIconImage {
+  margin-left: 15px;
+  margin-right: auto;
+}
+
+body[dir="rtl"] img.AttachmentIconImage {
+  margin-left: auto;
+  margin-right: 15px;
 }

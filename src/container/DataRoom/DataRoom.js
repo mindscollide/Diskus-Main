@@ -989,7 +989,7 @@ const DataRoom = () => {
         if (record.isFolder) {
           return <Dash />;
         } else {
-          return <span className={styles["ownerName"]}>{text}</span>;
+          return <span className={styles["ownerName"]}>{`${text} MB`}</span>;
         }
       },
     },
@@ -1655,7 +1655,7 @@ const DataRoom = () => {
         if (record.isFolder) {
           return <Dash />;
         } else {
-          return <span className={styles["ownerName"]}>{text}</span>;
+          return <span className={styles["ownerName"]}>{`${text} MB`}</span>;
         }
       },
     },

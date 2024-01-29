@@ -10,7 +10,6 @@ const getSubscriptionDetailInit = () => {
   };
 };
 const getSubscriptionDetailSuccess = (response, message) => {
-  console.log(response, message, " responseSuccess");
   return {
     type: actions.GETSUBSCRIPTIONPACAKGES_SUCCESS,
     response: response,
@@ -48,10 +47,9 @@ const getSubscriptionDetails = (navigate, t) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "responseresponse");
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t))
-          dispatch(getSubscriptionDetails(navigate, t))
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getSubscriptionDetails(navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -92,7 +90,6 @@ const getSubscriptionDetails = (navigate, t) => {
         }
       })
       .catch((response) => {
-        console.log(response, "responseresponse");
         dispatch(getSubscriptionDetailFail(t("Something-went-wrong")));
       });
   };

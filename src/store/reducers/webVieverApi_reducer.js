@@ -29,7 +29,6 @@ const webViewerReducer = (state = initialState, action) => {
       };
     }
     case actions.GETANNOTATIONSOFTODOATTACHEMENT_SUCCESS: {
-      console.log("blobToUint8Array", action);
       return {
         ...state,
         Loading: false,

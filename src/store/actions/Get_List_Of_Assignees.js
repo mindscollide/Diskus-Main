@@ -170,8 +170,7 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, value) => {
   let meetingPageCurrent = JSON.parse(
     localStorage.getItem("MeetingPageCurrent")
   );
-  console.log("ScheduleNewMeeting", checkFlag);
-  console.log("ScheduleNewMeeting", typeof checkFlag);
+
   let Data = {
     Date: "",
     Title: "",
@@ -295,8 +294,7 @@ const UpdateMeeting = (navigate, t, checkFlag, object, value) => {
   let meetingPageCurrent = JSON.parse(
     localStorage.getItem("MeetingPageCurrent")
   );
-  console.log("UpdateMeeting", checkFlag);
-  console.log("UpdateMeeting", typeof checkFlag);
+
   let Data = {
     Date: "",
     Title: "",
