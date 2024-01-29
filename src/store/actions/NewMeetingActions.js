@@ -319,22 +319,24 @@ const handlegetAllMeetingTypesInit = () => {
   };
 };
 
-const handlegetAllMeetingTypesSuccess = (response, message) => {
+const handlegetAllMeetingTypesSuccess = (response, message, loader) => {
   return {
     type: actions.GET_ALL_MEETING_TYPES_NEW_SUCCESS,
     response: response,
     message: message,
+    loader: loader,
   };
 };
 
-const handlegetAllMeetingTypesFailed = (message) => {
+const handlegetAllMeetingTypesFailed = (message, loader) => {
   return {
     type: actions.GET_ALL_MEETING_TYPES_NEW_FAILED,
     message: message,
+    loader: loader,
   };
 };
 
-const GetAllMeetingTypesNewFunction = (navigate, t) => {
+const GetAllMeetingTypesNewFunction = (navigate, t, loader) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(handlegetAllMeetingTypesInit());
@@ -367,7 +369,8 @@ const GetAllMeetingTypesNewFunction = (navigate, t) => {
             dispatch(
               handlegetAllMeetingTypesSuccess(
                 response.data.responseResult,
-                t("Record-found")
+                t("Record-found"),
+                loader
               )
             );
           } else if (

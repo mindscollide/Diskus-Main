@@ -206,7 +206,7 @@ const ProposedNewMeeting = ({
   }, [PollsReducer.gellAllCommittesandGroups]);
 
   useEffect(() => {
-    dispatch(GetAllMeetingTypesNewFunction(navigate, t));
+    dispatch(GetAllMeetingTypesNewFunction(navigate, t, false));
   }, []);
 
   useEffect(() => {
@@ -638,7 +638,7 @@ const ProposedNewMeeting = ({
         MeetingDetails: {
           MeetingID: 0,
           MeetingTitle: proposedMeetingDetails.MeetingTitle,
-          MeetingType: { PK_MTID: 27, Type: "BoardMeetings" },
+          MeetingType: meetingTypeDetails.MeetingType,
           Location: "",
           Description: proposedMeetingDetails.Description,
           IsVideoChat: true,
@@ -728,6 +728,18 @@ const ProposedNewMeeting = ({
         });
       }
     }
+  };
+
+  //handle change Meeting Type Selector
+
+  const handleMeetingSelectChange = (selectedOption) => {
+    setMeetingTypeDetails({
+      ...meetingTypeDetails,
+      MeetingType: {
+        PK_MTID: selectedOption.value,
+        Type: selectedOption.label,
+      },
+    });
   };
 
   //For arabic Convertion of the Date Times
@@ -1192,15 +1204,13 @@ const ProposedNewMeeting = ({
                           <span className={styles["res_steric"]}>*</span>
                         </span>
                         <Select
-                          // options={meetingTypeDropdown}
+                          options={meetingTypeDropdown}
                           placeholder={t("Meeting-type")}
-                          value={
-                            {
-                              // value: meetingDetails.MeetingType?.PK_MTID,
-                              // label: meetingDetails.MeetingType?.Type,
-                            }
-                          }
-                          // onChange={handleMeetingSelectChange}
+                          value={{
+                            value: meetingTypeDetails.MeetingType?.PK_MTID,
+                            label: meetingTypeDetails.MeetingType?.Type,
+                          }}
+                          onChange={handleMeetingSelectChange}
                           isSearchable={false}
                         />
                       </Col>
