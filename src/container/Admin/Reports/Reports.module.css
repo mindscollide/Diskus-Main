@@ -1,0 +1,16 @@
+.user-login-history-heading {
+  color: #6172d6;
+  font-family: "MontserratSemiBold-600";
+  margin: 0;
+  padding: 0;
+}
+.user-login-history-table-paper {
+  min-height: 70vh !important;
+  width: 100%;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px !important;
+  padding: 0 20px;
+}
+.export-to-excel-btn {
+  padding: 10px 20px;
+}

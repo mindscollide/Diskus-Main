@@ -88,7 +88,7 @@ const VerificationIphone = () => {
       let Data = {
         UserID: JSON.parse(UserID),
         Device: "BROWSER",
-        DeviceID: "c",
+        DeviceID: "1",
         OrganizationID: OrganizationID,
         isEmail: false,
         isSMS: false,

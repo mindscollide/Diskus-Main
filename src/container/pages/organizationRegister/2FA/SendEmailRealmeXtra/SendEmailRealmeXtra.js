@@ -101,7 +101,7 @@ const SendEmailRealmeXtra = () => {
       let Data = {
         UserID: JSON.parse(UserID),
         Device: "BROWSER",
-        DeviceID: "c",
+        DeviceID: "1",
         OrganizationID: OrganizationID,
         isEmail: codeemail,
         isSMS: codesms,
@@ -124,7 +124,7 @@ const SendEmailRealmeXtra = () => {
       let Data = {
         UserID: JSON.parse(UserID),
         Device: "BROWSER",
-        DeviceID: "c",
+        DeviceID: "1",
         OrganizationID: OrganizationID,
         isEmail: codeemail,
         isSMS: codesms,

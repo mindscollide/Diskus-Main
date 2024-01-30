@@ -338,7 +338,11 @@ const ViewParticipantsDates = ({
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["Staff_meeting_Heading"]}>
                   {meetingDeatils.MeetingType}
-                  <span>({meetingDeatils.MeetingLocation})</span>
+                  {meetingDeatils.MeetingLocation !== "" &&
+                  meetingDeatils.MeetingLocation !== null &&
+                  meetingDeatils.MeetingLocation !== undefined ? (
+                    <span>({meetingDeatils.MeetingLocation})</span>
+                  ) : null}
                 </span>
               </Col>
             </Row>

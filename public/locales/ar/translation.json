@@ -1702,5 +1702,14 @@
   "Screen-share": "Screen Share",
   "Layout": "Layout",
   "Collapse": "Collapse",
-  "Downloading-file": "Downloading file"
+  "Downloading-file": "Downloading file",
+  "User-name": "User Name",
+  "User-email": "User Email",
+  "Login-date-time": "Login Date Time",
+  "Logout-date-time": "Logout Date Time",
+  "Session-duration": "Session Duration",
+  "Interface": "Interface",
+  "Ip-address": "IP Address",
+  "User-login-history": "User Login History",
+  "Export-to-excel": "Export to Excel"
 }

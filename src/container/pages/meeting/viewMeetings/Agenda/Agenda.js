@@ -390,12 +390,6 @@ const Agenda = ({
     }
   }, [rows]);
 
-  console.log(
-    "MeetingAgendaReducerMeetingAgendaReducer",
-    MeetingAgendaReducer,
-    data
-  );
-
   return (
     <>
       {emptyStateRows === true &&

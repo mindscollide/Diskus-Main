@@ -285,3 +285,7 @@
 .TextAreaProposedMeetingDetails {
   font-size: 1rem !important;
 }
+.user-login-history-searchbar {
+  width: 100%;
+  position: relative;
+}

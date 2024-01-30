@@ -44,7 +44,7 @@ const signIn = (UserData, navigate, t) => {
   let Data = {
     UserPassword: UserData.Password,
     UserName: UserData.UserName,
-    DeviceID: id.toString(),
+    DeviceID: "1",
     Device: "browser",
   };
 
