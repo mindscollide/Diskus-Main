@@ -1239,5 +1239,6 @@
   "Inteface-type": "Inteface Type",
   "Date-from": "Date From",
   "Date-to": "Date To",
-  "Select-send-response-by-date": "Select Send Response by Date"
+  "Select-send-response-by-date": "Select Send Response by Date",
+  "Payment-proceed": "Payment Proceed"
 }

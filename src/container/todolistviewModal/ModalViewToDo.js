@@ -260,6 +260,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
       let commentIndex2 = taskAssigneeComments.find(
         (data, index) => data?.taskCommentID === Number(Comments.pK_TCID)
       );
+      console.log(commentIndex, commentIndex2, "commentIndex2commentIndex2");
       if (commentIndex !== -1) {
         let newArr = taskAssigneeComments.map((comment, index) => {
           if (index === commentIndex) {
@@ -279,7 +280,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
 
         setTaskAssigneeComments(newArr);
         dispatch(emptyCommentState());
-      } else if (commentIndex2 === undefined && commentIndex === undefined) {
+      } else if (commentIndex2 === undefined && commentIndex === -1) {
         // Comment does not exist, add it
         let newComment = {
           userID: parseInt(Comments.fK_UID),

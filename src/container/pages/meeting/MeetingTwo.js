@@ -649,7 +649,12 @@ const NewMeeting = () => {
         return (
           <>
             <Row>
-              <Col sm={12} md={12} lg={12}>
+              <Col
+                sm={12}
+                md={12}
+                lg={12}
+                className="d-flex align-items-center justify-content-center"
+              >
                 {record.isAttachment ? (
                   <span
                     className={
@@ -962,7 +967,11 @@ const NewMeeting = () => {
         console.log("isPrimaryOrganizer", isPrimaryOrganizer);
 
         const isQuickMeeting = record.isQuickMeeting;
-        if (record.status === "8" || record.status === "4") {
+        if (
+          record.status === "8" ||
+          record.status === "4" ||
+          record.status === "9"
+        ) {
           return null;
         } else {
           if (isQuickMeeting) {
