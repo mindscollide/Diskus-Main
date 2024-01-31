@@ -1711,5 +1711,8 @@
   "Interface": "Interface",
   "Ip-address": "IP Address",
   "User-login-history": "User Login History",
-  "Export-to-excel": "Export to Excel"
+  "Export-to-excel": "Export to Excel",
+  "Inteface-type": "Inteface Type",
+  "Date-from": "Date From",
+  "Date-To": "Date To"
 }

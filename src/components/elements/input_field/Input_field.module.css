@@ -289,3 +289,6 @@
   width: 100%;
   position: relative;
 }
+.user-login-history-searchbar .valid-feedback {
+  display: block;
+}

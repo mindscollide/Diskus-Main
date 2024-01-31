@@ -42,3 +42,8 @@ export const containsStringandNumericCharacters = (value) => {
 export const truncateString = (string, length) => {
   return string.length < length ? string : `${string.slice(0, length - 3)}...`;
 };
+export const validateIP = (ip) => {
+  const ipRegex =
+    /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+  return ipRegex.test(ip);
+};
