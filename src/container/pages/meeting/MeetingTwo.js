@@ -511,6 +511,8 @@ const NewMeeting = () => {
       title: <span>{t("Title")}</span>,
       dataIndex: "title",
       key: "title",
+      ellipsis: true,
+
       width: "115px",
       render: (text, record) => {
         const isParticipant = record.meetingAttendees.some(
@@ -1798,7 +1800,7 @@ const NewMeeting = () => {
                       <>
                         <Table
                           column={MeetingColoumns}
-                          scroll={{ y: "54vh", x: true }}
+                          scroll={{ y: "54vh", x: false }}
                           pagination={false}
                           className="newMeetingTable"
                           rows={rows}

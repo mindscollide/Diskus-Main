@@ -29,7 +29,7 @@ const AdminHome = () => {
   const navigate = useNavigate();
   const state = useSelector((state) => state);
   // settingReducer.Loading;
-  const { GetSubscriptionPackage, settingReducer } = state;
+  const { GetSubscriptionPackage, settingReducer, UserReportReducer } = state;
   const [currentLanguge, setCurrentLanguage] = useState("en");
   const { t } = useTranslation();
   const [client, setClient] = useState(null);
@@ -201,7 +201,9 @@ const AdminHome = () => {
           id={notificationID}
         />
         <Outlet />
-        {settingReducer.Loading ? <Loader /> : null}
+        {settingReducer.Loading || UserReportReducer.Loading ? (
+          <Loader />
+        ) : null}
       </ConfigProvider>
     </>
   );

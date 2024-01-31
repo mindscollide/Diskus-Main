@@ -404,21 +404,21 @@ const Reports = () => {
   };
 
   const handleCloseSearcbBox = () => {
-    setUserLoginHistorySearch({
-      ...userLoginHistorySearch,
-      userName: "",
-      userEmail: "",
-      DateFrom: "",
-      DateForView: "",
-      DateTo: "",
-      DateToView: "",
-      IpAddress: "",
-      InterFaceType: {
-        value: 0,
-        label: "",
-      },
-      Title: "",
-    });
+    // setUserLoginHistorySearch({
+    //   ...userLoginHistorySearch,
+    //   userName: "",
+    //   userEmail: "",
+    //   DateFrom: "",
+    //   DateForView: "",
+    //   DateTo: "",
+    //   DateToView: "",
+    //   IpAddress: "",
+    //   InterFaceType: {
+    //     value: 0,
+    //     label: "",
+    //   },
+    //   Title: "",
+    // });
     setSearchBoxExpand(false);
   };
 
@@ -549,11 +549,11 @@ const Reports = () => {
                           {/* <TextField /> */}
                           <DatePicker
                             format={"DD/MM/YYYY"}
-                            placeholder={t("Date-To")}
+                            placeholder={t("Date-to")}
                             value={userLoginHistorySearch.DateToView}
                             render={
                               <InputIcon
-                                placeholder={t("Date-To")}
+                                placeholder={t("Date-to")}
                                 className={
                                   styles["UserLoginHistory_datePicker"]
                                 }
@@ -612,6 +612,8 @@ const Reports = () => {
                       </Row>
                     </section>
                   )}
+                  {/* {userLoginHistorySearch.userName !== "" &&
+                    userLoginHistorySearch.userName} */}
                 </section>
               </Col>
             </Row>
