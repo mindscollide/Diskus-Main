@@ -421,33 +421,40 @@ const AgendaWise = ({
     });
   };
 
-  const handleAddClickAgendaWise = async () => {
-    if (addNoteFields.Description.value !== "") {
+  const handleAddClickAgendaWise = () => {
+    // Directly use the state value for checking instead of relying on a separate variable
+    const content = addNoteFields.Description.value.trim();
+    const isDescriptionNotEmpty = content !== "";
+    const isAgendaSelected = agendaOptionvalue.value !== 0;
+
+    if (isDescriptionNotEmpty && isAgendaSelected) {
       let Data = {
         AgendaID: agendaSelect.agendaSelectOptions.id,
-        MinuteText: addNoteFields.Description.value,
+        MinuteText: content,
       };
       dispatch(AddAgendaWiseMinutesApiFunc(navigate, Data, t));
       setAgendaOptionValue({
         value: 0,
         label: "",
       });
-      // setAgendaOptions([]);
     } else {
-      setAddNoteFields({
-        ...addNoteFields,
-        Description: {
-          value: addNoteFields.Description.value,
-          errorMessage:
-            addNoteFields.Description.value === ""
-              ? t("Minutes-text-is-required")
-              : addNoteFields.Description.errorMessage,
-          errorStatus:
-            addNoteFields.Description.value === ""
-              ? true
-              : addNoteFields.Description.errorStatus,
-        },
-      });
+      if (!isDescriptionNotEmpty) {
+        setAddNoteFields((prevState) => ({
+          ...prevState,
+          Description: {
+            ...prevState.Description,
+            errorMessage: t("Minutes-text-is-required"),
+            errorStatus: true,
+          },
+        }));
+      }
+
+      if (!isAgendaSelected) {
+        setOpen({
+          flag: true,
+          message: t("Select-agenda"),
+        });
+      }
     }
   };
 

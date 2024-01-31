@@ -68,17 +68,11 @@ const AgendaWise = ({
     (state) => state
   );
 
-  // const ResponseMessage = useSelector(
-  //   (state) => state.NewMeetingreducer.ResponseMessage
-  // );
-
-  console.log(NewMeetingreducer.ResponseMessage, "editorRefeditorRefeditorRef");
   const editorRef = useRef(null);
   const { Dragger } = Upload;
   const [fileForSend, setFileForSend] = useState([]);
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
   const [messages, setMessages] = useState([]);
-  // const [fileAttachments, setFileAttachments] = useState([]);
   const [expanded, setExpanded] = useState(false);
   const [updateData, setupdateData] = useState({
     MinutesID: 0,
@@ -86,10 +80,6 @@ const AgendaWise = ({
   const [agendaOptions, setAgendaOptions] = useState([]);
   const [showMoreIndex, setShowMoreIndex] = useState(null);
   const [showMore, setShowMore] = useState(false);
-  // const [agendaOptionvalue, setAgendaOptionValue] = useState({
-  //   label: "",
-  //   value: 0,
-  // });
   const [agendaID, setAgendaID] = useState([]);
   const [agendaSelect, setAgendaSelect] = useState({
     agendaSelectOptions: {
@@ -97,6 +87,7 @@ const AgendaWise = ({
       title: "",
     },
   });
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     let Data = {
@@ -210,8 +201,6 @@ const AgendaWise = ({
     NewMeetingreducer.agendaWiseMinutesReducer,
     NewMeetingreducer.getallDocumentsForAgendaWiseMinutes,
   ]);
-
-  console.log(messages, "NewMeetingreducerNewMeetingreducer");
 
   // Grouping the messages by agendaID while maintaining the unique titles
   const groupedMessages = messages.reduce((acc, curr) => {
@@ -410,6 +399,8 @@ const AgendaWise = ({
   const onTextChange = (content, delta, source) => {
     const deltaOps = delta.ops || [];
 
+    const contentTrimmed = content.trim();
+
     // Check if any image is being pasted
     const containsImage = deltaOps.some((op) => op.insert && op.insert.image);
     if (containsImage) {
@@ -428,8 +419,11 @@ const AgendaWise = ({
           ...addAgendaWiseFields,
           Description: {
             value: content,
-            errorMessage: "",
-            errorStatus: false,
+            errorMessage:
+              contentTrimmed !== ""
+                ? ""
+                : addAgendaWiseFields.Description.errorMessage,
+            errorStatus: contentTrimmed === "",
           },
         });
       }
@@ -450,19 +444,16 @@ const AgendaWise = ({
     });
   };
 
-  const handleAddClickAgendaWise = async () => {
-    if (agendaSelect.agendaSelectOptions.id === 0) {
-      setOpen({
-        flag: true,
-        message: t("Select-agenda"),
-      });
-      return;
-    }
+  const handleAddClickAgendaWise = () => {
+    // Directly use the state value for checking instead of relying on a separate variable
+    const content = addAgendaWiseFields.Description.value.trim();
+    const isDescriptionNotEmpty = content !== "";
+    const isAgendaSelected = agendaOptionvalue.value !== 0;
 
-    if (addAgendaWiseFields.Description.value !== "") {
+    if (isDescriptionNotEmpty && isAgendaSelected) {
       let Data = {
         AgendaID: agendaSelect.agendaSelectOptions.id,
-        MinuteText: addAgendaWiseFields.Description.value,
+        MinuteText: content,
       };
       dispatch(AddAgendaWiseMinutesApiFunc(navigate, Data, t));
       setAgendaOptionValue({
@@ -470,24 +461,23 @@ const AgendaWise = ({
         label: "",
       });
     } else {
-      setAgendaWiseFields({
-        ...addAgendaWiseFields,
-        Description: {
-          value: addAgendaWiseFields.Description.value,
-          errorMessage:
-            addAgendaWiseFields.Description.value === ""
-              ? t("Minutes-text-is-required")
-              : addAgendaWiseFields.Description.errorMessage,
-          errorStatus:
-            addAgendaWiseFields.Description.value === ""
-              ? true
-              : addAgendaWiseFields.Description.errorStatus,
-        },
-      });
-      setOpen({
-        flag: true,
-        message: t("Select-agenda"),
-      });
+      if (!isDescriptionNotEmpty) {
+        setAgendaWiseFields((prevState) => ({
+          ...prevState,
+          Description: {
+            ...prevState.Description,
+            errorMessage: t("Minutes-text-is-required"),
+            errorStatus: true,
+          },
+        }));
+      }
+
+      if (!isAgendaSelected) {
+        setOpen({
+          flag: true,
+          message: t("Select-agenda"),
+        });
+      }
     }
   };
 

@@ -116,6 +116,29 @@ const ViewParticipantsDates = ({
         let datesarry = [];
         userWiseMeetingProposed.forEach((datesData, index) => {
           setApiUserID(datesData.userID);
+          let found = false;
+          let isSelectedValue = false;
+
+          // Loop through the data to find the specific date combination
+          for (const datesData of userWiseMeetingProposed) {
+            for (const data of datesData.selectedProposedDates) {
+              if (
+                data.proposedDate === "10000101" &&
+                data.startTime === "000000" &&
+                data.endTime === "000000"
+              ) {
+                isSelectedValue = data.isSelected;
+                found = true;
+                break;
+              }
+            }
+            if (found) {
+              break;
+            }
+          }
+
+          setSelectAll(isSelectedValue);
+
           datesData.selectedProposedDates.forEach((data) => {
             if (
               data.proposedDate !== "10000101" ||
@@ -255,7 +278,6 @@ const ViewParticipantsDates = ({
           };
         });
       });
-      // setCheckedObjects([...sendProposedData]);
     }
     setSelectAll(event.target.checked);
   };
@@ -372,15 +394,8 @@ const ViewParticipantsDates = ({
                   >
                     {prposedData.length > 0
                       ? prposedData.map((data, index) => {
+                          console.log(data, "Scroller_Prposed_Meeting_date");
                           // Extract the userID from localStorage
-                          const loggedInUserID = Number(
-                            localStorage.getItem("userID")
-                          );
-
-                          // Check if the current data isSelected and matches the logged-in userID
-                          // const isChecked =
-                          //   data.isSelected &&
-                          //   loggedInUserID === Number(apiUserID);
 
                           const isChecked = data.isSelected;
 
@@ -395,8 +410,8 @@ const ViewParticipantsDates = ({
                                 <Row className={styles["Inner_Send_class"]}>
                                   <Col lg={10} md={10} sm={12}>
                                     <span className={styles["Time_Class"]}>
-                                      {moment(data.startTime).format("HH:MM a")}{" "}
-                                      - {moment(data.endTime).format("HH:MM a")}
+                                      {moment(data.startTime).format("hh:mm A")}{" "}
+                                      - {moment(data.endTime).format("hh:mm A")}
                                       ,{" "}
                                       {changeDateStartHandler2(
                                         data.proposedDate
