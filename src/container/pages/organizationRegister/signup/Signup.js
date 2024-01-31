@@ -265,12 +265,12 @@ const Signup = () => {
       });
     }
     if (name === "State" && value !== "") {
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      // let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
       if (value !== "") {
         setSignUpDetails({
           ...signUpDetails,
           State: {
-            value: valueCheck.trimStart(),
+            value: value.trimStart(),
             errorMessage: "",
             errorStatus: false,
           },
@@ -287,12 +287,12 @@ const Signup = () => {
       });
     }
     if (name === "City" && value !== "") {
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      // let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
       if (value !== "") {
         setSignUpDetails({
           ...signUpDetails,
           City: {
-            value: valueCheck.trimStart(),
+            value: value.trimStart(),
             errorMessage: "",
             errorStatus: false,
           },
@@ -331,12 +331,12 @@ const Signup = () => {
       });
     }
     if (name === "FullName" && value !== "") {
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      // let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
       if (value !== "") {
         setSignUpDetails({
           ...signUpDetails,
           FullName: {
-            value: valueCheck.trimStart(),
+            value: value.trimStart(),
             errorMessage: "Full Name is required",
             errorStatus: false,
           },

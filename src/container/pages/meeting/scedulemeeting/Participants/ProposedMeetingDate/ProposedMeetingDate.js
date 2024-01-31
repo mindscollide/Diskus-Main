@@ -77,6 +77,7 @@ const ProposedMeetingDate = ({
     Description: "",
     Location: "",
     MeetingType: "",
+    MeetingDate: [],
   });
 
   const [sendResponseVal, setSendResponseVal] = useState("");
@@ -91,10 +92,6 @@ const ProposedMeetingDate = ({
   });
 
   const [endDateError, setEndDateError] = useState(false);
-  console.log({ getCurrentDateforMeeting }, "getCurrentDateforMeeting");
-  console.log({ getEndTime }, "getCurrentDateforMeeting");
-
-  // console.log({ startTime }, "getCurrentDateforMeeting");
 
   const [rows, setRows] = useState([
     {
@@ -160,13 +157,65 @@ const ProposedMeetingDate = ({
     try {
       if (getAllMeetingDetails) {
         if (getAllMeetingDetails.advanceMeetingDetails) {
+          console.log(
+            getAllMeetingDetails.advanceMeetingDetails,
+            "getAllMeetingDetails"
+          );
           setViewProposedModal({
             Title: getAllMeetingDetails.advanceMeetingDetails.meetingTitle,
             Description: getAllMeetingDetails.advanceMeetingDetails.description,
             Location: getAllMeetingDetails.advanceMeetingDetails.location,
             MeetingType:
               getAllMeetingDetails.advanceMeetingDetails.meetingType.type,
+            MeetingDate:
+              getAllMeetingDetails.advanceMeetingDetails.meetingDates,
           });
+
+          const newDataforView =
+            getAllMeetingDetails.advanceMeetingDetails.meetingDates.map(
+              (dates) => {
+                console.log(dates, "newDataforViewnewDataforView");
+                if (
+                  dates.meetingDate === "10000101" &&
+                  dates.endTime === "000000" &&
+                  dates.startTime === "000000"
+                ) {
+                  return {
+                    endTimeforSend: "",
+                    startTimeforSend: "",
+                    selectDateforSend: "",
+                    endDateView: "",
+                    selectedOptionView: "",
+                    proposedDateID: 0,
+                    startDateView: "",
+                    isComing: true,
+                  };
+                } else {
+                  return {
+                    endDate: convertDateTimetoGMTMeetingDetail(
+                      dates.meetingDate + dates.endTime
+                    ).slice(8, 14),
+                    startDate: convertDateTimetoGMTMeetingDetail(
+                      dates.meetingDate + dates.startTime
+                    ).slice(8, 14),
+                    selectedOption: convertDateTimetoGMTMeetingDetail(
+                      dates.meetingDate + dates.startTime
+                    ).slice(0, 8),
+                    endDateView: resolutionResultTable(
+                      dates.meetingDate + dates.endTime
+                    ),
+                    selectedOptionView: resolutionResultTable(
+                      dates.meetingDate + dates.startTime
+                    ),
+                    startDateView: resolutionResultTable(
+                      dates.meetingDate + dates.startTime
+                    ),
+                    proposedDateID: 0,
+                  };
+                }
+              }
+            );
+          setRows(newDataforView);
         }
       }
     } catch {}
@@ -327,6 +376,7 @@ const ProposedMeetingDate = ({
             selectedOptionView: DateGMT,
             endDateView: getEndTime?.newFormatTime,
             startDateView: getStartTime?.newFormatTime,
+            proposedDateID: 0,
           },
         ]);
       }
@@ -361,8 +411,6 @@ const ProposedMeetingDate = ({
     });
   };
 
-  console.log(rows, "newArrnewArrnewArrnewArrnewArr");
-
   // Function to handle the save Proposed button click
   const handleSave = () => {
     let newArr = [];
@@ -380,16 +428,20 @@ const ProposedMeetingDate = ({
         proposedDateID: data.proposedDateID,
       });
     });
-    console.log(newArr, "newArrnewArrnewArrnewArrnewArr");
-
-    // if (isAscendingOrder()) {
-    let Data = {
-      MeetingID: currentMeeting,
-      SendResponsebyDate: sendResponseBy.date,
-      ProposedDates: newArr,
-    };
-    console.log(Data, "newArrnewArrnewArrnewArrnewArr");
-    dispatch(setProposedMeetingDateApiFunc(Data, navigate, t));
+    if (sendResponseVal !== "") {
+      let Data = {
+        MeetingID: currentMeeting,
+        SendResponsebyDate: sendResponseBy.date,
+        ProposedDates: newArr,
+      };
+      console.log(Data, "sendResponseValsendResponseVal");
+      dispatch(setProposedMeetingDateApiFunc(Data, navigate, t, false, false));
+    } else {
+      setOpen({
+        flag: true,
+        message: t("Select-send-response-by-date"),
+      });
+    }
   };
 
   const validate = () => {
@@ -494,20 +546,6 @@ const ProposedMeetingDate = ({
   }, [getAllProposedDates]);
 
   console.log(rows, "rowsrowsrowsrowsrowsrowsrows");
-
-  // Setting the Dates And Time Default
-  // useEffect(() => {
-  //   if (isApiData === false) {
-  //     const updatedRows = [...rows];
-  //     updatedRows[0].selectedOption = getCurrentDateforMeeting?.dateFormat;
-  //     updatedRows[0].selectedOptionView = getCurrentDateforMeeting?.DateGMT;
-  //     updatedRows[0].startDate = getStartTime?.formattedTime;
-  //     updatedRows[0].startDateView = getStartTime?.newFormatTime;
-  //     updatedRows[0].endDate = getEndTime?.formattedTime;
-  //     updatedRows[0].endDateView = getEndTime?.newFormatTime;
-  //     setRows(updatedRows);
-  //   }
-  // }, [isApiData]);
 
   return (
     <section>

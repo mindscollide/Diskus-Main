@@ -392,8 +392,8 @@ const Agenda = ({
 
   console.log(
     "MeetingAgendaReducerMeetingAgendaReducer",
-    MeetingAgendaReducer,
-    data
+    MeetingAgendaReducer
+    // data
   );
 
   return (

@@ -10,6 +10,13 @@ import {
   getUserProposedWiseApi,
   showSceduleProposedMeeting,
   getUserWiseProposedDatesMainApi,
+  searchNewUserMeeting,
+  scheduleMeetingPageFlag,
+  viewProposeDateMeetingPageFlag,
+  viewAdvanceMeetingPublishPageFlag,
+  viewAdvanceMeetingUnpublishPageFlag,
+  viewProposeOrganizerMeetingPageFlag,
+  proposeNewMeetingPageFlag,
 } from "../../../../../../store/actions/NewMeetingActions";
 import { useEffect, useState } from "react";
 import SceduleProposedmeeting from "../../meetingDetails/UnpublishedProposedMeeting/SceduleProposedMeeting/SceduleProposedmeeting";
@@ -18,10 +25,15 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let userID = localStorage.getItem("userID");
+
   //reducer call from Attendance_Reducers
   const sceduleproposedMeeting = useSelector(
     (state) => state.NewMeetingreducer.sceduleproposedMeeting
   );
+
   const userWiseMeetingProposed = useSelector(
     (state) => state.NewMeetingreducer.userWiseMeetingProposed
   );
@@ -32,12 +44,6 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
 
   let viewProposeDatePollMeetingID = Number(
     localStorage.getItem("viewProposeDatePollMeetingID")
-  );
-
-  console.log(
-    getUserProposedOrganizerData,
-    viewProposeDatePollMeetingID,
-    "getUserProposedOrganizerDatagetUserProposedOrganizerData"
   );
 
   const [organizerRows, setOrganizerRows] = useState([]);
@@ -133,6 +139,24 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
 
   const cancelHandler = () => {
     setViewProposeOrganizerPoll(false);
+    dispatch(scheduleMeetingPageFlag(false));
+    dispatch(viewProposeDateMeetingPageFlag(false));
+    dispatch(viewAdvanceMeetingPublishPageFlag(false));
+    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+    dispatch(viewProposeOrganizerMeetingPageFlag(false));
+    dispatch(proposeNewMeetingPageFlag(false));
+    if (meetingpageRow !== null && meetingPageCurrent !== null) {
+      let searchData = {
+        Date: "",
+        Title: "",
+        HostName: "",
+        UserID: Number(userID),
+        PageNumber: Number(meetingPageCurrent),
+        Length: Number(meetingpageRow),
+        PublishedMeetings: false,
+      };
+      dispatch(searchNewUserMeeting(navigate, searchData, t));
+    }
   };
 
   const handleViewPollClick = () => {

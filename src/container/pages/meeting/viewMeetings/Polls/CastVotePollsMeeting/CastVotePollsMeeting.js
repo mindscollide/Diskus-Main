@@ -69,6 +69,7 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
     }
   };
   const handleCheckBoxForOneOnly = (e, id) => {
+    let value = e.target.value;
     setViewProgressPollsDetails({
       ...viewProgressPollsDetails,
       answer: [value],
