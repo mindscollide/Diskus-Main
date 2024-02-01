@@ -347,6 +347,20 @@ const NavbarAdmin = () => {
                             {t("Invoice-&-payment-history")}
                           </NavDropdown.Item>
                         </NavDropdown>
+                        <NavDropdown
+                          title={t("Reports")}
+                          id="collasible-nav-dropdown"
+                          className="DiskusAdminNavBar"
+                        >
+                          <NavDropdown.Item
+                            as={Link}
+                            to="loginreport"
+                            eventKey="link-8"
+                            className="text-black border-none "
+                          >
+                            {t("User-login-history")}
+                          </NavDropdown.Item>
+                        </NavDropdown>
                       </Nav>
                     </Navbar.Collapse>
                   </Container>

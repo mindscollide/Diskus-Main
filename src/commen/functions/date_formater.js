@@ -804,3 +804,19 @@ export const get_CurrentDateTime = () => {
   const current_value = `${day}/${month}/${year}`;
   return { currentTime, current_Date, dateObject: currentDate, current_value };
 };
+
+export const getDifferentisDateisPassed = (curentDate, dataDateValue) => {
+  if (
+    curentDate instanceof Date &&
+    !isNaN(curentDate) &&
+    dataDateValue instanceof Date &&
+    !isNaN(dataDateValue)
+  ) {
+    if (curentDate > dataDateValue) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  return false;
+};

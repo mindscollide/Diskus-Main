@@ -112,7 +112,7 @@ const VerificationCodeOne = () => {
     let Data = {
       UserID: JSON.parse(userID),
       Device: "Browser",
-      DeviceID: "c",
+      DeviceID: "1",
       OrganizationID: JSON.parse(OrganizationID),
       isEmail: value === 0 ? false : value === 1 ? true : false,
       isSMS: value === 0 ? true : value === 1 ? false : false,

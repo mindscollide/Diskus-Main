@@ -105,7 +105,6 @@ const EditPollsMeeting = ({ setEditPolls }) => {
   const allValuesNotEmpty = options.every((item) => item.value !== "");
 
   const addNewRow = () => {
-    console.log("iam clicked");
     if (options.length > 1) {
       if (allValuesNotEmpty) {
         let lastIndex = options.length - 1;
@@ -328,6 +327,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
       getUserDetails.forEach((data, index) => {
         newArr.push({
           value: data.pK_UID,
+          name: data.userName,
           label: (
             <>
               <>
@@ -414,7 +414,13 @@ const EditPollsMeeting = ({ setEditPolls }) => {
       } catch {}
     }
   }, [PollsReducer.Allpolls]);
-
+  const customFilter = (options, searchText) => {
+    if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
+      return true;
+    } else {
+      return false;
+    }
+  };
   return (
     <section>
       <Row>
@@ -617,6 +623,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                     isMulti
                     value={selectedsearch}
                     onChange={handleSelectValue}
+                    filterOption={customFilter}
                   />
                   <Button
                     text={t("ADD")}
@@ -633,7 +640,6 @@ const EditPollsMeeting = ({ setEditPolls }) => {
               <Row>
                 {members.length > 0
                   ? members.map((data, index) => {
-                      console.log("datadatadatamembers", data);
                       return (
                         <>
                           <Col lg={6} md={6} sm={6} className="mt-3">

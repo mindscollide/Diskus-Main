@@ -6558,3 +6558,6 @@ th.ant-table-cell.notification-class-table {
 .ant-radio-wrapper .ant-radio + span {
   color: #333; /* Adjust label text color as needed */
 }
+.ant-table-wrapper.userlogin_history_tableP .ant-table-tbody tr td {
+  font-weight: 600;
+}

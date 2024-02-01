@@ -5,6 +5,8 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button, Table } from "../../../../../components/elements";
+import { ChevronDown } from "react-bootstrap-icons";
+
 import addmore from "../../../../../assets/images/addmore.png";
 import { Col, Row } from "react-bootstrap";
 import CrossIcon from "../../../../../assets/images/CrossIcon.svg";
@@ -30,6 +32,8 @@ import CustomPagination from "../../../../../commen/functions/customPagination/P
 import { clearAttendanceState } from "../../../../../store/actions/Attendance_Meeting";
 import { ViewToDoList } from "../../../../../store/actions/ToDoList_action";
 import ModalViewToDo from "../../../../todolistviewModal/ModalViewToDo";
+import { Select } from "antd";
+import { updateTodoStatusFunc } from "../../../../../store/actions/GetTodos";
 
 const Actions = ({
   setViewAdvanceMeetingModal,
@@ -46,16 +50,25 @@ const Actions = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer, actionMeetingReducer } = useSelector(
-    (state) => state
-  );
+  const {
+    NewMeetingreducer,
+    actionMeetingReducer,
+    todoStatus,
+    getTodosStatus,
+    toDoListReducer,
+  } = useSelector((state) => state);
   let userID = localStorage.getItem("userID");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPageSize, setCurrentPageSize] = useState(50);
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let currentView = localStorage.getItem("MeetingCurrentView");
+  let currentLanguage = localStorage.getItem("i18nextLng");
   const [viewTaskModal, setViewTaskModal] = useState(false);
   const [createaTask, setCreateaTask] = useState(false);
   const [totalRecords, setTotalRecords] = useState(0);
+  const [removeTodo, setRemoveTodo] = useState(0);
+  const [statusOptions, setStatusOptions] = useState([]);
 
   const [actionState, setActionState] = useState({
     Title: "",
@@ -75,8 +88,8 @@ const Actions = ({
       Title: actionState.Title,
       AssignedToName: actionState.AssignedToName,
       UserID: Number(userID),
-      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+      PageNumber: currentPage,
+      Length: currentPageSize,
     };
 
     dispatch(getMeetingTaskMainApi(navigate, t, meetingTaskData));
@@ -86,20 +99,60 @@ const Actions = ({
     };
   }, []);
 
-  const ActionsColoumn = [
-    {
-      title: t("Due-date"),
-      dataIndex: "deadlineDate",
-      key: "deadlineDate",
-      width: "200px",
-      render: (text, record) => {
-        return (
-          <span className={styles["Action-Date-title"]}>
-            {_justShowDateformatBilling(record.deadlineDate + "000000")}
-          </span>
+  // SET STATUS VALUES
+  useEffect(() => {
+    let optionsArr = [];
+    let newOptionsFilter = [];
+    if (todoStatus.Response !== null && todoStatus.Response !== "") {
+      todoStatus.Response.map((data, index) => {
+        optionsArr.push({
+          id: data.pK_TSID,
+          status: data.status,
+        });
+        newOptionsFilter.push({
+          key: data.pK_TSID,
+          label: data.status,
+        });
+      });
+    }
+    setStatusOptions(optionsArr);
+  }, [todoStatus]);
+
+  useEffect(() => {
+    if (removeTodo !== 0) {
+      if (
+        getTodosStatus.UpdateTodoStatusMessage ===
+        t("The-record-has-been-updated-successfully")
+      ) {
+        let copyData = [...actionsRows];
+        let removeDeleteTodo = copyData.filter(
+          (todoData, index) => todoData.pK_TID !== removeTodo
         );
-      },
-    },
+        setActionsRows(removeDeleteTodo);
+        setRemoveTodo(0);
+      }
+    }
+  }, [getTodosStatus.UpdateTodoStatusMessage, removeTodo]);
+
+  useEffect(() => {
+    if (
+      toDoListReducer.SocketTodoActivityData !== null &&
+      toDoListReducer.SocketTodoActivityData !== undefined
+    ) {
+      setActionsRows([toDoListReducer.SocketTodoActivityData, ...actionsRows]);
+    }
+  }, [toDoListReducer.SocketTodoActivityData]);
+  // CHANGE HANDLER STATUS
+  const statusChangeHandler = (e, statusdata) => {
+    if (e === 6) {
+      setRemoveTodo(statusdata);
+    }
+    dispatch(
+      updateTodoStatusFunc(navigate, e, statusdata, t, false, 3, currentMeeting)
+    );
+  };
+
+  const ActionsColoumn = [
     {
       title: t("Title"),
       dataIndex: "title",
@@ -117,33 +170,219 @@ const Actions = ({
       },
     },
     {
+      title: t("Assigned-by"),
+      dataIndex: "taskCreator",
+      key: "taskCreator",
+      width: "220px",
+      sortDirections: ["descend", "ascend"],
+      // align: "left",
+      render: (record, index) => {
+        return (
+          <p className="m-0 MontserratRegular color-5a5a5a FontArabicRegular text-nowrap">
+            {" "}
+            <img
+              draggable="false"
+              className="data-img"
+              src={`data:image/jpeg;base64,${record?.displayProfilePictureName}`}
+              alt=""
+            />
+            {record?.name}
+          </p>
+        );
+      },
+      sorter: (a, b) => {
+        return a?.taskCreator?.name
+          .toLowerCase()
+          .localeCompare(b?.taskCreator?.name?.toLowerCase());
+      },
+    },
+    {
       title: t("Assigned-to"),
+      width: "220px",
       dataIndex: "taskAssignedTo",
       key: "taskAssignedTo",
+      sortDirections: ["descend", "ascend"],
+      sorter: (a, b) =>
+        a.taskAssignedTo[0].name
+          .toLowerCase()
+          .localeCompare(b.taskAssignedTo[0].name.toLowerCase()),
+      render: (text, record) => {
+        if (text !== undefined && text !== null && text.length > 0) {
+          return (
+            <>
+              <p className="m-0 MontserratRegular  color-505050 FontArabicRegular text-nowrap ">
+                {" "}
+                {currentLanguage === "ar" ? (
+                  <>
+                    <img
+                      draggable="false"
+                      className="data-img"
+                      src={`data:image/jpeg;base64,${text[0]?.displayProfilePictureName}`}
+                      alt=""
+                    />
+
+                    {text[0].name}
+                  </>
+                ) : (
+                  <>
+                    <img
+                      draggable="false"
+                      className="data-img"
+                      src={`data:image/jpeg;base64,${text[0]?.displayProfilePictureName}`}
+                      alt=""
+                    />
+                    {text[0].name}
+                  </>
+                )}
+              </p>
+            </>
+          );
+        }
+      },
+    },
+    {
+      title: t("Due-date"),
+      dataIndex: "deadlineDate",
+      key: "deadlineDate",
       width: "200px",
       render: (text, record) => {
         return (
-          <>
-            <span className={styles["Action-Date-title"]}>
-              {record.taskAssignedTo[0].name}
-            </span>
-          </>
+          <span className={styles["Action-Date-title"]}>
+            {_justShowDateformatBilling(record.deadlineDateTime)}
+          </span>
         );
       },
     },
+    // {
+    //   title: t("Assigned-to"),
+    //   dataIndex: "taskAssignedTo",
+    //   key: "taskAssignedTo",
+    //   width: "200px",
+    //   render: (text, record) => {
+    //     return (
+    //       <>
+    //         <span className={styles["Action-Date-title"]}>
+    //           {record.taskAssignedTo[0].name}
+    //         </span>
+    //       </>
+    //     );
+    //   },
+    // },
     {
       title: t("Status"),
       dataIndex: "status",
       key: "status",
-      width: "150px",
-      render: (text, record) => (
-        <>
-          <span className={styles["Action-Date-title"]}>
-            {record.status.status}
-          </span>
-        </>
+      align: "center",
+      width: "220px",
+      filters: [
+        {
+          text: t("In-progress"),
+          value: "In Progress",
+          // className: currentLanguage,
+        },
+        {
+          text: t("Pending"),
+          value: "Pending",
+        },
+        {
+          text: t("Upcoming"),
+          value: "Upcoming",
+        },
+        {
+          text: t("Cancelled"),
+          value: "Cancelled",
+        },
+        {
+          text: t("Completed"),
+          value: "Completed",
+        },
+      ],
+      defaultFilteredValue: [
+        "In Progress",
+        "Pending",
+        "Upcoming",
+        "Cancelled",
+        "Completed",
+      ],
+      filterIcon: (filtered) => (
+        <ChevronDown className="filter-chevron-icon-todolist" />
       ),
+      onFilter: (value, record) => {
+        return record?.status?.status
+          ?.toLowerCase()
+          .includes(value.toLowerCase());
+      },
+      render: (text, record) => {
+        if (Number(record?.taskCreator?.pK_UID) === Number(userID)) {
+          return (
+            <>
+              <Select
+                defaultValue={text.status}
+                bordered={false}
+                dropdownClassName="Status-Todo"
+                className={
+                  text.pK_TSID === 1
+                    ? "InProgress MontserratSemiBold custom-class "
+                    : text.pK_TSID === 2
+                    ? "Pending MontserratSemiBold custom-class "
+                    : text.pK_TSID === 3
+                    ? "Upcoming MontserratSemiBold custom-class "
+                    : text.pK_TSID === 4
+                    ? "Cancelled MontserratSemiBold custom-class "
+                    : text.pK_TSID === 5
+                    ? "Completed MontserratSemiBold custom-class "
+                    : null
+                }
+                onChange={(e) => statusChangeHandler(e, record.pK_TID)}
+              >
+                {statusOptions.map((optValue, index) => {
+                  return (
+                    <option key={optValue.id} value={optValue.id}>
+                      {optValue.status}
+                    </option>
+                  );
+                })}
+              </Select>
+            </>
+          );
+        } else {
+          return (
+            <p
+              className={
+                text.pK_TSID === 1
+                  ? "InProgress  MontserratSemiBold color-5a5a5a text-center  my-1"
+                  : text.pK_TSID === 2
+                  ? "Pending  MontserratSemiBold color-5a5a5a text-center my-1"
+                  : text.pK_TSID === 3
+                  ? "Upcoming MontserratSemiBold color-5a5a5a text-center  my-1"
+                  : text.pK_TSID === 4
+                  ? "Cancelled  MontserratSemiBold color-5a5a5a text-center my-1"
+                  : text.pK_TSID === 5
+                  ? "Completed  MontserratSemiBold color-5a5a5a  text-center my-1"
+                  : null
+              }
+            >
+              {text.status}
+            </p>
+          );
+        }
+      },
+
+      filterMultiple: true,
     },
+    // {
+    //   title: t("Status"),
+    //   dataIndex: "status",
+    //   key: "status",
+    //   width: "150px",
+    //   render: (text, record) => (
+    //     <>
+    //       <span className={styles["Action-Date-title"]}>
+    //         {record.status.status}
+    //       </span>
+    //     </>
+    //   ),
+    // },
     {
       dataIndex: "RedCrossIcon",
       key: "RedCrossIcon",
@@ -182,18 +421,71 @@ const Actions = ({
       )
     );
   };
-
+  // for Socket Update meeting status update
   useEffect(() => {
     if (
-      actionMeetingReducer.todoListMeetingTask !== null &&
-      actionMeetingReducer.todoListMeetingTask !== undefined &&
-      actionMeetingReducer.todoListMeetingTask.length > 0
+      toDoListReducer.socketTodoStatusData &&
+      Object.keys(toDoListReducer.socketTodoStatusData).length > 0
     ) {
-      setTotalRecords(actionMeetingReducer.todoListMeetingTask.totalRecords);
-      setActionsRows(actionMeetingReducer.todoListMeetingTask);
-    } else {
-      setActionsRows([]);
+      let tableRowsData = [...actionsRows];
+      var foundIndex = tableRowsData.findIndex(
+        (x) => x.pK_TID === toDoListReducer.socketTodoStatusData.todoid
+      );
+      if (foundIndex !== -1) {
+        if (Number(toDoListReducer.socketTodoStatusData.todoStatusID) === 6) {
+          let removeDeleteIndex = tableRowsData.filter(
+            (data, index) =>
+              data.pK_TID !== toDoListReducer.socketTodoStatusData.todoid
+          );
+          setActionsRows(removeDeleteIndex);
+        } else {
+          let newArr = tableRowsData.map((rowObj, index) => {
+            if (index === foundIndex) {
+              let statusID = toDoListReducer.socketTodoStatusData.todoStatusID;
+              const newData = {
+                ...rowObj,
+                status: {
+                  pK_TSID: statusID,
+                  status:
+                    statusID === 1
+                      ? "In Progress"
+                      : statusID === 2
+                      ? "Pending"
+                      : statusID === 3
+                      ? "Upcoming"
+                      : statusID === 4
+                      ? "Cancelled"
+                      : statusID === 5
+                      ? "Completed"
+                      : statusID === 6
+                      ? "Deleted"
+                      : null,
+                },
+              };
+              return newData;
+            }
+            return rowObj;
+          });
+          setActionsRows(newArr);
+        }
+      }
     }
+  }, [toDoListReducer.socketTodoStatusData]);
+
+  useEffect(() => {
+    try {
+      if (
+        actionMeetingReducer.todoListMeetingTask !== null &&
+        actionMeetingReducer.todoListMeetingTask !== undefined &&
+        actionMeetingReducer.todoListMeetingTask.toDoLists.length > 0
+      ) {
+        setTotalRecords(actionMeetingReducer.todoListMeetingTask.totalRecords);
+        setActionsRows(actionMeetingReducer.todoListMeetingTask.toDoLists);
+      } else {
+        setActionsRows([]);
+        setTotalRecords(0);
+      }
+    } catch {}
   }, [actionMeetingReducer.todoListMeetingTask]);
 
   // for pagination in Create Task
@@ -207,8 +499,10 @@ const Actions = ({
       PageNumber: Number(current),
       Length: Number(pageSize),
     };
-    localStorage.setItem("MeetingPageRows", pageSize);
-    localStorage.setItem("MeetingPageCurrent", current);
+    setCurrentPage(current);
+    setCurrentPageSize(pageSize);
+    // localStorage.setItem("MeetingPageRows", pageSize);
+    // localStorage.setItem("MeetingPageCurrent", current);
     dispatch(getMeetingTaskMainApi(navigate, t, data));
   };
 
@@ -356,7 +650,7 @@ const Actions = ({
                           column={ActionsColoumn}
                           scroll={{ y: "40vh" }}
                           pagination={false}
-                          className="Polling_table"
+                          className={"ToDo"}
                           rows={actionsRows}
                         />
                       </Col>
@@ -376,22 +670,13 @@ const Actions = ({
                               md={12}
                               sm={12}
                               className={
-                                "ant-pagination-active-on-Action d-flex justify-content-center"
+                                "pagination-groups-table d-flex justify-content-center"
                               }
                             >
-                              <span
-                                className={
-                                  styles["PaginationStyle-Action-Page"]
-                                }
-                              >
+                              <span className="PaginationStyle-TodoList">
                                 <CustomPagination
                                   onChange={handleForPagination}
-                                  current={
-                                    meetingPageCurrent !== null &&
-                                    meetingPageCurrent !== undefined
-                                      ? Number(meetingPageCurrent)
-                                      : 1
-                                  }
+                                  current={currentPage}
                                   showSizer={true}
                                   total={totalRecords}
                                   pageSizeOptionsValues={[
@@ -400,12 +685,7 @@ const Actions = ({
                                     "100",
                                     "200",
                                   ]}
-                                  pageSize={
-                                    meetingpageRow !== null &&
-                                    meetingpageRow !== undefined
-                                      ? meetingpageRow
-                                      : 50
-                                  }
+                                  pageSize={currentPageSize}
                                 />
                               </span>
                             </Col>

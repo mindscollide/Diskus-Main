@@ -2843,7 +2843,7 @@ const changePasswordFunc = (navigate, oldPassword, newPassword, t) => {
     UserID: userID,
     OldPassword: oldPassword,
     NewPassword: newPassword,
-    DeviceID: "1111",
+    DeviceID: "1",
   };
   return (dispatch) => {
     dispatch(changePasswordInit());

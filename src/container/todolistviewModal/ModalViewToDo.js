@@ -37,6 +37,7 @@ import { DownloadFile } from "../../store/actions/Download_action";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { Spin } from "antd";
+import { DataRoomDownloadFileApiFunc } from "../../store/actions/DataRoom_actions";
 
 const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   //For Localization
@@ -113,6 +114,9 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   const [taskAssigneeComments, setTaskAssigneeComments] = useState([]);
   const [assgineeComments, setAssgieeComments] = useState("");
   const [deleteCommentsId, setDeleteCommentsId] = useState(0);
+  // for anotantion opens in new tabb on doubble click
+  const [clicks, setClicks] = useState(0);
+  const [dataCheck, setDataCheck] = useState([]);
   //Upload File States
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
@@ -256,6 +260,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
       let commentIndex2 = taskAssigneeComments.find(
         (data, index) => data?.taskCommentID === Number(Comments.pK_TCID)
       );
+      console.log(commentIndex, commentIndex2, "commentIndex2commentIndex2");
       if (commentIndex !== -1) {
         let newArr = taskAssigneeComments.map((comment, index) => {
           if (index === commentIndex) {
@@ -275,7 +280,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
 
         setTaskAssigneeComments(newArr);
         dispatch(emptyCommentState());
-      } else if (commentIndex2 === undefined && commentIndex === undefined) {
+      } else if (commentIndex2 === undefined && commentIndex === -1) {
         // Comment does not exist, add it
         let newComment = {
           userID: parseInt(Comments.fK_UID),
@@ -384,6 +389,40 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   const handleDeleteComments = (commentID, taskID) => {
     setDeleteCommentsId(commentID);
     dispatch(deleteCommentApi(navigate, t, commentID, taskID));
+  };
+
+  const handleClickDownloadFile = (fileID, fileName) => {
+    let data = {
+      FileID: Number(fileID),
+    };
+    dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, fileName));
+  };
+
+  const handleLinkClick = (data) => {
+    if (clicks === 1) {
+      if (dataCheck === data) {
+        // Perform the action you want to happen on the double-click here
+        window.open(
+          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(data)}`,
+          "_blank",
+          "noopener noreferrer"
+        );
+      } else {
+        setDataCheck(data);
+      }
+
+      // Reset the click count
+      setClicks(0);
+    } else {
+      // Increment the click count
+      setClicks(clicks + 1);
+      setDataCheck(data);
+      // You can add a delay here to reset the click count after a certain time if needed
+      setTimeout(() => {
+        setClicks(0);
+        setDataCheck([]);
+      }, 300); // Reset after 300 milliseconds (adjust as needed)
+    }
   };
   // useEffect(() => { }, [toDoListReducer.ToDoDetails]);
 
@@ -662,16 +701,15 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                             modalviewAttachmentFiles.DisplayAttachmentName.split(
                               " "
                             )[0];
-                          console.log(
-                            "modalviewAttachmentFilesmodalviewAttachmentFiles",
-                            modalviewAttachmentFiles
-                          );
+
                           const pdfData = {
                             taskId: modalviewAttachmentFiles.FK_TID,
-                            attachmentID: modalviewAttachmentFiles.PK_MAAID,
+                            attachmentID: Number(
+                              modalviewAttachmentFiles.OriginalAttachmentName
+                            ),
                             fileName:
                               modalviewAttachmentFiles.DisplayAttachmentName,
-                            commingFrom: 1,
+                            commingFrom: 4,
                           };
                           const pdfDataJson = JSON.stringify(pdfData);
                           return (
@@ -685,87 +723,193 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                               // }
                             >
                               {ext === "doc" ? (
-                                <FileIcon
-                                  extension={"docx"}
-                                  size={78}
-                                  type={"document"}
-                                  labelColor={"rgba(44, 88, 152)"}
-                                />
+                                <span
+                                  onClick={() =>
+                                    handleClickDownloadFile(
+                                      modalviewAttachmentFiles.OriginalAttachmentName,
+                                      modalviewAttachmentFiles.DisplayAttachmentName
+                                    )
+                                  }
+                                  className="cursor-pointer"
+                                >
+                                  <FileIcon
+                                    extension={"docx"}
+                                    size={78}
+                                    type={"document"}
+                                    labelColor={"rgba(44, 88, 152)"}
+                                  />
+                                </span>
                               ) : ext === "docx" ? (
-                                <FileIcon
-                                  extension={"docx"}
-                                  size={78}
-                                  type={"font"}
-                                  labelColor={"rgba(44, 88, 152)"}
-                                />
+                                <span
+                                  onClick={() =>
+                                    handleClickDownloadFile(
+                                      modalviewAttachmentFiles.OriginalAttachmentName,
+                                      modalviewAttachmentFiles.DisplayAttachmentName
+                                    )
+                                  }
+                                  className="cursor-pointer"
+                                >
+                                  <FileIcon
+                                    extension={"docx"}
+                                    size={78}
+                                    type={"font"}
+                                    labelColor={"rgba(44, 88, 152)"}
+                                  />
+                                </span>
                               ) : ext === "xls" ? (
-                                <FileIcon
-                                  extension={"xls"}
-                                  type={"spreadsheet"}
-                                  size={78}
-                                  labelColor={"rgba(16, 121, 63)"}
-                                />
+                                <span
+                                  onClick={() =>
+                                    handleClickDownloadFile(
+                                      modalviewAttachmentFiles.OriginalAttachmentName,
+                                      modalviewAttachmentFiles.DisplayAttachmentName
+                                    )
+                                  }
+                                  className="cursor-pointer"
+                                >
+                                  <FileIcon
+                                    extension={"xls"}
+                                    type={"spreadsheet"}
+                                    size={78}
+                                    labelColor={"rgba(16, 121, 63)"}
+                                  />
+                                </span>
                               ) : ext === "xlsx" ? (
-                                <FileIcon
-                                  extension={"xls"}
-                                  type={"spreadsheet"}
-                                  size={78}
-                                  labelColor={"rgba(16, 121, 63)"}
-                                />
+                                <span
+                                  onClick={() =>
+                                    handleClickDownloadFile(
+                                      modalviewAttachmentFiles.OriginalAttachmentName,
+                                      modalviewAttachmentFiles.DisplayAttachmentName
+                                    )
+                                  }
+                                  className="cursor-pointer"
+                                >
+                                  <FileIcon
+                                    extension={"xls"}
+                                    type={"spreadsheet"}
+                                    size={78}
+                                    labelColor={"rgba(16, 121, 63)"}
+                                  />
+                                </span>
                               ) : ext === "pdf" ? (
-                                <Link
-                                  to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
-                                    pdfDataJson
-                                  )}`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
+                                // <Link
+                                //   to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                                //     pdfDataJson
+                                //   )}`}
+                                //   target="_blank"
+                                //   onClick={}
+                                //   rel="noopener noreferrer"
+                                // >
+
+                                <span
+                                  onClick={() => handleLinkClick(pdfDataJson)}
                                 >
                                   <FileIcon
                                     extension={"pdf"}
                                     size={78}
                                     {...defaultStyles.pdf}
                                   />
-                                </Link>
-                              ) : ext === "png" ? (
-                                <FileIcon
-                                  extension={"png"}
-                                  size={78}
-                                  type={"image"}
-                                  labelColor={"rgba(102, 102, 224)"}
-                                />
+                                </span>
+                              ) : // </Link>
+                              ext === "png" ? (
+                                <span
+                                  onClick={() =>
+                                    handleClickDownloadFile(
+                                      modalviewAttachmentFiles.OriginalAttachmentName,
+                                      modalviewAttachmentFiles.DisplayAttachmentName
+                                    )
+                                  }
+                                  className="cursor-pointer"
+                                >
+                                  <FileIcon
+                                    extension={"png"}
+                                    size={78}
+                                    type={"image"}
+                                    labelColor={"rgba(102, 102, 224)"}
+                                  />
+                                </span>
                               ) : ext === "txt" ? (
-                                <FileIcon
-                                  extension={"txt"}
-                                  size={78}
-                                  type={"document"}
-                                  labelColor={"rgba(52, 120, 199)"}
-                                />
+                                <span
+                                  onClick={() =>
+                                    handleClickDownloadFile(
+                                      modalviewAttachmentFiles.OriginalAttachmentName,
+                                      modalviewAttachmentFiles.DisplayAttachmentName
+                                    )
+                                  }
+                                  className="cursor-pointer"
+                                >
+                                  <FileIcon
+                                    extension={"txt"}
+                                    size={78}
+                                    type={"document"}
+                                    labelColor={"rgba(52, 120, 199)"}
+                                  />
+                                </span>
                               ) : ext === "jpg" ? (
-                                <FileIcon
-                                  extension={"jpg"}
-                                  size={78}
-                                  type={"image"}
-                                  labelColor={"rgba(102, 102, 224)"}
-                                />
+                                <span
+                                  onClick={() =>
+                                    handleClickDownloadFile(
+                                      modalviewAttachmentFiles.OriginalAttachmentName,
+                                      modalviewAttachmentFiles.DisplayAttachmentName
+                                    )
+                                  }
+                                  className="cursor-pointer"
+                                >
+                                  <FileIcon
+                                    extension={"jpg"}
+                                    size={78}
+                                    type={"image"}
+                                    labelColor={"rgba(102, 102, 224)"}
+                                  />
+                                </span>
                               ) : ext === "jpeg" ? (
-                                <FileIcon
-                                  extension={"jpeg"}
-                                  size={78}
-                                  type={"image"}
-                                  labelColor={"rgba(102, 102, 224)"}
-                                />
+                                <span
+                                  onClick={() =>
+                                    handleClickDownloadFile(
+                                      modalviewAttachmentFiles.OriginalAttachmentName,
+                                      modalviewAttachmentFiles.DisplayAttachmentName
+                                    )
+                                  }
+                                  className="cursor-pointer"
+                                >
+                                  <FileIcon
+                                    extension={"jpeg"}
+                                    size={78}
+                                    type={"image"}
+                                    labelColor={"rgba(102, 102, 224)"}
+                                  />
+                                </span>
                               ) : ext === "gif" ? (
-                                <FileIcon
-                                  extension={"gif"}
-                                  size={78}
-                                  {...defaultStyles.gif}
-                                />
+                                <span
+                                  onClick={() =>
+                                    handleClickDownloadFile(
+                                      modalviewAttachmentFiles.OriginalAttachmentName,
+                                      modalviewAttachmentFiles.DisplayAttachmentName
+                                    )
+                                  }
+                                  className="cursor-pointer"
+                                >
+                                  <FileIcon
+                                    extension={"gif"}
+                                    size={78}
+                                    {...defaultStyles.gif}
+                                  />
+                                </span>
                               ) : (
-                                <FileIcon
-                                  extension={ext}
-                                  size={78}
-                                  {...defaultStyles.ext}
-                                />
+                                <span
+                                  onClick={() =>
+                                    handleClickDownloadFile(
+                                      modalviewAttachmentFiles.OriginalAttachmentName,
+                                      modalviewAttachmentFiles.DisplayAttachmentName
+                                    )
+                                  }
+                                  className="cursor-pointer"
+                                >
+                                  <FileIcon
+                                    extension={ext}
+                                    size={78}
+                                    {...defaultStyles.ext}
+                                  />
+                                </span>
                               )}
                               <p className="todoModalFileAttach FontArabicRegular">
                                 {first}

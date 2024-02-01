@@ -77,7 +77,7 @@ const VerificationCodeThree = () => {
     let Data = {
       UserID: JSON.parse(userID),
       Device: "Browser",
-      DeviceID: "c",
+      DeviceID: "1",
       OrganizationID: JSON.parse(OrganizationID),
       isEmail: false,
       isSMS: false,

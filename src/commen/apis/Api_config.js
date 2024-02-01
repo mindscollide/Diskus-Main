@@ -1341,8 +1341,11 @@ const validateMicrosoftToken = {
 const getUserWiseProposeDateOrganizer = {
   RequestMethod: "ServiceManager.GetUserWiseProposedDates",
 };
-
+const UserLoginHistoryRM = {
+  RequestMethod: "ServiceManager.GetUserLoginHistory",
+};
 export {
+  UserLoginHistoryRM,
   getDataAnalyticsCountRM,
   updateAndOpenByAndDescriptionRM,
   getFileFolderDetailsRM,

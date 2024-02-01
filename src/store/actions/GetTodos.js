@@ -5,6 +5,7 @@ import { todosStatus, updateTodoStatus } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import { GetTodoListByUser, SearchTodoListApi } from "./ToDoList_action";
 import { getTaskCommitteeIDApi, getTasksByGroupIDApi } from "./Polls_actions";
+import { getMeetingTaskMainApi } from "./Action_Meeting";
 
 const getTodoStatusInit = () => {
   return {
@@ -107,7 +108,15 @@ const getTodoStatus = (navigate, t) => {
   };
 };
 
-const updateTodoStatusFunc = (navigate, statusID, data, t, flag, value) => {
+const updateTodoStatusFunc = (
+  navigate,
+  statusID,
+  data,
+  t,
+  flag,
+  value,
+  currentMeetingID
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let userID = JSON.parse(localStorage.getItem("userID"));
   let meetingPage = localStorage.getItem("todoListPage");
@@ -134,7 +143,15 @@ const updateTodoStatusFunc = (navigate, statusID, data, t, flag, value) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            updateTodoStatusFunc(navigate, statusID, data, t, flag, value)
+            updateTodoStatusFunc(
+              navigate,
+              statusID,
+              data,
+              t,
+              flag,
+              value,
+              currentMeetingID
+            )
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -175,6 +192,26 @@ const updateTodoStatusFunc = (navigate, statusID, data, t, flag, value) => {
                   };
                   dispatch(getTasksByGroupIDApi(navigate, t, newData));
                 }
+              } else if (value === 3) {
+                await dispatch(
+                  updateTodoStatusSuccess(
+                    t("The-record-has-been-updated-successfully"),
+                    false
+                  )
+                );
+                let userID = localStorage.getItem("userID");
+
+                let meetingTaskData = {
+                  MeetingID: Number(currentMeetingID),
+                  Date: "",
+                  Title: "",
+                  AssignedToName: "",
+                  UserID: Number(userID),
+                  PageNumber: 1,
+                  Length: 50,
+                };
+
+                dispatch(getMeetingTaskMainApi(navigate, t, meetingTaskData));
               } else {
                 if (flag === false) {
                   await dispatch(

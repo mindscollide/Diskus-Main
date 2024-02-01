@@ -3,7 +3,7 @@ import * as actions from "../action_types";
 const initialState = {
   Loading: false,
   ResponseMessage: "",
-  todoListMeetingTask: [],
+  todoListMeetingTask: null,
   uploadActionDocument: null,
   mapTaskMeetingAgenda: null,
   removeTaskMapping: null,
