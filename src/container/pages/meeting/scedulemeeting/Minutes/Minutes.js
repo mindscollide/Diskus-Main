@@ -30,6 +30,17 @@ import {
   searchNewUserMeeting,
   cleareAllState,
   InviteToCollaborateMinutesApiFunc,
+  meetingDetailsGlobalFlag,
+  organizersGlobalFlag,
+  agendaContributorsGlobalFlag,
+  participantsGlobalFlag,
+  agendaGlobalFlag,
+  meetingMaterialGlobalFlag,
+  minutesGlobalFlag,
+  proposedMeetingDatesGlobalFlag,
+  actionsGlobalFlag,
+  pollsGlobalFlag,
+  attendanceGlobalFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import { newTimeFormaterAsPerUTCFullDate } from "../../../../../commen/functions/date_formater";
 import AgendaWise from "./AgendaWise/AgendaWise";
@@ -741,6 +752,17 @@ const Minutes = ({
       } else {
         setactionsPage(true);
         setMinutes(false);
+        dispatch(meetingDetailsGlobalFlag(false));
+        dispatch(organizersGlobalFlag(false));
+        dispatch(agendaContributorsGlobalFlag(false));
+        dispatch(participantsGlobalFlag(false));
+        dispatch(agendaGlobalFlag(false));
+        dispatch(meetingMaterialGlobalFlag(false));
+        dispatch(minutesGlobalFlag(false));
+        dispatch(proposedMeetingDatesGlobalFlag(false));
+        dispatch(actionsGlobalFlag(true));
+        dispatch(pollsGlobalFlag(false));
+        dispatch(attendanceGlobalFlag(false));
       }
     } else if (general) {
       if (
@@ -752,6 +774,17 @@ const Minutes = ({
       } else {
         setactionsPage(true);
         setMinutes(false);
+        dispatch(meetingDetailsGlobalFlag(false));
+        dispatch(organizersGlobalFlag(false));
+        dispatch(agendaContributorsGlobalFlag(false));
+        dispatch(participantsGlobalFlag(false));
+        dispatch(agendaGlobalFlag(false));
+        dispatch(meetingMaterialGlobalFlag(false));
+        dispatch(minutesGlobalFlag(false));
+        dispatch(proposedMeetingDatesGlobalFlag(false));
+        dispatch(actionsGlobalFlag(true));
+        dispatch(pollsGlobalFlag(false));
+        dispatch(attendanceGlobalFlag(false));
       }
     }
 
@@ -1400,12 +1433,12 @@ const Minutes = ({
               onClick={handleInvitetoCollaborate}
             />
           ) : null}
-          <Button
+          {/* <Button
             text={t("Previous")}
             className={styles["Previous_button_Minutes"]}
             onClick={handlePreviousButton}
             // onClick={handleUNsaveChangesModal}
-          />
+          /> */}
           <Button
             text={t("Next")}
             className={styles["Next_button_Minutes"]}

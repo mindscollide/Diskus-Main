@@ -42,7 +42,7 @@ import {
   Notification,
 } from "../../../components/elements";
 import { Paper } from "@material-ui/core";
-
+import CancelButtonModal from "./closeMeetingTab/CancelModal";
 import { Col, Dropdown, Row } from "react-bootstrap";
 import { ChevronDown, Plus } from "react-bootstrap-icons";
 import gregorian from "react-date-object/calendars/gregorian";
@@ -64,6 +64,18 @@ import {
   viewProposeOrganizerMeetingPageFlag,
   proposeNewMeetingPageFlag,
   meetingNotConductedMQTT,
+  viewMeetingFlag,
+  meetingDetailsGlobalFlag,
+  organizersGlobalFlag,
+  agendaContributorsGlobalFlag,
+  participantsGlobalFlag,
+  agendaGlobalFlag,
+  meetingMaterialGlobalFlag,
+  minutesGlobalFlag,
+  proposedMeetingDatesGlobalFlag,
+  actionsGlobalFlag,
+  pollsGlobalFlag,
+  attendanceGlobalFlag,
 } from "../../../store/actions/NewMeetingActions";
 import { mqttCurrentMeetingEnded } from "../../../store/actions/GetMeetingUserId";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
@@ -80,6 +92,11 @@ import {
   newTimeFormaterAsPerUTCFullDate,
   utcConvertintoGMT,
 } from "../../../commen/functions/date_formater";
+import {
+  getCurrentDate,
+  getEndTimeWitlCeilFunction,
+  getStartTimeWithCeilFunction,
+} from "../../../commen/functions/time_formatter";
 import { StatusValue } from "./statusJson";
 import ModalMeeting from "../../modalmeeting/ModalMeeting";
 import ModalUpdate from "../../modalUpdate/ModalUpdate";
@@ -133,6 +150,9 @@ const NewMeeting = () => {
   let minutes = now.getUTCMinutes().toString().padStart(2, "0");
   let seconds = now.getUTCSeconds().toString().padStart(2, "0");
   let currentUTCDateTime = `${year}${month}${day}${hours}${minutes}${seconds}`;
+  const getStartTime = getStartTimeWithCeilFunction();
+  const getEndTime = getEndTimeWitlCeilFunction();
+  const getCurrentDateforMeeting = getCurrentDate();
   const [quickMeeting, setQuickMeeting] = useState(false);
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
   const [proposedNewMeeting, setProposedNewMeeting] = useState(false);
@@ -338,6 +358,17 @@ const NewMeeting = () => {
     setSceduleMeeting(true);
     dispatch(scheduleMeetingPageFlag(true));
     setCurrentMeetingID(0);
+    dispatch(meetingDetailsGlobalFlag(true));
+    dispatch(organizersGlobalFlag(false));
+    dispatch(agendaContributorsGlobalFlag(false));
+    dispatch(participantsGlobalFlag(false));
+    dispatch(agendaGlobalFlag(false));
+    dispatch(meetingMaterialGlobalFlag(false));
+    dispatch(minutesGlobalFlag(false));
+    dispatch(proposedMeetingDatesGlobalFlag(false));
+    dispatch(actionsGlobalFlag(false));
+    dispatch(pollsGlobalFlag(false));
+    dispatch(attendanceGlobalFlag(false));
   };
 
   const openProposedNewMeetingPage = () => {
@@ -494,6 +525,18 @@ const NewMeeting = () => {
         )
       );
       dispatch(scheduleMeetingPageFlag(true));
+      dispatch(viewMeetingFlag(false));
+      dispatch(meetingDetailsGlobalFlag(true));
+      dispatch(organizersGlobalFlag(false));
+      dispatch(agendaContributorsGlobalFlag(false));
+      dispatch(participantsGlobalFlag(false));
+      dispatch(agendaGlobalFlag(false));
+      dispatch(meetingMaterialGlobalFlag(false));
+      dispatch(minutesGlobalFlag(false));
+      dispatch(proposedMeetingDatesGlobalFlag(false));
+      dispatch(actionsGlobalFlag(false));
+      dispatch(pollsGlobalFlag(false));
+      dispatch(attendanceGlobalFlag(false));
     } else {
     }
   };
@@ -543,6 +586,7 @@ const NewMeeting = () => {
                   : "Organizer",
                 isPrimaryOrganizer: isPrimaryOrganizer,
               });
+              dispatch(viewMeetingFlag(true));
               // setIsOrganisers(isOrganiser);
             }}
           >
@@ -725,7 +769,7 @@ const NewMeeting = () => {
                 {record.status === "9" &&
                   isOrganiser &&
                   record.isQuickMeeting === false && (
-                    <Tooltip placement="topLeft" title={t("member")}>
+                    <Tooltip placement="topLeft" title={t("Attendance")}>
                       <img
                         src={member}
                         className="cursor-pointer"
@@ -884,6 +928,7 @@ const NewMeeting = () => {
                     role: "Participant",
                     isPrimaryOrganizer: false,
                   });
+                  dispatch(viewMeetingFlag(true));
                 }}
               />
             );
@@ -900,6 +945,7 @@ const NewMeeting = () => {
                     role: "Agenda Contributor",
                     isPrimaryOrganizer: false,
                   });
+                  dispatch(viewMeetingFlag(true));
                 }}
               />
             );
@@ -916,6 +962,7 @@ const NewMeeting = () => {
                     role: "Organizer",
                     isPrimaryOrganizer: isPrimaryOrganizer,
                   });
+                  dispatch(viewMeetingFlag(true));
                 }}
               />
             );
@@ -1020,6 +1067,7 @@ const NewMeeting = () => {
                               isPrimaryOrganizer: isPrimaryOrganizer,
                             });
                             setEditMeeting(true);
+                            dispatch(viewMeetingFlag(false));
                           }}
                         />
                       </Tooltip>
@@ -1053,6 +1101,7 @@ const NewMeeting = () => {
                               isPrimaryOrganizer: isPrimaryOrganizer,
                             });
                             setEditMeeting(true);
+                            dispatch(viewMeetingFlag(false));
                           }}
                         />
                       </Tooltip>

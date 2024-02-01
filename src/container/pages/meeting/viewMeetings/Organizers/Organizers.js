@@ -426,11 +426,11 @@ const Organizers = ({
               className={styles["Cancel_Meeting_Details"]}
               onClick={handleCancelMeetingNoPopup}
             />
-            <Button
+            {/* <Button
               text={t("Previous")}
               className={styles["publish_button_Organization"]}
               onClick={previousTabOrganizer}
-            />
+            /> */}
 
             <Button
               text={t("Next")}

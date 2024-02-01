@@ -113,6 +113,20 @@ const initialState = {
   viewProposeOrganizerMeetingPageFlag: false,
   proposeNewMeetingPageFlag: false,
   getUserProposedOrganizerData: [],
+  sideBarMeetingPopupState: false,
+  viewMeetingFlag: false,
+
+  meetingDetailsGlobalFlag: true,
+  organizersGlobalFlag: false,
+  agendaContributorsGlobalFlag: false,
+  participantsGlobalFlag: false,
+  agendaGlobalFlag: false,
+  meetingMaterialGlobalFlag: false,
+  minutesGlobalFlag: false,
+  proposedMeetingDatesGlobalFlag: false,
+  actionsGlobalFlag: false,
+  pollsGlobalFlag: false,
+  attendanceGlobalFlag: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -1937,6 +1951,97 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         proposeNewMeetingPageFlag: action.response,
+      };
+    }
+
+    case actions.SIDEBAR_POPUP_ADVANCE_MEETING: {
+      return {
+        ...state,
+        sideBarMeetingPopupState: action.response,
+      };
+    }
+
+    case actions.VIEW_MEETING_FLAG: {
+      return {
+        ...state,
+        viewMeetingFlag: action.response,
+      };
+    }
+
+    case actions.MEETING_DETAILS_GLOBAL_FLAG: {
+      return {
+        ...state,
+        meetingDetailsGlobalFlag: action.response,
+      };
+    }
+
+    case actions.ORGANIZERS_GLOBAL_FLAG: {
+      return {
+        ...state,
+        organizersGlobalFlag: action.response,
+      };
+    }
+
+    case actions.AGENDA_CONTRIBUTORS_GLOBAL_FLAG: {
+      return {
+        ...state,
+        agendaContributorsGlobalFlag: action.response,
+      };
+    }
+
+    case actions.PARTICIPANTS_GLOBAL_FLAG: {
+      return {
+        ...state,
+        participantsGlobalFlag: action.response,
+      };
+    }
+
+    case actions.AGENDA_GLOBAL_FLAG: {
+      return {
+        ...state,
+        agendaGlobalFlag: action.response,
+      };
+    }
+
+    case actions.MEETING_MATERIAL_GLOBAL_FLAG: {
+      return {
+        ...state,
+        meetingMaterialGlobalFlag: action.response,
+      };
+    }
+
+    case actions.MINUTES_GLOBAL_FLAG: {
+      return {
+        ...state,
+        minutesGlobalFlag: action.response,
+      };
+    }
+
+    case actions.PROPOSED_MEETING_DATES_GLOBAL_FLAG: {
+      return {
+        ...state,
+        proposedMeetingDatesGlobalFlag: action.response,
+      };
+    }
+
+    case actions.ACTIONS_GLOBAL_FLAG: {
+      return {
+        ...state,
+        actionsGlobalFlag: action.response,
+      };
+    }
+
+    case actions.POLLS_GLOBAL_FLAG: {
+      return {
+        ...state,
+        pollsGlobalFlag: action.response,
+      };
+    }
+
+    case actions.ATTENDANCE_GLOBAL_FLAG: {
+      return {
+        ...state,
+        attendanceGlobalFlag: action.response,
       };
     }
 

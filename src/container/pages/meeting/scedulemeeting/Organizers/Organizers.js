@@ -28,6 +28,17 @@ import {
   sendRecentNotificationOrganizerModal,
   UpdateMeetingUserForOrganizers,
   showCancelModalOrganizers,
+  meetingDetailsGlobalFlag,
+  organizersGlobalFlag,
+  agendaContributorsGlobalFlag,
+  participantsGlobalFlag,
+  agendaGlobalFlag,
+  meetingMaterialGlobalFlag,
+  minutesGlobalFlag,
+  proposedMeetingDatesGlobalFlag,
+  actionsGlobalFlag,
+  pollsGlobalFlag,
+  attendanceGlobalFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import ModalOrganizor from "./ModalAddUserOrganizer/ModalOrganizor";
 import ModalCrossIcon from "./ModalCrossIconClick/ModalCrossIcon";
@@ -574,6 +585,18 @@ const Organizers = ({
     setRowsData([]);
     dispatch(saveMeetingFlag(false));
     dispatch(editMeetingFlag(false));
+
+    dispatch(meetingDetailsGlobalFlag(false));
+    dispatch(organizersGlobalFlag(false));
+    dispatch(agendaContributorsGlobalFlag(true));
+    dispatch(participantsGlobalFlag(false));
+    dispatch(agendaGlobalFlag(false));
+    dispatch(meetingMaterialGlobalFlag(false));
+    dispatch(minutesGlobalFlag(false));
+    dispatch(proposedMeetingDatesGlobalFlag(false));
+    dispatch(actionsGlobalFlag(false));
+    dispatch(pollsGlobalFlag(false));
+    dispatch(attendanceGlobalFlag(false));
   };
 
   const enableEditButton = () => {
@@ -977,11 +1000,11 @@ const Organizers = ({
                     onClick={handleCancelOrganizer}
                   />
 
-                  <Button
+                  {/* <Button
                     text={t("Previous")}
                     className={styles["publish_button_Organization"]}
                     onClick={previousTabOrganizer}
-                  />
+                  /> */}
 
                   <Button
                     text={t("Next")}

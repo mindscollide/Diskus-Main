@@ -19,6 +19,17 @@ import {
   searchNewUserMeeting,
   showCancelMeetingMaterial,
   showPreviousConfirmationModal,
+  meetingDetailsGlobalFlag,
+  organizersGlobalFlag,
+  agendaContributorsGlobalFlag,
+  participantsGlobalFlag,
+  agendaGlobalFlag,
+  meetingMaterialGlobalFlag,
+  minutesGlobalFlag,
+  proposedMeetingDatesGlobalFlag,
+  actionsGlobalFlag,
+  pollsGlobalFlag,
+  attendanceGlobalFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import { getMeetingMaterialAPI } from "../../../../../store/actions/NewMeetingActions";
 import {
@@ -290,6 +301,17 @@ const MeetingMaterial = ({
     // }
     setMeetingMaterial(false);
     setMinutes(true);
+    dispatch(meetingDetailsGlobalFlag(false));
+    dispatch(organizersGlobalFlag(false));
+    dispatch(agendaContributorsGlobalFlag(false));
+    dispatch(participantsGlobalFlag(false));
+    dispatch(agendaGlobalFlag(false));
+    dispatch(meetingMaterialGlobalFlag(false));
+    dispatch(minutesGlobalFlag(true));
+    dispatch(proposedMeetingDatesGlobalFlag(false));
+    dispatch(actionsGlobalFlag(false));
+    dispatch(pollsGlobalFlag(false));
+    dispatch(attendanceGlobalFlag(false));
   };
   const handlePublish = () => {
     let Data = { MeetingID: currentMeeting, StatusID: 1 };
@@ -373,11 +395,11 @@ const MeetingMaterial = ({
             onClick={handleCancelButton}
           />
           {/* <Button text={t("Save")} className={styles["Cancel_Classname"]} /> */}
-          <Button
+          {/* <Button
             text={t("Previous")}
             className={styles["Save_Classname"]}
             onClick={handlePreviousButtonMeetingMaterial}
-          />
+          /> */}
           <Button
             text={t("Next")}
             className={styles["Save_Classname"]}

@@ -22,6 +22,17 @@ import {
   showAddAgendaContributor,
   showAgendaContributorsModals,
   showCancelModalAgendaContributor,
+  meetingDetailsGlobalFlag,
+  organizersGlobalFlag,
+  agendaContributorsGlobalFlag,
+  participantsGlobalFlag,
+  agendaGlobalFlag,
+  meetingMaterialGlobalFlag,
+  minutesGlobalFlag,
+  proposedMeetingDatesGlobalFlag,
+  actionsGlobalFlag,
+  pollsGlobalFlag,
+  attendanceGlobalFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import ModalCrossIcon from "../Organizers/ModalCrossIconClick/ModalCrossIcon";
 import tick from "../../../../../assets/images/PNG tick.png";
@@ -456,6 +467,17 @@ const AgendaContributers = ({
     // dispatch(ShowNextConfirmationModal(true));
     setAgendaContributors(false);
     setParticipants(true);
+    dispatch(meetingDetailsGlobalFlag(false));
+    dispatch(organizersGlobalFlag(false));
+    dispatch(agendaContributorsGlobalFlag(false));
+    dispatch(participantsGlobalFlag(true));
+    dispatch(agendaGlobalFlag(false));
+    dispatch(meetingMaterialGlobalFlag(false));
+    dispatch(minutesGlobalFlag(false));
+    dispatch(proposedMeetingDatesGlobalFlag(false));
+    dispatch(actionsGlobalFlag(false));
+    dispatch(pollsGlobalFlag(false));
+    dispatch(attendanceGlobalFlag(false));
   };
   const previousTabOrganizer = () => {
     // dispatch(showPreviousConfirmationModal(true));
@@ -749,11 +771,11 @@ const AgendaContributers = ({
                 className={styles["Cancel_Organization"]}
                 onClick={enableNotificatoinTable}
               />
-              <Button
+              {/* <Button
                 text={t("Previous")}
                 className={styles["publish_button_AgendaContributor"]}
                 onClick={previousTabOrganizer}
-              />
+              /> */}
               <Button
                 text={t("Next")}
                 className={styles["publish_button_AgendaContributor"]}

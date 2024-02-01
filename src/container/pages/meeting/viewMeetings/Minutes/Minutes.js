@@ -1380,11 +1380,11 @@ const Minutes = ({
             />
           ) : null}
 
-          <Button
+          {/* <Button
             text={t("Previous")}
             className={styles["Previous_Button"]}
             onClick={handlePreviousButton}
-          />
+          /> */}
           <Button
             text={t("Next")}
             onClick={handleNextButton}

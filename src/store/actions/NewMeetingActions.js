@@ -486,12 +486,6 @@ const SaveMeetingDetialsNewApiFunction = (
                   "Meeting_MeetingServiceManager_SaveMeetingDetails_01".toLowerCase()
                 )
             ) {
-              // dispatch(
-              //   handleSaveMeetingSuccess(
-              //     response.data.responseResult,
-              //     ""
-              //   )
-              // );
               localStorage.setItem(
                 "currentMeetingLS",
                 response.data.responseResult.meetingID
@@ -569,6 +563,20 @@ const SaveMeetingDetialsNewApiFunction = (
                       data.MeetingDetails.MeetingStatusID
                     )
                   );
+
+                  dispatch(meetingDetailsGlobalFlag(false));
+                  dispatch(organizersGlobalFlag(true));
+                  dispatch(agendaContributorsGlobalFlag(false));
+                  dispatch(participantsGlobalFlag(false));
+                  dispatch(agendaGlobalFlag(false));
+                  dispatch(meetingMaterialGlobalFlag(false));
+                  dispatch(minutesGlobalFlag(false));
+                  dispatch(proposedMeetingDatesGlobalFlag(false));
+                  dispatch(actionsGlobalFlag(false));
+                  dispatch(pollsGlobalFlag(false));
+                  dispatch(attendanceGlobalFlag(false));
+                  setorganizers(true);
+                  setmeetingDetails(false);
                   // let MappedData = {
                   //   MeetingID: response.data.responseResult.meetingID,
                   //   MeetingTitle: meetingDetails.MeetingTitle,
@@ -606,18 +614,31 @@ const SaveMeetingDetialsNewApiFunction = (
                 let Data = {
                   MeetingID: Number(response.data.responseResult.meetingID),
                 };
-                await dispatch(
-                  GetAllMeetingDetailsApiFunc(
-                    navigate,
-                    t,
-                    Data,
-                    true,
-                    setCurrentMeetingID,
-                    setSceduleMeeting,
-                    setDataroomMapFolderId,
-                    data.MeetingDetails.MeetingStatusID
-                  )
-                );
+                // await dispatch(
+                //   GetAllMeetingDetailsApiFunc(
+                //     navigate,
+                //     t,
+                //     Data,
+                //     true,
+                //     setCurrentMeetingID,
+                //     setSceduleMeeting,
+                //     setDataroomMapFolderId,
+                //     data.MeetingDetails.MeetingStatusID
+                //   )
+                // );
+                dispatch(meetingDetailsGlobalFlag(false));
+                dispatch(organizersGlobalFlag(true));
+                dispatch(agendaContributorsGlobalFlag(false));
+                dispatch(participantsGlobalFlag(false));
+                dispatch(agendaGlobalFlag(false));
+                dispatch(meetingMaterialGlobalFlag(false));
+                dispatch(minutesGlobalFlag(false));
+                dispatch(proposedMeetingDatesGlobalFlag(false));
+                dispatch(actionsGlobalFlag(false));
+                dispatch(pollsGlobalFlag(false));
+                dispatch(attendanceGlobalFlag(false));
+                setorganizers(true);
+                setmeetingDetails(false);
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -1000,6 +1021,13 @@ const clearMeetingState = () => {
 const showCancelModalmeetingDeitals = (response) => {
   return {
     type: actions.CANCEL_BUTTON_MODAL_MEETING_DETIALS_TAB,
+    response: response,
+  };
+};
+
+const viewMeetingFlag = (response) => {
+  return {
+    type: actions.VIEW_MEETING_FLAG,
     response: response,
   };
 };
@@ -7164,6 +7192,101 @@ const getUserWiseProposedDatesMainApi = (navigate, t, Data) => {
 
 // get user wise proposed dates in unpublished meeting on organizer end
 
+const sidebarPopupAdvanceMeeting = (response) => {
+  return {
+    type: actions.SIDEBAR_POPUP_ADVANCE_MEETING,
+    response: response,
+  };
+};
+
+//Meeting Details
+const meetingDetailsGlobalFlag = (response) => {
+  return {
+    type: actions.MEETING_DETAILS_GLOBAL_FLAG,
+    response: response,
+  };
+};
+
+//Organizers
+const organizersGlobalFlag = (response) => {
+  return {
+    type: actions.ORGANIZERS_GLOBAL_FLAG,
+    response: response,
+  };
+};
+
+//Agenda Contributors
+const agendaContributorsGlobalFlag = (response) => {
+  return {
+    type: actions.AGENDA_CONTRIBUTORS_GLOBAL_FLAG,
+    response: response,
+  };
+};
+
+//Participants
+const participantsGlobalFlag = (response) => {
+  return {
+    type: actions.PARTICIPANTS_GLOBAL_FLAG,
+    response: response,
+  };
+};
+
+//Agenda
+const agendaGlobalFlag = (response) => {
+  return {
+    type: actions.AGENDA_GLOBAL_FLAG,
+    response: response,
+  };
+};
+
+//Meeting Material
+const meetingMaterialGlobalFlag = (response) => {
+  return {
+    type: actions.MEETING_MATERIAL_GLOBAL_FLAG,
+    response: response,
+  };
+};
+
+//Minutes
+const minutesGlobalFlag = (response) => {
+  return {
+    type: actions.MINUTES_GLOBAL_FLAG,
+    response: response,
+  };
+};
+
+//Proposed Meeting Dates
+const proposedMeetingDatesGlobalFlag = (response) => {
+  return {
+    type: actions.PROPOSED_MEETING_DATES_GLOBAL_FLAG,
+    response: response,
+  };
+};
+
+//Actions Page
+const actionsGlobalFlag = (response) => {
+  return {
+    type: actions.ACTIONS_GLOBAL_FLAG,
+    response: response,
+  };
+};
+
+//Polls
+const pollsGlobalFlag = (response) => {
+  return {
+    type: actions.POLLS_GLOBAL_FLAG,
+    response: response,
+  };
+};
+
+//Attendance
+const attendanceGlobalFlag = (response) => {
+  return {
+    type: actions.ATTENDANCE_GLOBAL_FLAG,
+    response: response,
+  };
+};
+
 export {
   clearResponseNewMeetingReducerMessage,
   getAllAgendaContributorApi,
@@ -7293,4 +7416,17 @@ export {
   proposeNewMeetingPageFlag,
   meetingNotConductedMQTT,
   getUserWiseProposedDatesMainApi,
+  sidebarPopupAdvanceMeeting,
+  viewMeetingFlag,
+  meetingDetailsGlobalFlag,
+  organizersGlobalFlag,
+  agendaContributorsGlobalFlag,
+  participantsGlobalFlag,
+  agendaGlobalFlag,
+  meetingMaterialGlobalFlag,
+  minutesGlobalFlag,
+  proposedMeetingDatesGlobalFlag,
+  actionsGlobalFlag,
+  pollsGlobalFlag,
+  attendanceGlobalFlag,
 };

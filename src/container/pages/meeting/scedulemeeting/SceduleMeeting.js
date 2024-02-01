@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import styles from "./SceduleMeeting.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -20,8 +21,19 @@ import {
   GetAllMeetingRemindersApiFrequencyNew,
   GetAllMeetingTypesNewFunction,
   showCancelModalAgenda,
+  meetingDetailsGlobalFlag,
+  organizersGlobalFlag,
+  agendaContributorsGlobalFlag,
+  participantsGlobalFlag,
+  agendaGlobalFlag,
+  meetingMaterialGlobalFlag,
+  minutesGlobalFlag,
+  proposedMeetingDatesGlobalFlag,
+  actionsGlobalFlag,
+  pollsGlobalFlag,
+  attendanceGlobalFlag,
 } from "../../../../store/actions/NewMeetingActions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 const SceduleMeeting = ({
   setEdiorRole,
@@ -35,6 +47,7 @@ const SceduleMeeting = ({
   dataroomMapFolderId,
 }) => {
   const { t } = useTranslation();
+  const { NewMeetingreducer } = useSelector((state) => state);
   const [meetingDetails, setmeetingDetails] = useState(true);
   const [organizers, setorganizers] = useState(false);
   const [agendaContributors, setAgendaContributors] = useState(false);
@@ -102,6 +115,18 @@ const SceduleMeeting = ({
       setAttendance(false);
       setPolls(false);
       setMeetingMaterial(false);
+
+      dispatch(meetingDetailsGlobalFlag(true));
+      dispatch(organizersGlobalFlag(false));
+      dispatch(agendaContributorsGlobalFlag(false));
+      dispatch(participantsGlobalFlag(false));
+      dispatch(agendaGlobalFlag(false));
+      dispatch(meetingMaterialGlobalFlag(false));
+      dispatch(minutesGlobalFlag(false));
+      dispatch(proposedMeetingDatesGlobalFlag(false));
+      dispatch(actionsGlobalFlag(false));
+      dispatch(pollsGlobalFlag(false));
+      dispatch(attendanceGlobalFlag(false));
     }
   };
 
@@ -116,6 +141,18 @@ const SceduleMeeting = ({
     setAttendance(false);
     setPolls(false);
     setMeetingMaterial(false);
+
+    dispatch(meetingDetailsGlobalFlag(false));
+    dispatch(organizersGlobalFlag(true));
+    dispatch(agendaContributorsGlobalFlag(false));
+    dispatch(participantsGlobalFlag(false));
+    dispatch(agendaGlobalFlag(false));
+    dispatch(meetingMaterialGlobalFlag(false));
+    dispatch(minutesGlobalFlag(false));
+    dispatch(proposedMeetingDatesGlobalFlag(false));
+    dispatch(actionsGlobalFlag(false));
+    dispatch(pollsGlobalFlag(false));
+    dispatch(attendanceGlobalFlag(false));
   };
 
   const showAgendaContributers = () => {
@@ -129,6 +166,18 @@ const SceduleMeeting = ({
     setAttendance(false);
     setPolls(false);
     setMeetingMaterial(false);
+
+    dispatch(meetingDetailsGlobalFlag(false));
+    dispatch(organizersGlobalFlag(false));
+    dispatch(agendaContributorsGlobalFlag(true));
+    dispatch(participantsGlobalFlag(false));
+    dispatch(agendaGlobalFlag(false));
+    dispatch(meetingMaterialGlobalFlag(false));
+    dispatch(minutesGlobalFlag(false));
+    dispatch(proposedMeetingDatesGlobalFlag(false));
+    dispatch(actionsGlobalFlag(false));
+    dispatch(pollsGlobalFlag(false));
+    dispatch(attendanceGlobalFlag(false));
   };
 
   const showParticipants = () => {
@@ -142,6 +191,18 @@ const SceduleMeeting = ({
     setAttendance(false);
     setPolls(false);
     setMeetingMaterial(false);
+
+    dispatch(meetingDetailsGlobalFlag(false));
+    dispatch(organizersGlobalFlag(false));
+    dispatch(agendaContributorsGlobalFlag(false));
+    dispatch(participantsGlobalFlag(true));
+    dispatch(agendaGlobalFlag(false));
+    dispatch(meetingMaterialGlobalFlag(false));
+    dispatch(minutesGlobalFlag(false));
+    dispatch(proposedMeetingDatesGlobalFlag(false));
+    dispatch(actionsGlobalFlag(false));
+    dispatch(pollsGlobalFlag(false));
+    dispatch(attendanceGlobalFlag(false));
   };
 
   const showAgenda = () => {
@@ -156,6 +217,18 @@ const SceduleMeeting = ({
     setPolls(false);
     setMeetingMaterial(false);
     dispatch(showCancelModalAgenda(false));
+
+    dispatch(meetingDetailsGlobalFlag(false));
+    dispatch(organizersGlobalFlag(false));
+    dispatch(agendaContributorsGlobalFlag(false));
+    dispatch(participantsGlobalFlag(false));
+    dispatch(agendaGlobalFlag(true));
+    dispatch(meetingMaterialGlobalFlag(false));
+    dispatch(minutesGlobalFlag(false));
+    dispatch(proposedMeetingDatesGlobalFlag(false));
+    dispatch(actionsGlobalFlag(false));
+    dispatch(pollsGlobalFlag(false));
+    dispatch(attendanceGlobalFlag(false));
   };
 
   const showMeetingMaterial = () => {
@@ -169,6 +242,18 @@ const SceduleMeeting = ({
     setAttendance(false);
     setPolls(false);
     setmeetingDetails(false);
+
+    dispatch(meetingDetailsGlobalFlag(false));
+    dispatch(organizersGlobalFlag(false));
+    dispatch(agendaContributorsGlobalFlag(false));
+    dispatch(participantsGlobalFlag(false));
+    dispatch(agendaGlobalFlag(false));
+    dispatch(meetingMaterialGlobalFlag(true));
+    dispatch(minutesGlobalFlag(false));
+    dispatch(proposedMeetingDatesGlobalFlag(false));
+    dispatch(actionsGlobalFlag(false));
+    dispatch(pollsGlobalFlag(false));
+    dispatch(attendanceGlobalFlag(false));
   };
 
   const showMinutes = () => {
@@ -182,6 +267,18 @@ const SceduleMeeting = ({
     setAttendance(false);
     setPolls(false);
     setactionsPage(false);
+
+    dispatch(meetingDetailsGlobalFlag(false));
+    dispatch(organizersGlobalFlag(false));
+    dispatch(agendaContributorsGlobalFlag(false));
+    dispatch(participantsGlobalFlag(false));
+    dispatch(agendaGlobalFlag(false));
+    dispatch(meetingMaterialGlobalFlag(false));
+    dispatch(minutesGlobalFlag(true));
+    dispatch(proposedMeetingDatesGlobalFlag(false));
+    dispatch(actionsGlobalFlag(false));
+    dispatch(pollsGlobalFlag(false));
+    dispatch(attendanceGlobalFlag(false));
   };
 
   const showActions = () => {
@@ -195,6 +292,18 @@ const SceduleMeeting = ({
     setAttendance(false);
     setPolls(false);
     setmeetingDetails(false);
+
+    dispatch(meetingDetailsGlobalFlag(false));
+    dispatch(organizersGlobalFlag(false));
+    dispatch(agendaContributorsGlobalFlag(false));
+    dispatch(participantsGlobalFlag(false));
+    dispatch(agendaGlobalFlag(false));
+    dispatch(meetingMaterialGlobalFlag(false));
+    dispatch(minutesGlobalFlag(false));
+    dispatch(proposedMeetingDatesGlobalFlag(false));
+    dispatch(actionsGlobalFlag(true));
+    dispatch(pollsGlobalFlag(false));
+    dispatch(attendanceGlobalFlag(false));
   };
 
   const ShowPolls = () => {
@@ -208,6 +317,18 @@ const SceduleMeeting = ({
     setorganizers(false);
     setAttendance(false);
     setmeetingDetails(false);
+
+    dispatch(meetingDetailsGlobalFlag(false));
+    dispatch(organizersGlobalFlag(false));
+    dispatch(agendaContributorsGlobalFlag(false));
+    dispatch(participantsGlobalFlag(false));
+    dispatch(agendaGlobalFlag(false));
+    dispatch(meetingMaterialGlobalFlag(false));
+    dispatch(minutesGlobalFlag(false));
+    dispatch(proposedMeetingDatesGlobalFlag(false));
+    dispatch(actionsGlobalFlag(false));
+    dispatch(pollsGlobalFlag(true));
+    dispatch(attendanceGlobalFlag(false));
   };
 
   const showAttendance = () => {
@@ -221,6 +342,18 @@ const SceduleMeeting = ({
     setorganizers(false);
     setmeetingDetails(false);
     setPolls(false);
+
+    dispatch(meetingDetailsGlobalFlag(false));
+    dispatch(organizersGlobalFlag(false));
+    dispatch(agendaContributorsGlobalFlag(false));
+    dispatch(participantsGlobalFlag(false));
+    dispatch(agendaGlobalFlag(false));
+    dispatch(meetingMaterialGlobalFlag(false));
+    dispatch(minutesGlobalFlag(false));
+    dispatch(proposedMeetingDatesGlobalFlag(false));
+    dispatch(actionsGlobalFlag(false));
+    dispatch(pollsGlobalFlag(false));
+    dispatch(attendanceGlobalFlag(true));
   };
 
   return (
@@ -386,7 +519,7 @@ const SceduleMeeting = ({
               </Col>
             </Row>
 
-            {meetingDetails && (
+            {meetingDetails && NewMeetingreducer.meetingDetailsGlobalFlag && (
               <MeetingDetails
                 setorganizers={setorganizers}
                 setmeetingDetails={setmeetingDetails}
@@ -408,7 +541,7 @@ const SceduleMeeting = ({
               />
             )}
 
-            {organizers && (
+            {organizers && NewMeetingreducer.organizersGlobalFlag && (
               <Organizers
                 setorganizers={setorganizers}
                 setmeetingDetails={setmeetingDetails}
@@ -429,22 +562,23 @@ const SceduleMeeting = ({
                 setDataroomMapFolderId={setDataroomMapFolderId}
               />
             )}
-            {agendaContributors && (
-              <AgendaContributers
-                setorganizers={setorganizers}
-                setCurrentMeetingID={setCurrentMeetingID}
-                currentMeeting={currentMeeting}
-                setSceduleMeeting={setSceduleMeeting}
-                setAgendaContributors={setAgendaContributors}
-                setParticipants={setParticipants}
-                setEditMeeting={setEditMeeting}
-                isEditMeeting={isEditMeeting}
-                editorRole={editorRole}
-                setEdiorRole={setEdiorRole}
-                setDataroomMapFolderId={setDataroomMapFolderId}
-              />
-            )}
-            {participants && (
+            {agendaContributors &&
+              NewMeetingreducer.agendaContributorsGlobalFlag && (
+                <AgendaContributers
+                  setorganizers={setorganizers}
+                  setCurrentMeetingID={setCurrentMeetingID}
+                  currentMeeting={currentMeeting}
+                  setSceduleMeeting={setSceduleMeeting}
+                  setAgendaContributors={setAgendaContributors}
+                  setParticipants={setParticipants}
+                  setEditMeeting={setEditMeeting}
+                  isEditMeeting={isEditMeeting}
+                  editorRole={editorRole}
+                  setEdiorRole={setEdiorRole}
+                  setDataroomMapFolderId={setDataroomMapFolderId}
+                />
+              )}
+            {participants && NewMeetingreducer.participantsGlobalFlag && (
               <Participants
                 setParticipants={setParticipants}
                 setAgenda={setAgenda}
@@ -461,7 +595,7 @@ const SceduleMeeting = ({
                 setEdiorRole={setEdiorRole}
               />
             )}
-            {agenda && (
+            {agenda && NewMeetingreducer.agendaGlobalFlag && (
               <Agenda
                 setSceduleMeeting={setSceduleMeeting}
                 currentMeeting={currentMeeting}
@@ -477,7 +611,7 @@ const SceduleMeeting = ({
                 setEdiorRole={setEdiorRole}
               />
             )}
-            {meetingMaterial && (
+            {meetingMaterial && NewMeetingreducer.meetingMaterialGlobalFlag && (
               <MeetingMaterial
                 setSceduleMeeting={setSceduleMeeting}
                 setMeetingMaterial={setMeetingMaterial}
@@ -493,7 +627,7 @@ const SceduleMeeting = ({
                 setEdiorRole={setEdiorRole}
               />
             )}
-            {minutes && (
+            {minutes && NewMeetingreducer.minutesGlobalFlag && (
               <Minutes
                 setMinutes={setMinutes}
                 setMeetingMaterial={setMeetingMaterial}
@@ -508,7 +642,7 @@ const SceduleMeeting = ({
                 setEdiorRole={setEdiorRole}
               />
             )}
-            {actionsPage && (
+            {actionsPage && NewMeetingreducer.actionsGlobalFlag && (
               <Actions
                 setMinutes={setMinutes}
                 setSceduleMeeting={setSceduleMeeting}
@@ -525,7 +659,7 @@ const SceduleMeeting = ({
                 setEdiorRole={setEdiorRole}
               />
             )}
-            {polls && (
+            {polls && NewMeetingreducer.pollsGlobalFlag && (
               <Polls
                 setSceduleMeeting={setSceduleMeeting}
                 setPolls={setPolls}
@@ -540,7 +674,7 @@ const SceduleMeeting = ({
                 setEdiorRole={setEdiorRole}
               />
             )}
-            {attendance && (
+            {attendance && NewMeetingreducer.attendanceGlobalFlag && (
               <Attendence
                 currentMeeting={currentMeeting}
                 setCurrentMeetingID={setCurrentMeetingID}

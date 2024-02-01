@@ -1702,5 +1702,8 @@
   "Screen-share": "Screen Share",
   "Layout": "Layout",
   "Collapse": "Collapse",
-  "Downloading-file": "Downloading file"
+  "Downloading-file": "Downloading file",
+  "Description-and-attachement": "Description And Attachement",
+  "Attendace": "Attendance",
+  "Send-reply": "Send reply"
 }

@@ -27,6 +27,17 @@ import {
   showAddParticipantsModal,
   showCancelModalPartipants,
   showCrossConfirmationModal,
+  meetingDetailsGlobalFlag,
+  organizersGlobalFlag,
+  agendaContributorsGlobalFlag,
+  participantsGlobalFlag,
+  agendaGlobalFlag,
+  meetingMaterialGlobalFlag,
+  minutesGlobalFlag,
+  proposedMeetingDatesGlobalFlag,
+  actionsGlobalFlag,
+  pollsGlobalFlag,
+  attendanceGlobalFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import AddParticipantModal from "./AddParticipantModal/AddParticipantModal";
 import { CancelParticipants } from "./CancelParticipants/CancelParticipants";
@@ -415,6 +426,17 @@ const Participants = ({
     // dispatch(ShowNextConfirmationModal(true));
     setAgenda(true);
     setParticipants(false);
+    dispatch(meetingDetailsGlobalFlag(false));
+    dispatch(organizersGlobalFlag(false));
+    dispatch(agendaContributorsGlobalFlag(false));
+    dispatch(participantsGlobalFlag(false));
+    dispatch(agendaGlobalFlag(true));
+    dispatch(meetingMaterialGlobalFlag(false));
+    dispatch(minutesGlobalFlag(false));
+    dispatch(proposedMeetingDatesGlobalFlag(false));
+    dispatch(actionsGlobalFlag(false));
+    dispatch(pollsGlobalFlag(false));
+    dispatch(attendanceGlobalFlag(false));
   };
 
   const previousTabOrganizer = () => {
@@ -693,11 +715,11 @@ const Participants = ({
                         onClick={handleCancelParticipants}
                       />
 
-                      <Button
+                      {/* <Button
                         text={t("Previous")}
                         className={styles["publish_button_participant"]}
                         onClick={previousTabOrganizer}
-                      />
+                      /> */}
 
                       <Button
                         text={t("Next")}
@@ -720,11 +742,11 @@ const Participants = ({
                         onClick={handleCancelParticipants}
                       />
 
-                      <Button
+                      {/* <Button
                         text={t("Previous")}
                         className={styles["publish_button_participant"]}
                         onClick={previousTabOrganizer}
-                      />
+                      /> */}
 
                       <Button
                         text={t("Next")}

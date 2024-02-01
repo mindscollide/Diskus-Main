@@ -428,11 +428,11 @@ const Actions = ({
                     className={styles["CloneMeetingButton"]}
                     onClick={handleCancelActionNoPopup}
                   />
-                  <Button
+                  {/* <Button
                     text={t("Previous")}
                     className={styles["SaveButtonActions"]}
                     onClick={prevTabToMinutes}
-                  />
+                  /> */}
                   {Number(editorRole.status) === 9 &&
                   (editorRole.role === "Participant" ||
                     editorRole.role === "Agenda Contributor") ? null : (

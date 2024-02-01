@@ -24,6 +24,17 @@ import {
   GetAllAgendaWiseMinutesApiFunc,
   GetAllUserAgendaRightsApiFunc,
   showVoteAgendaModal,
+  meetingDetailsGlobalFlag,
+  organizersGlobalFlag,
+  agendaContributorsGlobalFlag,
+  participantsGlobalFlag,
+  agendaGlobalFlag,
+  meetingMaterialGlobalFlag,
+  minutesGlobalFlag,
+  proposedMeetingDatesGlobalFlag,
+  actionsGlobalFlag,
+  pollsGlobalFlag,
+  attendanceGlobalFlag,
 } from "./NewMeetingActions";
 
 const clearAgendaReducerState = () => {
@@ -1161,7 +1172,9 @@ const AddUpdateAdvanceMeetingAgenda = (
   setDataroomMapFolderId,
   setSceduleMeeting,
   setPublishState,
-  setCalendarViewModal
+  setCalendarViewModal,
+  setMeetingMaterial,
+  setAgenda
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let getMeetingData = {
@@ -1196,7 +1209,9 @@ const AddUpdateAdvanceMeetingAgenda = (
               setDataroomMapFolderId,
               setSceduleMeeting,
               setPublishState,
-              setCalendarViewModal
+              setCalendarViewModal,
+              setMeetingMaterial,
+              setAgenda
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -1295,6 +1310,19 @@ const AddUpdateAdvanceMeetingAgenda = (
                     t
                   )
                 );
+                setMeetingMaterial(true);
+                setAgenda(false);
+                dispatch(meetingDetailsGlobalFlag(false));
+                dispatch(organizersGlobalFlag(false));
+                dispatch(agendaContributorsGlobalFlag(false));
+                dispatch(participantsGlobalFlag(false));
+                dispatch(agendaGlobalFlag(false));
+                dispatch(meetingMaterialGlobalFlag(true));
+                dispatch(minutesGlobalFlag(false));
+                dispatch(proposedMeetingDatesGlobalFlag(false));
+                dispatch(actionsGlobalFlag(false));
+                dispatch(pollsGlobalFlag(false));
+                dispatch(attendanceGlobalFlag(false));
               } else if (flag === 2) {
                 dispatch(
                   UpdateOrganizersMeeting(
@@ -1311,6 +1339,19 @@ const AddUpdateAdvanceMeetingAgenda = (
                   )
                 );
                 setSceduleMeeting(false);
+                setMeetingMaterial(false);
+                setAgenda(false);
+                dispatch(meetingDetailsGlobalFlag(false));
+                dispatch(organizersGlobalFlag(false));
+                dispatch(agendaContributorsGlobalFlag(false));
+                dispatch(participantsGlobalFlag(false));
+                dispatch(agendaGlobalFlag(false));
+                dispatch(meetingMaterialGlobalFlag(false));
+                dispatch(minutesGlobalFlag(false));
+                dispatch(proposedMeetingDatesGlobalFlag(false));
+                dispatch(actionsGlobalFlag(false));
+                dispatch(pollsGlobalFlag(false));
+                dispatch(attendanceGlobalFlag(false));
               }
             } else if (
               response.data.responseResult.responseMessage
