@@ -101,6 +101,7 @@ const Agenda = ({
   const [fileForSend, setFileForSend] = useState([]);
   const [allPresenters, setAllPresenters] = useState([]);
   const [presenters, setPresenters] = useState([]);
+  const [isPublishedState, setIsPublishedState] = useState(false);
   const [savedViewAgenda, setsavedViewAgenda] = useState(false);
 
   const [open, setOpen] = useState({
@@ -699,6 +700,9 @@ const Agenda = ({
     ) {
       let newData =
         MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList;
+      let isPublishedAgenda =
+        MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.isPublished;
+      setIsPublishedState(isPublishedAgenda);
       setRows((prevRows) => {
         const updatedRows = newData.map((agendaItem) => {
           const { id, presenterID, userID, subAgenda, ...rest } = agendaItem;
@@ -1618,14 +1622,22 @@ const Agenda = ({
                   Number(editorRole.status) === 12) &&
                 (editorRole.status !== "9" || editorRole.status !== 9) ? (
                   <Button
-                    disableBtn={Number(currentMeeting) === 0 ? true : false}
+                    disableBtn={
+                      Number(currentMeeting) === 0 && isPublishedState === false
+                        ? true
+                        : false
+                    }
                     text={t("Publish")}
                     className={styles["Save_Agenda_btn"]}
                     onClick={() => saveAgendaData(2)}
                   />
                 ) : isEditMeeting === true ? null : (
                   <Button
-                    disableBtn={Number(currentMeeting) === 0 ? true : false}
+                    disableBtn={
+                      Number(currentMeeting) === 0 && isPublishedState === false
+                        ? true
+                        : false
+                    }
                     text={t("Publish")}
                     className={styles["Save_Agenda_btn"]}
                     onClick={() => saveAgendaData(2)}

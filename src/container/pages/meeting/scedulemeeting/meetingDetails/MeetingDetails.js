@@ -168,6 +168,7 @@ const MeetingDetails = ({
       label: "",
     },
     IsVideoCall: true,
+    IsPublished: false,
   });
 
   // useEffect(() => {
@@ -244,6 +245,7 @@ const MeetingDetails = ({
           label: "",
         },
         IsVideoCall: false,
+        IsPublished: false,
       });
       setRows([
         {
@@ -516,6 +518,7 @@ const MeetingDetails = ({
           Location: meetingDetails.Location,
           Description: meetingDetails.Description,
           IsVideoChat: meetingDetails.IsVideoCall,
+          IsPublished: meetingDetails.IsPublished,
           IsTalkGroup: meetingDetails.groupChat,
           OrganizationId: organizationID,
           MeetingDates: newArr,
@@ -603,6 +606,7 @@ const MeetingDetails = ({
           Location: meetingDetails.Location,
           Description: meetingDetails.Description,
           IsVideoChat: meetingDetails.IsVideoCall,
+          IsPublished: meetingDetails.IsPublished,
           IsTalkGroup: meetingDetails.groupChat,
           OrganizationId: organizationID,
           MeetingDates: newArr,
@@ -688,6 +692,7 @@ const MeetingDetails = ({
           Location: meetingDetails.Location,
           Description: meetingDetails.Description,
           IsVideoChat: meetingDetails.IsVideoCall,
+          IsPublished: meetingDetails.IsPublished,
           IsTalkGroup: meetingDetails.groupChat,
           OrganizationId: organizationID,
           MeetingDates: newArr,
@@ -969,6 +974,7 @@ const MeetingDetails = ({
       ) {
         // setEditMeeting(true);
         let MeetingData = getAllMeetingDetails.advanceMeetingDetails;
+        let isPublishedState = getAllMeetingDetails.isPublished;
         let getmeetingDates = MeetingData.meetingDates;
         let getmeetingRecurrance = MeetingData.meetingRecurrance;
         let getmeetingReminders = MeetingData.meetingReminders;
@@ -1022,6 +1028,7 @@ const MeetingDetails = ({
             label: getmeetingRecurrance.recurrance,
           },
           IsVideoCall: MeetingData.isVideo,
+          IsPublished: isPublishedState,
         });
         let newDateTimeData = [];
         if (
@@ -2063,14 +2070,18 @@ const MeetingDetails = ({
               {Number(editorRole.status) === 11 ||
               Number(editorRole.status) === 12 ? (
                 <Button
-                  disableBtn={true}
+                  disableBtn={
+                    meetingDetails.IsPublished === true ? false : true
+                  }
                   text={t("Publish")}
                   className={styles["Update_Next"]}
                   onClick={handlePublish}
                 />
               ) : isEditMeeting === true ? null : (
                 <Button
-                  disableBtn={true}
+                  disableBtn={
+                    meetingDetails.IsPublished === true ? false : true
+                  }
                   text={t("Publish")}
                   className={styles["Update_Next"]}
                   onClick={handlePublish}

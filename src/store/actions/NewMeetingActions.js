@@ -522,13 +522,24 @@ const SaveMeetingDetialsNewApiFunction = (
                 if (Number(data.MeetingDetails.MeetingStatusID) === 1) {
                   setSceduleMeeting(false);
                   dispatch(scheduleMeetingPageFlag(false));
+
                   dispatch(
                     handleSaveMeetingSuccess(
                       response.data.responseResult,
                       t("Meeting-details-updated-and-published-successfully")
                     )
                   );
-
+                  dispatch(meetingDetailsGlobalFlag(false));
+                  dispatch(organizersGlobalFlag(true));
+                  dispatch(agendaContributorsGlobalFlag(false));
+                  dispatch(participantsGlobalFlag(false));
+                  dispatch(agendaGlobalFlag(false));
+                  dispatch(meetingMaterialGlobalFlag(false));
+                  dispatch(minutesGlobalFlag(false));
+                  dispatch(proposedMeetingDatesGlobalFlag(false));
+                  dispatch(actionsGlobalFlag(false));
+                  dispatch(pollsGlobalFlag(false));
+                  dispatch(attendanceGlobalFlag(false));
                   let currentView = localStorage.getItem("MeetingCurrentView");
                   let meetingpageRow = localStorage.getItem("MeetingPageRows");
                   let meetingPageCurrent = parseInt(
@@ -1678,6 +1689,13 @@ const getAllAgendaContributor_success = (response, message) => {
   };
 };
 
+const getAllAgendaContributor_isPublished_success = (response, message) => {
+  return {
+    type: actions.GET_ALL_AGENDACONTRIBUTOR_ISPUBLISHED_SUCCESS,
+    response,
+  };
+};
+
 const getAllAgendaContributor_fail = (message) => {
   return {
     type: actions.GET_ALL_AGENDACONTRIBUTOR_FAIL,
@@ -1717,6 +1735,11 @@ const getAllAgendaContributorApi = (navigate, t, data) => {
                 getAllAgendaContributor_success(
                   response.data.responseResult.meetingAgendaContributors,
                   t("Record-found")
+                )
+              );
+              dispatch(
+                getAllAgendaContributor_isPublished_success(
+                  response.data.responseResult.isPublished
                 )
               );
             } else if (
@@ -1872,6 +1895,13 @@ const showAllMeetingParticipantsSuccess = (response, message) => {
   };
 };
 
+const showAllMeetingParticipantsIsPublishedSuccess = (response, message) => {
+  return {
+    type: actions.GET_ALL_SAVED_PARTICIPATNS_ISPUBLISHED_SUCCESS,
+    response: response,
+  };
+};
+
 const showAllMeetingParticipantsFailed = (message) => {
   return {
     type: actions.GET_ALL_SAVED_PARTICIPATNS_FAILED,
@@ -1913,6 +1943,11 @@ const GetAllSavedparticipantsAPI = (Data, navigate, t) => {
                 showAllMeetingParticipantsSuccess(
                   response.data.responseResult.meetingParticipants,
                   t("Record-found")
+                )
+              );
+              dispatch(
+                showAllMeetingParticipantsIsPublishedSuccess(
+                  response.data.responseResult.isPublished
                 )
               );
             } else if (
@@ -2840,6 +2875,13 @@ const meetingMaterialSuccess = (response, message) => {
   };
 };
 
+const meetingMaterialIsPublishedSuccess = (response) => {
+  return {
+    type: actions.GET_ALL_MEETING_MATERIAL_ISPUBLISHED_SUCCESS,
+    response: response,
+  };
+};
+
 //Aun work on meeting Material Fail
 const meetingMaterialFail = (message) => {
   return {
@@ -2880,6 +2922,11 @@ const getMeetingMaterialAPI = (navigate, t, meetingMaterialData, rows, id) => {
                 meetingMaterialSuccess(
                   response.data.responseResult.meetingMaterial,
                   t("Record-found")
+                )
+              );
+              dispatch(
+                meetingMaterialIsPublishedSuccess(
+                  response.data.responseResult.isPublished
                 )
               );
             } else if (

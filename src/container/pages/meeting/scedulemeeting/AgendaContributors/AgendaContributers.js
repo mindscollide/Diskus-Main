@@ -68,6 +68,7 @@ const AgendaContributers = ({
   );
   const [isEdit, setIsEdit] = useState(false);
   const [isEditClicked, setIsEditClicked] = useState(false);
+  const [isPublishedState, setIsPublishedState] = useState(false);
   const [disbaleIcon, setDisbaleIcon] = useState(false);
   const [isEditFlag, setIsEditFlag] = useState(0);
   const [notifyMessageField, setNotifyMessageField] = useState("");
@@ -575,6 +576,10 @@ const AgendaContributers = ({
         ...NewMeetingreducer.getAllAgendaContributors,
       ];
 
+      setIsPublishedState(
+        NewMeetingreducer.getAllAgendaContributorsIsPublished
+      );
+
       // // Initial values
       // const initialValues = {};
       // agendaContributorData.forEach((organizer) => {
@@ -797,14 +802,22 @@ const AgendaContributers = ({
               {Number(editorRole.status) === 11 ||
               Number(editorRole.status) === 12 ? (
                 <Button
-                  disableBtn={Number(currentMeeting) === 0 ? true : false}
+                  disableBtn={
+                    Number(currentMeeting) === 0 && isPublishedState === false
+                      ? true
+                      : false
+                  }
                   text={t("Publish")}
                   className={styles["Next_Organization"]}
                   onClick={handleNextButton}
                 />
               ) : isEditMeeting === true ? null : (
                 <Button
-                  disableBtn={Number(currentMeeting) === 0 ? true : false}
+                  disableBtn={
+                    Number(currentMeeting) === 0 && isPublishedState === false
+                      ? true
+                      : false
+                  }
                   text={t("Publish")}
                   className={styles["Next_Organization"]}
                   onClick={handleNextButton}

@@ -61,7 +61,9 @@ const initialState = {
   getmeetingURL: null,
   saveMeetingParticipants: [],
   getAllAgendaContributors: [],
+  getAllAgendaContributorsIsPublished: false,
   getAllSavedparticipants: [],
+  getAllSavedparticipantsIsPublished: false,
   sendNotificationOrganizerModal: false,
   getAllMeetingDetails: null,
   getPollsMeetingID: null,
@@ -70,6 +72,7 @@ const initialState = {
   getAllProposedDates: [],
   meetingResponse: [],
   meetingMaterialData: [],
+  meetingMaterialIsPublished: false,
   agendaRights: null,
   attachmentsPermission: [],
   cancelViewModalMeetingDetails: false,
@@ -684,6 +687,14 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
 
+    case actions.GET_ALL_SAVED_PARTICIPATNS_ISPUBLISHED_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getAllSavedparticipantsIsPublished: action.response,
+      };
+    }
+
     case actions.GET_ALL_SAVED_PARTICIPATNS_FAILED: {
       return {
         ...state,
@@ -706,6 +717,16 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: false,
         Loader2: false,
         getAllAgendaContributors: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALL_AGENDACONTRIBUTOR_ISPUBLISHED_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        Loader2: false,
+        getAllAgendaContributorsIsPublished: action.response,
         ResponseMessage: action.message,
       };
     }
@@ -932,6 +953,14 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: false,
         meetingMaterialData: action.response,
         ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALL_MEETING_MATERIAL_ISPUBLISHED_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        meetingMaterialIsPublished: action.response,
       };
     }
 
