@@ -1,0 +1,77 @@
+.user-login-history-heading {
+  color: #6172d6;
+  font-family: "MontserratSemiBold-600";
+  margin: 0;
+  padding: 0;
+}
+.user-login-history-table-paper {
+  min-height: 70vh !important;
+  width: 100%;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px !important;
+  padding: 0 20px;
+}
+.export-to-excel-btn {
+  padding: 10px 20px;
+  background-color: #fff;
+  border: 1px solid #e1e1e1;
+  font-size: 0.8em;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold-600";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+.report_search_Box {
+  position: relative;
+}
+
+.userLoginHistory_Box {
+  width: 100%;
+  height: auto;
+  background-color: #fff;
+  border: 1px solid #e1e1e1 !important;
+  position: absolute;
+  z-index: 1;
+  border-radius: 4px;
+  padding: 10px;
+}
+.searchbox_icon_userhistoryLogin {
+  position: absolute !important;
+  right: 10px;
+  top: 10px;
+  left: auto;
+  cursor: pointer;
+}
+.ResetBtn {
+  padding: 12px 30px !important;
+  font-family: "MontserratSemiBold-600";
+  border-radius: 4px !important;
+  background-color: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  color: #5a5a5a !important;
+}
+.SearchBtn {
+  padding: 12px 30px !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold-600";
+  background-color: #6172d6 !important;
+  border: none !important;
+  color: #fff !important;
+}
+.datePicker_Container {
+  width: 100% !important;
+  display: block !important;
+}
+.UserLoginHistory_datePicker {
+  width: 100% !important;
+  border: 1px solid #e1e1e1 !important;
+  height: 39px !important;
+  /* padding: 12px 30px; */
+  padding: 0 10px;
+  cursor: pointer !important;
+}
+.UserLoginHistory_datePicker:is(:focus, :focus-visible) {
+  outline: none !important;
+}

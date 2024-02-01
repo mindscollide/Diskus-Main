@@ -193,6 +193,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
       getUserDetails.forEach((data, index) => {
         newArr.push({
           value: data.pK_UID,
+          name: data.userName,
           label: (
             <>
               <>
@@ -375,6 +376,14 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
           message: t("Please-fill-all-reqired-fields"),
         });
       }
+    }
+  };
+
+  const customFilter = (options, searchText) => {
+    if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
+      return true;
+    } else {
+      return false;
     }
   };
 
@@ -605,6 +614,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
                           components={animatedComponents}
                           isMulti
                           onChange={handleSelectValue}
+                          filterOption={customFilter}
                         />
                         <Button
                           text={t("ADD")}

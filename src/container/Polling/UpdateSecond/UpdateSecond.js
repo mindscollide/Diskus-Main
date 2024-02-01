@@ -229,7 +229,6 @@ const UpdateSecond = ({
                   >
                     <Row>
                       {viewpollMembers.map((data, index) => {
-                        console.log("datadatadata", data);
                         return (
                           <Col lg={6} md={6} sm={12} className="mt-2">
                             <Row>

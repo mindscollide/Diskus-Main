@@ -97,7 +97,12 @@ const CreateTask = ({
 
   useEffect(() => {
     let createMeetingTaskData = NewMeetingreducer.getMeetingusers;
+
     if (createMeetingTaskData !== undefined && createMeetingTaskData !== null) {
+      console.log(
+        createMeetingTaskData,
+        "createMeetingTaskDatacreateMeetingTaskData"
+      );
       let newmembersArray = [];
       if (Object.keys(createMeetingTaskData).length > 0) {
         if (createMeetingTaskData.meetingOrganizers.length > 0) {
@@ -153,7 +158,7 @@ const CreateTask = ({
                           className="d-flex gap-2 align-items-center"
                         >
                           <img
-                            src={GroupIcon}
+                            src={`data:image/jpeg;base64,${meetAgendaContributor.userProfilePicture.displayProfilePictureName}`}
                             height="16.45px"
                             alt=""
                             width="18.32px"
@@ -244,7 +249,7 @@ const CreateTask = ({
   const actionSaveHandler = () => {
     if (
       createTaskDetails.ActionsToTake !== "" &&
-      createTaskDetails.Description !== "" &&
+      // createTaskDetails.Description !== "" &&
       createTaskDetails.AssignedTo > 0 &&
       createTaskDetails.date !== ""
     ) {
@@ -476,6 +481,7 @@ const CreateTask = ({
                       placeholder={t("Task-title")}
                       labelClass={"d-none"}
                       change={HandleChange}
+                      maxLength={195}
                       name={"ActionsToTake"}
                       value={createTaskDetails.ActionsToTake}
                     />
@@ -610,7 +616,7 @@ const CreateTask = ({
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["SubHeading"]}>
                       {t("Description")}{" "}
-                      <span className={styles["Steric"]}>*</span>
+                      {/* <span className={styles["Steric"]}>*</span> */}
                     </span>
                   </Col>
                 </Row>
@@ -623,12 +629,12 @@ const CreateTask = ({
                       value={createTaskDetails.Description}
                       applyClass="Polls_meeting"
                       as={"textarea"}
-                      maxLength={500}
+                      maxLength={295}
                       rows="4"
                       placeholder={t("Description")}
-                      required={true}
+                      // required={true}
                     />
-                    <Row>
+                    {/* <Row>
                       <Col>
                         <p
                           className={
@@ -640,7 +646,7 @@ const CreateTask = ({
                           {t("Description-is-required-action")}
                         </p>
                       </Col>
-                    </Row>
+                    </Row> */}
                   </Col>
                 </Row>
                 <Row className="mt-2">

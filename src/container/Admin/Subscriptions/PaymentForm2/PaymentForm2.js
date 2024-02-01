@@ -224,7 +224,7 @@ const PaymentForm2 = () => {
                   className="d-flex justify-content-center"
                 >
                   <Button
-                    text={t("Payment-procced")}
+                    text={t("Payment-proceed")}
                     onClick={handleSubmitforPayment}
                     className={styles["PaymentFormSubmitPayment"]}
                   />

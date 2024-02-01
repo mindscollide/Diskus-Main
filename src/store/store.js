@@ -34,6 +34,7 @@ import {
   AgendaWiseAgendaListReducer,
   downloadReducer,
   DataRoomFileAndFoldersDetailsReducer,
+  UserReportReducer,
 } from "./reducers";
 import * as actions from "./action_types";
 import { configureStore } from "@reduxjs/toolkit";
@@ -95,6 +96,7 @@ const AppReducer = combineReducers({
   actionMeetingReducer: actionMeetingReducer,
   AgendaWiseAgendaListReducer: AgendaWiseAgendaListReducer,
   DataRoomFileAndFoldersDetailsReducer: DataRoomFileAndFoldersDetailsReducer,
+  UserReportReducer: UserReportReducer,
 });
 
 const rootReducer = (state, action) => {

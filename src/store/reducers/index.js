@@ -55,3 +55,5 @@ export { default as AgendaWiseAgendaListReducer } from "./AgendaWiseAgendaReduce
 export { default as downloadReducer } from "./Download_reducer";
 
 export { default as DataRoomFileAndFoldersDetailsReducer } from "./Dataroom2_reducer";
+
+export { default as UserReportReducer } from "./UserReport_Reducer";

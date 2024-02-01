@@ -44,7 +44,10 @@ import {
   getStartTimeWithCeilFunction,
   incrementDateforPropsedMeeting,
 } from "../../../../../commen/functions/time_formatter";
-import { SaveMeetingDetialsNewApiFunction } from "../../../../../store/actions/NewMeetingActions";
+import {
+  GetAllMeetingTypesNewFunction,
+  SaveMeetingDetialsNewApiFunction,
+} from "../../../../../store/actions/NewMeetingActions";
 
 const ProposedNewMeeting = ({
   setProposedNewMeeting,
@@ -67,6 +70,9 @@ const ProposedNewMeeting = ({
   const calendRef = useRef();
   let OrganizationID = localStorage.getItem("organizationID");
   let currentLanguage = localStorage.getItem("i18nextLng");
+  const getALlMeetingTypes = useSelector(
+    (state) => state.NewMeetingreducer.getALlMeetingTypes
+  );
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [error, seterror] = useState(false);
@@ -75,6 +81,13 @@ const ProposedNewMeeting = ({
   const [members, setMembers] = useState([]);
   const [membersParticipants, setMembersParticipants] = useState([]);
   const [selectedsearch, setSelectedsearch] = useState([]);
+  const [meetingTypeDetails, setMeetingTypeDetails] = useState({
+    MeetingType: {
+      PK_MTID: 1,
+      Type: t("Board-meeting"),
+    },
+  });
+  const [meetingTypeDropdown, setmeetingTypeDropdown] = useState([]);
   const [dropdowndata, setDropdowndata] = useState([]);
   const startTime = getStartTimeWithCeilFunction();
   const getEndTime = getEndTimeWitlCeilFunction();
@@ -191,6 +204,35 @@ const ProposedNewMeeting = ({
       }
     } catch {}
   }, [PollsReducer.gellAllCommittesandGroups]);
+
+  useEffect(() => {
+    dispatch(GetAllMeetingTypesNewFunction(navigate, t, false));
+  }, []);
+
+  useEffect(() => {
+    try {
+      if (
+        getALlMeetingTypes.meetingTypes !== null &&
+        getALlMeetingTypes.meetingTypes !== undefined
+      ) {
+        let Newdata = [];
+        getALlMeetingTypes.meetingTypes.forEach((data, index) => {
+          Newdata.push({
+            value: data.pK_MTID,
+            label: data.type,
+          });
+          setMeetingTypeDetails({
+            ...meetingTypeDetails,
+            MeetingType: {
+              PK_MTID: getALlMeetingTypes.meetingTypes[0].pK_MTID,
+              Type: getALlMeetingTypes.meetingTypes[0].type,
+            },
+          });
+        });
+        setmeetingTypeDropdown(Newdata);
+      }
+    } catch (error) {}
+  }, [getALlMeetingTypes.meetingTypes]);
 
   //onChange function Search
   const onChangeSearch = (e) => {
@@ -596,7 +638,7 @@ const ProposedNewMeeting = ({
         MeetingDetails: {
           MeetingID: 0,
           MeetingTitle: proposedMeetingDetails.MeetingTitle,
-          MeetingType: { PK_MTID: 27, Type: "BoardMeetings" },
+          MeetingType: meetingTypeDetails.MeetingType,
           Location: "",
           Description: proposedMeetingDetails.Description,
           IsVideoChat: true,
@@ -686,6 +728,18 @@ const ProposedNewMeeting = ({
         });
       }
     }
+  };
+
+  //handle change Meeting Type Selector
+
+  const handleMeetingSelectChange = (selectedOption) => {
+    setMeetingTypeDetails({
+      ...meetingTypeDetails,
+      MeetingType: {
+        PK_MTID: selectedOption.value,
+        Type: selectedOption.label,
+      },
+    });
   };
 
   //For arabic Convertion of the Date Times
@@ -1136,58 +1190,87 @@ const ProposedNewMeeting = ({
                     </Col>
                   </Row>
                 </Row>
-
-                <Row className="mt-4">
-                  <Col lg={12} md={12} sm={12}>
-                    <span className={styles["Sub_headings"]}>
-                      {t("Send-response-by")}{" "}
-                      <span className={styles["res_steric"]}>*</span>
-                    </span>
-                  </Col>
-                </Row>
-                <Row className="mt-2">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className={styles["Width_Date_SendResponseBy"]}
-                  >
-                    <DatePicker
-                      value={sendResponseVal}
-                      format={"DD/MM/YYYY"}
-                      minDate={moment().toDate()}
-                      placeholder="DD/MM/YYYY"
-                      render={
-                        <InputIcon
-                          placeholder="DD/MM/YYYY"
-                          className="datepicker_input"
-                        />
-                      }
-                      editable={false}
-                      className="proposedMeetindatesDatePicker"
-                      onOpenPickNewDate={true}
-                      inputMode=""
-                      calendar={calendarValue}
-                      locale={localValue}
-                      ref={calendRef}
-                      onChange={(value) => SendResponseHndler(value)}
-                    />
-
+                <Row className="mt-3">
+                  <Col lg={6} md={6} sm={6}>
                     <Row>
-                      <Col>
-                        <p
-                          className={
-                            error && sendResponseVal === ""
-                              ? ` ${styles["errorMessage-inLogin"]} `
-                              : `${styles["errorMessage-inLogin_hidden"]}`
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex flex-column flex-wrap"
+                      >
+                        <span className={styles["Sub_headings"]}>
+                          {t("Meeting-type")}{" "}
+                          <span className={styles["res_steric"]}>*</span>
+                        </span>
+                        <Select
+                          options={meetingTypeDropdown}
+                          placeholder={t("Meeting-type")}
+                          value={{
+                            value: meetingTypeDetails.MeetingType?.PK_MTID,
+                            label: meetingTypeDetails.MeetingType?.Type,
+                          }}
+                          onChange={handleMeetingSelectChange}
+                          isSearchable={false}
+                        />
+                      </Col>
+                    </Row>
+                  </Col>
+                  <Col lg={6} md={6} sm={6}>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex flex-column flex-wrap justify-content-end"
+                      >
+                        <span className={styles["Sub_headings"]}>
+                          {t("Send-response-by")}{" "}
+                          <span className={styles["res_steric"]}>*</span>
+                        </span>
+
+                        <DatePicker
+                          value={sendResponseVal}
+                          format={"DD/MM/YYYY"}
+                          minDate={moment().toDate()}
+                          placeholder="DD/MM/YYYY"
+                          render={
+                            <InputIcon
+                              placeholder="DD/MM/YYYY"
+                              className="datepicker_input"
+                            />
                           }
-                        >
-                          {t("Please-select-send-response-by-date")}
-                        </p>
+                          editable={false}
+                          className="proposedMeetindatesDatePicker"
+                          onOpenPickNewDate={true}
+                          inputMode=""
+                          calendar={calendarValue}
+                          locale={localValue}
+                          ref={calendRef}
+                          onChange={(value) => SendResponseHndler(value)}
+                        />
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg={12} md={12} sm={12}>
+                        <Row>
+                          <Col>
+                            <p
+                              className={
+                                error && sendResponseVal === ""
+                                  ? ` ${styles["errorMessage-inLogin"]} `
+                                  : `${styles["errorMessage-inLogin_hidden"]}`
+                              }
+                            >
+                              {t("Please-select-send-response-by-date")}
+                            </p>
+                          </Col>
+                        </Row>
                       </Col>
                     </Row>
                   </Col>
                 </Row>
+
                 <Row className="mt-5">
                   <Col
                     lg={12}

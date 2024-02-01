@@ -1226,5 +1226,19 @@
   "Start-your-Free-Trial-now": "Start your free trial now",
   "Please-select-any-of-the-given-options": "Please select any of the given options",
   "Downloading-file": "Downloading file",
-  "Archived-groups": "Archived groups"
+  "Archived-groups": "Archived groups",
+  "User-name": "User Name",
+  "User-email": "User Email",
+  "Login-date-time": "Login Date Time",
+  "Logout-date-time": "Logout Date Time",
+  "Session-duration": "Session Duration",
+  "Interface": "Interface",
+  "Ip-address": "IP Address",
+  "User-login-history": "User Login History",
+  "Export-to-excel": "Export to Excel",
+  "Inteface-type": "Inteface Type",
+  "Date-from": "Date From",
+  "Date-to": "Date To",
+  "Select-send-response-by-date": "Select Send Response by Date",
+  "Payment-proceed": "Payment Proceed"
 }

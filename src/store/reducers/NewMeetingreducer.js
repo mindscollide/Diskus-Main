@@ -399,7 +399,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.GET_ALL_MEETING_TYPES_NEW_SUCCESS: {
       return {
         ...state,
-        // Loading: false,
+        Loading: action.loader,
         getALlMeetingTypes: action.response,
       };
     }
@@ -407,7 +407,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.GET_ALL_MEETING_TYPES_NEW_FAILED: {
       return {
         ...state,
-        Loading: false,
+        Loading: action.loader,
         ResponseMessage: action.message,
       };
     }

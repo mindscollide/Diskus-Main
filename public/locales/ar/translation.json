@@ -1058,7 +1058,7 @@
   "Voted": "تم التصويت",
   "Not-voted": "لم يتم التصويت",
   "Are-you-sure-you-want-to-continue?": "هل أنت متأكد أنك تريد الاستمرار؟",
-  "Payment-procced": "تمت عملية الدفع",
+  "Payment-proceed": "تمت عملية الدفع",
   "Maximum-meeting-duration-in-minutes": "الحد الأقصى لمدة الاجتماع بالدقائق",
   "Meeting-title": "*عنوان اللقاء",
   "Organizer-name": "اسم المنظم",
@@ -1705,5 +1705,18 @@
   "Downloading-file": "Downloading file",
   "Description-and-attachement": "Description And Attachement",
   "Attendace": "Attendance",
-  "Send-reply": "Send reply"
+  "Send-reply": "Send reply",
+  "User-name": "User Name",
+  "User-email": "User Email",
+  "Login-date-time": "Login Date Time",
+  "Logout-date-time": "Logout Date Time",
+  "Session-duration": "Session Duration",
+  "Interface": "Interface",
+  "Ip-address": "IP Address",
+  "User-login-history": "User Login History",
+  "Export-to-excel": "Export to Excel",
+  "Inteface-type": "Inteface Type",
+  "Date-from": "Date From",
+  "Date-to": "Date To",
+  "Select-send-response-by-date": "Select Send Response by Date"
 }

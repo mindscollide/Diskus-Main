@@ -111,7 +111,7 @@ const Agenda = ({
   let currentView = localStorage.getItem("MeetingCurrentView");
 
   const [rows, setRows] = useState([]);
-
+  console.log(rows, "rowsrowsrowsrows");
   const [emptyStateRows, setEmptyStateRows] = useState(false);
 
   useEffect(() => {
@@ -390,7 +390,11 @@ const Agenda = ({
     }
   }, [rows]);
 
-  console.log("MeetingAgendaReducerMeetingAgendaReducer", MeetingAgendaReducer);
+  console.log(
+    "MeetingAgendaReducerMeetingAgendaReducer",
+    MeetingAgendaReducer
+    // data
+  );
 
   return (
     <>

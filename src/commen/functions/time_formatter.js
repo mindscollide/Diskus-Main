@@ -105,11 +105,12 @@ export const getHoursMinutesSec = (date) => {
 
 export const incrementDateforPropsedMeeting = (date) => {
   if (date instanceof Date && !isNaN(date)) {
-    let newDate = new Date();
-    newDate.setDate(date.getDate() + 1);
+    let newDate = new Date(date); // Create a new Date object from the passed date
+    newDate.setDate(newDate.getDate() + 1); // Increment the date by 1 day
+
     let year = newDate.getFullYear();
-    let month = `0${newDate.getMonth() + 1}`.slice(-2); // Months are 0-indexed, so adding 1
-    let day = `0${newDate.getDate()}`.slice(-2);
+    let month = `0${newDate.getMonth() + 1}`.slice(-2); // Correctly format the month
+    let day = `0${newDate.getDate()}`.slice(-2); // Correctly format the day
 
     let dateFormat = `${year}${month}${day}`;
     return { DateGMT: newDate, dateFormat };

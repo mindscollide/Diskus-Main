@@ -114,7 +114,6 @@ const VerifyEmailOTP = () => {
     let data = {
       Email: nEmail,
     };
-    console.log("UserEmail", data);
 
     localStorage.removeItem("seconds");
     localStorage.removeItem("minutes");
@@ -181,7 +180,6 @@ const VerifyEmailOTP = () => {
     let s = localStorage.getItem("seconds");
     let m = localStorage.getItem("minutes");
     window.addEventListener("beforeunload ", (e) => {
-      console.log("ttt");
       e.preventDefault();
       if (m !== undefined && s !== undefined) {
         if (s === 1) {

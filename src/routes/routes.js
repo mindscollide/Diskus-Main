@@ -74,6 +74,7 @@ import PrivateAdminRouteNonActive from "./privateadminNonactive_routes";
 import PrivateParAdminRouteNonActive from "./PrivateParAdminRouteNonActive";
 import PrivateRoutes from "./private_routes";
 import PrivateRouteDataroom from "./private_route_dataroom";
+import Reports from "../container/Admin/Reports/Reports";
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
@@ -140,6 +141,7 @@ export const router = createHashRouter(
         <Route exact path="/Diskus/Admin/" element={<AdminHome />}>
           <Route path="" element={<Summary />} />
           <Route path="AllUserPage" element={<AllUserPage />} />
+          <Route path="loginreport" element={<Reports />} />
           <Route path="AddUser" element={<AddUser />} />
           <Route path="EditUser" element={<EditUser />} />
           <Route path="Invoice" element={<Invoice />} />

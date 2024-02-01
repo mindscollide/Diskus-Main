@@ -46,6 +46,8 @@ import { useEffect } from "react";
 import { StatusValue } from "../../../statusJson";
 import {
   convertDateinGMT,
+  forRecentActivity,
+  getDifferentisDateisPassed,
   newTimeFormaterAsPerUTCFullDate,
   utcConvertintoGMT,
 } from "../../../../../../commen/functions/date_formater";
@@ -520,6 +522,20 @@ const UnpublishedProposedMeeting = ({
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
             attendee.meetingAttendeeRole.role === "Organizer"
         );
+        const isResponseDateGone = forRecentActivity(
+          `${record.responseDeadLine}000000`
+        );
+        const currentDateObj = new Date();
+
+        const isViewPollShown = getDifferentisDateisPassed(
+          currentDateObj,
+          isResponseDateGone
+        );
+
+        console.log(
+          isViewPollShown,
+          "currentDateObjcurrentDateObjcurrentDateObj"
+        );
         let apiData = {
           MeetingID: Number(record.pK_MDID),
           StatusID: 1,
@@ -550,6 +566,7 @@ const UnpublishedProposedMeeting = ({
                     <Button
                       text={t("Send-reply")}
                       className={styles["publish_meeting_btn_View_poll"]}
+                      disableBtn={isViewPollShown ? true : false}
                       onClick={() =>
                         viewProposeDatePollHandler(
                           true,
@@ -564,6 +581,7 @@ const UnpublishedProposedMeeting = ({
                     <Button
                       text={t("View-poll")}
                       className={styles["publish_meeting_btn_View_poll"]}
+                      disableBtn={isViewPollShown ? true : false}
                       onClick={() =>
                         viewProposeDatePollHandler(
                           false,

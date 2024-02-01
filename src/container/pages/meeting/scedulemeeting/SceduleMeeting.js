@@ -66,7 +66,7 @@ const SceduleMeeting = ({
   const apiCallsForComponentMound = async () => {
     try {
       // Meeting Type Drop Down API
-      await dispatch(GetAllMeetingTypesNewFunction(navigate, t));
+      await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
       // Reminder Frequency Drop Down API
       await dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
       // Recurring Drop Down API

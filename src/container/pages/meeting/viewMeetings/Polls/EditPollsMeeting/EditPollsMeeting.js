@@ -321,6 +321,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
       getUserDetails.forEach((data, index) => {
         newArr.push({
           value: data.pK_UID,
+          name: data.userName,
           label: (
             <>
               <>
@@ -352,6 +353,14 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
       setmemberSelect(newArr);
     }
   }, [GroupsReducer.getGroupByGroupIdResponse]);
+
+  const customFilter = (options, searchText) => {
+    if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   useEffect(() => {
     if (PollsReducer.Allpolls !== null && PollsReducer.Allpolls !== undefined) {
@@ -626,6 +635,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
                     closeMenuOnSelect={false}
                     options={memberSelect}
                     components={animatedComponents}
+                    filterOption={customFilter}
                     isMulti
                     value={selectedsearch}
                     onChange={handleSelectValue}

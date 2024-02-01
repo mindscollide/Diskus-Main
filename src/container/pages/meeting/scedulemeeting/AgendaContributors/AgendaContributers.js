@@ -283,7 +283,7 @@ const AgendaContributers = ({
       },
     },
     {
-      title: t("RSVP"),
+      title: "",
       dataIndex: "rsvp",
       key: "rsvp",
       width: "80px",

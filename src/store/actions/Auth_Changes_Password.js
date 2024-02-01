@@ -31,7 +31,7 @@ const changePasswordFunc = (changePasswordData, navigate) => {
     Email: changePasswordData.Email,
     Password: changePasswordData.Password,
     ConfirmPassword: changePasswordData.ConfirmPassword,
-    DeviceID: "browser",
+    DeviceID: "1",
   };
 
   return (dispatch) => {

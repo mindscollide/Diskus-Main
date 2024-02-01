@@ -301,13 +301,13 @@ const Organizers = ({
               onChange={(checked) => handleSwitchChange(checked, rowIndex)}
               disabled={record.disabledSwitch === true ? true : false}
             />
-            <label className="column-boldness">Primary</label>
+            <label className="column-boldness">{t("Primary")}</label>
           </Col>
         </Row>
       ),
     },
     {
-      title: t("RSVP"),
+      title: "",
       dataIndex: "rsvp",
       key: "rsvp",
       width: "120px",

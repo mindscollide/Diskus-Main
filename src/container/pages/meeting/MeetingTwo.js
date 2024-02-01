@@ -554,6 +554,8 @@ const NewMeeting = () => {
       title: <span>{t("Title")}</span>,
       dataIndex: "title",
       key: "title",
+      ellipsis: true,
+
       width: "115px",
       render: (text, record) => {
         const isParticipant = record.meetingAttendees.some(
@@ -590,8 +592,8 @@ const NewMeeting = () => {
               // setIsOrganisers(isOrganiser);
             }}
           >
-            {/* {text} */}
-            {truncateString(text, 35)}
+            {text}
+            {/* {truncateString(text, 35)} */}
           </span>
         );
       },
@@ -691,7 +693,12 @@ const NewMeeting = () => {
         return (
           <>
             <Row>
-              <Col sm={12} md={12} lg={12}>
+              <Col
+                sm={12}
+                md={12}
+                lg={12}
+                className="d-flex align-items-center justify-content-center"
+              >
                 {record.isAttachment ? (
                   <span
                     className={
@@ -1007,7 +1014,11 @@ const NewMeeting = () => {
         console.log("isPrimaryOrganizer", isPrimaryOrganizer);
 
         const isQuickMeeting = record.isQuickMeeting;
-        if (record.status === "8" || record.status === "4") {
+        if (
+          record.status === "8" ||
+          record.status === "4" ||
+          record.status === "9"
+        ) {
           return null;
         } else {
           if (isQuickMeeting) {
@@ -1847,7 +1858,7 @@ const NewMeeting = () => {
                       <>
                         <Table
                           column={MeetingColoumns}
-                          scroll={{ y: "54vh", x: true }}
+                          scroll={{ y: "54vh", x: false }}
                           pagination={false}
                           className="newMeetingTable"
                           rows={rows}

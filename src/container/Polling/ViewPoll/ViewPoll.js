@@ -17,9 +17,9 @@ const ViewPoll = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { PollsReducer } = useSelector((state) => state);
-  console.log(PollsReducer, "PollsReducerPollsReducerPollsReducerPollsReducer");
+
   const [viewpollMembers, setViewPollmembers] = useState([]);
-  console.log(viewpollMembers, "viewpollMembersviewpollMembersviewpollMembers");
+
   const [pollAnswersDetailsView, setPollAnswersDetailsView] = useState([]);
   const [viewPollsDetails, setViewPollsDetails] = useState({
     date: "",

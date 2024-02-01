@@ -303,6 +303,14 @@ const EditPollsMeeting = ({ setEditPolls }) => {
     }
   };
 
+  const customFilter = (options, searchText) => {
+    if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   useEffect(() => {
     if (
       GroupsReducer.getGroupByGroupIdResponse !== null &&
@@ -313,6 +321,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
       getUserDetails.forEach((data, index) => {
         newArr.push({
           value: data.pK_UID,
+          name: data.userName,
           label: (
             <>
               <>
@@ -602,6 +611,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                     isMulti
                     value={selectedsearch}
                     onChange={handleSelectValue}
+                    filterOption={customFilter}
                   />
                   <Button
                     text={t("ADD")}

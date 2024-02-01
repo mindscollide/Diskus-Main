@@ -274,6 +274,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
             (meetParticipants, meetParticipantsIndex) => {
               let MeetingParticipantsData = {
                 value: meetParticipants.userID,
+                name: meetParticipants.userName,
                 label: (
                   <>
                     <>
@@ -558,6 +559,14 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
     }
   }, [PollsReducer.ResponseMessage]);
 
+  const customFilter = (options, searchText) => {
+    if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
     <>
       {savedPolls ? (
@@ -778,7 +787,8 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                           components={animatedComponents}
                           isMulti
                           onChange={handleSelectValue}
-                          isSearchable={false}
+                          isSearchable={true}
+                          filterOption={customFilter}
                         />
                         <Button
                           text={t("ADD")}

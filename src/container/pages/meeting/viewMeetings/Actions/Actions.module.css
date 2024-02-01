@@ -139,6 +139,7 @@
   font-size: 12px !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
+  display: block;
   white-space: nowrap !important;
   cursor: pointer !important;
   user-select: none !important;
