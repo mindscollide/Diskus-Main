@@ -116,7 +116,7 @@ const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
                                           }
                                         >
                                           {data.answer}{" "}
-                                          <span>{data.totalVotes}</span>
+                                          <span>({data.totalVotes})</span>
                                         </span>
                                       </Col>
                                     </Row>

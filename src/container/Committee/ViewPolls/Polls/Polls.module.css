@@ -79,6 +79,8 @@
   font-family: "MontserratSemiBold";
   font-size: 14px !important;
   display: inline-block !important;
+
+  cursor: pointer;
   /* width: 80% !important;
   overflow: hidden !important;
   white-space: nowrap !important;
