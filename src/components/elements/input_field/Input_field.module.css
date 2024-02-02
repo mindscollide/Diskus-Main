@@ -139,6 +139,7 @@
   height: 39px !important;
   position: relative !important;
 }
+
 .text-area-close-New_meeting {
   resize: none !important;
   height: 69px !important;
@@ -198,12 +199,14 @@
   border: 1px solid #e1e1e1 !important;
   position: relative;
 }
+
 .pollingCreateTitle {
   font-size: 12px !important;
   font-family: "MontserratMedium";
   color: #5a5a5a !important;
   height: 39px !important;
 }
+
 .search_voterInput {
   margin: 0 !important;
 }
@@ -217,7 +220,7 @@
 }
 
 .text-area-create-meeting {
-  height: 222.8px !important;
+  height: 49px !important;
   resize: none;
 }
 
@@ -253,6 +256,7 @@
   border: 1px solid #e1e1e1 !important;
   position: relative;
 }
+
 .text-area-create-group {
   font-size: 12px !important;
   font-family: "MontserratMedium";
@@ -274,10 +278,12 @@
 .resolution-search-input {
   position: relative !important;
 }
+
 .text-area-dataroom {
   resize: none;
   overflow-y: auto;
 }
+
 .searchFilterAgendaContributor {
   padding: 12px 30px !important;
 }
@@ -285,10 +291,12 @@
 .TextAreaProposedMeetingDetails {
   font-size: 1rem !important;
 }
+
 .user-login-history-searchbar {
   width: 100%;
   position: relative;
 }
+
 .user-login-history-searchbar .valid-feedback {
   display: block;
 }

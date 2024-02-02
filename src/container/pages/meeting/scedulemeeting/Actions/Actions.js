@@ -16,6 +16,17 @@ import RemoveTableModal from "./RemoveTableModal/RemoveTableModal";
 import {
   showCancelActions,
   showUnsavedActionsModal,
+  meetingDetailsGlobalFlag,
+  organizersGlobalFlag,
+  agendaContributorsGlobalFlag,
+  participantsGlobalFlag,
+  agendaGlobalFlag,
+  meetingMaterialGlobalFlag,
+  minutesGlobalFlag,
+  proposedMeetingDatesGlobalFlag,
+  actionsGlobalFlag,
+  pollsGlobalFlag,
+  attendanceGlobalFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import {
   getMeetingTaskMainApi,
@@ -525,6 +536,17 @@ const Actions = ({
   const nextTabToPolls = () => {
     setactionsPage(false);
     setPolls(true);
+    dispatch(meetingDetailsGlobalFlag(false));
+    dispatch(organizersGlobalFlag(false));
+    dispatch(agendaContributorsGlobalFlag(false));
+    dispatch(participantsGlobalFlag(false));
+    dispatch(agendaGlobalFlag(false));
+    dispatch(meetingMaterialGlobalFlag(false));
+    dispatch(minutesGlobalFlag(false));
+    dispatch(proposedMeetingDatesGlobalFlag(false));
+    dispatch(actionsGlobalFlag(false));
+    dispatch(pollsGlobalFlag(true));
+    dispatch(attendanceGlobalFlag(false));
   };
 
   // To go on Previous tab
@@ -686,11 +708,11 @@ const Actions = ({
                   className={styles["CloneMeetingButton"]}
                   onClick={handleCancelActions}
                 />
-                <Button
+                {/* <Button
                   text={t("Previous")}
                   className={styles["SaveButtonActions"]}
                   onClick={prevTabToMinutes}
-                />
+                /> */}
                 <Button
                   text={t("Next")}
                   className={styles["SaveButtonActions"]}

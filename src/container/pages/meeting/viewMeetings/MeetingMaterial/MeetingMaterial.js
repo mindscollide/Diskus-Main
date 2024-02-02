@@ -403,11 +403,11 @@ const MeetingMaterial = ({
             className={styles["Cancel_Meeting_Details"]}
             onClick={handleCancelMeetingNoPopup}
           />
-          <Button
+          {/* <Button
             text={t("Previous")}
             className={styles["Save_Classname"]}
             onClick={prevHandlerClick}
-          />
+          /> */}
           <Button
             text={t("Next")}
             onClick={handleClickSave}

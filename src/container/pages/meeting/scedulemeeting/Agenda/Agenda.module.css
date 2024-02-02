@@ -2,8 +2,8 @@
   width: 100% !important;
   height: auto !important;
   min-height: 126px !important;
-  border: 1px solid #bbbbbb !important;
-  border-radius: 4px !important;
+  /* border: 1px solid #bbbbbb !important; */
+  /* border-radius: 4px !important; */
   padding: 1px 15px !important;
   position: relative;
 }
@@ -12,8 +12,8 @@
   width: 100% !important;
   min-height: 126px !important;
   height: auto !important;
-  border: 1px solid #bbbbbb !important;
-  border-radius: 4px !important;
+  /* border: 1px solid #bbbbbb !important; */
+  /* border-radius: 4px !important; */
   padding: 1px 15px !important;
   filter: opacity(0.5);
   position: relative;
@@ -36,8 +36,8 @@
   width: 90% !important;
   height: auto !important;
   min-height: 126px !important;
-  border: 1px solid #bbbbbb !important;
-  border-radius: 4px !important;
+  /* border: 1px solid #bbbbbb !important; */
+  /* border-radius: 4px !important; */
   padding: 10px 15px !important;
   margin-left: 10px !important;
   position: relative;
@@ -170,18 +170,19 @@
 .Scroller_Agenda {
   height: 46vh !important;
   overflow-x: hidden !important;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
 .Scroller_Agenda::-webkit-scrollbar {
-  width: 0.5rem;
-  border-radius: 20px;
-  background-color: #f2f2f2;
+  width: 0.5rem !important;
+  border-radius: 20px !important;
+  background-color: #f2f2f2 !important;
 }
 
 .Scroller_Agenda::-webkit-scrollbar-thumb {
-  border-radius: 20px;
-  background: #ccc;
-  margin-left: -15px;
+  border-radius: 20px !important;
+  background: #ccc !important;
+  margin-left: -15px !important;
 }
 
 .Scroller_document {
@@ -476,4 +477,139 @@ img.AttachmentIconImage {
 body[dir="rtl"] img.AttachmentIconImage {
   margin-left: auto;
   margin-right: 15px;
+}
+
+.agenda-border-class {
+  border: 1px solid #bbbbbb;
+  padding: 10px 15px;
+  margin: 15px 0px;
+  border-radius: 4px;
+}
+
+.Import_Agenda_Buttons {
+  padding: 12px 30px !important;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
+  margin: 10px 0px !important;
+}
+
+.Import_Agenda_Buttons:hover,
+.Import_Agenda_Buttons:active,
+.Import_Agenda_Buttons:focus,
+.Import_Agenda_Buttons:focus-visible {
+  padding: 12px 30px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
+  margin: 10px 0px !important;
+}
+
+.show-attachments-button-show {
+  padding: 10px 14px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  border: 3px solid #5f78d6 !important;
+  background: #5f78d6 !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.show-attachments-button-show:active,
+.show-attachments-button-show:hover,
+.show-attachments-button-show:focus,
+.show-attachments-button-show:focus-visible {
+  padding: 10px 14px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  border: 3px solid #5f78d6 !important;
+  background: #5f78d6 !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.show-attachments-button-hide {
+  padding: 10px 14px !important;
+  /* border: none !important; */
+  border-radius: 4px !important;
+  /* border-color: #5f78d6 !important; */
+  border: 3px solid #5f78d6 !important;
+  color: #5f78d6 !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.show-attachments-button-hide:active,
+.show-attachments-button-hide:hover,
+.show-attachments-button-hide:focus,
+.show-attachments-button-hide:focus-visible {
+  padding: 10px 14px !important;
+  /* border: none !important; */
+  color: #5f78d6 !important;
+  border: 3px solid #5f78d6 !important;
+  border-radius: 4px !important;
+  /* border-color: #5f78d6 !important; */
+  font-size: 12px !important;
+  background: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+
+.show-attachments-button-show-subagenda {
+  padding: 10px 14px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  border: 3px solid #4adede !important;
+  background: #4adede !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #fff !important;
+}
+
+.show-attachments-button-show-subagenda:active,
+.show-attachments-button-show-subagenda:hover,
+.show-attachments-button-show-subagenda:focus,
+.show-attachments-button-show-subagenda:focus-visible {
+  padding: 10px 14px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  border: 3px solid #4adede !important;
+  background: #4adede !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #fff !important;
+}
+
+.show-attachments-button-hide-subagenda {
+  padding: 10px 14px !important;
+  /* border: none !important; */
+  border-radius: 4px !important;
+  /* border-color: #5f78d6 !important; */
+  border: 3px solid #4adede !important;
+  color: #4adede !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.show-attachments-button-hide-subagenda:active,
+.show-attachments-button-hide-subagenda:hover,
+.show-attachments-button-hide-subagenda:focus,
+.show-attachments-button-hide-subagenda:focus-visible {
+  padding: 10px 14px !important;
+  /* border: none !important; */
+  color: #4adede !important;
+  border: 3px solid #4adede !important;
+  border-radius: 4px !important;
+  /* border-color: #5f78d6 !important; */
+  font-size: 12px !important;
+  background: #fff !important;
+  font-family: "MontserratSemiBold" !important;
 }

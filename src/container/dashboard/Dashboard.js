@@ -2,6 +2,7 @@ import TalkChat2 from "../../components/layout/talk/talk-chat/talkChatBox/chat";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Sidebar, Talk } from "../../components/layout";
+import CancelButtonModal from "../pages/meeting/closeMeetingTab/CancelModal";
 import { Loader, LoaderPanel } from "../../components/elements";
 import Header2 from "../../components/layout/header2/Header2";
 import { ConfigProvider, Layout } from "antd";
@@ -170,6 +171,10 @@ const Dashboard = () => {
   let Blur = localStorage.getItem("blur");
 
   const [currentActiveChat, setCurrentActiveChat] = useState([]);
+
+  const cancelModalMeetingDetails = useSelector(
+    (state) => state.NewMeetingreducer.cancelModalMeetingDetails
+  );
 
   useEffect(() => {
     if (
@@ -1813,6 +1818,8 @@ const Dashboard = () => {
           DataRoomFileAndFoldersDetailsReducer.Loading ? (
             <Loader />
           ) : null}
+
+          {cancelModalMeetingDetails && <CancelButtonModal />}
         </Layout>
         {/* <Layout>
           <Sidebar />

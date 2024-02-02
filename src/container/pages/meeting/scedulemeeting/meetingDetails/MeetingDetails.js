@@ -168,6 +168,7 @@ const MeetingDetails = ({
       label: "",
     },
     IsVideoCall: true,
+    IsPublished: false,
   });
 
   // useEffect(() => {
@@ -244,6 +245,7 @@ const MeetingDetails = ({
           label: "",
         },
         IsVideoCall: false,
+        IsPublished: false,
       });
       setRows([
         {
@@ -516,6 +518,7 @@ const MeetingDetails = ({
           Location: meetingDetails.Location,
           Description: meetingDetails.Description,
           IsVideoChat: meetingDetails.IsVideoCall,
+          IsPublished: meetingDetails.IsPublished,
           IsTalkGroup: meetingDetails.groupChat,
           OrganizationId: organizationID,
           MeetingDates: newArr,
@@ -603,6 +606,7 @@ const MeetingDetails = ({
           Location: meetingDetails.Location,
           Description: meetingDetails.Description,
           IsVideoChat: meetingDetails.IsVideoCall,
+          IsPublished: meetingDetails.IsPublished,
           IsTalkGroup: meetingDetails.groupChat,
           OrganizationId: organizationID,
           MeetingDates: newArr,
@@ -688,6 +692,7 @@ const MeetingDetails = ({
           Location: meetingDetails.Location,
           Description: meetingDetails.Description,
           IsVideoChat: meetingDetails.IsVideoCall,
+          IsPublished: meetingDetails.IsPublished,
           IsTalkGroup: meetingDetails.groupChat,
           OrganizationId: organizationID,
           MeetingDates: newArr,
@@ -969,6 +974,7 @@ const MeetingDetails = ({
       ) {
         // setEditMeeting(true);
         let MeetingData = getAllMeetingDetails.advanceMeetingDetails;
+        let isPublishedState = getAllMeetingDetails.isPublished;
         let getmeetingDates = MeetingData.meetingDates;
         let getmeetingRecurrance = MeetingData.meetingRecurrance;
         let getmeetingReminders = MeetingData.meetingReminders;
@@ -1022,6 +1028,7 @@ const MeetingDetails = ({
             label: getmeetingRecurrance.recurrance,
           },
           IsVideoCall: MeetingData.isVideo,
+          IsPublished: isPublishedState,
         });
         let newDateTimeData = [];
         if (
@@ -1121,25 +1128,6 @@ const MeetingDetails = ({
       if (meetingDetails.ReminderFrequencyThree.value !== 0) {
         newReminderData.push(meetingDetails.ReminderFrequencyThree.value);
       }
-      console.log(
-        MeetingData.meetingTitle === meetingDetails.MeetingTitle,
-        MeetingData.meetingType.pK_MTID === meetingDetails.MeetingType.PK_MTID,
-        MeetingData.location === meetingDetails.Location,
-        MeetingData.description === meetingDetails.Description,
-        MeetingData.isTalkGroup === meetingDetails.groupChat,
-        MeetingData.videoCallURl === meetingDetails.Link,
-        compareMeetings(MeetingData.meetingDates, newArr),
-        comparePKMRID(MeetingData.meetingReminders, newReminderData),
-        MeetingData.notes === meetingDetails.Notes,
-        MeetingData.allowRSVP === meetingDetails.AllowRSPV,
-        MeetingData.notifyAdminOnRSVP === meetingDetails.NotifyMeetingOrganizer,
-        MeetingData.meetingRecurrance.recurranceID ===
-          meetingDetails.RecurringOptions.value,
-        MeetingData.meetingRecurrance.recurranceID ===
-          meetingDetails.RecurringOptions.value,
-        MeetingData.isVideo === meetingDetails.IsVideoCall,
-        "meetingDataMeetingData"
-      );
       if (
         MeetingData.meetingTitle === meetingDetails.MeetingTitle &&
         MeetingData.meetingType.pK_MTID ===
@@ -1184,6 +1172,8 @@ const MeetingDetails = ({
     dispatch(getAgendaWithMeetingIDForImport_success(null, ""));
     dispatch(getAllMeetingForAgendaImport_success([], ""));
   }, []);
+
+  console.log("MeetingDetailsMeetingDetails", meetingDetails);
 
   return (
     <section>
@@ -1338,16 +1328,16 @@ const MeetingDetails = ({
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <TextField
-                    applyClass="text-area-create-resolution"
+                    applyClass="text-area-create-meeting"
                     type="text"
                     as={"textarea"}
-                    rows="2"
-                    placeholder={t("Description")}
-                    required={true}
-                    name={"Description"}
+                    rows="5"
+                    name={"Notes"}
                     change={HandleChange}
-                    value={meetingDetails.Description}
-                    // maxLength={300}
+                    placeholder={t("Note-for-this-meeting")}
+                    required={true}
+                    maxLength={145}
+                    value={meetingDetails.Notes}
                     disable={
                       (Number(editorRole.status) === 9 ||
                         Number(editorRole.status) === 8 ||
@@ -1377,102 +1367,6 @@ const MeetingDetails = ({
                 </Col>
               </Row>
               <Row className="mt-3">
-                <Col lg={4} md={4} sm={12}>
-                  <Row className="mt-2">
-                    <Col lg={12} md={12} sm={12} className="d-flex gap-3">
-                      <Switch
-                        onChange={handleGroupChat}
-                        checkedValue={meetingDetails.groupChat}
-                        disabled={
-                          (Number(editorRole.status) === 9 ||
-                            Number(editorRole.status) === 8 ||
-                            Number(editorRole.status) === 10) &&
-                          editorRole.role === "Organizer" &&
-                          isEditMeeting === true
-                            ? true
-                            : editorRole.role === "Agenda Contributor" &&
-                              isEditMeeting === true
-                            ? true
-                            : false
-                        }
-                      />
-                      <span className={styles["Create_group_chat_heading"]}>
-                        {t("Create-group-chat")}
-                      </span>
-                    </Col>
-                  </Row>
-                </Col>
-                <Col lg={8} md={8} sm={12}>
-                  <Row>
-                    <Col lg={1} md={1} sm={12} className="d-flex gap-3 m-0 p-0">
-                      <Button
-                        icon={
-                          Loading ? (
-                            <>
-                              <Spinner
-                                className={styles["checkEmailSpinner"]}
-                              />
-                            </>
-                          ) : (
-                            <>
-                              <img
-                                draggable={false}
-                                src={
-                                  meetingDetails.IsVideoCall
-                                    ? whiteVideIcon
-                                    : MeetingVideoChatIcon
-                                }
-                                width="22.32px"
-                                height="14.75px"
-                                alt=""
-                                className={
-                                  meetingDetails.IsVideoCall
-                                    ? styles["Camera_icon_active_IconStyles"]
-                                    : styles["Camera_icon"]
-                                }
-                              />
-                            </>
-                          )
-                        }
-                        className={
-                          meetingDetails.IsVideoCall
-                            ? styles["Camera_icon_Active"]
-                            : styles["Button_not_active"]
-                        }
-                        disableBtn={
-                          (Number(editorRole.status) === 9 ||
-                            Number(editorRole.status) === 8 ||
-                            Number(editorRole.status) === 10) &&
-                          editorRole.role === "Organizer" &&
-                          isEditMeeting === true
-                            ? true
-                            : editorRole.role === "Agenda Contributor" &&
-                              isEditMeeting === true
-                            ? true
-                            : false
-                        }
-                        onClick={handleVideoCameraButton}
-                      />
-                    </Col>
-                    <Col lg={11} md={11} sm={12}>
-                      <TextField
-                        disable={true}
-                        placeholder={t("Paste-microsoft-team-zoom-link") + "*"}
-                        applyClass={"meetinInnerSearch"}
-                        labelClass="d-none"
-                        name={"Link"}
-                        // change={HandleChange}
-                        value={
-                          meetingDetails.IsVideoCall
-                            ? t("Video-session-enabled")
-                            : ""
-                        }
-                      />
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
-              <Row>
                 <Col lg={12} md={12} sm={12}>
                   <span className={styles["Scedule_heading"]}>
                     {t("Scheduled-on")}
@@ -1874,16 +1768,16 @@ const MeetingDetails = ({
               <Row className="mt-3">
                 <Col lg={12} md={12} sm={12}>
                   <TextField
-                    applyClass="text-area-create-meeting"
+                    applyClass="text-area-create-resolution"
                     type="text"
                     as={"textarea"}
-                    rows="5"
-                    name={"Notes"}
-                    change={HandleChange}
-                    placeholder={t("Note-for-this-meeting")}
+                    rows="2"
+                    placeholder={t("Description")}
                     required={true}
-                    maxLength={145}
-                    value={meetingDetails.Notes}
+                    name={"Description"}
+                    change={HandleChange}
+                    value={meetingDetails.Description}
+                    // maxLength={300}
                     disable={
                       (Number(editorRole.status) === 9 ||
                         Number(editorRole.status) === 8 ||
@@ -1897,6 +1791,7 @@ const MeetingDetails = ({
                         : false
                     }
                   />
+
                   {/* <Row>
                     <Col>
                       <p
@@ -1912,8 +1807,9 @@ const MeetingDetails = ({
                   </Row> */}
                 </Col>
               </Row>
-              <Row className="mt-4">
-                <Col lg={3} md={3} sm={12}>
+
+              <Row className="mt-3">
+                <Col lg={6} md={6} sm={12}>
                   <Row>
                     <Col lg={12} md={12} sm={12} className="d-flex gap-2">
                       <Switch
@@ -1932,13 +1828,13 @@ const MeetingDetails = ({
                             : false
                         }
                       />
-                      <span className={styles["Notify_heading"]}>
+                      <span className={styles["Create_group_chat_heading"]}>
                         {t("Allow-rsvp")}
                       </span>
                     </Col>
                   </Row>
                 </Col>
-                <Col lg={9} md={9} sm={12}>
+                <Col lg={6} md={6} sm={12}>
                   <Row>
                     <Col
                       lg={12}
@@ -1962,14 +1858,133 @@ const MeetingDetails = ({
                             : false
                         }
                       />
-                      <span className={styles["Notify_heading"]}>
+                      <span className={styles["Create_group_chat_heading"]}>
                         {t("Notify-meeting-organizer-when-members-rsvp")}
                       </span>
                     </Col>
                   </Row>
                 </Col>
               </Row>
-              <Row className="mt-4">
+              <Row className="mt-2">
+                <Col lg={6} md={6} sm={12}>
+                  <Row className="mt-2">
+                    <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                      <Switch
+                        onChange={handleGroupChat}
+                        checkedValue={meetingDetails.groupChat}
+                        disabled={
+                          (Number(editorRole.status) === 9 ||
+                            Number(editorRole.status) === 8 ||
+                            Number(editorRole.status) === 10) &&
+                          editorRole.role === "Organizer" &&
+                          isEditMeeting === true
+                            ? true
+                            : editorRole.role === "Agenda Contributor" &&
+                              isEditMeeting === true
+                            ? true
+                            : false
+                        }
+                      />
+                      <span className={styles["Create_group_chat_heading"]}>
+                        {t("Create-group-chat")}
+                      </span>
+                    </Col>
+                  </Row>
+                </Col>
+                <Col lg={6} md={6} sm={12}>
+                  <Row className="mt-2">
+                    <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                      <Switch
+                        onChange={handleVideoCameraButton}
+                        checkedValue={meetingDetails.IsVideoCall}
+                        disabled={
+                          (Number(editorRole.status) === 9 ||
+                            Number(editorRole.status) === 8 ||
+                            Number(editorRole.status) === 10) &&
+                          editorRole.role === "Organizer" &&
+                          isEditMeeting === true
+                            ? true
+                            : editorRole.role === "Agenda Contributor" &&
+                              isEditMeeting === true
+                            ? true
+                            : false
+                        }
+                      />
+                      <span className={styles["Create_group_chat_heading"]}>
+                        {t("Video-session-enabled")}
+                      </span>
+                    </Col>
+                  </Row>
+                  {/* <Row>
+                    <Col lg={1} md={1} sm={12} className="d-flex gap-3 m-0 p-0">
+                      <Button
+                        icon={
+                          Loading ? (
+                            <>
+                              <Spinner
+                                className={styles["checkEmailSpinner"]}
+                              />
+                            </>
+                          ) : (
+                            <>
+                              <img
+                                draggable={false}
+                                src={
+                                  meetingDetails.IsVideoCall
+                                    ? whiteVideIcon
+                                    : MeetingVideoChatIcon
+                                }
+                                width="22.32px"
+                                height="14.75px"
+                                alt=""
+                                className={
+                                  meetingDetails.IsVideoCall
+                                    ? styles["Camera_icon_active_IconStyles"]
+                                    : styles["Camera_icon"]
+                                }
+                              />
+                            </>
+                          )
+                        }
+                        className={
+                          meetingDetails.IsVideoCall
+                            ? styles["Camera_icon_Active"]
+                            : styles["Button_not_active"]
+                        }
+                        disableBtn={
+                          (Number(editorRole.status) === 9 ||
+                            Number(editorRole.status) === 8 ||
+                            Number(editorRole.status) === 10) &&
+                          editorRole.role === "Organizer" &&
+                          isEditMeeting === true
+                            ? true
+                            : editorRole.role === "Agenda Contributor" &&
+                              isEditMeeting === true
+                            ? true
+                            : false
+                        }
+                        onClick={handleVideoCameraButton}
+                      />
+                    </Col>
+                    <Col lg={11} md={11} sm={12}>
+                      <TextField
+                        disable={true}
+                        placeholder={t("Paste-microsoft-team-zoom-link") + "*"}
+                        applyClass={"meetinInnerSearch"}
+                        labelClass="d-none"
+                        name={"Link"}
+                        // change={HandleChange}
+                        value={
+                          meetingDetails.IsVideoCall
+                            ? t("Video-session-enabled")
+                            : ""
+                        }
+                      />
+                    </Col>
+                  </Row> */}
+                </Col>
+              </Row>
+              <Row className="mt-3">
                 <Col lg={12} md={12} sm={12}>
                   <span className={styles["reccurring_heading"]}>
                     {t("Recurring")}
@@ -2030,7 +2045,7 @@ const MeetingDetails = ({
             ) === 0 ? (
             <>
               <Button
-                text={t("Save")}
+                text={t("Next")}
                 className={styles["Update_Next"]}
                 onClick={SaveMeeting}
               />
@@ -2038,7 +2053,7 @@ const MeetingDetails = ({
           ) : (
             <>
               <Button
-                text={t("Update")}
+                text={t("Next")}
                 className={styles["Update_Next"]}
                 onClick={UpdateMeetings}
               />
@@ -2046,24 +2061,28 @@ const MeetingDetails = ({
           )}
           {Number(currentMeeting) !== 0 && (
             <>
-              <Button
+              {/* <Button
                 disableBtn={Number(currentMeeting) === 0 ? true : false}
                 text={t("Next")}
                 className={styles["Published"]}
                 onClick={handleUpdateNext}
-              />
+              /> */}
 
               {Number(editorRole.status) === 11 ||
               Number(editorRole.status) === 12 ? (
                 <Button
-                  disableBtn={Number(currentMeeting) === 0 ? true : false}
+                  disableBtn={
+                    meetingDetails.IsPublished === true ? false : true
+                  }
                   text={t("Publish")}
                   className={styles["Update_Next"]}
                   onClick={handlePublish}
                 />
               ) : isEditMeeting === true ? null : (
                 <Button
-                  disableBtn={Number(currentMeeting) === 0 ? true : false}
+                  disableBtn={
+                    meetingDetails.IsPublished === true ? false : true
+                  }
                   text={t("Publish")}
                   className={styles["Update_Next"]}
                   onClick={handlePublish}

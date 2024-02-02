@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import "./ExpandedMenu.css";
 import { Row, Col, Nav, Container, Navbar, NavDropdown } from "react-bootstrap";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -12,6 +13,10 @@ import {
   updateGroupPageFlag,
   viewGroupPageFlag,
 } from "../../../../store/actions/Groups_actions";
+import {
+  showCancelModalmeetingDeitals,
+  viewMeetingFlag,
+} from "../../../../store/actions/NewMeetingActions";
 import {
   createCommitteePageFlag,
   updateCommitteePageFlag,
@@ -30,25 +35,128 @@ const ExpandedMenu = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { NewMeetingreducer } = useSelector((state) => state);
+  const [dataroomNavigation, setDataroomNavigation] = useState("dataroom");
+  const [groupNavigation, setGroupNavigation] = useState("groups");
+  const [committeeNavigation, setCommitteeNavigation] = useState("committee");
+  const [resolutionNavigation, setResolutionNavigation] =
+    useState("resolution");
+  const [pollNavigation, setPollNavigation] = useState("polling");
 
-  const handleGroupLinkClick = () => {
-    dispatch(createGroupPageFlag(false));
-    dispatch(updateGroupPageFlag(false));
-    dispatch(viewGroupPageFlag(false));
+  // //Dataroom Sidebar Click
+  const handleMeetingSidebarDataroom = () => {
+    if (
+      (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+        NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+        NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+      NewMeetingreducer.viewMeetingFlag === false
+    ) {
+      setDataroomNavigation("Meeting");
+      dispatch(showCancelModalmeetingDeitals(true));
+      localStorage.setItem("navigateLocation", "dataroom");
+    } else {
+      setDataroomNavigation("dataroom");
+      dispatch(viewMeetingFlag(false));
+    }
+    // navigate(`/${dataroomNavigation}`);
   };
 
-  const handleCommitteeLinkClick = () => {
-    dispatch(createCommitteePageFlag(false));
-    dispatch(updateCommitteePageFlag(false));
-    dispatch(viewCommitteePageFlag(false));
+  // //Groups Sidebar Click
+  const handleMeetingSidebarGroups = () => {
+    if (
+      (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+        NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+        NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+      NewMeetingreducer.viewMeetingFlag === false
+    ) {
+      setGroupNavigation("Meeting");
+      dispatch(showCancelModalmeetingDeitals(true));
+      localStorage.setItem("navigateLocation", "groups");
+    } else {
+      setGroupNavigation("groups");
+      dispatch(createGroupPageFlag(false));
+      dispatch(updateGroupPageFlag(false));
+      dispatch(viewGroupPageFlag(false));
+      dispatch(viewMeetingFlag(false));
+    }
+    // navigate(`/${groupNavigation}`);
   };
 
-  const handleResolutionLinkClick = () => {
-    dispatch(resultResolutionFlag(false));
-    dispatch(voteResolutionFlag(false));
-    dispatch(viewAttachmentFlag(false));
-    dispatch(createResolutionModal(false));
-    dispatch(viewResolutionModal(false));
+  // //Committees Sidebar Click
+  const handleMeetingSidebarCommittees = () => {
+    if (
+      (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+        NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+        NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+      NewMeetingreducer.viewMeetingFlag === false
+    ) {
+      setCommitteeNavigation("Meeting");
+      dispatch(showCancelModalmeetingDeitals(true));
+      localStorage.setItem("navigateLocation", "committee");
+    } else {
+      setCommitteeNavigation("committee");
+      dispatch(createCommitteePageFlag(false));
+      dispatch(updateCommitteePageFlag(false));
+      dispatch(viewCommitteePageFlag(false));
+      dispatch(viewMeetingFlag(false));
+    }
+    // navigate(`/${committeeNavigation}`);
+  };
+
+  // //Resolutions Sidebar Click
+  const handleMeetingSidebarResolutions = () => {
+    if (
+      (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+        NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+        NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+      NewMeetingreducer.viewMeetingFlag === false
+    ) {
+      setResolutionNavigation("Meeting");
+      dispatch(showCancelModalmeetingDeitals(true));
+      localStorage.setItem("navigateLocation", "resolution");
+    } else {
+      setResolutionNavigation("resolution");
+      dispatch(resultResolutionFlag(false));
+      dispatch(voteResolutionFlag(false));
+      dispatch(viewAttachmentFlag(false));
+      dispatch(createResolutionModal(false));
+      dispatch(viewResolutionModal(false));
+      dispatch(viewMeetingFlag(false));
+    }
+    // navigate(`/${resolutionNavigation}`);
+  };
+
+  // //Polls Sidebar Click
+  const handleMeetingSidebarPolls = () => {
+    if (
+      (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+        NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+        NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+      NewMeetingreducer.viewMeetingFlag === false
+    ) {
+      setPollNavigation("Meeting");
+      dispatch(showCancelModalmeetingDeitals(true));
+      localStorage.setItem("navigateLocation", "polling");
+    } else {
+      setPollNavigation("polling");
+      dispatch(viewMeetingFlag(false));
+    }
+    // navigate(`/${pollNavigation}`);
   };
 
   return (
@@ -63,7 +171,19 @@ const ExpandedMenu = () => {
           {/* DataRoom */}
           <Nav.Link
             as={Link}
-            to="dataroom"
+            to={
+              (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+                NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+                NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+                NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                  true ||
+                NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                  true ||
+                NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+              NewMeetingreducer.viewMeetingFlag === false
+                ? "/DisKus/Meeting"
+                : "/DisKus/dataroom"
+            }
             draggable="false"
             eventKey="link-5"
             className={
@@ -72,6 +192,7 @@ const ExpandedMenu = () => {
                 ? " m-0 p-0 icon-active-sidebar_expand"
                 : " m-0 p-0 icon_expand"
             }
+            onClick={handleMeetingSidebarDataroom}
           >
             <div draggable="false">
               <svg
@@ -341,7 +462,20 @@ const ExpandedMenu = () => {
           {/* Groups */}
           <Nav.Link
             as={Link}
-            to="groups"
+            // to="groups"
+            to={
+              (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+                NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+                NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+                NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                  true ||
+                NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                  true ||
+                NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+              NewMeetingreducer.viewMeetingFlag === false
+                ? "/DisKus/Meeting"
+                : "/DisKus/groups"
+            }
             disabled={false}
             draggable="false"
             eventKey="link-5"
@@ -351,7 +485,7 @@ const ExpandedMenu = () => {
                 ? "m-0 p-0 icon-active-sidebar_expand"
                 : "m-0 p-0 icon_expand"
             }
-            onClick={handleGroupLinkClick}
+            onClick={handleMeetingSidebarGroups}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -384,7 +518,20 @@ const ExpandedMenu = () => {
           {/* Committee */}
           <Nav.Link
             as={Link}
-            to="committee"
+            // to="committee"
+            to={
+              (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+                NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+                NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+                NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                  true ||
+                NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                  true ||
+                NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+              NewMeetingreducer.viewMeetingFlag === false
+                ? "/DisKus/Meeting"
+                : "/DisKus/committee"
+            }
             disabled={false}
             draggable="false"
             eventKey="link-5"
@@ -394,7 +541,7 @@ const ExpandedMenu = () => {
                 ? "m-0 p-0  icon-active-sidebar_expand"
                 : "m-0 p-0 icon_expand"
             }
-            onClick={handleCommitteeLinkClick}
+            onClick={handleMeetingSidebarCommittees}
           >
             <div draggable="false">
               <svg
@@ -444,7 +591,20 @@ const ExpandedMenu = () => {
           {/* Resolution */}
           <Nav.Link
             as={Link}
-            to="resolution"
+            // to="resolution"
+            to={
+              (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+                NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+                NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+                NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                  true ||
+                NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                  true ||
+                NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+              NewMeetingreducer.viewMeetingFlag === false
+                ? "/DisKus/Meeting"
+                : "/DisKus/resolution"
+            }
             disabled={false}
             draggable="false"
             eventKey="link-5"
@@ -454,7 +614,7 @@ const ExpandedMenu = () => {
                 ? "m-0 p-0 icon-active-sidebar_expand"
                 : "m-0 p-0 icon_expand"
             }
-            onClick={handleResolutionLinkClick}
+            onClick={handleMeetingSidebarResolutions}
           >
             <div draggable="false">
               <svg
@@ -501,7 +661,20 @@ const ExpandedMenu = () => {
           {/* Polls */}
           <Nav.Link
             as={Link}
-            to="polling"
+            // to="polling"
+            to={
+              (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+                NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+                NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+                NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                  true ||
+                NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                  true ||
+                NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+              NewMeetingreducer.viewMeetingFlag === false
+                ? "/DisKus/Meeting"
+                : "/DisKus/polling"
+            }
             disabled={false}
             draggable="false"
             eventKey="link-5"
@@ -511,6 +684,7 @@ const ExpandedMenu = () => {
                 ? "m-0 p-0  icon-active-sidebar_expand Meeting_Side_bar_Tag_active"
                 : "m-0 p-0 icon_expand"
             }
+            onClick={handleMeetingSidebarPolls}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
