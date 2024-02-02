@@ -13,8 +13,21 @@ import {
   viewProposeOrganizerMeetingPageFlag,
   proposeNewMeetingPageFlag,
   searchNewUserMeeting,
+  viewMeetingFlag,
+  meetingDetailsGlobalFlag,
+  organizersGlobalFlag,
+  agendaContributorsGlobalFlag,
+  participantsGlobalFlag,
+  agendaGlobalFlag,
+  meetingMaterialGlobalFlag,
+  minutesGlobalFlag,
+  proposedMeetingDatesGlobalFlag,
+  actionsGlobalFlag,
+  pollsGlobalFlag,
+  attendanceGlobalFlag,
 } from "../../../store/actions/NewMeetingActions";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
+import { showCancelModalmeetingDeitals } from "../../../store/actions/NewMeetingActions";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -29,6 +42,11 @@ const Sidebar = () => {
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let userID = localStorage.getItem("userID");
+
+  const [meetingNavigation, setMeetingNavigation] = useState("Meeting");
+  const [todoListNavigation, setTodoListNavigation] = useState("todolist");
+  const [calendarNavigation, setCalendarNavigation] = useState("calendar");
+  const [notesNavigation, setNotesNavigation] = useState("Notes");
 
   const sidebarshow = useRef();
 
@@ -55,62 +73,153 @@ const Sidebar = () => {
 
   useEffect(() => {
     if (Blur !== undefined && Blur !== null) {
-      console.log("Blur", Blur);
-
       setActivateBlur(true);
     } else {
-      console.log("Blur", Blur);
-
       setActivateBlur(false);
     }
   }, [Blur]);
 
+  //Meeting SideBar Click
   const handleMeetingSidebarClick = () => {
-    dispatch(scheduleMeetingPageFlag(false));
-    dispatch(viewProposeDateMeetingPageFlag(false));
-    dispatch(viewAdvanceMeetingPublishPageFlag(false));
-    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-    dispatch(viewProposeOrganizerMeetingPageFlag(false));
-    dispatch(proposeNewMeetingPageFlag(false));
     if (
-      NewMeetingreducer.scheduleMeetingPageFlag === true ||
-      NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
-      NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
-      NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
-      NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
-      NewMeetingreducer.proposeNewMeetingPageFlag === true
+      (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+        NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+        NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+      NewMeetingreducer.viewMeetingFlag === false
     ) {
-      if (meetingpageRow !== null && meetingPageCurrent !== null) {
-        let searchData = {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(userID),
-          PageNumber: Number(meetingPageCurrent),
-          Length: Number(meetingpageRow),
-          PublishedMeetings: Number(currentView) === 1 ? true : false,
-        };
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
-        dispatch(allAssignessList(navigate, t));
-        // localStorage.setItem("MeetingCurrentView", 1);
-      } else {
-        let searchData = {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(userID),
-          PageNumber: 1,
-          Length: 50,
-          PublishedMeetings: Number(currentView) === 1 ? true : false,
-        };
-        localStorage.setItem("MeetingPageRows", 50);
-        localStorage.setItem("MeetingPageCurrent", 1);
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
-        dispatch(allAssignessList(navigate, t));
-        // localStorage.setItem("MeetingCurrentView", 1);
+      setMeetingNavigation("Meeting");
+      dispatch(showCancelModalmeetingDeitals(true));
+      localStorage.setItem("navigateLocation", "Meeting");
+    } else {
+      dispatch(scheduleMeetingPageFlag(false));
+      dispatch(viewProposeDateMeetingPageFlag(false));
+      dispatch(viewAdvanceMeetingPublishPageFlag(false));
+      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+      dispatch(viewProposeOrganizerMeetingPageFlag(false));
+      dispatch(proposeNewMeetingPageFlag(false));
+      if (
+        (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+          NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+          NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+          NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+          NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+          NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+        NewMeetingreducer.viewMeetingFlag === true
+      ) {
+        if (meetingpageRow !== null && meetingPageCurrent !== null) {
+          let searchData = {
+            Date: "",
+            Title: "",
+            HostName: "",
+            UserID: Number(userID),
+            PageNumber: Number(meetingPageCurrent),
+            Length: Number(meetingpageRow),
+            PublishedMeetings: Number(currentView) === 1 ? true : false,
+          };
+          dispatch(searchNewUserMeeting(navigate, searchData, t));
+          dispatch(allAssignessList(navigate, t));
+        } else {
+          let searchData = {
+            Date: "",
+            Title: "",
+            HostName: "",
+            UserID: Number(userID),
+            PageNumber: 1,
+            Length: 50,
+            PublishedMeetings: Number(currentView) === 1 ? true : false,
+          };
+          localStorage.setItem("MeetingPageRows", 50);
+          localStorage.setItem("MeetingPageCurrent", 1);
+          dispatch(searchNewUserMeeting(navigate, searchData, t));
+          dispatch(allAssignessList(navigate, t));
+          // localStorage.setItem("MeetingCurrentView", 1);
+        }
+        dispatch(viewMeetingFlag(false));
+        dispatch(meetingDetailsGlobalFlag(false));
+        dispatch(organizersGlobalFlag(false));
+        dispatch(agendaContributorsGlobalFlag(false));
+        dispatch(participantsGlobalFlag(false));
+        dispatch(agendaGlobalFlag(false));
+        dispatch(meetingMaterialGlobalFlag(false));
+        dispatch(minutesGlobalFlag(false));
+        dispatch(proposedMeetingDatesGlobalFlag(false));
+        dispatch(actionsGlobalFlag(false));
+        dispatch(pollsGlobalFlag(false));
+        dispatch(attendanceGlobalFlag(false));
       }
     }
+    console.log("Navigation works", meetingNavigation, `/${meetingNavigation}`);
+    // navigate(`/${meetingNavigation}`);
   };
+
+  //Todo Sidebar Click
+  const handleMeetingSidebarTodo = () => {
+    if (
+      (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+        NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+        NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+      NewMeetingreducer.viewMeetingFlag === false
+    ) {
+      console.log("todoListNavigationtodoListNavigation", todoListNavigation);
+      setTodoListNavigation("Meeting");
+      dispatch(showCancelModalmeetingDeitals(true));
+      localStorage.setItem("navigateLocation", "todolist");
+    } else {
+      setTodoListNavigation("todolist");
+      dispatch(viewMeetingFlag(false));
+    }
+    // navigate(`/${todoListNavigation}`);
+  };
+
+  //Calendar Sidebar Click
+  const handleMeetingSidebarCalendar = () => {
+    if (
+      (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+        NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+        NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+      NewMeetingreducer.viewMeetingFlag === false
+    ) {
+      setCalendarNavigation("Meeting");
+      dispatch(showCancelModalmeetingDeitals(true));
+      localStorage.setItem("navigateLocation", "calendar");
+    } else {
+      setCalendarNavigation("calendar");
+      dispatch(viewMeetingFlag(false));
+    }
+    // navigate(`/${calendarNavigation}`);
+  };
+
+  //Notes Sidebar Click
+  const handleMeetingSidebarNotes = () => {
+    if (
+      (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+        NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+        NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+      NewMeetingreducer.viewMeetingFlag === false
+    ) {
+      setNotesNavigation("Meeting");
+      dispatch(showCancelModalmeetingDeitals(true));
+      localStorage.setItem("navigateLocation", "Notes");
+    } else {
+      setNotesNavigation("Notes");
+      dispatch(viewMeetingFlag(false));
+    }
+    // navigate(`/${notesNavigation}`);
+  };
+
+  console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
 
   return (
     <>
@@ -546,16 +655,26 @@ const Sidebar = () => {
             }
           >
             <Nav className="new_sidebar p-0 d-flex justify-content-center  gap-3 align-items-center flex-column">
-              {/* <Nav.Link as={Link} to="home" eventKey="link-1">
-              <img src={Logo} className="mb-5" />
-            </Nav.Link> */}
-
               <>
                 {/* Meeting Menu */}
 
                 <Nav.Link
                   as={Link}
-                  to="Meeting"
+                  to={
+                    (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+                      NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                        true ||
+                      NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                        true ||
+                      NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                        true ||
+                      NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                        true ||
+                      NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+                    NewMeetingreducer.viewMeetingFlag === false
+                      ? "/DisKus/Meeting"
+                      : "/DisKus/Meeting"
+                  }
                   eventKey="link-2"
                   className={
                     location.pathname === "/DisKus/Meeting" ||
@@ -603,7 +722,21 @@ const Sidebar = () => {
                 {/* Todo Menu */}
                 <Nav.Link
                   as={Link}
-                  to="todolist"
+                  to={
+                    (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+                      NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                        true ||
+                      NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                        true ||
+                      NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                        true ||
+                      NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                        true ||
+                      NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+                    NewMeetingreducer.viewMeetingFlag === false
+                      ? "/DisKus/Meeting"
+                      : "/DisKus/todolist"
+                  }
                   eventKey="link-3"
                   className={
                     location.pathname === "/DisKus/todolist" ||
@@ -611,6 +744,7 @@ const Sidebar = () => {
                       ? "m-0 p-0 iconSidebar-active-sidebar"
                       : "m-0 p-0 iconSidebar"
                   }
+                  onClick={handleMeetingSidebarTodo}
                 >
                   <div
                     className="d-flex align-items-center flex-column"
@@ -659,7 +793,21 @@ const Sidebar = () => {
                 {/* Calendar Menu */}
                 <Nav.Link
                   as={Link}
-                  to="calendar"
+                  to={
+                    (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+                      NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                        true ||
+                      NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                        true ||
+                      NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                        true ||
+                      NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                        true ||
+                      NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+                    NewMeetingreducer.viewMeetingFlag === false
+                      ? "/DisKus/Meeting"
+                      : "/DisKus/calendar"
+                  }
                   eventKey="link-5"
                   className={
                     location.pathname === "/DisKus/calendar" ||
@@ -667,6 +815,7 @@ const Sidebar = () => {
                       ? "m-0 p-0 iconSidebar-active-sidebar"
                       : "m-0 p-0 iconSidebar"
                   }
+                  onClick={handleMeetingSidebarCalendar}
                 >
                   <div
                     className="d-flex align-items-center flex-column"
@@ -716,7 +865,21 @@ const Sidebar = () => {
                 <Nav.Link
                   as={Link}
                   disabled={false}
-                  to="Notes"
+                  to={
+                    (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+                      NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                        true ||
+                      NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                        true ||
+                      NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                        true ||
+                      NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                        true ||
+                      NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+                    NewMeetingreducer.viewMeetingFlag === false
+                      ? "/DisKus/Meeting"
+                      : "/DisKus/Notes"
+                  }
                   eventKey="link-4"
                   className={
                     location.pathname === "/DisKus/Notes" ||
@@ -724,6 +887,7 @@ const Sidebar = () => {
                       ? "m-0 p-0 iconSidebar-active-sidebar"
                       : "m-0 p-0 iconSidebar"
                   }
+                  onClick={handleMeetingSidebarNotes}
                 >
                   <div
                     className="d-flex flex-column noteIcon"

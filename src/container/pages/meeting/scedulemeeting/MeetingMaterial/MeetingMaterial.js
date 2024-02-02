@@ -19,6 +19,17 @@ import {
   searchNewUserMeeting,
   showCancelMeetingMaterial,
   showPreviousConfirmationModal,
+  meetingDetailsGlobalFlag,
+  organizersGlobalFlag,
+  agendaContributorsGlobalFlag,
+  participantsGlobalFlag,
+  agendaGlobalFlag,
+  meetingMaterialGlobalFlag,
+  minutesGlobalFlag,
+  proposedMeetingDatesGlobalFlag,
+  actionsGlobalFlag,
+  pollsGlobalFlag,
+  attendanceGlobalFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import { getMeetingMaterialAPI } from "../../../../../store/actions/NewMeetingActions";
 import {
@@ -53,6 +64,9 @@ const MeetingMaterial = ({
   const meetingMaterialData = useSelector(
     (state) => state.NewMeetingreducer.meetingMaterialData
   );
+  const isPublishedGlobal = useSelector(
+    (state) => state.NewMeetingreducer.meetingMaterialIsPublished
+  );
   const Loading = useSelector((state) => state.NewMeetingreducer.Loading);
   const cancelMeetingMaterial = useSelector(
     (state) => state.NewMeetingreducer.cancelMeetingMaterial
@@ -72,6 +86,7 @@ const MeetingMaterial = ({
   const [flag, setFlag] = useState(5);
   const [prevFlag, setprevFlag] = useState(5);
   const [dataCheck, setDataCheck] = useState([]);
+  const [isPublishedState, setIsPublishedState] = useState(false);
 
   // row state for meeting Material
   const [rows, setRows] = useState([]);
@@ -258,7 +273,8 @@ const MeetingMaterial = ({
     } else {
       setRows([]);
     }
-  }, [meetingMaterialData]);
+    setIsPublishedState(isPublishedGlobal);
+  }, [meetingMaterialData, isPublishedGlobal]);
 
   const handleCancelButton = async () => {
     // dispatch(showCancelMeetingMaterial(true));
@@ -290,6 +306,17 @@ const MeetingMaterial = ({
     // }
     setMeetingMaterial(false);
     setMinutes(true);
+    dispatch(meetingDetailsGlobalFlag(false));
+    dispatch(organizersGlobalFlag(false));
+    dispatch(agendaContributorsGlobalFlag(false));
+    dispatch(participantsGlobalFlag(false));
+    dispatch(agendaGlobalFlag(false));
+    dispatch(meetingMaterialGlobalFlag(false));
+    dispatch(minutesGlobalFlag(true));
+    dispatch(proposedMeetingDatesGlobalFlag(false));
+    dispatch(actionsGlobalFlag(false));
+    dispatch(pollsGlobalFlag(false));
+    dispatch(attendanceGlobalFlag(false));
   };
   const handlePublish = () => {
     let Data = { MeetingID: currentMeeting, StatusID: 1 };
@@ -373,11 +400,11 @@ const MeetingMaterial = ({
             onClick={handleCancelButton}
           />
           {/* <Button text={t("Save")} className={styles["Cancel_Classname"]} /> */}
-          <Button
+          {/* <Button
             text={t("Previous")}
             className={styles["Save_Classname"]}
             onClick={handlePreviousButtonMeetingMaterial}
-          />
+          /> */}
           <Button
             text={t("Next")}
             className={styles["Save_Classname"]}
@@ -392,14 +419,22 @@ const MeetingMaterial = ({
           {Number(editorRole.status) === 11 ||
           Number(editorRole.status) === 12 ? (
             <Button
-              disableBtn={Number(currentMeeting) === 0 ? true : false}
+              disableBtn={
+                Number(currentMeeting) === 0 && isPublishedState === false
+                  ? true
+                  : false
+              }
               text={t("Publish")}
               className={styles["Save_Classname"]}
               onClick={handlePublish}
             />
           ) : isEditMeeting === true ? null : (
             <Button
-              disableBtn={Number(currentMeeting) === 0 ? true : false}
+              disableBtn={
+                Number(currentMeeting) === 0 && isPublishedState === false
+                  ? true
+                  : false
+              }
               text={t("Publish")}
               className={styles["Save_Classname"]}
               onClick={handlePublish}

@@ -333,11 +333,11 @@ const AgendaContributers = ({
               className={styles["Cancel_Meeting_Details"]}
               onClick={handleCancelMeetingNoPopup}
             />
-            <Button
+            {/* <Button
               text={t("Previous")}
               className={styles["Next_Button_Organizers_view"]}
               onClick={handlePreviousBtn}
-            />
+            /> */}
             <Button
               text={t("Next")}
               className={styles["Next_Button_Organizers_view"]}

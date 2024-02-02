@@ -23,6 +23,17 @@ import {
   GetAllPollsByMeetingIdApiFunc,
   showCancelPolls,
   showUnsavedPollsMeeting,
+  meetingDetailsGlobalFlag,
+  organizersGlobalFlag,
+  agendaContributorsGlobalFlag,
+  participantsGlobalFlag,
+  agendaGlobalFlag,
+  meetingMaterialGlobalFlag,
+  minutesGlobalFlag,
+  proposedMeetingDatesGlobalFlag,
+  actionsGlobalFlag,
+  pollsGlobalFlag,
+  attendanceGlobalFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import EditPollsMeeting from "./EditPollsMeeting/EditPollsMeeting";
 import AfterViewPolls from "./AfterViewPolls/AfterViewPolls";
@@ -478,6 +489,17 @@ const Polls = ({
   const handleNextButtonPolls = () => {
     setPolls(false);
     setAttendance(true);
+    dispatch(meetingDetailsGlobalFlag(false));
+    dispatch(organizersGlobalFlag(false));
+    dispatch(agendaContributorsGlobalFlag(false));
+    dispatch(participantsGlobalFlag(false));
+    dispatch(agendaGlobalFlag(false));
+    dispatch(meetingMaterialGlobalFlag(false));
+    dispatch(minutesGlobalFlag(false));
+    dispatch(proposedMeetingDatesGlobalFlag(false));
+    dispatch(actionsGlobalFlag(false));
+    dispatch(pollsGlobalFlag(false));
+    dispatch(attendanceGlobalFlag(true));
   };
 
   useEffect(() => {
@@ -663,11 +685,11 @@ const Polls = ({
                       className={styles["Cancel_Button_Polls_meeting"]}
                       onClick={handleCacnelbutton}
                     />
-                    <Button
+                    {/* <Button
                       text={t("Previous")}
                       className={styles["Save_Button_Polls_meeting"]}
                       onClick={handleClickPrevPolls}
-                    />
+                    /> */}
                     {Number(editorRole.status) === 10 &&
                     editorRole.role === "Agenda Contributor" ? null : (
                       <Button

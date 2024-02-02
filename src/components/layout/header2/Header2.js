@@ -11,6 +11,10 @@ import "../../../i18n.js";
 import { useTranslation } from "react-i18next";
 import { signOut } from "../../../store/actions/Auth_Sign_Out";
 import {
+  showCancelModalmeetingDeitals,
+  viewMeetingFlag,
+} from "../../../store/actions/NewMeetingActions";
+import {
   getUserDetails,
   getUserSetting,
 } from "../../../store/actions/GetUserSetting";
@@ -29,7 +33,7 @@ const Header2 = () => {
   const location = useLocation();
   // const languageref = useRef()
   const state = useSelector((state) => state);
-  const { settingReducer } = state;
+  const { settingReducer, NewMeetingreducer } = state;
   const { UserProfileData } = settingReducer;
   const navigate = useNavigate();
   const [createMeetingModal, setCreateMeetingModal] = useState(false);
@@ -120,19 +124,97 @@ const Header2 = () => {
     setCreateMeetingModal(true);
   };
   const handleUploadFile = async ({ file }) => {
-    console.log(file, "handleUploadFilehandleUploadFile");
-    // await dispatch(uploadDocumentFromDashboard(file));
-    navigate("/Diskus/dataroom", { state: file });
+    if (
+      (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+        NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+        NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+      NewMeetingreducer.viewMeetingFlag === false
+    ) {
+      dispatch(showCancelModalmeetingDeitals(true));
+      localStorage.setItem("navigateLocation", "dataroom");
+    } else {
+      console.log(file, "handleUploadFilehandleUploadFile");
+      navigate("/Diskus/dataroom", { state: file });
+    }
   };
-  const RecentFilesTab = async () => {
-    // let Data = {
-    //   UserID: Number(userID),
-    //   OrganizationID: Number(organizationID),
-    // };
-    // await dispatch(getRecentDocumentsApi(navigate, t, Data));
-    localStorage.setItem("setTableView", 4);
 
-    navigate("/DisKus/dataroom");
+  const RecentFilesTab = async () => {
+    if (
+      (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+        NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+        NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+      NewMeetingreducer.viewMeetingFlag === false
+    ) {
+      dispatch(showCancelModalmeetingDeitals(true));
+      localStorage.setItem("navigateLocation", "dataroom");
+    } else {
+      localStorage.setItem("setTableView", 4);
+      navigate("/DisKus/dataroom");
+      dispatch(viewMeetingFlag(false));
+    }
+  };
+
+  const homePageDashboardClick = () => {
+    if (location.pathname.includes("/Admin") === false) {
+      if (
+        (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+          NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+          NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+          NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+          NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+          NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+        NewMeetingreducer.viewMeetingFlag === false
+      ) {
+        dispatch(showCancelModalmeetingDeitals(true));
+        localStorage.setItem("navigateLocation", "home");
+      } else {
+        dispatch(viewMeetingFlag(false));
+      }
+    }
+  };
+
+  const handleMeetingSidebarSettings = () => {
+    if (location.pathname.includes("/Admin") === false) {
+      if (
+        (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+          NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+          NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+          NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+          NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+          NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+        NewMeetingreducer.viewMeetingFlag === false
+      ) {
+        dispatch(showCancelModalmeetingDeitals(true));
+        localStorage.setItem("navigateLocation", "setting");
+      } else {
+        dispatch(viewMeetingFlag(false));
+      }
+    }
+  };
+
+  const handleMeetingSidebarFAQ = () => {
+    if (location.pathname.includes("/Admin") === false) {
+      if (
+        (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+          NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+          NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+          NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+          NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+          NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+        NewMeetingreducer.viewMeetingFlag === false
+      ) {
+        dispatch(showCancelModalmeetingDeitals(true));
+        localStorage.setItem("navigateLocation", "faq's");
+      } else {
+        dispatch(viewMeetingFlag(false));
+      }
+    }
   };
 
   return (
@@ -148,6 +230,7 @@ const Header2 = () => {
                   ? "/Diskus/Admin/Summary"
                   : "/DisKus/home"
               }
+              // onClick={homePageDashboardClick}
             >
               <img
                 src={DiskusLogoHeader}
@@ -259,8 +342,24 @@ const Header2 = () => {
                     >
                       <Nav.Link
                         as={Link}
-                        to="setting"
+                        to={
+                          (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+                            NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                              true ||
+                            NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                              true ||
+                            NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                              true ||
+                            NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                              true ||
+                            NewMeetingreducer.proposeNewMeetingPageFlag ===
+                              true) &&
+                          NewMeetingreducer.viewMeetingFlag === false
+                            ? "/DisKus/Meeting"
+                            : "/DisKus/setting"
+                        }
                         className="d-flex text-black FontClass"
+                        onClick={handleMeetingSidebarSettings}
                       >
                         {/* Change Password */}
                         {t("Settings")}
@@ -272,7 +371,23 @@ const Header2 = () => {
                     >
                       <Nav.Link
                         as={Link}
-                        to="faq's"
+                        to={
+                          (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+                            NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                              true ||
+                            NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                              true ||
+                            NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                              true ||
+                            NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                              true ||
+                            NewMeetingreducer.proposeNewMeetingPageFlag ===
+                              true) &&
+                          NewMeetingreducer.viewMeetingFlag === false
+                            ? "/DisKus/Meeting"
+                            : "/DisKus/faq's"
+                        }
+                        onClick={handleMeetingSidebarFAQ}
                         className="d-flex text-black FontClass"
                       >
                         {/* Change Password */}
@@ -310,8 +425,21 @@ const Header2 = () => {
                 to={
                   location.pathname.includes("/Admin")
                     ? "/Diskus/Admin/faq's"
+                    : (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+                        NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                          true ||
+                        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                          true ||
+                        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                          true ||
+                        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                          true ||
+                        NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+                      NewMeetingreducer.viewMeetingFlag === false
+                    ? "/DisKus/Meeting"
                     : "/DisKus/faq's"
                 }
+                onClick={handleMeetingSidebarFAQ}
                 className="mx-3"
               >
                 <img
@@ -336,11 +464,29 @@ const Header2 = () => {
           <section className="d-flex justify-content-between w-100  align-items-center px-5">
             <Navbar.Brand
               as={Link}
+              // to={
+              //   location.pathname.includes("/Admin")
+              //     ? "/Diskus/Admin/Summary"
+              //     : "/DisKus/home"
+              // }
               to={
                 location.pathname.includes("/Admin")
                   ? "/Diskus/Admin/Summary"
+                  : (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+                      NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                        true ||
+                      NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                        true ||
+                      NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                        true ||
+                      NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                        true ||
+                      NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+                    NewMeetingreducer.viewMeetingFlag === false
+                  ? "/DisKus/Meeting"
                   : "/DisKus/home"
               }
+              onClick={homePageDashboardClick}
             >
               <img
                 src={DiskusLogoHeader}
@@ -461,8 +607,24 @@ const Header2 = () => {
                     >
                       <Nav.Link
                         as={Link}
-                        to="setting"
+                        to={
+                          (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+                            NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                              true ||
+                            NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                              true ||
+                            NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                              true ||
+                            NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                              true ||
+                            NewMeetingreducer.proposeNewMeetingPageFlag ===
+                              true) &&
+                          NewMeetingreducer.viewMeetingFlag === false
+                            ? "/DisKus/Meeting"
+                            : "/DisKus/setting"
+                        }
                         className="d-flex text-black FontClass"
+                        onClick={handleMeetingSidebarSettings}
                       >
                         {/* Change Password */}
                         {t("Settings")}
@@ -474,7 +636,23 @@ const Header2 = () => {
                     >
                       <Nav.Link
                         as={Link}
-                        to="faq's"
+                        to={
+                          (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+                            NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                              true ||
+                            NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                              true ||
+                            NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                              true ||
+                            NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                              true ||
+                            NewMeetingreducer.proposeNewMeetingPageFlag ===
+                              true) &&
+                          NewMeetingreducer.viewMeetingFlag === false
+                            ? "/DisKus/Meeting"
+                            : "/DisKus/faq's"
+                        }
+                        onClick={handleMeetingSidebarFAQ}
                         className="d-flex text-black FontClass"
                       >
                         {/* Change Password */}
@@ -511,9 +689,22 @@ const Header2 = () => {
                 to={
                   location.pathname.includes("/Admin")
                     ? "/Diskus/Admin/faq's"
+                    : (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+                        NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                          true ||
+                        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                          true ||
+                        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                          true ||
+                        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                          true ||
+                        NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+                      NewMeetingreducer.viewMeetingFlag === false
+                    ? "/DisKus/Meeting"
                     : "/DisKus/faq's"
                 }
                 className="mx-3"
+                onClick={handleMeetingSidebarFAQ}
               >
                 <img src={DiskusHeaderInfo} width={28} draggable="false" />
               </Nav.Link>

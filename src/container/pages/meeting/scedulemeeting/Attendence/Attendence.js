@@ -367,11 +367,11 @@ const Attendence = ({
             className={styles["CloneMeetingStyles"]}
             onClick={handleCancelBtn}
           />
-          <Button
+          {/* <Button
             text={t("Previous")}
             onClick={navigatePrevHandler}
             className={styles["CloneMeetingStyles"]}
-          />
+          /> */}
           <Button
             text={t("Save")}
             onClick={() => saveHandler()}

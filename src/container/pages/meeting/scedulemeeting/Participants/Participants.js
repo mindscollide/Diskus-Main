@@ -27,6 +27,17 @@ import {
   showAddParticipantsModal,
   showCancelModalPartipants,
   showCrossConfirmationModal,
+  meetingDetailsGlobalFlag,
+  organizersGlobalFlag,
+  agendaContributorsGlobalFlag,
+  participantsGlobalFlag,
+  agendaGlobalFlag,
+  meetingMaterialGlobalFlag,
+  minutesGlobalFlag,
+  proposedMeetingDatesGlobalFlag,
+  actionsGlobalFlag,
+  pollsGlobalFlag,
+  attendanceGlobalFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import AddParticipantModal from "./AddParticipantModal/AddParticipantModal";
 import { CancelParticipants } from "./CancelParticipants/CancelParticipants";
@@ -64,6 +75,8 @@ const Participants = ({
   const [isEditable, setIsEditable] = useState(false);
   const [particpantsRole, setParticpantsRole] = useState([]);
   const [editableSave, setEditableSave] = useState(0);
+  const [isPublishedState, setIsPublishedState] = useState(false);
+
   const [flag, setFlag] = useState(4);
   const [prevFlag, setprevFlag] = useState(4);
   const [open, setOpen] = useState({
@@ -171,7 +184,7 @@ const Participants = ({
       } else {
         // IsParticipantsAddFlow;
       }
-
+      setIsPublishedState(NewMeetingreducer.getAllSavedparticipantsIsPublished);
       setrspvRows(getAllData);
     } else {
       setrspvRows([]);
@@ -415,6 +428,17 @@ const Participants = ({
     // dispatch(ShowNextConfirmationModal(true));
     setAgenda(true);
     setParticipants(false);
+    dispatch(meetingDetailsGlobalFlag(false));
+    dispatch(organizersGlobalFlag(false));
+    dispatch(agendaContributorsGlobalFlag(false));
+    dispatch(participantsGlobalFlag(false));
+    dispatch(agendaGlobalFlag(true));
+    dispatch(meetingMaterialGlobalFlag(false));
+    dispatch(minutesGlobalFlag(false));
+    dispatch(proposedMeetingDatesGlobalFlag(false));
+    dispatch(actionsGlobalFlag(false));
+    dispatch(pollsGlobalFlag(false));
+    dispatch(attendanceGlobalFlag(false));
   };
 
   const previousTabOrganizer = () => {
@@ -693,11 +717,11 @@ const Participants = ({
                         onClick={handleCancelParticipants}
                       />
 
-                      <Button
+                      {/* <Button
                         text={t("Previous")}
                         className={styles["publish_button_participant"]}
                         onClick={previousTabOrganizer}
-                      />
+                      /> */}
 
                       <Button
                         text={t("Next")}
@@ -720,11 +744,11 @@ const Participants = ({
                         onClick={handleCancelParticipants}
                       />
 
-                      <Button
+                      {/* <Button
                         text={t("Previous")}
                         className={styles["publish_button_participant"]}
                         onClick={previousTabOrganizer}
-                      />
+                      /> */}
 
                       <Button
                         text={t("Next")}
@@ -750,14 +774,24 @@ const Participants = ({
                   {Number(editorRole.status) === 11 ||
                   Number(editorRole.status) === 12 ? (
                     <Button
-                      disableBtn={Number(currentMeeting) === 0 ? true : false}
+                      disableBtn={
+                        Number(currentMeeting) === 0 &&
+                        isPublishedState === false
+                          ? true
+                          : false
+                      }
                       text={t("Publish")}
                       className={styles["Next_Organization"]}
                       onClick={handleNextButton}
                     />
                   ) : isEditMeeting === true || isEditClicked ? null : (
                     <Button
-                      disableBtn={Number(currentMeeting) === 0 ? true : false}
+                      disableBtn={
+                        Number(currentMeeting) === 0 &&
+                        isPublishedState === false
+                          ? true
+                          : false
+                      }
                       text={t("Publish")}
                       className={styles["Next_Organization"]}
                       onClick={handleNextButton}
