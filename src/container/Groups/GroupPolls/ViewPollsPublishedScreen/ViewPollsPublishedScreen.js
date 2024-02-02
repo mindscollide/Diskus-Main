@@ -79,7 +79,7 @@ const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
         <>
           <section>
             <Row>
-              <Col lg={6} md={6} sm={6}>
+              <Col lg={6} md={6} sm={12}>
                 <Row className="mt-3">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Heading_vewPolls_Published"]}>
@@ -129,6 +129,7 @@ const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
                                             <Checkbox disabled={true} />
                                             <Progress
                                               className="Progress_bar_Polls"
+                                              // prefixCls="progress_bar_poll"
                                               percent={data.votePercentage}
                                               status="active"
                                             />
@@ -173,7 +174,7 @@ const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
                 </Row>
               </Col>
               <Col lg={1} md={1} sm={1}></Col>
-              <Col lg={5} md={5} sm={5}>
+              <Col lg={5} md={5} sm={12}>
                 <Row className="mt-3">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Participants"]}>

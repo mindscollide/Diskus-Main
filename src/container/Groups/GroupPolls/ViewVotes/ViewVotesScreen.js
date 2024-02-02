@@ -68,7 +68,7 @@ const ViewVotesScreen = ({ setviewVotes }) => {
   return (
     <section>
       <Row>
-        <Col lg={6} md={6} sm={6}>
+        <Col lg={7} md={7} sm={12}>
           <Row className="mt-3">
             <Col lg={12} md={12} sm={12}>
               <span className={styles["Heading_vewPolls_Published"]}>
@@ -96,7 +96,7 @@ const ViewVotesScreen = ({ setviewVotes }) => {
                                     className={styles["Messege_span_Class"]}
                                   >
                                     {data.answer}
-                                    {""} <span>{data.totalVotes}</span>
+                                    {""} <span>({data.totalVotes})</span>
                                   </span>
                                 </Col>
                               </Row>
@@ -128,10 +128,14 @@ const ViewVotesScreen = ({ setviewVotes }) => {
             </Col>
           </Row>
         </Col>
-        <Col lg={1} md={1} sm={1}></Col>
-        <Col lg={5} md={5} sm={5}>
+        <Col lg={5} md={5} sm={12}>
           <Row>
-            <Col sm={12} md={12} lg={12}>
+            <Col
+              sm={12}
+              md={12}
+              lg={12}
+              className={styles["viewVotes_container"]}
+            >
               {pollAttendiesOpptionsVise.length > 0 &&
                 pollAttendiesOpptionsVise.map((pollParticipantData, index) => {
                   return (

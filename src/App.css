@@ -5605,6 +5605,9 @@ body[dir="rtl"] .ant-result-subtitle {
   border-radius: 4px;
   height: 39px;
 }
+.Progress_bar_Polls {
+  width: 92% !important;
+}
 
 .Progress_bar_Polls .ant-progress-bg {
   height: 39px !important;
