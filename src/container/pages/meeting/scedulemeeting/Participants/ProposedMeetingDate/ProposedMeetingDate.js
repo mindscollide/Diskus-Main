@@ -82,6 +82,7 @@ const ProposedMeetingDate = ({
   const [sendResponseBy, setSendResponseBy] = useState({
     date: "",
   });
+
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -100,8 +101,6 @@ const ProposedMeetingDate = ({
     },
   ]);
 
-  console.log("Componentrender", { sendResponseVal, sendResponseBy });
-
   const callApis = async () => {
     let Data = {
       MeetingID: Number(currentMeeting),
@@ -118,17 +117,22 @@ const ProposedMeetingDate = ({
         setDataroomMapFolderId
       )
     );
+    setSendResponseVal("");
+    setSendResponseBy({
+      ...sendResponseBy,
+      date: "",
+    });
   };
 
   useEffect(() => {
     callApis();
-    return () => {
-      setProposedMeetingDates(false);
-      setSendResponseVal("");
-      setSendResponseBy({
-        date: "",
-      });
-    };
+    // return () => {
+    //   setProposedMeetingDates(false);
+    //   setSendResponseVal("");
+    //   setSendResponseBy({
+    //     date: "",
+    //   });
+    // };
   }, []);
 
   useEffect(() => {
@@ -145,12 +149,8 @@ const ProposedMeetingDate = ({
 
   useEffect(() => {
     try {
-      if (getAllMeetingDetails) {
+      if (getAllMeetingDetails && getAllProposedDates) {
         if (getAllMeetingDetails.advanceMeetingDetails) {
-          console.log(
-            getAllMeetingDetails.advanceMeetingDetails,
-            "getAllMeetingDetails"
-          );
           setViewProposedModal({
             Title: getAllMeetingDetails.advanceMeetingDetails.meetingTitle,
             Description: getAllMeetingDetails.advanceMeetingDetails.description,
@@ -160,10 +160,11 @@ const ProposedMeetingDate = ({
             MeetingDate:
               getAllMeetingDetails.advanceMeetingDetails.meetingDates,
           });
+
           if (
             getAllProposedDates === null &&
             getAllProposedDates === undefined &&
-            Object.keys(getAllProposedDates).length === 0
+            getAllProposedDates.meetingProposedDates.length > 0
           ) {
             const newDataforView =
               getAllMeetingDetails.advanceMeetingDetails.meetingDates.map(
@@ -260,12 +261,12 @@ const ProposedMeetingDate = ({
         }
       }
     } catch {}
-    return () => {
-      setSendResponseVal("");
-      setSendResponseBy({
-        date: "",
-      });
-    };
+    // return () => {
+    //   setSendResponseVal("");
+    //   setSendResponseBy({
+    //     date: "",
+    //   });
+    // };
   }, [getAllMeetingDetails, getAllProposedDates]);
 
   const changeDateStartHandler = (date, index) => {
@@ -459,7 +460,7 @@ const ProposedMeetingDate = ({
   };
 
   // Function to handle the save Proposed button click
-  const handleSave = async () => {
+  const handleSave = () => {
     let newArr = [];
     rows.forEach((data) => {
       newArr.push({
@@ -481,9 +482,7 @@ const ProposedMeetingDate = ({
         SendResponsebyDate: sendResponseBy.date,
         ProposedDates: newArr,
       };
-      await dispatch(
-        setProposedMeetingDateApiFunc(Data, navigate, t, false, false)
-      );
+      dispatch(setProposedMeetingDateApiFunc(Data, navigate, t, false, false));
       setSendResponseVal("");
       setSendResponseBy({
         date: "",
@@ -597,7 +596,16 @@ const ProposedMeetingDate = ({
     }
   }, [getAllProposedDates]);
 
-  console.log(rows, "rowsrowsrowsrowsrowsrowsrows");
+  console.log(
+    {
+      rows,
+      sendResponseBy,
+      sendResponseVal,
+      getAllProposedDates,
+      getAllMeetingDetails,
+    },
+    "getAllMeetingDetailsgetAllMeetingDetailsrows"
+  );
 
   return (
     <section>
