@@ -1328,16 +1328,16 @@ const MeetingDetails = ({
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <TextField
-                    applyClass="text-area-create-resolution"
+                    applyClass="text-area-create-meeting"
                     type="text"
                     as={"textarea"}
-                    rows="2"
-                    placeholder={t("Description")}
-                    required={true}
-                    name={"Description"}
+                    rows="5"
+                    name={"Notes"}
                     change={HandleChange}
-                    value={meetingDetails.Description}
-                    // maxLength={300}
+                    placeholder={t("Note-for-this-meeting")}
+                    required={true}
+                    maxLength={145}
+                    value={meetingDetails.Notes}
                     disable={
                       (Number(editorRole.status) === 9 ||
                         Number(editorRole.status) === 8 ||
@@ -1768,16 +1768,16 @@ const MeetingDetails = ({
               <Row className="mt-3">
                 <Col lg={12} md={12} sm={12}>
                   <TextField
-                    applyClass="text-area-create-meeting"
+                    applyClass="text-area-create-resolution"
                     type="text"
                     as={"textarea"}
-                    rows="5"
-                    name={"Notes"}
-                    change={HandleChange}
-                    placeholder={t("Note-for-this-meeting")}
+                    rows="2"
+                    placeholder={t("Description")}
                     required={true}
-                    maxLength={145}
-                    value={meetingDetails.Notes}
+                    name={"Description"}
+                    change={HandleChange}
+                    value={meetingDetails.Description}
+                    // maxLength={300}
                     disable={
                       (Number(editorRole.status) === 9 ||
                         Number(editorRole.status) === 8 ||
@@ -1791,6 +1791,7 @@ const MeetingDetails = ({
                         : false
                     }
                   />
+
                   {/* <Row>
                     <Col>
                       <p
