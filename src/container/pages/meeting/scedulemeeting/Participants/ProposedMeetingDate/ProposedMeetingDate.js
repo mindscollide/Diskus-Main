@@ -68,7 +68,6 @@ const ProposedMeetingDate = ({
   const prposedMeetingUnsavedModal = useSelector(
     (state) => state.NewMeetingreducer.prposedMeetingUnsavedModal
   );
-
   const [viewProposedModal, setViewProposedModal] = useState({
     Title: "",
     Description: "",
@@ -129,16 +128,6 @@ const ProposedMeetingDate = ({
       setSendResponseBy({
         date: "",
       });
-      setRows([
-        {
-          selectedOption: "",
-          startDate: "",
-          endDate: "",
-          selectedOptionView: "",
-          endDateView: "",
-          startDateView: "",
-        },
-      ]);
     };
   }, []);
 
@@ -271,6 +260,12 @@ const ProposedMeetingDate = ({
         }
       }
     } catch {}
+    return () => {
+      setSendResponseVal("");
+      setSendResponseBy({
+        date: "",
+      });
+    };
   }, [getAllMeetingDetails, getAllProposedDates]);
 
   const changeDateStartHandler = (date, index) => {
