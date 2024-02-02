@@ -68,10 +68,7 @@ const ProposedMeetingDate = ({
   const prposedMeetingUnsavedModal = useSelector(
     (state) => state.NewMeetingreducer.prposedMeetingUnsavedModal
   );
-  console.log(
-    getCurrentDateforMeeting,
-    "getCurrentDateforMeetinggetCurrentDateforMeeting"
-  );
+
   const [viewProposedModal, setViewProposedModal] = useState({
     Title: "",
     Description: "",
@@ -104,7 +101,7 @@ const ProposedMeetingDate = ({
     },
   ]);
 
-  console.log(rows, "");
+  console.log("Componentrender", { sendResponseVal, sendResponseBy });
 
   const callApis = async () => {
     let Data = {
@@ -128,6 +125,10 @@ const ProposedMeetingDate = ({
     callApis();
     return () => {
       setProposedMeetingDates(false);
+      setSendResponseVal("");
+      setSendResponseBy({
+        date: "",
+      });
       setRows([
         {
           selectedOption: "",
@@ -170,56 +171,107 @@ const ProposedMeetingDate = ({
             MeetingDate:
               getAllMeetingDetails.advanceMeetingDetails.meetingDates,
           });
-
-          const newDataforView =
-            getAllMeetingDetails.advanceMeetingDetails.meetingDates.map(
-              (dates) => {
-                console.log(dates, "newDataforViewnewDataforView");
-                if (
-                  dates.meetingDate === "10000101" &&
-                  dates.endTime === "000000" &&
-                  dates.startTime === "000000"
-                ) {
-                  return {
-                    endTimeforSend: "",
-                    startTimeforSend: "",
-                    selectDateforSend: "",
-                    endDateView: "",
-                    selectedOptionView: "",
-                    proposedDateID: 0,
-                    startDateView: "",
-                    isComing: true,
-                  };
-                } else {
-                  return {
-                    endDate: convertDateTimetoGMTMeetingDetail(
-                      dates.meetingDate + dates.endTime
-                    ).slice(8, 14),
-                    startDate: convertDateTimetoGMTMeetingDetail(
-                      dates.meetingDate + dates.startTime
-                    ).slice(8, 14),
-                    selectedOption: convertDateTimetoGMTMeetingDetail(
-                      dates.meetingDate + dates.startTime
-                    ).slice(0, 8),
-                    endDateView: resolutionResultTable(
-                      dates.meetingDate + dates.endTime
-                    ),
-                    selectedOptionView: resolutionResultTable(
-                      dates.meetingDate + dates.startTime
-                    ),
-                    startDateView: resolutionResultTable(
-                      dates.meetingDate + dates.startTime
-                    ),
-                    proposedDateID: 0,
-                  };
+          if (
+            getAllProposedDates === null &&
+            getAllProposedDates === undefined &&
+            Object.keys(getAllProposedDates).length === 0
+          ) {
+            const newDataforView =
+              getAllMeetingDetails.advanceMeetingDetails.meetingDates.map(
+                (dates) => {
+                  console.log(dates, "newDataforViewnewDataforView");
+                  if (
+                    dates.meetingDate === "10000101" &&
+                    dates.endTime === "000000" &&
+                    dates.startTime === "000000"
+                  ) {
+                    return {
+                      endTimeforSend: "",
+                      startTimeforSend: "",
+                      selectDateforSend: "",
+                      endDateView: "",
+                      selectedOptionView: "",
+                      proposedDateID: 0,
+                      startDateView: "",
+                      isComing: true,
+                    };
+                  } else {
+                    return {
+                      endDate: convertDateTimetoGMTMeetingDetail(
+                        dates.meetingDate + dates.endTime
+                      ).slice(8, 14),
+                      startDate: convertDateTimetoGMTMeetingDetail(
+                        dates.meetingDate + dates.startTime
+                      ).slice(8, 14),
+                      selectedOption: convertDateTimetoGMTMeetingDetail(
+                        dates.meetingDate + dates.startTime
+                      ).slice(0, 8),
+                      endDateView: resolutionResultTable(
+                        dates.meetingDate + dates.endTime
+                      ),
+                      selectedOptionView: resolutionResultTable(
+                        dates.meetingDate + dates.startTime
+                      ),
+                      startDateView: resolutionResultTable(
+                        dates.meetingDate + dates.startTime
+                      ),
+                      proposedDateID: 0,
+                    };
+                  }
                 }
-              }
-            );
-          setRows(newDataforView);
+              );
+            setRows(newDataforView);
+          } else {
+            const newDataforView =
+              getAllMeetingDetails.advanceMeetingDetails.meetingDates.map(
+                (dates) => {
+                  console.log(dates, "newDataforViewnewDataforView");
+                  if (
+                    dates.meetingDate === "10000101" &&
+                    dates.endTime === "000000" &&
+                    dates.startTime === "000000"
+                  ) {
+                    return {
+                      endTimeforSend: "",
+                      startTimeforSend: "",
+                      selectDateforSend: "",
+                      endDateView: "",
+                      selectedOptionView: "",
+                      proposedDateID: 0,
+                      startDateView: "",
+                      isComing: true,
+                    };
+                  } else {
+                    return {
+                      endDate: convertDateTimetoGMTMeetingDetail(
+                        dates.meetingDate + dates.endTime
+                      ).slice(8, 14),
+                      startDate: convertDateTimetoGMTMeetingDetail(
+                        dates.meetingDate + dates.startTime
+                      ).slice(8, 14),
+                      selectedOption: convertDateTimetoGMTMeetingDetail(
+                        dates.meetingDate + dates.startTime
+                      ).slice(0, 8),
+                      endDateView: resolutionResultTable(
+                        dates.meetingDate + dates.endTime
+                      ),
+                      selectedOptionView: resolutionResultTable(
+                        dates.meetingDate + dates.startTime
+                      ),
+                      startDateView: resolutionResultTable(
+                        dates.meetingDate + dates.startTime
+                      ),
+                      proposedDateID: 0,
+                    };
+                  }
+                }
+              );
+            setRows(newDataforView);
+          }
         }
       }
     } catch {}
-  }, [getAllMeetingDetails]);
+  }, [getAllMeetingDetails, getAllProposedDates]);
 
   const changeDateStartHandler = (date, index) => {
     let meetingDateValueFormat = new DateObject(date);
@@ -412,7 +464,7 @@ const ProposedMeetingDate = ({
   };
 
   // Function to handle the save Proposed button click
-  const handleSave = () => {
+  const handleSave = async () => {
     let newArr = [];
     rows.forEach((data) => {
       newArr.push({
@@ -434,8 +486,13 @@ const ProposedMeetingDate = ({
         SendResponsebyDate: sendResponseBy.date,
         ProposedDates: newArr,
       };
-      console.log(Data, "sendResponseValsendResponseVal");
-      dispatch(setProposedMeetingDateApiFunc(Data, navigate, t, false, false));
+      await dispatch(
+        setProposedMeetingDateApiFunc(Data, navigate, t, false, false)
+      );
+      setSendResponseVal("");
+      setSendResponseBy({
+        date: "",
+      });
     } else {
       setOpen({
         flag: true,
