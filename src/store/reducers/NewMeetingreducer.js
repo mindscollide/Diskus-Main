@@ -897,6 +897,8 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_PRPOSED_DATES_SUCCESS: {
+      console.log("hello", action);
+
       return {
         ...state,
         Loading: action.loader,
@@ -910,11 +912,15 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         getAllProposedDates: [],
-
         ResponseMessage: action.message,
       };
     }
-
+    case actions.CLEARE_ALL_PROPOSED_MEETING_DATES: {
+      return {
+        ...state,
+        getAllProposedDates: [],
+      };
+    }
     case actions.SET_MEETING_RESPONSE_INIT: {
       return {
         ...state,
