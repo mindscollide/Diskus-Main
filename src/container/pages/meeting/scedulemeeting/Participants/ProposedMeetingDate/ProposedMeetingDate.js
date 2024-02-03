@@ -165,7 +165,6 @@ const ProposedMeetingDate = ({
   useEffect(() => {
     try {
       if (getAllMeetingDetails?.advanceMeetingDetails && getAllProposedDates) {
-        console.log("check propose", getAllMeetingDetails);
         setViewProposedModal({
           Title: getAllMeetingDetails?.advanceMeetingDetails?.meetingTitle,
           Description: getAllMeetingDetails?.advanceMeetingDetails?.description,
@@ -175,22 +174,11 @@ const ProposedMeetingDate = ({
           MeetingDate:
             getAllMeetingDetails?.advanceMeetingDetails?.meetingDates,
         });
-        console.log("check propose", getAllProposedDates !== null);
-        console.log("check propose", getAllProposedDates !== undefined);
-        console.log(
-          "check propose",
-          getAllProposedDates?.meetingProposedDates?.length > 0
-        );
-
         if (
           getAllProposedDates !== null &&
           getAllProposedDates !== undefined &&
           getAllProposedDates?.meetingProposedDates?.length > 0
         ) {
-          console.log(
-            getAllProposedDates,
-            "getAllProposedDatesgetAllProposedDates"
-          );
           let meetingDateValueFormat = new DateObject(
             getAllProposedDates.deadLineDate
           ).format("DD/MM/YYYY");
@@ -198,10 +186,8 @@ const ProposedMeetingDate = ({
           setSendResponseVal(meetingDateValueFormat);
           setSendResponseBy({
             ...sendResponseBy,
-            date: DateDate.slice(0, 8),
+            date: getAllProposedDates.deadLineDate.slice(0, 8),
           });
-          console.log(sendResponseVal, "sendResponseValsendResponseVal");
-          console.log(sendResponseBy.date, "sendResponseValsendResponseVal");
           const newDataforView = getAllProposedDates.meetingProposedDates.map(
             (dates) => {
               if (
@@ -246,7 +232,6 @@ const ProposedMeetingDate = ({
           );
           setRows(newDataforView);
         } else {
-          console.log("check propose");
           const newDataforView =
             getAllMeetingDetails.advanceMeetingDetails.meetingDates.map(
               (dates) => {
@@ -293,9 +278,7 @@ const ProposedMeetingDate = ({
           setRows(newDataforView);
         }
       }
-    } catch {
-      console.log("check propose");
-    }
+    } catch {}
   }, [getAllMeetingDetails, getAllProposedDates]);
 
   const changeDateStartHandler = (date, index) => {
@@ -476,13 +459,11 @@ const ProposedMeetingDate = ({
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let DateDate = convertToUTC(meetingDateValueFormat);
     setSendResponseVal(meetingDateValueFormat);
-    console.log("hello");
     setSendResponseBy({
       ...sendResponseBy,
       date: DateDate.slice(0, 8),
     });
   };
-
   // Function to handle the save Proposed button click
   const handleSave = () => {
     let newArr = [];
@@ -546,15 +527,12 @@ const ProposedMeetingDate = ({
           if (proposedMeetingData.deadLineDate === "10000101") {
             setSendResponseVal("");
           } else {
-            console.log("hello");
-            console.log("hello", proposedMeetingData.deadLineDate);
             if (proposedMeetingData.deadLineDate !== "") {
               setSendResponseVal(
                 resolutionResultTable(
                   proposedMeetingData.deadLineDate + "000000"
                 )
               );
-              console.log("hello");
               setSendResponseBy({
                 ...sendResponseBy,
                 date: proposedMeetingData.deadLineDate,
