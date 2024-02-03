@@ -2186,19 +2186,20 @@ const GetAllMeetingDetailsApiFunc = (
                   );
                 }
               }
-              await dispatch(
-                showGetAllMeetingDetialsSuccess(
-                  response.data.responseResult,
-                  t("Record-found"),
-                  loader
-                )
-              );
+              console.log("hello loader check", loader);
               await dispatch(
                 CreateUpdateMeetingDataRoomMapeedApiFunc(
                   navigate,
                   MappedData,
                   t,
                   setDataroomMapFolderId
+                )
+              );
+              await dispatch(
+                showGetAllMeetingDetialsSuccess(
+                  response.data.responseResult,
+                  t("Record-found"),
+                  loader
                 )
               );
               try {
@@ -2534,15 +2535,19 @@ const showGetAllProposedMeetingDatesFailed = (message) => {
     message: message,
   };
 };
-
+const cleareAllProposedMeetingDates = () => {
+  return {
+    type: actions.CLEARE_ALL_PROPOSED_MEETING_DATES,
+  };
+};
 const GetAllProposedMeetingDateApiFunc = (Data, navigate, t, flag) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(showGetAllProposedMeetingDatesInit());
     let form = new FormData();
     form.append("RequestMethod", getAllPropsedMeetingdates.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
+    await axios({
       method: "post",
       url: meetingApi,
       data: form,
@@ -7478,4 +7483,5 @@ export {
   actionsGlobalFlag,
   pollsGlobalFlag,
   attendanceGlobalFlag,
+  cleareAllProposedMeetingDates,
 };

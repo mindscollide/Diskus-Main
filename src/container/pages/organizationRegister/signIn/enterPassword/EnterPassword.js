@@ -309,7 +309,7 @@ const EnterPassword = () => {
                         placeholder={t("Password")}
                         iconClassName={styles["IconStyle"]}
                         labelClass="lightLabel"
-                        autoComplete="new-password"
+                        autoComplete="off"
                         maxLength={200}
                       />
                       <span

@@ -820,3 +820,26 @@ export const getDifferentisDateisPassed = (curentDate, dataDateValue) => {
   }
   return false;
 };
+
+// this function made by Huj For proposed meeting date
+// Exported function to convert a date string "DD/MM/YYYY" into UTC format
+export function convertToUTC(dateStr) {
+  // Parse the input string to get day, month, and year
+  const parts = dateStr.split("/");
+  const day = parseInt(parts[0], 10);
+  const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed in JavaScript Date
+  const year = parseInt(parts[2], 10);
+
+  // Create a Date object using UTC values
+  const date = new Date(Date.UTC(year, month, day));
+
+  // Format the date as "YYYYMMDDHHMMSS"
+  const yearStr = date.getUTCFullYear();
+  const monthStr = (date.getUTCMonth() + 1).toString().padStart(2, "0");
+  const dayStr = date.getUTCDate().toString().padStart(2, "0");
+  const hourStr = date.getUTCHours().toString().padStart(2, "0");
+  const minuteStr = date.getUTCMinutes().toString().padStart(2, "0");
+  const secondStr = date.getUTCSeconds().toString().padStart(2, "0");
+
+  return `${yearStr}${monthStr}${dayStr}${hourStr}${minuteStr}${secondStr}`;
+}
