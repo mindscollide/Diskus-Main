@@ -22,10 +22,12 @@ import {
   GetAllProposedMeetingDateApiFunc,
   setProposedMeetingDateApiFunc,
   GetAllMeetingDetailsApiFunc,
+  cleareAllProposedMeetingDates,
 } from "../../../../../../store/actions/NewMeetingActions";
 import {
   convertDateTimetoGMTMeetingDetail,
   convertGMTDateintoUTC,
+  convertToUTC,
   createConvert,
   resolutionResultTable,
 } from "../../../../../../commen/functions/date_formater";
@@ -136,14 +138,15 @@ const ProposedMeetingDate = ({
       });
       setRows([
         {
-          selectedOption: getCurrentDateforMeeting?.dateFormat,
-          startDate: getStartTime?.formattedTime,
-          endDate: getEndTime?.formattedTime,
-          selectedOptionView: getCurrentDateforMeeting?.DateGMT,
-          endDateView: getEndTime?.newFormatTime,
-          startDateView: getStartTime?.newFormatTime,
+          selectedOption: "",
+          startDate: "",
+          endDate: "",
+          selectedOptionView: "",
+          endDateView: "",
+          startDateView: "",
         },
       ]);
+      dispatch(cleareAllProposedMeetingDates());
     };
   }, []);
 
@@ -184,16 +187,11 @@ const ProposedMeetingDate = ({
           getAllProposedDates !== undefined &&
           getAllProposedDates?.meetingProposedDates?.length > 0
         ) {
-          console.log("check propose");
           let meetingDateValueFormat = new DateObject(
             getAllProposedDates.deadLineDate
           ).format("DD/MM/YYYY");
-          let DateDate = convertGMTDateintoUTC(
-            getAllProposedDates.deadLineDate
-          );
-
+          let DateDate = convertToUTC(getAllProposedDates.deadLineDate);
           setSendResponseVal(meetingDateValueFormat);
-
           setSendResponseBy({
             ...sendResponseBy,
             date: DateDate.slice(0, 8),
@@ -471,8 +469,9 @@ const ProposedMeetingDate = ({
   //Send Response By Handler
   const SendResponseHndler = (date) => {
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-    let DateDate = convertGMTDateintoUTC(date);
+    let DateDate = convertToUTC(meetingDateValueFormat);
     setSendResponseVal(meetingDateValueFormat);
+    console.log("hello");
     setSendResponseBy({
       ...sendResponseBy,
       date: DateDate.slice(0, 8),
@@ -503,10 +502,6 @@ const ProposedMeetingDate = ({
         ProposedDates: newArr,
       };
       dispatch(setProposedMeetingDateApiFunc(Data, navigate, t, false, false));
-      setSendResponseVal("");
-      setSendResponseBy({
-        date: "",
-      });
     } else {
       setOpen({
         flag: true,
@@ -546,13 +541,21 @@ const ProposedMeetingDate = ({
           if (proposedMeetingData.deadLineDate === "10000101") {
             setSendResponseVal("");
           } else {
-            setSendResponseVal(
-              resolutionResultTable(proposedMeetingData.deadLineDate + "000000")
-            );
-            setSendResponseBy({
-              ...sendResponseBy,
-              date: proposedMeetingData.deadLineDate,
-            });
+            console.log("hello");
+            console.log("hello", proposedMeetingData.deadLineDate);
+            if (proposedMeetingData.deadLineDate !== "") {
+              setSendResponseVal(
+                resolutionResultTable(
+                  proposedMeetingData.deadLineDate + "000000"
+                )
+              );
+              console.log("hello");
+              setSendResponseBy({
+                ...sendResponseBy,
+                date: proposedMeetingData.deadLineDate,
+              });
+            } else {
+            }
           }
 
           const newDataforView = proposedMeetingData.meetingProposedDates.map(
@@ -885,8 +888,10 @@ const ProposedMeetingDate = ({
                   className={styles["Width_Date_SendResponseBy"]}
                 >
                   <DatePicker
-                    value={sendResponseVal}
-                    selected={sendResponseBy.date}
+                    value={sendResponseVal === "" ? "" : sendResponseVal}
+                    selected={
+                      sendResponseBy.date === "" ? "" : sendResponseBy.date
+                    }
                     format={"DD/MM/YYYY"}
                     minDate={moment().toDate()}
                     placeholder="DD/MM/YYYY"

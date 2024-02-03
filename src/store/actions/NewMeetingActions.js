@@ -2535,7 +2535,11 @@ const showGetAllProposedMeetingDatesFailed = (message) => {
     message: message,
   };
 };
-
+const cleareAllProposedMeetingDates = () => {
+  return {
+    type: actions.CLEARE_ALL_PROPOSED_MEETING_DATES,
+  };
+};
 const GetAllProposedMeetingDateApiFunc = (Data, navigate, t, flag) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
@@ -7479,4 +7483,5 @@ export {
   actionsGlobalFlag,
   pollsGlobalFlag,
   attendanceGlobalFlag,
+  cleareAllProposedMeetingDates,
 };
