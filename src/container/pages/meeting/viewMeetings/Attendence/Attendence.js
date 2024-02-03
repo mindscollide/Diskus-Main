@@ -386,11 +386,11 @@ const Attendence = ({
             className={styles["Cancel_Meeting_Details"]}
             onClick={handleCancelBtn}
           />
-          <Button
+          {/* <Button
             text={t("Previous")}
             onClick={navigatePrevHandler}
             className={styles["CloneMeetingStyles"]}
-          />
+          /> */}
           <Button
             text={t("Revert")}
             onClick={() => revertHandler()}

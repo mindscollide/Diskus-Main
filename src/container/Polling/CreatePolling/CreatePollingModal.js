@@ -146,6 +146,7 @@ const CreatePolling = () => {
           pollsData.groups.map((a, index) => {
             let newData = {
               value: a.groupID,
+              name: a.groupName,
               label: (
                 <>
                   <Row>
@@ -178,6 +179,8 @@ const CreatePolling = () => {
           pollsData.committees.map((a, index) => {
             let newData = {
               value: a.committeeID,
+              name: a.committeeName,
+
               label: (
                 <>
                   <Row>
@@ -214,6 +217,7 @@ const CreatePolling = () => {
           pollsData.organizationUsers.map((a, index) => {
             let newData = {
               value: a.userID,
+              name: a.userName,
               label: (
                 <>
                   <Row>
@@ -516,6 +520,14 @@ const CreatePolling = () => {
       ...createPollData,
       AllowMultipleAnswers: !createPollData.AllowMultipleAnswers,
     });
+  };
+
+  const customFilter = (options, searchText) => {
+    if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   return (
@@ -862,6 +874,7 @@ const CreatePolling = () => {
                             classNamePrefix={"selectMember"}
                             closeMenuOnSelect={false}
                             components={animatedComponents}
+                            filterOption={customFilter}
                             isMulti
                             options={dropdowndata}
                           />

@@ -75,7 +75,7 @@ body[rtl] .Camera_icon_Active {
 }
 
 .Scroller_meeting {
-  height: 13vh !important;
+  height: 12.5vh !important;
   overflow-x: hidden !important;
 }
 

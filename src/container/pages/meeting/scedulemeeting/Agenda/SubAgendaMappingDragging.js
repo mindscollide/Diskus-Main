@@ -3,7 +3,11 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-import { TextField, Notification } from "../../../../../components/elements";
+import {
+  TextField,
+  Notification,
+  Button,
+} from "../../../../../components/elements";
 import styles from "./Agenda.module.css";
 import Select from "react-select";
 import DatePicker from "react-multi-date-picker";
@@ -818,7 +822,7 @@ const SubAgendaMappingDragging = ({
                                           </Row>
                                           <Row>
                                             <Col lg={12} md={12} sm={12}>
-                                              <span
+                                              {/* <span
                                                 className={
                                                   styles["Show_More_Styles"]
                                                 }
@@ -829,13 +833,49 @@ const SubAgendaMappingDragging = ({
                                                       subIndex
                                                     );
                                                 }}
-                                              >
-                                                {subexpandIndex === index &&
-                                                expandSubIndex === subIndex &&
-                                                subExpand
-                                                  ? t("Hide-details")
-                                                  : t("Show-more")}
-                                              </span>
+                                              > */}
+                                              {subexpandIndex === index &&
+                                              expandSubIndex === subIndex &&
+                                              subExpand ? (
+                                                // t("Hide-details")
+                                                <Button
+                                                  text={t(
+                                                    "Description-and-attachement"
+                                                  )}
+                                                  className={
+                                                    styles[
+                                                      "show-attachments-button-hide-subagenda"
+                                                    ]
+                                                  }
+                                                  onClick={() => {
+                                                    parentIslockedCheck ||
+                                                      handleSubMenuExpand(
+                                                        index,
+                                                        subIndex
+                                                      );
+                                                  }}
+                                                />
+                                              ) : (
+                                                // t("Show-more")
+                                                <Button
+                                                  text={t(
+                                                    "Description-and-attachement"
+                                                  )}
+                                                  className={
+                                                    styles[
+                                                      "show-attachments-button-show-subagenda"
+                                                    ]
+                                                  }
+                                                  onClick={() => {
+                                                    parentIslockedCheck ||
+                                                      handleSubMenuExpand(
+                                                        index,
+                                                        subIndex
+                                                      );
+                                                  }}
+                                                />
+                                              )}
+                                              {/* </span> */}
                                               {subAgendaData.subfiles.length >
                                               0 ? (
                                                 <img
@@ -898,6 +938,23 @@ const SubAgendaMappingDragging = ({
                                                     />
                                                   </Col>
                                                 </Row>
+                                                {/* <Row
+                                                  key={index + Math.random()}
+                                                  className="mt-3"
+                                                >
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <Button
+                                                      text={t(
+                                                        "Add-attachments"
+                                                      )}
+                                                      className={
+                                                        styles[
+                                                          "show-attachments-button"
+                                                        ]
+                                                      }
+                                                    />
+                                                  </Col>
+                                                </Row> */}
                                                 <Row className="mt-3">
                                                   <Col lg={12} md={12} sm={12}>
                                                     <span

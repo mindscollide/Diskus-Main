@@ -745,12 +745,12 @@ const Polls = ({
                       onClick={handleCancelPolls}
                       // onClick={handleCancelActionNoPopup}
                     />
-                    <Button
+                    {/* <Button
                       text={t("Previous")}
                       className={styles["Save_Button_Polls_meeting"]}
                       onClick={handleClickPrev}
                       // onClick={prevTabToMinutes}
-                    />
+                    /> */}
                     {Number(editorRole.status) === 10 &&
                     editorRole.role === "Organizer" ? (
                       <Button

@@ -101,6 +101,7 @@ const Agenda = ({
   const [fileForSend, setFileForSend] = useState([]);
   const [allPresenters, setAllPresenters] = useState([]);
   const [presenters, setPresenters] = useState([]);
+  const [isPublishedState, setIsPublishedState] = useState(false);
   const [savedViewAgenda, setsavedViewAgenda] = useState(false);
 
   const [open, setOpen] = useState({
@@ -671,7 +672,9 @@ const Agenda = ({
           setDataroomMapFolderId,
           setSceduleMeeting,
           setPublishState,
-          setCalendarViewModal
+          setCalendarViewModal,
+          setMeetingMaterial,
+          setAgenda
         )
       );
     } else {
@@ -697,6 +700,9 @@ const Agenda = ({
     ) {
       let newData =
         MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList;
+      let isPublishedAgenda =
+        MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.isPublished;
+      setIsPublishedState(isPublishedAgenda);
       setRows((prevRows) => {
         const updatedRows = newData.map((agendaItem) => {
           const { id, presenterID, userID, subAgenda, ...rest } = agendaItem;
@@ -1392,6 +1398,19 @@ const Agenda = ({
         <VotingPage />
       ) : (
         <>
+          <Row className="m-0">
+            <Col className="p-0">
+              {editorRole.status === "9" ||
+              editorRole.status === 9 ||
+              editorRole.role === "Agenda Contributor" ? null : (
+                <Button
+                  text={t("Import-previous-agenda")}
+                  className={styles["Import_Agenda_Buttons"]}
+                  onClick={importPreviousAgenda}
+                />
+              )}
+            </Col>
+          </Row>
           <section>
             <DragDropContext
               onDragEnd={(result) => onDragEnd(result, rows, setRows)}
@@ -1421,35 +1440,41 @@ const Agenda = ({
                             ? rows.map((data, index) => {
                                 return (
                                   <>
-                                    <ParentAgenda
-                                      fileForSend={fileForSend}
-                                      setFileForSend={setFileForSend}
-                                      currentMeeting={currentMeeting}
-                                      data={data}
-                                      allUsersRC={allUsersRC}
-                                      setAllUsersRC={setAllUsersRC}
-                                      index={index}
-                                      allSavedPresenters={allSavedPresenters}
-                                      setAllSavedPresenters={
-                                        setAllSavedPresenters
-                                      }
-                                      rows={rows}
-                                      setRows={setRows}
-                                      setMainAgendaRemovalIndex={
-                                        setMainAgendaRemovalIndex
-                                      }
-                                      agendaItemRemovedIndex={
-                                        agendaItemRemovedIndex
-                                      }
-                                      setAgendaItemRemovedIndex={
-                                        setAgendaItemRemovedIndex
-                                      }
-                                      setSubajendaRemoval={setSubajendaRemoval}
-                                      editorRole={editorRole}
-                                      setSelectedID={setSelectedID}
-                                    />
+                                    <div
+                                      className={styles["agenda-border-class"]}
+                                    >
+                                      <ParentAgenda
+                                        fileForSend={fileForSend}
+                                        setFileForSend={setFileForSend}
+                                        currentMeeting={currentMeeting}
+                                        data={data}
+                                        allUsersRC={allUsersRC}
+                                        setAllUsersRC={setAllUsersRC}
+                                        index={index}
+                                        allSavedPresenters={allSavedPresenters}
+                                        setAllSavedPresenters={
+                                          setAllSavedPresenters
+                                        }
+                                        rows={rows}
+                                        setRows={setRows}
+                                        setMainAgendaRemovalIndex={
+                                          setMainAgendaRemovalIndex
+                                        }
+                                        agendaItemRemovedIndex={
+                                          agendaItemRemovedIndex
+                                        }
+                                        setAgendaItemRemovedIndex={
+                                          setAgendaItemRemovedIndex
+                                        }
+                                        setSubajendaRemoval={
+                                          setSubajendaRemoval
+                                        }
+                                        editorRole={editorRole}
+                                        setSelectedID={setSelectedID}
+                                      />
+                                    </div>
                                     {/* Line Seperator */}
-                                    <Row className="mt-3">
+                                    {/* <Row className="mt-3">
                                       <Col lg={12} md={12} sm={12}>
                                         <img
                                           draggable={false}
@@ -1463,7 +1488,7 @@ const Agenda = ({
                                           }
                                         />
                                       </Col>
-                                    </Row>
+                                    </Row> */}
                                   </>
                                 );
                               })
@@ -1556,7 +1581,7 @@ const Agenda = ({
                 sm={12}
                 className="d-flex justify-content-end gap-2"
               >
-                {editorRole.status === "9" ||
+                {/* {editorRole.status === "9" ||
                 editorRole.status === 9 ||
                 editorRole.role === "Agenda Contributor" ? null : (
                   <Button
@@ -1564,7 +1589,7 @@ const Agenda = ({
                     className={styles["Agenda_Buttons"]}
                     onClick={importPreviousAgenda}
                   />
-                )}
+                )} */}
                 <Button
                   text={t("Cancel")}
                   className={styles["Agenda_Buttons"]}
@@ -1575,21 +1600,21 @@ const Agenda = ({
                   text={t("Save-and-publish")}
                   className={styles["Agenda_Buttons"]}
                 /> */}
-                <Button
+                {/* <Button
                   text={t("Previous")}
                   className={styles["Save_Agenda_btn"]}
                   onClick={handlePerviousAgenda}
-                />
-                <Button
+                /> */}
+                {/* <Button
                   text={t("Next")}
                   className={styles["Save_Agenda_btn"]}
                   onClick={handleNextAgenda}
-                />
+                /> */}
 
                 {editorRole.status === "9" || editorRole.status === 9 ? null : (
                   <Button
                     onClick={() => saveAgendaData(1)}
-                    text={t("Save")}
+                    text={t("Next")}
                     className={styles["Save_Agenda_btn"]}
                   />
                 )}
@@ -1597,14 +1622,22 @@ const Agenda = ({
                   Number(editorRole.status) === 12) &&
                 (editorRole.status !== "9" || editorRole.status !== 9) ? (
                   <Button
-                    disableBtn={Number(currentMeeting) === 0 ? true : false}
+                    disableBtn={
+                      Number(currentMeeting) === 0 && isPublishedState === false
+                        ? true
+                        : false
+                    }
                     text={t("Publish")}
                     className={styles["Save_Agenda_btn"]}
                     onClick={() => saveAgendaData(2)}
                   />
                 ) : isEditMeeting === true ? null : (
                   <Button
-                    disableBtn={Number(currentMeeting) === 0 ? true : false}
+                    disableBtn={
+                      Number(currentMeeting) === 0 && isPublishedState === false
+                        ? true
+                        : false
+                    }
                     text={t("Publish")}
                     className={styles["Save_Agenda_btn"]}
                     onClick={() => saveAgendaData(2)}

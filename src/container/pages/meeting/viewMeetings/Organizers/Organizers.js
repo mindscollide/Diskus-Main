@@ -147,13 +147,13 @@ const Organizers = ({
             sm={12}
             className="d-flex gap-3 align-items-center"
           >
-            <label className="column-boldness">Primary</label>
+            <label className="column-boldness">{t("Primary")}</label>
           </Col>
         </Row>
       ),
     },
     {
-      title: t("RSVP"),
+      title: "",
       dataIndex: "rsvp",
       key: "rsvp",
       width: "120px",
@@ -426,11 +426,11 @@ const Organizers = ({
               className={styles["Cancel_Meeting_Details"]}
               onClick={handleCancelMeetingNoPopup}
             />
-            <Button
+            {/* <Button
               text={t("Previous")}
               className={styles["publish_button_Organization"]}
               onClick={previousTabOrganizer}
-            />
+            /> */}
 
             <Button
               text={t("Next")}

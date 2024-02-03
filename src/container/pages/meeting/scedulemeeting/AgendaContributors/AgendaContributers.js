@@ -22,6 +22,17 @@ import {
   showAddAgendaContributor,
   showAgendaContributorsModals,
   showCancelModalAgendaContributor,
+  meetingDetailsGlobalFlag,
+  organizersGlobalFlag,
+  agendaContributorsGlobalFlag,
+  participantsGlobalFlag,
+  agendaGlobalFlag,
+  meetingMaterialGlobalFlag,
+  minutesGlobalFlag,
+  proposedMeetingDatesGlobalFlag,
+  actionsGlobalFlag,
+  pollsGlobalFlag,
+  attendanceGlobalFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import ModalCrossIcon from "../Organizers/ModalCrossIconClick/ModalCrossIcon";
 import tick from "../../../../../assets/images/PNG tick.png";
@@ -57,6 +68,7 @@ const AgendaContributers = ({
   );
   const [isEdit, setIsEdit] = useState(false);
   const [isEditClicked, setIsEditClicked] = useState(false);
+  const [isPublishedState, setIsPublishedState] = useState(false);
   const [disbaleIcon, setDisbaleIcon] = useState(false);
   const [isEditFlag, setIsEditFlag] = useState(0);
   const [notifyMessageField, setNotifyMessageField] = useState("");
@@ -272,7 +284,7 @@ const AgendaContributers = ({
       },
     },
     {
-      title: t("RSVP"),
+      title: "",
       dataIndex: "rsvp",
       key: "rsvp",
       width: "80px",
@@ -456,6 +468,17 @@ const AgendaContributers = ({
     // dispatch(ShowNextConfirmationModal(true));
     setAgendaContributors(false);
     setParticipants(true);
+    dispatch(meetingDetailsGlobalFlag(false));
+    dispatch(organizersGlobalFlag(false));
+    dispatch(agendaContributorsGlobalFlag(false));
+    dispatch(participantsGlobalFlag(true));
+    dispatch(agendaGlobalFlag(false));
+    dispatch(meetingMaterialGlobalFlag(false));
+    dispatch(minutesGlobalFlag(false));
+    dispatch(proposedMeetingDatesGlobalFlag(false));
+    dispatch(actionsGlobalFlag(false));
+    dispatch(pollsGlobalFlag(false));
+    dispatch(attendanceGlobalFlag(false));
   };
   const previousTabOrganizer = () => {
     // dispatch(showPreviousConfirmationModal(true));
@@ -552,6 +575,10 @@ const AgendaContributers = ({
       let agendaContributorData = [
         ...NewMeetingreducer.getAllAgendaContributors,
       ];
+
+      setIsPublishedState(
+        NewMeetingreducer.getAllAgendaContributorsIsPublished
+      );
 
       // // Initial values
       // const initialValues = {};
@@ -749,11 +776,11 @@ const AgendaContributers = ({
                 className={styles["Cancel_Organization"]}
                 onClick={enableNotificatoinTable}
               />
-              <Button
+              {/* <Button
                 text={t("Previous")}
                 className={styles["publish_button_AgendaContributor"]}
                 onClick={previousTabOrganizer}
-              />
+              /> */}
               <Button
                 text={t("Next")}
                 className={styles["publish_button_AgendaContributor"]}
@@ -775,14 +802,22 @@ const AgendaContributers = ({
               {Number(editorRole.status) === 11 ||
               Number(editorRole.status) === 12 ? (
                 <Button
-                  disableBtn={Number(currentMeeting) === 0 ? true : false}
+                  disableBtn={
+                    Number(currentMeeting) === 0 && isPublishedState === false
+                      ? true
+                      : false
+                  }
                   text={t("Publish")}
                   className={styles["Next_Organization"]}
                   onClick={handleNextButton}
                 />
               ) : isEditMeeting === true ? null : (
                 <Button
-                  disableBtn={Number(currentMeeting) === 0 ? true : false}
+                  disableBtn={
+                    Number(currentMeeting) === 0 && isPublishedState === false
+                      ? true
+                      : false
+                  }
                   text={t("Publish")}
                   className={styles["Next_Organization"]}
                   onClick={handleNextButton}

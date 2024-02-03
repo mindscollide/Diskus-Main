@@ -14,7 +14,7 @@ import {
 import BlackCrossIcon from "../../../../../../assets/images/BlackCrossIconModals.svg";
 import committeicon from "../../../../../../assets/images/Group 2584.png";
 import { useDispatch, useSelector } from "react-redux";
-import GroupIcon from "../../../../../../assets/images/Path 636.png";
+import GroupIcon from "../../../../../../assets/images/GroupSetting.svg";
 import committeeicon from "../../../../../../assets/images/committeedropdown.svg";
 import profile from "../../../../../../assets/images/newprofile.png";
 import { useTranslation } from "react-i18next";
@@ -182,62 +182,118 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
     };
     dispatch(GetAllCommitteesUsersandGroupsParticipants(Data, navigate, t));
   }, []);
-  console.log(
-    NewMeetingreducer,
-    " NewMeetingreducer.AllUserCommitteesGroupsData"
-  );
-  console.log(dropdowndata, "dropdowndatadropdowndata");
+
   useEffect(() => {
-    let newParticpantData =
+    let newOrganizersData =
       NewMeetingreducer.getAllCommitteeAndGroupPartcipants;
-    console.log(newParticpantData, "newParticpantDatanewParticpantData");
-    if (newParticpantData !== null && newParticpantData !== undefined) {
+    if (newOrganizersData !== null && newOrganizersData !== undefined) {
       let temp = [];
-      if (Object.keys(newParticpantData).length > 0) {
-        if (Object.keys(newParticpantData.groups).length > 0) {
-          newParticpantData.groups.forEach((a, index) => {
+      if (Object.keys(newOrganizersData).length > 0) {
+        if (Object.keys(newOrganizersData.groups).length > 0) {
+          newOrganizersData.groups.map((a, index) => {
             let newData = {
               value: a.groupID,
-              label: a.groupName,
-              profilePic: GroupIcon,
+              name: a.groupName,
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={GroupIcon}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.groupName}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
+              ),
               type: 1,
             };
             temp.push(newData);
           });
         }
-        if (Object.keys(newParticpantData.committees).length > 0) {
-          newParticpantData.committees.forEach((a, index) => {
+        if (Object.keys(newOrganizersData.committees).length > 0) {
+          newOrganizersData.committees.map((a, index) => {
             let newData = {
               value: a.committeeID,
-              label: a.committeeName,
-              profilePic: committeeicon,
-
+              name: a.committeeName,
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={committeeicon}
+                        width="21.71px"
+                        height="18.61px"
+                        draggable="false"
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.committeeName}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
+              ),
               type: 2,
             };
             temp.push(newData);
           });
         }
-        if (Object.keys(newParticpantData.organizationUsers).length > 0) {
-          newParticpantData.organizationUsers.forEach((a, index) => {
+        if (Object.keys(newOrganizersData.organizationUsers).length > 0) {
+          newOrganizersData.organizationUsers.map((a, index) => {
             let newData = {
               value: a.userID,
-              label: a.userName,
-              profilePic: a?.profilePicture?.displayProfilePictureName,
+              name: a.userName,
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
+                        // src={}
+                        alt=""
+                        className={styles["UserProfilepic"]}
+                        width="18px"
+                        height="18px"
+                        draggable="false"
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.userName}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
+              ),
               type: 3,
             };
             temp.push(newData);
           });
         }
-        setDropdowndata(temp);
+        setAddParticipantDropdown(temp);
       } else {
-        setDropdowndata([]);
+        setAddParticipantDropdown([]);
       }
     }
   }, [NewMeetingreducer.getAllCommitteeAndGroupPartcipants]);
-
-  const onChangeSearch = (e) => {
-    setParticipantUsers(e.target.value.trimStart());
-  };
 
   const onSearch = (name, id, type, item) => {
     let newOrganizersData =
@@ -368,47 +424,13 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
       dispatch(showAddParticipantsModal(false));
     }
   };
-  //Drop Down Values
-  const searchFilterHandler = (value) => {
-    let allAssignees = dropdowndata;
-    console.log(allAssignees, "searchFilterHandlersearchFilterHandler");
-    try {
-      if (
-        allAssignees !== undefined &&
-        allAssignees !== null &&
-        allAssignees !== []
-      ) {
-        return allAssignees
-          .filter((item) => {
-            const searchValue = value.toLowerCase();
-            const agendaContributorValue = item.label.toLowerCase();
-            return (
-              searchValue && agendaContributorValue.startsWith(searchValue)
-            );
-          })
-          .slice(0, 10)
-          .map((item) => (
-            <div
-              onClick={() => onSearch(item.label, item.value, item.type, item)}
-              className="dropdown-row-assignee d-flex align-items-center flex-row"
-              key={item.pK_UID}
-            >
-              <img
-                draggable="false"
-                src={
-                  item.type === 3
-                    ? `data:image/jpeg;base64,${item?.profilePic}`
-                    : item.profilePic
-                }
-                alt=""
-                className="user-img"
-              />
-              <p className="p-0 m-0">{item.label}</p>
-            </div>
-          ));
-      } else {
-      }
-    } catch (error) {}
+
+  const customFilter = (options, searchText) => {
+    if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   return (
@@ -459,19 +481,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
                     sm={12}
                     className="group-fields d-flex align-items-center gap-2"
                   >
-                    <InputSearchFilter
-                      placeholder={t("Add-participant")}
-                      value={participantUsers}
-                      filteredDataHandler={searchFilterHandler(
-                        participantUsers
-                      )}
-                      // applyClass="assigneeFindInCreateToDo"
-                      applyClass={"searchFilterAgendaContributor"}
-                      labelClass={"searchFilterAgendaContributorLabel"}
-                      disable={dropdowndata.length === 0 ? true : false}
-                      change={onChangeSearch}
-                    />
-                    {/* <Select
+                    <Select
                       closeMenuOnSelect={false}
                       onChange={handleSelectValue}
                       value={selectedsearch}
@@ -485,13 +495,14 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
                       components={animatedComponents}
                       options={addParticipantDropdown}
                       isMulti
-                      isSearchable={false}
-                    /> */}
-                    {/* <Button
+                      filterOption={customFilter}
+                      isSearchable={true}
+                    />
+                    <Button
                       text={t("ADD")}
                       className={styles["ADD_Btn_CreatePool_Modal"]}
                       onClick={handleAddUsers}
-                    /> */}
+                    />
                   </Col>
                 </Row>
                 <Row className={styles["Scroller_For_CreatePollModal2"]}>

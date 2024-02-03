@@ -26,6 +26,18 @@ import {
   viewAdvanceMeetingUnpublishPageFlag,
   viewProposeOrganizerMeetingPageFlag,
   proposeNewMeetingPageFlag,
+  viewMeetingFlag,
+  meetingDetailsGlobalFlag,
+  organizersGlobalFlag,
+  agendaContributorsGlobalFlag,
+  participantsGlobalFlag,
+  agendaGlobalFlag,
+  meetingMaterialGlobalFlag,
+  minutesGlobalFlag,
+  proposedMeetingDatesGlobalFlag,
+  actionsGlobalFlag,
+  pollsGlobalFlag,
+  attendanceGlobalFlag,
 } from "../../../../../../store/actions/NewMeetingActions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -34,6 +46,8 @@ import { useEffect } from "react";
 import { StatusValue } from "../../../statusJson";
 import {
   convertDateinGMT,
+  forRecentActivity,
+  getDifferentisDateisPassed,
   newTimeFormaterAsPerUTCFullDate,
   utcConvertintoGMT,
 } from "../../../../../../commen/functions/date_formater";
@@ -121,10 +135,32 @@ const UnpublishedProposedMeeting = ({
       setResponseByDate(responseDeadLine);
       setViewProposeDatePoll(true);
       dispatch(viewProposeDateMeetingPageFlag(true));
+      dispatch(meetingDetailsGlobalFlag(false));
+      dispatch(organizersGlobalFlag(false));
+      dispatch(agendaContributorsGlobalFlag(false));
+      dispatch(participantsGlobalFlag(false));
+      dispatch(agendaGlobalFlag(false));
+      dispatch(meetingMaterialGlobalFlag(false));
+      dispatch(minutesGlobalFlag(false));
+      dispatch(proposedMeetingDatesGlobalFlag(true));
+      dispatch(actionsGlobalFlag(false));
+      dispatch(pollsGlobalFlag(false));
+      dispatch(attendanceGlobalFlag(false));
     } else if (isAgendaContributor) {
     } else if (isOrganiser) {
       setViewProposeOrganizerPoll(true);
       dispatch(viewProposeOrganizerMeetingPageFlag(true));
+      dispatch(meetingDetailsGlobalFlag(false));
+      dispatch(organizersGlobalFlag(false));
+      dispatch(agendaContributorsGlobalFlag(false));
+      dispatch(participantsGlobalFlag(false));
+      dispatch(agendaGlobalFlag(false));
+      dispatch(meetingMaterialGlobalFlag(false));
+      dispatch(minutesGlobalFlag(false));
+      dispatch(proposedMeetingDatesGlobalFlag(true));
+      dispatch(actionsGlobalFlag(false));
+      dispatch(pollsGlobalFlag(false));
+      dispatch(attendanceGlobalFlag(false));
     }
   };
 
@@ -190,6 +226,18 @@ const UnpublishedProposedMeeting = ({
                   : "Organizer",
               });
               handleOpenViewModal(record);
+              dispatch(viewMeetingFlag(true));
+              dispatch(meetingDetailsGlobalFlag(true));
+              dispatch(organizersGlobalFlag(false));
+              dispatch(agendaContributorsGlobalFlag(false));
+              dispatch(participantsGlobalFlag(false));
+              dispatch(agendaGlobalFlag(false));
+              dispatch(meetingMaterialGlobalFlag(false));
+              dispatch(minutesGlobalFlag(false));
+              dispatch(proposedMeetingDatesGlobalFlag(false));
+              dispatch(actionsGlobalFlag(false));
+              dispatch(pollsGlobalFlag(false));
+              dispatch(attendanceGlobalFlag(false));
             }}
           >
             {truncateString(text, 35)}
@@ -392,12 +440,22 @@ const UnpublishedProposedMeeting = ({
                         isAgendaContributor,
                         record
                       );
-
                       setEdiorRole({
                         status: record.status,
                         role: "Agenda Contributor",
                       });
                       setEditMeeting(true);
+                      dispatch(meetingDetailsGlobalFlag(true));
+                      dispatch(organizersGlobalFlag(false));
+                      dispatch(agendaContributorsGlobalFlag(false));
+                      dispatch(participantsGlobalFlag(false));
+                      dispatch(agendaGlobalFlag(false));
+                      dispatch(meetingMaterialGlobalFlag(false));
+                      dispatch(minutesGlobalFlag(false));
+                      dispatch(proposedMeetingDatesGlobalFlag(false));
+                      dispatch(actionsGlobalFlag(false));
+                      dispatch(pollsGlobalFlag(false));
+                      dispatch(attendanceGlobalFlag(false));
                     }}
                   />
                 ) : isOrganiser ? (
@@ -422,6 +480,17 @@ const UnpublishedProposedMeeting = ({
                           role: "Organizer",
                         });
                         setEditMeeting(true);
+                        dispatch(meetingDetailsGlobalFlag(true));
+                        dispatch(organizersGlobalFlag(false));
+                        dispatch(agendaContributorsGlobalFlag(false));
+                        dispatch(participantsGlobalFlag(false));
+                        dispatch(agendaGlobalFlag(false));
+                        dispatch(meetingMaterialGlobalFlag(false));
+                        dispatch(minutesGlobalFlag(false));
+                        dispatch(proposedMeetingDatesGlobalFlag(false));
+                        dispatch(actionsGlobalFlag(false));
+                        dispatch(pollsGlobalFlag(false));
+                        dispatch(attendanceGlobalFlag(false));
                       }}
                     />
                   </>
@@ -453,6 +522,20 @@ const UnpublishedProposedMeeting = ({
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
             attendee.meetingAttendeeRole.role === "Organizer"
         );
+        const isResponseDateGone = forRecentActivity(
+          `${record.responseDeadLine}000000`
+        );
+        const currentDateObj = new Date();
+
+        const isViewPollShown = getDifferentisDateisPassed(
+          currentDateObj,
+          isResponseDateGone
+        );
+
+        console.log(
+          isViewPollShown,
+          "currentDateObjcurrentDateObjcurrentDateObj"
+        );
         let apiData = {
           MeetingID: Number(record.pK_MDID),
           StatusID: 1,
@@ -481,8 +564,9 @@ const UnpublishedProposedMeeting = ({
                 ) : record.status === "12" ? (
                   isParticipant ? (
                     <Button
-                      text={t("View-poll")}
+                      text={t("Send-reply")}
                       className={styles["publish_meeting_btn_View_poll"]}
+                      disableBtn={isViewPollShown ? true : false}
                       onClick={() =>
                         viewProposeDatePollHandler(
                           true,
@@ -497,6 +581,7 @@ const UnpublishedProposedMeeting = ({
                     <Button
                       text={t("View-poll")}
                       className={styles["publish_meeting_btn_View_poll"]}
+                      disableBtn={isViewPollShown ? true : false}
                       onClick={() =>
                         viewProposeDatePollHandler(
                           false,

@@ -249,7 +249,7 @@ const CreateTask = ({
   const actionSaveHandler = () => {
     if (
       createTaskDetails.ActionsToTake !== "" &&
-      createTaskDetails.Description !== "" &&
+      // createTaskDetails.Description !== "" &&
       createTaskDetails.AssignedTo > 0 &&
       createTaskDetails.date !== ""
     ) {
@@ -481,6 +481,7 @@ const CreateTask = ({
                       placeholder={t("Task-title")}
                       labelClass={"d-none"}
                       change={HandleChange}
+                      maxLength={195}
                       name={"ActionsToTake"}
                       value={createTaskDetails.ActionsToTake}
                     />
@@ -615,7 +616,7 @@ const CreateTask = ({
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["SubHeading"]}>
                       {t("Description")}{" "}
-                      <span className={styles["Steric"]}>*</span>
+                      {/* <span className={styles["Steric"]}>*</span> */}
                     </span>
                   </Col>
                 </Row>
@@ -628,12 +629,12 @@ const CreateTask = ({
                       value={createTaskDetails.Description}
                       applyClass="Polls_meeting"
                       as={"textarea"}
-                      maxLength={500}
+                      maxLength={295}
                       rows="4"
                       placeholder={t("Description")}
-                      required={true}
+                      // required={true}
                     />
-                    <Row>
+                    {/* <Row>
                       <Col>
                         <p
                           className={
@@ -645,7 +646,7 @@ const CreateTask = ({
                           {t("Description-is-required-action")}
                         </p>
                       </Col>
-                    </Row>
+                    </Row> */}
                   </Col>
                 </Row>
                 <Row className="mt-2">

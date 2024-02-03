@@ -28,6 +28,17 @@ import {
   sendRecentNotificationOrganizerModal,
   UpdateMeetingUserForOrganizers,
   showCancelModalOrganizers,
+  meetingDetailsGlobalFlag,
+  organizersGlobalFlag,
+  agendaContributorsGlobalFlag,
+  participantsGlobalFlag,
+  agendaGlobalFlag,
+  meetingMaterialGlobalFlag,
+  minutesGlobalFlag,
+  proposedMeetingDatesGlobalFlag,
+  actionsGlobalFlag,
+  pollsGlobalFlag,
+  attendanceGlobalFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import ModalOrganizor from "./ModalAddUserOrganizer/ModalOrganizor";
 import ModalCrossIcon from "./ModalCrossIconClick/ModalCrossIcon";
@@ -57,7 +68,6 @@ import {
 import CancelModalOrganizer from "./CancelModalOrganizer/CancelModalOrganizer";
 import NextModal from "../meetingDetails/NextModal/NextModal";
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
-import { deepEqual } from "../../../../../commen/functions/CompareArrayObjectValues";
 
 const Organizers = ({
   setAgendaContributors,
@@ -99,6 +109,7 @@ const Organizers = ({
   const [flag, setFlag] = useState(2);
   const [prevFlag, setprevFlag] = useState(2);
   const [editState, setEditState] = useState(false);
+  const [isPublishedState, setIsPublishedState] = useState(false);
   // const [editFlag, setEditFlag] = useState(0);
   const [notificationMessage, setNotificationMessage] = useState("");
 
@@ -290,13 +301,13 @@ const Organizers = ({
               onChange={(checked) => handleSwitchChange(checked, rowIndex)}
               disabled={record.disabledSwitch === true ? true : false}
             />
-            <label className="column-boldness">Primary</label>
+            <label className="column-boldness">{t("Primary")}</label>
           </Col>
         </Row>
       ),
     },
     {
-      title: t("RSVP"),
+      title: "",
       dataIndex: "rsvp",
       key: "rsvp",
       width: "120px",
@@ -574,6 +585,18 @@ const Organizers = ({
     setRowsData([]);
     dispatch(saveMeetingFlag(false));
     dispatch(editMeetingFlag(false));
+
+    dispatch(meetingDetailsGlobalFlag(false));
+    dispatch(organizersGlobalFlag(false));
+    dispatch(agendaContributorsGlobalFlag(true));
+    dispatch(participantsGlobalFlag(false));
+    dispatch(agendaGlobalFlag(false));
+    dispatch(meetingMaterialGlobalFlag(false));
+    dispatch(minutesGlobalFlag(false));
+    dispatch(proposedMeetingDatesGlobalFlag(false));
+    dispatch(actionsGlobalFlag(false));
+    dispatch(pollsGlobalFlag(false));
+    dispatch(attendanceGlobalFlag(false));
   };
 
   const enableEditButton = () => {
@@ -606,7 +629,9 @@ const Organizers = ({
     dispatch(editMeetingFlag(false));
     const allMeetingOrganizers =
       MeetingOrganizersReducer.AllMeetingOrganizersData.meetingOrganizers;
-
+    setIsPublishedState(
+      MeetingOrganizersReducer.AllMeetingOrganizersData.isPublished
+    );
     const updatedMeetingOrganizers = allMeetingOrganizers.map((organizer) => ({
       ...organizer,
       disabledNotification: false,
@@ -876,6 +901,11 @@ const Organizers = ({
     dispatch(clearResponseMessage(""));
   }, [MeetingOrganizersReducer.ResponseMessage]);
 
+  console.log(
+    "MeetingOrganizersReducerMeetingOrganizersReducer",
+    MeetingOrganizersReducer
+  );
+
   useEffect(() => {
     dispatch(getAgendaAndVotingInfo_success([], ""));
     dispatch(GetCurrentAgendaDetails([]));
@@ -977,11 +1007,11 @@ const Organizers = ({
                     onClick={handleCancelOrganizer}
                   />
 
-                  <Button
+                  {/* <Button
                     text={t("Previous")}
                     className={styles["publish_button_Organization"]}
                     onClick={previousTabOrganizer}
-                  />
+                  /> */}
 
                   <Button
                     text={t("Next")}
@@ -1003,14 +1033,24 @@ const Organizers = ({
                   {Number(editorRole.status) === 11 ||
                   Number(editorRole.status) === 12 ? (
                     <Button
-                      disableBtn={Number(currentMeeting) === 0 ? true : false}
+                      disableBtn={
+                        Number(currentMeeting) === 0 &&
+                        isPublishedState === false
+                          ? true
+                          : false
+                      }
                       text={t("Publish")}
                       className={styles["Next_Organization"]}
                       onClick={handlePublishButton}
                     />
                   ) : isEditMeeting === true ? null : (
                     <Button
-                      disableBtn={Number(currentMeeting) === 0 ? true : false}
+                      disableBtn={
+                        Number(currentMeeting) === 0 &&
+                        isPublishedState === false
+                          ? true
+                          : false
+                      }
                       text={t("Publish")}
                       className={styles["Next_Organization"]}
                       onClick={handlePublishButton}

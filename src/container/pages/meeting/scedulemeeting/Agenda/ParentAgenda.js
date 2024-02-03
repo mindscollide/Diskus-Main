@@ -481,7 +481,7 @@ const ParentAgenda = ({
             <div ref={provided.innerRef} {...provided.draggableProps}>
               {/* Main Agenda Items Mapping */}
               <span className="position-relative">
-                <Row key={data.iD} className="mt-4 m-0 p-0">
+                <Row key={data.iD} className="m-0 p-0">
                   <Col
                     lg={12}
                     md={12}
@@ -734,16 +734,36 @@ const ParentAgenda = ({
                           </Row>
                           <Row className="mt-2">
                             <Col lg={12} md={12} sm={12}>
-                              <span
+                              {/* <span
                                 className={styles["Show_Details_Tag"]}
                                 onClick={() => {
                                   handleExpandedBtn(index);
                                 }}
-                              >
-                                {expandIndex === index && expand
-                                  ? t("Hide-details")
-                                  : t("Show-details")}
-                              </span>
+                              > */}
+                              {expandIndex === index && expand ? (
+                                <Button
+                                  text={t("Description-and-attachement")}
+                                  className={
+                                    styles["show-attachments-button-hide"]
+                                  }
+                                  onClick={() => {
+                                    handleExpandedBtn(index);
+                                  }}
+                                />
+                              ) : (
+                                // t("Hide-details")
+                                // t("Show-details")}
+                                <Button
+                                  text={t("Description-and-attachement")}
+                                  className={
+                                    styles["show-attachments-button-show"]
+                                  }
+                                  onClick={() => {
+                                    handleExpandedBtn(index);
+                                  }}
+                                />
+                              )}
+                              {/* // </span> */}
                               {data.files.length > 0 ? (
                                 <img
                                   className={styles["AttachmentIconImage"]}
@@ -784,6 +804,11 @@ const ParentAgenda = ({
                                   />
                                 </Col>
                               </Row>
+                              {/* <Row key={index + Math.random()} className="mt-3">
+                                <Col lg={12} md={12} sm={12}>
+
+                                </Col>
+                              </Row> */}
                               <Row key={index + 3} className="mt-3">
                                 <Col lg={12} md={12} sm={12}>
                                   <span className={styles["Agenda_Heading"]}>

@@ -5067,7 +5067,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                     <Col lg={6} md={6} sm={12}>
                                       <label style={{ marginLeft: "5px" }}>
                                         <b style={{ fontSize: "0.7rem" }}>
-                                          {t("Date-To")}
+                                          {t("Date-to")}
                                         </b>
                                       </label>
                                       <InputDatePicker

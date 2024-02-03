@@ -194,6 +194,7 @@ const Createpolls = ({ setCreatepoll }) => {
       getUserDetails.forEach((data, index) => {
         newArr.push({
           value: data.pK_UID,
+          name: data.userName,
           label: (
             <>
               <>
@@ -496,6 +497,13 @@ const Createpolls = ({ setCreatepoll }) => {
       }
     }
   };
+  const customFilter = (options, searchText) => {
+    if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   return (
     <>
@@ -720,6 +728,7 @@ const Createpolls = ({ setCreatepoll }) => {
                           options={memberSelect}
                           value={selectedsearch}
                           closeMenuOnSelect={false}
+                          filterOption={customFilter}
                           components={animatedComponents}
                           placeholder="Add Members "
                           isMulti
