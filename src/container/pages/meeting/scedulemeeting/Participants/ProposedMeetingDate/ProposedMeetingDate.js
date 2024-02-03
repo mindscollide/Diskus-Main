@@ -117,22 +117,34 @@ const ProposedMeetingDate = ({
         setDataroomMapFolderId
       )
     );
-    setSendResponseVal("");
-    setSendResponseBy({
-      ...sendResponseBy,
-      date: "",
-    });
   };
 
   useEffect(() => {
     callApis();
-    // return () => {
-    //   setProposedMeetingDates(false);
-    //   setSendResponseVal("");
-    //   setSendResponseBy({
-    //     date: "",
-    //   });
-    // };
+    return () => {
+      setProposedMeetingDates(false);
+      setViewProposedModal({
+        Title: "",
+        Description: "",
+        Location: "",
+        MeetingType: "",
+        MeetingDate: [],
+      });
+      setSendResponseVal("");
+      setSendResponseBy({
+        date: "",
+      });
+      setRows([
+        {
+          selectedOption: getCurrentDateforMeeting?.dateFormat,
+          startDate: getStartTime?.formattedTime,
+          endDate: getEndTime?.formattedTime,
+          selectedOptionView: getCurrentDateforMeeting?.DateGMT,
+          endDateView: getEndTime?.newFormatTime,
+          startDateView: getStartTime?.newFormatTime,
+        },
+      ]);
+    };
   }, []);
 
   useEffect(() => {
@@ -146,6 +158,16 @@ const ProposedMeetingDate = ({
       }
     }
   }, [currentLanguage]);
+
+  console.log(
+    getAllMeetingDetails,
+    getAllProposedDates,
+    "getAllMeetingDetailsgetAllMeetingDetails"
+  );
+  console.log(
+    sendResponseVal,
+    "getAllMeetingDetailsgetAllMeetingDetails sendResponseVal"
+  );
 
   useEffect(() => {
     try {
@@ -162,10 +184,33 @@ const ProposedMeetingDate = ({
           });
 
           if (
-            getAllProposedDates === null &&
-            getAllProposedDates === undefined &&
+            getAllProposedDates !== null &&
+            getAllProposedDates !== undefined &&
             getAllProposedDates.meetingProposedDates.length > 0
           ) {
+            console.log(
+              getAllProposedDates,
+              "setSendResponseValsetSendResponseVal"
+            );
+            let meetingDateValueFormat = new DateObject(
+              getAllProposedDates.deadLineDate
+            ).format("DD/MM/YYYY");
+            let DateDate = convertGMTDateintoUTC(
+              getAllProposedDates.deadLineDate
+            );
+            console.log(
+              meetingDateValueFormat,
+              "meetingDateValueFormatmeetingDateValueFormat"
+            );
+            setSendResponseVal(meetingDateValueFormat);
+            console.log(
+              sendResponseVal,
+              "meetingDateValueFormatmeetingDateValueFormat"
+            );
+            setSendResponseBy({
+              ...sendResponseBy,
+              date: DateDate.slice(0, 8),
+            });
             const newDataforView =
               getAllMeetingDetails.advanceMeetingDetails.meetingDates.map(
                 (dates) => {
@@ -261,12 +306,6 @@ const ProposedMeetingDate = ({
         }
       }
     } catch {}
-    // return () => {
-    //   setSendResponseVal("");
-    //   setSendResponseBy({
-    //     date: "",
-    //   });
-    // };
   }, [getAllMeetingDetails, getAllProposedDates]);
 
   const changeDateStartHandler = (date, index) => {
