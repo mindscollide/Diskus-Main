@@ -583,7 +583,6 @@ const Reports = () => {
                           />
                         </Col>
                         <Col sm={12} md={6} lg={6}>
-                          {/* <TextField labelClass={"d-none"} /> */}
                           <Select
                             placeholder={t("Inteface-type")}
                             options={DeviceIdType}

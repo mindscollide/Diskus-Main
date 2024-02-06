@@ -1,13 +1,13 @@
-body::-webkit-scrollbar {
-  width: 0.5rem;
-  border-radius: 20px;
-  background-color: #f2f2f2;
+::-webkit-scrollbar {
+  width: 0.5rem !important;
+  border-radius: 20px !important;
+  background-color: #f2f2f2 !important;
 }
 
-body::-webkit-scrollbar-thumb {
-  border-radius: 20px;
-  background: #ccc;
-  margin-left: -15px;
+::-webkit-scrollbar-thumb {
+  border-radius: 20px !important;
+  background: #ccc !important;
+  margin-left: -15px !important;
 }
 
 ::placeholder {

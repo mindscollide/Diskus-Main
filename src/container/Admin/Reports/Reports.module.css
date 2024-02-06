@@ -44,6 +44,10 @@
   left: auto;
   cursor: pointer;
 }
+body[dir="rtl"] .searchbox_icon_userhistoryLogin {
+  left: 10px;
+  right: auto;
+}
 .ResetBtn {
   padding: 12px 30px !important;
   font-family: "MontserratSemiBold-600";
