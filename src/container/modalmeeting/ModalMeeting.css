@@ -741,3 +741,9 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn_Next {
   max-height: 40vh !important;
   width: 100% !important;
 }
+/* .presenter_dropdown__input {
+  display: none !important;
+} */
+.css-qbdosj-Input:after {
+  display: none;
+}

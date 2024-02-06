@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./ModalUpdate.css";
 import FileIcon, { defaultStyles } from "react-file-icon";
+import Select from "react-select";
 import {
   convertDateTimeObject,
   convertTimetoGMT,
@@ -195,6 +196,12 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [selectedTime, setSelectedTime] = useState(null);
   const [fileSize, setFileSize] = useState(0);
+  const [allPresenters, setAllPresenters] = useState([]);
+  const [presenterValue, setPresenterValue] = useState({
+    value: 0,
+    label: "",
+    name: "",
+  });
 
   useEffect(() => {
     if (currentLanguage !== undefined) {
@@ -787,6 +794,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             setMeetingAgendaAttachments({
               MeetingAgendaAttachments: [],
             });
+            setPresenterValue({
+              label: "",
+              value: 0,
+              name: "",
+            });
           } else {
             setModalField(false);
             setOpen({
@@ -808,6 +820,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           });
           seteditRecordIndex(null);
           seteditRecordFlag(false);
+          setPresenterValue({
+            label: "",
+            value: 0,
+            name: "",
+          });
           setObjMeetingAgenda({
             PK_MAID: 0,
             Title: "",
@@ -854,6 +871,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             setMeetingAgendaAttachments({
               MeetingAgendaAttachments: [],
             });
+            setPresenterValue({
+              label: "",
+              value: 0,
+              name: "",
+            });
             setFileSize(0);
           } else {
             setModalField(false);
@@ -882,6 +904,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             PresenterName: "",
             URLs: "",
             FK_MDID: 0,
+          });
+          setPresenterValue({
+            label: "",
+            value: 0,
+            name: "",
           });
           setMeetingAgendaAttachments({
             MeetingAgendaAttachments: [],
@@ -1047,6 +1074,35 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   useEffect(() => {
     if (Object.keys(assignees.user).length > 0) {
       setMeetingAttendeesList(assignees.user);
+      let PresenterData = [];
+      assignees.user.forEach((user, index) => {
+        PresenterData.push({
+          label: (
+            <>
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex gap-2 align-items-center"
+                >
+                  <img
+                    src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
+                    height="16.45px"
+                    width="18.32px"
+                    draggable="false"
+                    alt=""
+                  />
+                  <span>{user.name}</span>
+                </Col>
+              </Row>
+            </>
+          ),
+          value: user.pK_UID,
+          name: user.name,
+        });
+      });
+      setAllPresenters(PresenterData);
     }
   }, [assignees.user]);
 
@@ -1304,6 +1360,37 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   }, [assignees.ViewMeetingDetails]);
 
   const editGrid = (datarecord, dataindex) => {
+    let Data;
+    assignees.user.forEach((user, index) => {
+      if (user.name === datarecord.ObjMeetingAgenda.PresenterName) {
+        Data = {
+          label: (
+            <>
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex gap-2 align-items-center"
+                >
+                  <img
+                    src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
+                    height="16.45px"
+                    width="18.32px"
+                    draggable="false"
+                    alt=""
+                  />
+                  <span>{user.name}</span>
+                </Col>
+              </Row>
+            </>
+          ),
+          value: user.pK_UID,
+          name: user.name,
+        };
+      }
+      setPresenterValue(Data);
+    });
     seteditRecordIndex(dataindex);
     seteditRecordFlag(true);
     setObjMeetingAgenda({
@@ -2058,6 +2145,27 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   };
   console.log(createMeeting, "handleDeleteAgendahandleDeleteAgenda");
 
+  const handleChangePresenter = (value) => {
+    console.log(
+      value,
+      "handleChangePresenterhandleChangePresenterhandleChangePresenter"
+    );
+    setPresenterValue(value);
+    setObjMeetingAgenda({
+      ...objMeetingAgenda,
+      PresenterName: value.name,
+    });
+  };
+  console.log(objMeetingAgenda, "objMeetingAgendaobjMeetingAgenda");
+  const filterFunc = (options, searchText) => {
+    console.log(options, "filterFuncfilterFunc");
+    if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
     <>
       <Container>
@@ -2421,9 +2529,19 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                             md={5}
                             sm={12}
                             xs={12}
-                            className="agenda-title-field CreateMeetingAgenda"
+                            className="agenda-title-field "
                           >
-                            <TextField
+                            <Select
+                              options={allPresenters}
+                              isDisabled={endMeetingStatus}
+                              maxMenuHeight={140}
+                              classNamePrefix={"ModalOrganizerSelect"}
+                              onChange={handleChangePresenter}
+                              value={presenterValue}
+                              placeholder="Select Presenter"
+                              filterOption={filterFunc}
+                            />
+                            {/* <TextField
                               disable={endMeetingStatus}
                               change={agendaHandler}
                               name={"PresenterName"}
@@ -2432,7 +2550,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                               type="text"
                               maxLength={200}
                               placeholder={t("Presenter")}
-                            />
+                            /> */}
                           </Col>
                         </Row>
 
