@@ -27,6 +27,7 @@ import {
   actionsGlobalFlag,
   pollsGlobalFlag,
   attendanceGlobalFlag,
+  uploadGlobalFlag
 } from "../../../../../store/actions/NewMeetingActions";
 import {
   getMeetingTaskMainApi,
@@ -547,6 +548,7 @@ const Actions = ({
     dispatch(actionsGlobalFlag(false));
     dispatch(pollsGlobalFlag(true));
     dispatch(attendanceGlobalFlag(false));
+    dispatch(uploadGlobalFlag(false));
   };
 
   // To go on Previous tab

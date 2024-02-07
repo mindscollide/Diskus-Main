@@ -33,6 +33,7 @@ import {
   actionsGlobalFlag,
   pollsGlobalFlag,
   attendanceGlobalFlag,
+  uploadGlobalFlag
 } from "../../../../../store/actions/NewMeetingActions";
 import ModalCrossIcon from "../Organizers/ModalCrossIconClick/ModalCrossIcon";
 import tick from "../../../../../assets/images/PNG tick.png";
@@ -479,6 +480,7 @@ const AgendaContributers = ({
     dispatch(actionsGlobalFlag(false));
     dispatch(pollsGlobalFlag(false));
     dispatch(attendanceGlobalFlag(false));
+    dispatch(uploadGlobalFlag(false));
   };
   const previousTabOrganizer = () => {
     // dispatch(showPreviousConfirmationModal(true));

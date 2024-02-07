@@ -38,6 +38,7 @@ import {
   actionsGlobalFlag,
   pollsGlobalFlag,
   attendanceGlobalFlag,
+  uploadGlobalFlag
 } from "../../../../../../store/actions/NewMeetingActions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -146,6 +147,7 @@ const UnpublishedProposedMeeting = ({
       dispatch(actionsGlobalFlag(false));
       dispatch(pollsGlobalFlag(false));
       dispatch(attendanceGlobalFlag(false));
+      dispatch(uploadGlobalFlag(false));
     } else if (isAgendaContributor) {
     } else if (isOrganiser) {
       setViewProposeOrganizerPoll(true);
@@ -161,6 +163,7 @@ const UnpublishedProposedMeeting = ({
       dispatch(actionsGlobalFlag(false));
       dispatch(pollsGlobalFlag(false));
       dispatch(attendanceGlobalFlag(false));
+      dispatch(uploadGlobalFlag(false));
     }
   };
 
@@ -238,7 +241,8 @@ const UnpublishedProposedMeeting = ({
               dispatch(actionsGlobalFlag(false));
               dispatch(pollsGlobalFlag(false));
               dispatch(attendanceGlobalFlag(false));
-            }}
+      dispatch(uploadGlobalFlag(false));
+    }}
           >
             {truncateString(text, 35)}
           </span>
@@ -456,7 +460,8 @@ const UnpublishedProposedMeeting = ({
                       dispatch(actionsGlobalFlag(false));
                       dispatch(pollsGlobalFlag(false));
                       dispatch(attendanceGlobalFlag(false));
-                    }}
+      dispatch(uploadGlobalFlag(false));
+    }}
                   />
                 ) : isOrganiser ? (
                   <>
@@ -491,7 +496,8 @@ const UnpublishedProposedMeeting = ({
                         dispatch(actionsGlobalFlag(false));
                         dispatch(pollsGlobalFlag(false));
                         dispatch(attendanceGlobalFlag(false));
-                      }}
+      dispatch(uploadGlobalFlag(false));
+    }}
                     />
                   </>
                 ) : null}
