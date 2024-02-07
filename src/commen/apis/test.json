@@ -1,18 +1,11 @@
 {
-  "MeetingID": 2870,
-  "SendResponsebyDate": "20240214",
-  "ProposedDates": [
-    {
-      "ProposedDate": "20240203",
-      "StartTime": "100000",
-      "EndTime": "110000",
-      "proposedDateID": 0
-    },
-    {
-      "ProposedDate": "20240204",
-      "StartTime": "100000",
-      "EndTime": "110000",
-      "proposedDateID": 0
-    }
-  ]
+  "OrganizationID": 417,
+  "Username": "Saif",
+  "UserEmail": "saif@gmail.com",
+  "IpAddress": "234.234.32.23",
+  "DeviceID": "",
+  "DateLogin": "",
+  "DateLogOut": "",
+  "sRow": 0,
+  "Length": 10
 }

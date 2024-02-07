@@ -111,7 +111,7 @@ button.dropdown-toggle.dropdown-toggle.btn.btn-primary:has(p.user-name) {
 
 .dropdown-toggle:hover {
   background: #ffffff;
-  border: none !important;
+  /* border: none !important; */
 }
 
 .user-dropdown .dropdown-toggle .header-icon {

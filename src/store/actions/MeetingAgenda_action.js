@@ -35,6 +35,7 @@ import {
   actionsGlobalFlag,
   pollsGlobalFlag,
   attendanceGlobalFlag,
+  uploadGlobalFlag
 } from "./NewMeetingActions";
 
 const clearAgendaReducerState = () => {
@@ -1323,7 +1324,8 @@ const AddUpdateAdvanceMeetingAgenda = (
                 dispatch(actionsGlobalFlag(false));
                 dispatch(pollsGlobalFlag(false));
                 dispatch(attendanceGlobalFlag(false));
-              } else if (flag === 2) {
+      dispatch(uploadGlobalFlag(false));
+    } else if (flag === 2) {
                 dispatch(
                   UpdateOrganizersMeeting(
                     navigate,
@@ -1352,7 +1354,8 @@ const AddUpdateAdvanceMeetingAgenda = (
                 dispatch(actionsGlobalFlag(false));
                 dispatch(pollsGlobalFlag(false));
                 dispatch(attendanceGlobalFlag(false));
-              }
+      dispatch(uploadGlobalFlag(false));
+    }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

@@ -16,6 +16,7 @@ import {
 import {
   showCancelModalmeetingDeitals,
   viewMeetingFlag,
+  uploadGlobalFlag,
 } from "../../../../store/actions/NewMeetingActions";
 import {
   createCommitteePageFlag,
@@ -56,6 +57,7 @@ const ExpandedMenu = () => {
     ) {
       setDataroomNavigation("Meeting");
       dispatch(showCancelModalmeetingDeitals(true));
+      dispatch(uploadGlobalFlag(false));
       localStorage.setItem("navigateLocation", "dataroom");
     } else {
       setDataroomNavigation("dataroom");
@@ -77,6 +79,7 @@ const ExpandedMenu = () => {
     ) {
       setGroupNavigation("Meeting");
       dispatch(showCancelModalmeetingDeitals(true));
+      dispatch(uploadGlobalFlag(false));
       localStorage.setItem("navigateLocation", "groups");
     } else {
       setGroupNavigation("groups");
@@ -101,6 +104,7 @@ const ExpandedMenu = () => {
     ) {
       setCommitteeNavigation("Meeting");
       dispatch(showCancelModalmeetingDeitals(true));
+      dispatch(uploadGlobalFlag(false));
       localStorage.setItem("navigateLocation", "committee");
     } else {
       setCommitteeNavigation("committee");
@@ -125,6 +129,7 @@ const ExpandedMenu = () => {
     ) {
       setResolutionNavigation("Meeting");
       dispatch(showCancelModalmeetingDeitals(true));
+      dispatch(uploadGlobalFlag(false));
       localStorage.setItem("navigateLocation", "resolution");
     } else {
       setResolutionNavigation("resolution");
@@ -151,6 +156,7 @@ const ExpandedMenu = () => {
     ) {
       setPollNavigation("Meeting");
       dispatch(showCancelModalmeetingDeitals(true));
+      dispatch(uploadGlobalFlag(false));
       localStorage.setItem("navigateLocation", "polling");
     } else {
       setPollNavigation("polling");
