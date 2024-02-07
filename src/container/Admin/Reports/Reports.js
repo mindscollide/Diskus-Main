@@ -458,8 +458,25 @@ const Reports = () => {
     }
   };
 
-  const handleSearches = () => {
-    setShowSearchText(false);
+  const handleSearches = (data, fieldName) => {
+    console.log(data, fieldName, "datadatadatahandleSearches");
+    setUserLoginHistorySearch({
+      ...userLoginHistorySearch,
+      [fieldName]: "",
+    });
+    let Data = {
+      OrganizationID: Number(OrganizationID),
+      Username: userLoginHistorySearch.userName,
+      UserEmail: userLoginHistorySearch.userEmail,
+      IpAddress: userLoginHistorySearch.IpAddress,
+      DeviceID: "",
+      DateLogin: userLoginHistorySearch.DateFrom,
+      DateLogOut: userLoginHistorySearch.DateTo,
+      sRow: 0,
+      Length: 10,
+    };
+    console.log(Data, "consoleconsole");
+    dispatch(userLoginHistory_Api(navigate, t, Data));
   };
 
   console.log(
@@ -534,7 +551,12 @@ const Reports = () => {
                             alt=""
                             className="cursor-pointer"
                             width={13}
-                            onClick={handleSearches}
+                            onClick={() =>
+                              handleSearches(
+                                userLoginHistorySearch.userName,
+                                "userName"
+                              )
+                            }
                           />
                         </div>
                       ) : null}
@@ -549,6 +571,12 @@ const Reports = () => {
                             alt=""
                             className="cursor-pointer"
                             width={13}
+                            onClick={() =>
+                              handleSearches(
+                                userLoginHistorySearch.Title,
+                                "Title"
+                              )
+                            }
                           />
                         </div>
                       ) : null}
@@ -564,6 +592,12 @@ const Reports = () => {
                             alt=""
                             className="cursor-pointer"
                             width={13}
+                            onClick={() =>
+                              handleSearches(
+                                userLoginHistorySearch.userEmail,
+                                "userEmail"
+                              )
+                            }
                           />
                         </div>
                       ) : null}
@@ -579,6 +613,12 @@ const Reports = () => {
                             alt=""
                             className="cursor-pointer"
                             width={13}
+                            onClick={() =>
+                              handleSearches(
+                                userLoginHistorySearch.IpAddress,
+                                "IpAddress"
+                              )
+                            }
                           />
                         </div>
                       ) : null}
@@ -594,6 +634,12 @@ const Reports = () => {
                             alt=""
                             className="cursor-pointer"
                             width={13}
+                            onClick={() =>
+                              handleSearches(
+                                userLoginHistorySearch.DateFrom,
+                                "DateFrom"
+                              )
+                            }
                           />
                         </div>
                       ) : null}
@@ -609,6 +655,12 @@ const Reports = () => {
                             alt=""
                             className="cursor-pointer"
                             width={13}
+                            onClick={() =>
+                              handleSearches(
+                                userLoginHistorySearch.DateTo,
+                                "DateTo"
+                              )
+                            }
                           />
                         </div>
                       ) : null}
