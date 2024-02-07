@@ -31,10 +31,17 @@ import {
   validateEmailEnglishAndArabicFormat,
   validationEmail,
 } from "../../../commen/functions/validations";
+import {
+  newTimeFormaterAsPerUTCFullDate,
+  newTimeFormaterForImportMeetingAgenda,
+  utcConvertintoGMT,
+} from "../../../commen/functions/date_formater";
+import { getTimeDifference } from "../../../commen/functions/time_formatter";
 
 const Reports = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const [showsearchText, setShowSearchText] = useState(false);
   const navigate = useNavigate();
   const UserLoginHistoryData = useSelector(
     (state) => state.UserReportReducer.userLoginHistoryData
@@ -164,7 +171,7 @@ const Reports = () => {
       key: "userName",
       align: "left",
       ellipsis: true,
-      width: 300,
+      width: 220,
     },
     {
       title: t("User-email"),
@@ -180,13 +187,19 @@ const Reports = () => {
       key: "dateLogin",
       align: "center",
       width: 200,
+      render: (text, record) => {
+        return newTimeFormaterForImportMeetingAgenda(text);
+      },
     },
     {
       title: t("Logout-date-time"),
       dataIndex: "dateLogOut",
       key: "dateLogOut",
       align: "center",
-      width: 150,
+      width: 200,
+      render: (text, record) => {
+        return newTimeFormaterForImportMeetingAgenda(text);
+      },
     },
     {
       title: t("Session-duration"),
@@ -194,6 +207,9 @@ const Reports = () => {
       key: "decision",
       align: "center",
       width: 150,
+      render: (text, record) => {
+        return getTimeDifference(record.dateLogin, record.dateLogOut);
+      },
     },
     {
       title: t("Interface"),
@@ -208,10 +224,10 @@ const Reports = () => {
     },
     {
       title: t("Ip-address"),
-      dataIndex: "Result",
+      dataIndex: "loggedInFromIP",
       align: "center",
-      key: "Result",
-      width: 100,
+      key: "loggedInFromIP",
+      width: 120,
     },
   ];
 
@@ -348,6 +364,7 @@ const Reports = () => {
           Length: 10,
         };
         dispatch(userLoginHistory_Api(navigate, t, Data));
+        setShowSearchText(true);
       } else {
       }
     } catch {}
@@ -365,6 +382,7 @@ const Reports = () => {
       Length: 10,
     };
     dispatch(userLoginHistory_Api(navigate, t, Data));
+    showsearchText(false);
     setUserLoginHistorySearch({
       ...userLoginHistorySearch,
       userName: "",
@@ -479,6 +497,9 @@ const Reports = () => {
                       />
                     }
                   />
+                  {userLoginHistorySearch.userName !== "" && showsearchText
+                    ? userLoginHistorySearch.userName
+                    : null}
                   {searchBoxExpand && (
                     <section className={styles["userLoginHistory_Box"]}>
                       <Row>
