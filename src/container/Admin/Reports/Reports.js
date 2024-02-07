@@ -464,19 +464,23 @@ const Reports = () => {
       ...userLoginHistorySearch,
       [fieldName]: "",
     });
+
     let Data = {
       OrganizationID: Number(OrganizationID),
-      Username: userLoginHistorySearch.userName,
-      UserEmail: userLoginHistorySearch.userEmail,
-      IpAddress: userLoginHistorySearch.IpAddress,
+      Username: fieldName === "userName" ? "" : userLoginHistorySearch.userName,
+      UserEmail:
+        fieldName === "userEmail" ? "" : userLoginHistorySearch.userEmail,
+      IpAddress:
+        fieldName === "IpAddress" ? "" : userLoginHistorySearch.IpAddress,
       DeviceID: "",
-      DateLogin: userLoginHistorySearch.DateFrom,
-      DateLogOut: userLoginHistorySearch.DateTo,
+      DateLogin:
+        fieldName === "DateFrom" ? "" : userLoginHistorySearch.DateFrom,
+      DateLogOut: fieldName === "DateTo" ? "" : userLoginHistorySearch.DateTo,
       sRow: 0,
       Length: 10,
     };
     console.log(Data, "consoleconsole");
-    dispatch(userLoginHistory_Api(navigate, t, Data));
+    // dispatch(userLoginHistory_Api(navigate, t, Data));
   };
 
   console.log(
