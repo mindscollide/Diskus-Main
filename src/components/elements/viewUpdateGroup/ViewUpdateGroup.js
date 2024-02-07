@@ -30,6 +30,7 @@ import {
   getFileExtension,
   getIconSource,
 } from "../../../container/DataRoom/SearchFunctionality/option";
+import { DataRoomDownloadFileApiFunc } from "../../../store/actions/DataRoom_actions";
 const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
   let userID = localStorage.getItem("userID");
 
@@ -201,6 +202,18 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
         `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
         "_blank",
         "noopener noreferrer"
+      );
+    } else {
+      let data2 = {
+        FileID: Number(data.pK_FileID),
+      };
+      dispatch(
+        DataRoomDownloadFileApiFunc(
+          navigate,
+          data2,
+          t,
+          data.DisplayAttachmentName
+        )
       );
     }
   };

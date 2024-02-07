@@ -202,6 +202,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
             (MorganizerData, MorganizerIndex) => {
               let MeetingOrganizerData = {
                 value: MorganizerData.userID,
+                name: MorganizerData.userName,
                 label: (
                   <>
                     <>
@@ -213,7 +214,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                           className="d-flex gap-2 align-items-center"
                         >
                           <img
-                            src={GroupIcon}
+                            src={`data:image/jpeg;base64,${MorganizerData.userProfilePicture.displayProfilePictureName}`}
                             height="16.45px"
                             width="18.32px"
                             draggable="false"
@@ -238,6 +239,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
             (meetAgendaContributor, meetAgendaContributorIndex) => {
               let MeetingAgendaContributorData = {
                 value: meetAgendaContributor.userID,
+                name: meetAgendaContributor.userName,
                 label: (
                   <>
                     <>
@@ -249,7 +251,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                           className="d-flex gap-2 align-items-center"
                         >
                           <img
-                            src={GroupIcon}
+                            src={`data:image/jpeg;base64,${meetAgendaContributor.userProfilePicture.displayProfilePictureName}`}
                             height="16.45px"
                             alt=""
                             width="18.32px"
@@ -286,7 +288,8 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                           className="d-flex gap-2 align-items-center"
                         >
                           <img
-                            src={GroupIcon}
+                            // src={GroupIcon}
+                            src={`data:image/jpeg;base64,${meetParticipants.userProfilePicture.displayProfilePictureName}`}
                             height="16.45px"
                             width="18.32px"
                             alt=""

@@ -384,7 +384,7 @@ const Polls = ({ committeeStatus }) => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles["Background-nonvoted-Button"]}
+                    // className={styles["Background-nonvoted-Button"]}
                   >
                     <span className={styles["Not-voted"]}>
                       {t("Not-voted")}

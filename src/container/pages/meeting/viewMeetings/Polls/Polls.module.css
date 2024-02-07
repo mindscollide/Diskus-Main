@@ -215,3 +215,13 @@ body[dir="rtl"] .PaginationStyle-Resolution {
   border-radius: 4px !important;
   font-family: "MontserratSemiBold" !important;
 }
+.Background-nonvoted-Button {
+  max-width: 109px !important;
+  border-radius: 4px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center;
+  height: 42px !important;
+  color: #6172d6 !important;
+  background-color: #ecefff !important;
+}

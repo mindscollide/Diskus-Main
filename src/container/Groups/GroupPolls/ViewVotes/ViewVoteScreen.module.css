@@ -5,7 +5,7 @@
 }
 
 .Scroller_View_Published_Polls {
-  height: 50vh !important;
+  height: auto !important;
   overflow-x: hidden !important;
 }
 
@@ -74,4 +74,7 @@
   color: #5a5a5a !important;
   font-size: 16px !important;
   font-family: "MontserratSemiBold" !important;
+}
+.viewVotes_container {
+  min-height: 50vh;
 }

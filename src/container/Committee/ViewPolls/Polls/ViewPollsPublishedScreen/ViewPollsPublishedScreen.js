@@ -71,7 +71,6 @@ const ViewPollsPublishedScreen = ({ setSavePollsPublished }) => {
       PollID: viewPublishedPollDetails.PollID,
     };
     dispatch(viewVotesApi(navigate, data, t, 1, setviewVotes));
-    // setviewVotes(true);
   };
   return (
     <>
@@ -115,7 +114,7 @@ const ViewPollsPublishedScreen = ({ setSavePollsPublished }) => {
                                           }
                                         >
                                           {data.answer}{" "}
-                                          <span>{data.totalVotes}</span>
+                                          <span>({data.totalVotes})</span>
                                         </span>
                                       </Col>
                                     </Row>

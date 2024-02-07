@@ -72,6 +72,7 @@
   color: #2197d7 !important;
   font-family: "MontserratSemiBold";
   font-size: 14px !important;
+  cursor: pointer;
   /* display: inline-block !important; */
   /* width: 80% !important;
   overflow: hidden !important;
@@ -200,4 +201,14 @@ body[dir="rtl"] .PaginationStyle-Resolution {
 .poll_status {
   font-size: 14px;
   font-family: "MontserratRegular" !important;
+}
+.Background-nonvoted-Button {
+  max-width: 109px !important;
+  border-radius: 4px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center;
+  height: 42px !important;
+  color: #6172d6 !important;
+  background-color: #ecefff !important;
 }

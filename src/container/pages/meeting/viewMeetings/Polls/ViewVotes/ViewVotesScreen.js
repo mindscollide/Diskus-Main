@@ -95,7 +95,7 @@ const ViewVotesScreen = ({ setviewVotes }) => {
                                     className={styles["Messege_span_Class"]}
                                   >
                                     {data?.answer}
-                                    {""} <span>{data?.totalVotes}</span>
+                                    {""} <span>({data?.totalVotes})</span>
                                   </span>
                                 </Col>
                               </Row>

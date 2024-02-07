@@ -5,11 +5,11 @@
   padding: 0;
 }
 .user-login-history-table-paper {
-  min-height: 70vh !important;
+  min-height: 40vh !important;
   width: 100%;
   border: 1px solid #e1e1e1;
   border-radius: 4px !important;
-  padding: 0 20px;
+  padding: 0 20px 20px 0;
 }
 .export-to-excel-btn {
   padding: 10px 20px;
@@ -43,6 +43,10 @@
   top: 10px;
   left: auto;
   cursor: pointer;
+}
+body[dir="rtl"] .searchbox_icon_userhistoryLogin {
+  left: 10px;
+  right: auto;
 }
 .ResetBtn {
   padding: 12px 30px !important;

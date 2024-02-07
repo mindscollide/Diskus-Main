@@ -1700,8 +1700,10 @@ const DataRoom = () => {
                   className="d-flex justify-content-end gap-2 position-relative otherstuff"
                 >
                   <div className="tablerowFeatures">
-                    {record.permissionID === 2 ||
+                    {record.permissionID === 1 ||
                     record.permissionID === 3 ? null : (
+                      //  Share Icon
+
                       <Tooltip placement="topRight" title={t("Share")}>
                         <span className={styles["share__Icon"]}>
                           <svg
@@ -1730,7 +1732,7 @@ const DataRoom = () => {
                         </span>
                       </Tooltip>
                     )}
-
+                    {/* Download Icon */}
                     <Tooltip placement="topRight" title={t("Download")}>
                       <span className={styles["download__Icon"]}>
                         <img
@@ -1744,7 +1746,6 @@ const DataRoom = () => {
                       </span>
                     </Tooltip>
                     {record.permissionID === 1 ||
-                    record.permissionID === 2 ||
                     record.permissionID === 3 ? null : (
                       <Tooltip placement="topRight" title={t("Delete")}>
                         <span className={styles["delete__Icon"]}>
@@ -1801,7 +1802,7 @@ const DataRoom = () => {
                           />
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                          {record.permissionID === 1
+                          {record.permissionID === 2
                             ? optionsforFolderEditor(t).map((data, index) => {
                                 return (
                                   <Dropdown.Item
@@ -1814,7 +1815,7 @@ const DataRoom = () => {
                                   </Dropdown.Item>
                                 );
                               })
-                            : record.permissionID === 2
+                            : record.permissionID === 1
                             ? optionsforFolderViewer(t).map((data, index) => {
                                 return (
                                   <Dropdown.Item
@@ -1860,7 +1861,7 @@ const DataRoom = () => {
                           />
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                          {record.permissionID === 1
+                          {record.permissionID === 2
                             ? optionsforFileEditor(t).map((data, index) => {
                                 return (
                                   <Dropdown.Item
@@ -1877,7 +1878,7 @@ const DataRoom = () => {
                                   </Dropdown.Item>
                                 );
                               })
-                            : record.permissionID === 2
+                            : record.permissionID === 1
                             ? optionsforFileViewer(t).map((data, index) => {
                                 return (
                                   <Dropdown.Item

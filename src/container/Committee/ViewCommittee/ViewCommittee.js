@@ -21,6 +21,7 @@ import {
   getFileExtension,
   getIconSource,
 } from "../../DataRoom/SearchFunctionality/option";
+import { DataRoomDownloadFileApiFunc } from "../../../store/actions/DataRoom_actions";
 const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
   const { Dragger } = Upload;
   const dispatch = useDispatch();
@@ -108,6 +109,18 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
         `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
         "_blank",
         "noopener noreferrer"
+      );
+    } else {
+      let data2 = {
+        FileID: Number(data.pK_FileID),
+      };
+      dispatch(
+        DataRoomDownloadFileApiFunc(
+          navigate,
+          data2,
+          t,
+          data.DisplayAttachmentName
+        )
       );
     }
   };
