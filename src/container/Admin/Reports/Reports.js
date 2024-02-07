@@ -17,6 +17,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { Spin } from "antd";
 import XLSIcon from "../../../assets/images/AttachmentIcons/xls-file.svg";
 import searchicon from "../../../assets/images/searchicon.svg";
+import Crossicon from "../../../assets/images/WhiteCrossIcon.svg";
 // Cross-Chat-Icon
 import CrossIcon from "../../../assets/images/Cross-Chat-Icon.png";
 import DatePicker, { DateObject } from "react-multi-date-picker";
@@ -41,12 +42,12 @@ import { getTimeDifference } from "../../../commen/functions/time_formatter";
 const Reports = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const [showsearchText, setShowSearchText] = useState(false);
   const navigate = useNavigate();
   const UserLoginHistoryData = useSelector(
     (state) => state.UserReportReducer.userLoginHistoryData
   );
   const [loginHistoyRows, setLoginHistoryRows] = useState([]);
+  const [showsearchText, setShowSearchText] = useState(false);
   const [totalRecords, setTotalRecords] = useState(0);
   const [isRowsData, setSRowsData] = useState(0);
   const [isScroll, setIsScroll] = useState(false);
@@ -107,6 +108,7 @@ const Reports = () => {
     };
     dispatch(userLoginHistory_Api(navigate, t, Data));
     return () => {
+      setShowSearchText(false);
       setIsScroll(false);
       setTotalRecords(0);
       setSRowsData(0);
@@ -161,6 +163,7 @@ const Reports = () => {
       }
     } catch {}
   }, [UserLoginHistoryData]);
+
   const userloginColumns = [
     {
       title: t("User-name"),
@@ -367,34 +370,38 @@ const Reports = () => {
     } catch {}
   };
   const handleReset = () => {
-    let Data = {
-      OrganizationID: Number(OrganizationID),
-      Username: "",
-      UserEmail: "",
-      IpAddress: "",
-      DeviceID: "",
-      DateLogin: "",
-      DateLogOut: "",
-      sRow: 0,
-      Length: 10,
-    };
-    dispatch(userLoginHistory_Api(navigate, t, Data));
-    showsearchText(false);
-    setUserLoginHistorySearch({
-      ...userLoginHistorySearch,
-      userName: "",
-      userEmail: "",
-      DateFrom: "",
-      DateForView: "",
-      DateTo: "",
-      DateToView: "",
-      IpAddress: "",
-      InterFaceType: {
-        value: 0,
-        label: "",
-      },
-      Title: "",
-    });
+    try {
+      let Data = {
+        OrganizationID: Number(OrganizationID),
+        Username: "",
+        UserEmail: "",
+        IpAddress: "",
+        DeviceID: "",
+        DateLogin: "",
+        DateLogOut: "",
+        sRow: 0,
+        Length: 10,
+      };
+      dispatch(userLoginHistory_Api(navigate, t, Data));
+      setShowSearchText(false);
+      setUserLoginHistorySearch({
+        ...userLoginHistorySearch,
+        userName: "",
+        userEmail: "",
+        DateFrom: "",
+        DateForView: "",
+        DateTo: "",
+        DateToView: "",
+        IpAddress: "",
+        InterFaceType: {
+          value: 0,
+          label: "",
+        },
+        Title: "",
+      });
+    } catch (error) {
+      console.log(error, "userLoginHistorySearchuserLoginHistorySearch");
+    }
   };
 
   const handleKeyDown = (e) => {
@@ -451,6 +458,21 @@ const Reports = () => {
     }
   };
 
+  const handleSearches = () => {
+    setShowSearchText(false);
+  };
+
+  console.log(
+    userLoginHistorySearch.userName,
+    userLoginHistorySearch.Title,
+    userLoginHistorySearch.userEmail,
+    userLoginHistorySearch.IpAddress,
+    userLoginHistorySearch.DateFrom,
+    userLoginHistorySearch.DateTo,
+    showsearchText,
+    "userLoginHistorySearchuserLoginHistorySearch"
+  );
+
   return (
     <Fragment>
       <Container>
@@ -494,9 +516,105 @@ const Reports = () => {
                       />
                     }
                   />
-                  {userLoginHistorySearch.userName !== "" && showsearchText
-                    ? userLoginHistorySearch.userName
-                    : null}
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 flex-wrap"
+                    >
+                      {showsearchText &&
+                      userLoginHistorySearch.userName !== "" ? (
+                        <div className={styles["SearchablesItems"]}>
+                          <span className={styles["Searches"]}>
+                            {userLoginHistorySearch.userName}
+                          </span>
+                          <img
+                            src={Crossicon}
+                            alt=""
+                            className="cursor-pointer"
+                            width={13}
+                            onClick={handleSearches}
+                          />
+                        </div>
+                      ) : null}
+
+                      {showsearchText && userLoginHistorySearch.Title !== "" ? (
+                        <div className={styles["SearchablesItems"]}>
+                          <span className={styles["Searches"]}>
+                            {userLoginHistorySearch.Title}
+                          </span>
+                          <img
+                            src={Crossicon}
+                            alt=""
+                            className="cursor-pointer"
+                            width={13}
+                          />
+                        </div>
+                      ) : null}
+
+                      {showsearchText &&
+                      userLoginHistorySearch.userEmail !== "" ? (
+                        <div className={styles["SearchablesItems"]}>
+                          <span className={styles["Searches"]}>
+                            {userLoginHistorySearch.userEmail}
+                          </span>
+                          <img
+                            src={Crossicon}
+                            alt=""
+                            className="cursor-pointer"
+                            width={13}
+                          />
+                        </div>
+                      ) : null}
+
+                      {showsearchText &&
+                      userLoginHistorySearch.IpAddress !== "" ? (
+                        <div className={styles["SearchablesItems"]}>
+                          <span className={styles["Searches"]}>
+                            {userLoginHistorySearch.IpAddress}
+                          </span>
+                          <img
+                            src={Crossicon}
+                            alt=""
+                            className="cursor-pointer"
+                            width={13}
+                          />
+                        </div>
+                      ) : null}
+
+                      {showsearchText &&
+                      userLoginHistorySearch.DateFrom !== "" ? (
+                        <div className={styles["SearchablesItems"]}>
+                          <span className={styles["Searches"]}>
+                            {userLoginHistorySearch.DateFrom}
+                          </span>
+                          <img
+                            src={Crossicon}
+                            alt=""
+                            className="cursor-pointer"
+                            width={13}
+                          />
+                        </div>
+                      ) : null}
+
+                      {showsearchText &&
+                      userLoginHistorySearch.DateTo !== "" ? (
+                        <div className={styles["SearchablesItems"]}>
+                          <span className={styles["Searches"]}>
+                            {userLoginHistorySearch.DateTo}
+                          </span>
+                          <img
+                            src={Crossicon}
+                            alt=""
+                            className="cursor-pointer"
+                            width={13}
+                          />
+                        </div>
+                      ) : null}
+                    </Col>
+                  </Row>
+
                   {searchBoxExpand && (
                     <section className={styles["userLoginHistory_Box"]}>
                       <Row>
@@ -510,6 +628,7 @@ const Reports = () => {
                             src={CrossIcon}
                             width={14}
                             height={14}
+                            alt=""
                             className="cursor-pointer"
                             onClick={handleCloseSearcbBox}
                           />
