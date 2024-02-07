@@ -365,6 +365,7 @@ const Reports = () => {
         };
         dispatch(userLoginHistory_Api(navigate, t, Data));
         setShowSearchText(true);
+        setSearchBoxExpand(false);
       } else {
       }
     } catch {}
