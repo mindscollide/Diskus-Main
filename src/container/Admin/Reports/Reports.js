@@ -26,18 +26,10 @@ import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import Select from "react-select";
-import { validateIP } from "../../../commen/functions/regex";
-import {
-  validateEmail,
-  validateEmailEnglishAndArabicFormat,
-  validationEmail,
-} from "../../../commen/functions/validations";
-import {
-  newTimeFormaterAsPerUTCFullDate,
-  newTimeFormaterForImportMeetingAgenda,
-  utcConvertintoGMT,
-} from "../../../commen/functions/date_formater";
+import { validateEmailEnglishAndArabicFormat } from "../../../commen/functions/validations";
+import { newTimeFormaterForImportMeetingAgenda } from "../../../commen/functions/date_formater";
 import { getTimeDifference } from "../../../commen/functions/time_formatter";
+import moment from "moment";
 
 const Reports = () => {
   const { t } = useTranslation();
@@ -484,17 +476,6 @@ const Reports = () => {
     dispatch(userLoginHistory_Api(navigate, t, Data));
   };
 
-  console.log(
-    userLoginHistorySearch.userName,
-    userLoginHistorySearch.Title,
-    userLoginHistorySearch.userEmail,
-    userLoginHistorySearch.IpAddress,
-    userLoginHistorySearch.DateFrom,
-    userLoginHistorySearch.DateTo,
-    showsearchText,
-    "userLoginHistorySearchuserLoginHistorySearch"
-  );
-
   return (
     <Fragment>
       <Container>
@@ -632,7 +613,9 @@ const Reports = () => {
                       userLoginHistorySearch.DateFrom !== "" ? (
                         <div className={styles["SearchablesItems"]}>
                           <span className={styles["Searches"]}>
-                            {userLoginHistorySearch.DateFrom}
+                            {moment
+                              .utc(userLoginHistorySearch.DateFrom, "YYYYMMDD")
+                              .format("DD-MMM-YYYY")}
                           </span>
                           <img
                             src={Crossicon}
@@ -653,7 +636,9 @@ const Reports = () => {
                       userLoginHistorySearch.DateTo !== "" ? (
                         <div className={styles["SearchablesItems"]}>
                           <span className={styles["Searches"]}>
-                            {userLoginHistorySearch.DateTo}
+                            {moment
+                              .utc(userLoginHistorySearch.DateTo, "YYYYMMDD")
+                              .format("DD-MMM-YYYY")}
                           </span>
                           <img
                             src={Crossicon}
