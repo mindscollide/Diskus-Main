@@ -149,18 +149,21 @@ const AgendaContributers = ({
       title: t("Name"),
       dataIndex: "userName",
       key: "userName",
+      align: "left",
       width: "80px",
     },
     {
       title: t("Email"),
       dataIndex: "email",
       key: "email",
+      align: "left",
       width: "80px",
     },
     {
       title: t("contributor-title"),
       dataIndex: "Title",
       key: "Title",
+      align: "left",
       width: "80px",
       render: (text, record) => {
         if (
@@ -202,6 +205,7 @@ const AgendaContributers = ({
       title: t("Notification"),
       dataIndex: "isNotifed",
       key: "isNotified",
+      align: "center",
       width: "80px",
       className: "notification-class-table",
       render: (text, record) => {
