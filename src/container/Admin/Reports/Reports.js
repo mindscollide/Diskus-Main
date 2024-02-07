@@ -15,7 +15,7 @@ import { userLoginHistory_Api } from "../../../store/actions/UserReport_actions"
 import { useSelector } from "react-redux";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Spin } from "antd";
-import PDFIcon from "../../../assets/images/AttachmentIcons/pdf.svg";
+import XLSIcon from "../../../assets/images/AttachmentIcons/xls-file.svg";
 import searchicon from "../../../assets/images/searchicon.svg";
 // Cross-Chat-Icon
 import CrossIcon from "../../../assets/images/Cross-Chat-Icon.png";
@@ -77,10 +77,6 @@ const Reports = () => {
     Title: "",
   });
 
-  console.log(
-    { userLoginHistorySearch },
-    "userLoginHistorySearchuserLoginHistorySearch"
-  );
   const DeviceIdType = [
     {
       label: "Browser",
@@ -137,25 +133,26 @@ const Reports = () => {
           UserLoginHistoryData.userLoginHistoryModel?.length > 0 &&
           UserLoginHistoryData.totalCount > 0
         ) {
-          // if (isScroll) {
-          //   let copyData = [...loginHistoyRows];
+          if (isScroll) {
+            setIsScroll(false);
 
-          //   UserLoginHistoryData.userLoginHistoryModel.forEach(
-          //     (data, index) => {
-          //       copyData.push(data);
-          //     }
-          //   );
-          //   setLoginHistoryRows(copyData);
-          //   setSRowsData(
-          //     (prev) => prev + UserLoginHistoryData.userLoginHistoryModel.length
-          //   );
-          //   setTotalRecords(UserLoginHistoryData.totalCount);
-          //   setIsScroll(false);
-          // } else {
-          setLoginHistoryRows(UserLoginHistoryData.userLoginHistoryModel);
-          setTotalRecords(UserLoginHistoryData.totalCount);
-          setSRowsData(UserLoginHistoryData.userLoginHistoryModel.length);
-          // }
+            let copyData = [...loginHistoyRows];
+
+            UserLoginHistoryData.userLoginHistoryModel.forEach(
+              (data, index) => {
+                copyData.push(data);
+              }
+            );
+            setLoginHistoryRows(copyData);
+            setSRowsData(
+              (prev) => prev + UserLoginHistoryData.userLoginHistoryModel.length
+            );
+            setTotalRecords(UserLoginHistoryData.totalCount);
+          } else {
+            setLoginHistoryRows(UserLoginHistoryData.userLoginHistoryModel);
+            setTotalRecords(UserLoginHistoryData.totalCount);
+            setSRowsData(UserLoginHistoryData.userLoginHistoryModel.length);
+          }
         } else {
           setLoginHistoryRows([]);
           setTotalRecords(0);
@@ -169,7 +166,7 @@ const Reports = () => {
       title: t("User-name"),
       dataIndex: "userName",
       key: "userName",
-      align: "left",
+      align: "center",
       ellipsis: true,
       width: 220,
     },
@@ -472,7 +469,7 @@ const Reports = () => {
                 className="d-flex justify-content-end align-items-center"
               >
                 <span className={styles["export-to-excel-btn"]}>
-                  <img src={PDFIcon} alt="" /> {t("Export-to-excel")}
+                  <img src={XLSIcon} alt="" /> {t("Export-to-excel")}
                 </span>
               </Col>
               <Col sm={12} md={8} lg={8}>
@@ -641,12 +638,13 @@ const Reports = () => {
         </Row>
         <Row>
           <Paper className={styles["user-login-history-table-paper"]}>
-            {/* <InfiniteScroll
+            <InfiniteScroll
               dataLength={loginHistoyRows.length}
               next={handleScroll}
+              height={"60vh"}
               hasMore={loginHistoyRows.length === totalRecords ? false : true}
               loader={
-                isRowsData <= totalRecords ? (
+                isRowsData <= totalRecords && isScroll ? (
                   <>
                     <Row>
                       <Col
@@ -662,20 +660,19 @@ const Reports = () => {
                 ) : null
               }
               scrollableTarget="scrollableDiv"
-            > */}
-            <Table
-              column={userloginColumns}
-              rows={loginHistoyRows}
-              pagination={false}
-              footer={false}
-              className={"userlogin_history_tableP"}
-              size={"small"}
-              scroll={{
-                x: false,
-                y: "50vh",
-              }}
-            />
-            {/* </InfiniteScroll> */}
+            >
+              <Table
+                column={userloginColumns}
+                rows={loginHistoyRows}
+                pagination={false}
+                footer={false}
+                className={"userlogin_history_tableP"}
+                size={"small"}
+                scroll={{
+                  x: false,
+                }}
+              />
+            </InfiniteScroll>
           </Paper>
         </Row>
       </Container>
