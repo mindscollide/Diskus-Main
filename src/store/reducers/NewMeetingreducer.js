@@ -130,6 +130,7 @@ const initialState = {
   actionsGlobalFlag: false,
   pollsGlobalFlag: false,
   attendanceGlobalFlag: false,
+  uploadGlobalFlag: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -2077,6 +2078,13 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         attendanceGlobalFlag: action.response,
+      };
+    }
+
+    case actions.UPLOAD_GLOBAL_FLAG: {
+      return {
+        ...state,
+        uploadGlobalFlag: action.response,
       };
     }
 

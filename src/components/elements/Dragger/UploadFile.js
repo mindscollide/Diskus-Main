@@ -16,15 +16,17 @@ const UploadFile = ({
   setProgress,
   handleFileUploadRequest,
   title,
+  className,
 }) => {
   return (
     <Upload
       showUploadList={false}
       onProgress={(onprogress) => setProgress(onprogress.percent)}
       customRequest={handleFileUploadRequest}
+      className={className}
     >
       <p className={styles["New_folder"]}>{title}</p>
-    </Upload >
+    </Upload>
   );
 };
 

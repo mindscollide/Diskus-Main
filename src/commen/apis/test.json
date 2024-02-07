@@ -1,18 +1,9 @@
 {
-  "MeetingID": 2870,
-  "SendResponsebyDate": "20240214",
-  "ProposedDates": [
-    {
-      "ProposedDate": "20240203",
-      "StartTime": "100000",
-      "EndTime": "110000",
-      "proposedDateID": 0
-    },
-    {
-      "ProposedDate": "20240204",
-      "StartTime": "100000",
-      "EndTime": "110000",
-      "proposedDateID": 0
-    }
-  ]
+  "uid": "rc-upload-1707297501709-12",
+  "lastModified": 1694641842866,
+  "lastModifiedDate": "",
+  "name": "QQ图片20220902161241.png",
+  "size": 139144,
+  "type": "image/png",
+  "webkitRelativePath": ""
 }
