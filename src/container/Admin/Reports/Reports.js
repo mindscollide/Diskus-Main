@@ -437,6 +437,11 @@ const Reports = () => {
     setSearchBoxExpand(false);
   };
 
+  const handleIputSearchIcon = () => {
+    setSearchBoxExpand(!searchBoxExpand);
+    setShowSearchText(false);
+  };
+
   const handleValidateEmail = () => {
     if (
       !validateEmailEnglishAndArabicFormat(userLoginHistorySearch.userEmail)
@@ -447,7 +452,6 @@ const Reports = () => {
         show: true,
       });
     } else {
-      // alert("Email format is valid");
     }
   };
 
@@ -515,7 +519,7 @@ const Reports = () => {
                         src={searchicon}
                         alt=""
                         className={styles["searchbox_icon_userhistoryLogin"]}
-                        onClick={() => setSearchBoxExpand(!searchBoxExpand)}
+                        onClick={handleIputSearchIcon}
                       />
                     }
                   />
