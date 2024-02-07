@@ -480,7 +480,7 @@ const Reports = () => {
       Length: 10,
     };
     console.log(Data, "consoleconsole");
-    // dispatch(userLoginHistory_Api(navigate, t, Data));
+    dispatch(userLoginHistory_Api(navigate, t, Data));
   };
 
   console.log(
