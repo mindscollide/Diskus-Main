@@ -132,6 +132,7 @@ const AgendaContributers = ({
       title: t("Name"),
       dataIndex: "userName",
       key: "userName",
+      align: "left",
       width: "300px",
     },
 
@@ -139,12 +140,14 @@ const AgendaContributers = ({
       title: t("Email"),
       dataIndex: "email",
       key: "email",
+      align: "left",
       width: "400px",
     },
     {
       title: t("Contributor-title"),
       dataIndex: "Title",
       key: "Title",
+      align: "left",
       width: "300px",
     },
 
@@ -152,6 +155,7 @@ const AgendaContributers = ({
       title: "",
       dataIndex: "rsvp",
       key: "rsvp",
+      align: "left",
       width: "120px",
       render: (text, record) => {
         if (record.isRSVP === true) {
