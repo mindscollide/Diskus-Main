@@ -76,7 +76,7 @@ import {
   actionsGlobalFlag,
   pollsGlobalFlag,
   attendanceGlobalFlag,
-  uploadGlobalFlag
+  uploadGlobalFlag,
 } from "../../../store/actions/NewMeetingActions";
 import { mqttCurrentMeetingEnded } from "../../../store/actions/GetMeetingUserId";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
@@ -370,7 +370,7 @@ const NewMeeting = () => {
     dispatch(actionsGlobalFlag(false));
     dispatch(pollsGlobalFlag(false));
     dispatch(attendanceGlobalFlag(false));
-    dispatch(uploadGlobalFlag(false))
+    dispatch(uploadGlobalFlag(false));
   };
 
   const openProposedNewMeetingPage = () => {
@@ -539,7 +539,7 @@ const NewMeeting = () => {
       dispatch(actionsGlobalFlag(false));
       dispatch(pollsGlobalFlag(false));
       dispatch(attendanceGlobalFlag(false));
-      dispatch(uploadGlobalFlag(false))
+      dispatch(uploadGlobalFlag(false));
     } else {
     }
   };
@@ -1486,7 +1486,7 @@ const NewMeeting = () => {
     }
   }, [dashboardEventData, rows]);
 
-  console.log("dashBoardEventData", dashboardEventData);
+  console.log("meetingIdReducermeetingIdReducer", meetingIdReducer);
   useEffect(() => {
     if (
       NewMeetingreducer.meetingStatusNotConductedMqttData !== null &&

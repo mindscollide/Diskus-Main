@@ -158,9 +158,10 @@ const Agenda = ({
   }, [allPresenters, allSavedPresenters]);
 
   useEffect(() => {
-    if (presenters.lenth > 0 || Object.keys(presenters).length > 0) {
+    if (presenters.length > 0 || Object.keys(presenters).length > 0) {
       const mappedPresenters = presenters.map((presenter) => ({
         value: presenter.userID,
+        name: presenter.userName,
         label: (
           <>
             <Row>

@@ -346,6 +346,8 @@ const UpdateOrganizersMeeting = (
                       setDataroomMapFolderId
                     )
                   );
+                  setSceduleMeeting(true);
+                  await dispatch(scheduleMeetingPageFlag(true));
                   // setPublishState(true);
                   setEdiorRole({
                     status: "10",
