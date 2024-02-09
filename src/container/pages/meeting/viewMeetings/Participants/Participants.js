@@ -138,6 +138,7 @@ const Participants = ({
       title: t("Name"),
       dataIndex: "userName",
       key: "userName",
+      align: "left",
       width: "260px",
     },
 
@@ -145,12 +146,14 @@ const Participants = ({
       title: t("Email"),
       dataIndex: "email",
       key: "email",
+      align: "left",
       width: "280px",
     },
     {
       title: t("Participant-title"),
       dataIndex: "Title",
       key: "Title",
+      align: "center",
       width: "300px",
     },
 
@@ -158,6 +161,7 @@ const Participants = ({
       title: t("Role"),
       dataIndex: "participantRole",
       key: "participantRole",
+      align: "left",
       width: "249px",
       render: (text) => (
         <label className="column-boldness">{text.participantRole}</label>
@@ -167,6 +171,7 @@ const Participants = ({
       title: t("RSVP"),
       dataIndex: "rsvp",
       key: "rsvp",
+      align: "left",
       width: "120px",
       render: (text, record) => {
         if (record.isRSVP === true) {

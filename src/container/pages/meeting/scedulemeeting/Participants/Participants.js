@@ -38,6 +38,7 @@ import {
   actionsGlobalFlag,
   pollsGlobalFlag,
   attendanceGlobalFlag,
+  uploadGlobalFlag
 } from "../../../../../store/actions/NewMeetingActions";
 import AddParticipantModal from "./AddParticipantModal/AddParticipantModal";
 import { CancelParticipants } from "./CancelParticipants/CancelParticipants";
@@ -232,6 +233,7 @@ const Participants = ({
       ),
       dataIndex: "userName",
       key: "userName",
+      align: "left",
       width: "80px",
     },
 
@@ -239,6 +241,7 @@ const Participants = ({
       title: t("Email"),
       dataIndex: "email",
       key: "email",
+      align: "left",
       width: "120px",
     },
     {
@@ -289,6 +292,7 @@ const Participants = ({
       title: t("Role"),
       dataIndex: "participantRole",
       key: "participantRole",
+      align: "left",
       width: "120px",
 
       render: (text, record) => {
@@ -340,6 +344,7 @@ const Participants = ({
       title: t("RSVP"),
       dataIndex: "rsvp",
       key: "rsvp",
+      align: "left",
       width: "120px",
       render: (text, record) => {
         if (record.isRSVP === true) {
@@ -439,6 +444,7 @@ const Participants = ({
     dispatch(actionsGlobalFlag(false));
     dispatch(pollsGlobalFlag(false));
     dispatch(attendanceGlobalFlag(false));
+    dispatch(uploadGlobalFlag(false));
   };
 
   const previousTabOrganizer = () => {
@@ -706,11 +712,16 @@ const Participants = ({
                   (editorRole.role === "Agenda Contributor" &&
                     isEditMeeting === true) ? (
                     <>
-                      <Button
-                        text={t("Propose-meeting-dates")}
-                        className={styles["Next_Organization"]}
-                        onClick={handleProposedmeetingDates}
-                      />
+                      {Number(editorRole.status) === 10 ? null : (
+                        <>
+                          <Button
+                            text={t("Propose-meeting-dates")}
+                            className={styles["Next_Organization"]}
+                            onClick={handleProposedmeetingDates}
+                          />
+                        </>
+                      )}
+
                       <Button
                         text={t("Cancel")}
                         className={styles["Cancel_Organization"]}

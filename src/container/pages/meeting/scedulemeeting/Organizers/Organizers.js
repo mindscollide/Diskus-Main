@@ -39,6 +39,7 @@ import {
   actionsGlobalFlag,
   pollsGlobalFlag,
   attendanceGlobalFlag,
+  uploadGlobalFlag
 } from "../../../../../store/actions/NewMeetingActions";
 import ModalOrganizor from "./ModalAddUserOrganizer/ModalOrganizor";
 import ModalCrossIcon from "./ModalCrossIconClick/ModalCrossIcon";
@@ -219,6 +220,7 @@ const Organizers = ({
       dataIndex: "userName",
       key: "userName",
       width: "200px",
+      align: "left",
       render: (text) => <label className={styles["Title_desc"]}>{text}</label>,
     },
 
@@ -226,6 +228,7 @@ const Organizers = ({
       title: t("Email"),
       dataIndex: "email",
       key: "email",
+      align: "left",
       width: "250px",
       render: (text) => <label className="column-boldness">{text}</label>,
     },
@@ -287,6 +290,7 @@ const Organizers = ({
     {
       dataIndex: "isPrimaryOrganizer",
       key: "isPrimaryOrganizer",
+      align: "left",
       width: "200px",
       render: (text, record, rowIndex) => (
         <Row>
@@ -311,6 +315,8 @@ const Organizers = ({
       dataIndex: "rsvp",
       key: "rsvp",
       width: "120px",
+      align: "left",
+
       render: (text, record) => {
         if (record.isRSVP === true) {
           return (
@@ -415,6 +421,8 @@ const Organizers = ({
       dataIndex: "isDeletable",
       key: "isDeletable",
       width: "120px",
+      align: "left",
+
       render: (text, record) => {
         if (record.isDeletable === true) {
           return (
@@ -597,6 +605,7 @@ const Organizers = ({
     dispatch(actionsGlobalFlag(false));
     dispatch(pollsGlobalFlag(false));
     dispatch(attendanceGlobalFlag(false));
+    dispatch(uploadGlobalFlag(false));
   };
 
   const enableEditButton = () => {

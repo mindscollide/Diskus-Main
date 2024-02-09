@@ -25,6 +25,7 @@ import {
   actionsGlobalFlag,
   pollsGlobalFlag,
   attendanceGlobalFlag,
+  uploadGlobalFlag,
 } from "../../../store/actions/NewMeetingActions";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { showCancelModalmeetingDeitals } from "../../../store/actions/NewMeetingActions";
@@ -92,6 +93,7 @@ const Sidebar = () => {
     ) {
       setMeetingNavigation("Meeting");
       dispatch(showCancelModalmeetingDeitals(true));
+      dispatch(uploadGlobalFlag(false));
       localStorage.setItem("navigateLocation", "Meeting");
     } else {
       dispatch(scheduleMeetingPageFlag(false));
@@ -149,6 +151,7 @@ const Sidebar = () => {
         dispatch(actionsGlobalFlag(false));
         dispatch(pollsGlobalFlag(false));
         dispatch(attendanceGlobalFlag(false));
+        dispatch(uploadGlobalFlag(false));
       }
     }
     console.log("Navigation works", meetingNavigation, `/${meetingNavigation}`);
@@ -170,6 +173,7 @@ const Sidebar = () => {
       setTodoListNavigation("Meeting");
       dispatch(showCancelModalmeetingDeitals(true));
       localStorage.setItem("navigateLocation", "todolist");
+      dispatch(uploadGlobalFlag(false));
     } else {
       setTodoListNavigation("todolist");
       dispatch(viewMeetingFlag(false));
@@ -191,6 +195,7 @@ const Sidebar = () => {
       setCalendarNavigation("Meeting");
       dispatch(showCancelModalmeetingDeitals(true));
       localStorage.setItem("navigateLocation", "calendar");
+      dispatch(uploadGlobalFlag(false));
     } else {
       setCalendarNavigation("calendar");
       dispatch(viewMeetingFlag(false));
@@ -212,6 +217,7 @@ const Sidebar = () => {
       setNotesNavigation("Meeting");
       dispatch(showCancelModalmeetingDeitals(true));
       localStorage.setItem("navigateLocation", "Notes");
+      dispatch(uploadGlobalFlag(false));
     } else {
       setNotesNavigation("Notes");
       dispatch(viewMeetingFlag(false));

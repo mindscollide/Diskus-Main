@@ -76,6 +76,7 @@ import {
   actionsGlobalFlag,
   pollsGlobalFlag,
   attendanceGlobalFlag,
+  uploadGlobalFlag
 } from "../../../store/actions/NewMeetingActions";
 import { mqttCurrentMeetingEnded } from "../../../store/actions/GetMeetingUserId";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
@@ -369,6 +370,7 @@ const NewMeeting = () => {
     dispatch(actionsGlobalFlag(false));
     dispatch(pollsGlobalFlag(false));
     dispatch(attendanceGlobalFlag(false));
+    dispatch(uploadGlobalFlag(false))
   };
 
   const openProposedNewMeetingPage = () => {
@@ -537,6 +539,7 @@ const NewMeeting = () => {
       dispatch(actionsGlobalFlag(false));
       dispatch(pollsGlobalFlag(false));
       dispatch(attendanceGlobalFlag(false));
+      dispatch(uploadGlobalFlag(false))
     } else {
     }
   };

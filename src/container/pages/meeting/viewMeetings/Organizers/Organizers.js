@@ -117,6 +117,7 @@ const Organizers = ({
       dataIndex: "userName",
       key: "userName",
       width: "200px",
+      align: "left",
       render: (text) => <label className={styles["Title_desc"]}>{text}</label>,
     },
 
@@ -125,12 +126,14 @@ const Organizers = ({
       dataIndex: "email",
       key: "email",
       width: "250px",
+      align: "left",
       render: (text) => <label className="column-boldness">{text}</label>,
     },
     {
       title: t("Organizer-title"),
       dataIndex: "organizerTitle",
       key: "organizerTitle",
+      align: "center",
       width: "250px",
       render: (text) => <label className="column-boldness">{text}</label>,
     },
@@ -138,6 +141,7 @@ const Organizers = ({
     {
       dataIndex: "isPrimaryOrganizer",
       key: "isPrimaryOrganizer",
+      align: "left",
       width: "200px",
       render: (text, record, rowIndex) => (
         <Row>
@@ -156,6 +160,7 @@ const Organizers = ({
       title: "",
       dataIndex: "rsvp",
       key: "rsvp",
+      align: "left",
       width: "120px",
       render: (text, record) => {
         if (record.isRSVP === true) {

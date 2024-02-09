@@ -540,7 +540,8 @@ const SaveMeetingDetialsNewApiFunction = (
                   dispatch(actionsGlobalFlag(false));
                   dispatch(pollsGlobalFlag(false));
                   dispatch(attendanceGlobalFlag(false));
-                  let currentView = localStorage.getItem("MeetingCurrentView");
+      dispatch(uploadGlobalFlag(false));
+      let currentView = localStorage.getItem("MeetingCurrentView");
                   let meetingpageRow = localStorage.getItem("MeetingPageRows");
                   let meetingPageCurrent = parseInt(
                     localStorage.getItem("MeetingPageCurrent")
@@ -589,7 +590,8 @@ const SaveMeetingDetialsNewApiFunction = (
                   dispatch(actionsGlobalFlag(false));
                   dispatch(pollsGlobalFlag(false));
                   dispatch(attendanceGlobalFlag(false));
-                  setorganizers(true);
+      dispatch(uploadGlobalFlag(false));
+      setorganizers(true);
                   setmeetingDetails(false);
                   // let MappedData = {
                   //   MeetingID: response.data.responseResult.meetingID,
@@ -651,7 +653,8 @@ const SaveMeetingDetialsNewApiFunction = (
                 dispatch(actionsGlobalFlag(false));
                 dispatch(pollsGlobalFlag(false));
                 dispatch(attendanceGlobalFlag(false));
-                setorganizers(true);
+      dispatch(uploadGlobalFlag(false));
+      setorganizers(true);
                 setmeetingDetails(false);
               }
             } else if (
@@ -7341,6 +7344,14 @@ const attendanceGlobalFlag = (response) => {
   };
 };
 
+//Upload Document
+const uploadGlobalFlag = (response) => {
+  return {
+    type: actions.UPLOAD_GLOBAL_FLAG,
+    response: response,
+  };
+};
+
 export {
   clearResponseNewMeetingReducerMessage,
   getAllAgendaContributorApi,
@@ -7484,4 +7495,5 @@ export {
   pollsGlobalFlag,
   attendanceGlobalFlag,
   cleareAllProposedMeetingDates,
+  uploadGlobalFlag,
 };
