@@ -77,6 +77,7 @@ import {
   pollsGlobalFlag,
   attendanceGlobalFlag,
   uploadGlobalFlag,
+  FetchMeetingURLClipboard,
 } from "../../../store/actions/NewMeetingActions";
 import { mqttCurrentMeetingEnded } from "../../../store/actions/GetMeetingUserId";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
@@ -133,6 +134,10 @@ const NewMeeting = () => {
   const ResponseMessages = useSelector(
     (state) => state.MeetingOrganizersReducer.ResponseMessage
   );
+
+  let currentUserID = Number(localStorage.getItem("userID"));
+
+  let currentOrganization = Number(localStorage.getItem("organizationID"));
 
   let currentLanguage = localStorage.getItem("i18nextLng");
   //Current User ID

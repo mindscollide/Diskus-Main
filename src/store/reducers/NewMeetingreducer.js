@@ -1656,12 +1656,14 @@ const NewMeetingreducer = (state = initialState, action) => {
         action.response !== null
       ) {
         let currentVideoURL = action.response;
+
         let match = currentVideoURL.match(/RoomID=([^&]*)/);
         let roomID = match[1];
         let dynamicBaseURLCaller = localStorage.getItem(
           "videoBaseURLParticipant"
         );
         let randomGuestName = generateRandomGuest();
+        let UserName = localStorage.getItem("name");
         const endIndexBaseURLCaller = endIndexUrl(dynamicBaseURLCaller);
         const extractedBaseURLCaller = extractedUrl(
           dynamicBaseURLCaller,
@@ -1669,7 +1671,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         );
         let resultedVideoURL = generateURLParticipant(
           extractedBaseURLCaller,
-          randomGuestName,
+          UserName,
           roomID
         );
         return {
