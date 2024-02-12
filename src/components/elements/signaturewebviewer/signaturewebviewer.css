@@ -87,7 +87,7 @@
 .MainHeader {
   padding: 10px 0 !important;
 }
-.App .buttons_tab {
+.App .buttons_tab button {
   width: 100%;
   display: flex;
   justify-content: center;

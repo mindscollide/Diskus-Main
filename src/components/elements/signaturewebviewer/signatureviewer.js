@@ -552,6 +552,56 @@ const SignatureViewer = () => {
         const openCustomModal = () => {
           setOpenAddParticipentModal(true); // Open the custom modal
         };
+        const handleClickTItle = () => {
+          const annotation = new Annotations.FreeTextAnnotation();
+          annotation.PageNumber = documentViewer.getCurrentPage();
+          annotation.X = 100;
+          annotation.Y = 100;
+          annotation.Width = 200;
+          annotation.Height = 50;
+          annotation.TextAlign = "center";
+          annotation.TextVerticalAlign = "center";
+          annotation.Intent = Annotations.FreeTextAnnotation.Intent.FreeText; // Set the intent to FreeText
+          annotation.Subject = `Title-${selectedUserRef.current}`;
+
+          // Add the annotation to the document
+          annotationManager.addAnnotation(annotation);
+          annotationManager.redrawAnnotation(annotation);
+        };
+        const handleClickName = () => {
+          const annotation = new Annotations.FreeTextAnnotation();
+          annotation.PageNumber = documentViewer.getCurrentPage();
+          annotation.X = 100;
+          annotation.Y = 100;
+          annotation.Width = 200;
+          annotation.Height = 50;
+          annotation.TextAlign = "center";
+          annotation.TextVerticalAlign = "center";
+          annotation.Intent = Annotations.FreeTextAnnotation.Intent.FreeText; // Set the intent to FreeText
+          annotation.Subject = `Name-${selectedUserRef.current}`;
+
+          // Add the annotation to the document
+          annotationManager.addAnnotation(annotation);
+          annotationManager.redrawAnnotation(annotation);
+        };
+
+        const handleClickEmail = () => {
+          const annotation = new Annotations.FreeTextAnnotation();
+          annotation.PageNumber = documentViewer.getCurrentPage();
+          annotation.X = 100;
+          annotation.Y = 100;
+          annotation.Width = 200;
+          annotation.Height = 50;
+          annotation.TextAlign = "center";
+          annotation.TextVerticalAlign = "center";
+          annotation.Intent = Annotations.FreeTextAnnotation.Intent.FreeText; // Set the intent to FreeText
+          annotation.Subject = `Email-${selectedUserRef.current}`;
+
+          // Add the annotation to the document
+          annotationManager.addAnnotation(annotation);
+          annotationManager.redrawAnnotation(annotation);
+        };
+
         // Create a render function for the custom panel
         const renderCustomPanel = () => {
           return (
@@ -621,10 +671,49 @@ const SignatureViewer = () => {
                 </button>
                 {/* <Button text={"Open Custom Modal"} /> */}
               </div>
-              <div className="buttons_tab">
-                <button>Title</button>
-                <button>Name</button>
-                <button>Email</button>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  gap: "10px",
+                  alignItems: "center",
+                }}
+              >
+                <button
+                  style={{
+                    width: "100%",
+                    padding: "5px 12px",
+
+                    background: "#ffffff",
+                    border: "1px solid #e1e1e1",
+                  }}
+                  onClick={handleClickTItle}
+                >
+                  Title
+                </button>
+                <button
+                  style={{
+                    width: "100%",
+                    padding: "5px 12px",
+                    background: "#ffffff",
+                    border: "1px solid #e1e1e1",
+                  }}
+                  onClick={handleClickName}
+                >
+                  Name
+                </button>
+                <button
+                  style={{
+                    width: "100%",
+                    padding: "5px 12px",
+
+                    background: "#ffffff",
+                    border: "1px solid #e1e1e1",
+                  }}
+                  onClick={handleClickEmail}
+                >
+                  Email
+                </button>
               </div>
             </div>
           );
