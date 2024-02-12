@@ -76,7 +76,8 @@ import {
   actionsGlobalFlag,
   pollsGlobalFlag,
   attendanceGlobalFlag,
-  uploadGlobalFlag
+  uploadGlobalFlag,
+  FetchMeetingURLClipboard,
 } from "../../../store/actions/NewMeetingActions";
 import { mqttCurrentMeetingEnded } from "../../../store/actions/GetMeetingUserId";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
@@ -133,6 +134,10 @@ const NewMeeting = () => {
   const ResponseMessages = useSelector(
     (state) => state.MeetingOrganizersReducer.ResponseMessage
   );
+
+  let currentUserID = Number(localStorage.getItem("userID"));
+
+  let currentOrganization = Number(localStorage.getItem("organizationID"));
 
   let currentLanguage = localStorage.getItem("i18nextLng");
   //Current User ID
@@ -370,7 +375,7 @@ const NewMeeting = () => {
     dispatch(actionsGlobalFlag(false));
     dispatch(pollsGlobalFlag(false));
     dispatch(attendanceGlobalFlag(false));
-    dispatch(uploadGlobalFlag(false))
+    dispatch(uploadGlobalFlag(false));
   };
 
   const openProposedNewMeetingPage = () => {
@@ -539,7 +544,7 @@ const NewMeeting = () => {
       dispatch(actionsGlobalFlag(false));
       dispatch(pollsGlobalFlag(false));
       dispatch(attendanceGlobalFlag(false));
-      dispatch(uploadGlobalFlag(false))
+      dispatch(uploadGlobalFlag(false));
     } else {
     }
   };
@@ -757,7 +762,7 @@ const NewMeeting = () => {
                     }
                   ></span>
                 )}
-                {record.isVideoCall ? (
+                {/* {record.isVideoCall ? (
                   <span
                     className={
                       currentLanguage === "ar"
@@ -775,7 +780,7 @@ const NewMeeting = () => {
                         : "margin-right-20"
                     }
                   ></span>
-                )}
+                )} */}
                 {record.status === "9" &&
                   isOrganiser &&
                   record.isQuickMeeting === false && (
@@ -912,11 +917,16 @@ const NewMeeting = () => {
                             3,
                             startMeetingRequest,
                             setEdiorRole,
-                            setAdvanceMeetingModalID,
+                            // setAdvanceMeetingModalID,
                             setDataroomMapFolderId,
                             setViewAdvanceMeetingModal
                           )
                         );
+                        setAdvanceMeetingModalID(record.pK_MDID);
+                        dispatch(viewMeetingFlag(true));
+                        setViewAdvanceMeetingModal(true);
+                        dispatch(viewAdvanceMeetingPublishPageFlag(true));
+                        dispatch(scheduleMeetingPageFlag(false));
                       }}
                     />
                   </Col>
@@ -1486,7 +1496,7 @@ const NewMeeting = () => {
     }
   }, [dashboardEventData, rows]);
 
-  console.log("dashBoardEventData", dashboardEventData);
+  console.log("meetingIdReducermeetingIdReducer", meetingIdReducer);
   useEffect(() => {
     if (
       NewMeetingreducer.meetingStatusNotConductedMqttData !== null &&

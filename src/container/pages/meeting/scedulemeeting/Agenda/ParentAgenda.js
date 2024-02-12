@@ -413,9 +413,10 @@ const ParentAgenda = ({
   }, [allPresenters]);
 
   useEffect(() => {
-    if (presenters.lenth > 0 || Object.keys(presenters).length > 0) {
+    if (presenters.length > 0 || Object.keys(presenters).length > 0) {
       const mappedPresenters = presenters.map((presenter) => ({
         value: presenter.userID,
+        name: presenter.userName,
         label: (
           <>
             <Row>
@@ -433,7 +434,7 @@ const ParentAgenda = ({
               </Col>
             </Row>
           </>
-        ),
+        ).toString(),
       }));
       setAllSavedPresenters((prevPresenters) => {
         if (
@@ -453,6 +454,16 @@ const ParentAgenda = ({
   console.log("editor role", editorRole);
 
   console.log("Agenda Data", rows);
+  console.log("allSavedPresentersallSavedPresenters", allSavedPresenters);
+
+  const filterFunc = (options, searchText) => {
+    // console.log(options, "filterFuncfilterFunc");
+    if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   return (
     <>
@@ -603,7 +614,8 @@ const ParentAgenda = ({
                                 classNamePrefix={
                                   "SelectOrganizersSelect_active"
                                 }
-                                isSearchable={false}
+                                filterOption={filterFunc}
+                                // isSearchable={true}
                               />
                             </Col>
                             <Col
