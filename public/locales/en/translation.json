@@ -60,7 +60,7 @@
   "Meetings": "Meetings",
   "Meeting": "Meeting",
   "This-week": "This Week",
-  "Up-coming-event": "Upcoming events",
+  "Up-coming-event": "Upcoming Events",
   "No-upcoming-events": "No upcoming events",
   "Change-password": "Change password",
   "Sign-out": "Sign out",
@@ -1758,5 +1758,6 @@
   "Date-from": "Date From",
   "Date-to": "Date To",
   "Select-send-response-by-date": "Select Send Response by Date",
+  "Work-email-address": "Work Email address",
   "Deselect-all": "Deselect all"
 }
