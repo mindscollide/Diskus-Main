@@ -33,6 +33,7 @@ const SignatureViewer = () => {
   const [openAddParticipentModal, setOpenAddParticipentModal] = useState(false);
   const { webViewer } = useSelector((state) => state);
   const viewer = useRef(null);
+  console.log(viewer, "viewerviewerviewer");
   const [signersData, setSignersData] = useState([
     {
       Name: "",
@@ -619,6 +620,11 @@ const SignatureViewer = () => {
                   Open Modal
                 </button>
                 {/* <Button text={"Open Custom Modal"} /> */}
+              </div>
+              <div className="buttons_tab">
+                <button>Title</button>
+                <button>Name</button>
+                <button>Email</button>
               </div>
             </div>
           );
