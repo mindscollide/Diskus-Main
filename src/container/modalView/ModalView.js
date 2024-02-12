@@ -30,6 +30,7 @@ import { useNavigate } from "react-router-dom";
 import {
   CleareMessegeNewMeeting,
   FetchMeetingURLApi,
+  FetchMeetingURLClipboard,
 } from "../../store/actions/NewMeetingActions";
 import copyToClipboard from "../../hooks/useClipBoard";
 import { callRequestReceivedMQTT } from "../../store/actions/VideoMain_actions";
@@ -295,6 +296,18 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         let meetingID = Number(
           assignees.ViewMeetingDetails.meetingDetails.pK_MDID
         );
+        let Data2 = {
+          MeetingID: meetingID,
+        };
+        dispatch(
+          FetchMeetingURLClipboard(
+            Data2,
+            navigate,
+            t,
+            currentUserID,
+            currentOrganization
+          )
+        );
         setIsVideo(check);
         setMeetID(meetingID);
       } else {
@@ -303,8 +316,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       console.log(error, "errorerrorerrorerror");
     }
   }, [assignees.ViewMeetingDetails]);
-
-  console.log(isVideo, "isVideoisVideoisVideo");
 
   // for view data
   useEffect(() => {

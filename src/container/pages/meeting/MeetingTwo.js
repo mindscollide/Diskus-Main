@@ -587,18 +587,6 @@ const NewMeeting = () => {
             className={styles["meetingTitle"]}
             onClick={() => {
               handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
-              let Data2 = {
-                MeetingID: Number(record.pK_MDID),
-              };
-              dispatch(
-                FetchMeetingURLClipboard(
-                  Data2,
-                  navigate,
-                  t,
-                  currentUserID,
-                  currentOrganization
-                )
-              );
               setEdiorRole({
                 status: record.status,
                 role: isParticipant
