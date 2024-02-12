@@ -4,9 +4,10 @@ import axios from "axios";
 import { getAdminURLs } from "../../commen/apis/Api_ends_points";
 import { RefreshToken } from "./Auth_action";
 
-const userLoginHistory_Init = () => {
+const userLoginHistory_Init = (loader) => {
   return {
     type: actions.GET_USER_LOGIN_HISTORY_INIT,
+    loader: loader,
   };
 };
 const userLoginHistory_Success = (response, message) => {
@@ -24,10 +25,10 @@ const userLoginHistory_Fail = (message) => {
   };
 };
 
-const userLoginHistory_Api = (navigate, t, Data) => {
+const userLoginHistory_Api = (navigate, t, Data, loader) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
-    dispatch(userLoginHistory_Init());
+    dispatch(userLoginHistory_Init(loader));
     let form = new FormData();
     form.append("RequestMethod", UserLoginHistoryRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
@@ -42,7 +43,7 @@ const userLoginHistory_Api = (navigate, t, Data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(userLoginHistory_Api(navigate, t, Data));
+          dispatch(userLoginHistory_Api(navigate, t, Data, loader));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (

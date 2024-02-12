@@ -98,7 +98,7 @@ const Reports = () => {
       sRow: 0,
       Length: 10,
     };
-    dispatch(userLoginHistory_Api(navigate, t, Data));
+    dispatch(userLoginHistory_Api(navigate, t, Data, true));
     return () => {
       setShowSearchText(false);
       setIsScroll(false);
@@ -237,7 +237,7 @@ const Reports = () => {
         sRow: Number(isRowsData),
         Length: 10,
       };
-      dispatch(userLoginHistory_Api(navigate, t, Data));
+      dispatch(userLoginHistory_Api(navigate, t, Data, false));
     } else {
       setIsScroll(false);
     }
@@ -355,7 +355,7 @@ const Reports = () => {
           sRow: 0,
           Length: 10,
         };
-        dispatch(userLoginHistory_Api(navigate, t, Data));
+        dispatch(userLoginHistory_Api(navigate, t, Data, true));
         setShowSearchText(true);
         setSearchBoxExpand(false);
       } else {
@@ -375,7 +375,7 @@ const Reports = () => {
         sRow: 0,
         Length: 10,
       };
-      dispatch(userLoginHistory_Api(navigate, t, Data));
+      dispatch(userLoginHistory_Api(navigate, t, Data, true));
       setShowSearchText(false);
       setUserLoginHistorySearch({
         ...userLoginHistorySearch,
@@ -413,7 +413,7 @@ const Reports = () => {
         sRow: 0,
         Length: 10,
       };
-      dispatch(userLoginHistory_Api(navigate, t, Data));
+      dispatch(userLoginHistory_Api(navigate, t, Data, true));
       setSearchText([...searchText, userLoginHistorySearch.Title]);
     }
   };
@@ -477,7 +477,7 @@ const Reports = () => {
       Length: 10,
     };
     console.log(Data, "consoleconsole");
-    dispatch(userLoginHistory_Api(navigate, t, Data));
+    dispatch(userLoginHistory_Api(navigate, t, Data, true));
   };
 
   return (
