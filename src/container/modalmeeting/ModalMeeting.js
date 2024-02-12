@@ -1186,9 +1186,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
 
   useEffect(() => {
     if (meetingAttendeesList.length > 0) {
-      let user1 = createMeeting.MeetingAttendees;
-      let List = addedParticipantNameList;
-      user1.push({
+      let user1Data = {
         User: {
           PK_UID: parseInt(createrID),
         },
@@ -1198,10 +1196,14 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         AttendeeAvailability: {
           PK_AAID: 1,
         },
-      });
-      meetingAttendeesList.map((data, index) => {
+      };
+
+      let updatedMeetingAttendeesList = [...addedParticipantNameList]; // Copying the existing list
+
+      // Add the creator's details to the meeting attendees list
+      meetingAttendeesList.forEach((data) => {
         if (data.pK_UID === parseInt(createrID)) {
-          List.push({
+          updatedMeetingAttendeesList.push({
             name: data.name,
             designation: data.designation,
             profilePicture: data.orignalProfilePictureName,
@@ -1211,8 +1213,13 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           });
         }
       });
-      setCreateMeeting({ ...createMeeting, MeetingAttendees: user1 });
-      setAddedParticipantNameList(List);
+
+      setCreateMeeting({
+        ...createMeeting,
+        MeetingAttendees: [user1Data],
+      });
+
+      setAddedParticipantNameList(updatedMeetingAttendeesList);
     }
   }, [meetingAttendeesList]);
 
@@ -1220,6 +1227,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   useEffect(() => {
     try {
       if (Object.keys(assignees.user).length > 0) {
+        console.log(assignees.user, "assigneesassigneesassignees");
         setMeetingAttendeesList(assignees.user);
         let PresenterData = [];
         assignees.user.forEach((user, index) => {
@@ -1248,6 +1256,35 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
             value: user.pK_UID,
             name: user.name,
           });
+        });
+        setPresenterValue({
+          label: (
+            <>
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex gap-2 align-items-center"
+                >
+                  <img
+                    src={`data:image/jpeg;base64,${assignees.user[0]?.displayProfilePictureName}`}
+                    height="16.45px"
+                    width="18.32px"
+                    draggable="false"
+                    alt=""
+                  />
+                  <span>{assignees.user[0]?.name}</span>
+                </Col>
+              </Row>
+            </>
+          ),
+          value: assignees.user[0]?.pK_UID,
+          name: assignees.user[0]?.name,
+        });
+        setObjMeetingAgenda({
+          ...objMeetingAgenda,
+          PresenterName: assignees.user[0]?.name,
         });
         setAllPresenters(PresenterData);
       }

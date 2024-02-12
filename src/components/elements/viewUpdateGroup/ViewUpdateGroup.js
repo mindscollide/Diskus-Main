@@ -199,7 +199,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
     const pdfDataJson = JSON.stringify(pdfData);
     if (ext === "pdf") {
       window.open(
-        `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+        `/#/DisKus/signatureviewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
         "_blank",
         "noopener noreferrer"
       );

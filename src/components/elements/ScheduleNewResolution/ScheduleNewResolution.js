@@ -65,6 +65,7 @@ import {
   dateforView,
   timeforSend,
   timeforView,
+  timeforViewScheduleResolution,
 } from "../../../commen/functions/time_formatter";
 
 const ScheduleNewResolution = () => {
@@ -128,19 +129,19 @@ const ScheduleNewResolution = () => {
     date: dateforSend(new Date(), 1),
     time: timeforSend(new Date()),
     dateValue: dateforView(new Date(), 1),
-    timeCirculationforView: new Date(),
+    timeCirculationforView: timeforViewScheduleResolution(new Date()),
   });
   const [votingDateTime, setVotingDateTime] = useState({
     date: dateforSend(new Date(), 2),
     time: timeforSend(new Date()),
     dateValue: dateforView(new Date(), 2),
-    timeVotingforView: new Date(),
+    timeVotingforView: timeforViewScheduleResolution(new Date()),
   });
   const [decisionDateTime, setDecisionDateTime] = useState({
     date: dateforSend(new Date(), 3),
     time: timeforSend(new Date()),
     dateValue: dateforView(new Date(), 3),
-    timeDecisionforView: new Date(),
+    timeDecisionforView: timeforViewScheduleResolution(new Date()),
   });
   console.log(
     { decisionDateTime, votingDateTime, circulationDateTime },
