@@ -629,9 +629,7 @@ const ProposedNewMeeting = ({
     });
     if (
       proposedMeetingDetails.MeetingTitle !== "" &&
-      // proposedMeetingDetails.Description !== "" &&
       membersParticipants.length !== 0 &&
-      // rows.length <= 1 ||
       sendResponseVal !== ""
     ) {
       let data = {
@@ -665,7 +663,7 @@ const ProposedNewMeeting = ({
           1,
           setCurrentMeetingID,
           currentMeeting,
-          proposedMeetingDetails, //state in which title and description is present
+          proposedMeetingDetails,
           setDataroomMapFolderId,
           membersParticipants,
           rows,
