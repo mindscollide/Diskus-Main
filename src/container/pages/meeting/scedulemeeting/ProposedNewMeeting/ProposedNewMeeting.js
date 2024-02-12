@@ -685,14 +685,12 @@ const ProposedNewMeeting = ({
       seterror(false);
     } else if (
       proposedMeetingDetails.MeetingTitle === "" &&
-      // proposedMeetingDetails.Description === "" &&
       membersParticipants.length === 0 &&
-      // rows.length <= 1 &&
       sendResponseVal === ""
     ) {
       seterror(true);
     } else {
-      // seterror(true);
+      seterror(true);
     }
   };
 
