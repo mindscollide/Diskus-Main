@@ -1744,7 +1744,7 @@
   "Add-some-purpose-start-by-creating-your-agenda": "Add some purpose - start by creating your agenda",
   "Description-and-attachement": "Description And Attachement",
   "Attendace": "Attendance",
-  "Send-reply": "Send reply",
+  "Send-reply": "Send Reply",
   "User-name": "User Name",
   "User-email": "User Email",
   "Login-date-time": "Login Date Time",
@@ -1757,5 +1757,6 @@
   "Inteface-type": "Inteface Type",
   "Date-from": "Date From",
   "Date-to": "Date To",
-  "Select-send-response-by-date": "Select Send Response by Date"
+  "Select-send-response-by-date": "Select Send Response by Date",
+  "Deselect-all": "Deselect all"
 }
