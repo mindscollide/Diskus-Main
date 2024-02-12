@@ -33,6 +33,7 @@ import {
   actionsGlobalFlag,
   pollsGlobalFlag,
   attendanceGlobalFlag,
+  uploadGlobalFlag
 } from "../../../../../store/actions/NewMeetingActions";
 import ModalCrossIcon from "../Organizers/ModalCrossIconClick/ModalCrossIcon";
 import tick from "../../../../../assets/images/PNG tick.png";
@@ -149,18 +150,21 @@ const AgendaContributers = ({
       title: t("Name"),
       dataIndex: "userName",
       key: "userName",
+      align: "left",
       width: "80px",
     },
     {
       title: t("Email"),
       dataIndex: "email",
       key: "email",
+      align: "left",
       width: "80px",
     },
     {
       title: t("contributor-title"),
       dataIndex: "Title",
       key: "Title",
+      align: "left",
       width: "80px",
       render: (text, record) => {
         if (
@@ -202,6 +206,7 @@ const AgendaContributers = ({
       title: t("Notification"),
       dataIndex: "isNotifed",
       key: "isNotified",
+      align: "center",
       width: "80px",
       className: "notification-class-table",
       render: (text, record) => {
@@ -479,6 +484,7 @@ const AgendaContributers = ({
     dispatch(actionsGlobalFlag(false));
     dispatch(pollsGlobalFlag(false));
     dispatch(attendanceGlobalFlag(false));
+    dispatch(uploadGlobalFlag(false));
   };
   const previousTabOrganizer = () => {
     // dispatch(showPreviousConfirmationModal(true));

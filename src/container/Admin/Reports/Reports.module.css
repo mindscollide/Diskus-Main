@@ -79,3 +79,16 @@ body[dir="rtl"] .searchbox_icon_userhistoryLogin {
 .UserLoginHistory_datePicker:is(:focus, :focus-visible) {
   outline: none !important;
 }
+
+.SearchablesItems {
+  padding: 5px 30px !important;
+  border-radius: 4px !important;
+  background: #6172d6;
+  display: flex;
+  gap: 25px !important;
+}
+
+.Searches {
+  font-size: 12px !important;
+  color: #fff !important;
+}

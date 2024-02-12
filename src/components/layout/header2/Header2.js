@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import { signOut } from "../../../store/actions/Auth_Sign_Out";
 import {
   showCancelModalmeetingDeitals,
+  uploadGlobalFlag,
   viewMeetingFlag,
 } from "../../../store/actions/NewMeetingActions";
 import {
@@ -124,21 +125,8 @@ const Header2 = () => {
     setCreateMeetingModal(true);
   };
   const handleUploadFile = async ({ file }) => {
-    if (
-      (NewMeetingreducer.scheduleMeetingPageFlag === true ||
-        NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
-        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
-        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
-        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
-        NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
-      NewMeetingreducer.viewMeetingFlag === false
-    ) {
-      dispatch(showCancelModalmeetingDeitals(true));
-      localStorage.setItem("navigateLocation", "dataroom");
-    } else {
-      console.log(file, "handleUploadFilehandleUploadFile");
-      navigate("/Diskus/dataroom", { state: file });
-    }
+    console.log(file, "handleUploadFilehandleUploadFile");
+    navigate("/Diskus/dataroom", { state: file });
   };
 
   const RecentFilesTab = async () => {
@@ -522,11 +510,34 @@ const Header2 = () => {
                       </Dropdown.Item>
                       <Dropdown.Item className="d-flex title-className">
                         {/* {t("Upload-document")} */}
-                        <UploadTextField
-                          title={t("Upload-document")}
-                          handleFileUploadRequest={handleUploadFile}
-                          // setProgress={setProgress}
-                        />
+                        {(NewMeetingreducer.scheduleMeetingPageFlag === true ||
+                          NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                            true ||
+                          NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                            true ||
+                          NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                            true ||
+                          NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                            true ||
+                          NewMeetingreducer.proposeNewMeetingPageFlag ===
+                            true) &&
+                        NewMeetingreducer.viewMeetingFlag === false ? (
+                          <div
+                            onClick={() => {
+                              dispatch(showCancelModalmeetingDeitals(true));
+                              dispatch(uploadGlobalFlag(true));
+                            }}
+                          >
+                            {t("Upload-document")}
+                          </div>
+                        ) : (
+                          <UploadTextField
+                            title={t("Upload-document")}
+                            handleFileUploadRequest={handleUploadFile}
+                            // setProgress={setProgress}
+                          />
+                        )}
+
                         {/* <input type="file" /> */}
                       </Dropdown.Item>
                       <Dropdown.Item

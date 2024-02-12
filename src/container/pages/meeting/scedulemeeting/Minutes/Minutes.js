@@ -41,6 +41,7 @@ import {
   actionsGlobalFlag,
   pollsGlobalFlag,
   attendanceGlobalFlag,
+  uploadGlobalFlag
 } from "../../../../../store/actions/NewMeetingActions";
 import { newTimeFormaterAsPerUTCFullDate } from "../../../../../commen/functions/date_formater";
 import AgendaWise from "./AgendaWise/AgendaWise";
@@ -763,7 +764,8 @@ const Minutes = ({
         dispatch(actionsGlobalFlag(true));
         dispatch(pollsGlobalFlag(false));
         dispatch(attendanceGlobalFlag(false));
-      }
+      dispatch(uploadGlobalFlag(false));
+    }
     } else if (general) {
       if (
         addNoteFields.Description.value.trimStart() !== "" ||
@@ -785,7 +787,8 @@ const Minutes = ({
         dispatch(actionsGlobalFlag(true));
         dispatch(pollsGlobalFlag(false));
         dispatch(attendanceGlobalFlag(false));
-      }
+      dispatch(uploadGlobalFlag(false));
+    }
     }
 
     // dispatch(showPreviousConfirmationModal(true));

@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../components/elements";
+import { UploadTextField } from "../../../../components/elements";
 import {
   searchNewUserMeeting,
   showCancelModalmeetingDeitals,
@@ -27,9 +28,11 @@ import {
   actionsGlobalFlag,
   pollsGlobalFlag,
   attendanceGlobalFlag,
+  uploadGlobalFlag,
 } from "../../../../store/actions/NewMeetingActions";
 import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignees";
 import { Col, Row } from "react-bootstrap";
+
 const CancelButtonModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -45,55 +48,169 @@ const CancelButtonModal = () => {
     dispatch(showCancelModalmeetingDeitals(false));
   };
 
-  const handleYesFunctionality = () => {
-    dispatch(showCancelModalmeetingDeitals(false));
-    dispatch(scheduleMeetingPageFlag(false));
-    dispatch(viewProposeDateMeetingPageFlag(false));
-    dispatch(viewAdvanceMeetingPublishPageFlag(false));
-    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-    dispatch(viewProposeOrganizerMeetingPageFlag(false));
-    dispatch(proposeNewMeetingPageFlag(false));
-    dispatch(viewMeetingFlag(false));
-    dispatch(meetingDetailsGlobalFlag(false));
-    dispatch(organizersGlobalFlag(false));
-    dispatch(agendaContributorsGlobalFlag(false));
-    dispatch(participantsGlobalFlag(false));
-    dispatch(agendaGlobalFlag(false));
-    dispatch(meetingMaterialGlobalFlag(false));
-    dispatch(minutesGlobalFlag(false));
-    dispatch(proposedMeetingDatesGlobalFlag(false));
-    dispatch(actionsGlobalFlag(false));
-    dispatch(pollsGlobalFlag(false));
-    dispatch(attendanceGlobalFlag(false));
-    navigate(`/DisKus/${navigateLocation}`);
-    if (navigateLocation === "Meeting") {
-      if (meetingpageRow !== null && meetingPageCurrent !== null) {
-        let searchData = {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(userID),
-          PageNumber: Number(meetingPageCurrent),
-          Length: Number(meetingpageRow),
-          PublishedMeetings: Number(currentView) === 1 ? true : false,
-        };
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
-        dispatch(allAssignessList(navigate, t));
-      } else {
-        let searchData = {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(userID),
-          PageNumber: 1,
-          Length: 50,
-          PublishedMeetings: Number(currentView) === 1 ? true : false,
-        };
-        localStorage.setItem("MeetingPageRows", 50);
-        localStorage.setItem("MeetingPageCurrent", 1);
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
-        dispatch(allAssignessList(navigate, t));
-        // localStorage.setItem("MeetingCurrentView", 1);
+  const handleYesFunctionality = async (event) => {
+    if (NewMeetingreducer.uploadGlobalFlag === true) {
+      dispatch(showCancelModalmeetingDeitals(false));
+      dispatch(scheduleMeetingPageFlag(false));
+      dispatch(viewProposeDateMeetingPageFlag(false));
+      dispatch(viewAdvanceMeetingPublishPageFlag(false));
+      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+      dispatch(viewProposeOrganizerMeetingPageFlag(false));
+      dispatch(proposeNewMeetingPageFlag(false));
+      dispatch(viewMeetingFlag(false));
+      dispatch(meetingDetailsGlobalFlag(false));
+      dispatch(organizersGlobalFlag(false));
+      dispatch(agendaContributorsGlobalFlag(false));
+      dispatch(participantsGlobalFlag(false));
+      dispatch(agendaGlobalFlag(false));
+      dispatch(meetingMaterialGlobalFlag(false));
+      dispatch(minutesGlobalFlag(false));
+      dispatch(proposedMeetingDatesGlobalFlag(false));
+      dispatch(actionsGlobalFlag(false));
+      dispatch(pollsGlobalFlag(false));
+      dispatch(attendanceGlobalFlag(false));
+      dispatch(uploadGlobalFlag(false));
+      navigate(`/DisKus/Meeting`);
+      // Trigger the file input programmatically
+      const fileInput = document.createElement("input");
+      fileInput.type = "file";
+      fileInput.onchange = handleUploadFile; // Assign the file upload handler
+      fileInput.click(); // Click to trigger the file input
+    } else {
+      dispatch(showCancelModalmeetingDeitals(false));
+      dispatch(scheduleMeetingPageFlag(false));
+      dispatch(viewProposeDateMeetingPageFlag(false));
+      dispatch(viewAdvanceMeetingPublishPageFlag(false));
+      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+      dispatch(viewProposeOrganizerMeetingPageFlag(false));
+      dispatch(proposeNewMeetingPageFlag(false));
+      dispatch(viewMeetingFlag(false));
+      dispatch(meetingDetailsGlobalFlag(false));
+      dispatch(organizersGlobalFlag(false));
+      dispatch(agendaContributorsGlobalFlag(false));
+      dispatch(participantsGlobalFlag(false));
+      dispatch(agendaGlobalFlag(false));
+      dispatch(meetingMaterialGlobalFlag(false));
+      dispatch(minutesGlobalFlag(false));
+      dispatch(proposedMeetingDatesGlobalFlag(false));
+      dispatch(actionsGlobalFlag(false));
+      dispatch(pollsGlobalFlag(false));
+      dispatch(attendanceGlobalFlag(false));
+      dispatch(uploadGlobalFlag(false));
+      navigate(`/DisKus/${navigateLocation}`);
+      if (navigateLocation === "Meeting") {
+        if (meetingpageRow !== null && meetingPageCurrent !== null) {
+          let searchData = {
+            Date: "",
+            Title: "",
+            HostName: "",
+            UserID: Number(userID),
+            PageNumber: Number(meetingPageCurrent),
+            Length: Number(meetingpageRow),
+            PublishedMeetings: Number(currentView) === 1 ? true : false,
+          };
+          dispatch(searchNewUserMeeting(navigate, searchData, t));
+          dispatch(allAssignessList(navigate, t));
+        } else {
+          let searchData = {
+            Date: "",
+            Title: "",
+            HostName: "",
+            UserID: Number(userID),
+            PageNumber: 1,
+            Length: 50,
+            PublishedMeetings: Number(currentView) === 1 ? true : false,
+          };
+          localStorage.setItem("MeetingPageRows", 50);
+          localStorage.setItem("MeetingPageCurrent", 1);
+          dispatch(searchNewUserMeeting(navigate, searchData, t));
+          dispatch(allAssignessList(navigate, t));
+          // localStorage.setItem("MeetingCurrentView", 1);
+        }
+      }
+    }
+  };
+
+  const handleUploadFile = async ({ file }) => {
+    // console.log(event.target, "handleUploadFilehandleUploadFile");
+    // const file = event.target.files[0]; // Extract the file from the event
+    // console.log(file, "handleUploadFilehandleUploadFile");
+    // navigate("/Diskus/dataroom", { state: file });
+    if (NewMeetingreducer.uploadGlobalFlag === true) {
+      dispatch(showCancelModalmeetingDeitals(false));
+      dispatch(scheduleMeetingPageFlag(false));
+      dispatch(viewProposeDateMeetingPageFlag(false));
+      dispatch(viewAdvanceMeetingPublishPageFlag(false));
+      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+      dispatch(viewProposeOrganizerMeetingPageFlag(false));
+      dispatch(proposeNewMeetingPageFlag(false));
+      dispatch(viewMeetingFlag(false));
+      dispatch(meetingDetailsGlobalFlag(false));
+      dispatch(organizersGlobalFlag(false));
+      dispatch(agendaContributorsGlobalFlag(false));
+      dispatch(participantsGlobalFlag(false));
+      dispatch(agendaGlobalFlag(false));
+      dispatch(meetingMaterialGlobalFlag(false));
+      dispatch(minutesGlobalFlag(false));
+      dispatch(proposedMeetingDatesGlobalFlag(false));
+      dispatch(actionsGlobalFlag(false));
+      dispatch(pollsGlobalFlag(false));
+      dispatch(attendanceGlobalFlag(false));
+      dispatch(uploadGlobalFlag(false));
+      // navigate(`/DisKus/Meeting`);
+      console.log(file, "handleUploadFilehandleUploadFile");
+      navigate("/Diskus/dataroom", { state: file });
+    } else {
+      dispatch(showCancelModalmeetingDeitals(false));
+      dispatch(scheduleMeetingPageFlag(false));
+      dispatch(viewProposeDateMeetingPageFlag(false));
+      dispatch(viewAdvanceMeetingPublishPageFlag(false));
+      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+      dispatch(viewProposeOrganizerMeetingPageFlag(false));
+      dispatch(proposeNewMeetingPageFlag(false));
+      dispatch(viewMeetingFlag(false));
+      dispatch(meetingDetailsGlobalFlag(false));
+      dispatch(organizersGlobalFlag(false));
+      dispatch(agendaContributorsGlobalFlag(false));
+      dispatch(participantsGlobalFlag(false));
+      dispatch(agendaGlobalFlag(false));
+      dispatch(meetingMaterialGlobalFlag(false));
+      dispatch(minutesGlobalFlag(false));
+      dispatch(proposedMeetingDatesGlobalFlag(false));
+      dispatch(actionsGlobalFlag(false));
+      dispatch(pollsGlobalFlag(false));
+      dispatch(attendanceGlobalFlag(false));
+      dispatch(uploadGlobalFlag(false));
+      navigate(`/DisKus/${navigateLocation}`);
+      if (navigateLocation === "Meeting") {
+        if (meetingpageRow !== null && meetingPageCurrent !== null) {
+          let searchData = {
+            Date: "",
+            Title: "",
+            HostName: "",
+            UserID: Number(userID),
+            PageNumber: Number(meetingPageCurrent),
+            Length: Number(meetingpageRow),
+            PublishedMeetings: Number(currentView) === 1 ? true : false,
+          };
+          dispatch(searchNewUserMeeting(navigate, searchData, t));
+          dispatch(allAssignessList(navigate, t));
+        } else {
+          let searchData = {
+            Date: "",
+            Title: "",
+            HostName: "",
+            UserID: Number(userID),
+            PageNumber: 1,
+            Length: 50,
+            PublishedMeetings: Number(currentView) === 1 ? true : false,
+          };
+          localStorage.setItem("MeetingPageRows", 50);
+          localStorage.setItem("MeetingPageCurrent", 1);
+          dispatch(searchNewUserMeeting(navigate, searchData, t));
+          dispatch(allAssignessList(navigate, t));
+          // localStorage.setItem("MeetingCurrentView", 1);
+        }
       }
     }
   };
@@ -102,6 +219,16 @@ const CancelButtonModal = () => {
     <section>
       {" "}
       <section>
+        {/* {
+          <div className="d-none">
+            {" "}
+            <UploadTextField
+              title={t("Upload-document")}
+              handleFileUploadRequest={handleUploadFile}
+              // setProgress={setProgress}
+            />
+          </div>
+        } */}
         <Modal
           show={NewMeetingreducer.cancelModalMeetingDetails}
           setShow={dispatch(showCancelModalmeetingDeitals)}
@@ -152,11 +279,20 @@ const CancelButtonModal = () => {
                     className={styles["Yes_unsave_File_Upload"]}
                     onClick={handleNOFunctionality}
                   />
-                  <Button
-                    text={t("Yes")}
-                    className={styles["No_unsave_File_Upload"]}
-                    onClick={handleYesFunctionality}
-                  />
+                  {NewMeetingreducer.uploadGlobalFlag === true ? (
+                    <UploadTextField
+                      title={t("Yes")}
+                      handleFileUploadRequest={handleUploadFile}
+                      className={styles["No_unsave_File_Upload"]}
+                      // setProgress={setProgress}
+                    />
+                  ) : (
+                    <Button
+                      text={t("Yes")}
+                      className={styles["No_unsave_File_Upload"]}
+                      onClick={handleYesFunctionality}
+                    />
+                  )}
                 </Col>
               </Row>
             </>

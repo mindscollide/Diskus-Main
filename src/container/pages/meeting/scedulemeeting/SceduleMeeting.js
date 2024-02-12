@@ -32,6 +32,7 @@ import {
   actionsGlobalFlag,
   pollsGlobalFlag,
   attendanceGlobalFlag,
+  uploadGlobalFlag
 } from "../../../../store/actions/NewMeetingActions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -127,6 +128,7 @@ const SceduleMeeting = ({
       dispatch(actionsGlobalFlag(false));
       dispatch(pollsGlobalFlag(false));
       dispatch(attendanceGlobalFlag(false));
+      dispatch(uploadGlobalFlag(false));
     }
   };
 
@@ -153,6 +155,7 @@ const SceduleMeeting = ({
     dispatch(actionsGlobalFlag(false));
     dispatch(pollsGlobalFlag(false));
     dispatch(attendanceGlobalFlag(false));
+    dispatch(uploadGlobalFlag(false));
   };
 
   const showAgendaContributers = () => {
@@ -178,6 +181,7 @@ const SceduleMeeting = ({
     dispatch(actionsGlobalFlag(false));
     dispatch(pollsGlobalFlag(false));
     dispatch(attendanceGlobalFlag(false));
+    dispatch(uploadGlobalFlag(false));
   };
 
   const showParticipants = () => {
@@ -203,6 +207,7 @@ const SceduleMeeting = ({
     dispatch(actionsGlobalFlag(false));
     dispatch(pollsGlobalFlag(false));
     dispatch(attendanceGlobalFlag(false));
+    dispatch(uploadGlobalFlag(false));
   };
 
   const showAgenda = () => {
@@ -229,6 +234,7 @@ const SceduleMeeting = ({
     dispatch(actionsGlobalFlag(false));
     dispatch(pollsGlobalFlag(false));
     dispatch(attendanceGlobalFlag(false));
+    dispatch(uploadGlobalFlag(false));
   };
 
   const showMeetingMaterial = () => {
@@ -254,6 +260,7 @@ const SceduleMeeting = ({
     dispatch(actionsGlobalFlag(false));
     dispatch(pollsGlobalFlag(false));
     dispatch(attendanceGlobalFlag(false));
+    dispatch(uploadGlobalFlag(false));
   };
 
   const showMinutes = () => {
@@ -279,6 +286,7 @@ const SceduleMeeting = ({
     dispatch(actionsGlobalFlag(false));
     dispatch(pollsGlobalFlag(false));
     dispatch(attendanceGlobalFlag(false));
+    dispatch(uploadGlobalFlag(false));
   };
 
   const showActions = () => {
@@ -304,6 +312,7 @@ const SceduleMeeting = ({
     dispatch(actionsGlobalFlag(true));
     dispatch(pollsGlobalFlag(false));
     dispatch(attendanceGlobalFlag(false));
+    dispatch(uploadGlobalFlag(false));
   };
 
   const ShowPolls = () => {
@@ -329,6 +338,7 @@ const SceduleMeeting = ({
     dispatch(actionsGlobalFlag(false));
     dispatch(pollsGlobalFlag(true));
     dispatch(attendanceGlobalFlag(false));
+    dispatch(uploadGlobalFlag(false));
   };
 
   const showAttendance = () => {
@@ -354,6 +364,7 @@ const SceduleMeeting = ({
     dispatch(actionsGlobalFlag(false));
     dispatch(pollsGlobalFlag(false));
     dispatch(attendanceGlobalFlag(true));
+    dispatch(uploadGlobalFlag(false));
   };
 
   return (
