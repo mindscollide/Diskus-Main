@@ -1398,7 +1398,7 @@ const Agenda = ({
         <VotingPage />
       ) : (
         <>
-          <Row className="m-0">
+          {/* <Row className="m-0">
             <Col className="p-0">
               {editorRole.status === "9" ||
               editorRole.status === 9 ||
@@ -1410,7 +1410,7 @@ const Agenda = ({
                 />
               )}
             </Col>
-          </Row>
+          </Row> */}
           <section>
             <DragDropContext
               onDragEnd={(result) => onDragEnd(result, rows, setRows)}
@@ -1441,7 +1441,13 @@ const Agenda = ({
                                 return (
                                   <>
                                     <div
-                                      className={styles["agenda-border-class"]}
+                                      // className={styles["agenda-border-class"]}
+                                      className={
+                                        data.canView === false &&
+                                        editorRole.role === "Agenda Contributor"
+                                          ? "d-none"
+                                          : styles["agenda-border-class"]
+                                      }
                                     >
                                       <ParentAgenda
                                         fileForSend={fileForSend}
@@ -1581,7 +1587,7 @@ const Agenda = ({
                 sm={12}
                 className="d-flex justify-content-end gap-2"
               >
-                {/* {editorRole.status === "9" ||
+                {editorRole.status === "9" ||
                 editorRole.status === 9 ||
                 editorRole.role === "Agenda Contributor" ? null : (
                   <Button
@@ -1589,7 +1595,7 @@ const Agenda = ({
                     className={styles["Agenda_Buttons"]}
                     onClick={importPreviousAgenda}
                   />
-                )} */}
+                )}
                 <Button
                   text={t("Cancel")}
                   className={styles["Agenda_Buttons"]}
@@ -1623,7 +1629,7 @@ const Agenda = ({
                 (editorRole.status !== "9" || editorRole.status !== 9) ? (
                   <Button
                     disableBtn={
-                      Number(currentMeeting) === 0 && isPublishedState === false
+                      Number(currentMeeting) === 0 || isPublishedState === false
                         ? true
                         : false
                     }
@@ -1634,7 +1640,7 @@ const Agenda = ({
                 ) : isEditMeeting === true ? null : (
                   <Button
                     disableBtn={
-                      Number(currentMeeting) === 0 && isPublishedState === false
+                      Number(currentMeeting) === 0 || isPublishedState === false
                         ? true
                         : false
                     }

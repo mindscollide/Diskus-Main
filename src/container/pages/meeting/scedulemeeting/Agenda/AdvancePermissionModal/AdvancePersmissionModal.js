@@ -85,6 +85,13 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
     setMembers((prev) => {
       return prev.map((memberdata, index) => {
         if (memberdata.userID === data.userID) {
+          if (!checked) {
+            return {
+              ...memberdata,
+              canView: checked,
+              canModify: checked,
+            };
+          }
           return {
             ...memberdata,
             canView: checked,
@@ -99,6 +106,19 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
     setMembers((prev) => {
       return prev.map((memberdata, index) => {
         if (memberdata.userID === data.userID) {
+          if (checked) {
+            return {
+              ...memberdata,
+              canView: checked,
+              canModify: checked,
+            };
+          }
+          if (!memberdata.canView) {
+            return {
+              ...memberdata,
+              canModify: checked,
+            };
+          }
           return {
             ...memberdata,
             canModify: checked,

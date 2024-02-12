@@ -30,7 +30,7 @@ import {
   actionsGlobalFlag,
   pollsGlobalFlag,
   attendanceGlobalFlag,
-  uploadGlobalFlag
+  uploadGlobalFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import { getMeetingMaterialAPI } from "../../../../../store/actions/NewMeetingActions";
 import {
@@ -422,7 +422,7 @@ const MeetingMaterial = ({
           Number(editorRole.status) === 12 ? (
             <Button
               disableBtn={
-                Number(currentMeeting) === 0 && isPublishedState === false
+                Number(currentMeeting) === 0 || isPublishedState === false
                   ? true
                   : false
               }
@@ -433,7 +433,7 @@ const MeetingMaterial = ({
           ) : isEditMeeting === true ? null : (
             <Button
               disableBtn={
-                Number(currentMeeting) === 0 && isPublishedState === false
+                Number(currentMeeting) === 0 || isPublishedState === false
                   ? true
                   : false
               }
