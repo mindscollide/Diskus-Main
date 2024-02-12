@@ -640,16 +640,32 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       MeetingID: meetingID,
       UserID: parseInt(createrID),
     };
-    let Data2 = {
+    // let Data2 = {
+    //   Date: "",
+    //   Title: "",
+    //   HostName: "",
+    //   UserID: parseInt(createrID),
+    //   PageNumber: 1,
+    //   Length: 50,
+    //   PublishedMeetings: true,
+    // };
+
+    let meetingpageRow = localStorage.getItem("MeetingPageRows");
+    let meetingPageCurrent = parseInt(
+      localStorage.getItem("MeetingPageCurrent")
+    );
+    let currentView = localStorage.getItem("MeetingCurrentView");
+    let searchData = {
       Date: "",
       Title: "",
       HostName: "",
-      UserID: parseInt(createrID),
-      PageNumber: 1,
-      Length: 50,
-      PublishedMeetings: true,
+      UserID: Number(createrID),
+      PageNumber: Number(meetingPageCurrent),
+      Length: Number(meetingpageRow),
+      PublishedMeetings:
+        currentView && Number(currentView) === 1 ? true : false,
     };
-    await dispatch(EndMeeting(navigate, Data, t, Data2));
+    await dispatch(EndMeeting(navigate, Data, t, searchData));
   };
   const leaveMeeting = async () => {
     await setViewFlag(false);

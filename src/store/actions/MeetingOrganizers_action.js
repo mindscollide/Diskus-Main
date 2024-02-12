@@ -341,13 +341,13 @@ const UpdateOrganizersMeeting = (
                       t,
                       requestDataForMeetingDetails,
                       true,
-                      setAdvanceMeetingModalID,
+                      // setAdvanceMeetingModalID,
                       setSceduleMeeting,
                       setDataroomMapFolderId
                     )
                   );
-                  setSceduleMeeting(true);
-                  await dispatch(scheduleMeetingPageFlag(true));
+                  setSceduleMeeting(false);
+                  // await dispatch(scheduleMeetingPageFlag(false));
                   // setPublishState(true);
                   setEdiorRole({
                     status: "10",
