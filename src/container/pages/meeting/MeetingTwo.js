@@ -762,7 +762,7 @@ const NewMeeting = () => {
                     }
                   ></span>
                 )}
-                {record.isVideoCall ? (
+                {/* {record.isVideoCall ? (
                   <span
                     className={
                       currentLanguage === "ar"
@@ -780,7 +780,7 @@ const NewMeeting = () => {
                         : "margin-right-20"
                     }
                   ></span>
-                )}
+                )} */}
                 {record.status === "9" &&
                   isOrganiser &&
                   record.isQuickMeeting === false && (
@@ -917,11 +917,16 @@ const NewMeeting = () => {
                             3,
                             startMeetingRequest,
                             setEdiorRole,
-                            setAdvanceMeetingModalID,
+                            // setAdvanceMeetingModalID,
                             setDataroomMapFolderId,
                             setViewAdvanceMeetingModal
                           )
                         );
+                        setAdvanceMeetingModalID(record.pK_MDID);
+                        dispatch(viewMeetingFlag(true));
+                        setViewAdvanceMeetingModal(true);
+                        dispatch(viewAdvanceMeetingPublishPageFlag(true));
+                        dispatch(scheduleMeetingPageFlag(false));
                       }}
                     />
                   </Col>
@@ -1491,7 +1496,7 @@ const NewMeeting = () => {
     }
   }, [dashboardEventData, rows]);
 
-  console.log("dashBoardEventData", dashboardEventData);
+  console.log("meetingIdReducermeetingIdReducer", meetingIdReducer);
   useEffect(() => {
     if (
       NewMeetingreducer.meetingStatusNotConductedMqttData !== null &&
