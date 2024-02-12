@@ -53,6 +53,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   const [isMinutes, setIsMinutes] = useState(false);
   const [isAttachments, setIsAttachments] = useState(false);
   const [isVideo, setIsVideo] = useState(false);
+  const [meetStatus, setMeetStatus] = useState(0);
+  console.log(meetStatus, "meetStatusmeetStatus");
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -291,11 +293,11 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   useEffect(() => {
     try {
       if (Object.keys(assignees.ViewMeetingDetails).length > 0) {
-        console.log(assignees.ViewMeetingDetails, "useEffectuseEffect");
         let check = assignees.ViewMeetingDetails.meetingDetails.isVideoCall;
         let meetingID = Number(
           assignees.ViewMeetingDetails.meetingDetails.pK_MDID
         );
+        let StatusCheck = assignees.ViewMeetingDetails.meetingStatus.pK_MSID;
         let Data2 = {
           MeetingID: meetingID,
         };
@@ -310,6 +312,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         );
         setIsVideo(check);
         setMeetID(meetingID);
+        setMeetStatus(StatusCheck);
       } else {
       }
     } catch (error) {
@@ -927,13 +930,13 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       className="MontserratRegular d-flex gap-2 align-items-center"
                     >
                       <Button
-                        disableBtn={isVideo ? false : true}
+                        disableBtn={isVideo && meetStatus === 10 ? false : true}
                         text={t("Copy-link")}
                         className={"CopyLinkButton"}
                         onClick={() => copyToClipboardd()}
                       />
                       <Button
-                        disableBtn={isVideo ? false : true}
+                        disableBtn={isVideo && meetStatus === 10 ? false : true}
                         text={t("Join-Video-Call")}
                         className={"JoinMeetingButton"}
                         onClick={joinMeetingCall}
