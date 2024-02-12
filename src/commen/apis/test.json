@@ -1,11 +1,17 @@
 {
-  "OrganizationID": 417,
-  "Username": "Saif",
-  "UserEmail": "saif@gmail.com",
-  "IpAddress": "234.234.32.23",
-  "DeviceID": "",
-  "DateLogin": "",
-  "DateLogOut": "",
-  "sRow": 0,
-  "Length": 10
+  "MeetingID": 0,
+  "ProposedDates": [
+    {
+      "ProposedDateID": 1528,
+      "ProposedDate": "20240212",
+      "StartTime": "130000",
+      "EndTime": "140000"
+    },
+    {
+      "ProposedDateID": 1529,
+      "ProposedDate": "20240213",
+      "StartTime": "130000",
+      "EndTime": "140000"
+    }
+  ]
 }

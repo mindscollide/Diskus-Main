@@ -54,7 +54,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   const [isAttachments, setIsAttachments] = useState(false);
   const [isVideo, setIsVideo] = useState(false);
   const [meetStatus, setMeetStatus] = useState(0);
-  console.log(meetStatus, "meetStatusmeetStatus");
   const [open, setOpen] = useState({
     flag: false,
     message: "",
