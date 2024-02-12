@@ -75,6 +75,7 @@ import PrivateParAdminRouteNonActive from "./PrivateParAdminRouteNonActive";
 import PrivateRoutes from "./private_routes";
 import PrivateRouteDataroom from "./private_route_dataroom";
 import Reports from "../container/Admin/Reports/Reports";
+import CalenderLoginSuccess from "../container/CalenderSyncLoginOutPages/CalenderLoginSuccess";
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
@@ -112,6 +113,7 @@ export const router = createHashRouter(
 
       <Route element={<PrivateRoutes />}>
         <Route exact path="/Diskus/" element={<Dashboard />}>
+          <Route path="loginSuccess" element={<CalenderLoginSuccess />} />
           <Route path="maximizePanel" element={<VideoPanelMaximize />} />
           <Route path="" element={<Home />} />
           <Route path="home" element={<Home />} />
@@ -122,6 +124,7 @@ export const router = createHashRouter(
           <Route path="Meeting" element={<NewMeeting />} />
           <Route path="Meeting/Useravailabilityformeeting" element={<RSVP />} />
           <Route path="videochat" element={<VideoChat />} />
+          
           <Route path="setting" element={<UserSettings />} />
           <Route path="faq's" element={<CustomMiscellaneous />} />
           <Route path="groups" element={<Groups />} />

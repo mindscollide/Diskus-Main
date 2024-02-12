@@ -468,6 +468,7 @@ const UserSettings = () => {
         ...userOptionsSettings,
         AllowMicrosoftCalenderSync: value,
       });
+      window.location.hash = '/DisKus/setting';
     } else {
     }
   };

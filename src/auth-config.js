@@ -16,7 +16,7 @@ export const msalConfig = {
     authority:
       "https://login.microsoftonline.com/c5978316-9241-4527-b8f3-b75023242cf3",
     redirectUri: "http://localhost:3000",
-    postLogoutRedirectUri:"http://localhost:3000",
+    postLogoutRedirectUri: "http://localhost:3000",
   },
   cache: {
     cacheLocation: "sessionStorage", // This configures where your cache will be stored
@@ -56,7 +56,7 @@ export const msalConfig = {
  * https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#openid-connect-scopes
  */
 export const loginRequest = {
-  scopes: ["User.Read","openid","offline_access","Calendars.ReadWrite"],
+  scopes: ["User.Read", "openid", "offline_access", "Calendars.ReadWrite"],
   // scopes: [],
 };
 
