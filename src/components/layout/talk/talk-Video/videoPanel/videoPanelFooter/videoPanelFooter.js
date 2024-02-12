@@ -1,26 +1,41 @@
-import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Row, Col, Container } from 'react-bootstrap'
-import { Button } from '../../../../../elements'
-import './videoPanelFooter.css'
-import VideoCallWhiteIcon from './../../../../../../assets/images/Video-White-Icon.png'
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Row, Col, Container } from "react-bootstrap";
+import { Button } from "../../../../../elements";
+import "./videoPanelFooter.css";
+import VideoCallWhiteIcon from "./../../../../../../assets/images/Video-White-Icon.png";
+import { X } from "react-bootstrap-icons";
+import { useTranslation } from "react-i18next";
 
 const VideoPanelFooter = ({
   groupCallClick,
   groupbtnClassName,
   buttonText,
+  deselectAllUsers,
 }) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const { videoFeatureReducer, VideoMainReducer } = useSelector(
-    (state) => state,
-  )
+    (state) => state
+  );
+
+  const { t } = useTranslation();
 
   return (
     <>
       <Container>
         <Row>
-          <Col>
+          <Col lg={5} md={5} sm={12}>
+            {VideoMainReducer.Loading === false ? (
+              <div className="deselect-all" onClick={deselectAllUsers}>
+                <p>
+                  {t("Deselect-all")}
+                  <X />
+                </p>
+              </div>
+            ) : null}
+          </Col>
+          <Col lg={7} md={7} sm={12} className="text-end">
             {VideoMainReducer.Loading === false ? (
               <div className="group-call">
                 <Button
@@ -35,7 +50,7 @@ const VideoPanelFooter = ({
         </Row>
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default VideoPanelFooter
+export default VideoPanelFooter;
