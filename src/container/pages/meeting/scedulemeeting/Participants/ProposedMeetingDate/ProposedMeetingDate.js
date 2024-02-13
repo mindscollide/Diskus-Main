@@ -95,9 +95,9 @@ const ProposedMeetingDate = ({
   const [rows, setRows] = useState([
     {
       selectedOption: getCurrentDateforMeeting?.dateFormat,
+      selectedOptionView: getCurrentDateforMeeting?.DateGMT,
       startDate: getStartTime?.formattedTime,
       endDate: getEndTime?.formattedTime,
-      selectedOptionView: getCurrentDateforMeeting?.DateGMT,
       endDateView: getEndTime?.newFormatTime,
       startDateView: getStartTime?.newFormatTime,
     },
@@ -282,19 +282,25 @@ const ProposedMeetingDate = ({
   }, [getAllMeetingDetails, getAllProposedDates]);
 
   const changeDateStartHandler = (date, index) => {
-    let meetingDateValueFormat = new DateObject(date);
-    let DateDate = new DateObject(date).format("YYYYMMDD");
-    const updatedRows = [...rows];
-    if (index > 0 && DateDate < updatedRows[index - 1].selectedOption) {
-      return;
-    } else {
-      updatedRows[index].selectedOption = DateDate.slice(0, 8);
-      updatedRows[index].selectedOptionView = meetingDateValueFormat;
-      updatedRows[index].isComing = false;
-      updatedRows[index].proposedDateID = 0;
-
-      setRows(updatedRows);
-    }
+    try {
+      let newDate = new Date(date);
+      let DateDate = new DateObject(date).format("YYYYMMDD");
+      const updatedRows = [...rows];
+      if (
+        index > 0 &&
+        Number(DateDate) < Number(updatedRows[index - 1].selectedOption)
+      ) {
+        setOpen({
+          flag: true,
+          message: t("Selected-date-should-not-be-less-than-the-previous-one"),
+        });
+        return;
+      } else {
+        updatedRows[index].selectedOption = DateDate;
+        updatedRows[index].selectedOptionView = newDate;
+        setRows(updatedRows);
+      }
+    } catch {}
   };
 
   const handleStartDateChange = (index, date) => {
@@ -423,26 +429,27 @@ const ProposedMeetingDate = ({
     }
   };
 
+  //Meeting Details
   const addRow = () => {
-    if (rows.length < 5) {
-      const lastRow = rows[rows.length - 1];
-      if (isValidRow(lastRow)) {
-        let { dateFormat, DateGMT } = incrementDateforPropsedMeeting(
-          lastRow.selectedOptionView
-        );
-        setRows([
-          ...rows,
-          {
-            selectedOption: dateFormat,
-            startDate: getStartTime?.formattedTime,
-            endDate: getEndTime?.formattedTime,
-            selectedOptionView: DateGMT,
-            endDateView: getEndTime?.newFormatTime,
-            startDateView: getStartTime?.newFormatTime,
-            proposedDateID: 0,
-          },
-        ]);
-      }
+    const lastRow = rows[rows.length - 1];
+    console.log(lastRow, "lastRowlastRowlastRow");
+    if (isValidRow(lastRow)) {
+      let { DateGMT, dateFormat } = incrementDateforPropsedMeeting(
+        lastRow.selectedOptionView
+      );
+      console.log(DateGMT, "DateGMTDateGMTDateGMTDateGMT");
+      setRows([
+        ...rows,
+        {
+          selectedOption: dateFormat,
+          selectedOptionView: DateGMT,
+          startDate: getStartTime?.formattedTime,
+          startDateView: getStartTime?.newFormatTime,
+          endDate: getEndTime?.formattedTime,
+          endDateView: getEndTime?.newFormatTime,
+          proposedDateID: 0,
+        },
+      ]);
     } else {
       setOpen({
         flag: true,
@@ -861,6 +868,7 @@ const ProposedMeetingDate = ({
                     }
                     className={styles["Add_Dates_Btn_Class"]}
                     onClick={addRow}
+                    disabled={!isValidRow(rows[rows.length - 1])}
                   />
                 </Col>
               </Row>
