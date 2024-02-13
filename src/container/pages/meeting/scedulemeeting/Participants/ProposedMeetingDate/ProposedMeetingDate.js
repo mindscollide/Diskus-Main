@@ -297,10 +297,16 @@ const ProposedMeetingDate = ({
     }
   };
 
-  const handleStartTimeChange = (index, date) => {
+  const handleStartDateChange = (index, date) => {
     let newDate = new Date(date);
+
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const getFormattedTime = getHoursMinutesSec(newDate);
+      const hours = ("0" + newDate.getHours()).slice(-2);
+      const minutes = ("0" + newDate.getMinutes()).slice(-2);
+
+      // Format the time as HH:mm:ss
+      const formattedTime = `${hours}${minutes}${"00"}`;
+
       const updatedRows = [...rows];
 
       if (
@@ -308,18 +314,21 @@ const ProposedMeetingDate = ({
         updatedRows[index - 1].selectedOption ===
           updatedRows[index].selectedOption
       ) {
-        if (getFormattedTime <= updatedRows[index - 1].endDate) {
+        if (formattedTime <= updatedRows[index - 1].endDate) {
           setOpen({
             flag: true,
             message: t(
               "Selected-start-time-should-not-be-less-than-the-previous-endTime"
             ),
           });
+          updatedRows[index].startDate = getStartTime?.formattedTime;
+          updatedRows[index].startTime = getStartTime?.newFormatTime;
+          setRows(updatedRows);
           return;
         } else {
           if (
             updatedRows[index].endDate !== "" &&
-            getFormattedTime >= updatedRows[index].endDate
+            formattedTime >= updatedRows[index].endDate
           ) {
             setOpen({
               flag: true,
@@ -327,20 +336,20 @@ const ProposedMeetingDate = ({
                 "Selected-start-time-should-not-be-greater-than-the-endTime"
               ),
             });
+            updatedRows[index].startDate = formattedTime;
+            updatedRows[index].startTime = newDate;
+            setRows(updatedRows);
             return;
           } else {
-            updatedRows[index].startDate = getFormattedTime;
-            updatedRows[index].startDateView = newDate;
-            updatedRows[index].isComing = false;
-            updatedRows[index].proposedDateID = 0;
-
+            updatedRows[index].startDate = formattedTime;
+            updatedRows[index].startTime = newDate;
             setRows(updatedRows);
           }
         }
       } else {
         if (
           updatedRows[index].endDate !== "" &&
-          getFormattedTime >= updatedRows[index].endDate
+          formattedTime >= updatedRows[index].endDate
         ) {
           setOpen({
             flag: true,
@@ -348,25 +357,29 @@ const ProposedMeetingDate = ({
               "Selected-start-time-should-not-be-greater-than-the-endTime"
             ),
           });
+          updatedRows[index].startDate = formattedTime;
+          updatedRows[index].startTime = newDate;
+          setRows(updatedRows);
           return;
         } else {
-          updatedRows[index].startDate = getFormattedTime;
-          updatedRows[index].startDateView = newDate;
-          updatedRows[index].isComing = false;
-          updatedRows[index].proposedDateID = 0;
-
+          updatedRows[index].startDate = formattedTime;
+          updatedRows[index].startTime = newDate;
           setRows(updatedRows);
         }
       }
     } else {
-      console.error("Invalid date and time object:", date);
     }
   };
 
-  const handleEndTimeChange = (index, date) => {
+  const handleEndDateChange = (index, date) => {
     let newDate = new Date(date);
+
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const getFormattedTime = getHoursMinutesSec(newDate);
+      const hours = ("0" + newDate.getHours()).slice(-2);
+      const minutes = ("0" + newDate.getMinutes()).slice(-2);
+
+      // Format the time as HH:mm:ss
+      const formattedTime = `${hours}${minutes}${"00"}`;
 
       const updatedRows = [...rows];
 
@@ -375,42 +388,38 @@ const ProposedMeetingDate = ({
         updatedRows[index - 1].selectedOption ===
           updatedRows[index].selectedOption
       ) {
-        if (getFormattedTime <= updatedRows[index].startDate) {
+        if (formattedTime <= updatedRows[index].startDate) {
           setOpen({
             flag: true,
             message: t(
               "Selected-end-time-should-not-be-less-than-the-previous-one"
             ),
           });
+          updatedRows[index].endDate = formattedTime;
+          updatedRows[index].endTime = newDate;
           return;
         } else {
-          updatedRows[index].endDate = getFormattedTime;
-          updatedRows[index].endDateView = newDate;
-          updatedRows[index].isComing = false;
-          updatedRows[index].proposedDateID = 0;
-
+          updatedRows[index].endDate = formattedTime;
+          updatedRows[index].endTime = newDate;
           setRows(updatedRows);
         }
       } else {
-        if (getFormattedTime <= updatedRows[index].startDate) {
+        if (formattedTime <= updatedRows[index].startDate) {
           setOpen({
             flag: true,
-            message: t(
-              "Selected end time should be greater than the start time."
-            ),
+            message: t("Selected-end-time-should-not-be-less-than-start-time"),
           });
+          updatedRows[index].endDate = formattedTime;
+          updatedRows[index].endTime = newDate;
           return;
         } else {
-          updatedRows[index].endDate = getFormattedTime;
-          updatedRows[index].endDateView = newDate;
-          updatedRows[index].isComing = false;
-          updatedRows[index].proposedDateID = 0;
-
+          updatedRows[index].endDate = formattedTime;
+          updatedRows[index].endTime = newDate;
           setRows(updatedRows);
         }
       }
+      // }
     } else {
-      console.error("Invalid date and time object:", date);
     }
   };
 
@@ -487,6 +496,8 @@ const ProposedMeetingDate = ({
         SendResponsebyDate: sendResponseBy.date,
         ProposedDates: newArr,
       };
+      console.log(Data, "newDatenewDatenewDatenewDate");
+
       dispatch(setProposedMeetingDateApiFunc(Data, navigate, t, false, false));
     } else {
       setOpen({
@@ -730,7 +741,7 @@ const ProposedMeetingDate = ({
                                       selected={data.startDate}
                                       plugins={[<TimePicker hideSeconds />]}
                                       onChange={(date) =>
-                                        handleStartTimeChange(index, date)
+                                        handleStartDateChange(index, date)
                                       }
                                     />
                                   </Col>
@@ -767,7 +778,7 @@ const ProposedMeetingDate = ({
                                       selected={data.startDate}
                                       plugins={[<TimePicker hideSeconds />]}
                                       onChange={(date) =>
-                                        handleEndTimeChange(index, date)
+                                        handleEndDateChange(index, date)
                                       }
                                     />
                                   </Col>

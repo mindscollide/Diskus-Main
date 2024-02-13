@@ -1,17 +1,24 @@
 {
-  "MeetingID": 0,
+  "MeetingID": 2986,
+  "SendResponsebyDate": "20240229",
   "ProposedDates": [
     {
-      "ProposedDateID": 1528,
-      "ProposedDate": "20240212",
-      "StartTime": "130000",
-      "EndTime": "140000"
+      "ProposedDate": "20240213",
+      "StartTime": "060000",
+      "EndTime": "070000",
+      "proposedDateID": 1557
     },
     {
-      "ProposedDateID": 1529,
-      "ProposedDate": "20240213",
-      "StartTime": "130000",
-      "EndTime": "140000"
+      "ProposedDate": "20240214",
+      "StartTime": "060000",
+      "EndTime": "070000",
+      "proposedDateID": 1558
+    },
+    {
+      "ProposedDate": "20240215",
+      "StartTime": "110000",
+      "EndTime": "130000",
+      "proposedDateID": 0
     }
   ]
 }
