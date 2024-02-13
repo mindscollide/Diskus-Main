@@ -353,8 +353,6 @@ const MeetingDetails = ({
     } else {
     }
   };
-  // startDate: getStartTime?.formattedTime,
-  //       startTime: getStartTime?.newFormatTime,
 
   const handleEndDateChange = (index, date) => {
     let newDate = new Date(date);
@@ -407,9 +405,7 @@ const MeetingDetails = ({
     } else {
     }
   };
-  // endDate: getEndTime?.formattedTime,
-  // endTime: getEndTime?.newFormatTime,
-  //Onchange Function For DatePicker inAdd datess First
+
   const changeDateStartHandler = (date, index) => {
     try {
       let newDate = new Date(date);
