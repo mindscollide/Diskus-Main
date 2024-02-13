@@ -215,6 +215,7 @@ const AgendaContributorsModal = ({
                         Number(SelectedRSVP.value) === 1 ? true : false,
                       isEdit: false,
                       isContributedNotified: true,
+                      attendeeAvailability: 1,
                     };
                     tem.push(newUser);
                   }
@@ -245,6 +246,7 @@ const AgendaContributorsModal = ({
                       agendaListRightsAll:
                         Number(SelectedRSVP.value) === 1 ? true : false,
                       isEdit: false,
+                      attendeeAvailability: 1,
                     };
                     tem.push(newUser);
                   }
@@ -272,6 +274,7 @@ const AgendaContributorsModal = ({
                   agendaListRightsAll:
                     Number(SelectedRSVP.value) === 1 ? true : false,
                   isEdit: false,
+                  attendeeAvailability: 1,
                 };
                 tem.push(newUser);
               }

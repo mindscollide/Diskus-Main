@@ -386,7 +386,7 @@ const SceduleMeeting = ({
         <Col lg={12} md={12} sm={12} className="mb-4">
           <Paper className={styles["Scedule_meeting_paper"]}>
             <Row>
-              <Col lg={12} md={12} sm={12} className="d-flex gap-2 flex-wrap">
+              <Col lg={12} md={12} sm={12} className="py-2 d-flex gap-2 flex-wrap">
                 <Button
                   text={t("Meeting-details")}
                   className={

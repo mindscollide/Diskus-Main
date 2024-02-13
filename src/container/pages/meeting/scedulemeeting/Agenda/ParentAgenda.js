@@ -14,6 +14,7 @@ import {
   GetAllMeetingUserApiFunc,
   showVoteAgendaModal,
   UpateMeetingStatusLockApiFunc,
+  GetAllUserAgendaRightsApiFunc,
 } from "../../../../../store/actions/NewMeetingActions";
 import {
   convertDateTimetoGMTMeetingDetail,
@@ -145,7 +146,6 @@ const ParentAgenda = ({
       agendaVotingID: 0,
       subTitle: "",
       description: "",
-      agendaVotingID: 0,
       presenterID: allSavedPresenters[0]?.value,
       presenterName: allSavedPresenters[0]?.label,
       startDate: rows[index].startDate,
@@ -178,16 +178,20 @@ const ParentAgenda = ({
       // await dispatch(
       //   getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows, id)
       // );
-      dispatch(
-        GetAdvanceMeetingAgendabyMeetingID(
-          meetingMaterialData,
-          navigate,
-          t,
-          rows,
-          id,
-          flag
-        )
-      );
+      // dispatch(
+      //   GetAdvanceMeetingAgendabyMeetingID(
+      //     meetingMaterialData,
+      //     navigate,
+      //     t,
+      //     rows,
+      //     id,
+      //     flag
+      //   )
+      // );
+      let NewData = {
+        AgendaID: id,
+      };
+      dispatch(GetAllUserAgendaRightsApiFunc(navigate, t, NewData));
       dispatch(showAdvancePermissionModal(true));
     }
   };

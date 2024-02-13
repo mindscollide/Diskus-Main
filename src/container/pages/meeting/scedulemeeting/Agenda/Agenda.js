@@ -222,6 +222,7 @@ const Agenda = ({
   const [currentState, setCurrentState] = useState(rows);
 
   useEffect(() => {
+    console.log("updated Rows ROWS ROWS");
     setRows({
       ...rows,
       iD: getRandomUniqueNumber().toString() + "A",
@@ -256,9 +257,9 @@ const Agenda = ({
       iD: getRandomUniqueNumber().toString() + "A",
       title: "",
       agendaVotingID: 0,
-      presenterID: 0,
+      presenterID: allSavedPresenters[0]?.value,
+      presenterName: allSavedPresenters[0]?.label,
       description: "",
-      presenterName: "",
       startDate: "",
       endDate: "",
       selectedRadio: 1,
@@ -271,8 +272,11 @@ const Agenda = ({
       isAttachment: false,
       userID: 0,
       subAgenda: [],
+      canEdit: false,
+      canView: false,
     };
     updatedRows.push(newMainAgenda);
+    console.log("updated Rows", updatedRows);
     setRows(updatedRows);
   };
 
@@ -687,7 +691,8 @@ const Agenda = ({
     updatedRows[0].presenterID = allSavedPresenters[0]?.value;
     updatedRows[0].presenterName = allSavedPresenters[0]?.label;
     setRows(updatedRows);
-  }, [allSavedPresenters]);
+    console.log("updated Rows ROWS ROWS");
+  }, [allSavedPresenters, allUsersRC]);
 
   useEffect(() => {
     if (
@@ -829,12 +834,13 @@ const Agenda = ({
         return updatedRows;
       });
     } else {
+      console.log("updated Rows ROWS ROWS");
       setRows(rows);
     }
   }, [
     MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData,
-    allSavedPresenters,
-    allUsersRC,
+    // allSavedPresenters,
+    // allUsersRC,
   ]);
 
   useEffect(() => {
@@ -846,6 +852,7 @@ const Agenda = ({
       let newData =
         MeetingAgendaReducer.GetAgendaWithMeetingIDForImportData.agendaList;
 
+      console.log("updated Rows ROWS ROWS");
       setRows((prevRows) => {
         const updatedRows = newData.map((agendaItem) => {
           const {
@@ -1294,6 +1301,7 @@ const Agenda = ({
       });
     } else {
       // Your existing logic for handling other cases
+      console.log("updated Rows ROWS ROWS");
       setRows(rows);
     }
   }, [MeetingAgendaReducer.GetAgendaWithMeetingIDForImportData]);
@@ -1399,7 +1407,7 @@ const Agenda = ({
         <VotingPage />
       ) : (
         <>
-          <Row className="m-0">
+          {/* <Row className="m-0">
             <Col className="p-0">
               {editorRole.status === "9" ||
               editorRole.status === 9 ||
@@ -1411,7 +1419,7 @@ const Agenda = ({
                 />
               )}
             </Col>
-          </Row>
+          </Row> */}
           <section>
             <DragDropContext
               onDragEnd={(result) => onDragEnd(result, rows, setRows)}
@@ -1442,7 +1450,13 @@ const Agenda = ({
                                 return (
                                   <>
                                     <div
-                                      className={styles["agenda-border-class"]}
+                                      // className={styles["agenda-border-class"]}
+                                      className={
+                                        data.canView === false &&
+                                        editorRole.role === "Agenda Contributor"
+                                          ? "d-none"
+                                          : styles["agenda-border-class"]
+                                      }
                                     >
                                       <ParentAgenda
                                         fileForSend={fileForSend}
@@ -1582,7 +1596,7 @@ const Agenda = ({
                 sm={12}
                 className="d-flex justify-content-end gap-2"
               >
-                {/* {editorRole.status === "9" ||
+                {editorRole.status === "9" ||
                 editorRole.status === 9 ||
                 editorRole.role === "Agenda Contributor" ? null : (
                   <Button
@@ -1590,7 +1604,7 @@ const Agenda = ({
                     className={styles["Agenda_Buttons"]}
                     onClick={importPreviousAgenda}
                   />
-                )} */}
+                )}
                 <Button
                   text={t("Cancel")}
                   className={styles["Agenda_Buttons"]}
@@ -1624,7 +1638,7 @@ const Agenda = ({
                 (editorRole.status !== "9" || editorRole.status !== 9) ? (
                   <Button
                     disableBtn={
-                      Number(currentMeeting) === 0 && isPublishedState === false
+                      Number(currentMeeting) === 0 || isPublishedState === false
                         ? true
                         : false
                     }
@@ -1635,7 +1649,7 @@ const Agenda = ({
                 ) : isEditMeeting === true ? null : (
                   <Button
                     disableBtn={
-                      Number(currentMeeting) === 0 && isPublishedState === false
+                      Number(currentMeeting) === 0 || isPublishedState === false
                         ? true
                         : false
                     }

@@ -11,6 +11,8 @@ import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import addmore from "../../../../../assets/images/addmore.png";
 import greenMailIcon from "../../../../../assets/images/greenmail.svg";
 import redMailIcon from "../../../../../assets/images/redmail.svg";
+import AwaitingResponse from "../../../../../assets/images/Awaiting-response.svg";
+import TentativelyAccepted from "../../../../../assets/images/Tentatively-accepted.svg";
 import rspvGreenIcon from "../../../../../assets/images/rspvGreen.svg";
 import thumbsup from "../../../../../assets/images/thumbsup.svg";
 import thumbsdown from "../../../../../assets/images/thumbsdown.svg";
@@ -39,7 +41,7 @@ import {
   actionsGlobalFlag,
   pollsGlobalFlag,
   attendanceGlobalFlag,
-  uploadGlobalFlag
+  uploadGlobalFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import ModalOrganizor from "./ModalAddUserOrganizer/ModalOrganizor";
 import ModalCrossIcon from "./ModalCrossIconClick/ModalCrossIcon";
@@ -311,14 +313,24 @@ const Organizers = ({
       ),
     },
     {
-      title: "",
-      dataIndex: "rsvp",
-      key: "rsvp",
+      title: "RSVP",
+      dataIndex: "attendeeAvailability",
+      key: "attendeeAvailability",
       width: "120px",
       align: "left",
 
       render: (text, record) => {
-        if (record.isRSVP === true) {
+        if (record.attendeeAvailability === 1) {
+          return (
+            <img
+              draggable={false}
+              src={AwaitingResponse}
+              height="30px"
+              width="30px"
+              alt=""
+            />
+          );
+        } else if (record.attendeeAvailability === 2) {
           return (
             <img
               draggable={false}
@@ -328,11 +340,21 @@ const Organizers = ({
               alt=""
             />
           );
-        } else {
+        } else if (record.attendeeAvailability === 3) {
           return (
             <img
               draggable={false}
               src={thumbsdown}
+              height="30px"
+              width="30px"
+              alt=""
+            />
+          );
+        } else if (record.attendeeAvailability === 4) {
+          return (
+            <img
+              draggable={false}
+              src={TentativelyAccepted}
               height="30px"
               width="30px"
               alt=""
@@ -444,10 +466,10 @@ const Organizers = ({
   ];
 
   // Filter columns based on the RSVP Condition
-  const finalColumns =
-    Number(editorRole.status) === 1
-      ? MeetingColoumns.filter((column) => column.key !== "rsvp")
-      : MeetingColoumns;
+  // const finalColumns =
+  //   Number(editorRole.status) === 1
+  //     ? MeetingColoumns.filter((column) => column.key !== "rsvp")
+  //     : MeetingColoumns;
 
   const sendRecentNotification = (record) => {
     if (
@@ -593,7 +615,6 @@ const Organizers = ({
     setRowsData([]);
     dispatch(saveMeetingFlag(false));
     dispatch(editMeetingFlag(false));
-
     dispatch(meetingDetailsGlobalFlag(false));
     dispatch(organizersGlobalFlag(false));
     dispatch(agendaContributorsGlobalFlag(true));
@@ -776,7 +797,17 @@ const Organizers = ({
 
       setRowsData(updatedMeetingOrganizers);
     }
+    setIsPublishedState(
+      MeetingOrganizersReducer.AllMeetingOrganizersData.isPublished
+    );
   }, [MeetingOrganizersReducer.AllMeetingOrganizersData]);
+
+  console.log(
+    "MeetingOrganizersReducer.AllMeetingOrganizersData",
+    MeetingOrganizersReducer.AllMeetingOrganizersData
+  );
+
+  console.log("isPublishedStateisPublishedState", isPublishedState);
 
   useEffect(() => {
     if (
@@ -997,7 +1028,7 @@ const Organizers = ({
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <Table
-                  column={finalColumns}
+                  column={MeetingColoumns}
                   scroll={{ y: "62vh" }}
                   pagination={false}
                   className="Polling_table"
@@ -1043,7 +1074,7 @@ const Organizers = ({
                   Number(editorRole.status) === 12 ? (
                     <Button
                       disableBtn={
-                        Number(currentMeeting) === 0 &&
+                        Number(currentMeeting) === 0 ||
                         isPublishedState === false
                           ? true
                           : false
@@ -1055,7 +1086,7 @@ const Organizers = ({
                   ) : isEditMeeting === true ? null : (
                     <Button
                       disableBtn={
-                        Number(currentMeeting) === 0 &&
+                        Number(currentMeeting) === 0 ||
                         isPublishedState === false
                           ? true
                           : false
