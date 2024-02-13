@@ -3,6 +3,8 @@ import styles from "./Participants.module.css";
 import rspvGreenIcon from "../../../../../assets/images/rspvGreen.svg";
 import thumbsup from "../../../../../assets/images/thumbsup.svg";
 import thumbsdown from "../../../../../assets/images/thumbsdown.svg";
+import AwaitingResponse from "../../../../../assets/images/Awaiting-response.svg";
+import TentativelyAccepted from "../../../../../assets/images/Tentatively-accepted.svg";
 import emptyContributorState from "../../../../../assets/images/emptyStateContributor.svg";
 import { Col, Row } from "react-bootstrap";
 import {
@@ -89,6 +91,7 @@ const Participants = ({
             userID: data.userID,
             userName: data.userName,
             isComingApi: true,
+            attendeeAvailability: data.attendeeAvailability,
           });
         });
       } else {
@@ -169,12 +172,22 @@ const Participants = ({
     },
     {
       title: t("RSVP"),
-      dataIndex: "rsvp",
-      key: "rsvp",
+      dataIndex: "attendeeAvailability",
+      key: "attendeeAvailability",
       align: "left",
       width: "120px",
       render: (text, record) => {
-        if (record.isRSVP === true) {
+        if (record.attendeeAvailability === 1) {
+          return (
+            <img
+              draggable={false}
+              src={AwaitingResponse}
+              height="30px"
+              width="30px"
+              alt=""
+            />
+          );
+        } else if (record.attendeeAvailability === 2) {
           return (
             <img
               draggable={false}
@@ -184,7 +197,7 @@ const Participants = ({
               alt=""
             />
           );
-        } else {
+        } else if (record.attendeeAvailability === 3) {
           return (
             <img
               draggable={false}
@@ -194,8 +207,41 @@ const Participants = ({
               alt=""
             />
           );
+        } else if (record.attendeeAvailability === 4) {
+          return (
+            <img
+              draggable={false}
+              src={TentativelyAccepted}
+              height="30px"
+              width="30px"
+              alt=""
+            />
+          );
         }
       },
+      // render: (text, record) => {
+      //   if (record.isRSVP === true) {
+      //     return (
+      //       <img
+      //         draggable={false}
+      //         src={thumbsup}
+      //         height="30px"
+      //         width="30px"
+      //         alt=""
+      //       />
+      //     );
+      //   } else {
+      //     return (
+      //       <img
+      //         draggable={false}
+      //         src={thumbsdown}
+      //         height="30px"
+      //         width="30px"
+      //         alt=""
+      //       />
+      //     );
+      //   }
+      // },
     },
   ];
 

@@ -75,6 +75,7 @@ import PrivateParAdminRouteNonActive from "./PrivateParAdminRouteNonActive";
 import PrivateRoutes from "./private_routes";
 import PrivateRouteDataroom from "./private_route_dataroom";
 import Reports from "../container/Admin/Reports/Reports";
+import SignatureViewer from "../components/elements/signaturewebviewer/signatureviewer";
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
@@ -117,6 +118,7 @@ export const router = createHashRouter(
           <Route path="home" element={<Home />} />
           <Route path="todolist" element={<TodoList />} />
           <Route path="documentViewer" element={<DocumentViewer />} />
+          <Route path="signatureviewer" element={<SignatureViewer />} />
           <Route path="forgotpassword" element={<ForgotPassword />} />
           <Route path="calendar" element={<CalendarPage />} />
           <Route path="Meeting" element={<NewMeeting />} />
