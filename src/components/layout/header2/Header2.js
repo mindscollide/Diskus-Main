@@ -9,7 +9,10 @@ import DiskusNotificationIcon from "../../../assets/images/newElements/Diskus-no
 import "./Header.css";
 import "../../../i18n.js";
 import { useTranslation } from "react-i18next";
-import { signOut } from "../../../store/actions/Auth_Sign_Out";
+import {
+  signOut,
+  userLogOutApiFunc,
+} from "../../../store/actions/Auth_Sign_Out";
 import {
   showCancelModalmeetingDeitals,
   uploadGlobalFlag,
@@ -117,7 +120,7 @@ const Header2 = () => {
   };
 
   const logoutFunction = () => {
-    dispatch(signOut(navigate));
+    dispatch(userLogOutApiFunc(navigate, t));
   };
 
   const openMeetingModal = () => {

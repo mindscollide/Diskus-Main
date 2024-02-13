@@ -673,14 +673,6 @@ const ProposedNewMeeting = ({
         )
       );
 
-      setProposedMeetingDetails({
-        MeetingTitle: "",
-        Description: "",
-      });
-      setMembersParticipants([]);
-      setSendResponseBy({
-        date: "",
-      });
       seterror(false);
     } else if (
       proposedMeetingDetails.MeetingTitle === "" &&

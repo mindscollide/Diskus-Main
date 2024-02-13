@@ -1344,6 +1344,9 @@ const getUserWiseProposeDateOrganizer = {
 const UserLoginHistoryRM = {
   RequestMethod: "ServiceManager.GetUserLoginHistory",
 };
+const UserLogout = {
+  RequestMethod: "ServiceManager.LogOut",
+};
 export {
   UserLoginHistoryRM,
   getDataAnalyticsCountRM,
@@ -1704,4 +1707,5 @@ export {
   //Validate Microsoft Token
   validateMicrosoftToken,
   getUserWiseProposeDateOrganizer,
+  UserLogout,
 };
