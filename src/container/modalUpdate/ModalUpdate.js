@@ -136,6 +136,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   // for meatings  Attendees List
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
 
+  const [attendeesParticipant, setAttendeesParticipant] = useState([]);
+
   // for   dropdown Attendees List
   const [optiosnMeetingAttendeesList, setOptiosnMeetingAttendeesList] =
     useState([]);
@@ -162,7 +164,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   // for   added participant  Name list
   const [addedParticipantNameList, setAddedParticipantNameList] = useState([]);
   //Attendees States
-  const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
+  const [taskAssignedToInput, setTaskAssignedToInput] = useState({
+    value: 0,
+    label: "",
+    name: "",
+  });
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
   const [taskAssignedName, setTaskAssignedName] = useState("");
   // const [isValid, setValid] = useState(false);
@@ -1509,6 +1515,123 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       }
     }
   };
+  useEffect(() => {
+    try {
+      let membersData = [];
+      if (Number(checkFlag) === 6) {
+        // Committees MembersData
+        let CommitteeMembers =
+          CommitteeReducer?.getCommitteeByCommitteeID?.committeMembers;
+        if (
+          CommitteeMembers !== null &&
+          CommitteeMembers !== undefined &&
+          CommitteeMembers.length > 0
+        ) {
+          CommitteeMembers.forEach((committeesMember, index) => {
+            membersData.push({
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={`data:image/jpeg;base64,${committeesMember?.userProfilePicture.displayProfilePictureName}`}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
+                      />
+                      <span>{committeesMember.userName}</span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              value: committeesMember?.pK_UID,
+              name: committeesMember?.userName,
+            });
+          });
+        }
+      } else if (Number(checkFlag) === 7) {
+        let GroupMembers =
+          GroupsReducer?.getGroupByGroupIdResponse?.groupMembers;
+        if (
+          GroupMembers !== null &&
+          GroupMembers !== undefined &&
+          GroupMembers.length > 0
+        ) {
+          GroupMembers.forEach((groupMemberData, index) => {
+            membersData.push({
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={`data:image/jpeg;base64,${groupMemberData?.userProfilePicture.displayProfilePictureName}`}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
+                      />
+                      <span>{groupMemberData.userName}</span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              value: groupMemberData?.pK_UID,
+              name: groupMemberData?.userName,
+            });
+          });
+        }
+        // Group MembersData
+      } else {
+        let allAssignees = assignees.user;
+        if (
+          allAssignees !== undefined &&
+          allAssignees !== null &&
+          allAssignees.length !== 0
+        ) {
+          allAssignees.forEach((assigneeMember, index) => {
+            membersData.push({
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={`data:image/jpeg;base64,${assigneeMember?.displayProfilePictureName}`}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
+                      />
+                      <span>{assigneeMember.name}</span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              value: assigneeMember?.pK_UID,
+              name: assigneeMember?.name,
+            });
+          });
+        }
+        // meeting Members
+      }
+      setAttendeesParticipant(membersData);
+    } catch {}
+  }, [checkFlag]);
 
   // for add Attendees handler
   const addAttendees = () => {
@@ -2156,9 +2279,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       PresenterName: value.name,
     });
   };
-  console.log(objMeetingAgenda, "objMeetingAgendaobjMeetingAgenda");
   const filterFunc = (options, searchText) => {
-    console.log(options, "filterFuncfilterFunc");
     if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
       return true;
     } else {
@@ -2166,6 +2287,15 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     }
   };
 
+  const handleChangeAttenddes = (attendeeData) => {
+    setTaskAssignedToInput({
+      ...taskAssignedToInput,
+      label: attendeeData.label,
+      value: attendeeData.value,
+      name: attendeeData.name,
+    });
+    setTaskAssignedTo(attendeeData.value);
+  };
   return (
     <>
       <Container>
@@ -2537,7 +2667,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                               maxMenuHeight={140}
                               classNamePrefix={"ModalOrganizerSelect"}
                               onChange={handleChangePresenter}
-                              value={presenterValue}
+                              value={
+                                presenterValue.value === 0
+                                  ? null
+                                  : presenterValue
+                              }
                               placeholder="Select Presenter"
                               filterOption={filterFunc}
                             />
@@ -2967,9 +3101,22 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         md={5}
                         sm={12}
                         xs={12}
-                        className="attendee-title-field inputSearchFilter CreateMeetingParticipant addattendee-textfield-Update"
+                        className="attendee-title-field  addattendee-textfield-Update"
                       >
-                        <InputSearchFilter
+                        <Select
+                          options={attendeesParticipant}
+                          classNamePrefix={"ModalOrganizerSelect"}
+                          filterOption={filterFunc}
+                          placeholder="Please Select"
+                          onChange={handleChangeAttenddes}
+                          isSearchable={true}
+                          value={
+                            taskAssignedToInput.value === 0
+                              ? null
+                              : taskAssignedToInput
+                          }
+                        />
+                        {/* <InputSearchFilter
                           placeholder={t("Add-attendees")}
                           value={taskAssignedToInput}
                           filteredDataHandler={searchFilterHandler(
@@ -2977,7 +3124,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                           )}
                           change={onChangeSearch}
                           applyClass={"input_searchAttendees_createMeeting"}
-                        />
+                        /> */}
                       </Col>
                       <Col
                         lg={5}
@@ -3000,9 +3147,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                           className={"btn update-add-attendee-btn"}
                           text={t("Add")}
                           onClick={addAttendees}
-                          disableBtn={
-                            !taskAssignedToInput || !participantRoleName
-                          }
+                          disableBtn={!taskAssignedToInput}
                         />
                       </Col>
                     </Row>

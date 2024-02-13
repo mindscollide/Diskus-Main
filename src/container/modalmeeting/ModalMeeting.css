@@ -115,7 +115,7 @@ fieldset:disabled .btn {
   margin-top: 10px;
 } */
 .participant-scroll-creatingmeeting {
-  height: 40vh !important;
+  height: 48vh !important;
   overflow-y: auto !important;
   overflow-x: hidden;
 }
@@ -412,7 +412,7 @@ body[dir="rtl"] .isAttendee-Schedule-top-btn {
 
 .addattendee-textfield-width {
   width: 290px !important;
-  margin-top: 15px !important;
+  margin-top: 12px !important;
   margin-bottom: 10px !important;
 }
 

@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import WebViewer from "@pdftron/webviewer";
 import "./signaturewebviewer.css";
+import PlusSignSignatureFlow from "../../../assets/images/plus-sign-signatureflow.svg";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -19,7 +20,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { Notification, Loader, Modal, Button, TextField } from "../index";
 import { Col, Row } from "react-bootstrap";
-import DeleteIcon from "../../../assets/images/delete_dataroom.svg";
+import DeleteIcon from "../../../assets/images/Icon material-delete.svg";
 import Select from "react-select";
 const SignatureViewer = () => {
   const location = useLocation();
@@ -1069,9 +1070,10 @@ const SignatureViewer = () => {
                             <Row>
                               <Col sm={12} md={6} lg={6}>
                                 <TextField
-                                  placeholder="Name"
+                                  placeholder={t("Full-name")}
                                   labelClass={"inputlabel_style"}
                                   width={"100%"}
+                                  applyClass={"signatureflow_input"}
                                   name={"Name"}
                                   type="text"
                                   value={fieldsData.Name}
@@ -1087,7 +1089,8 @@ const SignatureViewer = () => {
                                   name={"EmailAddress"}
                                   type="email"
                                   labelClass={"inputlabel_style"}
-                                  placeholder="E-mail Address"
+                                  applyClass={"signatureflow_input"}
+                                  placeholder={t("Email")}
                                   value={fieldsData.EmailAddress}
                                   label={"Email"}
                                   change={(e) =>
@@ -1097,12 +1100,7 @@ const SignatureViewer = () => {
                               </Col>
                             </Row>
                           </Col>
-                          <Col
-                            sm={12}
-                            md={1}
-                            lg={1}
-                            className="d-flex justify-content-start align-items-center"
-                          >
+                          <Col sm={12} md={1} lg={1} className="p-0 mt-3">
                             <img
                               src={DeleteIcon}
                               className="cursor-pointer"
@@ -1118,8 +1116,9 @@ const SignatureViewer = () => {
                 <Col lg={12} md={12} xs={12} sm={12}>
                   <Button
                     className="addOther_field"
-                    text={"Add another signer"}
+                    text={t("Add-another-signer")}
                     onClick={handleClickAdd}
+                    icon={<img src={PlusSignSignatureFlow} />}
                   />
                 </Col>
               </Row>
