@@ -1229,12 +1229,8 @@ const ProposedNewMeeting = ({
                         </span>
 
                         <DatePicker
-                          value={sendResponseVal === "" ? "" : sendResponseVal}
-                          selected={
-                            sendResponseBy.date === ""
-                              ? ""
-                              : sendResponseBy.date
-                          }
+                          value={sendResponseVal}
+                          selected={sendResponseBy.date}
                           format={"DD/MM/YYYY"}
                           minDate={moment().toDate()}
                           placeholder="DD/MM/YYYY"
