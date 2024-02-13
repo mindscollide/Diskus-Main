@@ -97,6 +97,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
                       disabledSwitch: true,
                       NotificationMessage: "",
                       isEdit: false,
+                      attendeeAvailability: 1,
                     };
                     let newUserSave = {
                       isPrimaryOrganizer: false,
@@ -143,6 +144,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
                       disabledSwitch: true,
                       NotificationMessage: "",
                       isEdit: false,
+                      attendeeAvailability: 1,
                     };
                     let newUserSave = {
                       isPrimaryOrganizer: false,
@@ -183,6 +185,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
                   disabledSwitch: true,
                   NotificationMessage: "",
                   isEdit: false,
+                  attendeeAvailability: 1,
                 };
                 let newUserSave = {
                   isPrimaryOrganizer: false,
@@ -399,6 +402,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
                   disabledSwitch: true,
                   NotificationMessage: "",
                   isEdit: false,
+                  attendeeAvailability: 1,
                 };
                 let newUserSave = {
                   isPrimaryOrganizer: false,
@@ -445,6 +449,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
                   disabledSwitch: true,
                   NotificationMessage: "",
                   isEdit: false,
+                  attendeeAvailability: 1,
                 };
                 let newUserSave = {
                   isPrimaryOrganizer: false,
@@ -484,6 +489,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
               disabledSwitch: true,
               NotificationMessage: "",
               isEdit: false,
+              attendeeAvailability: 1,
             };
             let newUserSave = {
               isPrimaryOrganizer: false,
@@ -516,7 +522,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
       if (
         allAssignees !== undefined &&
         allAssignees !== null &&
-        allAssignees !== []
+        allAssignees.length !== 0
       ) {
         return allAssignees
           .filter((item) => {

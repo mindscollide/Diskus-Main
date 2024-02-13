@@ -28,6 +28,7 @@ import InputIcon from "react-multi-date-picker/components/input_icon";
 import moment from "moment";
 import {
   convertGMTDateintoUTC,
+  convertToUTC,
   createConvert,
 } from "../../../../../commen/functions/date_formater";
 import { containsStringandNumericCharacters } from "../../../../../commen/functions/regex";
@@ -598,7 +599,7 @@ const ProposedNewMeeting = ({
   //Send Response By Handler
   const SendResponseHndler = (date) => {
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-    let DateDate = convertGMTDateintoUTC(date);
+    let DateDate = convertToUTC(meetingDateValueFormat);
     setSendResponseVal(meetingDateValueFormat);
     setSendResponseBy({
       ...sendResponseBy,
@@ -672,14 +673,6 @@ const ProposedNewMeeting = ({
         )
       );
 
-      setProposedMeetingDetails({
-        MeetingTitle: "",
-        Description: "",
-      });
-      setMembersParticipants([]);
-      setSendResponseBy({
-        date: "",
-      });
       seterror(false);
     } else if (
       proposedMeetingDetails.MeetingTitle === "" &&
@@ -691,6 +684,8 @@ const ProposedNewMeeting = ({
       seterror(true);
     }
   };
+
+  console.log(sendResponseBy.date, "sendResponseBysendResponseBy");
 
   //handle Change for Decription and Title Of meeting
   const HandleChange = (e, index) => {
@@ -1227,6 +1222,7 @@ const ProposedNewMeeting = ({
 
                         <DatePicker
                           value={sendResponseVal}
+                          selected={sendResponseBy.date}
                           format={"DD/MM/YYYY"}
                           minDate={moment().toDate()}
                           placeholder="DD/MM/YYYY"

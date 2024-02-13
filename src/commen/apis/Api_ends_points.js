@@ -48,6 +48,9 @@ const reportExcelUrl = ":11020/ExcelReport";
 
 const DataRoomFilesDownloads = ":11017/Report";
 
+//Logout Auth
+const UserLogoutAuth = ":11009/Auth";
+
 //this is our final api's
 const authenticationApi = baseURL + serviceAuthenticationURL;
 
@@ -94,6 +97,9 @@ const reportDownload = baseURL + reportExcelUrl;
 
 const DataRoomAllFilesDownloads = baseURL + DataRoomFilesDownloads;
 
+// Logout API URL
+const userLogOutAuthURL = baseURL + UserLogoutAuth;
+
 export {
   authenticationApi,
   toDoListApi,
@@ -114,4 +120,5 @@ export {
   videoApi,
   reportDownload,
   DataRoomAllFilesDownloads,
+  userLogOutAuthURL,
 };

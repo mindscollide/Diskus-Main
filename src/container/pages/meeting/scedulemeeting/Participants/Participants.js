@@ -5,6 +5,8 @@ import emptyContributorState from "../../../../../assets/images/emptyStateContri
 import addmore from "../../../../../assets/images/addmore.png";
 import rspvGreenIcon from "../../../../../assets/images/rspvGreen.svg";
 import NORSVP from "../../../../../assets/images/No-RSVP.png";
+import AwaitingResponse from "../../../../../assets/images/Awaiting-response.svg";
+import TentativelyAccepted from "../../../../../assets/images/Tentatively-accepted.svg";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import thumbsup from "../../../../../assets/images/thumbsup.svg";
 import thumbsdown from "../../../../../assets/images/thumbsdown.svg";
@@ -38,7 +40,7 @@ import {
   actionsGlobalFlag,
   pollsGlobalFlag,
   attendanceGlobalFlag,
-  uploadGlobalFlag
+  uploadGlobalFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import AddParticipantModal from "./AddParticipantModal/AddParticipantModal";
 import { CancelParticipants } from "./CancelParticipants/CancelParticipants";
@@ -180,6 +182,7 @@ const Participants = ({
             userID: data.userID,
             userName: data.userName,
             isComingApi: true,
+            attendeeAvailability: data.attendeeAvailability,
           });
         });
       } else {
@@ -342,12 +345,22 @@ const Participants = ({
 
     {
       title: t("RSVP"),
-      dataIndex: "rsvp",
-      key: "rsvp",
+      dataIndex: "attendeeAvailability",
+      key: "attendeeAvailability",
       align: "left",
       width: "120px",
       render: (text, record) => {
-        if (record.isRSVP === true) {
+        if (record.attendeeAvailability === 1) {
+          return (
+            <img
+              draggable={false}
+              src={AwaitingResponse}
+              height="30px"
+              width="30px"
+              alt=""
+            />
+          );
+        } else if (record.attendeeAvailability === 2) {
           return (
             <img
               draggable={false}
@@ -357,7 +370,7 @@ const Participants = ({
               alt=""
             />
           );
-        } else {
+        } else if (record.attendeeAvailability === 3) {
           return (
             <img
               draggable={false}
@@ -367,8 +380,41 @@ const Participants = ({
               alt=""
             />
           );
+        } else if (record.attendeeAvailability === 4) {
+          return (
+            <img
+              draggable={false}
+              src={TentativelyAccepted}
+              height="30px"
+              width="30px"
+              alt=""
+            />
+          );
         }
       },
+      // render: (text, record) => {
+      //   if (record.isRSVP === true) {
+      //     return (
+      //       <img
+      //         draggable={false}
+      //         src={thumbsup}
+      //         height="30px"
+      //         width="30px"
+      //         alt=""
+      //       />
+      //     );
+      //   } else {
+      //     return (
+      //       <img
+      //         draggable={false}
+      //         src={thumbsdown}
+      //         height="30px"
+      //         width="30px"
+      //         alt=""
+      //       />
+      //     );
+      //   }
+      // },
     },
 
     {
@@ -419,10 +465,10 @@ const Participants = ({
   ];
 
   // Filter columns based on the RSVP Condition
-  const finalColumns =
-    Number(editorRole.status) === 1
-      ? ParticipantsColoumn.filter((column) => column.key !== "rsvp")
-      : ParticipantsColoumn;
+  // const finalColumns =
+  //   Number(editorRole.status) === 1
+  //     ? ParticipantsColoumn.filter((column) => column.key !== "rsvp")
+  //     : ParticipantsColoumn;
 
   //Proposed meeting Page Opens
   const handleProposedmeetingDates = () => {
@@ -634,7 +680,7 @@ const Participants = ({
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <Table
-                  column={finalColumns}
+                  column={ParticipantsColoumn}
                   scroll={{ y: "42vh" }}
                   pagination={false}
                   locale={{
@@ -786,7 +832,7 @@ const Participants = ({
                   Number(editorRole.status) === 12 ? (
                     <Button
                       disableBtn={
-                        Number(currentMeeting) === 0 &&
+                        Number(currentMeeting) === 0 ||
                         isPublishedState === false
                           ? true
                           : false
@@ -798,7 +844,7 @@ const Participants = ({
                   ) : isEditMeeting === true || isEditClicked ? null : (
                     <Button
                       disableBtn={
-                        Number(currentMeeting) === 0 &&
+                        Number(currentMeeting) === 0 ||
                         isPublishedState === false
                           ? true
                           : false
