@@ -19,26 +19,28 @@
 }
 .Signers_heading {
   color: #6172d6;
-  font-size: 2em;
+  font-size: 1.25rem;
   font-family: "MontserratSemiBold";
 }
 .Signers_tagLine {
-  font-size: 1em;
+  font-size: 1rem;
   font-family: "MontserratSemiBold";
   color: #5a5a5a !important;
 }
 
 .inputlabel_style {
   color: #6172d6 !important;
-  font-size: 1em !important;
+  font-size: 0.625rem !important;
   font-family: "MontserratSemiBold";
 }
 .addOther_field {
-  color: #ccc !important;
-  padding: 8px 10px !important;
+  color: #5a5a5a !important;
+  padding: 12px 10px !important;
   display: flex !important;
   width: 100% !important;
   background: #fff !important;
+  font-family: "MontserratMedium";
+
   justify-content: center !important;
   align-items: center !important;
   border: 1px dashed #ccc !important;
@@ -46,6 +48,7 @@
   margin: 5px 0;
   cursor: pointer;
   outline: none !important;
+  gap: 5px;
 }
 .signersList {
   max-height: 200px;
@@ -57,12 +60,17 @@
   border: 1px solid #e1e1e1 !important;
   padding: 8px 30px !important;
   border-radius: 4px !important;
+  font-size: 0.75rem;
+  font-family: "MontserratSemiBold";
 }
 .Add {
   background: #6172d6 !important;
   color: #fff !important;
   border-radius: 4px !important;
+  font-size: 0.75rem;
+
   padding: 8px 30px !important;
+  font-family: "MontserratSemiBold";
 }
 /* .CancelSignature_Btn {
   color: #5a5a5a !important;
@@ -93,4 +101,7 @@
   justify-content: center;
   align-items: center;
   gap: 15px;
+}
+.delete_icon_signatureFlow {
+  opacity: 50% !important;
 }
