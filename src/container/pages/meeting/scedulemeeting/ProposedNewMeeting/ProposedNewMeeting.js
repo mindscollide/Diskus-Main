@@ -90,7 +90,7 @@ const ProposedNewMeeting = ({
   });
   const [meetingTypeDropdown, setmeetingTypeDropdown] = useState([]);
   const [dropdowndata, setDropdowndata] = useState([]);
-  const startTime = getStartTimeWithCeilFunction();
+  const getStartTime = getStartTimeWithCeilFunction();
   const getEndTime = getEndTimeWitlCeilFunction();
   const getCurrentDateforMeeting = getCurrentDate();
   const getNextDateforMeeting = {
@@ -116,19 +116,16 @@ const ProposedNewMeeting = ({
   });
 
   //state for adding Date and Time Rows
-  const [rows, setRows] = useState(() => {
-    const nextDay = getNextDay();
-    return [
-      {
-        selectedOption: nextDay,
-        dateForView: getCurrentDateforMeeting.DateGMT,
-        startDate: startTime?.formattedTime,
-        startTime: startTime?.newFormatTime,
-        endDate: getEndTime?.formattedTime,
-        endTime: getEndTime?.newFormatTime,
-      },
-    ];
-  });
+  const [rows, setRows] = useState([
+    {
+      selectedOption: getCurrentDateforMeeting?.dateFormat,
+      selectedOptionView: getCurrentDateforMeeting?.DateGMT,
+      startDate: getStartTime?.formattedTime,
+      endDate: getEndTime?.formattedTime,
+      endDateView: getEndTime?.newFormatTime,
+      startDateView: getStartTime?.newFormatTime,
+    },
+  ]);
 
   //Getting All Groups And Committies By Organization ID
   useEffect(() => {
@@ -404,31 +401,30 @@ const ProposedNewMeeting = ({
 
   //Adding the Dates Rows
   const addRow = () => {
-    // Check if the current number of rows is less than or equal to 4
-    if (rows.length <= 4) {
-      const lastRow = rows[rows.length - 1];
-
-      if (isValidRow(lastRow)) {
-        let { DateGMT, dateFormat } = incrementDateforPropsedMeeting(
-          lastRow.dateForView
-        );
-
-        setRows((prevRows) => [
-          ...prevRows,
-          {
-            selectedOption: dateFormat,
-            dateForView: DateGMT,
-            startDate: startTime?.formattedTime,
-            startTime: startTime?.newFormatTime,
-            endDate: getEndTime?.formattedTime,
-            endTime: getEndTime?.newFormatTime,
-          },
-        ]);
-      } else {
-        console.log("Invalid row. Cannot add a new row.");
-      }
+    const lastRow = rows[rows.length - 1];
+    console.log(lastRow, "lastRowlastRowlastRow");
+    if (isValidRow(lastRow)) {
+      let { DateGMT, dateFormat } = incrementDateforPropsedMeeting(
+        lastRow.selectedOptionView
+      );
+      console.log(DateGMT, "DateGMTDateGMTDateGMTDateGMT");
+      setRows([
+        ...rows,
+        {
+          selectedOption: dateFormat,
+          selectedOptionView: DateGMT,
+          startDate: getStartTime?.formattedTime,
+          startDateView: getStartTime?.newFormatTime,
+          endDate: getEndTime?.formattedTime,
+          endDateView: getEndTime?.newFormatTime,
+          proposedDateID: 0,
+        },
+      ]);
     } else {
-      console.log("Maximum number of rows reached (5). Cannot add more rows.");
+      setOpen({
+        flag: true,
+        message: t("You-cant-enter-more-then-five-dates"),
+      });
     }
   };
 
@@ -487,8 +483,8 @@ const ProposedNewMeeting = ({
               "Selected-start-time-should-not-be-less-than-the-previous-endTime"
             ),
           });
-          updatedRows[index].startDate = startTime?.formattedTime;
-          updatedRows[index].startTime = startTime?.newFormatTime;
+          updatedRows[index].startDate = getStartTime?.formattedTime;
+          updatedRows[index].startTime = getStartTime?.newFormatTime;
           setRows(updatedRows);
           return;
         } else {
@@ -984,7 +980,6 @@ const ProposedNewMeeting = ({
                   >
                     {rows.length > 0
                       ? rows.map((data, index) => {
-                          console.log(data, "datadatadata");
                           return (
                             <>
                               <Row>
@@ -992,8 +987,9 @@ const ProposedNewMeeting = ({
                                   <Row className="mt-2">
                                     <Col lg={4} md={4} sm={12}>
                                       <DatePicker
-                                        selected={new Date(data.selectedOption)}
-                                        value={data.dateForView}
+                                        disabled={data.isComing ? true : false}
+                                        value={data.selectedOptionView}
+                                        selected={data.selectedOption}
                                         format={"DD/MM/YYYY"}
                                         minDate={
                                           index > 0
@@ -1018,6 +1014,20 @@ const ProposedNewMeeting = ({
                                           changeDateStartHandler(value, index)
                                         }
                                       />
+                                      <Row>
+                                        <Col>
+                                          <p
+                                            className={
+                                              error &&
+                                              data.selectedOption === ""
+                                                ? ` ${styles["errorMessage-inLogin"]} `
+                                                : `${styles["errorMessage-inLogin_hidden"]}`
+                                            }
+                                          >
+                                            {t("Please-select-data-and-time")}
+                                          </p>
+                                        </Col>
+                                      </Row>
                                     </Col>
                                     <Col
                                       lg={3}
@@ -1029,15 +1039,14 @@ const ProposedNewMeeting = ({
                                         arrowClassName="arrowClass"
                                         containerClassName="containerClassTimePicker"
                                         className="timePicker"
+                                        disabled={data.isComing ? true : false}
                                         disableDayPicker
                                         inputClass="inputTImeMeeting"
                                         calendar={calendarValue}
                                         locale={localValue}
                                         format="hh:mm A"
+                                        value={data.startDateView}
                                         selected={data.startDate}
-                                        // onOpen={() => handleOpenStartTime(index)}
-                                        value={data.startTime}
-                                        editable={false}
                                         plugins={[<TimePicker hideSeconds />]}
                                         onChange={(date) =>
                                           handleStartDateChange(index, date)
@@ -1064,18 +1073,18 @@ const ProposedNewMeeting = ({
                                       // className="d-flex justify-content-end"
                                     >
                                       <DatePicker
+                                        value={data.endDateView}
                                         arrowClassName="arrowClass"
                                         containerClassName="containerClassTimePicker"
                                         className="timePicker"
                                         disableDayPicker
+                                        disabled={data.isComing ? true : false}
                                         inputClass="inputTImeMeeting"
                                         calendar={calendarValue}
                                         locale={localValue}
-                                        value={data.endTime}
                                         format="hh:mm A"
-                                        selected={data.endDate}
+                                        selected={data.startDate}
                                         plugins={[<TimePicker hideSeconds />]}
-                                        editable={false}
                                         onChange={(date) =>
                                           handleEndDateChange(index, date)
                                         }
@@ -1096,7 +1105,9 @@ const ProposedNewMeeting = ({
                                               width="23px"
                                               height="23px"
                                               alt=""
-                                              className="cursor-pointer"
+                                              className={
+                                                styles["Cross_icon_class"]
+                                              }
                                               onClick={() => {
                                                 HandleCancelFunction(index);
                                               }}
@@ -1106,6 +1117,22 @@ const ProposedNewMeeting = ({
                                       </>
                                     </Col>
                                   </Row>
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col>
+                                  <p
+                                    className={
+                                      error &&
+                                      rows.selectedOption === "" &&
+                                      rows.startDate === "" &&
+                                      rows.endDate === ""
+                                        ? ` ${styles["errorMessage-inLogin"]} `
+                                        : `${styles["errorMessage-inLogin_hidden"]}`
+                                    }
+                                  >
+                                    {t("Please-select-data-and-time")}
+                                  </p>
                                 </Col>
                               </Row>
                             </>
