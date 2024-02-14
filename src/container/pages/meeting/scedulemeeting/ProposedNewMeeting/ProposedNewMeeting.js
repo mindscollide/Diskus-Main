@@ -130,15 +130,6 @@ const ProposedNewMeeting = ({
     ];
   });
 
-  console.log(rows, "rooowwwwss");
-
-  // Later in your component, modify rows as needed:
-  const handleRowModification = (index, newData) => {
-    const updatedRows = [...rows];
-    updatedRows[index] = { ...updatedRows[index], ...newData };
-    setRows(updatedRows);
-  };
-
   //Getting All Groups And Committies By Organization ID
   useEffect(() => {
     dispatch(getAllCommitteesandGroups(navigate, t));
@@ -685,8 +676,6 @@ const ProposedNewMeeting = ({
     }
   };
 
-  console.log(sendResponseBy.date, "sendResponseBysendResponseBy");
-
   //handle Change for Decription and Title Of meeting
   const HandleChange = (e, index) => {
     let name = e.target.name;
@@ -745,6 +734,18 @@ const ProposedNewMeeting = ({
       }
     }
   }, [currentLanguage]);
+
+  const proposedDateString = rows[rows.length - 1].selectedOption;
+  const proposedDateMoment = moment(proposedDateString, "YYYYMMDD");
+  let minDateForResponse;
+
+  if (!proposedDateMoment.isValid()) {
+    console.error("The date is not valid:", proposedDateString);
+    // handle the error appropriately
+  } else {
+    // Add 1 day using moment.js
+    minDateForResponse = proposedDateMoment.toDate();
+  }
 
   return (
     <section>
@@ -1007,20 +1008,6 @@ const ProposedNewMeeting = ({
                                           changeDateStartHandler(value, index)
                                         }
                                       />
-                                      {/* <Row>
-                                        <Col>
-                                          <p
-                                            className={
-                                              error &&
-                                              data.selectedOption === ""
-                                                ? ` ${styles["errorMessage-inLogin"]} `
-                                                : `${styles["errorMessage-inLogin_hidden"]}`
-                                            }
-                                          >
-                                            {t("Please-select-data-and-time")}
-                                          </p>
-                                        </Col>
-                                      </Row> */}
                                     </Col>
                                     <Col
                                       lg={3}
@@ -1111,22 +1098,6 @@ const ProposedNewMeeting = ({
                                   </Row>
                                 </Col>
                               </Row>
-                              {/* <Row>
-                                <Col>
-                                  <p
-                                    className={
-                                      error &&
-                                      rows.selectedOption === "" &&
-                                      rows.startDate === "" &&
-                                      rows.endDate === ""
-                                        ? ` ${styles["errorMessage-inLogin"]} `
-                                        : `${styles["errorMessage-inLogin_hidden"]}`
-                                    }
-                                  >
-                                    {t("Please-select-data-and-time")}
-                                  </p>
-                                </Col>
-                              </Row> */}
                             </>
                           );
                         })
@@ -1224,7 +1195,7 @@ const ProposedNewMeeting = ({
                           value={sendResponseVal}
                           selected={sendResponseBy.date}
                           format={"DD/MM/YYYY"}
-                          minDate={moment().toDate()}
+                          maxDate={minDateForResponse}
                           placeholder="DD/MM/YYYY"
                           render={
                             <InputIcon
