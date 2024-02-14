@@ -620,6 +620,19 @@ const ProposedMeetingDate = ({
     }
   }, [getAllProposedDates]);
 
+  //Logic For Not Letting the User to Select dates based on Proposed Dates
+  const proposedDateString = rows[rows.length - 1].selectedOption;
+  const proposedDateMoment = moment(proposedDateString, "YYYYMMDD");
+  let minDateForResponse;
+
+  if (!proposedDateMoment.isValid()) {
+    console.error("The date is not valid:", proposedDateString);
+    // handle the error appropriately
+  } else {
+    // Add 1 day using moment.js
+    minDateForResponse = proposedDateMoment.toDate();
+  }
+
   return (
     <section>
       <Row className="mt-2">
@@ -895,7 +908,7 @@ const ProposedMeetingDate = ({
                       sendResponseBy.date === "" ? "" : sendResponseBy.date
                     }
                     format={"DD/MM/YYYY"}
-                    minDate={moment().toDate()}
+                    maxDate={minDateForResponse}
                     placeholder="DD/MM/YYYY"
                     render={
                       <InputIcon
