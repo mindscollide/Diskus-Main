@@ -463,10 +463,9 @@ const ProposedNewMeeting = ({
     } catch {}
   };
 
-  //OnChange Function For Start Time
-  const handleStartTimeChange = (index, date) => {
+  const handleStartDateChange = (index, date) => {
     let newDate = new Date(date);
-    console.log(newDate, "handleStartDateChangehandleStartDateChange");
+
     if (newDate instanceof Date && !isNaN(newDate)) {
       const hours = ("0" + newDate.getHours()).slice(-2);
       const minutes = ("0" + newDate.getMinutes()).slice(-2);
@@ -488,6 +487,9 @@ const ProposedNewMeeting = ({
               "Selected-start-time-should-not-be-less-than-the-previous-endTime"
             ),
           });
+          updatedRows[index].startDate = startTime?.formattedTime;
+          updatedRows[index].startTime = startTime?.newFormatTime;
+          setRows(updatedRows);
           return;
         } else {
           if (
@@ -500,6 +502,9 @@ const ProposedNewMeeting = ({
                 "Selected-start-time-should-not-be-greater-than-the-endTime"
               ),
             });
+            updatedRows[index].startDate = formattedTime;
+            updatedRows[index].startTime = newDate;
+            setRows(updatedRows);
             return;
           } else {
             updatedRows[index].startDate = formattedTime;
@@ -518,6 +523,9 @@ const ProposedNewMeeting = ({
               "Selected-start-time-should-not-be-greater-than-the-endTime"
             ),
           });
+          updatedRows[index].startDate = formattedTime;
+          updatedRows[index].startTime = newDate;
+          setRows(updatedRows);
           return;
         } else {
           updatedRows[index].startDate = formattedTime;
@@ -526,12 +534,10 @@ const ProposedNewMeeting = ({
         }
       }
     } else {
-      console.error("Invalid date and time object:", date);
     }
   };
 
-  //OnChange Function For End Time
-  const handleEndTimeChange = (index, date) => {
+  const handleEndDateChange = (index, date) => {
     let newDate = new Date(date);
 
     if (newDate instanceof Date && !isNaN(newDate)) {
@@ -555,6 +561,8 @@ const ProposedNewMeeting = ({
               "Selected-end-time-should-not-be-less-than-the-previous-one"
             ),
           });
+          updatedRows[index].endDate = formattedTime;
+          updatedRows[index].endTime = newDate;
           return;
         } else {
           updatedRows[index].endDate = formattedTime;
@@ -567,6 +575,8 @@ const ProposedNewMeeting = ({
             flag: true,
             message: t("Selected-end-time-should-not-be-less-than-start-time"),
           });
+          updatedRows[index].endDate = formattedTime;
+          updatedRows[index].endTime = newDate;
           return;
         } else {
           updatedRows[index].endDate = formattedTime;
@@ -576,7 +586,6 @@ const ProposedNewMeeting = ({
       }
       // }
     } else {
-      console.error("Invalid date and time object:", date);
     }
   };
 
@@ -735,6 +744,7 @@ const ProposedNewMeeting = ({
     }
   }, [currentLanguage]);
 
+  //Logic For Not Letting the User to Select dates based on Proposed Dates
   const proposedDateString = rows[rows.length - 1].selectedOption;
   const proposedDateMoment = moment(proposedDateString, "YYYYMMDD");
   let minDateForResponse;
@@ -1030,7 +1040,7 @@ const ProposedNewMeeting = ({
                                         editable={false}
                                         plugins={[<TimePicker hideSeconds />]}
                                         onChange={(date) =>
-                                          handleStartTimeChange(index, date)
+                                          handleStartDateChange(index, date)
                                         }
                                       />
                                     </Col>
@@ -1067,7 +1077,7 @@ const ProposedNewMeeting = ({
                                         plugins={[<TimePicker hideSeconds />]}
                                         editable={false}
                                         onChange={(date) =>
-                                          handleEndTimeChange(index, date)
+                                          handleEndDateChange(index, date)
                                         }
                                       />
                                     </Col>
