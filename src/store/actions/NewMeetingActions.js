@@ -61,6 +61,7 @@ import {
   validateEncryptedStringUserAvailabilityForMeeting,
   getAllCommittesandGroupsforPolls,
   getUserWiseProposeDateOrganizer,
+  endMeetingStatus,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -7352,6 +7353,151 @@ const uploadGlobalFlag = (response) => {
   };
 };
 
+// end meeting new Api
+const endMeetingInit = () => {
+  return {
+    type: actions.END_MEETING_STATUS_INIT,
+  };
+};
+
+const endMeetingSuccess = (response, message) => {
+  return {
+    type: actions.END_MEETING_STATUS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const endMeetingFail = (message) => {
+  return {
+    type: actions.END_MEETING_STATUS_FAIL,
+    message: message,
+  };
+};
+
+const endMeetingStatusApi = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    await dispatch(endMeetingInit());
+    let form = new FormData();
+    form.append("RequestMethod", endMeetingStatus.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(endMeetingStatusApi(navigate, t, Data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                endMeetingSuccess(
+                  response.data.responseResult,
+                  t("Record-updated")
+                )
+              );
+
+              let currentView = localStorage.getItem("MeetingCurrentView");
+              let meetingpageRow = localStorage.getItem("MeetingPageRows");
+              let meetingPageCurrent = parseInt(
+                localStorage.getItem("MeetingPageCurrent")
+              );
+              let userID = localStorage.getItem("userID");
+              let searchData = {
+                Date: "",
+                Title: "",
+                HostName: "",
+                UserID: Number(userID),
+                PageNumber:
+                  meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+                Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+                PublishedMeetings:
+                  currentView && Number(currentView) === 1 ? true : false,
+              };
+              await dispatch(searchNewUserMeeting(navigate, searchData, t));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_02".toLowerCase()
+                )
+            ) {
+              dispatch(endMeetingFail(t("No-records-updated")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_03".toLowerCase()
+                )
+            ) {
+              dispatch(endMeetingFail(t("Something-went-wrong")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_04".toLowerCase()
+                )
+            ) {
+              dispatch(endMeetingFail(t("Add-meeting-agenda-to-publish")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_05".toLowerCase()
+                )
+            ) {
+              dispatch(endMeetingFail(t("Add-meeting-organizers-to-publish")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_06".toLowerCase()
+                )
+            ) {
+              dispatch(
+                endMeetingFail(t("Add-meeting-participants-to-publish"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_07".toLowerCase()
+                )
+            ) {
+              dispatch(
+                endMeetingFail(
+                  t("Meeting-cannot-be-published-after-time-has-elapsed")
+                )
+              );
+            } else {
+              dispatch(endMeetingFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(endMeetingFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(endMeetingFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(endMeetingFail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   clearResponseNewMeetingReducerMessage,
   getAllAgendaContributorApi,
@@ -7496,4 +7642,5 @@ export {
   attendanceGlobalFlag,
   cleareAllProposedMeetingDates,
   uploadGlobalFlag,
+  endMeetingStatusApi,
 };

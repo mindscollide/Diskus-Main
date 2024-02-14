@@ -9,6 +9,13 @@ const initialState = {
 
 const attendanceMeetingReducer = (state = initialState, action) => {
   switch (action.type) {
+    case actions.CLEAR_ATTENDANCE_RESPONSEMESSAGE: {
+      return {
+        ...state,
+        ResponseMessage: "",
+      };
+    }
+
     case actions.GET_ALL_ATTENDANCE_MEETING_INIT: {
       return {
         ...state,
@@ -61,7 +68,6 @@ const attendanceMeetingReducer = (state = initialState, action) => {
     case actions.ATTENDANCE_REDUCER_STATE_CLEAR: {
       return {
         ...state,
-        ResponseMessage: "",
         saveAttendanceMeeting: [],
         attendanceMeetings: [],
       };

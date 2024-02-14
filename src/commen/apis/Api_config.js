@@ -1347,6 +1347,12 @@ const UserLoginHistoryRM = {
 const UserLogout = {
   RequestMethod: "ServiceManager.LogOut",
 };
+
+// new api for end quick meeting
+const endMeetingStatus = {
+  RequestMethod: "ServiceManager.MeetingStatusUpdate",
+};
+
 export {
   UserLoginHistoryRM,
   getDataAnalyticsCountRM,
@@ -1708,4 +1714,5 @@ export {
   validateMicrosoftToken,
   getUserWiseProposeDateOrganizer,
   UserLogout,
+  endMeetingStatus,
 };

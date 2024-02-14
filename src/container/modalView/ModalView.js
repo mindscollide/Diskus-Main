@@ -29,11 +29,13 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import {
   CleareMessegeNewMeeting,
+  endMeetingStatusApi,
   FetchMeetingURLApi,
   FetchMeetingURLClipboard,
 } from "../../store/actions/NewMeetingActions";
 import copyToClipboard from "../../hooks/useClipBoard";
 import { callRequestReceivedMQTT } from "../../store/actions/VideoMain_actions";
+import { UpdateOrganizersMeeting } from "../../store/actions/MeetingOrganizers_action";
 
 const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   //For Localization
@@ -684,36 +686,11 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   const endMeeting = async () => {
     await setViewFlag(false);
     let meetingID = assignees.ViewMeetingDetails.meetingDetails.pK_MDID;
-    let Data = {
+    let newData = {
       MeetingID: meetingID,
-      UserID: parseInt(createrID),
+      StatusID: 9,
     };
-    // let Data2 = {
-    //   Date: "",
-    //   Title: "",
-    //   HostName: "",
-    //   UserID: parseInt(createrID),
-    //   PageNumber: 1,
-    //   Length: 50,
-    //   PublishedMeetings: true,
-    // };
-
-    let meetingpageRow = localStorage.getItem("MeetingPageRows");
-    let meetingPageCurrent = parseInt(
-      localStorage.getItem("MeetingPageCurrent")
-    );
-    let currentView = localStorage.getItem("MeetingCurrentView");
-    let searchData = {
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(createrID),
-      PageNumber: Number(meetingPageCurrent),
-      Length: Number(meetingpageRow),
-      PublishedMeetings:
-        currentView && Number(currentView) === 1 ? true : false,
-    };
-    await dispatch(EndMeeting(navigate, Data, t, searchData));
+    await dispatch(endMeetingStatusApi(navigate, t, newData));
   };
   const leaveMeeting = async () => {
     await setViewFlag(false);
