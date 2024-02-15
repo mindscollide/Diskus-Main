@@ -699,6 +699,7 @@ const CreateTask = ({
                                                     className={
                                                       styles["FileName"]
                                                     }
+                                                    title={data.name}
                                                   >
                                                     {data.name}
                                                   </span>

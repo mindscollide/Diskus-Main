@@ -2021,7 +2021,12 @@ const ScheduleNewResolution = () => {
                                                         draggable="false"
                                                       />
                                                     </span>
-                                                    <p className="modaltodolist-attachment-text">
+                                                    <p
+                                                      className="modaltodolist-attachment-text"
+                                                      title={
+                                                        data.DisplayAttachmentName
+                                                      }
+                                                    >
                                                       {first}
                                                     </p>
                                                   </Col>

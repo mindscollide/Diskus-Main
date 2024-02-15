@@ -1120,7 +1120,12 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                                                       {...defaultStyles.ext}
                                                     />
                                                   )}
-                                                  <p className="fileUploadLabel">
+                                                  <p
+                                                    className="fileUploadLabel"
+                                                    title={
+                                                      MeetingAgendaAttachmentsData.DisplayAttachmentName
+                                                    }
+                                                  >
                                                     {first}
                                                   </p>
                                                 </Col>
@@ -1317,7 +1322,12 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                                 extension={ext}
                                 {...defaultStyles.ext}
                               />
-                              <p className="fileUploadLabel">{first}</p>
+                              <p
+                                className="fileUploadLabel"
+                                title={data.DisplayAttachmentName}
+                              >
+                                {first}
+                              </p>
                             </Col>
                           );
                         })

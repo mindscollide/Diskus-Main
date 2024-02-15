@@ -234,12 +234,17 @@ input#MeetingReminderID::placeholder {
   cursor: pointer;
 }
 
-.file-icon-modalmeeting-p {
+/* .file-icon-modalmeeting-p {
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: center;
   white-space: nowrap;
 }
+
+.file-icon-modalmeeting-p:hover {
+  text-overflow: none;
+  white-space: normal;
+} */
 
 /* .modalmeeting-participant-scroll {
   height: 161px;
