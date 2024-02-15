@@ -33,7 +33,10 @@ import { clearAttendanceState } from "../../../../../store/actions/Attendance_Me
 import { ViewToDoList } from "../../../../../store/actions/ToDoList_action";
 import ModalViewToDo from "../../../../todolistviewModal/ModalViewToDo";
 import { Select } from "antd";
-import { updateTodoStatusFunc } from "../../../../../store/actions/GetTodos";
+import {
+  getTodoStatus,
+  updateTodoStatusFunc,
+} from "../../../../../store/actions/GetTodos";
 
 const Actions = ({
   setViewAdvanceMeetingModal,
@@ -93,6 +96,8 @@ const Actions = ({
     };
 
     dispatch(getMeetingTaskMainApi(navigate, t, meetingTaskData));
+    dispatch(getTodoStatus(navigate, t));
+
     return () => {
       dispatch(clearAttendanceState());
       setActionsRows([]);

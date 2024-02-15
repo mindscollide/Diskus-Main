@@ -35,12 +35,11 @@ const SignatureViewer = () => {
   const { webViewer } = useSelector((state) => state);
   const viewer = useRef(null);
   console.log(viewer, "viewerviewerviewer");
-  const [signersData, setSignersData] = useState([
-    {
-      Name: "",
-      EmailAddress: "",
-    },
-  ]);
+  const [signers, setSigners] = useState({
+    Name: "",
+    EmailAddress: "",
+  });
+  const [signerData, setSignerData] = useState([]);
   const [isButtonDisbale, setButtonDisabled] = useState(false);
   let name = localStorage.getItem("name");
   // Parse the URL parameters to get the data
@@ -62,7 +61,8 @@ const SignatureViewer = () => {
 
   useEffect(() => {
     if (taskId && attachmentID) {
-      console.log("test", { taskId, attachmentID });
+      setOpenAddParticipentModal(true);
+      // console.log("test", { taskId, attachmentID });
       if (Number(commingFrom) === 1) {
         let data = {
           TaskID: Number(taskId),
@@ -437,40 +437,37 @@ const SignatureViewer = () => {
       console.error("Error clearing signature annotations:", error);
     }
   };
-  const allValuesNotEmpty = signersData.every(
-    (item) => item.EmailAddress !== "" && item.Name !== ""
-  );
+
   const handleClickAdd = () => {
-    if (allValuesNotEmpty) {
-      setSignersData((prevSignersData) => [
-        ...prevSignersData,
-        { Name: "", EmailAddress: "" },
+    if (signers.EmailAddress !== "" && signers.Name !== "") {
+      setSignerData([
+        ...signerData,
+        { Name: signers.Name, EmailAddress: signers.EmailAddress },
       ]);
-    } else {
-      setOpen({
-        message: "Please fill all options",
-        open: true,
+      setSigners({
+        ...signers,
+        EmailAddress: "",
+        Name: "",
       });
+    } else {
+      // setOpen({
+      //   message: "Please fill all options",
+      //   open: true,
+      // });
     }
   };
 
   const handleRemoveSigner = (index) => {
-    setSignersData((prevSignersData) => {
+    setSignerData((prevSignersData) => {
       return prevSignersData.filter((_, i) => i !== index);
     });
   };
 
   const handleupdateFieldData = (event, index) => {
-    setSignersData((prevSignersData) => {
-      return prevSignersData.map((data, dataindex) => {
-        if (index === dataindex) {
-          return {
-            ...data,
-            [event.target.name]: event.target.value,
-          };
-        }
-        return data;
-      });
+    let { name, value } = event.target;
+    setSigners({
+      ...signers,
+      [name]: value,
     });
   };
   // if using a class, equivalent of componentDidMount
@@ -1025,13 +1022,21 @@ const SignatureViewer = () => {
     }
   }, [webViewer.ResponseMessage]);
   const handleHideModal = () => {
-    setOpenAddParticipentModal(false);
-    setSignersData([
-      {
-        Name: "",
-        EmailAddress: "",
-      },
-    ]);
+    if (signerData.length > 0) {
+      setOpenAddParticipentModal(false);
+      // setSignersData([
+      //   {
+      //     Name: "",
+      //     EmailAddress: "",
+      //   },
+      // ]);
+    } else {
+      setOpen({
+        ...open,
+        message: "Data Must Required",
+        open: true,
+      });
+    }
   };
   return (
     <>
@@ -1061,56 +1066,87 @@ const SignatureViewer = () => {
                     {t("Add-the-people-who-need-to-sign-this-document")}
                   </span>
                 </Col>
-                <Col lg={12} md={12} xs={12} sm={12} className="signersList">
+                <Col lg={12} md={12} xs={12} sm={12}>
+                  <Row>
+                    <Col sm={12} md={6} lg={6}>
+                      <TextField
+                        placeholder={t("Full-name")}
+                        labelClass={"inputlabel_style"}
+                        width={"100%"}
+                        applyClass={"signatureflow_input"}
+                        name={"Name"}
+                        type="text"
+                        // disable={index !== 0 ? true : false}
+                        value={signers.Name}
+                        label={"Name"}
+                        change={(e) => handleupdateFieldData(e)}
+                      />
+                    </Col>
+                    <Col sm={12} md={6} lg={6}>
+                      <TextField
+                        width={"100%"}
+                        name={"EmailAddress"}
+                        type="email"
+                        // disable={index !== 0 ? true : false}
+                        labelClass={"inputlabel_style"}
+                        applyClass={"signatureflow_input"}
+                        placeholder={t("Email")}
+                        value={signers.EmailAddress}
+                        label={"Email"}
+                        change={(e) => handleupdateFieldData(e)}
+                      />
+                    </Col>
+                  </Row>
                   <Row className="d-flex align-items-center">
-                    {signersData.map((fieldsData, index) => {
-                      return (
-                        <>
-                          <Col sm={12} md={11} lg={11} className="my-1">
-                            <Row>
-                              <Col sm={12} md={6} lg={6}>
-                                <TextField
-                                  placeholder={t("Full-name")}
-                                  labelClass={"inputlabel_style"}
-                                  width={"100%"}
-                                  applyClass={"signatureflow_input"}
-                                  name={"Name"}
-                                  type="text"
-                                  value={fieldsData.Name}
-                                  label={"Name"}
-                                  change={(e) =>
-                                    handleupdateFieldData(e, index)
-                                  }
-                                />
-                              </Col>
-                              <Col sm={12} md={6} lg={6}>
-                                <TextField
-                                  width={"100%"}
-                                  name={"EmailAddress"}
-                                  type="email"
-                                  labelClass={"inputlabel_style"}
-                                  applyClass={"signatureflow_input"}
-                                  placeholder={t("Email")}
-                                  value={fieldsData.EmailAddress}
-                                  label={"Email"}
-                                  change={(e) =>
-                                    handleupdateFieldData(e, index)
-                                  }
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                          <Col sm={12} md={1} lg={1} className="p-0 mt-3">
-                            <img
-                              src={DeleteIcon}
-                              className="cursor-pointer"
-                              onClick={() => handleRemoveSigner(index)}
-                              width={20}
-                            />
-                          </Col>
-                        </>
-                      );
-                    })}
+                    <Col sm={12} md={12} lg={12} className="signersList">
+                      <Row>
+                        {signerData.length > 0 &&
+                          signerData.map((fieldsData, index) => {
+                            return (
+                              <>
+                                <Col sm={12} md={11} lg={11} className="my-1">
+                                  <Row>
+                                    <Col sm={12} md={6} lg={6}>
+                                      <TextField
+                                        placeholder={t("Full-name")}
+                                        labelClass={"inputlabel_style"}
+                                        width={"100%"}
+                                        applyClass={"signatureflow_input"}
+                                        name={"Name"}
+                                        type="text"
+                                        disable={true}
+                                        value={fieldsData.Name}
+                                        label={"Name"}
+                                      />
+                                    </Col>
+                                    <Col sm={12} md={6} lg={6}>
+                                      <TextField
+                                        width={"100%"}
+                                        name={"EmailAddress"}
+                                        type="email"
+                                        disable={true}
+                                        labelClass={"inputlabel_style"}
+                                        applyClass={"signatureflow_input"}
+                                        placeholder={t("Email")}
+                                        value={fieldsData.EmailAddress}
+                                        label={"Email"}
+                                      />
+                                    </Col>
+                                  </Row>
+                                </Col>
+                                <Col sm={12} md={1} lg={1} className="p-0 mt-4">
+                                  <img
+                                    src={DeleteIcon}
+                                    className="cursor-pointer"
+                                    onClick={() => handleRemoveSigner(index)}
+                                    width={20}
+                                  />
+                                </Col>
+                              </>
+                            );
+                          })}
+                      </Row>
+                    </Col>
                   </Row>
                 </Col>
                 <Col lg={12} md={12} xs={12} sm={12}>
@@ -1137,7 +1173,7 @@ const SignatureViewer = () => {
                 <Button
                   className={"CancelBtn"}
                   text={t("Cancel")}
-                  onClick={() => setOpenAddParticipentModal(false)}
+                  onClick={handleHideModal}
                 />
                 <Button
                   className={"Add"}
