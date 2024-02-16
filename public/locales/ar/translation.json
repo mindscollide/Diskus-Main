@@ -1703,7 +1703,7 @@
   "Layout": "Layout",
   "Collapse": "Collapse",
   "Downloading-file": "Downloading file",
-  "Description-and-attachement": "Description And Attachement",
+  "Description-and-attachement": "Description And Attachment",
   "Attendace": "Attendance",
   "Send-reply": "Send Reply",
   "User-name": "User Name",
@@ -1723,5 +1723,6 @@
   "Work-email-address": "Work Email address",
   "Deselect-all": "Deselect all",
   "Add-another-signer": "Add another signer",
-  "Add-assignee": "Add Assignee"
+  "Add-assignee": "Add Assignee",
+  "You-have-been-blocked": "You have been blocked by [User Name]"
 }

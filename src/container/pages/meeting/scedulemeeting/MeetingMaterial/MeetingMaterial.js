@@ -62,6 +62,9 @@ const MeetingMaterial = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { NewMeetingreducer } = useSelector((state) => state);
+
   const meetingMaterialData = useSelector(
     (state) => state.NewMeetingreducer.meetingMaterialData
   );
@@ -276,6 +279,10 @@ const MeetingMaterial = ({
     }
     setIsPublishedState(isPublishedGlobal);
   }, [meetingMaterialData, isPublishedGlobal]);
+
+  console.log("isPublishedGlobalisPublishedGlobal", isPublishedGlobal);
+
+  console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
 
   const handleCancelButton = async () => {
     // dispatch(showCancelMeetingMaterial(true));
