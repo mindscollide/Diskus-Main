@@ -31,6 +31,8 @@ import { showunsavedEditPollsMeetings } from "../../../../store/actions/NewMeeti
 import {
   convertGMTDateintoUTC,
   convertintoGMTCalender,
+  multiDatePickerDateChangIntoUTC,
+  utcConvertintoGMT,
 } from "../../../../commen/functions/date_formater";
 import { updatePollsApi } from "../../../../store/actions/Polls_actions";
 
@@ -165,7 +167,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
     setMeetingDate(meetingDateValueFormat);
     setupdatePolls({
       ...updatePolls,
-      date: convertGMTDateintoUTC(date).slice(0, 8),
+      date: multiDatePickerDateChangIntoUTC(date),
     });
   };
 
@@ -362,9 +364,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
       ) {
         let pollsDetailsData = PollsReducer.Allpolls.poll;
         let pollMembers = [];
-        let newDateGmt = convertintoGMTCalender(
-          pollsDetailsData.pollDetails.dueDate
-        );
+        let newDateGmt = pollsDetailsData.pollDetails.dueDate.slice(0, 8);
         setupdatePolls({
           ...updatePolls,
           Title: pollsDetailsData.pollDetails.pollTitle,
@@ -374,7 +374,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
           PollID: pollsDetailsData.pollDetails.pollID,
         });
 
-        let DateDate = new Date(newDateGmt);
+        let DateDate = utcConvertintoGMT(newDateGmt + "000000");
         setMeetingDate(DateDate);
         if (pollsDetailsData.pollDetails.pollStatus.pollStatusId === 2) {
           setCheckForPollStatus(true);

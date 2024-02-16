@@ -35,6 +35,7 @@ import {
 import {
   convertGMTDateintoUTC,
   convertintoGMTCalender,
+  utcConvertintoGMT,
 } from "../../../../../../commen/functions/date_formater";
 import {
   clearPollsMesseges,
@@ -370,9 +371,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
       ) {
         let pollsDetailsData = PollsReducer.Allpolls.poll;
         let pollMembers = [];
-        let newDateGmt = convertintoGMTCalender(
-          pollsDetailsData.pollDetails.dueDate
-        );
+        let newDateGmt = pollsDetailsData.pollDetails.dueDate.slice(0, 8);
         setupdatePolls({
           ...updatePolls,
           Title: pollsDetailsData.pollDetails.pollTitle,
@@ -382,7 +381,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
           PollID: pollsDetailsData.pollDetails.pollID,
         });
 
-        let DateDate = new Date(newDateGmt);
+        let DateDate = utcConvertintoGMT(newDateGmt + "000000");
         setMeetingDate(DateDate);
         if (pollsDetailsData.pollDetails.pollStatus.pollStatusId === 2) {
           setCheckForPollStatus(true);

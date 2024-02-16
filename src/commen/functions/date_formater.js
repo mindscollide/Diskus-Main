@@ -549,11 +549,15 @@ export const convertGMTDateintoUTC = (GMTdate) => {
 
 export const multiDatePickerDateChangIntoUTC = (date) => {
   const utcTime = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+  let d = new Date(date);
+  d.setHours(23);
+  d.setMinutes(59);
+  d.setSeconds(58);
 
   // Extract the year, month, and day components from the UTC time
-  const year = utcTime.getUTCFullYear();
-  const month = String(utcTime.getUTCMonth() + 1).padStart(2, "0");
-  const day = String(utcTime.getUTCDate()).padStart(2, "0");
+  const year = d.getUTCFullYear();
+  const month = String(d.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(d.getUTCDate()).padStart(2, "0");
   const utcFormatted = `${year}${month}${day}`;
 
   return utcFormatted;
