@@ -1754,6 +1754,11 @@ const getAllAgendaContributorApi = (navigate, t, data) => {
                 )
             ) {
               dispatch(getAllAgendaContributor_fail(""));
+              dispatch(
+                getAllAgendaContributor_isPublished_success(
+                  response.data.responseResult.isPublished
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1962,6 +1967,11 @@ const GetAllSavedparticipantsAPI = (Data, navigate, t) => {
                 )
             ) {
               dispatch(showAllMeetingParticipantsFailed(""));
+              dispatch(
+                showAllMeetingParticipantsIsPublishedSuccess(
+                  response.data.responseResult.isPublished
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2943,6 +2953,11 @@ const getMeetingMaterialAPI = (navigate, t, meetingMaterialData, rows, id) => {
               "Meeting_MeetingServiceManager_GetAllMeetingMaterial_02"
             ) {
               dispatch(meetingMaterialFail(""));
+              dispatch(
+                meetingMaterialIsPublishedSuccess(
+                  response.data.responseResult.isPublished
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_GetAllMeetingMaterial_03"
