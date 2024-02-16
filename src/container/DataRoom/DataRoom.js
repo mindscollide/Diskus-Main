@@ -626,11 +626,11 @@ const DataRoom = () => {
         )
       );
     } else if (data.value === 8) {
-      window.open(
-        `/#/DisKus/signatureviewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
-        "_blank",
-        "noopener noreferrer"
-      );
+      // window.open(
+      //   `/#/DisKus/signatureviewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+      //   "_blank",
+      //   "noopener noreferrer"
+      // );
     }
   };
   //
