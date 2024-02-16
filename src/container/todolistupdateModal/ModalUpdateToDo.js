@@ -494,7 +494,10 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
                                       {...defaultStyles.gif}
                                     />
                                   ) : null}
-                                  <p className="modalupdatetodolist-attachment-text">
+                                  <p
+                                    className="modalupdatetodolist-attachment-text"
+                                    title={data.DisplayAttachmentName}
+                                  >
                                     {first}
                                   </p>
                                 </Col>

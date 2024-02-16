@@ -867,7 +867,10 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                                         }
                                       />
                                     </span>
-                                    <p className="modaltodolist-attachment-text">
+                                    <p
+                                      className="modaltodolist-attachment-text"
+                                      title={data.displayAttachmentName}
+                                    >
                                       {first}
                                     </p>
                                   </Col>

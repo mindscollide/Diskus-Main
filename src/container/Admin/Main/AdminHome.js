@@ -98,7 +98,9 @@ const AdminHome = () => {
           message: `Your role in ${data.payload.organizationName} has been updated. Please login again to continue working`,
         });
         setNotificationID(id);
+
         setTimeout(() => {
+          dispatch(setLoader());
           navigate("/");
         }, 4000);
       } else if (

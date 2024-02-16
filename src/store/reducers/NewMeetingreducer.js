@@ -131,6 +131,8 @@ const initialState = {
   pollsGlobalFlag: false,
   attendanceGlobalFlag: false,
   uploadGlobalFlag: false,
+
+  endMeetingStatus: null,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -2087,6 +2089,31 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         uploadGlobalFlag: action.response,
+      };
+    }
+
+    case actions.END_MEETING_STATUS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.END_MEETING_STATUS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        endMeetingStatus: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.END_MEETING_STATUS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        endMeetingStatus: null,
+        ResponseMessage: action.message,
       };
     }
 
