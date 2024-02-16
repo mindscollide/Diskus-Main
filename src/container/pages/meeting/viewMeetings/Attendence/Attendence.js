@@ -4,8 +4,15 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-import { Button, Table, Loader } from "../../../../../components/elements";
 import {
+  Button,
+  Table,
+  Loader,
+  Notification,
+} from "../../../../../components/elements";
+import {
+  clearAttendanceResponse,
+  clearAttendanceState,
   getAllAttendanceMeetingApi,
   saveMeetingAttendanceApi,
 } from "../../../../../store/actions/Attendance_Meeting";
@@ -55,6 +62,17 @@ const Attendence = ({
 
   const [attendenceRows, setAttendenceRows] = useState([]);
   console.log(attendenceRows, "attendenceRowsattendenceRows");
+
+  const ResponseMessage = useSelector(
+    (state) => state.attendanceMeetingReducer.ResponseMessage
+  );
+
+  console.log(ResponseMessage, "ResponseMessageResponseMessage");
+
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+  });
 
   const [cancelModalView, setCancelModalView] = useState(false);
 
@@ -283,21 +301,52 @@ const Attendence = ({
   }, []);
 
   // for save the meeting
-  const saveHandler = () => {
-    let newData = [];
-    attendenceRows.forEach((data, index) => {
-      newData.push({
-        AttendanceStatusID: data.meetingAttendancestatus.attendanceStatusID,
-        UserID: data.userID,
-      });
-    });
-    let Data = {
-      MeetingAttendance: newData,
-      MeetingID: Number(advanceMeetingModalID),
-    };
-    console.log(Data, "DataData");
-    dispatch(saveMeetingAttendanceApi(navigate, t, Data));
+
+  // Function to handle notification logic
+  const handleSaveNotification = () => {
+    if (ResponseMessage) {
+      setOpen({ open: true, message: ResponseMessage });
+
+      // Dispatch an action to reset/clear ResponseMessage
+      dispatch(clearAttendanceResponse());
+    }
   };
+
+  // for save the meeting
+  const saveHandler = async () => {
+    try {
+      let newData = [];
+      attendenceRows.forEach((data, index) => {
+        newData.push({
+          AttendanceStatusID: data.meetingAttendancestatus.attendanceStatusID,
+          UserID: data.userID,
+        });
+      });
+      let Data = {
+        MeetingAttendance: newData,
+        MeetingID: Number(advanceMeetingModalID),
+      };
+
+      const response = await dispatch(
+        saveMeetingAttendanceApi(navigate, t, Data)
+      );
+
+      if (response && response.success) {
+        handleSaveNotification();
+      } else {
+      }
+    } catch (error) {
+      handleSaveNotification();
+      console.error("Error saving attendance:", error);
+    }
+  };
+
+  // useEffect to handle notifications
+  useEffect(() => {
+    handleSaveNotification();
+  }, [ResponseMessage]);
+
+  // ... (existing code)
 
   // This is how I can revert Data without Hitting an API
   const revertHandler = () => {
@@ -425,6 +474,8 @@ const Attendence = ({
           setPolls={setPolls}
         />
       )}
+
+      <Notification message={open.message} setOpen={setOpen} open={open.open} />
     </>
   );
 };

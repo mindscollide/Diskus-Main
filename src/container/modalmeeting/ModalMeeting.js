@@ -152,6 +152,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   const [attachments, setAttachments] = useState([]);
   const [forUpdateAttachments, setForUpdateAttachent] = useState([]);
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
+  console.log(taskAssignedTo, "taskAssignedTotaskAssignedTo");
   const [taskAssignedName, setTaskAssignedName] = useState("");
   const [createMeetingTime, setCreateMeetingTime] = useState(
     getStartTime.newFormatTime
@@ -2082,7 +2083,9 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                             classNamePrefix={"ModalOrganizerSelect"}
                             onChange={handleChangePresenter}
                             value={
-                              presenterValue.value === 0 ? null : presenterValue
+                              presenterValue?.value === 0
+                                ? null
+                                : presenterValue
                             }
                             placeholder="Select Presenter"
                             filterOption={filterFunc}
@@ -2238,7 +2241,10 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                                     }
                                   />
                                 </span>
-                                <p className="file-icon-modalmeeting-p">
+                                <p
+                                  className="file-icon-modalmeeting-p"
+                                  title={data.DisplayAttachmentName}
+                                >
                                   {first}
                                 </p>
                               </Col>
@@ -2431,7 +2437,10 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                                                       {...defaultStyles.ext}
                                                     />
                                                   )}
-                                                  <p className="file-icon-modalmeeting-p">
+                                                  <p
+                                                    className="file-icon-modalmeeting-p"
+                                                    title={first}
+                                                  >
                                                     {first}
                                                   </p>
                                                 </Col>

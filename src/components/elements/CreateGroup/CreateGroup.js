@@ -20,6 +20,8 @@ import {
   Loader,
 } from "./../../../components/elements";
 import styles from "./CreateGroup.module.css";
+import Select from "react-select";
+
 import { useSelector, useDispatch } from "react-redux";
 import {
   SaveGroupsDocumentsApiFunc,
@@ -83,6 +85,15 @@ const CreateGroup = ({ setCreategrouppage }) => {
   const [groupTypeValue, setGroupTypeValue] = useState("");
   const [organizationGroupType, setOrganizationGroupType] = useState([]);
   const [meetingAttendees, setMeetingAttendees] = useState([]);
+  const [allPresenters, setAllPresenters] = useState([]);
+  const [presenterValue, setPresenterValue] = useState({
+    value: 0,
+    label: "",
+    name: "",
+  });
+
+  console.log(allPresenters, "allPresentersallPresenters");
+  console.log(presenterValue, "allPresentersallPresenters");
 
   const [onclickFlag, setOnclickFlag] = useState(false);
   // for Participant id's
@@ -134,44 +145,44 @@ const CreateGroup = ({ setCreategrouppage }) => {
   //   } else {
   //   }
   // };
-  const searchFilterHandler = (value) => {
-    if (meetingAttendeesList.length > 0 && meetingAttendeesList) {
-      return meetingAttendeesList
-        .filter((item) => {
-          const searchTerm = value.toLowerCase();
-          const assigneesName = item.name.toLowerCase();
+  // const searchFilterHandler = (value) => {
+  //   if (meetingAttendeesList.length > 0 && meetingAttendeesList) {
+  //     return meetingAttendeesList
+  //       .filter((item) => {
+  //         const searchTerm = value.toLowerCase();
+  //         const assigneesName = item.name.toLowerCase();
 
-          return (
-            searchTerm && assigneesName.startsWith(searchTerm)
-            // assigneesName !== searchTerm.toLowerCase()
-          );
-        })
-        .slice(0, 10)
-        .map((item) => (
-          <div
-            onClick={() => onSearch(item.name, item.pK_UID)}
-            className="dropdown-row-assignee d-flex align-items-center flex-row"
-            key={item.pK_UID}
-          >
-            {}
-            <img
-              src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
-              alt=""
-              className="user-img"
-              draggable="false"
-            />
-            <p className="p-0 m-0">{item.name}</p>
-          </div>
-        ));
-    } else {
-    }
-  };
-  const onSearch = (name, id) => {
-    setOnclickFlag(true);
-    setTaskAssignedToInput(name);
-    setTaskAssignedTo(id);
-    setTaskAssignedName(name);
-  };
+  //         return (
+  //           searchTerm && assigneesName.startsWith(searchTerm)
+  //           // assigneesName !== searchTerm.toLowerCase()
+  //         );
+  //       })
+  //       .slice(0, 10)
+  //       .map((item) => (
+  //         <div
+  //           onClick={() => onSearch(item.name, item.pK_UID)}
+  //           className="dropdown-row-assignee d-flex align-items-center flex-row"
+  //           key={item.pK_UID}
+  //         >
+  //           {}
+  //           <img
+  //             src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
+  //             alt=""
+  //             className="user-img"
+  //             draggable="false"
+  //           />
+  //           <p className="p-0 m-0">{item.name}</p>
+  //         </div>
+  //       ));
+  //   } else {
+  //   }
+  // };
+  // const onSearch = (name, id) => {
+  //   setOnclickFlag(true);
+  //   setTaskAssignedToInput(name);
+  //   setTaskAssignedTo(id);
+  //   setTaskAssignedName(name);
+  // };
 
   // for meatings  Attendees
 
@@ -184,7 +195,36 @@ const CreateGroup = ({ setCreategrouppage }) => {
   useEffect(() => {
     try {
       if (Object.keys(assignees.user).length > 0) {
+        let newData = [];
         setMeetingAttendeesList(assignees.user);
+        assignees.user.forEach((user, index) => {
+          newData.push({
+            label: (
+              <>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex gap-2 align-items-center"
+                  >
+                    <img
+                      src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
+                      height="16.45px"
+                      width="18.32px"
+                      draggable="false"
+                      alt=""
+                    />
+                    <span>{user.name}</span>
+                  </Col>
+                </Row>
+              </>
+            ),
+            value: user.pK_UID,
+            name: user.name,
+          });
+        });
+        setAllPresenters(newData);
       }
     } catch (error) {}
   }, [assignees.user]);
@@ -241,7 +281,10 @@ const CreateGroup = ({ setCreategrouppage }) => {
         CreatorID: creatorID,
       });
     }
+    // setAllPresenters(meetingAttendeesList);
   }, [meetingAttendeesList]);
+
+  console.log(taskAssignedTo, "meetingAttendeesList");
 
   const handleAddAttendees = () => {
     // Create new copies of state variables to avoid state mutations
@@ -394,15 +437,17 @@ const CreateGroup = ({ setCreategrouppage }) => {
     });
   };
   //Input Field Assignee Change
-  const onChangeSearch = (e) => {
-    setOnclickFlag(false);
-    if (e.target.value.trimStart() != "") {
-      setTaskAssignedToInput(e.target.value.trimStart());
-    } else {
-      setTaskAssignedToInput("");
-      setTaskAssignedTo(0);
-      setTaskAssignedName("");
-    }
+  const onChangeSearch = (item) => {
+    setPresenterValue(item);
+    setTaskAssignedTo(item.value);
+    // setOnclickFlag(false);
+    // if (e.target.value.trimStart() != "") {
+    //   setTaskAssignedToInput(e.target.value.trimStart());
+    // } else {
+    //   setTaskAssignedToInput("");
+    //   setTaskAssignedTo(0);
+    //   setTaskAssignedName("");
+    // }
   };
 
   // onChange Function for set input values in state
@@ -462,7 +507,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
 
   const checkGroupMembers = (GroupMembers) => {
     if (Object.keys(GroupMembers).length > 0) {
-      // let flag1 = GroupMembers.find((data, index) => data.FK_GRMRID === 1);
       let flag2 = GroupMembers.find((data, index) => data.FK_GRMRID === 2);
 
       if (flag2 != undefined) {
@@ -673,6 +717,15 @@ const CreateGroup = ({ setCreategrouppage }) => {
       GroupsDocumentCallUpload(folderIDCreated);
     }
   }, [GroupsReducer.FolderID]);
+
+  const filterFunc = (options, searchText) => {
+    // console.log(options, "filterFuncfilterFunc");
+    if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   return (
     <>
@@ -1096,14 +1149,17 @@ const CreateGroup = ({ setCreategrouppage }) => {
                               sm={12}
                               className="group-fields"
                             >
-                              <InputSearchFilter
+                              <Select
+                                options={allPresenters}
+                                maxMenuHeight={140}
+                                onChange={onChangeSearch}
+                                value={
+                                  presenterValue.value === 0
+                                    ? null
+                                    : presenterValue
+                                }
                                 placeholder={t("Search-member-here") + " *"}
-                                value={taskAssignedToInput}
-                                filteredDataHandler={searchFilterHandler(
-                                  taskAssignedToInput
-                                )}
-                                change={onChangeSearch}
-                                onclickFlag={onclickFlag}
+                                filterOption={filterFunc}
                               />
                             </Col>
                           </Row>
@@ -1366,6 +1422,9 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                   <span
                                                     className={
                                                       styles["FileName"]
+                                                    }
+                                                    title={
+                                                      data.DisplayAttachmentName
                                                     }
                                                   >
                                                     {data.DisplayAttachmentName}

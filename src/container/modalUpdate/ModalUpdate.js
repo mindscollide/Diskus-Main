@@ -72,8 +72,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   const { t } = useTranslation();
   const getStartTime = getStartTimeWithCeilFunction();
   const getCurrentDateforMeeting = getCurrentDate();
-
+  const [defaultPresenter, setDefaultPresenter] = useState(null);
   let currentLanguage = localStorage.getItem("i18nextLng");
+  let createrID = Number(localStorage.getItem("userID"));
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { assignees, uploadReducer, CommitteeReducer, GroupsReducer } =
@@ -106,7 +108,12 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     URLs: "",
     FK_MDID: 0,
   });
-
+  const [defaultMeetingAgenda, setDefaultObjMeetingAgenda] = useState({
+    Title: "",
+    PresenterName: "",
+    URLs: "",
+    FK_MDID: 0,
+  });
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -790,20 +797,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             });
             seteditRecordIndex(null);
             seteditRecordFlag(false);
-            setObjMeetingAgenda({
-              PK_MAID: 0,
-              Title: "",
-              PresenterName: "",
-              URLs: "",
-              FK_MDID: 0,
-            });
+            setObjMeetingAgenda(defaultMeetingAgenda);
+            setPresenterValue(defaultPresenter);
+
             setMeetingAgendaAttachments({
               MeetingAgendaAttachments: [],
-            });
-            setPresenterValue({
-              label: "",
-              value: 0,
-              name: "",
             });
           } else {
             setModalField(false);
@@ -826,18 +824,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           });
           seteditRecordIndex(null);
           seteditRecordFlag(false);
-          setPresenterValue({
-            label: "",
-            value: 0,
-            name: "",
-          });
-          setObjMeetingAgenda({
-            PK_MAID: 0,
-            Title: "",
-            PresenterName: "",
-            URLs: "",
-            FK_MDID: 0,
-          });
+          setPresenterValue(defaultPresenter);
+          setObjMeetingAgenda(defaultMeetingAgenda);
           setMeetingAgendaAttachments({
             MeetingAgendaAttachments: [],
           });
@@ -867,21 +855,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
               ...createMeeting,
               ["MeetingAgendas"]: previousAdendas,
             });
-            setObjMeetingAgenda({
-              PK_MAID: 0,
-              Title: "",
-              PresenterName: "",
-              URLs: "",
-              FK_MDID: 0,
-            });
+            setObjMeetingAgenda(defaultMeetingAgenda);
             setMeetingAgendaAttachments({
               MeetingAgendaAttachments: [],
             });
-            setPresenterValue({
-              label: "",
-              value: 0,
-              name: "",
-            });
+            setPresenterValue(defaultPresenter);
             setFileSize(0);
           } else {
             setModalField(false);
@@ -904,18 +882,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             ...createMeeting,
             ["MeetingAgendas"]: previousAdendas,
           });
-          setObjMeetingAgenda({
-            PK_MAID: 0,
-            Title: "",
-            PresenterName: "",
-            URLs: "",
-            FK_MDID: 0,
-          });
-          setPresenterValue({
-            label: "",
-            value: 0,
-            name: "",
-          });
+          setObjMeetingAgenda(defaultMeetingAgenda);
+          setPresenterValue(defaultPresenter);
           setMeetingAgendaAttachments({
             MeetingAgendaAttachments: [],
           });
@@ -1107,6 +1075,66 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           value: user.pK_UID,
           name: user.name,
         });
+        if (Number(user.pK_UID) === Number(createrID)) {
+          setDefaultPresenter({
+            label: (
+              <>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex gap-2 align-items-center"
+                  >
+                    <img
+                      src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
+                      height="16.45px"
+                      width="18.32px"
+                      draggable="false"
+                      alt=""
+                    />
+                    <span>{user?.name}</span>
+                  </Col>
+                </Row>
+              </>
+            ),
+            value: user?.pK_UID,
+            name: user?.name,
+          });
+          setPresenterValue({
+            label: (
+              <>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex gap-2 align-items-center"
+                  >
+                    <img
+                      src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
+                      height="16.45px"
+                      width="18.32px"
+                      draggable="false"
+                      alt=""
+                    />
+                    <span>{user?.name}</span>
+                  </Col>
+                </Row>
+              </>
+            ),
+            value: user?.pK_UID,
+            name: user?.name,
+          });
+          setDefaultObjMeetingAgenda({
+            ...defaultMeetingAgenda,
+            PresenterName: user?.name,
+          });
+          setObjMeetingAgenda({
+            ...objMeetingAgenda,
+            PresenterName: user?.name,
+          });
+        }
       });
       setAllPresenters(PresenterData);
     }
@@ -2668,7 +2696,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                               classNamePrefix={"ModalOrganizerSelect"}
                               onChange={handleChangePresenter}
                               value={
-                                presenterValue.value === 0
+                                presenterValue?.value === 0
                                   ? null
                                   : presenterValue
                               }
@@ -2852,7 +2880,12 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                                                   }
                                                 />
                                               </span>
-                                              <p className="file-icon-updatemeeting-p">
+                                              <p
+                                                className="file-icon-updatemeeting-p"
+                                                title={
+                                                  data.DisplayAttachmentName
+                                                }
+                                              >
                                                 {first}
                                               </p>
                                             </Col>
@@ -3074,7 +3107,12 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                                                       {...defaultStyles.gif}
                                                     />
                                                   ) : null}
-                                                  <p className="text-center">
+                                                  <p
+                                                    className="text-center"
+                                                    title={
+                                                      MeetingAgendaAttachmentsData.DisplayAttachmentName
+                                                    }
+                                                  >
                                                     {first}
                                                   </p>
                                                 </Col>

@@ -1446,6 +1446,11 @@ const deleteUserSignatureRM = {
 const getWorkFlowByFileIdRM = {
   RequestMethod: "ServiceManager.GetWorkFlowByFileID",
 };
+// new api for end quick meeting
+const endMeetingStatus = {
+  RequestMethod: "ServiceManager.MeetingStatusUpdate",
+};
+
 export {
   UserLoginHistoryRM,
   getDataAnalyticsCountRM,
@@ -1834,4 +1839,5 @@ export {
   getUserSignatureRM,
   deleteUserSignatureRM,
   getWorkFlowByFileIdRM,
+  endMeetingStatus,
 };

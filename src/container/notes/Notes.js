@@ -494,6 +494,7 @@ const Notes = () => {
                                           className={
                                             styles["notes-attachment-text"]
                                           }
+                                          title={file.displayAttachmentName}
                                         >
                                           {first}
                                         </p>

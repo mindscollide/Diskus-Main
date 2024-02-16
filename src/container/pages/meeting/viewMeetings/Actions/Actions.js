@@ -324,7 +324,7 @@ const Actions = ({
               <Select
                 defaultValue={text.status}
                 bordered={false}
-                dropdownClassName="Status-Todo"
+                // dropdownClassName="Status-Todo"
                 className={
                   text.pK_TSID === 1
                     ? "InProgress MontserratSemiBold custom-class "
