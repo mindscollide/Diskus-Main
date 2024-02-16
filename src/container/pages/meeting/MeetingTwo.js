@@ -922,11 +922,20 @@ const NewMeeting = () => {
                             setViewAdvanceMeetingModal
                           )
                         );
+                        localStorage.setItem(
+                          "currentMeetingID",
+                          record.pK_MDID
+                        );
                         setAdvanceMeetingModalID(record.pK_MDID);
                         dispatch(viewMeetingFlag(true));
                         setViewAdvanceMeetingModal(true);
                         dispatch(viewAdvanceMeetingPublishPageFlag(true));
                         dispatch(scheduleMeetingPageFlag(false));
+                        setEdiorRole({
+                          status: 10,
+                          role: "Organizer",
+                          isPrimaryOrganizer: isPrimaryOrganizer,
+                        });
                       }}
                     />
                   </Col>
