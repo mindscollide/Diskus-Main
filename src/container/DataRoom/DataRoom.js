@@ -1030,6 +1030,15 @@ const DataRoom = () => {
           isPermission: record.permissionID,
         };
         const pdfDataJson = JSON.stringify(pdfData);
+        const pdfDataforSignature = {
+          taskId: record.id,
+          commingFrom: 4,
+          fileName: record.name,
+          attachmentID: record.id,
+          isPermission: record.permissionID,
+          isNew: true,
+        };
+        const pdfDataJsonSignature = JSON.stringify(pdfDataforSignature);
         if (record.isShared) {
           return (
             <>
@@ -1697,6 +1706,16 @@ const DataRoom = () => {
         };
         let fileExtension = getFileExtension(record.name);
         const pdfDataJson = JSON.stringify(pdfData);
+        const pdfDataforSignature = {
+          taskId: record.id,
+          commingFrom: 4,
+          fileName: record.name,
+          attachmentID: record.id,
+          isPermission: record.permissionID,
+          isNew: true,
+        };
+        const pdfDataJsonSignature = JSON.stringify(pdfDataforSignature);
+
         if (record.isShared) {
           return (
             <>
@@ -2075,7 +2094,7 @@ const DataRoom = () => {
                                         fileOptionsSelect(
                                           data,
                                           record,
-                                          pdfDataJson
+                                          pdfDataJsonSignature
                                         )
                                       }
                                     >

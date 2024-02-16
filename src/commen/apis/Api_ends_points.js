@@ -51,6 +51,8 @@ const DataRoomFilesDownloads = ":11017/Report";
 //Logout Auth
 const UserLogoutAuth = ":11009/Auth";
 
+const WorkFlowUrl = ":11021/WorkFlow";
+
 //this is our final api's
 const authenticationApi = baseURL + serviceAuthenticationURL;
 
@@ -100,6 +102,8 @@ const DataRoomAllFilesDownloads = baseURL + DataRoomFilesDownloads;
 // Logout API URL
 const userLogOutAuthURL = baseURL + UserLogoutAuth;
 
+const workflowApi = baseURL + WorkFlowUrl;
+
 export {
   authenticationApi,
   toDoListApi,
@@ -121,4 +125,5 @@ export {
   reportDownload,
   DataRoomAllFilesDownloads,
   userLogOutAuthURL,
+  workflowApi,
 };
