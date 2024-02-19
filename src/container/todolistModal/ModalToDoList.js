@@ -247,8 +247,20 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     }
   };
 
+  // Initialize previousFileList to an empty array
+  let previousFileList = [];
   //Upload File Handler
   const uploadFilesToDo = (data) => {
+    console.log(data, "uploadFilesToDouploadFilesToDo");
+    let filesArray = Object.values(data.target.files);
+    console.log(
+      Object.values(data.target.files),
+      "filesArrayfilesArrayfilesArray"
+    );
+    // Check if the fileList is the same as the previous one
+    if (JSON.stringify(filesArray) === JSON.stringify(previousFileList)) {
+      return; // Skip processing if it's the same fileList
+    }
     let fileSizeArr;
     if (Object.keys(tasksAttachments.TasksAttachments).length === 10) {
       setTimeout(
@@ -377,6 +389,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         }
       }
     }
+    // Update previousFileList to current fileList
+    previousFileList = filesArray;
   };
 
   useEffect(() => {
@@ -867,6 +881,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       <span className="custom-upload-input">
                         <CustomUpload
                           change={uploadFilesToDo}
+                          multiple={true}
                           onClick={(event) => {
                             event.target.value = null;
                           }}
