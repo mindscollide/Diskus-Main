@@ -1,4 +1,5 @@
 import * as actions from "../action_types";
+import { useSelector } from "react-redux";
 import {
   refreshTokenTalk,
   getAllUserChats,
@@ -42,6 +43,7 @@ import {
   getAllStarredMessages,
   deleteMultipleGroupMessages,
 } from "../../commen/apis/Api_config";
+import { changeMQTTJSONOne } from "../../commen/functions/MQTTJson";
 import axios from "axios";
 import { talkApi } from "../../commen/apis/Api_ends_points";
 import { signOut } from "./Auth_Sign_Out";
@@ -2328,6 +2330,7 @@ const OtoMessageRetryFlag = (response) => {
 //Insert OTO Messages
 const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  let currentUserName = localStorage.getItem("userNameChat");
 
   // let unsentMessageObject =
   //   JSON.parse(localStorage.getItem("unsentMessage")) || [];
@@ -2402,10 +2405,15 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
             ) {
               await dispatch(
                 OTOMessageSendSuccess(
-                  t("User-is-blocked"),
+                  changeMQTTJSONOne(
+                    t("You-have-been-blocked"),
+                    "[User Name]",
+                    currentUserName
+                  ),
                   response.data.responseResult.talkResponse
                 )
               );
+
               // if (unsentMessageObject) {
               //   messageUnsent = [...unsentMessageObject];
               //   messageUnsent.push(object.TalkRequest.Message.UID);
@@ -4326,4 +4334,5 @@ export {
   mqttGroupLeft,
   DeleteMultipleMessages,
   lastMessageDeletion,
+  OTOMessageSendSuccess,
 };

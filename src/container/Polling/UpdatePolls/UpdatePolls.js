@@ -37,6 +37,7 @@ import {
   convertintoGMTCalender,
   multiDatePickerDateChangIntoUTC,
   newDateFormaterAsPerUTC,
+  utcConvertintoGMT,
 } from "../../../commen/functions/date_formater";
 import {
   regexOnlyForNumberNCharacters,
@@ -225,10 +226,13 @@ const UpdatePolls = () => {
           members.push(data);
         });
         setPollmembers(members);
-        let newDateGmt = convertintoGMTCalender(
-          pollsDetails.poll.pollDetails.dueDate
+        // let newDateGmt = convertintoGMTCalender(
+        //   pollsDetails.poll.pollDetails.dueDate
+        // );
+        let DateDate = utcConvertintoGMT(
+          pollsDetails.poll.pollDetails.dueDate.slice(0, 8) + "000000"
         );
-        let DateDate = new Date(newDateGmt);
+        // let DateDate = new Date(newDateGmt);
         if (pollsDetails.poll.pollDetails.pollStatus.pollStatusId === 2) {
           setCheckForPollStatus(true);
         } else {

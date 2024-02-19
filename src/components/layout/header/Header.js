@@ -21,7 +21,10 @@ import {
 } from "react-bootstrap-icons";
 import { CustomDatePicker, ResultMessage } from "../../elements";
 import CancelMeetingSvg from "../../../assets/images/cancel_meeting_icon.svg";
-import { signOut } from "../../../store/actions/Auth_Sign_Out";
+import {
+  signOut,
+  userLogOutApiFunc,
+} from "../../../store/actions/Auth_Sign_Out";
 import { dateTime } from "../../../commen/functions/date_formater";
 import { getNotifications } from "../../../store/actions/GetUserNotification";
 import { getUserSetting } from "../../../store/actions/GetUserSetting";
@@ -268,7 +271,7 @@ const Header = ({ currentUserImage }) => {
                 </Dropdown.Item>
                 <Dropdown.Item
                   className={currentLanguage}
-                  onClick={() => dispatch(signOut(navigate))}
+                  onClick={() => dispatch(userLogOutApiFunc(navigate, t))}
                 >
                   {/* Sign Out */}
                   {t("Sign-out")}

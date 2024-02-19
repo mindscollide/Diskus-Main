@@ -131,6 +131,7 @@ const RecentChats = () => {
 
   const chatClick = (record) => {
     localStorage.setItem("ActiveChatType", record.messageType);
+    localStorage.setItem("userNameChat", record.fullName);
     if (!talkFeatureStates.ChatBoxActiveFlag) {
       dispatch(chatBoxActiveFlag(true));
     }

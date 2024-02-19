@@ -268,7 +268,10 @@ const ViewAttachments = ({ resolutionAttachments, setViewattachmentpage }) => {
                               />
                             </span>
                           )}
-                          <p className={styles["notes-attachment-text"]}>
+                          <p
+                            className={styles["notes-attachment-text"]}
+                            title={data.displayAttachmentName}
+                          >
                             {first}
                           </p>
                         </Col>

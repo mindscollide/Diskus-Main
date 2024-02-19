@@ -399,19 +399,21 @@ const VideoCallNormalHeader = ({
         </Col>
         <>
           <Col lg={5} md={5} sm={12} className="normal-screen-top-icons">
-            <div className="screenShare-Toggle flipHorizontal">
-              <Tooltip placement="topRight" title={t("Layout")}>
-                <img
-                  className={
-                    videoFeatureReducer.LeaveCallModalFlag === true
-                      ? "grayScaleImage"
-                      : "cursor-pointer"
-                  }
-                  onClick={layoutCurrentChange}
-                  src={LayoutIconPurple}
-                />
-              </Tooltip>
-            </div>
+            {videoFeatureReducer.MaximizeVideoFlag === true ? (
+              <div className="screenShare-Toggle flipHorizontal">
+                <Tooltip placement="topRight" title={t("Layout")}>
+                  <img
+                    className={
+                      videoFeatureReducer.LeaveCallModalFlag === true
+                        ? "grayScaleImage"
+                        : "cursor-pointer"
+                    }
+                    onClick={layoutCurrentChange}
+                    src={LayoutIconPurple}
+                  />
+                </Tooltip>
+              </div>
+            ) : null}
             {callerID === currentUserID && currentCallType === 2 ? (
               <div
                 className="positionRelative flipHorizontal"

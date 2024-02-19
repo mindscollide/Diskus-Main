@@ -37,6 +37,8 @@ const ViewParticipantsDates = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const currentUserId = localStorage.getItem("userID");
+
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -56,6 +58,7 @@ const ViewParticipantsDates = ({
 
   const [deadline, setDeadline] = useState("");
   const [prposedData, setPrposedData] = useState([]);
+  console.log(prposedData, "prposedDataprposedDataprposedData");
   const [sendProposedData, setSendProposedData] = useState([]);
   const [noneOfAbove, setNoneOfAbove] = useState([]);
   const [apiUserID, setApiUserID] = useState("");
@@ -103,8 +106,8 @@ const ViewParticipantsDates = ({
     };
   }, []);
 
-  //Previous API for Dates that have to be Inserted new
-
+  //Previous API for D ates that have to be Inserted new
+  console.log(selectAll, "selectAllselectAllselectAllselectAll");
   useEffect(() => {
     try {
       if (
@@ -115,59 +118,56 @@ const ViewParticipantsDates = ({
         let uniqueDates = new Set();
         let datesarry = [];
         userWiseMeetingProposed.forEach((datesData, index) => {
+          console.log(datesData, "datesDatadatesDatadatesData");
           setApiUserID(datesData.userID);
-          let found = false;
-          let isSelectedValue = false;
-
-          // Loop through the data to find the specific date combination
-          for (const datesData of userWiseMeetingProposed) {
-            for (const data of datesData.selectedProposedDates) {
+          if (Number(datesData.userID) === Number(currentUserId)) {
+            console.log(datesData, "newDatanewDatanewData");
+            datesData.selectedProposedDates.forEach((newData, index) => {
               if (
-                data.proposedDate === "10000101" &&
-                data.startTime === "000000" &&
-                data.endTime === "000000"
+                newData.proposedDate === "10000101" &&
+                newData.startTime === "000000" &&
+                newData.endTime === "000000"
               ) {
-                isSelectedValue = data.isSelected;
-                found = true;
-                break;
+                setSelectAll(newData.isSelected);
               }
-            }
-            if (found) {
-              break;
-            }
+            });
+          }
+          // Loop through the data to find the specific date combination
+
+          if (Number(datesData.userID) === Number(currentUserId)) {
+            datesData.selectedProposedDates.forEach((data) => {
+              if (
+                data.proposedDate !== "10000101" ||
+                data.endTime !== "000000" ||
+                data.startTime !== "000000"
+              ) {
+                const uniqueID = data.proposedDateID;
+                if (!uniqueDates.has(uniqueID)) {
+                  uniqueDates.add(uniqueID);
+                  datesarry.push({
+                    userID: datesData.userID,
+                    endTime: resolutionResultTable(
+                      data.proposedDate + data.endTime
+                    ),
+                    proposedDate: resolutionResultTable(
+                      data.proposedDate + data.startTime
+                    ),
+                    proposedDateID: data.proposedDateID,
+                    startTime: resolutionResultTable(
+                      data.proposedDate + data.startTime
+                    ),
+                    EndtimeSend: data.endTime,
+                    ProposedDateSend: data.proposedDate,
+                    proposedDateIDSend: data.proposedDateID,
+                    StartTimeSend: data.startTime,
+                    isSelected: data.isSelected,
+                  });
+                }
+              }
+            });
           }
 
-          setSelectAll(isSelectedValue);
-
-          datesData.selectedProposedDates.forEach((data) => {
-            if (
-              data.proposedDate !== "10000101" ||
-              data.endTime !== "000000" ||
-              data.startTime !== "000000"
-            ) {
-              const uniqueID = data.proposedDateID;
-              if (!uniqueDates.has(uniqueID)) {
-                uniqueDates.add(uniqueID);
-                datesarry.push({
-                  endTime: resolutionResultTable(
-                    data.proposedDate + data.endTime
-                  ),
-                  proposedDate: resolutionResultTable(
-                    data.proposedDate + data.startTime
-                  ),
-                  proposedDateID: data.proposedDateID,
-                  startTime: resolutionResultTable(
-                    data.proposedDate + data.startTime
-                  ),
-                  EndtimeSend: data.endTime,
-                  ProposedDateSend: data.proposedDate,
-                  proposedDateIDSend: data.proposedDateID,
-                  StartTimeSend: data.startTime,
-                  isSelected: data.isSelected,
-                });
-              }
-            }
-          });
+          console.log(datesarry, "datesarrydatesarrydatesarry");
 
           //now For Sending Data
           let SenddataObject = [];
@@ -205,7 +205,9 @@ const ViewParticipantsDates = ({
         });
       } else {
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error, "catchError");
+    }
   }, [userWiseMeetingProposed]);
 
   //Fetching All Saved Data
@@ -394,10 +396,19 @@ const ViewParticipantsDates = ({
                   >
                     {prposedData.length > 0
                       ? prposedData.map((data, index) => {
-                          console.log(data, "Scroller_Prposed_Meeting_date");
-                          // Extract the userID from localStorage
+                          console.log(data, "datadatadata");
 
-                          const isChecked = data.isSelected;
+                          const isChecked =
+                            data.isSelected &&
+                            Number(data.userID) === Number(currentUserId);
+                          console.log(isChecked, "isCheckedisChecked2");
+                          console.log(
+                            currentUserId,
+                            data.userID,
+                            typeof currentUserId,
+                            typeof data.userID,
+                            "isCheckedisChecked1"
+                          );
 
                           return (
                             <Row className="m-0 p-0 mt-2" key={index}>
@@ -422,7 +433,7 @@ const ViewParticipantsDates = ({
                                     <Checkbox
                                       prefixCls={"ProposedMeeting_Checkbox"}
                                       classNameCheckBoxP="d-none"
-                                      checked={isChecked} // Set the checked state here
+                                      checked={isChecked}
                                       onChange={() =>
                                         handleCheckboxChange(data)
                                       }

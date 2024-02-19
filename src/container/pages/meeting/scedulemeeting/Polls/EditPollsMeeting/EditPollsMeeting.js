@@ -35,6 +35,7 @@ import {
 import {
   convertGMTDateintoUTC,
   convertintoGMTCalender,
+  utcConvertintoGMT,
 } from "../../../../../../commen/functions/date_formater";
 import { updatePollsApi } from "../../../../../../store/actions/Polls_actions";
 
@@ -355,58 +356,62 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
   }, [GroupsReducer.getGroupByGroupIdResponse]);
 
   useEffect(() => {
-    if (PollsReducer.Allpolls !== null && PollsReducer.Allpolls !== undefined) {
-      let pollsDetailsData = PollsReducer.Allpolls.poll;
-      let pollMembers = [];
-      let newDateGmt = convertintoGMTCalender(
-        pollsDetailsData.pollDetails.dueDate
-      );
-      setupdatePolls({
-        ...updatePolls,
-        Title: pollsDetailsData.pollDetails.pollTitle,
-        AllowMultipleAnswers: pollsDetailsData.pollDetails.allowMultipleAnswers,
-        date: pollsDetailsData.pollDetails.dueDate,
-        PollID: pollsDetailsData.pollDetails.pollID,
-      });
-
-      let DateDate = new Date(newDateGmt);
-      setMeetingDate(DateDate);
-      if (pollsDetailsData.pollDetails.pollStatus.pollStatusId === 2) {
-        setCheckForPollStatus(true);
-      } else {
-        setCheckForPollStatus(false);
-      }
-      if (pollsDetailsData.pollParticipants.length > 0) {
-        pollsDetailsData.pollParticipants.forEach((particpantData, index) => {
-          pollMembers.push({
-            userName: particpantData.userName,
-            userID: particpantData.userID,
-            displayPicture:
-              particpantData.profilePicture.displayProfilePictureName,
-            emailAddress: particpantData.emailAddress,
-          });
+    try {
+      if (
+        PollsReducer.Allpolls !== null &&
+        PollsReducer.Allpolls !== undefined
+      ) {
+        let pollsDetailsData = PollsReducer.Allpolls.poll;
+        let pollMembers = [];
+        let newDateGmt = pollsDetailsData.pollDetails.dueDate.slice(0, 8);
+        setupdatePolls({
+          ...updatePolls,
+          Title: pollsDetailsData.pollDetails.pollTitle,
+          AllowMultipleAnswers:
+            pollsDetailsData.pollDetails.allowMultipleAnswers,
+          date: pollsDetailsData.pollDetails.dueDate.slice(0, 8),
+          PollID: pollsDetailsData.pollDetails.pollID,
         });
-        setMembers(pollMembers);
-      }
-      try {
-        if (Object.keys(pollsDetailsData.pollOptions).length > 2) {
-          let Option = [];
-          pollsDetailsData.pollOptions.map((data, index) => {
-            let dataAdd = { name: index + 1, value: data.answer };
-            Option.push(dataAdd);
-          });
-          setOptions(Option);
-        } else if (Object.keys(pollsDetailsData.pollOptions).length <= 2) {
-          const updatedOptions = options.map((option) => {
-            const apiData = pollsDetailsData.pollOptions.find(
-              (apiOption, index) => index + 1 === option.name
-            );
-            return apiData ? { ...option, value: apiData.answer } : option;
-          });
-          setOptions(updatedOptions);
+
+        let DateDate = utcConvertintoGMT(newDateGmt + "000000");
+        setMeetingDate(DateDate);
+        if (pollsDetailsData.pollDetails.pollStatus.pollStatusId === 2) {
+          setCheckForPollStatus(true);
+        } else {
+          setCheckForPollStatus(false);
         }
-      } catch {}
-    }
+        if (pollsDetailsData.pollParticipants.length > 0) {
+          pollsDetailsData.pollParticipants.forEach((particpantData, index) => {
+            pollMembers.push({
+              userName: particpantData.userName,
+              userID: particpantData.userID,
+              displayPicture:
+                particpantData.profilePicture.displayProfilePictureName,
+              emailAddress: particpantData.emailAddress,
+            });
+          });
+          setMembers(pollMembers);
+        }
+        try {
+          if (Object.keys(pollsDetailsData.pollOptions).length > 2) {
+            let Option = [];
+            pollsDetailsData.pollOptions.map((data, index) => {
+              let dataAdd = { name: index + 1, value: data.answer };
+              Option.push(dataAdd);
+            });
+            setOptions(Option);
+          } else if (Object.keys(pollsDetailsData.pollOptions).length <= 2) {
+            const updatedOptions = options.map((option) => {
+              const apiData = pollsDetailsData.pollOptions.find(
+                (apiOption, index) => index + 1 === option.name
+              );
+              return apiData ? { ...option, value: apiData.answer } : option;
+            });
+            setOptions(updatedOptions);
+          }
+        } catch {}
+      }
+    } catch {}
   }, [PollsReducer.Allpolls]);
 
   useEffect(() => {

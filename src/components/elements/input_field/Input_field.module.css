@@ -300,3 +300,12 @@
 .user-login-history-searchbar .valid-feedback {
   display: block;
 }
+.signatureflow_input {
+  width: 100%;
+  height: 39px;
+  font-family: "MontserratMedium";
+  color: #5a5a5a;
+}
+.signatureflow_input::placeholder {
+  color: #a2a2a2 !important;
+}

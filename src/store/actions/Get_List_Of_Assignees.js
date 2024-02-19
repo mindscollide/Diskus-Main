@@ -645,22 +645,22 @@ const CancelMeeting = (navigate, object, t, value) => {
                 };
                 dispatch(getMeetingbyGroupApi(navigate, t, Data));
               } else if (value === 4) {
-                let meetingpageRow = JSON.parse(
-                  localStorage.getItem("MeetingPageRows")
-                );
-                let meetingPageCurrent = JSON.parse(
+                let meetingpageRow = localStorage.getItem("MeetingPageRows");
+                let meetingPageCurrent = parseInt(
                   localStorage.getItem("MeetingPageCurrent")
                 );
-                let Data = {
+                let currentView = localStorage.getItem("MeetingCurrentView");
+                let searchData = {
                   Date: "",
                   Title: "",
                   HostName: "",
-                  UserID: createrID,
-                  PageNumber: meetingPageCurrent,
-                  Length: meetingpageRow,
-                  PublishedMeetings: true,
+                  UserID: Number(createrID),
+                  PageNumber: Number(meetingPageCurrent),
+                  Length: Number(meetingpageRow),
+                  PublishedMeetings:
+                    currentView && Number(currentView) === 1 ? true : false,
                 };
-                dispatch(searchUserMeeting(navigate, Data, t));
+                await dispatch(searchNewUserMeeting(navigate, searchData, t));
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -868,7 +868,8 @@ const EndMeeting = (navigate, object, t, searchData) => {
                   t("The-meeting-has-been-ended")
                 )
               );
-              await dispatch(searchUserMeeting(navigate, searchData, t));
+
+              await dispatch(searchNewUserMeeting(navigate, searchData, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

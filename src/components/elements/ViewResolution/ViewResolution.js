@@ -592,7 +592,10 @@ const ViewResolution = ({ setViewresolution }) => {
                                             </span>
                                           )}
                                           <span className="deleteBtn"></span>
-                                          <p className="file-icon-modalmeeting-p text-center FontArabicRegular">
+                                          <p
+                                            className="file-icon-modalmeeting-p text-center FontArabicRegular"
+                                            title={data.displayAttachmentName}
+                                          >
                                             {first}
                                           </p>
                                         </Col>

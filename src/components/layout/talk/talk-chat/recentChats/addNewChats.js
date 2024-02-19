@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import { Row, Col, Container, Form } from 'react-bootstrap'
-import { TextField } from '../../../../elements'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
+import React, { useState, useEffect } from "react";
+import { Row, Col, Container, Form } from "react-bootstrap";
+import { TextField } from "../../../../elements";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   addNewChatScreen,
   headerShowHideStatus,
@@ -11,78 +11,79 @@ import {
   footerShowHideStatus,
   recentChatFlag,
   chatBoxActiveFlag,
-} from '../../../../../store/actions/Talk_Feature_actions'
+} from "../../../../../store/actions/Talk_Feature_actions";
 import {
   GetAllUsers,
   GetOTOUserMessages,
   activeChat,
-} from '../../../../../store/actions/Talk_action'
-import CloseChatIcon from '../../../../../assets/images/Cross-Chat-Icon.png'
+} from "../../../../../store/actions/Talk_action";
+import CloseChatIcon from "../../../../../assets/images/Cross-Chat-Icon.png";
 
 const AddNewChat = () => {
-  const { talkStateData } = useSelector((state) => state)
+  const { talkStateData } = useSelector((state) => state);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   //Current User ID
-  let currentUserId = localStorage.getItem('userID')
+  let currentUserId = localStorage.getItem("userID");
 
   //Current Organization
-  let currentOrganizationId = localStorage.getItem('organizationID')
+  let currentOrganizationId = localStorage.getItem("organizationID");
 
   //all users states
-  const [allUsers, setAllUsers] = useState([])
+  const [allUsers, setAllUsers] = useState([]);
 
-  const [searchChatUserValue, setSearchChatUserValue] = useState('')
+  const [searchChatUserValue, setSearchChatUserValue] = useState("");
 
   const closeAddChat = () => {
-    dispatch(addNewChatScreen(false))
-    dispatch(footerActionStatus(false))
-    dispatch(headerShowHideStatus(true))
-    dispatch(footerShowHideStatus(true))
-    dispatch(recentChatFlag(true))
-  }
+    dispatch(addNewChatScreen(false));
+    dispatch(footerActionStatus(false));
+    dispatch(headerShowHideStatus(true));
+    dispatch(footerShowHideStatus(true));
+    dispatch(recentChatFlag(true));
+  };
 
   const chatClickNewChat = (record) => {
-    dispatch(chatBoxActiveFlag(true))
+    dispatch(chatBoxActiveFlag(true));
+    localStorage.setItem("userNameChat", record.fullName);
 
     let newChatData = {
       admin: 0,
-      attachmentLocation: '',
+      attachmentLocation: "",
       companyName: record.companyName,
       fullName: record.fullName,
       id: record.id,
       imgURL: record.imgURL,
       isOnline: false,
-      messageBody: '',
-      messageDate: '',
-      messageType: 'O',
+      messageBody: "",
+      messageDate: "",
+      messageType: "O",
       notiCount: 0,
-      receivedDate: '',
-      seenDate: '',
+      receivedDate: "",
+      seenDate: "",
       senderID: 0,
-      sentDate: '',
-    }
+      sentDate: "",
+    };
     let chatOTOData = {
       UserID: currentUserId,
       ChannelID: currentOrganizationId,
       OpponentUserId: record.id,
       NumberOfMessages: 50,
       OffsetMessage: 0,
-    }
-    dispatch(GetOTOUserMessages(navigate, chatOTOData, t))
-    dispatch(activeChat(newChatData))
-    setSearchChatUserValue('')
-    dispatch(addNewChatScreen(false))
-    dispatch(footerActionStatus(false))
-    dispatch(headerShowHideStatus(true))
-    dispatch(footerShowHideStatus(true))
-    dispatch(recentChatFlag(true))
-  }
+    };
+    dispatch(GetOTOUserMessages(navigate, chatOTOData, t));
+    dispatch(activeChat(newChatData));
+    setSearchChatUserValue("");
+    dispatch(addNewChatScreen(false));
+    dispatch(footerActionStatus(false));
+    dispatch(headerShowHideStatus(true));
+    dispatch(footerShowHideStatus(true));
+    dispatch(recentChatFlag(true));
+  };
 
   useEffect(() => {
     dispatch(
@@ -90,10 +91,10 @@ const AddNewChat = () => {
         navigate,
         parseInt(currentUserId),
         parseInt(currentOrganizationId),
-        t,
-      ),
-    )
-  }, [])
+        t
+      )
+    );
+  }, []);
 
   //Setting state data of all users
   useEffect(() => {
@@ -102,37 +103,36 @@ const AddNewChat = () => {
       talkStateData.AllUsers.AllUsersData !== null &&
       talkStateData.AllUsers.AllUsersData.length !== 0
     ) {
-      setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers)
+      setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers);
     }
-  }, [talkStateData?.AllUsers?.AllUsersData?.allUsers])
+  }, [talkStateData?.AllUsers?.AllUsersData?.allUsers]);
 
   const searchChatUsers = (e) => {
-    setSearchChatUserValue(e)
+    setSearchChatUserValue(e);
     try {
       if (
         talkStateData.AllUsers.AllUsersData !== undefined &&
         talkStateData.AllUsers.AllUsersData !== null &&
         talkStateData.AllUsers.AllUsersData.length !== 0
       ) {
-        if (e !== '') {
-          let filteredData = talkStateData.AllUsers.AllUsersData.allUsers.filter(
-            (value) => {
-              return value.fullName.toLowerCase().includes(e.toLowerCase())
-            },
-          )
+        if (e !== "") {
+          let filteredData =
+            talkStateData.AllUsers.AllUsersData.allUsers.filter((value) => {
+              return value.fullName.toLowerCase().includes(e.toLowerCase());
+            });
           if (filteredData.length === 0) {
-            setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers)
+            setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers);
           } else {
-            setAllUsers(filteredData)
+            setAllUsers(filteredData);
           }
-        } else if (e === '' || e === null) {
-          let data = talkStateData.AllUsers.AllUsersData.allUsers
-          setSearchChatUserValue('')
-          setAllUsers(data)
+        } else if (e === "" || e === null) {
+          let data = talkStateData.AllUsers.AllUsersData.allUsers;
+          setSearchChatUserValue("");
+          setAllUsers(data);
         }
       }
     } catch {}
-  }
+  };
 
   return (
     <>
@@ -140,7 +140,7 @@ const AddNewChat = () => {
         <Row className="margin-top-10">
           <Col lg={6} md={6} sm={12}>
             <div className="new-chat">
-              <p className="fw-bold m-0">{t('New Conversation')}</p>
+              <p className="fw-bold m-0">{t("New Conversation")}</p>
             </div>
           </Col>
           <Col lg={5} md={5} sm={12}></Col>
@@ -158,10 +158,10 @@ const AddNewChat = () => {
               applyClass="form-control2"
               name="Name"
               change={(e) => {
-                searchChatUsers(e.target.value)
+                searchChatUsers(e.target.value);
               }}
               value={searchChatUserValue}
-              labelClass={'d-none'}
+              labelClass={"d-none"}
             />
           </Col>
         </Row>
@@ -197,19 +197,19 @@ const AddNewChat = () => {
                   </Col>
                   <Col lg={10} md={10} sm={10} className="bottom-border">
                     <div
-                      className={'chat-block add-user-section'}
+                      className={"chat-block add-user-section"}
                       onClick={() => chatClickNewChat(dataItem)}
                     >
                       <p className="chat-username m-0">{dataItem.fullName}</p>
                     </div>
                   </Col>
                 </Row>
-              )
+              );
             })
           : null}
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default AddNewChat
+export default AddNewChat;

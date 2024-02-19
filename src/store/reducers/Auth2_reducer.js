@@ -30,6 +30,7 @@ const initialState = {
   getSubscriptionPaymentComplete: null,
   paymentCompleteResponse: null,
   UpdateProfilePicture: null,
+  logoutUser: null,
 };
 
 const AuthReducer = (state = initialState, action) => {
@@ -461,6 +462,28 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         UpdateProfilePicture: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.USER_LOGOUT_INIT: {
+      return { ...state, Loading: true };
+    }
+
+    case actions.USER_LOGOUT_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        logoutUser: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.USER_LOGOUT_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        logoutUser: null,
         ResponseMessage: action.message,
       };
     }

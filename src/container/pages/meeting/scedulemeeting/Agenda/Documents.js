@@ -91,7 +91,10 @@ const Documents = ({
                                       )}
                                       alt=""
                                     />
-                                    <span className={styles["TitleFile"]}>
+                                    <span
+                                      className={styles["TitleFile"]}
+                                      title={filesData.displayAttachmentName}
+                                    >
                                       {filesData.displayAttachmentName}
                                     </span>
                                   </Col>

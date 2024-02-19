@@ -82,6 +82,7 @@ const Sidebar = () => {
 
   //Meeting SideBar Click
   const handleMeetingSidebarClick = () => {
+    localStorage.setItem("navigateLocation", "Meeting");
     if (
       (NewMeetingreducer.scheduleMeetingPageFlag === true ||
         NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
@@ -94,7 +95,6 @@ const Sidebar = () => {
       setMeetingNavigation("Meeting");
       dispatch(showCancelModalmeetingDeitals(true));
       dispatch(uploadGlobalFlag(false));
-      localStorage.setItem("navigateLocation", "Meeting");
     } else {
       dispatch(scheduleMeetingPageFlag(false));
       dispatch(viewProposeDateMeetingPageFlag(false));
@@ -158,7 +158,7 @@ const Sidebar = () => {
     // navigate(`/${meetingNavigation}`);
   };
 
-  //Todo Sidebar Click
+  // Todo Sidebar Click
   const handleMeetingSidebarTodo = () => {
     if (
       (NewMeetingreducer.scheduleMeetingPageFlag === true ||

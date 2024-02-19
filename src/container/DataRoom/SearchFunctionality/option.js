@@ -473,6 +473,17 @@ export const optionsforFileEditableNonShareable = (t) => [
 
   // { label: t("Remove"), value: 6, labelIcon: PDFICON },
 ];
+
+export const optionsforPDFandSignatureFlow = (t) => [
+  { label: t("Open"), value: 1, labelIcon: PDFICON },
+  { label: t("Share"), value: 2, labelIcon: PDFICON },
+  { label: t("Rename"), value: 3, labelIcon: PDFICON },
+  { label: t("View-detail"), value: 4, labelIcon: PDFICON },
+  { label: t("Download"), value: 5, labelIcon: PDFICON },
+  { label: t("Remove"), value: 6, labelIcon: PDFICON },
+  { label: t("Analytics"), value: 7, labelIcon: PDFICON },
+  { label: t("Signaure"), value: 8, labelIcon: PDFICON },
+];
 export const getIconSource = (extension) => {
   switch (extension) {
     case "pdf":

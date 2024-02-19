@@ -4,8 +4,15 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-import { Button, Table, Loader } from "../../../../../components/elements";
 import {
+  Button,
+  Table,
+  Loader,
+  Notification,
+} from "../../../../../components/elements";
+import {
+  clearAttendanceResponse,
+  clearAttendanceState,
   getAllAttendanceMeetingApi,
   saveMeetingAttendanceApi,
 } from "../../../../../store/actions/Attendance_Meeting";
@@ -38,6 +45,11 @@ const Attendence = ({
   const { attendanceMeetingReducer, NewMeetingreducer } = useSelector(
     (state) => state
   );
+
+  const ResponseMessage = useSelector(
+    (state) => state.attendanceMeetingReducer.ResponseMessage
+  );
+
   console.log(attendanceMeetingReducer, "attendanceMeetingReducer");
   const [useCase, setUseCase] = useState(0);
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -46,10 +58,16 @@ const Attendence = ({
   let meetingID = Number(localStorage.getItem("meetingID"));
   let userID = localStorage.getItem("userID");
 
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+  });
+  console.log(open, "setOpensetOpen");
+
   const [attendenceRows, setAttendenceRows] = useState([]);
   console.log(attendenceRows, "attendenceRowsattendenceRows");
 
-  console.log(meetingID, "meetingIDmeetingID");
+  console.log(meetingID, ResponseMessage, "meetingIDmeetingID");
 
   const enablePresent = (record, status) => {
     const updatedRows = attendenceRows.map((row) => {
@@ -270,21 +288,64 @@ const Attendence = ({
   }, []);
 
   // for save the meeting
-  const saveHandler = () => {
-    let newData = [];
-    attendenceRows.forEach((data, index) => {
-      newData.push({
-        AttendanceStatusID: data.meetingAttendancestatus.attendanceStatusID,
-        UserID: data.userID,
-      });
-    });
-    let Data = {
-      MeetingAttendance: newData,
-      MeetingID: Number(currentMeeting),
-    };
-    console.log(Data, "DataData");
-    dispatch(saveMeetingAttendanceApi(navigate, t, Data));
+  // const saveHandler = () => {
+  //   let newData = [];
+  //   attendenceRows.forEach((data, index) => {
+  //     newData.push({
+  //       AttendanceStatusID: data.meetingAttendancestatus.attendanceStatusID,
+  //       UserID: data.userID,
+  //     });
+  //   });
+  //   let Data = {
+  //     MeetingAttendance: newData,
+  //     MeetingID: Number(currentMeeting),
+  //   };
+  //   console.log(Data, "DataData");
+  //   dispatch(saveMeetingAttendanceApi(navigate, t, Data));
+  // };
+
+  const handleSaveNotification = () => {
+    if (ResponseMessage) {
+      setOpen({ open: true, message: ResponseMessage });
+
+      // Dispatch an action to reset/clear ResponseMessage
+      dispatch(clearAttendanceResponse());
+    }
   };
+
+  // for save the meeting
+  const saveHandler = async () => {
+    try {
+      let newData = [];
+      attendenceRows.forEach((data, index) => {
+        newData.push({
+          AttendanceStatusID: data.meetingAttendancestatus.attendanceStatusID,
+          UserID: data.userID,
+        });
+      });
+      let Data = {
+        MeetingAttendance: newData,
+        MeetingID: Number(currentMeeting),
+      };
+
+      const response = await dispatch(
+        saveMeetingAttendanceApi(navigate, t, Data)
+      );
+
+      if (response && response.success) {
+        handleSaveNotification();
+      } else {
+      }
+    } catch (error) {
+      handleSaveNotification();
+      console.error("Error saving attendance:", error);
+    }
+  };
+
+  // useEffect to handle notifications
+  useEffect(() => {
+    handleSaveNotification();
+  }, [ResponseMessage]);
 
   // This is how I can revert Data without Hitting an API
   const revertHandler = () => {
@@ -312,6 +373,7 @@ const Attendence = ({
       setUseCase(1);
     }
   };
+
   const handleCancelBtn = () => {
     let ReducerAttendeceData = deepEqual(
       attendanceMeetingReducer.attendanceMeetings,
@@ -393,6 +455,8 @@ const Attendence = ({
           setSceduleMeeting={setSceduleMeeting}
         />
       )}
+
+      <Notification message={open.message} open={open.open} setOpen={setOpen} />
     </>
   );
 };

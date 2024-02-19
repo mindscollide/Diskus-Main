@@ -402,6 +402,7 @@ const SubAgendaMappingDragging = ({
 
   const allSavedPresenters = presenters.map((presenter) => ({
     value: presenter.userID,
+    name: presenter.userName,
     label: (
       <>
         <Row>
@@ -419,6 +420,16 @@ const SubAgendaMappingDragging = ({
       </>
     ),
   }));
+  console.log(allSavedPresenters, "allSavedPresentersallSaved");
+
+  const filterSubAgendaFunc = (options, searchText) => {
+    // console.log(options, "filterFuncfilterFunc");
+    if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   return (
     <>
@@ -636,7 +647,10 @@ const SubAgendaMappingDragging = ({
                                                 classNamePrefix={
                                                   "SelectOrganizersSelect_active"
                                                 }
-                                                isSearchable={false}
+                                                filterOption={
+                                                  filterSubAgendaFunc
+                                                }
+                                                isSearchable={true}
                                               />
                                             </Col>
                                             <Col

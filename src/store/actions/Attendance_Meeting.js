@@ -147,7 +147,12 @@ const saveMeetingAttendanceApi = (navigate, t, Data) => {
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_SaveMeetingAttendanceReport_01"
             ) {
-              dispatch(saveAttendanceSuccess(t("Record-saved")));
+              dispatch(
+                saveAttendanceSuccess(
+                  response.data.responseResult,
+                  t("Record-saved")
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_SaveMeetingAttendanceReport_02"
@@ -179,9 +184,16 @@ const saveMeetingAttendanceApi = (navigate, t, Data) => {
   };
 };
 
-const clearAttendanceState = () => {
+const clearAttendanceState = (message) => {
   return {
     type: actions.ATTENDANCE_REDUCER_STATE_CLEAR,
+    message: message,
+  };
+};
+
+const clearAttendanceResponse = () => {
+  return {
+    type: actions.CLEAR_ATTENDANCE_RESPONSEMESSAGE,
   };
 };
 
@@ -189,4 +201,5 @@ export {
   getAllAttendanceMeetingApi,
   saveMeetingAttendanceApi,
   clearAttendanceState,
+  clearAttendanceResponse,
 };

@@ -263,6 +263,7 @@ form.relative-position-form {
 .fileIconBoxView {
   width: 80px;
   text-align: center;
+  cursor: pointer;
 }
 
 label.MontserratSemiBold-600.todo-employee-name-card {

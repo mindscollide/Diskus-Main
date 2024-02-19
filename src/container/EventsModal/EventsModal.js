@@ -31,6 +31,7 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
   let minutes = now.getUTCMinutes().toString().padStart(2, "0");
   let seconds = now.getUTCSeconds().toString().padStart(2, "0");
   let currentUTCDateTime = `${year}${month}${day}${hours}${minutes}${seconds}`;
+  let lang = localStorage.getItem("i18nextLng");
 
   const meetingDashboardCalendarEvent = (data) => {
     dispatch(dashboardCalendarEvent(data));
@@ -123,73 +124,72 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
                         ></Col>
                       </Row>
                       <Row>
+                        <Col sm={12} md={6} lg={6}>
+                          {eventData.statusID === 1 &&
+                          eventData.participantRoleID === 1 ? (
+                            eventData.isQuickMeeting === true &&
+                            minutesDifference <= 15 ? (
+                              // &&
+                              // minutesDifference > 0
+                              <Button
+                                text={t("Start-meeting")}
+                                className={styles["Start-Meeting"]}
+                                onClick={() =>
+                                  meetingDashboardCalendarEvent(eventData)
+                                }
+                              />
+                            ) : eventData.isQuickMeeting === false &&
+                              minutesDifference <= 15 ? (
+                              // &&
+                              // minutesDifference > 0
+                              //   &&
+                              //     minutesDifference <= 99999999 &&
+                              //     minutesDifference > 0
+                              <Button
+                                text={t("Start-meeting")}
+                                className={styles["Start-Meeting"]}
+                                onClick={() =>
+                                  meetingDashboardCalendarEvent(eventData)
+                                }
+                              />
+                            ) : null
+                          ) : eventData.statusID === 10 ? (
+                            eventData.participantRoleID === 2 ? (
+                              <Button
+                                text={t("Join-meeting")}
+                                className={styles["joining-Meeting"]}
+                                onClick={() =>
+                                  meetingDashboardCalendarEvent(eventData)
+                                }
+                              />
+                            ) : eventData.participantRoleID === 4 ? (
+                              <Button
+                                text={t("Join-meeting")}
+                                className={styles["joining-Meeting"]}
+                                onClick={() =>
+                                  meetingDashboardCalendarEvent(eventData)
+                                }
+                              />
+                            ) : eventData.participantRoleID === 1 ? (
+                              <Button
+                                text={t("Start-join-meeting")}
+                                className={styles["joining-Meeting"]}
+                                onClick={() =>
+                                  meetingDashboardCalendarEvent(eventData)
+                                }
+                              />
+                            ) : null
+                          ) : null}
+                        </Col>
                         <Col
                           sm={12}
-                          md={12}
-                          lg={12}
-                          className="d-flex justify-content-end align-items-center"
+                          md={6}
+                          lg={6}
+                          className="d-flex justify-content-end align-items-end"
                         >
-                          <div>
-                            <p className={styles["event__type"]}>
-                              {eventData.calenderEventType}
-                            </p>
-
-                            {eventData.statusID === 1 &&
-                            eventData.participantRoleID === 1 ? (
-                              eventData.isQuickMeeting === true &&
-                              minutesDifference <= 15 ? (
-                                // &&
-                                // minutesDifference > 0
-                                <Button
-                                  text={t("Start-meeting")}
-                                  className={styles["Start-Meeting"]}
-                                  onClick={() =>
-                                    meetingDashboardCalendarEvent(eventData)
-                                  }
-                                />
-                              ) : eventData.isQuickMeeting === false &&
-                                minutesDifference <= 15 ? (
-                                // &&
-                                // minutesDifference > 0
-                                //   &&
-                                //     minutesDifference <= 99999999 &&
-                                //     minutesDifference > 0
-                                <Button
-                                  text={t("Start-meeting")}
-                                  className={styles["Start-Meeting"]}
-                                  onClick={() =>
-                                    meetingDashboardCalendarEvent(eventData)
-                                  }
-                                />
-                              ) : null
-                            ) : eventData.statusID === 10 ? (
-                              eventData.participantRoleID === 2 ? (
-                                <Button
-                                  text={t("Join-meeting")}
-                                  className={styles["joining-Meeting"]}
-                                  onClick={() =>
-                                    meetingDashboardCalendarEvent(eventData)
-                                  }
-                                />
-                              ) : eventData.participantRoleID === 4 ? (
-                                <Button
-                                  text={t("Join-meeting")}
-                                  className={styles["joining-Meeting"]}
-                                  onClick={() =>
-                                    meetingDashboardCalendarEvent(eventData)
-                                  }
-                                />
-                              ) : eventData.participantRoleID === 1 ? (
-                                <Button
-                                  text={t("Start-join-meeting")}
-                                  className={styles["joining-Meeting"]}
-                                  onClick={() =>
-                                    meetingDashboardCalendarEvent(eventData)
-                                  }
-                                />
-                              ) : null
-                            ) : null}
-                          </div>
+                          <p className={styles["event__type"]}>
+                            {eventData.calenderEventType}
+                          </p>
                         </Col>
                       </Row>
                     </section>

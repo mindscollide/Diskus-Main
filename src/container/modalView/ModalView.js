@@ -11,7 +11,7 @@ import {
   Button,
   Modal,
   EmployeeCard,
-  Loader,
+  Notification,
 } from "./../../components/elements";
 
 import { Row, Col, Container } from "react-bootstrap";
@@ -27,18 +27,39 @@ import { DownloadFile } from "../../store/actions/Download_action";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import {
+  CleareMessegeNewMeeting,
+  endMeetingStatusApi,
+  FetchMeetingURLApi,
+  FetchMeetingURLClipboard,
+} from "../../store/actions/NewMeetingActions";
+import copyToClipboard from "../../hooks/useClipBoard";
+import { callRequestReceivedMQTT } from "../../store/actions/VideoMain_actions";
+import { UpdateOrganizersMeeting } from "../../store/actions/MeetingOrganizers_action";
 
 const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   //For Localization
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { assignees } = useSelector((state) => state);
+  const { assignees, NewMeetingreducer } = useSelector((state) => state);
+  let activeCall = JSON.parse(localStorage.getItem("activeCall"));
+  let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+  let currentUserID = Number(localStorage.getItem("userID"));
+  let currentOrganization = Number(localStorage.getItem("organizationID"));
+  const [getMeetID, setMeetID] = useState(0);
+  const [initiateVideoModalOto, setInitiateVideoModalOto] = useState(false);
   const [isDetails, setIsDetails] = useState(true);
   const [isAttendees, setIsAttendees] = useState(false);
   const [isAgenda, setIsAgenda] = useState(false);
   const [isMinutes, setIsMinutes] = useState(false);
   const [isAttachments, setIsAttachments] = useState(false);
+  const [isVideo, setIsVideo] = useState(false);
+  const [meetStatus, setMeetStatus] = useState(0);
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+  });
   const [meetingReminderID, setMeetingReminderID] = useState([]);
   const [meetingReminderValue, setMeetingReminderValue] = useState("");
   const [objMeetingAgenda, setObjMeetingAgenda] = useState({
@@ -267,10 +288,39 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       });
     }
   };
-  console.log(
-    allMeetingDetails,
-    "allMeetingDetailsallMeetingDetailsallMeetingDetails"
-  );
+
+  //for  Join Meeting Copy Link Button State Check
+
+  useEffect(() => {
+    try {
+      if (Object.keys(assignees.ViewMeetingDetails).length > 0) {
+        let check = assignees.ViewMeetingDetails.meetingDetails.isVideoCall;
+        let meetingID = Number(
+          assignees.ViewMeetingDetails.meetingDetails.pK_MDID
+        );
+        let StatusCheck = assignees.ViewMeetingDetails.meetingStatus.pK_MSID;
+        let Data2 = {
+          MeetingID: meetingID,
+        };
+        dispatch(
+          FetchMeetingURLClipboard(
+            Data2,
+            navigate,
+            t,
+            currentUserID,
+            currentOrganization
+          )
+        );
+        setIsVideo(check);
+        setMeetID(meetingID);
+        setMeetStatus(StatusCheck);
+      } else {
+      }
+    } catch (error) {
+      console.log(error, "errorerrorerrorerror");
+    }
+  }, [assignees.ViewMeetingDetails]);
+
   // for view data
   useEffect(() => {
     try {
@@ -636,20 +686,11 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   const endMeeting = async () => {
     await setViewFlag(false);
     let meetingID = assignees.ViewMeetingDetails.meetingDetails.pK_MDID;
-    let Data = {
+    let newData = {
       MeetingID: meetingID,
-      UserID: parseInt(createrID),
+      StatusID: 9,
     };
-    let Data2 = {
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: parseInt(createrID),
-      PageNumber: 1,
-      Length: 50,
-      PublishedMeetings: true,
-    };
-    await dispatch(EndMeeting(navigate, Data, t, Data2));
+    await dispatch(endMeetingStatusApi(navigate, t, newData));
   };
   const leaveMeeting = async () => {
     await setViewFlag(false);
@@ -676,6 +717,53 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       DisplayFileName: record.DisplayAttachmentName,
     };
     dispatch(DownloadFile(navigate, data, t));
+  };
+
+  //Copy link function
+
+  const copyToClipboardd = () => {
+    if (
+      NewMeetingreducer.CurrentMeetingURL !== undefined &&
+      NewMeetingreducer.CurrentMeetingURL !== null &&
+      NewMeetingreducer.CurrentMeetingURL !== ""
+    ) {
+      copyToClipboard(NewMeetingreducer.CurrentMeetingURL);
+      setOpen({
+        ...open,
+        flag: true,
+        message: "URL copied to clipboard",
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+      dispatch(CleareMessegeNewMeeting());
+    }
+  };
+
+  const joinMeetingCall = () => {
+    setViewFlag(false);
+    if (activeCall === false && isMeeting === false) {
+      let Data = {
+        MeetingID: getMeetID,
+      };
+      dispatch(
+        FetchMeetingURLApi(
+          Data,
+          navigate,
+          t,
+          currentUserID,
+          currentOrganization
+        )
+      );
+      localStorage.setItem("meetingTitle", createMeeting.MeetingTitle);
+    } else if (activeCall === true && isMeeting === false) {
+      setInitiateVideoModalOto(true);
+      dispatch(callRequestReceivedMQTT({}, ""));
+    }
   };
 
   return (
@@ -815,9 +903,9 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                 <>
                   <Row className="my-4">
                     <Col
-                      lg={12}
-                      md={12}
-                      xs={12}
+                      lg={6}
+                      md={6}
+                      xs={6}
                       className="MontserratRegular d-flex flex-column lh-sm my-3"
                     >
                       <span className="MeetingViewDateTimeTextField">
@@ -826,6 +914,25 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       <span className="MeetingViewLocationText_Field">
                         {createMeeting.MeetingLocation}
                       </span>
+                    </Col>
+                    <Col
+                      lg={6}
+                      md={6}
+                      xs={6}
+                      className="MontserratRegular d-flex gap-2 align-items-center"
+                    >
+                      <Button
+                        disableBtn={isVideo && meetStatus === 10 ? false : true}
+                        text={t("Copy-link")}
+                        className={"CopyLinkButton"}
+                        onClick={() => copyToClipboardd()}
+                      />
+                      <Button
+                        disableBtn={isVideo && meetStatus === 10 ? false : true}
+                        text={t("Join-Video-Call")}
+                        className={"JoinMeetingButton"}
+                        onClick={joinMeetingCall}
+                      />
                     </Col>
                   </Row>
                   <Row>
@@ -1013,7 +1120,12 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                                                       {...defaultStyles.ext}
                                                     />
                                                   )}
-                                                  <p className="fileUploadLabel">
+                                                  <p
+                                                    className="fileUploadLabel"
+                                                    title={
+                                                      MeetingAgendaAttachmentsData.DisplayAttachmentName
+                                                    }
+                                                  >
                                                     {first}
                                                   </p>
                                                 </Col>
@@ -1210,7 +1322,12 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                                 extension={ext}
                                 {...defaultStyles.ext}
                               />
-                              <p className="fileUploadLabel">{first}</p>
+                              <p
+                                className="fileUploadLabel"
+                                title={data.DisplayAttachmentName}
+                              >
+                                {first}
+                              </p>
                             </Col>
                           );
                         })
@@ -1282,6 +1399,11 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
               ) : null}
             </>
           }
+        />
+        <Notification
+          setOpen={setOpen}
+          open={open.flag}
+          message={open.message}
         />
       </Container>
     </>

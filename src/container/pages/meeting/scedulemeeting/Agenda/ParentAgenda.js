@@ -14,6 +14,7 @@ import {
   GetAllMeetingUserApiFunc,
   showVoteAgendaModal,
   UpateMeetingStatusLockApiFunc,
+  GetAllUserAgendaRightsApiFunc,
 } from "../../../../../store/actions/NewMeetingActions";
 import {
   convertDateTimetoGMTMeetingDetail,
@@ -145,7 +146,6 @@ const ParentAgenda = ({
       agendaVotingID: 0,
       subTitle: "",
       description: "",
-      agendaVotingID: 0,
       presenterID: allSavedPresenters[0]?.value,
       presenterName: allSavedPresenters[0]?.label,
       startDate: rows[index].startDate,
@@ -178,16 +178,20 @@ const ParentAgenda = ({
       // await dispatch(
       //   getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows, id)
       // );
-      dispatch(
-        GetAdvanceMeetingAgendabyMeetingID(
-          meetingMaterialData,
-          navigate,
-          t,
-          rows,
-          id,
-          flag
-        )
-      );
+      // dispatch(
+      //   GetAdvanceMeetingAgendabyMeetingID(
+      //     meetingMaterialData,
+      //     navigate,
+      //     t,
+      //     rows,
+      //     id,
+      //     flag
+      //   )
+      // );
+      let NewData = {
+        AgendaID: id,
+      };
+      dispatch(GetAllUserAgendaRightsApiFunc(navigate, t, NewData));
       dispatch(showAdvancePermissionModal(true));
     }
   };
@@ -413,9 +417,10 @@ const ParentAgenda = ({
   }, [allPresenters]);
 
   useEffect(() => {
-    if (presenters.lenth > 0 || Object.keys(presenters).length > 0) {
+    if (presenters.length > 0 || Object.keys(presenters).length > 0) {
       const mappedPresenters = presenters.map((presenter) => ({
         value: presenter.userID,
+        name: presenter.userName,
         label: (
           <>
             <Row>
@@ -433,7 +438,7 @@ const ParentAgenda = ({
               </Col>
             </Row>
           </>
-        ),
+        ).toString(),
       }));
       setAllSavedPresenters((prevPresenters) => {
         if (
@@ -453,6 +458,16 @@ const ParentAgenda = ({
   console.log("editor role", editorRole);
 
   console.log("Agenda Data", rows);
+  console.log("allSavedPresentersallSavedPresenters", allSavedPresenters);
+
+  const filterFunc = (options, searchText) => {
+    // console.log(options, "filterFuncfilterFunc");
+    if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   return (
     <>
@@ -603,7 +618,8 @@ const ParentAgenda = ({
                                 classNamePrefix={
                                   "SelectOrganizersSelect_active"
                                 }
-                                isSearchable={false}
+                                filterOption={filterFunc}
+                                // isSearchable={true}
                               />
                             </Col>
                             <Col

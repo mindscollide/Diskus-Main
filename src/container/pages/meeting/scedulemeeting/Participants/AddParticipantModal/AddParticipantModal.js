@@ -85,6 +85,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
                         participantRoleID: 2,
                       },
                       isComingApi: false,
+                      attendeeAvailability: 1,
                     };
                     tem.push(newUser);
                   }
@@ -119,6 +120,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
                         participantRoleID: 2,
                       },
                       isComingApi: false,
+                      attendeeAvailability: 1,
                     };
                     tem.push(newUser);
                   }
@@ -151,6 +153,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
                     participantRoleID: 2,
                   },
                   isComingApi: false,
+                  attendeeAvailability: 1,
                 };
                 tem.push(newUser);
               }

@@ -7,6 +7,8 @@ import greenMailIcon from "../../../../../assets/images/greenmail.svg";
 import redMailIcon from "../../../../../assets/images/redmail.svg";
 import RspvIcon from "../../../../../assets/images/rspvGreen.svg";
 import thumbsup from "../../../../../assets/images/thumbsup.svg";
+import AwaitingResponse from "../../../../../assets/images/Awaiting-response.svg";
+import TentativelyAccepted from "../../../../../assets/images/Tentatively-accepted.svg";
 import thumbsdown from "../../../../../assets/images/thumbsdown.svg";
 import Select from "react-select";
 import { Col, Row } from "react-bootstrap";
@@ -33,7 +35,7 @@ import {
   actionsGlobalFlag,
   pollsGlobalFlag,
   attendanceGlobalFlag,
-  uploadGlobalFlag
+  uploadGlobalFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import ModalCrossIcon from "../Organizers/ModalCrossIconClick/ModalCrossIcon";
 import tick from "../../../../../assets/images/PNG tick.png";
@@ -289,51 +291,94 @@ const AgendaContributers = ({
       },
     },
     {
-      title: "",
-      dataIndex: "rsvp",
-      key: "rsvp",
+      title: "RSVP",
+      dataIndex: "attendeeAvailability",
+      key: "attendeeAvailability",
       width: "80px",
       render: (text, record) => {
-        return (
-          <>
-            <Row>
-              <Col lg={12} md={12} sm={12}>
-                {((Number(editorRole.status) === 9 ||
-                  Number(editorRole.status) === 8 ||
-                  Number(editorRole.status) === 10) &&
-                  editorRole.role === "Organizer" &&
-                  isEditMeeting === true) ||
-                (editorRole.role === "Agenda Contributor" &&
-                  isEditMeeting === true) ? (
-                  <img
-                    draggable={false}
-                    src={thumbsup}
-                    className={
-                      record.isEdit === true ? "cursor-default" : "pe-none"
-                    }
-                    height="30px"
-                    width="30px"
-                    alt=""
-                  />
-                ) : (
-                  <img
-                    draggable={false}
-                    src={thumbsup}
-                    className={
-                      record.isEdit === true ? "cursor-default" : "pe-none"
-                    }
-                    height="30px"
-                    width="30px"
-                    alt=""
-                  />
-                )}
-
-                {/* <img draggable = {false} src={RspcAbstainIcon} height="30px" width="30px" /> */}
-              </Col>
-            </Row>
-          </>
-        );
+        if (record.attendeeAvailability === 1) {
+          return (
+            <img
+              draggable={false}
+              src={AwaitingResponse}
+              height="30px"
+              width="30px"
+              alt=""
+            />
+          );
+        } else if (record.attendeeAvailability === 2) {
+          return (
+            <img
+              draggable={false}
+              src={thumbsup}
+              height="30px"
+              width="30px"
+              alt=""
+            />
+          );
+        } else if (record.attendeeAvailability === 3) {
+          return (
+            <img
+              draggable={false}
+              src={thumbsdown}
+              height="30px"
+              width="30px"
+              alt=""
+            />
+          );
+        } else if (record.attendeeAvailability === 4) {
+          return (
+            <img
+              draggable={false}
+              src={TentativelyAccepted}
+              height="30px"
+              width="30px"
+              alt=""
+            />
+          );
+        }
       },
+      // render: (text, record) => {
+      //   return (
+      //     <>
+      //       <Row>
+      //         <Col lg={12} md={12} sm={12}>
+      //           {((Number(editorRole.status) === 9 ||
+      //             Number(editorRole.status) === 8 ||
+      //             Number(editorRole.status) === 10) &&
+      //             editorRole.role === "Organizer" &&
+      //             isEditMeeting === true) ||
+      //           (editorRole.role === "Agenda Contributor" &&
+      //             isEditMeeting === true) ? (
+      //             <img
+      //               draggable={false}
+      //               src={thumbsup}
+      //               className={
+      //                 record.isEdit === true ? "cursor-default" : "pe-none"
+      //               }
+      //               height="30px"
+      //               width="30px"
+      //               alt=""
+      //             />
+      //           ) : (
+      //             <img
+      //               draggable={false}
+      //               src={thumbsup}
+      //               className={
+      //                 record.isEdit === true ? "cursor-default" : "pe-none"
+      //               }
+      //               height="30px"
+      //               width="30px"
+      //               alt=""
+      //             />
+      //           )}
+
+      //           {/* <img draggable = {false} src={RspcAbstainIcon} height="30px" width="30px" /> */}
+      //         </Col>
+      //       </Row>
+      //     </>
+      //   );
+      // },
     },
     {
       dataIndex: "Close",
@@ -369,10 +414,10 @@ const AgendaContributers = ({
   ];
 
   // Filter columns based on the RSVP Condition
-  const finalColumns =
-    Number(editorRole.status) === 1
-      ? AgendaColoumns.filter((column) => column.key !== "rsvp")
-      : AgendaColoumns;
+  // const finalColumns =
+  //   Number(editorRole.status) === 1
+  //     ? AgendaColoumns.filter((column) => column.key !== "rsvp")
+  //     : AgendaColoumns;
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
@@ -606,6 +651,7 @@ const AgendaContributers = ({
           isEdit: true,
           isContributedNotified: true,
           agendaListRightsAll: AgConData.agendaListRightsAll,
+          attendeeAvailability: AgConData.attendeeAvailability,
         });
       });
       setRowsData(newArr);
@@ -716,7 +762,7 @@ const AgendaContributers = ({
         <Row>
           <Col lg={12} md={12} sm={12}>
             <Table
-              column={finalColumns}
+              column={AgendaColoumns}
               scroll={{ y: "62vh" }}
               pagination={false}
               locale={{
@@ -809,7 +855,7 @@ const AgendaContributers = ({
               Number(editorRole.status) === 12 ? (
                 <Button
                   disableBtn={
-                    Number(currentMeeting) === 0 && isPublishedState === false
+                    Number(currentMeeting) === 0 || isPublishedState === false
                       ? true
                       : false
                   }
@@ -820,7 +866,7 @@ const AgendaContributers = ({
               ) : isEditMeeting === true ? null : (
                 <Button
                   disableBtn={
-                    Number(currentMeeting) === 0 && isPublishedState === false
+                    Number(currentMeeting) === 0 || isPublishedState === false
                       ? true
                       : false
                   }

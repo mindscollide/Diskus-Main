@@ -203,6 +203,7 @@ const authReducer = (state = initialState, action) => {
         ConfirmPasswordData: action.message,
       };
     }
+
     case actions.AUTH_RESPONSE_MESSAGE: {
       return {
         ...state,

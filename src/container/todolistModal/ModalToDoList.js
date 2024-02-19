@@ -23,6 +23,8 @@ import {
 } from "./../../commen/functions/date_formater";
 import CustomUpload from "./../../components/elements/upload/Upload";
 import { Row, Col, Container } from "react-bootstrap";
+import Select from "react-select";
+
 import {
   GetAllAssigneesToDoList,
   CreateToDoList,
@@ -59,6 +61,12 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   });
 
   const [toDoDate, setToDoDate] = useState("");
+  const [allPresenters, setAllPresenters] = useState([]);
+  const [presenterValue, setPresenterValue] = useState({
+    value: 0,
+    label: "",
+    name: "",
+  });
 
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -101,6 +109,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
 
   const [TaskAssignedTo, setTaskAssignedTo] = useState([]);
+  console.log(TaskAssignedTo, "TaskAssignedToTaskAssignedTo");
 
   const [taskAssignedName, setTaskAssignedName] = useState([]);
   const [assignees, setAssignees] = useState([]);
@@ -144,6 +153,36 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         (obj) => parseInt(obj.pK_UID) !== parseInt(createrID)
       );
       setTaskAssigneeApiData(filterData);
+
+      let PresenterData = [];
+      data.forEach((user, index) => {
+        PresenterData.push({
+          label: (
+            <>
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex gap-2 align-items-center"
+                >
+                  <img
+                    src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
+                    height="16.45px"
+                    width="18.32px"
+                    draggable="false"
+                    alt=""
+                  />
+                  <span>{user.name}</span>
+                </Col>
+              </Row>
+            </>
+          ),
+          value: user.pK_UID,
+          name: user.name,
+        });
+      });
+      setAllPresenters(PresenterData);
     }
   }, [toDoListReducer.AllAssigneesData]);
 
@@ -398,8 +437,9 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   }, [taskAssignedName.length]);
 
   //Input Field Assignee Change
-  const onChangeSearch = (e) => {
-    setTaskAssignedToInput(e.target.value.trimStart());
+  const onChangeSearch = (item) => {
+    setPresenterValue(item);
+    setTaskCreatorID(item.value);
   };
 
   //Drop Down Values
@@ -614,6 +654,16 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     setCloseConfirmationBox(false);
     setIsCreateTodo(true);
   };
+
+  const filterFunc = (options, searchText) => {
+    // console.log(options, "filterFuncfilterFunc");
+    if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
     <>
       <Container>
@@ -720,17 +770,18 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       md={6}
                       sm={6}
                       xs={12}
-                      className="todolist-modal-fields margin-top--20 d-flex  flex-column"
+                      className="todolist-modal-fields margin-top-0 d-flex  flex-column"
                     >
-                      <InputSearchFilter
-                        placeholder={t("Add-attendees")}
-                        value={taskAssignedToInput}
-                        filteredDataHandler={searchFilterHandler(
-                          taskAssignedToInput
-                        )}
+                      <Select
+                        options={allPresenters}
+                        maxMenuHeight={140}
+                        onChange={onChangeSearch}
+                        value={
+                          presenterValue.value === 0 ? null : presenterValue
+                        }
+                        placeholder={t("Add-assignee")}
                         applyClass="assigneeFindInCreateToDo"
-                        disable={taskAssigneeLength}
-                        change={onChangeSearch}
+                        filterOption={filterFunc}
                       />
                     </Col>
                   </Row>
@@ -935,7 +986,10 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                                             }
                                           />
                                         </span>
-                                        <p className="modaltodolist-attachment-text">
+                                        <p
+                                          className="modaltodolist-attachment-text"
+                                          title={data.DisplayAttachmentName}
+                                        >
                                           {first}
                                         </p>
                                       </Col>

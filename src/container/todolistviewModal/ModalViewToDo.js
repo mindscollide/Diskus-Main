@@ -911,7 +911,12 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                                   />
                                 </span>
                               )}
-                              <p className="todoModalFileAttach FontArabicRegular">
+                              <p
+                                className="todoModalFileAttach FontArabicRegular"
+                                title={
+                                  modalviewAttachmentFiles.DisplayAttachmentName
+                                }
+                              >
                                 {first}
                               </p>
                             </Col>

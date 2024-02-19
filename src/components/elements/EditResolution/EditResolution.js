@@ -2455,7 +2455,12 @@ const EditResolution = ({ setCancelresolution }) => {
                                                               draggable="false"
                                                             />
                                                           </span>
-                                                          <p className="modaltodolist-attachment-text  FontArabicRegular">
+                                                          <p
+                                                            className="modaltodolist-attachment-text  FontArabicRegular"
+                                                            title={
+                                                              data.displayAttachmentName
+                                                            }
+                                                          >
                                                             {first}
                                                           </p>
                                                         </Col>

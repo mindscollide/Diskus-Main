@@ -75,6 +75,11 @@ const ViewMeetingModal = ({
 
   const { meetingIdReducer } = useSelector((state) => state);
 
+  console.log(
+    meetingIdReducer.meetingDetails,
+    "meetingIdReducermeetingIdReducermeetingIdReducer"
+  );
+
   useEffect(() => {
     return () => {
       dispatch(cleareAllState());

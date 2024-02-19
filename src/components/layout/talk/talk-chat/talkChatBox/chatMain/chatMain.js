@@ -37,6 +37,7 @@ import {
   downloadChatEmptyObject,
   DeleteMultipleMessages,
   activeChat,
+  OTOMessageSendSuccess,
 } from "../../../../../../store/actions/Talk_action";
 import {
   normalizeVideoPanelFlag,
@@ -1834,13 +1835,30 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [talkStateData?.MessageStatusUpdateData?.MessageStatusUpdateResponse]);
 
   useEffect(() => {
-    if (talkStateData.MessageSendOTO.ResponseMessage === "User-is-blocked") {
+    if (
+      talkStateData.MessageSendOTO.ResponseMessage !==
+        t("User-is-not-in-channel") &&
+      talkStateData.MessageSendOTO.ResponseMessage !==
+        t("OTO-message-inserted") &&
+      talkStateData.MessageSendOTO.ResponseMessage !==
+        t("OTO-message-not-inserted") &&
+      talkStateData.MessageSendOTO.ResponseMessage !==
+        t("Something-went-wrong") &&
+      talkStateData.MessageSendOTO.ResponseMessage !== ""
+    ) {
       setNotification({
         notificationShow: true,
         message: talkStateData.MessageSendOTO.ResponseMessage,
       });
       setNotificationID(id);
     }
+    setTimeout(() => {
+      setNotification({
+        notificationShow: false,
+        message: "",
+      });
+      dispatch(OTOMessageSendSuccess("", []));
+    }, 3000);
   }, [talkStateData.MessageSendOTO]);
 
   const uniqueId = generateGUID();

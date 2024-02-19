@@ -131,6 +131,8 @@ const initialState = {
   pollsGlobalFlag: false,
   attendanceGlobalFlag: false,
   uploadGlobalFlag: false,
+
+  endMeetingStatus: null,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -1656,12 +1658,14 @@ const NewMeetingreducer = (state = initialState, action) => {
         action.response !== null
       ) {
         let currentVideoURL = action.response;
+
         let match = currentVideoURL.match(/RoomID=([^&]*)/);
         let roomID = match[1];
         let dynamicBaseURLCaller = localStorage.getItem(
           "videoBaseURLParticipant"
         );
         let randomGuestName = generateRandomGuest();
+        let UserName = localStorage.getItem("name");
         const endIndexBaseURLCaller = endIndexUrl(dynamicBaseURLCaller);
         const extractedBaseURLCaller = extractedUrl(
           dynamicBaseURLCaller,
@@ -1669,7 +1673,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         );
         let resultedVideoURL = generateURLParticipant(
           extractedBaseURLCaller,
-          randomGuestName,
+          UserName,
           roomID
         );
         return {
@@ -2085,6 +2089,31 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         uploadGlobalFlag: action.response,
+      };
+    }
+
+    case actions.END_MEETING_STATUS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.END_MEETING_STATUS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        endMeetingStatus: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.END_MEETING_STATUS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        endMeetingStatus: null,
+        ResponseMessage: action.message,
       };
     }
 

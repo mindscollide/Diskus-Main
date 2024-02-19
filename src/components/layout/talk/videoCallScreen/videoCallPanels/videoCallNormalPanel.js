@@ -132,7 +132,7 @@ const VideoPanelNormal = () => {
       dynamicBaseURLCaller,
       endIndexBaseURLCaller
     );
-    let randomGuestName = generateRandomGuest();
+    // let randomGuestName = generateRandomGuest();
     if (isMeeting === false) {
       setParticipantURL(
         generateURLParticipant(
@@ -145,7 +145,7 @@ const VideoPanelNormal = () => {
       setParticipantURL(
         generateURLParticipant(
           extractedBaseURLCaller,
-          randomGuestName,
+          currentUserName,
           callAcceptedRoomID
         )
       );

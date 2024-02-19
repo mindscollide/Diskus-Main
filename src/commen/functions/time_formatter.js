@@ -106,6 +106,7 @@ export const getHoursMinutesSec = (date) => {
 
 export const incrementDateforPropsedMeeting = (date) => {
   if (date instanceof Date && !isNaN(date)) {
+    console.log(date, "datedatedate");
     let newDate = new Date(date); // Create a new Date object from the passed date
     newDate.setDate(newDate.getDate() + 1); // Increment the date by 1 day
 
@@ -157,12 +158,24 @@ export const timeforView = (date) => {
 
 export const timeforSend = (date) => {
   if (date instanceof Date && !isNaN(date)) {
-    // let newDate = new Date();
-    // newDate.setDate(date.getDate() + daycount);
+    const minutes = ("0" + date.getMinutes()).slice(-2);
 
+    date.setHours(date.getHours() + 1, 0, 0, 0);
+    console.log({ date }, "newDatenewDatenewDate");
+
+    let newDate = new Date(date.getHours, 0, 0, 0);
+    console.log({ newDate }, "newDatenewDatenewDate");
     let timeValforSend = moment(date).format("HH:mm");
 
     return timeValforSend;
+  }
+  return "";
+};
+export const timeforViewScheduleResolution = (dateObject) => {
+  if (dateObject instanceof Date && !isNaN(dateObject)) {
+    dateObject.setHours(dateObject.getHours() + 1, 0, 0, 0);
+
+    return dateObject;
   }
   return "";
 };

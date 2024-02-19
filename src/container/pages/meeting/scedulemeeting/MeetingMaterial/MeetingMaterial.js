@@ -30,7 +30,7 @@ import {
   actionsGlobalFlag,
   pollsGlobalFlag,
   attendanceGlobalFlag,
-  uploadGlobalFlag
+  uploadGlobalFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import { getMeetingMaterialAPI } from "../../../../../store/actions/NewMeetingActions";
 import {
@@ -62,6 +62,9 @@ const MeetingMaterial = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { NewMeetingreducer } = useSelector((state) => state);
+
   const meetingMaterialData = useSelector(
     (state) => state.NewMeetingreducer.meetingMaterialData
   );
@@ -277,6 +280,10 @@ const MeetingMaterial = ({
     setIsPublishedState(isPublishedGlobal);
   }, [meetingMaterialData, isPublishedGlobal]);
 
+  console.log("isPublishedGlobalisPublishedGlobal", isPublishedGlobal);
+
+  console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
+
   const handleCancelButton = async () => {
     // dispatch(showCancelMeetingMaterial(true));
     let searchData = {
@@ -422,7 +429,7 @@ const MeetingMaterial = ({
           Number(editorRole.status) === 12 ? (
             <Button
               disableBtn={
-                Number(currentMeeting) === 0 && isPublishedState === false
+                Number(currentMeeting) === 0 || isPublishedState === false
                   ? true
                   : false
               }
@@ -433,7 +440,7 @@ const MeetingMaterial = ({
           ) : isEditMeeting === true ? null : (
             <Button
               disableBtn={
-                Number(currentMeeting) === 0 && isPublishedState === false
+                Number(currentMeeting) === 0 || isPublishedState === false
                   ? true
                   : false
               }

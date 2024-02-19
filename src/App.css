@@ -6214,10 +6214,6 @@ input[type="time"]::-webkit-clear-button {
   border-bottom: 1px solid #6172d6 !important;
 }
 
-.SceduleProposedMeeting tbody tr:last-child td:nth-child(2) {
-  /* border-bottom: 1px solid #6172d6; */
-}
-
 .AbstainProgressViewModal .ant-progress-success-bg,
 .ant-progress-bg {
   background-color: #f16b6b !important;

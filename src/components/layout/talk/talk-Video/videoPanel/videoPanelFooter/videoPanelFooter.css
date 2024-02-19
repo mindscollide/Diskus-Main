@@ -1,43 +1,65 @@
 .group-btn {
-    position: fixed;
-    height: 40px !important;
-    width: 150px;
-    /* right: 7%; */
-    /* bottom: 5%; */
-    background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-    border: none;
-    border-radius: 4px;
-    font-size: 12px;
-    font-family: 'MontserratRegular';
-    /* filter: grayscale(1); */
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    left: calc(100% - 255px);
-    top: calc(100% - 75px);
+  /* position: fixed; */
+  height: 35px !important;
+  width: 150px;
+  /* right: 7%; */
+  /* bottom: 5%; */
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: "MontserratRegular";
+  /* filter: grayscale(1); */
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  /* left: calc(100% - 255px); */
+  /* top: calc(100% - 75px); */
 }
 
 .group-btn-gray {
-    position: fixed;
-    height: 40px !important;
-    width: 150px;
-    /* right: 7%; */
-    /* bottom: 5%; */
-    background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-    border: none;
-    border-radius: 4px;
-    font-size: 12px;
-    font-family: 'MontserratRegular';
-    filter: grayscale(1);
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    left: calc(100% - 255px);
-    top: calc(100% - 75px);
+  /* position: fixed; */
+  height: 35px !important;
+  width: 150px;
+  /* right: 7%; */
+  /* bottom: 5%; */
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: "MontserratRegular";
+  filter: grayscale(1);
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  /* left: calc(100% - 255px); */
+  /* top: calc(100% - 75px); */
 }
 
 button.group-btn.btn.btn-primary span {
-    margin-left: 10px;
+  margin-left: 10px;
 }
 
 button.group-btn-gray.btn.btn-primary span {
-    margin-left: 10px;
+  margin-left: 10px;
+}
+
+.deselect-all {
+  display: flex;
+  align-items: center !important;
+  height: 100%;
+  color: #6172d6 !important;
+  font-family: "MontserratMedium-500";
+}
+
+.deselect-all p {
+  margin: 0 !important;
+}
+
+.deselect-all svg {
+  font-size: 24px !important;
+  margin-top: -2px !important;
+}
+
+.deselect-all p:hover {
+  border-bottom: 1px solid #6172d6;
+  cursor: pointer;
 }

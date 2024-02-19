@@ -188,6 +188,12 @@ const VideoPanelBodyContact = () => {
     }
   };
 
+  const deselectAllUsers = () => {
+    console.log("Function Clicked");
+    setGroupCallUsers([]);
+    setGroupCallActiveUsers([]);
+  };
+
   const leaveCallHostOto = () => {
     let userCalledID = Number(localStorage.getItem("recipentCalledID"));
     let Data = {
@@ -351,7 +357,10 @@ const VideoPanelBodyContact = () => {
             return (
               <Row className="single-chat" key={index}>
                 <Col lg={1} md={1} sm={1} className="mt-4">
-                  <Checkbox onChange={() => groupCallUsersHandler(userData)} />
+                  <Checkbox
+                    checked={groupCallUsers.includes(userData.userID)}
+                    onChange={() => groupCallUsersHandler(userData)}
+                  />
                 </Col>
                 <Col lg={2} md={2} sm={2} className="bottom-border">
                   <div
@@ -392,14 +401,18 @@ const VideoPanelBodyContact = () => {
           <p>No Users Available</p>
         )}
       </Container>
-      <VideoPanelFooter
-        groupCallClick={initiateGroupCall}
-        groupbtnClassName={
-          groupCallUsers.length <= 1 ? "group-btn-gray" : "group-btn"
-        }
-        buttonText={buttonText}
-      />
-
+      <div className="videocall-footer-panel">
+        {VideoMainReducer.Loading === false ? (
+          <VideoPanelFooter
+            groupCallClick={initiateGroupCall}
+            groupbtnClassName={
+              groupCallUsers.length <= 1 ? "group-btn-gray" : "group-btn"
+            }
+            buttonText={buttonText}
+            deselectAllUsers={deselectAllUsers}
+          />
+        ) : null}
+      </div>
       <Modal
         show={initiateVideoModalOto}
         onHide={() => {

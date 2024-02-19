@@ -10,6 +10,7 @@ import pdfIcon from "../../../assets/images/pdf_icon.svg";
 import Rightploygon from "../../../assets/images/Polygon right.svg";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
 import { Upload } from "antd";
+import Select from "react-select";
 import userImage from "../../../assets/images/user.png";
 import {
   TextField,
@@ -58,6 +59,12 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   const [fileAttachments, setFileAttachments] = useState([]);
   const [fileSize, setFileSize] = useState(0);
   const [fileForSend, setFileForSend] = useState([]);
+  const [allPresenters, setAllPresenters] = useState([]);
+  const [presenterValue, setPresenterValue] = useState({
+    value: 0,
+    label: "",
+    name: "",
+  });
 
   const [committeeMemberRolesOptions, setCommitteeMemberRolesOptions] =
     useState([]);
@@ -363,15 +370,17 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   };
 
   //Input Field Assignee Change
-  const onChangeSearch = (e) => {
-    setOnclickFlag(false);
-    if (e.target.value.trimStart() !== "") {
-      setTaskAssignedToInput(e.target.value.trimStart());
-    } else {
-      setTaskAssignedToInput("");
-      setTaskAssignedTo(0);
-      setTaskAssignedName("");
-    }
+  const onChangeSearch = (item) => {
+    setPresenterValue(item);
+    setTaskAssignedTo(item.value);
+    // setOnclickFlag(false);
+    // if (e.target.value.trimStart() !== "") {
+    //   setTaskAssignedToInput(e.target.value.trimStart());
+    // } else {
+    //   setTaskAssignedToInput("");
+    //   setTaskAssignedTo(0);
+    //   setTaskAssignedName("");
+    // }
   };
 
   // onChange function for group chat
@@ -400,7 +409,36 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   useEffect(() => {
     try {
       if (Object.keys(assignees.user).length > 0) {
+        let newData = [];
         setMeetingAttendeesList(assignees.user);
+        assignees.user.forEach((user, index) => {
+          newData.push({
+            label: (
+              <>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex gap-2 align-items-center"
+                  >
+                    <img
+                      src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
+                      height="16.45px"
+                      width="18.32px"
+                      draggable="false"
+                      alt=""
+                    />
+                    <span>{user.name}</span>
+                  </Col>
+                </Row>
+              </>
+            ),
+            value: user.pK_UID,
+            name: user.name,
+          });
+        });
+        setAllPresenters(newData);
       }
     } catch (error) {}
   }, [assignees.user]);
@@ -629,6 +667,15 @@ const CreateCommittee = ({ setCreategrouppage }) => {
           fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
       )
     );
+  };
+
+  const filterFunc = (options, searchText) => {
+    // console.log(options, "filterFuncfilterFunc");
+    if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   return (
@@ -1431,15 +1478,17 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               sm={12}
                               className="create-committee-fields InputSearchForCreateCommittee"
                             >
-                              <InputSearchFilter
-                                applyClass={"createCommittee_searchMember"}
+                              <Select
+                                options={allPresenters}
+                                maxMenuHeight={140}
+                                onChange={onChangeSearch}
+                                value={
+                                  presenterValue.value === 0
+                                    ? null
+                                    : presenterValue
+                                }
                                 placeholder={t("Search-member-here") + "*"}
-                                value={taskAssignedToInput}
-                                filteredDataHandler={searchFilterHandler(
-                                  taskAssignedToInput
-                                )}
-                                change={onChangeSearch}
-                                onclickFlag={onclickFlag}
+                                filterOption={filterFunc}
                               />
                             </Col>
                           </Row>

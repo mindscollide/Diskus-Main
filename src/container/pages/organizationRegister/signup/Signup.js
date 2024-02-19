@@ -929,7 +929,7 @@ const Signup = () => {
                           handeEmailvlidate();
                         }}
                         labelClass="d-none"
-                        placeholder={t("Email-address")}
+                        placeholder={t("Work-email-address")}
                         name="Email"
                         type="email"
                         maxLength={160}

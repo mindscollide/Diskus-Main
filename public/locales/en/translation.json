@@ -60,7 +60,7 @@
   "Meetings": "Meetings",
   "Meeting": "Meeting",
   "This-week": "This Week",
-  "Up-coming-event": "Upcoming events",
+  "Up-coming-event": "Upcoming Events",
   "No-upcoming-events": "No upcoming events",
   "Change-password": "Change password",
   "Sign-out": "Sign out",
@@ -1742,9 +1742,9 @@
   "Collapse": "Collapse",
   "Downloading-file": "Downloading file",
   "Add-some-purpose-start-by-creating-your-agenda": "Add some purpose - start by creating your agenda",
-  "Description-and-attachement": "Description And Attachement",
+  "Description-and-attachement": "Description And Attachment",
   "Attendace": "Attendance",
-  "Send-reply": "Send reply",
+  "Send-reply": "Send Reply",
   "User-name": "User Name",
   "User-email": "User Email",
   "Login-date-time": "Login Date Time",
@@ -1757,5 +1757,11 @@
   "Inteface-type": "Inteface Type",
   "Date-from": "Date From",
   "Date-to": "Date To",
-  "Select-send-response-by-date": "Select Send Response by Date"
+  "Select-send-response-by-date": "Select Send Response by Date",
+  "Add-the-people-who-need-to-sign-this-document": "Add the people who need to sign this document",
+  "Work-email-address": "Work Email address",
+  "Deselect-all": "Deselect all",
+  "Add-another-signer": "Add another signer",
+  "Add-assignee": "Add Assignee",
+  "You-have-been-blocked": "You have been blocked by [User Name]"
 }

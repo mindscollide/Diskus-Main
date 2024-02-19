@@ -99,6 +99,7 @@ import {
   optionsforFolderViewer,
   optionsforFolderEditor,
   optionsforFolder,
+  optionsforPDFandSignatureFlow,
 } from "./SearchFunctionality/option";
 import { allAssignessList } from "../../store/actions/Get_List_Of_Assignees";
 import axios from "axios";
@@ -624,6 +625,12 @@ const DataRoom = () => {
           setFileDataforAnalyticsCount
         )
       );
+    } else if (data.value === 8) {
+      window.open(
+        `/#/DisKus/signatureviewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+        "_blank",
+        "noopener noreferrer"
+      );
     }
   };
   //
@@ -1023,6 +1030,15 @@ const DataRoom = () => {
           isPermission: record.permissionID,
         };
         const pdfDataJson = JSON.stringify(pdfData);
+        const pdfDataforSignature = {
+          taskId: record.id,
+          commingFrom: 4,
+          fileName: record.name,
+          attachmentID: record.id,
+          isPermission: record.permissionID,
+          isNew: true,
+        };
+        const pdfDataJsonSignature = JSON.stringify(pdfDataforSignature);
         if (record.isShared) {
           return (
             <>
@@ -1688,7 +1704,18 @@ const DataRoom = () => {
           attachmentID: record.id,
           isPermission: record.permissionID,
         };
+        let fileExtension = getFileExtension(record.name);
         const pdfDataJson = JSON.stringify(pdfData);
+        const pdfDataforSignature = {
+          taskId: record.id,
+          commingFrom: 4,
+          fileName: record.name,
+          attachmentID: record.id,
+          isPermission: record.permissionID,
+          isNew: true,
+        };
+        const pdfDataJsonSignature = JSON.stringify(pdfDataforSignature);
+
         if (record.isShared) {
           return (
             <>
@@ -2057,7 +2084,42 @@ const DataRoom = () => {
                           />
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                          {optionsforFile(t).map((data, index) => {
+                          {fileExtension === "pdf"
+                            ? optionsforPDFandSignatureFlow(t).map(
+                                (data, index) => {
+                                  return (
+                                    <Dropdown.Item
+                                      key={index}
+                                      onClick={() =>
+                                        fileOptionsSelect(
+                                          data,
+                                          record,
+                                          pdfDataJsonSignature
+                                        )
+                                      }
+                                    >
+                                      {data.label}
+                                    </Dropdown.Item>
+                                  );
+                                }
+                              )
+                            : optionsforFile(t).map((data, index) => {
+                                return (
+                                  <Dropdown.Item
+                                    key={index}
+                                    onClick={() =>
+                                      fileOptionsSelect(
+                                        data,
+                                        record,
+                                        pdfDataJson
+                                      )
+                                    }
+                                  >
+                                    {data.label}
+                                  </Dropdown.Item>
+                                );
+                              })}
+                          {/* {optionsforFile(t).map((data, index) => {
                             return (
                               <Dropdown.Item
                                 key={index}
@@ -2068,7 +2130,7 @@ const DataRoom = () => {
                                 {data.label}
                               </Dropdown.Item>
                             );
-                          })}
+                          })} */}
                         </Dropdown.Menu>
                       </Dropdown>
                     )}

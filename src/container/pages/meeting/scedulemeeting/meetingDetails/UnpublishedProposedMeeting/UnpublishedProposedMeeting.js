@@ -587,7 +587,7 @@ const UnpublishedProposedMeeting = ({
                     <Button
                       text={t("View-poll")}
                       className={styles["publish_meeting_btn_View_poll"]}
-                      disableBtn={isViewPollShown ? true : false}
+                      // disableBtn={isViewPollShown ? true : false}
                       onClick={() =>
                         viewProposeDatePollHandler(
                           false,
