@@ -1348,6 +1348,104 @@ const UserLogout = {
   RequestMethod: "ServiceManager.LogOut",
 };
 
+const createWorkFlowRM = {
+  RequestMethod: "ServiceManager.CreateSignatureFlow",
+};
+
+const saveWorkFlowRM = {
+  RequestMethod: "ServiceManager.SaveWorkFlow",
+};
+
+const updateActorBundleStatusRM = {
+  RequestMethod: "ServiceManager.UpdateActorBundleStatus",
+};
+
+const getActorBundleStatusStateRM = {
+  RequestMethod: "ServiceManager.GetActorBundleStatusState",
+};
+
+const getActionableBundleStatusStateRM = {
+  RequestMethod: "ServiceManager.GetActionableBundleStatusState",
+};
+
+const getEntityTypesRM = {
+  RequestMethod: "ServiceManager.GetEntityTypes",
+};
+const getWorkFlowRM = {
+  RequestMethod: "ServiceManager.GetWorkFlow",
+};
+const getWorkFlowsRM = {
+  RequestMethod: "ServiceManager.GetWorkFlows",
+};
+const saveActorRM = {
+  RequestMethod: "ServiceManager.SaveActorColor",
+};
+
+const saveActorColorRM = {
+  RequestMethod: "ServiceManager.SaveActorColor",
+};
+const saveAndEditFormFieldsRM = {
+  RequestMethod: "ServiceManager.SaveAndEditFormFields",
+};
+
+const sendDocumentRM = {
+  RequestMethod: "ServiceManager.SendDocument",
+};
+
+const DeclineReason = {
+  RequestMethod: "ServiceManager.DeclineReason",
+};
+
+const getAllFieldsByWorkFlowIdRM = {
+  RequestMethod: "ServiceManager.GetAllFieldsByWorkFlowID",
+};
+
+const addUpdateFieldValueRM = {
+  RequestMethod: "ServiceManager.AddUpdateFieldValue",
+};
+
+const saveAuditTrailRM = {
+  RequestMethod: "ServiceManager.SaveAuditTrail",
+};
+
+const getAllAuditTrailByWorkFlowIdRM = {
+  RequestMethod: "ServiceManager.GetAllAuditTrailByWorkFlowID",
+};
+
+const getDeclineReasonRM = {
+  RequestMethod: "ServiceManager.GetDeclineReason",
+};
+const getSignatureFormFieldTypesRM = {
+  RequestMethod: "ServiceManager.GetSignatureFormFieldTypes",
+};
+const getColorPlattesRM = {
+  RequestMethod: "ServiceManager.GetColorPalettes",
+};
+const getAuditTrailActionsRM = {
+  RequestMethod: "ServiceManager.GetAuditTrailActions",
+};
+const getActorFieldValuesRM = {
+  RequestMethod: "ServiceManager.GetActorFieldValues",
+};
+
+const addNewSignatureRM = {
+  RequestMethod: "ServiceManager.AddANewSignature",
+};
+
+const getAllSignaturesRM = {
+  RequestMethod: "ServiceManager.GetAllSignatures",
+};
+
+const getUserSignatureRM = {
+  RequestMethod: "ServiceManager.GetUserSignature",
+};
+const deleteUserSignatureRM = {
+  RequestMethod: "ServiceManager.DeleteUserSignature",
+};
+
+const getWorkFlowByFileIdRM = {
+  RequestMethod: "ServiceManager.GetWorkFlowByFileID",
+};
 // new api for end quick meeting
 const endMeetingStatus = {
   RequestMethod: "ServiceManager.MeetingStatusUpdate",
@@ -1714,5 +1812,32 @@ export {
   validateMicrosoftToken,
   getUserWiseProposeDateOrganizer,
   UserLogout,
+  createWorkFlowRM,
+  saveWorkFlowRM,
+  updateActorBundleStatusRM,
+  getActorBundleStatusStateRM,
+  getActionableBundleStatusStateRM,
+  getEntityTypesRM,
+  getWorkFlowRM,
+  getWorkFlowsRM,
+  saveActorRM,
+  saveActorColorRM,
+  saveAndEditFormFieldsRM,
+  sendDocumentRM,
+  DeclineReason,
+  getAllFieldsByWorkFlowIdRM,
+  addUpdateFieldValueRM,
+  saveAuditTrailRM,
+  getAllAuditTrailByWorkFlowIdRM,
+  getDeclineReasonRM,
+  getSignatureFormFieldTypesRM,
+  getColorPlattesRM,
+  getAuditTrailActionsRM,
+  getActorFieldValuesRM,
+  addNewSignatureRM,
+  getAllSignaturesRM,
+  getUserSignatureRM,
+  deleteUserSignatureRM,
+  getWorkFlowByFileIdRM,
   endMeetingStatus,
 };
