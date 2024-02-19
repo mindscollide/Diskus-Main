@@ -502,7 +502,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       );
     });
     // Wait for all promises to resolve
-    await Promise.all(uploadPromises);
+    await Promise.all(uploadPromises); //till here the files get upload
     let newAttachmentData = newfile.map((data, index) => {
       return {
         DisplayAttachmentName: data.DisplayAttachmentName,
@@ -520,6 +520,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       TaskID: Number(createTaskID),
       TasksAttachments: newAttachmentData,
     };
+    console.log(Data, "TaskCreatorIDTaskCreatorID");
     await dispatch(
       saveTaskDocumentsAndAssigneesApi(navigate, Data, t, 1, setShow)
     );

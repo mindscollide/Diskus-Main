@@ -1195,6 +1195,10 @@ const uploadDocumentsTaskApi = (navigate, t, data, folderID, newFolder) => {
               await dispatch(
                 uploadDocument_success(response.data.responseResult, "")
               );
+              console.log(
+                response.data.responseResult,
+                "uploadDocument_success"
+              );
               await dispatch(
                 saveFilesTaskApi(
                   navigate,
