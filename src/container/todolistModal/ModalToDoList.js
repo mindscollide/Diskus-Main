@@ -251,11 +251,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const uploadFilesToDo = (data) => {
     console.log(data, "uploadFilesToDouploadFilesToDo");
     let filesArray = Object.values(data.target.files);
-    console.log(
-      Object.values(data.target.files),
-      "filesArrayfilesArrayfilesArray"
-    );
-
     let fileSizeArr = fileSize;
     let flag = false;
     let sizezero = true;
