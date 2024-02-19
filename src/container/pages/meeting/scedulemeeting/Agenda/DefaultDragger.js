@@ -32,106 +32,115 @@ const DefaultDragger = ({
     multiple: true,
     showUploadList: false,
     onChange(data) {
-      const { status } = data.file;
+      const { fileList } = data;
+      console.log(fileList, "fileListfileList");
+      let flag = false;
+      let sizezero = true;
       let newRows = [...rows];
+
+      let size = true;
+      // Check if the fileList is the same as the previous one
+      if (JSON.stringify(fileList) === JSON.stringify(previousFileList)) {
+        return; // Skip processing if it's the same fileList
+      }
+      console.log(newRows[index], "checkingIndex");
       let fileSizeArr;
-      if (newRows[index].files.length > 9) {
+      let getRowData = newRows[index];
+      if (getRowData.files.length > 9) {
         setOpen({
           flag: true,
           message: t("Not-allowed-more-than-10-files"),
         });
-      } else if (newRows[index].files.length > 0) {
-        let flag = false;
-        let sizezero;
-        let size;
-        newRows[index].files.map((arData, index) => {
-          if (arData.displayAttachmentName === data.file.originFileObj.name) {
-            flag = true;
+      }
+      if (getRowData.files.length > 0) {
+        fileList.forEach((fileData, index) => {
+          if (fileData.size > 10485760) {
+            size = false;
+          } else if (fileData.size === 0) {
+            sizezero = false;
+          }
+          let fileExists = getRowData.files.some(
+            (oldFileData) => oldFileData.displayAttachmentName === fileData.name
+          );
+          if (!size) {
+            setTimeout(() => {
+              setOpen({
+                flag: true,
+                message: t("File-size-should-not-be-greater-then-zero"),
+              });
+            }, 3000);
+          } else if (!sizezero) {
+            setTimeout(() => {
+              setOpen({
+                flag: true,
+                message: t("File-size-should-not-be-zero"),
+              });
+            }, 3000);
+          } else if (fileExists) {
+            setTimeout(() => {
+              setOpen({
+                flag: true,
+                message: t("File-already-exists"),
+              });
+            }, 3000);
+          } else {
+            let file = {
+              displayAttachmentName: fileData.originFileObj.name,
+              originalAttachmentName: fileData.originFileObj.name,
+              agendaAttachmentsID: getRandomUniqueNumber(),
+              fK_MAID: 0,
+              fK_UID: currentUserID,
+            };
+            setFileForSend([...fileForSend, fileData.originFileObj]);
+            getRowData.files.push(file);
           }
         });
-        if (data.file.size > 10485760) {
-          size = false;
-        } else if (data.file.size === 0) {
-          sizezero = false;
-        }
-        if (size === false) {
-          setTimeout(
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-greater-then-zero"),
-            }),
-            3000
-          );
-        } else if (sizezero === false) {
-          setTimeout(
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-zero"),
-            }),
-            3000
-          );
-        } else if (flag === true) {
-          setTimeout(
-            setOpen({
-              flag: true,
-              message: t("File-already-exists"),
-            }),
-            3000
-          );
-        } else {
-          let file = {
-            displayAttachmentName: data.file.originFileObj.name,
-            originalAttachmentName: data.file.originFileObj.name,
-            agendaAttachmentsID: getRandomUniqueNumber(),
-            fK_MAID: 0,
-            fK_UID: currentUserID,
-          };
-          setFileForSend([...fileForSend, data.file.originFileObj]);
-          newRows[index].files.push(file);
-          setRows(newRows);
-          // dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
-        }
       } else {
-        let sizezero;
-        let size;
-        if (data.file.size > 10485760) {
-          size = false;
-        } else if (data.file.size === 0) {
-          sizezero = false;
-        }
-        if (size === false) {
-          setTimeout(
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-greater-then-zero"),
-            }),
-            3000
-          );
-        } else if (sizezero === false) {
-          setTimeout(
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-zero"),
-            }),
-            3000
-          );
-        } else {
-          let file = {
-            displayAttachmentName: data.file.originFileObj.name,
-            originalAttachmentName: data.file.originFileObj.name,
-            agendaAttachmentsID: getRandomUniqueNumber(),
-            fK_MAID: 0,
-            fK_UID: currentUserID,
-          };
-          newRows[index].files.push(file);
-          setFileForSend([...fileForSend, data.file.originFileObj]);
-          setRows(newRows);
-        }
+        fileList.forEach((fileData, index) => {
+          if (fileData.size > 10485760) {
+            size = false;
+          } else if (fileData.size === 0) {
+            sizezero = false;
+          }
+
+          if (!size) {
+            setTimeout(() => {
+              setOpen({
+                flag: true,
+                message: t("File-size-should-not-be-greater-then-zero"),
+              });
+            }, 3000);
+          } else if (!sizezero) {
+            setTimeout(() => {
+              setOpen({
+                flag: true,
+                message: t("File-size-should-not-be-zero"),
+              });
+            }, 3000);
+          } else {
+            let file = {
+              displayAttachmentName: fileData.originFileObj.name,
+              originalAttachmentName: fileData.originFileObj.name,
+              agendaAttachmentsID: getRandomUniqueNumber(),
+              fK_MAID: 0,
+              fK_UID: currentUserID,
+            };
+            // setFileForSend([...fileForSend, fileData.originFileObj]);
+            setFileForSend((prevFiles) => [
+              ...prevFiles,
+              fileData.originFileObj,
+            ]);
+            getRowData.files.push(file);
+          }
+        });
       }
+      setRows(newRows);
     },
     customRequest() {},
   };
-
+  // Initialize previousFileList to an empty array
+  let previousFileList = [];
+  console.log(fileForSend, "fileForSendfileForSendfileForSend");
   return (
     <>
       <Row key={index + 5} className="mt-4 mb-2">
@@ -139,6 +148,7 @@ const DefaultDragger = ({
           <Dragger
             {...props}
             className={styles["dragdrop_attachment_create_resolution"]}
+            fileList={[]}
             disabled={
               editorRole.role === "Participant" ||
               (editorRole.role === "Agenda Contributor" &&
