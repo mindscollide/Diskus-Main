@@ -686,6 +686,8 @@ const Agenda = ({
     }
   };
 
+  console.log("fileForSendAgendafileForSendAgenda", fileForSend)
+
   useEffect(() => {
     let updatedRows = [...rows];
     updatedRows[0].presenterID = allSavedPresenters[0]?.value;
