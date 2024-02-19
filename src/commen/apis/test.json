@@ -1,24 +1,16 @@
 {
-  "MeetingID": 2986,
-  "SendResponsebyDate": "20240229",
-  "ProposedDates": [
+  "FolderID": 8119,
+  "Files": [
     {
-      "ProposedDate": "20240213",
-      "StartTime": "060000",
-      "EndTime": "070000",
-      "proposedDateID": 1557
-    },
-    {
-      "ProposedDate": "20240214",
-      "StartTime": "060000",
-      "EndTime": "070000",
-      "proposedDateID": 1558
-    },
-    {
-      "ProposedDate": "20240215",
-      "StartTime": "110000",
-      "EndTime": "130000",
-      "proposedDateID": 0
+      "DisplayFileName": "Minutes Workflow.docx",
+      "DiskusFileNameString": "20240219142010574",
+      "ShareAbleLink": "20240219142010574",
+      "FK_UserID": 1093,
+      "FK_OrganizationID": 417,
+      "fileSizeOnDisk": 0.3,
+      "FileSize": 0.3
     }
-  ]
+  ],
+  "UserID": 1093,
+  "Type": 0
 }

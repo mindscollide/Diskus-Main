@@ -30,6 +30,7 @@ import {
   CreateToDoList,
   uploadDocumentsTaskApi,
   saveTaskDocumentsAndAssigneesApi,
+  saveFilesTaskApi,
 } from "./../../store/actions/ToDoList_action";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -121,6 +122,25 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
   });
+  //Uploaded  objects
+  const [uploadObjects, setUploadObjects] = useState([]);
+
+  useEffect(() => {
+    try {
+      if (
+        toDoListReducer.todoDocumentsUpload !== null &&
+        toDoListReducer.todoDocumentsUpload !== undefined &&
+        toDoListReducer.todoDocumentsUpload.length > 0
+      ) {
+        console.log(toDoListReducer, "toDoListReducer");
+        let uploadedFilesData = toDoListReducer.todoDocumentsUpload;
+        setUploadObjects(uploadedFilesData);
+      }
+    } catch (error) {
+      console.log("todoListReducer", error);
+    }
+  }, [toDoListReducer.todoDocumentsUpload]);
+  console.log(toDoListReducer, "toDoListReducer");
 
   //To Set task Creater ID
   useEffect(() => {
@@ -146,7 +166,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     if (
       data !== undefined &&
       data !== null &&
-      data !== [] &&
+      data.length !== 0 &&
       Object(data).length > 0
     ) {
       const filterData = data.filter(
@@ -386,7 +406,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     if (
       allAssignees !== undefined &&
       allAssignees !== null &&
-      allAssignees !== []
+      allAssignees.length !== 0
     ) {
       return allAssignees
         .filter((item) => {
@@ -503,6 +523,9 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     });
     // Wait for all promises to resolve
     await Promise.all(uploadPromises); //till here the files get upload
+    console.log(uploadObjects, "saveFilesTaskApi Data");
+    dispatch(saveFilesTaskApi(navigate, t, uploadObjects, folderID, newfile));
+    console.log(newfile, "saveFilesTaskApi Data");
     let newAttachmentData = newfile.map((data, index) => {
       return {
         DisplayAttachmentName: data.DisplayAttachmentName,
@@ -520,7 +543,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       TaskID: Number(createTaskID),
       TasksAttachments: newAttachmentData,
     };
-    console.log(Data, "TaskCreatorIDTaskCreatorID");
     await dispatch(
       saveTaskDocumentsAndAssigneesApi(navigate, Data, t, 1, setShow)
     );
