@@ -204,10 +204,10 @@ const saveFilesCommitteesApi = (navigate, t, data, folderID, newFolder) => {
               try {
                 let fileIds = response.data.responseResult.fileID;
                 console.log(fileIds, "fileIdsfileIds");
-                fileIds.forEach((newFileID, index) => {
+                fileIds.map((newFileID, index) => {
                   console.log(fileIds, "newFileID");
 
-                  return newFolder.push({ pK_FileID: newFileID });
+                  return newFolder.push({ pK_FileID: newFileID.pK_FileID });
                 });
               } catch (error) {
                 console.log(
