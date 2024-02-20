@@ -4,12 +4,10 @@ import {
   Button,
   TextField,
   TableToDo,
-  Loader,
   Notification,
   SelectBox,
 } from "../../components/elements";
 import { Col, Row } from "react-bootstrap";
-import { Pagination } from "antd";
 import searchicon from "../../assets/images/searchicon.svg";
 import plusbutton from "../../assets/images/Group 119.svg";
 import thumbsup from "../../assets/images/thumbsup.svg";
@@ -68,7 +66,7 @@ const Resolution = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { ResolutionReducer, LanguageReducer } = useSelector((state) => state);
+  const { ResolutionReducer } = useSelector((state) => state);
   const [totalResolution, setTotalResolution] = useState(0);
   const [totalVoterResolution, setTotalVoterResolution] = useState(0);
   const [cancelResolutionModal, setCancelResolutionModal] = useState(false);

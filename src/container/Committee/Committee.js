@@ -1,6 +1,6 @@
 import { Container, Row, Col } from "react-bootstrap";
 import styles from "./Committee.module.css";
-import { Button, Loader, Notification } from "../../components/elements";
+import { Button, Notification } from "../../components/elements";
 import React, { useEffect, useState } from "react";
 import NoCommitteeImg from "../../assets/images/No-Committee.svg";
 import { useTranslation } from "react-i18next";
@@ -18,7 +18,6 @@ import {
   getCommitteesbyCommitteeId,
   realtimeCommitteeStatusResponse,
   createCommitteePageFlag,
-  updateCommitteePageFlag,
   viewCommitteePageFlag,
 } from "../../store/actions/Committee_actions";
 import { getAllCommitteesByUserIdActions } from "../../store/actions/Committee_actions";
@@ -46,8 +45,7 @@ import CommitteeStatusModal from "../../components/elements/committeeChangeStatu
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 
 const Committee = () => {
-  const { CommitteeReducer, LanguageReducer, talkStateData, DataRoomReducer } =
-    useSelector((state) => state);
+  const { CommitteeReducer, talkStateData } = useSelector((state) => state);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();

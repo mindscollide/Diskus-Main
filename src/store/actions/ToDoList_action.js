@@ -1161,9 +1161,17 @@ const uploadDocument_fail = (message) => {
 };
 
 // Upload Documents API for Resolution
-const uploadDocumentsTaskApi = (navigate, t, data, folderID, newFolder) => {
+const uploadDocumentsTaskApi = (
+  navigate,
+  t,
+  data,
+  folderID,
+  newFolder,
+  newfile
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
-
+  let creatorID = localStorage.getItem("userID");
+  let organizationID = localStorage.getItem("organizationID");
   return async (dispatch) => {
     dispatch(uploadDocument_init());
     let form = new FormData();
@@ -1181,7 +1189,14 @@ const uploadDocumentsTaskApi = (navigate, t, data, folderID, newFolder) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            uploadDocumentsTaskApi(navigate, t, data, folderID, newFolder)
+            uploadDocumentsTaskApi(
+              navigate,
+              t,
+              data,
+              folderID,
+              newFolder,
+              newfile
+            )
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -1192,18 +1207,16 @@ const uploadDocumentsTaskApi = (navigate, t, data, folderID, newFolder) => {
                   "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
                 )
             ) {
-              await dispatch(
-                uploadDocument_success(response.data.responseResult, "")
-              );
-              await dispatch(
-                saveFilesTaskApi(
-                  navigate,
-                  t,
-                  response.data.responseResult,
-                  folderID,
-                  newFolder
-                )
-              );
+              newfile.push({
+                DisplayFileName: response.data.responseResult.displayFileName,
+                DiskusFileNameString:
+                  response.data.responseResult.diskusFileName,
+                ShareAbleLink: response.data.responseResult.shareAbleLink,
+                FK_UserID: JSON.parse(creatorID),
+                FK_OrganizationID: JSON.parse(organizationID),
+                FileSize: Number(response.data.responseResult.fileSizeOnDisk),
+                fileSizeOnDisk: Number(response.data.responseResult.fileSize),
+              });
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1263,22 +1276,15 @@ const saveFilesTaskApi = (navigate, t, data, folderID, newFolder) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let creatorID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
+
   let Data = {
     FolderID: folderID !== null && folderID !== undefined ? folderID : 0,
-    Files: [
-      {
-        DisplayFileName: data.displayFileName,
-        DiskusFileNameString: data.diskusFileName,
-        ShareAbleLink: data.shareAbleLink,
-        FK_UserID: JSON.parse(creatorID),
-        FK_OrganizationID: JSON.parse(organizationID),
-        fileSizeOnDisk: Number(data.fileSizeOnDisk),
-        FileSize: Number(data.fileSize),
-      },
-    ],
+    // Files: data,
+    Files: data,
     UserID: JSON.parse(creatorID),
     Type: 0,
   };
+  console.log("saveFilesTaskApi Data", Data);
   return async (dispatch) => {
     dispatch(saveFiles_init());
     let form = new FormData();
