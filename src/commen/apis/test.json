@@ -1,23 +1,14 @@
 {
-  "FolderID": 8169,
+  "FolderID": 8176,
   "Files": [
     {
-      "DisplayFileName": "Saif-Global.txt",
-      "DiskusFileNameString": "20240220092937284",
-      "ShareAbleLink": "20240220092937284",
+      "DisplayFileName": "heat eq.pdf",
+      "DiskusFileNameString": "20240220101405238",
+      "ShareAbleLink": "20240220101405238",
       "FK_UserID": 1093,
       "FK_OrganizationID": 417,
-      "FileSize": 0.01,
-      "fileSizeOnDisk": 0.01
-    },
-    {
-      "DisplayFileName": "Minutes Workflow.docx",
-      "DiskusFileNameString": "20240220092937310",
-      "ShareAbleLink": "20240220092937310",
-      "FK_UserID": 1093,
-      "FK_OrganizationID": 417,
-      "FileSize": 0.3,
-      "fileSizeOnDisk": 0.3
+      "FileSize": 0.8,
+      "fileSizeOnDisk": 0.8
     }
   ],
   "UserID": 1093,

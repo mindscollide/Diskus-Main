@@ -505,7 +505,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
           t,
           newData,
           folderID,
-          newFolder,
+          // newFolder,
           newfile
         )
       );
@@ -513,19 +513,20 @@ const CreateCommittee = ({ setCreategrouppage }) => {
 
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
-    console.log(newFolder, "newfilenewfilenewfilenewfile");
+    console.log(newfile, "newfilenewfilenewfilene?wfile");
+    console.log(newFolder, "newfilenewfilenewfilene?wfile");
+
     await dispatch(
       saveFilesCommitteesApi(navigate, t, newfile, folderID, newFolder)
     );
-    console.log(newFolder, "newFoldernewFoldernewFolder");
+    console.log(newFolder, "newfilenewfilenewfilene?wfile");
+
     let newCommitteeID = localStorage.getItem("CommitteeID");
     let newData = {
       CommitteeID: Number(newCommitteeID),
-      UpdateFileList: newFolder.flatMap((folderItem) =>
-        folderItem.pK_FileID.map((fileID) => ({
-          PK_FileID: fileID,
-        }))
-      ),
+      UpdateFileList: newFolder.map((fileID) => ({
+        PK_FileID: fileID.pK_FileID,
+      })),
     };
     console.log(newData, "newFoldernewFoldernewFolder");
     await dispatch(

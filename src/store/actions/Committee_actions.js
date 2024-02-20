@@ -53,7 +53,7 @@ const uploadDocumentsCommitteesApi = (
   t,
   data,
   folderID,
-  newFolder,
+  // newFolder,
   newfile
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
@@ -82,7 +82,7 @@ const uploadDocumentsCommitteesApi = (
               t,
               data,
               folderID,
-              newFolder,
+              // newFolder,
               newfile
             )
           );
@@ -105,16 +105,10 @@ const uploadDocumentsCommitteesApi = (
                 FileSize: Number(response.data.responseResult.fileSizeOnDisk),
                 fileSizeOnDisk: Number(response.data.responseResult.fileSize),
               });
+
               dispatch(
                 uploadDocument_success(response.data.responseResult, "")
               );
-
-              // let newData = {
-              //   DisplayAttachmentName: data.displayFileName,
-              //   OriginalAttachmentName:
-              //     response.data.responseResult.fileID.toString(),
-              // };
-              // newfile.push(newData);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -207,12 +201,21 @@ const saveFilesCommitteesApi = (navigate, t, data, folderID, newFolder) => {
                   "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase()
                 )
             ) {
-              newFolder.push({
-                pK_FileID: response.data.responseResult.fileID,
-                DisplayAttachmentName: data.displayFileName,
-              });
-              // pK_FileID: fileData.pK_FileID,
-              // DisplayAttachmentName: fileData.displayFileName,
+              try {
+                let fileIds = response.data.responseResult.fileID;
+                console.log(fileIds, "fileIdsfileIds");
+                fileIds.forEach((newFileID, index) => {
+                  console.log(fileIds, "newFileID");
+
+                  return newFolder.push({ pK_FileID: newFileID });
+                });
+              } catch (error) {
+                console.log(
+                  error,
+                  "fileIdsfileIdsfileIdsfileIdsfileIdsfileIds"
+                );
+              }
+
               await dispatch(
                 saveFiles_success(response.data.responseResult, "")
               );
