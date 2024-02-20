@@ -1336,19 +1336,17 @@ const saveFilesGroupsApi = (navigate, t, data, folderID, newFolder) => {
                   "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase()
                 )
             ) {
+              console.log(response.data.responseResult, "consoleconsole");
               try {
                 let fileIds = response.data.responseResult.fileID;
-                console.log(fileIds, "fileIdsfileIds");
-                fileIds.forEach((newFileID, index) => {
-                  console.log(fileIds, "newFileID");
+                console.log(fileIds, "newFileID");
+                fileIds.map((newFileID, index) => {
+                  console.log(newFileID, "newFileID");
 
-                  return newFolder.push({ pK_FileID: newFileID });
+                  return newFolder.push({ pK_FileID: newFileID.pK_FileID });
                 });
               } catch (error) {
-                console.log(
-                  error,
-                  "fileIdsfileIdsfileIdsfileIdsfileIdsfileIds"
-                );
+                console.log(error, "newFileID");
               }
               await dispatch(
                 saveFiles_success(response.data.responseResult, "")
