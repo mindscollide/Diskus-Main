@@ -1,24 +1,55 @@
 {
-  "MeetingID": 2986,
-  "SendResponsebyDate": "20240229",
-  "ProposedDates": [
+  "FolderID": 8139,
+  "Files": [
     {
-      "ProposedDate": "20240213",
-      "StartTime": "060000",
-      "EndTime": "070000",
-      "proposedDateID": 1557
+      "DisplayFileName": "Saif-Global.txt",
+      "DiskusFileNameString": "20240220053853513",
+      "ShareAbleLink": "20240220053853513",
+      "FK_UserID": 1093,
+      "FK_OrganizationID": 417,
+      "fileSizeOnDisk": 0.01,
+      "FileSize": 0.01
     },
     {
-      "ProposedDate": "20240214",
-      "StartTime": "060000",
-      "EndTime": "070000",
-      "proposedDateID": 1558
+      "DisplayFileName": "Minutes Workflow.docx",
+      "DiskusFileNameString": "20240220053853530",
+      "ShareAbleLink": "20240220053853530",
+      "FK_UserID": 1093,
+      "FK_OrganizationID": 417,
+      "fileSizeOnDisk": 0.3,
+      "FileSize": 0.3
     },
     {
-      "ProposedDate": "20240215",
-      "StartTime": "110000",
-      "EndTime": "130000",
-      "proposedDateID": 0
+      "FK_UserID": 1093,
+      "FK_OrganizationID": 417,
+      "fileSizeOnDisk": null,
+      "FileSize": null
+    },
+    {
+      "DisplayFileName": "Saif-Global.txt",
+      "DiskusFileNameString": "20240220054626845",
+      "ShareAbleLink": "20240220054626845",
+      "FK_UserID": 1093,
+      "FK_OrganizationID": 417,
+      "fileSizeOnDisk": 0.01,
+      "FileSize": 0.01
+    },
+    {
+      "DisplayFileName": "Minutes Workflow.docx",
+      "DiskusFileNameString": "20240220054626863",
+      "ShareAbleLink": "20240220054626863",
+      "FK_UserID": 1093,
+      "FK_OrganizationID": 417,
+      "fileSizeOnDisk": 0.3,
+      "FileSize": 0.3
+    },
+    {
+      "FK_UserID": 1093,
+      "FK_OrganizationID": 417,
+      "fileSizeOnDisk": null,
+      "FileSize": null
     }
-  ]
+  ],
+  "UserID": 1093,
+  "Type": 0
 }
