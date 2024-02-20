@@ -1,10 +1,10 @@
 {
-  "FolderID": 8165,
+  "FolderID": 8169,
   "Files": [
     {
       "DisplayFileName": "Saif-Global.txt",
-      "DiskusFileNameString": "20240220083639520",
-      "ShareAbleLink": "20240220083639520",
+      "DiskusFileNameString": "20240220092937284",
+      "ShareAbleLink": "20240220092937284",
       "FK_UserID": 1093,
       "FK_OrganizationID": 417,
       "FileSize": 0.01,
@@ -12,39 +12,12 @@
     },
     {
       "DisplayFileName": "Minutes Workflow.docx",
-      "DiskusFileNameString": "20240220083640447",
-      "ShareAbleLink": "20240220083640447",
+      "DiskusFileNameString": "20240220092937310",
+      "ShareAbleLink": "20240220092937310",
       "FK_UserID": 1093,
       "FK_OrganizationID": 417,
       "FileSize": 0.3,
       "fileSizeOnDisk": 0.3
-    },
-    {
-      "DisplayFileName": "AdmitCard_4000534.pdf",
-      "DiskusFileNameString": "20240220083640445",
-      "ShareAbleLink": "20240220083640445",
-      "FK_UserID": 1093,
-      "FK_OrganizationID": 417,
-      "FileSize": 0.09,
-      "fileSizeOnDisk": 0.08
-    },
-    {
-      "DisplayFileName": "heat eq.pdf",
-      "DiskusFileNameString": "20240220083640693",
-      "ShareAbleLink": "20240220083640693",
-      "FK_UserID": 1093,
-      "FK_OrganizationID": 417,
-      "FileSize": 0.8,
-      "fileSizeOnDisk": 0.8
-    },
-    {
-      "DisplayFileName": "SPM Assignmnet.pdf",
-      "DiskusFileNameString": "20240220083640927",
-      "ShareAbleLink": "20240220083640927",
-      "FK_UserID": 1093,
-      "FK_OrganizationID": 417,
-      "FileSize": 1.2,
-      "fileSizeOnDisk": 1.19
     }
   ],
   "UserID": 1093,

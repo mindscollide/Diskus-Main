@@ -25,6 +25,7 @@ import {
   getCommitteeMembersRole,
   getCommitteeTypes,
   saveCommitteeDocumentsApi,
+  saveFilesCommitteesApi,
   updateCommittee,
   uploadDocumentsCommitteesApi,
 } from "../../../store/actions/Committee_actions";
@@ -644,18 +645,31 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
   };
 
   const documentsUploadCall = async (folderID) => {
-    let newFolder = [...filesSending];
+    let newFolder = [];
+    let newfile = [];
     const uploadPromises = fileForSend.map(async (newData) => {
       await dispatch(
-        uploadDocumentsCommitteesApi(navigate, t, newData, folderID, newFolder)
+        uploadDocumentsCommitteesApi(
+          navigate,
+          t,
+          newData,
+          folderID,
+          newFolder,
+          newfile
+        )
       );
     });
 
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
+    console.log(newFolder, "newfilenewfilenewfilenewfile");
+    await dispatch(
+      saveFilesCommitteesApi(navigate, t, newfile, folderID, newFolder)
+    );
 
+    let newCommitteeID = localStorage.getItem("CommitteeID");
     let newData = {
-      CommitteeID: Number(committeeData.committeeID),
+      CommitteeID: Number(newCommitteeID),
       UpdateFileList: newFolder.map((data, index) => {
         return { PK_FileID: data.pK_FileID };
       }),
