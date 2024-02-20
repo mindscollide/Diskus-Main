@@ -521,16 +521,16 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     let newCommitteeID = localStorage.getItem("CommitteeID");
     let newData = {
       CommitteeID: Number(newCommitteeID),
-      UpdateFileList: newFolder.pK_FileID.map((data, index) => {
-        return { PK_FileID: data.pK_FileID };
-      }),
+      UpdateFileList: newFolder.flatMap((folderItem) =>
+        folderItem.pK_FileID.map((fileID) => ({
+          PK_FileID: fileID,
+        }))
+      ),
     };
-
     console.log(newData, "newFoldernewFoldernewFolder");
-
-    // await dispatch(
-    //   saveCommitteeDocumentsApi(navigate, t, newData, setCreategrouppage)
-    // );
+    await dispatch(
+      saveCommitteeDocumentsApi(navigate, t, newData, setCreategrouppage)
+    );
   };
 
   useEffect(() => {
