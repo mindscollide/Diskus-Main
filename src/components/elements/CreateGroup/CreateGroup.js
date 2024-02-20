@@ -587,6 +587,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
       setAttendees([...attendees, id]);
     }
   };
+
   const props = {
     name: "file",
     multiple: true,
@@ -663,7 +664,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
     onDrop(e) {},
     customRequest() {},
   };
-
   // Initialize previousFileList to an empty array
   let previousFileList = [];
 
