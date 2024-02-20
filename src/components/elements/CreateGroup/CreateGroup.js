@@ -692,10 +692,11 @@ const CreateGroup = ({ setCreategrouppage }) => {
 
     let groupID = localStorage.getItem("groupID");
 
+    console.log(newFolder, "newFoldernewFoldernewFolder");
     let Data = {
       GroupID: Number(groupID),
       UpdateFileList: newFolder.map((data, index) => {
-        return { PK_FileID: data.pK_FileID };
+        return { PK_FileID: data.pK_FileID.pK_FileID };
       }),
     };
     dispatch(SaveGroupsDocumentsApiFunc(navigate, Data, t, setCreategrouppage));

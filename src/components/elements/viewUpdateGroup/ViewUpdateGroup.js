@@ -24,6 +24,7 @@ import { useNavigate } from "react-router-dom";
 import {
   RetriveDocumentsGroupsApiFunc,
   SaveGroupsDocumentsApiFunc,
+  saveFilesGroupsApi,
   uploadDocumentsGroupsApi,
 } from "../../../store/actions/Groups_actions";
 import {
@@ -243,14 +244,18 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
 
   const handleViewSave = async () => {
     let newfile = [...previousFileIDs];
+    let fileObj = [];
+
     const uploadPromises = fileForSend.map(async (newData) => {
       await dispatch(
-        uploadDocumentsGroupsApi(navigate, t, newData, folderID, newfile)
+        uploadDocumentsGroupsApi(navigate, t, newData, folderID, fileObj)
       );
     });
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
-
+    console.log(newfile, "fileObjfileObjfileObjfileObj");
+    console.log(fileObj, "fileObjfileObjfileObjfileObj");
+    await dispatch(saveFilesGroupsApi(navigate, t, fileObj, folderID, newfile));
     let Data = {
       GroupID: Number(viewGroupDetails.GroupID),
       UpdateFileList: newfile.map((data, index) => {
