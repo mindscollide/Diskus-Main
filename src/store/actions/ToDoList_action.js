@@ -1161,7 +1161,14 @@ const uploadDocument_fail = (message) => {
 };
 
 // Upload Documents API for Resolution
-const uploadDocumentsTaskApi = (navigate, t, data, folderID, newFolder) => {
+const uploadDocumentsTaskApi = (
+  navigate,
+  t,
+  data,
+  folderID,
+  newFolder,
+  newfile
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let creatorID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
@@ -1182,7 +1189,14 @@ const uploadDocumentsTaskApi = (navigate, t, data, folderID, newFolder) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            uploadDocumentsTaskApi(navigate, t, data, folderID, newFolder)
+            uploadDocumentsTaskApi(
+              navigate,
+              t,
+              data,
+              folderID,
+              newFolder,
+              newfile
+            )
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -1193,20 +1207,7 @@ const uploadDocumentsTaskApi = (navigate, t, data, folderID, newFolder) => {
                   "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
                 )
             ) {
-              await dispatch(
-                uploadDocument_success(response.data.responseResult, "")
-              );
-              console.log(
-                response.data.responseResult,
-                "uploadDocument_success"
-              );
-
-              let responseResultsArray = [];
-              const array = response.data.responseResult;
-              responseResultsArray.push({ array });
-              console.log(responseResultsArray, "arrayarrayarrayarray");
-
-              responseResultsArray.push({
+              newfile.push({
                 DisplayFileName: response.data.responseResult.displayFileName,
                 DiskusFileNameString:
                   response.data.responseResult.diskusFileName,
@@ -1216,16 +1217,6 @@ const uploadDocumentsTaskApi = (navigate, t, data, folderID, newFolder) => {
                 FileSize: Number(response.data.responseResult.fileSizeOnDisk),
                 fileSizeOnDisk: Number(response.data.responseResult.fileSize),
               });
-              console.log(responseResultsArray, "responseResultsArray");
-              // await dispatch(
-              //   saveFilesTaskApi(
-              //     navigate,
-              //     t,
-              //     response.data.responseResult,
-              //     folderID,
-              //     newFolder
-              //   )
-              // );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1289,15 +1280,7 @@ const saveFilesTaskApi = (navigate, t, data, folderID, newFolder) => {
   let Data = {
     FolderID: folderID !== null && folderID !== undefined ? folderID : 0,
     // Files: data,
-    Files: data.map((file) => ({
-      DisplayFileName: file.displayFileName,
-      DiskusFileNameString: file.diskusFileName,
-      ShareAbleLink: file.shareAbleLink,
-      FK_UserID: JSON.parse(creatorID),
-      FK_OrganizationID: JSON.parse(organizationID),
-      fileSizeOnDisk: Number(file.fileSizeOnDisk),
-      FileSize: Number(file.fileSize),
-    })),
+    Files: data,
     UserID: JSON.parse(creatorID),
     Type: 0,
   };
@@ -1561,7 +1544,6 @@ const saveTaskDocumentsAndAssigneesApi = (
                 ""
               )
             );
-            dispatch(uploadDocument_success([], ""));
             let NewData = {
               ToDoID: Number(Data?.TaskID),
               UpdateFileList: Data?.TasksAttachments.map((data, index) => {

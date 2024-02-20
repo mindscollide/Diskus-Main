@@ -15,7 +15,6 @@ import {
   Button,
   Modal,
   Notification,
-  InputSearchFilter,
 } from "./../../components/elements";
 import {
   createConvert,
@@ -124,6 +123,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   });
   //Uploaded  objects
   const [uploadObjects, setUploadObjects] = useState([]);
+  const [isUploadComplete, setIsUploadComplete] = useState(false);
 
   useEffect(() => {
     try {
@@ -135,12 +135,12 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         console.log(toDoListReducer, "toDoListReducer");
         let uploadedFilesData = toDoListReducer.todoDocumentsUpload;
         setUploadObjects(uploadedFilesData);
+        setIsUploadComplete(true);
       }
     } catch (error) {
       console.log("todoListReducer", error);
     }
   }, [toDoListReducer.todoDocumentsUpload]);
-  console.log(toDoListReducer, "toDoListReducer");
 
   //To Set task Creater ID
   useEffect(() => {
@@ -515,18 +515,27 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     }
   };
   const uploadTaskDocuments = async (folderID) => {
+    let newFolder = [];
     let newfile = [];
     const uploadPromises = fileForSend.map(async (newData) => {
       await dispatch(
-        uploadDocumentsTaskApi(navigate, t, newData, folderID, newfile)
+        uploadDocumentsTaskApi(
+          navigate,
+          t,
+          newData,
+          folderID,
+          newFolder,
+          newfile
+        )
       );
     });
     // Wait for all promises to resolve
     await Promise.all(uploadPromises); //till here the files get upload
-    console.log(uploadObjects, "saveFilesTaskApi Data");
-    dispatch(saveFilesTaskApi(navigate, t, uploadObjects, folderID, newfile));
-    console.log(newfile, "saveFilesTaskApi Data");
-    let newAttachmentData = newfile.map((data, index) => {
+
+    dispatch(
+      saveFilesTaskApi(navigate, t, newfile, folderID, newFolder, newfile)
+    );
+    let newAttachmentData = newFolder.map((data, index) => {
       return {
         DisplayAttachmentName: data.DisplayAttachmentName,
         OriginalAttachmentName: data.pK_FileID.toString(),
