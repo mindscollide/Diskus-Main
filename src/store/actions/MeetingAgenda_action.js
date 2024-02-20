@@ -35,7 +35,7 @@ import {
   actionsGlobalFlag,
   pollsGlobalFlag,
   attendanceGlobalFlag,
-  uploadGlobalFlag
+  uploadGlobalFlag,
 } from "./NewMeetingActions";
 
 const clearAgendaReducerState = () => {
@@ -876,9 +876,17 @@ const uploadDocument_fail = (message) => {
 };
 
 // Upload Documents API
-const UploadDocumentsAgendaApi = (navigate, t, data, folderID, newFolder) => {
+const UploadDocumentsAgendaApi = (
+  navigate,
+  t,
+  data,
+  folderID,
+  newFolder,
+  newfile
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
-
+  let creatorID = localStorage.getItem("userID");
+  let organizationID = localStorage.getItem("organizationID");
   return async (dispatch) => {
     dispatch(uploadDocument_init());
     let form = new FormData();
@@ -897,7 +905,14 @@ const UploadDocumentsAgendaApi = (navigate, t, data, folderID, newFolder) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            UploadDocumentsAgendaApi(navigate, t, data, folderID, newFolder)
+            UploadDocumentsAgendaApi(
+              navigate,
+              t,
+              data,
+              folderID,
+              newFolder,
+              newfile
+            )
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -908,18 +923,28 @@ const UploadDocumentsAgendaApi = (navigate, t, data, folderID, newFolder) => {
                   "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
                 )
             ) {
+              newfile.push({
+                DisplayFileName: response.data.responseResult.displayFileName,
+                DiskusFileNameString:
+                  response.data.responseResult.diskusFileName,
+                ShareAbleLink: response.data.responseResult.shareAbleLink,
+                FK_UserID: JSON.parse(creatorID),
+                FK_OrganizationID: JSON.parse(organizationID),
+                FileSize: Number(response.data.responseResult.fileSizeOnDisk),
+                fileSizeOnDisk: Number(response.data.responseResult.fileSize),
+              });
               dispatch(
                 uploadDocument_success(response.data.responseResult, "")
               );
-              await dispatch(
-                SaveFilesAgendaApi(
-                  navigate,
-                  t,
-                  response.data.responseResult,
-                  folderID,
-                  newFolder
-                )
-              );
+              // await dispatch(
+              //   SaveFilesAgendaApi(
+              //     navigate,
+              //     t,
+              //     response.data.responseResult,
+              //     folderID,
+              //     newFolder
+              //   )
+              // );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -980,17 +1005,18 @@ const SaveFilesAgendaApi = (navigate, t, data, folderID, newFolder) => {
   let OrganizationID = localStorage.getItem("organizationID");
   let Data = {
     FolderID: folderID !== null ? folderID : 0,
-    Files: [
-      {
-        DisplayFileName: data.displayFileName,
-        DiskusFileNameString: data.diskusFileName,
-        ShareAbleLink: data.shareAbleLink,
-        FK_UserID: JSON.parse(createrID),
-        FK_OrganizationID: JSON.parse(OrganizationID),
-        FileSizeOnDisk: Number(data.fileSizeOnDisk),
-        FileSize: Number(data.fileSize),
-      },
-    ],
+    Files: data,
+    // Files: [
+    //   {
+    //     DisplayFileName: data.displayFileName,
+    //     DiskusFileNameString: data.diskusFileName,
+    //     ShareAbleLink: data.shareAbleLink,
+    //     FK_UserID: JSON.parse(createrID),
+    //     FK_OrganizationID: JSON.parse(OrganizationID),
+    //     FileSizeOnDisk: Number(data.fileSizeOnDisk),
+    //     FileSize: Number(data.fileSize),
+    //   },
+    // ],
     UserID: JSON.parse(createrID),
     Type: 0,
   };
@@ -1318,8 +1344,8 @@ const AddUpdateAdvanceMeetingAgenda = (
                 dispatch(actionsGlobalFlag(false));
                 dispatch(pollsGlobalFlag(false));
                 dispatch(attendanceGlobalFlag(false));
-      dispatch(uploadGlobalFlag(false));
-    } else if (flag === 2) {
+                dispatch(uploadGlobalFlag(false));
+              } else if (flag === 2) {
                 dispatch(
                   UpdateOrganizersMeeting(
                     navigate,
@@ -1348,8 +1374,8 @@ const AddUpdateAdvanceMeetingAgenda = (
                 dispatch(actionsGlobalFlag(false));
                 dispatch(pollsGlobalFlag(false));
                 dispatch(attendanceGlobalFlag(false));
-      dispatch(uploadGlobalFlag(false));
-    }
+                dispatch(uploadGlobalFlag(false));
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

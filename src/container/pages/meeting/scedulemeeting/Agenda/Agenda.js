@@ -30,6 +30,7 @@ import {
 import {
   CreateUpdateMeetingDataRoomMap,
   UploadDocumentsAgendaApi,
+  SaveFilesAgendaApi,
   AddUpdateAdvanceMeetingAgenda,
   clearResponseMessage,
   GetAdvanceMeetingAgendabyMeetingID,
@@ -588,7 +589,7 @@ const Agenda = ({
       // All conditions are met, apply your feature here
 
       let newFolder = [];
-
+      let newfile = [];
       const uploadPromises = fileForSend.map(async (newData) => {
         await dispatch(
           UploadDocumentsAgendaApi(
@@ -596,7 +597,8 @@ const Agenda = ({
             t,
             newData,
             folderDataRoomMeeting,
-            newFolder
+            newFolder,
+            newfile
           )
         );
       });
@@ -604,6 +606,16 @@ const Agenda = ({
 
       // Wait for all promises to resolve
       await Promise.all(uploadPromises);
+
+      await dispatch(
+        SaveFilesAgendaApi(
+          navigate,
+          t,
+          newfile,
+          folderDataRoomMeeting,
+          newFolder
+        )
+      );
 
       let cleanedData = removeProperties(convertedRows);
 
@@ -664,7 +676,7 @@ const Agenda = ({
 
       let capitalizedData = capitalizeKeys(Data);
       let publishMeetingData = { MeetingID: currentMeeting, StatusID: 1 };
-      dispatch(
+      await dispatch(
         AddUpdateAdvanceMeetingAgenda(
           capitalizedData,
           navigate,
@@ -686,7 +698,7 @@ const Agenda = ({
     }
   };
 
-  console.log("fileForSendAgendafileForSendAgenda", fileForSend)
+  console.log("fileForSendAgendafileForSendAgenda", fileForSend);
 
   useEffect(() => {
     let updatedRows = [...rows];

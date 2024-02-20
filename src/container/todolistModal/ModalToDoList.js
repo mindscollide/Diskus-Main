@@ -532,6 +532,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     // Wait for all promises to resolve
     await Promise.all(uploadPromises); //till here the files get upload
 
+    console.log("NewFOlderNewFolder", newFolder)
+
     dispatch(
       saveFilesTaskApi(navigate, t, newfile, folderID, newFolder, newfile)
     );
