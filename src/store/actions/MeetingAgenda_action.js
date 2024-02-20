@@ -920,12 +920,6 @@ const UploadDocumentsAgendaApi = (navigate, t, data, folderID, newFolder) => {
                   newFolder
                 )
               );
-              // let newData = {
-              //   DisplayAttachmentName: data.displayFileName,
-              //   OriginalAttachmentName:
-              //     response.data.responseResult.fileID.toString(),
-              // };
-              // newfile.push(newData);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
