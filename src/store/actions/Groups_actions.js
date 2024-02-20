@@ -1186,9 +1186,17 @@ const uploadDocument_fail = (message) => {
 };
 
 // Upload Documents API for Resolution
-const uploadDocumentsGroupsApi = (navigate, t, data, folderID, newFolder) => {
+const uploadDocumentsGroupsApi = (
+  navigate,
+  t,
+  data,
+  folderID,
+  newFolder,
+  newfile
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
-
+  let creatorID = localStorage.getItem("userID");
+  let organizationID = localStorage.getItem("organizationID");
   return async (dispatch) => {
     dispatch(uploadDocument_init());
     let form = new FormData();
@@ -1206,7 +1214,14 @@ const uploadDocumentsGroupsApi = (navigate, t, data, folderID, newFolder) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            uploadDocumentsGroupsApi(navigate, t, data, folderID, newFolder)
+            uploadDocumentsGroupsApi(
+              navigate,
+              t,
+              data,
+              folderID,
+              newFolder,
+              newfile
+            )
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -1217,15 +1232,16 @@ const uploadDocumentsGroupsApi = (navigate, t, data, folderID, newFolder) => {
                   "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
                 )
             ) {
-              await dispatch(
-                saveFilesGroupsApi(
-                  navigate,
-                  t,
-                  response.data.responseResult,
-                  folderID,
-                  newFolder
-                )
-              );
+              newfile.push({
+                DisplayFileName: response.data.responseResult.displayFileName,
+                DiskusFileNameString:
+                  response.data.responseResult.diskusFileName,
+                ShareAbleLink: response.data.responseResult.shareAbleLink,
+                FK_UserID: JSON.parse(creatorID),
+                FK_OrganizationID: JSON.parse(organizationID),
+                FileSize: Number(response.data.responseResult.fileSizeOnDisk),
+                fileSizeOnDisk: Number(response.data.responseResult.fileSize),
+              });
               await dispatch(
                 uploadDocument_success(response.data.responseResult, "")
               );
@@ -1290,17 +1306,7 @@ const saveFilesGroupsApi = (navigate, t, data, folderID, newFolder) => {
   let organizationID = localStorage.getItem("organizationID");
   let Data = {
     FolderID: folderID !== null ? folderID : 0,
-    Files: [
-      {
-        DisplayFileName: data.displayFileName,
-        DiskusFileNameString: data.diskusFileName,
-        ShareAbleLink: data.shareAbleLink,
-        FK_UserID: JSON.parse(creatorID),
-        FK_OrganizationID: JSON.parse(organizationID),
-        fileSizeOnDisk: Number(data.fileSizeOnDisk),
-        FileSize: Number(data.fileSize),
-      },
-    ],
+    Files: data,
     UserID: JSON.parse(creatorID),
     Type: 0,
   };
