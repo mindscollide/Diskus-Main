@@ -86,19 +86,16 @@ const saveFilesResolutionApi = (navigate, t, data, folderID, newFolder) => {
                   "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase()
                 )
             ) {
-              try {
-                let fileIds = response.data.responseResult.fileID;
-                console.log(fileIds, "newFileID");
-                fileIds.map((newFileID, index) => {
-                  console.log(newFileID, "newFileID");
+              let fileIds = response.data.responseResult.fileID;
+              console.log(fileIds, "newFileID");
+              fileIds.map((newFileID, index) => {
+                console.log(newFileID, "newFileID");
 
-                  return newFolder.push({
-                    pK_FileID: newFileID.pK_FileID,
-                  });
+                return newFolder.push({
+                  pK_FileID: newFileID.pK_FileID,
                 });
-              } catch (error) {
-                console.log(error, "newFileID");
-              }
+              });
+
               await dispatch(
                 saveFiles_success(response.data.responseResult, "")
               );

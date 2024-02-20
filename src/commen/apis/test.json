@@ -17,5 +17,17 @@
       "Email": "erenfour@yopmail.com"
     }
   ],
-  "Attachments": [{ "pK_FileID": 8120 }, { "pK_FileID": 8121 }]
+  "Attachments": [
+    {
+      "DisplayAttachmentName": "",
+      "OriginalAttachmentName": "",
+      "pK_RAID": 361
+    },
+    {
+      "DisplayAttachmentName": "",
+      "OriginalAttachmentName": "",
+      "pK_RAID": 362
+    },
+    { "pK_FileID": 8187 }
+  ]
 }

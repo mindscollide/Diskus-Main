@@ -14,7 +14,6 @@ import {
   SelectBox,
   InputSearchFilter,
   Notification,
-  Loader,
 } from "./../../../components/elements";
 import userImage from "../../../assets/images/user.png";
 import styles from "./UpadateGroup.module.css";
@@ -22,7 +21,6 @@ import CrossIcon from "../../../assets/images/cancel_meeting_icon.svg";
 import Groups from "../../../container/Groups/Groups";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  RetriveDocumentsGroupsApiFunc,
   SaveGroupsDocumentsApiFunc,
   getGroupMembersRoles,
   getOrganizationGroupTypes,
@@ -32,13 +30,11 @@ import {
 } from "../../../store/actions/Groups_actions";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useNavigate } from "react-router-dom";
-import CustomModal from "../modal/Modal";
 import ConfirmationModal from "../confirmationModal/ConfirmationModal";
 import { Upload } from "antd";
 
 const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   const { Dragger } = Upload;
-  const creatorID = JSON.parse(localStorage.getItem("userID"));
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
   const [fileAttachments, setFileAttachments] = useState([]);
   const [fileForSend, setFileForSend] = useState([]);

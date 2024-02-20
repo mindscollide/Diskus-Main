@@ -46,6 +46,7 @@ import {
   updateResolutionModal,
   updateResolution,
   uploadDocumentsResolutionApi,
+  saveFilesResolutionApi,
 } from "../../../store/actions/Resolution_actions";
 import moment from "moment";
 import {
@@ -508,7 +509,7 @@ const EditResolution = ({ setCancelresolution }) => {
   };
 
   let previousFileList = [];
-
+  console.log(attachments, "attachmentsattachmentsattachments");
   const props = {
     name: "file",
     // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
@@ -573,6 +574,7 @@ const EditResolution = ({ setCancelresolution }) => {
             originalAttachmentName: fileData.name,
             fileSize: fileData.originFileObj.size,
           };
+          console.log(file, "filefilefilefile");
           setAttachments((prevAttachments) => [...prevAttachments, file]);
           fileSizeArr += fileData.originFileObj.size;
           setFileForSend((prevFiles) => [...prevFiles, fileData.originFileObj]);
@@ -787,18 +789,22 @@ const EditResolution = ({ setCancelresolution }) => {
 
   const documentsUploadCall = async (folderID) => {
     let newfile = [...tasksAttachments];
-
+    let fileObj = [];
     if (fileForSend.length > 0) {
       const uploadPromises = fileForSend.map(async (newData) => {
         await dispatch(
-          uploadDocumentsResolutionApi(navigate, t, newData, folderID, newfile)
+          uploadDocumentsResolutionApi(navigate, t, newData, folderID, fileObj)
         );
       });
 
       // Wait for all promises to resolve
       await Promise.all(uploadPromises);
     }
-
+    console.log(newfile, "fileObjfileObjfileObjfileObj");
+    console.log(fileObj, "fileObjfileObjfileObjfileObj");
+    await dispatch(
+      saveFilesResolutionApi(navigate, t, fileObj, folderID, newfile)
+    );
     await dispatch(
       updateResolution(
         navigate,
@@ -1144,6 +1150,7 @@ const EditResolution = ({ setCancelresolution }) => {
 
           let newData = [];
           attachmentsResolution.forEach((data, index) => {
+            console.log(data, "attachmentsResolution");
             atCH.push({
               DisplayAttachmentName: data.displayAttachmentName,
               OriginalAttachmentName: data.originalAttachmentName,
@@ -2286,6 +2293,10 @@ const EditResolution = ({ setCancelresolution }) => {
                                               {attachments.length > 0
                                                 ? attachments.map(
                                                     (data, index) => {
+                                                      console.log(
+                                                        data,
+                                                        "attachmentsResolution"
+                                                      );
                                                       var ext =
                                                         data?.displayAttachmentName
                                                           ?.split(".")
