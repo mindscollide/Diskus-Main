@@ -1191,7 +1191,7 @@ const uploadDocumentsGroupsApi = (
   t,
   data,
   folderID,
-  newFolder,
+  // newFolder,
   newfile
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
@@ -1219,7 +1219,7 @@ const uploadDocumentsGroupsApi = (
               t,
               data,
               folderID,
-              newFolder,
+              // newFolder,
               newfile
             )
           );
@@ -1336,12 +1336,23 @@ const saveFilesGroupsApi = (navigate, t, data, folderID, newFolder) => {
                   "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase()
                 )
             ) {
-              let newData = {
-                pK_FileID: response.data.responseResult.fileID,
-                DisplayAttachmentName: data.displayFileName,
-              };
-              newFolder.push(newData);
-              await dispatch(saveFiles_success(newData, ""));
+              try {
+                let fileIds = response.data.responseResult.fileID;
+                console.log(fileIds, "fileIdsfileIds");
+                fileIds.forEach((newFileID, index) => {
+                  console.log(fileIds, "newFileID");
+
+                  return newFolder.push({ pK_FileID: newFileID });
+                });
+              } catch (error) {
+                console.log(
+                  error,
+                  "fileIdsfileIdsfileIdsfileIdsfileIdsfileIds"
+                );
+              }
+              await dispatch(
+                saveFiles_success(response.data.responseResult, "")
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

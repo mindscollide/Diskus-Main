@@ -676,7 +676,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
           t,
           newData,
           folderID,
-          newFolder,
+          // newFolder,
           newfile
         )
       );
