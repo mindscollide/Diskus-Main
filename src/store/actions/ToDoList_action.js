@@ -238,6 +238,11 @@ const CreateToDoList = (navigate, object, t, setCreateTaskID, value) => {
               await dispatch(SetLoaderFalse());
 
               setCreateTaskID(Number(response.data.responseResult.tid));
+              console.log(object, "objectobjectobjectobject");
+              console.log(
+                response.data.responseResult,
+                "objectobjectobjectobject"
+              );
               if (value === 1) {
               } else {
                 let Data = {
@@ -1166,7 +1171,7 @@ const uploadDocumentsTaskApi = (
   t,
   data,
   folderID,
-  newFolder,
+  // newFolder,
   newfile
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
@@ -1194,7 +1199,7 @@ const uploadDocumentsTaskApi = (
               t,
               data,
               folderID,
-              newFolder,
+              // newFolder,
               newfile
             )
           );
@@ -1275,8 +1280,6 @@ const saveFiles_fail = (message) => {
 const saveFilesTaskApi = (navigate, t, data, folderID, newFolder) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let creatorID = localStorage.getItem("userID");
-  let organizationID = localStorage.getItem("organizationID");
-
   let Data = {
     FolderID: folderID !== null && folderID !== undefined ? folderID : 0,
     // Files: data,
@@ -1311,12 +1314,28 @@ const saveFilesTaskApi = (navigate, t, data, folderID, newFolder) => {
                   "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase()
                 )
             ) {
-              let newData = {
-                pK_FileID: response.data.responseResult.fileID,
-                DisplayAttachmentName: data.displayFileName,
-              };
-              newFolder.push(newData);
-              await dispatch(saveFiles_success(newData, ""));
+              console.log(
+                response.data.responseResult,
+                "newFoldernewFoldernewFolder"
+              );
+              try {
+                let File = response.data.responseResult.fileID;
+                File.map((newData, index) => {
+                  console.log(newData, "newFoldernewFoldernewFolder");
+                  return newFolder.push({
+                    pK_FileID: newData.pK_FileID,
+                    DisplayAttachmentName: newData.displayFileName,
+                  });
+                });
+              } catch (error) {
+                console.log(error, "newFoldernewFoldernewFolder");
+              }
+
+              console.log(newFolder, "newFoldernewFoldernewFolder");
+
+              await dispatch(
+                saveFiles_success(response.data.responseResult, "")
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
