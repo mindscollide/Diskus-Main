@@ -52,20 +52,9 @@ const saveFiles_fail = (message) => {
 const saveFilesResolutionApi = (navigate, t, data, folderID, newFolder) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let creatorID = localStorage.getItem("userID");
-  let organizationID = localStorage.getItem("organizationID");
   let Data = {
     FolderID: folderID !== null ? folderID : 0,
-    Files: [
-      {
-        DisplayFileName: data.displayFileName,
-        DiskusFileNameString: data.diskusFileName,
-        ShareAbleLink: data.shareAbleLink,
-        FK_UserID: JSON.parse(creatorID),
-        FK_OrganizationID: JSON.parse(organizationID),
-        fileSizeOnDisk: Number(data.fileSizeOnDisk),
-        FileSize: Number(data.fileSize),
-      },
-    ],
+    Files: data,
     UserID: JSON.parse(creatorID),
     Type: 0,
   };
@@ -97,13 +86,22 @@ const saveFilesResolutionApi = (navigate, t, data, folderID, newFolder) => {
                   "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase()
                 )
             ) {
-              let newData = {
-                DisplayAttachmentName: data.displayFileName,
-                OriginalAttachmentName:
-                  response.data.responseResult.fileID.toString(),
-              };
-              newFolder.push(newData);
-              await dispatch(saveFiles_success(newData, ""));
+              try {
+                let fileIds = response.data.responseResult.fileID;
+                console.log(fileIds, "newFileID");
+                fileIds.map((newFileID, index) => {
+                  console.log(newFileID, "newFileID");
+
+                  return newFolder.push({
+                    pK_FileID: newFileID.pK_FileID,
+                  });
+                });
+              } catch (error) {
+                console.log(error, "newFileID");
+              }
+              await dispatch(
+                saveFiles_success(response.data.responseResult, "")
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -159,15 +157,10 @@ const uploadDocument_fail = (message) => {
 };
 
 // Upload Documents API for Resolution
-const uploadDocumentsResolutionApi = (
-  navigate,
-  t,
-  data,
-  folderID,
-  newFolder
-) => {
+const uploadDocumentsResolutionApi = (navigate, t, data, folderID, newfile) => {
   let token = JSON.parse(localStorage.getItem("token"));
-
+  let creatorID = localStorage.getItem("userID");
+  let organizationID = localStorage.getItem("organizationID");
   return async (dispatch) => {
     dispatch(uploadDocument_init());
     let form = new FormData();
@@ -184,7 +177,9 @@ const uploadDocumentsResolutionApi = (
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(uploadDocumentsResolutionApi(navigate, t, data, folderID));
+          dispatch(
+            uploadDocumentsResolutionApi(navigate, t, data, folderID, newfile)
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -194,15 +189,16 @@ const uploadDocumentsResolutionApi = (
                   "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
                 )
             ) {
-              await dispatch(
-                saveFilesResolutionApi(
-                  navigate,
-                  t,
-                  response.data.responseResult,
-                  folderID,
-                  newFolder
-                )
-              );
+              newfile.push({
+                DisplayFileName: response.data.responseResult.displayFileName,
+                DiskusFileNameString:
+                  response.data.responseResult.diskusFileName,
+                ShareAbleLink: response.data.responseResult.shareAbleLink,
+                FK_UserID: JSON.parse(creatorID),
+                FK_OrganizationID: JSON.parse(organizationID),
+                FileSize: Number(response.data.responseResult.fileSizeOnDisk),
+                fileSizeOnDisk: Number(response.data.responseResult.fileSize),
+              });
               await dispatch(
                 uploadDocument_success(response.data.responseResult, "")
               );
@@ -972,6 +968,9 @@ const updateResolution = (
     NonVoters: nonVoter,
     Attachments: tasksAttachments,
   };
+
+  console.log(tasksAttachments, "tasksAttachments");
+
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(updateResolution_Init());
@@ -1014,11 +1013,12 @@ const updateResolution = (
                   t("Resolution-circulated-successfully")
                 )
               );
+
               let newArr = [];
               if (tasksAttachments.length > 0) {
                 tasksAttachments.forEach((data, index) => {
                   newArr.push({
-                    PK_FileID: Number(data.OriginalAttachmentName),
+                    PK_FileID: Number(data.pK_FileID),
                   });
                 });
               }
@@ -1045,11 +1045,13 @@ const updateResolution = (
                   t("Resolution-details-updated-successfully")
                 )
               );
+              console.log(tasksAttachments, "tasksAttachments");
               let newArr = [];
               if (tasksAttachments.length > 0) {
                 tasksAttachments.forEach((data, index) => {
+                  console.log(data, "tasksAttachments");
                   newArr.push({
-                    PK_FileID: Number(data.OriginalAttachmentName),
+                    PK_FileID: Number(data.pK_FileID),
                   });
                 });
               }

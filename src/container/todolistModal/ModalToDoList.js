@@ -515,63 +515,69 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     }
   };
   const uploadTaskDocuments = async (folderID) => {
-    let newFolder = [];
-    let newfile = [];
-    const uploadPromises = fileForSend.map(async (newData) => {
+    try {
+      let newfile = [];
+      let newFolder = [];
+      const uploadPromises = fileForSend.map(async (newData) => {
+        await dispatch(
+          uploadDocumentsTaskApi(
+            navigate,
+            t,
+            newData,
+            folderID,
+            // newFolder,
+            newfile
+          )
+        );
+      });
+      // Wait for all promises to resolve
+      await Promise.all(uploadPromises); //till here the files get upload
       await dispatch(
-        uploadDocumentsTaskApi(
-          navigate,
-          t,
-          newData,
-          folderID,
-          // newFolder,
-          newfile
-        )
+        saveFilesTaskApi(navigate, t, newfile, folderID, newFolder)
       );
-    });
-    // Wait for all promises to resolve
-    await Promise.all(uploadPromises); //till here the files get upload
-    dispatch(saveFilesTaskApi(navigate, t, newfile, folderID, newFolder));
-    console.log(newFolder, "newFoldernewFoldernewFolder");
-    let newAttachmentData = newFolder.map((data, index) => {
-      console.log(data, "newFoldernewFoldernewFolder");
-      return {
-        DisplayAttachmentName: data.DisplayAttachmentName,
-        OriginalAttachmentName: data.pK_FileID.toString(),
-        FK_TID: Number(createTaskID),
-      };
-    });
+      console.log(newFolder, "newFoldernewFoldernewFolder");
+      let newAttachmentData = newFolder.map((data, index) => {
+        console.log(data, "newFoldernewFoldernewFolder");
+        return {
+          DisplayAttachmentName: data.DisplayAttachmentName,
+          OriginalAttachmentName: data.pK_FileID.toString(),
+          FK_TID: Number(createTaskID),
+        };
+      });
 
-    let Data = {
-      TaskCreatorID: TaskCreatorID,
-      TaskAssignedTo:
-        TaskAssignedTo.length > 0
-          ? TaskAssignedTo.map((data, index) => data)
-          : [TaskCreatorID],
-      TaskID: Number(createTaskID),
-      TasksAttachments: newAttachmentData,
-    };
-    await dispatch(
-      saveTaskDocumentsAndAssigneesApi(navigate, Data, t, 1, setShow)
-    );
-    setTask({
-      ...task,
-      PK_TID: 1,
-      Title: "",
-      Description: "",
-      IsMainTask: true,
-      DeadLineDate: "",
-      DeadLineTime: "",
-      CreationDateTime: "",
-    });
-    setCreateTodoDate("");
-    setCreateTodoTime("");
-    setTaskAssignedTo([]);
-    setTaskAssignedName([]);
-    setToDoDate("");
-    setAssignees([]);
-    setFileForSend([]);
-    setTasksAttachments({ TasksAttachments: [] });
+      let Data = {
+        TaskCreatorID: TaskCreatorID,
+        TaskAssignedTo:
+          TaskAssignedTo.length > 0
+            ? TaskAssignedTo.map((data, index) => data)
+            : [TaskCreatorID],
+        TaskID: Number(createTaskID),
+        TasksAttachments: newAttachmentData,
+      };
+      await dispatch(
+        saveTaskDocumentsAndAssigneesApi(navigate, Data, t, 1, setShow)
+      );
+      setTask({
+        ...task,
+        PK_TID: 1,
+        Title: "",
+        Description: "",
+        IsMainTask: true,
+        DeadLineDate: "",
+        DeadLineTime: "",
+        CreationDateTime: "",
+      });
+      setCreateTodoDate("");
+      setCreateTodoTime("");
+      setTaskAssignedTo([]);
+      setTaskAssignedName([]);
+      setToDoDate("");
+      setAssignees([]);
+      setFileForSend([]);
+      setTasksAttachments({ TasksAttachments: [] });
+    } catch (error) {
+      console.log(error, "errorerrorerrorerrorerror");
+    }
   };
 
   useEffect(() => {

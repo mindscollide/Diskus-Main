@@ -1,25 +1,21 @@
 {
-  "FolderID": 8196,
-  "Files": [
+  "IsCirculate": false,
+  "FK_ResolutionID": 307,
+  "Voters": [
     {
-      "DisplayFileName": "Saif-Global.txt",
-      "DiskusFileNameString": "20240220122615591",
-      "ShareAbleLink": "20240220122615591",
-      "FK_UserID": 1093,
-      "FK_OrganizationID": 417,
-      "FileSize": 0.01,
-      "fileSizeOnDisk": 0.01
-    },
-    {
-      "DisplayFileName": "Minutes Workflow.docx",
-      "DiskusFileNameString": "20240220122615604",
-      "ShareAbleLink": "20240220122615604",
-      "FK_UserID": 1093,
-      "FK_OrganizationID": 417,
-      "FileSize": 0.3,
-      "fileSizeOnDisk": 0.3
+      "FK_UID": 1093,
+      "FK_VotingStatus_ID": 3,
+      "Notes": "",
+      "Email": "ereneight@yopmail.com"
     }
   ],
-  "UserID": 1093,
-  "Type": 0
+  "NonVoters": [
+    {
+      "FK_UID": 986,
+      "FK_VotingStatus_ID": 3,
+      "Notes": "",
+      "Email": "erenfour@yopmail.com"
+    }
+  ],
+  "Attachments": [{ "pK_FileID": 8120 }, { "pK_FileID": 8121 }]
 }
