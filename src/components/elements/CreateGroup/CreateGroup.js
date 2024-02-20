@@ -686,7 +686,9 @@ const CreateGroup = ({ setCreategrouppage }) => {
 
     console.log(newfile, "newfilenewfilenewfilenewfile");
 
-    dispatch(saveFilesGroupsApi(navigate, t, newfile, folderID, newFolder));
+    await dispatch(
+      saveFilesGroupsApi(navigate, t, newfile, folderID, newFolder)
+    );
 
     let groupID = localStorage.getItem("groupID");
 

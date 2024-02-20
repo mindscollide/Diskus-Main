@@ -53,10 +53,12 @@ const uploadDocumentsCommitteesApi = (
   t,
   data,
   folderID,
-  newFolder
+  newFolder,
+  newfile
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
-
+  let creatorID = localStorage.getItem("userID");
+  let organizationID = localStorage.getItem("organizationID");
   return async (dispatch) => {
     dispatch(uploadDocument_init());
     let form = new FormData();
@@ -75,7 +77,14 @@ const uploadDocumentsCommitteesApi = (
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            uploadDocumentsCommitteesApi(navigate, t, data, folderID, newFolder)
+            uploadDocumentsCommitteesApi(
+              navigate,
+              t,
+              data,
+              folderID,
+              newFolder,
+              newfile
+            )
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -86,18 +95,20 @@ const uploadDocumentsCommitteesApi = (
                   "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
                 )
             ) {
+              newfile.push({
+                DisplayFileName: response.data.responseResult.displayFileName,
+                DiskusFileNameString:
+                  response.data.responseResult.diskusFileName,
+                ShareAbleLink: response.data.responseResult.shareAbleLink,
+                FK_UserID: JSON.parse(creatorID),
+                FK_OrganizationID: JSON.parse(organizationID),
+                FileSize: Number(response.data.responseResult.fileSizeOnDisk),
+                fileSizeOnDisk: Number(response.data.responseResult.fileSize),
+              });
               dispatch(
                 uploadDocument_success(response.data.responseResult, "")
               );
-              await dispatch(
-                saveFilesCommitteesApi(
-                  navigate,
-                  t,
-                  response.data.responseResult,
-                  folderID,
-                  newFolder
-                )
-              );
+
               // let newData = {
               //   DisplayAttachmentName: data.displayFileName,
               //   OriginalAttachmentName:
@@ -164,17 +175,7 @@ const saveFilesCommitteesApi = (navigate, t, data, folderID, newFolder) => {
   let OrganizationID = localStorage.getItem("organizationID");
   let Data = {
     FolderID: folderID !== null ? folderID : 0,
-    Files: [
-      {
-        DisplayFileName: data.displayFileName,
-        DiskusFileNameString: data.diskusFileName,
-        ShareAbleLink: data.shareAbleLink,
-        FK_UserID: JSON.parse(createrID),
-        FK_OrganizationID: JSON.parse(OrganizationID),
-        fileSizeOnDisk: Number(data.fileSizeOnDisk),
-        FileSize: Number(data.fileSize),
-      },
-    ],
+    Files: data,
     UserID: JSON.parse(createrID),
     Type: 0,
   };
