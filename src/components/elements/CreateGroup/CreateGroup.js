@@ -28,6 +28,7 @@ import {
   createGroup,
   getGroupMembersRoles,
   getOrganizationGroupTypes,
+  saveFilesGroupsApi,
   uploadDocumentsGroupsApi,
 } from "../../../store/actions/Groups_actions";
 import { render } from "@testing-library/react";
@@ -666,20 +667,35 @@ const CreateGroup = ({ setCreategrouppage }) => {
   };
 
   const GroupsDocumentCallUpload = async (folderID) => {
+    let newFolder = [];
     let newfile = [];
     const uploadPromises = fileForSend.map(async (newData) => {
       await dispatch(
-        uploadDocumentsGroupsApi(navigate, t, newData, folderID, newfile)
+        uploadDocumentsGroupsApi(
+          navigate,
+          t,
+          newData,
+          folderID,
+          // newFolder,
+          newfile
+        )
       );
     });
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
 
+    console.log(newfile, "newfilenewfilenewfilenewfile");
+
+    await dispatch(
+      saveFilesGroupsApi(navigate, t, newfile, folderID, newFolder)
+    );
+
     let groupID = localStorage.getItem("groupID");
 
+    console.log(newFolder, "newFoldernewFoldernewFolder");
     let Data = {
       GroupID: Number(groupID),
-      UpdateFileList: newfile.map((data, index) => {
+      UpdateFileList: newFolder.map((data, index) => {
         return { PK_FileID: data.pK_FileID };
       }),
     };
