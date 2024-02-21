@@ -964,7 +964,7 @@ const EditResolution = ({ setCancelresolution }) => {
         atCH.push({
           DisplayAttachmentName: data.displayAttachmentName,
           OriginalAttachmentName: data.originalAttachmentName,
-          pK_RAID: data.pK_RAID,
+          pK_FileID: data.pK_RAID,
         });
         newData.push({
           displayAttachmentName: data.displayAttachmentName,
@@ -1154,7 +1154,7 @@ const EditResolution = ({ setCancelresolution }) => {
             atCH.push({
               DisplayAttachmentName: data.displayAttachmentName,
               OriginalAttachmentName: data.originalAttachmentName,
-              pK_RAID: data.pK_RAID,
+              pK_FileID: data.pK_RAID,
             });
             newData.push({
               displayAttachmentName: data.displayAttachmentName,
