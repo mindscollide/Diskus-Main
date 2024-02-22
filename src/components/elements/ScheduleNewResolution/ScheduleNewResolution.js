@@ -779,6 +779,7 @@ const ScheduleNewResolution = () => {
   }, [assignees.user]);
 
   const documentsUploadCall = async (folderID) => {
+    let newFolder = [];
     let newfile = [];
     const uploadPromises = fileForSend.map(async (newData) => {
       await dispatch(
@@ -788,7 +789,9 @@ const ScheduleNewResolution = () => {
 
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
-
+    await dispatch(
+      saveFilesResolutionApi(navigate, t, newfile, folderID, newFolder)
+    );
     let resolutionID = localStorage.getItem("resolutionID");
     await dispatch(
       updateResolution(
@@ -796,7 +799,7 @@ const ScheduleNewResolution = () => {
         Number(resolutionID),
         voters,
         nonVoter,
-        newfile,
+        newFolder,
         t,
         sendStatus
       )

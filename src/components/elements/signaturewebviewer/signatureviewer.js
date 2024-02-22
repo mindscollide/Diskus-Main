@@ -4,6 +4,7 @@ import "./signaturewebviewer.css";
 import PlusSignSignatureFlow from "../../../assets/images/plus-sign-signatureflow.svg";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+
 import {
   ClearMessageAnnotations,
   GetAnnotationsOfToDoAttachementMessageCleare,
@@ -22,7 +23,13 @@ import { Notification, Loader, Modal, Button, TextField } from "../index";
 import { Col, Row } from "react-bootstrap";
 import DeleteIcon from "../../../assets/images/Icon material-delete.svg";
 import Select from "react-select";
-import { createWorkflowApi } from "../../../store/actions/workflow_actions";
+import {
+  addUpdateFieldValueApi,
+  createWorkflowApi,
+  getWorkFlowByWorkFlowIdwApi,
+  saveWorkflowApi,
+} from "../../../store/actions/workflow_actions";
+import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 const SignatureViewer = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -34,23 +41,35 @@ const SignatureViewer = () => {
   });
   const [openAddParticipentModal, setOpenAddParticipentModal] = useState(false);
   const { webViewer } = useSelector((state) => state);
-  const { createSignatureResponse } = useSelector(
+  const { createSignatureResponse, saveWorkFlowResponse } = useSelector(
     (state) => state.SignatureWorkFlowReducer
   );
-  console.log(
-    createSignatureResponse,
-    "createSignatureResponsecreateSignatureResponse"
-  );
+  const { assignees } = useSelector((state) => state);
+
   const viewer = useRef(null);
   const [isNewFile, setIsFileNew] = useState(false);
-  console.log(isNewFile, "isNewFileisNewFileisNewFile");
-  console.log(viewer, "viewerviewerviewer");
+  const [userList, setUserList] = useState([]);
   const [signers, setSigners] = useState({
     Name: "",
     EmailAddress: "",
+    UserID: 0,
+  });
+  const [signerUserData, setSingerUserData] = useState({
+    value: 0,
+    label: "",
+    name: "",
   });
   const [signerData, setSignerData] = useState([]);
+  const [participants, setParticipants] = useState([]);
   const [isButtonDisbale, setButtonDisabled] = useState(false);
+  const [workflowResponse, setWorkFlowResponse] = useState({
+    workflow: "",
+    signatureDocument: "",
+  });
+  console.log(
+    workflowResponse,
+    "workflowResponseworkflowResponseworkflowResponse"
+  );
   let name = localStorage.getItem("name");
   // Parse the URL parameters to get the data
   const pdfDataJson = new URLSearchParams(location.search).get("pdfData");
@@ -70,9 +89,16 @@ const SignatureViewer = () => {
 
   const [selectedUser, setSelectedUser] = useState("user1");
 
+  const selectedUserRef = useRef(selectedUser);
+  const userAnnotationsRef = useRef(userAnnotations);
+  const pdfResponceDataRef = useRef(pdfResponceData.xfdfData);
+  const removedAnnotationsRef = useRef(pdfResponceData.removedAnnotations);
+  const participantsRef = useRef(participants);
+  console.log("participantsRef participants", participantsRef);
+
   useEffect(() => {
     if (taskId && attachmentID) {
-      setOpenAddParticipentModal(true);
+      dispatch(allAssignessList(navigate, t));
       // console.log("test", { taskId, attachmentID });
       if (Number(commingFrom) === 1) {
         let data = {
@@ -108,10 +134,70 @@ const SignatureViewer = () => {
         };
 
         dispatch(createWorkflowApi(dataRoomData, navigate, t));
+        setOpenAddParticipentModal(true);
       }
     }
   }, []);
+  useEffect(() => {
+    try {
+      if (Object.keys(assignees.user).length > 0) {
+        let usersDataArr = [];
+        assignees.user.forEach((allData, index) => {
+          usersDataArr.push({
+            label: (
+              <>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex gap-2 align-items-center"
+                  >
+                    <img
+                      src={`data:image/jpeg;base64,${allData?.displayProfilePictureName}`}
+                      height="16.45px"
+                      width="18.32px"
+                      draggable="false"
+                      alt=""
+                    />
+                    <span>{allData.name}</span>
+                  </Col>
+                </Row>
+              </>
+            ),
+            value: allData.pK_UID,
+            name: allData.name,
+            email: allData.emailAddress,
+          });
+        });
+        setUserList(usersDataArr);
 
+        // setAllPresenters(PresenterData);
+      }
+    } catch (error) {}
+  }, [assignees.user]);
+  useEffect(() => {
+    try {
+      if (saveWorkFlowResponse !== null) {
+        let getUsers = saveWorkFlowResponse.workFlow;
+        let listOfUsers = [];
+        getUsers.bundleModels.forEach((users, index) => {
+          users.actors.forEach((usersData, index) => {
+            listOfUsers.push({
+              name: usersData.name,
+              pk_UID: usersData.pK_UID,
+            });
+          });
+        });
+        setParticipants(listOfUsers);
+        console.log(
+          listOfUsers,
+          "saveWorkFlowResponsesaveWorkFlowResponsesaveWorkFlowResponse"
+        );
+      } else {
+      }
+    } catch {}
+  }, [saveWorkFlowResponse]);
   function base64ToBlob(base64) {
     const binaryString = window.atob(base64);
     const len = binaryString.length;
@@ -185,27 +271,47 @@ const SignatureViewer = () => {
   }
   useEffect(() => {
     try {
-      if (createSignatureResponse?.signatureDocument) {
-        if (isNewFile) {
-          setPdfResponceData((prevData) => ({
-            ...prevData,
-            xfdfData: "",
-            pdfUrls: createSignatureResponse?.signatureDocument?.base64File,
-            removedAnnotations: "",
-          }));
-        } else {
-          // let value = "250486b9-711b-3bfa-3457-8d6ff0f35044";
-          // let xmlNew = processXml(webViewer.xfdfData, value);
-          // const currentUserID = "user1";
-          // const { filteredXmlString, removedAnnotations } =
-          //   filterFreetextElements(xmlNew, currentUserID);
-          // setPdfResponceData((prevData) => ({
-          //   ...prevData,
-          //   xfdfData: isNewFile === true ? "" : "",
-          //   pdfUrls: createSignatureResponse?.signatureDocument?.base64File,
-          //   removedAnnotations: isNewFile === true ? "" : "",
-          // }));
+      if (createSignatureResponse !== null) {
+        console.log(
+          createSignatureResponse,
+          "createSignatureResponsecreateSignatureResponse"
+        );
+        let Data = {
+          FileID: Number(createSignatureResponse.signatureDocument.documentID),
+        };
+        dispatch(getWorkFlowByWorkFlowIdwApi(Data, navigate, t));
+        // let apiResponse = {
+        //   createSignatureResponse.signatureDocument, createSignatureResponse.workflow
+        // }
+        setWorkFlowResponse({
+          ...workflowResponse,
+          workflow: createSignatureResponse.workFlow,
+          signatureDocument: createSignatureResponse.signatureDocument,
+        });
+
+        if (createSignatureResponse?.signatureDocument) {
+          if (isNewFile) {
+            setPdfResponceData((prevData) => ({
+              ...prevData,
+              xfdfData: "",
+              pdfUrls: createSignatureResponse?.signatureDocument?.base64File,
+              removedAnnotations: "",
+            }));
+          } else {
+            // let value = "250486b9-711b-3bfa-3457-8d6ff0f35044";
+            // let xmlNew = processXml(webViewer.xfdfData, value);
+            // const currentUserID = "user1";
+            // const { filteredXmlString, removedAnnotations } =
+            //   filterFreetextElements(xmlNew, currentUserID);
+            // setPdfResponceData((prevData) => ({
+            //   ...prevData,
+            //   xfdfData: isNewFile === true ? "" : "",
+            //   pdfUrls: createSignatureResponse?.signatureDocument?.base64File,
+            //   removedAnnotations: isNewFile === true ? "" : "",
+            // }));
+          }
         }
+
         // let value = "250486b9-711b-3bfa-3457-8d6ff0f35044";
         // let xmlNew = processXml(webViewer.xfdfData, value);
         // const currentUserID = "user1";
@@ -222,18 +328,22 @@ const SignatureViewer = () => {
   }, [createSignatureResponse]);
   console.log("annotationChanged pdfResponceData", pdfResponceData);
 
-  const selectedUserRef = useRef(selectedUser);
-  const userAnnotationsRef = useRef(userAnnotations);
-  const pdfResponceDataRef = useRef(pdfResponceData.xfdfData);
-  const removedAnnotationsRef = useRef(pdfResponceData.removedAnnotations);
-
   useEffect(() => {
     selectedUserRef.current = selectedUser;
+  }, [selectedUser]);
+  useEffect(() => {
     userAnnotationsRef.current = userAnnotations;
+  }, [userAnnotations]);
+  useEffect(() => {
     pdfResponceDataRef.current = pdfResponceData.xfdfData;
+  }, [pdfResponceData]);
+  useEffect(() => {
     removedAnnotationsRef.current = pdfResponceData.removedAnnotations;
-  }, [selectedUser, userAnnotations, pdfResponceData, removedAnnotationsRef]);
-
+  }, [removedAnnotationsRef]);
+  useEffect(() => {
+    participantsRef.current = participants;
+    console.log("participantsRef pdfResponceData", participantsRef.current);
+  }, [participants]);
   const [Instance, setInstance] = useState();
   const [removeFlag, setRemoveFlag] = useState(false);
   const areAllAnnotationsEmpty = (userAnnotations) => {
@@ -473,13 +583,23 @@ const SignatureViewer = () => {
 
   const handleClickAdd = () => {
     if (signers.EmailAddress !== "" && signers.Name !== "") {
+      setSingerUserData({
+        value: 0,
+        label: "",
+        name: "",
+      });
       setSignerData([
         ...signerData,
-        { Name: signers.Name, EmailAddress: signers.EmailAddress },
+        {
+          Name: signers.Name,
+          EmailAddress: signers.EmailAddress,
+          userID: signers.UserID,
+        },
       ]);
       setSigners({
         ...signers,
         EmailAddress: "",
+        UserID: 0,
         Name: "",
       });
     } else {
@@ -582,7 +702,12 @@ const SignatureViewer = () => {
           setSelectedUser(selectedValue);
           // userSelect = selectedValue;
         };
-
+        const handleChangeUser = (event) => {
+          console.log(
+            event,
+            "handleChangeUserhandleChangeUserhandleChangeUser"
+          );
+        };
         const openCustomModal = () => {
           setOpenAddParticipentModal(true); // Open the custom modal
         };
@@ -652,37 +777,14 @@ const SignatureViewer = () => {
                   }}
                   id="select-country"
                   data-live-search="true"
+                  onChange={handleChangeUser}
                 >
-                  <option
-                    style={{
-                      width: "100%",
-                      padding: "12px 5px",
-                      margin: "8px 0",
-                    }}
-                    data-tokens="china"
-                  >
-                    China
-                  </option>
-                  <option
-                    style={{
-                      width: "100%",
-                      padding: "12px 5px",
-                      margin: "8px 0",
-                    }}
-                    data-tokens="malayasia"
-                  >
-                    Malayasia
-                  </option>
-                  <option
-                    style={{
-                      width: "100%",
-                      padding: "12px 5px",
-                      margin: "8px 0",
-                    }}
-                    data-tokens="singapore"
-                  >
-                    Singapore
-                  </option>
+                  {participantsRef.current?.map((userData, index) => {
+                    console.log(userData, "userDatauserDatauserData");
+                    return (
+                      <option value={userData.pk_UID}>{userData.name}</option>
+                    );
+                  })}
                 </select>
 
                 {/* <Select /> */}
@@ -787,92 +889,92 @@ const SignatureViewer = () => {
         }
         const { WidgetFlags } = Annotations;
         instance.UI.setHeaderItems((header) => {
-          header.push({
-            type: "actionButton",
-            img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>',
-            onClick: async () => {
-              const xfdfString = await annotationManager.exportAnnotations();
-              console.log("xfdfStringxfdf String", xfdfString);
-              // Append removed annotations to xfdfString
-              const updatedMainXmlString = addRemovedAnnotationsToMainXml(
-                xfdfString,
-                removedAnnotationsRef.current
-              );
-              console.log(
-                "xfdfStringxfdf updatedMainXmlString",
-                updatedMainXmlString
-              );
-              const updatedXml = updateFreetextCustomData(updatedMainXmlString);
-              console.log("xfdfStringxfdf updatedXml", updatedXml);
-              const doc = documentViewer.getDocument();
-              const data = await doc.getFileData({}); // No xfdfString for annotations
-              const arr = new Uint8Array(data);
-              const blob = new Blob([arr], { type: "application/pdf" });
-              generateBase64FromBlob(blob)
-                .then((base64String) => {
-                  console.log(
-                    "xfdfStringxfdf PDF Base64 String:",
-                    base64String
-                  );
-                  // Here you can use the base64String as needed
-                })
-                .catch((error) => {
-                  console.error("Error generating base64 string:", error);
-                });
+          // header.push({
+          //   type: "actionButton",
+          //   img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>',
+          //   onClick: async () => {
+          //     const xfdfString = await annotationManager.exportAnnotations();
+          //     console.log("xfdfStringxfdf String", xfdfString);
+          //     // Append removed annotations to xfdfString
+          //     const updatedMainXmlString = addRemovedAnnotationsToMainXml(
+          //       xfdfString,
+          //       removedAnnotationsRef.current
+          //     );
+          //     console.log(
+          //       "xfdfStringxfdf updatedMainXmlString",
+          //       updatedMainXmlString
+          //     );
+          //     const updatedXml = updateFreetextCustomData(updatedMainXmlString);
+          //     console.log("xfdfStringxfdf updatedXml", updatedXml);
+          //     const doc = documentViewer.getDocument();
+          //     const data = await doc.getFileData({}); // No xfdfString for annotations
+          //     const arr = new Uint8Array(data);
+          //     const blob = new Blob([arr], { type: "application/pdf" });
+          //     generateBase64FromBlob(blob)
+          //       .then((base64String) => {
+          //         console.log(
+          //           "xfdfStringxfdf PDF Base64 String:",
+          //           base64String
+          //         );
+          //         // Here you can use the base64String as needed
+          //       })
+          //       .catch((error) => {
+          //         console.error("Error generating base64 string:", error);
+          //       });
 
-              // Dispatch your Redux action to send the data to the API
-              // if (Number(commingFrom) === 1) {
-              //   const apiData = {
-              //     TaskID: taskId, // Assuming taskId is defined in your component
-              //     TaskAttachementID: attachmentID, // Assuming attachmentID is defined in your component
-              //     AnnotationString: updatedMainXmlString, // Pass the annotations data here
-              //   };
-              //   // for todo
-              //   dispatch(addAnnotationsOnToDoAttachement(navigate, t, apiData));
-              // } else if (Number(commingFrom) === 2) {
-              //   let notesData = {
-              //     NoteID: taskId,
-              //     NoteAttachementID: attachmentID,
-              //     AnnotationString: updatedMainXmlString,
-              //   };
-              //   dispatch(
-              //     addAnnotationsOnNotesAttachement(navigate, t, notesData)
-              //   );
-              //   // for notes
-              // } else if (Number(commingFrom) === 3) {
-              //   let resolutionData = {
-              //     ResolutionID: taskId,
-              //     ResolutionAttachementID: attachmentID,
-              //     AnnotationString: updatedMainXmlString,
-              //   };
-              //   dispatch(
-              //     addAnnotationsOnResolutionAttachement(
-              //       navigate,
-              //       t,
-              //       resolutionData
-              //     )
-              //   );
-              //   // for resultion
-              // } else if (Number(commingFrom) === 4) {
-              //   // for data room
-              //   let dataRoomData = {
-              //     FileID: attachmentID,
-              //     AnnotationString: updatedMainXmlString,
-              //   };
+          //     // Dispatch your Redux action to send the data to the API
+          //     // if (Number(commingFrom) === 1) {
+          //     //   const apiData = {
+          //     //     TaskID: taskId, // Assuming taskId is defined in your component
+          //     //     TaskAttachementID: attachmentID, // Assuming attachmentID is defined in your component
+          //     //     AnnotationString: updatedMainXmlString, // Pass the annotations data here
+          //     //   };
+          //     //   // for todo
+          //     //   dispatch(addAnnotationsOnToDoAttachement(navigate, t, apiData));
+          //     // } else if (Number(commingFrom) === 2) {
+          //     //   let notesData = {
+          //     //     NoteID: taskId,
+          //     //     NoteAttachementID: attachmentID,
+          //     //     AnnotationString: updatedMainXmlString,
+          //     //   };
+          //     //   dispatch(
+          //     //     addAnnotationsOnNotesAttachement(navigate, t, notesData)
+          //     //   );
+          //     //   // for notes
+          //     // } else if (Number(commingFrom) === 3) {
+          //     //   let resolutionData = {
+          //     //     ResolutionID: taskId,
+          //     //     ResolutionAttachementID: attachmentID,
+          //     //     AnnotationString: updatedMainXmlString,
+          //     //   };
+          //     //   dispatch(
+          //     //     addAnnotationsOnResolutionAttachement(
+          //     //       navigate,
+          //     //       t,
+          //     //       resolutionData
+          //     //     )
+          //     //   );
+          //     //   // for resultion
+          //     // } else if (Number(commingFrom) === 4) {
+          //     //   // for data room
+          //     //   let dataRoomData = {
+          //     //     FileID: attachmentID,
+          //     //     AnnotationString: updatedMainXmlString,
+          //     //   };
 
-              //   dispatch(
-              //     addAnnotationsOnDataroomAttachement(navigate, t, dataRoomData)
-              //   );
-              // }
-            },
-          });
-          header.push({
-            type: "actionButton",
-            img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>',
-            onClick: async () => {
-              publicFlow(annotationManager);
-            },
-          });
+          //     //   dispatch(
+          //     //     addAnnotationsOnDataroomAttachement(navigate, t, dataRoomData)
+          //     //   );
+          //     // }
+          //   },
+          // });
+          // header.push({
+          //   type: "actionButton",
+          //   img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>',
+          //   onClick: async () => {
+          //     publicFlow(annotationManager);
+          //   },
+          // });
           header.push({
             type: "customElement",
             render: () => {
@@ -1060,12 +1162,7 @@ const SignatureViewer = () => {
   const handleHideModal = () => {
     if (signerData.length > 0) {
       setOpenAddParticipentModal(false);
-      // setSignersData([
-      //   {
-      //     Name: "",
-      //     EmailAddress: "",
-      //   },
-      // ]);
+      setSignerData([]);
     } else {
       setOpen({
         ...open,
@@ -1073,6 +1170,46 @@ const SignatureViewer = () => {
         open: true,
       });
     }
+  };
+  const filterFunc = (options, searchText) => {
+    console.log(options, "filterFuncfilterFunc");
+    if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const clickSaveSigners = () => {
+    let Data = {
+      WorkFlowTitle: workflowResponse.workflow.title,
+      Description: workflowResponse.workflow.description,
+      isDeadline: workflowResponse.workflow.isDeadline,
+      DeadlineDateTime: workflowResponse.workflow.deadlineDatetime,
+      CreatorID: workflowResponse.workflow.creatorID,
+      ListOfActionAbleBundle: signerData.map((sendData, index) => {
+        return {
+          ID: `BundleID_# ${index + 1}`,
+          Title: "",
+          BundleDeadline: "",
+          ListOfUsers: [sendData.userID],
+          Entity: {
+            EntityID: workflowResponse.signatureDocument.documentID,
+            EntityTypeID: 1,
+          },
+        };
+      }),
+    };
+    dispatch(saveWorkflowApi(Data, navigate, t, setOpenAddParticipentModal));
+  };
+  const handleChangeFllName = (value) => {
+    setSingerUserData(value);
+    setSigners({
+      ...signers,
+      EmailAddress: value.email,
+      UserID: value.value,
+      Name: value.name,
+    });
   };
   return (
     <>
@@ -1105,7 +1242,18 @@ const SignatureViewer = () => {
                 <Col lg={12} md={12} xs={12} sm={12}>
                   <Row>
                     <Col sm={12} md={6} lg={6}>
-                      <TextField
+                      <p className="pb-1 m-0 inputlabel_style">{"Full Name"}</p>
+                      <Select
+                        placeholder="Full Name"
+                        onChange={handleChangeFllName}
+                        options={userList}
+                        filterOption={filterFunc}
+                        value={
+                          signerUserData.value !== 0 ? signerUserData : null
+                        }
+                      />
+
+                      {/* <TextField
                         placeholder={t("Full-name")}
                         labelClass={"inputlabel_style"}
                         width={"100%"}
@@ -1116,7 +1264,7 @@ const SignatureViewer = () => {
                         value={signers.Name}
                         label={"Name"}
                         change={(e) => handleupdateFieldData(e)}
-                      />
+                      /> */}
                     </Col>
                     <Col sm={12} md={6} lg={6}>
                       <TextField
@@ -1170,7 +1318,12 @@ const SignatureViewer = () => {
                                     </Col>
                                   </Row>
                                 </Col>
-                                <Col sm={12} md={1} lg={1} className="p-0 mt-4">
+                                <Col
+                                  sm={12}
+                                  md={1}
+                                  lg={1}
+                                  className="my-1 d-flex align-items-end mb-3"
+                                >
                                   <img
                                     src={DeleteIcon}
                                     className="cursor-pointer"
@@ -1214,7 +1367,7 @@ const SignatureViewer = () => {
                 <Button
                   className={"Add"}
                   text={t("Add")}
-                  // onClick={()=>setOpenAddParticipentModal(false)}
+                  onClick={clickSaveSigners}
                 />
               </Col>
             </Row>

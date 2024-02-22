@@ -1318,18 +1318,14 @@ const saveFilesTaskApi = (navigate, t, data, folderID, newFolder) => {
                 response.data.responseResult,
                 "newFoldernewFoldernewFolder"
               );
-              try {
-                let File = response.data.responseResult.fileID;
-                File.map((newData, index) => {
-                  console.log(newData, "newFoldernewFoldernewFolder");
-                  return newFolder.push({
-                    pK_FileID: newData.pK_FileID,
-                    DisplayAttachmentName: newData.displayFileName,
-                  });
+              let File = response.data.responseResult.fileID;
+              File.forEach((newData, index) => {
+                console.log(newData, "newFoldernewFoldernewFolder");
+                return newFolder.push({
+                  pK_FileID: newData.pK_FileID,
+                  DisplayAttachmentName: newData.displayFileName,
                 });
-              } catch (error) {
-                console.log(error, "newFoldernewFoldernewFolder");
-              }
+              });
 
               console.log(newFolder, "newFoldernewFoldernewFolder");
 
