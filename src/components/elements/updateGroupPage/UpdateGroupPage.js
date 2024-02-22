@@ -14,7 +14,6 @@ import {
   SelectBox,
   InputSearchFilter,
   Notification,
-  Loader,
 } from "./../../../components/elements";
 import userImage from "../../../assets/images/user.png";
 import styles from "./UpadateGroup.module.css";
@@ -22,22 +21,20 @@ import CrossIcon from "../../../assets/images/cancel_meeting_icon.svg";
 import Groups from "../../../container/Groups/Groups";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  RetriveDocumentsGroupsApiFunc,
   SaveGroupsDocumentsApiFunc,
   getGroupMembersRoles,
   getOrganizationGroupTypes,
+  saveFilesGroupsApi,
   updateGroup,
   uploadDocumentsGroupsApi,
 } from "../../../store/actions/Groups_actions";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useNavigate } from "react-router-dom";
-import CustomModal from "../modal/Modal";
 import ConfirmationModal from "../confirmationModal/ConfirmationModal";
 import { Upload } from "antd";
 
 const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   const { Dragger } = Upload;
-  const creatorID = JSON.parse(localStorage.getItem("userID"));
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
   const [fileAttachments, setFileAttachments] = useState([]);
   const [fileForSend, setFileForSend] = useState([]);
@@ -693,20 +690,24 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
 
   const GroupsDocumentCallUpload = async (folderID) => {
     let newfile = [...previousFileIDs];
+    let fileObj = [];
     const uploadPromises = fileForSend.map(async (newData) => {
       await dispatch(
-        uploadDocumentsGroupsApi(navigate, t, newData, folderID, newfile)
+        uploadDocumentsGroupsApi(navigate, t, newData, folderID, fileObj)
       );
     });
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
-
+    console.log(newfile, "fileObjfileObjfileObjfileObj");
+    console.log(fileObj, "fileObjfileObjfileObjfileObj");
+    await dispatch(saveFilesGroupsApi(navigate, t, fileObj, folderID, newfile));
     let Data = {
       GroupID: Number(GroupDetails.GroupID),
       UpdateFileList: newfile.map((data, index) => {
         return { PK_FileID: Number(data.pK_FileID) };
       }),
     };
+    console.log(Data, "fileObjfileObjfileObjfileObj");
     dispatch(
       SaveGroupsDocumentsApiFunc(navigate, Data, t, setUpdateComponentpage)
     );

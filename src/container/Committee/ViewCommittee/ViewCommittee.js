@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import {
   saveCommitteeDocumentsApi,
+  saveFilesCommitteesApi,
   uploadDocumentsCommitteesApi,
 } from "../../../store/actions/Committee_actions";
 import { Col, Row } from "react-bootstrap";
@@ -56,20 +57,25 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
 
   const handleSave = async () => {
     let newFolder = [...filesSending];
+    let fileObj = [];
     const uploadPromises = fileForSend.map(async (newData) => {
       await dispatch(
-        uploadDocumentsCommitteesApi(navigate, t, newData, folderID, newFolder)
+        uploadDocumentsCommitteesApi(navigate, t, newData, folderID, fileObj)
       );
     });
 
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
-
+    console.log(fileObj, "newFoldernewFoldernewFolder");
+    // console.log(newfile, "newFoldernewFoldernewFolder");
+    await dispatch(
+      saveFilesCommitteesApi(navigate, t, fileObj, folderID, newFolder)
+    );
     let newData = {
       CommitteeID: Number(committeeData.committeeID),
-      UpdateFileList: newFolder.map((data, index) => {
-        return { PK_FileID: data.pK_FileID };
-      }),
+      UpdateFileList: newFolder.map((fileID) => ({
+        PK_FileID: fileID.pK_FileID,
+      })),
     };
     await dispatch(saveCommitteeDocumentsApi(navigate, t, newData));
   };

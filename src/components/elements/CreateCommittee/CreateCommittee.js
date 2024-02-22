@@ -28,6 +28,7 @@ import {
   createcommittee,
   getCommitteeMembersRole,
   getCommitteeTypes,
+  saveFilesCommitteesApi,
   uploadDocumentsCommitteesApi,
 } from "../../../store/actions/Committee_actions";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
@@ -496,22 +497,38 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   };
   const documentsUploadCall = async (folderID) => {
     let newFolder = [];
+    let newfile = [];
     const uploadPromises = fileForSend.map(async (newData) => {
       await dispatch(
-        uploadDocumentsCommitteesApi(navigate, t, newData, folderID, newFolder)
+        uploadDocumentsCommitteesApi(
+          navigate,
+          t,
+          newData,
+          folderID,
+          // newFolder,
+          newfile
+        )
       );
     });
 
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
+    console.log(newfile, "newfilenewfilenewfilene?wfile");
+    console.log(newFolder, "newfilenewfilenewfilene?wfile");
+
+    await dispatch(
+      saveFilesCommitteesApi(navigate, t, newfile, folderID, newFolder)
+    );
+    console.log(newFolder, "newfilenewfilenewfilene?wfile");
 
     let newCommitteeID = localStorage.getItem("CommitteeID");
     let newData = {
       CommitteeID: Number(newCommitteeID),
-      UpdateFileList: newFolder.map((data, index) => {
-        return { PK_FileID: data.pK_FileID };
-      }),
+      UpdateFileList: newFolder.map((fileID) => ({
+        PK_FileID: fileID.pK_FileID,
+      })),
     };
+    console.log(newData, "newFoldernewFoldernewFolder");
     await dispatch(
       saveCommitteeDocumentsApi(navigate, t, newData, setCreategrouppage)
     );

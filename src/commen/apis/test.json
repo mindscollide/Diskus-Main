@@ -1,55 +1,33 @@
 {
-  "FolderID": 8139,
-  "Files": [
+  "IsCirculate": false,
+  "FK_ResolutionID": 307,
+  "Voters": [
     {
-      "DisplayFileName": "Saif-Global.txt",
-      "DiskusFileNameString": "20240220053853513",
-      "ShareAbleLink": "20240220053853513",
-      "FK_UserID": 1093,
-      "FK_OrganizationID": 417,
-      "fileSizeOnDisk": 0.01,
-      "FileSize": 0.01
-    },
-    {
-      "DisplayFileName": "Minutes Workflow.docx",
-      "DiskusFileNameString": "20240220053853530",
-      "ShareAbleLink": "20240220053853530",
-      "FK_UserID": 1093,
-      "FK_OrganizationID": 417,
-      "fileSizeOnDisk": 0.3,
-      "FileSize": 0.3
-    },
-    {
-      "FK_UserID": 1093,
-      "FK_OrganizationID": 417,
-      "fileSizeOnDisk": null,
-      "FileSize": null
-    },
-    {
-      "DisplayFileName": "Saif-Global.txt",
-      "DiskusFileNameString": "20240220054626845",
-      "ShareAbleLink": "20240220054626845",
-      "FK_UserID": 1093,
-      "FK_OrganizationID": 417,
-      "fileSizeOnDisk": 0.01,
-      "FileSize": 0.01
-    },
-    {
-      "DisplayFileName": "Minutes Workflow.docx",
-      "DiskusFileNameString": "20240220054626863",
-      "ShareAbleLink": "20240220054626863",
-      "FK_UserID": 1093,
-      "FK_OrganizationID": 417,
-      "fileSizeOnDisk": 0.3,
-      "FileSize": 0.3
-    },
-    {
-      "FK_UserID": 1093,
-      "FK_OrganizationID": 417,
-      "fileSizeOnDisk": null,
-      "FileSize": null
+      "FK_UID": 1093,
+      "FK_VotingStatus_ID": 3,
+      "Notes": "",
+      "Email": "ereneight@yopmail.com"
     }
   ],
-  "UserID": 1093,
-  "Type": 0
+  "NonVoters": [
+    {
+      "FK_UID": 986,
+      "FK_VotingStatus_ID": 3,
+      "Notes": "",
+      "Email": "erenfour@yopmail.com"
+    }
+  ],
+  "Attachments": [
+    {
+      "DisplayAttachmentName": "",
+      "OriginalAttachmentName": "",
+      "pK_RAID": 361
+    },
+    {
+      "DisplayAttachmentName": "",
+      "OriginalAttachmentName": "",
+      "pK_RAID": 362
+    },
+    { "pK_FileID": 8187 }
+  ]
 }
