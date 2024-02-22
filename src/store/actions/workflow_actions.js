@@ -2,6 +2,7 @@ import {
   createWorkFlowRM,
   saveWorkFlowRM,
   getWorkFlowByFileIdRM,
+  addUpdateFieldValueRM,
 } from "../../commen/apis/Api_config";
 import { workflowApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
@@ -153,7 +154,7 @@ const saveWorkflow_fail = (message) => {
   };
 };
 
-const saveWorkflowApi = (Data, navigate, t) => {
+const saveWorkflowApi = (Data, navigate, t, setOpenAddParticipentModal) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(saveWorkflow_init());
@@ -172,7 +173,9 @@ const saveWorkflowApi = (Data, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(saveWorkflowApi(Data, navigate, t));
+          dispatch(
+            saveWorkflowApi(Data, navigate, t, setOpenAddParticipentModal)
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -182,6 +185,7 @@ const saveWorkflowApi = (Data, navigate, t) => {
                   "WorkFlow_WorkFlowServiceManager_SaveWorkFlow_01".toLowerCase()
                 )
             ) {
+              setOpenAddParticipentModal(false);
               dispatch(
                 saveWorkflow_success(
                   response.data.responseResult,
@@ -308,4 +312,118 @@ const getWorkFlowByWorkFlowIdwApi = (Data, navigate, t) => {
       });
   };
 };
-export { createWorkflowApi, saveWorkflowApi, getWorkFlowByWorkFlowIdwApi };
+// crate workflow Init
+const addUpdateFieldValue_init = () => {
+  return {
+    type: actions.ADD_UPDATE_FIELD_VALUE_INIT,
+  };
+};
+
+const addUpdateFieldValue_success = (response, message) => {
+  return {
+    type: actions.ADD_UPDATE_FIELD_VALUE_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const addUpdateFieldValue_fail = (message) => {
+  return {
+    type: actions.ADD_UPDATE_FIELD_VALUE_FAIL,
+    message: message,
+  };
+};
+
+const addUpdateFieldValueApi = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    return new Promise((resolve, reject) => {
+      dispatch(addUpdateFieldValue_init());
+      let form = new FormData();
+      form.append("RequestMethod", addUpdateFieldValueRM.RequestMethod);
+      form.append("RequestData", JSON.stringify(Data));
+
+      axios({
+        method: "post",
+        url: workflowApi,
+        data: form,
+        headers: {
+          _token: token,
+        },
+      })
+        .then(async (response) => {
+          if (response.data.responseCode === 417) {
+            await dispatch(RefreshToken(navigate, t));
+            dispatch(addUpdateFieldValueApi(Data, navigate, t));
+          } else if (response.data.responseCode === 200) {
+            if (response.data.responseResult.isExecuted === true) {
+              if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "WorkFlow_WorkFlowServiceManager_AddUpdateFieldValue_01".toLowerCase()
+                  )
+              ) {
+                resolve(response.data.responseResult);
+                dispatch(
+                  addUpdateFieldValue_success(
+                    response.data.responseResult,
+                    t("Created-successfully")
+                  )
+                );
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "WorkFlow_WorkFlowServiceManager_AddUpdateFieldValue_02".toLowerCase()
+                  )
+              ) {
+                reject(response.data.responseResult.responseMessage);
+                dispatch(
+                  addUpdateFieldValue_fail(t("Dataroom-api-call-error"))
+                );
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "WorkFlow_WorkFlowServiceManager_AddUpdateFieldValue_03".toLowerCase()
+                  )
+              ) {
+                reject(response.data.responseResult.responseMessage);
+
+                dispatch(addUpdateFieldValue_fail(t("Failed-to-save-file")));
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "WorkFlow_WorkFlowServiceManager_AddUpdateFieldValue_04".toLowerCase()
+                  )
+              ) {
+                dispatch(addUpdateFieldValue_fail(t("Failed-to-save-file")));
+                reject(response.data.responseResult.responseMessage);
+              } else {
+                dispatch(addUpdateFieldValue_fail(t("Something-went-wrong")));
+                reject(response.data.responseResult.responseMessage);
+              }
+            } else {
+              dispatch(addUpdateFieldValue_fail(t("Something-went-wrong")));
+              reject(response.data.responseResult.responseMessage);
+            }
+          } else {
+            dispatch(addUpdateFieldValue_fail(t("Something-went-wrong")));
+            reject(response.data.responseResult.responseMessage);
+          }
+        })
+        .catch((response) => {
+          dispatch(addUpdateFieldValue_fail(t("Something-went-wrong")));
+          reject(response.data.responseResult.responseMessage);
+        });
+    });
+  };
+};
+export {
+  createWorkflowApi,
+  saveWorkflowApi,
+  getWorkFlowByWorkFlowIdwApi,
+  addUpdateFieldValueApi,
+};

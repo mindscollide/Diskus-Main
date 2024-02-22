@@ -6,6 +6,7 @@ const initialState = {
   createSignatureResponse: null,
   saveWorkFlowResponse: null,
   getWorkfFlowByFileId: null,
+  addUpdateFieldValue: null,
 };
 
 const SignatureWorkflowReducer = (state = initialState, action) => {
@@ -74,6 +75,28 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         getWorkfFlowByFileId: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.ADD_UPDATE_FIELD_VALUE_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.ADD_UPDATE_FIELD_VALUE_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        addUpdateFieldValue: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.ADD_UPDATE_FIELD_VALUE_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        addUpdateFieldValue: action.response,
         ResponseMessage: action.message,
       };
     }

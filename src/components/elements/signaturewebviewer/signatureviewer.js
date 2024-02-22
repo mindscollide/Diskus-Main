@@ -24,6 +24,7 @@ import { Col, Row } from "react-bootstrap";
 import DeleteIcon from "../../../assets/images/Icon material-delete.svg";
 import Select from "react-select";
 import {
+  addUpdateFieldValueApi,
   createWorkflowApi,
   getWorkFlowByWorkFlowIdwApi,
   saveWorkflowApi,
@@ -40,7 +41,7 @@ const SignatureViewer = () => {
   });
   const [openAddParticipentModal, setOpenAddParticipentModal] = useState(false);
   const { webViewer } = useSelector((state) => state);
-  const { createSignatureResponse } = useSelector(
+  const { createSignatureResponse, saveWorkFlowResponse } = useSelector(
     (state) => state.SignatureWorkFlowReducer
   );
   const { assignees } = useSelector((state) => state);
@@ -59,6 +60,7 @@ const SignatureViewer = () => {
     name: "",
   });
   const [signerData, setSignerData] = useState([]);
+  const [participants, setParticipants] = useState([]);
   const [isButtonDisbale, setButtonDisabled] = useState(false);
   const [workflowResponse, setWorkFlowResponse] = useState({
     workflow: "",
@@ -86,12 +88,17 @@ const SignatureViewer = () => {
   ]);
 
   const [selectedUser, setSelectedUser] = useState("user1");
-  console.log(userList, "userListuserListuserList");
+
+  const selectedUserRef = useRef(selectedUser);
+  const userAnnotationsRef = useRef(userAnnotations);
+  const pdfResponceDataRef = useRef(pdfResponceData.xfdfData);
+  const removedAnnotationsRef = useRef(pdfResponceData.removedAnnotations);
+  const participantsRef = useRef(participants);
+  console.log("participantsRef participants", participantsRef);
 
   useEffect(() => {
     if (taskId && attachmentID) {
       dispatch(allAssignessList(navigate, t));
-      setOpenAddParticipentModal(true);
       // console.log("test", { taskId, attachmentID });
       if (Number(commingFrom) === 1) {
         let data = {
@@ -127,6 +134,7 @@ const SignatureViewer = () => {
         };
 
         dispatch(createWorkflowApi(dataRoomData, navigate, t));
+        setOpenAddParticipentModal(true);
       }
     }
   }, []);
@@ -168,6 +176,28 @@ const SignatureViewer = () => {
       }
     } catch (error) {}
   }, [assignees.user]);
+  useEffect(() => {
+    try {
+      if (saveWorkFlowResponse !== null) {
+        let getUsers = saveWorkFlowResponse.workFlow;
+        let listOfUsers = [];
+        getUsers.bundleModels.forEach((users, index) => {
+          users.actors.forEach((usersData, index) => {
+            listOfUsers.push({
+              name: usersData.name,
+              pk_UID: usersData.pK_UID,
+            });
+          });
+        });
+        setParticipants(listOfUsers);
+        console.log(
+          listOfUsers,
+          "saveWorkFlowResponsesaveWorkFlowResponsesaveWorkFlowResponse"
+        );
+      } else {
+      }
+    } catch {}
+  }, [saveWorkFlowResponse]);
   function base64ToBlob(base64) {
     const binaryString = window.atob(base64);
     const len = binaryString.length;
@@ -298,18 +328,22 @@ const SignatureViewer = () => {
   }, [createSignatureResponse]);
   console.log("annotationChanged pdfResponceData", pdfResponceData);
 
-  const selectedUserRef = useRef(selectedUser);
-  const userAnnotationsRef = useRef(userAnnotations);
-  const pdfResponceDataRef = useRef(pdfResponceData.xfdfData);
-  const removedAnnotationsRef = useRef(pdfResponceData.removedAnnotations);
-
   useEffect(() => {
     selectedUserRef.current = selectedUser;
+  }, [selectedUser]);
+  useEffect(() => {
     userAnnotationsRef.current = userAnnotations;
+  }, [userAnnotations]);
+  useEffect(() => {
     pdfResponceDataRef.current = pdfResponceData.xfdfData;
+  }, [pdfResponceData]);
+  useEffect(() => {
     removedAnnotationsRef.current = pdfResponceData.removedAnnotations;
-  }, [selectedUser, userAnnotations, pdfResponceData, removedAnnotationsRef]);
-
+  }, [removedAnnotationsRef]);
+  useEffect(() => {
+    participantsRef.current = participants;
+    console.log("participantsRef pdfResponceData", participantsRef.current);
+  }, [participants]);
   const [Instance, setInstance] = useState();
   const [removeFlag, setRemoveFlag] = useState(false);
   const areAllAnnotationsEmpty = (userAnnotations) => {
@@ -745,9 +779,10 @@ const SignatureViewer = () => {
                   data-live-search="true"
                   onChange={handleChangeUser}
                 >
-                  {userList.map((userData, index) => {
+                  {participantsRef.current?.map((userData, index) => {
+                    console.log(userData, "userDatauserDatauserData");
                     return (
-                      <option value={userData.pK_UID}>{userData.name}</option>
+                      <option value={userData.pk_UID}>{userData.name}</option>
                     );
                   })}
                 </select>
@@ -1127,12 +1162,7 @@ const SignatureViewer = () => {
   const handleHideModal = () => {
     if (signerData.length > 0) {
       setOpenAddParticipentModal(false);
-      // setSignersData([
-      //   {
-      //     Name: "",
-      //     EmailAddress: "",
-      //   },
-      // ]);
+      setSignerData([]);
     } else {
       setOpen({
         ...open,
@@ -1170,8 +1200,7 @@ const SignatureViewer = () => {
         };
       }),
     };
-    dispatch(saveWorkflowApi(Data, navigate, t));
-    console.log(Data, "clickSaveSignersclickSaveSignersclickSaveSigners");
+    dispatch(saveWorkflowApi(Data, navigate, t, setOpenAddParticipentModal));
   };
   const handleChangeFllName = (value) => {
     setSingerUserData(value);
