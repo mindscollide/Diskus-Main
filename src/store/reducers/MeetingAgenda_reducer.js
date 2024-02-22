@@ -287,7 +287,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
     case actions.UPLOAD_DOCUMENTS_AGENDA_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        // Loading: false,
         UploadDocumentsResponse: action.response,
         ResponseMessage: action.message,
       };
@@ -295,7 +295,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
     case actions.UPLOAD_DOCUMENTS_AGENDA_FAIL: {
       return {
         ...state,
-        Loading: false,
+        // Loading: false,
         UploadDocumentsResponse: [],
         ResponseMessage: action.message,
       };

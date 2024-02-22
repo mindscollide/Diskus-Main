@@ -875,7 +875,122 @@ const uploadDocument_fail = (message) => {
   };
 };
 
-// Upload Documents API
+// // Upload Documents API
+// const UploadDocumentsAgendaApi = (
+//   navigate,
+//   t,
+//   data,
+//   folderID,
+//   newFolder,
+//   newfile
+// ) => {
+//   let token = JSON.parse(localStorage.getItem("token"));
+//   let creatorID = localStorage.getItem("userID");
+//   let organizationID = localStorage.getItem("organizationID");
+//   return async (dispatch) => {
+//     dispatch(uploadDocument_init());
+//     let form = new FormData();
+//     form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
+//     form.append("RequestData", JSON.stringify(data));
+//     form.append("File", data);
+//     await axios({
+//       method: "post",
+//       url: dataRoomApi,
+//       data: form,
+//       headers: {
+//         _token: token,
+//       },
+//     })
+//       .then(async (response) => {
+//         if (response.data.responseCode === 417) {
+//           await dispatch(RefreshToken(navigate, t));
+//           dispatch(
+//             UploadDocumentsAgendaApi(
+//               navigate,
+//               t,
+//               data,
+//               folderID,
+//               newFolder,
+//               newfile
+//             )
+//           );
+//         } else if (response.data.responseCode === 200) {
+//           if (response.data.responseResult.isExecuted === true) {
+//             if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
+//                 )
+//             ) {
+//               return {
+//                 success: true,
+//                 dummyData: {
+//                   DisplayFileName: response.data.responseResult.displayFileName,
+//                   DiskusFileNameString:
+//                     response.data.responseResult.diskusFileName,
+//                   ShareAbleLink: response.data.responseResult.shareAbleLink,
+//                   FK_UserID: JSON.parse(creatorID),
+//                   FK_OrganizationID: JSON.parse(organizationID),
+//                   FileSize: Number(response.data.responseResult.fileSizeOnDisk),
+//                   fileSizeOnDisk: Number(response.data.responseResult.fileSize),
+//                 },
+//               };
+//               // let dummyData = {
+//               //   DisplayFileName: response.data.responseResult.displayFileName,
+//               //   DiskusFileNameString:
+//               //     response.data.responseResult.diskusFileName,
+//               //   ShareAbleLink: response.data.responseResult.shareAbleLink,
+//               //   FK_UserID: JSON.parse(creatorID),
+//               //   FK_OrganizationID: JSON.parse(organizationID),
+//               //   FileSize: Number(response.data.responseResult.fileSizeOnDisk),
+//               //   fileSizeOnDisk: Number(response.data.responseResult.fileSize),
+//               // };
+//               // await newfile.push(dummyData);
+//               // console.log("newfilenewfile", newfile);
+//               // dispatch(
+//               //   uploadDocument_success(response.data.responseResult, "")
+//               // );
+//               // await dispatch(
+//               //   SaveFilesAgendaApi(
+//               //     navigate,
+//               //     t,
+//               //     response.data.responseResult,
+//               //     folderID,
+//               //     newFolder
+//               //   )
+//               // );
+//             } else if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase()
+//                 )
+//             ) {
+//               dispatch(uploadDocument_fail(t("Failed-to-update-document")));
+//             } else if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase()
+//                 )
+//             ) {
+//               // dispatch(uploadDocument_fail(t("Something-went-wrong")));
+//             }
+//           } else {
+//             dispatch(uploadDocument_fail(t("Something-went-wrong")));
+//           }
+//         } else {
+//           dispatch(uploadDocument_fail(t("Something-went-wrong")));
+//         }
+//         // }
+//       })
+//       .catch((error) => {
+//         dispatch(uploadDocument_fail(t("Something-went-wrong")));
+//       });
+//   };
+// };
+
 const UploadDocumentsAgendaApi = (
   navigate,
   t,
@@ -884,95 +999,95 @@ const UploadDocumentsAgendaApi = (
   newFolder,
   newfile
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-  let creatorID = localStorage.getItem("userID");
-  let organizationID = localStorage.getItem("organizationID");
   return async (dispatch) => {
-    dispatch(uploadDocument_init());
-    let form = new FormData();
-    form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
-    form.append("RequestData", JSON.stringify(data));
-    form.append("File", data);
-    await axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            UploadDocumentsAgendaApi(
-              navigate,
-              t,
-              data,
-              folderID,
-              newFolder,
-              newfile
-            )
-          );
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
-                )
-            ) {
-              newfile.push({
-                DisplayFileName: response.data.responseResult.displayFileName,
-                DiskusFileNameString:
-                  response.data.responseResult.diskusFileName,
-                ShareAbleLink: response.data.responseResult.shareAbleLink,
-                FK_UserID: JSON.parse(creatorID),
-                FK_OrganizationID: JSON.parse(organizationID),
-                FileSize: Number(response.data.responseResult.fileSizeOnDisk),
-                fileSizeOnDisk: Number(response.data.responseResult.fileSize),
-              });
-              dispatch(
-                uploadDocument_success(response.data.responseResult, "")
-              );
-              // await dispatch(
-              //   SaveFilesAgendaApi(
-              //     navigate,
-              //     t,
-              //     response.data.responseResult,
-              //     folderID,
-              //     newFolder
-              //   )
-              // );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase()
-                )
-            ) {
-              dispatch(uploadDocument_fail(t("Failed-to-update-document")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase()
-                )
-            ) {
-              dispatch(uploadDocument_fail(t("Something-went-wrong")));
-            }
-          } else {
-            dispatch(uploadDocument_fail(t("Something-went-wrong")));
+    dispatch(uploadDocument_init()); // Dispatch action to indicate upload initialization
+
+    try {
+      let token = JSON.parse(localStorage.getItem("token"));
+      let creatorID = localStorage.getItem("userID");
+      let organizationID = localStorage.getItem("organizationID");
+
+      let form = new FormData();
+      form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
+      form.append("RequestData", JSON.stringify(data));
+      form.append("File", data);
+
+      const response = await axios({
+        method: "post",
+        url: dataRoomApi,
+        data: form,
+        headers: {
+          _token: token,
+        },
+      });
+
+      if (response.data.responseCode === 417) {
+        // Token expired, refresh token
+        await dispatch(RefreshToken(navigate, t));
+        // Retry the upload
+        return dispatch(
+          UploadDocumentsAgendaApi(
+            navigate,
+            t,
+            data,
+            folderID,
+            newFolder,
+            newfile
+          )
+        );
+      } else if (response.data.responseCode === 200) {
+        if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
+              )
+          ) {
+            // Successful upload
+            const dummyData = {
+              DisplayFileName: response.data.responseResult.displayFileName,
+              DiskusFileNameString: response.data.responseResult.diskusFileName,
+              ShareAbleLink: response.data.responseResult.shareAbleLink,
+              FK_UserID: JSON.parse(creatorID),
+              FK_OrganizationID: JSON.parse(organizationID),
+              FileSize: Number(response.data.responseResult.fileSizeOnDisk),
+              fileSizeOnDisk: Number(response.data.responseResult.fileSize),
+            };
+            // Dispatch success action
+            // dispatch(uploadDocumentSuccess(dummyData)); // You need to create this action creator
+            return { success: true, dummyData };
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase()
+              )
+          ) {
+            // Failed to update document
+            dispatch(uploadDocument_fail(t("Failed-to-update-document")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase()
+              )
+          ) {
+            // Handle other errors
+            // dispatch(uploadDocumentFail(t("Something-went-wrong")));
           }
         } else {
+          // Something went wrong
           dispatch(uploadDocument_fail(t("Something-went-wrong")));
         }
-        // }
-      })
-      .catch((error) => {
+      } else {
+        // Something went wrong
         dispatch(uploadDocument_fail(t("Something-went-wrong")));
-      });
+      }
+    } catch (error) {
+      // Error occurred
+      dispatch(uploadDocument_fail(t("Something-went-wrong")));
+    }
   };
 };
 
@@ -1046,13 +1161,22 @@ const SaveFilesAgendaApi = (navigate, t, data, folderID, newFolder) => {
                   "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase()
                 )
             ) {
-              newFolder.push({
-                pK_FileID: response.data.responseResult.fileID,
-                displayAttachmentName: data.displayFileName,
+              let fileIds = response.data.responseResult.fileID;
+              console.log(fileIds, "newFileID");
+              fileIds.forEach((newFileID, index) => {
+                console.log(newFileID, "newFileID");
+                return newFolder.push({
+                  pK_FileID: newFileID.pK_FileID,
+                  displayAttachmentName: newFileID.displayFileName,
+                });
               });
-              await dispatch(
-                saveFiles_success(response.data.responseResult, "")
-              );
+              // newFolder.push({
+              //   pK_FileID: response.data.responseResult.fileID,
+              //   displayAttachmentName: data.displayFileName,
+              // });
+              // await dispatch(
+              //   saveFiles_success(response.data.responseResult, "")
+              // );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
