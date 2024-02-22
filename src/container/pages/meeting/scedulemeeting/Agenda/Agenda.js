@@ -30,6 +30,7 @@ import {
 import {
   CreateUpdateMeetingDataRoomMap,
   UploadDocumentsAgendaApi,
+  SaveFilesAgendaApi,
   AddUpdateAdvanceMeetingAgenda,
   clearResponseMessage,
   GetAdvanceMeetingAgendabyMeetingID,
@@ -371,6 +372,107 @@ const Agenda = ({
     }
   }
 
+  // const [newFile, setNewFile] = useState([]);
+
+  const updateSave = async (flag) => {
+    // Upload documents
+
+    let newFolder = [];
+    let newfile = [];
+    await Promise.all(
+      fileForSend.map(async (newData) => {
+        console.log("newDatanewData", newData);
+        try {
+          const result = await dispatch(
+            UploadDocumentsAgendaApi(
+              navigate,
+              t,
+              newData,
+              folderDataRoomMeeting,
+              newFolder
+            )
+          );
+          if (result && result.success) {
+            newfile = [...newfile, result.dummyData];
+            // setNewFile((prevState) => [...prevState, result.dummyData]);
+            console.log("newfilenewfile", newfile);
+            console.log("newfoldernewfolder", newFolder);
+          }
+          console.log("resultresult", result);
+        } catch (error) {
+          console.error(error);
+        }
+      })
+    );
+
+    // Convert date fields to UTC
+    const convertedRows = convertDateFieldsToUTC(rows);
+    console.log("newfile", newfile);
+
+    // Save files
+    await dispatch(
+      SaveFilesAgendaApi(navigate, t, newfile, folderDataRoomMeeting, newFolder)
+    );
+
+    // Process data and update properties
+    let cleanedData = removeProperties(convertedRows);
+    let mappingObject = {};
+    newFolder.forEach((folder) => {
+      mappingObject[folder.displayAttachmentName] = folder.pK_FileID.toString();
+    });
+
+    let updatedData = cleanedData.map((item) => ({
+      ...item,
+      files: item.files.map((file) => ({
+        ...file,
+        originalAttachmentName:
+          mappingObject[file.displayAttachmentName] ||
+          file.originalAttachmentName,
+      })),
+      subAgenda: item.subAgenda.map((subAgenda) => ({
+        ...subAgenda,
+        subfiles: subAgenda.subfiles.map((subFile) => ({
+          ...subFile,
+          originalAttachmentName:
+            mappingObject[subFile.displayAttachmentName] ||
+            subFile.originalAttachmentName,
+        })),
+      })),
+    }));
+
+    // Clear fileForSend array
+    setFileForSend([]);
+
+    // Construct data object
+    let Data = {
+      MeetingID: currentMeetingIDLS,
+      AgendaList: updatedData,
+    };
+
+    // Capitalize keys in the data object
+    let capitalizedData = capitalizeKeys(Data);
+
+    // Dispatch API call to update meeting agenda
+    let publishMeetingData = { MeetingID: currentMeeting, StatusID: 1 };
+    await dispatch(
+      AddUpdateAdvanceMeetingAgenda(
+        capitalizedData,
+        navigate,
+        t,
+        currentMeetingIDLS,
+        flag,
+        publishMeetingData,
+        setEdiorRole,
+        setAdvanceMeetingModalID,
+        setDataroomMapFolderId,
+        setSceduleMeeting,
+        setPublishState,
+        setCalendarViewModal,
+        setMeetingMaterial,
+        setAgenda
+      )
+    );
+  };
   const saveAgendaData = async (flag) => {
     let isValid = true;
     let shouldResetFileForSend = true;
@@ -583,110 +685,138 @@ const Agenda = ({
     if (shouldResetFileForSend) {
       setFileForSend([]);
     }
-
     if (isValid) {
-      // All conditions are met, apply your feature here
-
-      let newFolder = [];
-
-      const uploadPromises = fileForSend.map(async (newData) => {
-        await dispatch(
-          UploadDocumentsAgendaApi(
-            navigate,
-            t,
-            newData,
-            folderDataRoomMeeting,
-            newFolder
-          )
-        );
-      });
-      const convertedRows = convertDateFieldsToUTC(rows);
-
-      // Wait for all promises to resolve
-      await Promise.all(uploadPromises);
-
-      let cleanedData = removeProperties(convertedRows);
-
-      let mappingObject = {};
-      newFolder.forEach((folder) => {
-        mappingObject[folder.displayAttachmentName] =
-          folder.pK_FileID.toString();
-      });
-
-      // Update files property in capitalizedData
-      let updatedData = cleanedData.map((item) => {
-        let updatedFiles = item.files.map((file) => {
-          let newAttachmentName = mappingObject[file.displayAttachmentName];
-          if (newAttachmentName) {
-            return {
-              ...file,
-              originalAttachmentName: newAttachmentName,
-            };
-          } else {
-            return file;
-          }
-        });
-
-        // Update subfiles property in SubAgenda objects
-        let updatedSubAgenda = item.subAgenda.map((subAgenda) => {
-          let updatedSubFiles = subAgenda.subfiles.map((subFile) => {
-            let newAttachmentName =
-              mappingObject[subFile.displayAttachmentName];
-            if (newAttachmentName) {
-              return {
-                ...subFile,
-                originalAttachmentName: newAttachmentName,
-              };
-            } else {
-              return subFile;
-            }
-          });
-
-          return {
-            ...subAgenda,
-            subfiles: updatedSubFiles,
-          };
-        });
-
-        return {
-          ...item,
-          files: updatedFiles,
-          subAgenda: updatedSubAgenda,
-        };
-      });
-
-      setFileForSend([]);
-
-      let Data = {
-        MeetingID: currentMeetingIDLS,
-        AgendaList: updatedData,
-      };
-
-      let capitalizedData = capitalizeKeys(Data);
-      let publishMeetingData = { MeetingID: currentMeeting, StatusID: 1 };
-      dispatch(
-        AddUpdateAdvanceMeetingAgenda(
-          capitalizedData,
-          navigate,
-          t,
-          currentMeetingIDLS,
-          flag,
-          publishMeetingData,
-          setEdiorRole,
-          setAdvanceMeetingModalID,
-          setDataroomMapFolderId,
-          setSceduleMeeting,
-          setPublishState,
-          setCalendarViewModal,
-          setMeetingMaterial,
-          setAgenda
-        )
-      );
-    } else {
+      updateSave(flag);
     }
+    // if (isValid) {
+    //   // All conditions are met, apply your feature here
+
+    //   let newFolder = [];
+    //   let newfile = [];
+    //   await Promise.all(fileForSend.map(async (newData) => {
+    //     try {
+    //       // Dispatch the upload API call
+    //       const result = await dispatch(UploadDocumentsAgendaApi(
+    //         navigate,
+    //         t,
+    //         newData,
+    //         folderDataRoomMeeting,
+    //         newFolder,
+    //         // newfile
+    //       ));
+
+    //       // If upload is successful, update newfile array
+    //       if (result && result.success) {
+    //         newfile = [...newfile, result.dummyData];
+    //         console.log("newfile", newfile);
+    //       }
+    //     } catch (error) {
+    //       console.error(error);
+    //     }
+    //   }));
+    //   const convertedRows = convertDateFieldsToUTC(rows);
+
+    //   // Wait for all promises to resolve
+    //   console.log("newfile", newfile);
+
+    //   await dispatch(
+    //     SaveFilesAgendaApi(
+    //       navigate,
+    //       t,
+    //       newfile,
+    //       folderDataRoomMeeting,
+    //       newFolder
+    //     )
+    //   );
+
+    //   console.log("newFoldernewFolder", newFolder);
+
+    //   let cleanedData = removeProperties(convertedRows);
+
+    //   let mappingObject = {};
+    //   newFolder.forEach((folder) => {
+    //     mappingObject[folder.displayAttachmentName] =
+    //       folder.pK_FileID.toString();
+    //   });
+
+    //   // Update files property in capitalizedData
+    //   let updatedData = cleanedData.map((item) => {
+    //     let updatedFiles = item.files.map((file) => {
+    //       let newAttachmentName = mappingObject[file.displayAttachmentName];
+    //       if (newAttachmentName) {
+    //         return {
+    //           ...file,
+    //           originalAttachmentName: newAttachmentName,
+    //         };
+    //       } else {
+    //         return file;
+    //       }
+    //     });
+
+    //     // Update subfiles property in SubAgenda objects
+    //     let updatedSubAgenda = item.subAgenda.map((subAgenda) => {
+    //       let updatedSubFiles = subAgenda.subfiles.map((subFile) => {
+    //         let newAttachmentName =
+    //           mappingObject[subFile.displayAttachmentName];
+    //         if (newAttachmentName) {
+    //           return {
+    //             ...subFile,
+    //             originalAttachmentName: newAttachmentName,
+    //           };
+    //         } else {
+    //           return subFile;
+    //         }
+    //       });
+
+    //       return {
+    //         ...subAgenda,
+    //         subfiles: updatedSubFiles,
+    //       };
+    //     });
+
+    //     return {
+    //       ...item,
+    //       files: updatedFiles,
+    //       subAgenda: updatedSubAgenda,
+    //     };
+    //   });
+
+    //   setFileForSend([]);
+
+    //   let Data = {
+    //     MeetingID: currentMeetingIDLS,
+    //     AgendaList: updatedData,
+    //   };
+
+    //   let capitalizedData = capitalizeKeys(Data);
+    //   let publishMeetingData = { MeetingID: currentMeeting, StatusID: 1 };
+    //   await dispatch(
+    //     AddUpdateAdvanceMeetingAgenda(
+    //       capitalizedData,
+    //       navigate,
+    //       t,
+    //       currentMeetingIDLS,
+    //       flag,
+    //       publishMeetingData,
+    //       setEdiorRole,
+    //       setAdvanceMeetingModalID,
+    //       setDataroomMapFolderId,
+    //       setSceduleMeeting,
+    //       setPublishState,
+    //       setCalendarViewModal,
+    //       setMeetingMaterial,
+    //       setAgenda
+    //     )
+    //   );
+    // } else {
+    // }
   };
 
-  console.log("fileForSendAgendafileForSendAgenda", fileForSend)
+  // useEffect(() => {
+  //   console.log("newFile updated:", newFile);
+  // }, [newFile]);
+
+  console.log("fileForSendAgendafileForSendAgenda", fileForSend);
 
   useEffect(() => {
     let updatedRows = [...rows];
@@ -713,7 +843,8 @@ const Agenda = ({
       setIsPublishedState(isPublishedAgenda);
       setRows((prevRows) => {
         const updatedRows = newData.map((agendaItem) => {
-          const { id, presenterID, userID, subAgenda, ...rest } = agendaItem;
+          const { id, presenterID, userID, subAgenda, files, ...rest } =
+            agendaItem;
           const matchingPresenter = allSavedPresenters.find(
             (presenter) => presenter.value === presenterID
           );
@@ -747,7 +878,9 @@ const Agenda = ({
                   endDate: subAgendaItem.endDate
                     ? convertUtcToGmt(subAgendaItem.endDate)
                     : null,
-                  subfiles: subAgendaItem.subfiles,
+                  subfiles: subAgendaItem.subfiles
+                    ? [...subAgendaItem.subfiles]
+                    : [],
                 };
               })
             : null;
@@ -768,6 +901,7 @@ const Agenda = ({
               ? convertUtcToGmt(agendaItem.endDate)
               : null,
             subAgenda: updatedSubAgenda,
+            files: agendaItem.files ? [...agendaItem.files] : [],
           };
         });
 
@@ -775,7 +909,8 @@ const Agenda = ({
       });
       setCurrentState((prevRows) => {
         const updatedRows = newData.map((agendaItem) => {
-          const { id, presenterID, userID, subAgenda, ...rest } = agendaItem;
+          const { id, presenterID, userID, subAgenda, files, ...rest } =
+            agendaItem;
           const matchingPresenter = allSavedPresenters.find(
             (presenter) => presenter.value === presenterID
           );
@@ -809,7 +944,9 @@ const Agenda = ({
                   endDate: subAgendaItem.endDate
                     ? convertUtcToGmt(subAgendaItem.endDate)
                     : null,
-                  subfiles: subAgendaItem.subfiles,
+                  subfiles: subAgendaItem.subfiles
+                    ? [...subAgendaItem.subfiles]
+                    : [],
                 };
               })
             : null;
@@ -829,6 +966,7 @@ const Agenda = ({
             endDate: agendaItem.endDate
               ? convertUtcToGmt(agendaItem.endDate)
               : null,
+            files: agendaItem.files ? [...agendaItem.files] : [],
             subAgenda: updatedSubAgenda,
           };
         });
@@ -1398,6 +1536,10 @@ const Agenda = ({
       setEmptyStateRows(false);
     }
   }, [rows.length]);
+
+  console.log("MeetingAgendaReducer", MeetingAgendaReducer);
+
+  console.log("Agenda Data", rows);
 
   return (
     <>

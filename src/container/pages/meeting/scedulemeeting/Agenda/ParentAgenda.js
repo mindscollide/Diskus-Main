@@ -455,10 +455,10 @@ const ParentAgenda = ({
     setRows(updatedAgendaItems);
   }, [presenters, allPresenters]);
 
-  console.log("editor role", editorRole);
+  // console.log("editor role", editorRole);
 
-  console.log("Agenda Data", rows);
-  console.log("allSavedPresentersallSavedPresenters", allSavedPresenters);
+  // console.log("Agenda Data", rows);
+  // console.log("allSavedPresentersallSavedPresenters", allSavedPresenters);
 
   const filterFunc = (options, searchText) => {
     // console.log(options, "filterFuncfilterFunc");
