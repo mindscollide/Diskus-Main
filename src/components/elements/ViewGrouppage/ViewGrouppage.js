@@ -1,28 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import styles from "./ViewGrouppage.module.css";
-import Newprofile from "../../../assets/images/newprofile.png";
-import pdfIcon from "../../../assets/images/pdf_icon.svg";
-import file_image from "../../../assets/images/file_image.svg";
-import featherupload from "../../../assets/images/featherupload.svg";
 import { useTranslation } from "react-i18next";
 import { Paper } from "@material-ui/core";
 import Polls from "../../../container/Groups/GroupPolls/GroupViewPolls";
 import ViewGroupTodo from "../../../container/Groups/ViewGroupTodo/ViewGroupTodo";
-
-import CreateGroupPolls from "../../../container/Groups/GroupPolls/CreatePolls/CreateGrouppolls";
 import ViewUpdateGroup from "../viewUpdateGroup/ViewUpdateGroup";
 import { getbyGroupID } from "../../../store/actions/Groups_actions";
-import { Upload } from "antd";
-
-import {
-  TextField,
-  Button,
-  Checkbox,
-  SelectBox,
-  InputSearchFilter,
-} from "./../../../components/elements";
-import CrossIcon from "../../../assets/images/cancel_meeting_icon.svg";
+import { Button } from "./../../../components/elements";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { XLg } from "react-bootstrap-icons";

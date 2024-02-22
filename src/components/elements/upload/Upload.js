@@ -7,6 +7,7 @@ import AttachmentIcon from "../../../assets/images/Attachment_Icon.svg";
 const CustomUpload = ({
   change,
   onClick,
+  multiple,
   className,
   disable,
   attachmentIconClass,
@@ -22,6 +23,7 @@ const CustomUpload = ({
         disable={disable}
         onClick={onClick}
         size={1000}
+        multiple={multiple}
         accept=".doc, .docx, .xls, .xlsx,.pdf,.png,.txt,.jpg, .jpeg, .gif, .csv"
         // inputProps={{ acceptOnly: '.doc, .docx, .xls, .xlsx,.pdf,.png' }}
         // restrictions={{

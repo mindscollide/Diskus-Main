@@ -46,6 +46,7 @@ import {
   updateResolutionModal,
   updateResolution,
   uploadDocumentsResolutionApi,
+  saveFilesResolutionApi,
 } from "../../../store/actions/Resolution_actions";
 import moment from "moment";
 import {
@@ -68,8 +69,6 @@ import TextFieldDateTime from "../input_field_date/Input_field";
 import { ArrowLeft, ArrowRight } from "react-bootstrap-icons";
 import { validateInput } from "../../../commen/functions/regex";
 import InputIcon from "react-multi-date-picker/components/input_icon";
-import TextFieldTime from "../input_field_time/Input_field";
-import { left } from "@popperjs/core";
 const EditResolution = ({ setCancelresolution }) => {
   const { Dragger } = Upload;
   const { t } = useTranslation();
@@ -77,11 +76,8 @@ const EditResolution = ({ setCancelresolution }) => {
   const navigate = useNavigate();
 
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const { ResolutionReducer, assignees, uploadReducer } = useSelector(
-    (state) => state
-  );
+  const { ResolutionReducer, assignees } = useSelector((state) => state);
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
-  const [resolutionID, setResolutionID] = useState(0);
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const currentDate = new Date();
@@ -512,123 +508,87 @@ const EditResolution = ({ setCancelresolution }) => {
     setEmailValue("");
   };
 
+  let previousFileList = [];
+  console.log(attachments, "attachmentsattachmentsattachments");
   const props = {
     name: "file",
     // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
     multiple: true,
     showUploadList: false,
     onChange(data) {
-      let fileSizeArr;
-      if (attachments.length > 10) {
+      const { fileList } = data;
+
+      // Check if the fileList is the same as the previous one
+      if (JSON.stringify(fileList) === JSON.stringify(previousFileList)) {
+        return; // Skip processing if it's the same fileList
+      }
+
+      let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
+      let flag = false;
+      let sizezero = true;
+      let size = true;
+
+      if (attachments.length > 9) {
         setOpen({
           flag: true,
           message: t("Not-allowed-more-than-10-files"),
         });
-      } else if (fileSize >= 104857600) {
-        setTimeout(
-          setOpen({
-            open: true,
-            message: t("You-can-not-upload-more-then-100MB-files"),
-          }),
-          3000
-        );
-      } else if (attachments.length > 0) {
-        let flag = false;
-        let sizezero;
-        let size;
-        attachments.forEach((arData, index) => {
-          if (arData.displayAttachmentName === data.file.originFileObj.name) {
-            flag = true;
-          }
-        });
-        if (data.file.size > 10485760) {
+        return;
+      }
+
+      fileList.forEach((fileData, index) => {
+        if (fileData.size > 10485760) {
           size = false;
-        } else if (data.file.size === 0) {
+        } else if (fileData.size === 0) {
           sizezero = false;
         }
-        if (size === false) {
-          setTimeout(
+
+        let fileExists = attachments.some(
+          (oldFileData) => oldFileData.displayAttachmentName === fileData.name
+        );
+
+        if (!size) {
+          setTimeout(() => {
             setOpen({
               flag: true,
               message: t("File-size-should-not-be-greater-then-zero"),
-            }),
-            3000
-          );
-        } else if (sizezero === false) {
-          setTimeout(
+            });
+          }, 3000);
+        } else if (!sizezero) {
+          setTimeout(() => {
             setOpen({
               flag: true,
               message: t("File-size-should-not-be-zero"),
-            }),
-            3000
-          );
-        } else if (flag === true) {
-          setTimeout(
+            });
+          }, 3000);
+        } else if (fileExists) {
+          setTimeout(() => {
             setOpen({
               flag: true,
               message: t("File-already-exists"),
-            }),
-            3000
-          );
+            });
+          }, 3000);
         } else {
-          let newdata = {
-            displayAttachmentName: data.file.originFileObj.name,
-            originalAttachmentName: data.file.originFileObj.name,
-            fileSize: data.file.originFileObj.size,
+          let file = {
+            displayAttachmentName: fileData.name,
+            originalAttachmentName: fileData.name,
+            fileSize: fileData.originFileObj.size,
           };
-          setAttachments([...attachments, newdata]);
-          fileSizeArr = data.file.originFileObj.size + fileSize;
-          setFileForSend([...fileForSend, data.file.originFileObj]);
+          console.log(file, "filefilefilefile");
+          setAttachments((prevAttachments) => [...prevAttachments, file]);
+          fileSizeArr += fileData.originFileObj.size;
+          setFileForSend((prevFiles) => [...prevFiles, fileData.originFileObj]);
           setFileSize(fileSizeArr);
-          // dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
         }
-      } else {
-        let sizezero;
-        let size;
-        if (data.file.size > 10485760) {
-          size = false;
-        } else if (data.file.size === 0) {
-          sizezero = false;
-        }
-        if (size === false) {
-          setTimeout(
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-greater-then-zero"),
-            }),
-            3000
-          );
-        } else if (sizezero === false) {
-          setTimeout(
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-zero"),
-            }),
-            3000
-          );
-        } else {
-          // let file = {
-          //   DisplayAttachmentName: data.file.name,
-          //   OriginalAttachmentName: data.file.name,
-          //   fileSize: data.file.originFileObj.size,
-          // };
-          let newdata = {
-            displayAttachmentName: data.file.originFileObj.name,
-            originalAttachmentName: data.file.originFileObj.name,
-            fileSize: data.file.originFileObj.size,
-          };
-          setAttachments([...attachments, newdata]);
-          // setTasksAttachments([...tasksAttachments, file]);
-          fileSizeArr = data.file.originFileObj.size + fileSize;
-          setFileForSend([...fileForSend, data.file.originFileObj]);
-          setFileSize(fileSizeArr);
-          // dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
-        }
-      }
+      });
+
+      // Update previousFileList to current fileList
+      previousFileList = fileList;
     },
     onDrop(e) {},
     customRequest() {},
   };
+  console.log(attachments, fileForSend, "attachmentsattachments");
 
   const handleCirculateResolution = async () => {
     if (fileForSend.length > 0) {
@@ -829,18 +789,22 @@ const EditResolution = ({ setCancelresolution }) => {
 
   const documentsUploadCall = async (folderID) => {
     let newfile = [...tasksAttachments];
-
+    let fileObj = [];
     if (fileForSend.length > 0) {
       const uploadPromises = fileForSend.map(async (newData) => {
         await dispatch(
-          uploadDocumentsResolutionApi(navigate, t, newData, folderID, newfile)
+          uploadDocumentsResolutionApi(navigate, t, newData, folderID, fileObj)
         );
       });
 
       // Wait for all promises to resolve
       await Promise.all(uploadPromises);
     }
-
+    console.log(newfile, "fileObjfileObjfileObjfileObj");
+    console.log(fileObj, "fileObjfileObjfileObjfileObj");
+    await dispatch(
+      saveFilesResolutionApi(navigate, t, fileObj, folderID, newfile)
+    );
     await dispatch(
       updateResolution(
         navigate,
@@ -1000,7 +964,7 @@ const EditResolution = ({ setCancelresolution }) => {
         atCH.push({
           DisplayAttachmentName: data.displayAttachmentName,
           OriginalAttachmentName: data.originalAttachmentName,
-          pK_RAID: data.pK_RAID,
+          pK_FileID: data.pK_RAID,
         });
         newData.push({
           displayAttachmentName: data.displayAttachmentName,
@@ -1186,10 +1150,11 @@ const EditResolution = ({ setCancelresolution }) => {
 
           let newData = [];
           attachmentsResolution.forEach((data, index) => {
+            console.log(data, "attachmentsResolution");
             atCH.push({
               DisplayAttachmentName: data.displayAttachmentName,
               OriginalAttachmentName: data.originalAttachmentName,
-              pK_RAID: data.pK_RAID,
+              pK_FileID: data.pK_RAID,
             });
             newData.push({
               displayAttachmentName: data.displayAttachmentName,
@@ -2328,6 +2293,10 @@ const EditResolution = ({ setCancelresolution }) => {
                                               {attachments.length > 0
                                                 ? attachments.map(
                                                     (data, index) => {
+                                                      console.log(
+                                                        data,
+                                                        "attachmentsResolution"
+                                                      );
                                                       var ext =
                                                         data?.displayAttachmentName
                                                           ?.split(".")
@@ -2504,6 +2473,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                   <Col lg={12} md={12} sm={12}>
                                     <Dragger
                                       {...props}
+                                      fileList={[]}
                                       className={
                                         styles[
                                           "dragdrop_attachment_create_resolution"

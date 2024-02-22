@@ -14,7 +14,6 @@ import {
   SelectBox,
   InputSearchFilter,
   Notification,
-  Loader,
 } from "./../../../components/elements";
 import userImage from "../../../assets/images/user.png";
 import styles from "./UpadateGroup.module.css";
@@ -22,22 +21,20 @@ import CrossIcon from "../../../assets/images/cancel_meeting_icon.svg";
 import Groups from "../../../container/Groups/Groups";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  RetriveDocumentsGroupsApiFunc,
   SaveGroupsDocumentsApiFunc,
   getGroupMembersRoles,
   getOrganizationGroupTypes,
+  saveFilesGroupsApi,
   updateGroup,
   uploadDocumentsGroupsApi,
 } from "../../../store/actions/Groups_actions";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useNavigate } from "react-router-dom";
-import CustomModal from "../modal/Modal";
 import ConfirmationModal from "../confirmationModal/ConfirmationModal";
 import { Upload } from "antd";
 
 const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   const { Dragger } = Upload;
-  const creatorID = JSON.parse(localStorage.getItem("userID"));
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
   const [fileAttachments, setFileAttachments] = useState([]);
   const [fileForSend, setFileForSend] = useState([]);
@@ -545,105 +542,83 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     multiple: true,
     showUploadList: false,
     onChange(data) {
-      const { status } = data.file;
-      let fileSizeArr;
+      const { fileList } = data;
+
+      // Check if the fileList is the same as the previous one
+      if (JSON.stringify(fileList) === JSON.stringify(previousFileList)) {
+        return; // Skip processing if it's the same fileList
+      }
+
+      let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
+      let flag = false;
+      let sizezero = true;
+      let size = true;
+
       if (fileAttachments.length > 9) {
         setOpen({
           flag: true,
           message: t("Not-allowed-more-than-10-files"),
         });
-      } else if (fileAttachments.length > 0) {
-        let flag = false;
-        let sizezero;
-        let size;
-        fileAttachments.map((arData, index) => {
-          if (arData.DisplayAttachmentName === data.file.originFileObj.name) {
-            flag = true;
-          }
-        });
-        if (data.file.size > 10485760) {
+        return;
+      }
+
+      fileList.forEach((fileData, index) => {
+        if (fileData.size > 10485760) {
           size = false;
-        } else if (data.file.size === 0) {
+        } else if (fileData.size === 0) {
           sizezero = false;
         }
-        if (size === false) {
-          setTimeout(
+
+        let fileExists = fileAttachments.some(
+          (oldFileData) => oldFileData.DisplayAttachmentName === fileData.name
+        );
+
+        if (!size) {
+          setTimeout(() => {
             setOpen({
               flag: true,
               message: t("File-size-should-not-be-greater-then-zero"),
-            }),
-            3000
-          );
-        } else if (sizezero === false) {
-          setTimeout(
+            });
+          }, 3000);
+        } else if (!sizezero) {
+          setTimeout(() => {
             setOpen({
               flag: true,
               message: t("File-size-should-not-be-zero"),
-            }),
-            3000
-          );
-        } else if (flag === true) {
-          setTimeout(
+            });
+          }, 3000);
+        } else if (fileExists) {
+          setTimeout(() => {
             setOpen({
               flag: true,
               message: t("File-already-exists"),
-            }),
-            3000
-          );
+            });
+          }, 3000);
         } else {
           let file = {
-            DisplayAttachmentName: data.file.name,
-            OriginalAttachmentName: data.file.name,
-            fileSize: data.file.originFileObj.size,
+            DisplayAttachmentName: fileData.name,
+            OriginalAttachmentName: fileData.name,
+            fileSize: fileData.originFileObj.size,
           };
-          setFileAttachments([...fileAttachments, file]);
-          fileSizeArr = data.file.originFileObj.size + fileSize;
-          setFileForSend([...fileForSend, data.file.originFileObj]);
-          setFileSize(fileSizeArr);
-          // dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
-        }
-      } else {
-        let sizezero;
-        let size;
-        if (data.file.size > 10485760) {
-          size = false;
-        } else if (data.file.size === 0) {
-          sizezero = false;
-        }
-        if (size === false) {
-          setTimeout(
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-greater-then-zero"),
-            }),
-            3000
-          );
-        } else if (sizezero === false) {
-          setTimeout(
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-zero"),
-            }),
-            3000
-          );
-        } else {
-          let file = {
-            DisplayAttachmentName: data.file.name,
-            OriginalAttachmentName: data.file.name,
-            fileSize: data.file.originFileObj.size,
-          };
-          setFileAttachments([...fileAttachments, file]);
-          fileSizeArr = data.file.originFileObj.size + fileSize;
-          setFileForSend([...fileForSend, data.file.originFileObj]);
+          setFileAttachments((prevAttachments) => [...prevAttachments, file]);
+          fileSizeArr += fileData.originFileObj.size;
+          setFileForSend((prevFiles) => [...prevFiles, fileData.originFileObj]);
           setFileSize(fileSizeArr);
         }
-      }
+      });
+
+      // Update previousFileList to current fileList
+      previousFileList = fileList;
     },
     onDrop(e) {},
     customRequest() {},
   };
-
+  // Initialize previousFileList to an empty array
+  let previousFileList = [];
   //Sliders For Attachments
+
+  console.log(fileForSend, "fileForSendfileForSend");
+  console.log(fileAttachments, "fileForSendfileForSend");
 
   const SlideLeft = () => {
     var Slider = document.getElementById("Slider");
@@ -655,31 +630,37 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     Slider.scrollLeft = Slider.scrollLeft + 300;
   };
 
-  const handleRemoveFile = (data) => {
-    setFileForSend((prevFiles) =>
-      prevFiles.filter(
-        (fileSend) => fileSend.name !== data.DisplayAttachmentName
-      )
-    );
+  const handleRemoveFile = (index) => {
+    const updatedFies = [...fileAttachments];
+    updatedFies.splice(index, 1);
+    setFileAttachments(updatedFies);
 
-    setPreviousFileIDs((prevFiles) =>
-      prevFiles.filter(
-        (fileSend) =>
-          fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
-      )
-    );
-
-    setFileAttachments((prevFiles) =>
-      prevFiles.filter(
-        (fileSend) =>
-          fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
-      )
-    );
+    const updateFileForSend = [...fileForSend];
+    updateFileForSend.splice(index, 1);
+    setFileForSend(updateFileForSend);
   };
-  console.log(
-    { fileAttachments, previousFileIDs, fileForSend },
-    "fileForSendfileForSendfileForSend"
-  );
+
+  // const handleRemoveFile = (data) => {
+  //   setFileForSend((prevFiles) =>
+  //     prevFiles.filter(
+  //       (fileSend) => fileSend.name !== data.DisplayAttachmentName
+  //     )
+  //   );
+
+  //   setPreviousFileIDs((prevFiles) =>
+  //     prevFiles.filter(
+  //       (fileSend) =>
+  //         fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
+  //     )
+  //   );
+
+  //   setFileAttachments((prevFiles) =>
+  //     prevFiles.filter(
+  //       (fileSend) =>
+  //         fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
+  //     )
+  //   );
+  // };
 
   useEffect(() => {
     if (
@@ -709,20 +690,24 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
 
   const GroupsDocumentCallUpload = async (folderID) => {
     let newfile = [...previousFileIDs];
+    let fileObj = [];
     const uploadPromises = fileForSend.map(async (newData) => {
       await dispatch(
-        uploadDocumentsGroupsApi(navigate, t, newData, folderID, newfile)
+        uploadDocumentsGroupsApi(navigate, t, newData, folderID, fileObj)
       );
     });
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
-
+    console.log(newfile, "fileObjfileObjfileObjfileObj");
+    console.log(fileObj, "fileObjfileObjfileObjfileObj");
+    await dispatch(saveFilesGroupsApi(navigate, t, fileObj, folderID, newfile));
     let Data = {
       GroupID: Number(GroupDetails.GroupID),
       UpdateFileList: newfile.map((data, index) => {
         return { PK_FileID: Number(data.pK_FileID) };
       }),
     };
+    console.log(Data, "fileObjfileObjfileObjfileObj");
     dispatch(
       SaveGroupsDocumentsApiFunc(navigate, Data, t, setUpdateComponentpage)
     );
@@ -1395,6 +1380,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                             <img
                                               src={CrossIcon}
                                               height="12.68px"
+                                              alt=""
                                               width="12.68px"
                                               onClick={() =>
                                                 handleRemoveFile(data)
@@ -1478,6 +1464,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                       <Row className="mt-2">
                         <Col lg={12} md={12} sm={12}>
                           <Dragger
+                            fileList={[]}
                             {...props}
                             className={
                               styles["dragdrop_attachment_create_resolution"]

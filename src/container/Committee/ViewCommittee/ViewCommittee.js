@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import {
   saveCommitteeDocumentsApi,
+  saveFilesCommitteesApi,
   uploadDocumentsCommitteesApi,
 } from "../../../store/actions/Committee_actions";
 import { Col, Row } from "react-bootstrap";
@@ -56,20 +57,25 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
 
   const handleSave = async () => {
     let newFolder = [...filesSending];
+    let fileObj = [];
     const uploadPromises = fileForSend.map(async (newData) => {
       await dispatch(
-        uploadDocumentsCommitteesApi(navigate, t, newData, folderID, newFolder)
+        uploadDocumentsCommitteesApi(navigate, t, newData, folderID, fileObj)
       );
     });
 
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
-
+    console.log(fileObj, "newFoldernewFoldernewFolder");
+    // console.log(newfile, "newFoldernewFoldernewFolder");
+    await dispatch(
+      saveFilesCommitteesApi(navigate, t, fileObj, folderID, newFolder)
+    );
     let newData = {
       CommitteeID: Number(committeeData.committeeID),
-      UpdateFileList: newFolder.map((data, index) => {
-        return { PK_FileID: data.pK_FileID };
-      }),
+      UpdateFileList: newFolder.map((fileID) => ({
+        PK_FileID: fileID.pK_FileID,
+      })),
     };
     await dispatch(saveCommitteeDocumentsApi(navigate, t, newData));
   };
@@ -144,110 +150,83 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
 
   const props = {
     name: "file",
-    // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
     multiple: true,
     showUploadList: false,
     onChange(data) {
-      const { status } = data.file;
-      let fileSizeArr;
+      const { fileList } = data;
+
+      // Check if the fileList is the same as the previous one
+      if (JSON.stringify(fileList) === JSON.stringify(previousFileList)) {
+        return; // Skip processing if it's the same fileList
+      }
+
+      let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
+      let flag = false;
+      let sizezero = true;
+      let size = true;
+
       if (fileAttachments.length > 9) {
         setOpen({
           flag: true,
           message: t("Not-allowed-more-than-10-files"),
         });
-      } else if (fileAttachments.length > 0) {
-        let flag = false;
-        let sizezero;
-        let size;
-        fileAttachments.map((arData, index) => {
-          if (arData.DisplayAttachmentName === data.file.originFileObj.name) {
-            flag = true;
-          }
-        });
-        if (data.file.size > 10485760) {
+        return;
+      }
+
+      fileList.forEach((fileData, index) => {
+        if (fileData.size > 10485760) {
           size = false;
-        } else if (data.file.size === 0) {
+        } else if (fileData.size === 0) {
           sizezero = false;
         }
-        if (size === false) {
-          setTimeout(
+
+        let fileExists = fileAttachments.some(
+          (oldFileData) => oldFileData.DisplayAttachmentName === fileData.name
+        );
+
+        if (!size) {
+          setTimeout(() => {
             setOpen({
               flag: true,
               message: t("File-size-should-not-be-greater-then-zero"),
-            }),
-            3000
-          );
-        } else if (sizezero === false) {
-          setTimeout(
+            });
+          }, 3000);
+        } else if (!sizezero) {
+          setTimeout(() => {
             setOpen({
               flag: true,
               message: t("File-size-should-not-be-zero"),
-            }),
-            3000
-          );
-        } else if (flag === true) {
-          setTimeout(
+            });
+          }, 3000);
+        } else if (fileExists) {
+          setTimeout(() => {
             setOpen({
               flag: true,
               message: t("File-already-exists"),
-            }),
-            3000
-          );
+            });
+          }, 3000);
         } else {
           let file = {
-            DisplayAttachmentName: data.file.name,
-            OriginalAttachmentName: data.file.name,
-            fileSize: data.file.originFileObj.size,
-            fk_UserID: Number(currentUserID),
+            DisplayAttachmentName: fileData.name,
+            OriginalAttachmentName: fileData.name,
+            fileSize: fileData.originFileObj.size,
           };
-          setFileAttachments([...fileAttachments, file]);
-          fileSizeArr = data.file.originFileObj.size + fileSize;
-          setFileForSend([...fileForSend, data.file.originFileObj]);
+          setFileAttachments((prevAttachments) => [...prevAttachments, file]);
+          fileSizeArr += fileData.originFileObj.size;
+          setFileForSend((prevFiles) => [...prevFiles, fileData.originFileObj]);
           setFileSize(fileSizeArr);
-          // dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
         }
-      } else {
-        let sizezero;
-        let size;
-        if (data.file.size > 10485760) {
-          size = false;
-        } else if (data.file.size === 0) {
-          sizezero = false;
-        }
-        if (size === false) {
-          setTimeout(
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-greater-then-zero"),
-            }),
-            3000
-          );
-        } else if (sizezero === false) {
-          setTimeout(
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-zero"),
-            }),
-            3000
-          );
-        } else {
-          let file = {
-            DisplayAttachmentName: data.file.name,
-            OriginalAttachmentName: data.file.name,
-            fileSize: data.file.originFileObj.size,
-            fk_UserID: Number(currentUserID),
-          };
-          setFileAttachments([...fileAttachments, file]);
-          fileSizeArr = data.file.originFileObj.size + fileSize;
-          setFileForSend([...fileForSend, data.file.originFileObj]);
-          setFileSize(fileSizeArr);
-          // dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
-        }
-      }
+      });
+
+      // Update previousFileList to current fileList
+      previousFileList = fileList;
     },
     onDrop(e) {},
     customRequest() {},
   };
+  // Initialize previousFileList to an empty array
+  let previousFileList = [];
+  //Sliders For Attachments
 
   useEffect(() => {
     try {
