@@ -20,7 +20,7 @@ export const StatusValue = (t, statusValue) => {
         <span className={"meeting-status-value"}>{t("Not Conducted")}</span>
       );
     case "9":
-      return <span className={"meeting-status-value"}>{t("End")}</span>;
+      return <span className={"meeting-status-value"}>{t("Ended")}</span>;
     case "10":
       return <span className={"meeting-status-value"}>{t("Active")}</span>;
     case "11":
