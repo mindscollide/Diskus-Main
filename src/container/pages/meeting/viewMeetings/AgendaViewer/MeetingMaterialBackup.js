@@ -22,7 +22,7 @@ import {
 import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
 import { Eye } from "react-bootstrap-icons";
 
-const MeetingMaterial = ({
+const MeetingMaterialPrev = ({
   setViewAdvanceMeetingModal,
   advanceMeetingModalID,
   setAdvanceMeetingModalID,
@@ -332,36 +332,8 @@ const MeetingMaterial = ({
     dispatch(showCancelMeetingMaterial(true));
   };
   const handleClickSave = () => {
-    console.log(
-      { editorRole },
-      "handleClickSavehandleClickSavehandleClickSave"
-    );
-    // if (
-    //   editorRole.role === "Organizer" &&
-    //   (Number(editorRole.status) === 9 || Number(editorRole.status) === 10)
-    // ) {
-    //   setMinutes(true);
-    //   setMeetingMaterial(false);
-    // }
-    // if (
-    //   (editorRole.role === "Participant" ||
-    //     editorRole.role === "Agenda Contributor") &&
-    //   Number(editorRole.status) === 10
-    // ) {
-    //   setactionsPage(true);
-    //   setMeetingMaterial(false);
-    // }
-    // if (
-    //   (editorRole.role === "Agenda Contributor" ||
-    //     editorRole.role === "Participant") &&
-    //   Number(editorRole.status) === 9
-    // ) {
-    //   setactionsPage(true);
-    //   setMeetingMaterial(false);
-    // }
     setMinutes(true);
     setMeetingMaterial(false);
-    // setMinutes(true);
   };
 
   const prevHandlerClick = () => {
@@ -433,4 +405,4 @@ const MeetingMaterial = ({
   );
 };
 
-export default MeetingMaterial;
+export default MeetingMaterialPrev;
