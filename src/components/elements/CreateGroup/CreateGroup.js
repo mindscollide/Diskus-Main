@@ -343,6 +343,11 @@ const CreateGroup = ({ setCreategrouppage }) => {
         setParticipantRoleName("");
         setTaskAssignedToInput("");
         setAttendees([]);
+        setPresenterValue({
+          value: 0,
+          label: "",
+          name: "",
+        });
       } else {
         setOpen({
           flag: true,
@@ -376,6 +381,11 @@ const CreateGroup = ({ setCreategrouppage }) => {
         setTaskAssignedTo(0);
         setParticipantRoleName("");
         setTaskAssignedToInput("");
+        setPresenterValue({
+          value: 0,
+          label: "",
+          name: "",
+        });
       } else if (participantOptionsWithID !== undefined) {
         attendees.forEach((dataID) => {
           newMeetingAttendees.push({
@@ -401,6 +411,11 @@ const CreateGroup = ({ setCreategrouppage }) => {
 
         // Clear input fields and reset state
         setAttendees([]);
+        setPresenterValue({
+          value: 0,
+          label: "",
+          name: "",
+        });
         setParticipantRoleName("");
       } else {
         setOpen({
@@ -421,6 +436,11 @@ const CreateGroup = ({ setCreategrouppage }) => {
       setParticipantRoleName("");
       setTaskAssignedToInput("");
       setAttendees([]);
+      setPresenterValue({
+        value: 0,
+        label: "",
+        name: "",
+      });
     }
   };
 

@@ -13,6 +13,7 @@ const initialState = {
   MeetingAgendaFolderID: 0,
   UploadDocumentsResponse: null,
   SaveFilesResponse: null,
+  SaveMeetingFilesResponse: null,
   SaveDocumentsResponse: null,
   SaveUpdateAgendaData: [],
   GetCurrentAgendaDetails: [],
@@ -310,7 +311,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
       return {
         ...state,
         // Loading: false,
-        SaveFilesResponse: action.response,
+        SaveMeetingFilesResponse: action.response,
         ResponseMessage: action.message,
       };
     }
@@ -318,7 +319,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        SaveFilesResponse: null,
+        SaveMeetingFilesResponse: null,
         ResponseMessage: action.message,
       };
     }
