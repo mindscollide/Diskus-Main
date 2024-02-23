@@ -466,8 +466,6 @@ const TodoList = () => {
           .includes(value.toLowerCase());
       },
       render: (text, record) => {
-        console.log(record, "recordrecordrecord");
-        console.log(text, "recordrecordrecord");
         if (Number(record?.taskCreator?.pK_UID) === Number(createrID)) {
           return (
             <>

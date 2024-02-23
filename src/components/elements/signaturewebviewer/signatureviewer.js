@@ -35,20 +35,28 @@ const SignatureViewer = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-  });
-  const [openAddParticipentModal, setOpenAddParticipentModal] = useState(false);
   const { webViewer } = useSelector((state) => state);
   const { createSignatureResponse, saveWorkFlowResponse } = useSelector(
     (state) => state.SignatureWorkFlowReducer
   );
+  let name = localStorage.getItem("name");
+  // Parse the URL parameters to get the data
+  const pdfDataJson = new URLSearchParams(location.search).get("pdfData");
+  // Deserialize the JSON string into an object
+  const pdfData = JSON.parse(pdfDataJson);
+  const { taskId, attachmentID, fileName, commingFrom, isPermission, isNew } =
+    pdfData;
   const { assignees } = useSelector((state) => state);
-
+  const [Instance, setInstance] = useState();
+  const [removeFlag, setRemoveFlag] = useState(false);
   const viewer = useRef(null);
   const [isNewFile, setIsFileNew] = useState(false);
   const [userList, setUserList] = useState([]);
+  const [signerData, setSignerData] = useState([]);
+  const [participants, setParticipants] = useState([]);
+  const [openAddParticipentModal, setOpenAddParticipentModal] = useState(false);
+  const [isButtonDisbale, setButtonDisabled] = useState(false);
+  const [selectedUser, setSelectedUser] = useState("");
   const [signers, setSigners] = useState({
     Name: "",
     EmailAddress: "",
@@ -59,42 +67,35 @@ const SignatureViewer = () => {
     label: "",
     name: "",
   });
-  const [signerData, setSignerData] = useState([]);
-  const [participants, setParticipants] = useState([]);
-  const [isButtonDisbale, setButtonDisabled] = useState(false);
-  const [workflowResponse, setWorkFlowResponse] = useState({
-    workflow: "",
-    signatureDocument: "",
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
   });
-  console.log(
-    workflowResponse,
-    "workflowResponseworkflowResponseworkflowResponse"
-  );
-  let name = localStorage.getItem("name");
-  // Parse the URL parameters to get the data
-  const pdfDataJson = new URLSearchParams(location.search).get("pdfData");
-  // Deserialize the JSON string into an object
-  const pdfData = JSON.parse(pdfDataJson);
-  const { taskId, attachmentID, fileName, commingFrom, isPermission, isNew } =
-    pdfData;
   const [pdfResponceData, setPdfResponceData] = useState({
     xfdfData: "",
     attachmentBlob: "",
     removedAnnotations: "",
+    workFlowID: 0,
+    documentID: 0,
+    title: "",
+    description: "",
+    creationDateTime: "",
+    isDeadline: "",
+    deadlineDatetime: "",
+    creatorID: "",
+    isCreator: 0,
   });
   const [userAnnotations, setUserAnnotations] = useState([
     { userID: "user1", xml: [] },
     { userID: "user2", xml: [] },
   ]);
 
-  const [selectedUser, setSelectedUser] = useState("user1");
-
   const selectedUserRef = useRef(selectedUser);
   const userAnnotationsRef = useRef(userAnnotations);
   const pdfResponceDataRef = useRef(pdfResponceData.xfdfData);
+  const pdfResponceDataBLobRef = useRef(pdfResponceData.attachmentBlob);
   const removedAnnotationsRef = useRef(pdfResponceData.removedAnnotations);
   const participantsRef = useRef(participants);
-  console.log("participantsRef participants", participantsRef);
 
   useEffect(() => {
     if (taskId && attachmentID) {
@@ -138,6 +139,7 @@ const SignatureViewer = () => {
       }
     }
   }, []);
+
   useEffect(() => {
     try {
       if (Object.keys(assignees.user).length > 0) {
@@ -176,6 +178,7 @@ const SignatureViewer = () => {
       }
     } catch (error) {}
   }, [assignees.user]);
+
   useEffect(() => {
     try {
       if (saveWorkFlowResponse !== null) {
@@ -190,14 +193,12 @@ const SignatureViewer = () => {
           });
         });
         setParticipants(listOfUsers);
-        console.log(
-          listOfUsers,
-          "saveWorkFlowResponsesaveWorkFlowResponsesaveWorkFlowResponse"
-        );
+        setSelectedUser(listOfUsers[0].pk_UID);
       } else {
       }
     } catch {}
   }, [saveWorkFlowResponse]);
+
   function base64ToBlob(base64) {
     const binaryString = window.atob(base64);
     const len = binaryString.length;
@@ -246,6 +247,7 @@ const SignatureViewer = () => {
     }
   }
 
+  // this function perom after rotating signature flow
   function filterFreetextElements(xmlString, currentUserID) {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xmlString, "text/xml");
@@ -269,33 +271,37 @@ const SignatureViewer = () => {
     const filteredXmlString = serializer.serializeToString(xmlDoc);
     return { filteredXmlString, removedAnnotations };
   }
+
   useEffect(() => {
     try {
       if (createSignatureResponse !== null) {
-        console.log(
-          createSignatureResponse,
-          "createSignatureResponsecreateSignatureResponse"
-        );
         let Data = {
           FileID: Number(createSignatureResponse.signatureDocument.documentID),
         };
-        dispatch(getWorkFlowByWorkFlowIdwApi(Data, navigate, t));
+        // dispatch(getWorkFlowByWorkFlowIdwApi(Data, navigate, t));
         // let apiResponse = {
         //   createSignatureResponse.signatureDocument, createSignatureResponse.workflow
         // }
-        setWorkFlowResponse({
-          ...workflowResponse,
-          workflow: createSignatureResponse.workFlow,
-          signatureDocument: createSignatureResponse.signatureDocument,
-        });
 
         if (createSignatureResponse?.signatureDocument) {
           if (isNewFile) {
             setPdfResponceData((prevData) => ({
               ...prevData,
               xfdfData: "",
-              pdfUrls: createSignatureResponse?.signatureDocument?.base64File,
+              attachmentBlob:
+                createSignatureResponse?.signatureDocument?.base64File,
               removedAnnotations: "",
+              workFlowID: createSignatureResponse?.workFlow?.pK_WorkFlow_ID,
+              documentID: createSignatureResponse?.signatureDocument.documentID,
+              title: createSignatureResponse?.workFlow?.title,
+              description: createSignatureResponse?.workFlow?.description,
+              creationDateTime:
+                createSignatureResponse?.workFlow?.creationDateTime,
+              isDeadline: createSignatureResponse?.workFlow?.isDeadline,
+              deadlineDatetime:
+                createSignatureResponse?.workFlow?.deadlineDatetime,
+              creatorID: createSignatureResponse?.workFlow?.creatorID,
+              isCreator: createSignatureResponse?.workFlow?.isCreator,
             }));
           } else {
             // let value = "250486b9-711b-3bfa-3457-8d6ff0f35044";
@@ -326,26 +332,27 @@ const SignatureViewer = () => {
       }
     } catch {}
   }, [createSignatureResponse]);
-  console.log("annotationChanged pdfResponceData", pdfResponceData);
 
   useEffect(() => {
     selectedUserRef.current = selectedUser;
   }, [selectedUser]);
+
   useEffect(() => {
     userAnnotationsRef.current = userAnnotations;
   }, [userAnnotations]);
+
   useEffect(() => {
     pdfResponceDataRef.current = pdfResponceData.xfdfData;
   }, [pdfResponceData]);
+
   useEffect(() => {
     removedAnnotationsRef.current = pdfResponceData.removedAnnotations;
   }, [removedAnnotationsRef]);
+
   useEffect(() => {
     participantsRef.current = participants;
-    console.log("participantsRef pdfResponceData", participantsRef.current);
   }, [participants]);
-  const [Instance, setInstance] = useState();
-  const [removeFlag, setRemoveFlag] = useState(false);
+
   const areAllAnnotationsEmpty = (userAnnotations) => {
     // Check if any user has non-empty xml array
     for (const user of userAnnotations) {
@@ -465,6 +472,7 @@ const SignatureViewer = () => {
     const updatedXmlString = serializer.serializeToString(xmlDoc);
     return updatedXmlString;
   }
+
   function removeSignatureAnnotationsFromXFDF(xfdfString) {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xfdfString, "text/xml");
@@ -623,6 +631,7 @@ const SignatureViewer = () => {
       [name]: value,
     });
   };
+
   // if using a class, equivalent of componentDidMount
   useEffect(() => {
     if (createSignatureResponse?.signatureDocument) {
@@ -779,8 +788,7 @@ const SignatureViewer = () => {
                   data-live-search="true"
                   onChange={handleChangeUser}
                 >
-                  {participantsRef.current?.map((userData, index) => {
-                    console.log(userData, "userDatauserDatauserData");
+                  {participantsRef.current.map((userData, index) => {
                     return (
                       <option value={userData.pk_UID}>{userData.name}</option>
                     );
@@ -1104,6 +1112,15 @@ const SignatureViewer = () => {
 
   useEffect(() => {
     if (Instance) {
+      // Rerender the custom panel to reflect the updated participants
+      Instance.UI.disableElement("customPanel");
+      Instance.UI.enableElement("customPanel");
+      Instance.UI.setActiveLeftPanel("customPanel");
+    }
+  }, [participants]);
+
+  useEffect(() => {
+    if (Instance) {
       const { annotationManager } = Instance.Core;
       annotationManager.addEventListener(
         "annotationChanged",
@@ -1139,6 +1156,7 @@ const SignatureViewer = () => {
       );
     }
   }, [Instance]);
+
   useEffect(() => {
     if (
       webViewer.ResponseMessage !== "" &&
@@ -1159,6 +1177,7 @@ const SignatureViewer = () => {
       }, 4000);
     }
   }, [webViewer.ResponseMessage]);
+
   const handleHideModal = () => {
     if (signerData.length > 0) {
       setOpenAddParticipentModal(false);
@@ -1182,11 +1201,11 @@ const SignatureViewer = () => {
 
   const clickSaveSigners = () => {
     let Data = {
-      WorkFlowTitle: workflowResponse.workflow.title,
-      Description: workflowResponse.workflow.description,
-      isDeadline: workflowResponse.workflow.isDeadline,
-      DeadlineDateTime: workflowResponse.workflow.deadlineDatetime,
-      CreatorID: workflowResponse.workflow.creatorID,
+      WorkFlowTitle: pdfResponceData.title,
+      Description: pdfResponceData.description,
+      isDeadline: pdfResponceData.isDeadline,
+      DeadlineDateTime: pdfResponceData.deadlineDatetime,
+      CreatorID: pdfResponceData.creatorID,
       ListOfActionAbleBundle: signerData.map((sendData, index) => {
         return {
           ID: `BundleID_# ${index + 1}`,
@@ -1194,7 +1213,7 @@ const SignatureViewer = () => {
           BundleDeadline: "",
           ListOfUsers: [sendData.userID],
           Entity: {
-            EntityID: workflowResponse.signatureDocument.documentID,
+            EntityID: pdfResponceData.documentID,
             EntityTypeID: 1,
           },
         };

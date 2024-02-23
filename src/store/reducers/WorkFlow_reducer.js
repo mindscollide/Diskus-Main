@@ -7,6 +7,9 @@ const initialState = {
   saveWorkFlowResponse: null,
   getWorkfFlowByFileId: null,
   addUpdateFieldValue: null,
+  saveSignatureOocument: null,
+  getAllFieldsByWorkflowID: null,
+  sendDocumentResponse: null,
 };
 
 const SignatureWorkflowReducer = (state = initialState, action) => {
@@ -97,6 +100,72 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         addUpdateFieldValue: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SAVE_SIGNATURE_DOCUMENT_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.SAVE_SIGNATURE_DOCUMENT_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        saveSignatureOocument: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SAVE_SIGNATURE_DOCUMENT_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        saveSignatureOocument: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GET_ALL_FIELDS_BY_WORKDFLOW_ID_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GET_ALL_FIELDS_BY_WORKDFLOW_ID_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getAllFieldsByWorkflowID: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GET_ALL_FIELDS_BY_WORKDFLOW_ID_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getAllFieldsByWorkflowID: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SEND_DOCUMENT_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.SEND_DOCUMENT_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        sendDocumentResponse: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SEND_DOCUMENT_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        sendDocumentResponse: null,
         ResponseMessage: action.message,
       };
     }

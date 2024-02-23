@@ -420,7 +420,7 @@ const SubAgendaMappingDragging = ({
       </>
     ),
   }));
-  console.log(allSavedPresenters, "allSavedPresentersallSaved");
+  // console.log(allSavedPresenters, "allSavedPresentersallSaved");
 
   const filterSubAgendaFunc = (options, searchText) => {
     // console.log(options, "filterFuncfilterFunc");
