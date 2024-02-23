@@ -192,7 +192,7 @@ const saveWorkflowApi = (Data, navigate, t, setOpenAddParticipentModal) => {
               dispatch(
                 saveWorkflow_success(
                   response.data.responseResult,
-                  t("Created-successfully")
+                  t("Saved-successfully")
                 )
               );
             } else if (
@@ -202,7 +202,7 @@ const saveWorkflowApi = (Data, navigate, t, setOpenAddParticipentModal) => {
                   "WorkFlow_WorkFlowServiceManager_SaveWorkFlow_02".toLowerCase()
                 )
             ) {
-              dispatch(saveWorkflow_fail(t("Dataroom-api-call-error")));
+              dispatch(saveWorkflow_fail(t("Failed-to-save-workflow")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -210,7 +210,7 @@ const saveWorkflowApi = (Data, navigate, t, setOpenAddParticipentModal) => {
                   "WorkFlow_WorkFlowServiceManager_SaveWorkFlow_03".toLowerCase()
                 )
             ) {
-              dispatch(createWorkflow_fail(t("Failed-to-save-file")));
+              dispatch(saveWorkflow_fail(t("Something-went-wrong")));
             } else {
               dispatch(saveWorkflow_fail(t("Something-went-wrong")));
             }
@@ -281,7 +281,7 @@ const getWorkFlowByWorkFlowIdwApi = (Data, navigate, t) => {
               dispatch(
                 getWorkFlowByFlodID_success(
                   response.data.responseResult,
-                  t("Created-successfully")
+                  t("Data-available")
                 )
               );
             } else if (
@@ -291,7 +291,7 @@ const getWorkFlowByWorkFlowIdwApi = (Data, navigate, t) => {
                   "WorkFlow_WorkFlowServiceManager_GetWorkFlowByFileID_02".toLowerCase()
                 )
             ) {
-              dispatch(getWorkFlowByFlodID_fail(t("Dataroom-api-call-error")));
+              dispatch(getWorkFlowByFlodID_fail(t("No-data-available")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -299,7 +299,7 @@ const getWorkFlowByWorkFlowIdwApi = (Data, navigate, t) => {
                   "WorkFlow_WorkFlowServiceManager_GetWorkFlowByFileID_03".toLowerCase()
                 )
             ) {
-              dispatch(getWorkFlowByFlodID_fail(t("Failed-to-save-file")));
+              dispatch(getWorkFlowByFlodID_fail(t("Something-went-wrong")));
             } else {
               dispatch(getWorkFlowByFlodID_fail(t("Something-went-wrong")));
             }
@@ -371,7 +371,7 @@ const addUpdateFieldValueApi = (Data, navigate, t) => {
                 dispatch(
                   addUpdateFieldValue_success(
                     response.data.responseResult,
-                    t("Created-successfully")
+                    t("Saved-successfully")
                   )
                 );
               } else if (
@@ -382,9 +382,7 @@ const addUpdateFieldValueApi = (Data, navigate, t) => {
                   )
               ) {
                 reject(response.data.responseResult.responseMessage);
-                dispatch(
-                  addUpdateFieldValue_fail(t("Dataroom-api-call-error"))
-                );
+                dispatch(addUpdateFieldValue_fail(t("invalid-data-provided")));
               } else if (
                 response.data.responseResult.responseMessage
                   .toLowerCase()
@@ -394,7 +392,7 @@ const addUpdateFieldValueApi = (Data, navigate, t) => {
               ) {
                 reject(response.data.responseResult.responseMessage);
 
-                dispatch(addUpdateFieldValue_fail(t("Failed-to-save-file")));
+                dispatch(addUpdateFieldValue_fail(t("Failed-to-save")));
               } else if (
                 response.data.responseResult.responseMessage
                   .toLowerCase()
@@ -402,7 +400,7 @@ const addUpdateFieldValueApi = (Data, navigate, t) => {
                     "WorkFlow_WorkFlowServiceManager_AddUpdateFieldValue_04".toLowerCase()
                   )
               ) {
-                dispatch(addUpdateFieldValue_fail(t("Failed-to-save-file")));
+                dispatch(addUpdateFieldValue_fail(t("Something-went-wrong")));
                 reject(response.data.responseResult.responseMessage);
               } else {
                 dispatch(addUpdateFieldValue_fail(t("Something-went-wrong")));
@@ -480,7 +478,7 @@ const saveSignatureDocumentApi = (Data, navigate, t) => {
                 dispatch(
                   saveSignatureDocument_success(
                     response.data.responseResult,
-                    t("Created-successfully")
+                    t("Signature-file-created-and-added-to-dataroom")
                   )
                 );
               } else if (
@@ -491,9 +489,7 @@ const saveSignatureDocumentApi = (Data, navigate, t) => {
                   )
               ) {
                 reject(response.data.responseResult.responseMessage);
-                dispatch(
-                  saveSignatureDocument_fail(t("Dataroom-api-call-error"))
-                );
+                dispatch(saveSignatureDocument_fail(t("Invalid-data")));
               } else if (
                 response.data.responseResult.responseMessage
                   .toLowerCase()
@@ -503,7 +499,7 @@ const saveSignatureDocumentApi = (Data, navigate, t) => {
               ) {
                 reject(response.data.responseResult.responseMessage);
 
-                dispatch(saveSignatureDocument_fail(t("Failed-to-save-file")));
+                dispatch(saveSignatureDocument_fail(t("File-not-exist")));
               } else if (
                 response.data.responseResult.responseMessage
                   .toLowerCase()
@@ -511,7 +507,40 @@ const saveSignatureDocumentApi = (Data, navigate, t) => {
                     "DataRoom_DataRoomServiceManager_SaveSignatureDocument_04".toLowerCase()
                   )
               ) {
-                dispatch(saveSignatureDocument_fail(t("Failed-to-save-file")));
+                dispatch(
+                  saveSignatureDocument_fail(t("File-not-found-on-server"))
+                );
+                reject(response.data.responseResult.responseMessage);
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "DataRoom_DataRoomServiceManager_SaveSignatureDocument_05".toLowerCase()
+                  )
+              ) {
+                dispatch(
+                  saveSignatureDocument_fail(t("Invalid-file-extension"))
+                );
+                reject(response.data.responseResult.responseMessage);
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "DataRoom_DataRoomServiceManager_SaveSignatureDocument_06".toLowerCase()
+                  )
+              ) {
+                dispatch(
+                  saveSignatureDocument_fail(t("Failed-to-save-signature-file"))
+                );
+                reject(response.data.responseResult.responseMessage);
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "DataRoom_DataRoomServiceManager_SaveSignatureDocument_07".toLowerCase()
+                  )
+              ) {
+                dispatch(saveSignatureDocument_fail(t("Something-went-wrong")));
                 reject(response.data.responseResult.responseMessage);
               } else {
                 dispatch(saveSignatureDocument_fail(t("Something-went-wrong")));
@@ -589,7 +618,7 @@ const getAllFieldsByWorkflowIdApi = (Data, navigate, t) => {
                 dispatch(
                   getAllFieldsByWorkflowId_success(
                     response.data.responseResult,
-                    t("Created-successfully")
+                    t("Data-available")
                   )
                 );
               } else if (
@@ -600,9 +629,7 @@ const getAllFieldsByWorkflowIdApi = (Data, navigate, t) => {
                   )
               ) {
                 reject(response.data.responseResult.responseMessage);
-                dispatch(
-                  getAllFieldsByWorkflowId_fail(t("Dataroom-api-call-error"))
-                );
+                dispatch(getAllFieldsByWorkflowId_fail(t("Np-data-available")));
               } else if (
                 response.data.responseResult.responseMessage
                   .toLowerCase()
@@ -613,7 +640,7 @@ const getAllFieldsByWorkflowIdApi = (Data, navigate, t) => {
                 reject(response.data.responseResult.responseMessage);
 
                 dispatch(
-                  getAllFieldsByWorkflowId_fail(t("Failed-to-save-file"))
+                  getAllFieldsByWorkflowId_fail(t("Something-went-wrong"))
                 );
               } else {
                 dispatch(
@@ -694,7 +721,7 @@ const sendDocumentIdApi = (Data, navigate, t) => {
                 dispatch(
                   sendDocument_success(
                     response.data.responseResult,
-                    t("Created-successfully")
+                    t("Saved-successfully")
                   )
                 );
               } else if (
@@ -705,7 +732,7 @@ const sendDocumentIdApi = (Data, navigate, t) => {
                   )
               ) {
                 reject(response.data.responseResult.responseMessage);
-                dispatch(sendDocument_fail(t("Dataroom-api-call-error")));
+                dispatch(sendDocument_fail(t("Failed-to-save")));
               } else if (
                 response.data.responseResult.responseMessage
                   .toLowerCase()
@@ -715,7 +742,7 @@ const sendDocumentIdApi = (Data, navigate, t) => {
               ) {
                 reject(response.data.responseResult.responseMessage);
 
-                dispatch(sendDocument_fail(t("Failed-to-save-file")));
+                dispatch(sendDocument_fail(t("Something-went-wrong")));
               } else {
                 dispatch(sendDocument_fail(t("Something-went-wrong")));
                 reject(response.data.responseResult.responseMessage);
