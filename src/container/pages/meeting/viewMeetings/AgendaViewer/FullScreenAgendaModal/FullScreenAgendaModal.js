@@ -29,7 +29,7 @@ const FullScreenAgendaModal = ({ setFullScreenView }) => {
   return (
     <section>
       <Modal
-        show={setFullScreenView(true)}
+        show={true}
         // setShow={setFullScreenView}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}

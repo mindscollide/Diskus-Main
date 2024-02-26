@@ -437,13 +437,29 @@ const AgendaViewer = ({
       )}
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
 
-      {fullScreenView ? <FullScreenAgendaModal setFullScreenView={setFullScreenView} /> : null}
-      {agendaSelectOptionView ? <SelectAgendaModal /> : null}
-      {exportAgendaView ? <ExportAgendaModal /> : null}
-      {printAgendaView ? <PrintAgendaModal /> : null}
-      {shareEmailView ? <ShareEmailModal /> : null}
-      {showMoreFilesView ? <AllFilesModal /> : null}
-      {participantInfoView ? <ParticipantInfoModal /> : null}
+      {fullScreenView ? (
+        <FullScreenAgendaModal setFullScreenView={setFullScreenView} />
+      ) : null}
+      {agendaSelectOptionView ? (
+        <SelectAgendaModal
+          setAgendaSelectOptionView={setAgendaSelectOptionView}
+        />
+      ) : null}
+      {exportAgendaView ? (
+        <ExportAgendaModal setExportAgendaView={setExportAgendaView} />
+      ) : null}
+      {printAgendaView ? (
+        <PrintAgendaModal setPrintAgendaView={setPrintAgendaView} />
+      ) : null}
+      {shareEmailView ? (
+        <ShareEmailModal setShareEmailView={setShareEmailView} />
+      ) : null}
+      {showMoreFilesView ? (
+        <AllFilesModal setShowMoreFilesView={setShowMoreFilesView} />
+      ) : null}
+      {participantInfoView ? (
+        <ParticipantInfoModal setParticipantInfoView={setParticipantInfoView} />
+      ) : null}
     </>
   );
 };

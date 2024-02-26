@@ -25,7 +25,7 @@ import Plus from "../../../../../../assets/images/Meeting plus.png";
 import profile from "../../../../../../assets/images/newprofile.png";
 import { validateInput } from "../../../../../../commen/functions/regex";
 
-const ParticipantInfoModal = ({ setenableVotingPage }) => {
+const ParticipantInfoModal = ({ setParticipantInfoView }) => {
   return (
     <section>
       <Modal
@@ -33,7 +33,7 @@ const ParticipantInfoModal = ({ setenableVotingPage }) => {
         // setShow={dispatch(showVoteAgendaModal)}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}
-        onHide={false}
+        onHide={() => setParticipantInfoView(false)}
         size={"sm"}
         ModalTitle={
           <>
@@ -68,8 +68,8 @@ const ParticipantInfoModal = ({ setenableVotingPage }) => {
                 sm={12}
                 className="d-flex justify-content-end gap-2"
               >
-                <Button text="Cancel" className={styles["Cancel_Vote_Modal"]} />
-                <Button text="Save" className={styles["Save_Vote_Modal"]} />
+                <Button onClick={() => setParticipantInfoView(false)} text="Cancel" className={styles["Cancel_Vote_Modal"]} />
+                <Button onClick={() => setParticipantInfoView(false)} text="Save" className={styles["Save_Vote_Modal"]} />
               </Col>
             </Row>
           </>

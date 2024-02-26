@@ -25,7 +25,7 @@ import Plus from "../../../../../../assets/images/Meeting plus.png";
 import profile from "../../../../../../assets/images/newprofile.png";
 import { validateInput } from "../../../../../../commen/functions/regex";
 
-const ExportAgendaModal = ({ setenableVotingPage }) => {
+const ExportAgendaModal = ({ setExportAgendaView }) => {
   return (
     <section>
       <Modal
@@ -33,7 +33,7 @@ const ExportAgendaModal = ({ setenableVotingPage }) => {
         // setShow={dispatch(showVoteAgendaModal)}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}
-        onHide={false}
+        onHide={() => setExportAgendaView(false)}
         size={"xl"}
         ModalTitle={
           <>
