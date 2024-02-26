@@ -817,7 +817,3 @@ body[dir="rtl"] img.AttachmentIconImage {
 .popup-agenda-menu span img {
   margin-right: 10px;
 }
-
-.popup-agenda-menu span:hover {
-  background-color: #f9f9f9;
-}

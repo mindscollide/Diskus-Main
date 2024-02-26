@@ -18,6 +18,13 @@ import {
 import emptyContributorState from "../../../../../assets/images/Empty_Agenda_Meeting_view.svg";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import ParentAgenda from "./ParentAgenda";
+import AllFilesModal from "./AllFilesModal/AllFilesModal";
+import ExportAgendaModal from "./ExportAgendaModal/ExportAgendaModal";
+import FullScreenAgendaModal from "./FullScreenAgendaModal/FullScreenAgendaModal";
+import ParticipantInfoModal from "./ParticipantInfoModal/ParticipantInfoModal";
+import PrintAgendaModal from "./PrintAgendaModal/PrintAgendaModal";
+import SelectAgendaModal from "./SelectAgendaModal/SelectAgendaModal";
+import ShareEmailModal from "./ShareEmailModal/ShareEmailModal";
 import { onDragEnd } from "./drageFunction";
 import CollapseIcon from "./AV-Images/Collapse-Icon.png";
 import ExpandAgendaIcon from "./AV-Images/Expand-Agenda-Icon.png";
@@ -71,6 +78,14 @@ const AgendaViewer = ({
 
   const [rows, setRows] = useState([]);
   const [emptyStateRows, setEmptyStateRows] = useState(false);
+
+  const [fullScreenView, setFullScreenView] = useState(false);
+  const [agendaSelectOptionView, setAgendaSelectOptionView] = useState(false);
+  const [exportAgendaView, setExportAgendaView] = useState(false);
+  const [printAgendaView, setPrintAgendaView] = useState(false);
+  const [shareEmailView, setShareEmailView] = useState(false);
+  const [showMoreFilesView, setShowMoreFilesView] = useState(false);
+  const [participantInfoView, setParticipantInfoView] = useState(false);
 
   useEffect(() => {
     let Data = {
@@ -150,6 +165,34 @@ const AgendaViewer = ({
     };
   }, [menuAgenda]);
 
+  const fullScreenModal = () => {
+    setFullScreenView(!fullScreenView);
+  };
+
+  const participantModal = () => {
+    setParticipantInfoView(!participantInfoView);
+  };
+
+  const printModal = () => {
+    setPrintAgendaView(!printAgendaView);
+  };
+
+  const exportModal = () => {
+    setExportAgendaView(!exportAgendaView);
+  };
+
+  const shareEmailModal = () => {
+    setShareEmailView(!shareEmailView);
+  };
+
+  const selectAgendaModal = () => {
+    setAgendaSelectOptionView(!agendaSelectOptionView);
+  };
+
+  const showMoreFilesModal = () => {
+    setShowMoreFilesView(!showMoreFilesView);
+  };
+
   return (
     <>
       {emptyStateRows === true &&
@@ -200,14 +243,17 @@ const AgendaViewer = ({
                   sm={12}
                   className="d-flex justify-content-end align-items-center text-end gap-2 mt-3"
                 >
-                  <div className={styles["box-agendas"]}>
+                  <div
+                    className={styles["box-agendas"]}
+                    onClick={fullScreenModal}
+                  >
                     <img src={ExpandAgendaIcon} alt="" />
                   </div>
                   <div
                     onClick={menuPopupAgenda}
                     className={styles["box-agendas"]}
                     ref={closeMenuAgenda}
-                    >
+                  >
                     <img src={MenuIcon} alt="" />
                     {/* {menuAgenda ? ( */}
                     <div
@@ -221,21 +267,29 @@ const AgendaViewer = ({
                             } ${"opacity-0 pe-none"}`
                       }
                     >
-                      <span>
+                      <span onClick={participantModal}>
                         <img width={20} src={ParticipantsInfo} alt="" />
                         Participants Info
                       </span>
-                      <span>
+                      <span onClick={printModal}>
                         <img width={20} src={PrintIcon} alt="" />
                         Print
                       </span>
-                      <span>
+                      <span onClick={exportModal}>
                         <img width={20} src={ExportIcon} alt="" />
                         Export (pdf)
                       </span>
-                      <span className="border-0">
+                      <span onClick={shareEmailModal} className="border-0">
                         <img width={20} src={ShareIcon} alt="" />
                         Share (email)
+                      </span>
+                      <span onClick={selectAgendaModal} className="border-0">
+                        <img width={20} src={ShareIcon} alt="" />
+                        Select Agenda (TEMP)
+                      </span>
+                      <span onClick={showMoreFilesModal} className="border-0">
+                        <img width={20} src={ShareIcon} alt="" />
+                        Show More Files (TEMP)
                       </span>
                     </div>
                     {/* ) : null} */}
@@ -382,6 +436,14 @@ const AgendaViewer = ({
         />
       )}
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+
+      {fullScreenView ? <FullScreenAgendaModal setFullScreenView={setFullScreenView} /> : null}
+      {agendaSelectOptionView ? <SelectAgendaModal /> : null}
+      {exportAgendaView ? <ExportAgendaModal /> : null}
+      {printAgendaView ? <PrintAgendaModal /> : null}
+      {shareEmailView ? <ShareEmailModal /> : null}
+      {showMoreFilesView ? <AllFilesModal /> : null}
+      {participantInfoView ? <ParticipantInfoModal /> : null}
     </>
   );
 };

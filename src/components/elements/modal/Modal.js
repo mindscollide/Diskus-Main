@@ -17,6 +17,7 @@ const CustomModal = ({
   modalHeaderClassName,
   className,
   closeButton,
+  dialogClassName,
   modalTitleClassName,
 }) => {
   // const [show, setShow] = useState(false);
@@ -45,6 +46,7 @@ const CustomModal = ({
           size={size}
           centered={true}
           className={className}
+          dialogClassName={dialogClassName}
         >
           <Modal.Header
             className={modalHeaderClassName}
