@@ -620,8 +620,8 @@ const ProposedMeetingDate = ({
     }
   }, [getAllProposedDates]);
 
-  //Logic For Not Letting the User to Select dates based on Proposed Dates
-  const proposedDateString = rows[rows.length - 1].selectedOption;
+  //Logic For handling SendReponse By Date
+  const proposedDateString = rows[0].selectedOption;
   const proposedDateMoment = moment(proposedDateString, "YYYYMMDD");
   let minDateForResponse;
 
