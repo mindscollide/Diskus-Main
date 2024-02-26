@@ -267,6 +267,7 @@ const UnpublishedProposedMeeting = ({
           value: "11",
         },
       ],
+      filterResetToDefaultFilteredValue: true,
       defaultFilteredValue: ["11", "12"],
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-todolist" />

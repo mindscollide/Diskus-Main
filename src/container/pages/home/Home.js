@@ -135,6 +135,7 @@ const Home = () => {
   const [viewModalShow, setViewModalShow] = useState(false);
 
   const [viewFlagToDo, setViewFlagToDo] = useState(false);
+  const [minutesAgo, setMinutesAgo] = useState(null);
 
   let now = new Date();
   let year = now.getUTCFullYear();
@@ -823,7 +824,7 @@ const Home = () => {
                     upcomingEventsData.meetingDetails.participantRoleID ===
                       1 ? (
                       upcomingEventsData.meetingDetails.isQuickMeeting ===
-                        true && minutesDifference <= 15 ? (
+                        true && minutesDifference < 15 ? (
                         // &&
                         // minutesDifference > 0
                         //   &&
@@ -920,7 +921,7 @@ const Home = () => {
                       upcomingEventsData.meetingDetails.participantRoleID ===
                         1 ? (
                         upcomingEventsData.meetingDetails.isQuickMeeting ===
-                          true && minutesDifference <= 15 ? (
+                          true && minutesDifference < 15 ? (
                           // &&
                           // minutesDifference > 0
                           //   &&
@@ -934,7 +935,7 @@ const Home = () => {
                             }
                           />
                         ) : upcomingEventsData.meetingDetails.isQuickMeeting ===
-                            false && minutesDifference <= 15 ? (
+                            false && minutesDifference < 15 ? (
                           // &&
                           // minutesDifference > 0
                           //   &&
@@ -1006,7 +1007,7 @@ const Home = () => {
                     upcomingEventsData.meetingDetails.participantRoleID ===
                       1 ? (
                       upcomingEventsData.meetingDetails.isQuickMeeting ===
-                        true && minutesDifference <= 15 ? (
+                        true && minutesDifference < 15 ? (
                         // &&
                         // minutesDifference > 0
                         //   &&
@@ -1020,7 +1021,7 @@ const Home = () => {
                           }
                         />
                       ) : upcomingEventsData.meetingDetails.isQuickMeeting ===
-                          false && minutesDifference <= 15 ? (
+                          false && minutesDifference < 15 ? (
                         // &&
                         // minutesDifference > 0
                         //   &&
