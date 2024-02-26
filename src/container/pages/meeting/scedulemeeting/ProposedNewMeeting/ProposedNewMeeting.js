@@ -733,8 +733,7 @@ const ProposedNewMeeting = ({
     }
   }, [currentLanguage]);
 
-  //Logic For Not Letting the User to Select dates based on Proposed Dates
-  const proposedDateString = rows[rows.length - 1].selectedOption;
+  const proposedDateString = rows[0].selectedOption; // Considering only the date at zero index
   const proposedDateMoment = moment(proposedDateString, "YYYYMMDD");
   let minDateForResponse;
 
