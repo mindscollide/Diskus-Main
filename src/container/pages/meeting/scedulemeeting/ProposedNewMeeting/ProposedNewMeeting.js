@@ -745,7 +745,6 @@ const ProposedNewMeeting = ({
     // Add 1 day using moment.js
     minDateForResponse = proposedDateMoment.toDate();
   }
-
   return (
     <section>
       <Row>
@@ -1237,11 +1236,7 @@ const ProposedNewMeeting = ({
                     <Col>
                       <p
                         className={
-                          error &&
-                          //   rows.selectedOption === "" &&
-                          //   rows.startDate === "" &&
-                          //   rows.endDate === "" &&
-                          rows.length === 1
+                          error && rows.length === 1
                             ? ` ${styles["errorMessage-inLogin"]} `
                             : `${styles["errorMessage-inLogin_hidden"]}`
                         }
@@ -1291,8 +1286,12 @@ const ProposedNewMeeting = ({
                         </span>
 
                         <DatePicker
-                          value={sendResponseVal}
-                          selected={sendResponseBy.date}
+                          value={sendResponseVal === "" ? "" : sendResponseVal}
+                          selected={
+                            sendResponseBy.date === ""
+                              ? ""
+                              : sendResponseBy.date
+                          }
                           format={"DD/MM/YYYY"}
                           maxDate={minDateForResponse}
                           placeholder="DD/MM/YYYY"
