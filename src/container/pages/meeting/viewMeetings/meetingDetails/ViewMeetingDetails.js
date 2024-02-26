@@ -6,6 +6,7 @@ import {
   Button,
   Notification,
   Loader,
+  TextField,
   Modal,
 } from "../../../../../components/elements";
 import Messegeblue from "../../../../../assets/images/blue Messege.svg";
@@ -641,10 +642,24 @@ const ViewMeetingDetails = ({
               </Col>
             </Row>
             <Row className="mt-2">
+              {/* <Col lg={12} md={12} sm={12} className="textAreaDivVieww vv"> */}
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["ParaGraph_SavedMeeting"]}>
                   {meetingDetails.Description}
                 </span>
+                {/* <TextField
+                  // change={detailsHandler}
+                  name="MeetingDescription"
+                  applyClass="form-control2 textbox-height-details-view"
+                  type="text"
+                  disable={true}
+                  // as={"textarea"}
+                  rows="7"
+                  // label={}
+                  // placeholder={t("Description") + "*"}
+                  value={meetingDetails.Description}
+                  required
+                /> */}
               </Col>
             </Row>
             <Row className="mt-3">
@@ -689,9 +704,9 @@ const ViewMeetingDetails = ({
                     return (
                       <Col key={index} lg={12} md={12} sm={12}>
                         <span className={styles["ScheduledDateTime"]}>
-                          {moment.utc(formattedStartDate).format("HH:mm a")} -{" "}
-                          {moment.utc(formattedEndDate).format("HH:mm a")} ,{" "}
-                          {moment.utc(formattedEndDate).format("DD MMM YYYY")}
+                          {moment(formattedStartDate).format("HH:mm a")} -{" "}
+                          {moment(formattedEndDate).format("HH:mm a")} ,{" "}
+                          {moment(formattedEndDate).format("DD MMM YYYY")}
                         </span>
                       </Col>
                     );
