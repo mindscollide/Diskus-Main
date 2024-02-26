@@ -620,18 +620,14 @@ const ProposedMeetingDate = ({
     }
   }, [getAllProposedDates]);
 
-  //Logic For handling SendReponse By Date
-  const proposedDateString = rows[0].selectedOption;
-  const proposedDateMoment = moment(proposedDateString, "YYYYMMDD");
-  let minDateForResponse;
-
-  if (!proposedDateMoment.isValid()) {
-    console.error("The date is not valid:", proposedDateString);
-    // handle the error appropriately
-  } else {
-    // Add 1 day using moment.js
-    minDateForResponse = proposedDateMoment.toDate();
-  }
+  const today = moment().startOf("day");
+  const firstSelectedDate = moment(rows[0].selectedOption, "YYYYMMDD").startOf(
+    "day"
+  ); // Date selected at zero index
+  const minSelectableDate = today.isSameOrBefore(firstSelectedDate)
+    ? today
+    : firstSelectedDate;
+  const maxSelectableDate = firstSelectedDate;
 
   return (
     <section>
@@ -908,7 +904,8 @@ const ProposedMeetingDate = ({
                       sendResponseBy.date === "" ? "" : sendResponseBy.date
                     }
                     format={"DD/MM/YYYY"}
-                    maxDate={minDateForResponse}
+                    minDate={minSelectableDate.toDate()}
+                    maxDate={maxSelectableDate.toDate()}
                     placeholder="DD/MM/YYYY"
                     render={
                       <InputIcon

@@ -733,14 +733,14 @@ const ProposedNewMeeting = ({
     }
   }, [currentLanguage]);
 
-  const today = moment().startOf("day"); // Today's date
+  const today = moment().startOf("day");
   const firstSelectedDate = moment(rows[0].selectedOption, "YYYYMMDD").startOf(
     "day"
   ); // Date selected at zero index
   const minSelectableDate = today.isSameOrBefore(firstSelectedDate)
     ? today
-    : firstSelectedDate; // Minimum selectable date
-  const maxSelectableDate = firstSelectedDate; // Maximum selectable date
+    : firstSelectedDate;
+  const maxSelectableDate = firstSelectedDate;
 
   return (
     <section>
@@ -1290,8 +1290,8 @@ const ProposedNewMeeting = ({
                               : sendResponseBy.date
                           }
                           format={"DD/MM/YYYY"}
-                          minDate={minSelectableDate.toDate()} // Set the minDate here
-                          maxDate={maxSelectableDate.toDate()} // Set the maxDate here
+                          minDate={minSelectableDate.toDate()}
+                          maxDate={maxSelectableDate.toDate()}
                           placeholder="DD/MM/YYYY"
                           render={
                             <InputIcon
