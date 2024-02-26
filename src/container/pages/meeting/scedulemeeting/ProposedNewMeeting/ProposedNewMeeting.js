@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import Select from "react-select";
 import { Paper } from "@material-ui/core";
 import { Col, Row } from "react-bootstrap";
-import profile from "../../../../../assets/images/newprofile.png";
+import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import plusFaddes from "../../../../../assets/images/SVGBlackPlusIcon.svg";
 import CrossIcon from "../../../../../assets/images/CrossIcon.svg";
 import GroupIcon from "../../../../../assets/images/groupdropdown.svg";
@@ -118,12 +118,12 @@ const ProposedNewMeeting = ({
   //state for adding Date and Time Rows
   const [rows, setRows] = useState([
     {
-      selectedOption: getCurrentDateforMeeting?.dateFormat,
-      selectedOptionView: getCurrentDateforMeeting?.DateGMT,
+      selectedOption: getCurrentDateforMeeting.dateFormat,
+      dateForView: getCurrentDateforMeeting.DateGMT,
       startDate: getStartTime?.formattedTime,
+      startTime: getStartTime?.newFormatTime,
       endDate: getEndTime?.formattedTime,
-      endDateView: getEndTime?.newFormatTime,
-      startDateView: getStartTime?.newFormatTime,
+      endTime: getEndTime?.newFormatTime,
     },
   ]);
 
@@ -400,34 +400,27 @@ const ProposedNewMeeting = ({
   };
 
   //Adding the Dates Rows
+
   const addRow = () => {
     const lastRow = rows[rows.length - 1];
-    console.log(lastRow, "lastRowlastRowlastRow");
+
     if (isValidRow(lastRow)) {
       let { DateGMT, dateFormat } = incrementDateforPropsedMeeting(
-        lastRow.selectedOptionView
+        lastRow.dateForView
       );
-      console.log(DateGMT, "DateGMTDateGMTDateGMTDateGMT");
       setRows([
         ...rows,
         {
           selectedOption: dateFormat,
-          selectedOptionView: DateGMT,
+          dateForView: DateGMT,
           startDate: getStartTime?.formattedTime,
-          startDateView: getStartTime?.newFormatTime,
+          startTime: getStartTime?.newFormatTime,
           endDate: getEndTime?.formattedTime,
-          endDateView: getEndTime?.newFormatTime,
-          proposedDateID: 0,
+          endTime: getEndTime?.newFormatTime,
         },
       ]);
-    } else {
-      setOpen({
-        flag: true,
-        message: t("You-cant-enter-more-then-five-dates"),
-      });
     }
   };
-
   //Validation For Checking that the Row Should Not Be Empty Before Inserting the Another
   const isValidRow = (row) => {
     console.log(row, "isValidRowisValidRowisValidRow");
@@ -436,29 +429,7 @@ const ProposedNewMeeting = ({
     );
   };
 
-  //OnChange Function For Select Options
-  const changeDateStartHandler = (date, index) => {
-    try {
-      let newDate = new Date(date);
-      let DateDate = new DateObject(date).format("YYYYMMDD");
-      const updatedRows = [...rows];
-      if (
-        index > 0 &&
-        Number(DateDate) < Number(updatedRows[index - 1].selectedOption)
-      ) {
-        setOpen({
-          flag: true,
-          message: t("Selected-date-should-not-be-less-than-the-previous-one"),
-        });
-        return;
-      } else {
-        updatedRows[index].selectedOption = DateDate;
-        updatedRows[index].dateForView = newDate;
-        setRows(updatedRows);
-      }
-    } catch {}
-  };
-
+  //OnChange Function For Select Dates
   const handleStartDateChange = (index, date) => {
     let newDate = new Date(date);
 
@@ -583,6 +554,28 @@ const ProposedNewMeeting = ({
       // }
     } else {
     }
+  };
+
+  const changeDateStartHandler = (date, index) => {
+    try {
+      let newDate = new Date(date);
+      let DateDate = new DateObject(date).format("YYYYMMDD");
+      const updatedRows = [...rows];
+      if (
+        index > 0 &&
+        Number(DateDate) < Number(updatedRows[index - 1].selectedOption)
+      ) {
+        setOpen({
+          flag: true,
+          message: t("Selected-date-should-not-be-less-than-the-previous-one"),
+        });
+        return;
+      } else {
+        updatedRows[index].selectedOption = DateDate;
+        updatedRows[index].dateForView = newDate;
+        setRows(updatedRows);
+      }
+    } catch {}
   };
 
   //Removing the Date Time Rows
@@ -982,14 +975,13 @@ const ProposedNewMeeting = ({
                       ? rows.map((data, index) => {
                           return (
                             <>
-                              <Row>
+                              <Row key={index}>
                                 <Col lg={12} md={12} sm={12} key={index}>
                                   <Row className="mt-2">
                                     <Col lg={4} md={4} sm={12}>
                                       <DatePicker
-                                        disabled={data.isComing ? true : false}
-                                        value={data.selectedOptionView}
                                         selected={data.selectedOption}
+                                        value={data.dateForView}
                                         format={"DD/MM/YYYY"}
                                         minDate={
                                           index > 0
@@ -1013,21 +1005,39 @@ const ProposedNewMeeting = ({
                                         onChange={(value) =>
                                           changeDateStartHandler(value, index)
                                         }
+                                        disabled={
+                                          (Number(editorRole.status) === 9 ||
+                                            Number(editorRole.status) === 8 ||
+                                            Number(editorRole.status) === 10) &&
+                                          editorRole.role === "Organizer" &&
+                                          isEditMeeting === true
+                                            ? true
+                                            : (Number(editorRole.status) ===
+                                                11 ||
+                                                Number(editorRole.status) ===
+                                                  2 ||
+                                                Number(editorRole.status) ===
+                                                  1 ||
+                                                Number(editorRole.status) ===
+                                                  12 ||
+                                                Number(editorRole.status) ===
+                                                  10) &&
+                                              editorRole.role ===
+                                                "Agenda Contributor" &&
+                                              isEditMeeting === true
+                                            ? true
+                                            : false
+                                        }
                                       />
-                                      <Row>
-                                        <Col>
-                                          <p
-                                            className={
-                                              error &&
-                                              data.selectedOption === ""
-                                                ? ` ${styles["errorMessage-inLogin"]} `
-                                                : `${styles["errorMessage-inLogin_hidden"]}`
-                                            }
-                                          >
-                                            {t("Please-select-data-and-time")}
-                                          </p>
-                                        </Col>
-                                      </Row>
+                                      <p
+                                        className={
+                                          error && data.selectedOption === ""
+                                            ? ` ${styles["errorMessage-inLogin"]} `
+                                            : `${styles["errorMessage-inLogin_hidden"]}`
+                                        }
+                                      >
+                                        {t("Scheduled-date-is-required")}
+                                      </p>
                                     </Col>
                                     <Col
                                       lg={3}
@@ -1039,19 +1049,52 @@ const ProposedNewMeeting = ({
                                         arrowClassName="arrowClass"
                                         containerClassName="containerClassTimePicker"
                                         className="timePicker"
-                                        disabled={data.isComing ? true : false}
                                         disableDayPicker
                                         inputClass="inputTImeMeeting"
                                         calendar={calendarValue}
                                         locale={localValue}
                                         format="hh:mm A"
-                                        value={data.startDateView}
                                         selected={data.startDate}
+                                        // onOpen={() => handleOpenStartTime(index)}
+                                        value={data.startTime}
+                                        editable={false}
                                         plugins={[<TimePicker hideSeconds />]}
                                         onChange={(date) =>
                                           handleStartDateChange(index, date)
                                         }
+                                        disabled={
+                                          (Number(editorRole.status) === 9 ||
+                                            Number(editorRole.status) === 8 ||
+                                            Number(editorRole.status) === 10) &&
+                                          editorRole.role === "Organizer" &&
+                                          isEditMeeting === true
+                                            ? true
+                                            : (Number(editorRole.status) ===
+                                                11 ||
+                                                Number(editorRole.status) ===
+                                                  2 ||
+                                                Number(editorRole.status) ===
+                                                  1 ||
+                                                Number(editorRole.status) ===
+                                                  12 ||
+                                                Number(editorRole.status) ===
+                                                  10) &&
+                                              editorRole.role ===
+                                                "Agenda Contributor" &&
+                                              isEditMeeting === true
+                                            ? true
+                                            : false
+                                        }
                                       />
+                                      <p
+                                        className={
+                                          error && data.startDate === ""
+                                            ? ` ${styles["errorMessage-inLogin"]} `
+                                            : `${styles["errorMessage-inLogin_hidden"]}`
+                                        }
+                                      >
+                                        {t("start-time-is-required")}
+                                      </p>
                                     </Col>
                                     <Col
                                       lg={1}
@@ -1073,22 +1116,56 @@ const ProposedNewMeeting = ({
                                       // className="d-flex justify-content-end"
                                     >
                                       <DatePicker
-                                        value={data.endDateView}
                                         arrowClassName="arrowClass"
                                         containerClassName="containerClassTimePicker"
                                         className="timePicker"
                                         disableDayPicker
-                                        disabled={data.isComing ? true : false}
                                         inputClass="inputTImeMeeting"
                                         calendar={calendarValue}
                                         locale={localValue}
+                                        value={data.endTime}
                                         format="hh:mm A"
-                                        selected={data.startDate}
+                                        // onOpen={() => handleOpenEndTime(index)}
+                                        // onOpen={() => handleOpenStartTime()}
+                                        selected={data.endDate}
                                         plugins={[<TimePicker hideSeconds />]}
+                                        editable={false}
                                         onChange={(date) =>
                                           handleEndDateChange(index, date)
                                         }
+                                        disabled={
+                                          (Number(editorRole.status) === 9 ||
+                                            Number(editorRole.status) === 8 ||
+                                            Number(editorRole.status) === 10) &&
+                                          editorRole.role === "Organizer" &&
+                                          isEditMeeting === true
+                                            ? true
+                                            : (Number(editorRole.status) ===
+                                                11 ||
+                                                Number(editorRole.status) ===
+                                                  2 ||
+                                                Number(editorRole.status) ===
+                                                  1 ||
+                                                Number(editorRole.status) ===
+                                                  12 ||
+                                                Number(editorRole.status) ===
+                                                  10) &&
+                                              editorRole.role ===
+                                                "Agenda Contributor" &&
+                                              isEditMeeting === true
+                                            ? true
+                                            : false
+                                        }
                                       />
+                                      <p
+                                        className={
+                                          error && data.endDate === ""
+                                            ? ` ${styles["errorMessage-inLogin"]} `
+                                            : `${styles["errorMessage-inLogin_hidden"]}`
+                                        }
+                                      >
+                                        {t("end-time-is-required")}
+                                      </p>
                                     </Col>
                                     <Col
                                       lg={1}
@@ -1096,43 +1173,27 @@ const ProposedNewMeeting = ({
                                       sm={12}
                                       className="d-flex justify-content-end position-relative align-items-center"
                                     >
-                                      <>
-                                        {index === 0 ? null : (
-                                          <>
-                                            <img
-                                              draggable={false}
-                                              src={CrossIcon}
-                                              width="23px"
-                                              height="23px"
-                                              alt=""
-                                              className={
-                                                styles["Cross_icon_class"]
-                                              }
-                                              onClick={() => {
-                                                HandleCancelFunction(index);
-                                              }}
-                                            />
-                                          </>
-                                        )}
-                                      </>
+                                      {index === 0 ? null : Number(
+                                          editorRole.status
+                                        ) === 9 &&
+                                        isEditMeeting ===
+                                          true ? null : editorRole.role ===
+                                          "Agenda Contributor" &&
+                                        isEditMeeting === true ? null : (
+                                        <img
+                                          draggable={false}
+                                          src={redcrossIcon}
+                                          width="23px"
+                                          alt=""
+                                          height="23px"
+                                          className={styles["Cross_icon_class"]}
+                                          onClick={() => {
+                                            HandleCancelFunction(index);
+                                          }}
+                                        />
+                                      )}
                                     </Col>
                                   </Row>
-                                </Col>
-                              </Row>
-                              <Row>
-                                <Col>
-                                  <p
-                                    className={
-                                      error &&
-                                      rows.selectedOption === "" &&
-                                      rows.startDate === "" &&
-                                      rows.endDate === ""
-                                        ? ` ${styles["errorMessage-inLogin"]} `
-                                        : `${styles["errorMessage-inLogin_hidden"]}`
-                                    }
-                                  >
-                                    {t("Please-select-data-and-time")}
-                                  </p>
                                 </Col>
                               </Row>
                             </>
@@ -1169,6 +1230,7 @@ const ProposedNewMeeting = ({
                       }
                       className={styles["Add_Dates_Btn_Class"]}
                       onClick={addRow}
+                      disabled={!isValidRow(rows[rows.length - 1])}
                     />
                   </Col>
                   <Row>
