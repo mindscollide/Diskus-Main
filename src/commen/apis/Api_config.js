@@ -1451,6 +1451,10 @@ const endMeetingStatus = {
   RequestMethod: "ServiceManager.MeetingStatusUpdate",
 };
 
+const saveSignatureDocumentRM = {
+  RequestMethod: "ServiceManager.SendDataRoomDocumentToSignatureFlow",
+};
+
 export {
   UserLoginHistoryRM,
   getDataAnalyticsCountRM,
@@ -1840,4 +1844,5 @@ export {
   deleteUserSignatureRM,
   getWorkFlowByFileIdRM,
   endMeetingStatus,
+  saveSignatureDocumentRM,
 };
