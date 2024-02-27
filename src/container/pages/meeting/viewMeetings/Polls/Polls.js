@@ -23,6 +23,7 @@ import {
   GetAllPollsByMeetingIdApiFunc,
   clearResponseNewMeetingReducerMessage,
   cleareAllState,
+  deleteSavedPollsMeeting,
   searchNewUserMeeting,
   showCancelPolls,
   showUnsavedPollsMeeting,
@@ -42,6 +43,7 @@ import {
 import CustomPagination from "../../../../../commen/functions/customPagination/Paginations";
 import ViewPollsPublishedScreen from "./ViewPollsPublishedScreen/ViewPollsPublishedScreen";
 import ViewPollsUnPublished from "./VIewPollsUnPublished/ViewPollsUnPublished";
+import DeletePollConfirmModal from "./DeletePollsConfirmationModal/DeletePollConfirmModal";
 
 const Polls = ({
   setViewAdvanceMeetingModal,
@@ -80,6 +82,8 @@ const Polls = ({
   let currentView = localStorage.getItem("MeetingCurrentView");
   let currentUserID = Number(localStorage.getItem("userID"));
   const [viewPublishedPoll, setViewPublishedPoll] = useState(false);
+  const [pollID, setPollID] = useState(0);
+
   // Unpublished Poll
   const [unPublished, setUnPublished] = useState(false);
 
@@ -102,13 +106,9 @@ const Polls = ({
     };
     dispatch(getPollsByPollIdApi(navigate, data, 0, t, setEditPolls));
   };
-
   const handleDeletePoll = (record) => {
-    let data = {
-      PollID: record.pollID,
-      MeetingID: parseInt(currentMeeting),
-    };
-    dispatch(deleteMeetingPollApi(navigate, t, data, currentMeeting));
+    dispatch(deleteSavedPollsMeeting(true));
+    setPollID(record.pollID);
   };
 
   const handleClickTitle = (record) => {
@@ -208,8 +208,6 @@ const Polls = ({
       }
     } catch {}
   }, [NewMeetingreducer.getPollsMeetingID]);
-
-  console.log(pollsRows, "pollsRowspollsRowspollsRows");
 
   const voteCastModal = (record) => {
     let data = {
@@ -768,6 +766,12 @@ const Polls = ({
             {NewMeetingreducer.cancelPolls && (
               <CancelPolls
                 setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+              />
+            )}
+            {NewMeetingreducer.deletPollsMeeting && (
+              <DeletePollConfirmModal
+                currentMeeting={currentMeeting}
+                pollID={pollID}
               />
             )}
             <Notification

@@ -792,6 +792,7 @@ const ScheduleNewResolution = () => {
     await dispatch(
       saveFilesResolutionApi(navigate, t, newfile, folderID, newFolder)
     );
+    console.log(newFolder, "newFoldernewFoldernewFoldernewFolder");
     let resolutionID = localStorage.getItem("resolutionID");
     await dispatch(
       updateResolution(

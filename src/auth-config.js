@@ -15,8 +15,9 @@ export const msalConfig = {
     clientId: "545933ff-407a-44e5-b3ac-a73ace252364",
     authority:
       "https://login.microsoftonline.com/c5978316-9241-4527-b8f3-b75023242cf3",
-    redirectUri: "http://localhost:3000",
-    postLogoutRedirectUri:"http://localhost:3000",
+    redirectUri: "https://letsdiskus.com/Diskus-Revamp/diskus-bg-blue.php",
+    postLogoutRedirectUri:
+      "https://letsdiskus.com/Diskus-Revamp/diskus-bg-blue.php",
   },
   cache: {
     cacheLocation: "sessionStorage", // This configures where your cache will be stored
@@ -56,7 +57,7 @@ export const msalConfig = {
  * https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#openid-connect-scopes
  */
 export const loginRequest = {
-  scopes: ["User.Read","openid","offline_access","Calendars.ReadWrite"],
+  scopes: ["User.Read", "openid", "offline_access", "Calendars.ReadWrite"],
   // scopes: [],
 };
 
