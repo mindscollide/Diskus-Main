@@ -6575,3 +6575,13 @@ th.ant-table-cell.notification-class-table {
   border: none !important;
   word-wrap: break-word;
 }
+
+span.subAgendaBorderClass {
+  display: block;
+  width: 30px;
+  background: #e1e1e1;
+  height: 1px;
+  position: absolute;
+  left: -4px;
+  top: 17px;
+}

@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import AttachmentIcon from "../../../../../assets/images/Attachment.svg";
+import DownloadIcon from "./AV-Images/Download-Icon.png";
 import {
   showAdvancePermissionModal,
   showVoteAgendaModal,
@@ -127,41 +128,6 @@ const SubAgendaMappingDragging = ({
     );
     setSubExpand(initialState);
   }, [rows]);
-
-  //Function For Handling See More For Subagendas
-  const handleSubMenuExpand = (index, subIndex) => {
-    // Close all subAgendas in the current row except the one you're expanding
-    // const updatedSubExpand = Array(rows[index].subAgenda.length).fill(false);
-    // updatedSubExpand[subIndex] = true;
-
-    // setsubexpandIndex(index);
-    // setExpandSubIndex(subIndex);
-    // setSubExpand(updatedSubExpand);
-    // Close all subAgendas in the current row except the one you're expanding
-    // If the clicked subAgenda is already open, close it
-    const isAlreadyExpanded = subExpand[index][subIndex];
-
-    // Close the clicked subAgenda if it's already expanded
-    if (isAlreadyExpanded) {
-      setSubExpand((prevSubExpand) => {
-        const updatedSubExpand = [...prevSubExpand];
-        updatedSubExpand[index][subIndex] = false;
-        return updatedSubExpand;
-      });
-      setsubexpandIndex(-1);
-      setExpandSubIndex(-1);
-    } else {
-      // Close all other subAgendas in the current row except the one you're expanding
-      const updatedSubExpand = rows.map((row, i) =>
-        i === index ? Array(row.subAgenda.length).fill(false) : subExpand[i]
-      );
-      updatedSubExpand[index][subIndex] = true;
-
-      setSubExpand(updatedSubExpand);
-      setsubexpandIndex(index);
-      setExpandSubIndex(subIndex);
-    }
-  };
 
   // Function to handle changes in sub-agenda radio group
   const handleSubAgendaRadioChange = (index, subIndex, e) => {
@@ -362,474 +328,227 @@ const SubAgendaMappingDragging = ({
                                           sm={12}
                                           className={styles["SubAgendaSection"]}
                                         >
-                                          <img
-                                            alt=""
-                                            src={CollapseIcon}
-                                            className={
-                                              subexpandIndex === index &&
-                                              expandSubIndex === subIndex &&
-                                              subExpand
-                                                ? styles["Arrow_Expanded"]
-                                                : styles["Arrow"]
-                                            }
-                                            onClick={() => {
-                                              apllyLockOnParentAgenda(index) ||
-                                                handleSubMenuExpand(
-                                                  index,
-                                                  subIndex
-                                                );
-                                            }}
-                                          />
                                           <Row className="mt-2 mb-2">
-                                            <Col lg={6} md={6} sm={12}>
+                                            <Col
+                                              lg={8}
+                                              md={8}
+                                              sm={12}
+                                              className="position-relative p-0"
+                                            >
+                                              <span className="subAgendaBorderClass"></span>
+
                                               <span
                                                 className={
-                                                  styles["AgendaTitle_Heading"]
+                                                  styles[
+                                                    "SubAgendaTitle_Heading"
+                                                  ]
                                                 }
                                               >
-                                                {subAgendaData.subTitle}
+                                                {index +
+                                                  1 +
+                                                  "." +
+                                                  (subIndex + 1) +
+                                                  " " +
+                                                  subAgendaData.subTitle}
+                                              </span>
+
+                                              <span
+                                                className={
+                                                  styles[
+                                                    "SubAgenda_Description"
+                                                  ]
+                                                }
+                                              >
+                                                {subAgendaData.description}
                                               </span>
                                             </Col>
                                             <Col
-                                              lg={6}
-                                              md={6}
+                                              lg={3}
+                                              md={3}
                                               sm={12}
-                                              className="text-end"
+                                              className="p-0"
                                             >
-                                              {Number(
-                                                subAgendaData.agendaVotingID
-                                              ) !== 0 &&
-                                              Number(editorRole.status) ===
-                                                10 &&
-                                              Number(
-                                                subAgendaData.voteOwner.userid
-                                              ) === Number(currentUserID) &&
-                                              !subAgendaData.voteOwner
-                                                ?.currentVotingClosed ? (
-                                                <Button
-                                                  text={t("Start-voting")}
-                                                  className={
-                                                    styles["startVotingButton"]
-                                                  }
-                                                  onClick={() =>
-                                                    startVoting(subAgendaData)
-                                                  }
-                                                />
-                                              ) : Number(
-                                                  subAgendaData.agendaVotingID
-                                                ) !== 0 &&
-                                                Number(editorRole.status) ===
-                                                  10 &&
-                                                Number(
-                                                  subAgendaData.voteOwner.userid
-                                                ) === Number(currentUserID) &&
-                                                subAgendaData.voteOwner
-                                                  ?.currentVotingClosed ? (
-                                                <>
-                                                  <Button
-                                                    text={t("End-voting")}
-                                                    className={
-                                                      styles[
-                                                        "startVotingButton"
-                                                      ]
-                                                    }
-                                                    onClick={() =>
-                                                      endVoting(subAgendaData)
-                                                    }
+                                              {/* <div className={styles["agendaCreationDetail"]}> */}
+                                              <Row className="m-0">
+                                                <Col
+                                                  lg={12}
+                                                  md={12}
+                                                  sm={12}
+                                                  className="d-flex align-items-center justify-content-end gap-3 p-0"
+                                                >
+                                                  <img
+                                                    src={`data:image/jpeg;base64,${subAgendaData?.userProfilePicture?.displayProfilePictureName}`}
+                                                    className={styles["Image"]}
+                                                    alt=""
+                                                    draggable={false}
                                                   />
-                                                  <Button
-                                                    text={t("View-votes")}
+                                                  <p
                                                     className={
-                                                      styles["ViewVoteButton"]
+                                                      styles["agendaCreater"]
                                                     }
-                                                    onClick={() =>
-                                                      EnableViewVoteModal(
-                                                        subAgendaData
-                                                      )
+                                                  >
+                                                    {
+                                                      subAgendaData?.presenterName
                                                     }
-                                                  />
-                                                </>
-                                              ) : editorRole.role ===
-                                                  "Organizer" &&
-                                                subAgendaData.voteOwner
-                                                  ?.currentVotingClosed ? (
-                                                <>
-                                                  <Button
-                                                    text={t("View-votes")}
-                                                    className={
-                                                      styles["ViewVoteButton"]
-                                                    }
-                                                    onClick={() =>
-                                                      EnableViewVoteModal(
-                                                        subAgendaData
-                                                      )
-                                                    }
-                                                  />
-                                                </>
-                                              ) : null}
-
-                                              {Number(
-                                                subAgendaData.agendaVotingID
-                                              ) === 0 ? null : Number(
-                                                  editorRole.status
-                                                ) === 10 &&
-                                                Number(
-                                                  subAgendaData.voteOwner.userid
-                                                ) !== Number(currentUserID) &&
-                                                subAgendaData.voteOwner
-                                                  ?.currentVotingClosed &&
-                                                editorRole.role !==
-                                                  "Organizer" ? (
-                                                <Button
-                                                  text={t("Cast-your-vote")}
-                                                  className={
-                                                    styles["CastYourVoteButton"]
-                                                  }
-                                                  onClick={() =>
-                                                    EnableCastVoteModal(
-                                                      subAgendaData
-                                                    )
-                                                  }
-                                                />
-                                              ) : null}
-                                              {/* {Number(
-                                              subAgendaData.agendaVotingID
-                                            ) === 0 ? null : Number(
-                                                editorRole.status
-                                              ) === 10 &&
-                                              Number(
-                                                subAgendaData.voteOwner.userid
-                                              ) !== Number(currentUserID) &&
-                                              subAgendaData.voteOwner
-                                                ?.currentVotingClosed ? (
-
-                                            ) : null} */}
-                                            </Col>
-                                          </Row>
-
-                                          <Row>
-                                            <Col lg={12} md={12} sm={12}>
-                                              <span
-                                                className={
-                                                  styles["Show_More_Styles"]
-                                                }
-                                                onClick={() =>
-                                                  handleSubMenuExpand(
-                                                    index,
-                                                    subIndex
-                                                  )
-                                                }
-                                              >
-                                                {subexpandIndex === index &&
-                                                expandSubIndex === subIndex &&
-                                                subExpand
-                                                  ? t("Hide-details")
-                                                  : t("Show-more")}
-                                              </span>
-                                              {subAgendaData.subfiles.length >
-                                              0 ? (
-                                                <img
-                                                  className={
-                                                    styles[
-                                                      "AttachmentIconImage"
-                                                    ]
-                                                  }
-                                                  src={AttachmentIcon}
-                                                  alt=""
-                                                />
-                                              ) : null}
-                                            </Col>
-                                          </Row>
-                                          {/* Condition for Subajencda */}
-                                          {subexpandIndex === index &&
-                                            expandSubIndex === subIndex &&
-                                            subExpand && (
-                                              <>
-                                                <Row className="mt-2">
-                                                  <Col lg={12} md={12} sm={12}>
-                                                    <div
-                                                      className={
-                                                        styles[
-                                                          "agendaCreationDetail"
-                                                        ]
-                                                      }
-                                                    >
-                                                      <img
-                                                        src={`data:image/jpeg;base64,${subAgendaData?.userProfilePicture?.displayProfilePictureName}`}
-                                                        className={
-                                                          styles["Image"]
-                                                        }
-                                                        alt=""
-                                                        draggable={false}
-                                                      />
-                                                      <p
-                                                        className={
-                                                          styles[
-                                                            "agendaCreater"
-                                                          ]
-                                                        }
-                                                      >
-                                                        {/* {
-                                                          subAgendaData?.presenterName
-                                                        } */}
-                                                        {subAgendaData?.presenterName +
-                                                          " - (" +
-                                                          moment(
-                                                            subAgendaData?.startDate,
-                                                            "HHmmss"
-                                                          ).format("hh:mm a") +
-                                                          " - " +
-                                                          moment(
-                                                            subAgendaData?.endDate,
-                                                            "HHmmss"
-                                                          ).format("hh:mm a") +
-                                                          ")"}
-                                                      </p>
-                                                      {/* <span
-                                                      className={
-                                                        styles[
-                                                          "agendaCreationTime"
-                                                        ]
-                                                      }
-                                                    >
-                                                      {
-                                                        subAgendaData?.presenterName
-                                                      }
-                                                    </span> */}
-                                                    </div>
-                                                  </Col>
-                                                </Row>
-                                                <Row className="mt-2">
-                                                  <Col lg={12} md={12} sm={12}>
+                                                  </p>
+                                                </Col>
+                                              </Row>
+                                              <Row className="m-0">
+                                                <Col
+                                                  lg={12}
+                                                  md={12}
+                                                  sm={12}
+                                                  className="text-end p-0"
+                                                >
+                                                  <p
+                                                    className={`${styles["agendaCreaterTime"]} MontserratMedium-500`}
+                                                  >
+                                                    {moment(
+                                                      subAgendaData?.startDate,
+                                                      "HHmmss"
+                                                    ).format("hh:mm a")}
                                                     <span
                                                       className={
-                                                        styles[
-                                                          "ParaGraph_SavedMeeting"
-                                                        ]
+                                                        styles["dashMinute"]
                                                       }
                                                     >
-                                                      {
-                                                        subAgendaData.description
-                                                      }
+                                                      -----
                                                     </span>
-                                                  </Col>
-                                                </Row>
-                                                {/* <Row className="mt-3">
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles["Agenda_Heading"]
-                                                    }
-                                                  >
-                                                    {t("Attachments")}
-                                                  </span>
+                                                    {moment(
+                                                      subAgendaData?.endDate,
+                                                      "HHmmss"
+                                                    ).format("hh:mm a")}
+                                                  </p>
                                                 </Col>
-                                              </Row> */}
-                                                <Row className="mt-3">
-                                                  <Col lg={6} md={6} sm={6}>
-                                                    {/* <Radio.Group
-                                                    value={
-                                                      subAgendaData.subSelectRadio
-                                                    }
-                                                    onChange={(e) =>
-                                                      handleSubAgendaRadioChange(
-                                                        index,
-                                                        subIndex,
-                                                        e
-                                                      )
-                                                    }
-                                                  >
-                                                    <Radio value={1}>
-                                                      <span
-                                                        className={
-                                                          styles[
-                                                            "Radio_Button_options"
-                                                          ]
-                                                        }
-                                                      >
-                                                        {t("Document")}
-                                                      </span>
-                                                    </Radio>
-                                                    <Radio value={2}>
-                                                      <span
-                                                        className={
-                                                          styles[
-                                                            "Radio_Button_options"
-                                                          ]
-                                                        }
-                                                      >
-                                                        {t("URL")}
-                                                      </span>
-                                                    </Radio>
-                                                    <Radio value={3}>
-                                                      <span
-                                                        className={
-                                                          styles[
-                                                            "Radio_Button_options"
-                                                          ]
-                                                        }
-                                                      >
-                                                        {t(
-                                                          "Request from contributor"
-                                                        )}
-                                                      </span>
-                                                    </Radio>
-                                                  </Radio.Group> */}
-                                                    {subAgendaData.subSelectRadio ===
-                                                    1 ? (
-                                                      <span
-                                                        className={
-                                                          styles[
-                                                            "Agenda_Heading"
-                                                          ]
-                                                        }
-                                                      >
-                                                        {t("Documents")}
-                                                      </span>
-                                                    ) : subAgendaData.subSelectRadio ===
-                                                      2 ? (
-                                                      <span
-                                                        className={
-                                                          styles[
-                                                            "Agenda_Heading"
-                                                          ]
-                                                        }
-                                                      >
-                                                        {t("URL")}
-                                                      </span>
-                                                    ) : subAgendaData.subSelectRadio ===
-                                                      3 ? (
-                                                      <span
-                                                        className={
-                                                          styles[
-                                                            "Agenda_Heading"
-                                                          ]
-                                                        }
-                                                      >
-                                                        {t(
-                                                          "Request-from-contributor"
-                                                        )}
-                                                      </span>
-                                                    ) : null}
-                                                  </Col>
-                                                </Row>
-                                                <Droppable
-                                                  droppableId={`subAgendaID-${subAgendaData.subAgendaID}-parent-${data.ID}-attachments`}
-                                                  type="attachment"
+                                              </Row>
+                                              {/* </div> */}
+                                            </Col>
+                                            <Col
+                                              lg={1}
+                                              md={1}
+                                              sm={12}
+                                              className="p-0"
+                                            ></Col>
+                                          </Row>
+                                          <>
+                                            {subAgendaData.subSelectRadio ===
+                                              1 &&
+                                            Object.keys(subAgendaData.subfiles)
+                                              .length > 0 ? (
+                                              <>
+                                                <div
+                                                  className={
+                                                    styles[
+                                                      "filesSubParentClass"
+                                                    ]
+                                                  }
                                                 >
-                                                  {(provided) => (
-                                                    <div
-                                                      {...provided.droppableProps}
-                                                      ref={provided.innerRef}
-                                                    >
-                                                      {subAgendaData.subSelectRadio ===
-                                                        1 &&
-                                                      Object.keys(
-                                                        subAgendaData.subfiles
-                                                      ).length > 0 ? (
-                                                        <>
-                                                          <Row>
-                                                            {subAgendaData.subfiles.map(
-                                                              (
-                                                                filesData,
-                                                                fileIndex
-                                                              ) => (
-                                                                <Col
-                                                                  key={
-                                                                    fileIndex
-                                                                  }
-                                                                  lg={3}
-                                                                  md={3}
-                                                                  sm={12}
-                                                                >
-                                                                  <div
-                                                                    className={
-                                                                      styles[
-                                                                        "agendaFileAttachedView"
-                                                                      ]
-                                                                    }
-                                                                  >
-                                                                    <span
-                                                                      className={
-                                                                        styles[
-                                                                          "agendaFileSpan"
-                                                                        ]
-                                                                      }
-                                                                    >
-                                                                      <img
-                                                                        draggable={
-                                                                          false
-                                                                        }
-                                                                        src={getIconSource(
-                                                                          getFileExtension(
-                                                                            filesData.displayAttachmentName
-                                                                          )
-                                                                        )}
-                                                                        alt=""
-                                                                      />{" "}
-                                                                      <span
-                                                                        onClick={() =>
-                                                                          downloadDocument(
-                                                                            filesData
-                                                                          )
-                                                                        }
-                                                                      >
-                                                                        {
-                                                                          filesData?.displayAttachmentName
-                                                                        }
-                                                                      </span>
-                                                                    </span>
-                                                                  </div>
-                                                                </Col>
-                                                              )
-                                                            )}
-                                                          </Row>
-                                                        </>
-                                                      ) : subAgendaData.subSelectRadio ===
-                                                          1 &&
-                                                        Object.keys(
-                                                          subAgendaData.subfiles
-                                                        ).length === 0 ? (
-                                                        <span
-                                                          className={
-                                                            styles[
-                                                              "NoFiles_Heading"
-                                                            ]
-                                                          }
-                                                        >
-                                                          No Files Attached
-                                                        </span>
-                                                      ) : null}
-
-                                                      {subAgendaData.subSelectRadio ===
-                                                        2 && (
-                                                        <SubUrls
-                                                          subAgendaData={
-                                                            subAgendaData
-                                                          }
-                                                          rows={rows}
-                                                          setRows={setRows}
-                                                          index={index}
-                                                          subIndex={subIndex}
-                                                        />
-                                                      )}
-                                                      {subAgendaData.subSelectRadio ===
-                                                        3 && (
-                                                        <SubRequestContributor
-                                                          subAgendaData={
-                                                            subAgendaData
-                                                          }
-                                                          rows={rows}
-                                                          setRows={setRows}
-                                                          index={index}
-                                                          subIndex={subIndex}
-                                                        />
-                                                      )}
-                                                    </div>
+                                                  {subAgendaData.subfiles.map(
+                                                    (filesData, fileIndex) => (
+                                                      <div
+                                                        key={fileIndex}
+                                                        className={
+                                                          styles[
+                                                            "agendaFileAttachedView"
+                                                          ]
+                                                        }
+                                                      >
+                                                        <Row className="m-0 text-center h-100 align-items-center">
+                                                          <Col
+                                                            lg={10}
+                                                            md={10}
+                                                            sm={12}
+                                                            className={`${styles["borderFileName"]} p-0`}
+                                                          >
+                                                            <div
+                                                              className={
+                                                                styles[
+                                                                  "fileNameTruncateStyle"
+                                                                ]
+                                                              }
+                                                            >
+                                                              <img
+                                                                draggable={
+                                                                  false
+                                                                }
+                                                                src={getIconSource(
+                                                                  getFileExtension(
+                                                                    filesData?.displayAttachmentName
+                                                                  )
+                                                                )}
+                                                                alt=""
+                                                              />
+                                                              <span
+                                                                onClick={() =>
+                                                                  downloadDocument(
+                                                                    filesData
+                                                                  )
+                                                                }
+                                                                className={
+                                                                  styles[
+                                                                    "fileNameAttachment"
+                                                                  ]
+                                                                }
+                                                              >
+                                                                {
+                                                                  filesData?.displayAttachmentName
+                                                                }
+                                                              </span>
+                                                            </div>
+                                                          </Col>
+                                                          <Col
+                                                            lg={2}
+                                                            md={2}
+                                                            sm={12}
+                                                            className="p-0"
+                                                          >
+                                                            <img
+                                                              draggable={false}
+                                                              src={DownloadIcon}
+                                                              alt=""
+                                                            />
+                                                          </Col>
+                                                        </Row>
+                                                      </div>
+                                                    )
                                                   )}
-                                                </Droppable>
+                                                </div>
                                               </>
+                                            ) : subAgendaData.subSelectRadio ===
+                                                1 &&
+                                              Object.keys(
+                                                subAgendaData.subfiles
+                                              ).length === 0 ? (
+                                              <span
+                                                className={
+                                                  styles["NoFiles_Heading"]
+                                                }
+                                              >
+                                                No Files Attached
+                                              </span>
+                                            ) : null}
+
+                                            {subAgendaData.subSelectRadio ===
+                                              2 && (
+                                              <SubUrls
+                                                subAgendaData={subAgendaData}
+                                                rows={rows}
+                                                setRows={setRows}
+                                                index={index}
+                                                subIndex={subIndex}
+                                              />
                                             )}
+                                            {subAgendaData.subSelectRadio ===
+                                              3 && (
+                                              <SubRequestContributor
+                                                subAgendaData={subAgendaData}
+                                                rows={rows}
+                                                setRows={setRows}
+                                                index={index}
+                                                subIndex={subIndex}
+                                              />
+                                            )}
+                                          </>
                                         </Col>
                                       </Row>
                                     </Col>

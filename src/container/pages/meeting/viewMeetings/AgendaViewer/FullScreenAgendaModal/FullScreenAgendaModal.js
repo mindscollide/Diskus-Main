@@ -34,7 +34,7 @@ const FullScreenAgendaModal = ({ setFullScreenView }) => {
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}
         onHide={() => setFullScreenView(false)}
-        size={"sm"}
+        size={"xl"}
         ModalTitle={
           <>
             <Row>
