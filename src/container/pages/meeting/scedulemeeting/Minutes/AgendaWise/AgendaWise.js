@@ -697,6 +697,7 @@ const AgendaWise = ({
       },
     });
     setFileAttachments([]);
+    setFileForSend([]);
     setisEdit(false);
   };
 
