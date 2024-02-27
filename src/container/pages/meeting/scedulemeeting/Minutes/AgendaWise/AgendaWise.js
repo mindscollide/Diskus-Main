@@ -31,6 +31,7 @@ import {
   SaveAgendaWiseDocumentsApiFunc,
   UpdateAgendaWiseMinutesApiFunc,
   cleareAllState,
+  saveFilesMeetingagendaWiseMinutesApi,
   uploadDocumentsMeetingAgendaWiseMinutesApi,
 } from "../../../../../../store/actions/NewMeetingActions";
 import { GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes } from "../../../../../../store/actions/AgendaWiseAgendaAction";
@@ -278,111 +279,84 @@ const AgendaWise = ({
     setExpanded(!expanded);
   };
 
-  //Props for File Dragger
   const props = {
     name: "file",
     multiple: true,
     showUploadList: false,
     onChange(data) {
-      const { status } = data.file;
-      let fileSizeArr;
+      const { fileList } = data;
+
+      // Check if the fileList is the same as the previous one
+      if (JSON.stringify(fileList) === JSON.stringify(previousFileList)) {
+        return; // Skip processing if it's the same fileList
+      }
+
+      let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
+      let flag = false;
+      let sizezero = true;
+      let size = true;
+
       if (fileAttachments.length > 9) {
         setOpen({
           flag: true,
           message: t("Not-allowed-more-than-10-files"),
         });
-      } else if (fileAttachments.length > 0) {
-        let flag = false;
-        let sizezero;
-        let size;
-        fileAttachments.map((arData, index) => {
-          if (arData.DisplayAttachmentName === data.file.originFileObj.name) {
-            flag = true;
-          }
-        });
-        if (data.file.size > 10485760) {
+        return;
+      }
+
+      fileList.forEach((fileData, index) => {
+        if (fileData.size > 10485760) {
           size = false;
-        } else if (data.file.size === 0) {
+        } else if (fileData.size === 0) {
           sizezero = false;
         }
-        if (size === false) {
-          setTimeout(
+
+        let fileExists = fileAttachments.some(
+          (oldFileData) => oldFileData.DisplayAttachmentName === fileData.name
+        );
+
+        if (!size) {
+          setTimeout(() => {
             setOpen({
               flag: true,
               message: t("File-size-should-not-be-greater-then-zero"),
-            }),
-            3000
-          );
-        } else if (sizezero === false) {
-          setTimeout(
+            });
+          }, 3000);
+        } else if (!sizezero) {
+          setTimeout(() => {
             setOpen({
               flag: true,
               message: t("File-size-should-not-be-zero"),
-            }),
-            3000
-          );
-        } else if (flag === true) {
-          setTimeout(
+            });
+          }, 3000);
+        } else if (fileExists) {
+          setTimeout(() => {
             setOpen({
               flag: true,
               message: t("File-already-exists"),
-            }),
-            3000
-          );
+            });
+          }, 3000);
         } else {
           let file = {
-            DisplayAttachmentName: data.file.name,
-            OriginalAttachmentName: data.file.name,
-            fileSize: data.file.originFileObj.size,
-            fk_UserID: Number(userID),
+            DisplayAttachmentName: fileData.name,
+            OriginalAttachmentName: fileData.name,
+            fileSize: fileData.originFileObj.size,
           };
-          setFileAttachments([...fileAttachments, file]);
-          fileSizeArr = data.file.originFileObj.size + fileSize;
-          setFileForSend([...fileForSend, data.file.originFileObj]);
-          setFileSize(fileSizeArr);
-          // dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
-        }
-      } else {
-        let sizezero;
-        let size;
-        if (data.file.size > 10485760) {
-          size = false;
-        } else if (data.file.size === 0) {
-          sizezero = false;
-        }
-        if (size === false) {
-          setTimeout(
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-greater-then-zero"),
-            }),
-            3000
-          );
-        } else if (sizezero === false) {
-          setTimeout(
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-zero"),
-            }),
-            3000
-          );
-        } else {
-          let file = {
-            DisplayAttachmentName: data.file.name,
-            OriginalAttachmentName: data.file.name,
-            fileSize: data.file.originFileObj.size,
-            fk_UserID: Number(userID),
-          };
-          setFileAttachments([...fileAttachments, file]);
-          fileSizeArr = data.file.originFileObj.size + fileSize;
-          setFileForSend([...fileForSend, data.file.originFileObj]);
+          setFileAttachments((prevAttachments) => [...prevAttachments, file]);
+          fileSizeArr += fileData.originFileObj.size;
+          setFileForSend((prevFiles) => [...prevFiles, fileData.originFileObj]);
           setFileSize(fileSizeArr);
         }
-      }
+      });
+
+      // Update previousFileList to current fileList
+      previousFileList = fileList;
     },
     onDrop(e) {},
     customRequest() {},
   };
+  // Initialize previousFileList to an empty array
+  let previousFileList = [];
 
   //Sliders For Attachments
 
@@ -482,7 +456,8 @@ const AgendaWise = ({
   };
 
   const documentUploadingFunc = async (minuteID) => {
-    let newfile = [...previousFileIDs];
+    let newFolder = [];
+    let newfile = [];
     const uploadPromises = fileForSend.map(async (newData) => {
       await dispatch(
         uploadDocumentsMeetingAgendaWiseMinutesApi(
@@ -490,6 +465,7 @@ const AgendaWise = ({
           t,
           newData,
           folderID,
+          // newFolder,
           newfile
         )
       );
@@ -497,11 +473,19 @@ const AgendaWise = ({
 
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
-
+    await dispatch(
+      saveFilesMeetingagendaWiseMinutesApi(
+        navigate,
+        t,
+        newfile,
+        folderID,
+        newFolder
+      )
+    );
     let docsData = {
       FK_MeetingAgendaMinutesID: minuteID,
       FK_MDID: currentMeeting,
-      UpdateFileList: newfile.map((data, index) => {
+      UpdateFileList: newFolder.map((data, index) => {
         return { PK_FileID: Number(data.pK_FileID) };
       }),
     };
@@ -650,6 +634,7 @@ const AgendaWise = ({
     dispatch(UpdateAgendaWiseMinutesApiFunc(navigate, UpdateDataAgendaWise, t));
 
     let newfile = [...previousFileIDs];
+    let fileObj = [];
     if (Object.keys(fileForSend).length > 0) {
       const uploadPromises = fileForSend.map(async (newData) => {
         await dispatch(
@@ -658,13 +643,21 @@ const AgendaWise = ({
             t,
             newData,
             folderID,
-            newfile
+            fileObj
           )
         );
       });
       // Wait for all promises to resolve
       await Promise.all(uploadPromises);
-
+      await dispatch(
+        saveFilesMeetingagendaWiseMinutesApi(
+          navigate,
+          t,
+          fileObj,
+          folderID,
+          newfile
+        )
+      );
       let docsData = {
         FK_MeetingAgendaMinutesID: Number(updateData.MinutesID),
         FK_MDID: currentMeeting,
@@ -1016,6 +1009,7 @@ const AgendaWise = ({
               <Row className="mt-2">
                 <Col lg={12} md={12} sm={12}>
                   <Dragger
+                    fileList={[]}
                     {...props}
                     className={styles["dragdrop_attachment_create_resolution"]}
                   >

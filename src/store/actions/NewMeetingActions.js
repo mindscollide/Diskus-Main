@@ -4962,10 +4962,12 @@ const uploadDocumentsMeetingAgendaWiseMinutesApi = (
   t,
   data,
   folderID,
-  newFolder
+  // newFolder,
+  newfile
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
-
+  let creatorID = localStorage.getItem("userID");
+  let organizationID = localStorage.getItem("organizationID");
   return async (dispatch) => {
     let form = new FormData();
     form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
@@ -4987,7 +4989,8 @@ const uploadDocumentsMeetingAgendaWiseMinutesApi = (
               t,
               data,
               folderID,
-              newFolder
+              // newFolder,
+              newfile
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -4999,15 +5002,16 @@ const uploadDocumentsMeetingAgendaWiseMinutesApi = (
                   "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
                 )
             ) {
-              await dispatch(
-                saveFilesMeetingagendaWiseMinutesApi(
-                  navigate,
-                  t,
-                  response.data.responseResult,
-                  folderID,
-                  newFolder
-                )
-              );
+              newfile.push({
+                DisplayFileName: response.data.responseResult.displayFileName,
+                DiskusFileNameString:
+                  response.data.responseResult.diskusFileName,
+                ShareAbleLink: response.data.responseResult.shareAbleLink,
+                FK_UserID: JSON.parse(creatorID),
+                FK_OrganizationID: JSON.parse(organizationID),
+                FileSize: Number(response.data.responseResult.fileSizeOnDisk),
+                fileSizeOnDisk: Number(response.data.responseResult.fileSize),
+              });
               await dispatch(
                 uploadDocument_success_agenda_wise(
                   response.data.responseResult,
@@ -5079,20 +5083,9 @@ const saveFilesMeetingagendaWiseMinutesApi = (
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let creatorID = localStorage.getItem("userID");
-  let organizationID = localStorage.getItem("organizationID");
   let Data = {
     FolderID: folderID !== null ? Number(folderID) : 0,
-    Files: [
-      {
-        DisplayFileName: data.displayFileName,
-        DiskusFileNameString: data.diskusFileName,
-        ShareAbleLink: data.shareAbleLink,
-        FK_UserID: JSON.parse(creatorID),
-        FK_OrganizationID: JSON.parse(organizationID),
-        fileSizeOnDisk: Number(data.fileSizeOnDisk),
-        FileSize: Number(data.fileSize),
-      },
-    ],
+    Files: data,
     UserID: JSON.parse(creatorID),
     Type: 0,
   };
@@ -5123,14 +5116,22 @@ const saveFilesMeetingagendaWiseMinutesApi = (
                   "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase()
                 )
             ) {
-              let newData = {
-                pK_FileID: response.data.responseResult.fileID,
-                DisplayAttachmentName: data.displayFileName,
-              };
-              newFolder.push(newData);
+              try {
+                let fileIds = response.data.responseResult.fileID;
+                console.log(fileIds, "newFileID");
+                fileIds.map((newFileID, index) => {
+                  console.log(newFileID, "newFileID");
+
+                  return newFolder.push({
+                    pK_FileID: newFileID.pK_FileID,
+                  });
+                });
+              } catch (error) {
+                console.log(error, "newFileID");
+              }
               await dispatch(
                 saveFiles_success_agenda_wise(
-                  newData,
+                  response.data.responseResult,
                   t("Files-saved-successfully")
                 )
               );
