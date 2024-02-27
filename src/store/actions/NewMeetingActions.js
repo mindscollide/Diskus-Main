@@ -265,6 +265,20 @@ const showUnsavedPollsMeeting = (response) => {
   };
 };
 
+const deleteSavedPollsMeeting = (response) => {
+  return {
+    type: actions.DELETE_POLL_MEETING,
+    response: response,
+  };
+};
+
+const editFlowDeleteSavedPollsMeeting = (response) => {
+  return {
+    type: actions.EDIT_FLOW_DELETE_POLL_MEETING,
+    response: response,
+  };
+};
+
 const showunsavedEditPollsMeetings = (response) => {
   return {
     type: actions.UNSAVED_EDIT_POLL_MEETING,
@@ -3667,10 +3681,12 @@ const uploadDocumentsMeetingMinutesApi = (
   t,
   data,
   folderID,
-  newFolder
+  // newFolder,
+  newfile
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
-
+  let creatorID = localStorage.getItem("userID");
+  let organizationID = localStorage.getItem("organizationID");
   return async (dispatch) => {
     dispatch(uploadDocument_init());
     let form = new FormData();
@@ -3693,7 +3709,8 @@ const uploadDocumentsMeetingMinutesApi = (
               t,
               data,
               folderID,
-              newFolder
+              // newFolder,
+              newfile
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -3705,19 +3722,20 @@ const uploadDocumentsMeetingMinutesApi = (
                   "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
                 )
             ) {
+              newfile.push({
+                DisplayFileName: response.data.responseResult.displayFileName,
+                DiskusFileNameString:
+                  response.data.responseResult.diskusFileName,
+                ShareAbleLink: response.data.responseResult.shareAbleLink,
+                FK_UserID: JSON.parse(creatorID),
+                FK_OrganizationID: JSON.parse(organizationID),
+                FileSize: Number(response.data.responseResult.fileSizeOnDisk),
+                fileSizeOnDisk: Number(response.data.responseResult.fileSize),
+              });
               await dispatch(
                 uploadDocument_success(
                   response.data.responseResult,
                   t("Document-uploaded-successfully")
-                )
-              );
-              await dispatch(
-                saveFilesMeetingMinutesApi(
-                  navigate,
-                  t,
-                  response.data.responseResult,
-                  folderID,
-                  newFolder
                 )
               );
             } else if (
@@ -3778,20 +3796,9 @@ const saveFiles_fail = (message) => {
 const saveFilesMeetingMinutesApi = (navigate, t, data, folderID, newFolder) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let creatorID = localStorage.getItem("userID");
-  let organizationID = localStorage.getItem("organizationID");
   let Data = {
     FolderID: folderID !== null ? Number(folderID) : 0,
-    Files: [
-      {
-        DisplayFileName: data.displayFileName,
-        DiskusFileNameString: data.diskusFileName,
-        ShareAbleLink: data.shareAbleLink,
-        FK_UserID: JSON.parse(creatorID),
-        FK_OrganizationID: JSON.parse(organizationID),
-        fileSizeOnDisk: Number(data.fileSizeOnDisk),
-        FileSize: Number(data.fileSize),
-      },
-    ],
+    Files: data,
     UserID: JSON.parse(creatorID),
     Type: 0,
   };
@@ -3823,16 +3830,24 @@ const saveFilesMeetingMinutesApi = (navigate, t, data, folderID, newFolder) => {
                   "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase()
                 )
             ) {
-              let newData = {
-                pK_FileID: response.data.responseResult.fileID,
-                DisplayAttachmentName: data.displayFileName,
-              };
-              newFolder.push({
-                pK_FileID: response.data.responseResult.fileID,
-                DisplayAttachmentName: data.displayFileName,
-              });
+              try {
+                let fileIds = response.data.responseResult.fileID;
+                console.log(fileIds, "newFileID");
+                fileIds.map((newFileID, index) => {
+                  console.log(newFileID, "newFileID");
+
+                  return newFolder.push({
+                    pK_FileID: newFileID.pK_FileID,
+                  });
+                });
+              } catch (error) {
+                console.log(error, "newFileID");
+              }
               await dispatch(
-                saveFiles_success(newData, t("Files-saved-successfully"))
+                saveFiles_success(
+                  response.data.responseResult,
+                  t("Files-saved-successfully")
+                )
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -4961,10 +4976,12 @@ const uploadDocumentsMeetingAgendaWiseMinutesApi = (
   t,
   data,
   folderID,
-  newFolder
+  // newFolder,
+  newfile
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
-
+  let creatorID = localStorage.getItem("userID");
+  let organizationID = localStorage.getItem("organizationID");
   return async (dispatch) => {
     let form = new FormData();
     form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
@@ -4986,7 +5003,8 @@ const uploadDocumentsMeetingAgendaWiseMinutesApi = (
               t,
               data,
               folderID,
-              newFolder
+              // newFolder,
+              newfile
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -4998,15 +5016,16 @@ const uploadDocumentsMeetingAgendaWiseMinutesApi = (
                   "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
                 )
             ) {
-              await dispatch(
-                saveFilesMeetingagendaWiseMinutesApi(
-                  navigate,
-                  t,
-                  response.data.responseResult,
-                  folderID,
-                  newFolder
-                )
-              );
+              newfile.push({
+                DisplayFileName: response.data.responseResult.displayFileName,
+                DiskusFileNameString:
+                  response.data.responseResult.diskusFileName,
+                ShareAbleLink: response.data.responseResult.shareAbleLink,
+                FK_UserID: JSON.parse(creatorID),
+                FK_OrganizationID: JSON.parse(organizationID),
+                FileSize: Number(response.data.responseResult.fileSizeOnDisk),
+                fileSizeOnDisk: Number(response.data.responseResult.fileSize),
+              });
               await dispatch(
                 uploadDocument_success_agenda_wise(
                   response.data.responseResult,
@@ -5078,20 +5097,9 @@ const saveFilesMeetingagendaWiseMinutesApi = (
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let creatorID = localStorage.getItem("userID");
-  let organizationID = localStorage.getItem("organizationID");
   let Data = {
     FolderID: folderID !== null ? Number(folderID) : 0,
-    Files: [
-      {
-        DisplayFileName: data.displayFileName,
-        DiskusFileNameString: data.diskusFileName,
-        ShareAbleLink: data.shareAbleLink,
-        FK_UserID: JSON.parse(creatorID),
-        FK_OrganizationID: JSON.parse(organizationID),
-        fileSizeOnDisk: Number(data.fileSizeOnDisk),
-        FileSize: Number(data.fileSize),
-      },
-    ],
+    Files: data,
     UserID: JSON.parse(creatorID),
     Type: 0,
   };
@@ -5122,14 +5130,22 @@ const saveFilesMeetingagendaWiseMinutesApi = (
                   "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase()
                 )
             ) {
-              let newData = {
-                pK_FileID: response.data.responseResult.fileID,
-                DisplayAttachmentName: data.displayFileName,
-              };
-              newFolder.push(newData);
+              try {
+                let fileIds = response.data.responseResult.fileID;
+                console.log(fileIds, "newFileID");
+                fileIds.map((newFileID, index) => {
+                  console.log(newFileID, "newFileID");
+
+                  return newFolder.push({
+                    pK_FileID: newFileID.pK_FileID,
+                  });
+                });
+              } catch (error) {
+                console.log(error, "newFileID");
+              }
               await dispatch(
                 saveFiles_success_agenda_wise(
-                  newData,
+                  response.data.responseResult,
                   t("Files-saved-successfully")
                 )
               );
@@ -7658,4 +7674,6 @@ export {
   cleareAllProposedMeetingDates,
   uploadGlobalFlag,
   endMeetingStatusApi,
+  deleteSavedPollsMeeting,
+  editFlowDeleteSavedPollsMeeting,
 };

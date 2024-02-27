@@ -1,6 +1,6 @@
 {
   "IsCirculate": false,
-  "FK_ResolutionID": 307,
+  "FK_ResolutionID": 323,
   "Voters": [
     {
       "FK_UID": 1093,
@@ -11,23 +11,28 @@
   ],
   "NonVoters": [
     {
-      "FK_UID": 986,
+      "FK_UID": 983,
       "FK_VotingStatus_ID": 3,
       "Notes": "",
-      "Email": "erenfour@yopmail.com"
+      "Email": "erenone@yopmail.com"
     }
   ],
   "Attachments": [
     {
       "DisplayAttachmentName": "",
       "OriginalAttachmentName": "",
-      "pK_RAID": 361
+      "pK_FileID": 421
     },
     {
       "DisplayAttachmentName": "",
       "OriginalAttachmentName": "",
-      "pK_RAID": 362
+      "pK_FileID": 422
     },
-    { "pK_FileID": 8187 }
+    {
+      "DisplayAttachmentName": "",
+      "OriginalAttachmentName": "",
+      "pK_FileID": 423
+    },
+    { "pK_FileID": 8330 }
   ]
 }

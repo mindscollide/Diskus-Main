@@ -301,7 +301,7 @@ const Header2 = () => {
                         as={Link}
                         to="changePassword"
                         disabled={true}
-                        className="text-black"
+                        className="d-flex text-black FontClass"
                       >
                         {/* Change Password */}
                         {t("Change-password")}
@@ -385,18 +385,18 @@ const Header2 = () => {
                         {t("Help")}
                       </Nav.Link>
                     </Dropdown.Item>
-                    {/* <Dropdown.Item
+                    <Dropdown.Item
                       className={" text-black" + " " + currentLanguage}
                       onClick={() => forgotPasswordCheck()}
                     >
                       <Nav.Link
                         as={Link}
                         to="changePassword"
-                        className="text-black"
+                        className="d-flex text-black FontClass"
                       >
                         {t("Change-password")}
                       </Nav.Link>
-                    </Dropdown.Item> */}
+                    </Dropdown.Item>
 
                     <Dropdown.Item
                       className={currentLanguage}
@@ -589,7 +589,7 @@ const Header2 = () => {
                       <Nav.Link
                         as={Link}
                         to="changePassword"
-                        className="text-black"
+                        className="d-flex text-black FontClass"
                       >
                         {/* Change Password */}
                         {t("Change-password")}
@@ -673,18 +673,18 @@ const Header2 = () => {
                         {t("Help")}
                       </Nav.Link>
                     </Dropdown.Item>
-                    {/* <Dropdown.Item
+                    <Dropdown.Item
                       className={" text-black" + " " + currentLanguage}
                       onClick={() => forgotPasswordCheck()}
                     >
                       <Nav.Link
                         as={Link}
                         to="changePassword"
-                        className="text-black"
+                        className="d-flex text-black FontClass"
                       >
                         {t("Change-password")}
                       </Nav.Link>
-                    </Dropdown.Item> */}
+                    </Dropdown.Item>
 
                     <Dropdown.Item
                       className={currentLanguage}
