@@ -429,8 +429,8 @@ const Minutes = ({
   };
 
   const documentUploadingFunc = async (minuteID) => {
-    let newfile = [...previousFileIDs];
-    let fileObj = [];
+    let newFolder = [];
+    let newfile = [];
     if (Object.keys(fileForSend).length > 0) {
       const uploadPromises = fileForSend.map(async (newData) => {
         await dispatch(
@@ -439,7 +439,8 @@ const Minutes = ({
             t,
             newData,
             folderID,
-            fileObj
+            // newFolder,
+            newfile
           )
         );
       });
@@ -448,12 +449,12 @@ const Minutes = ({
       await Promise.all(uploadPromises);
 
       await dispatch(
-        saveFilesMeetingMinutesApi(navigate, t, fileObj, folderID, newfile)
+        saveFilesMeetingMinutesApi(navigate, t, newfile, folderID, newFolder)
       );
       let docsData = {
         FK_MeetingGeneralMinutesID: minuteID,
         FK_MDID: currentMeeting,
-        UpdateFileList: newfile.map((data, index) => {
+        UpdateFileList: newFolder.map((data, index) => {
           return { PK_FileID: Number(data.pK_FileID) };
         }),
       };
