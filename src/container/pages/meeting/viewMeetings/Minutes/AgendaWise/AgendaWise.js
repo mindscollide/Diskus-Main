@@ -708,6 +708,7 @@ const AgendaWise = ({
     });
 
     setFileAttachments([]);
+    setFileForSend([]);
     setisEdit(false);
   };
   const handleRemovingTheMinutesAgendaWise = (AgendaWiseData) => {

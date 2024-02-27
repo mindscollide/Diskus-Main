@@ -594,6 +594,7 @@ const Minutes = ({
     }
 
     setFileAttachments([]);
+    setFileForSend([]);
     setisEdit(false);
     setAddNoteFields({
       ...addNoteFields,
