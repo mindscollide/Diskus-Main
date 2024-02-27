@@ -265,6 +265,20 @@ const showUnsavedPollsMeeting = (response) => {
   };
 };
 
+const deleteSavedPollsMeeting = (response) => {
+  return {
+    type: actions.DELETE_POLL_MEETING,
+    response: response,
+  };
+};
+
+const editFlowDeleteSavedPollsMeeting = (response) => {
+  return {
+    type: actions.EDIT_FLOW_DELETE_POLL_MEETING,
+    response: response,
+  };
+};
+
 const showunsavedEditPollsMeetings = (response) => {
   return {
     type: actions.UNSAVED_EDIT_POLL_MEETING,
@@ -7660,4 +7674,6 @@ export {
   cleareAllProposedMeetingDates,
   uploadGlobalFlag,
   endMeetingStatusApi,
+  deleteSavedPollsMeeting,
+  editFlowDeleteSavedPollsMeeting,
 };
