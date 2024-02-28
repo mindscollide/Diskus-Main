@@ -617,6 +617,19 @@ const ProposedNewMeeting = ({
         EndTime: createConvert(data.selectedOption + data.endDate).slice(8, 14),
       });
     });
+
+    // Sorting the Dates array
+    Dates.sort((a, b) => {
+      if (a.MeetingDate !== b.MeetingDate) {
+        return a.MeetingDate.localeCompare(b.MeetingDate);
+      } else if (a.StartTime !== b.StartTime) {
+        return a.StartTime.localeCompare(b.StartTime);
+      } else {
+        return a.EndTime.localeCompare(b.EndTime);
+      }
+    });
+    console.log(Dates, "handleProposedButtonProposedMeeting");
+
     if (
       proposedMeetingDetails.MeetingTitle !== "" &&
       membersParticipants.length !== 0 &&
@@ -642,25 +655,25 @@ const ProposedNewMeeting = ({
           MeetingStatusID: 11,
         },
       };
-      dispatch(
-        SaveMeetingDetialsNewApiFunction(
-          navigate,
-          t,
-          data,
-          setSceduleMeeting,
-          setorganizers,
-          setmeetingDetails,
-          1,
-          setCurrentMeetingID,
-          currentMeeting,
-          proposedMeetingDetails,
-          setDataroomMapFolderId,
-          membersParticipants,
-          rows,
-          sendResponseBy.date,
-          setProposedNewMeeting
-        )
-      );
+      // dispatch(
+      //   SaveMeetingDetialsNewApiFunction(
+      //     navigate,
+      //     t,
+      //     data,
+      //     setSceduleMeeting,
+      //     setorganizers,
+      //     setmeetingDetails,
+      //     1,
+      //     setCurrentMeetingID,
+      //     currentMeeting,
+      //     proposedMeetingDetails,
+      //     setDataroomMapFolderId,
+      //     membersParticipants,
+      //     rows,
+      //     sendResponseBy.date,
+      //     setProposedNewMeeting
+      //   )
+      // );
 
       seterror(false);
     } else if (
