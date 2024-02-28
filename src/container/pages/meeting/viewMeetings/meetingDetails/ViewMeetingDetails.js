@@ -464,6 +464,7 @@ const ViewMeetingDetails = ({
       NewMeetingreducer.CurrentMeetingURL !== null &&
       NewMeetingreducer.CurrentMeetingURL !== ""
     ) {
+      console.log("NewMeetingreducer.CurrentMeetingURL", NewMeetingreducer.CurrentMeetingURL)
       copyToClipboard(NewMeetingreducer.CurrentMeetingURL);
       setOpen({
         ...open,
