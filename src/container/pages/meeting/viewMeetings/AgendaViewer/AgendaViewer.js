@@ -87,6 +87,9 @@ const AgendaViewer = ({
   const [showMoreFilesView, setShowMoreFilesView] = useState(false);
   const [participantInfoView, setParticipantInfoView] = useState(false);
 
+  const [fileDataAgenda, setFileDataAgenda] = useState([]);
+  const [agendaName, setAgendaName] = useState("");
+
   useEffect(() => {
     let Data = {
       MeetingID: Number(advanceMeetingModalID),
@@ -321,6 +324,10 @@ const AgendaViewer = ({
                                     index={index}
                                     rows={rows}
                                     setRows={setRows}
+                                    setFileDataAgenda={setFileDataAgenda}
+                                    // fileDataAgenda={fileDataAgenda}
+                                    setAgendaName={setAgendaName}
+                                    // agendaName={agendaName}
                                     setMainAgendaRemovalIndex={
                                       setMainAgendaRemovalIndex
                                     }

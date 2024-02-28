@@ -879,7 +879,7 @@ span.dashMinute {
 .SubAgendaTitle_Heading {
   font-family: "MontserratSemiBold" !important;
   font-size: 18px !important;
-  color: #5a5a5a !important;
+  color: #6172d6 !important;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -896,4 +896,21 @@ span.SubAgenda_Description {
   margin: 10px 0px;
   display: block;
   margin-left: 35px;
+}
+
+.Show_More_Button,
+.Show_More_Button:is(:hover, :active, :focus, :focus-visible, :target) {
+  box-sizing: border-box !important;
+  background: #f6f9fc !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 13px !important;
+  font-style: normal !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  text-decoration-line: underline !important;
+  color: #5a5a5c !important;
+  font-family: "MontserratMedium-500" !important;
+  text-transform: uppercase !important;
+  height: 30px !important;
+  width: 85px !important;
 }

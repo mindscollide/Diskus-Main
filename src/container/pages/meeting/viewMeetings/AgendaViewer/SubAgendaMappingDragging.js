@@ -255,6 +255,7 @@ const SubAgendaMappingDragging = ({
     <>
       {data.subAgenda.length > 0 &&
         data.subAgenda.map((subAgendaData, subIndex) => {
+          const isLastIndex = subIndex === data.subAgenda.length - 1;
           return (
             <>
               <div
@@ -307,21 +308,12 @@ const SubAgendaMappingDragging = ({
                                         apllyLockOnParentAgenda(index) ||
                                         apllyLockOnSubAgenda(index, subIndex)
                                           ? styles["SubajendaBox_Inactive"]
+                                          : isLastIndex
+                                          ? `${styles["SubajendaBox"]} borderTopNone`
                                           : styles["SubajendaBox"]
                                       }
                                     >
                                       <Row isDragging={snapshot.isDragging}>
-                                        {/* <Col
-                                          lg={1}
-                                          md={1}
-                                          sm={1}
-                                          isDragging={snapshot.isDragging}
-                                          {...provided.dragHandleProps}
-                                        >
-                                          <section>
-                                            
-                                          </section>
-                                        </Col> */}
                                         <Col
                                           lg={12}
                                           md={12}
@@ -518,15 +510,7 @@ const SubAgendaMappingDragging = ({
                                                 1 &&
                                               Object.keys(
                                                 subAgendaData.subfiles
-                                              ).length === 0 ? (
-                                              <span
-                                                className={
-                                                  styles["NoFiles_Heading"]
-                                                }
-                                              >
-                                                No Files Attached
-                                              </span>
-                                            ) : null}
+                                              ).length === 0 ? null : null}
 
                                             {subAgendaData.subSelectRadio ===
                                               2 && (
@@ -554,6 +538,28 @@ const SubAgendaMappingDragging = ({
                                     </Col>
                                   </Row>
                                 </section>
+                                <Row className={isLastIndex ? "d-none" : ""}>
+                                  <Col lg={1} md={1} sm={12}></Col>
+                                  <Col
+                                    lg={11}
+                                    md={11}
+                                    sm={12}
+                                    className="position-relative"
+                                  >
+                                    {/* <span className="separatorSubAgendaWidth"></span>
+                                    <span className="separatorSubAgendaHeight"></span> */}
+                                    <span
+                                      className={`separatorSubAgendaWidth ${
+                                        isLastIndex ? "last-width-class" : ""
+                                      }`}
+                                    ></span>
+                                    <span
+                                      className={`separatorSubAgendaHeight ${
+                                        isLastIndex ? "last-height-class" : ""
+                                      }`}
+                                    ></span>
+                                  </Col>
+                                </Row>
                               </Col>
                             </Row>
                           </div>
