@@ -655,25 +655,25 @@ const ProposedNewMeeting = ({
           MeetingStatusID: 11,
         },
       };
-      // dispatch(
-      //   SaveMeetingDetialsNewApiFunction(
-      //     navigate,
-      //     t,
-      //     data,
-      //     setSceduleMeeting,
-      //     setorganizers,
-      //     setmeetingDetails,
-      //     1,
-      //     setCurrentMeetingID,
-      //     currentMeeting,
-      //     proposedMeetingDetails,
-      //     setDataroomMapFolderId,
-      //     membersParticipants,
-      //     rows,
-      //     sendResponseBy.date,
-      //     setProposedNewMeeting
-      //   )
-      // );
+      dispatch(
+        SaveMeetingDetialsNewApiFunction(
+          navigate,
+          t,
+          data,
+          setSceduleMeeting,
+          setorganizers,
+          setmeetingDetails,
+          1,
+          setCurrentMeetingID,
+          currentMeeting,
+          proposedMeetingDetails,
+          setDataroomMapFolderId,
+          membersParticipants,
+          rows,
+          sendResponseBy.date,
+          setProposedNewMeeting
+        )
+      );
 
       seterror(false);
     } else if (

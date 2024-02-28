@@ -574,8 +574,18 @@ const MeetingDetails = ({
           14
         ),
         EndTime: createConvert(data.selectedOption + data.endDate).slice(8, 14),
-        // EndTime: data.endDate,
       });
+    });
+
+    // Sorting the newArr array
+    newArr.sort((a, b) => {
+      if (a.MeetingDate !== b.MeetingDate) {
+        return a.MeetingDate.localeCompare(b.MeetingDate);
+      } else if (a.StartTime !== b.StartTime) {
+        return a.StartTime.localeCompare(b.StartTime);
+      } else {
+        return a.EndTime.localeCompare(b.EndTime);
+      }
     });
 
     if (
@@ -1112,6 +1122,17 @@ const MeetingDetails = ({
           StartTime: data.startDate,
           EndTime: data.endDate,
         });
+      });
+
+      // Sorting the newArr array
+      newArr.sort((a, b) => {
+        if (a.MeetingDate !== b.MeetingDate) {
+          return a.MeetingDate.localeCompare(b.MeetingDate);
+        } else if (a.StartTime !== b.StartTime) {
+          return a.StartTime.localeCompare(b.StartTime);
+        } else {
+          return a.EndTime.localeCompare(b.EndTime);
+        }
       });
 
       let newReminderData = [];
