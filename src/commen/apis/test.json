@@ -1,37 +1,26 @@
 {
-  "IsCirculate": false,
-  "FK_ResolutionID": 327,
-  "Voters": [
-    {
-      "FK_UID": 1093,
-      "FK_VotingStatus_ID": 3,
-      "Notes": "",
-      "Email": "ereneight@yopmail.com"
-    }
-  ],
-  "NonVoters": [
-    {
-      "FK_UID": 986,
-      "FK_VotingStatus_ID": 3,
-      "Notes": "",
-      "Email": "erenfour@yopmail.com"
-    }
-  ],
-  "Attachments": [
-    {
-      "DisplayFileName": "NewFeeVoucher.pdf",
-      "DiskusFileName": "20240221133102311",
-      "PK_FileID": 8345
-    },
-    {
-      "DisplayFileName": "Saif-Global.txt",
-      "DiskusFileName": "20240221133102057",
-      "PK_FileID": 8346
-    },
-    {
-      "DisplayFileName": "Minutes Workflow.docx",
-      "DiskusFileName": "20240221133102121",
-      "PK_FileID": 8347
-    }
-  ]
+  "MeetingDetails": {
+    "MeetingID": 0,
+    "MeetingTitle": "vb",
+    "MeetingType": { "PK_MTID": 4, "Type": "Board Meeting" },
+    "Location": "vb",
+    "Description": "",
+    "IsVideoChat": true,
+    "IsPublished": false,
+    "IsTalkGroup": false,
+    "OrganizationId": 417,
+    "MeetingDates": [
+      { "MeetingDate": "20240228", "StartTime": "090000", "EndTime": "100000" },
+      { "MeetingDate": "20240228", "StartTime": "110000", "EndTime": "130000" },
+      { "MeetingDate": "20240330", "StartTime": "090000", "EndTime": "100000" },
+      { "MeetingDate": "20240418", "StartTime": "090000", "EndTime": "100000" }
+    ],
+    "MeetingReminders": [4],
+    "Notes": "vb",
+    "AllowRSVP": true,
+    "NotifyOrganizerOnRSVP": true,
+    "ReucurringMeetingID": 1,
+    "VideoURL": "",
+    "MeetingStatusID": 11
+  }
 }
