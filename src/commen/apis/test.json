@@ -1,6 +1,6 @@
 {
   "IsCirculate": false,
-  "FK_ResolutionID": 323,
+  "FK_ResolutionID": 327,
   "Voters": [
     {
       "FK_UID": 1093,
@@ -11,28 +11,27 @@
   ],
   "NonVoters": [
     {
-      "FK_UID": 983,
+      "FK_UID": 986,
       "FK_VotingStatus_ID": 3,
       "Notes": "",
-      "Email": "erenone@yopmail.com"
+      "Email": "erenfour@yopmail.com"
     }
   ],
   "Attachments": [
     {
-      "DisplayAttachmentName": "",
-      "OriginalAttachmentName": "",
-      "pK_FileID": 421
+      "DisplayFileName": "NewFeeVoucher.pdf",
+      "DiskusFileName": "20240221133102311",
+      "PK_FileID": 8345
     },
     {
-      "DisplayAttachmentName": "",
-      "OriginalAttachmentName": "",
-      "pK_FileID": 422
+      "DisplayFileName": "Saif-Global.txt",
+      "DiskusFileName": "20240221133102057",
+      "PK_FileID": 8346
     },
     {
-      "DisplayAttachmentName": "",
-      "OriginalAttachmentName": "",
-      "pK_FileID": 423
-    },
-    { "pK_FileID": 8330 }
+      "DisplayFileName": "Minutes Workflow.docx",
+      "DiskusFileName": "20240221133102121",
+      "PK_FileID": 8347
+    }
   ]
 }
