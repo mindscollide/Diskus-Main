@@ -395,10 +395,9 @@ const ParentAgenda = ({
                                   <Button
                                     text={t("More")}
                                     className={styles["Show_More_Button"]}
-                                    onClick={showMoreFiles(
-                                      data.files,
-                                      data.title
-                                    )}
+                                    onClick={() =>
+                                      showMoreFiles(data.files, data.title)
+                                    }
                                   />
                                 )}
                               </div>
