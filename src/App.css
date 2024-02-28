@@ -6612,3 +6612,7 @@ span.separatorSubAgendaHeight {
 .borderTopNone {
   border-top: none !important;
 }
+
+.allFileModalClass .modal-dialog.modal-md.modal-dialog-centered {
+  height: auto !important;
+}

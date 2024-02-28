@@ -1,31 +1,60 @@
 import React, { useState } from "react";
-import {
-  Modal,
-  Button,
-  Switch,
-  TextField,
-  Table,
-} from "../../../../../../components/elements";
-import { Checkbox } from "antd";
+import { Modal, Button } from "../../../../../../components/elements";
 import styles from "./AllFilesModal.module.css";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import Select from "react-select";
-import { useNavigate } from "react-router-dom";
-import Cast from "../../../../../../assets/images/CAST.svg";
-import {
-  showVoteAgendaModal,
-  showVoteConfirmationModal,
-} from "../../../../../../store/actions/NewMeetingActions";
+import { DataRoomDownloadFileApiFunc } from "../../../../../../store/actions/DataRoom_actions";
 import { Col, Row } from "react-bootstrap";
-import redcrossIcon from "../../../../../../assets/images/Artboard 9.png";
-import Leftploygon from "../../../../../../assets/images/leftdirection.svg";
-import Rightploygon from "../../../../../../assets/images/rightdirection.svg";
-import Plus from "../../../../../../assets/images/Meeting plus.png";
-import profile from "../../../../../../assets/images/newprofile.png";
-import { validateInput } from "../../../../../../commen/functions/regex";
+import {
+  getFileExtension,
+  getIconSource,
+} from "../../../../../DataRoom/SearchFunctionality/option";
+import DownloadIcon from "./../AV-Images/Frame_Download.png";
 
-const AllFilesModal = ({ setShowMoreFilesView }) => {
+const AllFilesModal = ({
+  setShowMoreFilesView,
+  agendaName,
+  fileDataAgenda,
+  agendaIndex,
+  subAgendaIndex,
+  setFileDataAgenda,
+  setAgendaName,
+  setAgendaIndex,
+  setSubAgendaIndex,
+}) => {
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  const { t } = useTranslation();
+
+  const downloadDocument = (record) => {
+    console.log("filesDatafilesData", record);
+
+    let data = {
+      FileID: Number(record.originalAttachmentName),
+    };
+    dispatch(
+      DataRoomDownloadFileApiFunc(
+        navigate,
+        data,
+        t,
+        record.displayAttachmentName
+      )
+    );
+  };
+
+  const closeAllFileModal = () => {
+    setFileDataAgenda([]);
+    setAgendaName("");
+    setAgendaIndex(-1);
+    setSubAgendaIndex(-1);
+    setShowMoreFilesView(false);
+  };
+
+  console.log("File Data", agendaName, fileDataAgenda);
+
   return (
     <section>
       <Modal
@@ -34,28 +63,70 @@ const AllFilesModal = ({ setShowMoreFilesView }) => {
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}
         onHide={() => setShowMoreFilesView(false)}
-        size={"sm"}
+        size="md"
+        className="allFileModalClass"
         ModalTitle={
           <>
             <Row>
               <Col lg={12} md={12} sm={12} className={styles["OVer_padding"]}>
-                All Files Modal
+                <p className={styles["FileModalTitle"]}>
+                  {agendaIndex !== -1 && subAgendaIndex === -1
+                    ? agendaIndex + 1 + ". " + agendaName
+                    : agendaIndex !== -1 && subAgendaIndex !== -1
+                    ? agendaIndex +
+                      1 +
+                      "." +
+                      (subAgendaIndex + 1) +
+                      ". " +
+                      agendaName
+                    : null}
+                </p>
               </Col>
             </Row>
           </>
         }
         ModalBody={
           <>
-            <Row>
-              <Col lg={12} md={12} sm={12}>
-                <span className={styles["Vote_title"]}>
-                  Get new computers from Techno City Mall. Also, Get a ne... Get
-                  new computers from Techno City Mall. Also, Get a ne... Get new
-                  computers from Techno City Mall. Also, Get a ne... Get new
-                  computers from Techno City Mall. Also, Get a ne... Get new
-                  computers from Techno City Mall. Also, Get a ne...
-                </span>
+            <Row key={Math.random()}>
+              <Col lg={2} md={2} sm={12}></Col>
+              <Col lg={8} md={8} sm={12} className={styles["FileSectionHeight"]}>
+                {fileDataAgenda?.map((filesData, fileIndex) => (
+                  <div
+                    onClick={() => downloadDocument(filesData)}
+                    className={styles["allFileUI"]}
+                  >
+                    <Row className="m-0 text-center align-items-center">
+                      <Col
+                        lg={10}
+                        md={10}
+                        sm={12}
+                        className="d-flex align-items-center justify-content-start p-0"
+                      >
+                        <div className={styles["fileNameTruncateStyle"]}>
+                          <img
+                            draggable={false}
+                            src={getIconSource(
+                              getFileExtension(filesData?.displayAttachmentName)
+                            )}
+                            alt=""
+                            width={25}
+                          />
+                          <span
+                            onClick={() => downloadDocument(filesData)}
+                            className={styles["fileNameAttachment"]}
+                          >
+                            {filesData?.displayAttachmentName}
+                          </span>
+                        </div>
+                      </Col>
+                      <Col lg={2} md={2} sm={12} className="p-0">
+                        <img draggable={false} src={DownloadIcon} alt="" />
+                      </Col>
+                    </Row>
+                  </div>
+                ))}
               </Col>
+              <Col lg={2} md={2} sm={12}></Col>
             </Row>
           </>
         }
@@ -68,8 +139,11 @@ const AllFilesModal = ({ setShowMoreFilesView }) => {
                 sm={12}
                 className="d-flex justify-content-end gap-2"
               >
-                <Button text="Cancel" className={styles["Cancel_Vote_Modal"]} />
-                <Button text="Save" className={styles["Save_Vote_Modal"]} />
+                <Button
+                  onClick={closeAllFileModal}
+                  text="Close"
+                  className={styles["Cancel_Vote_Modal"]}
+                />
               </Col>
             </Row>
           </>

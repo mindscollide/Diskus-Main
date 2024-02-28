@@ -89,6 +89,8 @@ const AgendaViewer = ({
 
   const [fileDataAgenda, setFileDataAgenda] = useState([]);
   const [agendaName, setAgendaName] = useState("");
+  const [agendaIndex, setAgendaIndex] = useState(-1);
+  const [subAgendaIndex, setSubAgendaIndex] = useState(-1);
 
   useEffect(() => {
     let Data = {
@@ -328,6 +330,10 @@ const AgendaViewer = ({
                                     fileDataAgenda={fileDataAgenda}
                                     setAgendaName={setAgendaName}
                                     agendaName={agendaName}
+                                    setAgendaIndex={setAgendaIndex}
+                                    agendaIndex={agendaIndex}
+                                    setSubAgendaIndex={setSubAgendaIndex}
+                                    subAgendaIndex={subAgendaIndex}
                                     setMainAgendaRemovalIndex={
                                       setMainAgendaRemovalIndex
                                     }
@@ -342,6 +348,7 @@ const AgendaViewer = ({
                                     advanceMeetingModalID={
                                       advanceMeetingModalID
                                     }
+                                    setShowMoreFilesView={setShowMoreFilesView}
                                   />
                                 </>
                               );
@@ -462,7 +469,17 @@ const AgendaViewer = ({
         <ShareEmailModal setShareEmailView={setShareEmailView} />
       ) : null}
       {showMoreFilesView ? (
-        <AllFilesModal setShowMoreFilesView={setShowMoreFilesView} />
+        <AllFilesModal
+          agendaName={agendaName}
+          fileDataAgenda={fileDataAgenda}
+          setShowMoreFilesView={setShowMoreFilesView}
+          agendaIndex={agendaIndex}
+          subAgendaIndex={subAgendaIndex}
+          setFileDataAgenda={setFileDataAgenda}
+          setAgendaName={setAgendaName}
+          setAgendaIndex={setAgendaIndex}
+          setSubAgendaIndex={setSubAgendaIndex}
+        />
       ) : null}
       {participantInfoView ? (
         <ParticipantInfoModal setParticipantInfoView={setParticipantInfoView} />

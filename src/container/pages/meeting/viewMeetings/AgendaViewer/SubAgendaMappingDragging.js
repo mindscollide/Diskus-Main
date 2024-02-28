@@ -47,22 +47,21 @@ const SubAgendaMappingDragging = ({
   index,
   setRows,
   rows,
-  subexpandIndex,
-  expandSubIndex,
-  subExpand,
   apllyLockOnParentAgenda,
   subLockArry,
   setSubLockArray,
-  agendaItemRemovedIndex,
-  setAgendaItemRemovedIndex,
-  setSubajendaRemoval,
-  setsubexpandIndex,
-  setExpandSubIndex,
   setSubExpand,
-  openAdvancePermissionModal,
-  openVoteMOdal,
   editorRole,
   advanceMeetingModalID,
+  setFileDataAgenda,
+  setAgendaName,
+  fileDataAgenda,
+  agendaName,
+  setShowMoreFilesView,
+  setAgendaIndex,
+  agendaIndex,
+  setSubAgendaIndex,
+  subAgendaIndex,
 }) => {
   const { t } = useTranslation();
   //Timepicker
@@ -214,27 +213,18 @@ const SubAgendaMappingDragging = ({
     );
   };
 
-  const startVoting = (record) => {
-    let Data = {
-      MeetingID: advanceMeetingModalID,
-      AgendaID: record.id ? record.id : record.subAgendaID,
-      AgendaVotingID: record.agendaVotingID,
-      DoVotingStart: true,
-    };
-    dispatch(
-      AgendaVotingStatusUpdate(Data, navigate, t, advanceMeetingModalID)
-    );
-  };
-
-  const endVoting = (record) => {
-    let Data = {
-      MeetingID: advanceMeetingModalID,
-      AgendaID: record.id ? record.id : record.subAgendaID,
-      AgendaVotingID: record.agendaVotingID,
-      DoVotingStart: false,
-    };
-    dispatch(
-      AgendaVotingStatusUpdate(Data, navigate, t, advanceMeetingModalID)
+  const showMoreFiles = (fileData, name, index, subindex) => {
+    setFileDataAgenda(fileData);
+    setAgendaName(name);
+    setAgendaIndex(index);
+    setSubAgendaIndex(subindex);
+    setShowMoreFilesView(true);
+    console.log(
+      "Show More Files",
+      fileDataAgenda,
+      agendaName,
+      agendaIndex,
+      subAgendaIndex
     );
   };
 
@@ -427,6 +417,116 @@ const SubAgendaMappingDragging = ({
                                               1 &&
                                             Object.keys(subAgendaData.subfiles)
                                               .length > 0 ? (
+                                              <div
+                                                className={
+                                                  styles["filesParentClass"]
+                                                }
+                                              >
+                                                {subAgendaData.subfiles
+                                                  .slice(0, 3)
+                                                  .map(
+                                                    (filesData, fileIndex) => (
+                                                      <div
+                                                        key={fileIndex}
+                                                        className={
+                                                          styles[
+                                                            "agendaFileAttachedView"
+                                                          ]
+                                                        }
+                                                      >
+                                                        <Row className="m-0 text-center h-100 align-items-center">
+                                                          <Col
+                                                            lg={10}
+                                                            md={10}
+                                                            sm={12}
+                                                            className={`${styles["borderFileName"]} p-0`}
+                                                          >
+                                                            <div
+                                                              className={
+                                                                styles[
+                                                                  "fileNameTruncateStyle"
+                                                                ]
+                                                              }
+                                                            >
+                                                              <img
+                                                                draggable={
+                                                                  false
+                                                                }
+                                                                src={getIconSource(
+                                                                  getFileExtension(
+                                                                    filesData?.displayAttachmentName
+                                                                  )
+                                                                )}
+                                                                alt=""
+                                                              />
+                                                              <span
+                                                                onClick={() =>
+                                                                  downloadDocument(
+                                                                    filesData
+                                                                  )
+                                                                }
+                                                                className={
+                                                                  styles[
+                                                                    "fileNameAttachment"
+                                                                  ]
+                                                                }
+                                                              >
+                                                                {
+                                                                  filesData?.displayAttachmentName
+                                                                }
+                                                              </span>
+                                                            </div>
+                                                          </Col>
+                                                          <Col
+                                                            lg={2}
+                                                            md={2}
+                                                            sm={12}
+                                                            className="p-0"
+                                                          >
+                                                            <img
+                                                              draggable={false}
+                                                              src={DownloadIcon}
+                                                              alt=""
+                                                            />
+                                                          </Col>
+                                                        </Row>
+                                                      </div>
+                                                    )
+                                                  )}
+                                                {subAgendaData.subfiles.length >
+                                                  3 && (
+                                                  <Button
+                                                    text={t("More")}
+                                                    className={
+                                                      styles["Show_More_Button"]
+                                                    }
+                                                    onClick={() =>
+                                                      showMoreFiles(
+                                                        subAgendaData.subfiles,
+                                                        subAgendaData.subTitle,
+                                                        index,
+                                                        subIndex
+                                                      )
+                                                    }
+                                                  />
+                                                )}
+                                              </div>
+                                            ) : data.selectedRadio === 1 &&
+                                              Object.keys(
+                                                subAgendaData.subfiles
+                                              ).length === 0 ? (
+                                              <span
+                                                className={
+                                                  styles["NoFiles_Heading"]
+                                                }
+                                              >
+                                                No Files Attached
+                                              </span>
+                                            ) : null}
+                                            {/* {subAgendaData.subSelectRadio ===
+                                              1 &&
+                                            Object.keys(subAgendaData.subfiles)
+                                              .length > 0 ? (
                                               <>
                                                 <div
                                                   className={
@@ -510,7 +610,7 @@ const SubAgendaMappingDragging = ({
                                                 1 &&
                                               Object.keys(
                                                 subAgendaData.subfiles
-                                              ).length === 0 ? null : null}
+                                              ).length === 0 ? null : null} */}
 
                                             {subAgendaData.subSelectRadio ===
                                               2 && (

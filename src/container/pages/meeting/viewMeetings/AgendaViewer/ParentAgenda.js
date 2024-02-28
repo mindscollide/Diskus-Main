@@ -53,6 +53,11 @@ const ParentAgenda = ({
   setAgendaName,
   fileDataAgenda,
   agendaName,
+  setShowMoreFilesView,
+  setAgendaIndex,
+  agendaIndex,
+  setSubAgendaIndex,
+  subAgendaIndex,
 }) => {
   console.log(data, "datadatadatadata");
   console.log("EditorRoleEditorRole", editorRole);
@@ -107,11 +112,19 @@ const ParentAgenda = ({
     return exists;
   };
 
-  const showMoreFiles = (fileData, name) => {
+  const showMoreFiles = (fileData, name, index) => {
     setFileDataAgenda(fileData);
     setAgendaName(name);
-
-    console.log("Show More Files", fileDataAgenda, agendaName);
+    setAgendaIndex(index);
+    setSubAgendaIndex(-1);
+    setShowMoreFilesView(true);
+    console.log(
+      "Show More Files",
+      fileDataAgenda,
+      agendaName,
+      agendaIndex,
+      subAgendaIndex
+    );
   };
 
   useEffect(() => {
@@ -396,7 +409,11 @@ const ParentAgenda = ({
                                     text={t("More")}
                                     className={styles["Show_More_Button"]}
                                     onClick={() =>
-                                      showMoreFiles(data.files, data.title)
+                                      showMoreFiles(
+                                        data.files,
+                                        data.title,
+                                        index
+                                      )
                                     }
                                   />
                                 )}
@@ -494,7 +511,13 @@ const ParentAgenda = ({
                                   <Button
                                     text={t("More")}
                                     className={styles["Show_More_Button"]}
-                                    onClick={showMoreFiles}
+                                    onClick={() =>
+                                      showMoreFiles(
+                                        data.files,
+                                        data.title,
+                                        index
+                                      )
+                                    }
                                   />
                                 )}
                               </div>
@@ -546,6 +569,15 @@ const ParentAgenda = ({
                                 openVoteMOdal={openVoteMOdal}
                                 advanceMeetingModalID={advanceMeetingModalID}
                                 editorRole={editorRole}
+                                setFileDataAgenda={setFileDataAgenda}
+                                fileDataAgenda={fileDataAgenda}
+                                setAgendaName={setAgendaName}
+                                agendaName={agendaName}
+                                setAgendaIndex={setAgendaIndex}
+                                agendaIndex={agendaIndex}
+                                setSubAgendaIndex={setSubAgendaIndex}
+                                subAgendaIndex={subAgendaIndex}
+                                setShowMoreFilesView={setShowMoreFilesView}
                               />
                             </div>
                           </>

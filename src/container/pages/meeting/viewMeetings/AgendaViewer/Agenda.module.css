@@ -40,7 +40,7 @@
   width: 90% !important;
   height: auto !important;
   min-height: 126px !important;
-  border: 1px solid #e1e1e1 !important;
+  border: 1px solid #e1e1e1;
   border-radius: 0 !important;
   padding: 10px 15px !important;
   margin-left: 10px !important;
