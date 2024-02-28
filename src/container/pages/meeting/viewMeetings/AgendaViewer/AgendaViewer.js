@@ -325,9 +325,9 @@ const AgendaViewer = ({
                                     rows={rows}
                                     setRows={setRows}
                                     setFileDataAgenda={setFileDataAgenda}
-                                    // fileDataAgenda={fileDataAgenda}
+                                    fileDataAgenda={fileDataAgenda}
                                     setAgendaName={setAgendaName}
-                                    // agendaName={agendaName}
+                                    agendaName={agendaName}
                                     setMainAgendaRemovalIndex={
                                       setMainAgendaRemovalIndex
                                     }
