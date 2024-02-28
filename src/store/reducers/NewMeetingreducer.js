@@ -1689,7 +1689,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         );
         let resultedVideoURL = generateURLParticipant(
           extractedBaseURLCaller,
-          UserName,
+          randomGuestName,
           roomID
         );
         return {
