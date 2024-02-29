@@ -76,6 +76,7 @@ import PrivateRoutes from "./private_routes";
 import PrivateRouteDataroom from "./private_route_dataroom";
 import Reports from "../container/Admin/Reports/Reports";
 import SignatureViewer from "../components/elements/signaturewebviewer/signatureviewer";
+import SignUpOrganizationUM from "../container/pages/UserMangement/SignUpOrganizationUM/SignUpOrganizationUM";
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
@@ -191,6 +192,10 @@ export const router = createHashRouter(
       <Route Route element={<PrivateRoutes />}>
         <Route path="/onboard" element={<OnBoard />} />
       </Route>
+
+      {/* User Management Routes Defined Below  */}
+
+      <Route path="/signupUsermanagement" element={<SignUpOrganizationUM />} />
     </>
   )
 );
