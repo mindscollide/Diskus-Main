@@ -292,10 +292,6 @@ const AgendaViewer = ({
                         <img width={20} src={ShareIcon} alt="" />
                         Select Agenda (TEMP)
                       </span>
-                      <span onClick={showMoreFilesModal} className="border-0">
-                        <img width={20} src={ShareIcon} alt="" />
-                        Show More Files (TEMP)
-                      </span>
                     </div>
                     {/* ) : null} */}
                   </div>

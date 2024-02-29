@@ -5,25 +5,13 @@ import {
   Switch,
   TextField,
   Table,
+  Radio,
 } from "../../../../../../components/elements";
-import { Checkbox } from "antd";
 import styles from "./SelectAgendaModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import Select from "react-select";
 import { useNavigate } from "react-router-dom";
-import Cast from "../../../../../../assets/images/CAST.svg";
-import {
-  showVoteAgendaModal,
-  showVoteConfirmationModal,
-} from "../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
-import redcrossIcon from "../../../../../../assets/images/Artboard 9.png";
-import Leftploygon from "../../../../../../assets/images/leftdirection.svg";
-import Rightploygon from "../../../../../../assets/images/rightdirection.svg";
-import Plus from "../../../../../../assets/images/Meeting plus.png";
-import profile from "../../../../../../assets/images/newprofile.png";
-import { validateInput } from "../../../../../../commen/functions/regex";
 
 const SelectAgendaModal = ({ setAgendaSelectOptionView }) => {
   return (
@@ -34,12 +22,12 @@ const SelectAgendaModal = ({ setAgendaSelectOptionView }) => {
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}
         onHide={() => setAgendaSelectOptionView(false)}
-        size={"sm"}
+        size={"md"}
         ModalTitle={
           <>
             <Row>
               <Col lg={12} md={12} sm={12} className={styles["OVer_padding"]}>
-                Select Agenda Modal
+                Select Option
               </Col>
             </Row>
           </>
