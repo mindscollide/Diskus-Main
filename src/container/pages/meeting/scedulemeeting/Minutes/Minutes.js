@@ -388,13 +388,11 @@ const Minutes = ({
     setAgenda(true);
   };
 
-  const handleGeneralButtonClick = async () => {
+  const handleGeneralButtonClick = () => {
     let Data = {
       MeetingID: Number(currentMeeting),
     };
-    await dispatch(
-      GetAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting)
-    );
+    dispatch(GetAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
     setAgenda(false);
     setGeneral(true);
   };
