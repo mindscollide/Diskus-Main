@@ -1427,6 +1427,9 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                                     className={
                                                       styles["FileName"]
                                                     }
+                                                    title={
+                                                      data.DisplayAttachmentName
+                                                    }
                                                   >
                                                     {data.DisplayAttachmentName}
                                                   </span>

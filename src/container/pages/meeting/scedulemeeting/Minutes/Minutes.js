@@ -1026,6 +1026,9 @@ const Minutes = ({
                                                 />
                                                 <span
                                                   className={styles["FileName"]}
+                                                  title={
+                                                    data.DisplayAttachmentName
+                                                  }
                                                 >
                                                   {data.DisplayAttachmentName}
                                                 </span>

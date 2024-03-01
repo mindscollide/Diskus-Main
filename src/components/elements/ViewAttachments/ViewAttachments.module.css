@@ -32,9 +32,10 @@ body[dir="rtl"] .View_attachment_heading {
 }
 
 .notes-attachment-text {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: center;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  text-align: center !important;
+  white-space: nowrap !important;
 }
 
 body[dir="rtl"] .notes-attachment-text {

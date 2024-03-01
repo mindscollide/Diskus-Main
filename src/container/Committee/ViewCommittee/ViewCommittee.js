@@ -802,7 +802,10 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
                                       width="10px"
                                       className={styles["IconPDF"]}
                                     />
-                                    <span className={styles["FileName"]}>
+                                    <span
+                                      className={styles["FileName"]}
+                                      title={data.DisplayAttachmentName}
+                                    >
                                       {data.DisplayAttachmentName}
                                     </span>
                                   </Col>
