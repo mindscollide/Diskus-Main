@@ -339,6 +339,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
         "Cancelled",
         "Completed",
       ],
+      filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
