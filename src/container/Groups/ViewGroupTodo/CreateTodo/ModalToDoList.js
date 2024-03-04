@@ -558,7 +558,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         TasksAttachments: newAttachmentData,
       };
       await dispatch(
-        saveTaskDocumentsAndAssigneesApi(navigate, Data, t, 1, setShow)
+        saveTaskDocumentsAndAssigneesApi(navigate, Data, t, 3, setShow)
       );
       setTask({
         ...task,
