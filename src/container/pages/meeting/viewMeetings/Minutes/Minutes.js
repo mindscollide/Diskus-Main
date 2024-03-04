@@ -382,11 +382,11 @@ const Minutes = ({
     setAgenda(true);
   };
 
-  const handleGeneralButtonClick = async () => {
+  const handleGeneralButtonClick = () => {
     let Meet = {
       MeetingID: Number(advanceMeetingModalID),
     };
-    await dispatch(
+    dispatch(
       GetAllGeneralMinutesApiFunc(navigate, t, Meet, advanceMeetingModalID)
     );
     setAgenda(false);

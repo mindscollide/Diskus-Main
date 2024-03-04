@@ -246,6 +246,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
         },
       ],
       defaultFilteredValue: ["10", "9", "8", "2", "1", "4"],
+      filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),

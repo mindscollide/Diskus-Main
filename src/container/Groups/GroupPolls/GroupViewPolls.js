@@ -221,6 +221,7 @@ const GroupViewPolls = ({ groupStatus }) => {
         },
       ],
       defaultFilteredValue: ["Published", "UnPublished", "Expired"], // Use the actual status values here
+      filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
