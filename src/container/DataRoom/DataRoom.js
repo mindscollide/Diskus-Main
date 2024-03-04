@@ -960,18 +960,20 @@ const DataRoom = () => {
       filters: [
         {
           text: t("Last-modified"),
-          value: 2,
+          value: "2",
         },
         {
           text: t("Last-modified-by-me"),
-          value: 3,
+          value: "3",
         },
         {
           text: t("Last-open-by-me"),
-          value: 4,
+          value: "4",
         },
         // ... other filters ...
       ],
+      defaultFilteredValue: ["2", "3", "4"],
+      filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <DownOutlined className="filter-chevron-icon-todolist" />
       ),
@@ -1635,18 +1637,20 @@ const DataRoom = () => {
       filters: [
         {
           text: t("Last-modified"),
-          value: 2,
+          value: "2",
         },
         {
           text: t("Last-modified-by-me"),
-          value: 3,
+          value: "3",
         },
         {
           text: t("Last-open-by-me"),
-          value: 4,
+          value: "4",
         },
         // ... other filters ...
       ],
+      defaultFilteredValue: ["2", "3", "4"],
+      filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <DownOutlined className="filter-chevron-icon-todolist" />
       ),
