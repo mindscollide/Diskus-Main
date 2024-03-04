@@ -785,10 +785,8 @@ const TodoList = () => {
   const scroll = {
     y: "58vh",
     scrollbar: {
-      // You can adjust the width and distance as needed
       verticalWidth: 20, // Width of the vertical scrollbar
       handleSize: 10, // Distance between data and scrollbar
-      // Other scrollbar options
     },
   };
 

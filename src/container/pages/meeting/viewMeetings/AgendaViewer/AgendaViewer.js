@@ -448,7 +448,18 @@ const AgendaViewer = ({
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
 
       {fullScreenView ? (
-        <FullScreenAgendaModal setFullScreenView={setFullScreenView} />
+        <FullScreenAgendaModal
+          setFullScreenView={setFullScreenView}
+          setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+          advanceMeetingModalID={advanceMeetingModalID}
+          setAdvanceMeetingModalID={setAdvanceMeetingModalID}
+          setMeetingMaterial={setMeetingMaterial}
+          setMinutes={setMinutes}
+          editorRole={editorRole}
+          setEdiorRole={setEdiorRole}
+          rows={rows}
+          setRows={setRows}
+        />
       ) : null}
       {agendaSelectOptionView ? (
         <SelectAgendaModal

@@ -50,6 +50,21 @@
   border-right: none !important;
 }
 
+body[dir="rtl"] .SubajendaBox {
+  width: 90% !important;
+  height: auto !important;
+  min-height: 126px !important;
+  border: 1px solid #e1e1e1;
+  border-radius: 0 !important;
+  padding: 10px 15px !important;
+  margin-left: 10px !important;
+  position: relative;
+  margin-bottom: 25px;
+  border-bottom: none !important;
+  border-left: none !important;
+  border-right: 1px solid #e1e1e1 !important;
+}
+
 .SubajendaBox_Inactive {
   width: 90% !important;
   height: auto !important;
@@ -342,9 +357,6 @@ body[dir="rtl"] .BackGroundNewImplemented {
 
 .Arrow {
   cursor: pointer !important;
-  /* display: flex !important;
-  align-items: center !important;
-  justify-content: center; */
   transition: transform 0.5s ease;
   transform: rotate(180deg);
   position: absolute;
@@ -352,12 +364,20 @@ body[dir="rtl"] .BackGroundNewImplemented {
   top: 10px;
 }
 
+body[dir="rtl"] .Arrow {
+  cursor: pointer !important;
+  transition: transform 0.5s ease;
+  transform: rotate(180deg);
+  position: absolute;
+  right: auto;
+  top: 10px;
+  left: 15px;
+}
+
 .SubAgendaArrow {
   cursor: pointer !important;
   display: flex !important;
   align-items: center !important;
-  /* margin-top: 58px !important;
-  margin-left: 6px !important; */
 }
 
 body[dir="rtl"] .SubAgendaArrow {
@@ -366,15 +386,17 @@ body[dir="rtl"] .SubAgendaArrow {
 
 .Arrow_Expanded {
   cursor: pointer !important;
-  /* display: flex !important;
-  align-items: center !important;
-  justify-content: center; */
   transition: transform 0.5s ease;
   position: absolute;
   right: 15px;
   top: 10px;
-  /* margin-top: 150px !important;
-/* } */
+}
+
+body[dir="rtl"] .Arrow_Expanded {
+  position: absolute;
+  right: auto;
+  top: 10px;
+  left: 15px;
 }
 
 .subAgendaArrowExpand {
@@ -382,8 +404,6 @@ body[dir="rtl"] .SubAgendaArrow {
   display: flex !important;
   align-items: center !important;
   justify-content: center;
-  /* margin-top: 150px !important;
-  margin-left: 6px !important; */
 }
 
 body[dir="rtl"] .subAgendaArrowExpand {
@@ -572,6 +592,7 @@ p.agendaCreaterTime {
   font-size: 18px;
   line-height: 2.8;
   margin: 0;
+  text-align: end;
   color: #5a5a5a;
 }
 
@@ -814,6 +835,22 @@ body[dir="rtl"] img.AttachmentIconImage {
   padding: 7px;
 }
 
+body[dir="rtl"] .popup-agenda-menu {
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #e1e1e1;
+  z-index: 9;
+  top: 32px;
+  right: auto;
+  left: 0;
+  transition: opacity 0.3s ease;
+  display: block;
+  filter: drop-shadow(0px 0px 15px rgba(0, 0, 0, 0.25));
+  border-radius: 6px;
+  width: 330px;
+  padding: 7px;
+}
+
 .popup-agenda-menu span {
   color: #5a5a5a;
   text-decoration: none;
@@ -827,8 +864,26 @@ body[dir="rtl"] img.AttachmentIconImage {
   margin-right: 15px;
 }
 
+body[dir="rtl"] .popup-agenda-menu span {
+  color: #5a5a5a;
+  text-decoration: none;
+  text-align: right;
+  display: block;
+  font-size: 18px !important;
+  font-family: "MontserratSemiBold";
+  border-bottom: 3px solid #d8d8d8;
+  padding: 8px;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
 .popup-agenda-menu span img {
   margin-right: 10px;
+}
+
+body[dir="rtl"] .popup-agenda-menu span img {
+  margin-right: auto;
+  margin-left: 10px;
 }
 
 span.dashMinute {
@@ -843,12 +898,14 @@ span.dashMinute {
   display: flex;
 }
 
-.filesSubParentClass {
+.filesParentClassSubAgenda {
   gap: 20px;
   margin-bottom: 20px;
   display: flex;
-  margin-left: 23px;
+  margin-left: 22px;
 }
+
+
 
 .fileNameAttachment {
   font-style: normal;
@@ -863,8 +920,30 @@ span.dashMinute {
   white-space: nowrap;
 }
 
+body[dir="rtl"] .fileNameAttachment {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  text-decoration-line: underline;
+  color: #5a5a5c;
+  font-family: "MontserratMedium-500";
+  margin-left: 0;
+  margin-right: 10px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 .borderFileName {
   border-right: 1px solid #e1e1e1;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+body[dir="rtl"] .borderFileName {
+  border-right: none;
+  border-left: 1px solid #e1e1e1;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;

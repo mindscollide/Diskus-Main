@@ -25,6 +25,18 @@ span.fileNameAttachment {
   pointer-events: none;
 }
 
+body[dir="rtl"] span.fileNameAttachment {
+  margin-left: 0px;
+  margin-right: 20px;
+  font-family: "MontserratRegular";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 13px;
+  text-decoration-line: underline;
+  color: #5a5a5a;
+  pointer-events: none;
+}
+
 .Cancel_Vote_Modal,
 .Cancel_Vote_Modal:is(:hover, :active, :focus, :focus-visible, :target) {
   border: 1px solid #e1e1e1 !important;

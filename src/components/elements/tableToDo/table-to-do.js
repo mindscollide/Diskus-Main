@@ -24,27 +24,18 @@ const CustomTableToDo = ({
       <Text className="labelTitle">{labelTitle}</Text>
       <Table
         rowClassName={id}
-        // rowSelection={rowSelection}
         columns={column}
         dataSource={rows}
         className={className}
         loading={loading}
         onChange={onChange}
         onRow={onRow}
-        // bordered
         scroll={scroll}
         locale={locale}
         rowSelection={rowSelection}
         size={size}
         sortDirections={sortDirections}
         pagination={pagination}
-        // filterDropdown={(filterProps) => (
-        //   <div>
-        //     {/* filter dropdown content */}
-        //     <Button onClick={filterProps.confirmFilter}>Custom OK Text</Button>
-        //   </div>
-        // )}
-        // scroll={scroll}
       />
     </>
   );

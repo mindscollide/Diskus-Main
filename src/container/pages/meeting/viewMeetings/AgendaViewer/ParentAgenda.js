@@ -243,7 +243,7 @@ const ParentAgenda = ({
                                 lg={12}
                                 md={12}
                                 sm={12}
-                                className="text-end p-0"
+                                className="p-0"
                               >
                                 <p
                                   className={`${styles["agendaCreaterTime"]} MontserratMedium-500`}

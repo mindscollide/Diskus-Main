@@ -33,9 +33,8 @@ import ParticipantsInfo from "./../AV-Images/Participants-Icon.png";
 import PrintIcon from "./../AV-Images/Print-Icon.png";
 import ExportIcon from "./../AV-Images/Export-Icon.png";
 import ShareIcon from "./../AV-Images/Share-Icon.png";
-import FullScreenAgendaPrint from "./FullScreenAgendaPrint";
 
-const FullScreenAgendaModal = ({
+const FullScreenAgendaPrint = ({
   setFullScreenView,
   setViewAdvanceMeetingModal,
   advanceMeetingModalID,
@@ -45,8 +44,6 @@ const FullScreenAgendaModal = ({
   editorRole,
   setEdiorRole,
   setactionsPage,
-  rows,
-  setRows,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -75,7 +72,7 @@ const FullScreenAgendaModal = ({
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let currentView = localStorage.getItem("MeetingCurrentView");
 
-  // const [rows, setRows] = useState([]);
+  const [rows, setRows] = useState([]);
   const [emptyStateRows, setEmptyStateRows] = useState(false);
 
   const [agendaSelectOptionView, setAgendaSelectOptionView] = useState(false);
@@ -90,34 +87,34 @@ const FullScreenAgendaModal = ({
   const [agendaIndex, setAgendaIndex] = useState(-1);
   const [subAgendaIndex, setSubAgendaIndex] = useState(-1);
 
-  // useEffect(() => {
-  //   let Data = {
-  //     MeetingID: Number(advanceMeetingModalID),
-  //   };
-  //   dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
-  //   return () => {
-  //     dispatch(clearAgendaReducerState());
-  //     setRows([]);
-  //   };
-  // }, []);
+  useEffect(() => {
+    let Data = {
+      MeetingID: Number(advanceMeetingModalID),
+    };
+    dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
+    return () => {
+      dispatch(clearAgendaReducerState());
+      setRows([]);
+    };
+  }, []);
 
   const handleCancelMeetingNoPopup = () => {
-    // let searchData = {
-    //   Date: "",
-    //   Title: "",
-    //   HostName: "",
-    //   UserID: Number(userID),
-    //   PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-    //   Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-    //   PublishedMeetings:
-    //     currentView && Number(currentView) === 1 ? true : false,
-    // };
-    // dispatch(searchNewUserMeeting(navigate, searchData, t));
-    // localStorage.removeItem("folderDataRoomMeeting");
-    // setViewAdvanceMeetingModal(false);
-    // dispatch(viewAdvanceMeetingPublishPageFlag(false));
-    // dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-    // setactionsPage(false);
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+      PublishedMeetings:
+        currentView && Number(currentView) === 1 ? true : false,
+    };
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
+    localStorage.removeItem("folderDataRoomMeeting");
+    setViewAdvanceMeetingModal(false);
+    dispatch(viewAdvanceMeetingPublishPageFlag(false));
+    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+    setactionsPage(false);
   };
 
   const handleClickSave = () => {
@@ -125,15 +122,15 @@ const FullScreenAgendaModal = ({
     setMeetingMaterial(false);
   };
 
-  // useEffect(() => {
-  //   if (
-  //     GetAdvanceMeetingAgendabyMeetingIDData !== null &&
-  //     GetAdvanceMeetingAgendabyMeetingIDData !== undefined &&
-  //     GetAdvanceMeetingAgendabyMeetingIDData.length !== 0
-  //   ) {
-  //     setRows(GetAdvanceMeetingAgendabyMeetingIDData.agendaList);
-  //   }
-  // }, [GetAdvanceMeetingAgendabyMeetingIDData]);
+  useEffect(() => {
+    if (
+      GetAdvanceMeetingAgendabyMeetingIDData !== null &&
+      GetAdvanceMeetingAgendabyMeetingIDData !== undefined &&
+      GetAdvanceMeetingAgendabyMeetingIDData.length !== 0
+    ) {
+      setRows(GetAdvanceMeetingAgendabyMeetingIDData.agendaList);
+    }
+  }, [GetAdvanceMeetingAgendabyMeetingIDData]);
 
   useEffect(() => {
     if (rows.length !== 0) {
@@ -148,57 +145,59 @@ const FullScreenAgendaModal = ({
   }, [rows]);
 
   return (
-    <Modal
-      show={true}
-      modalFooterClassName={"d-block"}
-      modalHeaderClassName={"d-block"}
-      onHide={() => setFullScreenView(false)}
-      size={"xl"}
-      className="FullScreenModal"
-      ModalTitle={"Test"}
-      ModalBody={
-        <section>
-          {emptyStateRows === true &&
-          (editorRole.role === "Agenda Contributor" ||
-            editorRole.role === "Participant") ? (
-            <section>
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex justify-content-center mt-3"
-                >
-                  <img
-                    draggable={false}
-                    src={emptyContributorState}
-                    width="274.05px"
-                    alt=""
-                    height="230.96px"
-                    className={styles["Image-Add-Agenda"]}
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex justify-content-center mt-3"
-                >
-                  <span className={styles["Empty_state_heading"]}>
-                    {t("No-agenda-availabe-to-discuss").toUpperCase()}
-                  </span>
-                </Col>
-              </Row>
-            </section>
-          ) : null}
-          <section>
+    <section>
+      <Modal
+        show={true}
+        modalFooterClassName={"d-block"}
+        modalHeaderClassName={"d-block"}
+        onHide={() => setFullScreenView(false)}
+        size={"xl"}
+        className="FullScreenModal"
+        ModalTitle={"Test"}
+        ModalBody={
+          <>
             {emptyStateRows === true &&
             (editorRole.role === "Agenda Contributor" ||
-              editorRole.role === "Participant") ? null : (
+              editorRole.role === "Participant") ? (
               <>
-                {/* <DragDropContext
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-center mt-3"
+                  >
+                    <img
+                      draggable={false}
+                      src={emptyContributorState}
+                      width="274.05px"
+                      alt=""
+                      height="230.96px"
+                      className={styles["Image-Add-Agenda"]}
+                    />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-center mt-3"
+                  >
+                    <span className={styles["Empty_state_heading"]}>
+                      {t("No-agenda-availabe-to-discuss").toUpperCase()}
+                    </span>
+                  </Col>
+                </Row>
+              </>
+            ) : null}
+            <>
+              <section>
+                {emptyStateRows === true &&
+                (editorRole.role === "Agenda Contributor" ||
+                  editorRole.role === "Participant") ? null : (
+                  <>
+                    <DragDropContext
                       onDragEnd={(result) => onDragEnd(result, rows, setRows)}
                     >
                       <Row>
@@ -315,41 +314,44 @@ const FullScreenAgendaModal = ({
                           </Droppable>
                         </Col>
                       </Row>
-                    </DragDropContext> */}
-              </>
-            )}
-            <Row>
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex justify-content-end gap-2 mt-2"
-              >
-                <Button
-                  text={t("Cancel")}
-                  className={styles["Cancel_Meeting_Details"]}
-                  onClick={handleCancelMeetingNoPopup}
-                />
+                    </DragDropContext>
+                  </>
+                )}
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-end gap-2 mt-2"
+                  >
+                    <Button
+                      text={t("Cancel")}
+                      className={styles["Cancel_Meeting_Details"]}
+                      onClick={handleCancelMeetingNoPopup}
+                    />
 
-                <Button
-                  text={t("Next")}
-                  onClick={handleClickSave}
-                  className={styles["Save_Classname"]}
-                  disableBtn={
-                    Number(editorRole.status) === 11 ||
-                    Number(editorRole.status) === 12 ||
-                    Number(editorRole.status) === 1
-                      ? true
-                      : false
-                  }
-                />
-              </Col>
-            </Row>
-          </section>
-        </section>
-      }
-    />
+                    <Button
+                      text={t("Next")}
+                      onClick={handleClickSave}
+                      className={styles["Save_Classname"]}
+                      disableBtn={
+                        Number(editorRole.status) === 11 ||
+                        Number(editorRole.status) === 12 ||
+                        Number(editorRole.status) === 1
+                          ? true
+                          : false
+                      }
+                    />
+                  </Col>
+                </Row>
+              </section>
+            </>
+          </>
+        }
+        ModalFooter={"Test"}
+      />
+    </section>
   );
 };
 
-export default FullScreenAgendaModal;
+export default FullScreenAgendaPrint;

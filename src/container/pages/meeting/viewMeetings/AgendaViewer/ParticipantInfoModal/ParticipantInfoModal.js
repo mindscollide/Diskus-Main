@@ -5,27 +5,215 @@ import {
   Switch,
   TextField,
   Table,
+  TableToDo,
 } from "../../../../../../components/elements";
 import { Checkbox } from "antd";
+import CrossIcon from "./../AV-Images/Cross_Icon.png";
 import styles from "./ParticipantInfoModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import Select from "react-select";
 import { useNavigate } from "react-router-dom";
-import Cast from "../../../../../../assets/images/CAST.svg";
-import {
-  showVoteAgendaModal,
-  showVoteConfirmationModal,
-} from "../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
-import redcrossIcon from "../../../../../../assets/images/Artboard 9.png";
-import Leftploygon from "../../../../../../assets/images/leftdirection.svg";
-import Rightploygon from "../../../../../../assets/images/rightdirection.svg";
-import Plus from "../../../../../../assets/images/Meeting plus.png";
-import profile from "../../../../../../assets/images/newprofile.png";
-import { validateInput } from "../../../../../../commen/functions/regex";
 
 const ParticipantInfoModal = ({ setParticipantInfoView }) => {
+  const { t } = useTranslation();
+
+  // const [rowsParticipants, setRowsParticipants] = useState([]);
+
+  const rowsParticipants = [
+    {
+      key: "1",
+      name: "John Doe",
+      userEmail: "john.doe@example.com",
+      designation: "Software Engineer",
+      status: "Present",
+      joinTime: "11-01-2024 | 09:00 AM",
+      leaveTime: "11-01-2024 | 05:00 PM",
+      minutes: 480,
+    },
+    {
+      key: "1",
+      name: "John Doe",
+      userEmail: "john.doe@example.com",
+      designation: "Software Engineer",
+      status: "Present",
+      joinTime: "11-01-2024 | 09:00 AM",
+      leaveTime: "11-01-2024 | 05:00 PM",
+      minutes: 480,
+    },
+    {
+      key: "1",
+      name: "John Doe",
+      userEmail: "john.doe@example.com",
+      designation: "Software Engineer",
+      status: "Present",
+      joinTime: "11-01-2024 | 09:00 AM",
+      leaveTime: "11-01-2024 | 05:00 PM",
+      minutes: 480,
+    },
+    {
+      key: "2",
+      name: "Jane Smith",
+      userEmail: "jane.smith@example.com",
+      designation: "Product Manager",
+      status: "Absent",
+      joinTime: "11-01-2024 | 10:30 AM",
+      leaveTime: "11-01-2024 | 04:30 PM",
+      minutes: 360,
+    },
+    {
+      key: "3",
+      name: "Michael Johnson",
+      userEmail: "michael.johnson@example.com",
+      designation: "Data Analyst",
+      status: "Present",
+      joinTime: "11-01-2024 | 08:45 AM",
+      leaveTime: "11-01-2024 | 05:15 PM",
+      minutes: 510,
+    },
+    {
+      key: "4",
+      name: "Emily Brown",
+      userEmail: "emily.brown@example.com",
+      designation: "UX Designer",
+      status: "Present",
+      joinTime: "11-01-2024 | 09:15 AM",
+      leaveTime: "11-01-2024 | 05:45 PM",
+      minutes: 510,
+    },
+    {
+      key: "5",
+      name: "David Wilson",
+      userEmail: "david.wilson@example.com",
+      designation: "Project Manager",
+      status: "Present",
+      joinTime: "11-01-2024 | 09:30 AM",
+      leaveTime: "11-01-2024 | 06:00 PM",
+      minutes: 510,
+    },
+    {
+      key: "6",
+      name: "Sophia Lee",
+      userEmail: "sophia.lee@example.com",
+      designation: "Frontend Developer",
+      status: "Present",
+      joinTime: "11-01-2024 | 09:15 AM",
+      leaveTime: "11-01-2024 | 06:15 PM",
+      minutes: 540,
+    },
+    {
+      key: "7",
+      name: "William Taylor",
+      userEmail: "william.taylor@example.com",
+      designation: "QA Engineer",
+      status: "Absent",
+      joinTime: "11-01-2024 | 09:45 AM",
+      leaveTime: "11-01-2024 | 05:30 PM",
+      minutes: 405,
+    },
+    {
+      key: "8",
+      name: "Olivia Martinez",
+      userEmail: "olivia.martinez@example.com",
+      designation: "UI Designer",
+      status: "Present",
+      joinTime: "11-01-2024 | 10:00 AM",
+      leaveTime: "11-01-2024 | 06:30 PM",
+      minutes: 510,
+    },
+    {
+      key: "9",
+      name: "Daniel Anderson",
+      userEmail: "daniel.anderson@example.com",
+      designation: "Backend Developer",
+      status: "Present",
+      joinTime: "11-01-2024 | 09:00 AM",
+      leaveTime: "11-01-2024 | 06:00 PM",
+      minutes: 540,
+    },
+    {
+      key: "10",
+      name: "Ava Harris",
+      userEmail: "ava.harris@example.com",
+      designation: "System Administrator",
+      status: "Remote",
+      joinTime: "11-01-2024 | 09:30 AM",
+      leaveTime: "11-01-2024 | 06:15 PM",
+      minutes: 525,
+    },
+    // Add more data as needed
+  ];
+
+  const participantColumns = [
+    {
+      title: t("Name"),
+      dataIndex: "name",
+      key: "name",
+      className: "nameParticipant",
+      width: "150px",
+      ellipsis: true,
+    },
+    {
+      title: t("User-email"),
+      dataIndex: "userEmail",
+      key: "userEmail",
+      className: "emailParticipant",
+      width: "200px",
+      ellipsis: true,
+    },
+    {
+      title: t("Designation"),
+      dataIndex: "designation",
+      key: "designation",
+      className: "designationParticipant",
+      width: "150px",
+      ellipsis: true,
+    },
+    {
+      title: t("Status"),
+      dataIndex: "status",
+      key: "status",
+      align: "center",
+      className: "statusParticipant",
+      render: (text, record) => (
+        <p
+          className={
+            text === "Absent"
+              ? styles["absentStatus"]
+              : text === "Present"
+              ? styles["presentStatus"]
+              : styles["remoteStatus"]
+          }
+        >
+          {text}
+        </p>
+      ),
+    },
+    {
+      title: t("Join-time"),
+      dataIndex: "joinTime",
+      key: "joinTime",
+      align: "center",
+      className: "joinTimeParticipant",
+      width: "200px",
+      ellipsis: true,
+    },
+    {
+      title: t("Leave-time"),
+      dataIndex: "leaveTime",
+      key: "leaveTime",
+      className: "leaveTimeParticipant",
+      width: "200px",
+      ellipsis: true,
+    },
+    {
+      title: t("Minutes"),
+      dataIndex: "minutes",
+      key: "minutes",
+      className: "minutesParticipant",
+    },
+  ];
+
   return (
     <section>
       <Modal
@@ -34,42 +222,52 @@ const ParticipantInfoModal = ({ setParticipantInfoView }) => {
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}
         onHide={() => setParticipantInfoView(false)}
-        size={"sm"}
+        size={"xl"}
+        className="ParticipantAVModal"
         ModalTitle={
           <>
             <Row>
-              <Col lg={12} md={12} sm={12} className={styles["OVer_padding"]}>
-                Participant Info Modal
+              <Col lg={12} md={12} sm={12} className="position-relative">
+                <p className={styles["participantInfoHeading"]}>
+                  {t("Participant-info")}
+                </p>
+                <img
+                  onClick={() => setParticipantInfoView(false)}
+                  className={styles["image-close"]}
+                  src={CrossIcon}
+                  alt=""
+                />
               </Col>
             </Row>
           </>
         }
         ModalBody={
           <>
-            <Row>
-              <Col lg={12} md={12} sm={12}>
-                <span className={styles["Vote_title"]}>
-                  Get new computers from Techno City Mall. Also, Get a ne... Get
-                  new computers from Techno City Mall. Also, Get a ne... Get new
-                  computers from Techno City Mall. Also, Get a ne... Get new
-                  computers from Techno City Mall. Also, Get a ne... Get new
-                  computers from Techno City Mall. Also, Get a ne...
-                </span>
-              </Col>
-            </Row>
+            <TableToDo
+              sortDirections={["descend", "ascend"]}
+              column={participantColumns}
+              className={"ParticipantAV"}
+              rows={rowsParticipants}
+              // scroll={scroll}
+              pagination={false}
+              scroll={rowsParticipants.length > 10 ? { y: 385 } : undefined}
+            />
           </>
         }
         ModalFooter={
           <>
-            <Row className="mt-4">
+            <Row>
               <Col
                 lg={12}
                 md={12}
                 sm={12}
                 className="d-flex justify-content-end gap-2"
               >
-                <Button onClick={() => setParticipantInfoView(false)} text="Cancel" className={styles["Cancel_Vote_Modal"]} />
-                <Button onClick={() => setParticipantInfoView(false)} text="Save" className={styles["Save_Vote_Modal"]} />
+                <Button
+                  onClick={() => setParticipantInfoView(false)}
+                  text={t("Close")}
+                  className={styles["Send_Notify"]}
+                />
               </Col>
             </Row>
           </>
