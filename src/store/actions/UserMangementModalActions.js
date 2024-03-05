@@ -14,4 +14,15 @@ const showRequestExtentionModal = (response) => {
   };
 };
 
-export { showUpgradeNowModal, showRequestExtentionModal };
+const showCreateAddtionalUsersModal = (response) => {
+  return {
+    type: actions.CREATE_ADDITIONAL_MODALS,
+    response: response,
+  };
+};
+
+export {
+  showUpgradeNowModal,
+  showRequestExtentionModal,
+  showCreateAddtionalUsersModal,
+};

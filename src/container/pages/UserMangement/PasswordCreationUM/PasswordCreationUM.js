@@ -11,10 +11,17 @@ import PasswordChecklist from "react-password-checklist";
 import PasswordHideEyeIcon from "../../../../assets/images/newElements/password_hide.svg";
 import DiskusAuthPageLogo from "../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { Link } from "react-router-dom";
+import { showCreateAddtionalUsersModal } from "../../../../store/actions/UserMangementModalActions";
+import { useDispatch } from "react-redux";
+import CreateAddtionalUsersModal from "../ModalsUserManagement/CreateAdditionalusersModal/CreateAddtionalUsersModal";
 const PasswordCreationUM = () => {
   const { t, i18n } = useTranslation();
 
+  const dispatch = useDispatch();
+
   const passwordRef = useRef();
+
+  const { UserManagementModals } = useSelector((state) => state);
 
   const [isPasswordStrong, setPasswordStrong] = useState(false);
   const { Authreducer, LanguageReducer } = useSelector((state) => state);
@@ -25,6 +32,10 @@ const PasswordCreationUM = () => {
     ConfirmPassword: "",
   });
   const [password, setPassword] = useState("");
+
+  const handleSignupButton = () => {
+    dispatch(showCreateAddtionalUsersModal(true));
+  };
 
   return (
     <Container fluid>
@@ -183,26 +194,9 @@ const PasswordCreationUM = () => {
                     className="d-flex justify-content-center"
                   >
                     <Button
-                      type="submit"
                       text={t("Sign-up")}
-                      //   text={
-                      //     updateCheckPasswordFlag !== undefined &&
-                      //     updateCheckPasswordFlag !== null &&
-                      //     (updateCheckPasswordFlag === true ||
-                      //       updateCheckPasswordFlag === "true")
-                      //       ? t("Confirm")
-                      //       : t("Sign-up")
-                      //   }
-                      disableBtn={
-                        passwordDetails.Password === ""
-                          ? true
-                          : passwordDetails.ConfirmPassword === ""
-                          ? true
-                          : !isPasswordStrong
-                          ? true
-                          : false
-                      }
                       className={styles["subscribNow_button_EmailVerify"]}
+                      onClick={handleSignupButton}
                     />
                   </Col>
                 </Row>
@@ -243,6 +237,9 @@ const PasswordCreationUM = () => {
           </Col>
         </Col>
       </Row>
+      {UserManagementModals.createAdditionalModals && (
+        <CreateAddtionalUsersModal />
+      )}
     </Container>
   );
 };

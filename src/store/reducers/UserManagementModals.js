@@ -5,6 +5,7 @@ const initialState = {
   ResponseMessage: "",
   UpgradeNowModal: false,
   requestExtentionModal: false,
+  createAdditionalModals: false,
 };
 
 const UserManagementModals = (state = initialState, action) => {
@@ -22,6 +23,14 @@ const UserManagementModals = (state = initialState, action) => {
         requestExtentionModal: action.response,
       };
     }
+
+    case actions.CREATE_ADDITIONAL_MODALS: {
+      return {
+        ...state,
+        createAdditionalModals: action.response,
+      };
+    }
+
     default:
       return { ...state };
   }
