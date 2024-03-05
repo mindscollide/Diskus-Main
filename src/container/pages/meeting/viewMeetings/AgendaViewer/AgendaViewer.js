@@ -14,6 +14,8 @@ import {
 import {
   GetAdvanceMeetingAgendabyMeetingID,
   clearAgendaReducerState,
+  printAgenda,
+  exportAgenda,
 } from "../../../../../store/actions/MeetingAgenda_action";
 import emptyContributorState from "../../../../../assets/images/Empty_Agenda_Meeting_view.svg";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
@@ -22,7 +24,7 @@ import AllFilesModal from "./AllFilesModal/AllFilesModal";
 import ExportAgendaModal from "./ExportAgendaModal/ExportAgendaModal";
 import FullScreenAgendaModal from "./FullScreenAgendaModal/FullScreenAgendaModal";
 import ParticipantInfoModal from "./ParticipantInfoModal/ParticipantInfoModal";
-import PrintAgendaModal from "./PrintAgendaModal/PrintAgendaModal";
+import PrintExportAgendaModal from "./PrintExportAgendaModal/PrintExportAgendaModal";
 import SelectAgendaModal from "./SelectAgendaModal/SelectAgendaModal";
 import ShareEmailModal from "./ShareEmailModal/ShareEmailModal";
 import { onDragEnd } from "./drageFunction";
@@ -179,11 +181,14 @@ const AgendaViewer = ({
   };
 
   const printModal = () => {
-    setPrintAgendaView(!printAgendaView);
+    // setPrintAgendaView(!printAgendaView);
+    dispatch(printAgenda(true));
+    setAgendaSelectOptionView(!agendaSelectOptionView);
   };
 
   const exportModal = () => {
-    setExportAgendaView(!exportAgendaView);
+    dispatch(exportAgenda(true));
+    setAgendaSelectOptionView(!agendaSelectOptionView);
   };
 
   const shareEmailModal = () => {
@@ -289,10 +294,10 @@ const AgendaViewer = ({
                           <img width={20} src={ShareIcon} alt="" />
                           Share (email)
                         </span>
-                        <span onClick={selectAgendaModal} className="border-0">
+                        {/* <span onClick={selectAgendaModal} className="border-0">
                           <img width={20} src={ShareIcon} alt="" />
                           Select Agenda (TEMP)
-                        </span>
+                        </span> */}
                       </div>
                       {/* ) : null} */}
                     </div>
@@ -466,13 +471,25 @@ const AgendaViewer = ({
       {agendaSelectOptionView ? (
         <SelectAgendaModal
           setAgendaSelectOptionView={setAgendaSelectOptionView}
+          setPrintAgendaView={setPrintAgendaView}
         />
       ) : null}
       {exportAgendaView ? (
         <ExportAgendaModal setExportAgendaView={setExportAgendaView} />
       ) : null}
       {printAgendaView ? (
-        <PrintAgendaModal setPrintAgendaView={setPrintAgendaView} />
+        <PrintExportAgendaModal
+          setPrintAgendaView={setPrintAgendaView}
+          setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+          advanceMeetingModalID={advanceMeetingModalID}
+          setAdvanceMeetingModalID={setAdvanceMeetingModalID}
+          setMeetingMaterial={setMeetingMaterial}
+          setMinutes={setMinutes}
+          editorRole={editorRole}
+          setEdiorRole={setEdiorRole}
+          rows={rows}
+          setRows={setRows}
+        />
       ) : null}
       {shareEmailView ? (
         <ShareEmailModal setShareEmailView={setShareEmailView} />

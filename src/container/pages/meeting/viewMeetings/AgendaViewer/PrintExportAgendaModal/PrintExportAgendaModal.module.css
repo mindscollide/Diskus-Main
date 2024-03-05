@@ -828,22 +828,6 @@ body[dir="rtl"] img.AttachmentIconImage {
   top: 0;
 }
 
-body[dir="rtl"] .box-agendas {
-  border: 1px solid #e1e1e1;
-  border-radius: 4px;
-  height: 40px;
-  width: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  vertical-align: middle;
-  position: absolute;
-  cursor: pointer;
-  right: auto;
-  left: 30px;
-  top: 0;
-}
- 
 .box-agendas-camera {
   border: 1px solid #81db86;
   background-color: #81db86;
@@ -857,23 +841,6 @@ body[dir="rtl"] .box-agendas {
   position: absolute;
   cursor: pointer;
   right: 80px;
-  top: 0;
-}
-
-body[dir="rtl"] .box-agendas-camera {
-  border: 1px solid #81db86;
-  background-color: #81db86;
-  border-radius: 4px;
-  height: 40px;
-  width: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  vertical-align: middle;
-  position: absolute;
-  cursor: pointer;
-  right: auto;
-  left: 90px;
   top: 0;
 }
 
@@ -1081,4 +1048,29 @@ body[dir="rtl"] img.image-close {
   position: relative;
   padding-left: 22px;
   padding-right: 20px;
+}
+
+.Send_Notify {
+  height: 40px;
+  padding: 0px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1;
+  font-family: "MontserratSemiBold" !important;
+  border-radius: 4px !important;
+  background: #5f78d6;
+  color: #fff;
+}
+
+.Send_Notify:hover,
+.Send_Notify:active,
+.Send_Notify:focus,
+.Send_Notify:focus-visible {
+  height: 40px;
+  padding: 0px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
 }

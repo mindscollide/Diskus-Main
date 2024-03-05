@@ -6672,6 +6672,10 @@ body[dir="rtl"] span.separatorSubAgendaHeight {
   height: auto !important;
 }
 
+.PrintModalAgenda .modal-dialog.modal-xl.modal-dialog-centered {
+  height: auto !important;
+}
+
 .FullScreenModal
   .modal-dialog.modal-dialog-centered.modal-fullscreen
   .modal-content {
@@ -6683,6 +6687,34 @@ body[dir="rtl"] span.separatorSubAgendaHeight {
 }
 
 .FullScreenModal.blurEffect
+  .modal-dialog.modal-dialog-centered.modal-fullscreen
+  .modal-content {
+  max-height: calc(100% - 60px);
+  max-width: calc(100% - 60px);
+  margin: 30px !important;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  filter: blur(25px);
+}
+
+.PrintExportScreen
+  .modal-dialog.modal-dialog-centered.modal-fullscreen
+  .modal-content {
+  max-height: calc(100% - 60px);
+  max-width: calc(100% - 60px);
+  margin: 30px !important;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+}
+
+.PrintExportScreen
+  .modal-dialog.modal-dialog-centered.modal-fullscreen
+  .modal-content
+  .modal-body {
+  padding-top: 0 !important;
+}
+
+.PrintExportScreen.blurEffect
   .modal-dialog.modal-dialog-centered.modal-fullscreen
   .modal-content {
   max-height: calc(100% - 60px);

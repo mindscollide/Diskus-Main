@@ -24,6 +24,9 @@ const initialState = {
   MeetingAgendaStartedData: null,
   MeetingAgendaEndedData: null,
   MeetingAgendaUpdatedMqtt: null,
+  PrintAgendaFlag: false,
+  ExportAgendaFlag: false,
+  AgendaViewFlag: 0,
 };
 
 const MeetingAgendaReducer = (state = initialState, action) => {
@@ -460,6 +463,27 @@ const MeetingAgendaReducer = (state = initialState, action) => {
       return {
         ...state,
         MeetingAgendaUpdatedMqtt: action.response,
+      };
+    }
+
+    case actions.PRINT_AGENDA: {
+      return {
+        ...state,
+        PrintAgendaFlag: action.response,
+      };
+    }
+
+    case actions.EXPORT_AGENDA: {
+      return {
+        ...state,
+        ExportAgendaFlag: action.response,
+      };
+    }
+
+    case actions.AGENDA_VIEW_FLAG: {
+      return {
+        ...state,
+        AgendaViewFlag: action.response,
       };
     }
 

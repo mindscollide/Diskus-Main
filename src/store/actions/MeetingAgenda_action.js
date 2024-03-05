@@ -1904,6 +1904,27 @@ const meetingAgendaUpdatedMQTT = (response) => {
   };
 };
 
+const printAgenda = (response) => {
+  return {
+    type: actions.PRINT_AGENDA,
+    response: response,
+  };
+};
+
+const exportAgenda = (response) => {
+  return {
+    type: actions.EXPORT_AGENDA,
+    response: response,
+  };
+};
+
+const agendaViewFlag = (response) => {
+  return {
+    type: actions.AGENDA_VIEW_FLAG,
+    response: response,
+  };
+};
+
 export {
   GetAgendaVotingDetails,
   GetAllVotingResultDisplay,
@@ -1938,4 +1959,7 @@ export {
   meetingAgendaStartedMQTT,
   meetingAgendaEndedMQTT,
   meetingAgendaUpdatedMQTT,
+  printAgenda,
+  exportAgenda,
+  agendaViewFlag
 };
