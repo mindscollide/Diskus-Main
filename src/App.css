@@ -3397,7 +3397,7 @@ li.invalid {
   padding: 5px 0px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  /* align-items: center; */
 }
 
 li.valid {

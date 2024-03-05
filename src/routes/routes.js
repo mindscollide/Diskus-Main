@@ -77,6 +77,8 @@ import PrivateRouteDataroom from "./private_route_dataroom";
 import Reports from "../container/Admin/Reports/Reports";
 import SignatureViewer from "../components/elements/signaturewebviewer/signatureviewer";
 import SignUpOrganizationUM from "../container/pages/UserMangement/SignUpOrganizationUM/SignUpOrganizationUM";
+import VerifyOTPUM from "../container/pages/UserMangement/VerifyOTPUM/VerifyOTPUM";
+import PasswordCreationUM from "../container/pages/UserMangement/PasswordCreationUM/PasswordCreationUM";
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
@@ -196,6 +198,8 @@ export const router = createHashRouter(
       {/* User Management Routes Defined Below  */}
 
       <Route path="/signupUsermanagement" element={<SignUpOrganizationUM />} />
+      <Route path="/VerifyOTPUserManagement" element={<VerifyOTPUM />} />
+      <Route path="/PasswordCreationUM" element={<PasswordCreationUM />} />
     </>
   )
 );

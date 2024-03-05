@@ -753,6 +753,11 @@ const SignUpOrganizationUM = () => {
                       md={5}
                       className={styles["react-flag-Info-Signup"]}
                     >
+                      <Row>
+                        <span className={styles["Heading"]}>
+                          {t("Country")}
+                        </span>
+                      </Row>
                       <ReactFlagsSelect
                         selected={select}
                         onSelect={countryOnSelect}
@@ -762,6 +767,11 @@ const SignUpOrganizationUM = () => {
                   </Row>
                   <Row className="mb-3">
                     <Col sm={12} md={12} lg={12}>
+                      <Row>
+                        <span className={styles["Heading"]}>
+                          {t("Address-1")}
+                        </span>
+                      </Row>
                       <TextField
                         labelClass="d-none"
                         placeholder={t("Address-1")}
@@ -773,7 +783,7 @@ const SignUpOrganizationUM = () => {
                       />
                     </Col>
                   </Row>
-                  <Row className="mb-3">
+                  {/* <Row className="mb-3">
                     <Col sm={12} md={12} lg={12}>
                       <TextField
                         labelClass="d-none"
@@ -785,9 +795,14 @@ const SignUpOrganizationUM = () => {
                         applyClass="form-control2 MontserratMedium"
                       />
                     </Col>
-                  </Row>
+                  </Row> */}
                   <Row className="mb-3">
                     <Col sm={12} md={4} lg={4}>
+                      <Row>
+                        <span className={styles["Heading"]}>
+                          {t("State-province")}
+                        </span>
+                      </Row>
                       <TextField
                         labelClass="d-none"
                         placeholder={t("State-province")}
@@ -806,6 +821,9 @@ const SignUpOrganizationUM = () => {
                       </Row>
                     </Col>
                     <Col sm={12} md={4} lg={4}>
+                      <Row>
+                        <span className={styles["Heading"]}>{t("City")}</span>
+                      </Row>
                       <TextField
                         labelClass="d-none"
                         placeholder={t("City")}
@@ -824,6 +842,11 @@ const SignUpOrganizationUM = () => {
                       </Row>
                     </Col>
                     <Col sm={12} md={4} lg={4}>
+                      <Row>
+                        <span className={styles["Heading"]}>
+                          {t("Postal-zipcode")}
+                        </span>
+                      </Row>
                       <TextField
                         labelClass="d-none"
                         placeholder={t("Postal-zipcode")}
@@ -848,6 +871,12 @@ const SignUpOrganizationUM = () => {
                   </h4>
                   <Row className="mb-3">
                     <Col sm={12} md={12} lg={12}>
+                      <Row>
+                        <span className={styles["Heading"]}>
+                          {t("Full-name")}
+                          <span className={styles["RedSteric"]}>*</span>
+                        </span>
+                      </Row>
                       <TextField
                         labelClass="d-none"
                         placeholder={t("Full-name")}
@@ -878,6 +907,12 @@ const SignUpOrganizationUM = () => {
                   </Row>
                   <Row className="mb-3">
                     <Col sm={12} md={5} lg={5} className={styles["checkEmail"]}>
+                      <Row>
+                        <span className={styles["Heading"]}>
+                          {t("Email")}
+                          <span className={styles["RedSteric"]}>*</span>
+                        </span>
+                      </Row>
                       <TextField
                         onBlur={() => {
                           handeEmailvlidate();
@@ -928,6 +963,12 @@ const SignUpOrganizationUM = () => {
                       className={styles["phoneNumber"]}
                     >
                       <Row>
+                        <Row>
+                          <span className={styles["Heading"]}>
+                            {t("Phone-number")}
+                            <span className={styles["RedSteric"]}>*</span>
+                          </span>
+                        </Row>
                         <Col
                           lg={3}
                           md={3}
@@ -980,7 +1021,7 @@ const SignUpOrganizationUM = () => {
                   </Row>
                 </Col>
               </Row>
-              <Row className="mt-2">
+              <Row className="mt-4">
                 <Col
                   sm={7}
                   md={7}
