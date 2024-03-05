@@ -1725,5 +1725,10 @@
   "Add-another-signer": "Add another signer",
   "Add-assignee": "Add Assignee",
   "You-have-been-blocked": "You have been blocked by [User Name]",
-  "Are-you-sure-you-want-to-delete-Poll": "Are you sure you want to delete Poll?"
+  "Are-you-sure-you-want-to-delete-Poll": "Are you sure you want to delete Poll?",
+  "Upgrade-now": "Upgrade Now",
+  "Request-an-extention": "Request an extention",
+  "Your-trial-period-is-over-please-upgrade-your-Package": "Your trial period is over. Please upgrade your Package.",
+  "Still-not-sure": "Still not sure",
+  "We-have-extended-your-trial-for-another-week": "We have extended your trial for another week.There will be no further extensions. Please feel to contact support for any questions you may have."
 }

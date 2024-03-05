@@ -50,6 +50,7 @@ import { webViewerReducer } from "./reducers";
 //Aun Attendance Meeting Reducer
 import attendanceMeetingReducer from "./reducers/Attendance_Reducer";
 import actionMeetingReducer from "./reducers/ActionMeeting_Reducer";
+import UserManagementModals from "./reducers/UserManagementModals";
 
 const AppReducer = combineReducers({
   auth: authReducer,
@@ -99,6 +100,7 @@ const AppReducer = combineReducers({
   DataRoomFileAndFoldersDetailsReducer: DataRoomFileAndFoldersDetailsReducer,
   UserReportReducer: UserReportReducer,
   SignatureWorkFlowReducer: SignatureWorkFlowReducer,
+  UserManagementModals: UserManagementModals,
 });
 
 const rootReducer = (state, action) => {

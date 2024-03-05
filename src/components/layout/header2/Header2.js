@@ -32,6 +32,12 @@ import {
   getRecentDocumentsApi,
   uploadDocumentFromDashboard,
 } from "../../../store/actions/DataRoom_actions";
+import UpgradeNowModal from "../../../container/pages/UserMangement/ModalsUserManagement/UpgradeNowModal/UpgradeNowModal.js";
+import {
+  showRequestExtentionModal,
+  showUpgradeNowModal,
+} from "../../../store/actions/UserMangementModalActions.js";
+import RequestExtensionModal from "../../../container/pages/UserMangement/ModalsUserManagement/RequestExtentionModal/RequestExtensionModal.js";
 
 const Header2 = () => {
   const location = useLocation();
@@ -39,6 +45,7 @@ const Header2 = () => {
   const state = useSelector((state) => state);
   const { settingReducer, NewMeetingreducer } = state;
   const { UserProfileData } = settingReducer;
+  const { UserManagementModals } = useSelector((state) => state);
   const navigate = useNavigate();
   const [createMeetingModal, setCreateMeetingModal] = useState(false);
   const dispatch = useDispatch();
@@ -206,6 +213,14 @@ const Header2 = () => {
         dispatch(viewMeetingFlag(false));
       }
     }
+  };
+
+  const handleShowUpgradedNowModal = () => {
+    dispatch(showUpgradeNowModal(true));
+  };
+
+  const handleRequestExtentionModal = () => {
+    dispatch(showRequestExtentionModal(true));
   };
 
   return (
@@ -486,8 +501,23 @@ const Header2 = () => {
                 draggable="false"
               />
             </Navbar.Brand>
+            <Row>
+              <Col lg={12} md={12} sm={12} className="UpgradeButtonsClass">
+                <Button
+                  text={t("Upgrade-now")}
+                  className="UpgradeNowbutton"
+                  onClick={handleShowUpgradedNowModal}
+                />
+                <Button
+                  text={t("Request-an-extention")}
+                  className="UpgradeNowbutton"
+                  onClick={handleRequestExtentionModal}
+                />
+              </Col>
+            </Row>
             <Nav className="ml-auto align-items-center">
               <LanguageSelector />
+
               <Nav.Link className="me-2">
                 <div className="dropdown-btn_dotted">
                   {location.pathname.includes("/Diskus/Admin") ||
@@ -806,6 +836,8 @@ const Header2 = () => {
           checkFlag={1}
         />
       )}
+      {UserManagementModals.UpgradeNowModal && <UpgradeNowModal />}
+      {UserManagementModals.requestExtentionModal && <RequestExtensionModal />}
     </>
   );
 };
