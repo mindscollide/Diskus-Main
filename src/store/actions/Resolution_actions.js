@@ -92,7 +92,9 @@ const saveFilesResolutionApi = (navigate, t, data, folderID, newFolder) => {
                 console.log(newFileID, "newFileID");
 
                 return newFolder.push({
-                  pK_FileID: newFileID.pK_FileID,
+                  DisplayFileName: newFileID.displayFileName,
+                  DiskusFileName: newFileID.diskusFileNameString,
+                  PK_FileID: newFileID.pK_FileID,
                 });
               });
 
@@ -1014,8 +1016,9 @@ const updateResolution = (
               let newArr = [];
               if (tasksAttachments.length > 0) {
                 tasksAttachments.forEach((data, index) => {
+                  console.log(data, "PK_FileIDPK_FileIDPK_FileID");
                   newArr.push({
-                    PK_FileID: Number(data.pK_FileID),
+                    PK_FileID: Number(data.PK_FileID),
                   });
                 });
               }
@@ -1048,7 +1051,7 @@ const updateResolution = (
                 tasksAttachments.forEach((data, index) => {
                   console.log(data, "tasksAttachments");
                   newArr.push({
-                    PK_FileID: Number(data.pK_FileID),
+                    PK_FileID: Number(data.PK_FileID),
                   });
                 });
               }

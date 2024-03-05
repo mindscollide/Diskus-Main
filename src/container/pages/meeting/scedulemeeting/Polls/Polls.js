@@ -34,7 +34,8 @@ import {
   actionsGlobalFlag,
   pollsGlobalFlag,
   attendanceGlobalFlag,
-  uploadGlobalFlag
+  uploadGlobalFlag,
+  editFlowDeleteSavedPollsMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
 import EditPollsMeeting from "./EditPollsMeeting/EditPollsMeeting";
 import AfterViewPolls from "./AfterViewPolls/AfterViewPolls";
@@ -48,6 +49,7 @@ import {
 import CustomPagination from "../../../../../commen/functions/customPagination/Paginations";
 import ViewPollsPublishedScreen from "./ViewPollsPublishedScreen/ViewPollsPublishedScreen";
 import ViewPollsUnPublished from "./VIewPollsUnPublished/ViewPollsUnPublished";
+import EditDeletePollConfirm from "./EditDeletePollConfirm/EditDeletePollConfirm";
 const Polls = ({
   setSceduleMeeting,
   setPolls,
@@ -94,13 +96,11 @@ const Polls = ({
     };
     dispatch(getPollsByPollIdApi(navigate, data, 0, t, setEditPolls));
   };
+  const [pollID, setPollId] = useState(0);
 
   const handleDeletePoll = (record) => {
-    let data = {
-      PollID: record.pollID,
-      MeetingID: parseInt(currentMeeting),
-    };
-    dispatch(deleteMeetingPollApi(navigate, t, data, currentMeeting));
+    dispatch(editFlowDeleteSavedPollsMeeting(true));
+    setPollId(record.pollID);
   };
 
   useEffect(() => {
@@ -248,6 +248,7 @@ const Polls = ({
         },
       ],
       defaultFilteredValue: ["Published", "UnPublished", "Expired"], // Use the actual status values here
+      filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
@@ -726,6 +727,12 @@ const Polls = ({
 
             {NewMeetingreducer.cancelPolls && (
               <CancelPolls setSceduleMeeting={setSceduleMeeting} />
+            )}
+            {NewMeetingreducer.editFlowDeletePollsMeeting && (
+              <EditDeletePollConfirm
+                pollID={pollID}
+                currentMeeting={currentMeeting}
+              />
             )}
             <Notification
               setOpen={setOpen}
