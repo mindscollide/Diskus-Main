@@ -85,10 +85,8 @@ const SignatureViewer = () => {
     creatorID: "",
     isCreator: 0,
   });
-  const [userAnnotations, setUserAnnotations] = useState([
-    { userID: "user1", xml: [] },
-    { userID: "user2", xml: [] },
-  ]);
+  // { userID: "user1", xml: [] }
+  const [userAnnotations, setUserAnnotations] = useState([]);
 
   const selectedUserRef = useRef(selectedUser);
   const userAnnotationsRef = useRef(userAnnotations);
@@ -129,6 +127,7 @@ const SignatureViewer = () => {
         // for data room
         if (isNew) {
           setIsFileNew(true);
+          setSignerData([]);
         }
         let dataRoomData = {
           FileID: attachmentID,
@@ -184,16 +183,22 @@ const SignatureViewer = () => {
       if (saveWorkFlowResponse !== null) {
         let getUsers = saveWorkFlowResponse.workFlow;
         let listOfUsers = [];
+        let selectedUserList = [];
         getUsers.bundleModels.forEach((users, index) => {
           users.actors.forEach((usersData, index) => {
             listOfUsers.push({
               name: usersData.name,
               pk_UID: usersData.pK_UID,
             });
+            selectedUserList.push({
+              xml: [],
+              userID: usersData.pK_UID,
+            });
           });
         });
         setParticipants(listOfUsers);
         setSelectedUser(listOfUsers[0].pk_UID);
+        setUserAnnotations(selectedUserList);
       } else {
       }
     } catch {}
@@ -332,7 +337,7 @@ const SignatureViewer = () => {
       }
     } catch {}
   }, [createSignatureResponse]);
-
+  console.log("userAnnotations", userAnnotations);
   useEffect(() => {
     selectedUserRef.current = selectedUser;
   }, [selectedUser]);
@@ -363,8 +368,12 @@ const SignatureViewer = () => {
     return true;
   };
 
-  const updateXFDF = (action, xmlString, userSelect, userAnnotations) => {
+  // this will generate my xfdf files for user base and send into AddUpdateFieldValue
+  const updateXFDF = (action, xmlString, userSelectID, userAnnotations) => {
+    console.log("userAnnotations From auto", userSelect);
+    let userSelect = parseInt(userSelectID);
     if (areAllAnnotationsEmpty(userAnnotations)) {
+      console.log("annotationChanged From auto", userSelect);
       const parser = new DOMParser();
       const xmlDoc = parser.parseFromString(xmlString, "text/xml");
       if (
@@ -388,6 +397,7 @@ const SignatureViewer = () => {
       }
     } else {
       // Iterate over each user's annotations
+      console.log("userAnnotations From auto", userSelect);
       const parser = new DOMParser();
       const xmlDoc = parser.parseFromString(xmlString, "text/xml");
 
@@ -538,6 +548,7 @@ const SignatureViewer = () => {
 
   //   return modifiedXFDFString;
   // }
+
   const publicFlow = async (annotationManager) => {
     try {
       let annotations = await annotationManager.exportAnnotations();
@@ -589,6 +600,7 @@ const SignatureViewer = () => {
     }
   };
 
+  // this is add user modal func
   const handleClickAdd = () => {
     if (signers.EmailAddress !== "" && signers.Name !== "") {
       setSingerUserData({
@@ -618,17 +630,10 @@ const SignatureViewer = () => {
     }
   };
 
+  // this is add user modal func for remove
   const handleRemoveSigner = (index) => {
     setSignerData((prevSignersData) => {
       return prevSignersData.filter((_, i) => i !== index);
-    });
-  };
-
-  const handleupdateFieldData = (event, index) => {
-    let { name, value } = event.target;
-    setSigners({
-      ...signers,
-      [name]: value,
     });
   };
 
@@ -713,9 +718,10 @@ const SignatureViewer = () => {
         };
         const handleChangeUser = (event) => {
           console.log(
-            event,
+            event.target,
             "handleChangeUserhandleChangeUserhandleChangeUser"
           );
+          setSelectedUser(event.target.value);
         };
         const openCustomModal = () => {
           setOpenAddParticipentModal(true); // Open the custom modal
@@ -1191,7 +1197,6 @@ const SignatureViewer = () => {
     }
   };
   const filterFunc = (options, searchText) => {
-    console.log(options, "filterFuncfilterFunc");
     if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
       return true;
     } else {
@@ -1199,7 +1204,7 @@ const SignatureViewer = () => {
     }
   };
 
-  const clickSaveSigners = () => {
+  const clickSaveSigners = async () => {
     let Data = {
       WorkFlowTitle: pdfResponceData.title,
       Description: pdfResponceData.description,
@@ -1271,32 +1276,19 @@ const SignatureViewer = () => {
                           signerUserData.value !== 0 ? signerUserData : null
                         }
                       />
-
-                      {/* <TextField
-                        placeholder={t("Full-name")}
-                        labelClass={"inputlabel_style"}
-                        width={"100%"}
-                        applyClass={"signatureflow_input"}
-                        name={"Name"}
-                        type="text"
-                        // disable={index !== 0 ? true : false}
-                        value={signers.Name}
-                        label={"Name"}
-                        change={(e) => handleupdateFieldData(e)}
-                      /> */}
                     </Col>
                     <Col sm={12} md={6} lg={6}>
                       <TextField
                         width={"100%"}
                         name={"EmailAddress"}
                         type="email"
+                        disable={true}
                         // disable={index !== 0 ? true : false}
                         labelClass={"inputlabel_style"}
                         applyClass={"signatureflow_input"}
                         placeholder={t("Email")}
                         value={signers.EmailAddress}
                         label={"Email"}
-                        change={(e) => handleupdateFieldData(e)}
                       />
                     </Col>
                   </Row>
