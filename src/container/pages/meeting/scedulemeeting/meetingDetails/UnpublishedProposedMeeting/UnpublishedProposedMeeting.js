@@ -38,7 +38,7 @@ import {
   actionsGlobalFlag,
   pollsGlobalFlag,
   attendanceGlobalFlag,
-  uploadGlobalFlag
+  uploadGlobalFlag,
 } from "../../../../../../store/actions/NewMeetingActions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -241,8 +241,8 @@ const UnpublishedProposedMeeting = ({
               dispatch(actionsGlobalFlag(false));
               dispatch(pollsGlobalFlag(false));
               dispatch(attendanceGlobalFlag(false));
-      dispatch(uploadGlobalFlag(false));
-    }}
+              dispatch(uploadGlobalFlag(false));
+            }}
           >
             {truncateString(text, 35)}
           </span>
@@ -461,8 +461,8 @@ const UnpublishedProposedMeeting = ({
                       dispatch(actionsGlobalFlag(false));
                       dispatch(pollsGlobalFlag(false));
                       dispatch(attendanceGlobalFlag(false));
-      dispatch(uploadGlobalFlag(false));
-    }}
+                      dispatch(uploadGlobalFlag(false));
+                    }}
                   />
                 ) : isOrganiser ? (
                   <>
@@ -497,8 +497,8 @@ const UnpublishedProposedMeeting = ({
                         dispatch(actionsGlobalFlag(false));
                         dispatch(pollsGlobalFlag(false));
                         dispatch(attendanceGlobalFlag(false));
-      dispatch(uploadGlobalFlag(false));
-    }}
+                        dispatch(uploadGlobalFlag(false));
+                      }}
                     />
                   </>
                 ) : null}
