@@ -55,6 +55,8 @@ const Header2 = () => {
   //for dropdown
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [activateBlur, setActivateBlur] = useState(false);
+  //Trail Expiry States
+  const [trailExpiry, setTrailExpiry] = useState(false);
   let userID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
   // for userProfile
@@ -503,16 +505,34 @@ const Header2 = () => {
             </Navbar.Brand>
             <Row>
               <Col lg={12} md={12} sm={12} className="UpgradeButtonsClass">
-                <Button
-                  text={t("Upgrade-now")}
-                  className="UpgradeNowbutton"
-                  onClick={handleShowUpgradedNowModal}
-                />
-                <Button
-                  text={t("Request-an-extention")}
-                  className="UpgradeNowbutton"
-                  onClick={handleRequestExtentionModal}
-                />
+                {trailExpiry ? (
+                  <>
+                    <span className={"trialExpireButton"}>
+                      <span className="InnerText">
+                        {t("Your-trial-will-expire-in-7-days")}
+                      </span>
+                    </span>
+                    <Button
+                      text={t("Upgrade-now")}
+                      className="UpgradeNowbutton"
+                      onClick={handleShowUpgradedNowModal}
+                    />
+                  </>
+                ) : (
+                  <>
+                    {" "}
+                    <Button
+                      text={t("Upgrade-now")}
+                      className="UpgradeNowbutton"
+                      onClick={handleShowUpgradedNowModal}
+                    />
+                    <Button
+                      text={t("Request-an-extention")}
+                      className="UpgradeNowbutton"
+                      onClick={handleRequestExtentionModal}
+                    />
+                  </>
+                )}
               </Col>
             </Row>
             <Nav className="ml-auto align-items-center">
@@ -837,7 +857,9 @@ const Header2 = () => {
         />
       )}
       {UserManagementModals.UpgradeNowModal && <UpgradeNowModal />}
-      {UserManagementModals.requestExtentionModal && <RequestExtensionModal />}
+      {UserManagementModals.requestExtentionModal && (
+        <RequestExtensionModal setTrailExpiry={setTrailExpiry} />
+      )}
     </>
   );
 };

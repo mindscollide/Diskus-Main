@@ -8,24 +8,22 @@ import { showRequestExtentionModal } from "../../../../../store/actions/UserMang
 import { Col, Row } from "react-bootstrap";
 import crossicon from "../../../../../assets/images/BlackCrossIconModals.svg";
 import { Button, Modal } from "../../../../../components/elements";
-const RequestExtensionModal = () => {
+const RequestExtensionModal = ({ setTrailExpiry }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { UserManagementModals } = useSelector((state) => state);
 
-  const noBtnFunctionality = () => {
-    dispatch(showRequestExtentionModal(false));
-  };
-
   const yesBtnFunctionality = () => {
     dispatch(showRequestExtentionModal(false));
+    setTrailExpiry(true);
   };
 
   const handleCrossIcon = () => {
     dispatch(showRequestExtentionModal(false));
   };
+
   return (
     <section>
       <Modal
