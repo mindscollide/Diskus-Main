@@ -112,6 +112,7 @@ import {
 } from "../../store/actions/DataRoom2_actions";
 import FileDetailsModal from "./FileDetailsModal/FileDetailsModal";
 import copyToClipboard from "../../hooks/useClipBoard";
+import { createWorkflowApi } from "../../store/actions/workflow_actions";
 
 const DataRoom = () => {
   const currentUrl = window.location.href;
@@ -626,11 +627,10 @@ const DataRoom = () => {
         )
       );
     } else if (data.value === 8) {
-      window.open(
-        `/#/DisKus/signatureviewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
-        "_blank",
-        "noopener noreferrer"
-      );
+      let dataRoomData = {
+        FileID: Number(record.id),
+      };
+      dispatch(createWorkflowApi(dataRoomData, navigate, t, pdfDataJson));
     }
   };
   //

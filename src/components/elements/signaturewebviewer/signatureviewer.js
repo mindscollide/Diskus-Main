@@ -36,16 +36,23 @@ const SignatureViewer = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { webViewer } = useSelector((state) => state);
-  const { createSignatureResponse, saveWorkFlowResponse } = useSelector(
-    (state) => state.SignatureWorkFlowReducer
-  );
+  const {
+    createSignatureResponse,
+    saveWorkFlowResponse,
+    getWorkfFlowByFileId,
+  } = useSelector((state) => state.SignatureWorkFlowReducer);
   let name = localStorage.getItem("name");
   // Parse the URL parameters to get the data
   const pdfDataJson = new URLSearchParams(location.search).get("pdfData");
+  const ApiResponse = new URLSearchParams(location.search).get(
+    "createSignatureFlow"
+  );
+
+  console.log(webViewer, "ApiResponseApiResponseApiResponse");
   // Deserialize the JSON string into an object
-  const pdfData = JSON.parse(pdfDataJson);
-  const { taskId, attachmentID, fileName, commingFrom, isPermission, isNew } =
-    pdfData;
+  // const pdfData = JSON.parse(pdfDataJson);
+  // const { taskId, attachmentID, fileName, commingFrom, isPermission, isNew } =
+  //   pdfData;
   const { assignees } = useSelector((state) => state);
   const [Instance, setInstance] = useState();
   const [removeFlag, setRemoveFlag] = useState(false);
@@ -85,6 +92,11 @@ const SignatureViewer = () => {
     creatorID: "",
     isCreator: 0,
   });
+  console.log(pdfResponceData, "pdfResponceDatapdfResponceDatapdfResponceData");
+  console.log(
+    getWorkfFlowByFileId,
+    "getWorkfFlowByFileIdgetWorkfFlowByFileIdgetWorkfFlowByFileId"
+  );
   // { userID: "user1", xml: [] }
   const [userAnnotations, setUserAnnotations] = useState([]);
 
@@ -94,50 +106,99 @@ const SignatureViewer = () => {
   const pdfResponceDataBLobRef = useRef(pdfResponceData.attachmentBlob);
   const removedAnnotationsRef = useRef(pdfResponceData.removedAnnotations);
   const participantsRef = useRef(participants);
+  let documentID = Number(localStorage.getItem("documentID"));
 
+  console.log(
+    pdfResponceDataBLobRef,
+    "pdfResponceDataBLobRefpdfResponceDataBLobRef"
+  );
   useEffect(() => {
-    if (taskId && attachmentID) {
+    if (ApiResponse !== null && ApiResponse !== undefined) {
+      let Data = {
+        FileID: Number(ApiResponse),
+      };
+      let Data2 = {
+        FileID: Number(ApiResponse),
+        UserID: Number(localStorage.getItem("userID")),
+        OrganizationID: Number(localStorage.getItem("organizationID")),
+      };
+      dispatch(getAnnotationsOfDataroomAttachement(navigate, t, Data2));
+      dispatch(getWorkFlowByWorkFlowIdwApi(Data, navigate, t));
       dispatch(allAssignessList(navigate, t));
-      // console.log("test", { taskId, attachmentID });
-      if (Number(commingFrom) === 1) {
-        let data = {
-          TaskID: Number(taskId),
-          TaskAttachementID: Number(attachmentID),
-        };
-        // for todo
-        dispatch(getAnnotationsOfToDoAttachement(navigate, t, data));
-      } else if (Number(commingFrom) === 2) {
-        let notesData = {
-          NoteID: Number(taskId),
-          NoteAttachementID: Number(attachmentID),
-        };
-        console.log("test", { commingFrom, notesData });
-        dispatch(getAnnotationsOfNotesAttachement(navigate, t, notesData));
-        // for notes
-      } else if (Number(commingFrom) === 3) {
-        let resolutionData = {
-          ResolutionID: Number(taskId),
-          ResolutionAttachementID: Number(attachmentID),
-        };
-        dispatch(
-          getAnnotationsOfResolutionAttachement(navigate, t, resolutionData)
-        );
-        // for resultion
-      } else if (Number(commingFrom) === 4) {
-        // for data room
-        if (isNew) {
-          setIsFileNew(true);
-          setSignerData([]);
-        }
-        let dataRoomData = {
-          FileID: attachmentID,
-        };
-
-        dispatch(createWorkflowApi(dataRoomData, navigate, t));
-        setOpenAddParticipentModal(true);
-      }
+      // let newApiData = JSON.parse(ApiResponse);
+      // setPdfResponceData((prevData) => ({
+      //   ...prevData,
+      //   xfdfData: "",
+      //   attachmentBlob: newApiData?.signatureDocument?.base64File,
+      //   removedAnnotations: "",
+      //   workFlowID: newApiData?.workFlow?.pK_WorkFlow_ID,
+      //   documentID: newApiData?.signatureDocument.documentID,
+      //   title: newApiData?.workFlow?.title,
+      //   description: newApiData?.workFlow?.description,
+      //   creationDateTime: newApiData?.workFlow?.creationDateTime,
+      //   isDeadline: newApiData?.workFlow?.isDeadline,
+      //   deadlineDatetime: newApiData?.workFlow?.deadlineDatetime,
+      //   creatorID: newApiData?.workFlow?.creatorID,
+      //   isCreator: newApiData?.workFlow?.isCreator,
+      // }));
     }
   }, []);
+  useEffect(() => {
+    if (
+      getWorkfFlowByFileId !== null &&
+      getWorkfFlowByFileId !== undefined &&
+      webViewer
+    ) {
+      let bundleModels = getWorkfFlowByFileId.workFlow.bundleModels;
+      if (bundleModels?.length > 0) {
+        let listOfUsers = [];
+        let selectedUserList = [];
+        bundleModels.forEach((users, index) => {
+          users.actors.forEach((usersData, index) => {
+            listOfUsers.push({
+              name: usersData.name,
+              pk_UID: usersData.pK_UID,
+            });
+            selectedUserList.push({
+              xml: [],
+              userID: usersData.pK_UID,
+            });
+          });
+        });
+        setParticipants(listOfUsers);
+        setSelectedUser(listOfUsers[0].pk_UID);
+        setUserAnnotations(selectedUserList);
+      } else {
+        setOpenAddParticipentModal(true);
+      }
+
+      setPdfResponceData((prevData) => ({
+        ...prevData,
+        xfdfData: "",
+        attachmentBlob: webViewer.attachmentBlob,
+        removedAnnotations: "",
+        workFlowID: getWorkfFlowByFileId?.workFlow?.workFlow.pK_WorkFlow_ID,
+        documentID: Number(ApiResponse),
+        title: getWorkfFlowByFileId?.workFlow?.workFlow.title,
+        description: getWorkfFlowByFileId?.workFlow?.workFlow.description,
+        creationDateTime:
+          getWorkfFlowByFileId?.workFlow?.workFlow.creationDateTime,
+        isDeadline: getWorkfFlowByFileId?.workFlow?.workFlow.isDeadline,
+        deadlineDatetime:
+          getWorkfFlowByFileId?.workFlow?.workFlow.deadlineDatetime,
+        creatorID: getWorkfFlowByFileId?.workFlow?.workFlow.creatorID,
+        isCreator: getWorkfFlowByFileId?.workFlow?.workFlow.isCreator,
+      }));
+    }
+  }, [getWorkfFlowByFileId]);
+  useEffect(() => {
+    if (webViewer !== null && webViewer !== undefined) {
+      setPdfResponceData((prevData) => ({
+        ...prevData,
+        attachmentBlob: webViewer.attachmentBlob,
+      }));
+    }
+  }, [webViewer]);
 
   useEffect(() => {
     try {
@@ -177,7 +238,10 @@ const SignatureViewer = () => {
       }
     } catch (error) {}
   }, [assignees.user]);
-
+  console.log(
+    saveWorkFlowResponse,
+    "saveWorkFlowResponsesaveWorkFlowResponsesaveWorkFlowResponse"
+  );
   useEffect(() => {
     try {
       if (saveWorkFlowResponse !== null) {
@@ -201,7 +265,9 @@ const SignatureViewer = () => {
         setUserAnnotations(selectedUserList);
       } else {
       }
-    } catch {}
+    } catch (error) {
+      console.log(error, "catchcatchcatchcatch");
+    }
   }, [saveWorkFlowResponse]);
 
   function base64ToBlob(base64) {
@@ -277,66 +343,66 @@ const SignatureViewer = () => {
     return { filteredXmlString, removedAnnotations };
   }
 
-  useEffect(() => {
-    try {
-      if (createSignatureResponse !== null) {
-        let Data = {
-          FileID: Number(createSignatureResponse.signatureDocument.documentID),
-        };
-        // dispatch(getWorkFlowByWorkFlowIdwApi(Data, navigate, t));
-        // let apiResponse = {
-        //   createSignatureResponse.signatureDocument, createSignatureResponse.workflow
-        // }
+  // useEffect(() => {
+  //   try {
+  //     if (createSignatureResponse !== null) {
+  //       let Data = {
+  //         FileID: Number(createSignatureResponse.signatureDocument.documentID),
+  //       };
+  //       // dispatch(getWorkFlowByWorkFlowIdwApi(Data, navigate, t));
+  //       // let apiResponse = {
+  //       //   createSignatureResponse.signatureDocument, createSignatureResponse.workflow
+  //       // }
 
-        if (createSignatureResponse?.signatureDocument) {
-          if (isNewFile) {
-            setPdfResponceData((prevData) => ({
-              ...prevData,
-              xfdfData: "",
-              attachmentBlob:
-                createSignatureResponse?.signatureDocument?.base64File,
-              removedAnnotations: "",
-              workFlowID: createSignatureResponse?.workFlow?.pK_WorkFlow_ID,
-              documentID: createSignatureResponse?.signatureDocument.documentID,
-              title: createSignatureResponse?.workFlow?.title,
-              description: createSignatureResponse?.workFlow?.description,
-              creationDateTime:
-                createSignatureResponse?.workFlow?.creationDateTime,
-              isDeadline: createSignatureResponse?.workFlow?.isDeadline,
-              deadlineDatetime:
-                createSignatureResponse?.workFlow?.deadlineDatetime,
-              creatorID: createSignatureResponse?.workFlow?.creatorID,
-              isCreator: createSignatureResponse?.workFlow?.isCreator,
-            }));
-          } else {
-            // let value = "250486b9-711b-3bfa-3457-8d6ff0f35044";
-            // let xmlNew = processXml(webViewer.xfdfData, value);
-            // const currentUserID = "user1";
-            // const { filteredXmlString, removedAnnotations } =
-            //   filterFreetextElements(xmlNew, currentUserID);
-            // setPdfResponceData((prevData) => ({
-            //   ...prevData,
-            //   xfdfData: isNewFile === true ? "" : "",
-            //   pdfUrls: createSignatureResponse?.signatureDocument?.base64File,
-            //   removedAnnotations: isNewFile === true ? "" : "",
-            // }));
-          }
-        }
+  //       if (createSignatureResponse?.signatureDocument) {
+  //         if (isNewFile) {
+  //           setPdfResponceData((prevData) => ({
+  //             ...prevData,
+  //             xfdfData: "",
+  //             attachmentBlob:
+  //               createSignatureResponse?.signatureDocument?.base64File,
+  //             removedAnnotations: "",
+  //             workFlowID: createSignatureResponse?.workFlow?.pK_WorkFlow_ID,
+  //             documentID: createSignatureResponse?.signatureDocument.documentID,
+  //             title: createSignatureResponse?.workFlow?.title,
+  //             description: createSignatureResponse?.workFlow?.description,
+  //             creationDateTime:
+  //               createSignatureResponse?.workFlow?.creationDateTime,
+  //             isDeadline: createSignatureResponse?.workFlow?.isDeadline,
+  //             deadlineDatetime:
+  //               createSignatureResponse?.workFlow?.deadlineDatetime,
+  //             creatorID: createSignatureResponse?.workFlow?.creatorID,
+  //             isCreator: createSignatureResponse?.workFlow?.isCreator,
+  //           }));
+  //         } else {
+  //           // let value = "250486b9-711b-3bfa-3457-8d6ff0f35044";
+  //           // let xmlNew = processXml(webViewer.xfdfData, value);
+  //           // const currentUserID = "user1";
+  //           // const { filteredXmlString, removedAnnotations } =
+  //           //   filterFreetextElements(xmlNew, currentUserID);
+  //           // setPdfResponceData((prevData) => ({
+  //           //   ...prevData,
+  //           //   xfdfData: isNewFile === true ? "" : "",
+  //           //   pdfUrls: createSignatureResponse?.signatureDocument?.base64File,
+  //           //   removedAnnotations: isNewFile === true ? "" : "",
+  //           // }));
+  //         }
+  //       }
 
-        // let value = "250486b9-711b-3bfa-3457-8d6ff0f35044";
-        // let xmlNew = processXml(webViewer.xfdfData, value);
-        // const currentUserID = "user1";
-        // const { filteredXmlString, removedAnnotations } =
-        //   filterFreetextElements(xmlNew, currentUserID);
-        // setPdfResponceData((prevData) => ({
-        //   ...prevData,
-        //   xfdfData: isNewFile === true ? "" : "",
-        //   pdfUrls: createSignatureResponse?.signatureDocument?.base64File,
-        //   removedAnnotations: isNewFile === true ? "" : "",
-        // }));
-      }
-    } catch {}
-  }, [createSignatureResponse]);
+  //       // let value = "250486b9-711b-3bfa-3457-8d6ff0f35044";
+  //       // let xmlNew = processXml(webViewer.xfdfData, value);
+  //       // const currentUserID = "user1";
+  //       // const { filteredXmlString, removedAnnotations } =
+  //       //   filterFreetextElements(xmlNew, currentUserID);
+  //       // setPdfResponceData((prevData) => ({
+  //       //   ...prevData,
+  //       //   xfdfData: isNewFile === true ? "" : "",
+  //       //   pdfUrls: createSignatureResponse?.signatureDocument?.base64File,
+  //       //   removedAnnotations: isNewFile === true ? "" : "",
+  //       // }));
+  //     }
+  //   } catch {}
+  // }, [createSignatureResponse]);
   console.log("userAnnotations", userAnnotations);
   useEffect(() => {
     selectedUserRef.current = selectedUser;
@@ -639,7 +705,8 @@ const SignatureViewer = () => {
 
   // if using a class, equivalent of componentDidMount
   useEffect(() => {
-    if (createSignatureResponse?.signatureDocument) {
+    if (pdfResponceData.attachmentBlob !== "") {
+      let newData = JSON.parse(ApiResponse);
       WebViewer(
         {
           path: "/webviewer/lib",
@@ -652,12 +719,9 @@ const SignatureViewer = () => {
         viewer.current
       ).then(async (instance) => {
         setInstance(instance);
-        instance.UI.loadDocument(
-          base64ToBlob(createSignatureResponse?.signatureDocument?.base64File),
-          {
-            filename: fileName,
-          }
-        );
+        instance.UI.loadDocument(base64ToBlob(pdfResponceData.attachmentBlob), {
+          filename: pdfResponceData.title,
+        });
         const {
           documentViewer,
           annotationManager,
@@ -1114,7 +1178,7 @@ const SignatureViewer = () => {
         //======================================== for documentLoaded =====================================//
       });
     }
-  }, [createSignatureResponse?.signatureDocument]);
+  }, [pdfResponceData.attachmentBlob]);
 
   useEffect(() => {
     if (Instance) {
@@ -1206,10 +1270,14 @@ const SignatureViewer = () => {
 
   const clickSaveSigners = async () => {
     let Data = {
+      PK_WorkFlow_ID: pdfResponceData.workFlowID,
       WorkFlowTitle: pdfResponceData.title,
       Description: pdfResponceData.description,
       isDeadline: pdfResponceData.isDeadline,
-      DeadlineDateTime: pdfResponceData.deadlineDatetime,
+      DeadlineDateTime:
+        pdfResponceData.isDeadline === false
+          ? ""
+          : pdfResponceData.deadlineDatetime,
       CreatorID: pdfResponceData.creatorID,
       ListOfActionAbleBundle: signerData.map((sendData, index) => {
         return {

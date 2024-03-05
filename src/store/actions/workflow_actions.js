@@ -20,6 +20,10 @@ const createWorkflow_init = () => {
 };
 
 const createWorkflow_success = (response, message) => {
+  console.log(
+    { response, message },
+    "CREATESIGNATUREFLOW_SUCCESSCREATESIGNATUREFLOW_SUCCESS"
+  );
   return {
     type: actions.CREATESIGNATUREFLOW_SUCCESS,
     response: response,
@@ -34,7 +38,7 @@ const createWorkflow_fail = (message) => {
   };
 };
 // Create WorkFlow APi
-const createWorkflowApi = (Data, navigate, t) => {
+const createWorkflowApi = (Data, navigate, t, pdfDataJson) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(createWorkflow_init());
@@ -53,7 +57,7 @@ const createWorkflowApi = (Data, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(createWorkflowApi(Data, navigate, t));
+          dispatch(createWorkflowApi(Data, navigate, t, pdfDataJson));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -63,7 +67,23 @@ const createWorkflowApi = (Data, navigate, t) => {
                   "WorkFlow_WorkFlowServiceManager_CreateSignatureFlow_01".toLowerCase()
                 )
             ) {
-              dispatch(
+              console.log(
+                response.data.responseResult,
+                "createWorkflow_successcreateWorkflow_successcreateWorkflow_success"
+              );
+              let reponseData = JSON.stringify(
+                response.data.responseResult.signatureDocument.documentID
+              );
+
+              window.open(
+                `/#/DisKus/signatureviewer?createSignatureFlow=${encodeURIComponent(
+                  reponseData
+                )}`,
+                "_blank",
+                "noopener noreferrer"
+              );
+
+              await dispatch(
                 createWorkflow_success(
                   response.data.responseResult,
                   t("Created-successfully")
@@ -284,6 +304,19 @@ const getWorkFlowByWorkFlowIdwApi = (Data, navigate, t) => {
                   t("Data-available")
                 )
               );
+              console.log(
+                response.data.responseResult.workFlow.workFlow.pK_WorkFlow_ID,
+                response.data.responseResult.workFlow,
+                "workfFlowIdworkfFlowIdworkfFlowId"
+              );
+              try {
+                let workfFlowId =
+                  response.data.responseResult.workFlow.workFlow.pK_WorkFlow_ID;
+                let Data = { FK_WorkFlow_ID: Number(workfFlowId) };
+                dispatch(getAllFieldsByWorkflowIdApi(Data, navigate, t));
+              } catch (error) {
+                console.log(error, "errorerrorerror");
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -586,85 +619,74 @@ const getAllFieldsByWorkflowId_fail = (message) => {
 
 const getAllFieldsByWorkflowIdApi = (Data, navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  return new Promise((resolve, reject) => {
-    return (dispatch) => {
-      dispatch(getAllFieldsByWorkflowId_init());
-      let form = new FormData();
-      form.append("RequestMethod", getAllFieldsByWorkFlowIdRM.RequestMethod);
-      form.append("RequestData", JSON.stringify(Data));
 
-      axios({
-        method: "post",
-        url: dataRoomApi,
-        data: form,
-        headers: {
-          _token: token,
-        },
-      })
-        .then(async (response) => {
-          if (response.data.responseCode === 417) {
-            await dispatch(RefreshToken(navigate, t));
-            dispatch(getAllFieldsByWorkflowIdApi(Data, navigate, t));
-          } else if (response.data.responseCode === 200) {
-            if (response.data.responseResult.isExecuted === true) {
-              if (
-                response.data.responseResult.responseMessage
-                  .toLowerCase()
-                  .includes(
-                    "WorkFlow_WorkFlowServiceManager_GetAllFieldsByWorkFlowID_01".toLowerCase()
-                  )
-              ) {
-                resolve(response.data.responseResult);
-                dispatch(
-                  getAllFieldsByWorkflowId_success(
-                    response.data.responseResult,
-                    t("Data-available")
-                  )
-                );
-              } else if (
-                response.data.responseResult.responseMessage
-                  .toLowerCase()
-                  .includes(
-                    "WorkFlow_WorkFlowServiceManager_GetAllFieldsByWorkFlowID_02".toLowerCase()
-                  )
-              ) {
-                reject(response.data.responseResult.responseMessage);
-                dispatch(getAllFieldsByWorkflowId_fail(t("Np-data-available")));
-              } else if (
-                response.data.responseResult.responseMessage
-                  .toLowerCase()
-                  .includes(
-                    "WorkFlow_WorkFlowServiceManager_GetAllFieldsByWorkFlowID_03".toLowerCase()
-                  )
-              ) {
-                reject(response.data.responseResult.responseMessage);
+  return (dispatch) => {
+    dispatch(getAllFieldsByWorkflowId_init());
+    let form = new FormData();
+    form.append("RequestMethod", getAllFieldsByWorkFlowIdRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
 
-                dispatch(
-                  getAllFieldsByWorkflowId_fail(t("Something-went-wrong"))
-                );
-              } else {
-                dispatch(
-                  getAllFieldsByWorkflowId_fail(t("Something-went-wrong"))
-                );
-                reject(response.data.responseResult.responseMessage);
-              }
+    axios({
+      method: "post",
+      url: workflowApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getAllFieldsByWorkflowIdApi(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetAllFieldsByWorkFlowID_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllFieldsByWorkflowId_success(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetAllFieldsByWorkFlowID_02".toLowerCase()
+                )
+            ) {
+              dispatch(getAllFieldsByWorkflowId_fail(t("Np-data-available")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetAllFieldsByWorkFlowID_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllFieldsByWorkflowId_fail(t("Something-went-wrong"))
+              );
             } else {
               dispatch(
                 getAllFieldsByWorkflowId_fail(t("Something-went-wrong"))
               );
-              reject(response.data.responseResult.responseMessage);
             }
           } else {
             dispatch(getAllFieldsByWorkflowId_fail(t("Something-went-wrong")));
-            reject(response.data.responseResult.responseMessage);
           }
-        })
-        .catch((response) => {
+        } else {
           dispatch(getAllFieldsByWorkflowId_fail(t("Something-went-wrong")));
-          reject(response.data.responseResult.responseMessage);
-        });
-    };
-  });
+        }
+      })
+      .catch((response) => {
+        dispatch(getAllFieldsByWorkflowId_fail(t("Something-went-wrong")));
+      });
+  };
 };
 const sendDocument_init = () => {
   return {

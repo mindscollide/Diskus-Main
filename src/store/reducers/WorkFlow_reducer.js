@@ -21,6 +21,10 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
       };
     }
     case actions.CREATESIGNATUREFLOW_SUCCESS: {
+      console.log(
+        { action },
+        "CREATESIGNATUREFLOW_SUCCESSCREATESIGNATUREFLOW_SUCCESS"
+      );
       return {
         ...state,
         Loading: false,
