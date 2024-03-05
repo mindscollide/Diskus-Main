@@ -505,9 +505,17 @@ body[dir="rtl"] .SubAgendaSection {
 }
 
 .URLTitle_Heading {
-  font-family: "MontserratSemiBold" !important;
-  font-size: 16px !important;
-  color: #5a5a5a;
+  font-family: "MontserratMedium";
+  font-size: 14px !important;
+  font-weight: 600;
+  line-height: 15px;
+  text-decoration-line: underline;
+  color: #5f78d6;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
 }
 
 .ContributorTitle_Heading {
@@ -904,8 +912,6 @@ span.dashMinute {
   display: flex;
   margin-left: 22px;
 }
-
-
 
 .fileNameAttachment {
   font-style: normal;

@@ -241,62 +241,64 @@ const AgendaViewer = ({
           (editorRole.role === "Agenda Contributor" ||
             editorRole.role === "Participant") ? null : (
             <>
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex justify-content-end align-items-center text-end gap-2 mt-3"
-                >
-                  <div
-                    className={styles["box-agendas"]}
-                    onClick={fullScreenModal}
+              {rows.length > 0 ? (
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-end align-items-center text-end gap-2 mt-3"
                   >
-                    <img src={ExpandAgendaIcon} alt="" />
-                  </div>
-                  <div
-                    onClick={menuPopupAgenda}
-                    className={styles["box-agendas"]}
-                    ref={closeMenuAgenda}
-                  >
-                    <img src={MenuIcon} alt="" />
-                    {/* {menuAgenda ? ( */}
                     <div
-                      className={
-                        menuAgenda
-                          ? `${
-                              styles["popup-agenda-menu"]
-                            } ${"opacity-1 pe-auto"}`
-                          : `${
-                              styles["popup-agenda-menu"]
-                            } ${"opacity-0 pe-none"}`
-                      }
+                      className={styles["box-agendas"]}
+                      onClick={fullScreenModal}
                     >
-                      <span onClick={participantModal}>
-                        <img width={20} src={ParticipantsInfo} alt="" />
-                        Participants Info
-                      </span>
-                      <span onClick={printModal}>
-                        <img width={20} src={PrintIcon} alt="" />
-                        Print
-                      </span>
-                      <span onClick={exportModal}>
-                        <img width={20} src={ExportIcon} alt="" />
-                        Export (pdf)
-                      </span>
-                      <span onClick={shareEmailModal} className="border-0">
-                        <img width={20} src={ShareIcon} alt="" />
-                        Share (email)
-                      </span>
-                      <span onClick={selectAgendaModal} className="border-0">
-                        <img width={20} src={ShareIcon} alt="" />
-                        Select Agenda (TEMP)
-                      </span>
+                      <img src={ExpandAgendaIcon} alt="" />
                     </div>
-                    {/* ) : null} */}
-                  </div>
-                </Col>
-              </Row>
+                    <div
+                      onClick={menuPopupAgenda}
+                      className={styles["box-agendas"]}
+                      ref={closeMenuAgenda}
+                    >
+                      <img src={MenuIcon} alt="" />
+                      {/* {menuAgenda ? ( */}
+                      <div
+                        className={
+                          menuAgenda
+                            ? `${
+                                styles["popup-agenda-menu"]
+                              } ${"opacity-1 pe-auto"}`
+                            : `${
+                                styles["popup-agenda-menu"]
+                              } ${"opacity-0 pe-none"}`
+                        }
+                      >
+                        <span onClick={participantModal}>
+                          <img width={20} src={ParticipantsInfo} alt="" />
+                          Participants Info
+                        </span>
+                        <span onClick={printModal}>
+                          <img width={20} src={PrintIcon} alt="" />
+                          Print
+                        </span>
+                        <span onClick={exportModal}>
+                          <img width={20} src={ExportIcon} alt="" />
+                          Export (pdf)
+                        </span>
+                        <span onClick={shareEmailModal} className="border-0">
+                          <img width={20} src={ShareIcon} alt="" />
+                          Share (email)
+                        </span>
+                        <span onClick={selectAgendaModal} className="border-0">
+                          <img width={20} src={ShareIcon} alt="" />
+                          Select Agenda (TEMP)
+                        </span>
+                      </div>
+                      {/* ) : null} */}
+                    </div>
+                  </Col>
+                </Row>
+              ) : null}
               <DragDropContext
                 onDragEnd={(result) => onDragEnd(result, rows, setRows)}
               >

@@ -19,6 +19,7 @@ const CustomModal = ({
   closeButton,
   dialogClassName,
   modalTitleClassName,
+  fullscreen,
 }) => {
   // const [show, setShow] = useState(false);
   // console.log("viewmodalo", show);
@@ -47,6 +48,7 @@ const CustomModal = ({
           centered={true}
           className={className}
           dialogClassName={dialogClassName}
+          fullscreen={fullscreen}
         >
           <Modal.Header
             className={modalHeaderClassName}

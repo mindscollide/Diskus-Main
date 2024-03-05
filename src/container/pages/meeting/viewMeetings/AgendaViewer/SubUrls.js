@@ -29,8 +29,8 @@ const SubUrls = ({ subAgendaData, rows, setRows, index, subIndex }) => {
   };
   return (
     <Row className="mt-2">
-      <Col lg={12} md={12} sm={12}>
-        <span className={styles["URLTitle_Heading"]}>
+      <Col lg={8} md={8} sm={12}>
+        <span className={styles["URLTitle_Heading"]} onClick={() => window.open(subAgendaData.subAgendaUrlFieldRadio, '_blank')}>
           {subAgendaData.subAgendaUrlFieldRadio}
         </span>
       </Col>

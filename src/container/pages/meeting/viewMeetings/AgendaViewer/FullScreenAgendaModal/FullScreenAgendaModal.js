@@ -1,39 +1,34 @@
 import React, { useState, useEffect, useRef } from "react";
-import styles from "./../Agenda.module.css";
+import styles from "./FullScreenAgendaModal.module.css";
 import { useNavigate } from "react-router-dom";
-import { Col, Row, Modal } from "react-bootstrap";
-import { Button, Notification } from "./../../../../../../components/elements";
+import { Container, Col, Row } from "react-bootstrap";
+import {
+  Button,
+  Notification,
+  Modal,
+} from "./../../../../../../components/elements";
+import {
+  callRequestReceivedMQTT,
+  LeaveCall,
+} from "../../../../../../store/actions/VideoMain_actions";
+import { FetchMeetingURLApi } from "../../../../../../store/actions/NewMeetingActions";
+import {
+  normalizeVideoPanelFlag,
+  videoChatPanel,
+  maximizeVideoPanelFlag,
+  minimizeVideoPanelFlag,
+  leaveCallModal,
+  participantPopup,
+} from "../../../../../../store/actions/VideoFeature_actions";
 import { useTranslation } from "react-i18next";
-import CancelMeetingMaterial from "./../CancelMeetingMaterial/CancelMeetingMaterial";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  searchNewUserMeeting,
-  viewAdvanceMeetingPublishPageFlag,
-  viewAdvanceMeetingUnpublishPageFlag,
-} from "./../../../../../../store/actions/NewMeetingActions";
-import {
-  GetAdvanceMeetingAgendabyMeetingID,
-  clearAgendaReducerState,
-} from "./../../../../../../store/actions/MeetingAgenda_action";
 import emptyContributorState from "./../../../../../../assets/images/Empty_Agenda_Meeting_view.svg";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import ParentAgenda from "./../ParentAgenda";
 import AllFilesModal from "./../AllFilesModal/AllFilesModal";
-import ExportAgendaModal from "./../ExportAgendaModal/ExportAgendaModal";
-import ParticipantInfoModal from "./../ParticipantInfoModal/ParticipantInfoModal";
-import PrintAgendaModal from "./../PrintAgendaModal/PrintAgendaModal";
-import SelectAgendaModal from "./../SelectAgendaModal/SelectAgendaModal";
-import ShareEmailModal from "./../ShareEmailModal/ShareEmailModal";
 import { onDragEnd } from "./../drageFunction";
-import CollapseIcon from "./../AV-Images/Collapse-Icon.png";
-import ExpandAgendaIcon from "./../AV-Images/Expand-Agenda-Icon.png";
 import CollapseAgendaIcon from "./../AV-Images/Collapse-Agenda-Icon.png";
-import MenuIcon from "./../AV-Images/Menu-Icon.png";
-import ParticipantsInfo from "./../AV-Images/Participants-Icon.png";
-import PrintIcon from "./../AV-Images/Print-Icon.png";
-import ExportIcon from "./../AV-Images/Export-Icon.png";
-import ShareIcon from "./../AV-Images/Share-Icon.png";
-import FullScreenAgendaPrint from "./FullScreenAgendaPrint";
+import VideocameraIcon from "./../AV-Images/Videocamera-Icon.png";
 
 const FullScreenAgendaModal = ({
   setFullScreenView,
@@ -64,26 +59,26 @@ const FullScreenAgendaModal = ({
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
 
-  const [open, setOpen] = useState({
-    flag: false,
-    message: "",
-  });
+  let currentMeeting = Number(localStorage.getItem("currentMeetingLS"));
+  let currentUserID = Number(localStorage.getItem("userID"));
+  let currentOrganization = Number(localStorage.getItem("organizationID"));
+  let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+  let meetingTitle = localStorage.getItem("meetingTitle");
 
-  // For cancel with no modal Open
-  let userID = localStorage.getItem("userID");
-  let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
-  let currentView = localStorage.getItem("MeetingCurrentView");
+  let activeCall = JSON.parse(localStorage.getItem("activeCall"));
+
+  let initiateRoomID = localStorage.getItem("initiateCallRoomID");
+
+  let currentCallType = Number(localStorage.getItem("CallType"));
+
+  let callTypeID = Number(localStorage.getItem("callTypeID"));
+
+  let callerID = Number(localStorage.getItem("callerID"));
 
   // const [rows, setRows] = useState([]);
   const [emptyStateRows, setEmptyStateRows] = useState(false);
 
-  const [agendaSelectOptionView, setAgendaSelectOptionView] = useState(false);
-  const [exportAgendaView, setExportAgendaView] = useState(false);
-  const [printAgendaView, setPrintAgendaView] = useState(false);
-  const [shareEmailView, setShareEmailView] = useState(false);
   const [showMoreFilesView, setShowMoreFilesView] = useState(false);
-  const [participantInfoView, setParticipantInfoView] = useState(false);
 
   const [fileDataAgenda, setFileDataAgenda] = useState([]);
   const [agendaName, setAgendaName] = useState("");
@@ -147,15 +142,131 @@ const FullScreenAgendaModal = ({
     }
   }, [rows]);
 
+  const [initiateVideoModalOto, setInitiateVideoModalOto] = useState(false);
+
+  const leaveCallHost = () => {
+    let Data = {
+      OrganizationID: currentOrganization,
+      RoomID: initiateRoomID,
+      IsCaller: true,
+      CallTypeID: currentCallType,
+    };
+    dispatch(LeaveCall(Data, navigate, t));
+    let Data2 = {
+      MeetingID: currentMeeting,
+    };
+    dispatch(
+      FetchMeetingURLApi(Data2, navigate, t, currentUserID, currentOrganization)
+    );
+    localStorage.setItem("meetingTitle", meetingTitle);
+    const emptyArray = [];
+    localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
+    dispatch(normalizeVideoPanelFlag(true));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(false));
+    dispatch(leaveCallModal(false));
+    setInitiateVideoModalOto(false);
+    dispatch(participantPopup(false));
+    localStorage.setItem("activeCall", true);
+    localStorage.setItem("callerID", 0);
+    localStorage.setItem("recipentCalledID", 0);
+    dispatch(callRequestReceivedMQTT({}, ""));
+    dispatch(videoChatPanel(false));
+    localStorage.setItem("isMeetingVideo", true);
+  };
+
+  const leaveCallParticipant = () => {
+    let roomID = localStorage.getItem("acceptedRoomID");
+    let Data = {
+      OrganizationID: currentOrganization,
+      RoomID: roomID,
+      IsCaller: false,
+      CallTypeID: callTypeID,
+    };
+    dispatch(LeaveCall(Data, navigate, t));
+    let Data2 = {
+      MeetingID: currentMeeting,
+    };
+    dispatch(
+      FetchMeetingURLApi(Data2, navigate, t, currentUserID, currentOrganization)
+    );
+    localStorage.setItem("meetingTitle", meetingTitle);
+    const emptyArray = [];
+    localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
+    dispatch(normalizeVideoPanelFlag(true));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(false));
+    dispatch(leaveCallModal(false));
+    setInitiateVideoModalOto(false);
+    dispatch(participantPopup(false));
+    localStorage.setItem("CallType", 0);
+    localStorage.setItem("activeCall", true);
+    dispatch(callRequestReceivedMQTT({}, ""));
+    dispatch(videoChatPanel(false));
+    localStorage.setItem("isMeetingVideo", true);
+  };
+
+  const joinMeetingCall = () => {
+    if (activeCall === false && isMeeting === false) {
+      let Data = {
+        MeetingID: currentMeeting,
+      };
+      dispatch(
+        FetchMeetingURLApi(
+          Data,
+          navigate,
+          t,
+          currentUserID,
+          currentOrganization,
+          1
+        )
+      );
+      localStorage.setItem("meetingTitle", meetingTitle);
+    } else if (activeCall === true && isMeeting === false) {
+      setInitiateVideoModalOto(true);
+      dispatch(callRequestReceivedMQTT({}, ""));
+    }
+  };
+
   return (
     <Modal
       show={true}
       modalFooterClassName={"d-block"}
       modalHeaderClassName={"d-block"}
       onHide={() => setFullScreenView(false)}
-      size={"xl"}
-      className="FullScreenModal"
-      ModalTitle={"Test"}
+      // size={"xl"}
+      fullscreen={true}
+      className={
+        showMoreFilesView ? "FullScreenModal blurEffect" : "FullScreenModal"
+      }
+      ModalTitle={
+        <>
+          <Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className={styles["agendaViewerHeader"]}
+            >
+              <p className={styles["FileModalTitle"]}>{t("Agenda-Viewer")}</p>
+
+              <div
+                className={styles["box-agendas"]}
+                onClick={() => setFullScreenView(false)}
+              >
+                <img src={CollapseAgendaIcon} alt="" />
+              </div>
+
+              <div
+                className={styles["box-agendas-camera"]}
+                onClick={joinMeetingCall}
+              >
+                <img src={VideocameraIcon} alt="" />
+              </div>
+            </Col>
+          </Row>
+        </>
+      }
       ModalBody={
         <section>
           {emptyStateRows === true &&
@@ -198,153 +309,190 @@ const FullScreenAgendaModal = ({
             (editorRole.role === "Agenda Contributor" ||
               editorRole.role === "Participant") ? null : (
               <>
-                {/* <DragDropContext
-                      onDragEnd={(result) => onDragEnd(result, rows, setRows)}
+                <DragDropContext
+                  onDragEnd={(result) => onDragEnd(result, rows, setRows)}
+                >
+                  <Row className={styles["horizontalSpacing"]}>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className={styles["Scroller_Agenda"]}
                     >
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className={styles["Scroller_Agenda"]}
-                        >
-                          <Droppable droppableId="board" type="PARENT">
-                            {(provided) => (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.droppableProps}
-                              >
-                                {rows.length > 0 ? (
-                                  rows.map((data, index) => {
-                                    return (
-                                      <>
-                                        <ParentAgenda
-                                          data={data}
-                                          index={index}
-                                          rows={rows}
-                                          setRows={setRows}
-                                          setFileDataAgenda={setFileDataAgenda}
-                                          fileDataAgenda={fileDataAgenda}
-                                          setAgendaName={setAgendaName}
-                                          agendaName={agendaName}
-                                          setAgendaIndex={setAgendaIndex}
-                                          agendaIndex={agendaIndex}
-                                          setSubAgendaIndex={setSubAgendaIndex}
-                                          subAgendaIndex={subAgendaIndex}
-                                          setMainAgendaRemovalIndex={
-                                            setMainAgendaRemovalIndex
-                                          }
-                                          agendaItemRemovedIndex={
-                                            agendaItemRemovedIndex
-                                          }
-                                          setAgendaItemRemovedIndex={
-                                            setAgendaItemRemovedIndex
-                                          }
-                                          setSubajendaRemoval={
-                                            setSubajendaRemoval
-                                          }
-                                          editorRole={editorRole}
-                                          advanceMeetingModalID={
-                                            advanceMeetingModalID
-                                          }
-                                          setShowMoreFilesView={
-                                            setShowMoreFilesView
-                                          }
-                                        />
-                                      </>
-                                    );
-                                  })
-                                ) : (
+                      <Droppable droppableId="board" type="PARENT">
+                        {(provided) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.droppableProps}
+                          >
+                            {rows.length > 0 ? (
+                              rows.map((data, index) => {
+                                return (
                                   <>
-                                    <Row>
-                                      <Col
-                                        lg={12}
-                                        md={12}
-                                        sm={12}
-                                        className="d-flex justify-content-center mt-3"
-                                      >
-                                        <img
-                                          draggable={false}
-                                          src={emptyContributorState}
-                                          width="274.05px"
-                                          alt=""
-                                          height="230.96px"
-                                        />
-                                      </Col>
-                                    </Row>
-                                    <Row>
-                                      <Col
-                                        lg={12}
-                                        md={12}
-                                        sm={12}
-                                        className="d-flex justify-content-center mt-3"
-                                      >
-                                        <span
-                                          className={
-                                            styles["Empty_state_heading"]
-                                          }
-                                        >
-                                          {t("Add-agenda").toUpperCase()}
-                                        </span>
-                                      </Col>
-                                    </Row>
-                                    <Row>
-                                      <Col
-                                        lg={12}
-                                        md={12}
-                                        sm={12}
-                                        className="d-flex justify-content-center"
-                                      >
-                                        <span
-                                          className={
-                                            styles["Empty_state_Subheading"]
-                                          }
-                                        >
-                                          {t(
-                                            "Add-some-purpose-start-by-creating-your-agenda"
-                                          )}
-                                        </span>
-                                      </Col>
-                                    </Row>
+                                    <ParentAgenda
+                                      data={data}
+                                      index={index}
+                                      rows={rows}
+                                      setRows={setRows}
+                                      setFileDataAgenda={setFileDataAgenda}
+                                      fileDataAgenda={fileDataAgenda}
+                                      setAgendaName={setAgendaName}
+                                      agendaName={agendaName}
+                                      setAgendaIndex={setAgendaIndex}
+                                      agendaIndex={agendaIndex}
+                                      setSubAgendaIndex={setSubAgendaIndex}
+                                      subAgendaIndex={subAgendaIndex}
+                                      setMainAgendaRemovalIndex={
+                                        setMainAgendaRemovalIndex
+                                      }
+                                      agendaItemRemovedIndex={
+                                        agendaItemRemovedIndex
+                                      }
+                                      setAgendaItemRemovedIndex={
+                                        setAgendaItemRemovedIndex
+                                      }
+                                      setSubajendaRemoval={setSubajendaRemoval}
+                                      editorRole={editorRole}
+                                      advanceMeetingModalID={
+                                        advanceMeetingModalID
+                                      }
+                                      setShowMoreFilesView={
+                                        setShowMoreFilesView
+                                      }
+                                    />
                                   </>
-                                )}
-
-                                {provided.placeholder}
-                              </div>
+                                );
+                              })
+                            ) : (
+                              <>
+                                <Row>
+                                  <Col
+                                    lg={12}
+                                    md={12}
+                                    sm={12}
+                                    className="d-flex justify-content-center mt-3"
+                                  >
+                                    <img
+                                      draggable={false}
+                                      src={emptyContributorState}
+                                      width="274.05px"
+                                      alt=""
+                                      height="230.96px"
+                                    />
+                                  </Col>
+                                </Row>
+                                <Row>
+                                  <Col
+                                    lg={12}
+                                    md={12}
+                                    sm={12}
+                                    className="d-flex justify-content-center mt-3"
+                                  >
+                                    <span
+                                      className={styles["Empty_state_heading"]}
+                                    >
+                                      {t("Add-agenda").toUpperCase()}
+                                    </span>
+                                  </Col>
+                                </Row>
+                                <Row>
+                                  <Col
+                                    lg={12}
+                                    md={12}
+                                    sm={12}
+                                    className="d-flex justify-content-center"
+                                  >
+                                    <span
+                                      className={
+                                        styles["Empty_state_Subheading"]
+                                      }
+                                    >
+                                      {t(
+                                        "Add-some-purpose-start-by-creating-your-agenda"
+                                      )}
+                                    </span>
+                                  </Col>
+                                </Row>
+                              </>
                             )}
-                          </Droppable>
-                        </Col>
-                      </Row>
-                    </DragDropContext> */}
+
+                            {provided.placeholder}
+                          </div>
+                        )}
+                      </Droppable>
+                    </Col>
+                  </Row>
+                </DragDropContext>
               </>
             )}
-            <Row>
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex justify-content-end gap-2 mt-2"
-              >
-                <Button
-                  text={t("Cancel")}
-                  className={styles["Cancel_Meeting_Details"]}
-                  onClick={handleCancelMeetingNoPopup}
-                />
+            {showMoreFilesView ? (
+              <AllFilesModal
+                agendaName={agendaName}
+                fileDataAgenda={fileDataAgenda}
+                setShowMoreFilesView={setShowMoreFilesView}
+                agendaIndex={agendaIndex}
+                subAgendaIndex={subAgendaIndex}
+                setFileDataAgenda={setFileDataAgenda}
+                setAgendaName={setAgendaName}
+                setAgendaIndex={setAgendaIndex}
+                setSubAgendaIndex={setSubAgendaIndex}
+              />
+            ) : null}
 
-                <Button
-                  text={t("Next")}
-                  onClick={handleClickSave}
-                  className={styles["Save_Classname"]}
-                  disableBtn={
-                    Number(editorRole.status) === 11 ||
-                    Number(editorRole.status) === 12 ||
-                    Number(editorRole.status) === 1
-                      ? true
-                      : false
-                  }
-                />
-              </Col>
-            </Row>
+            <Modal
+              show={initiateVideoModalOto}
+              onHide={() => {
+                setInitiateVideoModalOto(false);
+              }}
+              setShow={setInitiateVideoModalOto}
+              modalFooterClassName="d-none"
+              centered
+              size={"sm"}
+              className="callCheckModal"
+              ModalBody={
+                <>
+                  <Container>
+                    <Row>
+                      <Col lg={12} md={12} sm={12}>
+                        <p> Disconnect current call? </p>
+                      </Col>
+                    </Row>
+                    <Row className="mt-3 mb-4">
+                      <Col
+                        lg={12}
+                        sm={12}
+                        md={12}
+                        className="d-flex justify-content-center gap-2"
+                      >
+                        <Button
+                          text={
+                            callerID === currentUserID || callerID === 0
+                              ? t("End Host")
+                              : callerID !== currentUserID
+                              ? t("End Participant")
+                              : null
+                          }
+                          className="leave-meeting-options__btn leave-meeting-red-button"
+                          onClick={
+                            callerID === currentUserID || callerID === 0
+                              ? leaveCallHost
+                              : callerID !== currentUserID
+                              ? leaveCallParticipant
+                              : null
+                          }
+                        />
+
+                        <Button
+                          text={t("Cancel")}
+                          className="leave-meeting-options__btn leave-meeting-gray-button"
+                          onClick={() => setInitiateVideoModalOto(false)}
+                        />
+                      </Col>
+                    </Row>
+                  </Container>
+                </>
+              }
+            />
           </section>
         </section>
       }

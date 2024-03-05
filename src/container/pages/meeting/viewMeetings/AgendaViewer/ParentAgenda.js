@@ -628,6 +628,7 @@ const ParentAgenda = ({
         </Draggable>
       </div>
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      
     </>
   );
 };

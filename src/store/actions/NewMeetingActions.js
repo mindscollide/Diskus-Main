@@ -1334,7 +1334,8 @@ const FetchMeetingURLApi = (
   navigate,
   t,
   currentUserID,
-  currentOrganization
+  currentOrganization,
+  flag
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -1360,7 +1361,8 @@ const FetchMeetingURLApi = (
               navigate,
               t,
               currentUserID,
-              currentOrganization
+              currentOrganization,
+              flag
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -1413,7 +1415,11 @@ const FetchMeetingURLApi = (
               localStorage.setItem("acceptedRecipientID", currentUserID);
               localStorage.setItem("isMeetingVideo", true);
               dispatch(callRequestReceivedMQTT({}, ""));
-              dispatch(maximizeVideoPanelFlag(true));
+              if (flag === 0) {
+                dispatch(maximizeVideoPanelFlag(true));
+              } else {
+                dispatch(normalizeVideoPanelFlag(true));
+              }
               dispatch(videoChatPanel(false));
               // dispatch(groupCallRecipients(groupCallActiveUsers))
             } else if (
