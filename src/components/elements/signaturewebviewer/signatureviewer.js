@@ -153,11 +153,17 @@ const SignatureViewer = () => {
       if (bundleModels?.length > 0) {
         let listOfUsers = [];
         let selectedUserList = [];
+        let signersData = [];
         bundleModels.forEach((users, index) => {
           users.actors.forEach((usersData, index) => {
             listOfUsers.push({
               name: usersData.name,
               pk_UID: usersData.pK_UID,
+            });
+            signersData.push({
+              Name: usersData.name,
+              EmailAddress: usersData.emailAddress,
+              userID: usersData.pK_UID,
             });
             selectedUserList.push({
               xml: [],
@@ -165,6 +171,7 @@ const SignatureViewer = () => {
             });
           });
         });
+        setSignerData(signersData);
         setParticipants(listOfUsers);
         setSelectedUser(listOfUsers[0].pk_UID);
         setUserAnnotations(selectedUserList);
@@ -248,11 +255,18 @@ const SignatureViewer = () => {
         let getUsers = saveWorkFlowResponse.workFlow;
         let listOfUsers = [];
         let selectedUserList = [];
+        let signersData = [];
+
         getUsers.bundleModels.forEach((users, index) => {
           users.actors.forEach((usersData, index) => {
             listOfUsers.push({
               name: usersData.name,
               pk_UID: usersData.pK_UID,
+            });
+            signersData.push({
+              Name: usersData.name,
+              EmailAddress: usersData.emailAddress,
+              userID: usersData.pK_UID,
             });
             selectedUserList.push({
               xml: [],
@@ -260,6 +274,8 @@ const SignatureViewer = () => {
             });
           });
         });
+        setSignerData(signersData);
+
         setParticipants(listOfUsers);
         setSelectedUser(listOfUsers[0].pk_UID);
         setUserAnnotations(selectedUserList);
@@ -343,66 +359,6 @@ const SignatureViewer = () => {
     return { filteredXmlString, removedAnnotations };
   }
 
-  // useEffect(() => {
-  //   try {
-  //     if (createSignatureResponse !== null) {
-  //       let Data = {
-  //         FileID: Number(createSignatureResponse.signatureDocument.documentID),
-  //       };
-  //       // dispatch(getWorkFlowByWorkFlowIdwApi(Data, navigate, t));
-  //       // let apiResponse = {
-  //       //   createSignatureResponse.signatureDocument, createSignatureResponse.workflow
-  //       // }
-
-  //       if (createSignatureResponse?.signatureDocument) {
-  //         if (isNewFile) {
-  //           setPdfResponceData((prevData) => ({
-  //             ...prevData,
-  //             xfdfData: "",
-  //             attachmentBlob:
-  //               createSignatureResponse?.signatureDocument?.base64File,
-  //             removedAnnotations: "",
-  //             workFlowID: createSignatureResponse?.workFlow?.pK_WorkFlow_ID,
-  //             documentID: createSignatureResponse?.signatureDocument.documentID,
-  //             title: createSignatureResponse?.workFlow?.title,
-  //             description: createSignatureResponse?.workFlow?.description,
-  //             creationDateTime:
-  //               createSignatureResponse?.workFlow?.creationDateTime,
-  //             isDeadline: createSignatureResponse?.workFlow?.isDeadline,
-  //             deadlineDatetime:
-  //               createSignatureResponse?.workFlow?.deadlineDatetime,
-  //             creatorID: createSignatureResponse?.workFlow?.creatorID,
-  //             isCreator: createSignatureResponse?.workFlow?.isCreator,
-  //           }));
-  //         } else {
-  //           // let value = "250486b9-711b-3bfa-3457-8d6ff0f35044";
-  //           // let xmlNew = processXml(webViewer.xfdfData, value);
-  //           // const currentUserID = "user1";
-  //           // const { filteredXmlString, removedAnnotations } =
-  //           //   filterFreetextElements(xmlNew, currentUserID);
-  //           // setPdfResponceData((prevData) => ({
-  //           //   ...prevData,
-  //           //   xfdfData: isNewFile === true ? "" : "",
-  //           //   pdfUrls: createSignatureResponse?.signatureDocument?.base64File,
-  //           //   removedAnnotations: isNewFile === true ? "" : "",
-  //           // }));
-  //         }
-  //       }
-
-  //       // let value = "250486b9-711b-3bfa-3457-8d6ff0f35044";
-  //       // let xmlNew = processXml(webViewer.xfdfData, value);
-  //       // const currentUserID = "user1";
-  //       // const { filteredXmlString, removedAnnotations } =
-  //       //   filterFreetextElements(xmlNew, currentUserID);
-  //       // setPdfResponceData((prevData) => ({
-  //       //   ...prevData,
-  //       //   xfdfData: isNewFile === true ? "" : "",
-  //       //   pdfUrls: createSignatureResponse?.signatureDocument?.base64File,
-  //       //   removedAnnotations: isNewFile === true ? "" : "",
-  //       // }));
-  //     }
-  //   } catch {}
-  // }, [createSignatureResponse]);
   console.log("userAnnotations", userAnnotations);
   useEffect(() => {
     selectedUserRef.current = selectedUser;
