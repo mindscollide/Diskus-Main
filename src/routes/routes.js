@@ -196,7 +196,6 @@ export const router = createHashRouter(
       </Route>
 
       {/* User Management Routes Defined Below  */}
-
       <Route path="/signupUsermanagement" element={<SignUpOrganizationUM />} />
       <Route path="/VerifyOTPUserManagement" element={<VerifyOTPUM />} />
       <Route path="/PasswordCreationUM" element={<PasswordCreationUM />} />
