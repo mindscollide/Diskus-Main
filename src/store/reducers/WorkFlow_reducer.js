@@ -10,6 +10,7 @@ const initialState = {
   saveSignatureOocument: null,
   getAllFieldsByWorkflowID: null,
   sendDocumentResponse: null,
+  getDataroomAnnotation: null,
 };
 
 const SignatureWorkflowReducer = (state = initialState, action) => {
@@ -71,7 +72,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
     case actions.GETWORKFLOWBYFILEID_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: action.loading,
         getWorkfFlowByFileId: action.response,
         ResponseMessage: action.message,
       };
@@ -138,7 +139,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
     case actions.GET_ALL_FIELDS_BY_WORKDFLOW_ID_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: action.loading,
         getAllFieldsByWorkflowID: action.response,
         ResponseMessage: action.message,
       };
@@ -170,6 +171,28 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         sendDocumentResponse: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GET_ANNOTATION_FILE_SIGNATUREFLOW_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GET_ANNOTATION_FILE_SIGNATUREFLOW_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getDataroomAnnotation: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GET_ANNOTATION_FILE_SIGNATUREFLOW_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getDataroomAnnotation: null,
         ResponseMessage: action.message,
       };
     }

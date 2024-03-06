@@ -40,6 +40,8 @@ const SignatureViewer = () => {
     createSignatureResponse,
     saveWorkFlowResponse,
     getWorkfFlowByFileId,
+    Loading,
+    getDataroomAnnotation,
   } = useSelector((state) => state.SignatureWorkFlowReducer);
   let name = localStorage.getItem("name");
   // Parse the URL parameters to get the data
@@ -92,11 +94,7 @@ const SignatureViewer = () => {
     creatorID: "",
     isCreator: 0,
   });
-  console.log(pdfResponceData, "pdfResponceDatapdfResponceDatapdfResponceData");
-  console.log(
-    getWorkfFlowByFileId,
-    "getWorkfFlowByFileIdgetWorkfFlowByFileIdgetWorkfFlowByFileId"
-  );
+
   // { userID: "user1", xml: [] }
   const [userAnnotations, setUserAnnotations] = useState([]);
 
@@ -108,47 +106,22 @@ const SignatureViewer = () => {
   const participantsRef = useRef(participants);
   let documentID = Number(localStorage.getItem("documentID"));
 
-  console.log(
-    pdfResponceDataBLobRef,
-    "pdfResponceDataBLobRefpdfResponceDataBLobRef"
-  );
   useEffect(() => {
-    if (ApiResponse !== null && ApiResponse !== undefined) {
-      let Data = {
-        FileID: Number(ApiResponse),
-      };
-      let Data2 = {
-        FileID: Number(ApiResponse),
-        UserID: Number(localStorage.getItem("userID")),
-        OrganizationID: Number(localStorage.getItem("organizationID")),
-      };
-      dispatch(getAnnotationsOfDataroomAttachement(navigate, t, Data2));
-      dispatch(getWorkFlowByWorkFlowIdwApi(Data, navigate, t));
-      dispatch(allAssignessList(navigate, t));
-      // let newApiData = JSON.parse(ApiResponse);
-      // setPdfResponceData((prevData) => ({
-      //   ...prevData,
-      //   xfdfData: "",
-      //   attachmentBlob: newApiData?.signatureDocument?.base64File,
-      //   removedAnnotations: "",
-      //   workFlowID: newApiData?.workFlow?.pK_WorkFlow_ID,
-      //   documentID: newApiData?.signatureDocument.documentID,
-      //   title: newApiData?.workFlow?.title,
-      //   description: newApiData?.workFlow?.description,
-      //   creationDateTime: newApiData?.workFlow?.creationDateTime,
-      //   isDeadline: newApiData?.workFlow?.isDeadline,
-      //   deadlineDatetime: newApiData?.workFlow?.deadlineDatetime,
-      //   creatorID: newApiData?.workFlow?.creatorID,
-      //   isCreator: newApiData?.workFlow?.isCreator,
-      // }));
-    }
+    const fetchData = async () => {
+      if (ApiResponse !== null && ApiResponse !== undefined) {
+        let Data = {
+          FileID: Number(ApiResponse),
+        };
+        dispatch(allAssignessList(navigate, t));
+        await dispatch(getWorkFlowByWorkFlowIdwApi(Data, navigate, t));
+      }
+    };
+
+    fetchData();
   }, []);
+  // Get Workflow by FileID Api Calling
   useEffect(() => {
-    if (
-      getWorkfFlowByFileId !== null &&
-      getWorkfFlowByFileId !== undefined &&
-      webViewer
-    ) {
+    if (getWorkfFlowByFileId !== null && getWorkfFlowByFileId !== undefined) {
       let bundleModels = getWorkfFlowByFileId.workFlow.bundleModels;
       if (bundleModels?.length > 0) {
         let listOfUsers = [];
@@ -198,14 +171,17 @@ const SignatureViewer = () => {
       }));
     }
   }, [getWorkfFlowByFileId]);
+  // Get  the file details by Id from API and Set it
   useEffect(() => {
-    if (webViewer !== null && webViewer !== undefined) {
+    if (getDataroomAnnotation !== null && getDataroomAnnotation !== undefined) {
       setPdfResponceData((prevData) => ({
         ...prevData,
-        attachmentBlob: webViewer.attachmentBlob,
+        xfdfData: "",
+        attachmentBlob: getDataroomAnnotation.attachmentBlob,
+        removedAnnotations: "",
       }));
     }
-  }, [webViewer]);
+  }, [getDataroomAnnotation]);
 
   useEffect(() => {
     try {
@@ -245,10 +221,8 @@ const SignatureViewer = () => {
       }
     } catch (error) {}
   }, [assignees.user]);
-  console.log(
-    saveWorkFlowResponse,
-    "saveWorkFlowResponsesaveWorkFlowResponsesaveWorkFlowResponse"
-  );
+
+  // Save Workflow Api Response
   useEffect(() => {
     try {
       if (saveWorkFlowResponse !== null) {
@@ -1410,6 +1384,7 @@ const SignatureViewer = () => {
         }
       />
       <Notification message={open.message} open={open.open} setOpen={setOpen} />
+      {Loading && <Loader />}
     </>
   );
 };
