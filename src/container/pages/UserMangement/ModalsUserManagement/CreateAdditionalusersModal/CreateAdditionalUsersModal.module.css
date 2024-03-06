@@ -43,8 +43,61 @@ body[dir="rtl"] .NameClass {
   font-family: "MontserratMedium";
   font-size: 12px !important;
   color: #5a5a5a !important;
+  margin-top: 2px !important;
 }
 
 body[dir="rtl"] .AdminAlsoClass {
   font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
+.Padding_Alignment {
+  padding: 0px 20px !important;
+}
+
+.SkipandResetButtonClass {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  font-family: "MontserratSemiBold" !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+}
+
+.SkipandResetButtonClass:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  font-family: "MontserratSemiBold" !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+}
+
+body[dir="rtl"] .SkipandResetButtonClass {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.CreateButtonClass {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  border: none !important;
+  font-family: "MontserratSemiBold" !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+}
+
+.CreateButtonClass:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  border: none !important;
+  font-family: "MontserratSemiBold" !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+}
+
+body[dir="rtl"] .CreateButtonClass {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }

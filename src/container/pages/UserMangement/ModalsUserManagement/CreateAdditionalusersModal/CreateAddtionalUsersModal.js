@@ -4,7 +4,12 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { showCreateAddtionalUsersModal } from "../../../../../store/actions/UserMangementModalActions";
-import { Checkbox, Modal, TextField } from "../../../../../components/elements";
+import {
+  Button,
+  Checkbox,
+  Modal,
+  TextField,
+} from "../../../../../components/elements";
 import crossicon from "../../../../../assets/images/BlackCrossIconModals.svg";
 import { Col, Row } from "react-bootstrap";
 const CreateAddtionalUsersModal = () => {
@@ -49,59 +54,120 @@ const CreateAddtionalUsersModal = () => {
         }
         ModalBody={
           <>
-            <Row>
-              <Col lg={12} md={12} sm={12}>
-                <span className={styles["AddtionalUserheading"]}>
-                  {t("Create-addtional-users")}
-                </span>
-              </Col>
-            </Row>
-            <Row className="mt-3">
-              <Col lg={12} md={12} sm={12}>
-                <TextField
-                  placeholder={t("Full-name")}
-                  label={
-                    <>
-                      <Row>
-                        <Col lg={12} md={12} sm={12}>
-                          <span className={styles["NameCreateAddtional"]}>
-                            {t("Name")}{" "}
-                            <span className={styles["Steric"]}>*</span>
-                          </span>
-                        </Col>
-                      </Row>
-                    </>
-                  }
-                  applyClass={"updateNotes_titleInput"}
-                />
-              </Col>
-            </Row>
-            <Row className="mt-3">
-              <Col
-                lg={6}
-                md={6}
-                sm={12}
-                className="d-flex flex-column flex-wrap"
-              >
-                <span className={styles["NameCreateAddtional"]}>
-                  {t("Organization")}
-                </span>
-                <span className={styles["NameClass"]}>Waqas Associates</span>
-              </Col>
-              <Col lg={6} md={6} sm={12}>
-                <Row>
-                  <Col sm={12} md={12} lg={12} className="d-flex gap-2">
-                    <Checkbox classNameDiv="" />
-                    <span className={styles["AdminAlsoClass"]}>
-                      {t("Is-admin-also")}
-                    </span>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
+            <section className={styles["Padding_Alignment"]}>
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <span className={styles["AddtionalUserheading"]}>
+                    {t("Create-addtional-users")}
+                  </span>
+                </Col>
+              </Row>
+              <Row className="mt-3">
+                <Col lg={12} md={12} sm={12}>
+                  <TextField
+                    placeholder={t("Full-name")}
+                    label={
+                      <>
+                        <Row>
+                          <Col lg={12} md={12} sm={12}>
+                            <span className={styles["NameCreateAddtional"]}>
+                              {t("Name")}{" "}
+                              <span className={styles["Steric"]}>*</span>
+                            </span>
+                          </Col>
+                        </Row>
+                      </>
+                    }
+                    applyClass={"updateNotes_titleInput"}
+                  />
+                </Col>
+              </Row>
+              <Row className="mt-3">
+                <Col
+                  lg={6}
+                  md={6}
+                  sm={12}
+                  className="d-flex flex-column flex-wrap"
+                >
+                  <span className={styles["NameCreateAddtional"]}>
+                    {t("Organization")}
+                  </span>
+                  <span className={styles["NameClass"]}>Waqas Associates</span>
+                </Col>
+                <Col lg={6} md={6} sm={12} className="flex-column flex-wrap">
+                  <span className={styles["NameCreateAddtional"]}>
+                    {t("Select-role")}
+                  </span>
+                  <Row>
+                    <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                      <Checkbox classNameCheckBoxP="m-0 p-0" classNameDiv="" />
+                      <span className={styles["AdminAlsoClass"]}>
+                        {t("Is-admin-also")}
+                      </span>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+              <Row>
+                <Col lg={6} md={6} sm={12}>
+                  <TextField
+                    placeholder={t("Email")}
+                    label={
+                      <>
+                        <span className={styles["NameCreateAddtional"]}>
+                          {t("Email")}{" "}
+                          <span className={styles["Steric"]}>*</span>
+                        </span>
+                      </>
+                    }
+                    applyClass={"updateNotes_titleInput"}
+                  />
+                </Col>{" "}
+                <Col lg={6} md={6} sm={12}>
+                  <TextField
+                    placeholder={t("Designation")}
+                    label={
+                      <>
+                        <span className={styles["NameCreateAddtional"]}>
+                          {t("Designation")}{" "}
+                          <span className={styles["Steric"]}>*</span>
+                        </span>
+                      </>
+                    }
+                    applyClass={"updateNotes_titleInput"}
+                  />
+                </Col>
+              </Row>
+            </section>
           </>
         }
-        ModalFooter={<></>}
+        ModalFooter={
+          <>
+            <section className={styles["Padding_Alignment"]}>
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex justify-content-end gap-2"
+                >
+                  <Button
+                    text={t("Skip")}
+                    className={styles["SkipandResetButtonClass"]}
+                  />
+                  <Button
+                    text={t("Reset")}
+                    className={styles["SkipandResetButtonClass"]}
+                  />
+                  <Button
+                    text={t("Create")}
+                    className={styles["CreateButtonClass"]}
+                  />
+                </Col>
+              </Row>
+            </section>
+          </>
+        }
       />
     </section>
   );
