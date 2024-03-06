@@ -21,8 +21,24 @@ const showCreateAddtionalUsersModal = (response) => {
   };
 };
 
+const showDeleteUsersModal = (response) => {
+  return {
+    type: actions.DELETE_USER_MODAL,
+    response: response,
+  };
+};
+
+const showEditUserModal = (response) => {
+  return {
+    type: actions.EDIT_USER_MODAL,
+    response: response,
+  };
+};
+
 export {
   showUpgradeNowModal,
   showRequestExtentionModal,
   showCreateAddtionalUsersModal,
+  showDeleteUsersModal,
+  showEditUserModal,
 };

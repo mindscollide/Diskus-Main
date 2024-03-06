@@ -204,3 +204,26 @@ body[dir="rtl"] .SearchButtonSearchBox {
   display: none;
   transition: opacity 5s ease-in-out;
 }
+
+.SearchablesItems {
+  padding: 5px 20px !important;
+  border-radius: 4px !important;
+  background: #6172d6;
+  display: flex;
+  text-align: center !important;
+  gap: 35px !important;
+}
+
+.CrossIcon_Class {
+  cursor: pointer !important;
+}
+
+.Searches {
+  font-size: 12px !important;
+  color: #fff !important;
+  font-family: "MontserratBold-700" !important;
+}
+
+body[dir="rtl"] .Searches {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}

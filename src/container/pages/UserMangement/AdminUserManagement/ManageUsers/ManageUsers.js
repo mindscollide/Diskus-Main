@@ -5,6 +5,7 @@ import EditIcon2 from "../../../../../assets/images/Edit-Icon-blck.png";
 import { Col, Container, Row } from "react-bootstrap";
 import { Plus, Trash } from "react-bootstrap-icons";
 import BlackCrossIcon from "../../../../../assets/images/BlackCrossIconModals.svg";
+import whiteCrossIcon from "../../../../../assets/images/WhiteCrossIcon.svg";
 import {
   Button,
   Checkbox,
@@ -15,18 +16,50 @@ import greenCheck from "../../../../../assets/images/greenCheck.svg";
 import { useTranslation } from "react-i18next";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
+import {
+  showDeleteUsersModal,
+  showEditUserModal,
+} from "../../../../../store/actions/UserMangementModalActions";
+import { useDispatch } from "react-redux";
+import DeleteUserModal from "../../ModalsUserManagement/DeleteUserModal/DeleteUserModal";
+import { useSelector } from "react-redux";
+import EditUserModal from "../../ModalsUserManagement/EditUserModal/EditUserModal";
 const ManageUsers = () => {
   const { t } = useTranslation();
 
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
+
+  const { UserManagementModals } = useSelector((state) => state);
+
   const [searchbox, setsearchbox] = useState(false);
 
   const [userTrialAlert, setUserTrialAlert] = useState(true);
 
+  const [showSearches, setshowSearches] = useState(false);
+
+  const [searchDetails, setsearchDetails] = useState({
+    Name: "",
+    Email: "",
+    Status: {
+      value: 0,
+      label: "",
+    },
+  });
+
   useEffect(() => {
     return () => {
       setUserTrialAlert(true);
+      setshowSearches(false);
+      setsearchDetails({
+        Name: "",
+        Email: "",
+        Status: {
+          value: 0,
+          label: "",
+        },
+      });
     };
   }, []);
 
@@ -81,11 +114,16 @@ const ManageUsers = () => {
           <>
             <div className="edit-icon-edituser icon-edit-list icon-size-one beachGreen">
               <i>
-                <img draggable="false" alt="" src={EditIcon2} />
+                <img
+                  draggable="false"
+                  alt=""
+                  src={EditIcon2}
+                  onClick={handleClickEditIcon}
+                />
               </i>
             </div>
             <i style={{ cursor: "pointer", color: "#000" }}>
-              <Trash size={22} />
+              <Trash size={22} onClick={handleDeleteModal} />
             </i>
           </>
         );
@@ -198,6 +236,63 @@ const ManageUsers = () => {
     setUserTrialAlert(false);
   };
 
+  const handleSearchBox = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    console.log({ name, value }, "handleChangeSearchBoxValues");
+
+    if (name === "Name") {
+      if (value !== "") {
+        let valueCheck = /^[A-Za-z\s]*$/i.test(value);
+        if (valueCheck) {
+          setsearchDetails((prevState) => ({
+            ...prevState,
+            [name]: value.trim(),
+          }));
+        }
+      } else {
+        setsearchDetails((prevState) => ({
+          ...prevState,
+          Name: "",
+        }));
+      }
+    } else if (name === "Email") {
+      setsearchDetails((prevState) => ({
+        ...prevState,
+        Email: value.trim(),
+      }));
+    }
+  };
+
+  const handleSearch = () => {
+    setsearchbox(false);
+    setshowSearches(true);
+  };
+
+  const handleRemoveSearchSnippet = () => {
+    setshowSearches(false);
+  };
+
+  const handleResetButton = () => {
+    setshowSearches(false);
+    setsearchDetails({
+      Name: "",
+      Email: "",
+      Status: {
+        value: 0,
+        label: "",
+      },
+    });
+  };
+
+  const handleDeleteModal = () => {
+    dispatch(showDeleteUsersModal(true));
+  };
+
+  const handleClickEditIcon = () => {
+    dispatch(showEditUserModal(true));
+  };
+
   return (
     <Container>
       <Row className={"mt-3 row"}>
@@ -253,6 +348,7 @@ const ManageUsers = () => {
               }
               iconClassName={styles["SearchIconClass"]}
             />
+
             {searchbox ? (
               <>
                 <Row>
@@ -284,6 +380,11 @@ const ManageUsers = () => {
                         <TextField
                           labelClass={"d-none"}
                           placeholder={t("Name")}
+                          name={"Name"}
+                          value={searchDetails.Name}
+                          type="text"
+                          applyClass={"usermanagementTextField"}
+                          change={handleSearchBox}
                         />
                       </Col>
                     </Row>
@@ -292,6 +393,11 @@ const ManageUsers = () => {
                         <TextField
                           labelClass={"d-none"}
                           placeholder={t("Email")}
+                          name={"Email"}
+                          applyClass={"usermanagementTextField"}
+                          type="email"
+                          value={searchDetails.Email}
+                          change={handleSearchBox}
                         />
                       </Col>
                       <Col lg={6} md={6} sm={12} xs={12}>
@@ -337,10 +443,12 @@ const ManageUsers = () => {
                         <Button
                           text={"Reset"}
                           className={styles["ResetButtonSearchBox"]}
+                          onClick={handleResetButton}
                         />
                         <Button
                           text={"Search"}
                           className={styles["SearchButtonSearchBox"]}
+                          onClick={handleSearch}
                         />
                       </Col>
                     </Row>
@@ -348,6 +456,38 @@ const ManageUsers = () => {
                 </Row>
               </>
             ) : null}
+            <Row className="mt-1">
+              <Col lg={12} md={12} sm={12} className="d-flex gap-2 flex-wrap">
+                {showSearches && searchDetails.Name !== "" ? (
+                  <div className={styles["SearchablesItems"]}>
+                    <span className={styles["Searches"]}>
+                      {searchDetails.Name}
+                    </span>
+                    <img
+                      src={whiteCrossIcon}
+                      alt=""
+                      className={styles["CrossIcon_Class"]}
+                      width={13}
+                      onClick={handleRemoveSearchSnippet}
+                    />
+                  </div>
+                ) : null}
+                {showSearches && searchDetails.Email !== "" ? (
+                  <div className={styles["SearchablesItems"]}>
+                    <span className={styles["Searches"]}>
+                      {searchDetails.Email}
+                    </span>
+                    <img
+                      src={whiteCrossIcon}
+                      alt=""
+                      className={styles["CrossIcon_Class"]}
+                      width={13}
+                      onClick={handleRemoveSearchSnippet}
+                    />
+                  </div>
+                ) : null}
+              </Col>
+            </Row>
           </span>
         </Col>
       </Row>
@@ -397,6 +537,8 @@ const ManageUsers = () => {
           />
         </Col>
       </Row>
+      {UserManagementModals.deleteUsersModal && <DeleteUserModal />}
+      {UserManagementModals.editUserModal && <EditUserModal />}
     </Container>
   );
 };

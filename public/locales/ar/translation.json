@@ -1737,5 +1737,6 @@
   "Select-role": "Select Role",
   "Skip": "Skip",
   "Manage-user": "Manage User",
-  "Maximum-20-users-can-be-created-in-trial-version": "Maximum 20 users can be created in Trial version"
+  "Maximum-20-users-can-be-created-in-trial-version": "Maximum 20 users can be created in Trial version",
+  "Are-you-sure-you-want-to-delete-this-user": "Are you sure you want to delete this user?"
 }

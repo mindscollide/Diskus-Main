@@ -6,6 +6,8 @@ const initialState = {
   UpgradeNowModal: false,
   requestExtentionModal: false,
   createAdditionalModals: false,
+  deleteUsersModal: false,
+  editUserModal: false,
 };
 
 const UserManagementModals = (state = initialState, action) => {
@@ -28,6 +30,20 @@ const UserManagementModals = (state = initialState, action) => {
       return {
         ...state,
         createAdditionalModals: action.response,
+      };
+    }
+
+    case actions.DELETE_USER_MODAL: {
+      return {
+        ...state,
+        deleteUsersModal: action.response,
+      };
+    }
+
+    case actions.EDIT_USER_MODAL: {
+      return {
+        ...state,
+        editUserModal: action.response,
       };
     }
 
