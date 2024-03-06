@@ -11,13 +11,21 @@ import {
   TextField,
 } from "../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
-import { showEditUserModal } from "../../../../../store/actions/UserMangementModalActions";
+import {
+  showEditUserModal,
+  showSucessfullyUpdatedModal,
+} from "../../../../../store/actions/UserMangementModalActions";
 const EditUserModal = () => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
   const { UserManagementModals } = useSelector((state) => state);
+
+  const handleUpdateButton = () => {
+    dispatch(showEditUserModal(false));
+    dispatch(showSucessfullyUpdatedModal(true));
+  };
   return (
     <section>
       <Modal
@@ -160,6 +168,7 @@ const EditUserModal = () => {
                   <Button
                     text={t("Update")}
                     className={styles["EdituserModalUpdateButton"]}
+                    onClick={handleUpdateButton}
                   />
                 </Col>
                 <Col lg={1} md={1} sm={12} xs={12}></Col>

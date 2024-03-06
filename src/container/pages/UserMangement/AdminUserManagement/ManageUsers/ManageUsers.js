@@ -24,6 +24,7 @@ import { useDispatch } from "react-redux";
 import DeleteUserModal from "../../ModalsUserManagement/DeleteUserModal/DeleteUserModal";
 import { useSelector } from "react-redux";
 import EditUserModal from "../../ModalsUserManagement/EditUserModal/EditUserModal";
+import SuccessfullyUpdateModal from "../../ModalsUserManagement/SuccessFullyUpdatedModal/SuccessfullyUpdateModal";
 const ManageUsers = () => {
   const { t } = useTranslation();
 
@@ -265,8 +266,10 @@ const ManageUsers = () => {
   };
 
   const handleSearch = () => {
-    setsearchbox(false);
-    setshowSearches(true);
+    if (searchDetails.Name !== "" && searchDetails.Email !== "") {
+      setsearchbox(false);
+      setshowSearches(true);
+    }
   };
 
   const handleRemoveSearchSnippet = () => {
@@ -525,7 +528,6 @@ const ManageUsers = () => {
           </Row>
         </>
       )}
-
       <Row className={styles["tablecolumnrow"]}>
         <Col lg={12} md={12} sm={12} xs={12}>
           <Table
@@ -538,7 +540,8 @@ const ManageUsers = () => {
         </Col>
       </Row>
       {UserManagementModals.deleteUsersModal && <DeleteUserModal />}
-      {UserManagementModals.editUserModal && <EditUserModal />}
+      {UserManagementModals.editUserModal && <EditUserModal />}{" "}
+      {UserManagementModals.successfullyUpdated && <SuccessfullyUpdateModal />}
     </Container>
   );
 };

@@ -8,6 +8,7 @@ const initialState = {
   createAdditionalModals: false,
   deleteUsersModal: false,
   editUserModal: false,
+  successfullyUpdated: false,
 };
 
 const UserManagementModals = (state = initialState, action) => {
@@ -44,6 +45,13 @@ const UserManagementModals = (state = initialState, action) => {
       return {
         ...state,
         editUserModal: action.response,
+      };
+    }
+
+    case actions.SUCCESSFULLY_UPDATED_MODAL: {
+      return {
+        ...state,
+        successfullyUpdated: action.response,
       };
     }
 

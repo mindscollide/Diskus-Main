@@ -35,10 +35,18 @@ const showEditUserModal = (response) => {
   };
 };
 
+const showSucessfullyUpdatedModal = (response) => {
+  return {
+    type: actions.SUCCESSFULLY_UPDATED_MODAL,
+    response: response,
+  };
+};
+
 export {
   showUpgradeNowModal,
   showRequestExtentionModal,
   showCreateAddtionalUsersModal,
   showDeleteUsersModal,
   showEditUserModal,
+  showSucessfullyUpdatedModal,
 };
