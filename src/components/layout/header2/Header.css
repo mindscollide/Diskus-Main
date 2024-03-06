@@ -634,7 +634,7 @@ body[dir="rtl"] .header2-container {
 .UpgradeButtonsClass {
   display: flex !important;
   gap: 10px !important;
-  margin-left: 270px !important;
+  margin-left: 150px !important;
 }
 
 .UpgradeNowbutton {
@@ -662,7 +662,7 @@ body[dir="rtl"] .UpgradeNowbutton {
 }
 
 body[dir="rtl"] .UpgradeButtonsClass {
-  margin-right: 270px !important;
+  margin-right: 150px !important;
 }
 
 .trialExpireButton {
