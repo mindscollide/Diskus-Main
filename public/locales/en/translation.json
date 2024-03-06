@@ -1774,5 +1774,7 @@
   "Create-addtional-users": "Create Addtional Users",
   "Is-admin-also": "Is Admin Also",
   "Select-role": "Select Role",
-  "Skip": "Skip"
+  "Skip": "Skip",
+  "Manage-user": "Manage User",
+  "Maximum-20-users-can-be-created-in-trial-version": "Maximum 20 users can be created in Trial version"
 }

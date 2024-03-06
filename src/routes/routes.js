@@ -79,6 +79,8 @@ import SignatureViewer from "../components/elements/signaturewebviewer/signature
 import SignUpOrganizationUM from "../container/pages/UserMangement/SignUpOrganizationUM/SignUpOrganizationUM";
 import VerifyOTPUM from "../container/pages/UserMangement/VerifyOTPUM/VerifyOTPUM";
 import PasswordCreationUM from "../container/pages/UserMangement/PasswordCreationUM/PasswordCreationUM";
+import ManageUsers from "../container/pages/UserMangement/AdminUserManagement/ManageUsers/ManageUsers";
+import AddUsers from "../container/pages/UserMangement/AdminUserManagement/AddUsers/AddUsers";
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
@@ -149,6 +151,8 @@ export const router = createHashRouter(
           <Route path="loginreport" element={<Reports />} />
           <Route path="AddUser" element={<AddUser />} />
           <Route path="EditUser" element={<EditUser />} />
+          <Route path="ManageUsers" element={<ManageUsers />} />
+          <Route path="AddUsersUsermanagement" element={<AddUsers />} />
           <Route path="Invoice" element={<Invoice />} />
           <Route path="PayOutstanding" element={<PayOutstanding />} />
           <Route path="PaymentHistory" element={<PaymentHistory />} />

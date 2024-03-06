@@ -69,7 +69,7 @@ const NavbarAdmin = () => {
                           </NavDropdown.Item>
                           <NavDropdown.Item
                             as={Link}
-                            to="EditUser"
+                            to="ManageUsers"
                             eventKey="link-8"
                             className="text-black border-none"
                           >
@@ -229,7 +229,7 @@ const NavbarAdmin = () => {
                           </NavDropdown.Item>
                           <NavDropdown.Item
                             as={Link}
-                            to="EditUser"
+                            to="ManageUsers"
                             eventKey="link-8"
                             className="text-black border-none"
                           >
