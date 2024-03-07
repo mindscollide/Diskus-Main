@@ -27,6 +27,8 @@ const initialState = {
   PrintAgendaFlag: false,
   ExportAgendaFlag: false,
   AgendaViewFlag: 0,
+  MeetingAgendaParticipants: [],
+  SendAgendaAsPDFEmail: null,
 };
 
 const MeetingAgendaReducer = (state = initialState, action) => {
@@ -484,6 +486,52 @@ const MeetingAgendaReducer = (state = initialState, action) => {
       return {
         ...state,
         AgendaViewFlag: action.response,
+      };
+    }
+
+    case actions.GET_GETMEETINGPARTICIPANTSAGENDA_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GET_GETMEETINGPARTICIPANTSAGENDA_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        MeetingAgendaParticipants: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GET_GETMEETINGPARTICIPANTSAGENDA_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        MeetingAgendaParticipants: [],
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SEND_AGENDAPDFASEMAIL_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.SEND_AGENDAPDFASEMAIL_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        SendAgendaAsPDFEmail: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SEND_AGENDAPDFASEMAIL_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        SendAgendaAsPDFEmail: null,
+        ResponseMessage: action.message,
       };
     }
 

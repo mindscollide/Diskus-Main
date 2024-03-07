@@ -16,6 +16,7 @@ import {
   clearAgendaReducerState,
   printAgenda,
   exportAgenda,
+  clearResponseMessage,
 } from "../../../../../store/actions/MeetingAgenda_action";
 import emptyContributorState from "../../../../../assets/images/Empty_Agenda_Meeting_view.svg";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
@@ -33,6 +34,7 @@ import ExpandAgendaIcon from "./AV-Images/Expand-Agenda-Icon.png";
 import CollapseAgendaIcon from "./AV-Images/Collapse-Agenda-Icon.png";
 import MenuIcon from "./AV-Images/Menu-Icon.png";
 import ParticipantsInfo from "./AV-Images/Participants-Icon.png";
+import ParticipantsInfoDisabled from "./AV-Images/Participants-Icon-disabled.png";
 import PrintIcon from "./AV-Images/Print-Icon.png";
 import ExportIcon from "./AV-Images/Export-Icon.png";
 import ShareIcon from "./AV-Images/Share-Icon.png";
@@ -57,6 +59,10 @@ const AgendaViewer = ({
 
   const cancelMeetingMaterial = useSelector(
     (state) => state.NewMeetingreducer.cancelMeetingMaterial
+  );
+
+  const agendaResponseMessage = useSelector(
+    (state) => state.MeetingAgendaReducer.ResponseMessage
   );
 
   const [menuAgenda, setMenuAgenda] = useState(false);
@@ -195,13 +201,33 @@ const AgendaViewer = ({
     setShareEmailView(!shareEmailView);
   };
 
-  const selectAgendaModal = () => {
-    setAgendaSelectOptionView(!agendaSelectOptionView);
-  };
+  useEffect(() => {
+    if (agendaResponseMessage === t("Success")) {
+      setTimeout(
+        setOpen({
+          flag: true,
+          message: t("Email-sent-successfully"),
+        }),
+        3000
+      );
+      dispatch(clearResponseMessage(""));
+    }
+    if (agendaResponseMessage === t("Invalid-data")) {
+      setTimeout(
+        setOpen({
+          flag: true,
+          message: t("Invalid-data"),
+        }),
+        3000
+      );
+      dispatch(clearResponseMessage(""));
+    }
+  }, [agendaResponseMessage]);
 
-  const showMoreFilesModal = () => {
-    setShowMoreFilesView(!showMoreFilesView);
-  };
+  console.log(
+    "agendaResponseMessageagendaResponseMessage",
+    agendaResponseMessage
+  );
 
   return (
     <>
@@ -278,26 +304,43 @@ const AgendaViewer = ({
                               } ${"opacity-0 pe-none"}`
                         }
                       >
-                        <span onClick={participantModal}>
-                          <img width={20} src={ParticipantsInfo} alt="" />
-                          Participants Info
+                        <span
+                          className={
+                            editorRole.status === 9 || editorRole.status === "9"
+                              ? null
+                              : styles["disabledEntity"]
+                          }
+                          onClick={
+                            editorRole.status === 9 || editorRole.status === "9"
+                              ? participantModal
+                              : null
+                          }
+                        >
+                          <img
+                            width={20}
+                            src={
+                              editorRole.status === 9 ||
+                              editorRole.status === "9"
+                                ? ParticipantsInfo
+                                : ParticipantsInfoDisabled
+                            }
+                            alt=""
+                          />
+                          {t("Participants-info")}
                         </span>
                         <span onClick={printModal}>
                           <img width={20} src={PrintIcon} alt="" />
-                          Print
+                          {t("Print")}
                         </span>
                         <span onClick={exportModal}>
                           <img width={20} src={ExportIcon} alt="" />
-                          Export (pdf)
+
+                          {t("Export-pdf")}
                         </span>
                         <span onClick={shareEmailModal} className="border-0">
                           <img width={20} src={ShareIcon} alt="" />
-                          Share (email)
+                          {t("Share-email")}
                         </span>
-                        {/* <span onClick={selectAgendaModal} className="border-0">
-                          <img width={20} src={ShareIcon} alt="" />
-                          Select Agenda (TEMP)
-                        </span> */}
                       </div>
                       {/* ) : null} */}
                     </div>
@@ -508,7 +551,10 @@ const AgendaViewer = ({
         />
       ) : null}
       {participantInfoView ? (
-        <ParticipantInfoModal setParticipantInfoView={setParticipantInfoView} />
+        <ParticipantInfoModal
+          advanceMeetingModalID={advanceMeetingModalID}
+          setParticipantInfoView={setParticipantInfoView}
+        />
       ) : null}
     </>
   );

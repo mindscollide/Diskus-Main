@@ -256,13 +256,14 @@ const FullScreenAgendaModal = ({
               >
                 <img src={CollapseAgendaIcon} alt="" />
               </div>
-
-              <div
-                className={styles["box-agendas-camera"]}
-                onClick={joinMeetingCall}
-              >
-                <img src={VideocameraIcon} alt="" />
-              </div>
+              {editorRole.status === "10" || editorRole.status === 10 ? (
+                <div
+                  className={styles["box-agendas-camera"]}
+                  onClick={joinMeetingCall}
+                >
+                  <img src={VideocameraIcon} alt="" />
+                </div>
+              ) : null}
             </Col>
           </Row>
         </>

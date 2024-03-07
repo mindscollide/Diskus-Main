@@ -1455,6 +1455,14 @@ const saveSignatureDocumentRM = {
   RequestMethod: "ServiceManager.SendDataRoomDocumentToSignatureFlow",
 };
 
+const getMeetingParticipantsInfo = {
+  RequestMethod: "ServiceManager.GetMeetingParticipantsInfo",
+};
+
+const sendAgendaPDFAsEmail = {
+  RequestMethod: "ServiceManager.SendAgendaPDFAsEmail",
+};
+
 export {
   UserLoginHistoryRM,
   getDataAnalyticsCountRM,
@@ -1845,4 +1853,6 @@ export {
   getWorkFlowByFileIdRM,
   endMeetingStatus,
   saveSignatureDocumentRM,
+  getMeetingParticipantsInfo,
+  sendAgendaPDFAsEmail,
 };

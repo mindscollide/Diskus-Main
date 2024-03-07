@@ -872,6 +872,11 @@ body[dir="rtl"] .popup-agenda-menu {
   margin-right: 15px;
 }
 
+.popup-agenda-menu span.disabledEntity {
+color: #c6c6c6  !important;
+cursor: default !important;
+}
+
 body[dir="rtl"] .popup-agenda-menu span {
   color: #5a5a5a;
   text-decoration: none;

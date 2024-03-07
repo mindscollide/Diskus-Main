@@ -18,6 +18,8 @@ import {
   saveMeetingDocuments,
   getAllMeetingForAgendaImport,
   getAgendaWithMeetingIDForImport,
+  getMeetingParticipantsInfo,
+  sendAgendaPDFAsEmail,
 } from "../../commen/apis/Api_config";
 import { meetingApi, dataRoomApi } from "../../commen/apis/Api_ends_points";
 import {
@@ -1925,6 +1927,191 @@ const agendaViewFlag = (response) => {
   };
 };
 
+const getMeetingParticipantsAgenda_init = () => {
+  return {
+    type: actions.GET_GETMEETINGPARTICIPANTSAGENDA_INIT,
+  };
+};
+
+const getMeetingParticipantsAgenda_success = (response, message) => {
+  return {
+    type: actions.GET_GETMEETINGPARTICIPANTSAGENDA_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getMeetingParticipantsAgenda_fail = (message) => {
+  return {
+    type: actions.GET_GETMEETINGPARTICIPANTSAGENDA_FAIL,
+    message: message,
+  };
+};
+
+const GetMeetingParticipantsAgenda = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getMeetingParticipantsAgenda_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", getMeetingParticipantsInfo.RequestMethod);
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetMeetingParticipantsAgenda(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingParticipantsInfo_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getMeetingParticipantsAgenda_success(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingParticipantsInfo_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getMeetingParticipantsAgenda_fail(t("No-records-found"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingParticipantsInfo_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getMeetingParticipantsAgenda_fail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                getMeetingParticipantsAgenda_fail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              getMeetingParticipantsAgenda_fail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            getMeetingParticipantsAgenda_fail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(getMeetingParticipantsAgenda_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const sendAgendaPDFAsEmail_init = () => {
+  return {
+    type: actions.SEND_AGENDAPDFASEMAIL_INIT,
+  };
+};
+
+const sendAgendaPDFAsEmail_success = (response, message) => {
+  return {
+    type: actions.SEND_AGENDAPDFASEMAIL_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const sendAgendaPDFAsEmail_fail = (message) => {
+  return {
+    type: actions.SEND_AGENDAPDFASEMAIL_FAIL,
+    message: message,
+  };
+};
+
+const SendAgendaPDFAsEmail = (Data, navigate, t, setShareEmailView) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(sendAgendaPDFAsEmail_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", sendAgendaPDFAsEmail.RequestMethod);
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(SendAgendaPDFAsEmail(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_SendAgendaPDFAsEmail_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                sendAgendaPDFAsEmail_success(
+                  response.data.responseResult,
+                  t("Success")
+                )
+              );
+              setShareEmailView(false);
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_SendAgendaPDFAsEmail_02".toLowerCase()
+                )
+            ) {
+              dispatch(sendAgendaPDFAsEmail_fail(t("Invalid-data")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_SendAgendaPDFAsEmail_03".toLowerCase()
+                )
+            ) {
+              dispatch(sendAgendaPDFAsEmail_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(sendAgendaPDFAsEmail_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(sendAgendaPDFAsEmail_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(sendAgendaPDFAsEmail_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(sendAgendaPDFAsEmail_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   GetAgendaVotingDetails,
   GetAllVotingResultDisplay,
@@ -1961,5 +2148,7 @@ export {
   meetingAgendaUpdatedMQTT,
   printAgenda,
   exportAgenda,
-  agendaViewFlag
+  agendaViewFlag,
+  GetMeetingParticipantsAgenda,
+  SendAgendaPDFAsEmail,
 };

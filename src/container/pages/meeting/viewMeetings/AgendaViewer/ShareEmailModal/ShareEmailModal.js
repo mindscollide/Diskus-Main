@@ -15,6 +15,10 @@ import CrossIcon from "./../AV-Images/Cross_Icon.png";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { GetAllCommitteesUsersandGroups } from "../../../../../../store/actions/MeetingOrganizers_action";
+import {
+  SendAgendaPDFAsEmail,
+  clearResponseMessage,
+} from "../../../../../../store/actions/MeetingAgenda_action";
 import committeeicon from "./../../../../../../assets/images/committeedropdown.svg";
 import GroupIcon from "./../../../../../../assets/images/groupdropdown.svg";
 import CrossEmail from "./../AV-Images/Cross-Email.png";
@@ -27,7 +31,11 @@ const ShareEmailModal = ({ setShareEmailView }) => {
 
   let currentMeeting = Number(localStorage.getItem("currentMeetingLS"));
 
-  const { MeetingOrganizersReducer } = useSelector((state) => state);
+  let meetingTitle = localStorage.getItem("meetingTitle");
+
+  const { MeetingOrganizersReducer, MeetingAgendaReducer } = useSelector(
+    (state) => state
+  );
 
   const [open, setOpen] = useState({
     open: false,
@@ -70,73 +78,73 @@ const ShareEmailModal = ({ setShareEmailView }) => {
     if (newOrganizersData !== null && newOrganizersData !== undefined) {
       let temp = [];
       if (Object.keys(newOrganizersData).length > 0) {
-        if (Object.keys(newOrganizersData.groups).length > 0) {
-          newOrganizersData.groups.map((a, index) => {
-            let newData = {
-              value: a.groupID,
-              name: a.groupName,
-              label: (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
-                      <img
-                        src={GroupIcon}
-                        height="16.45px"
-                        width="18.32px"
-                        draggable="false"
-                        alt=""
-                      />
-                      <span className={styles["NameDropDown"]}>
-                        {a.groupName}
-                      </span>
-                    </Col>
-                  </Row>
-                </>
-              ),
-              type: 1,
-            };
-            temp.push(newData);
-          });
-        }
-        if (Object.keys(newOrganizersData.committees).length > 0) {
-          newOrganizersData.committees.map((a, index) => {
-            let newData = {
-              value: a.committeeID,
-              name: a.committeeName,
+        // if (Object.keys(newOrganizersData.groups).length > 0) {
+        //   newOrganizersData.groups.map((a, index) => {
+        //     let newData = {
+        //       value: a.groupID,
+        //       name: a.groupName,
+        //       label: (
+        //         <>
+        //           <Row>
+        //             <Col
+        //               lg={12}
+        //               md={12}
+        //               sm={12}
+        //               className="d-flex gap-2 align-items-center"
+        //             >
+        //               <img
+        //                 src={GroupIcon}
+        //                 height="16.45px"
+        //                 width="18.32px"
+        //                 draggable="false"
+        //                 alt=""
+        //               />
+        //               <span className={styles["NameDropDown"]}>
+        //                 {a.groupName}
+        //               </span>
+        //             </Col>
+        //           </Row>
+        //         </>
+        //       ),
+        //       type: 1,
+        //     };
+        //     temp.push(newData);
+        //   });
+        // }
+        // if (Object.keys(newOrganizersData.committees).length > 0) {
+        //   newOrganizersData.committees.map((a, index) => {
+        //     let newData = {
+        //       value: a.committeeID,
+        //       name: a.committeeName,
 
-              label: (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
-                      <img
-                        src={committeeicon}
-                        width="21.71px"
-                        height="18.61px"
-                        draggable="false"
-                        alt=""
-                      />
-                      <span className={styles["NameDropDown"]}>
-                        {a.committeeName}
-                      </span>
-                    </Col>
-                  </Row>
-                </>
-              ),
-              type: 2,
-            };
-            temp.push(newData);
-          });
-        }
+        //       label: (
+        //         <>
+        //           <Row>
+        //             <Col
+        //               lg={12}
+        //               md={12}
+        //               sm={12}
+        //               className="d-flex gap-2 align-items-center"
+        //             >
+        //               <img
+        //                 src={committeeicon}
+        //                 width="21.71px"
+        //                 height="18.61px"
+        //                 draggable="false"
+        //                 alt=""
+        //               />
+        //               <span className={styles["NameDropDown"]}>
+        //                 {a.committeeName}
+        //               </span>
+        //             </Col>
+        //           </Row>
+        //         </>
+        //       ),
+        //       type: 2,
+        //     };
+        //     temp.push(newData);
+        //   });
+        // }
         if (Object.keys(newOrganizersData.organizationUsers).length > 0) {
           console.log(
             newOrganizersData.organizationUsers,
@@ -144,7 +152,7 @@ const ShareEmailModal = ({ setShareEmailView }) => {
           );
           newOrganizersData.organizationUsers.map((a, index) => {
             let newData = {
-              value: a.userID,
+              value: a.emailAddress,
               name: a.userName,
               label: (
                 <>
@@ -223,6 +231,48 @@ const ShareEmailModal = ({ setShareEmailView }) => {
       }
     }
   };
+
+  const sendEmail = () => {
+    let organizationalUsers = selectedsearch.map((item) => item.value);
+
+    let mergedUserEmails = organizationalUsers.concat(tags);
+
+    if (mergedUserEmails.length !== 0) {
+      let Data = {
+        PK_MDID: currentMeeting,
+        ListOfEmailAddresses: mergedUserEmails,
+        MeetingTitle: meetingTitle,
+        IsSubAgendaNeeded: true,
+        EmailMessage: notificationMessage,
+      };
+
+      dispatch(SendAgendaPDFAsEmail(Data, navigate, t, setShareEmailView));
+    } else {
+      setTimeout(
+        setOpen({
+          open: true,
+          message: t("Atleast-add-one-user"),
+        }),
+        3000
+      );
+    }
+
+  };
+
+  useEffect(() => {
+    if (MeetingAgendaReducer.ResponseMessage === t("Invalid-data")) {
+      setTimeout(
+        setOpen({
+          open: true,
+          message: t("Invalid-data"),
+        }),
+        3000
+      );
+      dispatch(clearResponseMessage(""));
+    }
+  }, [MeetingAgendaReducer.ResponseMessage]);
+
+  console.log("MeetingAgendaReducer", MeetingAgendaReducer);
 
   return (
     <section>
@@ -354,7 +404,11 @@ const ShareEmailModal = ({ setShareEmailView }) => {
                 sm={12}
                 className="d-flex justify-content-end gap-2 p-0"
               >
-                <Button text={t("Send")} className={styles["Send_Notify"]} />
+                <Button
+                  text={t("Send")}
+                  onClick={sendEmail}
+                  className={styles["Send_Notify"]}
+                />
               </Col>
             </Row>
           </>
