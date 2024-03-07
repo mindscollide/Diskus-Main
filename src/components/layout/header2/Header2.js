@@ -301,7 +301,7 @@ const Header2 = () => {
                         as={Link}
                         to="changePassword"
                         disabled={true}
-                        className="d-flex text-black FontClass"
+                        className="SignOutOptionMenu text-black"
                       >
                         {/* Change Password */}
                         {t("Change-password")}
@@ -392,7 +392,7 @@ const Header2 = () => {
                       <Nav.Link
                         as={Link}
                         to="changePassword"
-                        className="d-flex text-black FontClass"
+                        className="SignOutOptionMenu d-flex text-black  FontClass"
                       >
                         {t("Change-password")}
                       </Nav.Link>
@@ -589,7 +589,7 @@ const Header2 = () => {
                       <Nav.Link
                         as={Link}
                         to="changePassword"
-                        className="d-flex text-black FontClass"
+                        className="SignOutOptionMenu text-black"
                       >
                         {/* Change Password */}
                         {t("Change-password")}
@@ -680,7 +680,7 @@ const Header2 = () => {
                       <Nav.Link
                         as={Link}
                         to="changePassword"
-                        className="d-flex text-black FontClass"
+                        className="SignOutOptionMenu d-flex text-black FontClass"
                       >
                         {t("Change-password")}
                       </Nav.Link>
