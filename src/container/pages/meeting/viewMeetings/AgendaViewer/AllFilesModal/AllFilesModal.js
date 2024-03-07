@@ -141,7 +141,7 @@ const AllFilesModal = ({
               >
                 <Button
                   onClick={closeAllFileModal}
-                  text="Close"
+                  text={t("Close")}
                   className={styles["Cancel_Vote_Modal"]}
                 />
               </Col>

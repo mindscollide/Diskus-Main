@@ -239,12 +239,7 @@ const ParentAgenda = ({
                               </Col>
                             </Row>
                             <Row className="m-0">
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="p-0"
-                              >
+                              <Col lg={12} md={12} sm={12} className="p-0">
                                 <p
                                   className={`${styles["agendaCreaterTime"]} MontserratMedium-500`}
                                 >
@@ -419,11 +414,11 @@ const ParentAgenda = ({
                                 )}
                               </div>
                             ) : data.selectedRadio === 1 &&
-                              Object.keys(data.files).length === 0 ? (
-                              <span className={styles["NoFiles_Heading"]}>
-                                No Files Attached
-                              </span>
-                            ) : null}
+                              Object.keys(data.files).length ===
+                                0 ? null : // <span className={styles["NoFiles_Heading"]}>
+                            //   No Files Attached
+                            // </span>
+                            null}
 
                             {data.selectedRadio === 2 && (
                               <Urls
@@ -522,11 +517,11 @@ const ParentAgenda = ({
                                 )}
                               </div>
                             ) : data.selectedRadio === 1 &&
-                              Object.keys(data.files).length === 0 ? (
-                              <span className={styles["NoFiles_Heading"]}>
-                                No Files Attached
-                              </span>
-                            ) : null}
+                              Object.keys(data.files).length ===
+                                0 ? null : // <span className={styles["NoFiles_Heading"]}>
+                            //   No Files Attached
+                            // </span>
+                            null}
 
                             {data.selectedRadio === 2 && (
                               <Urls
@@ -628,7 +623,6 @@ const ParentAgenda = ({
         </Draggable>
       </div>
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
-      
     </>
   );
 };

@@ -419,7 +419,9 @@ const SubAgendaMappingDragging = ({
                                               .length > 0 ? (
                                               <div
                                                 className={
-                                                  styles["filesParentClassSubAgenda"]
+                                                  styles[
+                                                    "filesParentClassSubAgenda"
+                                                  ]
                                                 }
                                               >
                                                 {subAgendaData.subfiles
@@ -514,15 +516,14 @@ const SubAgendaMappingDragging = ({
                                             ) : data.selectedRadio === 1 &&
                                               Object.keys(
                                                 subAgendaData.subfiles
-                                              ).length === 0 ? (
-                                              <span
-                                                className={
-                                                  styles["NoFiles_Heading"]
-                                                }
-                                              >
-                                                No Files Attached
-                                              </span>
-                                            ) : null}
+                                              ).length === 0 ? null : // <span
+                                            //   className={
+                                            //     styles["NoFiles_Heading"]
+                                            //   }
+                                            // >
+                                            //   No Files Attached
+                                            // </span>
+                                            null}
                                             {/* {subAgendaData.subSelectRadio ===
                                               1 &&
                                             Object.keys(subAgendaData.subfiles)

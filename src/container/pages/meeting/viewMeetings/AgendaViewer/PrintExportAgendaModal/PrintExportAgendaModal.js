@@ -15,6 +15,8 @@ import { FetchMeetingURLApi } from "../../../../../../store/actions/NewMeetingAc
 import {
   printAgenda,
   exportAgenda,
+  ExportAgendaPDF,
+  PrintMeetingAgenda,
 } from "../../../../../../store/actions/MeetingAgenda_action";
 import {
   normalizeVideoPanelFlag,
@@ -72,25 +74,17 @@ const PrintExportAgendaModal = ({
     (state) => state.MeetingAgendaReducer.AgendaViewFlag
   );
 
+  const agendaTemplatePrint = useSelector(
+    (state) => state.MeetingAgendaReducer.PrintCurrentAgenda
+  );
+
   const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
 
   let currentMeeting = Number(localStorage.getItem("currentMeetingLS"));
-  let currentUserID = Number(localStorage.getItem("userID"));
-  let currentOrganization = Number(localStorage.getItem("organizationID"));
-  let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+
   let meetingTitle = localStorage.getItem("meetingTitle");
-
-  let activeCall = JSON.parse(localStorage.getItem("activeCall"));
-
-  let initiateRoomID = localStorage.getItem("initiateCallRoomID");
-
-  let currentCallType = Number(localStorage.getItem("CallType"));
-
-  let callTypeID = Number(localStorage.getItem("callTypeID"));
-
-  let callerID = Number(localStorage.getItem("callerID"));
 
   // const [rows, setRows] = useState([]);
   const [emptyStateRows, setEmptyStateRows] = useState(false);
@@ -102,50 +96,7 @@ const PrintExportAgendaModal = ({
   const [agendaIndex, setAgendaIndex] = useState(-1);
   const [subAgendaIndex, setSubAgendaIndex] = useState(-1);
 
-  // useEffect(() => {
-  //   let Data = {
-  //     MeetingID: Number(advanceMeetingModalID),
-  //   };
-  //   dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
-  //   return () => {
-  //     dispatch(clearAgendaReducerState());
-  //     setRows([]);
-  //   };
-  // }, []);
-
-  const handleCancelMeetingNoPopup = () => {
-    // let searchData = {
-    //   Date: "",
-    //   Title: "",
-    //   HostName: "",
-    //   UserID: Number(userID),
-    //   PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-    //   Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-    //   PublishedMeetings:
-    //     currentView && Number(currentView) === 1 ? true : false,
-    // };
-    // dispatch(searchNewUserMeeting(navigate, searchData, t));
-    // localStorage.removeItem("folderDataRoomMeeting");
-    // setViewAdvanceMeetingModal(false);
-    // dispatch(viewAdvanceMeetingPublishPageFlag(false));
-    // dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-    // setactionsPage(false);
-  };
-
-  const handleClickSave = () => {
-    setMinutes(true);
-    setMeetingMaterial(false);
-  };
-
-  // useEffect(() => {
-  //   if (
-  //     GetAdvanceMeetingAgendabyMeetingIDData !== null &&
-  //     GetAdvanceMeetingAgendabyMeetingIDData !== undefined &&
-  //     GetAdvanceMeetingAgendabyMeetingIDData.length !== 0
-  //   ) {
-  //     setRows(GetAdvanceMeetingAgendabyMeetingIDData.agendaList);
-  //   }
-  // }, [GetAdvanceMeetingAgendabyMeetingIDData]);
+  const [printTemplate, setPrintTemplate] = useState("");
 
   useEffect(() => {
     if (rows.length !== 0) {
@@ -158,92 +109,6 @@ const PrintExportAgendaModal = ({
       setEmptyStateRows(false);
     }
   }, [rows]);
-
-  const [initiateVideoModalOto, setInitiateVideoModalOto] = useState(false);
-
-  const leaveCallHost = () => {
-    let Data = {
-      OrganizationID: currentOrganization,
-      RoomID: initiateRoomID,
-      IsCaller: true,
-      CallTypeID: currentCallType,
-    };
-    dispatch(LeaveCall(Data, navigate, t));
-    let Data2 = {
-      MeetingID: currentMeeting,
-    };
-    dispatch(
-      FetchMeetingURLApi(Data2, navigate, t, currentUserID, currentOrganization)
-    );
-    localStorage.setItem("meetingTitle", meetingTitle);
-    const emptyArray = [];
-    localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
-    dispatch(normalizeVideoPanelFlag(true));
-    dispatch(maximizeVideoPanelFlag(false));
-    dispatch(minimizeVideoPanelFlag(false));
-    dispatch(leaveCallModal(false));
-    setInitiateVideoModalOto(false);
-    dispatch(participantPopup(false));
-    localStorage.setItem("activeCall", true);
-    localStorage.setItem("callerID", 0);
-    localStorage.setItem("recipentCalledID", 0);
-    dispatch(callRequestReceivedMQTT({}, ""));
-    dispatch(videoChatPanel(false));
-    localStorage.setItem("isMeetingVideo", true);
-  };
-
-  const leaveCallParticipant = () => {
-    let roomID = localStorage.getItem("acceptedRoomID");
-    let Data = {
-      OrganizationID: currentOrganization,
-      RoomID: roomID,
-      IsCaller: false,
-      CallTypeID: callTypeID,
-    };
-    dispatch(LeaveCall(Data, navigate, t));
-    let Data2 = {
-      MeetingID: currentMeeting,
-    };
-    dispatch(
-      FetchMeetingURLApi(Data2, navigate, t, currentUserID, currentOrganization)
-    );
-    localStorage.setItem("meetingTitle", meetingTitle);
-    const emptyArray = [];
-    localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
-    dispatch(normalizeVideoPanelFlag(true));
-    dispatch(maximizeVideoPanelFlag(false));
-    dispatch(minimizeVideoPanelFlag(false));
-    dispatch(leaveCallModal(false));
-    setInitiateVideoModalOto(false);
-    dispatch(participantPopup(false));
-    localStorage.setItem("CallType", 0);
-    localStorage.setItem("activeCall", true);
-    dispatch(callRequestReceivedMQTT({}, ""));
-    dispatch(videoChatPanel(false));
-    localStorage.setItem("isMeetingVideo", true);
-  };
-
-  const joinMeetingCall = () => {
-    if (activeCall === false && isMeeting === false) {
-      let Data = {
-        MeetingID: currentMeeting,
-      };
-      dispatch(
-        FetchMeetingURLApi(
-          Data,
-          navigate,
-          t,
-          currentUserID,
-          currentOrganization,
-          1
-        )
-      );
-      localStorage.setItem("meetingTitle", meetingTitle);
-    } else if (activeCall === true && isMeeting === false) {
-      setInitiateVideoModalOto(true);
-      dispatch(callRequestReceivedMQTT({}, ""));
-    }
-  };
 
   console.log("Agenda Rows", rows);
 
@@ -278,6 +143,41 @@ const PrintExportAgendaModal = ({
     dispatch(exportAgenda(false));
     resetRows();
   };
+
+  const printExportFeature = () => {
+    let Data = {
+      PK_MDID: currentMeeting,
+      MeetingTitle: meetingTitle,
+      IsSubAgendaNeeded: agendaValueFlag === 1 ? false : true,
+    };
+    if (printFlag === true) {
+      dispatch(PrintMeetingAgenda(Data, navigate, t));
+    } else if (exportFlag === true) {
+      dispatch(ExportAgendaPDF(Data, navigate, t, meetingTitle));
+    }
+  };
+
+  // const printHtmlContent = (htmlContent) => {
+  //   const printWindow = window.open("", "_blank");
+  //   printWindow.document.write(htmlContent);
+  //   printWindow.document.close();
+  //   printWindow.print();
+  // };
+
+  // useEffect(() => {
+  //   try {
+  //     if (
+  //       agendaTemplatePrint !== null &&
+  //       agendaTemplatePrint !== undefined &&
+  //       agendaTemplatePrint !== ""
+  //     ) {
+  //       setPrintTemplate(agendaTemplatePrint.printTemplate);
+  //       printHtmlContent(printTemplate);
+  //     }
+  //   } catch (error) {
+  //     console.log("Error", error);
+  //   }
+  // }, [agendaTemplatePrint]);
 
   return (
     <Modal
@@ -487,61 +387,6 @@ const PrintExportAgendaModal = ({
                 setSubAgendaIndex={setSubAgendaIndex}
               />
             ) : null}
-
-            <Modal
-              show={initiateVideoModalOto}
-              onHide={() => {
-                setInitiateVideoModalOto(false);
-              }}
-              setShow={setInitiateVideoModalOto}
-              modalFooterClassName="d-none"
-              centered
-              size={"sm"}
-              className="callCheckModal"
-              ModalBody={
-                <>
-                  <Container>
-                    <Row>
-                      <Col lg={12} md={12} sm={12}>
-                        <p> Disconnect current call? </p>
-                      </Col>
-                    </Row>
-                    <Row className="mt-3 mb-4">
-                      <Col
-                        lg={12}
-                        sm={12}
-                        md={12}
-                        className="d-flex justify-content-center gap-2"
-                      >
-                        <Button
-                          text={
-                            callerID === currentUserID || callerID === 0
-                              ? t("End Host")
-                              : callerID !== currentUserID
-                              ? t("End Participant")
-                              : null
-                          }
-                          className="leave-meeting-options__btn leave-meeting-red-button"
-                          onClick={
-                            callerID === currentUserID || callerID === 0
-                              ? leaveCallHost
-                              : callerID !== currentUserID
-                              ? leaveCallParticipant
-                              : null
-                          }
-                        />
-
-                        <Button
-                          text={t("Cancel")}
-                          className="leave-meeting-options__btn leave-meeting-gray-button"
-                          onClick={() => setInitiateVideoModalOto(false)}
-                        />
-                      </Col>
-                    </Row>
-                  </Container>
-                </>
-              }
-            />
           </section>
         </section>
       }
@@ -563,6 +408,7 @@ const PrintExportAgendaModal = ({
                     : null
                 }
                 className={styles["Send_Notify"]}
+                onClick={printExportFeature}
               />
             </Col>
           </Row>

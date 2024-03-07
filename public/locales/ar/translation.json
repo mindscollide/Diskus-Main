@@ -1725,5 +1725,20 @@
   "Add-another-signer": "Add another signer",
   "Add-assignee": "Add Assignee",
   "You-have-been-blocked": "You have been blocked by [User Name]",
-  "Are-you-sure-you-want-to-delete-Poll": "Are you sure you want to delete Poll?"
+  "Are-you-sure-you-want-to-delete-Poll": "Are you sure you want to delete Poll?",
+  "Participants-info": "Participants Info",
+  "Export-pdf": "Export (pdf)",
+  "Share-email": "Share (email)",
+  "Join-time": "Join Time",
+  "Leave-time": "Leave Time",
+  "Atleast-add-one-user": "Atleast add one user",
+  "Invalid-email-format": "Invalid Email Format",
+  "Select-organization-users": "Select organization users",
+  "Select-non-organization-users": "Add non organizational users",
+  "Message-optional": "Message - (Optional)",
+  "Select-option": "Select Option",
+  "Main-agenda-items": "Main agenda items",
+  "Agenda-with-sub-agenda": "Agenda with sub agenda",
+  "Export": "Export",
+  "Disconnect-current-call": "Disconnect current call"
 }

@@ -20,8 +20,14 @@ import {
   getAgendaWithMeetingIDForImport,
   getMeetingParticipantsInfo,
   sendAgendaPDFAsEmail,
+  exportAgendaAsPDF,
+  printMeetingAgenda,
 } from "../../commen/apis/Api_config";
-import { meetingApi, dataRoomApi } from "../../commen/apis/Api_ends_points";
+import {
+  meetingApi,
+  dataRoomApi,
+  DataRoomAllFilesDownloads,
+} from "../../commen/apis/Api_ends_points";
 import {
   GetAllAgendaWiseMinutesApiFunc,
   GetAllUserAgendaRightsApiFunc,
@@ -2112,6 +2118,136 @@ const SendAgendaPDFAsEmail = (Data, navigate, t, setShareEmailView) => {
   };
 };
 
+const ExportAgendaPDF = (Data, navigate, t, meetingTitle) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let form = new FormData();
+  form.append("RequestMethod", exportAgendaAsPDF.RequestMethod);
+  form.append("RequestData", JSON.stringify(Data));
+  let contentType = "application/pdf";
+  return (dispatch) => {
+    dispatch(sendAgendaPDFAsEmail_init());
+    axios({
+      method: "post",
+      url: DataRoomAllFilesDownloads,
+      data: form,
+      headers: {
+        _token: token,
+      },
+      responseType: "blob",
+    })
+      .then(async (response) => {
+        if (response.status === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(ExportAgendaPDF(Data, navigate, t, meetingTitle));
+          dispatch(setLoaderFalse());
+        } else if (response.status === 200) {
+          console.log("ExportAgendaPDFExportAgendaPDF", response);
+          const url = window.URL.createObjectURL(
+            new Blob([response.data], { type: "application/pdf" })
+          );
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", meetingTitle + " - Meeting Agenda");
+          document.body.appendChild(link);
+          link.click();
+          dispatch(setLoaderFalse());
+        }
+      })
+      .catch((response) => {});
+  };
+};
+
+const printMeetingAgenda_init = () => {
+  return {
+    type: actions.PRINT_AGENDA_MEETING_INIT,
+  };
+};
+
+const printMeetingAgenda_success = (response, message) => {
+  return {
+    type: actions.PRINT_AGENDA_MEETING_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const printMeetingAgenda_fail = (message) => {
+  return {
+    type: actions.PRINT_AGENDA_MEETING_FAIL,
+    message: message,
+  };
+};
+
+const PrintMeetingAgenda = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    // dispatch(printMeetingAgenda_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", printMeetingAgenda.RequestMethod);
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(SendAgendaPDFAsEmail(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_PrintMeetingAgenda_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                printMeetingAgenda_success(
+                  response.data.responseResult,
+                  t("Print-generated")
+                )
+              );
+              const printWindow = window.open("", "_blank");
+              printWindow.document.write(response.data.responseResult.printTemplate);
+              printWindow.document.close();
+              printWindow.print();
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_PrintMeetingAgenda_02".toLowerCase()
+                )
+            ) {
+              dispatch(printMeetingAgenda_fail(t("Invalid-data")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_PrintMeetingAgenda_03".toLowerCase()
+                )
+            ) {
+              dispatch(printMeetingAgenda_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(printMeetingAgenda_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(printMeetingAgenda_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(printMeetingAgenda_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(printMeetingAgenda_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   GetAgendaVotingDetails,
   GetAllVotingResultDisplay,
@@ -2151,4 +2287,6 @@ export {
   agendaViewFlag,
   GetMeetingParticipantsAgenda,
   SendAgendaPDFAsEmail,
+  ExportAgendaPDF,
+  PrintMeetingAgenda,
 };

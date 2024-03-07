@@ -29,6 +29,7 @@ const initialState = {
   AgendaViewFlag: 0,
   MeetingAgendaParticipants: [],
   SendAgendaAsPDFEmail: null,
+  PrintCurrentAgenda: null,
 };
 
 const MeetingAgendaReducer = (state = initialState, action) => {
@@ -531,6 +532,29 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         SendAgendaAsPDFEmail: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.PRINT_AGENDA_MEETING_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.PRINT_AGENDA_MEETING_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        PrintCurrentAgenda: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.PRINT_AGENDA_MEETING_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        PrintCurrentAgenda: null,
         ResponseMessage: action.message,
       };
     }

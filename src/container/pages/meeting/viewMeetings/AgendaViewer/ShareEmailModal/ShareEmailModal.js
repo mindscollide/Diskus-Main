@@ -289,7 +289,7 @@ const ShareEmailModal = ({ setShareEmailView }) => {
           <>
             <Row>
               <Col lg={12} md={12} sm={12} className="position-relative">
-                <p className={styles["FileModalTitle"]}>{t("Share-(Email)")}</p>
+                <p className={styles["FileModalTitle"]}>{t("Share-email")}</p>
                 <img
                   onClick={() => setShareEmailView(false)}
                   className={styles["image-close"]}
@@ -368,7 +368,7 @@ const ShareEmailModal = ({ setShareEmailView }) => {
             <Row className="m-0">
               <Col className="p-0">
                 <p className={`${styles["NonOrganizationUsers"]} m-0`}>
-                  {t("Message-(Optional)")}
+                  {t("Message-optional")}
                 </p>
               </Col>
             </Row>
