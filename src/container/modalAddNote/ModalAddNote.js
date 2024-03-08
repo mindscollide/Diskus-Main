@@ -296,7 +296,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
         }));
 
         fileSizeArr += fileData.size;
-        setFileForSend((prevFiles) => [...prevFiles, file]);
+        setFileForSend((prevFiles) => [...prevFiles, fileData]);
         setFileSize(fileSizeArr);
       }
       // Update previousFileList to current fileList
@@ -304,7 +304,6 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     });
   };
   let previousFileList = [];
-
   const cancelNewNoteModal = () => {
     setCloseConfirmationBox(true);
     setIsCreateNote(false);
@@ -394,6 +393,18 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           errorStatus: false,
         },
       });
+      // setOpen({
+      //   ...open,
+      //   open: true,
+      //   message: t("Field-should-not-be-empty"),
+      // });
+      // setTimeout(() => {
+      //   setOpen({
+      //     ...open,
+      //     open: false,
+      //     message: "",
+      //   });
+      // }, 3000);
     }
   };
 
