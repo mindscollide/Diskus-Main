@@ -53,6 +53,8 @@ const AgendaViewer = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const { MeetingAgendaReducer } = useSelector((state) => state);
+
   const GetAdvanceMeetingAgendabyMeetingIDData = useSelector(
     (state) => state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData
   );
@@ -223,6 +225,133 @@ const AgendaViewer = ({
       dispatch(clearResponseMessage(""));
     }
   }, [agendaResponseMessage]);
+
+  useEffect(() => {
+    if (
+      MeetingAgendaReducer.MeetingAgendaStartedData !== undefined &&
+      MeetingAgendaReducer.MeetingAgendaStartedData !== null
+    ) {
+      setRows((prevState) => {
+        const updatedState = prevState.map((item) => {
+          if (
+            item.id === MeetingAgendaReducer.MeetingAgendaStartedData.agendaID
+          ) {
+            console.log("Updating main item:", item);
+            return {
+              ...item,
+              voteOwner: {
+                ...item.voteOwner,
+                currentVotingClosed: true,
+              },
+            };
+          } else if (
+            item.subAgenda.some(
+              (subItem) =>
+                subItem.subAgendaID ===
+                MeetingAgendaReducer.MeetingAgendaStartedData.agendaID
+            )
+          ) {
+            console.log("Updating subItem:", item);
+            return {
+              ...item,
+              subAgenda: item.subAgenda.map((subItem) => {
+                if (
+                  subItem.subAgendaID ===
+                  MeetingAgendaReducer.MeetingAgendaStartedData.agendaID
+                ) {
+                  console.log("Updating subItem:", subItem);
+                  return {
+                    ...subItem,
+                    voteOwner: {
+                      ...subItem.voteOwner,
+                      currentVotingClosed: true,
+                    },
+                  };
+                }
+                return subItem;
+              }),
+            };
+          }
+          return item;
+        });
+
+        console.log("Updated state:", updatedState);
+        return updatedState;
+      });
+    }
+  }, [MeetingAgendaReducer.MeetingAgendaStartedData]);
+
+  useEffect(() => {
+    if (
+      MeetingAgendaReducer.MeetingAgendaEndedData !== undefined &&
+      MeetingAgendaReducer.MeetingAgendaEndedData !== null
+    ) {
+      setRows((prevState) => {
+        const updatedState = prevState.map((item) => {
+          if (
+            item.id === MeetingAgendaReducer.MeetingAgendaEndedData.agendaID
+          ) {
+            console.log("Updating main item:", item);
+            return {
+              ...item,
+              voteOwner: {
+                ...item.voteOwner,
+                currentVotingClosed: false,
+              },
+            };
+          } else if (
+            item.subAgenda.some(
+              (subItem) =>
+                subItem.subAgendaID ===
+                MeetingAgendaReducer.MeetingAgendaEndedData.agendaID
+            )
+          ) {
+            console.log("Updating subItem:", item);
+            return {
+              ...item,
+              subAgenda: item.subAgenda.map((subItem) => {
+                if (
+                  subItem.subAgendaID ===
+                  MeetingAgendaReducer.MeetingAgendaEndedData.agendaID
+                ) {
+                  console.log("Updating subItem:", subItem);
+                  return {
+                    ...subItem,
+                    voteOwner: {
+                      ...subItem.voteOwner,
+                      currentVotingClosed: false,
+                    },
+                  };
+                }
+                return subItem;
+              }),
+            };
+          }
+          return item;
+        });
+
+        console.log("Updated state:", updatedState);
+        return updatedState;
+      });
+    }
+  }, [MeetingAgendaReducer.MeetingAgendaEndedData]);
+
+  useEffect(() => {
+    if (
+      MeetingAgendaReducer.MeetingAgendaUpdatedMqtt !== undefined &&
+      MeetingAgendaReducer.MeetingAgendaUpdatedMqtt !== null
+    ) {
+      if (
+        Number(advanceMeetingModalID) ===
+        MeetingAgendaReducer.MeetingAgendaUpdatedMqtt.meetingID
+      ) {
+        let Data = {
+          MeetingID: Number(advanceMeetingModalID),
+        };
+        dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
+      }
+    }
+  }, [MeetingAgendaReducer.MeetingAgendaUpdatedMqtt]);
 
   console.log(
     "agendaResponseMessageagendaResponseMessage",

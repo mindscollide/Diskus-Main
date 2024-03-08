@@ -667,10 +667,10 @@ p.agendaCreaterTime {
   background: #81db86 !important;
   color: #fff !important;
   border: none !important;
-  font-size: 12px !important;
+  font-size: 13px !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
-  margin-right: 10px;
+  font-family: "MontserratMedium-500";
+  font-weight: 600;
 }
 
 .startVotingButton:is(:hover, :active, :focus, :focus-visible) {
@@ -679,10 +679,10 @@ p.agendaCreaterTime {
   background: #81db86 !important;
   color: #fff !important;
   border: none !important;
-  font-size: 12px !important;
+  font-size: 13px !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
-  margin-right: 10px;
+  font-family: "MontserratMedium-500";
+  font-weight: 600;
 }
 
 .CastYourVoteButton {
@@ -691,10 +691,10 @@ p.agendaCreaterTime {
   background: #81db86 !important;
   color: #fff !important;
   border: none !important;
-  font-size: 12px !important;
+  font-size: 13px !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
-  margin-right: 10px;
+  font-family: "MontserratMedium-500";
+  font-weight: 600;
 }
 
 .CastYourVoteButton:is(:hover, :active, :focus, :focus-visible) {
@@ -703,10 +703,10 @@ p.agendaCreaterTime {
   background: #81db86 !important;
   color: #fff !important;
   border: none !important;
-  font-size: 12px !important;
+  font-size: 13px !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
-  margin-right: 10px;
+  font-family: "MontserratMedium-500";
+  font-weight: 600;
 }
 
 .EndVotingButton {
@@ -715,9 +715,10 @@ p.agendaCreaterTime {
   background: #f16b6b !important;
   color: #fff !important;
   border: none !important;
-  font-size: 12px !important;
+  font-size: 13px !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-family: "MontserratMedium-500";
+  font-weight: 600;
 }
 
 .EndVotingButton:is(:hover, :active, :focus, :focus-visible) {
@@ -726,9 +727,10 @@ p.agendaCreaterTime {
   background: #f16b6b !important;
   color: #fff !important;
   border: none !important;
-  font-size: 12px !important;
+  font-size: 13px !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-family: "MontserratMedium-500";
+  font-weight: 600;
 }
 
 .ViewVoteButton {
@@ -737,9 +739,11 @@ p.agendaCreaterTime {
   background: #fff !important;
   color: #5a5a5a !important;
   border: 1px solid #e1e1e1 !important;
-  font-size: 12px !important;
+  font-size: 13px !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-family: "MontserratMedium-500";
+  font-weight: 600;
+  margin-left: 15px;
 }
 
 .ViewVoteButton:is(:hover, :active, :focus, :focus-visible) {
@@ -748,9 +752,39 @@ p.agendaCreaterTime {
   background: #fff !important;
   color: #5a5a5a !important;
   border: 1px solid #e1e1e1 !important;
-  font-size: 12px !important;
+  font-size: 13px !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-family: "MontserratMedium-500";
+  font-weight: 600;
+  margin-left: 15px;
+}
+
+body[dir="rtl"] .ViewVoteButton {
+  width: 114px !important;
+  height: 25 !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  font-size: 13px !important;
+  border-radius: 4px !important;
+  font-family: "MontserratMedium-500";
+  font-weight: 600;
+  margin-left: 0 !important;
+  margin-right: 15px !important;
+}
+
+body[dir="rtl"] .ViewVoteButton:is(:hover, :active, :focus, :focus-visible) {
+  width: 114px !important;
+  height: 25 !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  font-size: 13px !important;
+  border-radius: 4px !important;
+  font-family: "MontserratMedium-500";
+  font-weight: 600;
+  margin-left: 0 !important;
+  margin-right: 15px !important;
 }
 
 .Cancel_Meeting_Details {
@@ -873,8 +907,8 @@ body[dir="rtl"] .popup-agenda-menu {
 }
 
 .popup-agenda-menu span.disabledEntity {
-color: #c6c6c6  !important;
-cursor: default !important;
+  color: #c6c6c6 !important;
+  cursor: default !important;
 }
 
 body[dir="rtl"] .popup-agenda-menu span {

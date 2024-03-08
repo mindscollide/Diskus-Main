@@ -28,7 +28,7 @@ import RequestContributor from "./RequestContributor";
 import SubAgendaMappingDragging from "./SubAgendaMappingDragging";
 import dropmdownblack from "../../../../../assets/images/whitedown.png";
 import blackArrowUpper from "../../../../../assets/images/whiteupper.png";
-import ViewVoteModal from "../../scedulemeeting/Agenda/VotingPage/ViewVoteModal/ViewVoteModal";
+import ViewVoteModal from "../../viewMeetings/Agenda/VotingPage/ViewVoteModal/ViewVoteModal";
 import CastVoteAgendaModal from "../../scedulemeeting/Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
 import {
   getFileExtension,
@@ -98,6 +98,58 @@ const ParentAgenda = ({
 
   const openVoteMOdal = () => {
     dispatch(showVoteAgendaModal(true));
+  };
+
+  const EnableViewVoteModal = (record) => {
+    dispatch(showviewVotesAgenda(true));
+    dispatch(GetCurrentAgendaDetails(record));
+  };
+
+  const EnableCastVoteModal = async (record) => {
+    let Data = {
+      MeetingID: advanceMeetingModalID,
+      AgendaID: record.id ? record.id : record.subAgendaID,
+      AgendaVotingID: record.agendaVotingID,
+    };
+    await dispatch(GetAgendaAndVotingInfo(Data, navigate, t));
+    dispatch(showCastVoteAgendaModal(true));
+    dispatch(GetCurrentAgendaDetails(record));
+  };
+
+  //Konsa user vote kar sakta hai
+  const checkUserAuthentication = (record) => {
+    let flag = record.agendaVoters.find(
+      (data, index) => data.userID === Number(currentUserID)
+    );
+    if (flag) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const startVoting = (record) => {
+    let Data = {
+      MeetingID: advanceMeetingModalID,
+      AgendaID: record.id ? record.id : record.subAgendaID,
+      AgendaVotingID: record.agendaVotingID,
+      DoVotingStart: true,
+    };
+    dispatch(
+      AgendaVotingStatusUpdate(Data, navigate, t, advanceMeetingModalID)
+    );
+  };
+
+  const endVoting = (record) => {
+    let Data = {
+      MeetingID: advanceMeetingModalID,
+      AgendaID: record.id ? record.id : record.subAgendaID,
+      AgendaVotingID: record.agendaVotingID,
+      DoVotingStart: false,
+    };
+    dispatch(
+      AgendaVotingStatusUpdate(Data, navigate, t, advanceMeetingModalID)
+    );
   };
 
   //Lock For Main Agenda Will Locks Its childs Also
@@ -239,7 +291,16 @@ const ParentAgenda = ({
                               </Col>
                             </Row>
                             <Row className="m-0">
-                              <Col lg={12} md={12} sm={12} className="p-0">
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className={
+                                  currentLanguage === "ar"
+                                    ? "p-0 text-start"
+                                    : "p-0 text-end"
+                                }
+                              >
                                 <p
                                   className={`${styles["agendaCreaterTime"]} MontserratMedium-500`}
                                 >
@@ -253,6 +314,57 @@ const ParentAgenda = ({
                                     "hh:mm a"
                                   )}
                                 </p>
+                                {Number(data.agendaVotingID) !== 0 &&
+                                Number(editorRole.status) === 10 &&
+                                Number(data.voteOwner.userid) ===
+                                  Number(currentUserID) &&
+                                !data.voteOwner?.currentVotingClosed ? (
+                                  <Button
+                                    text={t("Start-voting")}
+                                    className={styles["startVotingButton"]}
+                                    onClick={() => startVoting(data)}
+                                  />
+                                ) : Number(data.agendaVotingID) !== 0 &&
+                                  Number(editorRole.status) === 10 &&
+                                  Number(data.voteOwner.userid) ===
+                                    Number(currentUserID) &&
+                                  data.voteOwner?.currentVotingClosed ? (
+                                  <>
+                                    <Button
+                                      text={t("End-voting")}
+                                      className={styles["startVotingButton"]}
+                                      onClick={() => endVoting(data)}
+                                    />
+                                    <Button
+                                      text={t("View-votes")}
+                                      className={styles["ViewVoteButton"]}
+                                      onClick={() => EnableViewVoteModal(data)}
+                                    />
+                                  </>
+                                ) : editorRole.role === "Organizer" &&
+                                  data.voteOwner?.currentVotingClosed ? (
+                                  <>
+                                    <Button
+                                      text={t("View-votes")}
+                                      className={styles["ViewVoteButton"]}
+                                      onClick={() => EnableViewVoteModal(data)}
+                                    />
+                                  </>
+                                ) : null}
+
+                                {Number(data.agendaVotingID) ===
+                                0 ? null : Number(editorRole.status) === 10 &&
+                                  Number(data.voteOwner.userid) !==
+                                    Number(currentUserID) &&
+                                  data.voteOwner?.currentVotingClosed &&
+                                  editorRole.role !== "Organizer" &&
+                                  checkUserAuthentication(data) ? (
+                                  <Button
+                                    text={t("Cast-your-vote")}
+                                    className={styles["CastYourVoteButton"]}
+                                    onClick={() => EnableCastVoteModal(data)}
+                                  />
+                                ) : null}
                               </Col>
                             </Row>
                             {/* </div> */}
@@ -275,150 +387,87 @@ const ParentAgenda = ({
                         </Row>
                         {expandIndex !== index && expand ? (
                           <>
-                            {/* {data.selectedRadio === 1 &&
-                            Object.keys(data.files).length > 0 ? (
-                              <div className={styles["filesParentClass"]}>
-                                {data.files.map((filesData, fileIndex) => (
-                                  <div
-                                    key={fileIndex}
-                                    className={styles["agendaFileAttachedView"]}
-                                  >
-                                    <Row className="m-0 text-center h-100 align-items-center">
-                                      <Col
-                                        lg={10}
-                                        md={10}
-                                        sm={12}
-                                        className={`${styles["borderFileName"]} p-0`}
+                            {
+                              data.selectedRadio === 1 &&
+                              Object.keys(data.files).length > 0 ? (
+                                <div className={styles["filesParentClass"]}>
+                                  {data.files
+                                    .slice(0, 3)
+                                    .map((filesData, fileIndex) => (
+                                      <div
+                                        key={fileIndex}
+                                        className={
+                                          styles["agendaFileAttachedView"]
+                                        }
                                       >
-                                        <div
-                                          className={
-                                            styles["fileNameTruncateStyle"]
-                                          }
-                                        >
-                                          <img
-                                            draggable={false}
-                                            src={getIconSource(
-                                              getFileExtension(
-                                                filesData?.displayAttachmentName
-                                              )
-                                            )}
-                                            alt=""
-                                          />
-                                          <span
-                                            onClick={() =>
-                                              downloadDocument(filesData)
-                                            }
-                                            className={
-                                              styles["fileNameAttachment"]
-                                            }
+                                        <Row className="m-0 text-center h-100 align-items-center">
+                                          <Col
+                                            lg={10}
+                                            md={10}
+                                            sm={12}
+                                            className={`${styles["borderFileName"]} p-0`}
                                           >
-                                            {filesData?.displayAttachmentName}
-                                          </span>
-                                        </div>
-                                      </Col>
-                                      <Col
-                                        lg={2}
-                                        md={2}
-                                        sm={12}
-                                        className="p-0"
-                                      >
-                                        <img
-                                          draggable={false}
-                                          src={DownloadIcon}
-                                          alt=""
-                                        />
-                                      </Col>
-                                    </Row>
-                                  </div>
-                                ))}
-                              </div>
-                            ) : data.selectedRadio === 1 &&
-                              Object.keys(data.files).length === 0 ? (
-                              <span className={styles["NoFiles_Heading"]}>
-                                No Files Attached
-                              </span>
-                            ) : null} */}
-
-                            {data.selectedRadio === 1 &&
-                            Object.keys(data.files).length > 0 ? (
-                              <div className={styles["filesParentClass"]}>
-                                {data.files
-                                  .slice(0, 3)
-                                  .map((filesData, fileIndex) => (
-                                    <div
-                                      key={fileIndex}
-                                      className={
-                                        styles["agendaFileAttachedView"]
-                                      }
-                                    >
-                                      <Row className="m-0 text-center h-100 align-items-center">
-                                        <Col
-                                          lg={10}
-                                          md={10}
-                                          sm={12}
-                                          className={`${styles["borderFileName"]} p-0`}
-                                        >
-                                          <div
-                                            className={
-                                              styles["fileNameTruncateStyle"]
-                                            }
+                                            <div
+                                              className={
+                                                styles["fileNameTruncateStyle"]
+                                              }
+                                            >
+                                              <img
+                                                draggable={false}
+                                                src={getIconSource(
+                                                  getFileExtension(
+                                                    filesData?.displayAttachmentName
+                                                  )
+                                                )}
+                                                alt=""
+                                              />
+                                              <span
+                                                onClick={() =>
+                                                  downloadDocument(filesData)
+                                                }
+                                                className={
+                                                  styles["fileNameAttachment"]
+                                                }
+                                              >
+                                                {
+                                                  filesData?.displayAttachmentName
+                                                }
+                                              </span>
+                                            </div>
+                                          </Col>
+                                          <Col
+                                            lg={2}
+                                            md={2}
+                                            sm={12}
+                                            className="p-0"
                                           >
                                             <img
                                               draggable={false}
-                                              src={getIconSource(
-                                                getFileExtension(
-                                                  filesData?.displayAttachmentName
-                                                )
-                                              )}
+                                              src={DownloadIcon}
                                               alt=""
                                             />
-                                            <span
-                                              onClick={() =>
-                                                downloadDocument(filesData)
-                                              }
-                                              className={
-                                                styles["fileNameAttachment"]
-                                              }
-                                            >
-                                              {filesData?.displayAttachmentName}
-                                            </span>
-                                          </div>
-                                        </Col>
-                                        <Col
-                                          lg={2}
-                                          md={2}
-                                          sm={12}
-                                          className="p-0"
-                                        >
-                                          <img
-                                            draggable={false}
-                                            src={DownloadIcon}
-                                            alt=""
-                                          />
-                                        </Col>
-                                      </Row>
-                                    </div>
-                                  ))}
-                                {data.files.length > 3 && (
-                                  <Button
-                                    text={t("More")}
-                                    className={styles["Show_More_Button"]}
-                                    onClick={() =>
-                                      showMoreFiles(
-                                        data.files,
-                                        data.title,
-                                        index
-                                      )
-                                    }
-                                  />
-                                )}
-                              </div>
-                            ) : data.selectedRadio === 1 &&
-                              Object.keys(data.files).length ===
-                                0 ? null : // <span className={styles["NoFiles_Heading"]}>
-                            //   No Files Attached
-                            // </span>
-                            null}
+                                          </Col>
+                                        </Row>
+                                      </div>
+                                    ))}
+                                  {data.files.length > 3 && (
+                                    <Button
+                                      text={t("More")}
+                                      className={styles["Show_More_Button"]}
+                                      onClick={() =>
+                                        showMoreFiles(
+                                          data.files,
+                                          data.title,
+                                          index
+                                        )
+                                      }
+                                    />
+                                  )}
+                                </div>
+                              ) : data.selectedRadio === 1 &&
+                                Object.keys(data.files).length ===
+                                  0 ? null : null // </span> //   No Files Attached // <span className={styles["NoFiles_Heading"]}>
+                            }
 
                             {data.selectedRadio === 2 && (
                               <Urls
@@ -442,86 +491,87 @@ const ParentAgenda = ({
                         {/* </Droppable> */}
                         {expandIndex === index && expand ? (
                           <>
-                            {data.selectedRadio === 1 &&
-                            Object.keys(data.files).length > 0 ? (
-                              <div className={styles["filesParentClass"]}>
-                                {data.files
-                                  .slice(0, 3)
-                                  .map((filesData, fileIndex) => (
-                                    <div
-                                      key={fileIndex}
-                                      className={
-                                        styles["agendaFileAttachedView"]
-                                      }
-                                    >
-                                      <Row className="m-0 text-center h-100 align-items-center">
-                                        <Col
-                                          lg={10}
-                                          md={10}
-                                          sm={12}
-                                          className={`${styles["borderFileName"]} p-0`}
-                                        >
-                                          <div
-                                            className={
-                                              styles["fileNameTruncateStyle"]
-                                            }
+                            {
+                              data.selectedRadio === 1 &&
+                              Object.keys(data.files).length > 0 ? (
+                                <div className={styles["filesParentClass"]}>
+                                  {data.files
+                                    .slice(0, 3)
+                                    .map((filesData, fileIndex) => (
+                                      <div
+                                        key={fileIndex}
+                                        className={
+                                          styles["agendaFileAttachedView"]
+                                        }
+                                      >
+                                        <Row className="m-0 text-center h-100 align-items-center">
+                                          <Col
+                                            lg={10}
+                                            md={10}
+                                            sm={12}
+                                            className={`${styles["borderFileName"]} p-0`}
+                                          >
+                                            <div
+                                              className={
+                                                styles["fileNameTruncateStyle"]
+                                              }
+                                            >
+                                              <img
+                                                draggable={false}
+                                                src={getIconSource(
+                                                  getFileExtension(
+                                                    filesData?.displayAttachmentName
+                                                  )
+                                                )}
+                                                alt=""
+                                              />
+                                              <span
+                                                onClick={() =>
+                                                  downloadDocument(filesData)
+                                                }
+                                                className={
+                                                  styles["fileNameAttachment"]
+                                                }
+                                              >
+                                                {
+                                                  filesData?.displayAttachmentName
+                                                }
+                                              </span>
+                                            </div>
+                                          </Col>
+                                          <Col
+                                            lg={2}
+                                            md={2}
+                                            sm={12}
+                                            className="p-0"
                                           >
                                             <img
                                               draggable={false}
-                                              src={getIconSource(
-                                                getFileExtension(
-                                                  filesData?.displayAttachmentName
-                                                )
-                                              )}
+                                              src={DownloadIcon}
                                               alt=""
                                             />
-                                            <span
-                                              onClick={() =>
-                                                downloadDocument(filesData)
-                                              }
-                                              className={
-                                                styles["fileNameAttachment"]
-                                              }
-                                            >
-                                              {filesData?.displayAttachmentName}
-                                            </span>
-                                          </div>
-                                        </Col>
-                                        <Col
-                                          lg={2}
-                                          md={2}
-                                          sm={12}
-                                          className="p-0"
-                                        >
-                                          <img
-                                            draggable={false}
-                                            src={DownloadIcon}
-                                            alt=""
-                                          />
-                                        </Col>
-                                      </Row>
-                                    </div>
-                                  ))}
-                                {data.files.length > 3 && (
-                                  <Button
-                                    text={t("More")}
-                                    className={styles["Show_More_Button"]}
-                                    onClick={() =>
-                                      showMoreFiles(
-                                        data.files,
-                                        data.title,
-                                        index
-                                      )
-                                    }
-                                  />
-                                )}
-                              </div>
-                            ) : data.selectedRadio === 1 &&
-                              Object.keys(data.files).length ===
-                                0 ? null : // <span className={styles["NoFiles_Heading"]}>
-                            //   No Files Attached
-                            // </span>
-                            null}
+                                          </Col>
+                                        </Row>
+                                      </div>
+                                    ))}
+                                  {data.files.length > 3 && (
+                                    <Button
+                                      text={t("More")}
+                                      className={styles["Show_More_Button"]}
+                                      onClick={() =>
+                                        showMoreFiles(
+                                          data.files,
+                                          data.title,
+                                          index
+                                        )
+                                      }
+                                    />
+                                  )}
+                                </div>
+                              ) : data.selectedRadio === 1 &&
+                                Object.keys(data.files).length ===
+                                  0 ? null : null // </span> //   No Files Attached // <span className={styles["NoFiles_Heading"]}>
+                            }
 
                             {data.selectedRadio === 2 && (
                               <Urls
@@ -582,42 +632,8 @@ const ParentAgenda = ({
                   </Col>
                 </Row>
               </span>
-              {/* SubAgenda Mapping */}
               {NewMeetingreducer.viewVotesAgenda && <ViewVoteModal />}
               {NewMeetingreducer.castVoteAgendaPage && <CastVoteAgendaModal />}
-              {/* sub Ajenda Button */}
-              {/* <Row className="mt-3">
-            <Col lg={12} md={12} sm={12}>
-              <Button
-                text={
-                  <>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex justify-content-center gap-2 align-items-center"
-                      >
-                        <img
-                          draggable={false}
-                          src={plusFaddes}
-                          height="10.77px"
-                          width="10.77px"
-                        />
-                        <span className={styles["Add_Agen_Heading"]}>
-                          {t("Add-sub-agenda")}
-                        </span>
-                      </Col>
-                    </Row>
-                  </>
-                }
-                className={styles["AddMoreBtnAgenda"]}
-                onClick={() => {
-                  addSubAjendaRows(index);
-                }}
-              />
-            </Col>
-          </Row> */}
             </div>
           )}
         </Draggable>

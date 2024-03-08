@@ -547,18 +547,6 @@ const SubAgendaMappingDragging = ({
                                                   }
                                                 />
                                               ) : null}
-                                              {/* {Number(
-                                              subAgendaData.agendaVotingID
-                                            ) === 0 ? null : Number(
-                                                editorRole.status
-                                              ) === 10 &&
-                                              Number(
-                                                subAgendaData.voteOwner.userid
-                                              ) !== Number(currentUserID) &&
-                                              subAgendaData.voteOwner
-                                                ?.currentVotingClosed ? (
-
-                                            ) : null} */}
                                             </Col>
                                           </Row>
 
