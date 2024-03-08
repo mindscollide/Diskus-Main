@@ -274,22 +274,24 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           FK_NotesStatusID: NotesReducer.GetNotesByNotesId.fK_NotesStatus,
         });
         setIsStarrted(NotesReducer.GetNotesByNotesId.isStarred);
-        let copyData = [...attachments];
+        let copyData = [];
         let newData = [];
         if (NotesReducer.GetNotesByNotesId.notesAttachments.length > 0) {
-          NotesReducer.GetNotesByNotesId.notesAttachments.map((data, index) => {
-            copyData.push({
-              DisplayAttachmentName: data.displayAttachmentName,
-              originalAttachmentName: data.originalAttachmentName,
-              fK_NotesID: data.fK_NotesID,
-              pK_NAID: data.pK_NAID,
-            });
-            newData.push({
-              DisplayAttachmentName: data.displayAttachmentName,
-              OriginalAttachmentName: data.originalAttachmentName,
-              FK_NotesID: data.fK_NotesID,
-            });
-          });
+          NotesReducer.GetNotesByNotesId.notesAttachments.forEach(
+            (data, index) => {
+              copyData.push({
+                DisplayAttachmentName: data.displayAttachmentName,
+                originalAttachmentName: data.originalAttachmentName,
+                fK_NotesID: data.fK_NotesID,
+                pK_NAID: data.pK_NAID,
+              });
+              newData.push({
+                DisplayAttachmentName: data.displayAttachmentName,
+                OriginalAttachmentName: data.originalAttachmentName,
+                FK_NotesID: data.fK_NotesID,
+              });
+            }
+          );
           setAttachments(copyData);
           setTasksAttachments({
             TasksAttachments: newData,
@@ -353,10 +355,10 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           OriginalAttachmentName: fileData.name,
           fileSize: fileData.size,
         };
-        setTasksAttachments((prevAttachments) => ({
-          ...prevAttachments,
-          TasksAttachments: [...prevAttachments.TasksAttachments, file],
-        }));
+        // setTasksAttachments((prevAttachments) => ({
+        //   ...prevAttachments,
+        //   TasksAttachments: [...prevAttachments.TasksAttachments, file],
+        // }));
         console.log(file, "filefilefilefile");
         setAttachments((prevAttachments) => [...prevAttachments, file]);
         fileSizeArr += fileData.size;
@@ -370,13 +372,14 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   let previousFileList = [];
   console.log(attachments, "newfilesnewfiles");
   console.log(tasksAttachments.TasksAttachments, "newfilesnewfiles");
-  console.log(tasksAttachments.TasksAttachments, "newfilesnewfiles");
+  console.log(fileForSend, "newfilesnewfiles");
+
   const notesSaveHandler = async () => {
     try {
       if (addNoteFields.Title.value !== "") {
         if (Object.keys(fileForSend).length > 0) {
-          let newfiles = [tasksAttachments.TasksAttachments];
-          console.log(newfiles, "newfilesnewfiles");
+          let newfiles = [...tasksAttachments.TasksAttachments];
+          console.log(newfiles, "PromisePromisePromise");
           const uploadPromises = fileForSend.map((newData, index) => {
             let flag = fileForSend.length !== index + 1;
             // Return the promise from FileUploadToDo
@@ -387,12 +390,13 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
 
           // Wait for all uploadPromises to resolve
           await Promise.all(uploadPromises);
-          console.log(newfiles, "newfilesnewfiles");
+          console.log(newfiles, "PromisePromisePromise");
           setErrorBar(false);
           let createrID = localStorage.getItem("userID");
           let OrganizationID = localStorage.getItem("organizationID");
           let notesAttachment = [];
           newfiles.map((data, index) => {
+            console.log(data, "newfilesnewfiles");
             notesAttachment.push({
               DisplayAttachmentName: data.DisplayAttachmentName,
               OriginalAttachmentName: data.OriginalAttachmentName,
