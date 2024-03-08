@@ -57,7 +57,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     TasksAttachments: [],
   });
   const [open, setOpen] = useState({
-    open: false,
+    flag: false,
     message: "",
   });
 
@@ -263,6 +263,8 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
         (oldFileData) => oldFileData.DisplayAttachmentName === fileData.name
       );
 
+      console.log(fileExists, "fileExistsfileExistsfileExists");
+
       if (!size) {
         setTimeout(() => {
           setOpen({
@@ -278,7 +280,9 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           });
         }, 3000);
       } else if (fileExists) {
+        console.log("iam in here");
         setTimeout(() => {
+          console.log("iam in here");
           setOpen({
             flag: true,
             message: t("File-already-exists"),
@@ -823,7 +827,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           }
         />
       </Container>
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );
 };

@@ -145,7 +145,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   };
 
   const [open, setOpen] = useState({
-    open: false,
+    flag: false,
     message: "",
   });
 
@@ -1003,7 +1003,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           }
         />
       </Container>
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );
 };
