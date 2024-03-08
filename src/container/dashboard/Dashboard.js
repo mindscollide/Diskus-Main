@@ -1816,7 +1816,8 @@ const Dashboard = () => {
           RealtimeNotification.Loading ||
           OrganizationBillingReducer.Loading ||
           DataRoomReducer.Loading ||
-          DataRoomFileAndFoldersDetailsReducer.Loading ? (
+          DataRoomFileAndFoldersDetailsReducer.Loading ||
+          SignatureWorkFlowReducer.Loading ? (
             <Loader />
           ) : null}
 

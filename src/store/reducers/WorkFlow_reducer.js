@@ -11,6 +11,7 @@ const initialState = {
   getAllFieldsByWorkflowID: null,
   sendDocumentResponse: null,
   getDataroomAnnotation: null,
+  addAnnotationFilesAttachment: null,
 };
 
 const SignatureWorkflowReducer = (state = initialState, action) => {
@@ -193,6 +194,28 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         getDataroomAnnotation: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.ADD_ANNOTATION_FILE_SIGNATUREFLOW_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.ADD_ANNOTATION_FILE_SIGNATUREFLOW_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        addAnnotationFilesAttachment: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.ADD_ANNOTATION_FILE_SIGNATUREFLOW_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        addAnnotationFilesAttachment: null,
         ResponseMessage: action.message,
       };
     }
