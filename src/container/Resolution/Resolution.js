@@ -538,13 +538,15 @@ const Resolution = () => {
           );
         } else {
           return (
-            <img
-              draggable="false"
-              src={EditResolutionIcon}
-              onClick={() => handleUpdateResolutionAction(data.resolutionID)}
-              className={styles["Edit_Icon_moderator"]}
-              alt=""
-            />
+            <Tooltip placement="bottomLeft" title={t("Edit")}>
+              <img
+                draggable="false"
+                src={EditResolutionIcon}
+                onClick={() => handleUpdateResolutionAction(data.resolutionID)}
+                className={styles["Edit_Icon_moderator"]}
+                alt=""
+              />
+            </Tooltip>
           );
         }
       },
