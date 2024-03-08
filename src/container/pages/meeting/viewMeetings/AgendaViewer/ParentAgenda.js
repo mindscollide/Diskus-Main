@@ -92,6 +92,14 @@ const ParentAgenda = ({
     setExpandIndex((prevIndex) => (prevIndex === index ? -1 : index));
   };
 
+  const printFlag = useSelector(
+    (state) => state.MeetingAgendaReducer.PrintAgendaFlag
+  );
+
+  const exportFlag = useSelector(
+    (state) => state.MeetingAgendaReducer.ExportAgendaFlag
+  );
+
   const openAdvancePermissionModal = () => {
     dispatch(showAdvancePermissionModal(true));
   };
@@ -314,57 +322,71 @@ const ParentAgenda = ({
                                     "hh:mm a"
                                   )}
                                 </p>
-                                {Number(data.agendaVotingID) !== 0 &&
-                                Number(editorRole.status) === 10 &&
-                                Number(data.voteOwner.userid) ===
-                                  Number(currentUserID) &&
-                                !data.voteOwner?.currentVotingClosed ? (
-                                  <Button
-                                    text={t("Start-voting")}
-                                    className={styles["startVotingButton"]}
-                                    onClick={() => startVoting(data)}
-                                  />
-                                ) : Number(data.agendaVotingID) !== 0 &&
-                                  Number(editorRole.status) === 10 &&
-                                  Number(data.voteOwner.userid) ===
-                                    Number(currentUserID) &&
-                                  data.voteOwner?.currentVotingClosed ? (
+                                {printFlag === true ||
+                                exportFlag === true ? null : (
                                   <>
-                                    <Button
-                                      text={t("End-voting")}
-                                      className={styles["startVotingButton"]}
-                                      onClick={() => endVoting(data)}
-                                    />
-                                    <Button
-                                      text={t("View-votes")}
-                                      className={styles["ViewVoteButton"]}
-                                      onClick={() => EnableViewVoteModal(data)}
-                                    />
-                                  </>
-                                ) : editorRole.role === "Organizer" &&
-                                  data.voteOwner?.currentVotingClosed ? (
-                                  <>
-                                    <Button
-                                      text={t("View-votes")}
-                                      className={styles["ViewVoteButton"]}
-                                      onClick={() => EnableViewVoteModal(data)}
-                                    />
-                                  </>
-                                ) : null}
+                                    {Number(data.agendaVotingID) !== 0 &&
+                                    Number(editorRole.status) === 10 &&
+                                    Number(data.voteOwner.userid) ===
+                                      Number(currentUserID) &&
+                                    !data.voteOwner?.currentVotingClosed ? (
+                                      <Button
+                                        text={t("Start-voting")}
+                                        className={styles["startVotingButton"]}
+                                        onClick={() => startVoting(data)}
+                                      />
+                                    ) : Number(data.agendaVotingID) !== 0 &&
+                                      Number(editorRole.status) === 10 &&
+                                      Number(data.voteOwner.userid) ===
+                                        Number(currentUserID) &&
+                                      data.voteOwner?.currentVotingClosed ? (
+                                      <>
+                                        <Button
+                                          text={t("End-voting")}
+                                          className={
+                                            styles["startVotingButton"]
+                                          }
+                                          onClick={() => endVoting(data)}
+                                        />
+                                        <Button
+                                          text={t("View-votes")}
+                                          className={styles["ViewVoteButton"]}
+                                          onClick={() =>
+                                            EnableViewVoteModal(data)
+                                          }
+                                        />
+                                      </>
+                                    ) : editorRole.role === "Organizer" &&
+                                      data.voteOwner?.currentVotingClosed ? (
+                                      <>
+                                        <Button
+                                          text={t("View-votes")}
+                                          className={styles["ViewVoteButton"]}
+                                          onClick={() =>
+                                            EnableViewVoteModal(data)
+                                          }
+                                        />
+                                      </>
+                                    ) : null}
 
-                                {Number(data.agendaVotingID) ===
-                                0 ? null : Number(editorRole.status) === 10 &&
-                                  Number(data.voteOwner.userid) !==
-                                    Number(currentUserID) &&
-                                  data.voteOwner?.currentVotingClosed &&
-                                  editorRole.role !== "Organizer" &&
-                                  checkUserAuthentication(data) ? (
-                                  <Button
-                                    text={t("Cast-your-vote")}
-                                    className={styles["CastYourVoteButton"]}
-                                    onClick={() => EnableCastVoteModal(data)}
-                                  />
-                                ) : null}
+                                    {Number(data.agendaVotingID) ===
+                                    0 ? null : Number(editorRole.status) ===
+                                        10 &&
+                                      Number(data.voteOwner.userid) !==
+                                        Number(currentUserID) &&
+                                      data.voteOwner?.currentVotingClosed &&
+                                      editorRole.role !== "Organizer" &&
+                                      checkUserAuthentication(data) ? (
+                                      <Button
+                                        text={t("Cast-your-vote")}
+                                        className={styles["CastYourVoteButton"]}
+                                        onClick={() =>
+                                          EnableCastVoteModal(data)
+                                        }
+                                      />
+                                    ) : null}
+                                  </>
+                                )}
                               </Col>
                             </Row>
                             {/* </div> */}

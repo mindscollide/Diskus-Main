@@ -27,10 +27,23 @@ const SubUrls = ({ subAgendaData, rows, setRows, index, subIndex }) => {
     console.log(updatedRows, "SubAgendaUrlRadioField");
     setRows(updatedRows);
   };
+
+  let currentLanguage = localStorage.getItem("i18nextLng");
+
   return (
     <Row className="mt-2">
-      <Col lg={8} md={8} sm={12}>
-        <span className={styles["URLTitle_Heading"]} onClick={() => window.open(subAgendaData.subAgendaUrlFieldRadio, '_blank')}>
+      <Col
+        lg={8}
+        md={8}
+        sm={12}
+        className={currentLanguage === "ar" ? "p-0" : ""}
+      >
+        <span
+          className={styles["URLTitle_Heading"]}
+          onClick={() =>
+            window.open(subAgendaData.subAgendaUrlFieldRadio, "_blank")
+          }
+        >
           {subAgendaData.subAgendaUrlFieldRadio}
         </span>
       </Col>

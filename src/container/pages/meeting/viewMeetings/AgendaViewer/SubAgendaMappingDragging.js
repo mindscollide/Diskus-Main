@@ -69,6 +69,14 @@ const SubAgendaMappingDragging = ({
 
   const { MeetingAgendaReducer } = useSelector((state) => state);
 
+  const printFlag = useSelector(
+    (state) => state.MeetingAgendaReducer.PrintAgendaFlag
+  );
+
+  const exportFlag = useSelector(
+    (state) => state.MeetingAgendaReducer.ExportAgendaFlag
+  );
+
   const navigate = useNavigate();
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
@@ -434,120 +442,141 @@ const SubAgendaMappingDragging = ({
                                                       "HHmmss"
                                                     ).format("hh:mm a")}
                                                   </p>
-                                                  {Number(
-                                                    subAgendaData.agendaVotingID
-                                                  ) !== 0 &&
-                                                  Number(editorRole.status) ===
-                                                    10 &&
-                                                  Number(
-                                                    subAgendaData.voteOwner
-                                                      .userid
-                                                  ) === Number(currentUserID) &&
-                                                  !subAgendaData.voteOwner
-                                                    ?.currentVotingClosed ? (
-                                                    <Button
-                                                      text={t("Start-voting")}
-                                                      className={
-                                                        styles[
-                                                          "startVotingButton"
-                                                        ]
-                                                      }
-                                                      onClick={() =>
-                                                        startVoting(
+                                                  {printFlag === true ||
+                                                  exportFlag === true ? null : (
+                                                    <>
+                                                      {Number(
+                                                        subAgendaData.agendaVotingID
+                                                      ) !== 0 &&
+                                                      Number(
+                                                        editorRole.status
+                                                      ) === 10 &&
+                                                      Number(
+                                                        subAgendaData.voteOwner
+                                                          .userid
+                                                      ) ===
+                                                        Number(currentUserID) &&
+                                                      !subAgendaData.voteOwner
+                                                        ?.currentVotingClosed ? (
+                                                        <Button
+                                                          text={t(
+                                                            "Start-voting"
+                                                          )}
+                                                          className={
+                                                            styles[
+                                                              "startVotingButton"
+                                                            ]
+                                                          }
+                                                          onClick={() =>
+                                                            startVoting(
+                                                              subAgendaData
+                                                            )
+                                                          }
+                                                        />
+                                                      ) : Number(
+                                                          subAgendaData.agendaVotingID
+                                                        ) !== 0 &&
+                                                        Number(
+                                                          editorRole.status
+                                                        ) === 10 &&
+                                                        Number(
                                                           subAgendaData
-                                                        )
-                                                      }
-                                                    />
-                                                  ) : Number(
-                                                      subAgendaData.agendaVotingID
-                                                    ) !== 0 &&
-                                                    Number(
-                                                      editorRole.status
-                                                    ) === 10 &&
-                                                    Number(
-                                                      subAgendaData.voteOwner
-                                                        .userid
-                                                    ) ===
-                                                      Number(currentUserID) &&
-                                                    subAgendaData.voteOwner
-                                                      ?.currentVotingClosed ? (
-                                                    <>
-                                                      <Button
-                                                        text={t("End-voting")}
-                                                        className={
-                                                          styles[
-                                                            "startVotingButton"
-                                                          ]
-                                                        }
-                                                        onClick={() =>
-                                                          endVoting(
-                                                            subAgendaData
-                                                          )
-                                                        }
-                                                      />
-                                                      <Button
-                                                        text={t("View-votes")}
-                                                        className={
-                                                          styles[
-                                                            "ViewVoteButton"
-                                                          ]
-                                                        }
-                                                        onClick={() =>
-                                                          EnableViewVoteModal(
-                                                            subAgendaData
-                                                          )
-                                                        }
-                                                      />
-                                                    </>
-                                                  ) : editorRole.role ===
-                                                      "Organizer" &&
-                                                    subAgendaData.voteOwner
-                                                      ?.currentVotingClosed ? (
-                                                    <>
-                                                      <Button
-                                                        text={t("View-votes")}
-                                                        className={
-                                                          styles[
-                                                            "ViewVoteButton"
-                                                          ]
-                                                        }
-                                                        onClick={() =>
-                                                          EnableViewVoteModal(
-                                                            subAgendaData
-                                                          )
-                                                        }
-                                                      />
-                                                    </>
-                                                  ) : null}
+                                                            .voteOwner.userid
+                                                        ) ===
+                                                          Number(
+                                                            currentUserID
+                                                          ) &&
+                                                        subAgendaData.voteOwner
+                                                          ?.currentVotingClosed ? (
+                                                        <>
+                                                          <Button
+                                                            text={t(
+                                                              "End-voting"
+                                                            )}
+                                                            className={
+                                                              styles[
+                                                                "startVotingButton"
+                                                              ]
+                                                            }
+                                                            onClick={() =>
+                                                              endVoting(
+                                                                subAgendaData
+                                                              )
+                                                            }
+                                                          />
+                                                          <Button
+                                                            text={t(
+                                                              "View-votes"
+                                                            )}
+                                                            className={
+                                                              styles[
+                                                                "ViewVoteButton"
+                                                              ]
+                                                            }
+                                                            onClick={() =>
+                                                              EnableViewVoteModal(
+                                                                subAgendaData
+                                                              )
+                                                            }
+                                                          />
+                                                        </>
+                                                      ) : editorRole.role ===
+                                                          "Organizer" &&
+                                                        subAgendaData.voteOwner
+                                                          ?.currentVotingClosed ? (
+                                                        <>
+                                                          <Button
+                                                            text={t(
+                                                              "View-votes"
+                                                            )}
+                                                            className={
+                                                              styles[
+                                                                "ViewVoteButton"
+                                                              ]
+                                                            }
+                                                            onClick={() =>
+                                                              EnableViewVoteModal(
+                                                                subAgendaData
+                                                              )
+                                                            }
+                                                          />
+                                                        </>
+                                                      ) : null}
 
-                                                  {Number(
-                                                    subAgendaData.agendaVotingID
-                                                  ) === 0 ? null : Number(
-                                                      editorRole.status
-                                                    ) === 10 &&
-                                                    Number(
-                                                      subAgendaData.voteOwner
-                                                        .userid
-                                                    ) !==
-                                                      Number(currentUserID) &&
-                                                    subAgendaData.voteOwner
-                                                      ?.currentVotingClosed &&
-                                                    editorRole.role !==
-                                                      "Organizer" ? (
-                                                    <Button
-                                                      text={t("Cast-your-vote")}
-                                                      className={
-                                                        styles[
-                                                          "CastYourVoteButton"
-                                                        ]
-                                                      }
-                                                      onClick={() =>
-                                                        EnableCastVoteModal(
+                                                      {Number(
+                                                        subAgendaData.agendaVotingID
+                                                      ) === 0 ? null : Number(
+                                                          editorRole.status
+                                                        ) === 10 &&
+                                                        Number(
                                                           subAgendaData
-                                                        )
-                                                      }
-                                                    />
-                                                  ) : null}
+                                                            .voteOwner.userid
+                                                        ) !==
+                                                          Number(
+                                                            currentUserID
+                                                          ) &&
+                                                        subAgendaData.voteOwner
+                                                          ?.currentVotingClosed &&
+                                                        editorRole.role !==
+                                                          "Organizer" ? (
+                                                        <Button
+                                                          text={t(
+                                                            "Cast-your-vote"
+                                                          )}
+                                                          className={
+                                                            styles[
+                                                              "CastYourVoteButton"
+                                                            ]
+                                                          }
+                                                          onClick={() =>
+                                                            EnableCastVoteModal(
+                                                              subAgendaData
+                                                            )
+                                                          }
+                                                        />
+                                                      ) : null}
+                                                    </>
+                                                  )}
                                                 </Col>
                                               </Row>
                                               {/* </div> */}
