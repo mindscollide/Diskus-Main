@@ -238,148 +238,72 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
 
   //Upload File Handler
   const uploadFilesToDo = (data) => {
-    let fileSizeArr;
-    if (Object.keys(tasksAttachments.TasksAttachments).length === 10) {
-      setTimeout(
-        setOpen({
-          open: true,
-          message: t("You-can-not-upload-more-then-10-files"),
-        }),
-        3000
-      );
-    } else if (fileSize >= 104857600) {
-      setTimeout(
-        setOpen({
-          open: true,
-          message: t("You-can-not-upload-more-then-100MB-files"),
-        }),
-        3000
-      );
-    } else {
-      const uploadFilePath = data.target.value;
-      const uploadedFile = data.target.files[0];
-      var ext = uploadedFile.name.split(".").pop();
+    console.log(data, "uploadFilesToDouploadFilesToDo");
+    let filesArray = Object.values(data.target.files);
+    let fileSizeArr = fileSize;
+    let flag = false;
+    let sizezero = true;
+    let size = true;
 
-      let file = tasksAttachments.TasksAttachments;
-
-      if (
-        ext === "doc" ||
-        ext === "docx" ||
-        ext === "xls" ||
-        ext === "xlsx" ||
-        ext === "pdf" ||
-        ext === "png" ||
-        ext === "txt" ||
-        ext === "jpg" ||
-        ext === "jpeg" ||
-        ext === "gif" ||
-        ext === "csv"
-      ) {
-        let data;
-        let sizezero;
-        let size;
-        if (file.length > 0) {
-          file.map((filename, index) => {
-            if (filename.DisplayAttachmentName === uploadedFile.name) {
-              data = false;
-            }
-          });
-          if (uploadedFile.size > 10485760) {
-            size = false;
-          } else if (uploadedFile.size === 0) {
-            sizezero = false;
-          }
-          if (data === false) {
-            setTimeout(
-              setOpen({
-                open: true,
-                message: t("File-already-exisit"),
-              }),
-              3000
-            );
-          } else if (size === false) {
-            setTimeout(
-              setOpen({
-                open: true,
-                message: t("File-size-should-not-be-greater-then-zero"),
-              }),
-              3000
-            );
-          } else if (sizezero === false) {
-            setTimeout(
-              setOpen({
-                open: true,
-                message: t("File-size-should-not-be-zero"),
-              }),
-              3000
-            );
-          } else {
-            // dispatch(FileUploadToDo(uploadedFile, t));
-            fileSizeArr = uploadedFile.size + fileSize;
-            fileSizeArr = uploadedFile.size + fileSize;
-            setFileForSend([...fileForSend, uploadedFile]);
-            setFileSize(fileSizeArr);
-            let FileData = {
-              PK_TAID: 0,
-              DisplayAttachmentName: uploadedFile.name,
-              OriginalAttachmentName: uploadFilePath,
-              CreationDateTime: "",
-              FK_TID: 0,
-              fileSize: uploadedFile.size,
-            };
-            setTasksAttachments({
-              TasksAttachments: [
-                ...tasksAttachments.TasksAttachments,
-                FileData,
-              ],
-            });
-          }
-        } else {
-          if (uploadedFile.size > 10485760) {
-            size = false;
-          } else if (uploadedFile.size === 0) {
-            sizezero = false;
-          }
-          if (size === false) {
-            setTimeout(
-              setOpen({
-                open: true,
-                message: t("File-size-should-not-be-greater-then-zero"),
-              }),
-              3000
-            );
-          } else if (sizezero === false) {
-            setTimeout(
-              setOpen({
-                open: true,
-                message: t("File-size-should-not-be-zero"),
-              }),
-              3000
-            );
-          } else {
-            // dispatch(FileUploadToDo(uploadedFile, t));
-            fileSizeArr = uploadedFile.size + fileSize;
-            setFileForSend([...fileForSend, uploadedFile]);
-            setFileSize(fileSizeArr);
-            let FileData = {
-              PK_TAID: 0,
-              DisplayAttachmentName: uploadedFile.name,
-              OriginalAttachmentName: uploadFilePath,
-              CreationDateTime: "",
-              FK_TID: 0,
-              fileSize: uploadedFile.size,
-            };
-            setTasksAttachments({
-              TasksAttachments: [
-                ...tasksAttachments.TasksAttachments,
-                FileData,
-              ],
-            });
-          }
-        }
-      }
+    if (tasksAttachments.TasksAttachments.length > 9) {
+      setOpen({
+        flag: true,
+        message: t("Not-allowed-more-than-10-files"),
+      });
+      return;
     }
+    filesArray.forEach((fileData, index) => {
+      if (fileData.size > 10485760) {
+        size = false;
+      } else if (fileData.size === 0) {
+        sizezero = false;
+      }
+
+      let fileExists = tasksAttachments.TasksAttachments.some(
+        (oldFileData) => oldFileData.DisplayAttachmentName === fileData.name
+      );
+
+      if (!size) {
+        setTimeout(() => {
+          setOpen({
+            flag: true,
+            message: t("File-size-should-not-be-greater-then-zero"),
+          });
+        }, 3000);
+      } else if (!sizezero) {
+        setTimeout(() => {
+          setOpen({
+            flag: true,
+            message: t("File-size-should-not-be-zero"),
+          });
+        }, 3000);
+      } else if (fileExists) {
+        setTimeout(() => {
+          setOpen({
+            flag: true,
+            message: t("File-already-exists"),
+          });
+        }, 3000);
+      } else {
+        let file = {
+          DisplayAttachmentName: fileData.name,
+          OriginalAttachmentName: fileData.name,
+          fileSize: fileData.size,
+        };
+        setTasksAttachments((prevAttachments) => ({
+          ...prevAttachments,
+          TasksAttachments: [...prevAttachments.TasksAttachments, file],
+        }));
+
+        fileSizeArr += fileData.size;
+        setFileForSend((prevFiles) => [...prevFiles, file]);
+        setFileSize(fileSizeArr);
+      }
+      // Update previousFileList to current fileList
+      previousFileList = filesArray;
+    });
   };
+  let previousFileList = [];
 
   const cancelNewNoteModal = () => {
     setCloseConfirmationBox(true);
@@ -470,18 +394,6 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           errorStatus: false,
         },
       });
-      // setOpen({
-      //   ...open,
-      //   open: true,
-      //   message: t("Field-should-not-be-empty"),
-      // });
-      // setTimeout(() => {
-      //   setOpen({
-      //     ...open,
-      //     open: false,
-      //     message: "",
-      //   });
-      // }, 3000);
     }
   };
 
@@ -679,6 +591,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                           >
                             <CustomUpload
                               change={uploadFilesToDo}
+                              multiple={true}
                               onClick={(event) => {
                                 event.target.value = null;
                               }}
