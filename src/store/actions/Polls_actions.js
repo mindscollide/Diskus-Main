@@ -359,6 +359,7 @@ const SavePollsApi = (navigate, Data, t, value, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(savePolls_init());
+    // Check if the browser is online
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", savePollsRequestMethod.RequestMethod);

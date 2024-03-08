@@ -396,8 +396,9 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //Input Field Assignee Change
   const onChangeSearch = (item) => {
+    console.log(item, "itemitemitem");
     setPresenterValue(item);
-    setTaskCreatorID(item.value);
+    setTaskAssignedTo([item.value]);
   };
 
   //Drop Down Values
@@ -554,6 +555,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         TaskID: Number(createTaskID),
         TasksAttachments: newAttachmentData,
       };
+      console.log(Data, "DataDataDataData");
       await dispatch(
         saveTaskDocumentsAndAssigneesApi(navigate, Data, t, 1, setShow)
       );

@@ -6583,6 +6583,19 @@ th.ant-table-cell.notification-class-table {
   word-wrap: break-word;
 }
 
+/* dataroom Searches React select */
+.searchResult_Document__control.css-13cymwt-control {
+  width: 200px !important;
+}
+
+.searchResult_Document__menu-list.css-1n6sfyn-MenuList {
+  width: 200px !important;
+}
+
+.searchResult_Document__control--is-focused {
+  width: 200px !important;
+}
+
 span.subAgendaBorderClass {
   display: block;
   width: 30px;
@@ -6904,3 +6917,4 @@ th.ant-table-cell.minutesParticipant {
 td.ant-table-cell.minutesParticipant {
   text-align: center !important;
 }
+
