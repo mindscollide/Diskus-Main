@@ -841,12 +841,17 @@ const Polling = () => {
                             />
                           </>
                         ) : null}
-                        <img
-                          src={searchicon}
-                          alt=""
-                          className={styles["Search_Bar_icon_class"]}
-                          draggable="false"
-                        />
+                        <Tooltip
+                          placement="bottomLeft"
+                          title={t("Search-filters")}
+                        >
+                          <img
+                            src={searchicon}
+                            alt=""
+                            className={styles["Search_Bar_icon_class"]}
+                            draggable="false"
+                          />
+                        </Tooltip>
                       </Col>
                     </Row>
                   </>

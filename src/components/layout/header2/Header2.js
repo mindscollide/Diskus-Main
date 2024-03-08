@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Nav, Navbar, DropdownButton, Row, Col } from "react-bootstrap";
+import { Tooltip } from "antd";
 import Dropdown from "react-bootstrap/Dropdown";
 import { useNavigate, Link } from "react-router-dom";
 import DiskusLogoHeader from "../../../assets/images/newElements/diskus_newheader.svg";
@@ -233,35 +234,37 @@ const Header2 = () => {
             <Nav className="ml-auto align-items-center">
               <LanguageSelector />
               <Nav.Link className="me-2">
-                <div className="dropdown-btn_dotted">
-                  <DropdownButton
-                    id="dropdown-btn_dotted"
-                    className="dropdown-btn_dotted"
-                    disabled={true}
-                    title={
-                      <img
-                        src={DiskusNotificationIcon}
-                        alt=""
-                        width={28}
-                        draggable="false"
-                      />
-                    }
-                    onClick={dropDownMenuFunction}
-                  >
-                    <Dropdown.Item
-                      className="d-flex title-className"
-                      onClick={openMeetingModal}
+                <Tooltip placement="topRight" title={t("Shortcuts")}>
+                  <div className="dropdown-btn_dotted">
+                    <DropdownButton
+                      id="dropdown-btn_dotted"
+                      className="dropdown-btn_dotted"
+                      disabled={true}
+                      title={
+                        <img
+                          src={DiskusNotificationIcon}
+                          alt=""
+                          width={28}
+                          draggable="false"
+                        />
+                      }
+                      onClick={dropDownMenuFunction}
                     >
-                      <span>{t("Quick-meeting")}</span>
-                    </Dropdown.Item>
-                    <Dropdown.Item className="d-flex title-className">
-                      {t("Upload-document")}
-                    </Dropdown.Item>
-                    <Dropdown.Item className="d-flex title-className">
-                      {t("Recently-added-files")}
-                    </Dropdown.Item>
-                  </DropdownButton>
-                </div>
+                      <Dropdown.Item
+                        className="d-flex title-className"
+                        onClick={openMeetingModal}
+                      >
+                        <span>{t("Quick-meeting")}</span>
+                      </Dropdown.Item>
+                      <Dropdown.Item className="d-flex title-className">
+                        {t("Upload-document")}
+                      </Dropdown.Item>
+                      <Dropdown.Item className="d-flex title-className">
+                        {t("Recently-added-files")}
+                      </Dropdown.Item>
+                    </DropdownButton>
+                  </div>
+                </Tooltip>
               </Nav.Link>
               <Dropdown className="profilebtn-dropdown">
                 <Dropdown.Toggle className="dropdown-toggle">
@@ -489,69 +492,72 @@ const Header2 = () => {
             <Nav className="ml-auto align-items-center">
               <LanguageSelector />
               <Nav.Link className="me-2">
-                <div className="dropdown-btn_dotted">
-                  {location.pathname.includes("/Diskus/Admin") ||
-                  location.pathname.includes("/DisKus/Admin") ? null : (
-                    <DropdownButton
-                      id="dropdown-btn_dotted"
-                      className="dropdown-btn_dotted"
-                      title={
-                        <img
-                          src={DiskusNotificationIcon}
-                          alt=""
-                          width={28}
-                          draggable="false"
-                        />
-                      }
-                      onClick={dropDownMenuFunction}
-                    >
-                      <Dropdown.Item
-                        className="d-flex title-className"
-                        onClick={openMeetingModal}
-                      >
-                        {t("Quick-meeting")}
-                      </Dropdown.Item>
-                      <Dropdown.Item className="d-flex title-className">
-                        {/* {t("Upload-document")} */}
-                        {(NewMeetingreducer.scheduleMeetingPageFlag === true ||
-                          NewMeetingreducer.viewProposeDateMeetingPageFlag ===
-                            true ||
-                          NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
-                            true ||
-                          NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
-                            true ||
-                          NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
-                            true ||
-                          NewMeetingreducer.proposeNewMeetingPageFlag ===
-                            true) &&
-                        NewMeetingreducer.viewMeetingFlag === false ? (
-                          <div
-                            onClick={() => {
-                              dispatch(showCancelModalmeetingDeitals(true));
-                              dispatch(uploadGlobalFlag(true));
-                            }}
-                          >
-                            {t("Upload-document")}
-                          </div>
-                        ) : (
-                          <UploadTextField
-                            title={t("Upload-document")}
-                            handleFileUploadRequest={handleUploadFile}
-                            // setProgress={setProgress}
+                <Tooltip placement="topRight" title={t("Shortcuts")}>
+                  <div className="dropdown-btn_dotted">
+                    {location.pathname.includes("/Diskus/Admin") ||
+                    location.pathname.includes("/DisKus/Admin") ? null : (
+                      <DropdownButton
+                        id="dropdown-btn_dotted"
+                        className="dropdown-btn_dotted"
+                        title={
+                          <img
+                            src={DiskusNotificationIcon}
+                            alt=""
+                            width={28}
+                            draggable="false"
                           />
-                        )}
-
-                        {/* <input type="file" /> */}
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        className="d-flex title-className"
-                        onClick={RecentFilesTab}
+                        }
+                        onClick={dropDownMenuFunction}
                       >
-                        {t("Recently-added-files")}
-                      </Dropdown.Item>
-                    </DropdownButton>
-                  )}
-                </div>
+                        <Dropdown.Item
+                          className="d-flex title-className"
+                          onClick={openMeetingModal}
+                        >
+                          {t("Quick-meeting")}
+                        </Dropdown.Item>
+                        <Dropdown.Item className="d-flex title-className">
+                          {/* {t("Upload-document")} */}
+                          {(NewMeetingreducer.scheduleMeetingPageFlag ===
+                            true ||
+                            NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                              true ||
+                            NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                              true ||
+                            NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                              true ||
+                            NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                              true ||
+                            NewMeetingreducer.proposeNewMeetingPageFlag ===
+                              true) &&
+                          NewMeetingreducer.viewMeetingFlag === false ? (
+                            <div
+                              onClick={() => {
+                                dispatch(showCancelModalmeetingDeitals(true));
+                                dispatch(uploadGlobalFlag(true));
+                              }}
+                            >
+                              {t("Upload-document")}
+                            </div>
+                          ) : (
+                            <UploadTextField
+                              title={t("Upload-document")}
+                              handleFileUploadRequest={handleUploadFile}
+                              // setProgress={setProgress}
+                            />
+                          )}
+
+                          {/* <input type="file" /> */}
+                        </Dropdown.Item>
+                        <Dropdown.Item
+                          className="d-flex title-className"
+                          onClick={RecentFilesTab}
+                        >
+                          {t("Recently-added-files")}
+                        </Dropdown.Item>
+                      </DropdownButton>
+                    )}
+                  </div>
+                </Tooltip>
               </Nav.Link>
               <Dropdown className="profilebtn-dropdown">
                 <Dropdown.Toggle className="dropdown-toggle">
@@ -698,6 +704,7 @@ const Header2 = () => {
                   </Dropdown.Menu>
                 )}
               </Dropdown>
+
               <Nav.Link
                 as={Link}
                 to={
@@ -720,8 +727,16 @@ const Header2 = () => {
                 className="mx-3"
                 onClick={handleMeetingSidebarFAQ}
               >
-                <img src={DiskusHeaderInfo} width={28} draggable="false" />
+                <Tooltip placement="topRight" title={t("FAQs")}>
+                  <img
+                    src={DiskusHeaderInfo}
+                    alt=""
+                    width={28}
+                    draggable="false"
+                  />
+                </Tooltip>
               </Nav.Link>
+
               {/* {roleID != 2 && roleID != 1 ? (
                 <Nav.Link className="me-2" as={Link} to="setting">
                   <img src={DiskusHeaderSetting} width={28} />

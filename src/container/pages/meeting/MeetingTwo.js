@@ -1722,13 +1722,18 @@ const NewMeeting = () => {
                             draggable="false"
                           />
                         ) : null}
-                        <img
-                          src={searchicon}
-                          className={styles["Search_Bar_icon_class"]}
-                          onClick={HandleShowSearch} // Add click functionality here
-                          alt=""
-                          draggable="false"
-                        />
+                        <Tooltip
+                          placement="bottomLeft"
+                          title={t("Search-filters")}
+                        >
+                          <img
+                            src={searchicon}
+                            className={styles["Search_Bar_icon_class"]}
+                            onClick={HandleShowSearch} // Add click functionality here
+                            alt=""
+                            draggable="false"
+                          />
+                        </Tooltip>
                       </Col>
                     </Row>
                   }

@@ -35,7 +35,7 @@ import {
   viewAttachmentFlag,
 } from "../../store/actions/Resolution_actions";
 import { useDispatch, useSelector } from "react-redux";
-import { Spin } from "antd";
+import { Spin, Tooltip } from "antd";
 import {
   newTimeFormaterForResolutionAsPerUTCFullDate,
   resolutionResultTable,
@@ -1313,7 +1313,14 @@ const Resolution = () => {
                         applyClass={"resolution-search-input"}
                         iconClassName={styles["Search_Icon"]}
                         inputicon={
-                          <img draggable="false" src={searchicon} alt="" />
+                          <>
+                            <Tooltip
+                              placement="bottomLeft"
+                              title={t("Search-filters")}
+                            >
+                              <img draggable="false" src={searchicon} alt="" />
+                            </Tooltip>
+                          </>
                         }
                         clickIcon={openSearchBox}
                       />
