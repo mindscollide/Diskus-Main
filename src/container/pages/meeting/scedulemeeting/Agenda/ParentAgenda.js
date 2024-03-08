@@ -27,7 +27,7 @@ import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import Select from "react-select";
 import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
-import { Radio } from "antd";
+import { Radio, Tooltip } from "antd";
 import desh from "../../../../../assets/images/desh.svg";
 import {
   Button,
@@ -891,82 +891,101 @@ const ParentAgenda = ({
                                     <>
                                       {data.iD.includes("A") ? null : (
                                         <>
-                                          <img
-                                            draggable={false}
-                                            src={Key}
-                                            alt=""
-                                            width="24.07px"
-                                            height="24.09px"
-                                            className={`cursor-pointer ${
-                                              data.isLocked ||
-                                              editorRole.status === 9 ||
-                                              editorRole.status === "9"
-                                                ? "pe-none"
-                                                : ""
-                                            }`}
-                                            role="button"
-                                            onClick={() => {
-                                              if (!data.isLocked) {
-                                                openAdvancePermissionModal(
-                                                  data.iD,
-                                                  1
-                                                );
+                                          <Tooltip
+                                            placement="bottomLeft"
+                                            title={t("Permission-settings")}
+                                          >
+                                            <img
+                                              draggable={false}
+                                              src={Key}
+                                              alt=""
+                                              width="24.07px"
+                                              height="24.09px"
+                                              className={`cursor-pointer ${
+                                                data.isLocked ||
+                                                editorRole.status === 9 ||
+                                                editorRole.status === "9"
+                                                  ? "pe-none"
+                                                  : ""
+                                              }`}
+                                              role="button"
+                                              onClick={() => {
+                                                if (!data.isLocked) {
+                                                  openAdvancePermissionModal(
+                                                    data.iD,
+                                                    1
+                                                  );
+                                                }
+                                              }}
+                                            />
+                                          </Tooltip>
+                                          <Tooltip
+                                            placement="bottomLeft"
+                                            title={t("Add-vote")}
+                                          >
+                                            <img
+                                              alt=""
+                                              draggable={false}
+                                              src={Cast}
+                                              width="25.85px"
+                                              height="25.89px"
+                                              className={
+                                                editorRole.status === 9 ||
+                                                editorRole.status === "9"
+                                                  ? "locked-cursor"
+                                                  : "cursor-pointer"
                                               }
-                                            }}
-                                          />
-                                          <img
-                                            alt=""
-                                            draggable={false}
-                                            src={Cast}
-                                            width="25.85px"
-                                            height="25.89px"
-                                            className={
-                                              editorRole.status === 9 ||
-                                              editorRole.status === "9"
-                                                ? "locked-cursor"
-                                                : "cursor-pointer"
-                                            }
-                                            onClick={() =>
+                                              onClick={() =>
+                                                data.isLocked
+                                                  ? ""
+                                                  : editorRole.status === 9 ||
+                                                    editorRole.status === "9"
+                                                  ? ""
+                                                  : openVoteMOdal(
+                                                      data.iD,
+                                                      data.agendaVotingID,
+                                                      data
+                                                    )
+                                              }
+                                            />
+                                          </Tooltip>
+                                          <Tooltip
+                                            placement="bottomLeft"
+                                            title={
                                               data.isLocked
-                                                ? ""
-                                                : editorRole.status === 9 ||
-                                                  editorRole.status === "9"
-                                                ? ""
-                                                : openVoteMOdal(
-                                                    data.iD,
-                                                    data.agendaVotingID,
-                                                    data
-                                                  )
+                                                ? t("Agenda-locked")
+                                                : t("Agenda-unlocked")
                                             }
-                                          />
-                                          <img
-                                            alt=""
-                                            draggable={false}
-                                            src={
-                                              data.isLocked ? DarkLock : Lock
-                                            }
-                                            width="18.87px"
-                                            className={
-                                              data.isLocked
-                                                ? styles["lockBtn_inActive"]
-                                                : editorRole.status === 9 ||
-                                                  editorRole.status === "9"
-                                                ? `${
-                                                    styles["lockBtn_inActive"]
-                                                  } ${"pe-none"}`
-                                                : styles["lockBtn"]
-                                            }
-                                            height="26.72px"
-                                            onClick={() =>
-                                              editorRole.status === 9 ||
-                                              editorRole.status === "9"
-                                                ? ""
-                                                : lockFunctionActive(
-                                                    data.iD,
-                                                    data.isLocked
-                                                  )
-                                            }
-                                          />
+                                          >
+                                            <img
+                                              alt=""
+                                              draggable={false}
+                                              src={
+                                                data.isLocked ? DarkLock : Lock
+                                              }
+                                              width="18.87px"
+                                              className={
+                                                data.isLocked
+                                                  ? styles["lockBtn_inActive"]
+                                                  : editorRole.status === 9 ||
+                                                    editorRole.status === "9"
+                                                  ? `${
+                                                      styles["lockBtn_inActive"]
+                                                    } ${"pe-none"}`
+                                                  : styles["lockBtn"]
+                                              }
+                                              height="26.72px"
+                                              onClick={() =>
+                                                editorRole.status === 9 ||
+                                                editorRole.status === "9"
+                                                  ? ""
+                                                  : lockFunctionActive(
+                                                      data.iD,
+                                                      data.isLocked
+                                                    )
+                                              }
+                                            />
+                                          </Tooltip>
                                         </>
                                       )}
                                     </>

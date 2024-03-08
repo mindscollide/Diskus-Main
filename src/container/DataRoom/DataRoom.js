@@ -3027,13 +3027,17 @@ const DataRoom = () => {
                 <span className={styles["lsit_grid_buttons"]}>
                   <Button
                     icon={
-                      <img
-                        src={gridbtnactive ? Grid_Selected : Grid_Not_Selected}
-                        height="25.27px"
-                        width="25.27px"
-                        alt=""
-                        className={styles["grid_view_Icon"]}
-                      />
+                      <Tooltip placement="bottomLeft" title={t("List-view")}>
+                        <img
+                          src={
+                            gridbtnactive ? Grid_Selected : Grid_Not_Selected
+                          }
+                          height="25.27px"
+                          width="25.27px"
+                          alt=""
+                          className={styles["grid_view_Icon"]}
+                        />
+                      </Tooltip>
                     }
                     className={
                       gridbtnactive
@@ -3044,13 +3048,17 @@ const DataRoom = () => {
                   />
                   <Button
                     icon={
-                      <img
-                        src={listviewactive ? List_Selected : List_Not_selected}
-                        height="25.27px"
-                        width="25.27px"
-                        alt=""
-                        className={styles["list_view_Icon"]}
-                      />
+                      <Tooltip placement="bottomLeft" title={t("Grid-view")}>
+                        <img
+                          src={
+                            listviewactive ? List_Selected : List_Not_selected
+                          }
+                          height="25.27px"
+                          width="25.27px"
+                          alt=""
+                          className={styles["list_view_Icon"]}
+                        />
+                      </Tooltip>
                     }
                     className={
                       listviewactive

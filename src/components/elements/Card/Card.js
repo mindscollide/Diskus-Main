@@ -15,6 +15,7 @@ import img6 from "../../../assets/images/DropdownSIX.svg";
 import img7 from "../../../assets/images/DropdownSEVEN.svg";
 import Group_Icon from "../../../assets/images/group_Icons.svg";
 import { useMemo } from "react";
+import { Tooltip } from "antd";
 const Card = ({
   CardHeading,
   profile,
@@ -184,37 +185,41 @@ const Card = ({
               className="d-flex justify-content-end gap-2 mt-4 pe-3"
             >
               {Number(creatorId) === Number(creatorID) && (
+                <Tooltip placement="bottomLeft" title={t("Edit")}>
+                  <img
+                    src={editicon}
+                    width="21px"
+                    height="21px"
+                    alt=""
+                    // className={StatusID === 1 ? "cursor-pointer" : ""}
+                    className={
+                      Number(creatorId) === Number(creatorID)
+                        ? styles["Edit_icon_styles"]
+                        : styles["Edit_icon_styles_InActive"]
+                    }
+                    onClick={() => setUniqCardID(CardID)}
+                    draggable="false"
+                  />
+                </Tooltip>
+              )}
+              <Tooltip placement="bottomLeft" title={t("More")}>
                 <img
-                  src={editicon}
+                  src={doticon}
                   width="21px"
                   height="21px"
-                  alt=""
                   // className={StatusID === 1 ? "cursor-pointer" : ""}
                   className={
-                    Number(creatorId) === Number(creatorID)
-                      ? styles["Edit_icon_styles"]
-                      : styles["Edit_icon_styles_InActive"]
+                    StatusID === 3 || StatusID === 1
+                      ? styles["dot_icon_styles"]
+                      : StatusID === 2
+                      ? styles["dot_icon_styles_InActive"]
+                      : styles["dot_icon_styles_InActive"]
                   }
                   onClick={() => setUniqCardID(CardID)}
+                  alt=""
                   draggable="false"
                 />
-              )}
-              <img
-                src={doticon}
-                width="21px"
-                height="21px"
-                // className={StatusID === 1 ? "cursor-pointer" : ""}
-                className={
-                  StatusID === 3 || StatusID === 1
-                    ? styles["dot_icon_styles"]
-                    : StatusID === 2
-                    ? styles["dot_icon_styles_InActive"]
-                    : styles["dot_icon_styles_InActive"]
-                }
-                onClick={() => setUniqCardID(CardID)}
-                alt=""
-                draggable="false"
-              />
+              </Tooltip>
             </Col>
             <Col lg={12} md={12} sm={12}>
               {editdropdown && parseInt(CardID) === parseInt(uniqCardID) ? (
