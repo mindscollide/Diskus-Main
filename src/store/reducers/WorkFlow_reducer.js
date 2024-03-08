@@ -51,7 +51,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
     case actions.SAVE_WORKFLOW_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: action.loading,
         saveWorkFlowResponse: action.response,
         ResponseMessage: action.message,
       };
@@ -96,7 +96,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
     case actions.ADD_UPDATE_FIELD_VALUE_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: action.loading,
         addUpdateFieldValue: action.response,
         ResponseMessage: action.message,
       };
@@ -206,7 +206,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
     case actions.ADD_ANNOTATION_FILE_SIGNATUREFLOW_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: action.loading,
         addAnnotationFilesAttachment: action.response,
         ResponseMessage: action.message,
       };

@@ -165,11 +165,12 @@ const saveWorkflow_init = () => {
   };
 };
 
-const saveWorkflow_success = (response, message) => {
+const saveWorkflow_success = (response, message, loading = false) => {
   return {
     type: actions.SAVE_WORKFLOW_SUCCESS,
     response: response,
     message: message,
+    loading: loading,
   };
 };
 
@@ -241,7 +242,8 @@ const saveWorkflowApi = (
                 dispatch(
                   saveWorkflow_success(
                     response.data.responseResult,
-                    t("Insert-successfully")
+                    t("Insert-successfully"),
+                    true
                   )
                 );
                 dispatch(
@@ -258,17 +260,19 @@ const saveWorkflowApi = (
                 dispatch(
                   saveWorkflow_success(
                     response.data.responseResult,
-                    t("Insert-successfully")
+                    t("Insert-successfully"),
+                    false
                   )
                 );
               }
 
-              dispatch(
-                saveWorkflow_success(
-                  response.data.responseResult,
-                  t("Insert-successfully")
-                )
-              );
+              // dispatch(
+              //   saveWorkflow_success(
+              //     response.data.responseResult,
+              //     t("Insert-successfully"),
+              //     false
+              //   )
+              // );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -297,7 +301,8 @@ const saveWorkflowApi = (
                 dispatch(
                   saveWorkflow_success(
                     response.data.responseResult,
-                    t("Insert-successfully")
+                    t("Insert-successfully"),
+                    true
                   )
                 );
               } else {
@@ -305,7 +310,8 @@ const saveWorkflowApi = (
                 dispatch(
                   saveWorkflow_success(
                     response.data.responseResult,
-                    t("Insert-successfully")
+                    t("Insert-successfully"),
+                    false
                   )
                 );
               }
@@ -449,11 +455,12 @@ const addUpdateFieldValue_init = () => {
   };
 };
 
-const addUpdateFieldValue_success = (response, message) => {
+const addUpdateFieldValue_success = (response, message, loading = false) => {
   return {
     type: actions.ADD_UPDATE_FIELD_VALUE_SUCCESS,
     response: response,
     message: message,
+    loading: loading,
   };
 };
 
@@ -518,7 +525,8 @@ const addUpdateFieldValueApi = (
               dispatch(
                 addUpdateFieldValue_success(
                   response.data.responseResult,
-                  t("Saved-successfully")
+                  t("Saved-successfully"),
+                  true
                 )
               );
             } else if (
@@ -779,11 +787,12 @@ const addAnnotationDataRoom_init = () => {
     type: actions.ADD_ANNOTATION_FILE_SIGNATUREFLOW_INIT,
   };
 };
-const addAnnotationDataRoom_success = (response, message) => {
+const addAnnotationDataRoom_success = (response, message, loading = false) => {
   return {
     type: actions.ADD_ANNOTATION_FILE_SIGNATUREFLOW_SUCCESS,
     response: response,
     message: message,
+    loading: loading,
   };
 };
 const addAnnotationDataRoom_fail = (message) => {
@@ -836,7 +845,8 @@ const addAnnoationSignatrueFlow = (
               dispatch(
                 addAnnotationDataRoom_success(
                   response.data.responseResult,
-                  t("Record-Inserted")
+                  t("Record-Inserted"),
+                  true
                 )
               );
             } else if (
@@ -849,8 +859,12 @@ const addAnnoationSignatrueFlow = (
               dispatch(
                 addAnnotationDataRoom_success(
                   response.data.responseResult,
-                  t("Record-updated")
+                  t("Record-updated"),
+                  true
                 )
+              );
+              dispatch(
+                saveSignatureDocumentApi(saveSignatureDocument, navigate, t)
               );
             } else if (
               response.data.responseResult.responseMessage

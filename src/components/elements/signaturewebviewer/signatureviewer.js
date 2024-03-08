@@ -1012,10 +1012,27 @@ const SignatureViewer = () => {
             }),
           };
           // for addupdatefieldValue api
-          let updateFieldValueData = {
-            ActorID: userAnnotationsRef.current[0].actorID,
-            xmlList: userAnnotationsRef.current[0].xml,
-          };
+          // const newData = userAnnotationsRef.current.map((item) => {
+          //   const updatedXmlList = item.xmlList.map((xmlItem) => {
+          //     return {
+          //       ...xmlItem,
+          //       ffield: JSON.stringify(xmlItem.ffield),
+          //       widget: JSON.stringify(xmlItem.widget),
+          //     };
+          //   });
+          //   return { ...item, xmlList: updatedXmlList };
+          // });
+          let convertData = [];
+
+          userAnnotationsRef.current.forEach((data) => {
+            const xmlListStrings = data.xml.map((xmlObj) =>
+              JSON.stringify(xmlObj)
+            );
+            convertData.push({
+              ActorID: data.actorID,
+              xmlList: xmlListStrings,
+            });
+          });
           // save signature document api
           let saveSignatureDocument = {
             FileID: Number(docWorkflowID),
@@ -1026,13 +1043,15 @@ const SignatureViewer = () => {
             FileID: Number(docWorkflowID),
             AnnotationString: xfdfString,
           };
-
+          let newData = { ActorsFieldValuesList: convertData };
           console.log(
             {
               getBase64,
               xfdfString,
               saveWorkFlowData,
-              updateFieldValueData,
+              convertData,
+              saveSignatureDocument,
+              addAnnoatationofFilesAttachment,
             },
             "handleClickSaveBtnhandleClickSaveBtn"
           );
@@ -1043,7 +1062,7 @@ const SignatureViewer = () => {
               t,
               setOpenAddParticipentModal,
               1,
-              updateFieldValueData,
+              newData,
               addAnnoatationofFilesAttachment,
               saveSignatureDocument
             )
@@ -1075,14 +1094,7 @@ const SignatureViewer = () => {
               };
             }),
           };
-          let updateFieldValueData = {
-            ActorID: userAnnotationsRef.current[0].actorID,
-            xmlList: userAnnotationsRef.current[0].xml,
-          };
-          console.log(
-            { saveWorkFlowData, updateFieldValueData },
-            "handleClickSaveBtnhandleClickSaveBtn"
-          );
+
           // dispatch(saveWorkflowApi(Data, navigate, t))
           // dispatch(addUpdateFieldValueApi(Data, navigate, t));
           // dispatch(addAnnoationSignatrueFlow(navigate,t , Data))
