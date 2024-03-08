@@ -246,6 +246,11 @@ const SubAgendaMappingDragging = ({
       {data.subAgenda.length > 0 &&
         data.subAgenda.map((subAgendaData, subIndex) => {
           const isLastIndex = subIndex === data.subAgenda.length - 1;
+          const hasNextViewFalse =
+            subIndex < data.subAgenda.length - 1 &&
+            subAgendaData.canView === false &&
+            data.subAgenda[subIndex + 1].canView === true;
+          console.log("hasNextViewFalse", hasNextViewFalse);
           return (
             <>
               <div
@@ -413,205 +418,122 @@ const SubAgendaMappingDragging = ({
                                             ></Col>
                                           </Row>
                                           <>
-                                            {subAgendaData.subSelectRadio ===
-                                              1 &&
-                                            Object.keys(subAgendaData.subfiles)
-                                              .length > 0 ? (
-                                              <div
-                                                className={
-                                                  styles[
-                                                    "filesParentClassSubAgenda"
-                                                  ]
-                                                }
-                                              >
-                                                {subAgendaData.subfiles
-                                                  .slice(0, 3)
-                                                  .map(
-                                                    (filesData, fileIndex) => (
-                                                      <div
-                                                        key={fileIndex}
-                                                        className={
-                                                          styles[
-                                                            "agendaFileAttachedView"
-                                                          ]
-                                                        }
-                                                      >
-                                                        <Row className="m-0 text-center h-100 align-items-center">
-                                                          <Col
-                                                            lg={10}
-                                                            md={10}
-                                                            sm={12}
-                                                            className={`${styles["borderFileName"]} p-0`}
-                                                          >
-                                                            <div
-                                                              className={
-                                                                styles[
-                                                                  "fileNameTruncateStyle"
-                                                                ]
-                                                              }
-                                                            >
-                                                              <img
-                                                                draggable={
-                                                                  false
-                                                                }
-                                                                src={getIconSource(
-                                                                  getFileExtension(
-                                                                    filesData?.displayAttachmentName
-                                                                  )
-                                                                )}
-                                                                alt=""
-                                                              />
-                                                              <span
-                                                                onClick={() =>
-                                                                  downloadDocument(
-                                                                    filesData
-                                                                  )
-                                                                }
-                                                                className={
-                                                                  styles[
-                                                                    "fileNameAttachment"
-                                                                  ]
-                                                                }
-                                                              >
-                                                                {
-                                                                  filesData?.displayAttachmentName
-                                                                }
-                                                              </span>
-                                                            </div>
-                                                          </Col>
-                                                          <Col
-                                                            lg={2}
-                                                            md={2}
-                                                            sm={12}
-                                                            className="p-0"
-                                                          >
-                                                            <img
-                                                              draggable={false}
-                                                              src={DownloadIcon}
-                                                              alt=""
-                                                            />
-                                                          </Col>
-                                                        </Row>
-                                                      </div>
-                                                    )
-                                                  )}
-                                                {subAgendaData.subfiles.length >
-                                                  3 && (
-                                                  <Button
-                                                    text={t("More")}
-                                                    className={
-                                                      styles["Show_More_Button"]
-                                                    }
-                                                    onClick={() =>
-                                                      showMoreFiles(
-                                                        subAgendaData.subfiles,
-                                                        subAgendaData.subTitle,
-                                                        index,
-                                                        subIndex
-                                                      )
-                                                    }
-                                                  />
-                                                )}
-                                              </div>
-                                            ) : data.selectedRadio === 1 &&
-                                              Object.keys(
-                                                subAgendaData.subfiles
-                                              ).length === 0 ? null : // <span
-                                            //   className={
-                                            //     styles["NoFiles_Heading"]
-                                            //   }
-                                            // >
-                                            //   No Files Attached
-                                            // </span>
-                                            null}
-                                            {/* {subAgendaData.subSelectRadio ===
-                                              1 &&
-                                            Object.keys(subAgendaData.subfiles)
-                                              .length > 0 ? (
-                                              <>
-                                                <div
-                                                  className={
-                                                    styles[
-                                                      "filesSubParentClass"
-                                                    ]
-                                                  }
-                                                >
-                                                  {subAgendaData.subfiles.map(
-                                                    (filesData, fileIndex) => (
-                                                      <div
-                                                        key={fileIndex}
-                                                        className={
-                                                          styles[
-                                                            "agendaFileAttachedView"
-                                                          ]
-                                                        }
-                                                      >
-                                                        <Row className="m-0 text-center h-100 align-items-center">
-                                                          <Col
-                                                            lg={10}
-                                                            md={10}
-                                                            sm={12}
-                                                            className={`${styles["borderFileName"]} p-0`}
-                                                          >
-                                                            <div
-                                                              className={
-                                                                styles[
-                                                                  "fileNameTruncateStyle"
-                                                                ]
-                                                              }
-                                                            >
-                                                              <img
-                                                                draggable={
-                                                                  false
-                                                                }
-                                                                src={getIconSource(
-                                                                  getFileExtension(
-                                                                    filesData?.displayAttachmentName
-                                                                  )
-                                                                )}
-                                                                alt=""
-                                                              />
-                                                              <span
-                                                                onClick={() =>
-                                                                  downloadDocument(
-                                                                    filesData
-                                                                  )
-                                                                }
-                                                                className={
-                                                                  styles[
-                                                                    "fileNameAttachment"
-                                                                  ]
-                                                                }
-                                                              >
-                                                                {
-                                                                  filesData?.displayAttachmentName
-                                                                }
-                                                              </span>
-                                                            </div>
-                                                          </Col>
-                                                          <Col
-                                                            lg={2}
-                                                            md={2}
-                                                            sm={12}
-                                                            className="p-0"
-                                                          >
-                                                            <img
-                                                              draggable={false}
-                                                              src={DownloadIcon}
-                                                              alt=""
-                                                            />
-                                                          </Col>
-                                                        </Row>
-                                                      </div>
-                                                    )
-                                                  )}
-                                                </div>
-                                              </>
-                                            ) : subAgendaData.subSelectRadio ===
+                                            {
+                                              subAgendaData.subSelectRadio ===
                                                 1 &&
                                               Object.keys(
                                                 subAgendaData.subfiles
-                                              ).length === 0 ? null : null} */}
+                                              ).length > 0 ? (
+                                                <div
+                                                  className={
+                                                    styles[
+                                                      "filesParentClassSubAgenda"
+                                                    ]
+                                                  }
+                                                >
+                                                  {subAgendaData.subfiles
+                                                    .slice(0, 3)
+                                                    .map(
+                                                      (
+                                                        filesData,
+                                                        fileIndex
+                                                      ) => (
+                                                        <div
+                                                          key={fileIndex}
+                                                          className={
+                                                            styles[
+                                                              "agendaFileAttachedView"
+                                                            ]
+                                                          }
+                                                        >
+                                                          <Row className="m-0 text-center h-100 align-items-center">
+                                                            <Col
+                                                              lg={10}
+                                                              md={10}
+                                                              sm={12}
+                                                              className={`${styles["borderFileName"]} p-0`}
+                                                            >
+                                                              <div
+                                                                className={
+                                                                  styles[
+                                                                    "fileNameTruncateStyle"
+                                                                  ]
+                                                                }
+                                                              >
+                                                                <img
+                                                                  draggable={
+                                                                    false
+                                                                  }
+                                                                  src={getIconSource(
+                                                                    getFileExtension(
+                                                                      filesData?.displayAttachmentName
+                                                                    )
+                                                                  )}
+                                                                  alt=""
+                                                                />
+                                                                <span
+                                                                  onClick={() =>
+                                                                    downloadDocument(
+                                                                      filesData
+                                                                    )
+                                                                  }
+                                                                  className={
+                                                                    styles[
+                                                                      "fileNameAttachment"
+                                                                    ]
+                                                                  }
+                                                                >
+                                                                  {
+                                                                    filesData?.displayAttachmentName
+                                                                  }
+                                                                </span>
+                                                              </div>
+                                                            </Col>
+                                                            <Col
+                                                              lg={2}
+                                                              md={2}
+                                                              sm={12}
+                                                              className="p-0"
+                                                            >
+                                                              <img
+                                                                draggable={
+                                                                  false
+                                                                }
+                                                                src={
+                                                                  DownloadIcon
+                                                                }
+                                                                alt=""
+                                                              />
+                                                            </Col>
+                                                          </Row>
+                                                        </div>
+                                                      )
+                                                    )}
+                                                  {subAgendaData.subfiles
+                                                    .length > 3 && (
+                                                    <Button
+                                                      text={t("More")}
+                                                      className={
+                                                        styles[
+                                                          "Show_More_Button"
+                                                        ]
+                                                      }
+                                                      onClick={() =>
+                                                        showMoreFiles(
+                                                          subAgendaData.subfiles,
+                                                          subAgendaData.subTitle,
+                                                          index,
+                                                          subIndex
+                                                        )
+                                                      }
+                                                    />
+                                                  )}
+                                                </div>
+                                              ) : data.selectedRadio === 1 &&
+                                                Object.keys(
+                                                  subAgendaData.subfiles
+                                                ).length === 0 ? null : null // <span
+                                            }
 
                                             {subAgendaData.subSelectRadio ===
                                               2 && (
@@ -649,16 +571,24 @@ const SubAgendaMappingDragging = ({
                                   >
                                     {/* <span className="separatorSubAgendaWidth"></span>
                                     <span className="separatorSubAgendaHeight"></span> */}
-                                    <span
-                                      className={`separatorSubAgendaWidth ${
-                                        isLastIndex ? "last-width-class" : ""
-                                      }`}
-                                    ></span>
-                                    <span
-                                      className={`separatorSubAgendaHeight ${
-                                        isLastIndex ? "last-height-class" : ""
-                                      }`}
-                                    ></span>
+                                    {hasNextViewFalse ? null : (
+                                      <React.Fragment>
+                                        <span
+                                          className={`separatorSubAgendaWidth ${
+                                            isLastIndex
+                                              ? "last-width-class"
+                                              : ""
+                                          }`}
+                                        ></span>
+                                        <span
+                                          className={`separatorSubAgendaHeight ${
+                                            isLastIndex
+                                              ? "last-height-class"
+                                              : ""
+                                          }`}
+                                        ></span>
+                                      </React.Fragment>
+                                    )}
                                   </Col>
                                 </Row>
                               </Col>
