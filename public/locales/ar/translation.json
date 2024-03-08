@@ -1738,5 +1738,20 @@
   "Skip": "Skip",
   "Manage-user": "Manage User",
   "Maximum-20-users-can-be-created-in-trial-version": "Maximum 20 users can be created in Trial version",
-  "Are-you-sure-you-want-to-delete-this-user": "Are you sure you want to delete this user?"
+  "Are-you-sure-you-want-to-delete-this-user": "Are you sure you want to delete this user?",
+  "Shortcuts": "Shortcuts",
+  "FAQs": "FAQs",
+  "Add-a-note": "Add a Note",
+  "Video-call": "Video Call",
+  "Search-filters": "Search filters",
+  "List-view": "List View",
+  "Grid-view": "Grid View",
+  "Enable-video-call": "Enable video call",
+  "Permission-settings": "Permission Settings",
+  "Agenda-locked": "Agenda Locked",
+  "Agenda-unlocked": "Agenda unlocked",
+  "Add-vote": "Add Vote",
+  "Starred": "Starred",
+  "Unstarred": "Unstarred",
+  "Response-awaited": "Response Awaited"
 }

@@ -23,6 +23,7 @@ import {
   setProposedMeetingDateApiFunc,
   GetAllMeetingDetailsApiFunc,
   cleareAllProposedMeetingDates,
+  searchNewUserMeeting,
 } from "../../../../../../store/actions/NewMeetingActions";
 import {
   convertDateTimetoGMTMeetingDetail,
@@ -531,6 +532,7 @@ const ProposedMeetingDate = ({
 
   const CancelModal = () => {
     setProposedMeetingDates(false);
+
     // setParticipants(true);
     // setParticipants(true);
 
