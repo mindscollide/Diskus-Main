@@ -1719,7 +1719,19 @@ i.icon-add-square.uploadfile {
   background: none !important;
 }
 
+.ant-table-wrapper.Billing_TablePakageSelection
+  .ant-table
+  .ant-table-container
+  .ant-table-content
+  thead.ant-table-thead {
+  background: none !important;
+}
+
 .ant-table-wrapper.ToDo .ant-table {
+  background: none !important;
+}
+
+.ant-table-wrapper.Billing_TablePakageSelection .ant-table {
   background: none !important;
 }
 
@@ -2801,6 +2813,13 @@ input#Participant::placeholder {
 
 .ToDo .ant-table table {
   border-spacing: 0 10px !important;
+  border-radius: 50px !important;
+  table-layout: inherit !important;
+  margin-top: -19px !important;
+}
+
+.Billing_TablePakageSelection .ant-table table {
+  border-spacing: 0 30px !important;
   border-radius: 50px !important;
   table-layout: inherit !important;
   margin-top: -19px !important;
@@ -4194,19 +4213,12 @@ span.ant-notification-notice-icon img {
   line-height: 1.2;
 }
 
-/* .ant-table-wrapper.ToDo {
-  overflow: hidden;
-  padding-right: 10px;
-  max-height: 82vh !important;
-} */
-
-/* .ant-table-wrapper.Resolution_table {
-  overflow: auto;
-  padding-right: 10px;
-  height: 500px;
-} */
-
 body[dir="rtl"] .ant-table-wrapper.ToDo {
+  padding-left: 10px;
+  padding-right: 0px;
+}
+
+body[dir="rtl"] .ant-table-wrapper.Billing_TablePakageSelection {
   padding-left: 10px;
   padding-right: 0px;
 }
@@ -4218,6 +4230,18 @@ body[dir="rtl"] .ant-table-wrapper.ToDo {
 }
 
 .ToDo::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.Billing_TablePakageSelection::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2 !important;
+}
+
+.Billing_TablePakageSelection::-webkit-scrollbar-thumb {
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px;
@@ -5296,6 +5320,13 @@ body[dir="rtl"]
 }
 
 .ant-table-wrapper.ToDo.ant-table .ant-table-thead > tr > th {
+  padding: 2px 16px !important;
+}
+
+.ant-table-wrapper.Billing_TablePakageSelection.ant-table
+  .ant-table-thead
+  > tr
+  > th {
   padding: 2px 16px !important;
 }
 
@@ -6590,6 +6621,7 @@ th.ant-table-cell.notification-class-table {
 }
 
 .pakageselectionSpanUsermanagement {
+  line-height: 15px !important;
   font-size: 16px !important;
   font-family: "MontserratExtraBold-800" !important;
 }

@@ -284,19 +284,13 @@ const PakageDetailsUserManagement = () => {
 
   const defaultRowWithButtons = {
     Monthlycharges: (
-      <span>
-        <Button text={"Pay-now"} className={styles["PayNowButtons"]} />
-      </span>
+      <Button text={t("Pay-now")} className={styles["PayNowButtons"]} />
     ),
     Quarterlycharges: (
-      <span>
-        <Button text={"Pay-now"} className={styles["PayNowButtons"]} />
-      </span>
+      <Button text={t("Pay-now")} className={styles["PayNowButtons"]} />
     ),
     Yearlycharges: (
-      <span>
-        <Button text={"Pay-now"} className={styles["PayNowButtons"]} />
-      </span>
+      <Button text={t("Pay-now")} className={styles["PayNowButtons"]} />
     ),
   };
 
@@ -446,7 +440,7 @@ const PakageDetailsUserManagement = () => {
         <Col lg={12} md={12} sm={12}>
           <TableToDo
             column={ColumnsPakageSelection}
-            className={"Billing_document"}
+            className={"Billing_TablePakageSelection"}
             rows={[...Data, defaultRow, defaultRowWithButtons]}
             pagination={false}
           />
