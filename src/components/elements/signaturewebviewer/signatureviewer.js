@@ -312,7 +312,7 @@ const SignatureViewer = () => {
 
         const extractXML = (ID) => {
           const xmlData = userAnnotations.find(
-            (userAnnotData) => Number(userAnnotData.userID) === Number(ID)
+            (userAnnotData) => Number(userAnnotData?.userID) === Number(ID)
           );
 
           if (xmlData) {
@@ -326,17 +326,17 @@ const SignatureViewer = () => {
           users.actors.forEach((usersData, index) => {
             listOfUsers.push({
               name: usersData.name,
-              pk_UID: usersData.pK_UID,
+              pk_UID: usersData?.pK_UID,
             });
             signersData.push({
               Name: usersData.name,
               EmailAddress: usersData.emailAddress,
-              userID: usersData.pK_UID,
+              userID: usersData?.pK_UID,
             });
             selectedUserList.push({
-              xml: extractXML(usersData.pK_UID),
-              userID: usersData.pK_UID,
-              actorID: usersData.fK_WorkFlowActor_ID,
+              xml: extractXML(usersData?.pK_UID),
+              userID: usersData?.pK_UID,
+              actorID: usersData?.fK_WorkFlowActor_ID,
             });
           });
         });
@@ -345,7 +345,7 @@ const SignatureViewer = () => {
 
         let deletedData = getRemovedData(userAnnotations, selectedUserList);
         setTeletedDataTem(deletedData);
-        setSelectedUser(listOfUsers[0].pk_UID);
+        setSelectedUser(listOfUsers[0]?.pk_UID);
         setUserAnnotations(selectedUserList);
       } else {
       }
@@ -1567,7 +1567,7 @@ const SignatureViewer = () => {
                 </Col>
                 <Col lg={12} md={12} xs={12} sm={12}>
                   <Row>
-                    <Col sm={12} md={6} lg={6}>
+                    <Col sm={6} md={6} lg={6}>
                       <p className="pb-1 m-0 inputlabel_style">{"Full Name"}</p>
                       <Select
                         placeholder="Full Name"
@@ -1579,7 +1579,7 @@ const SignatureViewer = () => {
                         }
                       />
                     </Col>
-                    <Col sm={12} md={6} lg={6}>
+                    <Col sm={6} md={6} lg={6}>
                       <TextField
                         width={"100%"}
                         name={"EmailAddress"}
@@ -1601,9 +1601,9 @@ const SignatureViewer = () => {
                           signerData.map((fieldsData, index) => {
                             return (
                               <>
-                                <Col sm={12} md={11} lg={11} className="my-1">
+                                <Col sm={11} md={11} lg={11} className="my-1">
                                   <Row>
-                                    <Col sm={12} md={6} lg={6}>
+                                    <Col sm={6} md={6} lg={6}>
                                       <TextField
                                         placeholder={t("Full-name")}
                                         labelClass={"inputlabel_style"}
@@ -1616,7 +1616,7 @@ const SignatureViewer = () => {
                                         label={"Name"}
                                       />
                                     </Col>
-                                    <Col sm={12} md={6} lg={6}>
+                                    <Col sm={6} md={6} lg={6}>
                                       <TextField
                                         width={"100%"}
                                         name={"EmailAddress"}
@@ -1632,7 +1632,7 @@ const SignatureViewer = () => {
                                   </Row>
                                 </Col>
                                 <Col
-                                  sm={12}
+                                  sm={1}
                                   md={1}
                                   lg={1}
                                   className="my-1 d-flex align-items-end mb-3"
