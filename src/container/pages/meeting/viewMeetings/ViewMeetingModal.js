@@ -21,7 +21,7 @@ import {
 } from "../../../../store/actions/NewMeetingActions";
 import Participants from "./Participants/Participants";
 import Agenda from "./Agenda/Agenda";
-import MeetingMaterial from "./MeetingMaterial/MeetingMaterial";
+import AgendaViewer from "./AgendaViewer/AgendaViewer";
 import Minutes from "./Minutes/Minutes";
 import Actions from "./Actions/Actions";
 import Polls from "./Polls/Polls";
@@ -496,7 +496,7 @@ const ViewMeetingModal = ({
                 />
               )}
               {meetingMaterial && (
-                <MeetingMaterial
+                <AgendaViewer
                   setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                   advanceMeetingModalID={advanceMeetingModalID}
                   setAdvanceMeetingModalID={setAdvanceMeetingModalID}

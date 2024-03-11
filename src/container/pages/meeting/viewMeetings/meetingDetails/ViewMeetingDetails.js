@@ -291,6 +291,7 @@ const ViewMeetingDetails = ({
       ) {
         let MeetingData =
           NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails;
+        localStorage.setItem("meetingTitle", MeetingData.meetingTitle);
         let getmeetingDates = MeetingData.meetingDates;
         let getmeetingRecurrance = MeetingData.meetingRecurrance;
         let getmeetingReminders = MeetingData.meetingReminders;
@@ -448,7 +449,8 @@ const ViewMeetingDetails = ({
           navigate,
           t,
           currentUserID,
-          currentOrganization
+          currentOrganization,
+          0
         )
       );
       localStorage.setItem("meetingTitle", meetingDetails.MeetingTitle);
@@ -464,7 +466,10 @@ const ViewMeetingDetails = ({
       NewMeetingreducer.CurrentMeetingURL !== null &&
       NewMeetingreducer.CurrentMeetingURL !== ""
     ) {
-      console.log("NewMeetingreducer.CurrentMeetingURL", NewMeetingreducer.CurrentMeetingURL)
+      console.log(
+        "NewMeetingreducer.CurrentMeetingURL",
+        NewMeetingreducer.CurrentMeetingURL
+      );
       copyToClipboard(NewMeetingreducer.CurrentMeetingURL);
       setOpen({
         ...open,
