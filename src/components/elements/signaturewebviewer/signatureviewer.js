@@ -100,8 +100,10 @@ const SignatureViewer = () => {
     creatorID: "",
     isCreator: 0,
   });
+  console.log(pdfResponceData, "pdfResponceDatapdfResponceDatapdfResponceData");
   // { userID: "user1", xml: [] }
   const [userAnnotations, setUserAnnotations] = useState([]);
+  console.log(userAnnotations, "userAnnotationsuserAnnotationsuserAnnotations");
   const [deletedDataTem, setTeletedDataTem] = useState([]);
   const selectedUserRef = useRef(selectedUser);
   const signerDataRef = useRef(signerData);
@@ -164,7 +166,7 @@ const SignatureViewer = () => {
             getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails.listOfFields.map(
               (item) => {
                 return {
-                  xml: JSON.parse(item.xmlField),
+                  xml: [JSON.parse(item.xmlField)],
                   actorID: item.actorID,
                   userID: item.userID,
                   actorColor: item.actorColor,
@@ -251,7 +253,7 @@ const SignatureViewer = () => {
     if (getDataroomAnnotation !== null && getDataroomAnnotation !== undefined) {
       setPdfResponceData((prevData) => ({
         ...prevData,
-        xfdfData: "",
+        xfdfData: getDataroomAnnotation.annotationString,
         attachmentBlob: getDataroomAnnotation.attachmentBlob,
         removedAnnotations: "",
       }));
