@@ -690,6 +690,23 @@ const NewMeeting = () => {
       },
     },
     {
+      title: t("Meeting-type"),
+      dataIndex: "meetingTypeID",
+      key: "meetingTypeID",
+      width: "115px",
+      render: (text, record) => {
+        // if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
+        //   return (
+        //     <span>
+        //       {newTimeFormaterAsPerUTCFullDate(
+        //         record.dateOfMeeting + record.meetingStartTime
+        //       )}
+        //     </span>
+        //   );
+        // }
+      },
+    },
+    {
       dataIndex: "Chat",
       key: "Chat",
       width: "36px",
