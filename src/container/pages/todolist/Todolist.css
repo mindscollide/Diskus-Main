@@ -81,9 +81,6 @@ body[dir="rtl"] .todolist-create-btn button {
   overflow-y: auto;
 }
 
-/* .ToDo .ant-table table {
-  margin-bottom: 10px !important;
-} */
 
 .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell {
   padding: 3px 3px !important;

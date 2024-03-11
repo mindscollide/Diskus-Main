@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Spin } from "antd";
+import { Spin, Tooltip } from "antd";
 import { Container, Row, Col } from "react-bootstrap";
 import TodoMessageIcon1 from "../../../assets/images/DashboardNewTodo.svg";
 import noTask from "../../../assets/images/DashBoardTask.svg";
@@ -1792,31 +1792,41 @@ const Home = () => {
                                   >
                                     <span className="d-flex gap-2">
                                       {data.isStarred ? (
-                                        <img
-                                          src={hollowstar}
-                                          width="17.26px"
-                                          height="16.62px"
-                                          alt=""
-                                          draggable="false"
-                                          className={
-                                            styles[
-                                              "starIcon-In-Collapse-material"
-                                            ]
-                                          }
-                                        />
+                                        <Tooltip
+                                          placement="bottomLeft"
+                                          title={t("Starred")}
+                                        >
+                                          <img
+                                            src={hollowstar}
+                                            width="17.26px"
+                                            height="16.62px"
+                                            alt=""
+                                            draggable="false"
+                                            className={
+                                              styles[
+                                                "starIcon-In-Collapse-material"
+                                              ]
+                                            }
+                                          />
+                                        </Tooltip>
                                       ) : (
-                                        <img
-                                          src={StarIcon}
-                                          width="17.34px"
-                                          height="16.62px"
-                                          alt=""
-                                          draggable="false"
-                                          className={
-                                            styles[
-                                              "starIcon-In-Collapse-material"
-                                            ]
-                                          }
-                                        />
+                                        <Tooltip
+                                          placement="bottomLeft"
+                                          title={t("Unstarred")}
+                                        >
+                                          <img
+                                            src={StarIcon}
+                                            width="17.34px"
+                                            height="16.62px"
+                                            alt=""
+                                            draggable="false"
+                                            className={
+                                              styles[
+                                                "starIcon-In-Collapse-material"
+                                              ]
+                                            }
+                                          />
+                                        </Tooltip>
                                       )}
                                       {/* <Star /> */}
                                       {data.isAttachment && (

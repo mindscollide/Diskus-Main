@@ -55,6 +55,7 @@ import {
 import { UpdateOrganizersMeeting } from "../../../../../../store/actions/MeetingOrganizers_action";
 import moment from "moment";
 import { truncateString } from "../../../../../../commen/functions/regex";
+import { Tooltip } from "antd";
 
 const UnpublishedProposedMeeting = ({
   setViewProposeDatePoll,
@@ -431,41 +432,7 @@ const UnpublishedProposedMeeting = ({
                 className="d-flex  align-items-center justify-content-center gap-4"
               >
                 {isAgendaContributor ? (
-                  <img
-                    src={EditIcon}
-                    className="cursor-pointer"
-                    width="17.03px"
-                    height="17.03px"
-                    alt=""
-                    draggable="false"
-                    onClick={() => {
-                      handleEditMeeting(
-                        record.pK_MDID,
-                        record.isQuickMeeting,
-                        isAgendaContributor,
-                        record
-                      );
-                      setEdiorRole({
-                        status: record.status,
-                        role: "Agenda Contributor",
-                      });
-                      setEditMeeting(true);
-                      dispatch(meetingDetailsGlobalFlag(true));
-                      dispatch(organizersGlobalFlag(false));
-                      dispatch(agendaContributorsGlobalFlag(false));
-                      dispatch(participantsGlobalFlag(false));
-                      dispatch(agendaGlobalFlag(false));
-                      dispatch(meetingMaterialGlobalFlag(false));
-                      dispatch(minutesGlobalFlag(false));
-                      dispatch(proposedMeetingDatesGlobalFlag(false));
-                      dispatch(actionsGlobalFlag(false));
-                      dispatch(pollsGlobalFlag(false));
-                      dispatch(attendanceGlobalFlag(false));
-                      dispatch(uploadGlobalFlag(false));
-                    }}
-                  />
-                ) : isOrganiser ? (
-                  <>
+                  <Tooltip placement="bottomLeft" title={t("Edit")}>
                     <img
                       src={EditIcon}
                       className="cursor-pointer"
@@ -480,10 +447,9 @@ const UnpublishedProposedMeeting = ({
                           isAgendaContributor,
                           record
                         );
-
                         setEdiorRole({
                           status: record.status,
-                          role: "Organizer",
+                          role: "Agenda Contributor",
                         });
                         setEditMeeting(true);
                         dispatch(meetingDetailsGlobalFlag(true));
@@ -500,6 +466,45 @@ const UnpublishedProposedMeeting = ({
                         dispatch(uploadGlobalFlag(false));
                       }}
                     />
+                  </Tooltip>
+                ) : isOrganiser ? (
+                  <>
+                    <Tooltip placement="bottomLeft" title={t("Edit")}>
+                      <img
+                        src={EditIcon}
+                        className="cursor-pointer"
+                        width="17.03px"
+                        height="17.03px"
+                        alt=""
+                        draggable="false"
+                        onClick={() => {
+                          handleEditMeeting(
+                            record.pK_MDID,
+                            record.isQuickMeeting,
+                            isAgendaContributor,
+                            record
+                          );
+
+                          setEdiorRole({
+                            status: record.status,
+                            role: "Organizer",
+                          });
+                          setEditMeeting(true);
+                          dispatch(meetingDetailsGlobalFlag(true));
+                          dispatch(organizersGlobalFlag(false));
+                          dispatch(agendaContributorsGlobalFlag(false));
+                          dispatch(participantsGlobalFlag(false));
+                          dispatch(agendaGlobalFlag(false));
+                          dispatch(meetingMaterialGlobalFlag(false));
+                          dispatch(minutesGlobalFlag(false));
+                          dispatch(proposedMeetingDatesGlobalFlag(false));
+                          dispatch(actionsGlobalFlag(false));
+                          dispatch(pollsGlobalFlag(false));
+                          dispatch(attendanceGlobalFlag(false));
+                          dispatch(uploadGlobalFlag(false));
+                        }}
+                      />
+                    </Tooltip>
                   </>
                 ) : null}
               </Col>
