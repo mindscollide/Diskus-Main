@@ -23,13 +23,26 @@
 }
 
 .packageselection_heading {
-  color: #6172d6;
+  color: #5a5a5a !important;
   text-align: center;
-  font-size: calc(30px - 20%) !important;
+  font-family: "MontserratBold-700" !important;
+  font-size: 30px !important;
 }
 
 body[dir="rtl"] .packageselection_heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
+
+.PerUserheading {
+  color: #6172d6 !important;
+  text-align: center;
+  font-family: "MontserratBold-700" !important;
+  font-size: 20px !important;
+  margin-top: -10px !important;
+}
+
+body[dir="rtl"] .PerUserheading {
+  font-family: "IBMPlexSansArabic-Bold" !important;
 }
 
 .goBackPackageSelectionBtn {
@@ -47,27 +60,6 @@ body[dir="rtl"] .goBackPackageSelectionBtn {
   text-decoration: underline !important;
 }
 
-.packageselection_bar {
-  padding: 5px 0px;
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: calc(21px - 20%) !important;
-  color: #fff;
-  font-family: "MontserratBold";
-  font-weight: 900;
-  border-radius: 4px;
-  border: 1px solid #e1e1e1;
-  text-transform: uppercase;
-  background: linear-gradient(to left, #4adede 0%, #6172d6 100%);
-}
-
-body[dir="rtl"] .packageselection_bar {
-  background: linear-gradient(to right, #4adede 0%, #6172d6 100%);
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
-}
-
 .crossicon {
   color: #707070 !important;
 }
@@ -78,8 +70,6 @@ body[dir="rtl"] .packageselection_bar {
   background-color: #fff !important;
   padding: 30px 15px;
   position: relative;
-  /* box-shadow   : 1px 2px 5px #ccc; */
-  /* border       : 1px solid transparent !important; */
 }
 
 .packageRibbon {
@@ -106,7 +96,7 @@ body[dir="rtl"] .packageRibbon svg path {
 
 .packagecard_pricebox {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
-  padding: 14px 0px;
+  padding: 10px 12px;
   border-radius: 4px;
 }
 
@@ -180,73 +170,10 @@ body[dir="rtl"] .selectedPackage_priceDetails {
   font-weight: 900;
 }
 
-.packagecard_two {
-  box-shadow: 0px 0px 12px -2px rgba(0, 0, 0, 0.46);
-  visibility: visible;
-  /* margin    : 10px 0 30px 0; */
-  border-radius: 4px;
-  /* width     : 155px; */
-  /* margin    : 20px auto 10px auto; */
-  max-height: 200px;
-  padding: 5px 0;
-}
-
-.packagecard_two h4 {
-  color: #076db7;
-  font-weight: 900;
-}
-
-.packagecard_two_visible {
-  box-shadow: 0px 0px 12px -2px rgba(0, 0, 0, 0.46);
-  visibility: hidden;
-  /* margin    : 10px 0 30px 0; */
-  /* padding   : 5px 5px !important; */
-  border-radius: 4px;
-  /* width     : 155px; */
-  /* margin    : 20px auto 10px auto; */
-  max-height: 200px;
-  padding: 5px 0;
-}
-
-.packagecard_disoucntprice_para {
-  text-align: center;
-  margin: 0 !important;
-  padding: 0 !important;
-  font-size: 13px !important;
-  font-family: "MontserratMedium";
-}
-
-body[dir="rtl"] .packagecard_disoucntprice_para {
-  font-family: "IBMPlexSansArabic-Medium" !important;
-}
-
 .selectedpackagecard_disoucntprice_para {
   text-align: center;
   margin: 0 !important;
   font-size: 30px !important;
-}
-
-.packagecard_usersallows {
-  width: 100%;
-  margin: 10px auto;
-  /* width  : 100%; */
-  padding: 0 12px;
-  text-align: center;
-}
-
-.packagecard_usersallows + p {
-  font-size: 12px;
-}
-
-.packagecard_usersallows_heading {
-  text-transform: uppercase;
-  color: #5a5a5a;
-  font-family: "MontserratBold";
-  font-size: calc(20px - 20%);
-}
-
-body[dir="rtl"] .packagecard_usersallows_heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .packagecard_usersallows_members {
@@ -307,34 +234,6 @@ body[dir="rtl"] .packagecard_btn {
   visibility: hidden;
 }
 
-.selected-package-text {
-  padding: 0 15px;
-  text-align: center;
-  margin: 20px 0;
-  height: 80px !important;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-wrap: break-word;
-}
-
-body[dir="rtl"] .selected-package-text {
-  font-family: "IBMPlexSansArabic-Medium" !important;
-}
-
-.selected-package-texts {
-  padding: 0 15px;
-  /* text-align: center; */
-  margin: 20px 0;
-  height: 80px !important;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-wrap: break-word;
-}
-
-body[dir="rtl"] .selected-package-texts {
-  font-family: "IBMPlexSansArabic-Medium" !important;
-}
-
 .ExecutiveMembersRange {
   width: 100%;
   margin: 0;
@@ -346,42 +245,6 @@ body[dir="rtl"] .selected-package-texts {
 
 .crossicon {
   color: #707070 !important;
-}
-
-.package_membersHeading {
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
-  color: #fff;
-  font-family: "MontserratMedium";
-  padding: 5px 0;
-  /* border-radius: 3px; */
-  font-size: calc(12px - 20%);
-  /* border       : 1px solid #ccc; */
-  text-transform: uppercase;
-}
-
-body[dir="rtl"] .package_membersHeading {
-  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
-  font-family: "IBMPlexSansArabic-Medium" !important;
-}
-
-.package_membersHeading {
-  border-top-right-radius: 3px;
-  border-top-left-radius: 3px;
-}
-
-.package_membersHeading_values {
-  color: #171d2d;
-  font-family: "MontserratBold";
-  padding: 5px 0;
-  border: 1px solid #ccc;
-  border-top-left-radius: 0px !important;
-  border-end-start-radius: 3px;
-  border-end-end-radius: 3px;
-  font-size: calc(20px - 20%) !important;
-}
-
-body[dir="rtl"] .package_membersHeading_values {
-  font-family: "IBMPlexSansArabic-Bold" !important;
 }
 
 .spandefault {
@@ -404,41 +267,12 @@ body[dir="rtl"] .spandefault {
   height: 100%;
   font-family: "MontserratBold";
   color: #fff !important;
-  font-size: 40px;
+  font-size: 60px;
   margin-bottom: 0;
 }
 
 body[dir="rtl"] .package_actualPrice {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
-}
-
-.package_actualPrice_active {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  font-family: "MontserratBold";
-  color: #fff !important;
-  font-size: 40px;
-  margin-bottom: 0;
-  text-decoration: line-through;
-  opacity: 0.7;
-}
-
-body[dir="rtl"] .package_actualPrice_active {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
-}
-
-.package_AnuallyAmount {
-  color: #6172d6 !important;
-  font-size: 22px !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  font-family: "MontserratBold";
-}
-
-body[dir="rtl"] .package_AnuallyAmount {
-  font-family: "IBMPlexSansArabic-Bold" !important;
 }
 
 .fixboxwidth {
@@ -447,9 +281,16 @@ body[dir="rtl"] .package_AnuallyAmount {
 }
 
 .package_title {
-  color: #5a5a5a !important;
+  color: #6172d6 !important;
   text-align: center;
+  font-size: 30px !important;
+  display: flex !important;
+  justify-content: center !important;
   font-family: "MontserratBold";
+}
+
+body[dir="rtl"] .package_title {
+  font-family: "IBMPlexSansArabic-Bold" !important;
 }
 
 .package_actualPrice_p {
@@ -460,18 +301,6 @@ body[dir="rtl"] .package_AnuallyAmount {
 
 body[dir="rtl"] .package_actualPrice_p {
   margin-right: 5px;
-  font-family: "IBMPlexSansArabic-Medium" !important;
-}
-
-.packageAnuallyMonth {
-  margin: 0;
-  padding: 0;
-  text-transform: lowercase;
-  font-size: 12px;
-  color: #6172d6;
-}
-
-body[dir="rtl"] .packageAnuallyMonth {
   font-family: "IBMPlexSansArabic-Medium" !important;
 }
 
@@ -577,49 +406,6 @@ body[dir="rtl"] .span-foranually {
   font-family: "IBMPlexSansArabic-Medium" !important;
 }
 
-.span-formontly {
-  width: 100%;
-  background-color: none;
-  text-align: center;
-  cursor: pointer;
-  opacity: 1;
-  border-top: 1px solid #e1e1e1;
-  border-bottom: 1px solid #e1e1e1;
-  border-left: 1px solid #e1e1e1;
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
-  font-family: "MontserratMedium";
-  height: 25px;
-  margin-top: 3px;
-  padding-top: 3px;
-}
-
-body[dir="rtl"] .span-formontly {
-  border-right: 1px solid #e1e1e1 !important;
-  border-top-right-radius: 4px !important;
-  border-bottom-right-radius: 4px !important;
-  border-top-left-radius: 0px !important;
-  border-bottom-left-radius: 0px !important;
-  border-left: 0px;
-  font-family: "IBMPlexSansArabic-Medium" !important;
-}
-
-.spanActive {
-  background: #6172d6;
-  width: 100%;
-  color: #fff;
-  border-radius: 4px;
-  text-align: center;
-  cursor: pointer;
-  font-family: "MontserratMedium";
-  height: 30px;
-  padding-top: 5px;
-}
-
-body[dir="rtl"] .spanActive {
-  font-family: "IBMPlexSansArabic-Medium" !important;
-}
-
 .languageSelector {
   position: absolute;
   right: 0;
@@ -638,4 +424,88 @@ body[dir="rtl"] .languageSelector {
   margin-right: 0;
   display: flex;
   justify-content: flex-end;
+}
+
+.MeetingHeading {
+  font-size: 20px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratBold-700" !important;
+}
+
+body[dir="rtl"] .MeetingHeading {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
+
+.keypoints {
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratMedium" !important;
+}
+
+body[dir="rtl"] .keypoints {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
+.BillingHeading {
+  font-size: 30px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratBold-700" !important;
+}
+
+body[dir="rtl"] .BillingHeading {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
+
+.Tableheading {
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold-600" !important;
+}
+
+body[dir="rtl"] .Tableheading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.ChargesPerLicesense {
+  font-size: 30px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratBold-700" !important;
+}
+
+body[dir="rtl"] .ChargesPerLicesense {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
+
+.TableheadingTotal {
+  font-size: 30px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratBold-700" !important;
+}
+
+body[dir="rtl"] .TableheadingTotal {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
+
+.PayNowButtons {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold-600" !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+}
+
+body[dir="rtl"] .PayNowButtons {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.PayNowButtons:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold-600" !important;
+  background: #6172d6 !important;
+  color: #fff !important;
 }

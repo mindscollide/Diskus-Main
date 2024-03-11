@@ -81,10 +81,17 @@ import VerifyOTPUM from "../container/pages/UserMangement/VerifyOTPUM/VerifyOTPU
 import PasswordCreationUM from "../container/pages/UserMangement/PasswordCreationUM/PasswordCreationUM";
 import ManageUsers from "../container/pages/UserMangement/AdminUserManagement/ManageUsers/ManageUsers";
 import AddUsers from "../container/pages/UserMangement/AdminUserManagement/AddUsers/AddUsers";
+import OrganizationLevelConfigUM from "../container/pages/UserMangement/OrganziationLevelConfigUM/OrganizationLevelConfigUM";
+import UserLevelConfigUM from "../container/pages/UserMangement/UserLevelConfigUM/UserLevelConfigUM";
+import PakageDetailsUserManagement from "../container/pages/UserMangement/PakageDetailsUserManagement/PakageDetailsUserManagement";
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
       <Route path="/packageselection" element={<PackageSelection />} />
+      <Route
+        path="/PakageDetailsUserManagement"
+        element={<PakageDetailsUserManagement />}
+      />
       <Route path="/signuporganization" element={<Signup />} />
       <Route path="/" element={<ValidateEmail />} />
       <Route path="/forgotpasssowrd" element={<ForgotPassword />} />
@@ -130,6 +137,7 @@ export const router = createHashRouter(
           <Route path="Meeting/Useravailabilityformeeting" element={<RSVP />} />
           <Route path="videochat" element={<VideoChat />} />
           <Route path="setting" element={<UserSettings />} />
+          <Route path="UserLevelConfigUM" element={<UserLevelConfigUM />} />
           <Route path="faq's" element={<CustomMiscellaneous />} />
           <Route path="groups" element={<Groups />} />
           <Route path="changePassword" element={<ChangePassword />} />
@@ -158,6 +166,10 @@ export const router = createHashRouter(
           <Route path="PaymentHistory" element={<PaymentHistory />} />
           <Route path="Summary" element={<Summary />} />
           <Route path="Organization" element={<OrganizationLevelSetting />} />
+          <Route
+            path="OrganizationlevelConfigUM"
+            element={<OrganizationLevelConfigUM />}
+          />
           <Route path="AllMeeting" element={<AllMeetings />} />
           <Route path="CancelSub" element={<CancelSubs />} />
           <Route path="PackageDetail" element={<PackageDetails />} />

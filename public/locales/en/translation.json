@@ -1792,5 +1792,15 @@
   "Add-vote": "Add Vote",
   "Starred": "Starred",
   "Unstarred": "Unstarred",
-  "Response-awaited": "Response Awaited"
+  "Response-awaited": "Response Awaited",
+  "Diskus-pakage-details": "Diskus - Package Details",
+  "Per-user-per-month-billed-annually": "(Per user per month billed annually)",
+  "Billing-calculator": "Billing Calculator:",
+  "Pakage-details": "Pakage Details",
+  "Charges-per": "Charges Per",
+  "License-US$": "License US$",
+  "of-licenses": "of licenses",
+  "charges-in": "Charges in US$",
+  "Quarterly": "Quarterly",
+  "Yearly": "Yearly"
 }

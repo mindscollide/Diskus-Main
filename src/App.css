@@ -6588,3 +6588,31 @@ th.ant-table-cell.notification-class-table {
 .searchResult_Document__control--is-focused {
   width: 200px !important;
 }
+
+.pakageselectionSpanUsermanagement {
+  font-size: 16px !important;
+  font-family: "MontserratExtraBold-800" !important;
+}
+
+body[dir="rtl"] .Tableheading {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
+.Billing_document .ant-table table {
+  border-spacing: 0 10px !important;
+  border-radius: 50px !important;
+  table-layout: inherit !important;
+  margin-top: -19px !important;
+}
+.ant-table-wrapper.Billing_document.ant-table .ant-table-thead > tr > th {
+  padding: 2px 16px !important;
+}
+.ant-table-wrapper.Billing_document
+  .ant-table
+  .ant-table-container
+  .ant-table-content
+  thead.ant-table-thead {
+  background: none !important;
+}
+.ant-table-wrapper.Billing_document.ant-table .ant-table-thead > tr > th {
+  padding: 2px 16px !important;
+}
