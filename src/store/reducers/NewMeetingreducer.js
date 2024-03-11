@@ -37,6 +37,8 @@ const initialState = {
   removeTableModal: false,
   unsavedPollsMeeting: false,
   unsavedEditPollsMeeting: false,
+  deletPollsMeeting: false,
+  editFlowDeletePollsMeeting: false,
   deleteMeetingModal: false,
   endMeetingModal: false,
   endForAllMeeting: false,
@@ -314,6 +316,20 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         unsavedPollsMeeting: action.response,
+      };
+    }
+
+    case actions.DELETE_POLL_MEETING: {
+      return {
+        ...state,
+        deletPollsMeeting: action.response,
+      };
+    }
+
+    case actions.EDIT_FLOW_DELETE_POLL_MEETING: {
+      return {
+        ...state,
+        editFlowDeletePollsMeeting: action.response,
       };
     }
 
@@ -1673,7 +1689,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         );
         let resultedVideoURL = generateURLParticipant(
           extractedBaseURLCaller,
-          UserName,
+          randomGuestName,
           roomID
         );
         return {

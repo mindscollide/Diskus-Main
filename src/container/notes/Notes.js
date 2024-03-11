@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Plus } from "react-bootstrap-icons";
 import { Button, Loader, Notification } from "../../components/elements";
-import { Accordion, AccordionSummary } from "@material-ui/core";
+import { Accordion, AccordionSummary, Tooltip } from "@material-ui/core";
 import { AccordionDetails } from "@mui/material";
 import {
   ClearNotesResponseMessage,
@@ -291,23 +291,34 @@ const Notes = () => {
                       <>
                         {" "}
                         {data.isStarred ? (
-                          <img
-                            draggable="false"
-                            src={hollowstar}
-                            width="15.86px"
-                            alt=""
-                            height="15.19px"
-                            className={styles["starIcon-In-Collapse-material"]}
-                          />
+                          <Tooltip placement="bottomLeft" title={t("Starred")}>
+                            <img
+                              draggable="false"
+                              src={hollowstar}
+                              width="15.86px"
+                              alt=""
+                              height="15.19px"
+                              className={
+                                styles["starIcon-In-Collapse-material"]
+                              }
+                            />
+                          </Tooltip>
                         ) : (
-                          <img
-                            draggable="false"
-                            src={StarIcon}
-                            width="15.86px"
-                            height="15.19px"
-                            alt=""
-                            className={styles["starIcon-In-Collapse-material"]}
-                          />
+                          <Tooltip
+                            placement="bottomLeft"
+                            title={t("Unstarred")}
+                          >
+                            <img
+                              draggable="false"
+                              src={StarIcon}
+                              width="15.86px"
+                              height="15.19px"
+                              alt=""
+                              className={
+                                styles["starIcon-In-Collapse-material"]
+                              }
+                            />
+                          </Tooltip>
                         )}
                         {data?.isAttachment ? (
                           <span>
@@ -376,15 +387,16 @@ const Notes = () => {
                             )}
                           </>
                         )}
-
-                        <img
-                          draggable="false"
-                          src={EditIconNote}
-                          width={17}
-                          alt=""
-                          className={styles["editIcon-In-Collapse-material"]}
-                          onClick={() => editIconModal(data?.pK_NotesID)}
-                        />
+                        <Tooltip placement="bottomLeft" title={t("Edit")}>
+                          <img
+                            draggable="false"
+                            src={EditIconNote}
+                            width={17}
+                            alt=""
+                            className={styles["editIcon-In-Collapse-material"]}
+                            onClick={() => editIconModal(data?.pK_NotesID)}
+                          />
+                        </Tooltip>
                       </>
                     }
                     attachmentsRow={

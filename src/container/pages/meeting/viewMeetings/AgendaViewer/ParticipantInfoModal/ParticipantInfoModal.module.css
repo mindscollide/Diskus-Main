@@ -1,0 +1,62 @@
+p.participantInfoHeading {
+  margin: 0;
+  font-family: "MontserratMedium-500";
+  font-weight: 600;
+  font-size: 17px;
+  color: #6172d6;
+}
+
+img.image-close {
+  position: absolute;
+  right: 10px;
+  top: 0px;
+  cursor: pointer;
+}
+
+body[dir="rtl"] img.image-close {
+  position: absolute;
+  right: auto;
+  top: 0px;
+  cursor: pointer;
+  left: 10px;
+}
+
+.Send_Notify {
+  height: 40px;
+  padding: 0px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1;
+  font-family: "MontserratSemiBold" !important;
+  border-radius: 4px !important;
+  background: #fff;
+  color: #5a5a5a;
+}
+
+.Send_Notify:hover,
+.Send_Notify:active,
+.Send_Notify:focus,
+.Send_Notify:focus-visible {
+  height: 40px;
+  padding: 0px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1;
+  font-family: "MontserratSemiBold" !important;
+  border-radius: 4px !important;
+  background: #fff;
+  color: #5a5a5a;
+}
+
+p.absentStatus {
+  color: #f16b6b !important;
+  margin: 0 !important;
+}
+
+p.presentStatus {
+  color: #6172d6 !important;
+  margin: 0 !important;
+}
+
+p.remoteStatus {
+  color: #d8a709 !important;
+  margin: 0 !important;
+}

@@ -344,7 +344,8 @@ const Polling = () => {
           value: "Expired", // Use the actual status value
         },
       ],
-      defaultFilteredValue: ["Published", "UnPublished", "Expired"], // Use the actual status values here
+      defaultFilteredValue: ["Published", "UnPublished", "Expired"],
+      filterResetToDefaultFilteredValue: true, // Use the actual status values here
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
@@ -840,12 +841,17 @@ const Polling = () => {
                             />
                           </>
                         ) : null}
-                        <img
-                          src={searchicon}
-                          alt=""
-                          className={styles["Search_Bar_icon_class"]}
-                          draggable="false"
-                        />
+                        <Tooltip
+                          placement="bottomLeft"
+                          title={t("Search-filters")}
+                        >
+                          <img
+                            src={searchicon}
+                            alt=""
+                            className={styles["Search_Bar_icon_class"]}
+                            draggable="false"
+                          />
+                        </Tooltip>
                       </Col>
                     </Row>
                   </>

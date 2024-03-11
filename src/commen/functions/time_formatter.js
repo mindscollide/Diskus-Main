@@ -201,3 +201,33 @@ export const getTimeDifference = (dateLogin, dateLogOut) => {
     .toString()
     .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 };
+
+//Newly added fomatter
+
+export const newGMTFormatter = (meetingDate, time) => {
+  // Combine date and time strings
+  const dateTimeString = `${meetingDate}T${time}`;
+
+  // Parse date and time strings
+  const year = meetingDate.substring(0, 4);
+  const month = meetingDate.substring(4, 6) - 1; // Months are 0-indexed in JavaScript Date object
+  const day = meetingDate.substring(6, 8);
+  const hours = time.substring(0, 2);
+  const minutes = time.substring(2, 4);
+
+  // Create a Date object with the parsed values
+  const dateTime = new Date(year, month, day, hours, minutes);
+
+  // Get GMT hours and minutes
+  const hoursGMT = dateTime.getUTCHours();
+  const minutesGMT = dateTime.getUTCMinutes();
+
+  // Format hours and minutes
+  const formattedHours = hoursGMT < 10 ? `0${hoursGMT}` : hoursGMT;
+  const formattedMinutes = minutesGMT < 10 ? `0${minutesGMT}` : minutesGMT;
+
+  // Construct GMT time string
+  const gmtTimeString = `${formattedHours}:${formattedMinutes} GMT`;
+
+  return gmtTimeString;
+};

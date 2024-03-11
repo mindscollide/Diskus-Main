@@ -143,6 +143,33 @@ export const newTimeFormaterForResolutionAsPerUTCFullDate = (dateTime) => {
   return moment(_dateTime).format("h:mm A, D MMM, YYYY");
 };
 
+//Included  New One
+
+export const newTimeFormaterForMeetingAsPerUTCFullDate = (dateTime) => {
+  const fullDateyear =
+    dateTime?.slice(0, 4) +
+    "-" +
+    dateTime?.slice(4, 6) +
+    "-" +
+    dateTime?.slice(6, 8) +
+    "T" +
+    dateTime?.slice(8, 10) +
+    ":" +
+    dateTime?.slice(10, 12) +
+    ":" +
+    dateTime?.slice(12, 14) +
+    ".000Z";
+
+  const _dateTime = new Date(fullDateyear);
+
+  // Get the start time, end time, and date
+  const startTime = moment(_dateTime).format("h:mm A");
+  const endTime = moment(_dateTime).add(1, "hour").format("h:mm A"); // Assuming end time is 1 hour after start time
+  const date = moment(_dateTime).format("D MMM, YYYY");
+
+  return `${startTime}, ${endTime}, ${date}`;
+};
+
 export const _justShowDateformat = (dateTime) => {
   let fullDateyear =
     dateTime.slice(0, 4) +
@@ -846,4 +873,24 @@ export function convertToUTC(dateStr) {
   const secondStr = date.getUTCSeconds().toString().padStart(2, "0");
 
   return `${yearStr}${monthStr}${dayStr}${hourStr}${minuteStr}${secondStr}`;
+}
+
+//For Agenda Viewer Participant
+export function convertAndFormatDateTimeGMT(dateTimeString) {
+  const year = dateTimeString.substring(0, 4);
+  const month = dateTimeString.substring(4, 6);
+  const day = dateTimeString.substring(6, 8);
+  const hour = dateTimeString.substring(8, 10);
+  const minute = dateTimeString.substring(10, 12);
+  const second = dateTimeString.substring(12, 14);
+
+  const date = new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}Z`);
+  const gmtDate = new Date(date.getTime() + (date.getTimezoneOffset() * 60000)); // Convert to GMT
+  const formattedDate = `${gmtDate.getUTCDate()}-${gmtDate.getUTCMonth() + 1}-${gmtDate.getUTCFullYear()}`;
+  const formattedHour = gmtDate.getUTCHours();
+  const formattedMinute = gmtDate.getUTCMinutes() < 10 ? '0' + gmtDate.getUTCMinutes() : gmtDate.getUTCMinutes();
+  const period = formattedHour < 12 ? 'AM' : 'PM';
+  const formattedTime = `${formattedHour > 12 ? formattedHour - 12 : formattedHour}:${formattedMinute} ${period}`;
+
+  return `${formattedDate} | ${formattedTime}`;
 }

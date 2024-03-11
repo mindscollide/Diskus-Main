@@ -4,6 +4,7 @@ import { BroadcastChannel } from "broadcast-channel";
 import { UserLogout } from "../../commen/apis/Api_config";
 import { authenticationApi } from "../../commen/apis/Api_ends_points";
 import axios from "axios";
+import { RefreshToken } from "./Auth_action";
 
 const logoutChannel = new BroadcastChannel("logout");
 
@@ -44,7 +45,10 @@ const userLogOutApiFunc = (navigate, t) => {
       },
     })
       .then(async (response) => {
-        if (response.data.responseCode === 200) {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(userLogOutApiFunc(navigate, t));
+        } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage

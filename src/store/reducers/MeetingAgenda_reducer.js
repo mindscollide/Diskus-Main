@@ -24,6 +24,12 @@ const initialState = {
   MeetingAgendaStartedData: null,
   MeetingAgendaEndedData: null,
   MeetingAgendaUpdatedMqtt: null,
+  PrintAgendaFlag: false,
+  ExportAgendaFlag: false,
+  AgendaViewFlag: 0,
+  MeetingAgendaParticipants: [],
+  SendAgendaAsPDFEmail: null,
+  PrintCurrentAgenda: null,
 };
 
 const MeetingAgendaReducer = (state = initialState, action) => {
@@ -460,6 +466,96 @@ const MeetingAgendaReducer = (state = initialState, action) => {
       return {
         ...state,
         MeetingAgendaUpdatedMqtt: action.response,
+      };
+    }
+
+    case actions.PRINT_AGENDA: {
+      return {
+        ...state,
+        PrintAgendaFlag: action.response,
+      };
+    }
+
+    case actions.EXPORT_AGENDA: {
+      return {
+        ...state,
+        ExportAgendaFlag: action.response,
+      };
+    }
+
+    case actions.AGENDA_VIEW_FLAG: {
+      return {
+        ...state,
+        AgendaViewFlag: action.response,
+      };
+    }
+
+    case actions.GET_GETMEETINGPARTICIPANTSAGENDA_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GET_GETMEETINGPARTICIPANTSAGENDA_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        MeetingAgendaParticipants: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GET_GETMEETINGPARTICIPANTSAGENDA_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        MeetingAgendaParticipants: [],
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SEND_AGENDAPDFASEMAIL_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.SEND_AGENDAPDFASEMAIL_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        SendAgendaAsPDFEmail: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SEND_AGENDAPDFASEMAIL_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        SendAgendaAsPDFEmail: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.PRINT_AGENDA_MEETING_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.PRINT_AGENDA_MEETING_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        PrintCurrentAgenda: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.PRINT_AGENDA_MEETING_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        PrintCurrentAgenda: null,
+        ResponseMessage: action.message,
       };
     }
 

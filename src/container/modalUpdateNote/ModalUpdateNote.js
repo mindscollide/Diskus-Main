@@ -145,7 +145,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   };
 
   const [open, setOpen] = useState({
-    open: false,
+    flag: false,
     message: "",
   });
 
@@ -274,22 +274,24 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           FK_NotesStatusID: NotesReducer.GetNotesByNotesId.fK_NotesStatus,
         });
         setIsStarrted(NotesReducer.GetNotesByNotesId.isStarred);
-        let copyData = [...attachments];
+        let copyData = [];
         let newData = [];
         if (NotesReducer.GetNotesByNotesId.notesAttachments.length > 0) {
-          NotesReducer.GetNotesByNotesId.notesAttachments.map((data, index) => {
-            copyData.push({
-              displayAttachmentName: data.displayAttachmentName,
-              originalAttachmentName: data.originalAttachmentName,
-              fK_NotesID: data.fK_NotesID,
-              pK_NAID: data.pK_NAID,
-            });
-            newData.push({
-              DisplayAttachmentName: data.displayAttachmentName,
-              OriginalAttachmentName: data.originalAttachmentName,
-              FK_NotesID: data.fK_NotesID,
-            });
-          });
+          NotesReducer.GetNotesByNotesId.notesAttachments.forEach(
+            (data, index) => {
+              copyData.push({
+                DisplayAttachmentName: data.displayAttachmentName,
+                originalAttachmentName: data.originalAttachmentName,
+                fK_NotesID: data.fK_NotesID,
+                pK_NAID: data.pK_NAID,
+              });
+              newData.push({
+                DisplayAttachmentName: data.displayAttachmentName,
+                OriginalAttachmentName: data.originalAttachmentName,
+                FK_NotesID: data.fK_NotesID,
+              });
+            }
+          );
           setAttachments(copyData);
           setTasksAttachments({
             TasksAttachments: newData,
@@ -299,145 +301,85 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
     } catch (error) {}
   }, [NotesReducer.GetNotesByNotesId]);
 
-  // console.log(first);
-
-  console.log(tasksAttachments, "tasksAttachmentstasksAttachments");
+  //Upload File Handler
   const uploadFilesToDo = (data) => {
-    let fileSizeArr;
-    if (attachments.length === 10) {
-      console.log("uploadedFile");
-      setTimeout(
-        setOpen({
-          open: true,
-          message: t("You-can-not-upload-more-then-10-files"),
-        }),
-        3000
-      );
-    } else if (fileSize >= 104857600) {
-      setTimeout(
-        setOpen({
-          open: true,
-          message: t("You-can-not-upload-more-then-100MB-files"),
-        }),
-        3000
-      );
-    } else {
-      const uploadedFile = data.target.files[0];
-      var ext = uploadedFile.name.split(".").pop();
-      let file = attachments;
-      if (
-        ext === "doc" ||
-        ext === "docx" ||
-        ext === "xls" ||
-        ext === "xlsx" ||
-        ext === "pdf" ||
-        ext === "png" ||
-        ext === "txt" ||
-        ext === "jpg" ||
-        ext === "jpeg" ||
-        ext === "gif" ||
-        ext === "csv"
-      ) {
-        let data;
-        let sizezero;
-        let size;
-        if (file.length > 0) {
-          file.map((filename, index) => {
-            if (filename.displayAttachmentName === uploadedFile.name) {
-              data = false;
-            }
-          });
-          if (uploadedFile.size > 10485760) {
-            size = false;
-          } else if (uploadedFile.size === 0) {
-            sizezero = false;
-          }
+    let filesArray = Object.values(data.target.files);
+    console.log(filesArray, "uploadFilesToDouploadFilesToDo");
+    let fileSizeArr = fileSize;
+    let flag = false;
+    let sizezero = true;
+    let size = true;
 
-          if (data === false) {
-            setTimeout(
-              setOpen({
-                open: true,
-                message: t("File-already-exists"),
-              }),
-              3000
-            );
-          } else if (size === false) {
-            setTimeout(
-              setOpen({
-                open: true,
-                message: t("File-size-should-not-be-greater-then-zero"),
-              }),
-              3000
-            );
-          } else if (sizezero === false) {
-            setTimeout(
-              setOpen({
-                open: true,
-                message: t("File-size-should-not-be-zero"),
-              }),
-              3000
-            );
-          } else {
-            let data = {
-              displayAttachmentName: uploadedFile.name,
-              originalAttachmentName: uploadedFile.name,
-              fK_NotesID: 0,
-              pK_NAID: 0,
-            };
-            fileSizeArr = uploadedFile.size + fileSize;
-            setFileForSend([...fileForSend, uploadedFile]);
-            setFileSize(fileSizeArr);
-            setAttachments([...attachments, data]);
-          }
-        } else {
-          console.log("uploadedFile 12");
-
-          let size;
-          let sizezero;
-          if (uploadedFile.size > 10485760) {
-            size = false;
-          } else if (uploadedFile.size === 0) {
-            sizezero = false;
-          }
-          if (size === false) {
-            setTimeout(
-              setOpen({
-                open: true,
-                message: t("File-size-should-not-be-greater-then-zero"),
-              }),
-              3000
-            );
-          } else if (sizezero === false) {
-            setTimeout(
-              setOpen({
-                open: true,
-                message: t("File-size-should-not-be-zero"),
-              }),
-              3000
-            );
-          } else {
-            let data = {
-              displayAttachmentName: uploadedFile.name,
-              originalAttachmentName: uploadedFile.name,
-              fK_NotesID: 0,
-              pK_NAID: 0,
-            };
-            fileSizeArr = uploadedFile.size + fileSize;
-            setFileForSend([...fileForSend, uploadedFile]);
-            setFileSize(fileSizeArr);
-            setAttachments([...attachments, data]);
-          }
-        }
-      }
+    if (tasksAttachments.TasksAttachments.length > 9) {
+      setOpen({
+        flag: true,
+        message: t("Not-allowed-more-than-10-files"),
+      });
+      return;
     }
+    filesArray.forEach((fileData, index) => {
+      if (fileData.size > 10485760) {
+        size = false;
+      } else if (fileData.size === 0) {
+        sizezero = false;
+      }
+
+      let fileExists = tasksAttachments.TasksAttachments.some(
+        (oldFileData) => oldFileData.DisplayAttachmentName === fileData.name
+      );
+
+      if (!size) {
+        setTimeout(() => {
+          setOpen({
+            flag: true,
+            message: t("File-size-should-not-be-greater-then-zero"),
+          });
+        }, 3000);
+      } else if (!sizezero) {
+        setTimeout(() => {
+          setOpen({
+            flag: true,
+            message: t("File-size-should-not-be-zero"),
+          });
+        }, 3000);
+      } else if (fileExists) {
+        setTimeout(() => {
+          setOpen({
+            flag: true,
+            message: t("File-already-exists"),
+          });
+        }, 3000);
+      } else {
+        let file = {
+          DisplayAttachmentName: fileData.name,
+          OriginalAttachmentName: fileData.name,
+          fileSize: fileData.size,
+        };
+        // setTasksAttachments((prevAttachments) => ({
+        //   ...prevAttachments,
+        //   TasksAttachments: [...prevAttachments.TasksAttachments, file],
+        // }));
+        console.log(file, "filefilefilefile");
+        setAttachments((prevAttachments) => [...prevAttachments, file]);
+        fileSizeArr += fileData.size;
+        setFileForSend((prevFiles) => [...prevFiles, fileData]);
+        setFileSize(fileSizeArr);
+      }
+      // Update previousFileList to current fileList
+      previousFileList = filesArray;
+    });
   };
+  let previousFileList = [];
+  console.log(attachments, "newfilesnewfiles");
+  console.log(tasksAttachments.TasksAttachments, "newfilesnewfiles");
+  console.log(fileForSend, "newfilesnewfiles");
 
   const notesSaveHandler = async () => {
     try {
       if (addNoteFields.Title.value !== "") {
         if (Object.keys(fileForSend).length > 0) {
           let newfiles = [...tasksAttachments.TasksAttachments];
-          console.log(newfiles, "newfilesnewfiles");
+          console.log(newfiles, "PromisePromisePromise");
           const uploadPromises = fileForSend.map((newData, index) => {
             let flag = fileForSend.length !== index + 1;
             // Return the promise from FileUploadToDo
@@ -448,12 +390,13 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
 
           // Wait for all uploadPromises to resolve
           await Promise.all(uploadPromises);
-          console.log(newfiles, "newfilesnewfiles");
+          console.log(newfiles, "PromisePromisePromise");
           setErrorBar(false);
           let createrID = localStorage.getItem("userID");
           let OrganizationID = localStorage.getItem("organizationID");
           let notesAttachment = [];
           newfiles.map((data, index) => {
+            console.log(data, "newfilesnewfiles");
             notesAttachment.push({
               DisplayAttachmentName: data.DisplayAttachmentName,
               OriginalAttachmentName: data.OriginalAttachmentName,
@@ -745,6 +688,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                           <span className={styles["Notes-upload-input"]}>
                             <CustomUpload
                               change={uploadFilesToDo}
+                              multiple={true}
                               onClick={(event) => {
                                 event.target.value = null;
                               }}
@@ -762,12 +706,11 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                         >
                           {attachments.length > 0
                             ? attachments.map((data, index) => {
-                                var ext = data.displayAttachmentName
-                                  .split(".")
-                                  .pop();
+                                var ext =
+                                  data.DisplayAttachmentName.split(".").pop();
 
                                 const first =
-                                  data.displayAttachmentName.split(" ")[0];
+                                  data.DisplayAttachmentName.split(" ")[0];
                                 return (
                                   <Col
                                     sm={12}
@@ -862,6 +805,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                                         src={deleteButtonCreateMeeting}
                                         width={15}
                                         height={15}
+                                        alt=""
                                         onClick={() =>
                                           deleteFilefromAttachments(data, index)
                                         }
@@ -1059,7 +1003,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           }
         />
       </Container>
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );
 };

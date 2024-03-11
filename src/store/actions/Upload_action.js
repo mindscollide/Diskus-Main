@@ -84,6 +84,7 @@ const FileUploadToDo = (navigate, data, t, newfile) => {
                   false
                 )
               );
+              console.log(newfile, "PromisePromisePromise");
               if (newfile) {
                 let dataResultdisplayFileName =
                   response.data.responseResult.displayFileName;

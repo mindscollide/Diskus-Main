@@ -52,6 +52,7 @@ import {
 } from "../../commen/functions/time_formatter";
 import { ConvertFileSizeInMB } from "../../commen/functions/convertFileSizeInMB";
 import Select from "react-select";
+import { Tooltip } from "antd";
 const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   // checkFlag 6 is for Committee
   // checkFlag 7 is for Group
@@ -1943,9 +1944,19 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                       <Button
                         text={
                           createMeeting.IsVideoCall === false ? (
-                            <img src={MeetingVideoChatIcon} alt="" />
+                            <Tooltip
+                              placement="bottomLeft"
+                              title={t("Enable-video-call")}
+                            >
+                              <img src={MeetingVideoChatIcon} alt="" />
+                            </Tooltip>
                           ) : (
-                            <img src={MeetingVideoChatIconActive} alt="" />
+                            <Tooltip
+                              placement="bottomLeft"
+                              title={t("Enable-video-call")}
+                            >
+                              <img src={MeetingVideoChatIconActive} alt="" />
+                            </Tooltip>
                           )
                         }
                         name="IsVideoCall"

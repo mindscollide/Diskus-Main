@@ -438,7 +438,6 @@ const TodoList = () => {
         {
           text: t("In-progress"),
           value: "In Progress",
-          // className: currentLanguage,
         },
         {
           text: t("Pending"),
@@ -464,6 +463,7 @@ const TodoList = () => {
         "Cancelled",
         "Completed",
       ],
+      filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),

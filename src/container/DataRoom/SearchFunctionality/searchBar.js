@@ -27,6 +27,7 @@ import {
 } from "../../../commen/functions/date_formater";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import { useSelector } from "react-redux";
+import { Tooltip } from "antd";
 const SearchBarComponent = ({
   setSearchDataFields,
   searchDataFields,
@@ -1308,23 +1309,27 @@ const SearchBarComponent = ({
                   className="cursor-pointer"
                   onClick={resteFunctionality}
                 />
-                <img
-                  draggable="false"
-                  src={searchicon}
-                  alt=""
-                  className="cursor-pointer"
-                  onClick={SearchiconClickOptions}
-                />
+                <Tooltip placement="bottomLeft" title={t("Search-filters")}>
+                  <img
+                    draggable="false"
+                    src={searchicon}
+                    alt=""
+                    className="cursor-pointer"
+                    onClick={SearchiconClickOptions}
+                  />
+                </Tooltip>
               </span>
             </>
           ) : (
-            <img
-              draggable="false"
-              src={searchicon}
-              alt=""
-              className="cursor-pointer"
-              onClick={SearchiconClickOptions}
-            />
+            <Tooltip placement="bottomLeft" title={t("Search-filters")}>
+              <img
+                draggable="false"
+                src={searchicon}
+                alt=""
+                className="cursor-pointer"
+                onClick={SearchiconClickOptions}
+              />
+            </Tooltip>
           )
         }
         // clickIcon={SearchiconClickOptions}

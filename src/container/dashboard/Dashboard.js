@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Sidebar, Talk } from "../../components/layout";
 import CancelButtonModal from "../pages/meeting/closeMeetingTab/CancelModal";
-import { Loader, LoaderPanel } from "../../components/elements";
+import { Loader, LoaderPanel, Notification } from "../../components/elements";
 import Header2 from "../../components/layout/header2/Header2";
 import { ConfigProvider, Layout } from "antd";
 import ar_EG from "antd/es/locale/ar_EG";
@@ -166,6 +166,10 @@ const Dashboard = () => {
   // for sub menus Icons
 
   //State For Meeting Data
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+  });
   const [activateBlur, setActivateBlur] = useState(false);
   const [notificationID, setNotificationID] = useState(0);
   const [currentLanguage, setCurrentLanguage] = useState("en");
@@ -197,7 +201,14 @@ const Dashboard = () => {
       message: "",
     });
   };
-
+  // if (!navigator.onLine) {
+  //   setOpen({
+  //     ...open,
+  //     flag: true,
+  //     message: "No internet connection. Please check your connection.",
+  //   });
+  //   alert("No internet connection. Please check your connection.");
+  // }
   const onMessageArrived = (msg) => {
     var min = 10000;
     var max = 90000;
@@ -1780,47 +1791,58 @@ const Dashboard = () => {
             <VideoCallScreen />
           ) : null}
 
-          {NewMeetingreducer.Loading ||
-          assignees.Loading ||
-          MeetingOrganizersReducer.LoadingMeetingOrganizer ||
-          MeetingOrganizersReducer.Loading ||
-          PollsReducer.Loading ||
-          CommitteeReducer.Loading ||
-          toDoListReducer.Loading ||
-          todoStatus.Loading ||
-          getTodosStatus.Loading ||
-          MeetingAgendaReducer.Loading ||
-          actionMeetingReducer.Loading ||
-          AgendaWiseAgendaListReducer.loading ||
-          downloadReducer.Loading ||
-          attendanceMeetingReducer.Loading ||
-          webViewer.Loading ||
-          LanguageReducer.Loading ||
-          uploadReducer.Loading ||
-          settingReducer.Loading ||
-          fAQsReducer.Loading ||
-          meetingIdReducer.Loading ||
-          calendarReducer.Loading ||
-          OnBoardModal.Loading ||
-          postAssigneeComments.Loading ||
-          VideoChatReducer.Loading ||
-          minuteofMeetingReducer.Loading ||
-          countryNamesReducer.Loading ||
-          GetSubscriptionPackage.Loading ||
-          Authreducer.Loading ||
-          roleListReducer.Loading ||
-          NotesReducer.Loading ||
-          GroupsReducer.Loading ||
-          GroupsReducer.getAllLoading ||
-          ResolutionReducer.Loading ||
-          RealtimeNotification.Loading ||
-          OrganizationBillingReducer.Loading ||
-          DataRoomReducer.Loading ||
-          DataRoomFileAndFoldersDetailsReducer.Loading ||
-          SignatureWorkFlowReducer.Loading ? (
+          {!navigator.onLine ? (
+            <React.Fragment>
+              {/* Display alert when offline */}
+              {alert("No internet connection. Please check your connection.")}
+            </React.Fragment>
+          ) : // Check for loading states to determine whether to display loader
+          NewMeetingreducer.Loading ||
+            assignees.Loading ||
+            MeetingOrganizersReducer.LoadingMeetingOrganizer ||
+            MeetingOrganizersReducer.Loading ||
+            PollsReducer.Loading ||
+            CommitteeReducer.Loading ||
+            toDoListReducer.Loading ||
+            todoStatus.Loading ||
+            getTodosStatus.Loading ||
+            MeetingAgendaReducer.Loading ||
+            actionMeetingReducer.Loading ||
+            AgendaWiseAgendaListReducer.loading ||
+            downloadReducer.Loading ||
+            attendanceMeetingReducer.Loading ||
+            webViewer.Loading ||
+            LanguageReducer.Loading ||
+            uploadReducer.Loading ||
+            settingReducer.Loading ||
+            fAQsReducer.Loading ||
+            meetingIdReducer.Loading ||
+            calendarReducer.Loading ||
+            OnBoardModal.Loading ||
+            postAssigneeComments.Loading ||
+            VideoChatReducer.Loading ||
+            minuteofMeetingReducer.Loading ||
+            countryNamesReducer.Loading ||
+            GetSubscriptionPackage.Loading ||
+            Authreducer.Loading ||
+            roleListReducer.Loading ||
+            NotesReducer.Loading ||
+            GroupsReducer.Loading ||
+            GroupsReducer.getAllLoading ||
+            ResolutionReducer.Loading ||
+            RealtimeNotification.Loading ||
+            OrganizationBillingReducer.Loading ||
+            DataRoomReducer.Loading ||
+            DataRoomFileAndFoldersDetailsReducer.Loading ||
+            SignatureWorkFlowReducer.Loading ? (
             <Loader />
           ) : null}
 
+          <Notification
+            setOpen={setOpen}
+            open={open.flag}
+            message={open.message}
+          />
           {cancelModalMeetingDetails && <CancelButtonModal />}
         </Layout>
         {/* <Layout>

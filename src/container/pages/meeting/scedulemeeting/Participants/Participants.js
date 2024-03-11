@@ -49,6 +49,7 @@ import { useEffect } from "react";
 import NextModal from "../meetingDetails/NextModal/NextModal";
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
+import { Tooltip } from "antd";
 
 const Participants = ({
   setParticipants,
@@ -352,33 +353,39 @@ const Participants = ({
       render: (text, record) => {
         if (record.attendeeAvailability === 1) {
           return (
-            <img
-              draggable={false}
-              src={AwaitingResponse}
-              height="30px"
-              width="30px"
-              alt=""
-            />
+            <Tooltip placement="bottomLeft" title={t("Response-awaited")}>
+              <img
+                draggable={false}
+                src={AwaitingResponse}
+                height="30px"
+                width="30px"
+                alt=""
+              />
+            </Tooltip>
           );
         } else if (record.attendeeAvailability === 2) {
           return (
-            <img
-              draggable={false}
-              src={thumbsup}
-              height="30px"
-              width="30px"
-              alt=""
-            />
+            <Tooltip placement="bottomLeft" title={t("Accepted")}>
+              <img
+                draggable={false}
+                src={thumbsup}
+                height="30px"
+                width="30px"
+                alt=""
+              />
+            </Tooltip>
           );
         } else if (record.attendeeAvailability === 3) {
           return (
-            <img
-              draggable={false}
-              src={thumbsdown}
-              height="30px"
-              width="30px"
-              alt=""
-            />
+            <Tooltip placement="bottomLeft" title={t("Rejected")}>
+              <img
+                draggable={false}
+                src={thumbsdown}
+                height="30px"
+                width="30px"
+                alt=""
+              />
+            </Tooltip>
           );
         } else if (record.attendeeAvailability === 4) {
           return (

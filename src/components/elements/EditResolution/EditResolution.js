@@ -785,10 +785,10 @@ const EditResolution = ({ setCancelresolution }) => {
       });
     }
   };
-  const [folderID, setFolderID] = useState(0);
-
+  console.log(tasksAttachments, "fileForSendfileForSend");
   const documentsUploadCall = async (folderID) => {
     let newfile = [...tasksAttachments];
+    console.log(tasksAttachments, "fileForSendfileForSend");
     let fileObj = [];
     if (fileForSend.length > 0) {
       const uploadPromises = fileForSend.map(async (newData) => {
@@ -800,8 +800,7 @@ const EditResolution = ({ setCancelresolution }) => {
       // Wait for all promises to resolve
       await Promise.all(uploadPromises);
     }
-    console.log(newfile, "fileObjfileObjfileObjfileObj");
-    console.log(fileObj, "fileObjfileObjfileObjfileObj");
+    console.log(newfile, "fileForSendfileForSend");
     await dispatch(
       saveFilesResolutionApi(navigate, t, fileObj, folderID, newfile)
     );
@@ -961,14 +960,16 @@ const EditResolution = ({ setCancelresolution }) => {
       let atCH = [];
       let newData = [];
       attachmentsResolution.map((data, index) => {
+        console.log(data, "newDatanewDatanewData");
         atCH.push({
-          DisplayAttachmentName: data.displayAttachmentName,
-          OriginalAttachmentName: data.originalAttachmentName,
-          pK_FileID: data.pK_RAID,
+          DisplayAttachmentName: data.DisplayAttachmentName,
+          OriginalAttachmentName: data.OriginalAttachmentName,
+          pK_FileID: data.pK_FileID,
         });
         newData.push({
           displayAttachmentName: data.displayAttachmentName,
           originalAttachmentName: data.originalAttachmentName,
+          pK_FileID: data.pK_FileID,
         });
       });
       setAttachments(newData);
@@ -1152,13 +1153,14 @@ const EditResolution = ({ setCancelresolution }) => {
           attachmentsResolution.forEach((data, index) => {
             console.log(data, "attachmentsResolution");
             atCH.push({
-              DisplayAttachmentName: data.displayAttachmentName,
-              OriginalAttachmentName: data.originalAttachmentName,
-              pK_FileID: data.pK_RAID,
+              DisplayFileName: data.displayAttachmentName,
+              DiskusFileName: data.originalAttachmentName,
+              PK_FileID: data.pK_RAID,
             });
             newData.push({
               displayAttachmentName: data.displayAttachmentName,
               originalAttachmentName: data.originalAttachmentName,
+              PK_FileID: data.pK_RAID,
             });
           });
           setAttachments(newData);

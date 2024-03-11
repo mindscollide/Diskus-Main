@@ -398,168 +398,330 @@ const Signup = () => {
   };
 
   const handlerSignup = async () => {
-    if (
-      signUpDetails.CompanyName.value !== "" &&
-      signUpDetails.CountryName.value !== "" &&
-      signUpDetails.Address1.value !== "" &&
-      signUpDetails.Address2.value !== "" &&
-      // signUpDetails.State.value !== "" &&
-      // signUpDetails.City.value !== "" &&
-      // signUpDetails.PostalCode.value !== "" &&
-      // signUpDetails.FullName.value !== "" &&
-      signUpDetails.Email.value !== "" &&
-      signUpDetails.PhoneNumber.value !== "" &&
-      signUpDetails.FullName.value !== ""
-    ) {
-      if (validateEmailEnglishAndArabicFormat(signUpDetails.Email.value)) {
-        if (
-          adminReducer.OrganisationCheck !== false &&
-          adminReducer.EmailCheck !== false
-        ) {
-          let PackageID = localStorage.getItem("PackageID");
-          let tenureOfSuscriptionID = localStorage.getItem(
-            "TenureOfSuscriptionID"
-          );
-          let data = {
-            SelectedPackageID: JSON.parse(PackageID),
-            TenureOfSuscriptionID: JSON.parse(tenureOfSuscriptionID),
-            Organization: {
-              OrganizationName: signUpDetails.CompanyName.value,
-              FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
-              ContactPersonName: signUpDetails.FullName.value,
-              ContactPersonEmail: signUpDetails.Email.value,
-              ContactPersonNumber: signUpDetails.PhoneNumber.value,
-              FK_NumberWorldCountryID: JSON.parse(
-                signUpDetails.PhoneNumberCountryID
-              ),
-              CustomerReferenceNumber: "",
-              PersonalNumber: signUpDetails.PhoneNumber.value,
-              OrganizationAddress1: signUpDetails.Address1.value,
-              OrganizationAddress2: signUpDetails.Address2.value,
-              City: signUpDetails.City.value,
-              StateProvince: signUpDetails.State.value,
-              PostalCode: signUpDetails.PostalCode.value,
-              FK_SubscriptionStatusID: 0,
-              // FK_CCID: signUpDetails.FK_CCID,
-            },
-          };
-          dispatch(createOrganization(data, navigate, t));
+    if (isFreeTrail === true) {
+      if (
+        signUpDetails.CompanyName.value !== "" &&
+        signUpDetails.CountryName.value !== "" &&
+        signUpDetails.Email.value !== "" &&
+        signUpDetails.PhoneNumber.value !== "" &&
+        signUpDetails.FullName.value !== ""
+      ) {
+        if (validateEmailEnglishAndArabicFormat(signUpDetails.Email.value)) {
+          if (
+            adminReducer.OrganisationCheck !== false &&
+            adminReducer.EmailCheck !== false
+          ) {
+            let PackageID = localStorage.getItem("PackageID");
+            let tenureOfSuscriptionID = localStorage.getItem(
+              "TenureOfSuscriptionID"
+            );
+            let data = {
+              SelectedPackageID: JSON.parse(PackageID),
+              TenureOfSuscriptionID: JSON.parse(tenureOfSuscriptionID),
+              Organization: {
+                OrganizationName: signUpDetails.CompanyName.value,
+                FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
+                ContactPersonName: signUpDetails.FullName.value,
+                ContactPersonEmail: signUpDetails.Email.value,
+                ContactPersonNumber: signUpDetails.PhoneNumber.value,
+                FK_NumberWorldCountryID: JSON.parse(
+                  signUpDetails.PhoneNumberCountryID
+                ),
+                CustomerReferenceNumber: "",
+                PersonalNumber: signUpDetails.PhoneNumber.value,
+                OrganizationAddress1: signUpDetails.Address1.value,
+                OrganizationAddress2: signUpDetails.Address2.value,
+                City: signUpDetails.City.value,
+                StateProvince: signUpDetails.State.value,
+                PostalCode: signUpDetails.PostalCode.value,
+                FK_SubscriptionStatusID: 0,
+                // FK_CCID: signUpDetails.FK_CCID,
+              },
+            };
+            dispatch(createOrganization(data, navigate, t));
+          } else {
+            await dispatch(setLoader(true));
+            await dispatch(
+              checkOraganisation(
+                setCompanyNameValidate,
+                setCompanyNameValidateError,
+                signUpDetails,
+                t,
+                setCompanyNameUnique
+              )
+            );
+            handeEmailvlidate();
+            setAgainCall(true);
+          }
         } else {
-          await dispatch(setLoader(true));
-          await dispatch(
-            checkOraganisation(
-              setCompanyNameValidate,
-              setCompanyNameValidateError,
-              signUpDetails,
-              t,
-              setCompanyNameUnique
-            )
-          );
-          handeEmailvlidate();
-          setAgainCall(true);
+          setOpen({
+            ...open,
+            open: true,
+            message: t("Email-should-be-in-email-format"),
+          });
         }
       } else {
+        setSignUpDetails({
+          ...signUpDetails,
+          CompanyName: {
+            value: signUpDetails.CompanyName.value,
+            errorMessage:
+              signUpDetails.CompanyName.value === ""
+                ? t("Company-name-is-required")
+                : signUpDetails.CompanyName.errorMessage,
+            errorStatus:
+              signUpDetails.CompanyName.value === ""
+                ? true
+                : signUpDetails.CompanyName.errorStatus,
+          },
+          CountryName: {
+            value: signUpDetails.CountryName.value,
+            errorMessage:
+              signUpDetails.CountryName.value === ""
+                ? t("Country-name-is-required")
+                : signUpDetails.CountryName.errorMessage,
+            errorStatus:
+              signUpDetails.CountryName.value === ""
+                ? true
+                : signUpDetails.CountryName.errorStatus,
+          },
+          Address1: {
+            value: signUpDetails.Address1.value,
+            errorMessage:
+              signUpDetails.Address1.value === ""
+                ? t("Address-1-is-required")
+                : signUpDetails.Address1.errorMessage,
+            errorStatus:
+              signUpDetails.Address1.value === ""
+                ? true
+                : signUpDetails.Address1.errorStatus,
+          },
+          Address2: {
+            value: signUpDetails.Address2.value,
+            errorMessage:
+              signUpDetails.Address2.value === ""
+                ? t("Address-2-is-required")
+                : signUpDetails.Address2.errorMessage,
+            errorStatus:
+              signUpDetails.Address2.value === ""
+                ? true
+                : signUpDetails.Address2.errorStatus,
+          },
+          State: {
+            value: signUpDetails.State.value,
+            errorMessage: "",
+          },
+          City: {
+            value: signUpDetails.City.value,
+            errorMessage: "",
+          },
+          PostalCode: {
+            value: signUpDetails.PostalCode.value,
+            errorMessage: "",
+          },
+          FullName: {
+            value: signUpDetails.FullName.value,
+            errorMessage:
+              signUpDetails.FullName.value === ""
+                ? t("Full-name-is-required")
+                : signUpDetails.FullName.errorMessage,
+            errorStatus:
+              signUpDetails.FullName.value === ""
+                ? true
+                : signUpDetails.FullName.errorStatus,
+          },
+          Email: {
+            value: signUpDetails.Email.value,
+            errorMessage:
+              signUpDetails.Email.value === ""
+                ? t("Email-address-is-required")
+                : signUpDetails.Email.errorMessage,
+            errorStatus: signUpDetails.Email.errorStatus,
+          },
+          PhoneNumber: {
+            value: signUpDetails.PhoneNumber.value,
+            errorMessage:
+              signUpDetails.PhoneNumber.value === ""
+                ? t("Phone-number-is-required")
+                : signUpDetails.PhoneNumber.errorMessage,
+            errorStatus:
+              signUpDetails.PhoneNumber.value === ""
+                ? true
+                : signUpDetails.PhoneNumber.errorStatus,
+          },
+        });
         setOpen({
           ...open,
           open: true,
-          message: t("Email-should-be-in-email-format"),
+          message: t("Please-fill-all-the-fields"),
         });
       }
     } else {
-      setSignUpDetails({
-        ...signUpDetails,
-        CompanyName: {
-          value: signUpDetails.CompanyName.value,
-          errorMessage:
-            signUpDetails.CompanyName.value === ""
-              ? t("Company-name-is-required")
-              : signUpDetails.CompanyName.errorMessage,
-          errorStatus:
-            signUpDetails.CompanyName.value === ""
-              ? true
-              : signUpDetails.CompanyName.errorStatus,
-        },
-        CountryName: {
-          value: signUpDetails.CountryName.value,
-          errorMessage:
-            signUpDetails.CountryName.value === ""
-              ? t("Country-name-is-required")
-              : signUpDetails.CountryName.errorMessage,
-          errorStatus:
-            signUpDetails.CountryName.value === ""
-              ? true
-              : signUpDetails.CountryName.errorStatus,
-        },
-        Address1: {
-          value: signUpDetails.Address1.value,
-          errorMessage:
-            signUpDetails.Address1.value === ""
-              ? t("Address-1-is-required")
-              : signUpDetails.Address1.errorMessage,
-          errorStatus:
-            signUpDetails.Address1.value === ""
-              ? true
-              : signUpDetails.Address1.errorStatus,
-        },
-        Address2: {
-          value: signUpDetails.Address2.value,
-          errorMessage:
-            signUpDetails.Address2.value === ""
-              ? t("Address-2-is-required")
-              : signUpDetails.Address2.errorMessage,
-          errorStatus:
-            signUpDetails.Address2.value === ""
-              ? true
-              : signUpDetails.Address2.errorStatus,
-        },
-        State: {
-          value: signUpDetails.State.value,
-          errorMessage: "",
-        },
-        City: {
-          value: signUpDetails.City.value,
-          errorMessage: "",
-        },
-        PostalCode: {
-          value: signUpDetails.PostalCode.value,
-          errorMessage: "",
-        },
-        FullName: {
-          value: signUpDetails.FullName.value,
-          errorMessage:
-            signUpDetails.FullName.value === ""
-              ? t("Full-name-is-required")
-              : signUpDetails.FullName.errorMessage,
-          errorStatus:
-            signUpDetails.FullName.value === ""
-              ? true
-              : signUpDetails.FullName.errorStatus,
-        },
-        Email: {
-          value: signUpDetails.Email.value,
-          errorMessage:
-            signUpDetails.Email.value === ""
-              ? t("Email-address-is-required")
-              : signUpDetails.Email.errorMessage,
-          errorStatus: signUpDetails.Email.errorStatus,
-        },
-        PhoneNumber: {
-          value: signUpDetails.PhoneNumber.value,
-          errorMessage:
-            signUpDetails.PhoneNumber.value === ""
-              ? t("Phone-number-is-required")
-              : signUpDetails.PhoneNumber.errorMessage,
-          errorStatus:
-            signUpDetails.PhoneNumber.value === ""
-              ? true
-              : signUpDetails.PhoneNumber.errorStatus,
-        },
-      });
-      setOpen({
-        ...open,
-        open: true,
-        message: t("Please-fill-all-the-fields"),
-      });
+      //if not free trial then with all checks
+
+      if (
+        signUpDetails.CompanyName.value !== "" &&
+        signUpDetails.CountryName.value !== "" &&
+        signUpDetails.Address1.value !== "" &&
+        signUpDetails.Address2.value !== "" &&
+        // signUpDetails.State.value !== "" &&
+        // signUpDetails.City.value !== "" &&
+        // signUpDetails.PostalCode.value !== "" &&
+        // signUpDetails.FullName.value !== "" &&
+        signUpDetails.Email.value !== "" &&
+        signUpDetails.PhoneNumber.value !== "" &&
+        signUpDetails.FullName.value !== ""
+      ) {
+        if (validateEmailEnglishAndArabicFormat(signUpDetails.Email.value)) {
+          if (
+            adminReducer.OrganisationCheck !== false &&
+            adminReducer.EmailCheck !== false
+          ) {
+            let PackageID = localStorage.getItem("PackageID");
+            let tenureOfSuscriptionID = localStorage.getItem(
+              "TenureOfSuscriptionID"
+            );
+            let data = {
+              SelectedPackageID: JSON.parse(PackageID),
+              TenureOfSuscriptionID: JSON.parse(tenureOfSuscriptionID),
+              Organization: {
+                OrganizationName: signUpDetails.CompanyName.value,
+                FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
+                ContactPersonName: signUpDetails.FullName.value,
+                ContactPersonEmail: signUpDetails.Email.value,
+                ContactPersonNumber: signUpDetails.PhoneNumber.value,
+                FK_NumberWorldCountryID: JSON.parse(
+                  signUpDetails.PhoneNumberCountryID
+                ),
+                CustomerReferenceNumber: "",
+                PersonalNumber: signUpDetails.PhoneNumber.value,
+                OrganizationAddress1: signUpDetails.Address1.value,
+                OrganizationAddress2: signUpDetails.Address2.value,
+                City: signUpDetails.City.value,
+                StateProvince: signUpDetails.State.value,
+                PostalCode: signUpDetails.PostalCode.value,
+                FK_SubscriptionStatusID: 0,
+                // FK_CCID: signUpDetails.FK_CCID,
+              },
+            };
+            dispatch(createOrganization(data, navigate, t));
+          } else {
+            await dispatch(setLoader(true));
+            await dispatch(
+              checkOraganisation(
+                setCompanyNameValidate,
+                setCompanyNameValidateError,
+                signUpDetails,
+                t,
+                setCompanyNameUnique
+              )
+            );
+            handeEmailvlidate();
+            setAgainCall(true);
+          }
+        } else {
+          setOpen({
+            ...open,
+            open: true,
+            message: t("Email-should-be-in-email-format"),
+          });
+        }
+      } else {
+        setSignUpDetails({
+          ...signUpDetails,
+          CompanyName: {
+            value: signUpDetails.CompanyName.value,
+            errorMessage:
+              signUpDetails.CompanyName.value === ""
+                ? t("Company-name-is-required")
+                : signUpDetails.CompanyName.errorMessage,
+            errorStatus:
+              signUpDetails.CompanyName.value === ""
+                ? true
+                : signUpDetails.CompanyName.errorStatus,
+          },
+          CountryName: {
+            value: signUpDetails.CountryName.value,
+            errorMessage:
+              signUpDetails.CountryName.value === ""
+                ? t("Country-name-is-required")
+                : signUpDetails.CountryName.errorMessage,
+            errorStatus:
+              signUpDetails.CountryName.value === ""
+                ? true
+                : signUpDetails.CountryName.errorStatus,
+          },
+          Address1: {
+            value: signUpDetails.Address1.value,
+            errorMessage:
+              signUpDetails.Address1.value === ""
+                ? t("Address-1-is-required")
+                : signUpDetails.Address1.errorMessage,
+            errorStatus:
+              signUpDetails.Address1.value === ""
+                ? true
+                : signUpDetails.Address1.errorStatus,
+          },
+          Address2: {
+            value: signUpDetails.Address2.value,
+            errorMessage:
+              signUpDetails.Address2.value === ""
+                ? t("Address-2-is-required")
+                : signUpDetails.Address2.errorMessage,
+            errorStatus:
+              signUpDetails.Address2.value === ""
+                ? true
+                : signUpDetails.Address2.errorStatus,
+          },
+          State: {
+            value: signUpDetails.State.value,
+            errorMessage: "",
+          },
+          City: {
+            value: signUpDetails.City.value,
+            errorMessage: "",
+          },
+          PostalCode: {
+            value: signUpDetails.PostalCode.value,
+            errorMessage: "",
+          },
+          FullName: {
+            value: signUpDetails.FullName.value,
+            errorMessage:
+              signUpDetails.FullName.value === ""
+                ? t("Full-name-is-required")
+                : signUpDetails.FullName.errorMessage,
+            errorStatus:
+              signUpDetails.FullName.value === ""
+                ? true
+                : signUpDetails.FullName.errorStatus,
+          },
+          Email: {
+            value: signUpDetails.Email.value,
+            errorMessage:
+              signUpDetails.Email.value === ""
+                ? t("Email-address-is-required")
+                : signUpDetails.Email.errorMessage,
+            errorStatus: signUpDetails.Email.errorStatus,
+          },
+          PhoneNumber: {
+            value: signUpDetails.PhoneNumber.value,
+            errorMessage:
+              signUpDetails.PhoneNumber.value === ""
+                ? t("Phone-number-is-required")
+                : signUpDetails.PhoneNumber.errorMessage,
+            errorStatus:
+              signUpDetails.PhoneNumber.value === ""
+                ? true
+                : signUpDetails.PhoneNumber.errorStatus,
+          },
+        });
+        setOpen({
+          ...open,
+          open: true,
+          message: t("Please-fill-all-the-fields"),
+        });
+      }
     }
   };
 
@@ -789,20 +951,24 @@ const Signup = () => {
                         name="Address1"
                         applyClass="form-control2 MontserratMedium"
                       />
-                      <Row>
-                        <Col>
-                          <p
-                            className={
-                              signUpDetails.Address1.errorStatus &&
-                              signUpDetails.Address1.value === ""
-                                ? ` ${styles["errorMessage"]} `
-                                : `${styles["errorMessage_hidden"]}`
-                            }
-                          >
-                            {signUpDetails.Address1.errorMessage}
-                          </p>
-                        </Col>
-                      </Row>
+                      {isFreeTrail !== true ? (
+                        <>
+                          <Row>
+                            <Col>
+                              <p
+                                className={
+                                  signUpDetails.Address1.errorStatus &&
+                                  signUpDetails.Address1.value === ""
+                                    ? ` ${styles["errorMessage"]} `
+                                    : `${styles["errorMessage_hidden"]}`
+                                }
+                              >
+                                {signUpDetails.Address1.errorMessage}
+                              </p>
+                            </Col>
+                          </Row>
+                        </>
+                      ) : null}
                     </Col>
                   </Row>
                   <Row className="mb-3">
@@ -816,20 +982,24 @@ const Signup = () => {
                         value={signUpDetails.Address2.value || ""}
                         applyClass="form-control2 MontserratMedium"
                       />
-                      <Row>
-                        <Col>
-                          <p
-                            className={
-                              signUpDetails.Address2.errorStatus &&
-                              signUpDetails.Address2.value === ""
-                                ? ` ${styles["errorMessage"]} `
-                                : `${styles["errorMessage_hidden"]}`
-                            }
-                          >
-                            {signUpDetails.Address2.errorMessage}
-                          </p>
-                        </Col>
-                      </Row>
+                      {isFreeTrail !== true ? (
+                        <>
+                          <Row>
+                            <Col>
+                              <p
+                                className={
+                                  signUpDetails.Address2.errorStatus &&
+                                  signUpDetails.Address2.value === ""
+                                    ? ` ${styles["errorMessage"]} `
+                                    : `${styles["errorMessage_hidden"]}`
+                                }
+                              >
+                                {signUpDetails.Address2.errorMessage}
+                              </p>
+                            </Col>
+                          </Row>
+                        </>
+                      ) : null}
                     </Col>
                   </Row>
                   <Row className="mb-3">
