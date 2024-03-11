@@ -177,6 +177,7 @@ const NewMeeting = () => {
     message: "",
   });
   const [rows, setRow] = useState([]);
+  console.log(rows, "rowsrowsrows");
   const [totalRecords, setTotalRecords] = useState(0);
   const [minutesAgo, setMinutesAgo] = useState(null);
   const [searchFields, setSearchFeilds] = useState({
@@ -691,20 +692,21 @@ const NewMeeting = () => {
     },
     {
       title: t("Meeting-type"),
-      dataIndex: "meetingTypeID",
-      key: "meetingTypeID",
+      dataIndex: "meetingType",
+      key: "meetingType",
       width: "115px",
-      render: (text, record) => {
-        // if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
-        //   return (
-        //     <span>
-        //       {newTimeFormaterAsPerUTCFullDate(
-        //         record.dateOfMeeting + record.meetingStartTime
-        //       )}
-        //     </span>
-        //   );
-        // }
-      },
+      align: "center",
+      // render: (text, record) => {
+      // if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
+      //   return (
+      //     <span>
+      //       {newTimeFormaterAsPerUTCFullDate(
+      //         record.dateOfMeeting + record.meetingStartTime
+      //       )}
+      //     </span>
+      //   );
+      // }
+      // },
     },
     {
       dataIndex: "Chat",
@@ -1252,6 +1254,7 @@ const NewMeeting = () => {
                 title: data.title,
                 talkGroupID: data.talkGroupID,
                 key: index,
+                meetingType: data.meetingTypeID,
               });
             } catch {}
           });
