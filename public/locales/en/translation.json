@@ -1779,5 +1779,8 @@
   "Add-vote": "Add Vote",
   "Starred": "Starred",
   "Unstarred": "Unstarred",
-  "Response-awaited": "Response Awaited"
+  "Response-awaited": "Response Awaited",
+  "Board-meeting": "Board Meeting",
+  "Group-meeting": "Group Meeting",
+  "Committee-meeting": "Committee Meeting"
 }
