@@ -105,14 +105,14 @@ const SignatureViewer = () => {
   const [userAnnotations, setUserAnnotations] = useState([]);
   const [deletedDataTem, setTeletedDataTem] = useState([]);
   const selectedUserRef = useRef(selectedUser);
-  const signerDataRef = useRef(signerData);
+  // const signerDataRef = useRef(signerData);
   const userAnnotationsRef = useRef(userAnnotations);
   const pdfResponceDataRef = useRef(pdfResponceData.xfdfData);
   const pdfResponceDataBLobRef = useRef(pdfResponceData.attachmentBlob);
   const removedAnnotationsRef = useRef(pdfResponceData.removedAnnotations);
   const participantsRef = useRef(participants);
   let documentID = Number(localStorage.getItem("documentID"));
-  console.log("signerDataRefsignerDataRef", signerDataRef);
+  // console.log("signerDataRefsignerDataRef", signerDataRef);
   useEffect(() => {
     const fetchData = async () => {
       if (docWorkflowID !== null && docWorkflowID !== undefined) {
