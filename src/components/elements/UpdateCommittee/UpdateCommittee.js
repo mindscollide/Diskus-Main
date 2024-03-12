@@ -1764,9 +1764,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                           </span>
                                           <section
                                             className={styles["Outer_Box"]}
-                                            onDoubleClick={
-                                              handleDoubleCLickFile
-                                            }
+                                            onClick={handleDoubleCLickFile}
                                           >
                                             <Row>
                                               <Col lg={12} md={12} sm={12}>
