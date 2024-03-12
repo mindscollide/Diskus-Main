@@ -710,8 +710,8 @@ const ViewMeetingDetails = ({
                     return (
                       <Col key={index} lg={12} md={12} sm={12}>
                         <span className={styles["ScheduledDateTime"]}>
-                          {moment(formattedStartDate).format("HH:mm a")} -{" "}
-                          {moment(formattedEndDate).format("HH:mm a")} ,{" "}
+                          {moment(formattedStartDate).format("hh:mm a")} -{" "}
+                          {moment(formattedEndDate).format("hh:mm a")} ,{" "}
                           {moment(formattedEndDate).format("DD MMM YYYY")}
                         </span>
                       </Col>

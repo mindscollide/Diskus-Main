@@ -982,7 +982,7 @@ const NewMeeting = () => {
           } else if (isOrganiser) {
             return (
               <Button
-                text={t("Start-join-meeting")}
+                text={t("Join-meeting")}
                 className={styles["joining-Meeting"]}
                 onClick={() => {
                   handleViewMeeting(record.pK_MDID, record.isQuickMeeting);

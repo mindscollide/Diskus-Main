@@ -172,7 +172,7 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
                               />
                             ) : eventData.participantRoleID === 1 ? (
                               <Button
-                                text={t("Start-join-meeting")}
+                                text={t("Join-meeting")}
                                 className={styles["joining-Meeting"]}
                                 onClick={() =>
                                   meetingDashboardCalendarEvent(eventData)
