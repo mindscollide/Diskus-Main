@@ -615,6 +615,8 @@ const NewMeeting = () => {
       dataIndex: "status",
       key: "status",
       width: "50px",
+      ellipsis: true,
+
       filters: [
         {
           text: t("Active"),
@@ -639,7 +641,7 @@ const NewMeeting = () => {
         {
           text: t("Not-conducted"),
           value: "8",
-        }
+        },
       ],
       defaultFilteredValue: ["10", "9", "8", "2", "1", "4"],
       filterResetToDefaultFilteredValue: true,
@@ -690,54 +692,53 @@ const NewMeeting = () => {
         return dateA - dateB;
       },
     },
-    // {
-    //   title: t("Meeting-type"),
-    //   dataIndex: "meetingType",
-    //   key: "meetingType",
-    //   width: "115px",
-    //   align: "center",
-    //   filters: [
-    //     {
-    //       text: t("Board-meeting"),
-    //       value: "1",
-    //     },
-    //     {
-    //       text: t("Committee-meeting"),
-    //       value: "2",
-    //     },
-    //     {
-    //       text: t("Group-meeting"),
-    //       value: "3",
-    //     },
-    //   ],
-    //   defaultFilteredValue: ["1", "2", "3"],
-    //   filterResetToDefaultFilteredValue: true,
-    //   filterIcon: () => (
-    //     <ChevronDown className="filter-chevron-icon-todolist" />
-    //   ),
-    //   onFilter: (value, record) => {
-    //     const meetingType = Number(record.meetingType);
-    //     return !isNaN(meetingType) && meetingType === Number(value);
-    //   },
-    //   render: (text) => {
-    //     let meetingTypeText = "";
-    //     switch (Number(text)) {
-    //       case 1:
-    //         meetingTypeText = t("Board-meeting");
-    //         break;
-    //       case 2:
-    //         meetingTypeText = t("Committee-meeting");
-    //         break;
-    //       case 3:
-    //         meetingTypeText = t("Group-meeting");
-    //         break;
-    //       default:
-    //         meetingTypeText = t("Unknown");
-    //     }
-    //     return <span>{meetingTypeText}</span>;
-    //   },
-    // },
-
+    {
+      title: t("Meeting-type"),
+      dataIndex: "meetingType",
+      key: "meetingType",
+      width: "115px",
+      align: "center",
+      filters: [
+        {
+          text: t("Board-meeting"),
+          value: "1",
+        },
+        {
+          text: t("Committee-meeting"),
+          value: "2",
+        },
+        {
+          text: t("Group-meeting"),
+          value: "3",
+        },
+      ],
+      defaultFilteredValue: ["1", "2", "3"],
+      filterResetToDefaultFilteredValue: true,
+      filterIcon: () => (
+        <ChevronDown className="filter-chevron-icon-todolist" />
+      ),
+      onFilter: (value, record) => {
+        const meetingType = Number(record.meetingType);
+        return !isNaN(meetingType) && meetingType === Number(value);
+      },
+      render: (text) => {
+        let meetingTypeText = "";
+        switch (Number(text)) {
+          case 1:
+            meetingTypeText = t("Board-meeting");
+            break;
+          case 2:
+            meetingTypeText = t("Committee-meeting");
+            break;
+          case 3:
+            meetingTypeText = t("Group-meeting");
+            break;
+          default:
+            meetingTypeText = t("Unknown");
+        }
+        return <span>{meetingTypeText}</span>;
+      },
+    },
     {
       dataIndex: "Chat",
       key: "Chat",
@@ -1099,7 +1100,12 @@ const NewMeeting = () => {
                 return (
                   <>
                     <Row>
-                      <Col sm={12} md={12} lg={12}>
+                      <Col
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        className="d-flex justify-content-center"
+                      >
                         <Tooltip placement="topRight" title={t("Edit")}>
                           <img
                             src={EditIcon}
@@ -1130,7 +1136,12 @@ const NewMeeting = () => {
               return (
                 <>
                   <Row>
-                    <Col sm={12} md={12} lg={12}>
+                    <Col
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className="d-flex justify-content-center"
+                    >
                       <Tooltip placement="topRight" title={t("Edit")}>
                         <img
                           src={EditIcon}
@@ -1164,7 +1175,12 @@ const NewMeeting = () => {
               return (
                 <>
                   <Row>
-                    <Col sm={12} md={12} lg={12}>
+                    <Col
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className="d-flex justify-content-center"
+                    >
                       <Tooltip placement="topRight" title={t("Edit")}>
                         <img
                           src={EditIcon}

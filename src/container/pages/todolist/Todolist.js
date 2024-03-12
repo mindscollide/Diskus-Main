@@ -929,78 +929,81 @@ const TodoList = () => {
             )}
           </Col>
         </Row>
-        <Row>
-          <Col>
-            <Row className="row-scroll-todolist">
-              <Col className="">
-                {/* {rowsToDo.length > 0 &&
-                rowsToDo !== undefined &&
-                rowsToDo !== null ? ( */}
-                <TableToDo
-                  sortDirections={["descend", "ascend"]}
-                  column={columnsToDo}
-                  className={"ToDo"}
-                  rows={rowsToDo}
-                  scroll={scroll}
-                  locale={{
-                    emptyText: (
-                      <>
-                        <section className="d-flex flex-column align-items-center justify-content-center ">
-                          <img src={TodoMessageIcon1} width={"250px"} alt="" />
-                          <span className="NotaskTodolist">{t("No-Task")}</span>
-                        </section>
-                      </>
-                    ), // Set your custom empty text here
-                  }}
-                  pagination={false}
-                />
+        <section className="todolist_main_section">
+          <Row>
+            <Col>
+              <TableToDo
+                sortDirections={["descend", "ascend"]}
+                column={columnsToDo}
+                className={"ToDo"}
+                rows={rowsToDo}
+                scroll={scroll}
+                locale={{
+                  emptyText: (
+                    <>
+                      <section className="d-flex flex-column align-items-center justify-content-center ">
+                        <img src={TodoMessageIcon1} width={"250px"} alt="" />
+                        <span className="NotaskTodolist">{t("No-Task")}</span>
+                      </section>
+                    </>
+                  ), // Set your custom empty text here
+                }}
+                pagination={false}
+              />
+            </Col>
+          </Row>
+          {/* <Row> */}
 
-                {rowsToDo.length > 0 && (
-                  <Row className="">
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex justify-content-center"
-                    >
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className={
-                            "pagination-groups-table d-flex justify-content-center"
-                          }
-                        >
-                          <span className="PaginationStyle-TodoList">
-                            <CustomPagination
-                              onChange={paginationChangeHandlerTodo}
-                              current={
-                                todoListCurrentPage !== null &&
-                                todoListCurrentPage !== undefined
-                                  ? todoListCurrentPage
-                                  : 1
-                              }
-                              showSizer={true}
-                              total={totalRecords}
-                              pageSizeOptionsValues={["30", "50", "100", "200"]}
-                              pageSize={
-                                todoListPageSize !== null &&
-                                todoListPageSize !== undefined
-                                  ? todoListPageSize
-                                  : 50
-                              }
-                            />
-                          </span>
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
-                )}
-              </Col>
-            </Row>
-          </Col>
-        </Row>
+          {/* </Row> */}
+          {/* </Col> */}
+          {/* </Row> */}
+          <Row>
+            <Col>
+              {rowsToDo.length > 0 && (
+                <Row className="">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-center"
+                  >
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={
+                          "pagination-groups-table d-flex justify-content-center"
+                        }
+                      >
+                        <span className="PaginationStyle-TodoList">
+                          <CustomPagination
+                            onChange={paginationChangeHandlerTodo}
+                            current={
+                              todoListCurrentPage !== null &&
+                              todoListCurrentPage !== undefined
+                                ? todoListCurrentPage
+                                : 1
+                            }
+                            showSizer={true}
+                            total={totalRecords}
+                            pageSizeOptionsValues={["30", "50", "100", "200"]}
+                            pageSize={
+                              todoListPageSize !== null &&
+                              todoListPageSize !== undefined
+                                ? todoListPageSize
+                                : 50
+                            }
+                          />
+                        </span>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+              )}
+            </Col>
+          </Row>
+        </section>
       </div>
       {show ? (
         <ModalToDoList

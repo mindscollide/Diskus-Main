@@ -280,9 +280,9 @@ const Participants = ({
 
   return (
     <>
-      <section>
+      <section className={styles["height2"]}>
         <Row>
-          <Col lg={12} md={12} sm={12} className={styles["FixedHeight"]}>
+          <Col lg={12} md={12} sm={12}>
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <Table

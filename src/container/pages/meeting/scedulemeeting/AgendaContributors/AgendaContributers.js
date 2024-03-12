@@ -759,86 +759,86 @@ const AgendaContributers = ({
             )}
           </Col>
         </Row>
-        <Row>
-          <Col lg={12} md={12} sm={12}>
-            <Table
-              column={AgendaColoumns}
-              scroll={{ y: "62vh" }}
-              pagination={false}
-              locale={{
-                emptyText: (
-                  <>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex justify-content-center"
-                      >
-                        <img
-                          draggable={false}
-                          src={emptyContributorState}
-                          className="cursor-pointer"
-                          width="274.05px"
-                          alt=""
-                          height="230.96px"
-                          onClick={handleInitiatewithEmptyState}
-                        />
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex justify-content-center"
-                      >
-                        <span className={styles["Empty_state_heading"]}>
-                          {t("No-agenda-contributor")}
-                        </span>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex justify-content-center"
-                      >
-                        <span className={styles["Empty_state_Subheading"]}>
-                          {t("There-are-no-agenda-contributors")}
-                        </span>
-                      </Col>
-                    </Row>
-                  </>
-                ),
-              }}
-              className="Polling_table"
-              rows={rowsData}
-            />
-          </Col>
-        </Row>
-      </section>
-      <Row>
-        <Col lg={12} md={12} sm={12}>
-          {!isEdit && !isEditClicked ? (
-            <section className={styles["Footer_Class"]}>
-              <Button
-                text={t("Cancel")}
-                className={styles["Cancel_Organization"]}
-                onClick={enableNotificatoinTable}
+        <section className={styles["height2"]}>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <Table
+                column={AgendaColoumns}
+                scroll={{ y: "62vh" }}
+                pagination={false}
+                locale={{
+                  emptyText: (
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex justify-content-center"
+                        >
+                          <img
+                            draggable={false}
+                            src={emptyContributorState}
+                            className="cursor-pointer"
+                            width="274.05px"
+                            alt=""
+                            height="230.96px"
+                            onClick={handleInitiatewithEmptyState}
+                          />
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex justify-content-center"
+                        >
+                          <span className={styles["Empty_state_heading"]}>
+                            {t("No-agenda-contributor")}
+                          </span>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex justify-content-center"
+                        >
+                          <span className={styles["Empty_state_Subheading"]}>
+                            {t("There-are-no-agenda-contributors")}
+                          </span>
+                        </Col>
+                      </Row>
+                    </>
+                  ),
+                }}
+                className="Polling_table"
+                rows={rowsData}
               />
-              {/* <Button
+            </Col>
+          </Row>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              {!isEdit && !isEditClicked ? (
+                <section className={styles["Footer_Class"]}>
+                  <Button
+                    text={t("Cancel")}
+                    className={styles["Cancel_Organization"]}
+                    onClick={enableNotificatoinTable}
+                  />
+                  {/* <Button
                 text={t("Previous")}
                 className={styles["publish_button_AgendaContributor"]}
                 onClick={previousTabOrganizer}
               /> */}
-              <Button
-                text={t("Next")}
-                className={styles["publish_button_AgendaContributor"]}
-                onClick={nextTabOrganizer}
-              />
-              {/* {((Number(editorRole.status) === 9 ||
+                  <Button
+                    text={t("Next")}
+                    className={styles["publish_button_AgendaContributor"]}
+                    onClick={nextTabOrganizer}
+                  />
+                  {/* {((Number(editorRole.status) === 9 ||
                 Number(editorRole.status) === 8 ||
                 Number(editorRole.status) === 10) &&
                 editorRole.role === "Organizer" &&
@@ -851,31 +851,33 @@ const AgendaContributers = ({
                   onClick={handleNextButton}
                 />
               )} */}
-              {Number(editorRole.status) === 11 ||
-              Number(editorRole.status) === 12 ? (
-                <Button
-                  disableBtn={
-                    Number(currentMeeting) === 0 || isPublishedState === false
-                      ? true
-                      : false
-                  }
-                  text={t("Publish")}
-                  className={styles["Next_Organization"]}
-                  onClick={handleNextButton}
-                />
-              ) : isEditMeeting === true ? null : (
-                <Button
-                  disableBtn={
-                    Number(currentMeeting) === 0 || isPublishedState === false
-                      ? true
-                      : false
-                  }
-                  text={t("Publish")}
-                  className={styles["Next_Organization"]}
-                  onClick={handleNextButton}
-                />
-              )}
-              {/* {Number(editorRole.status) === 11 ||
+                  {Number(editorRole.status) === 11 ||
+                  Number(editorRole.status) === 12 ? (
+                    <Button
+                      disableBtn={
+                        Number(currentMeeting) === 0 ||
+                        isPublishedState === false
+                          ? true
+                          : false
+                      }
+                      text={t("Publish")}
+                      className={styles["Next_Organization"]}
+                      onClick={handleNextButton}
+                    />
+                  ) : isEditMeeting === true ? null : (
+                    <Button
+                      disableBtn={
+                        Number(currentMeeting) === 0 ||
+                        isPublishedState === false
+                          ? true
+                          : false
+                      }
+                      text={t("Publish")}
+                      className={styles["Next_Organization"]}
+                      onClick={handleNextButton}
+                    />
+                  )}
+                  {/* {Number(editorRole.status) === 11 ||
               Number(editorRole.status) === 12 ? (
                 <Button
                   text={t("Publish")}
@@ -883,12 +885,14 @@ const AgendaContributers = ({
                   onClick={handleNextButton}
                 />
               ) : null} */}
-            </section>
-          ) : (
-            <section className={styles["Footer_Class2"]}></section>
-          )}
-        </Col>
-      </Row>
+                </section>
+              ) : (
+                <section className={styles["Footer_Class2"]}></section>
+              )}
+            </Col>
+          </Row>
+        </section>
+      </section>
 
       {NewMeetingreducer.agendaContributors && (
         <AgendaContributorsModal

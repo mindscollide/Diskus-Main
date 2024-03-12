@@ -155,3 +155,9 @@
   justify-content: flex-end;
   margin-top: 30px;
 }
+.height2 {
+  min-height: 60vh !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}

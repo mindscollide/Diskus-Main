@@ -72,7 +72,7 @@ const Actions = ({
   const [totalRecords, setTotalRecords] = useState(0);
   const [removeTodo, setRemoveTodo] = useState(0);
   const [statusOptions, setStatusOptions] = useState([]);
-
+  console.log(statusOptions, "statusOptionsstatusOptions");
   const [actionState, setActionState] = useState({
     Title: "",
     Date: "",
@@ -162,7 +162,9 @@ const Actions = ({
       title: t("Title"),
       dataIndex: "title",
       key: "title",
-      width: "250px",
+      ellipsis: true,
+      width: "200px",
+
       render: (text, record) => {
         return (
           <span
@@ -282,40 +284,32 @@ const Actions = ({
       filters: [
         {
           text: t("In-progress"),
-          value: "In Progress",
+          value: 1,
           // className: currentLanguage,
         },
         {
           text: t("Pending"),
-          value: "Pending",
+          value: 2,
         },
         {
           text: t("Upcoming"),
-          value: "Upcoming",
+          value: 3,
         },
         {
           text: t("Cancelled"),
-          value: "Cancelled",
+          value: 4,
         },
         {
           text: t("Completed"),
-          value: "Completed",
+          value: 5,
         },
       ],
-      defaultFilteredValue: [
-        "In Progress",
-        "Pending",
-        "Upcoming",
-        "Cancelled",
-        "Completed",
-      ],
+      defaultFilteredValue: [1, 2, 3, 4, 5],
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
       onFilter: (value, record) => {
-        return record?.status?.status
-          ?.toLowerCase()
-          .includes(value.toLowerCase());
+        return Number(record?.status?.pK_TSID) === Number(value);
       },
       render: (text, record) => {
         if (Number(record?.taskCreator?.pK_UID) === Number(userID)) {
@@ -324,7 +318,7 @@ const Actions = ({
               <Select
                 defaultValue={text.status}
                 bordered={false}
-                // dropdownClassName="Status-Todo"
+                dropdownClassName="Status-Todo"
                 className={
                   text.pK_TSID === 1
                     ? "InProgress MontserratSemiBold custom-class "
@@ -653,7 +647,7 @@ const Actions = ({
                       <Col lg={12} md={12} sm={12}>
                         <Table
                           column={ActionsColoumn}
-                          scroll={{ y: "40vh" }}
+                          scroll={{ y: "40vh", x: false }}
                           pagination={false}
                           className={"ToDo"}
                           rows={actionsRows}
@@ -701,7 +695,7 @@ const Actions = ({
                   </section>
                 </>
               )}
-              <Row className="mt-5">
+              <Row className="mt-3">
                 <Col
                   lg={12}
                   md={12}
