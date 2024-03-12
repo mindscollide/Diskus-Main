@@ -48,7 +48,7 @@ const BillingMethodUsermanagement = () => {
   }, []);
   return (
     <section>
-      <Row className="mt-3">
+      <Row className="mt-5">
         <Col lg={12} md={12} sm={12} className="d-flex justify-content-center">
           <span className={styles["BillingDetailsHeading"]}>
             {t("Billing-details")}
@@ -58,10 +58,56 @@ const BillingMethodUsermanagement = () => {
       <Row>
         <Col lg={12} md={12} sm={12}>
           <Stepper activeStep={activeStep}>
-            <Step label={t("Billing-contact")} />
-            <Step label={t("Billing-address")} />
-            <Step label={t("Pakage-details")} />
-            <Step label={t("Payment-method")} />
+            <Step
+              label={
+                <span
+                  className={
+                    activeStep === 0
+                      ? "billing-contactActive"
+                      : "billing-contact"
+                  }
+                >
+                  {t("Billing-contact")}
+                </span>
+              }
+            />
+            <Step
+              label={
+                <span
+                  className={
+                    activeStep === 1
+                      ? "billing-addressActive"
+                      : "billing-address"
+                  }
+                >
+                  {t("Billing-address")}
+                </span>
+              }
+            />
+            <Step
+              label={
+                <span
+                  className={
+                    activeStep === 2
+                      ? "package-detailsActive"
+                      : "package-details"
+                  }
+                >
+                  {t("Package-details")}
+                </span>
+              }
+            />
+            <Step
+              label={
+                <span
+                  className={
+                    activeStep === 3 ? "payment-methodActive" : "payment-method"
+                  }
+                >
+                  {t("Payment-method")}
+                </span>
+              }
+            />
           </Stepper>
         </Col>
       </Row>

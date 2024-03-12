@@ -7140,22 +7140,82 @@ body[dir="rtl"] .StepButtonContent-d1-0-3-7.completed {
   font-family: "IBMPlexSansArabic-Bold" !important;
 }
 
-.Label-0-3-9 {
+span.billing-contact {
   color: #5a5a5a !important;
   font-family: "MontserratSemiBold-600" !important;
   font-size: 16px !important;
 }
 
-body[dir="rtl"] .Label-0-3-9 {
-  font-family: "IBMPlexSansArabic-SemiBold";
-}
-
-.Label-d1-0-3-11 {
+span.billing-contactActive {
   color: #6172d6 !important;
   font-family: "MontserratSemiBold-600" !important;
   font-size: 16px !important;
 }
 
-body[dir="rtl"] .Label-d1-0-3-11 {
-  font-family: "IBMPlexSansArabic-SemiBold";
+span.billing-address {
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold-600" !important;
+  font-size: 16px !important;
+}
+
+span.billing-addressActive {
+  color: #6172d6 !important;
+  font-family: "MontserratSemiBold-600" !important;
+  font-size: 16px !important;
+}
+
+span.package-details {
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold-600" !important;
+  font-size: 16px !important;
+}
+
+span.package-detailsActive {
+  color: #6172d6 !important;
+  font-family: "MontserratSemiBold-600" !important;
+  font-size: 16px !important;
+}
+
+span.payment-method {
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold-600" !important;
+  font-size: 16px !important;
+}
+
+span.payment-methodActive {
+  color: #6172d6 !important;
+  font-family: "MontserratSemiBold-600" !important;
+  font-size: 16px !important;
+}
+
+body[dir="rtl"] span.billing-address {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+body[dir="rtl"] span.billing-addressActive {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+body[dir="rtl"] span.package-details {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+body[dir="rtl"] span.package-detailsActive {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+body[dir="rtl"] span.payment-method {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+body[dir="rtl"] span.payment-methodActive {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+body[dir="rtl"] span.billing-contactActive {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+body[dir="rtl"] span.billing-contact {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
