@@ -12,9 +12,6 @@ const ViewAttachments = ({ resolutionAttachments, setViewattachmentpage }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // for anotantion opens in new tabb on doubble click
-  const [clicks, setClicks] = useState(0);
-  const [dataCheck, setDataCheck] = useState([]);
   const handleClickDownloadFile = (fileID, fileName) => {
     let data = {
       FileID: Number(fileID),
@@ -22,30 +19,11 @@ const ViewAttachments = ({ resolutionAttachments, setViewattachmentpage }) => {
     dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, fileName));
   };
   const handleLinkClick = (data) => {
-    if (clicks === 1) {
-      if (dataCheck === data) {
-        // Perform the action you want to happen on the double-click here
-        window.open(
-          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(data)}`,
-          "_blank",
-          "noopener noreferrer"
-        );
-      } else {
-        setDataCheck(data);
-      }
-
-      // Reset the click count
-      setClicks(0);
-    } else {
-      // Increment the click count
-      setClicks(clicks + 1);
-      setDataCheck(data);
-      // You can add a delay here to reset the click count after a certain time if needed
-      setTimeout(() => {
-        setClicks(0);
-        setDataCheck([]);
-      }, 300); // Reset after 300 milliseconds (adjust as needed)
-    }
+    window.open(
+      `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(data)}`,
+      "_blank",
+      "noopener noreferrer"
+    );
   };
   return (
     <Container fluid>
