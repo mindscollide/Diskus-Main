@@ -612,7 +612,10 @@ const SignatureViewer = () => {
   ) {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xfdfString, "text/xml");
-
+    console.log(
+      { xmlDoc, deletedDataTem },
+      "removeSignatureAnnotationsFromXFDFremoveSignatureAnnotationsFromXFDF"
+    );
     // deletedDataTem;
     // Find all <ffield> elements with type="Sig" (signature fields) and remove them
     // const ffieldElements = xmlDoc.querySelectorAll('ffield[type="Sig"]');

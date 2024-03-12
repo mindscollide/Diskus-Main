@@ -154,7 +154,9 @@ const EnterPassword = () => {
     } else if (
       Authreducer.EnterPasswordResponseMessage != "" &&
       Authreducer.EnterPasswordResponseMessage != t("2fa-enabled") &&
-      Authreducer.EnterPasswordResponseMessage != undefined
+      Authreducer.EnterPasswordResponseMessage != undefined &&
+      Authreducer.EnterPasswordResponseMessage !==
+        t("The-user-is-not-an-admin-user")
     ) {
       setOpen({
         ...open,
@@ -168,7 +170,6 @@ const EnterPassword = () => {
           message: "",
         });
       }, 3000);
-
       dispatch(cleareMessage());
     } else if (
       Authreducer.OrganizationCreateResponseMessage !== "" &&
@@ -192,7 +193,9 @@ const EnterPassword = () => {
     } else if (
       Authreducer.CreatePasswordResponseMessage !== "" &&
       Authreducer.CreatePasswordResponseMessage != t("2fa-enabled") &&
-      Authreducer.CreatePasswordResponseMessage != undefined
+      Authreducer.CreatePasswordResponseMessage != undefined &&
+      Authreducer.CreatePasswordResponseMessage !==
+        t("The-user-is-not-an-admin-user")
     ) {
       setOpen({
         ...open,
