@@ -43,7 +43,6 @@ const AgendaContributers = ({
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
   const [cancelModalView, setCancelModalView] = useState(false);
-  console.log(NewMeetingreducer, "NewMeetingreducerNewMeetingreducer");
   const [rowsData, setRowsData] = useState([]);
   const [open, setOpen] = useState({
     flag: false,
@@ -283,7 +282,8 @@ const AgendaContributers = ({
       NewMeetingreducer.ResponseMessage !== t("Data-available") &&
       NewMeetingreducer.ResponseMessage !== t("No-data-available") &&
       NewMeetingreducer.ResponseMessage !== t("Record-found") &&
-      NewMeetingreducer.ResponseMessage !== t("No-record-found")
+      NewMeetingreducer.ResponseMessage !== t("No-record-found") &&
+      NewMeetingreducer.ResponseMessage !== undefined
     ) {
       setOpen({
         ...open,
@@ -302,6 +302,9 @@ const AgendaContributers = ({
       dispatch(CleareMessegeNewMeeting());
     }
   }, [NewMeetingreducer.ResponseMessage]);
+
+  console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
+
   return (
     <>
       <section>

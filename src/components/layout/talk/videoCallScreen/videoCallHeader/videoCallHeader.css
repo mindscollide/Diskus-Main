@@ -1,11 +1,14 @@
 .title-heading {
-    display: flex;
+    /* display: flex;
     align-items: baseline;
-    justify-content: start;
+    justify-content: start; */
     font-size: 22px !important;
     color: #6172d6 !important;
     margin: auto;
     font-family: "MontserratSemiBold";
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .minimize-screen-on-bottom {
