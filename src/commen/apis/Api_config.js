@@ -1452,7 +1452,7 @@ const endMeetingStatus = {
 };
 
 const saveSignatureDocumentRM = {
-  RequestMethod: "ServiceManager.SendDataRoomDocumentToSignatureFlow",
+  RequestMethod: "ServiceManager.SaveSignatureDocument",
 };
 
 const getMeetingParticipantsInfo = {

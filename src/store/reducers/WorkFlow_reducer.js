@@ -10,6 +10,8 @@ const initialState = {
   saveSignatureOocument: null,
   getAllFieldsByWorkflowID: null,
   sendDocumentResponse: null,
+  getDataroomAnnotation: null,
+  addAnnotationFilesAttachment: null,
 };
 
 const SignatureWorkflowReducer = (state = initialState, action) => {
@@ -21,6 +23,10 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
       };
     }
     case actions.CREATESIGNATUREFLOW_SUCCESS: {
+      console.log(
+        { action },
+        "CREATESIGNATUREFLOW_SUCCESSCREATESIGNATUREFLOW_SUCCESS"
+      );
       return {
         ...state,
         Loading: false,
@@ -45,7 +51,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
     case actions.SAVE_WORKFLOW_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: action.loading,
         saveWorkFlowResponse: action.response,
         ResponseMessage: action.message,
       };
@@ -67,7 +73,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
     case actions.GETWORKFLOWBYFILEID_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: action.loading,
         getWorkfFlowByFileId: action.response,
         ResponseMessage: action.message,
       };
@@ -90,7 +96,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
     case actions.ADD_UPDATE_FIELD_VALUE_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: action.loading,
         addUpdateFieldValue: action.response,
         ResponseMessage: action.message,
       };
@@ -134,7 +140,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
     case actions.GET_ALL_FIELDS_BY_WORKDFLOW_ID_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: action.loading,
         getAllFieldsByWorkflowID: action.response,
         ResponseMessage: action.message,
       };
@@ -166,6 +172,50 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         sendDocumentResponse: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GET_ANNOTATION_FILE_SIGNATUREFLOW_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GET_ANNOTATION_FILE_SIGNATUREFLOW_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getDataroomAnnotation: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GET_ANNOTATION_FILE_SIGNATUREFLOW_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getDataroomAnnotation: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.ADD_ANNOTATION_FILE_SIGNATUREFLOW_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.ADD_ANNOTATION_FILE_SIGNATUREFLOW_SUCCESS: {
+      return {
+        ...state,
+        Loading: action.loading,
+        addAnnotationFilesAttachment: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.ADD_ANNOTATION_FILE_SIGNATUREFLOW_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        addAnnotationFilesAttachment: null,
         ResponseMessage: action.message,
       };
     }
