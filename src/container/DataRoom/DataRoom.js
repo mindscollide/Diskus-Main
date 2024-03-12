@@ -112,6 +112,7 @@ import {
 } from "../../store/actions/DataRoom2_actions";
 import FileDetailsModal from "./FileDetailsModal/FileDetailsModal";
 import copyToClipboard from "../../hooks/useClipBoard";
+import { createWorkflowApi } from "../../store/actions/workflow_actions";
 
 const DataRoom = () => {
   const currentUrl = window.location.href;
@@ -623,11 +624,10 @@ const DataRoom = () => {
         )
       );
     } else if (data.value === 8) {
-      window.open(
-        `/#/DisKus/signatureviewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
-        "_blank",
-        "noopener noreferrer"
-      );
+      let dataRoomData = {
+        FileID: Number(record.id),
+      };
+      dispatch(createWorkflowApi(dataRoomData, navigate, t, pdfDataJson));
     }
   };
   //
@@ -1542,39 +1542,16 @@ const DataRoom = () => {
               </div>
             );
           } else {
-            if (ext === "pdf") {
-              return (
-                // <Link
-                //   to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
-                //     pdfDataJson
-                //   )}`}
-                //   target="_blank"
-                //   rel="noopener noreferrer"
-                // >
-                <>
-                  <section className={styles["fileRow"]}>
-                    <img
-                      src={getIconSource(getFileExtension(data.name))}
-                      alt=""
-                      width={"25px"}
-                      height={"25px"}
-                      className="me-2"
-                    />
-                    <abbr title={text}>
-                      <span
-                        onClick={(e) => handleLinkClick(e, pdfDataJson)}
-                        className={styles["dataroom_table_heading"]}
-                      >
-                        {text}
-                      </span>
-                    </abbr>
-                  </section>
-                </>
-
-                // </Link>
-              );
-            } else {
-              return (
+            // if (ext === "pdf") {
+            return (
+              // <Link
+              //   to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
+              //     pdfDataJson
+              //   )}`}
+              //   target="_blank"
+              //   rel="noopener noreferrer"
+              // >
+              <>
                 <section className={styles["fileRow"]}>
                   <img
                     src={getIconSource(getFileExtension(data.name))}
@@ -1584,13 +1561,36 @@ const DataRoom = () => {
                     className="me-2"
                   />
                   <abbr title={text}>
-                    <span className={styles["dataroom_table_heading"]}>
+                    <span
+                      onClick={(e) => handleLinkClick(e, pdfDataJson)}
+                      className={styles["dataroom_table_heading"]}
+                    >
                       {text}
                     </span>
                   </abbr>
                 </section>
-              );
-            }
+              </>
+
+              // </Link>
+            );
+            // } else {
+            //   return (
+            //     <section className={styles["fileRow"]}>
+            //       <img
+            //         src={getIconSource(getFileExtension(data.name))}
+            //         alt=""
+            //         width={"25px"}
+            //         height={"25px"}
+            //         className="me-2"
+            //       />
+            //       <abbr title={text}>
+            //         <span className={styles["dataroom_table_heading"]}>
+            //           {text}
+            //         </span>
+            //       </abbr>
+            //     </section>
+            //   );
+            // }
           }
         }
       },
@@ -2067,41 +2067,24 @@ const DataRoom = () => {
                           />
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                          {fileExtension === "pdf"
-                            ? optionsforPDFandSignatureFlow(t).map(
-                                (data, index) => {
-                                  return (
-                                    <Dropdown.Item
-                                      key={index}
-                                      onClick={() =>
-                                        fileOptionsSelect(
-                                          data,
-                                          record,
-                                          pdfDataJsonSignature
-                                        )
-                                      }
-                                    >
-                                      {data.label}
-                                    </Dropdown.Item>
-                                  );
-                                }
-                              )
-                            : optionsforFile(t).map((data, index) => {
-                                return (
-                                  <Dropdown.Item
-                                    key={index}
-                                    onClick={() =>
-                                      fileOptionsSelect(
-                                        data,
-                                        record,
-                                        pdfDataJson
-                                      )
-                                    }
-                                  >
-                                    {data.label}
-                                  </Dropdown.Item>
-                                );
-                              })}
+                          {optionsforPDFandSignatureFlow(t).map(
+                            (data, index) => {
+                              return (
+                                <Dropdown.Item
+                                  key={index}
+                                  onClick={() =>
+                                    fileOptionsSelect(
+                                      data,
+                                      record,
+                                      pdfDataJsonSignature
+                                    )
+                                  }
+                                >
+                                  {data.label}
+                                </Dropdown.Item>
+                              );
+                            }
+                          )}
                           {/* {optionsforFile(t).map((data, index) => {
                             return (
                               <Dropdown.Item
