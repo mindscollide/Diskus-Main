@@ -5,18 +5,24 @@ import { Col, Row } from "react-bootstrap";
 import { Step, Stepper } from "react-form-stepper";
 import { Button } from "../../../../components/elements";
 import BillProcessStepOne from "./BillProcessStepOne/BillProcessStepOne";
+import BillProcessStepTwo from "./BillProcessStepTwo/BillProcessStepTwo";
+import BillProcessStepThree from "./BillProcessStepThree/BillProcessStepThree";
+import BillProcessStepFour from "./BillProcessStepFour/BillProcessStepFour";
 const BillingMethodUsermanagement = () => {
   const { t } = useTranslation();
 
   const [activeStep, setActiveStep] = useState(0);
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setActiveStep((prevActiveStep) =>
+      prevActiveStep < 4 ? prevActiveStep + 1 : prevActiveStep
+    );
   };
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    setActiveStep((prevActiveStep) => Math.max(prevActiveStep - 1, 0));
   };
+
   //React Stepper Numbers manuipulation
   useEffect(() => {
     const firstvaue = document.querySelector(".StepButtonContent-d1-0-3-7");
@@ -62,7 +68,7 @@ const BillingMethodUsermanagement = () => {
               label={
                 <span
                   className={
-                    activeStep === 0
+                    activeStep >= 0
                       ? "billing-contactActive"
                       : "billing-contact"
                   }
@@ -75,7 +81,7 @@ const BillingMethodUsermanagement = () => {
               label={
                 <span
                   className={
-                    activeStep === 1
+                    activeStep >= 1
                       ? "billing-addressActive"
                       : "billing-address"
                   }
@@ -88,7 +94,7 @@ const BillingMethodUsermanagement = () => {
               label={
                 <span
                   className={
-                    activeStep === 2
+                    activeStep >= 2
                       ? "package-detailsActive"
                       : "package-details"
                   }
@@ -101,7 +107,7 @@ const BillingMethodUsermanagement = () => {
               label={
                 <span
                   className={
-                    activeStep === 3 ? "payment-methodActive" : "payment-method"
+                    activeStep >= 3 ? "payment-methodActive" : "payment-method"
                   }
                 >
                   {t("Payment-method")}
@@ -116,12 +122,18 @@ const BillingMethodUsermanagement = () => {
           {activeStep === 0 ? (
             <BillProcessStepOne />
           ) : activeStep === 1 ? (
-            <>step number two</>
+            <>
+              <BillProcessStepTwo />
+            </>
           ) : activeStep === 2 ? (
-            <>step number three</>
+            <>
+              <BillProcessStepThree />
+            </>
           ) : activeStep === 3 ? (
             <>
-              <>step number four</>
+              <>
+                <BillProcessStepFour />
+              </>
             </>
           ) : null}
         </Col>
