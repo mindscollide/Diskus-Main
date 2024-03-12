@@ -86,10 +86,8 @@ const MeetingMaterial = ({
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let userID = localStorage.getItem("userID");
-  const [clicks, setClicks] = useState(0);
   const [flag, setFlag] = useState(5);
   const [prevFlag, setprevFlag] = useState(5);
-  const [dataCheck, setDataCheck] = useState([]);
   const [isPublishedState, setIsPublishedState] = useState(false);
 
   // row state for meeting Material
@@ -205,7 +203,7 @@ const MeetingMaterial = ({
           <div>
             <section
               className={styles["docx-name-title"]}
-              onDoubleClick={() => handleDoubeClick(record)}
+              onClick={() => handleDoubeClick(record)}
             >
               <img
                 src={getIconSource(getFileExtension(record.displayFileName))}
@@ -250,7 +248,7 @@ const MeetingMaterial = ({
                   fontSize={22}
                   cursor={ext === "pdf" ? "pointer" : "default"}
                   pointerEvents={ext === "pdf" ? "auto" : "none"}
-                  onDoubleClick={() => handleDoubeClick(record)}
+                  onClick={() => handleDoubeClick(record)}
                 />
                 <Button
                   disableBtn={ext !== "pdf" ? false : true}

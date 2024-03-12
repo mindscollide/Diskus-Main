@@ -1817,5 +1817,8 @@
   "of-licenses": "of licenses",
   "charges-in": "Charges in US$",
   "Quarterly": "Quarterly",
-  "Yearly": "Yearly"
+  "Yearly": "Yearly",
+  "Board-meeting": "Board Meeting",
+  "Group-meeting": "Group Meeting",
+  "Committee-meeting": "Committee Meeting"
 }

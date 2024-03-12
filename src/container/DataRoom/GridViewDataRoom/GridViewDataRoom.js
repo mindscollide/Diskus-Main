@@ -50,9 +50,6 @@ const GridViewDataRoom = ({
   const currentView = Number(localStorage.getItem("setTableView"));
   const [showrenameFile, setShowRenameFile] = useState(false);
   const [shareFileModal, setShareFileModal] = useState(false);
-  // for anotantion opens in new tabb on doubble click
-  const [clicks, setClicks] = useState(0);
-  const [dataCheck, setDataCheck] = useState([]);
   const [sortIon, setSortIcon] = useState(false);
   const [showrenameFolder, setShowreanmeFolder] = useState(false);
   const [folderId, setFolderId] = useState(0);
@@ -215,30 +212,11 @@ const GridViewDataRoom = ({
 
   const handleLinkClick = (data) => {
     // e.preventDefault();
-    if (clicks === 1) {
-      if (dataCheck === data) {
-        // Perform the action you want to happen on the double-click here
-        window.open(
-          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(data)}`,
-          "_blank",
-          "noopener noreferrer"
-        );
-      } else {
-        setDataCheck(data);
-      }
-
-      // Reset the click count
-      setClicks(0);
-    } else {
-      // Increment the click count
-      setClicks(clicks + 1);
-      setDataCheck(data);
-      // You can add a delay here to reset the click count after a certain time if needed
-      setTimeout(() => {
-        setClicks(0);
-        setDataCheck([]);
-      }, 300); // Reset after 300 milliseconds (adjust as needed)
-    }
+    window.open(
+      `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(data)}`,
+      "_blank",
+      "noopener noreferrer"
+    );
   };
 
   useEffect(() => {

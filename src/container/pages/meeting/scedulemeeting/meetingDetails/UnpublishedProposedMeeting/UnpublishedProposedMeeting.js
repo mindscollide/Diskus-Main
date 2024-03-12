@@ -544,10 +544,6 @@ const UnpublishedProposedMeeting = ({
           isResponseDateGone
         );
 
-        console.log(
-          isViewPollShown,
-          "currentDateObjcurrentDateObjcurrentDateObj"
-        );
         let apiData = {
           MeetingID: Number(record.pK_MDID),
           StatusID: 1,
