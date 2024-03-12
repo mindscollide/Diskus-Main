@@ -12,12 +12,10 @@ import { LogLevel } from "@azure/msal-browser";
  */
 export const msalConfig = {
   auth: {
-    clientId: "545933ff-407a-44e5-b3ac-a73ace252364",
-    authority:
-      "https://login.microsoftonline.com/c5978316-9241-4527-b8f3-b75023242cf3",
-    redirectUri: "https://letsdiskus.com/Diskus-Revamp/diskus-bg-blue.php",
-    postLogoutRedirectUri:
-      "https://letsdiskus.com/Diskus-Revamp/diskus-bg-blue.php",
+    clientId: "d6f6df83-a960-44de-995c-42ec946b80ea",
+    authority: "https://login.microsoftonline.com/common",
+    redirectUri: "/",
+    postLogoutRedirectUri: "/",
   },
   cache: {
     cacheLocation: "sessionStorage", // This configures where your cache will be stored
