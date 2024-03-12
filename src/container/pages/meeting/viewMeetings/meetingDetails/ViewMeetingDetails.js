@@ -513,14 +513,7 @@ const ViewMeetingDetails = ({
       };
       dispatch(GetGroupMessages(navigate, chatGroupData, t));
       dispatch(GetAllUsers(navigate, parseInt(userID), currentOrganization, t));
-      dispatch(
-        GetAllUsersGroupsRoomsList(
-          navigate,
-          parseInt(userID),
-          currentOrganization,
-          t
-        )
-      );
+
       let allChatMessages =
         talkStateData.AllUserChats.AllUserChatsData.allMessages;
       const foundRecord = allChatMessages.find(

@@ -633,13 +633,13 @@ const NewMeeting = () => {
           value: "9",
         },
         {
-          text: t("Not-conducted"),
-          value: "8",
-        },
-        {
           text: t("Cancelled"),
           value: "4",
         },
+        {
+          text: t("Not-conducted"),
+          value: "8",
+        }
       ],
       defaultFilteredValue: ["10", "9", "8", "2", "1", "4"],
       filterResetToDefaultFilteredValue: true,
@@ -690,53 +690,53 @@ const NewMeeting = () => {
         return dateA - dateB;
       },
     },
-    {
-      title: t("Meeting-type"),
-      dataIndex: "meetingType",
-      key: "meetingType",
-      width: "115px",
-      align: "center",
-      filters: [
-        {
-          text: t("Board-meeting"),
-          value: "1",
-        },
-        {
-          text: t("Committee-meeting"),
-          value: "2",
-        },
-        {
-          text: t("Group-meeting"),
-          value: "3",
-        },
-      ],
-      defaultFilteredValue: ["1", "2", "3"],
-      filterResetToDefaultFilteredValue: true,
-      filterIcon: () => (
-        <ChevronDown className="filter-chevron-icon-todolist" />
-      ),
-      onFilter: (value, record) => {
-        const meetingType = Number(record.meetingType);
-        return !isNaN(meetingType) && meetingType === Number(value);
-      },
-      render: (text) => {
-        let meetingTypeText = "";
-        switch (Number(text)) {
-          case 1:
-            meetingTypeText = t("Board-meeting");
-            break;
-          case 2:
-            meetingTypeText = t("Committee-meeting");
-            break;
-          case 3:
-            meetingTypeText = t("Group-meeting");
-            break;
-          default:
-            meetingTypeText = t("Unknown");
-        }
-        return <span>{meetingTypeText}</span>;
-      },
-    },
+    // {
+    //   title: t("Meeting-type"),
+    //   dataIndex: "meetingType",
+    //   key: "meetingType",
+    //   width: "115px",
+    //   align: "center",
+    //   filters: [
+    //     {
+    //       text: t("Board-meeting"),
+    //       value: "1",
+    //     },
+    //     {
+    //       text: t("Committee-meeting"),
+    //       value: "2",
+    //     },
+    //     {
+    //       text: t("Group-meeting"),
+    //       value: "3",
+    //     },
+    //   ],
+    //   defaultFilteredValue: ["1", "2", "3"],
+    //   filterResetToDefaultFilteredValue: true,
+    //   filterIcon: () => (
+    //     <ChevronDown className="filter-chevron-icon-todolist" />
+    //   ),
+    //   onFilter: (value, record) => {
+    //     const meetingType = Number(record.meetingType);
+    //     return !isNaN(meetingType) && meetingType === Number(value);
+    //   },
+    //   render: (text) => {
+    //     let meetingTypeText = "";
+    //     switch (Number(text)) {
+    //       case 1:
+    //         meetingTypeText = t("Board-meeting");
+    //         break;
+    //       case 2:
+    //         meetingTypeText = t("Committee-meeting");
+    //         break;
+    //       case 3:
+    //         meetingTypeText = t("Group-meeting");
+    //         break;
+    //       default:
+    //         meetingTypeText = t("Unknown");
+    //     }
+    //     return <span>{meetingTypeText}</span>;
+    //   },
+    // },
 
     {
       dataIndex: "Chat",
