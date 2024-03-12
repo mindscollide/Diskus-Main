@@ -6976,3 +6976,171 @@ th.ant-table-cell.minutesParticipant {
 td.ant-table-cell.minutesParticipant {
   text-align: center !important;
 }
+
+/* React Stepper Styles */
+
+.StepButton-d2-0-3-12.active {
+  padding: 33px !important;
+  background: #6172d6 !important;
+  z-index: 1 !important;
+}
+
+.StepButton-d4-0-3-20.active {
+  padding: 33px !important;
+  background: #6172d6 !important;
+  z-index: 1 !important;
+}
+
+.StepButton-d6-0-3-26.active {
+  padding: 33px !important;
+  background: #6172d6 !important;
+  z-index: 1 !important;
+}
+
+.StepButton-d6-0-3-26.completed {
+  padding: 33px !important;
+  background: #6172d6 !important;
+  z-index: 1 !important;
+}
+
+.StepButton-d0-0-3-6.active {
+  padding: 33px !important;
+  background: #6172d6 !important;
+  z-index: 1 !important;
+}
+
+.StepButton-d2-0-3-12.completed:hover {
+  background: #4adede !important;
+  z-index: 1 !important;
+  padding: 33px !important;
+}
+
+.StepButton-d4-0-3-20.completed {
+  background: #4adede !important;
+  z-index: 1 !important;
+  padding: 33px !important;
+}
+
+.StepButton-d2-0-3-12.completed {
+  background: #4adede !important;
+  z-index: 1 !important;
+  padding: 33px !important;
+}
+
+.StepButton-d2-0-3-12.active:hover {
+  padding: 33px !important;
+  background: #6172d6 !important;
+  z-index: 1 !important;
+}
+
+.StepButton-d0-0-3-6.completed {
+  background: #4adede !important;
+  z-index: 1 !important;
+  padding: 33px !important;
+}
+
+.StepButton-d4-0-3-20 {
+  z-index: 1 !important;
+  padding: 33px !important;
+}
+
+.StepButton-d2-0-3-12 {
+  z-index: 1 !important;
+  padding: 33px !important;
+}
+
+.StepButton-d6-0-3-26 {
+  z-index: 1 !important;
+  padding: 33px !important;
+}
+
+.StepButtonContent-d3-0-3-13 {
+  color: #fff !important;
+  font-family: "MontserratBold-700" !important;
+  font-size: 30px !important;
+}
+
+body[dir="rtl"] .StepButtonContent-d3-0-3-13 {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
+
+.StepButtonContent-d1-0-3-7.active {
+  color: #fff !important;
+  font-family: "MontserratBold-700" !important;
+  font-size: 30px !important;
+}
+
+body[dir="rtl"] .StepButtonContent-d1-0-3-7.active {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
+
+.StepButtonContent-d5-0-3-21 {
+  color: #fff !important;
+  font-family: "MontserratBold-700" !important;
+  font-size: 30px !important;
+}
+
+body[dir="rtl"] .StepButtonContent-d5-0-3-21 {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
+
+.StepButtonContent-d7-0-3-27 {
+  color: #fff !important;
+  font-family: "MontserratBold-700" !important;
+  font-size: 30px !important;
+}
+
+body[dir="rtl"] .StepButtonContent-d7-0-3-27 {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
+
+.Connector-d1-0-3-17 {
+  border-color: #e1e1e1 !important;
+  border-top-style: dashed !important;
+  width: 100% !important;
+  margin-top: 18px !important;
+}
+
+.Connector-d3-0-3-23 {
+  border-color: #e1e1e1 !important;
+  border-top-style: dashed !important;
+  width: 100% !important;
+  margin-top: 18px !important;
+}
+
+.Connector-d5-0-3-29 {
+  border-color: #e1e1e1 !important;
+  border-top-style: dashed !important;
+  width: 100% !important;
+  margin-top: 18px !important;
+}
+
+.StepButtonContent-d1-0-3-7.completed {
+  color: #fff !important;
+  font-family: "MontserratBold-700" !important;
+  font-size: 30px !important;
+}
+
+body[dir="rtl"] .StepButtonContent-d1-0-3-7.completed {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
+
+.Label-0-3-9 {
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold-600" !important;
+  font-size: 16px !important;
+}
+
+body[dir="rtl"] .Label-0-3-9 {
+  font-family: "IBMPlexSansArabic-SemiBold";
+}
+
+.Label-d1-0-3-11 {
+  color: #6172d6 !important;
+  font-family: "MontserratSemiBold-600" !important;
+  font-size: 16px !important;
+}
+
+body[dir="rtl"] .Label-d1-0-3-11 {
+  font-family: "IBMPlexSansArabic-SemiBold";
+}

@@ -1,0 +1,9 @@
+.BillingDetailsHeading {
+  font-family: "MontserratSemiBold-600" !important;
+  color: #6172d6 !important;
+  font-size: 30px !important;
+}
+
+body[dir="rtl"] .BillingDetailsHeading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}

@@ -84,6 +84,7 @@ import AddUsers from "../container/pages/UserMangement/AdminUserManagement/AddUs
 import OrganizationLevelConfigUM from "../container/pages/UserMangement/OrganziationLevelConfigUM/OrganizationLevelConfigUM";
 import UserLevelConfigUM from "../container/pages/UserMangement/UserLevelConfigUM/UserLevelConfigUM";
 import PakageDetailsUserManagement from "../container/pages/UserMangement/PakageDetailsUserManagement/PakageDetailsUserManagement";
+import BillingMethodUsermanagement from "../container/pages/UserMangement/BillingMethodUserManagement/BillingMethodUsermanagement";
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
@@ -105,6 +106,10 @@ export const router = createHashRouter(
       <Route path="/verifyEmailOTP" element={<VerifyEmailOTP />} />
       <Route path="/selectedpackage" element={<PackageSelected />} />
       <Route path="/paymentForm" element={<PaymentForm />} />
+      <Route
+        path="/PaymentFormUserManagement"
+        element={<BillingMethodUsermanagement />}
+      />
       <Route
         path="/updatePasswordSuccess"
         element={<PasswordUpdateMessage />}

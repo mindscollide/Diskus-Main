@@ -1820,5 +1820,9 @@
   "Yearly": "Yearly",
   "Board-meeting": "Board Meeting",
   "Group-meeting": "Group Meeting",
-  "Committee-meeting": "Committee Meeting"
+  "Committee-meeting": "Committee Meeting",
+  "Billing-details": "Billing Details",
+  "Billing-contact": "Billing Contact",
+  "Billing-address": "Billing Address",
+  "Payment-method": "Payment Method"
 }
