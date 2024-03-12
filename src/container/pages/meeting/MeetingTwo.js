@@ -635,12 +635,12 @@ const NewMeeting = () => {
           value: "9",
         },
         {
-          text: t("Not-conducted"),
-          value: "8",
-        },
-        {
           text: t("Cancelled"),
           value: "4",
+        },
+        {
+          text: t("Not-conducted"),
+          value: "8",
         },
       ],
       defaultFilteredValue: ["10", "9", "8", "2", "1", "4"],
@@ -1032,7 +1032,7 @@ const NewMeeting = () => {
           } else if (isOrganiser) {
             return (
               <Button
-                text={t("Start-join-meeting")}
+                text={t("Join-meeting")}
                 className={styles["joining-Meeting"]}
                 onClick={() => {
                   handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
