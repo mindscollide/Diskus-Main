@@ -2947,6 +2947,7 @@ const DataRoom = () => {
                           />
                           <UploadTextField
                             title={t("File-upload")}
+                            multiple={true}
                             handleFileUploadRequest={handleUploadFile}
                             setProgress={setProgress}
                           />
