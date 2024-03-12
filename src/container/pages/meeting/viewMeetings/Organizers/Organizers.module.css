@@ -168,3 +168,9 @@
   border-radius: 4px !important;
   font-family: "MontserratSemiBold" !important;
 }
+.height2 {
+  min-height: 60vh !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}

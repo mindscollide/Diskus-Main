@@ -2067,7 +2067,7 @@ const DataRoom = () => {
                           />
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                          {optionsforPDFandSignatureFlow(t).map(
+                          {/* {optionsforPDFandSignatureFlow(t).map(
                             (data, index) => {
                               return (
                                 <Dropdown.Item
@@ -2084,8 +2084,8 @@ const DataRoom = () => {
                                 </Dropdown.Item>
                               );
                             }
-                          )}
-                          {/* {optionsforFile(t).map((data, index) => {
+                          )} */}
+                          {optionsforFile(t).map((data, index) => {
                             return (
                               <Dropdown.Item
                                 key={index}
@@ -2096,7 +2096,7 @@ const DataRoom = () => {
                                 {data.label}
                               </Dropdown.Item>
                             );
-                          })} */}
+                          })}
                         </Dropdown.Menu>
                       </Dropdown>
                     )}

@@ -346,16 +346,16 @@ const VideoCallNormalHeader = ({
     <>
       <Row className="mb-4">
         {currentCallType === 2 && callTypeID === 2 && meetingTitle === "" ? (
-          <Col lg={3} md={3} sm={12} className="mt-1">
+          <Col lg={5} md={5} sm={12} className="mt-1">
             <p className="title-heading">{t("Group-call")}</p>
           </Col>
         ) : (currentCallType === 2 || callTypeID === 2) &&
           meetingTitle !== "" ? (
-          <Col lg={3} md={3} sm={12} className="mt-1">
+          <Col lg={5} md={5} sm={12} className="mt-1">
             <p className="title-heading">{meetingTitle}</p>
           </Col>
         ) : (
-          <Col lg={3} md={3} sm={12} className="mt-1">
+          <Col lg={5} md={5} sm={12} className="mt-1">
             <p className="title-heading">
               {currentUserName !==
                 VideoMainReducer.VideoRecipentData.userName &&
@@ -377,8 +377,8 @@ const VideoCallNormalHeader = ({
         )}
 
         <Col
-          lg={4}
-          md={4}
+          lg={3}
+          md={3}
           sm={12}
           className="d-flex justify-content-center align-items-center mt-1"
         >
@@ -398,7 +398,7 @@ const VideoCallNormalHeader = ({
           ) : null}
         </Col>
         <>
-          <Col lg={5} md={5} sm={12} className="normal-screen-top-icons">
+          <Col lg={4} md={4} sm={12} className="normal-screen-top-icons">
             {videoFeatureReducer.MaximizeVideoFlag === true ? (
               <div className="screenShare-Toggle flipHorizontal">
                 <Tooltip placement="topRight" title={t("Layout")}>
@@ -593,10 +593,6 @@ const VideoCallNormalHeader = ({
               </div>
             ) : null}
           </Col>
-        </>
-
-        <>
-          <Col lg={1} md={1} sm={12}></Col>
         </>
       </Row>
 

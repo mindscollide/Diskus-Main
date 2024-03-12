@@ -745,7 +745,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   };
 
   const joinMeetingCall = () => {
-    setViewFlag(false);
+    // setViewFlag(false);
     if (activeCall === false && isMeeting === false) {
       let Data = {
         MeetingID: getMeetID,

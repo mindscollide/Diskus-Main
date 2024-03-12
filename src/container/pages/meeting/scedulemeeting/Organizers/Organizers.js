@@ -1026,40 +1026,41 @@ const Organizers = ({
                 )}
               </Col>
             </Row>
-            <Row>
-              <Col lg={12} md={12} sm={12}>
-                <Table
-                  column={MeetingColoumns}
-                  scroll={{ y: "62vh" }}
-                  pagination={false}
-                  className="Polling_table"
-                  rows={rowsData}
-                />
-              </Col>
-            </Row>
-          </section>
-          {!isEdit ? (
-            <Row>
-              <Col lg={12} md={12} sm={12}>
-                <section className={styles["Footer_button"]}>
-                  <Button
-                    text={t("Cancel")}
-                    className={styles["Cancel_Organization"]}
-                    onClick={handleCancelOrganizer}
+            <section className={styles["height2"]}>
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <Table
+                    column={MeetingColoumns}
+                    scroll={{ y: "62vh" }}
+                    pagination={false}
+                    className="Polling_table"
+                    rows={rowsData}
                   />
+                </Col>
+              </Row>
 
-                  {/* <Button
+              {!isEdit ? (
+                <Row>
+                  <Col lg={12} md={12} sm={12}>
+                    <section className={styles["Footer_button"]}>
+                      <Button
+                        text={t("Cancel")}
+                        className={styles["Cancel_Organization"]}
+                        onClick={handleCancelOrganizer}
+                      />
+
+                      {/* <Button
                     text={t("Previous")}
                     className={styles["publish_button_Organization"]}
                     onClick={previousTabOrganizer}
                   /> */}
 
-                  <Button
-                    text={t("Next")}
-                    className={styles["publish_button_Organization"]}
-                    onClick={nextTabOrganizer}
-                  />
-                  {/* {(Number(editorRole.status) === 9 ||
+                      <Button
+                        text={t("Next")}
+                        className={styles["publish_button_Organization"]}
+                        onClick={nextTabOrganizer}
+                      />
+                      {/* {(Number(editorRole.status) === 9 ||
                     Number(editorRole.status) === 8 ||
                     Number(editorRole.status) === 10) &&
                   editorRole.role === "Organizer" &&
@@ -1071,33 +1072,33 @@ const Organizers = ({
                       onClick={handlePublishButton}
                     />
                   )} */}
-                  {Number(editorRole.status) === 11 ||
-                  Number(editorRole.status) === 12 ? (
-                    <Button
-                      disableBtn={
-                        Number(currentMeeting) === 0 ||
-                        isPublishedState === false
-                          ? true
-                          : false
-                      }
-                      text={t("Publish")}
-                      className={styles["Next_Organization"]}
-                      onClick={handlePublishButton}
-                    />
-                  ) : isEditMeeting === true ? null : (
-                    <Button
-                      disableBtn={
-                        Number(currentMeeting) === 0 ||
-                        isPublishedState === false
-                          ? true
-                          : false
-                      }
-                      text={t("Publish")}
-                      className={styles["Next_Organization"]}
-                      onClick={handlePublishButton}
-                    />
-                  )}
-                  {/* {Number(editorRole.status) === 11 ||
+                      {Number(editorRole.status) === 11 ||
+                      Number(editorRole.status) === 12 ? (
+                        <Button
+                          disableBtn={
+                            Number(currentMeeting) === 0 ||
+                            isPublishedState === false
+                              ? true
+                              : false
+                          }
+                          text={t("Publish")}
+                          className={styles["Next_Organization"]}
+                          onClick={handlePublishButton}
+                        />
+                      ) : isEditMeeting === true ? null : (
+                        <Button
+                          disableBtn={
+                            Number(currentMeeting) === 0 ||
+                            isPublishedState === false
+                              ? true
+                              : false
+                          }
+                          text={t("Publish")}
+                          className={styles["Next_Organization"]}
+                          onClick={handlePublishButton}
+                        />
+                      )}
+                      {/* {Number(editorRole.status) === 11 ||
                   Number(editorRole.status) === 12 ? (
                     <Button
                       text={t("Publish")}
@@ -1105,10 +1106,12 @@ const Organizers = ({
                       onClick={handlePublishButton}
                     />
                   ) : null} */}
-                </section>
-              </Col>
-            </Row>
-          ) : null}
+                    </section>
+                  </Col>
+                </Row>
+              ) : null}
+            </section>
+          </section>
         </>
       )}
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
