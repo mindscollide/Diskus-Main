@@ -874,3 +874,23 @@ export function convertToUTC(dateStr) {
 
   return `${yearStr}${monthStr}${dayStr}${hourStr}${minuteStr}${secondStr}`;
 }
+
+//For Agenda Viewer Participant
+export function convertAndFormatDateTimeGMT(dateTimeString) {
+  const year = dateTimeString.substring(0, 4);
+  const month = dateTimeString.substring(4, 6);
+  const day = dateTimeString.substring(6, 8);
+  const hour = dateTimeString.substring(8, 10);
+  const minute = dateTimeString.substring(10, 12);
+  const second = dateTimeString.substring(12, 14);
+
+  const date = new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}Z`);
+  const gmtDate = new Date(date.getTime() + (date.getTimezoneOffset() * 60000)); // Convert to GMT
+  const formattedDate = `${gmtDate.getUTCDate()}-${gmtDate.getUTCMonth() + 1}-${gmtDate.getUTCFullYear()}`;
+  const formattedHour = gmtDate.getUTCHours();
+  const formattedMinute = gmtDate.getUTCMinutes() < 10 ? '0' + gmtDate.getUTCMinutes() : gmtDate.getUTCMinutes();
+  const period = formattedHour < 12 ? 'AM' : 'PM';
+  const formattedTime = `${formattedHour > 12 ? formattedHour - 12 : formattedHour}:${formattedMinute} ${period}`;
+
+  return `${formattedDate} | ${formattedTime}`;
+}
