@@ -7054,6 +7054,11 @@ td.ant-table-cell.minutesParticipant {
   padding: 33px !important;
 }
 
+.StepButton-d0-0-3-6 {
+  z-index: 1 !important;
+  padding: 33px !important;
+}
+
 .StepButtonContent-d3-0-3-13 {
   color: #fff !important;
   font-family: "MontserratBold-700" !important;
@@ -7061,6 +7066,16 @@ td.ant-table-cell.minutesParticipant {
 }
 
 body[dir="rtl"] .StepButtonContent-d3-0-3-13 {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
+
+.StepButtonContent-d1-0-3-7 {
+  color: #fff !important;
+  font-family: "MontserratBold-700" !important;
+  font-size: 30px !important;
+}
+
+body[dir="rtl"] .StepButtonContent-d1-0-3-7 {
   font-family: "IBMPlexSansArabic-Bold" !important;
 }
 
