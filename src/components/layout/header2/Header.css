@@ -541,7 +541,7 @@ body[dir="rtl"] label.logout-confirmation-label {
 }
 
 a.text-black.nav-link {
-  text-align: center;
+  /* text-align: center; */
   border-bottom: 1px solid #d8d8d8;
   color: #5a5a5a;
   padding: 5px 0 !important;
