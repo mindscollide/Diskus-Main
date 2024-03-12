@@ -161,3 +161,9 @@
   font-size: 12px !important;
   font-family: "Montserrat";
 }
+.height2 {
+  min-height: 60vh !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}

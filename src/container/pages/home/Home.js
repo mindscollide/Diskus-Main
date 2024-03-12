@@ -883,7 +883,7 @@ const Home = () => {
                           .participantRoleID === 1 ? (
                         <div className="width-100">
                           <Button
-                            text={t("Start-join-meeting")}
+                            text={t("Join-meeting")}
                             className={styles["joining-Meeting"]}
                             onClick={() =>
                               meetingDashboardCalendarEvent(upcomingEventsData)
@@ -971,7 +971,7 @@ const Home = () => {
                         ) : upcomingEventsData.meetingDetails
                             .participantRoleID === 1 ? (
                           <Button
-                            text={t("Start-join-meeting")}
+                            text={t("Join-meeting")}
                             className={styles["joining-Meeting"]}
                             onClick={() =>
                               meetingDashboardCalendarEvent(upcomingEventsData)
@@ -1057,7 +1057,7 @@ const Home = () => {
                       ) : upcomingEventsData.meetingDetails
                           .participantRoleID === 1 ? (
                         <Button
-                          text={t("Start-join-meeting")}
+                          text={t("Join-meeting")}
                           className={styles["joining-Meeting"]}
                           onClick={() =>
                             meetingDashboardCalendarEvent(upcomingEventsData)

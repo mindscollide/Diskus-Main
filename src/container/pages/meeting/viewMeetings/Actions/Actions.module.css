@@ -92,7 +92,7 @@
   display: inline-block !important;
   overflow: hidden !important;
   text-overflow: ellipsis;
-  width: 180px !important;
+  width: 100% !important;
   white-space: nowrap;
 }
 
@@ -110,6 +110,9 @@
 
 .HeightDefined {
   height: 49vh !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .Cancel_Meeting_Details {
@@ -134,16 +137,16 @@
   margin-top: 5px;
 }
 .Action_title {
-  font-family: "MontserratSemiBold-600" !important;
-  color: #6172d6 !important;
   font-size: 12px !important;
+  font-family: "MontserratSemiBold";
+  display: inline-block !important;
   overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  display: block;
-  white-space: nowrap !important;
+  text-overflow: ellipsis;
   cursor: pointer !important;
+  color: #6172d6 !important;
+  white-space: nowrap;
   user-select: none !important;
-  margin-top: 5px;
+  width: 200px;
 }
 .action-delete-cursor {
   cursor: pointer !important;

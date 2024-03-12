@@ -452,7 +452,7 @@ const Organizers = ({
 
   return (
     <>
-      <section className="position-relative">
+      <section className={`${"position-relative"} ${styles["height2"]}`}>
         <Row>
           <Col lg={12} md={12} sm={12}>
             <Table
@@ -464,34 +464,35 @@ const Organizers = ({
             />
           </Col>
         </Row>
-      </section>
-      <Row>
-        <Col lg={12} md={12} sm={12}>
-          <section className={styles["Footer_button"]}>
-            {/* <Button
+
+        <Row>
+          <Col lg={12} md={12} sm={12}>
+            <section className={styles["Footer_button"]}>
+              {/* <Button
               text={t("Cancel")}
               className={styles["Cancel_Organization"]}
               onClick={handleCancelOrganizer}
             /> */}
-            <Button
-              text={t("Cancel")}
-              className={styles["Cancel_Meeting_Details"]}
-              onClick={handleCancelMeetingNoPopup}
-            />
-            {/* <Button
+              <Button
+                text={t("Cancel")}
+                className={styles["Cancel_Meeting_Details"]}
+                onClick={handleCancelMeetingNoPopup}
+              />
+              {/* <Button
               text={t("Previous")}
               className={styles["publish_button_Organization"]}
               onClick={previousTabOrganizer}
             /> */}
 
-            <Button
-              text={t("Next")}
-              className={styles["publish_button_Organization"]}
-              onClick={nextTabOrganizer}
-            />
-          </section>
-        </Col>
-      </Row>
+              <Button
+                text={t("Next")}
+                className={styles["publish_button_Organization"]}
+                onClick={nextTabOrganizer}
+              />
+            </section>
+          </Col>
+        </Row>
+      </section>
 
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
 

@@ -13,7 +13,10 @@ import {
 } from "../../../../../../components/elements";
 import { Progress } from "antd";
 import moment from "moment";
-import { EditmeetingDateFormat } from "../../../../../../commen/functions/date_formater";
+import {
+  EditmeetingDateFormat,
+  _justShowDateformatBilling,
+} from "../../../../../../commen/functions/date_formater";
 import { castVoteApi } from "../../../../../../store/actions/Polls_actions";
 import {
   Radio3,
@@ -245,11 +248,10 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
                     <span className={styles["Date_Fetched"]}>
                       {viewProgressPollsDetails.Date !== "" && (
                         <>
-                          {moment(
-                            EditmeetingDateFormat(
-                              viewProgressPollsDetails?.Date + "000000"
-                            )
-                          ).format("DD MMM YYYY")}
+                          {_justShowDateformatBilling(
+                            viewProgressPollsDetails?.Date.slice(0, 8) +
+                              "000000"
+                          )}
                         </>
                       )}
                     </span>
