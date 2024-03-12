@@ -755,7 +755,7 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
                           <Col lg={4} md={4} sm={4}>
                             <section
                               className={styles["Outer_Box"]}
-                              onDoubleClick={() => handleDoubleCLickFile(data)}
+                              onClick={() => handleDoubleCLickFile(data)}
                             >
                               {Number(data.fk_UserID) ===
                                 Number(currentUserID) && (

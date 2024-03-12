@@ -253,7 +253,7 @@ const Participants = ({
       dataIndex: "participantTitle",
       key: "participantTitle",
       width: "120px",
-      align: "center",
+      align: "left",
       render: (text, record) => {
         if (
           ((Number(editorRole.status) === 9 ||

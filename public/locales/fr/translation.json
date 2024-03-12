@@ -215,8 +215,8 @@
   "Customer-Information": "Informations client",
   "Company": "Compagnie",
   "Country": "De campagne",
-  "Address-1": "Adresse 1*",
-  "Address-2": "Adresse 2*",
+  "Address-1": "Adresse 1",
+  "Address-2": "Adresse 2",
   "State": "État",
   "Postal-/-ZipCode": "Code postal",
   "Contact-Name": "Nom du contact",
@@ -1258,5 +1258,8 @@
   "Add-vote": "Add Vote",
   "Starred": "Starred",
   "Unstarred": "Unstarred",
-  "Response-awaited": "Response Awaited"
+  "Response-awaited": "Response Awaited",
+  "Board-meeting": "Board Meeting",
+  "Group-meeting": "Group Meeting",
+  "Committee-meeting": "Committee Meeting"
 }

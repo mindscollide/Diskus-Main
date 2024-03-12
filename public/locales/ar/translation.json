@@ -300,8 +300,8 @@
   "Error-404": "خطأ 404",
   "This-page-could-not-be-found": "لا يمكن العثور على هذه الصفحة",
   "Remember-password": "تذكر كلمة المرور",
-  "Address-1": "*العنوان 1",
-  "Address-2": "العنوان *2",
+  "Address-1": "العنوان 1",
+  "Address-2": "العنوان 2",
   "City": "مدينة",
   "Allowed-users": "المستخدمون المسموح لهم",
   "Executives": "المديرين",
@@ -1755,5 +1755,8 @@
   "Add-vote": "Add Vote",
   "Starred": "Starred",
   "Unstarred": "Unstarred",
-  "Response-awaited": "Response Awaited"
+  "Response-awaited": "Response Awaited",
+  "Board-meeting": "Board Meeting",
+  "Group-meeting": "Group Meeting",
+  "Committee-meeting": "Committee Meeting"
 }
