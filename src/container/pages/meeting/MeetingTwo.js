@@ -615,6 +615,8 @@ const NewMeeting = () => {
       dataIndex: "status",
       key: "status",
       width: "50px",
+      ellipsis: true,
+
       filters: [
         {
           text: t("Active"),
@@ -737,7 +739,6 @@ const NewMeeting = () => {
         return <span>{meetingTypeText}</span>;
       },
     },
-
     {
       dataIndex: "Chat",
       key: "Chat",
@@ -1099,7 +1100,12 @@ const NewMeeting = () => {
                 return (
                   <>
                     <Row>
-                      <Col sm={12} md={12} lg={12}>
+                      <Col
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        className="d-flex justify-content-center"
+                      >
                         <Tooltip placement="topRight" title={t("Edit")}>
                           <img
                             src={EditIcon}
@@ -1130,7 +1136,12 @@ const NewMeeting = () => {
               return (
                 <>
                   <Row>
-                    <Col sm={12} md={12} lg={12}>
+                    <Col
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className="d-flex justify-content-center"
+                    >
                       <Tooltip placement="topRight" title={t("Edit")}>
                         <img
                           src={EditIcon}
@@ -1164,7 +1175,12 @@ const NewMeeting = () => {
               return (
                 <>
                   <Row>
-                    <Col sm={12} md={12} lg={12}>
+                    <Col
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className="d-flex justify-content-center"
+                    >
                       <Tooltip placement="topRight" title={t("Edit")}>
                         <img
                           src={EditIcon}
