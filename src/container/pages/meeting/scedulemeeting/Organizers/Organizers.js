@@ -239,7 +239,7 @@ const Organizers = ({
       dataIndex: "organizerTitle",
       key: "organizerTitle",
       width: "250px",
-      align: "center",
+      align: "left",
       render: (text, record) => {
         if (
           (Number(editorRole.status) === 9 ||
@@ -369,6 +369,7 @@ const Organizers = ({
       dataIndex: "isOrganizerNotified",
       key: "isOrganizerNotified",
       width: "180px",
+      align: "left",
       render: (text, record) => {
         if (record.isOrganizerNotified === true) {
           return (

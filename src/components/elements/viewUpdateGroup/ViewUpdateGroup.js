@@ -500,7 +500,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
 
                             <section
                               className={styles["Outer_Box"]}
-                              onDoubleClick={() => handleDoubleCLickFile(data)}
+                              onClick={() => handleDoubleCLickFile(data)}
                             >
                               <Row>
                                 <Col lg={12} md={12} sm={12}>

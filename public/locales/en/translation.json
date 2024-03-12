@@ -149,8 +149,8 @@
   "This-page-could-not-be-found": "This page could not be found",
   "Remember-password": "Remember Password",
   "Company-name": "Company Name*",
-  "Address-1": "Address # 1*",
-  "Address-2": "Address # 2*",
+  "Address-1": "Address # 1",
+  "Address-2": "Address # 2",
   "City": "City",
   "Monthly": "Monthly",
   "Annually": "Annually",
@@ -1794,5 +1794,8 @@
   "Add-vote": "Add Vote",
   "Starred": "Starred",
   "Unstarred": "Unstarred",
-  "Response-awaited": "Response Awaited"
+  "Response-awaited": "Response Awaited",
+  "Board-meeting": "Board Meeting",
+  "Group-meeting": "Group Meeting",
+  "Committee-meeting": "Committee Meeting"
 }
