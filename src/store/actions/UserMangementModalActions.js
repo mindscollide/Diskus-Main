@@ -49,6 +49,12 @@ const showThankYouPaymentModal = (response) => {
   };
 };
 
+const showFailedPaymentModal = (response) => {
+  return {
+    type: actions.FAILED_PAYMENT_PROCESS,
+    response: response,
+  };
+};
 export {
   showUpgradeNowModal,
   showRequestExtentionModal,
@@ -57,4 +63,5 @@ export {
   showEditUserModal,
   showSucessfullyUpdatedModal,
   showThankYouPaymentModal,
+  showFailedPaymentModal,
 };

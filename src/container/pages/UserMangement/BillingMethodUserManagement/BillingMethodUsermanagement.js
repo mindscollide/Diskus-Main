@@ -12,8 +12,12 @@ import BillProcessStepThree from "./BillProcessStepThree/BillProcessStepThree";
 import BillProcessStepFour from "./BillProcessStepFour/BillProcessStepFour";
 import { useSelector } from "react-redux";
 import ThankForPayment from "../ModalsUserManagement/ThankForPaymentModal/ThankForPayment";
-import { showThankYouPaymentModal } from "../../../../store/actions/UserMangementModalActions";
+import {
+  showFailedPaymentModal,
+  showThankYouPaymentModal,
+} from "../../../../store/actions/UserMangementModalActions";
 import { useDispatch } from "react-redux";
+import PaymentFailedModal from "../ModalsUserManagement/PaymentFailedModal/PaymentFailedModal";
 const BillingMethodUsermanagement = () => {
   const { t } = useTranslation();
 
@@ -50,7 +54,8 @@ const BillingMethodUsermanagement = () => {
   };
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => Math.max(prevActiveStep - 1, 0));
+    // setActiveStep((prevActiveStep) => Math.max(prevActiveStep - 1, 0));
+    dispatch(showFailedPaymentModal(true));
   };
 
   //React Stepper Numbers manuipulation
@@ -208,6 +213,7 @@ const BillingMethodUsermanagement = () => {
         <Col lg={1} md={1} sm={12} xs={12}></Col>
       </Row>
       {UserManagementModals.thanksForPaymentModal && <ThankForPayment />}
+      {UserManagementModals.paymentProceedFailed && <PaymentFailedModal />}
     </Container>
   );
 };

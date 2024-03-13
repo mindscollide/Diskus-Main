@@ -1,0 +1,33 @@
+.PaymentFailedHeading {
+  font-size: 19px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+body[dir="rtl"] .PaymentFailedHeading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.PaymentDetailspage {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.PaymentDetailspage:is(:active, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+body[dir="rtl"] .PaymentDetailspage {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}

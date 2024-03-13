@@ -1302,5 +1302,8 @@
   "Address*": "Address*",
   "Go-to-portal": "Go To Portal",
   "Thank-you-for-your-payment.": "Thank you for your payment.",
-  "Proceed-to-diskus-portal": "Proceed to Diskus Portal"
+  "Proceed-to-diskus-portal": "Proceed to Diskus Portal",
+  "We-couldn't-process-your-payment-at-this": "We couldn't process your payment at this",
+  "time-please-review-your-details-and-try-again.": "time. Please review your details and try again.",
+  "Go-to-payment-detail-page": "Go To Payment Details Page"
 }

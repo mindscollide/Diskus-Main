@@ -10,6 +10,7 @@ const initialState = {
   editUserModal: false,
   successfullyUpdated: false,
   thanksForPaymentModal: false,
+  paymentProceedFailed: false,
 };
 
 const UserManagementModals = (state = initialState, action) => {
@@ -60,6 +61,13 @@ const UserManagementModals = (state = initialState, action) => {
       return {
         ...state,
         thanksForPaymentModal: action.response,
+      };
+    }
+
+    case actions.FAILED_PAYMENT_PROCESS: {
+      return {
+        ...state,
+        paymentProceedFailed: action.response,
       };
     }
 
