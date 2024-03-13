@@ -7130,6 +7130,10 @@ body[dir="rtl"] .StepButtonContent-d7-0-3-27 {
   margin-top: 18px !important;
 }
 
+body[dir="rtl"] .Connector-d5-0-3-29 {
+  margin-right: -346% !important;
+}
+
 .StepButtonContent-d1-0-3-7.completed {
   color: #fff !important;
   font-family: "MontserratBold-700" !important;

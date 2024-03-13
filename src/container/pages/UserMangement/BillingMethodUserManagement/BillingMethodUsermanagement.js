@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styles from "./BillingMethodUserManagement.module.css";
 import { useTranslation } from "react-i18next";
+import Cookies from "js-cookie";
 import { Col, Container, Row } from "react-bootstrap";
 import { Step, Stepper } from "react-form-stepper";
 import { Button } from "../../../../components/elements";
 import BillProcessStepOne from "./BillProcessStepOne/BillProcessStepOne";
+import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 import BillProcessStepTwo from "./BillProcessStepTwo/BillProcessStepTwo";
 import BillProcessStepThree from "./BillProcessStepThree/BillProcessStepThree";
 import BillProcessStepFour from "./BillProcessStepFour/BillProcessStepFour";
@@ -12,6 +14,21 @@ const BillingMethodUsermanagement = () => {
   const { t } = useTranslation();
 
   const [activeStep, setActiveStep] = useState(0);
+
+  // translate Languages start
+  const languages = [
+    { name: "English", code: "en" },
+    { name: "Français", code: "fr" },
+    { name: "العربية", code: "ar", dir: "rtl" },
+  ];
+
+  const currentLocale = Cookies.get("i18next") || "en";
+
+  const currentLangObj = languages.find((lang) => lang.code === currentLocale);
+
+  useEffect(() => {
+    document.body.dir = currentLangObj.dir || "ltr";
+  }, [currentLangObj, t]);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) =>
@@ -54,6 +71,11 @@ const BillingMethodUsermanagement = () => {
   }, []);
   return (
     <Container className={styles["sectionStyling"]}>
+      <Row className="position-relative">
+        <Col className={styles["languageSelector"]}>
+          <LanguageSelector />
+        </Col>
+      </Row>
       <Row>
         <Col lg={1} md={1} sm={12} xs={12}></Col>
         <Col lg={10} md={10} sm={12} xs={12}>

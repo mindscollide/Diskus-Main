@@ -59,3 +59,23 @@ body[dir="rtl"] .BackbuttonBillingMethod {
 .sectionStyling {
   padding: 10px 40px !important;
 }
+
+.languageSelector {
+  position: absolute;
+  right: 0;
+  z-index: 99999 !important;
+  margin-top: 20px;
+  margin-right: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+body[dir="rtl"] .languageSelector {
+  position: absolute;
+  right: 0;
+  z-index: 99999 !important;
+  margin-top: 20px;
+  margin-right: 0;
+  display: flex;
+  justify-content: flex-end;
+}
