@@ -302,7 +302,7 @@ const Polls = ({
         ),
       sortDirections: ["ascend", "descend"],
       render: (text, record) => {
-        return _justShowDateformatBilling(text + "000000");
+        return _justShowDateformatBilling(text);
       },
     },
 

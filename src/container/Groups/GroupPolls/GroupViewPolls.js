@@ -261,7 +261,7 @@ const GroupViewPolls = ({ groupStatus }) => {
       render: (text, record) => {
         return (
           <span className={styles["poll_status"]}>
-            {_justShowDateformatBilling(text + "000000")}
+            {_justShowDateformatBilling(text)}
           </span>
         );
       },

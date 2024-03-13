@@ -305,7 +305,7 @@ const Polls = ({ committeeStatus }) => {
       render: (text, record) => {
         return (
           <span className={styles["text-success"]}>
-            {_justShowDateformatBilling(text + "000000")}
+            {_justShowDateformatBilling(text)}
           </span>
         );
       },

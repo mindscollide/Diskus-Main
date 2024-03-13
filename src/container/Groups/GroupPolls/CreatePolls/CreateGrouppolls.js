@@ -175,9 +175,15 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
   };
 
   const changeDateStartHandler = (date) => {
-    console.log(value, "changeDateStartHandlerchangeDateStartHandler");
+    console.log(date, "changeDateStartHandlerchangeDateStartHandler");
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let DateDate = new Date(date);
+    console.log(DateDate, "changeDateStartHandlerchangeDateStartHandler");
+    console.log(
+      meetingDateValueFormat,
+      "changeDateStartHandlerchangeDateStartHandler"
+    );
+
     setMeetingDate(meetingDateValueFormat);
     setPollsData({
       ...pollsData,
@@ -334,9 +340,8 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
         ParticipantIDs: users,
         PollAnswers: optionsListData,
       };
-      console.log({ data }, "datadatadatadatadata");
-      // await dispatch(SavePollsApi(navigate, data, t, 4));
-      // setCreatepoll(false);
+      await dispatch(SavePollsApi(navigate, data, t, 4));
+      setCreatepoll(false);
     } else {
       // setError(true);
 
@@ -549,7 +554,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
                     <DatePicker
                       value={meetingDate}
                       format={"DD/MM/YYYY"}
-                      minDate={moment().toDate()}
+                      // minDate={moment().}
                       placeholder="DD/MM/YYYY"
                       render={
                         <InputIcon
@@ -560,11 +565,10 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
                       editable={false}
                       className="datePickerTodoCreate2"
                       onOpenPickNewDate={true}
-                      inputMode=""
                       calendar={calendarValue}
                       locale={localValue}
                       ref={calendRef}
-                      onChange={(value) => changeDateStartHandler(value)}
+                      onChange={changeDateStartHandler}
                     />
                   </Col>
                   <Col
