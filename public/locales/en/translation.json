@@ -1831,5 +1831,7 @@
   "Your-subscription-will-expire-on": "Your subscription will expire on",
   "Change-pakage-details": "Change pakage details",
   "Card-expiration-date": "Card expiration date",
-  "CVV": "CVV"
+  "CVV": "CVV",
+  "First-name": "First Name",
+  "Last-name": "Last Name"
 }

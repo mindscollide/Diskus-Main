@@ -31,12 +31,13 @@ const BillProcessStepTwo = () => {
                   </Row>
                   <Row>
                     <Col lg={12} md={12} sm={12} xs={12}>
-                      <Select placeholder={t("Country")} />
+                      <Select placeholder={t("Country*")} />
                     </Col>
                   </Row>
                 </Col>
                 <Col lg={6} md={6} sm={12} xs={12}>
                   <TextField
+                    placeholder={t("Postal-zipcode*")}
                     label={
                       <>
                         <span className={styles["nameStyles"]}>
@@ -51,6 +52,7 @@ const BillProcessStepTwo = () => {
               <Row className="mt-2">
                 <Col lg={6} md={6} sm={12} xs={12}>
                   <TextField
+                    placeholder={t("State-province*")}
                     label={
                       <>
                         <span className={styles["nameStyles"]}>
@@ -63,6 +65,7 @@ const BillProcessStepTwo = () => {
                 </Col>
                 <Col lg={6} md={6} sm={12} xs={12}>
                   <TextField
+                    placeholder={t("City*")}
                     label={
                       <>
                         <span className={styles["nameStyles"]}>
@@ -77,6 +80,7 @@ const BillProcessStepTwo = () => {
               <Row className="mt-2">
                 <Col lg={12} md={12} sm={12} xs={12}>
                   <TextField
+                    placeholder={t("Address*")}
                     label={
                       <>
                         <span className={styles["nameStyles"]}>

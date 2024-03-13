@@ -28,15 +28,17 @@ const BillProcessStepOne = () => {
                         </span>
                       </>
                     }
+                    placeholder={t("First-name")}
                   />
                 </Col>
                 <Col lg={6} md={6} sm={12} xs={12}>
-                  <TextField />
+                  <TextField placeholder={t("Last-name")} />
                 </Col>
               </Row>
               <Row className="mt-2">
                 <Col lg={12} md={12} sm={12} xs={12}>
                   <TextField
+                    placeholder={t("Company-name")}
                     label={
                       <>
                         <span className={styles["nameStyles"]}>
@@ -50,6 +52,7 @@ const BillProcessStepOne = () => {
               <Row className="mt-2">
                 <Col lg={12} md={12} sm={12} xs={12}>
                   <TextField
+                    placeholder={t("Email")}
                     label={
                       <>
                         <span className={styles["nameStyles"]}>

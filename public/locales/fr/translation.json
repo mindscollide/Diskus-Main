@@ -1292,5 +1292,12 @@
   "Your-subscription-will-expire-on": "Your subscription will expire on",
   "Change-pakage-details": "Change pakage details",
   "Card-expiration-date": "Card expiration date",
-  "CVV": "CVV"
+  "CVV": "CVV",
+  "First-name": "First Name",
+  "Last-name": "Last Name",
+  "Country*": "Country*",
+  "Postal-zipcode*": "Postal-zipcode*",
+  "State-province*": "State-province*",
+  "City*": "City*",
+  "Address*": "Address*"
 }
