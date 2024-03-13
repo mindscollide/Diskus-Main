@@ -54,115 +54,123 @@ const BillingMethodUsermanagement = () => {
   }, []);
   return (
     <Container className={styles["sectionStyling"]}>
-      <Row className="mt-4">
-        <Col
-          lg={12}
-          md={12}
-          sm={12}
-          XS={12}
-          className="d-flex justify-content-center"
-        >
-          <span className={styles["BillingDetailsHeading"]}>
-            {t("Billing-details")}
-          </span>
-        </Col>
-      </Row>
       <Row>
-        <Col lg={12} md={12} sm={12}>
-          <Stepper activeStep={activeStep}>
-            <Step
-              label={
-                <span
-                  className={
-                    activeStep >= 0
-                      ? "billing-contactActive"
-                      : "billing-contact"
+        <Col lg={1} md={1} sm={12} xs={12}></Col>
+        <Col lg={10} md={10} sm={12} xs={12}>
+          <Row className="mt-4">
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              XS={12}
+              className="d-flex justify-content-center"
+            >
+              <span className={styles["BillingDetailsHeading"]}>
+                {t("Billing-details")}
+              </span>
+            </Col>
+          </Row>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <Stepper activeStep={activeStep}>
+                <Step
+                  label={
+                    <span
+                      className={
+                        activeStep >= 0
+                          ? "billing-contactActive"
+                          : "billing-contact"
+                      }
+                    >
+                      {t("Billing-contact")}
+                    </span>
                   }
-                >
-                  {t("Billing-contact")}
-                </span>
-              }
-            />
-            <Step
-              label={
-                <span
-                  className={
-                    activeStep >= 1
-                      ? "billing-addressActive"
-                      : "billing-address"
+                />
+                <Step
+                  label={
+                    <span
+                      className={
+                        activeStep >= 1
+                          ? "billing-addressActive"
+                          : "billing-address"
+                      }
+                    >
+                      {t("Billing-address")}
+                    </span>
                   }
-                >
-                  {t("Billing-address")}
-                </span>
-              }
-            />
-            <Step
-              label={
-                <span
-                  className={
-                    activeStep >= 2
-                      ? "package-detailsActive"
-                      : "package-details"
+                />
+                <Step
+                  label={
+                    <span
+                      className={
+                        activeStep >= 2
+                          ? "package-detailsActive"
+                          : "package-details"
+                      }
+                    >
+                      {t("Package-details")}
+                    </span>
                   }
-                >
-                  {t("Package-details")}
-                </span>
-              }
-            />
-            <Step
-              label={
-                <span
-                  className={
-                    activeStep >= 3 ? "payment-methodActive" : "payment-method"
+                />
+                <Step
+                  label={
+                    <span
+                      className={
+                        activeStep >= 3
+                          ? "payment-methodActive"
+                          : "payment-method"
+                      }
+                    >
+                      {t("Payment-method")}
+                    </span>
                   }
-                >
-                  {t("Payment-method")}
-                </span>
-              }
-            />
-          </Stepper>
+                />
+              </Stepper>
+            </Col>
+          </Row>
+          <Row>
+            <Col lg={12} md={12} sm={12} xs={12}>
+              {activeStep === 0 ? (
+                <BillProcessStepOne />
+              ) : activeStep === 1 ? (
+                <>
+                  <BillProcessStepTwo />
+                </>
+              ) : activeStep === 2 ? (
+                <>
+                  <BillProcessStepThree />
+                </>
+              ) : activeStep === 3 ? (
+                <>
+                  <>
+                    <BillProcessStepFour />
+                  </>
+                </>
+              ) : null}
+            </Col>
+          </Row>
+          <Row className="mt-3">
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              xs={12}
+              className="d-flex justify-content-end gap-2"
+            >
+              <Button
+                text={t("Back")}
+                className={styles["BackbuttonBillingMethod"]}
+                onClick={handleBack}
+              />
+              <Button
+                text={t("Next")}
+                className={styles["NextbuttonBillingMethod"]}
+                onClick={handleNext}
+              />
+            </Col>
+          </Row>
         </Col>
-      </Row>
-      <Row>
-        <Col lg={12} md={12} sm={12} xs={12}>
-          {activeStep === 0 ? (
-            <BillProcessStepOne />
-          ) : activeStep === 1 ? (
-            <>
-              <BillProcessStepTwo />
-            </>
-          ) : activeStep === 2 ? (
-            <>
-              <BillProcessStepThree />
-            </>
-          ) : activeStep === 3 ? (
-            <>
-              <>
-                <BillProcessStepFour />
-              </>
-            </>
-          ) : null}
-        </Col>
-      </Row>
-      <Row className="mt-3">
-        <Col
-          lg={12}
-          md={12}
-          sm={12}
-          xs={12}
-          className="d-flex justify-content-end gap-2"
-        >
-          <Button
-            text={t("Back")}
-            className={styles["BackbuttonBillingMethod"]}
-            onClick={handleBack}
-          />
-          <Button
-            text={t("Next")}
-            className={styles["NextbuttonBillingMethod"]}
-            onClick={handleNext}
-          />
-        </Col>
+        <Col lg={1} md={1} sm={12} xs={12}></Col>
       </Row>
     </Container>
   );

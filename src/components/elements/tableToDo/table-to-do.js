@@ -16,6 +16,7 @@ const CustomTableToDo = ({
   rowSelection,
   onRow,
   sortDirections,
+  rowHoverBg,
 }) => {
   const { Text } = Typography;
 
@@ -36,6 +37,7 @@ const CustomTableToDo = ({
         size={size}
         sortDirections={sortDirections}
         pagination={pagination}
+        rowHoverBg={rowHoverBg}
       />
     </>
   );

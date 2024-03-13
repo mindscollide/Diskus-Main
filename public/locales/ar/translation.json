@@ -1788,5 +1788,7 @@
   "Payment-method": "Payment Method",
   "Charges-per-license-US$": "Charges-per license US$",
   "Number-of-licenses": "Number of licenses",
-  "Yearly-charges-in": "Yearly Charges in US$"
+  "Yearly-charges-in": "Yearly Charges in US$",
+  "Your-subscription-will-expire-on": "Your subscription will expire on",
+  "Change-pakage-details": "Change pakage details"
 }

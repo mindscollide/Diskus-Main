@@ -7219,3 +7219,64 @@ body[dir="rtl"] span.billing-contactActive {
 body[dir="rtl"] span.billing-contact {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
+
+/* Selecting pakage Details Css Usermangement */
+tr.ant-table-row.ant-table-row-level-0.saif {
+  outline: solid;
+  outline-color: #e1e1e1;
+  outline-width: 1px;
+}
+
+tr.ant-table-row.ant-table-row-level-0.saif:last-child {
+  outline: none !important;
+  background: none !important;
+  border: none !important;
+}
+
+tr.ant-table-row.ant-table-row-level-0.saif:last-child:hover {
+  outline: none !important;
+  background: none !important;
+  border: none !important;
+}
+
+.ant-table-tbody > tr.saif:last-child.ant-table-row:hover > td,
+.ant-table-tbody > tr.saif:last-child > td.ant-table-cell-row-hover {
+  background: transparent !important;
+}
+
+.ant-table-tbody > tr.saif > td {
+  border-bottom: none !important;
+}
+
+/* PakageDetails Table Css usermanagement */
+
+tr.ant-table-row.ant-table-row-level-0.PakageDetails {
+  outline: solid;
+  outline-color: #e1e1e1;
+  outline-width: 1px;
+  border-radius: 4px !important;
+  background: none !important;
+}
+
+tr.ant-table-row.ant-table-row-level-0.PakageDetails:last-child {
+  outline: none !important;
+  background: #e1e1e1 !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
+
+tr.ant-table-row.ant-table-row-level-0.PakageDetails:last-child:hover {
+  outline: none !important;
+  border-radius: 4px !important;
+  background: #e1e1e1 !important;
+  border: none !important;
+}
+
+.ant-table-tbody > tr.PakageDetails:last-child.ant-table-row:hover > td,
+.ant-table-tbody > tr.PakageDetails:last-child > td.ant-table-cell-row-hover {
+  background: transparent !important;
+}
+
+.ant-table-tbody > tr.PakageDetails > td {
+  border-bottom: none !important;
+}
