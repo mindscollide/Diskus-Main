@@ -54,8 +54,9 @@ const BillingMethodUsermanagement = () => {
   };
 
   const handleBack = () => {
-    // setActiveStep((prevActiveStep) => Math.max(prevActiveStep - 1, 0));
-    dispatch(showFailedPaymentModal(true));
+    setActiveStep((prevActiveStep) => Math.max(prevActiveStep - 1, 0));
+    //Enable payment failed modal
+    // dispatch(showFailedPaymentModal(true));
   };
 
   //React Stepper Numbers manuipulation
