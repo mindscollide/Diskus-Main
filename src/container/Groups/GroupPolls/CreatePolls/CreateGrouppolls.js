@@ -175,6 +175,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
   };
 
   const changeDateStartHandler = (date) => {
+    console.log(value, "changeDateStartHandlerchangeDateStartHandler");
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let DateDate = new Date(date);
     setMeetingDate(meetingDateValueFormat);
@@ -299,7 +300,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
   };
 
   //For Saving the polls
-
+  console.log(pollsData, "pollsDatapollsDatapollsDatapollsData");
   // for create polls
   const SavePollsButtonFunc = async (value) => {
     const organizationid = localStorage.getItem("organizationID");
@@ -333,9 +334,9 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
         ParticipantIDs: users,
         PollAnswers: optionsListData,
       };
-
-      await dispatch(SavePollsApi(navigate, data, t, 4));
-      setCreatepoll(false);
+      console.log({ data }, "datadatadatadatadata");
+      // await dispatch(SavePollsApi(navigate, data, t, 4));
+      // setCreatepoll(false);
     } else {
       // setError(true);
 
