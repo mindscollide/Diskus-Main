@@ -42,6 +42,13 @@ const showSucessfullyUpdatedModal = (response) => {
   };
 };
 
+const showThankYouPaymentModal = (response) => {
+  return {
+    type: actions.THANK_FOR_PAYMENT_MODAL,
+    response: response,
+  };
+};
+
 export {
   showUpgradeNowModal,
   showRequestExtentionModal,
@@ -49,4 +56,5 @@ export {
   showDeleteUsersModal,
   showEditUserModal,
   showSucessfullyUpdatedModal,
+  showThankYouPaymentModal,
 };

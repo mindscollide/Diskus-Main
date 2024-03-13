@@ -9,6 +9,7 @@ const initialState = {
   deleteUsersModal: false,
   editUserModal: false,
   successfullyUpdated: false,
+  thanksForPaymentModal: false,
 };
 
 const UserManagementModals = (state = initialState, action) => {
@@ -52,6 +53,13 @@ const UserManagementModals = (state = initialState, action) => {
       return {
         ...state,
         successfullyUpdated: action.response,
+      };
+    }
+
+    case actions.THANK_FOR_PAYMENT_MODAL: {
+      return {
+        ...state,
+        thanksForPaymentModal: action.response,
       };
     }
 

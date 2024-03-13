@@ -1299,5 +1299,8 @@
   "Postal-zipcode*": "Postal-zipcode*",
   "State-province*": "State-province*",
   "City*": "City*",
-  "Address*": "Address*"
+  "Address*": "Address*",
+  "Go-to-portal": "Go To Portal",
+  "Thank-you-for-your-payment.": "Thank you for your payment.",
+  "Proceed-to-diskus-portal": "Proceed to Diskus Portal"
 }

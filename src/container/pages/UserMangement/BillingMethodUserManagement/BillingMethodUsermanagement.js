@@ -10,8 +10,16 @@ import LanguageSelector from "../../../../components/elements/languageSelector/L
 import BillProcessStepTwo from "./BillProcessStepTwo/BillProcessStepTwo";
 import BillProcessStepThree from "./BillProcessStepThree/BillProcessStepThree";
 import BillProcessStepFour from "./BillProcessStepFour/BillProcessStepFour";
+import { useSelector } from "react-redux";
+import ThankForPayment from "../ModalsUserManagement/ThankForPaymentModal/ThankForPayment";
+import { showThankYouPaymentModal } from "../../../../store/actions/UserMangementModalActions";
+import { useDispatch } from "react-redux";
 const BillingMethodUsermanagement = () => {
   const { t } = useTranslation();
+
+  const dispatch = useDispatch();
+
+  const { UserManagementModals } = useSelector((state) => state);
 
   const [activeStep, setActiveStep] = useState(0);
 
@@ -31,9 +39,14 @@ const BillingMethodUsermanagement = () => {
   }, [currentLangObj, t]);
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) =>
-      prevActiveStep < 4 ? prevActiveStep + 1 : prevActiveStep
-    );
+    setActiveStep((prevActiveStep) => {
+      if (prevActiveStep >= 3) {
+        dispatch(showThankYouPaymentModal(true));
+        return prevActiveStep;
+      } else {
+        return prevActiveStep < 4 ? prevActiveStep + 1 : prevActiveStep;
+      }
+    });
   };
 
   const handleBack = () => {
@@ -194,6 +207,7 @@ const BillingMethodUsermanagement = () => {
         </Col>
         <Col lg={1} md={1} sm={12} xs={12}></Col>
       </Row>
+      {UserManagementModals.thanksForPaymentModal && <ThankForPayment />}
     </Container>
   );
 };
