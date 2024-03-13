@@ -95,11 +95,8 @@ const PakageDetailsUserManagement = () => {
     },
     {
       title: (
-        <span className="d-flex flex-column flex-wrap pakageselectionSpanUsermanagement">
-          {t("Charges-per")}
-          <span className="pakageselectionSpanUsermanagement">
-            {t("License-US$")}
-          </span>
+        <span className="pakageselectionSpanUsermanagement">
+          {t("Charges-per-license-US$")}
         </span>
       ),
       dataIndex: "Chargesperlicense",
@@ -109,11 +106,8 @@ const PakageDetailsUserManagement = () => {
     },
     {
       title: (
-        <span className="d-flex flex-column flex-wrap pakageselectionSpanUsermanagement">
-          {t("Number")}
-          <span className="pakageselectionSpanUsermanagement">
-            {t("of-licenses")}
-          </span>
+        <span className="pakageselectionSpanUsermanagement">
+          {t("Number-of-licenses")}
         </span>
       ),
       width: 100,
@@ -123,39 +117,8 @@ const PakageDetailsUserManagement = () => {
     },
     {
       title: (
-        <span className="d-flex flex-column flex-wrap pakageselectionSpanUsermanagement">
-          {t("Monthly")}
-          <span className="pakageselectionSpanUsermanagement">
-            {t("charges-in")}
-          </span>
-        </span>
-      ),
-      dataIndex: "Monthlycharges",
-      key: "Monthlycharges",
-      width: 100,
-      align: "center",
-    },
-    {
-      title: (
-        <span className="d-flex flex-column flex-wrap pakageselectionSpanUsermanagement">
-          {t("Quarterly")}
-          <span className="pakageselectionSpanUsermanagement">
-            {t("charges-in")}
-          </span>
-        </span>
-      ),
-      dataIndex: "Quarterlycharges",
-      key: "Quarterlycharges",
-      align: "center",
-      width: 100,
-    },
-    {
-      title: (
-        <span className="d-flex flex-column flex-wrap pakageselectionSpanUsermanagement">
-          {t("Yearly")}
-          <span className="pakageselectionSpanUsermanagement">
-            {t("charges-in")}
-          </span>
+        <span className="pakageselectionSpanUsermanagement">
+          {t("Yearly-charges-in")}
         </span>
       ),
       dataIndex: "Yearlycharges",

@@ -55,3 +55,7 @@ body[dir="rtl"] .BackbuttonBillingMethod {
   font-size: 12px !important;
   font-family: "MontserratSemiBold-600" !important;
 }
+
+.sectionStyling {
+  padding: 0px 40px !important;
+}

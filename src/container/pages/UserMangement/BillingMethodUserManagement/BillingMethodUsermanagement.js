@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./BillingMethodUserManagement.module.css";
 import { useTranslation } from "react-i18next";
-import { Col, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import { Step, Stepper } from "react-form-stepper";
 import { Button } from "../../../../components/elements";
 import BillProcessStepOne from "./BillProcessStepOne/BillProcessStepOne";
@@ -53,9 +53,15 @@ const BillingMethodUsermanagement = () => {
     }
   }, []);
   return (
-    <section>
-      <Row className="mt-5">
-        <Col lg={12} md={12} sm={12} className="d-flex justify-content-center">
+    <Container className={styles["sectionStyling"]}>
+      <Row className="mt-4">
+        <Col
+          lg={12}
+          md={12}
+          sm={12}
+          XS={12}
+          className="d-flex justify-content-center"
+        >
           <span className={styles["BillingDetailsHeading"]}>
             {t("Billing-details")}
           </span>
@@ -138,27 +144,27 @@ const BillingMethodUsermanagement = () => {
           ) : null}
         </Col>
       </Row>
-      <Row>
+      <Row className="mt-3">
         <Col
-          lg={11}
-          md={11}
-          sm={11}
-          xs={11}
-          className="d-flex justify-content-end gap-2 "
+          lg={12}
+          md={12}
+          sm={12}
+          xs={12}
+          className="d-flex justify-content-end gap-2"
         >
-          <Button
-            text={t("Next")}
-            className={styles["NextbuttonBillingMethod"]}
-            onClick={handleNext}
-          />
           <Button
             text={t("Back")}
             className={styles["BackbuttonBillingMethod"]}
             onClick={handleBack}
           />
+          <Button
+            text={t("Next")}
+            className={styles["NextbuttonBillingMethod"]}
+            onClick={handleNext}
+          />
         </Col>
       </Row>
-    </section>
+    </Container>
   );
 };
 
