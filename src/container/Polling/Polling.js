@@ -422,9 +422,9 @@ const Polling = () => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className={styles["Background-nonvoted-Button"]}
+                  // className={styles["Background-nonvoted-Button"]}
                 >
-                  <span className={styles["Not-voted"]}>{t("Voted")}</span>
+                  <span className={styles["votedBtn"]}>{t("Voted")}</span>
                 </Col>
               );
             }
@@ -455,9 +455,9 @@ const Polling = () => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles["Background-nonvoted-Button"]}
+                    // className={styles["Background-nonvoted-Button"]}
                   >
-                    <span className={styles["Not-voted"]}>{t("Voted")}</span>
+                    <span className={styles["votedBtn"]}>{t("Voted")}</span>
                   </Col>
                 );
               }
