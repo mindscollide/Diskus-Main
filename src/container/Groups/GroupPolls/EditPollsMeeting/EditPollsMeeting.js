@@ -364,17 +364,17 @@ const EditPollsMeeting = ({ setEditPolls }) => {
       ) {
         let pollsDetailsData = PollsReducer.Allpolls.poll;
         let pollMembers = [];
-        let newDateGmt = pollsDetailsData.pollDetails.dueDate.slice(0, 8);
+        let newDateGmt = pollsDetailsData.pollDetails.dueDate;
         setupdatePolls({
           ...updatePolls,
           Title: pollsDetailsData.pollDetails.pollTitle,
           AllowMultipleAnswers:
             pollsDetailsData.pollDetails.allowMultipleAnswers,
-          date: pollsDetailsData.pollDetails.dueDate.slice(0, 8),
+          date: pollsDetailsData.pollDetails.dueDate,
           PollID: pollsDetailsData.pollDetails.pollID,
         });
 
-        let DateDate = utcConvertintoGMT(newDateGmt + "000000");
+        let DateDate = utcConvertintoGMT(newDateGmt);
         setMeetingDate(DateDate);
         if (pollsDetailsData.pollDetails.pollStatus.pollStatusId === 2) {
           setCheckForPollStatus(true);
