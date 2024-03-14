@@ -27,7 +27,7 @@ import {
   actionsGlobalFlag,
   pollsGlobalFlag,
   attendanceGlobalFlag,
-  uploadGlobalFlag
+  uploadGlobalFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import {
   getMeetingTaskMainApi,
@@ -189,7 +189,9 @@ const Actions = ({
       title: t("Title"),
       dataIndex: "title",
       key: "title",
-      width: "250px",
+      ellipsis: true,
+
+      width: "115px",
       render: (text, record) => {
         return (
           <span
