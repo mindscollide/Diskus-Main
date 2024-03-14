@@ -55,6 +55,20 @@ const showFailedPaymentModal = (response) => {
     response: response,
   };
 };
+
+const showCancelSubscriptionModal = (response) => {
+  return {
+    type: actions.CANCEL_SUBSCRIPTION_MODAL,
+    response: response,
+  };
+};
+
+const showReasonForLeavingModal = (response) => {
+  return {
+    type: actions.REASON_FOR_LEAVING_MODAL,
+    response: response,
+  };
+};
 export {
   showUpgradeNowModal,
   showRequestExtentionModal,
@@ -64,4 +78,6 @@ export {
   showSucessfullyUpdatedModal,
   showThankYouPaymentModal,
   showFailedPaymentModal,
+  showCancelSubscriptionModal,
+  showReasonForLeavingModal,
 };

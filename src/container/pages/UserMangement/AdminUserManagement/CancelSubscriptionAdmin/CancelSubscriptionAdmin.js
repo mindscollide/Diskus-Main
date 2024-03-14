@@ -3,8 +3,17 @@ import styles from "./CancelSubscriptionAdmin.module.css";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Button, TableToDo } from "../../../../../components/elements";
+import CancelSubscriptionModal from "../../ModalsUserManagement/CancelSubscriptionModal/CancelSubscriptionModal";
+import { useSelector } from "react-redux";
+import { showCancelSubscriptionModal } from "../../../../../store/actions/UserMangementModalActions";
+import { useDispatch } from "react-redux";
+import ReasonForCancelSubs from "../../ModalsUserManagement/ResonsForCancelSubscriptionModal/ReasonForCancelSubs";
 const CancelSubscriptionAdmin = () => {
   const { t } = useTranslation();
+
+  const dispatch = useDispatch();
+
+  const { UserManagementModals } = useSelector((state) => state);
 
   const ColumnsPakageSelection = [
     {
@@ -124,6 +133,10 @@ const CancelSubscriptionAdmin = () => {
       <span className={styles["ChargesPerLicesensetotal"]}>13,072</span>
     ),
   };
+
+  const handleCancelSubsModal = () => {
+    dispatch(showCancelSubscriptionModal(true));
+  };
   return (
     <Container className="p-3">
       <Row className="mt-3">
@@ -211,6 +224,7 @@ const CancelSubscriptionAdmin = () => {
           <Button
             text={t("Cancel-now")}
             className={styles["CancelNowClassstyles"]}
+            onClick={handleCancelSubsModal}
           />
         </Col>
         <Col lg={5} md={5} sm={12} xs={12}>
@@ -221,6 +235,10 @@ const CancelSubscriptionAdmin = () => {
         </Col>
         <Col lg={1} md={1} sm={12} xs={12}></Col>
       </Row>
+      {UserManagementModals.cancelSubscriptionModal && (
+        <CancelSubscriptionModal />
+      )}
+      {UserManagementModals.reasonForleavingModal && <ReasonForCancelSubs />}
     </Container>
   );
 };

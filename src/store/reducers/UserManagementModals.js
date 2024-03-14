@@ -11,6 +11,8 @@ const initialState = {
   successfullyUpdated: false,
   thanksForPaymentModal: false,
   paymentProceedFailed: false,
+  cancelSubscriptionModal: false,
+  reasonForleavingModal: false,
 };
 
 const UserManagementModals = (state = initialState, action) => {
@@ -68,6 +70,20 @@ const UserManagementModals = (state = initialState, action) => {
       return {
         ...state,
         paymentProceedFailed: action.response,
+      };
+    }
+
+    case actions.CANCEL_SUBSCRIPTION_MODAL: {
+      return {
+        ...state,
+        cancelSubscriptionModal: action.response,
+      };
+    }
+
+    case actions.REASON_FOR_LEAVING_MODAL: {
+      return {
+        ...state,
+        reasonForleavingModal: action.response,
       };
     }
 
