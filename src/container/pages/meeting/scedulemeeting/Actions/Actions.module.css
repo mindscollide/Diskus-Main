@@ -110,6 +110,9 @@
 
 .HeightDefined {
   height: 55vh !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 .Action-Date-title_value {
   font-family: "MontserratSemiBold-600" !important;
