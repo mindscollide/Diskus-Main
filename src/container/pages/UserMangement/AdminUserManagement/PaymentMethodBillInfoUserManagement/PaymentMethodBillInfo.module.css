@@ -1,0 +1,9 @@
+.PaymentMethodHeading {
+  font-size: 30px !important;
+  color: #6172d6 !important;
+  font-family: "MontserratBold-700" !important;
+}
+
+body[dir="rtl"] .PaymentMethodHeading {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
