@@ -701,18 +701,18 @@ const NewMeeting = () => {
       filters: [
         {
           text: t("Board-meeting"),
-          value: "1",
+          value: 25,
         },
         {
           text: t("Committee-meeting"),
-          value: "2",
+          value: 26,
         },
         {
           text: t("Group-meeting"),
-          value: "3",
+          value: 27,
         },
       ],
-      defaultFilteredValue: ["1", "2", "3"],
+      defaultFilteredValue: [25, 26, 27],
       filterResetToDefaultFilteredValue: true,
       filterIcon: () => (
         <ChevronDown className="filter-chevron-icon-todolist" />
@@ -724,13 +724,13 @@ const NewMeeting = () => {
       render: (text) => {
         let meetingTypeText = "";
         switch (Number(text)) {
-          case 1:
+          case 25:
             meetingTypeText = t("Board-meeting");
             break;
-          case 2:
+          case 26:
             meetingTypeText = t("Committee-meeting");
             break;
-          case 3:
+          case 27:
             meetingTypeText = t("Group-meeting");
             break;
           default:

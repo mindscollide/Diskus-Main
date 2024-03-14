@@ -335,7 +335,8 @@ const SubAgendaMappingDragging = ({
                                         apllyLockOnParentAgenda(index) ||
                                         apllyLockOnSubAgenda(index, subIndex)
                                           ? styles["SubajendaBox_Inactive"]
-                                          : isLastIndex
+                                          : isLastIndex &&
+                                            subAgendaData.length === 1
                                           ? `${styles["SubajendaBox"]} ${styles["borderTopNone"]}`
                                           : styles["SubajendaBox"]
                                       }

@@ -676,6 +676,7 @@ p.agendaCreaterTime {
   border-radius: 4px !important;
   font-family: "MontserratMedium-500";
   font-weight: 600;
+  margin-bottom: 10px;
 }
 
 .startVotingButton:is(:hover, :active, :focus, :focus-visible) {
@@ -700,6 +701,7 @@ p.agendaCreaterTime {
   border-radius: 4px !important;
   font-family: "MontserratMedium-500";
   font-weight: 600;
+  margin-bottom: 10px;
 }
 
 .CastYourVoteButton:is(:hover, :active, :focus, :focus-visible) {
@@ -724,6 +726,7 @@ p.agendaCreaterTime {
   border-radius: 4px !important;
   font-family: "MontserratMedium-500";
   font-weight: 600;
+  margin-bottom: 10px;
 }
 
 .EndVotingButton:is(:hover, :active, :focus, :focus-visible) {
@@ -749,6 +752,7 @@ p.agendaCreaterTime {
   font-family: "MontserratMedium-500";
   font-weight: 600;
   margin-left: 15px;
+  margin-bottom: 10px;
 }
 
 .ViewVoteButton:is(:hover, :active, :focus, :focus-visible) {
