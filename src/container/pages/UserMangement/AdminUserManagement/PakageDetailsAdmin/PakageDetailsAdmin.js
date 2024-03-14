@@ -125,7 +125,7 @@ const PakageDetailsAdmin = () => {
     ),
   };
   return (
-    <Container>
+    <Container className="p-3">
       <Row className="mt-3">
         <Col
           lg={12}
@@ -140,7 +140,7 @@ const PakageDetailsAdmin = () => {
         </Col>
       </Row>
       <Row>
-        <Col lg={4} md={4} sm={12} xs={12}>
+        <Col xl={4} lg={4} md={4} sm={12} xs={12}>
           <Card className={styles["packagecard"]}>
             <Row className="mt-3">
               <Col sm={12}>
@@ -234,7 +234,7 @@ const PakageDetailsAdmin = () => {
             </Row>
           </Card>
         </Col>
-        <Col lg={8} md={8} sm={12} xs={12}>
+        <Col xl={8} lg={8} md={8} sm={12} xs={12}>
           <Card className={styles["DetailsCard"]}>
             <Row className="mt-4">
               <Col lg={12} md={12} sm={12} xs={12}></Col>
