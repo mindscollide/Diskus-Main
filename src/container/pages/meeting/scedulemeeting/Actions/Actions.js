@@ -650,7 +650,7 @@ const Actions = ({
                         <Col lg={12} md={12} sm={12}>
                           <Table
                             column={ActionsColoumn}
-                            scroll={{ y: "40vh" }}
+                            scroll={{ y: "40vh", x: false }}
                             pagination={false}
                             className={"ToDo"}
                             rows={actionsRows}
