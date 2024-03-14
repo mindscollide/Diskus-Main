@@ -1830,5 +1830,10 @@
   "It’s-too-expensive": "It’s too expensive.",
   "It’s-missing-an-integration-or-integration-is-too-basic": "It’s missing an integration or integration is too basic.",
   "Nevermind-take-me-back-to-my-account": "Nevermind, take me back to my account",
-  "Continue-to-cancel": "Continue to Cancel"
+  "Continue-to-cancel": "Continue to Cancel",
+  "will-delete-and-remove-all-relevant-data-including-but-not": " will delete and remove all relevant data including but not",
+  "limited-to-users-meetings-documents-related-to-your-organization-account-please-make-sure-that": "limited to Users, Meetings, Documents related to your organization account. Please make sure that",
+  "we-do-not-retain-any-backup-of-data-and-will-not-be-able-to-entertain-backup-recovery-request": "we do not retain any backup of data and will not be able to entertain backup recovery request",
+  "It-is-requested-that-you-please-make-backup-of-all-your-data-before-proceeding-to-delete-the": "It is requested that you please make backup of all your data before proceeding to delete the",
+  "account-please-proceed-with-caution-and-at-your-own-risk": "account. Please proceed with caution and at your own risk."
 }

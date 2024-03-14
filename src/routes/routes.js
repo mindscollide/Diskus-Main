@@ -87,6 +87,7 @@ import PakageDetailsUserManagement from "../container/pages/UserMangement/Pakage
 import BillingMethodUsermanagement from "../container/pages/UserMangement/BillingMethodUserManagement/BillingMethodUsermanagement";
 import PakageDetailsAdmin from "../container/pages/UserMangement/AdminUserManagement/PakageDetailsAdmin/PakageDetailsAdmin";
 import CancelSubscriptionAdmin from "../container/pages/UserMangement/AdminUserManagement/CancelSubscriptionAdmin/CancelSubscriptionAdmin";
+import DeleteOrganizationAdmin from "../container/pages/UserMangement/AdminUserManagement/DeleteOrganizationAdmin/DeleteOrganizationAdmin";
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
@@ -193,6 +194,10 @@ export const router = createHashRouter(
           <Route path="changePassword" element={<ChangePassword />} />
           <Route path="faq's" element={<CustomMiscellaneous />} />
           <Route path="deleteorganization" element={<DeleteOrganization />} />
+          <Route
+            path="deleteorganizationUserMangement"
+            element={<DeleteOrganizationAdmin />}
+          />
           <Route path="paymentForm" element={<PaymentForm2 />} />
           <Route
             path="UpgradePackageDetail"

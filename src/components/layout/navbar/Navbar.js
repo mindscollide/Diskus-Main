@@ -311,7 +311,8 @@ const NavbarAdmin = () => {
                           </NavDropdown.Item>
                           <NavDropdown.Item
                             as={Link}
-                            to="deleteorganization"
+                            // to="deleteorganization"
+                            to="deleteorganizationUserMangement"
                             eventKey="link-8"
                             className="text-black border-none "
                           >
