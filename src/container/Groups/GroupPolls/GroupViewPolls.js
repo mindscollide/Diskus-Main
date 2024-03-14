@@ -205,7 +205,7 @@ const GroupViewPolls = ({ groupStatus }) => {
       title: t("Status"),
       dataIndex: "Status",
       key: "Status",
-      width: "120px",
+      width: "70px",
       filters: [
         {
           text: t("Published"),
@@ -277,7 +277,7 @@ const GroupViewPolls = ({ groupStatus }) => {
       title: t("Created-by"),
       dataIndex: "pollCreator",
       key: "pollCreator",
-      width: "110px",
+      width: "80px",
       sorter: (a, b) => a.pollCreator.localeCompare(b.pollCreator),
       render: (text, record) => {
         return <span className={styles["poll_status"]}>{text}</span>;
@@ -287,6 +287,7 @@ const GroupViewPolls = ({ groupStatus }) => {
       title: t("Vote"),
       dataIndex: "Vote",
       width: "70px",
+      align: "center",
       render: (text, record) => {
         if (record.pollStatus.pollStatusId === 2) {
           if (record.isVoter) {
