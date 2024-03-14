@@ -85,6 +85,8 @@ import OrganizationLevelConfigUM from "../container/pages/UserMangement/Organzia
 import UserLevelConfigUM from "../container/pages/UserMangement/UserLevelConfigUM/UserLevelConfigUM";
 import PakageDetailsUserManagement from "../container/pages/UserMangement/PakageDetailsUserManagement/PakageDetailsUserManagement";
 import BillingMethodUsermanagement from "../container/pages/UserMangement/BillingMethodUserManagement/BillingMethodUsermanagement";
+import PakageDetailsAdmin from "../container/pages/UserMangement/AdminUserManagement/PakageDetailsAdmin/PakageDetailsAdmin";
+import CancelSubscriptionAdmin from "../container/pages/UserMangement/AdminUserManagement/CancelSubscriptionAdmin/CancelSubscriptionAdmin";
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
@@ -177,7 +179,15 @@ export const router = createHashRouter(
           />
           <Route path="AllMeeting" element={<AllMeetings />} />
           <Route path="CancelSub" element={<CancelSubs />} />
+          <Route
+            path="CancelSubscriptionUserManagement"
+            element={<CancelSubscriptionAdmin />}
+          />
           <Route path="PackageDetail" element={<PackageDetails />} />
+          <Route
+            path="PackageDetailsUserManagement"
+            element={<PakageDetailsAdmin />}
+          />
           <Route path="EmptyState" element={<EmptyState />} />
           <Route path="UpgradePackage" element={<PackageUpgrade />} />
           <Route path="changePassword" element={<ChangePassword />} />

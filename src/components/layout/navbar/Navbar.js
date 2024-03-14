@@ -133,7 +133,8 @@ const NavbarAdmin = () => {
                         >
                           <NavDropdown.Item
                             as={Link}
-                            to="PackageDetail"
+                            // to="PackageDetail"
+                            to="PackageDetailsUserManagement"
                             eventKey="link-8"
                             className="text-black border-none  bg-white"
                           >
@@ -142,7 +143,8 @@ const NavbarAdmin = () => {
 
                           <NavDropdown.Item
                             as={Link}
-                            to="CancelSub"
+                            // to="CancelSub"
+                            to="CancelSubscriptionUserManagement"
                             eventKey="link-8"
                             className="text-black border-none "
                           >
@@ -290,7 +292,8 @@ const NavbarAdmin = () => {
                         >
                           <NavDropdown.Item
                             as={Link}
-                            to="PackageDetail"
+                            // to="PackageDetail"
+                            to="PackageDetailsUserManagement"
                             eventKey="link-8"
                             className="text-black border-none  bg-white"
                           >
@@ -299,7 +302,8 @@ const NavbarAdmin = () => {
 
                           <NavDropdown.Item
                             as={Link}
-                            to="CancelSub"
+                            // to="CancelSub"
+                            to="CancelSubscriptionUserManagement"
                             eventKey="link-8"
                             className="text-black border-none "
                           >

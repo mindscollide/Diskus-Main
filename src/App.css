@@ -7253,7 +7253,6 @@ tr.ant-table-row.ant-table-row-level-0.saif:last-child:hover {
 }
 
 /* PakageDetails Table Css usermanagement */
-
 tr.ant-table-row.ant-table-row-level-0.PakageDetails {
   outline: solid;
   outline-color: #e1e1e1;
@@ -7282,5 +7281,40 @@ tr.ant-table-row.ant-table-row-level-0.PakageDetails:last-child:hover {
 }
 
 .ant-table-tbody > tr.PakageDetails > td {
+  border-bottom: none !important;
+}
+
+/* pakageDetails UpgradeUsermanagement */
+
+tr.ant-table-row.ant-table-row-level-0.UpgradePakageDetails {
+  outline: solid;
+  outline-color: #e1e1e1;
+  outline-width: 1px;
+  border-radius: 4px !important;
+  background: none !important;
+}
+
+tr.ant-table-row.ant-table-row-level-0.UpgradePakageDetails:last-child {
+  outline: none !important;
+  background: #6172d6 !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
+
+tr.ant-table-row.ant-table-row-level-0.UpgradePakageDetails:last-child:hover {
+  outline: none !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  border: none !important;
+}
+
+.ant-table-tbody > tr.UpgradePakageDetails:last-child.ant-table-row:hover > td,
+.ant-table-tbody
+  > tr.UpgradePakageDetails:last-child
+  > td.ant-table-cell-row-hover {
+  background: transparent !important;
+}
+
+.ant-table-tbody > tr.UpgradePakageDetails > td {
   border-bottom: none !important;
 }
