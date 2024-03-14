@@ -34,6 +34,7 @@ import {
   formatDateToMMDDYY,
   formatDateToUTC,
   multiDatePickerDateChangIntoUTC,
+  resolutionResultTable,
   utcConvertintoGMT,
 } from "../../../../../commen/functions/date_formater";
 import { updatePollsApi } from "../../../../../store/actions/Polls_actions";
@@ -166,11 +167,12 @@ const EditPollsMeeting = ({ setEditPolls }) => {
 
   const changeDateStartHandlerUpdatePolls = (date) => {
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-    let DateDate = new Date(date);
     setMeetingDate(meetingDateValueFormat);
+    let newDate = new Date(date);
+
     setupdatePolls({
       ...updatePolls,
-      date: convertGMTDateintoUTC(date),
+      date: newDate,
     });
   };
 
@@ -262,7 +264,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
       let data = {
         PollDetails: {
           PollTitle: updatePolls.Title,
-          DueDate: updatePolls.date,
+          DueDate: multiDatePickerDateChangIntoUTC(updatePolls.date),
           AllowMultipleAnswers: updatePolls.AllowMultipleAnswers,
           CreatorID: parseInt(createrid),
           PollStatusID: parseInt(pollStatusValue),
@@ -370,7 +372,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
         ...updatePolls,
         Title: pollsDetailsData.pollDetails.pollTitle,
         AllowMultipleAnswers: pollsDetailsData.pollDetails.allowMultipleAnswers,
-        date: pollsDetailsData.pollDetails.dueDate,
+        date: resolutionResultTable(pollsDetailsData?.pollDetails?.dueDate),
         PollID: pollsDetailsData.pollDetails.pollID,
       });
 

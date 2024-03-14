@@ -167,10 +167,7 @@ const NewMeeting = () => {
   const [proposedNewMeeting, setProposedNewMeeting] = useState(false);
   const [searchMeeting, setSearchMeeting] = useState(false);
   const [isMeetingTypeFilter, setMeetingTypeFilter] = useState([]);
-  console.log(
-    isMeetingTypeFilter,
-    "isMeetingTypeFilterisMeetingTypeFilterisMeetingTypeFilter"
-  );
+
   const [dataroomMapFolderId, setDataroomMapFolderId] = useState(0);
   //For Search Field Only
   const [searchText, setSearchText] = useState("");
@@ -717,25 +714,11 @@ const NewMeeting = () => {
         return meetingType === Number(value);
       },
       render: (text, record) => {
-        let meetingTypeText = "";
-        let filterValue = isMeetingTypeFilter.find(
-          (item, index) => Number(item.value) === Number(text)
+        const meetingType = Number(record.meetingType);
+        const matchedFilter = isMeetingTypeFilter.find(
+          (data) => meetingType === Number(data.value)
         );
-
-        switch (Number(text)) {
-          case Number(text):
-            meetingTypeText = filterValue?.text;
-            break;
-          case Number(text):
-            meetingTypeText = filterValue?.text;
-            break;
-          case Number(text):
-            meetingTypeText = filterValue?.text;
-            break;
-          default:
-            meetingTypeText = t("Unknown");
-        }
-        return <span>{meetingTypeText}</span>;
+        return matchedFilter ? matchedFilter.text : "";
       },
     },
     {
