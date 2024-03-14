@@ -726,11 +726,8 @@ const NewMeeting = () => {
           case Number(text):
             meetingTypeText = filterValue?.text;
             break;
-          case Number(text):
-            meetingTypeText = filterValue?.text;
-            break;
-          case Number(text):
-            meetingTypeText = filterValue?.text;
+          case Number(text) === 1:
+            meetingTypeText = t("Quick-meeting");
             break;
           default:
             meetingTypeText = t("Unknown");

@@ -245,6 +245,42 @@ const SubAgendaMappingDragging = ({
     );
   };
 
+  const pdfData = (record, ext) => {
+    console.log("PDFDATAPDFDATA", record);
+    let Data = {
+      taskId: Number(record.originalAttachmentName),
+      commingFrom: 4,
+      fileName: record.displayAttachmentName,
+      attachmentID: Number(record.originalAttachmentName),
+    };
+    let pdfDataJson = JSON.stringify(Data);
+    if (
+      ext === "pdf" ||
+      ext === "doc" ||
+      ext === "docx" ||
+      ext === "xlx" ||
+      ext === "xlxs"
+    ) {
+      window.open(
+        `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+        "_blank",
+        "noopener noreferrer"
+      );
+    } else {
+      let data = {
+        FileID: Number(record.originalAttachmentName),
+      };
+      dispatch(
+        DataRoomDownloadFileApiFunc(
+          navigate,
+          data,
+          t,
+          record.displayAttachmentName
+        )
+      );
+    }
+  };
+
   const showMoreFiles = (fileData, name, index, subindex) => {
     setFileDataAgenda(fileData);
     setAgendaName(name);
@@ -645,8 +681,11 @@ const SubAgendaMappingDragging = ({
                                                                 />
                                                                 <span
                                                                   onClick={() =>
-                                                                    downloadDocument(
-                                                                      filesData
+                                                                    pdfData(
+                                                                      filesData,
+                                                                      getFileExtension(
+                                                                        filesData?.displayAttachmentName
+                                                                      )
                                                                     )
                                                                   }
                                                                   className={
@@ -670,6 +709,11 @@ const SubAgendaMappingDragging = ({
                                                               <img
                                                                 draggable={
                                                                   false
+                                                                }
+                                                                onClick={() =>
+                                                                  downloadDocument(
+                                                                    filesData
+                                                                  )
                                                                 }
                                                                 src={
                                                                   DownloadIcon
