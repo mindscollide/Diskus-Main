@@ -213,7 +213,7 @@ const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
                 <Col lg={12} md={12} sm={12}>
                   <Table
                     column={scheduleColumn}
-                    scroll={{ x: "22vh" }}
+                    scroll={{ x: "22vh", y: "42vh" }}
                     pagination={false}
                     className="SceduleProposedMeeting"
                     rows={updatedOrganizerRows}
