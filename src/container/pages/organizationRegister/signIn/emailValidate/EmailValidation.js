@@ -355,7 +355,7 @@ const EmailValidation = () => {
                     <img draggable="false" src={DiskusLogo} alt="diskus_logo" />
                   </Col>
                 </Row>
-                <Row className="mt-3 mb-4 text-center">
+                <Row className="mt-4 mb-4 text-center">
                   <Col>
                     <span className={styles["signIn_heading"]}>
                       {t("Sign-in")}
@@ -380,21 +380,22 @@ const EmailValidation = () => {
                         maxLength={160}
                         ref={emailRef}
                       />
+                      <Row>
+                        <Col>
+                          <p
+                            className={
+                              errorBar
+                                ? ` ${styles["errorMessage-inLogin"]} `
+                                : `${styles["errorMessage-inLogin_hidden"]}`
+                            }
+                          >
+                            {errorMessage}
+                          </p>
+                        </Col>
+                      </Row>
                     </Col>
                   </Row>
-                  <Row>
-                    <Col>
-                      <p
-                        className={
-                          errorBar
-                            ? ` ${styles["errorMessage-inLogin"]} `
-                            : `${styles["errorMessage-inLogin_hidden"]}`
-                        }
-                      >
-                        {errorMessage}
-                      </p>
-                    </Col>
-                  </Row>
+
                   <Row>
                     <Col
                       sm={12}
@@ -436,7 +437,7 @@ const EmailValidation = () => {
                     </span>
                   </Col>
                 </Row>
-                <Row className="d-flex justify-content-center">
+                <Row className="d-flex justify-content-center mt-1">
                   <Col
                     sm={12}
                     lg={12}
