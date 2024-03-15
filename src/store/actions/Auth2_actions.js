@@ -1195,6 +1195,13 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   )
                 );
                 navigate("/");
+              } else {
+                dispatch(
+                  enterPasswordFail(
+                    t("User-is-not-activated-please-contact-your-admin")
+                  )
+                );
+                navigate("/");
               }
             } else if (
               response.data.responseResult.responseMessage
