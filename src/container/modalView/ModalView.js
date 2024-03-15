@@ -769,105 +769,109 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     }
   };
   useEffect(() => {
-    if (
-      meetingIdReducer.MeetingStatusEnded !== null &&
-      meetingIdReducer.MeetingStatusEnded !== undefined &&
-      meetingIdReducer.MeetingStatusEnded.length !== 0
-    ) {
-      let currentView = localStorage.getItem("MeetingCurrentView");
-      let meetingpageRow = localStorage.getItem("MeetingPageRows");
-      let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
-
-      let endMeetingData = meetingIdReducer.MeetingStatusEnded.meeting;
+    try {
       if (
-        getMeetID === endMeetingData.pK_MDID &&
-        endMeetingData.status === "9"
+        meetingIdReducer.MeetingStatusEnded !== null &&
+        meetingIdReducer.MeetingStatusEnded !== undefined &&
+        meetingIdReducer.MeetingStatusEnded.length !== 0
       ) {
-        setViewFlag(false);
-        setViewFlag(false);
-        dispatch(cleareAssigneesState());
-        setIsDetails(true);
-        setIsMinutes(false);
-        setIsAttachments(false);
-        setIsAgenda(false);
-        setIsAttendees(false);
-        setObjMeetingAgenda({
-          Title: "",
-          PresenterName: "",
-          URLs: "",
-          FK_MDID: 0,
-        });
-        setMeetingAgendaAttachments({
-          MeetingAgendaAttachments: [],
-        });
-        setParticipantRoleName("");
-        setSelectedAttendeesName("");
-        setCreateMeeting({
-          MeetingTitle: "",
-          MeetingDescription: "",
-          MeetingTypeID: 0,
-          MeetingDate: "",
-          MeetingStartTime: "",
-          MeetingEndTime: "",
-          MeetingLocation: "",
-          MeetingReminderID: [],
-          MeetingAgendas: [],
-          MeetingAttendees: [],
-          ExternalMeetingAttendees: [],
-          MinutesOfMeeting: [],
-        });
-        setMeetingAttendees({
-          User: {
-            PK_UID: 0,
-          },
-          MeetingAttendeeRole: {
-            PK_MARID: 0,
-          },
-          AttendeeAvailability: {
-            PK_AAID: 1,
-          },
-        });
-        setMeetingReminderValue("");
-        setMeetingReminderID([]);
+        let currentView = localStorage.getItem("MeetingCurrentView");
+        let meetingpageRow = localStorage.getItem("MeetingPageRows");
+        let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
 
-        // setEdiorRole({ status: null, role: null });
-        // setViewAdvanceMeetingModal(false);
-        // dispatch(viewAdvanceMeetingPublishPageFlag(false));
-        // dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-        // if (isMeetingVideo === true) {
-        //   localStorage.setItem("isCaller", false);
-        //   localStorage.setItem("isMeetingVideo", false);
-        //   const emptyArray = [];
-        //   localStorage.setItem(
-        //     "callerStatusObject",
-        //     JSON.stringify(emptyArray)
-        //   );
-        //   localStorage.setItem("activeCall", false);
-        //   localStorage.setItem("isCaller", false);
-        //   localStorage.setItem("acceptedRoomID", 0);
-        //   localStorage.setItem("activeRoomID", 0);
-        //   dispatch(normalizeVideoPanelFlag(false));
-        //   dispatch(maximizeVideoPanelFlag(false));
-        //   dispatch(minimizeVideoPanelFlag(false));
-        //   dispatch(leaveCallModal(false));
-        //   dispatch(participantPopup(false));
-        // }
-        // setCurrentMeetingID(0);
-        // setAdvanceMeetingModalID(null);
-        // setDataroomMapFolderId(0);
-        let searchData = {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: currentUserID,
-          PageNumber:
-            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-          Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-          PublishedMeetings:
-            currentView && Number(currentView) === 1 ? true : false,
-        };
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
+        let endMeetingData = meetingIdReducer.MeetingStatusEnded.meeting;
+        if (
+          getMeetID === endMeetingData.pK_MDID &&
+          endMeetingData.status === "9"
+        ) {
+          setViewFlag(false);
+          setViewFlag(false);
+          dispatch(cleareAssigneesState());
+          setIsDetails(true);
+          setIsMinutes(false);
+          setIsAttachments(false);
+          setIsAgenda(false);
+          setIsAttendees(false);
+          setObjMeetingAgenda({
+            Title: "",
+            PresenterName: "",
+            URLs: "",
+            FK_MDID: 0,
+          });
+          setMeetingAgendaAttachments({
+            MeetingAgendaAttachments: [],
+          });
+          setParticipantRoleName("");
+          setSelectedAttendeesName("");
+          setCreateMeeting({
+            MeetingTitle: "",
+            MeetingDescription: "",
+            MeetingTypeID: 0,
+            MeetingDate: "",
+            MeetingStartTime: "",
+            MeetingEndTime: "",
+            MeetingLocation: "",
+            MeetingReminderID: [],
+            MeetingAgendas: [],
+            MeetingAttendees: [],
+            ExternalMeetingAttendees: [],
+            MinutesOfMeeting: [],
+          });
+          setMeetingAttendees({
+            User: {
+              PK_UID: 0,
+            },
+            MeetingAttendeeRole: {
+              PK_MARID: 0,
+            },
+            AttendeeAvailability: {
+              PK_AAID: 1,
+            },
+          });
+          setMeetingReminderValue("");
+          setMeetingReminderID([]);
+
+          // setEdiorRole({ status: null, role: null });
+          // setViewAdvanceMeetingModal(false);
+          // dispatch(viewAdvanceMeetingPublishPageFlag(false));
+          // dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+          // if (isMeetingVideo === true) {
+          //   localStorage.setItem("isCaller", false);
+          //   localStorage.setItem("isMeetingVideo", false);
+          //   const emptyArray = [];
+          //   localStorage.setItem(
+          //     "callerStatusObject",
+          //     JSON.stringify(emptyArray)
+          //   );
+          //   localStorage.setItem("activeCall", false);
+          //   localStorage.setItem("isCaller", false);
+          //   localStorage.setItem("acceptedRoomID", 0);
+          //   localStorage.setItem("activeRoomID", 0);
+          //   dispatch(normalizeVideoPanelFlag(false));
+          //   dispatch(maximizeVideoPanelFlag(false));
+          //   dispatch(minimizeVideoPanelFlag(false));
+          //   dispatch(leaveCallModal(false));
+          //   dispatch(participantPopup(false));
+          // }
+          // setCurrentMeetingID(0);
+          // setAdvanceMeetingModalID(null);
+          // setDataroomMapFolderId(0);
+          let searchData = {
+            Date: "",
+            Title: "",
+            HostName: "",
+            UserID: currentUserID,
+            PageNumber:
+              meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+            Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+            PublishedMeetings:
+              currentView && Number(currentView) === 1 ? true : false,
+          };
+          dispatch(searchNewUserMeeting(navigate, searchData, t));
+        }
       }
+    } catch (error) {
+      console.log(error);
     }
   }, [meetingIdReducer.MeetingStatusEnded]);
 
