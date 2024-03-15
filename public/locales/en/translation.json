@@ -1875,5 +1875,8 @@
   "we-do-not-retain-any-backup-of-data-and-will-not-be-able-to-entertain-backup-recovery-request": "we do not retain any backup of data and will not be able to entertain backup recovery request",
   "It-is-requested-that-you-please-make-backup-of-all-your-data-before-proceeding-to-delete-the": "It is requested that you please make backup of all your data before proceeding to delete the",
   "account-please-proceed-with-caution-and-at-your-own-risk": "account. Please proceed with caution and at your own risk.",
-  "Confirm-billing-details": "Confirm Billing Details"
+  "Confirm-billing-details": "Confirm Billing Details",
+  "If-you-need-any-assistance": "If you need any assistance",
+  "Please-do-not-hesitate-to-email-us-at": "please do not hesitate to email us at",
+  "account@letsdiskus.com": "account@letsdiskus.com"
 }
