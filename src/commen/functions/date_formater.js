@@ -573,19 +573,15 @@ export const convertGMTDateintoUTC = (GMTdate) => {
 };
 
 // this work is create by huzeifa please dont write any thing below thi line
-
 export const multiDatePickerDateChangIntoUTC = (date) => {
-  const utcTime = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-  let d = new Date(date);
-  d.setHours(23);
-  d.setMinutes(59);
-  d.setSeconds(58);
-
   // Extract the year, month, and day components from the UTC time
-  const year = d.getUTCFullYear();
-  const month = String(d.getUTCMonth() + 1).padStart(2, "0");
-  const day = String(d.getUTCDate()).padStart(2, "0");
-  const utcFormatted = `${year}${month}${day}`;
+  const year = date.getUTCFullYear();
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(date.getUTCDate()).padStart(2, "0");
+  const hour = String(date.getUTCHours()).padStart(2, "0");
+  const minutes = String(date.getUTCMinutes()).padStart(2, "0");
+  const seconds = String(date.getUTCSeconds()).padStart(2, "0");
+  const utcFormatted = `${year}${month}${day}${hour}${minutes}${seconds}`;
 
   return utcFormatted;
 };
@@ -885,12 +881,19 @@ export function convertAndFormatDateTimeGMT(dateTimeString) {
   const second = dateTimeString.substring(12, 14);
 
   const date = new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}Z`);
-  const gmtDate = new Date(date.getTime() + (date.getTimezoneOffset() * 60000)); // Convert to GMT
-  const formattedDate = `${gmtDate.getUTCDate()}-${gmtDate.getUTCMonth() + 1}-${gmtDate.getUTCFullYear()}`;
+  const gmtDate = new Date(date.getTime() + date.getTimezoneOffset() * 60000); // Convert to GMT
+  const formattedDate = `${gmtDate.getUTCDate()}-${
+    gmtDate.getUTCMonth() + 1
+  }-${gmtDate.getUTCFullYear()}`;
   const formattedHour = gmtDate.getUTCHours();
-  const formattedMinute = gmtDate.getUTCMinutes() < 10 ? '0' + gmtDate.getUTCMinutes() : gmtDate.getUTCMinutes();
-  const period = formattedHour < 12 ? 'AM' : 'PM';
-  const formattedTime = `${formattedHour > 12 ? formattedHour - 12 : formattedHour}:${formattedMinute} ${period}`;
+  const formattedMinute =
+    gmtDate.getUTCMinutes() < 10
+      ? "0" + gmtDate.getUTCMinutes()
+      : gmtDate.getUTCMinutes();
+  const period = formattedHour < 12 ? "AM" : "PM";
+  const formattedTime = `${
+    formattedHour > 12 ? formattedHour - 12 : formattedHour
+  }:${formattedMinute} ${period}`;
 
   return `${formattedDate} | ${formattedTime}`;
 }

@@ -32,6 +32,7 @@ import {
   convertGMTDateintoUTC,
   convertintoGMTCalender,
   multiDatePickerDateChangIntoUTC,
+  resolutionResultTable,
   utcConvertintoGMT,
 } from "../../../../commen/functions/date_formater";
 import { updatePollsApi } from "../../../../store/actions/Polls_actions";
@@ -165,9 +166,10 @@ const EditPollsMeeting = ({ setEditPolls }) => {
   const changeDateStartHandlerUpdatePolls = (date) => {
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     setMeetingDate(meetingDateValueFormat);
+    let newDate = new Date(date);
     setupdatePolls({
       ...updatePolls,
-      date: multiDatePickerDateChangIntoUTC(date),
+      date: newDate,
     });
   };
 
@@ -250,7 +252,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
       let data = {
         PollDetails: {
           PollTitle: updatePolls.Title,
-          DueDate: updatePolls.date,
+          DueDate: multiDatePickerDateChangIntoUTC(updatePolls.date),
           AllowMultipleAnswers: updatePolls.AllowMultipleAnswers,
           CreatorID: parseInt(createrid),
           PollStatusID: parseInt(pollStatusValue),
@@ -364,17 +366,17 @@ const EditPollsMeeting = ({ setEditPolls }) => {
       ) {
         let pollsDetailsData = PollsReducer.Allpolls.poll;
         let pollMembers = [];
-        let newDateGmt = pollsDetailsData.pollDetails.dueDate.slice(0, 8);
+        let newDateGmt = pollsDetailsData.pollDetails.dueDate;
         setupdatePolls({
           ...updatePolls,
           Title: pollsDetailsData.pollDetails.pollTitle,
           AllowMultipleAnswers:
             pollsDetailsData.pollDetails.allowMultipleAnswers,
-          date: pollsDetailsData.pollDetails.dueDate.slice(0, 8),
+          date: resolutionResultTable(pollsDetailsData?.pollDetails?.dueDate),
           PollID: pollsDetailsData.pollDetails.pollID,
         });
 
-        let DateDate = utcConvertintoGMT(newDateGmt + "000000");
+        let DateDate = utcConvertintoGMT(newDateGmt);
         setMeetingDate(DateDate);
         if (pollsDetailsData.pollDetails.pollStatus.pollStatusId === 2) {
           setCheckForPollStatus(true);
