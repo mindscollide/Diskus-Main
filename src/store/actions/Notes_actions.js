@@ -175,7 +175,7 @@ const SaveNotesAPI = (navigate, Data, t, setAddNewModal) => {
               dispatch(
                 saveNotes_Success(
                   response.data.responseResult.getNotes,
-                  t("Notes-saved-successfully-with-attachments")
+                  t("Note-created-successfully-with-attachments")
                 )
               );
               dispatch(GetNotes(navigate, searchData, t));

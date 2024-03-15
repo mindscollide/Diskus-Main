@@ -1261,5 +1261,7 @@
   "Response-awaited": "Response Awaited",
   "Board-meeting": "Board Meeting",
   "Group-meeting": "Group Meeting",
-  "Committee-meeting": "Committee Meeting"
+  "Committee-meeting": "Committee Meeting",
+  "Note-created-successfully-with-attachments": "Note created successfully with attachments",
+  "Notes-saved-successfully": "Notes saved successfully"
 }
