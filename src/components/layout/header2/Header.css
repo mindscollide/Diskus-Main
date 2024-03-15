@@ -520,8 +520,9 @@ body[dir="rtl"] .Cancel-btn {
 }
 
 label.logout-confirmation-label {
-  font-weight: bold;
-  font-size: 18px;
+  font-family: "MontserratSemiBold" !important;
+  font-size: 20px !important;
+  color: #5a5a5a !important;
 }
 
 body[dir="rtl"] label.logout-confirmation-label {
