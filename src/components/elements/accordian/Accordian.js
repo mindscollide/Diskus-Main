@@ -6,11 +6,15 @@ const Accordian = ({
   AccordioonBody,
   AccordioonItem,
   defaultActiveKey,
-  className
+  className,
 }) => {
   return (
     <>
-      <Accordion flush defaultActiveKey={defaultActiveKey} className={className}>
+      <Accordion
+        flush
+        defaultActiveKey={defaultActiveKey}
+        className={className}
+      >
         <Accordion.Item eventKey="0">
           {AccordioonItem}
           <Accordion.Header>{AccordioonHeader}</Accordion.Header>
