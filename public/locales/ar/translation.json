@@ -1634,8 +1634,8 @@
   "Modified": "Modified",
   "Created": "Created",
   "Add-description": "Add Description",
-  "MEETING_STATUS_EDITED_PROPOSED": "The [Meeting TItle] has been Proposed",
-  "MEETING_STATUS_EDITED_PUBLISHED": "The [Meeting TItle] has been Published",
+  "MEETING_STATUS_EDITED_PROPOSED": "The [Meeting Title] has been Proposed",
+  "MEETING_STATUS_EDITED_PUBLISHED": "The [Meeting Title] has been Published",
   "Folder-details": "Folder details",
   "Not-allowed": "Not Allowed",
   "Anyone-in-my-organization-can-find-and-view": "Anyone in my organization can find and view",
@@ -1758,5 +1758,7 @@
   "Response-awaited": "Response Awaited",
   "Board-meeting": "Board Meeting",
   "Group-meeting": "Group Meeting",
-  "Committee-meeting": "Committee Meeting"
+  "Committee-meeting": "Committee Meeting",
+  "Note-created-successfully-with-attachments": "Note created successfully with attachments",
+  "Notes-saved-successfully": "Notes saved successfully"
 }
