@@ -88,6 +88,7 @@ import BillingMethodUsermanagement from "../container/pages/UserMangement/Billin
 import PakageDetailsAdmin from "../container/pages/UserMangement/AdminUserManagement/PakageDetailsAdmin/PakageDetailsAdmin";
 import CancelSubscriptionAdmin from "../container/pages/UserMangement/AdminUserManagement/CancelSubscriptionAdmin/CancelSubscriptionAdmin";
 import DeleteOrganizationAdmin from "../container/pages/UserMangement/AdminUserManagement/DeleteOrganizationAdmin/DeleteOrganizationAdmin";
+import PaymentMethodBillInfo from "../container/pages/UserMangement/AdminUserManagement/PaymentMethodBillInfoUserManagement/PaymentMethodBillInfo";
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
@@ -172,6 +173,10 @@ export const router = createHashRouter(
           <Route path="Invoice" element={<Invoice />} />
           <Route path="PayOutstanding" element={<PayOutstanding />} />
           <Route path="PaymentHistory" element={<PaymentHistory />} />
+          <Route
+            path="PaymentHistoryusermanagement"
+            element={<PaymentMethodBillInfo />}
+          />
           <Route path="Summary" element={<Summary />} />
           <Route path="Organization" element={<OrganizationLevelSetting />} />
           <Route

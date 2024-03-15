@@ -351,6 +351,14 @@ const NavbarAdmin = () => {
                           >
                             {t("Invoice-&-payment-history")}
                           </NavDropdown.Item>
+                          <NavDropdown.Item
+                            as={Link}
+                            eventKey="link-8"
+                            className="text-black border-none"
+                            to="PaymentHistoryusermanagement"
+                          >
+                            {t("Payment-history")}
+                          </NavDropdown.Item>
                         </NavDropdown>
                         <NavDropdown
                           title={t("Reports")}
