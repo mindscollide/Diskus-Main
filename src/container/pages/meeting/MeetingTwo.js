@@ -78,6 +78,7 @@ import {
   attendanceGlobalFlag,
   uploadGlobalFlag,
   FetchMeetingURLClipboard,
+  GetAllMeetingTypesNewFunction,
 } from "../../../store/actions/NewMeetingActions";
 import { mqttCurrentMeetingEnded } from "../../../store/actions/GetMeetingUserId";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
@@ -130,7 +131,9 @@ const NewMeeting = () => {
   const ResponseMessage = useSelector(
     (state) => state.NewMeetingreducer.ResponseMessage
   );
-
+  const getALlMeetingTypes = useSelector(
+    (state) => state.NewMeetingreducer.getALlMeetingTypes
+  );
   const ResponseMessages = useSelector(
     (state) => state.MeetingOrganizersReducer.ResponseMessage
   );
@@ -163,6 +166,7 @@ const NewMeeting = () => {
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
   const [proposedNewMeeting, setProposedNewMeeting] = useState(false);
   const [searchMeeting, setSearchMeeting] = useState(false);
+  const [isMeetingTypeFilter, setMeetingTypeFilter] = useState([]);
 
   const [dataroomMapFolderId, setDataroomMapFolderId] = useState(0);
   //For Search Field Only
@@ -177,7 +181,7 @@ const NewMeeting = () => {
     message: "",
   });
   const [rows, setRow] = useState([]);
-  console.log(rows, "rowsrowsrows");
+
   const [totalRecords, setTotalRecords] = useState(0);
   const [minutesAgo, setMinutesAgo] = useState(null);
   const [searchFields, setSearchFeilds] = useState({
@@ -214,12 +218,9 @@ const NewMeeting = () => {
   const [dashboardEventData, setDashboardEventData] = useState(null);
 
   useEffect(() => {
-    console.log("State before cleanup:", responseByDate);
-
     // state clean while rendering in meetingTwo
     return () => {
       setResponseByDate("");
-      console.log("State before cleanup:", responseByDate);
     };
   }, []);
 
@@ -236,6 +237,7 @@ const NewMeeting = () => {
   }, [currentLanguage]);
   //  Call all search meetings api
   useEffect(() => {
+    dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
     if (meetingpageRow !== null && meetingPageCurrent !== null) {
       let searchData = {
         Date: "",
@@ -265,6 +267,7 @@ const NewMeeting = () => {
       dispatch(allAssignessList(navigate, t));
       localStorage.setItem("MeetingCurrentView", 1);
     }
+
     setEditFlag(false);
     setViewFlag(false);
     dispatch(scheduleMeetingPageFlag(false));
@@ -582,7 +585,7 @@ const NewMeeting = () => {
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
             attendee.isPrimaryOrganizer === true
         );
-        console.log("RecordRecord", record);
+
         return (
           <span
             className={styles["meetingTitle"]}
@@ -698,45 +701,24 @@ const NewMeeting = () => {
       key: "meetingType",
       width: "115px",
       align: "center",
-      filters: [
-        {
-          text: t("Board-meeting"),
-          value: "1",
-        },
-        {
-          text: t("Committee-meeting"),
-          value: "2",
-        },
-        {
-          text: t("Group-meeting"),
-          value: "3",
-        },
-      ],
-      defaultFilteredValue: ["1", "2", "3"],
+      filters: isMeetingTypeFilter,
+      defaultFilteredValue: isMeetingTypeFilter.map((data, index) =>
+        String(data.value)
+      ),
       filterResetToDefaultFilteredValue: true,
       filterIcon: () => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
       onFilter: (value, record) => {
         const meetingType = Number(record.meetingType);
-        return !isNaN(meetingType) && meetingType === Number(value);
+        return meetingType === Number(value);
       },
-      render: (text) => {
-        let meetingTypeText = "";
-        switch (Number(text)) {
-          case 1:
-            meetingTypeText = t("Board-meeting");
-            break;
-          case 2:
-            meetingTypeText = t("Committee-meeting");
-            break;
-          case 3:
-            meetingTypeText = t("Group-meeting");
-            break;
-          default:
-            meetingTypeText = t("Unknown");
-        }
-        return <span>{meetingTypeText}</span>;
+      render: (text, record) => {
+        const meetingType = Number(record.meetingType);
+        const matchedFilter = isMeetingTypeFilter.find(
+          (data) => meetingType === Number(data.value)
+        );
+        return matchedFilter ? matchedFilter.text : "";
       },
     },
     {
@@ -1084,8 +1066,6 @@ const NewMeeting = () => {
             attendee.isPrimaryOrganizer === true
         );
 
-        console.log("isPrimaryOrganizer", isPrimaryOrganizer);
-
         const isQuickMeeting = record.isQuickMeeting;
         if (
           record.status === "8" ||
@@ -1311,6 +1291,32 @@ const NewMeeting = () => {
       }
     } catch {}
   }, [searchMeetings]);
+
+  useEffect(() => {
+    try {
+      if (
+        getALlMeetingTypes.meetingTypes !== null &&
+        getALlMeetingTypes.meetingTypes !== undefined
+      ) {
+        let meetingtypeFilter = [];
+        getALlMeetingTypes.meetingTypes.forEach((data, index) => {
+          meetingtypeFilter.push({
+            value: String(data.pK_MTID),
+            text: data.type,
+          });
+          // setMeetingDetails({
+          //   ...meetingDetails,
+          //   MeetingType: {
+          //     PK_MTID: getALlMeetingTypes.meetingTypes[0].pK_MTID,
+          //     Type: getALlMeetingTypes.meetingTypes[0].type,
+          //   },
+          // });
+        });
+        // setmeetingTypeDropdown(Newdata);
+        setMeetingTypeFilter(meetingtypeFilter);
+      }
+    } catch (error) {}
+  }, [getALlMeetingTypes.meetingTypes]);
 
   // Empty text data
   const emptyText = () => {
@@ -1574,7 +1580,6 @@ const NewMeeting = () => {
     }
   }, [dashboardEventData, rows]);
 
-  console.log("meetingIdReducermeetingIdReducer", meetingIdReducer);
   useEffect(() => {
     if (
       NewMeetingreducer.meetingStatusNotConductedMqttData !== null &&

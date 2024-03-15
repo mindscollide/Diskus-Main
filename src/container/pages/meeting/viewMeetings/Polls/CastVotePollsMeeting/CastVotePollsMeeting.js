@@ -249,8 +249,7 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
                       {viewProgressPollsDetails.Date !== "" && (
                         <>
                           {_justShowDateformatBilling(
-                            viewProgressPollsDetails?.Date.slice(0, 8) +
-                              "000000"
+                            viewProgressPollsDetails?.Date
                           )}
                         </>
                       )}

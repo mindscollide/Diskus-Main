@@ -225,3 +225,33 @@ body[dir="rtl"] .PaginationStyle-Resolution {
   color: #6172d6 !important;
   background-color: #ecefff !important;
 }
+
+.votedBtn {
+  background-color: #ecefff !important;
+  border: none !important;
+  color: #6172d6 !important;
+  border-radius: 4px !important;
+  font-size: 8px !important;
+
+  width: 64px !important;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-wrap: wrap;
+  height: 20px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+.votedBtn:is(:hover, :active, :focus, :focus-visible, :visited) {
+  background-color: #ecefff !important;
+  border: none !important;
+  color: #6172d6 !important;
+  border-radius: 4px !important;
+  font-size: 8px !important;
+  width: 64px !important;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-wrap: wrap;
+  height: 20px !important;
+  font-family: "MontserratSemiBold" !important;
+}

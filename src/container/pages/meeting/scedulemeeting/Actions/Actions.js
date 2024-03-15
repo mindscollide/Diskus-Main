@@ -27,7 +27,7 @@ import {
   actionsGlobalFlag,
   pollsGlobalFlag,
   attendanceGlobalFlag,
-  uploadGlobalFlag
+  uploadGlobalFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import {
   getMeetingTaskMainApi,
@@ -189,7 +189,9 @@ const Actions = ({
       title: t("Title"),
       dataIndex: "title",
       key: "title",
-      width: "250px",
+      ellipsis: true,
+
+      width: "115px",
       render: (text, record) => {
         return (
           <span
@@ -648,7 +650,7 @@ const Actions = ({
                         <Col lg={12} md={12} sm={12}>
                           <Table
                             column={ActionsColoumn}
-                            scroll={{ y: "40vh" }}
+                            scroll={{ y: "40vh", x: false }}
                             pagination={false}
                             className={"ToDo"}
                             rows={actionsRows}
