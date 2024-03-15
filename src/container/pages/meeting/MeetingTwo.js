@@ -904,30 +904,26 @@ const NewMeeting = () => {
               // minutesDifference > 0
             ) {
               return (
-                <Row>
-                  <Col sm={12} md={12} lg={12}>
-                    <Button
-                      text={t("Start-meeting")}
-                      className={styles["Start-Meeting"]}
-                      onClick={() => {
-                        dispatch(
-                          UpdateOrganizersMeeting(
-                            navigate,
-                            t,
-                            4,
-                            startMeetingRequest,
-                            setEdiorRole,
-                            setAdvanceMeetingModalID,
-                            setDataroomMapFolderId,
-                            setSceduleMeeting,
-                            setViewFlag,
-                            setEditFlag
-                          )
-                        );
-                      }}
-                    />
-                  </Col>
-                </Row>
+                <Button
+                  text={t("Start-meeting")}
+                  className={styles["Start-Meeting"]}
+                  onClick={() => {
+                    dispatch(
+                      UpdateOrganizersMeeting(
+                        navigate,
+                        t,
+                        4,
+                        startMeetingRequest,
+                        setEdiorRole,
+                        setAdvanceMeetingModalID,
+                        setDataroomMapFolderId,
+                        setSceduleMeeting,
+                        setViewFlag,
+                        setEditFlag
+                      )
+                    );
+                  }}
+                />
               );
             } else if (
               (record.isQuickMeeting === false &&
@@ -937,42 +933,35 @@ const NewMeeting = () => {
                 startMeetingData.showButton)
             ) {
               return (
-                <Row>
-                  <Col sm={12} md={12} lg={12}>
-                    <Button
-                      text={t("Start-meeting")}
-                      className={styles["Start-Meeting"]}
-                      onClick={() => {
-                        dispatch(
-                          UpdateOrganizersMeeting(
-                            navigate,
-                            t,
-                            3,
-                            startMeetingRequest,
-                            setEdiorRole,
-                            // setAdvanceMeetingModalID,
-                            setDataroomMapFolderId,
-                            setViewAdvanceMeetingModal
-                          )
-                        );
-                        localStorage.setItem(
-                          "currentMeetingID",
-                          record.pK_MDID
-                        );
-                        setAdvanceMeetingModalID(record.pK_MDID);
-                        dispatch(viewMeetingFlag(true));
-                        setViewAdvanceMeetingModal(true);
-                        dispatch(viewAdvanceMeetingPublishPageFlag(true));
-                        dispatch(scheduleMeetingPageFlag(false));
-                        setEdiorRole({
-                          status: 10,
-                          role: "Organizer",
-                          isPrimaryOrganizer: isPrimaryOrganizer,
-                        });
-                      }}
-                    />
-                  </Col>
-                </Row>
+                <Button
+                  text={t("Start-meeting")}
+                  className={styles["Start-Meeting"]}
+                  onClick={() => {
+                    dispatch(
+                      UpdateOrganizersMeeting(
+                        navigate,
+                        t,
+                        3,
+                        startMeetingRequest,
+                        setEdiorRole,
+                        // setAdvanceMeetingModalID,
+                        setDataroomMapFolderId,
+                        setViewAdvanceMeetingModal
+                      )
+                    );
+                    localStorage.setItem("currentMeetingID", record.pK_MDID);
+                    setAdvanceMeetingModalID(record.pK_MDID);
+                    dispatch(viewMeetingFlag(true));
+                    setViewAdvanceMeetingModal(true);
+                    dispatch(viewAdvanceMeetingPublishPageFlag(true));
+                    dispatch(scheduleMeetingPageFlag(false));
+                    setEdiorRole({
+                      status: 10,
+                      role: "Organizer",
+                      isPrimaryOrganizer: isPrimaryOrganizer,
+                    });
+                  }}
+                />
               );
             }
           }
