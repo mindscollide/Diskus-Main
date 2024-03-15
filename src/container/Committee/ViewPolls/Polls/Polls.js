@@ -305,7 +305,7 @@ const Polls = ({ committeeStatus }) => {
       render: (text, record) => {
         return (
           <span className={styles["text-success"]}>
-            {_justShowDateformatBilling(text + "000000")}
+            {_justShowDateformatBilling(text)}
           </span>
         );
       },
@@ -335,7 +335,6 @@ const Polls = ({ committeeStatus }) => {
       title: t("Vote"),
       dataIndex: "Vote",
       width: "70px",
-      align: "center",
       render: (text, record) => {
         if (record.pollStatus.pollStatusId === 2) {
           if (record.isVoter) {
@@ -355,21 +354,7 @@ const Polls = ({ committeeStatus }) => {
                 />
               );
             } else if (record.voteStatus === "Voted") {
-              return (
-                <Button
-                  className={styles["votedButton"]}
-                  text={t("Voted")}
-                  // onClick={() => navigate("/DisKus/polling")}
-                />
-                // <Col
-                //   lg={12}
-                //   md={12}
-                //   sm={12}
-                //   className={styles["Background-nonvoted-Button"]}
-                // >
-                //   <span className={styles["votedButton"]}>{t("Voted")}</span>
-                // </Col>
-              );
+              return <span className={styles["votedBtn"]}>{t("Voted")}</span>;
             }
           } else {
             return "";
@@ -381,28 +366,10 @@ const Polls = ({ committeeStatus }) => {
             if (record.wasPollPublished) {
               if (record.voteStatus === "Not Voted") {
                 return (
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    // className={styles["Background-nonvoted-Button"]}
-                  >
-                    <span className={styles["Not-voted"]}>
-                      {t("Not-voted")}
-                    </span>
-                  </Col>
+                  <span className={styles["Not-voted"]}>{t("Not-voted")}</span>
                 );
               } else {
-                return (
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className={styles["Vote_Button_Polls"]}
-                  >
-                    <span className={styles["votedButton"]}>{t("Voted")}</span>
-                  </Col>
-                );
+                return <span className={styles["votedBtn"]}>{t("Voted")}</span>;
               }
             } else {
               return "";

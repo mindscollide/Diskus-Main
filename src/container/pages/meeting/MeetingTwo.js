@@ -167,10 +167,7 @@ const NewMeeting = () => {
   const [proposedNewMeeting, setProposedNewMeeting] = useState(false);
   const [searchMeeting, setSearchMeeting] = useState(false);
   const [isMeetingTypeFilter, setMeetingTypeFilter] = useState([]);
-  console.log(
-    isMeetingTypeFilter,
-    "isMeetingTypeFilterisMeetingTypeFilterisMeetingTypeFilter"
-  );
+
   const [dataroomMapFolderId, setDataroomMapFolderId] = useState(0);
   //For Search Field Only
   const [searchText, setSearchText] = useState("");
@@ -717,22 +714,11 @@ const NewMeeting = () => {
         return meetingType === Number(value);
       },
       render: (text, record) => {
-        let meetingTypeText = "";
-        let filterValue = isMeetingTypeFilter.find(
-          (item, index) => Number(item.value) === Number(text)
+        const meetingType = Number(record.meetingType);
+        const matchedFilter = isMeetingTypeFilter.find(
+          (data) => meetingType === Number(data.value)
         );
-
-        switch (Number(text)) {
-          case Number(text):
-            meetingTypeText = filterValue?.text;
-            break;
-          case Number(text) === 1:
-            meetingTypeText = t("Quick-meeting");
-            break;
-          default:
-            meetingTypeText = t("Unknown");
-        }
-        return <span>{meetingTypeText}</span>;
+        return matchedFilter ? matchedFilter.text : "";
       },
     },
     {
@@ -918,30 +904,26 @@ const NewMeeting = () => {
               // minutesDifference > 0
             ) {
               return (
-                <Row>
-                  <Col sm={12} md={12} lg={12}>
-                    <Button
-                      text={t("Start-meeting")}
-                      className={styles["Start-Meeting"]}
-                      onClick={() => {
-                        dispatch(
-                          UpdateOrganizersMeeting(
-                            navigate,
-                            t,
-                            4,
-                            startMeetingRequest,
-                            setEdiorRole,
-                            setAdvanceMeetingModalID,
-                            setDataroomMapFolderId,
-                            setSceduleMeeting,
-                            setViewFlag,
-                            setEditFlag
-                          )
-                        );
-                      }}
-                    />
-                  </Col>
-                </Row>
+                <Button
+                  text={t("Start-meeting")}
+                  className={styles["Start-Meeting"]}
+                  onClick={() => {
+                    dispatch(
+                      UpdateOrganizersMeeting(
+                        navigate,
+                        t,
+                        4,
+                        startMeetingRequest,
+                        setEdiorRole,
+                        setAdvanceMeetingModalID,
+                        setDataroomMapFolderId,
+                        setSceduleMeeting,
+                        setViewFlag,
+                        setEditFlag
+                      )
+                    );
+                  }}
+                />
               );
             } else if (
               (record.isQuickMeeting === false &&
@@ -951,42 +933,35 @@ const NewMeeting = () => {
                 startMeetingData.showButton)
             ) {
               return (
-                <Row>
-                  <Col sm={12} md={12} lg={12}>
-                    <Button
-                      text={t("Start-meeting")}
-                      className={styles["Start-Meeting"]}
-                      onClick={() => {
-                        dispatch(
-                          UpdateOrganizersMeeting(
-                            navigate,
-                            t,
-                            3,
-                            startMeetingRequest,
-                            setEdiorRole,
-                            // setAdvanceMeetingModalID,
-                            setDataroomMapFolderId,
-                            setViewAdvanceMeetingModal
-                          )
-                        );
-                        localStorage.setItem(
-                          "currentMeetingID",
-                          record.pK_MDID
-                        );
-                        setAdvanceMeetingModalID(record.pK_MDID);
-                        dispatch(viewMeetingFlag(true));
-                        setViewAdvanceMeetingModal(true);
-                        dispatch(viewAdvanceMeetingPublishPageFlag(true));
-                        dispatch(scheduleMeetingPageFlag(false));
-                        setEdiorRole({
-                          status: 10,
-                          role: "Organizer",
-                          isPrimaryOrganizer: isPrimaryOrganizer,
-                        });
-                      }}
-                    />
-                  </Col>
-                </Row>
+                <Button
+                  text={t("Start-meeting")}
+                  className={styles["Start-Meeting"]}
+                  onClick={() => {
+                    dispatch(
+                      UpdateOrganizersMeeting(
+                        navigate,
+                        t,
+                        3,
+                        startMeetingRequest,
+                        setEdiorRole,
+                        // setAdvanceMeetingModalID,
+                        setDataroomMapFolderId,
+                        setViewAdvanceMeetingModal
+                      )
+                    );
+                    localStorage.setItem("currentMeetingID", record.pK_MDID);
+                    setAdvanceMeetingModalID(record.pK_MDID);
+                    dispatch(viewMeetingFlag(true));
+                    setViewAdvanceMeetingModal(true);
+                    dispatch(viewAdvanceMeetingPublishPageFlag(true));
+                    dispatch(scheduleMeetingPageFlag(false));
+                    setEdiorRole({
+                      status: 10,
+                      role: "Organizer",
+                      isPrimaryOrganizer: isPrimaryOrganizer,
+                    });
+                  }}
+                />
               );
             }
           }

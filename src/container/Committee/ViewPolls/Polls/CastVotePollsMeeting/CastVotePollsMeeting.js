@@ -242,7 +242,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
                         <>
                           {moment(
                             EditmeetingDateFormat(
-                              viewProgressPollsDetails?.Date + "000000"
+                              viewProgressPollsDetails?.Date
                             )
                           ).format("DD MMM YYYY")}
                         </>

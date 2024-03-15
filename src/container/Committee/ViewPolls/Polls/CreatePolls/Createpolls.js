@@ -175,6 +175,8 @@ const Createpolls = ({ setCreatepoll }) => {
   };
 
   const changeDateStartHandler = (date) => {
+    let newDate = new Date(date);
+    console.log(newDate, "newDatenewDatenewDatenewDatenewDate");
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let DateDate = new Date(date);
     setMeetingDate(meetingDateValueFormat);

@@ -162,7 +162,7 @@ const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
                             <>
                               {moment(
                                 EditmeetingDateFormat(
-                                  viewPublishedPollDetails?.Date + "000000"
+                                  viewPublishedPollDetails?.Date
                                 )
                               ).format("DD MMM YYYY")}
                             </>

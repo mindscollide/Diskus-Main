@@ -20,6 +20,7 @@
   font-size: 12px !important;
   font-family: "MontserratSemiBold" !important;
   padding: 0px 30px !important;
+  word-wrap: break-word;
 }
 
 .Heading_vewPolls_Published {

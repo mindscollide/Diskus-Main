@@ -197,7 +197,7 @@ const LanguageSelector = () => {
             : "text-black d-flex gap-2 align-items-center position-relative cursor-pointer"
         }
       >
-        <img
+        {/* <img
           src={
             location.pathname.includes("/DisKus/") ||
             location.pathname.includes("/Diskus/") ||
@@ -209,15 +209,15 @@ const LanguageSelector = () => {
           }
           alt=""
           draggable="false"
-        />
+        /> */}
         {/* {selectedLanguage.languageTitle} */}
         {currentLanguage === "en"
-          ? t("English")
+          ? t("EN")
           : currentLanguage === "ar"
-          ? t("Arabic")
+          ? t("AR")
           : currentLanguage === "fr"
-          ? t("French")
-          : t("English")}
+          ? t("FR")
+          : t("EN")}
         {languageDropdown ? (
           <img
             src={
