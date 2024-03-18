@@ -28,6 +28,7 @@ import { useTranslation } from "react-i18next";
 import StarIcon from "../../assets/images/Star.svg";
 import hollowstar from "../../assets/images/Hollowstar.svg";
 import { useNavigate } from "react-router-dom";
+import { Tooltip } from "antd";
 import ConfirmationModal from "../../components/elements/confirmationModal/ConfirmationModal";
 import {
   regexOnlyForNumberNCharacters,
@@ -491,21 +492,25 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                         {t("Add-note")}
                       </h2>
                       {isStarrted ? (
-                        <img
-                          draggable="false"
-                          src={hollowstar}
-                          alt=""
-                          className={styles["star-addnote-modal"]}
-                          onClick={() => setIsStarrted(!isStarrted)}
-                        />
+                        <Tooltip placement="topLeft" title={t("Starred")}>
+                          <img
+                            draggable="false"
+                            src={hollowstar}
+                            alt=""
+                            className={styles["star-addnote-modal"]}
+                            onClick={() => setIsStarrted(!isStarrted)}
+                          />
+                        </Tooltip>
                       ) : (
-                        <img
-                          draggable="false"
-                          src={StarIcon}
-                          alt=""
-                          className={styles["star-addnote-modal"]}
-                          onClick={() => setIsStarrted(!isStarrted)}
-                        />
+                        <Tooltip placement="topLeft" title={t("Unstarred")}>
+                          <img
+                            draggable="false"
+                            src={StarIcon}
+                            alt=""
+                            className={styles["star-addnote-modal"]}
+                            onClick={() => setIsStarrted(!isStarrted)}
+                          />
+                        </Tooltip>
                       )}
                     </Col>
                   </Row>
