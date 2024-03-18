@@ -173,8 +173,48 @@ body[dir="rtl"] .polling_searchinput {
   border-radius: 4px !important;
   font-size: 12px !important;
   width: 80px !important;
-  height: 42px !important;
+  /* height: 42px !important; */
   /* padding: 12px 30px; */
+  font-family: "MontserratSemiBold" !important;
+}
+.voteBtn:is(:hover, :active, :focus, :focus-visible, :visited) {
+  background-color: #81db86 !important;
+  border: none !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  width: 80px !important;
+  /* height: 42px !important; */
+  /* padding: 12px 30px; */
+  font-family: "MontserratSemiBold" !important;
+}
+
+.votedBtn {
+  background-color: #ecefff !important;
+  border: none !important;
+  color: #6172d6 !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  width: 80px !important;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-wrap: wrap;
+  height: 30px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+.votedBtn:is(:hover, :active, :focus, :focus-visible, :visited) {
+  background-color: #ecefff !important;
+  border: none !important;
+  color: #6172d6 !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  width: 80px !important;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-content: center;
+  height: 30px !important;
   font-family: "MontserratSemiBold" !important;
 }
 

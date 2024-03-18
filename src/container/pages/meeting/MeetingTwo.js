@@ -78,6 +78,7 @@ import {
   attendanceGlobalFlag,
   uploadGlobalFlag,
   FetchMeetingURLClipboard,
+  GetAllMeetingTypesNewFunction,
 } from "../../../store/actions/NewMeetingActions";
 import { mqttCurrentMeetingEnded } from "../../../store/actions/GetMeetingUserId";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
@@ -130,7 +131,9 @@ const NewMeeting = () => {
   const ResponseMessage = useSelector(
     (state) => state.NewMeetingreducer.ResponseMessage
   );
-
+  const getALlMeetingTypes = useSelector(
+    (state) => state.NewMeetingreducer.getALlMeetingTypes
+  );
   const ResponseMessages = useSelector(
     (state) => state.MeetingOrganizersReducer.ResponseMessage
   );
@@ -163,6 +166,7 @@ const NewMeeting = () => {
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
   const [proposedNewMeeting, setProposedNewMeeting] = useState(false);
   const [searchMeeting, setSearchMeeting] = useState(false);
+  const [isMeetingTypeFilter, setMeetingTypeFilter] = useState([]);
 
   const [dataroomMapFolderId, setDataroomMapFolderId] = useState(0);
   //For Search Field Only
@@ -177,6 +181,7 @@ const NewMeeting = () => {
     message: "",
   });
   const [rows, setRow] = useState([]);
+
   const [totalRecords, setTotalRecords] = useState(0);
   const [minutesAgo, setMinutesAgo] = useState(null);
   const [searchFields, setSearchFeilds] = useState({
@@ -213,12 +218,9 @@ const NewMeeting = () => {
   const [dashboardEventData, setDashboardEventData] = useState(null);
 
   useEffect(() => {
-    console.log("State before cleanup:", responseByDate);
-
     // state clean while rendering in meetingTwo
     return () => {
       setResponseByDate("");
-      console.log("State before cleanup:", responseByDate);
     };
   }, []);
 
@@ -235,6 +237,7 @@ const NewMeeting = () => {
   }, [currentLanguage]);
   //  Call all search meetings api
   useEffect(() => {
+    dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
     if (meetingpageRow !== null && meetingPageCurrent !== null) {
       let searchData = {
         Date: "",
@@ -264,6 +267,7 @@ const NewMeeting = () => {
       dispatch(allAssignessList(navigate, t));
       localStorage.setItem("MeetingCurrentView", 1);
     }
+
     setEditFlag(false);
     setViewFlag(false);
     dispatch(scheduleMeetingPageFlag(false));
@@ -581,7 +585,7 @@ const NewMeeting = () => {
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
             attendee.isPrimaryOrganizer === true
         );
-        console.log("RecordRecord", record);
+
         return (
           <span
             className={styles["meetingTitle"]}
@@ -614,6 +618,8 @@ const NewMeeting = () => {
       dataIndex: "status",
       key: "status",
       width: "50px",
+      ellipsis: true,
+
       filters: [
         {
           text: t("Active"),
@@ -632,12 +638,12 @@ const NewMeeting = () => {
           value: "9",
         },
         {
-          text: t("Not-conducted"),
-          value: "8",
-        },
-        {
           text: t("Cancelled"),
           value: "4",
+        },
+        {
+          text: t("Not-conducted"),
+          value: "8",
         },
       ],
       defaultFilteredValue: ["10", "9", "8", "2", "1", "4"],
@@ -687,6 +693,32 @@ const NewMeeting = () => {
           `${b?.dateOfMeeting}${b?.meetingStartTime}`
         );
         return dateA - dateB;
+      },
+    },
+    {
+      title: t("Meeting-type"),
+      dataIndex: "meetingType",
+      key: "meetingType",
+      width: "115px",
+      align: "center",
+      filters: isMeetingTypeFilter,
+      defaultFilteredValue: isMeetingTypeFilter.map((data, index) =>
+        String(data.value)
+      ),
+      filterResetToDefaultFilteredValue: true,
+      filterIcon: () => (
+        <ChevronDown className="filter-chevron-icon-todolist" />
+      ),
+      onFilter: (value, record) => {
+        const meetingType = Number(record.meetingType);
+        return meetingType === Number(value);
+      },
+      render: (text, record) => {
+        const meetingType = Number(record.meetingType);
+        const matchedFilter = isMeetingTypeFilter.find(
+          (data) => meetingType === Number(data.value)
+        );
+        return matchedFilter ? matchedFilter.text : "";
       },
     },
     {
@@ -872,30 +904,26 @@ const NewMeeting = () => {
               // minutesDifference > 0
             ) {
               return (
-                <Row>
-                  <Col sm={12} md={12} lg={12}>
-                    <Button
-                      text={t("Start-meeting")}
-                      className={styles["Start-Meeting"]}
-                      onClick={() => {
-                        dispatch(
-                          UpdateOrganizersMeeting(
-                            navigate,
-                            t,
-                            4,
-                            startMeetingRequest,
-                            setEdiorRole,
-                            setAdvanceMeetingModalID,
-                            setDataroomMapFolderId,
-                            setSceduleMeeting,
-                            setViewFlag,
-                            setEditFlag
-                          )
-                        );
-                      }}
-                    />
-                  </Col>
-                </Row>
+                <Button
+                  text={t("Start-meeting")}
+                  className={styles["Start-Meeting"]}
+                  onClick={() => {
+                    dispatch(
+                      UpdateOrganizersMeeting(
+                        navigate,
+                        t,
+                        4,
+                        startMeetingRequest,
+                        setEdiorRole,
+                        setAdvanceMeetingModalID,
+                        setDataroomMapFolderId,
+                        setSceduleMeeting,
+                        setViewFlag,
+                        setEditFlag
+                      )
+                    );
+                  }}
+                />
               );
             } else if (
               (record.isQuickMeeting === false &&
@@ -905,42 +933,35 @@ const NewMeeting = () => {
                 startMeetingData.showButton)
             ) {
               return (
-                <Row>
-                  <Col sm={12} md={12} lg={12}>
-                    <Button
-                      text={t("Start-meeting")}
-                      className={styles["Start-Meeting"]}
-                      onClick={() => {
-                        dispatch(
-                          UpdateOrganizersMeeting(
-                            navigate,
-                            t,
-                            3,
-                            startMeetingRequest,
-                            setEdiorRole,
-                            // setAdvanceMeetingModalID,
-                            setDataroomMapFolderId,
-                            setViewAdvanceMeetingModal
-                          )
-                        );
-                        localStorage.setItem(
-                          "currentMeetingID",
-                          record.pK_MDID
-                        );
-                        setAdvanceMeetingModalID(record.pK_MDID);
-                        dispatch(viewMeetingFlag(true));
-                        setViewAdvanceMeetingModal(true);
-                        dispatch(viewAdvanceMeetingPublishPageFlag(true));
-                        dispatch(scheduleMeetingPageFlag(false));
-                        setEdiorRole({
-                          status: 10,
-                          role: "Organizer",
-                          isPrimaryOrganizer: isPrimaryOrganizer,
-                        });
-                      }}
-                    />
-                  </Col>
-                </Row>
+                <Button
+                  text={t("Start-meeting")}
+                  className={styles["Start-Meeting"]}
+                  onClick={() => {
+                    dispatch(
+                      UpdateOrganizersMeeting(
+                        navigate,
+                        t,
+                        3,
+                        startMeetingRequest,
+                        setEdiorRole,
+                        // setAdvanceMeetingModalID,
+                        setDataroomMapFolderId,
+                        setViewAdvanceMeetingModal
+                      )
+                    );
+                    localStorage.setItem("currentMeetingID", record.pK_MDID);
+                    setAdvanceMeetingModalID(record.pK_MDID);
+                    dispatch(viewMeetingFlag(true));
+                    setViewAdvanceMeetingModal(true);
+                    dispatch(viewAdvanceMeetingPublishPageFlag(true));
+                    dispatch(scheduleMeetingPageFlag(false));
+                    setEdiorRole({
+                      status: 10,
+                      role: "Organizer",
+                      isPrimaryOrganizer: isPrimaryOrganizer,
+                    });
+                  }}
+                />
               );
             }
           }
@@ -982,7 +1003,7 @@ const NewMeeting = () => {
           } else if (isOrganiser) {
             return (
               <Button
-                text={t("Start-join-meeting")}
+                text={t("Join-meeting")}
                 className={styles["joining-Meeting"]}
                 onClick={() => {
                   handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
@@ -1034,8 +1055,6 @@ const NewMeeting = () => {
             attendee.isPrimaryOrganizer === true
         );
 
-        console.log("isPrimaryOrganizer", isPrimaryOrganizer);
-
         const isQuickMeeting = record.isQuickMeeting;
         if (
           record.status === "8" ||
@@ -1046,32 +1065,39 @@ const NewMeeting = () => {
         } else {
           if (isQuickMeeting) {
             if (isOrganiser) {
-              return (
-                <>
-                  <Row>
-                    <Col sm={12} md={12} lg={12}>
-                      <Tooltip placement="topRight" title={t("Edit")}>
-                        <img
-                          src={EditIcon}
-                          className="cursor-pointer"
-                          width="17.11px"
-                          height="17.11px"
-                          alt=""
-                          draggable="false"
-                          onClick={() =>
-                            handleEditMeeting(
-                              record.pK_MDID,
-                              record.isQuickMeeting,
-                              isAgendaContributor,
-                              record
-                            )
-                          }
-                        />
-                      </Tooltip>
-                    </Col>
-                  </Row>
-                </>
-              );
+              if (record.status !== "10") {
+                return (
+                  <>
+                    <Row>
+                      <Col
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        className="d-flex justify-content-center"
+                      >
+                        <Tooltip placement="topRight" title={t("Edit")}>
+                          <img
+                            src={EditIcon}
+                            className="cursor-pointer"
+                            width="17.11px"
+                            height="17.11px"
+                            alt=""
+                            draggable="false"
+                            onClick={() =>
+                              handleEditMeeting(
+                                record.pK_MDID,
+                                record.isQuickMeeting,
+                                isAgendaContributor,
+                                record
+                              )
+                            }
+                          />
+                        </Tooltip>
+                      </Col>
+                    </Row>
+                  </>
+                );
+              }
             }
           } else {
             if (isParticipant) {
@@ -1079,7 +1105,12 @@ const NewMeeting = () => {
               return (
                 <>
                   <Row>
-                    <Col sm={12} md={12} lg={12}>
+                    <Col
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className="d-flex justify-content-center"
+                    >
                       <Tooltip placement="topRight" title={t("Edit")}>
                         <img
                           src={EditIcon}
@@ -1113,7 +1144,12 @@ const NewMeeting = () => {
               return (
                 <>
                   <Row>
-                    <Col sm={12} md={12} lg={12}>
+                    <Col
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className="d-flex justify-content-center"
+                    >
                       <Tooltip placement="topRight" title={t("Edit")}>
                         <img
                           src={EditIcon}
@@ -1233,6 +1269,7 @@ const NewMeeting = () => {
                 title: data.title,
                 talkGroupID: data.talkGroupID,
                 key: index,
+                meetingType: data.meetingTypeID,
               });
             } catch {}
           });
@@ -1243,6 +1280,32 @@ const NewMeeting = () => {
       }
     } catch {}
   }, [searchMeetings]);
+
+  useEffect(() => {
+    try {
+      if (
+        getALlMeetingTypes.meetingTypes !== null &&
+        getALlMeetingTypes.meetingTypes !== undefined
+      ) {
+        let meetingtypeFilter = [];
+        getALlMeetingTypes.meetingTypes.forEach((data, index) => {
+          meetingtypeFilter.push({
+            value: String(data.pK_MTID),
+            text: data.type,
+          });
+          // setMeetingDetails({
+          //   ...meetingDetails,
+          //   MeetingType: {
+          //     PK_MTID: getALlMeetingTypes.meetingTypes[0].pK_MTID,
+          //     Type: getALlMeetingTypes.meetingTypes[0].type,
+          //   },
+          // });
+        });
+        // setmeetingTypeDropdown(Newdata);
+        setMeetingTypeFilter(meetingtypeFilter);
+      }
+    } catch (error) {}
+  }, [getALlMeetingTypes.meetingTypes]);
 
   // Empty text data
   const emptyText = () => {
@@ -1506,7 +1569,6 @@ const NewMeeting = () => {
     }
   }, [dashboardEventData, rows]);
 
-  console.log("meetingIdReducermeetingIdReducer", meetingIdReducer);
   useEffect(() => {
     if (
       NewMeetingreducer.meetingStatusNotConductedMqttData !== null &&
@@ -1722,13 +1784,18 @@ const NewMeeting = () => {
                             draggable="false"
                           />
                         ) : null}
-                        <img
-                          src={searchicon}
-                          className={styles["Search_Bar_icon_class"]}
-                          onClick={HandleShowSearch} // Add click functionality here
-                          alt=""
-                          draggable="false"
-                        />
+                        <Tooltip
+                          placement="bottomLeft"
+                          title={t("Search-filters")}
+                        >
+                          <img
+                            src={searchicon}
+                            className={styles["Search_Bar_icon_class"]}
+                            onClick={HandleShowSearch} // Add click functionality here
+                            alt=""
+                            draggable="false"
+                          />
+                        </Tooltip>
                       </Col>
                     </Row>
                   }

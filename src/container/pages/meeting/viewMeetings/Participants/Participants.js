@@ -28,6 +28,7 @@ import {
 import { useEffect } from "react";
 import NORSVP from "../../../../../assets/images/No-RSVP.png";
 import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
+import { Tooltip } from "antd";
 
 const Participants = ({
   setParticipants,
@@ -179,33 +180,39 @@ const Participants = ({
       render: (text, record) => {
         if (record.attendeeAvailability === 1) {
           return (
-            <img
-              draggable={false}
-              src={AwaitingResponse}
-              height="30px"
-              width="30px"
-              alt=""
-            />
+            <Tooltip placement="bottomLeft" title={t("Response-awaited")}>
+              <img
+                draggable={false}
+                src={AwaitingResponse}
+                height="30px"
+                width="30px"
+                alt=""
+              />
+            </Tooltip>
           );
         } else if (record.attendeeAvailability === 2) {
           return (
-            <img
-              draggable={false}
-              src={thumbsup}
-              height="30px"
-              width="30px"
-              alt=""
-            />
+            <Tooltip placement="bottomLeft" title={t("Accepted")}>
+              <img
+                draggable={false}
+                src={thumbsup}
+                height="30px"
+                width="30px"
+                alt=""
+              />
+            </Tooltip>
           );
         } else if (record.attendeeAvailability === 3) {
           return (
-            <img
-              draggable={false}
-              src={thumbsdown}
-              height="30px"
-              width="30px"
-              alt=""
-            />
+            <Tooltip placement="bottomLeft" title={t("Rejected")}>
+              <img
+                draggable={false}
+                src={thumbsdown}
+                height="30px"
+                width="30px"
+                alt=""
+              />
+            </Tooltip>
           );
         } else if (record.attendeeAvailability === 4) {
           return (
@@ -273,9 +280,9 @@ const Participants = ({
 
   return (
     <>
-      <section>
+      <section className={styles["height2"]}>
         <Row>
-          <Col lg={12} md={12} sm={12} className={styles["FixedHeight"]}>
+          <Col lg={12} md={12} sm={12}>
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <Table

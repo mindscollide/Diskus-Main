@@ -86,10 +86,8 @@ const MeetingMaterial = ({
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let userID = localStorage.getItem("userID");
-  const [clicks, setClicks] = useState(0);
   const [flag, setFlag] = useState(5);
   const [prevFlag, setprevFlag] = useState(5);
-  const [dataCheck, setDataCheck] = useState([]);
   const [isPublishedState, setIsPublishedState] = useState(false);
 
   // row state for meeting Material
@@ -102,6 +100,81 @@ const MeetingMaterial = ({
     };
     dispatch(getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows));
   }, []);
+  // handle click open a file in web viewer on new tab
+  const handleClickOpenFile = (record) => {
+    if (
+      (editorRole.role.toLowerCase() === "Organizer".toLowerCase() ||
+        editorRole.role.toLowerCase() === "Agenda Contributor".toLowerCase()) &&
+      (editorRole.status === "12" ||
+        editorRole.status === "11" ||
+        editorRole.status === "10" ||
+        editorRole.status === "1")
+    ) {
+      const documentData = {
+        taskId: record.agendaID,
+        commingFrom: 4,
+        fileName: record.displayFileName,
+        attachmentID: Number(record.originalFileName),
+      };
+      const documentDataJson = JSON.stringify(documentData);
+      window.open(
+        `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+          documentDataJson
+        )}`,
+        "_blank",
+        "noopener noreferrer"
+      );
+    } else if (
+      editorRole.status === "9" &&
+      (editorRole.role === "Agenda Contributor" ||
+        editorRole.role === "Organizer")
+    ) {
+      const documentData = {
+        taskId: record.agendaID,
+        commingFrom: 4,
+        fileName: record.displayFileName,
+        attachmentID: Number(record.originalFileName),
+        isPermission: 1,
+      };
+      const documentDataJson = JSON.stringify(documentData);
+      window.open(
+        `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+          documentDataJson
+        )}`,
+        "_blank",
+        "noopener noreferrer"
+      );
+    }
+  };
+  //  handle Click download a file
+  const handleClickDownload = (record) => {
+    if (
+      (editorRole.role.toLowerCase() === "Organizer".toLowerCase() ||
+        editorRole.role.toLowerCase() === "Agenda Contributor".toLowerCase()) &&
+      (editorRole.status === "12" ||
+        editorRole.status === "11" ||
+        editorRole.status === "10" ||
+        editorRole.status === "1")
+    ) {
+      let data = {
+        FileID: Number(record.originalFileName),
+      };
+      dispatch(
+        DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName)
+      );
+    } else if (
+      editorRole.status === "9" &&
+      (editorRole.role === "Agenda Contributor" ||
+        editorRole.role === "Organizer")
+    ) {
+      let data = {
+        FileID: Number(record.originalFileName),
+      };
+      dispatch(
+        DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName)
+      );
+    }
+  };
 
   const handleDoubeClick = (record) => {
     const ext = getFileExtension(record.displayFileName);
@@ -205,7 +278,7 @@ const MeetingMaterial = ({
           <div>
             <section
               className={styles["docx-name-title"]}
-              onDoubleClick={() => handleDoubeClick(record)}
+              onClick={() => handleDoubeClick(record)}
             >
               <img
                 src={getIconSource(getFileExtension(record.displayFileName))}
@@ -248,15 +321,33 @@ const MeetingMaterial = ({
               >
                 <Eye
                   fontSize={22}
-                  cursor={ext === "pdf" ? "pointer" : "default"}
-                  pointerEvents={ext === "pdf" ? "auto" : "none"}
-                  onDoubleClick={() => handleDoubeClick(record)}
+                  cursor={
+                    ext === "pdf" ||
+                    ext === "doc" ||
+                    ext === "docx" ||
+                    ext === "xls" ||
+                    ext === "xlsx" ||
+                    ext === "rtf"
+                      ? "pointer"
+                      : "default"
+                  }
+                  pointerEvents={
+                    ext === "pdf" ||
+                    ext === "doc" ||
+                    ext === "docx" ||
+                    ext === "xls" ||
+                    ext === "xlsx" ||
+                    ext === "rtf"
+                      ? "auto"
+                      : "none"
+                  }
+                  onClick={() => handleClickOpenFile(record)}
                 />
                 <Button
-                  disableBtn={ext !== "pdf" ? false : true}
+                  // disableBtn={ext !== "pdf" ? false : true}
                   text={t("Download")}
                   className={styles["downloadButton"]}
-                  onClick={() => handleDoubeClick(record)}
+                  onClick={() => handleClickDownload(record)}
                 />
               </Col>
             </Row>

@@ -244,6 +244,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
         },
       ],
       defaultFilteredValue: ["10", "9", "8", "2", "1", "4"],
+      filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
@@ -512,7 +513,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
           } else if (isOrganiser) {
             return (
               <Button
-                text={t("Start-join-meeting")}
+                text={t("Join-meeting")}
                 className={styles["joining-Meeting"]}
                 onClick={() => {
                   handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
@@ -551,35 +552,37 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
         } else {
           if (isQuickMeeting) {
             if (isOrganiser) {
-              return (
-                <>
-                  <Row>
-                    <Col sm={12} md={12} lg={12}>
-                      {/* <Tooltip placement="topRight" title={t("Edit")}> */}
-                      {groupStatus === 3 && (
-                        <img
-                          src={EditIcon}
-                          className="cursor-pointer"
-                          width="17.11px"
-                          height="17.11px"
-                          alt=""
-                          draggable="false"
-                          onClick={() =>
-                            handleEditMeeting(
-                              record.pK_MDID,
-                              record.isQuickMeeting,
-                              isAgendaContributor,
-                              record
-                            )
-                          }
-                        />
-                      )}
+              if (record.status !== "10") {
+                return (
+                  <>
+                    <Row>
+                      <Col sm={12} md={12} lg={12}>
+                        {/* <Tooltip placement="topRight" title={t("Edit")}> */}
+                        {groupStatus === 3 && (
+                          <img
+                            src={EditIcon}
+                            className="cursor-pointer"
+                            width="17.11px"
+                            height="17.11px"
+                            alt=""
+                            draggable="false"
+                            onClick={() =>
+                              handleEditMeeting(
+                                record.pK_MDID,
+                                record.isQuickMeeting,
+                                isAgendaContributor,
+                                record
+                              )
+                            }
+                          />
+                        )}
 
-                      {/* </Tooltip> */}
-                    </Col>
-                  </Row>
-                </>
-              );
+                        {/* </Tooltip> */}
+                      </Col>
+                    </Row>
+                  </>
+                );
+              }
             }
           }
         }

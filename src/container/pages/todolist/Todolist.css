@@ -72,18 +72,10 @@ body[dir="rtl"] .todolist-create-btn button {
   background: linear-gradient(to right, #4adede 0%, #6172d6 100%) !important;
 }
 
-.todolist-search-row {
-  /* margin-left: -25px !important; */
-}
-
 .ToDo {
   /* min-height: 79vh !important; */
   overflow-y: auto;
 }
-
-/* .ToDo .ant-table table {
-  margin-bottom: 10px !important;
-} */
 
 .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell {
   padding: 3px 3px !important;
@@ -446,4 +438,10 @@ td.ant-table-column-sort {
   text-align: center;
   font-weight: 600;
   margin-top: 20px;
+}
+.todolist_main_section {
+  min-height: calc(100vh - 22vh);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }

@@ -119,9 +119,7 @@ const ViewPollsUnPublished = ({ setUnPublished }) => {
                     {viewProgressPollsDetails.Date !== "" && (
                       <>
                         {moment(
-                          EditmeetingDateFormat(
-                            viewProgressPollsDetails?.Date + "000000"
-                          )
+                          EditmeetingDateFormat(viewProgressPollsDetails?.Date)
                         ).format("DD MMM YYYY")}
                       </>
                     )}

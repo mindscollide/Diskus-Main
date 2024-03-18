@@ -22,7 +22,7 @@ import {
 import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
 import { Eye } from "react-bootstrap-icons";
 
-const MeetingMaterial = ({
+const MeetingMaterialPrev = ({
   setViewAdvanceMeetingModal,
   advanceMeetingModalID,
   setAdvanceMeetingModalID,
@@ -48,9 +48,6 @@ const MeetingMaterial = ({
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let currentView = localStorage.getItem("MeetingCurrentView");
 
-  const [clicks, setClicks] = useState(0);
-  const [dataCheck, setDataCheck] = useState([]);
-
   // row state for meeting Material
   const [rows, setRows] = useState([]);
 
@@ -70,29 +67,12 @@ const MeetingMaterial = ({
   //onClick of handlerFor View PDF
   const viewHandlerOnclick = (e, data) => {
     e.preventDefault();
-    if (clicks === 1) {
-      if (dataCheck === data) {
-        // Perform the action you want to happen on the double-click here
-        window.open(
-          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(data)}`,
-          "_blank",
-          "noopener noreferrer"
-        );
-      } else {
-        setDataCheck(data);
-      }
-      // Reset the click count
-      setClicks(0);
-    } else {
-      // Increment the click count
-      setClicks(clicks + 1);
-      setDataCheck(data);
-      // You can add a delay here to reset the click count after a certain time if needed
-      setTimeout(() => {
-        setClicks(0);
-        setDataCheck([]);
-      }, 300); // Reset after 300 milliseconds (adjust as needed)
-    }
+
+    window.open(
+      `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(data)}`,
+      "_blank",
+      "noopener noreferrer"
+    );
   };
 
   const downloadAgendaViewer = (fileID, fileName) => {
@@ -232,7 +212,7 @@ const MeetingMaterial = ({
           <div>
             <section
               className={styles["docx-name-title"]}
-              onDoubleClick={() => handleDoubeClick(record)}
+              onClick={() => handleDoubeClick(record)}
             >
               <img
                 src={getIconSource(getFileExtension(record.displayFileName))}
@@ -278,7 +258,7 @@ const MeetingMaterial = ({
                   fontSize={22}
                   cursor={ext === "pdf" ? "pointer" : "default"}
                   pointerEvents={ext === "pdf" ? "auto" : "none"}
-                  onDoubleClick={() => handleDoubeClick(record)}
+                  onClick={() => handleDoubeClick(record)}
                 />
                 {/* {ext !== "pdf" && ( */}
                 <Button
@@ -332,36 +312,8 @@ const MeetingMaterial = ({
     dispatch(showCancelMeetingMaterial(true));
   };
   const handleClickSave = () => {
-    console.log(
-      { editorRole },
-      "handleClickSavehandleClickSavehandleClickSave"
-    );
-    // if (
-    //   editorRole.role === "Organizer" &&
-    //   (Number(editorRole.status) === 9 || Number(editorRole.status) === 10)
-    // ) {
-    //   setMinutes(true);
-    //   setMeetingMaterial(false);
-    // }
-    // if (
-    //   (editorRole.role === "Participant" ||
-    //     editorRole.role === "Agenda Contributor") &&
-    //   Number(editorRole.status) === 10
-    // ) {
-    //   setactionsPage(true);
-    //   setMeetingMaterial(false);
-    // }
-    // if (
-    //   (editorRole.role === "Agenda Contributor" ||
-    //     editorRole.role === "Participant") &&
-    //   Number(editorRole.status) === 9
-    // ) {
-    //   setactionsPage(true);
-    //   setMeetingMaterial(false);
-    // }
     setMinutes(true);
     setMeetingMaterial(false);
-    // setMinutes(true);
   };
 
   const prevHandlerClick = () => {
@@ -433,4 +385,4 @@ const MeetingMaterial = ({
   );
 };
 
-export default MeetingMaterial;
+export default MeetingMaterialPrev;

@@ -9,6 +9,9 @@ import AgendaContributers from "./AgendaContributors/AgendaContributers";
 import {
   normalizeVideoPanelFlag,
   minimizeVideoPanelFlag,
+  maximizeVideoPanelFlag,
+  leaveCallModal,
+  participantPopup,
 } from "../../../../store/actions/VideoFeature_actions";
 import {
   searchNewUserMeeting,
@@ -21,7 +24,7 @@ import {
 } from "../../../../store/actions/NewMeetingActions";
 import Participants from "./Participants/Participants";
 import Agenda from "./Agenda/Agenda";
-import MeetingMaterial from "./MeetingMaterial/MeetingMaterial";
+import AgendaViewer from "./AgendaViewer/AgendaViewer";
 import Minutes from "./Minutes/Minutes";
 import Actions from "./Actions/Actions";
 import Polls from "./Polls/Polls";
@@ -70,6 +73,7 @@ const ViewMeetingModal = ({
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let userID = localStorage.getItem("userID");
+  let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
 
   const dispatch = useDispatch();
 
@@ -233,7 +237,24 @@ const ViewMeetingModal = ({
         setViewAdvanceMeetingModal(false);
         dispatch(viewAdvanceMeetingPublishPageFlag(false));
         dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-
+        if (isMeetingVideo === true) {
+          localStorage.setItem("isCaller", false);
+          localStorage.setItem("isMeetingVideo", false);
+          const emptyArray = [];
+          localStorage.setItem(
+            "callerStatusObject",
+            JSON.stringify(emptyArray)
+          );
+          localStorage.setItem("activeCall", false);
+          localStorage.setItem("isCaller", false);
+          localStorage.setItem("acceptedRoomID", 0);
+          localStorage.setItem("activeRoomID", 0);
+          dispatch(normalizeVideoPanelFlag(false));
+          dispatch(maximizeVideoPanelFlag(false));
+          dispatch(minimizeVideoPanelFlag(false));
+          dispatch(leaveCallModal(false));
+          dispatch(participantPopup(false));
+        }
         setCurrentMeetingID(0);
         setAdvanceMeetingModalID(null);
         setDataroomMapFolderId(0);
@@ -252,14 +273,6 @@ const ViewMeetingModal = ({
 
         localStorage.setItem("folderDataRoomMeeting", 0);
       }
-      console.log(
-        "meetingIdReducer.MeetingStatusSocket",
-        advanceMeetingModalID === endMeetingData.pK_MDID &&
-          endMeetingData.status === "9",
-        advanceMeetingModalID,
-        endMeetingData.pK_MDID,
-        endMeetingData.status
-      );
     }
   }, [meetingIdReducer.MeetingStatusEnded]);
 
@@ -496,7 +509,7 @@ const ViewMeetingModal = ({
                 />
               )}
               {meetingMaterial && (
-                <MeetingMaterial
+                <AgendaViewer
                   setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                   advanceMeetingModalID={advanceMeetingModalID}
                   setAdvanceMeetingModalID={setAdvanceMeetingModalID}

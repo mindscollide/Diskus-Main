@@ -15,6 +15,7 @@ import {
   GetAllMeetingDetailsApiFunc,
   SetMeetingResponseApiFunc,
   getUserProposedWiseApi,
+  searchNewUserMeeting,
   viewProposeDateMeetingPageFlag,
 } from "../../../../../../store/actions/NewMeetingActions";
 import { useEffect } from "react";
@@ -38,6 +39,9 @@ const ViewParticipantsDates = ({
   const navigate = useNavigate();
 
   const currentUserId = localStorage.getItem("userID");
+  let userID = localStorage.getItem("userID");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
 
   const [open, setOpen] = useState({
     flag: false,
@@ -330,6 +334,16 @@ const ViewParticipantsDates = ({
   };
 
   const handleCancel = () => {
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: 1,
+      Length: 50,
+      PublishedMeetings: false,
+    };
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
     setViewProposeDatePoll(false);
     dispatch(viewProposeDateMeetingPageFlag(false));
   };

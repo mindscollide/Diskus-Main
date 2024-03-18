@@ -112,6 +112,7 @@ import {
 } from "../../store/actions/DataRoom2_actions";
 import FileDetailsModal from "./FileDetailsModal/FileDetailsModal";
 import copyToClipboard from "../../hooks/useClipBoard";
+import { createWorkflowApi } from "../../store/actions/workflow_actions";
 
 const DataRoom = () => {
   const currentUrl = window.location.href;
@@ -208,9 +209,6 @@ const DataRoom = () => {
     open: false,
     message: "",
   });
-  // for anotantion opens in new tabb on doubble click
-  const [clicks, setClicks] = useState(0);
-  const [dataCheck, setDataCheck] = useState([]);
 
   let userID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
@@ -626,11 +624,10 @@ const DataRoom = () => {
         )
       );
     } else if (data.value === 8) {
-      window.open(
-        `/#/DisKus/signatureviewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
-        "_blank",
-        "noopener noreferrer"
-      );
+      let dataRoomData = {
+        FileID: Number(record.id),
+      };
+      dispatch(createWorkflowApi(dataRoomData, navigate, t, pdfDataJson));
     }
   };
   //
@@ -960,18 +957,20 @@ const DataRoom = () => {
       filters: [
         {
           text: t("Last-modified"),
-          value: 2,
+          value: "2",
         },
         {
           text: t("Last-modified-by-me"),
-          value: 3,
+          value: "3",
         },
         {
           text: t("Last-open-by-me"),
-          value: 4,
+          value: "4",
         },
         // ... other filters ...
       ],
+      defaultFilteredValue: ["2", "3", "4"],
+      filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <DownOutlined className="filter-chevron-icon-todolist" />
       ),
@@ -1433,30 +1432,12 @@ const DataRoom = () => {
 
   const handleLinkClick = (e, data) => {
     e.preventDefault();
-    if (clicks === 1) {
-      if (dataCheck === data) {
-        // Perform the action you want to happen on the double-click here
-        window.open(
-          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(data)}`,
-          "_blank",
-          "noopener noreferrer"
-        );
-      } else {
-        setDataCheck(data);
-      }
 
-      // Reset the click count
-      setClicks(0);
-    } else {
-      // Increment the click count
-      setClicks(clicks + 1);
-      setDataCheck(data);
-      // You can add a delay here to reset the click count after a certain time if needed
-      setTimeout(() => {
-        setClicks(0);
-        setDataCheck([]);
-      }, 300); // Reset after 300 milliseconds (adjust as needed)
-    }
+    window.open(
+      `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(data)}`,
+      "_blank",
+      "noopener noreferrer"
+    );
   };
 
   const MyDocumentsColumns = [
@@ -1561,39 +1542,16 @@ const DataRoom = () => {
               </div>
             );
           } else {
-            if (ext === "pdf") {
-              return (
-                // <Link
-                //   to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
-                //     pdfDataJson
-                //   )}`}
-                //   target="_blank"
-                //   rel="noopener noreferrer"
-                // >
-                <>
-                  <section className={styles["fileRow"]}>
-                    <img
-                      src={getIconSource(getFileExtension(data.name))}
-                      alt=""
-                      width={"25px"}
-                      height={"25px"}
-                      className="me-2"
-                    />
-                    <abbr title={text}>
-                      <span
-                        onClick={(e) => handleLinkClick(e, pdfDataJson)}
-                        className={styles["dataroom_table_heading"]}
-                      >
-                        {text}
-                      </span>
-                    </abbr>
-                  </section>
-                </>
-
-                // </Link>
-              );
-            } else {
-              return (
+            // if (ext === "pdf") {
+            return (
+              // <Link
+              //   to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
+              //     pdfDataJson
+              //   )}`}
+              //   target="_blank"
+              //   rel="noopener noreferrer"
+              // >
+              <>
                 <section className={styles["fileRow"]}>
                   <img
                     src={getIconSource(getFileExtension(data.name))}
@@ -1603,13 +1561,36 @@ const DataRoom = () => {
                     className="me-2"
                   />
                   <abbr title={text}>
-                    <span className={styles["dataroom_table_heading"]}>
+                    <span
+                      onClick={(e) => handleLinkClick(e, pdfDataJson)}
+                      className={styles["dataroom_table_heading"]}
+                    >
                       {text}
                     </span>
                   </abbr>
                 </section>
-              );
-            }
+              </>
+
+              // </Link>
+            );
+            // } else {
+            //   return (
+            //     <section className={styles["fileRow"]}>
+            //       <img
+            //         src={getIconSource(getFileExtension(data.name))}
+            //         alt=""
+            //         width={"25px"}
+            //         height={"25px"}
+            //         className="me-2"
+            //       />
+            //       <abbr title={text}>
+            //         <span className={styles["dataroom_table_heading"]}>
+            //           {text}
+            //         </span>
+            //       </abbr>
+            //     </section>
+            //   );
+            // }
           }
         }
       },
@@ -1635,18 +1616,20 @@ const DataRoom = () => {
       filters: [
         {
           text: t("Last-modified"),
-          value: 2,
+          value: "2",
         },
         {
           text: t("Last-modified-by-me"),
-          value: 3,
+          value: "3",
         },
         {
           text: t("Last-open-by-me"),
-          value: 4,
+          value: "4",
         },
         // ... other filters ...
       ],
+      defaultFilteredValue: ["2", "3", "4"],
+      filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <DownOutlined className="filter-chevron-icon-todolist" />
       ),
@@ -2084,41 +2067,24 @@ const DataRoom = () => {
                           />
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                          {fileExtension === "pdf"
-                            ? optionsforPDFandSignatureFlow(t).map(
-                                (data, index) => {
-                                  return (
-                                    <Dropdown.Item
-                                      key={index}
-                                      onClick={() =>
-                                        fileOptionsSelect(
-                                          data,
-                                          record,
-                                          pdfDataJsonSignature
-                                        )
-                                      }
-                                    >
-                                      {data.label}
-                                    </Dropdown.Item>
-                                  );
-                                }
-                              )
-                            : optionsforFile(t).map((data, index) => {
-                                return (
-                                  <Dropdown.Item
-                                    key={index}
-                                    onClick={() =>
-                                      fileOptionsSelect(
-                                        data,
-                                        record,
-                                        pdfDataJson
-                                      )
-                                    }
-                                  >
-                                    {data.label}
-                                  </Dropdown.Item>
-                                );
-                              })}
+                          {optionsforPDFandSignatureFlow(t).map(
+                            (data, index) => {
+                              return (
+                                <Dropdown.Item
+                                  key={index}
+                                  onClick={() =>
+                                    fileOptionsSelect(
+                                      data,
+                                      record,
+                                      pdfDataJsonSignature
+                                    )
+                                  }
+                                >
+                                  {data.label}
+                                </Dropdown.Item>
+                              );
+                            }
+                          )}
                           {/* {optionsforFile(t).map((data, index) => {
                             return (
                               <Dropdown.Item
@@ -2964,6 +2930,7 @@ const DataRoom = () => {
                           />
                           <UploadTextField
                             title={t("File-upload")}
+                            multiple={true}
                             handleFileUploadRequest={handleUploadFile}
                             setProgress={setProgress}
                           />
@@ -3023,13 +2990,17 @@ const DataRoom = () => {
                 <span className={styles["lsit_grid_buttons"]}>
                   <Button
                     icon={
-                      <img
-                        src={gridbtnactive ? Grid_Selected : Grid_Not_Selected}
-                        height="25.27px"
-                        width="25.27px"
-                        alt=""
-                        className={styles["grid_view_Icon"]}
-                      />
+                      <Tooltip placement="bottomLeft" title={t("List-view")}>
+                        <img
+                          src={
+                            gridbtnactive ? Grid_Selected : Grid_Not_Selected
+                          }
+                          height="25.27px"
+                          width="25.27px"
+                          alt=""
+                          className={styles["grid_view_Icon"]}
+                        />
+                      </Tooltip>
                     }
                     className={
                       gridbtnactive
@@ -3040,13 +3011,17 @@ const DataRoom = () => {
                   />
                   <Button
                     icon={
-                      <img
-                        src={listviewactive ? List_Selected : List_Not_selected}
-                        height="25.27px"
-                        width="25.27px"
-                        alt=""
-                        className={styles["list_view_Icon"]}
-                      />
+                      <Tooltip placement="bottomLeft" title={t("Grid-view")}>
+                        <img
+                          src={
+                            listviewactive ? List_Selected : List_Not_selected
+                          }
+                          height="25.27px"
+                          width="25.27px"
+                          alt=""
+                          className={styles["list_view_Icon"]}
+                        />
+                      </Tooltip>
                     }
                     className={
                       listviewactive

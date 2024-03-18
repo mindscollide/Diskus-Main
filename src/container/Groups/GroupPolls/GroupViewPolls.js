@@ -205,7 +205,7 @@ const GroupViewPolls = ({ groupStatus }) => {
       title: t("Status"),
       dataIndex: "Status",
       key: "Status",
-      width: "120px",
+      width: "70px",
       filters: [
         {
           text: t("Published"),
@@ -221,6 +221,7 @@ const GroupViewPolls = ({ groupStatus }) => {
         },
       ],
       defaultFilteredValue: ["Published", "UnPublished", "Expired"], // Use the actual status values here
+      filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
@@ -260,7 +261,7 @@ const GroupViewPolls = ({ groupStatus }) => {
       render: (text, record) => {
         return (
           <span className={styles["poll_status"]}>
-            {_justShowDateformatBilling(text + "000000")}
+            {_justShowDateformatBilling(text)}
           </span>
         );
       },
@@ -276,7 +277,7 @@ const GroupViewPolls = ({ groupStatus }) => {
       title: t("Created-by"),
       dataIndex: "pollCreator",
       key: "pollCreator",
-      width: "110px",
+      width: "80px",
       sorter: (a, b) => a.pollCreator.localeCompare(b.pollCreator),
       render: (text, record) => {
         return <span className={styles["poll_status"]}>{text}</span>;
@@ -303,16 +304,7 @@ const GroupViewPolls = ({ groupStatus }) => {
                 />
               );
             } else if (record.voteStatus === "Voted") {
-              return (
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className={styles["Background-nonvoted-Button"]}
-                >
-                  <span className={styles["Not-voted"]}>{t("Voted")}</span>
-                </Col>
-              );
+              return <span className={styles["votedBtn"]}>{t("Voted")}</span>;
             }
           } else {
             return "";
@@ -324,28 +316,10 @@ const GroupViewPolls = ({ groupStatus }) => {
             if (record.wasPollPublished) {
               if (record.voteStatus === "Not Voted") {
                 return (
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    // className={styles["Background-nonvoted-Button"]}
-                  >
-                    <span className={styles["Not-voted"]}>
-                      {t("Not-voted")}
-                    </span>
-                  </Col>
+                  <span className={styles["Not-voted"]}>{t("Not-voted")}</span>
                 );
               } else {
-                return (
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className={styles["Vote_Button_Polls"]}
-                  >
-                    <span className={styles["Not-voted"]}>{t("Voted")}</span>
-                  </Col>
-                );
+                return <span className={styles["votedBtn"]}>{t("Voted")}</span>;
               }
             } else {
               return "";
