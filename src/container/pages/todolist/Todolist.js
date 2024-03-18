@@ -28,7 +28,7 @@ import {
   saveTaskDocumentsApi,
 } from "../../../store/actions/ToDoList_action";
 import "antd/dist/antd.css";
-
+import { Tooltip } from "antd";
 import ModalToDoList from "../../todolistModal/ModalToDoList";
 import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
 import ModalUpdateToDo from "../../todolistupdateModal/ModalUpdateToDo";
@@ -532,12 +532,14 @@ const TodoList = () => {
       render: (record, index) => {
         if (parseInt(record?.pK_UID) === parseInt(createrID)) {
           return (
-            <i
-              className="meeting-editbutton cursor-pointer"
-              onClick={(e) => deleteTodolist(index)}
-            >
-              <img draggable="false" src={del} alt="" />
-            </i>
+            <Tooltip placement="topRight" title={t("Delete")}>
+              <i
+                className="meeting-editbutton cursor-pointer"
+                onClick={(e) => deleteTodolist(index)}
+              >
+                <img draggable="false" src={del} alt="" />
+              </i>
+            </Tooltip>
           );
         } else {
           <></>;
