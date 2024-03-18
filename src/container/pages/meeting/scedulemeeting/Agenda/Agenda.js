@@ -1486,18 +1486,18 @@ const Agenda = ({
         }),
         3000
       );
-    } else if (MeetingAgendaReducer.ResponseMessage === "Voting-saved") {
+    } else if (MeetingAgendaReducer.ResponseMessage === t("Voting-saved")) {
       setTimeout(
         setOpen({
-          open: true,
+          flag: true,
           message: t("Agenda-voting-details-saved-successfully"),
         }),
         3000
       );
-    } else if (MeetingAgendaReducer.ResponseMessage === "Voting-updated") {
+    } else if (MeetingAgendaReducer.ResponseMessage === t("Voting-updated")) {
       setTimeout(
         setOpen({
-          open: true,
+          flag: true,
           message: t("Agenda-voting-details-updated-successfully"),
         }),
         3000

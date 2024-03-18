@@ -45,7 +45,7 @@ import {
 } from "../../commen/apis/Api_config";
 import { changeMQTTJSONOne } from "../../commen/functions/MQTTJson";
 import axios from "axios";
-import { talkApi } from "../../commen/apis/Api_ends_points";
+import { talkApi, talkApiReport } from "../../commen/apis/Api_ends_points";
 import { signOut } from "./Auth_Sign_Out";
 import { RefreshToken } from "./Auth_action";
 import { useNavigate } from "react-router-dom";
@@ -3786,7 +3786,7 @@ const DownloadChat = (object, t, navigate) => {
     form.append("RequestData", JSON.stringify(object));
     axios({
       method: "post",
-      url: talkApi,
+      url: talkApiReport,
       data: form,
       headers: {
         _token: token,
@@ -3887,7 +3887,7 @@ const EmailChat = (object, t, navigate) => {
     form.append("RequestData", JSON.stringify(object));
     axios({
       method: "post",
-      url: talkApi,
+      url: talkApiReport,
       data: form,
       headers: {
         _token: token,
