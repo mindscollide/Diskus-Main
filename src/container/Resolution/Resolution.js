@@ -489,13 +489,15 @@ const Resolution = () => {
         if (data.resolutionStatus === "Circulated") {
           if (votingDeadline < newDate) {
             return (
-              <img
-                draggable="false"
-                src={ResultResolutionIcon}
-                onClick={() => getResultHandle(data.resolutionID)}
-                className={styles["Result_icon"]}
-                alt=""
-              />
+              <Tooltip placement="bottomLeft" title={t("Result")}>
+                <img
+                  draggable="false"
+                  src={ResultResolutionIcon}
+                  onClick={() => getResultHandle(data.resolutionID)}
+                  className={styles["Result_icon"]}
+                  alt=""
+                />
+              </Tooltip>
             );
           } else {
             return "";
@@ -503,13 +505,15 @@ const Resolution = () => {
         } else if (data.resolutionStatus === "Closed") {
           if (votingDeadline < newDate) {
             return (
-              <img
-                draggable="false"
-                src={ResultResolutionIcon}
-                onClick={() => getResultHandle(data.resolutionID)}
-                className={styles["Result_icon"]}
-                alt=""
-              />
+              <Tooltip placement="bottomLeft" title={t("Result")}>
+                <img
+                  draggable="false"
+                  src={ResultResolutionIcon}
+                  onClick={() => getResultHandle(data.resolutionID)}
+                  className={styles["Result_icon"]}
+                  alt=""
+                />
+              </Tooltip>
             );
           }
         }
@@ -526,14 +530,16 @@ const Resolution = () => {
         } else if (data.resolutionStatus === "Circulated") {
           return (
             <span className={styles["Edit_Icon_moderator"]}>
-              <img
-                draggable="false"
-                src={CrossResolution}
-                width={22}
-                height={22}
-                alt=""
-                onClick={() => OpenCancelModal(data.resolutionID)}
-              />
+              <Tooltip placement="bottomLeft" title={t("Cancel")}>
+                <img
+                  draggable="false"
+                  src={CrossResolution}
+                  width={22}
+                  height={22}
+                  alt=""
+                  onClick={() => OpenCancelModal(data.resolutionID)}
+                />
+              </Tooltip>
             </span>
           );
         } else {
