@@ -519,23 +519,25 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     try {
       let newfile = [];
       let newFolder = [];
-      const uploadPromises = fileForSend.map(async (newData) => {
+      if (fileForSend.length > 0) {
+        const uploadPromises = fileForSend.map(async (newData) => {
+          await dispatch(
+            uploadDocumentsTaskApi(
+              navigate,
+              t,
+              newData,
+              folderID,
+              // newFolder,
+              newfile
+            )
+          );
+        });
+        // Wait for all promises to resolve
+        await Promise.all(uploadPromises); //till here the files get upload
         await dispatch(
-          uploadDocumentsTaskApi(
-            navigate,
-            t,
-            newData,
-            folderID,
-            // newFolder,
-            newfile
-          )
+          saveFilesTaskApi(navigate, t, newfile, folderID, newFolder)
         );
-      });
-      // Wait for all promises to resolve
-      await Promise.all(uploadPromises); //till here the files get upload
-      await dispatch(
-        saveFilesTaskApi(navigate, t, newfile, folderID, newFolder)
-      );
+      }
       console.log(newFolder, "newFoldernewFoldernewFolder");
       let newAttachmentData = newFolder.map((data, index) => {
         console.log(data, "newFoldernewFoldernewFolder");
