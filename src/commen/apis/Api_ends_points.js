@@ -8,6 +8,8 @@ const toDoListURL = ":11003/ToDoList";
 // ali work
 const settingURL = ":11004/Settings";
 
+const settingDownloadURL = ":11004/Report";
+
 // Huzeifa work for Meetings
 const meetingURL = ":11002/Meeting";
 
@@ -62,6 +64,8 @@ const dataRoomApi = baseURL + getDataRoomURL;
 
 // ali work
 const settingApi = baseURL + settingURL;
+
+const settingDownloadApi = baseURL + settingDownloadURL;
 
 const meetingApi = baseURL + meetingURL;
 
@@ -126,4 +130,5 @@ export {
   DataRoomAllFilesDownloads,
   userLogOutAuthURL,
   workflowApi,
+  settingDownloadApi,
 };

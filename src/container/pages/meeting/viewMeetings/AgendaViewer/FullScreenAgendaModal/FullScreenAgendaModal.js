@@ -29,6 +29,7 @@ import AllFilesModal from "./../AllFilesModal/AllFilesModal";
 import { onDragEnd } from "./../drageFunction";
 import CollapseAgendaIcon from "./../AV-Images/Collapse-Agenda-Icon.png";
 import VideocameraIcon from "./../AV-Images/Videocamera-Icon.png";
+import { Tooltip } from "antd";
 
 const FullScreenAgendaModal = ({
   setFullScreenView,
@@ -250,19 +251,24 @@ const FullScreenAgendaModal = ({
             >
               <p className={styles["FileModalTitle"]}>{t("Agenda-Viewer")}</p>
 
-              <div
-                className={styles["box-agendas"]}
-                onClick={() => setFullScreenView(false)}
-              >
-                <img src={CollapseAgendaIcon} alt="" />
-              </div>
-              {editorRole.status === "10" || editorRole.status === 10 ? (
+              <Tooltip placement="topRight" title={t("unExpand")}>
                 <div
-                  className={styles["box-agendas-camera"]}
-                  onClick={joinMeetingCall}
+                  className={styles["box-agendas"]}
+                  onClick={() => setFullScreenView(false)}
                 >
-                  <img src={VideocameraIcon} alt="" />
+                  <img src={CollapseAgendaIcon} alt="" />
                 </div>
+              </Tooltip>
+
+              {editorRole.status === "10" || editorRole.status === 10 ? (
+                <Tooltip placement="topRight" title={t("Enable-video-call")}>
+                  <div
+                    className={styles["box-agendas-camera"]}
+                    onClick={joinMeetingCall}
+                  >
+                    <img src={VideocameraIcon} alt="" />
+                  </div>
+                </Tooltip>
               ) : null}
             </Col>
           </Row>
