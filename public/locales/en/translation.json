@@ -1672,8 +1672,8 @@
   "Modified": "Modified",
   "Created": "Created",
   "Add-description": "Add Description",
-  "MEETING_STATUS_EDITED_PROPOSED": "The [Meeting TItle] has been Proposed",
-  "MEETING_STATUS_EDITED_PUBLISHED": "The [Meeting TItle] has been Published",
+  "MEETING_STATUS_EDITED_PROPOSED": "The [Meeting Title] has been Proposed",
+  "MEETING_STATUS_EDITED_PUBLISHED": "The [Meeting Title] has been Published",
   "Folder-details": "Folder details",
   "Not-allowed": "Not Allowed",
   "Anyone-in-my-organization-can-find-and-view": "Anyone in my organization can find and view",
@@ -1878,5 +1878,7 @@
   "Confirm-billing-details": "Confirm Billing Details",
   "If-you-need-any-assistance": "If you need any assistance",
   "Please-do-not-hesitate-to-email-us-at": "please do not hesitate to email us at",
-  "account@letsdiskus.com": "account@letsdiskus.com"
+  "account@letsdiskus.com": "account@letsdiskus.com",
+  "Note-created-successfully-with-attachments": "Note created successfully with attachments",
+  "Notes-saved-successfully": "Notes saved successfully"
 }

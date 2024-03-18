@@ -29,7 +29,7 @@ import SubAgendaMappingDragging from "./SubAgendaMappingDragging";
 import dropmdownblack from "../../../../../assets/images/whitedown.png";
 import blackArrowUpper from "../../../../../assets/images/whiteupper.png";
 import ViewVoteModal from "../../viewMeetings/Agenda/VotingPage/ViewVoteModal/ViewVoteModal";
-import CastVoteAgendaModal from "../../scedulemeeting/Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
+import CastVoteAgendaModal from "../../viewMeetings/Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
 import {
   getFileExtension,
   getIconSource,
@@ -227,6 +227,42 @@ const ParentAgenda = ({
       dispatch(clearResponseMessage(""));
     }
   }, [MeetingAgendaReducer.ResponseMessage]);
+
+  const pdfData = (record, ext) => {
+    console.log("PDFDATAPDFDATA", record);
+    let Data = {
+      taskId: Number(record.originalAttachmentName),
+      commingFrom: 4,
+      fileName: record.displayAttachmentName,
+      attachmentID: Number(record.originalAttachmentName),
+    };
+    let pdfDataJson = JSON.stringify(Data);
+    if (
+      ext === "pdf" ||
+      ext === "doc" ||
+      ext === "docx" ||
+      ext === "xlx" ||
+      ext === "xlxs"
+    ) {
+      window.open(
+        `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+        "_blank",
+        "noopener noreferrer"
+      );
+    } else {
+      let data = {
+        FileID: Number(record.originalAttachmentName),
+      };
+      dispatch(
+        DataRoomDownloadFileApiFunc(
+          navigate,
+          data,
+          t,
+          record.displayAttachmentName
+        )
+      );
+    }
+  };
 
   console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
 
@@ -445,7 +481,12 @@ const ParentAgenda = ({
                                               />
                                               <span
                                                 onClick={() =>
-                                                  downloadDocument(filesData)
+                                                  pdfData(
+                                                    filesData,
+                                                    getFileExtension(
+                                                      filesData?.displayAttachmentName
+                                                    )
+                                                  )
                                                 }
                                                 className={
                                                   styles["fileNameAttachment"]
@@ -467,6 +508,9 @@ const ParentAgenda = ({
                                               draggable={false}
                                               src={DownloadIcon}
                                               alt=""
+                                              onClick={() =>
+                                                downloadDocument(filesData)
+                                              }
                                             />
                                           </Col>
                                         </Row>
