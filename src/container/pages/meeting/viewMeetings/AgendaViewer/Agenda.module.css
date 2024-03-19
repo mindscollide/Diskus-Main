@@ -1047,3 +1047,36 @@ span.SubAgenda_Description {
   height: 30px !important;
   width: 85px !important;
 }
+
+.box-agendas-camera {
+  border: 1px solid #81db86;
+  background-color: #81db86;
+  border-radius: 4px;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  /* position: absolute; */
+  cursor: pointer;
+  right: 80px;
+  top: 0;
+}
+
+body[dir="rtl"] .box-agendas-camera {
+  border: 1px solid #81db86;
+  background-color: #81db86;
+  border-radius: 4px;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  /* position: absolute; */
+  cursor: pointer;
+  right: auto;
+  left: 90px;
+  top: 0;
+}

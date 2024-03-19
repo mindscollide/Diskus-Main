@@ -44,7 +44,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
     case actions.GET_AGENDAVOTINGDETAILS_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        // Loading: false,
         MeetingAgendaVotingDetailsData: action.response,
         ResponseMessage: action.message,
       };

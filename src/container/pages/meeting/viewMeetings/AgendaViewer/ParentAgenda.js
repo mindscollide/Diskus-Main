@@ -37,6 +37,7 @@ import {
 import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
 import CollapseIcon from "./AV-Images/Collapse-Icon.png";
 import DownloadIcon from "./AV-Images/Download-Icon.png";
+import { timeFormatFunction } from "../../../../../commen/functions/date_formater";
 
 const ParentAgenda = ({
   data,
@@ -348,15 +349,22 @@ const ParentAgenda = ({
                                 <p
                                   className={`${styles["agendaCreaterTime"]} MontserratMedium-500`}
                                 >
-                                  {moment(data?.startDate, "HHmmss").format(
-                                    "hh:mm a"
-                                  )}
+                                  {/* {moment(
+                                    data?.startDate,
+                                    "HHmmss"
+                                  ).toISOString()} */}
+                                  {moment(
+                                    timeFormatFunction(data.startDate)
+                                  ).format("hh:mm a")}
                                   <span className={styles["dashMinute"]}>
                                     -----
                                   </span>
-                                  {moment(data?.endDate, "HHmmss").format(
+                                  {moment(
+                                    timeFormatFunction(data.endDate)
+                                  ).format("hh:mm a")}
+                                  {/* {moment(data?.endDate, "HHmmss").format(
                                     "hh:mm a"
-                                  )}
+                                  )} */}
                                 </p>
                                 {printFlag === true ||
                                 exportFlag === true ? null : (

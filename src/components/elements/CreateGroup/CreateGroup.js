@@ -93,9 +93,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
     name: "",
   });
 
-  console.log(allPresenters, "allPresentersallPresenters");
-  console.log(presenterValue, "allPresentersallPresenters");
-
   const [onclickFlag, setOnclickFlag] = useState(false);
   // for Participant id's
   const participantOptionsWithIDs = [
@@ -284,8 +281,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
     }
     // setAllPresenters(meetingAttendeesList);
   }, [meetingAttendeesList]);
-
-  console.log(taskAssignedTo, "meetingAttendeesList");
 
   const handleAddAttendees = () => {
     // Create new copies of state variables to avoid state mutations
@@ -689,30 +684,29 @@ const CreateGroup = ({ setCreategrouppage }) => {
   const GroupsDocumentCallUpload = async (folderID) => {
     let newFolder = [];
     let newfile = [];
-    const uploadPromises = fileForSend.map(async (newData) => {
+    if (fileForSend.length > 0) {
+      const uploadPromises = fileForSend.map(async (newData) => {
+        await dispatch(
+          uploadDocumentsGroupsApi(
+            navigate,
+            t,
+            newData,
+            folderID,
+            // newFolder,
+            newfile
+          )
+        );
+      });
+      // Wait for all promises to resolve
+      await Promise.all(uploadPromises);
+
       await dispatch(
-        uploadDocumentsGroupsApi(
-          navigate,
-          t,
-          newData,
-          folderID,
-          // newFolder,
-          newfile
-        )
+        saveFilesGroupsApi(navigate, t, newfile, folderID, newFolder)
       );
-    });
-    // Wait for all promises to resolve
-    await Promise.all(uploadPromises);
-
-    console.log(newfile, "newfilenewfilenewfilenewfile");
-
-    await dispatch(
-      saveFilesGroupsApi(navigate, t, newfile, folderID, newFolder)
-    );
+    }
 
     let groupID = localStorage.getItem("groupID");
 
-    console.log(newFolder, "newFoldernewFoldernewFolder");
     let Data = {
       GroupID: Number(groupID),
       UpdateFileList: newFolder.map((data, index) => {
@@ -731,7 +725,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
   }, [GroupsReducer.FolderID]);
 
   const filterFunc = (options, searchText) => {
-    // console.log(options, "filterFuncfilterFunc");
+    //
     if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
       return true;
     } else {

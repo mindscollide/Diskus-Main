@@ -1,8 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./Agenda.module.css";
 import { useNavigate } from "react-router-dom";
-import { Col, Row } from "react-bootstrap";
-import { Button, Notification } from "../../../../../components/elements";
+import { Col, Row, Container } from "react-bootstrap";
+import {
+  Button,
+  Notification,
+  Modal,
+} from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import CancelMeetingMaterial from "./CancelMeetingMaterial/CancelMeetingMaterial";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +15,7 @@ import {
   searchNewUserMeeting,
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
+  FetchMeetingURLApi,
 } from "../../../../../store/actions/NewMeetingActions";
 import {
   GetAdvanceMeetingAgendabyMeetingID,
@@ -19,6 +24,18 @@ import {
   exportAgenda,
   clearResponseMessage,
 } from "../../../../../store/actions/MeetingAgenda_action";
+import {
+  callRequestReceivedMQTT,
+  LeaveCall,
+} from "../../../../../store/actions/VideoMain_actions";
+import {
+  normalizeVideoPanelFlag,
+  videoChatPanel,
+  maximizeVideoPanelFlag,
+  minimizeVideoPanelFlag,
+  leaveCallModal,
+  participantPopup,
+} from "../../../../../store/actions/VideoFeature_actions";
 import emptyContributorState from "../../../../../assets/images/Empty_Agenda_Meeting_view.svg";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import ParentAgenda from "./ParentAgenda";
@@ -38,6 +55,7 @@ import ParticipantsInfo from "./AV-Images/Participants-Icon.png";
 import ParticipantsInfoDisabled from "./AV-Images/Participants-Icon-disabled.png";
 import PrintIcon from "./AV-Images/Print-Icon.png";
 import ExportIcon from "./AV-Images/Export-Icon.png";
+import VideocameraIcon from "./AV-Images/Videocamera-Icon.png";
 import ShareIcon from "./AV-Images/Share-Icon.png";
 
 const AgendaViewer = ({
@@ -55,6 +73,22 @@ const AgendaViewer = ({
   const navigate = useNavigate();
 
   const { MeetingAgendaReducer } = useSelector((state) => state);
+
+  let activeCall = JSON.parse(localStorage.getItem("activeCall"));
+
+  let initiateRoomID = localStorage.getItem("initiateCallRoomID");
+
+  let currentCallType = Number(localStorage.getItem("CallType"));
+
+  let callTypeID = Number(localStorage.getItem("callTypeID"));
+
+  let callerID = Number(localStorage.getItem("callerID"));
+
+  let currentMeeting = Number(localStorage.getItem("currentMeetingLS"));
+  let currentUserID = Number(localStorage.getItem("userID"));
+  let currentOrganization = Number(localStorage.getItem("organizationID"));
+  let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+  let meetingTitle = localStorage.getItem("meetingTitle");
 
   const GetAdvanceMeetingAgendabyMeetingIDData = useSelector(
     (state) => state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData
@@ -202,6 +236,92 @@ const AgendaViewer = ({
 
   const shareEmailModal = () => {
     setShareEmailView(!shareEmailView);
+  };
+
+  const [initiateVideoModalOto, setInitiateVideoModalOto] = useState(false);
+
+  const leaveCallHost = () => {
+    let Data = {
+      OrganizationID: currentOrganization,
+      RoomID: initiateRoomID,
+      IsCaller: true,
+      CallTypeID: currentCallType,
+    };
+    dispatch(LeaveCall(Data, navigate, t));
+    let Data2 = {
+      MeetingID: currentMeeting,
+    };
+    dispatch(
+      FetchMeetingURLApi(Data2, navigate, t, currentUserID, currentOrganization)
+    );
+    localStorage.setItem("meetingTitle", meetingTitle);
+    const emptyArray = [];
+    localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
+    dispatch(normalizeVideoPanelFlag(true));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(false));
+    dispatch(leaveCallModal(false));
+    setInitiateVideoModalOto(false);
+    dispatch(participantPopup(false));
+    localStorage.setItem("activeCall", true);
+    localStorage.setItem("callerID", 0);
+    localStorage.setItem("recipentCalledID", 0);
+    dispatch(callRequestReceivedMQTT({}, ""));
+    dispatch(videoChatPanel(false));
+    localStorage.setItem("isMeetingVideo", true);
+  };
+
+  const leaveCallParticipant = () => {
+    let roomID = localStorage.getItem("acceptedRoomID");
+    let Data = {
+      OrganizationID: currentOrganization,
+      RoomID: roomID,
+      IsCaller: false,
+      CallTypeID: callTypeID,
+    };
+    dispatch(LeaveCall(Data, navigate, t));
+    let Data2 = {
+      MeetingID: currentMeeting,
+    };
+    dispatch(
+      FetchMeetingURLApi(Data2, navigate, t, currentUserID, currentOrganization)
+    );
+    localStorage.setItem("meetingTitle", meetingTitle);
+    const emptyArray = [];
+    localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
+    dispatch(normalizeVideoPanelFlag(true));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(false));
+    dispatch(leaveCallModal(false));
+    setInitiateVideoModalOto(false);
+    dispatch(participantPopup(false));
+    localStorage.setItem("CallType", 0);
+    localStorage.setItem("activeCall", true);
+    dispatch(callRequestReceivedMQTT({}, ""));
+    dispatch(videoChatPanel(false));
+    localStorage.setItem("isMeetingVideo", true);
+  };
+
+  const joinMeetingCall = () => {
+    if (activeCall === false && isMeeting === false) {
+      let Data = {
+        MeetingID: currentMeeting,
+      };
+      dispatch(
+        FetchMeetingURLApi(
+          Data,
+          navigate,
+          t,
+          currentUserID,
+          currentOrganization,
+          1
+        )
+      );
+      localStorage.setItem("meetingTitle", meetingTitle);
+    } else if (activeCall === true && isMeeting === false) {
+      setInitiateVideoModalOto(true);
+      dispatch(callRequestReceivedMQTT({}, ""));
+    }
   };
 
   useEffect(() => {
@@ -410,6 +530,20 @@ const AgendaViewer = ({
                     sm={12}
                     className="d-flex justify-content-end align-items-center text-end gap-2 mt-3"
                   >
+                    {editorRole.status === "10" || editorRole.status === 10 ? (
+                      <Tooltip
+                        placement="topRight"
+                        title={t("Enable-video-call")}
+                      >
+                        <div
+                          className={styles["box-agendas-camera"]}
+                          onClick={joinMeetingCall}
+                        >
+                          <img src={VideocameraIcon} alt="" />
+                        </div>
+                      </Tooltip>
+                    ) : null}
+
                     <Tooltip placement="topRight" title={t("Expand")}>
                       <div
                         className={styles["box-agendas"]}
@@ -426,7 +560,6 @@ const AgendaViewer = ({
                         ref={closeMenuAgenda}
                       >
                         <img src={MenuIcon} alt="" />
-                        {/* {menuAgenda ? ( */}
                         <div
                           className={
                             menuAgenda
@@ -596,7 +729,7 @@ const AgendaViewer = ({
               </DragDropContext>
             </>
           )}
-          <Row>
+          {/* <Row>
             <Col
               lg={12}
               md={12}
@@ -622,7 +755,7 @@ const AgendaViewer = ({
                 }
               />
             </Col>
-          </Row>
+          </Row> */}
         </section>
       </>
       {cancelMeetingMaterial && (
@@ -693,6 +826,60 @@ const AgendaViewer = ({
           setParticipantInfoView={setParticipantInfoView}
         />
       ) : null}
+      <Modal
+        show={initiateVideoModalOto}
+        onHide={() => {
+          setInitiateVideoModalOto(false);
+        }}
+        setShow={setInitiateVideoModalOto}
+        modalFooterClassName="d-none"
+        centered
+        size={"sm"}
+        className="callCheckModal"
+        ModalBody={
+          <>
+            <Container>
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <p> {t("Disconnect-current-call")} </p>
+                </Col>
+              </Row>
+              <Row className="mt-3 mb-4">
+                <Col
+                  lg={12}
+                  sm={12}
+                  md={12}
+                  className="d-flex justify-content-center gap-2"
+                >
+                  <Button
+                    text={
+                      callerID === currentUserID || callerID === 0
+                        ? t("End Host")
+                        : callerID !== currentUserID
+                        ? t("End Participant")
+                        : null
+                    }
+                    className="leave-meeting-options__btn leave-meeting-red-button"
+                    onClick={
+                      callerID === currentUserID || callerID === 0
+                        ? leaveCallHost
+                        : callerID !== currentUserID
+                        ? leaveCallParticipant
+                        : null
+                    }
+                  />
+
+                  <Button
+                    text={t("Cancel")}
+                    className="leave-meeting-options__btn leave-meeting-gray-button"
+                    onClick={() => setInitiateVideoModalOto(false)}
+                  />
+                </Col>
+              </Row>
+            </Container>
+          </>
+        }
+      />
     </>
   );
 };

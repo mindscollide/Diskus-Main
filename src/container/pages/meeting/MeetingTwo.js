@@ -167,7 +167,9 @@ const NewMeeting = () => {
   const [proposedNewMeeting, setProposedNewMeeting] = useState(false);
   const [searchMeeting, setSearchMeeting] = useState(false);
   const [isMeetingTypeFilter, setMeetingTypeFilter] = useState([]);
-
+  const [defaultFiltersValues, setDefaultFilterValues] = useState([]);
+  console.log(defaultFiltersValues, "defaultFiltersValues");
+  console.log(isMeetingTypeFilter, "isMeetingTypeFilterisMeetingTypeFilter");
   const [dataroomMapFolderId, setDataroomMapFolderId] = useState(0);
   //For Search Field Only
   const [searchText, setSearchText] = useState("");
@@ -181,7 +183,6 @@ const NewMeeting = () => {
     message: "",
   });
   const [rows, setRow] = useState([]);
-
   const [totalRecords, setTotalRecords] = useState(0);
   const [minutesAgo, setMinutesAgo] = useState(null);
   const [searchFields, setSearchFeilds] = useState({
@@ -218,13 +219,6 @@ const NewMeeting = () => {
   const [dashboardEventData, setDashboardEventData] = useState(null);
 
   useEffect(() => {
-    // state clean while rendering in meetingTwo
-    return () => {
-      setResponseByDate("");
-    };
-  }, []);
-
-  useEffect(() => {
     if (currentLanguage !== undefined && currentLanguage !== null) {
       if (currentLanguage === "en") {
         setCalendarValue(gregorian);
@@ -237,47 +231,99 @@ const NewMeeting = () => {
   }, [currentLanguage]);
   //  Call all search meetings api
   useEffect(() => {
-    dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
-    if (meetingpageRow !== null && meetingPageCurrent !== null) {
-      let searchData = {
-        Date: "",
-        Title: "",
-        HostName: "",
-        UserID: Number(userID),
-        PageNumber: Number(meetingPageCurrent),
-        Length: Number(meetingpageRow),
-        PublishedMeetings: true,
-      };
-      dispatch(searchNewUserMeeting(navigate, searchData, t));
-      dispatch(allAssignessList(navigate, t));
-      localStorage.setItem("MeetingCurrentView", 1);
-    } else {
-      let searchData = {
-        Date: "",
-        Title: "",
-        HostName: "",
-        UserID: Number(userID),
-        PageNumber: 1,
-        Length: 50,
-        PublishedMeetings: true,
-      };
-      localStorage.setItem("MeetingPageRows", 50);
-      localStorage.setItem("MeetingPageCurrent", 1);
-      dispatch(searchNewUserMeeting(navigate, searchData, t));
-      dispatch(allAssignessList(navigate, t));
-      localStorage.setItem("MeetingCurrentView", 1);
-    }
+    const callApi = async () => {
+      try {
+        if (meetingpageRow !== null && meetingPageCurrent !== null) {
+          let searchData = {
+            Date: "",
+            Title: "",
+            HostName: "",
+            UserID: Number(userID),
+            PageNumber: Number(meetingPageCurrent),
+            Length: Number(meetingpageRow),
+            PublishedMeetings: true,
+          };
+          await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+          await dispatch(searchNewUserMeeting(navigate, searchData, t));
+          await dispatch(allAssignessList(navigate, t));
+          localStorage.setItem("MeetingCurrentView", 1);
+        } else {
+          let searchData = {
+            Date: "",
+            Title: "",
+            HostName: "",
+            UserID: Number(userID),
+            PageNumber: 1,
+            Length: 50,
+            PublishedMeetings: true,
+          };
+          localStorage.setItem("MeetingPageRows", 50);
+          localStorage.setItem("MeetingPageCurrent", 1);
+          await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+          await dispatch(searchNewUserMeeting(navigate, searchData, t));
+          await dispatch(allAssignessList(navigate, t));
 
-    setEditFlag(false);
-    setViewFlag(false);
-    dispatch(scheduleMeetingPageFlag(false));
-    dispatch(viewProposeDateMeetingPageFlag(false));
-    dispatch(viewAdvanceMeetingPublishPageFlag(false));
-    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-    dispatch(viewProposeOrganizerMeetingPageFlag(false));
-    dispatch(proposeNewMeetingPageFlag(false));
+          localStorage.setItem("MeetingCurrentView", 1);
+        }
+        setEditFlag(false);
+        setViewFlag(false);
+        dispatch(scheduleMeetingPageFlag(false));
+        dispatch(viewProposeDateMeetingPageFlag(false));
+        dispatch(viewAdvanceMeetingPublishPageFlag(false));
+        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+        dispatch(viewProposeOrganizerMeetingPageFlag(false));
+        dispatch(proposeNewMeetingPageFlag(false));
+      } catch (error) {
+        // Handle any errors here
+        console.error("Error in callApi:", error);
+      }
+    };
+
+    callApi();
+    // setEditFlag(false);
+    // setViewFlag(false);
+    // dispatch(scheduleMeetingPageFlag(false));
+    // dispatch(viewProposeDateMeetingPageFlag(false));
+    // dispatch(viewAdvanceMeetingPublishPageFlag(false));
+    // dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+    // dispatch(viewProposeOrganizerMeetingPageFlag(false));
+    // dispatch(proposeNewMeetingPageFlag(false));
+    return () => {
+      setResponseByDate("");
+    };
   }, []);
 
+  useEffect(() => {
+    try {
+      if (
+        getALlMeetingTypes.meetingTypes !== null &&
+        getALlMeetingTypes.meetingTypes !== undefined
+      ) {
+        let meetingtypeFilter = [];
+        let byDefault = {
+          value: "0",
+          text: t("Quick-meeting"),
+        };
+        meetingtypeFilter.push(byDefault);
+        getALlMeetingTypes.meetingTypes.forEach((data, index) => {
+          meetingtypeFilter.push({
+            text: data.type,
+            value: String(data.pK_MTID),
+          });
+        });
+
+        setMeetingTypeFilter(meetingtypeFilter);
+      }
+    } catch (error) {}
+  }, [getALlMeetingTypes.meetingTypes]);
+  useEffect(() => {
+    if (isMeetingTypeFilter.length > 0) {
+      const newData = isMeetingTypeFilter.map((meeting) =>
+        String(meeting.value)
+      );
+      setDefaultFilterValues(newData);
+    }
+  }, [isMeetingTypeFilter]);
   const HandleShowSearch = () => {
     setSearchMeeting(!searchMeeting);
     setSearchText("");
@@ -701,10 +747,9 @@ const NewMeeting = () => {
       key: "meetingType",
       width: "115px",
       align: "center",
+      ellipsis: true,
       filters: isMeetingTypeFilter,
-      defaultFilteredValue: isMeetingTypeFilter.map((data, index) =>
-        String(data.value)
-      ),
+      defaultFilteredValue: defaultFiltersValues || null,
       filterResetToDefaultFilteredValue: true,
       filterIcon: () => (
         <ChevronDown className="filter-chevron-icon-todolist" />
@@ -718,7 +763,11 @@ const NewMeeting = () => {
         const matchedFilter = isMeetingTypeFilter.find(
           (data) => meetingType === Number(data.value)
         );
-        return matchedFilter ? matchedFilter.text : "";
+        return record.isQuickMeeting === true && meetingType === 1
+          ? t("Quick-meeting")
+          : matchedFilter
+          ? matchedFilter.text
+          : "";
       },
     },
     {
@@ -1269,7 +1318,10 @@ const NewMeeting = () => {
                 title: data.title,
                 talkGroupID: data.talkGroupID,
                 key: index,
-                meetingType: data.meetingTypeID,
+                meetingType:
+                  data.meetingTypeID === 1 && data.isQuickMeeting
+                    ? 0
+                    : data.meetingTypeID,
               });
             } catch {}
           });
@@ -1288,20 +1340,19 @@ const NewMeeting = () => {
         getALlMeetingTypes.meetingTypes !== undefined
       ) {
         let meetingtypeFilter = [];
+        let byDefault = {
+          value: "0",
+          text: t("Quick-meeting"),
+        };
+        meetingtypeFilter.push(byDefault);
         getALlMeetingTypes.meetingTypes.forEach((data, index) => {
           meetingtypeFilter.push({
-            value: String(data.pK_MTID),
             text: data.type,
+            value: String(data.pK_MTID),
           });
-          // setMeetingDetails({
-          //   ...meetingDetails,
-          //   MeetingType: {
-          //     PK_MTID: getALlMeetingTypes.meetingTypes[0].pK_MTID,
-          //     Type: getALlMeetingTypes.meetingTypes[0].type,
-          //   },
-          // });
         });
-        // setmeetingTypeDropdown(Newdata);
+        let newData = meetingtypeFilter.map((meeting) => String(meeting.value));
+        setDefaultFilterValues(newData);
         setMeetingTypeFilter(meetingtypeFilter);
       }
     } catch (error) {}
@@ -1946,30 +1997,32 @@ const NewMeeting = () => {
                   <Row className="mt-2">
                     <Col lg={12} md={12} sm={12}>
                       <>
-                        <Table
-                          column={MeetingColoumns}
-                          scroll={{ y: "54vh", x: false }}
-                          pagination={false}
-                          className="newMeetingTable"
-                          rows={rows}
-                          locale={{
-                            emptyText: emptyText(), // Set your custom empty text here
-                          }}
-                          expandable={{
-                            expandedRowRender: (record) => {
-                              return record.meetingAgenda.map((data) => (
-                                <p className={styles["meeting-expanded-row"]}>
-                                  {data.objMeetingAgenda.title}
-                                </p>
-                              ));
-                            },
-                            rowExpandable: (record) =>
-                              record.meetingAgenda !== null &&
-                              record.meetingAgenda.length > 0
-                                ? true
-                                : false,
-                          }}
-                        />
+                        {defaultFiltersValues.length > 0 ? (
+                          <Table
+                            column={MeetingColoumns}
+                            scroll={{ y: "54vh", x: false }}
+                            pagination={false}
+                            className="newMeetingTable"
+                            rows={rows}
+                            locale={{
+                              emptyText: emptyText(), // Set your custom empty text here
+                            }}
+                            expandable={{
+                              expandedRowRender: (record) => {
+                                return record.meetingAgenda.map((data) => (
+                                  <p className={styles["meeting-expanded-row"]}>
+                                    {data.objMeetingAgenda.title}
+                                  </p>
+                                ));
+                              },
+                              rowExpandable: (record) =>
+                                record.meetingAgenda !== null &&
+                                record.meetingAgenda.length > 0
+                                  ? true
+                                  : false,
+                            }}
+                          />
+                        ) : null}
                       </>
                     </Col>
                   </Row>

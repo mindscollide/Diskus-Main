@@ -11,7 +11,7 @@ import {
   CustomRadio2,
   Notification,
 } from "../../../../../components/elements";
-import { Progress } from "antd";
+import { Progress, Radio } from "antd";
 import {
   EditmeetingDateFormat,
   utcConvertintoGMT,
@@ -39,6 +39,8 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
     AllowMultipleAnswers: false,
     answer: [],
   });
+
+  console.log(viewProgressPollsDetails.answer, "answeransweransweranswer");
 
   const handleSubmitVote = () => {
     if (viewProgressPollsDetails.answer.length > 0) {
@@ -130,6 +132,8 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
     setvotePolls(false);
   };
 
+  console.log(viewProgressPollsDetails.answer, "viewProgressPollsDetails");
+
   return (
     <>
       <section>
@@ -152,6 +156,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
                 <Row>
                   {pollsOption.length > 0
                     ? pollsOption.map((data, index) => {
+                        console.log(data, "datadatadatadata");
                         return (
                           <>
                             <Col
@@ -197,16 +202,31 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
                                             classNameCheckBoxP="d-none"
                                           />
                                         ) : (
-                                          <CustomRadio2
+                                          // <CustomRadio2
+                                          //   value={
+                                          //     viewProgressPollsDetails.answer
+                                          //   }
+                                          //   Optios={data.pollAnswerID}
+                                          //   onChange={handleCheckBoxForOneOnly}
+                                          //   className={
+                                          //     styles["Custom_radio_button"]
+                                          //   }
+                                          // />
+
+                                          <Radio.Group
+                                            onChange={(e) =>
+                                              setViewProgressPollsDetails({
+                                                ...viewProgressPollsDetails,
+                                                answer: [e.target.value],
+                                              })
+                                            }
                                             value={
-                                              viewProgressPollsDetails.answer
+                                              viewProgressPollsDetails.answer[0]
                                             }
-                                            Optios={data.pollAnswerID}
-                                            onChange={handleCheckBoxForOneOnly}
-                                            className={
-                                              styles["Custom_radio_button"]
-                                            }
-                                          />
+                                            className="AnotherRadioSelect"
+                                          >
+                                            <Radio value={data.pollAnswerID} />
+                                          </Radio.Group>
                                         )}
                                         <Progress
                                           className="Progress_bar_Polls"

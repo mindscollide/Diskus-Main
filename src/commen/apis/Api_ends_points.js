@@ -33,6 +33,7 @@ const getSocketURL = ":9999";
 //talk url
 const talkImageUrl = ":11014";
 const talkURL = ":11014/Talk";
+const talkURLReport = ":11014/Report";
 
 // Calender
 const calenderURL = ":11016/Calender";
@@ -85,6 +86,8 @@ const getResolutionApi = baseURL + getResolutionURL;
 // get Talk Api
 const talkApi = baseURL + talkURL;
 
+const talkApiReport = baseURL + talkURLReport;
+
 const filesUrlTalk = baseURL + talkImageUrl;
 
 const getGroupsApi = baseURL + getGroupsURL;
@@ -131,4 +134,5 @@ export {
   userLogOutAuthURL,
   workflowApi,
   settingDownloadApi,
+  talkApiReport,
 };

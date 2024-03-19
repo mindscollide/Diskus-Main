@@ -196,7 +196,7 @@ const ParentAgenda = ({
     }
   };
 
-  const openVoteMOdal = async (AgendaID, agendaVotingID, agendaDetails) => {
+  const openVoteMOdal = async (AgendaID, agendaVotingID, agendaTitle) => {
     let Data = {
       AgendaID: AgendaID,
       MeetingID: currentMeetingIDLS,
@@ -206,14 +206,19 @@ const ParentAgenda = ({
       AgendaVotingID: agendaVotingID,
       MeetingID: currentMeetingIDLS,
     };
+    let agendaFiltered = {
+      title: agendaTitle,
+      iD: AgendaID,
+      agendaVotingID: agendaVotingID,
+    };
     if (Data.AgendaVotingID !== 0) {
       await dispatch(GetAgendaAndVotingInfo(Data, navigate, t));
       dispatch(showVoteAgendaModal(true));
-      dispatch(GetCurrentAgendaDetails(agendaDetails));
+      dispatch(GetCurrentAgendaDetails(agendaFiltered));
       dispatch(GetAgendaVotingDetails(dataForAgendaDetails, navigate, t));
-      localStorage.setItem("currentAgendaVotingID", Data.AgendaVotingID);
+      localStorage.setItem("currentAgendaVotingID", agendaVotingID);
     } else {
-      dispatch(GetCurrentAgendaDetails(agendaDetails));
+      dispatch(GetCurrentAgendaDetails(agendaFiltered));
       dispatch(showVoteAgendaModal(true));
       localStorage.setItem("currentAgendaVotingID", 0);
     }
@@ -944,7 +949,7 @@ const ParentAgenda = ({
                                                   : openVoteMOdal(
                                                       data.iD,
                                                       data.agendaVotingID,
-                                                      data
+                                                      data.title
                                                     )
                                               }
                                             />

@@ -798,6 +798,7 @@ const AgendaWise = ({
             <Col lg={6} md={6} sm={6}>
               <Select
                 options={agendaOptions}
+                maxMenuHeight={140}
                 value={{
                   value: agendaOptionvalue.value,
                   label: agendaOptionvalue.label,

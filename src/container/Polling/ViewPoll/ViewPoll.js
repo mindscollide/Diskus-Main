@@ -1,12 +1,10 @@
 import React, { useEffect } from "react";
 import styles from "./ViewPoll.module.css";
 import { Container, Row, Col } from "react-bootstrap";
-import { Modal, Button, TextField } from "../../../components/elements";
+import { Modal, Button } from "../../../components/elements";
 import { useTranslation } from "react-i18next";
 import AlarmClock from "../../../assets/images/AlarmOptions.svg";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
-import CrossIcon from "../../../assets/images/CrossIcon.svg";
-import profile from "../../../assets/images/profile_polls.svg";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -97,6 +95,7 @@ const ViewPoll = () => {
                       src={AlarmClock}
                       width="14.97px"
                       height="14.66px"
+                      alt=""
                     />
                     <span className={styles["Due_Date_viewPoll"]}>
                       {t("Due-date-on")}{" "}
@@ -124,6 +123,7 @@ const ViewPoll = () => {
                   src={BlackCrossIcon}
                   width="16px"
                   height="16px"
+                  alt=""
                   className={styles["View_cross_icon"]}
                   onClick={() => {
                     dispatch(setviewpollModal(false));
