@@ -219,13 +219,6 @@ const NewMeeting = () => {
   const [dashboardEventData, setDashboardEventData] = useState(null);
 
   useEffect(() => {
-    // state clean while rendering in meetingTwo
-    return () => {
-      setResponseByDate("");
-    };
-  }, []);
-
-  useEffect(() => {
     if (currentLanguage !== undefined && currentLanguage !== null) {
       if (currentLanguage === "en") {
         setCalendarValue(gregorian);
@@ -295,8 +288,42 @@ const NewMeeting = () => {
     // dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
     // dispatch(viewProposeOrganizerMeetingPageFlag(false));
     // dispatch(proposeNewMeetingPageFlag(false));
+    return () => {
+      setResponseByDate("");
+    };
   }, []);
 
+  useEffect(() => {
+    try {
+      if (
+        getALlMeetingTypes.meetingTypes !== null &&
+        getALlMeetingTypes.meetingTypes !== undefined
+      ) {
+        let meetingtypeFilter = [];
+        let byDefault = {
+          value: "0",
+          text: t("Quick-meeting"),
+        };
+        meetingtypeFilter.push(byDefault);
+        getALlMeetingTypes.meetingTypes.forEach((data, index) => {
+          meetingtypeFilter.push({
+            text: data.type,
+            value: String(data.pK_MTID),
+          });
+        });
+
+        setMeetingTypeFilter(meetingtypeFilter);
+      }
+    } catch (error) {}
+  }, [getALlMeetingTypes.meetingTypes]);
+  useEffect(() => {
+    if (isMeetingTypeFilter.length > 0) {
+      const newData = isMeetingTypeFilter.map((meeting) =>
+        String(meeting.value)
+      );
+      setDefaultFilterValues(newData);
+    }
+  }, [isMeetingTypeFilter]);
   const HandleShowSearch = () => {
     setSearchMeeting(!searchMeeting);
     setSearchText("");
@@ -1298,62 +1325,38 @@ const NewMeeting = () => {
               });
             } catch {}
           });
-          try {
-            if (
-              getALlMeetingTypes.meetingTypes !== null &&
-              getALlMeetingTypes.meetingTypes !== undefined
-            ) {
-              let meetingtypeFilter = [];
-              let byDefault = {
-                value: "0",
-                text: t("Quick-meeting"),
-              };
-              meetingtypeFilter.push(byDefault);
-              getALlMeetingTypes.meetingTypes.forEach((data, index) => {
-                meetingtypeFilter.push({
-                  text: data.type,
-                  value: String(data.pK_MTID),
-                });
-              });
-              let newData = meetingtypeFilter.map((meeting) =>
-                String(meeting.value)
-              );
-              setDefaultFilterValues(newData);
-              setMeetingTypeFilter(meetingtypeFilter);
-            }
-          } catch (error) {}
           setRow(newRowData);
         }
       } else {
         setRow([]);
       }
     } catch {}
-  }, [searchMeetings, getALlMeetingTypes.meetingTypes]);
+  }, [searchMeetings]);
 
-  // useEffect(() => {
-  //   try {
-  //     if (
-  //       getALlMeetingTypes.meetingTypes !== null &&
-  //       getALlMeetingTypes.meetingTypes !== undefined
-  //     ) {
-  //       let meetingtypeFilter = [];
-  //       let byDefault = {
-  //         value: "0",
-  //         text: t("Quick-meeting"),
-  //       };
-  //       meetingtypeFilter.push(byDefault);
-  //       getALlMeetingTypes.meetingTypes.forEach((data, index) => {
-  //         meetingtypeFilter.push({
-  //           text: data.type,
-  //           value: String(data.pK_MTID),
-  //         });
-  //       });
-  //       let newData = meetingtypeFilter.map((meeting) => String(meeting.value));
-  //       setDefaultFilterValues(newData);
-  //       setMeetingTypeFilter(meetingtypeFilter);
-  //     }
-  //   } catch (error) {}
-  // }, [getALlMeetingTypes.meetingTypes]);
+  useEffect(() => {
+    try {
+      if (
+        getALlMeetingTypes.meetingTypes !== null &&
+        getALlMeetingTypes.meetingTypes !== undefined
+      ) {
+        let meetingtypeFilter = [];
+        let byDefault = {
+          value: "0",
+          text: t("Quick-meeting"),
+        };
+        meetingtypeFilter.push(byDefault);
+        getALlMeetingTypes.meetingTypes.forEach((data, index) => {
+          meetingtypeFilter.push({
+            text: data.type,
+            value: String(data.pK_MTID),
+          });
+        });
+        let newData = meetingtypeFilter.map((meeting) => String(meeting.value));
+        setDefaultFilterValues(newData);
+        setMeetingTypeFilter(meetingtypeFilter);
+      }
+    } catch (error) {}
+  }, [getALlMeetingTypes.meetingTypes]);
 
   // Empty text data
   const emptyText = () => {
@@ -1994,30 +1997,32 @@ const NewMeeting = () => {
                   <Row className="mt-2">
                     <Col lg={12} md={12} sm={12}>
                       <>
-                        <Table
-                          column={MeetingColoumns}
-                          scroll={{ y: "54vh", x: false }}
-                          pagination={false}
-                          className="newMeetingTable"
-                          rows={rows}
-                          locale={{
-                            emptyText: emptyText(), // Set your custom empty text here
-                          }}
-                          expandable={{
-                            expandedRowRender: (record) => {
-                              return record.meetingAgenda.map((data) => (
-                                <p className={styles["meeting-expanded-row"]}>
-                                  {data.objMeetingAgenda.title}
-                                </p>
-                              ));
-                            },
-                            rowExpandable: (record) =>
-                              record.meetingAgenda !== null &&
-                              record.meetingAgenda.length > 0
-                                ? true
-                                : false,
-                          }}
-                        />
+                        {defaultFiltersValues.length > 0 ? (
+                          <Table
+                            column={MeetingColoumns}
+                            scroll={{ y: "54vh", x: false }}
+                            pagination={false}
+                            className="newMeetingTable"
+                            rows={rows}
+                            locale={{
+                              emptyText: emptyText(), // Set your custom empty text here
+                            }}
+                            expandable={{
+                              expandedRowRender: (record) => {
+                                return record.meetingAgenda.map((data) => (
+                                  <p className={styles["meeting-expanded-row"]}>
+                                    {data.objMeetingAgenda.title}
+                                  </p>
+                                ));
+                              },
+                              rowExpandable: (record) =>
+                                record.meetingAgenda !== null &&
+                                record.meetingAgenda.length > 0
+                                  ? true
+                                  : false,
+                            }}
+                          />
+                        ) : null}
                       </>
                     </Col>
                   </Row>
