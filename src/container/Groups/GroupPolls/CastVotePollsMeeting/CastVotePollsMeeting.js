@@ -11,7 +11,7 @@ import {
   CustomRadio2,
   Notification,
 } from "../../../../components/elements";
-import { Progress } from "antd";
+import { Progress, Radio } from "antd";
 import { EditmeetingDateFormat } from "../../../../commen/functions/date_formater";
 import moment from "moment";
 import { castVoteApi } from "../../../../store/actions/Polls_actions";
@@ -193,17 +193,20 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
                                             classNameCheckBoxP="d-none"
                                           />
                                         ) : (
-                                          <CustomRadio2
-                                            value={
-                                              viewProgressPollsDetails.answer
+                                          <Radio.Group
+                                            onChange={(e) =>
+                                              setViewProgressPollsDetails({
+                                                ...viewProgressPollsDetails,
+                                                answer: [e.target.value],
+                                              })
                                             }
-                                            Optios={data.pollAnswerID}
-                                            onChange={handleCheckBoxForOneOnly}
-
-                                            // className={
-                                            //   styles["Custom_radio_button"]
-                                            // }
-                                          />
+                                            value={
+                                              viewProgressPollsDetails.answer[0]
+                                            }
+                                            className="AnotherRadioSelect"
+                                          >
+                                            <Radio value={data.pollAnswerID} />
+                                          </Radio.Group>
                                         )}
                                         <Progress
                                           className="Progress_bar_Polls"
