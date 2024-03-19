@@ -78,6 +78,14 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
       answer: [value],
     });
   };
+
+  const handleRadioChange = (e) => {
+    setViewProgressPollsDetails({
+      ...viewProgressPollsDetails,
+      answer: e.target.value,
+    });
+  };
+
   const handleCheckBoxYes = (e) => {
     let checked = e.target.checked;
     let name = e.target.name;
@@ -204,26 +212,23 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
                                           //   value={
                                           //     viewProgressPollsDetails.answer
                                           //   }
-                                          //   className={
-                                          //     styles["Checked_pollmeetingBox"]
-                                          //   }
                                           //   Optios={data.pollAnswerID}
                                           //   onChange={handleCheckBoxForOneOnly}
 
-                                          //   // className={
-                                          //   //   styles["Custom_radio_button"]
-                                          //   // }
+                                          //   className={
+                                          //     styles["Custom_radio_button"]
+                                          //   }
                                           // />
+
                                           <Radio.Group
-                                            // onChange={(e) => handleRadioChange(index, e.target.value)}
                                             onChange={(e) =>
                                               setViewProgressPollsDetails({
                                                 ...viewProgressPollsDetails,
-                                                answer: e.target.value,
+                                                answer: [e.target.value],
                                               })
                                             }
                                             value={
-                                              viewProgressPollsDetails.answer
+                                              viewProgressPollsDetails.answer[0]
                                             }
                                             className="AnotherRadioSelect"
                                           >

@@ -11,7 +11,7 @@ import {
   CustomRadio2,
   Notification,
 } from "../../../../../../components/elements";
-import { Progress } from "antd";
+import { Progress, Radio } from "antd";
 import moment from "moment";
 import { EditmeetingDateFormat } from "../../../../../../commen/functions/date_formater";
 import { castVoteApi } from "../../../../../../store/actions/Polls_actions";
@@ -199,17 +199,31 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
                                             classNameCheckBoxP="d-none"
                                           />
                                         ) : (
-                                          <CustomRadio2
+                                          // <CustomRadio2
+                                          //   value={
+                                          //     viewProgressPollsDetails.answer
+                                          //   }
+                                          //   Optios={data.pollAnswerID}
+                                          //   onChange={handleCheckBoxForOneOnly}
+
+                                          //   className={
+                                          //     styles["Custom_radio_button"]
+                                          //   }
+                                          // />
+                                          <Radio.Group
+                                            onChange={(e) =>
+                                              setViewProgressPollsDetails({
+                                                ...viewProgressPollsDetails,
+                                                answer: e.target.value,
+                                              })
+                                            }
                                             value={
                                               viewProgressPollsDetails.answer
                                             }
-                                            Optios={data.pollAnswerID}
-                                            onChange={handleCheckBoxForOneOnly}
-
-                                            // className={
-                                            //   styles["Custom_radio_button"]
-                                            // }
-                                          />
+                                            className="AnotherRadioSelect"
+                                          >
+                                            <Radio value={data.pollAnswerID} />
+                                          </Radio.Group>
                                         )}
                                         <Progress
                                           className="Progress_bar_Polls"
