@@ -82,7 +82,7 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
       ),
       dataIndex: "answer",
       key: "answer",
-      width: "55px",
+      width: "100px",
       render: (text, record) => (
         <Row>
           <Col lg={12} md={12} sm={12}>
@@ -111,7 +111,7 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
       ),
       dataIndex: "percentage",
       key: "percentage",
-      width: "240px",
+      width: "170px",
       render: (text, record) => (
         <>
           <Row>

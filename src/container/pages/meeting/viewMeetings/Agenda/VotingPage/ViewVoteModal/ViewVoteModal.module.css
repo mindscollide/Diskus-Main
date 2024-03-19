@@ -22,13 +22,15 @@
   font-family: "MontserratSemiBold" !important;
 }
 
-.BargraphButton:is(:active,
-  :hover,
-  :focus,
-  :target,
-  :visited,
-  :focus-visible,
-  :focus-within) {
+.BargraphButton:is(
+    :active,
+    :hover,
+    :focus,
+    :target,
+    :visited,
+    :focus-visible,
+    :focus-within
+  ) {
   padding: 12px 30px !important;
   background: #6172d6 !important;
   color: #fff !important;
@@ -44,6 +46,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  display: block;
 }
 
 .NoOfVotes {
