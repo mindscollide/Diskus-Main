@@ -38,7 +38,7 @@ const PrivateRoutes = () => {
   const token =
     localStorage.getItem("token") !== undefined &&
     localStorage.getItem("token") !== null
-      ? JSON.parse(localStorage.getItem("token"))
+      ? localStorage.getItem("token")
       : "";
   let TwoFA = JSON.parse(localStorage.getItem("2fa"));
   let TowApproval = JSON.parse(localStorage.getItem("TowApproval"));

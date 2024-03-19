@@ -194,9 +194,9 @@ const ProposedNewMeeting = ({
     } catch {}
   }, [PollsReducer.gellAllCommittesandGroups]);
 
-  useEffect(() => {
-    dispatch(GetAllMeetingTypesNewFunction(navigate, t, false));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(GetAllMeetingTypesNewFunction(navigate, t, false));
+  // }, []);
 
   useEffect(() => {
     try {
