@@ -143,6 +143,8 @@ body[dir="rtl"] .UpdateButtonPakageDetails {
 
 body[dir="rtl"] .TableheadingTotal {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
+  display: flex !important;
+  justify-content: center !important;
 }
 
 .ChargesPerLicesense {
@@ -153,6 +155,8 @@ body[dir="rtl"] .TableheadingTotal {
 
 body[dir="rtl"] .ChargesPerLicesense {
   font-family: "IBMPlexSansArabic-Bold" !important;
+  display: flex !important;
+  justify-content: center !important;
 }
 
 .ChargesPerLicesensetotal {
@@ -163,6 +167,8 @@ body[dir="rtl"] .ChargesPerLicesense {
 
 body[dir="rtl"] .ChargesPerLicesensetotal {
   font-family: "IBMPlexSansArabic-Bold" !important;
+  display: flex !important;
+  justify-content: center !important;
 }
 
 .Tableheading {
@@ -173,4 +179,6 @@ body[dir="rtl"] .ChargesPerLicesensetotal {
 
 body[dir="rtl"] .Tableheading {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
+  display: flex !important;
+  justify-content: center !important;
 }
