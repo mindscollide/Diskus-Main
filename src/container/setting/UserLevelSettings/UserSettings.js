@@ -24,11 +24,11 @@ import {
   revokeToken,
   updateUserSettingFunc,
 } from "../../../store/actions/UpdateUserGeneralSetting";
-import {
-  AuthenticatedTemplate,
-  UnauthenticatedTemplate,
-  useMsal,
-} from "@azure/msal-react";
+// import {
+//   AuthenticatedTemplate,
+//   UnauthenticatedTemplate,
+//   useMsal,
+// } from "@azure/msal-react";
 import { loginRequest } from "../../../auth-config";
 
 const UserSettings = () => {
@@ -109,8 +109,8 @@ const UserSettings = () => {
     EmailWhenNewTODODeleted: false,
     EmailWhenNewTODOEdited: false,
   });
-  const { instance } = useMsal();
-  const activeAccount = instance.getActiveAccount();
+  // const { instance } = useMsal();
+  // const activeAccount = instance.getActiveAccount();
   const [authMicrosoftAccessToken, setAuthMicrosoftAccessToken] = useState("");
   const [authMicrosoftRefreshToken, setAuthMicrosoftRefreshToken] =
     useState("");
@@ -448,58 +448,58 @@ const UserSettings = () => {
     }
   };
 
-  const signInMicrowSoft = async (value) => {
-    const response = await instance.loginPopup(loginRequest);
-    if (response) {
-      const gettingKeyForSessionStorage = response.idTokenClaims.aud;
-      if (gettingKeyForSessionStorage) {
-        const sessionStorageKey =
-          "msal.token.keys." + gettingKeyForSessionStorage;
-        const sessionStorageKeyResponce = JSON.parse(
-          sessionStorage.getItem(sessionStorageKey)
-        );
-        const getSessionStorageRefreshToken = JSON.parse(
-          sessionStorage.getItem(sessionStorageKeyResponce.refreshToken[0])
-        );
-        setAuthMicrosoftRefreshToken(getSessionStorageRefreshToken.secret);
-      }
-      setAuthMicrosoftAccessToken(response.accessToken);
-      setUserOptionsSettings({
-        ...userOptionsSettings,
-        AllowMicrosoftCalenderSync: value,
-      });
-    } else {
-    }
-  };
+  // const signInMicrowSoft = async (value) => {
+  //   const response = await instance.loginPopup(loginRequest);
+  //   if (response) {
+  //     const gettingKeyForSessionStorage = response.idTokenClaims.aud;
+  //     if (gettingKeyForSessionStorage) {
+  //       const sessionStorageKey =
+  //         "msal.token.keys." + gettingKeyForSessionStorage;
+  //       const sessionStorageKeyResponce = JSON.parse(
+  //         sessionStorage.getItem(sessionStorageKey)
+  //       );
+  //       const getSessionStorageRefreshToken = JSON.parse(
+  //         sessionStorage.getItem(sessionStorageKeyResponce.refreshToken[0])
+  //       );
+  //       setAuthMicrosoftRefreshToken(getSessionStorageRefreshToken.secret);
+  //     }
+  //     setAuthMicrosoftAccessToken(response.accessToken);
+  //     setUserOptionsSettings({
+  //       ...userOptionsSettings,
+  //       AllowMicrosoftCalenderSync: value,
+  //     });
+  //   } else {
+  //   }
+  // };
 
   const onChangeAllowMicrosoftCalenderSync = async (e) => {
-    const value = e.target.checked;
-    if (value) {
-      signInMicrowSoft(value);
-    } else {
-      try {
-        // Initiate the logout process
-        await instance.logoutPopup();
+    // const value = e.target.checked;
+    // if (value) {
+    //   signInMicrowSoft(value);
+    // } else {
+    //   try {
+    //     // Initiate the logout process
+    //     await instance.logoutPopup();
 
-        // Check if the user is still authenticated after logout
-        const isAuthenticated = !!instance.getAllAccounts().length;
+    //     // Check if the user is still authenticated after logout
+    //     const isAuthenticated = !!instance.getAllAccounts().length;
 
-        if (!isAuthenticated) {
-          setAuthMicrosoftAccessToken("");
-          setAuthMicrosoftRefreshToken("");
+    //     if (!isAuthenticated) {
+    //       setAuthMicrosoftAccessToken("");
+    //       setAuthMicrosoftRefreshToken("");
 
-          setUserOptionsSettings({
-            ...userOptionsSettings,
-            AllowMicrosoftCalenderSync: value,
-          });
-          // Perform any additional actions after successful logout
-        } else {
-          // Handle the case where the user is still authenticated after logout
-        }
-      } catch (error) {
-        // Handle any errors that occur during logout
-      }
-    }
+    //       setUserOptionsSettings({
+    //         ...userOptionsSettings,
+    //         AllowMicrosoftCalenderSync: value,
+    //       });
+    //       // Perform any additional actions after successful logout
+    //     } else {
+    //       // Handle the case where the user is still authenticated after logout
+    //     }
+    //   } catch (error) {
+    //     // Handle any errors that occur during logout
+    //   }
+    // }
   };
 
   const onChangeEmailWhenAddedToCommittee = (e) => {
