@@ -416,6 +416,10 @@ const Agenda = ({
 
     // Process data and update properties
     let cleanedData = removeProperties(convertedRows);
+    console.log(
+      { newFolder, cleanedData },
+      "newFoldernewFoldernewFoldernewFolder"
+    );
     let mappingObject = {};
     newFolder.forEach((folder) => {
       mappingObject[folder.displayAttachmentName] = folder.pK_FileID.toString();
@@ -439,7 +443,10 @@ const Agenda = ({
         })),
       })),
     }));
-
+    console.log(
+      { newFolder, cleanedData, mappingObject, updatedData },
+      "newFoldernewFoldernewFoldernewFolder"
+    );
     // Clear fileForSend array
     setFileForSend([]);
 
