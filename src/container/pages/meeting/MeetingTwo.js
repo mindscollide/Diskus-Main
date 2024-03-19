@@ -78,6 +78,7 @@ import {
   attendanceGlobalFlag,
   uploadGlobalFlag,
   FetchMeetingURLClipboard,
+  GetAllMeetingTypesNewFunction,
 } from "../../../store/actions/NewMeetingActions";
 import { mqttCurrentMeetingEnded } from "../../../store/actions/GetMeetingUserId";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
@@ -130,7 +131,9 @@ const NewMeeting = () => {
   const ResponseMessage = useSelector(
     (state) => state.NewMeetingreducer.ResponseMessage
   );
-
+  const getALlMeetingTypes = useSelector(
+    (state) => state.NewMeetingreducer.getALlMeetingTypes
+  );
   const ResponseMessages = useSelector(
     (state) => state.MeetingOrganizersReducer.ResponseMessage
   );
@@ -163,7 +166,10 @@ const NewMeeting = () => {
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
   const [proposedNewMeeting, setProposedNewMeeting] = useState(false);
   const [searchMeeting, setSearchMeeting] = useState(false);
-
+  const [isMeetingTypeFilter, setMeetingTypeFilter] = useState([]);
+  const [defaultFiltersValues, setDefaultFilterValues] = useState([]);
+  console.log(defaultFiltersValues, "defaultFiltersValues");
+  console.log(isMeetingTypeFilter, "isMeetingTypeFilterisMeetingTypeFilter");
   const [dataroomMapFolderId, setDataroomMapFolderId] = useState(0);
   //For Search Field Only
   const [searchText, setSearchText] = useState("");
@@ -177,7 +183,6 @@ const NewMeeting = () => {
     message: "",
   });
   const [rows, setRow] = useState([]);
-  console.log(rows, "rowsrowsrows");
   const [totalRecords, setTotalRecords] = useState(0);
   const [minutesAgo, setMinutesAgo] = useState(null);
   const [searchFields, setSearchFeilds] = useState({
@@ -214,12 +219,9 @@ const NewMeeting = () => {
   const [dashboardEventData, setDashboardEventData] = useState(null);
 
   useEffect(() => {
-    console.log("State before cleanup:", responseByDate);
-
     // state clean while rendering in meetingTwo
     return () => {
       setResponseByDate("");
-      console.log("State before cleanup:", responseByDate);
     };
   }, []);
 
@@ -236,43 +238,63 @@ const NewMeeting = () => {
   }, [currentLanguage]);
   //  Call all search meetings api
   useEffect(() => {
-    if (meetingpageRow !== null && meetingPageCurrent !== null) {
-      let searchData = {
-        Date: "",
-        Title: "",
-        HostName: "",
-        UserID: Number(userID),
-        PageNumber: Number(meetingPageCurrent),
-        Length: Number(meetingpageRow),
-        PublishedMeetings: true,
-      };
-      dispatch(searchNewUserMeeting(navigate, searchData, t));
-      dispatch(allAssignessList(navigate, t));
-      localStorage.setItem("MeetingCurrentView", 1);
-    } else {
-      let searchData = {
-        Date: "",
-        Title: "",
-        HostName: "",
-        UserID: Number(userID),
-        PageNumber: 1,
-        Length: 50,
-        PublishedMeetings: true,
-      };
-      localStorage.setItem("MeetingPageRows", 50);
-      localStorage.setItem("MeetingPageCurrent", 1);
-      dispatch(searchNewUserMeeting(navigate, searchData, t));
-      dispatch(allAssignessList(navigate, t));
-      localStorage.setItem("MeetingCurrentView", 1);
-    }
-    setEditFlag(false);
-    setViewFlag(false);
-    dispatch(scheduleMeetingPageFlag(false));
-    dispatch(viewProposeDateMeetingPageFlag(false));
-    dispatch(viewAdvanceMeetingPublishPageFlag(false));
-    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-    dispatch(viewProposeOrganizerMeetingPageFlag(false));
-    dispatch(proposeNewMeetingPageFlag(false));
+    const callApi = async () => {
+      try {
+        if (meetingpageRow !== null && meetingPageCurrent !== null) {
+          let searchData = {
+            Date: "",
+            Title: "",
+            HostName: "",
+            UserID: Number(userID),
+            PageNumber: Number(meetingPageCurrent),
+            Length: Number(meetingpageRow),
+            PublishedMeetings: true,
+          };
+          await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+          await dispatch(searchNewUserMeeting(navigate, searchData, t));
+          await dispatch(allAssignessList(navigate, t));
+          localStorage.setItem("MeetingCurrentView", 1);
+        } else {
+          let searchData = {
+            Date: "",
+            Title: "",
+            HostName: "",
+            UserID: Number(userID),
+            PageNumber: 1,
+            Length: 50,
+            PublishedMeetings: true,
+          };
+          localStorage.setItem("MeetingPageRows", 50);
+          localStorage.setItem("MeetingPageCurrent", 1);
+          await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+          await dispatch(searchNewUserMeeting(navigate, searchData, t));
+          await dispatch(allAssignessList(navigate, t));
+
+          localStorage.setItem("MeetingCurrentView", 1);
+        }
+        setEditFlag(false);
+        setViewFlag(false);
+        dispatch(scheduleMeetingPageFlag(false));
+        dispatch(viewProposeDateMeetingPageFlag(false));
+        dispatch(viewAdvanceMeetingPublishPageFlag(false));
+        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+        dispatch(viewProposeOrganizerMeetingPageFlag(false));
+        dispatch(proposeNewMeetingPageFlag(false));
+      } catch (error) {
+        // Handle any errors here
+        console.error("Error in callApi:", error);
+      }
+    };
+
+    callApi();
+    // setEditFlag(false);
+    // setViewFlag(false);
+    // dispatch(scheduleMeetingPageFlag(false));
+    // dispatch(viewProposeDateMeetingPageFlag(false));
+    // dispatch(viewAdvanceMeetingPublishPageFlag(false));
+    // dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+    // dispatch(viewProposeOrganizerMeetingPageFlag(false));
+    // dispatch(proposeNewMeetingPageFlag(false));
   }, []);
 
   const HandleShowSearch = () => {
@@ -582,7 +604,7 @@ const NewMeeting = () => {
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
             attendee.isPrimaryOrganizer === true
         );
-        console.log("RecordRecord", record);
+
         return (
           <span
             className={styles["meetingTitle"]}
@@ -698,45 +720,27 @@ const NewMeeting = () => {
       key: "meetingType",
       width: "115px",
       align: "center",
-      filters: [
-        {
-          text: t("Board-meeting"),
-          value: "1",
-        },
-        {
-          text: t("Committee-meeting"),
-          value: "2",
-        },
-        {
-          text: t("Group-meeting"),
-          value: "3",
-        },
-      ],
-      defaultFilteredValue: ["1", "2", "3"],
+      ellipsis: true,
+      filters: isMeetingTypeFilter,
+      defaultFilteredValue: defaultFiltersValues || null,
       filterResetToDefaultFilteredValue: true,
       filterIcon: () => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
       onFilter: (value, record) => {
         const meetingType = Number(record.meetingType);
-        return !isNaN(meetingType) && meetingType === Number(value);
+        return meetingType === Number(value);
       },
-      render: (text) => {
-        let meetingTypeText = "";
-        switch (Number(text)) {
-          case 1:
-            meetingTypeText = t("Board-meeting");
-            break;
-          case 2:
-            meetingTypeText = t("Committee-meeting");
-            break;
-          case 3:
-            meetingTypeText = t("Group-meeting");
-            break;
-          default:
-            meetingTypeText = t("Unknown");
-        }
-        return <span>{meetingTypeText}</span>;
+      render: (text, record) => {
+        const meetingType = Number(record.meetingType);
+        const matchedFilter = isMeetingTypeFilter.find(
+          (data) => meetingType === Number(data.value)
+        );
+        return record.isQuickMeeting === true && meetingType === 1
+          ? t("Quick-meeting")
+          : matchedFilter
+          ? matchedFilter.text
+          : "";
       },
     },
     {
@@ -922,30 +926,26 @@ const NewMeeting = () => {
               // minutesDifference > 0
             ) {
               return (
-                <Row>
-                  <Col sm={12} md={12} lg={12}>
-                    <Button
-                      text={t("Start-meeting")}
-                      className={styles["Start-Meeting"]}
-                      onClick={() => {
-                        dispatch(
-                          UpdateOrganizersMeeting(
-                            navigate,
-                            t,
-                            4,
-                            startMeetingRequest,
-                            setEdiorRole,
-                            setAdvanceMeetingModalID,
-                            setDataroomMapFolderId,
-                            setSceduleMeeting,
-                            setViewFlag,
-                            setEditFlag
-                          )
-                        );
-                      }}
-                    />
-                  </Col>
-                </Row>
+                <Button
+                  text={t("Start-meeting")}
+                  className={styles["Start-Meeting"]}
+                  onClick={() => {
+                    dispatch(
+                      UpdateOrganizersMeeting(
+                        navigate,
+                        t,
+                        4,
+                        startMeetingRequest,
+                        setEdiorRole,
+                        setAdvanceMeetingModalID,
+                        setDataroomMapFolderId,
+                        setSceduleMeeting,
+                        setViewFlag,
+                        setEditFlag
+                      )
+                    );
+                  }}
+                />
               );
             } else if (
               (record.isQuickMeeting === false &&
@@ -955,42 +955,35 @@ const NewMeeting = () => {
                 startMeetingData.showButton)
             ) {
               return (
-                <Row>
-                  <Col sm={12} md={12} lg={12}>
-                    <Button
-                      text={t("Start-meeting")}
-                      className={styles["Start-Meeting"]}
-                      onClick={() => {
-                        dispatch(
-                          UpdateOrganizersMeeting(
-                            navigate,
-                            t,
-                            3,
-                            startMeetingRequest,
-                            setEdiorRole,
-                            // setAdvanceMeetingModalID,
-                            setDataroomMapFolderId,
-                            setViewAdvanceMeetingModal
-                          )
-                        );
-                        localStorage.setItem(
-                          "currentMeetingID",
-                          record.pK_MDID
-                        );
-                        setAdvanceMeetingModalID(record.pK_MDID);
-                        dispatch(viewMeetingFlag(true));
-                        setViewAdvanceMeetingModal(true);
-                        dispatch(viewAdvanceMeetingPublishPageFlag(true));
-                        dispatch(scheduleMeetingPageFlag(false));
-                        setEdiorRole({
-                          status: 10,
-                          role: "Organizer",
-                          isPrimaryOrganizer: isPrimaryOrganizer,
-                        });
-                      }}
-                    />
-                  </Col>
-                </Row>
+                <Button
+                  text={t("Start-meeting")}
+                  className={styles["Start-Meeting"]}
+                  onClick={() => {
+                    dispatch(
+                      UpdateOrganizersMeeting(
+                        navigate,
+                        t,
+                        3,
+                        startMeetingRequest,
+                        setEdiorRole,
+                        // setAdvanceMeetingModalID,
+                        setDataroomMapFolderId,
+                        setViewAdvanceMeetingModal
+                      )
+                    );
+                    localStorage.setItem("currentMeetingID", record.pK_MDID);
+                    setAdvanceMeetingModalID(record.pK_MDID);
+                    dispatch(viewMeetingFlag(true));
+                    setViewAdvanceMeetingModal(true);
+                    dispatch(viewAdvanceMeetingPublishPageFlag(true));
+                    dispatch(scheduleMeetingPageFlag(false));
+                    setEdiorRole({
+                      status: 10,
+                      role: "Organizer",
+                      isPrimaryOrganizer: isPrimaryOrganizer,
+                    });
+                  }}
+                />
               );
             }
           }
@@ -1083,8 +1076,6 @@ const NewMeeting = () => {
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
             attendee.isPrimaryOrganizer === true
         );
-
-        console.log("isPrimaryOrganizer", isPrimaryOrganizer);
 
         const isQuickMeeting = record.isQuickMeeting;
         if (
@@ -1300,17 +1291,69 @@ const NewMeeting = () => {
                 title: data.title,
                 talkGroupID: data.talkGroupID,
                 key: index,
-                meetingType: data.meetingTypeID,
+                meetingType:
+                  data.meetingTypeID === 1 && data.isQuickMeeting
+                    ? 0
+                    : data.meetingTypeID,
               });
             } catch {}
           });
+          try {
+            if (
+              getALlMeetingTypes.meetingTypes !== null &&
+              getALlMeetingTypes.meetingTypes !== undefined
+            ) {
+              let meetingtypeFilter = [];
+              let byDefault = {
+                value: "0",
+                text: t("Quick-meeting"),
+              };
+              meetingtypeFilter.push(byDefault);
+              getALlMeetingTypes.meetingTypes.forEach((data, index) => {
+                meetingtypeFilter.push({
+                  text: data.type,
+                  value: String(data.pK_MTID),
+                });
+              });
+              let newData = meetingtypeFilter.map((meeting) =>
+                String(meeting.value)
+              );
+              setDefaultFilterValues(newData);
+              setMeetingTypeFilter(meetingtypeFilter);
+            }
+          } catch (error) {}
           setRow(newRowData);
         }
       } else {
         setRow([]);
       }
     } catch {}
-  }, [searchMeetings]);
+  }, [searchMeetings, getALlMeetingTypes.meetingTypes]);
+
+  // useEffect(() => {
+  //   try {
+  //     if (
+  //       getALlMeetingTypes.meetingTypes !== null &&
+  //       getALlMeetingTypes.meetingTypes !== undefined
+  //     ) {
+  //       let meetingtypeFilter = [];
+  //       let byDefault = {
+  //         value: "0",
+  //         text: t("Quick-meeting"),
+  //       };
+  //       meetingtypeFilter.push(byDefault);
+  //       getALlMeetingTypes.meetingTypes.forEach((data, index) => {
+  //         meetingtypeFilter.push({
+  //           text: data.type,
+  //           value: String(data.pK_MTID),
+  //         });
+  //       });
+  //       let newData = meetingtypeFilter.map((meeting) => String(meeting.value));
+  //       setDefaultFilterValues(newData);
+  //       setMeetingTypeFilter(meetingtypeFilter);
+  //     }
+  //   } catch (error) {}
+  // }, [getALlMeetingTypes.meetingTypes]);
 
   // Empty text data
   const emptyText = () => {
@@ -1574,7 +1617,6 @@ const NewMeeting = () => {
     }
   }, [dashboardEventData, rows]);
 
-  console.log("meetingIdReducermeetingIdReducer", meetingIdReducer);
   useEffect(() => {
     if (
       NewMeetingreducer.meetingStatusNotConductedMqttData !== null &&

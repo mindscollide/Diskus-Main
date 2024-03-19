@@ -53,6 +53,42 @@ const AllFilesModal = ({
     setShowMoreFilesView(false);
   };
 
+  const pdfData = (record, ext) => {
+    console.log("PDFDATAPDFDATA", record);
+    let Data = {
+      taskId: Number(record.originalAttachmentName),
+      commingFrom: 4,
+      fileName: record.displayAttachmentName,
+      attachmentID: Number(record.originalAttachmentName),
+    };
+    let pdfDataJson = JSON.stringify(Data);
+    if (
+      ext === "pdf" ||
+      ext === "doc" ||
+      ext === "docx" ||
+      ext === "xlx" ||
+      ext === "xlxs"
+    ) {
+      window.open(
+        `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+        "_blank",
+        "noopener noreferrer"
+      );
+    } else {
+      let data = {
+        FileID: Number(record.originalAttachmentName),
+      };
+      dispatch(
+        DataRoomDownloadFileApiFunc(
+          navigate,
+          data,
+          t,
+          record.displayAttachmentName
+        )
+      );
+    }
+  };
+
   console.log("File Data", agendaName, fileDataAgenda);
 
   return (
@@ -89,7 +125,12 @@ const AllFilesModal = ({
           <>
             <Row key={Math.random()}>
               <Col lg={2} md={2} sm={12}></Col>
-              <Col lg={8} md={8} sm={12} className={styles["FileSectionHeight"]}>
+              <Col
+                lg={8}
+                md={8}
+                sm={12}
+                className={styles["FileSectionHeight"]}
+              >
                 {fileDataAgenda?.map((filesData, fileIndex) => (
                   <div
                     onClick={() => downloadDocument(filesData)}
@@ -112,7 +153,14 @@ const AllFilesModal = ({
                             width={25}
                           />
                           <span
-                            onClick={() => downloadDocument(filesData)}
+                            onClick={() =>
+                              pdfData(
+                                filesData,
+                                getFileExtension(
+                                  filesData?.displayAttachmentName
+                                )
+                              )
+                            }
                             className={styles["fileNameAttachment"]}
                           >
                             {filesData?.displayAttachmentName}
@@ -120,7 +168,12 @@ const AllFilesModal = ({
                         </div>
                       </Col>
                       <Col lg={2} md={2} sm={12} className="p-0">
-                        <img draggable={false} src={DownloadIcon} alt="" />
+                        <img
+                          onClick={() => downloadDocument(filesData)}
+                          draggable={false}
+                          src={DownloadIcon}
+                          alt=""
+                        />
                       </Col>
                     </Row>
                   </div>

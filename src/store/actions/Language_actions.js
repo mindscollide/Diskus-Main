@@ -30,7 +30,11 @@ const getAllLanguagesFail = (message) => {
 };
 
 const getAllLanguages = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  // let token =
+  //   localStorage.getItem("token") !== undefined &&
+  //   localStorage.getItem("token") !== null
+  //     ? JSON.parse(localStorage.getItem("token"))
+  //     : "";
   return (dispatch) => {
     dispatch(getAllLanguagesInitial());
     let form = new FormData();
@@ -39,9 +43,9 @@ const getAllLanguages = (navigate, t) => {
       method: "post",
       url: getAdminURLs,
       data: form,
-      headers: {
-        _token: token,
-      },
+      // headers: {
+      //   _token: token,
+      // },
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {

@@ -8,6 +8,8 @@ const toDoListURL = ":11003/ToDoList";
 // ali work
 const settingURL = ":11004/Settings";
 
+const settingDownloadURL = ":11004/Report";
+
 // Huzeifa work for Meetings
 const meetingURL = ":11002/Meeting";
 
@@ -31,6 +33,7 @@ const getSocketURL = ":9999";
 //talk url
 const talkImageUrl = ":11014";
 const talkURL = ":11014/Talk";
+const talkURLReport = ":11014/Report";
 
 // Calender
 const calenderURL = ":11016/Calender";
@@ -63,6 +66,8 @@ const dataRoomApi = baseURL + getDataRoomURL;
 // ali work
 const settingApi = baseURL + settingURL;
 
+const settingDownloadApi = baseURL + settingDownloadURL;
+
 const meetingApi = baseURL + meetingURL;
 
 const getTodoListAPI = baseURL + toDoListURL;
@@ -80,6 +85,8 @@ const getResolutionApi = baseURL + getResolutionURL;
 
 // get Talk Api
 const talkApi = baseURL + talkURL;
+
+const talkApiReport = baseURL + talkURLReport;
 
 const filesUrlTalk = baseURL + talkImageUrl;
 
@@ -126,4 +133,6 @@ export {
   DataRoomAllFilesDownloads,
   userLogOutAuthURL,
   workflowApi,
+  settingDownloadApi,
+  talkApiReport,
 };

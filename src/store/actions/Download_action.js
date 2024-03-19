@@ -6,6 +6,7 @@ import {
   settingApi,
   meetingApi,
   reportDownload,
+  settingDownloadApi,
 } from "../../commen/apis/Api_ends_points";
 import {
   downloadDocument,
@@ -94,7 +95,7 @@ const DownloadFile = (navigate, data, t) => {
     dispatch(DownloadLoaderStart());
     axios({
       method: "post",
-      url: settingApi,
+      url: settingDownloadApi,
       data: form,
       headers: {
         _token: token,

@@ -1133,52 +1133,25 @@ const DataRoom = () => {
                       </Tooltip>
                     )}
                   </div>
-
-                  <span className={styles["threeDot__Icon"]}>
-                    {record.isFolder ? (
-                      <Dropdown
-                        className={`${
-                          styles["options_dropdown"]
-                        } ${"dataroom_options"}`}
-                      >
-                        <Dropdown.Toggle id="dropdown-autoclose-true">
-                          <img
-                            src={dot}
-                            alt=""
-                            width="15.02px"
-                            height="10.71px"
-                          />
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                          {record.permissionID === 1
-                            ? optionsforFolderEditor(t).map((data, index) => {
-                                return (
-                                  <Dropdown.Item
-                                    key={index}
-                                    onClick={() =>
-                                      folderOptionsSelect(data, record)
-                                    }
-                                  >
-                                    {data.label}
-                                  </Dropdown.Item>
-                                );
-                              })
-                            : record.permissionID === 2
-                            ? optionsforFolderViewer(t).map((data, index) => {
-                                return (
-                                  <Dropdown.Item
-                                    key={index}
-                                    onClick={() =>
-                                      folderOptionsSelect(data, record)
-                                    }
-                                  >
-                                    {data.label}
-                                  </Dropdown.Item>
-                                );
-                              })
-                            : record.permissionID === 3
-                            ? optionsforFolderEditableNonShareable(t).map(
-                                (data, index) => {
+                  <Tooltip placement="topRight" title={t("More")}>
+                    <span className={styles["threeDot__Icon"]}>
+                      {record.isFolder ? (
+                        <Dropdown
+                          className={`${
+                            styles["options_dropdown"]
+                          } ${"dataroom_options"}`}
+                        >
+                          <Dropdown.Toggle id="dropdown-autoclose-true">
+                            <img
+                              src={dot}
+                              alt=""
+                              width="15.02px"
+                              height="10.71px"
+                            />
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu>
+                            {record.permissionID === 1
+                              ? optionsforFolderEditor(t).map((data, index) => {
                                   return (
                                     <Dropdown.Item
                                       key={index}
@@ -1189,63 +1162,55 @@ const DataRoom = () => {
                                       {data.label}
                                     </Dropdown.Item>
                                   );
-                                }
-                              )
-                            : null}
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    ) : (
-                      <Dropdown
-                        className={`${
-                          styles["options_dropdown"]
-                        } ${"dataroom_options"}`}
-                      >
-                        <Dropdown.Toggle id="dropdown-autoclose-true">
-                          <img
-                            src={dot}
-                            alt=""
-                            width="15.02px"
-                            height="10.71px"
-                          />
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                          {record.permissionID === 1
-                            ? optionsforFileEditor(t).map((data, index) => {
-                                return (
-                                  <Dropdown.Item
-                                    key={index}
-                                    onClick={() =>
-                                      fileOptionsSelect(
-                                        data,
-                                        record,
-                                        pdfDataJson
-                                      )
-                                    }
-                                  >
-                                    {data.label}
-                                  </Dropdown.Item>
-                                );
-                              })
-                            : record.permissionID === 2
-                            ? optionsforFileViewer(t).map((data, index) => {
-                                return (
-                                  <Dropdown.Item
-                                    key={index}
-                                    onClick={() =>
-                                      fileOptionsSelect(
-                                        data,
-                                        record,
-                                        pdfDataJson
-                                      )
-                                    }
-                                  >
-                                    {data.label}
-                                  </Dropdown.Item>
-                                );
-                              })
-                            : record.permissionID === 3
-                            ? optionsforFileEditableNonShareable(t).map(
-                                (data, index) => {
+                                })
+                              : record.permissionID === 2
+                              ? optionsforFolderViewer(t).map((data, index) => {
+                                  return (
+                                    <Dropdown.Item
+                                      key={index}
+                                      onClick={() =>
+                                        folderOptionsSelect(data, record)
+                                      }
+                                    >
+                                      {data.label}
+                                    </Dropdown.Item>
+                                  );
+                                })
+                              : record.permissionID === 3
+                              ? optionsforFolderEditableNonShareable(t).map(
+                                  (data, index) => {
+                                    return (
+                                      <Dropdown.Item
+                                        key={index}
+                                        onClick={() =>
+                                          folderOptionsSelect(data, record)
+                                        }
+                                      >
+                                        {data.label}
+                                      </Dropdown.Item>
+                                    );
+                                  }
+                                )
+                              : null}
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      ) : (
+                        <Dropdown
+                          className={`${
+                            styles["options_dropdown"]
+                          } ${"dataroom_options"}`}
+                        >
+                          <Dropdown.Toggle id="dropdown-autoclose-true">
+                            <img
+                              src={dot}
+                              alt=""
+                              width="15.02px"
+                              height="10.71px"
+                            />
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu>
+                            {record.permissionID === 1
+                              ? optionsforFileEditor(t).map((data, index) => {
                                   return (
                                     <Dropdown.Item
                                       key={index}
@@ -1260,13 +1225,49 @@ const DataRoom = () => {
                                       {data.label}
                                     </Dropdown.Item>
                                   );
-                                }
-                              )
-                            : null}
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    )}
-                  </span>
+                                })
+                              : record.permissionID === 2
+                              ? optionsforFileViewer(t).map((data, index) => {
+                                  return (
+                                    <Dropdown.Item
+                                      key={index}
+                                      onClick={() =>
+                                        fileOptionsSelect(
+                                          data,
+                                          record,
+                                          pdfDataJson
+                                        )
+                                      }
+                                    >
+                                      {data.label}
+                                    </Dropdown.Item>
+                                  );
+                                })
+                              : record.permissionID === 3
+                              ? optionsforFileEditableNonShareable(t).map(
+                                  (data, index) => {
+                                    return (
+                                      <Dropdown.Item
+                                        key={index}
+                                        onClick={() =>
+                                          fileOptionsSelect(
+                                            data,
+                                            record,
+                                            pdfDataJson
+                                          )
+                                        }
+                                      >
+                                        {data.label}
+                                      </Dropdown.Item>
+                                    );
+                                  }
+                                )
+                              : null}
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      )}
+                    </span>
+                  </Tooltip>
                 </Col>
               </Row>
             </>
@@ -1360,67 +1361,69 @@ const DataRoom = () => {
                     </Tooltip>
                   </div>
 
-                  <span className={styles["threeDot__Icon"]}>
-                    {record.isFolder ? (
-                      <Dropdown
-                        className={`${
-                          styles["options_dropdown"]
-                        } ${"dataroom_options"}`}
-                      >
-                        <Dropdown.Toggle id="dropdown-autoclose-true">
-                          <img
-                            src={dot}
-                            alt=""
-                            width="15.02px"
-                            height="10.71px"
-                          />
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                          {optionsforFolder(t).map((data, index) => {
-                            return (
-                              <Dropdown.Item
-                                key={index}
-                                onClick={() =>
-                                  folderOptionsSelect(data, record)
-                                }
-                              >
-                                {data.label}
-                              </Dropdown.Item>
-                            );
-                          })}
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    ) : (
-                      <Dropdown
-                        className={`${
-                          styles["options_dropdown"]
-                        } ${"dataroom_options"}`}
-                      >
-                        <Dropdown.Toggle id="dropdown-autoclose-true">
-                          <img
-                            src={dot}
-                            alt=""
-                            width="15.02px"
-                            height="10.71px"
-                          />
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                          {optionsforFile(t).map((data, index) => {
-                            return (
-                              <Dropdown.Item
-                                key={index}
-                                onClick={() =>
-                                  fileOptionsSelect(data, record, pdfDataJson)
-                                }
-                              >
-                                {data.label}
-                              </Dropdown.Item>
-                            );
-                          })}
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    )}
-                  </span>
+                  <Tooltip placement="topRight" title={t("More")}>
+                    <span className={styles["threeDot__Icon"]}>
+                      {record.isFolder ? (
+                        <Dropdown
+                          className={`${
+                            styles["options_dropdown"]
+                          } ${"dataroom_options"}`}
+                        >
+                          <Dropdown.Toggle id="dropdown-autoclose-true">
+                            <img
+                              src={dot}
+                              alt=""
+                              width="15.02px"
+                              height="10.71px"
+                            />
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu>
+                            {optionsforFolder(t).map((data, index) => {
+                              return (
+                                <Dropdown.Item
+                                  key={index}
+                                  onClick={() =>
+                                    folderOptionsSelect(data, record)
+                                  }
+                                >
+                                  {data.label}
+                                </Dropdown.Item>
+                              );
+                            })}
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      ) : (
+                        <Dropdown
+                          className={`${
+                            styles["options_dropdown"]
+                          } ${"dataroom_options"}`}
+                        >
+                          <Dropdown.Toggle id="dropdown-autoclose-true">
+                            <img
+                              src={dot}
+                              alt=""
+                              width="15.02px"
+                              height="10.71px"
+                            />
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu>
+                            {optionsforFile(t).map((data, index) => {
+                              return (
+                                <Dropdown.Item
+                                  key={index}
+                                  onClick={() =>
+                                    fileOptionsSelect(data, record, pdfDataJson)
+                                  }
+                                >
+                                  {data.label}
+                                </Dropdown.Item>
+                              );
+                            })}
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      )}
+                    </span>
+                  </Tooltip>
                 </Col>
               </Row>
             </>
@@ -1796,51 +1799,25 @@ const DataRoom = () => {
                     )}
                   </div>
 
-                  <span className={styles["threeDot__Icon"]}>
-                    {record.isFolder ? (
-                      <Dropdown
-                        className={`${
-                          styles["options_dropdown"]
-                        } ${"dataroom_options"}`}
-                      >
-                        <Dropdown.Toggle id="dropdown-autoclose-true">
-                          <img
-                            src={dot}
-                            alt=""
-                            width="15.02px"
-                            height="10.71px"
-                          />
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                          {record.permissionID === 2
-                            ? optionsforFolderEditor(t).map((data, index) => {
-                                return (
-                                  <Dropdown.Item
-                                    key={index}
-                                    onClick={() =>
-                                      folderOptionsSelect(data, record)
-                                    }
-                                  >
-                                    {data.label}
-                                  </Dropdown.Item>
-                                );
-                              })
-                            : record.permissionID === 1
-                            ? optionsforFolderViewer(t).map((data, index) => {
-                                return (
-                                  <Dropdown.Item
-                                    key={index}
-                                    onClick={() =>
-                                      folderOptionsSelect(data, record)
-                                    }
-                                  >
-                                    {data.label}
-                                  </Dropdown.Item>
-                                );
-                              })
-                            : record.permissionID === 3
-                            ? optionsforFolderEditableNonShareable(t).map(
-                                (data, index) => {
+                  <Tooltip placement="topRight" title={t("More")}>
+                    <span className={styles["threeDot__Icon"]}>
+                      {record.isFolder ? (
+                        <Dropdown
+                          className={`${
+                            styles["options_dropdown"]
+                          } ${"dataroom_options"}`}
+                        >
+                          <Dropdown.Toggle id="dropdown-autoclose-true">
+                            <img
+                              src={dot}
+                              alt=""
+                              width="15.02px"
+                              height="10.71px"
+                            />
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu>
+                            {record.permissionID === 2
+                              ? optionsforFolderEditor(t).map((data, index) => {
                                   return (
                                     <Dropdown.Item
                                       key={index}
@@ -1851,63 +1828,55 @@ const DataRoom = () => {
                                       {data.label}
                                     </Dropdown.Item>
                                   );
-                                }
-                              )
-                            : null}
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    ) : (
-                      <Dropdown
-                        className={`${
-                          styles["options_dropdown"]
-                        } ${"dataroom_options"}`}
-                      >
-                        <Dropdown.Toggle id="dropdown-autoclose-true">
-                          <img
-                            src={dot}
-                            alt=""
-                            width="15.02px"
-                            height="10.71px"
-                          />
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                          {record.permissionID === 2
-                            ? optionsforFileEditor(t).map((data, index) => {
-                                return (
-                                  <Dropdown.Item
-                                    key={index}
-                                    onClick={() =>
-                                      fileOptionsSelect(
-                                        data,
-                                        record,
-                                        pdfDataJson
-                                      )
-                                    }
-                                  >
-                                    {data.label}
-                                  </Dropdown.Item>
-                                );
-                              })
-                            : record.permissionID === 1
-                            ? optionsforFileViewer(t).map((data, index) => {
-                                return (
-                                  <Dropdown.Item
-                                    key={index}
-                                    onClick={() =>
-                                      fileOptionsSelect(
-                                        data,
-                                        record,
-                                        pdfDataJson
-                                      )
-                                    }
-                                  >
-                                    {data.label}
-                                  </Dropdown.Item>
-                                );
-                              })
-                            : record.permissionID === 3
-                            ? optionsforFileEditableNonShareable(t).map(
-                                (data, index) => {
+                                })
+                              : record.permissionID === 1
+                              ? optionsforFolderViewer(t).map((data, index) => {
+                                  return (
+                                    <Dropdown.Item
+                                      key={index}
+                                      onClick={() =>
+                                        folderOptionsSelect(data, record)
+                                      }
+                                    >
+                                      {data.label}
+                                    </Dropdown.Item>
+                                  );
+                                })
+                              : record.permissionID === 3
+                              ? optionsforFolderEditableNonShareable(t).map(
+                                  (data, index) => {
+                                    return (
+                                      <Dropdown.Item
+                                        key={index}
+                                        onClick={() =>
+                                          folderOptionsSelect(data, record)
+                                        }
+                                      >
+                                        {data.label}
+                                      </Dropdown.Item>
+                                    );
+                                  }
+                                )
+                              : null}
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      ) : (
+                        <Dropdown
+                          className={`${
+                            styles["options_dropdown"]
+                          } ${"dataroom_options"}`}
+                        >
+                          <Dropdown.Toggle id="dropdown-autoclose-true">
+                            <img
+                              src={dot}
+                              alt=""
+                              width="15.02px"
+                              height="10.71px"
+                            />
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu>
+                            {record.permissionID === 2
+                              ? optionsforFileEditor(t).map((data, index) => {
                                   return (
                                     <Dropdown.Item
                                       key={index}
@@ -1922,13 +1891,49 @@ const DataRoom = () => {
                                       {data.label}
                                     </Dropdown.Item>
                                   );
-                                }
-                              )
-                            : null}
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    )}
-                  </span>
+                                })
+                              : record.permissionID === 1
+                              ? optionsforFileViewer(t).map((data, index) => {
+                                  return (
+                                    <Dropdown.Item
+                                      key={index}
+                                      onClick={() =>
+                                        fileOptionsSelect(
+                                          data,
+                                          record,
+                                          pdfDataJson
+                                        )
+                                      }
+                                    >
+                                      {data.label}
+                                    </Dropdown.Item>
+                                  );
+                                })
+                              : record.permissionID === 3
+                              ? optionsforFileEditableNonShareable(t).map(
+                                  (data, index) => {
+                                    return (
+                                      <Dropdown.Item
+                                        key={index}
+                                        onClick={() =>
+                                          fileOptionsSelect(
+                                            data,
+                                            record,
+                                            pdfDataJson
+                                          )
+                                        }
+                                      >
+                                        {data.label}
+                                      </Dropdown.Item>
+                                    );
+                                  }
+                                )
+                              : null}
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      )}
+                    </span>
+                  </Tooltip>
                 </Col>
               </Row>
             </>
@@ -2022,70 +2027,71 @@ const DataRoom = () => {
                     </Tooltip>
                   </div>
 
-                  <span className={styles["threeDot__Icon"]}>
-                    {record.isFolder ? (
-                      <Dropdown
-                        className={`${
-                          styles["options_dropdown"]
-                        } ${"dataroom_options"}`}
-                      >
-                        <Dropdown.Toggle id="dropdown-autoclose-true">
-                          <img
-                            src={dot}
-                            alt=""
-                            width="15.02px"
-                            height="10.71px"
-                          />
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                          {optionsforFolder(t).map((data, index) => {
-                            return (
-                              <Dropdown.Item
-                                key={index}
-                                onClick={() =>
-                                  folderOptionsSelect(data, record)
-                                }
-                              >
-                                {data.label}
-                              </Dropdown.Item>
-                            );
-                          })}
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    ) : (
-                      <Dropdown
-                        className={`${
-                          styles["options_dropdown"]
-                        } ${"dataroom_options"}`}
-                      >
-                        <Dropdown.Toggle id="dropdown-autoclose-true">
-                          <img
-                            src={dot}
-                            alt=""
-                            width="15.02px"
-                            height="10.71px"
-                          />
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                          {/* {optionsforPDFandSignatureFlow(t).map(
-                            (data, index) => {
+                  <Tooltip placement="topRight" title={t("More")}>
+                    <span className={styles["threeDot__Icon"]}>
+                      {record.isFolder ? (
+                        <Dropdown
+                          className={`${
+                            styles["options_dropdown"]
+                          } ${"dataroom_options"}`}
+                        >
+                          <Dropdown.Toggle id="dropdown-autoclose-true">
+                            <img
+                              src={dot}
+                              alt=""
+                              width="15.02px"
+                              height="10.71px"
+                            />
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu>
+                            {optionsforFolder(t).map((data, index) => {
                               return (
                                 <Dropdown.Item
                                   key={index}
                                   onClick={() =>
-                                    fileOptionsSelect(
-                                      data,
-                                      record,
-                                      pdfDataJsonSignature
-                                    )
+                                    folderOptionsSelect(data, record)
                                   }
                                 >
                                   {data.label}
                                 </Dropdown.Item>
                               );
-                            }
-                          )} */}
-                          {optionsforFile(t).map((data, index) => {
+                            })}
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      ) : (
+                        <Dropdown
+                          className={`${
+                            styles["options_dropdown"]
+                          } ${"dataroom_options"}`}
+                        >
+                          <Dropdown.Toggle id="dropdown-autoclose-true">
+                            <img
+                              src={dot}
+                              alt=""
+                              width="15.02px"
+                              height="10.71px"
+                            />
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu>
+                            {optionsforPDFandSignatureFlow(t).map(
+                              (data, index) => {
+                                return (
+                                  <Dropdown.Item
+                                    key={index}
+                                    onClick={() =>
+                                      fileOptionsSelect(
+                                        data,
+                                        record,
+                                        pdfDataJsonSignature
+                                      )
+                                    }
+                                  >
+                                    {data.label}
+                                  </Dropdown.Item>
+                                );
+                              }
+                            )}
+                            {/* {optionsforFile(t).map((data, index) => {
                             return (
                               <Dropdown.Item
                                 key={index}
@@ -2096,11 +2102,12 @@ const DataRoom = () => {
                                 {data.label}
                               </Dropdown.Item>
                             );
-                          })}
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    )}
-                  </span>
+                          })} */}
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      )}
+                    </span>
+                  </Tooltip>
                 </Col>
               </Row>
             </>
@@ -2990,7 +2997,7 @@ const DataRoom = () => {
                 <span className={styles["lsit_grid_buttons"]}>
                   <Button
                     icon={
-                      <Tooltip placement="bottomLeft" title={t("List-view")}>
+                      <Tooltip placement="bottomLeft" title={t("Grid-view")}>
                         <img
                           src={
                             gridbtnactive ? Grid_Selected : Grid_Not_Selected
@@ -3011,7 +3018,7 @@ const DataRoom = () => {
                   />
                   <Button
                     icon={
-                      <Tooltip placement="bottomLeft" title={t("Grid-view")}>
+                      <Tooltip placement="bottomLeft" title={t("List-view")}>
                         <img
                           src={
                             listviewactive ? List_Selected : List_Not_selected

@@ -800,7 +800,7 @@ const CreatePolling = () => {
                               <Button
                                 text={
                                   <>
-                                    <Row className="mt-3">
+                                    <Row>
                                       <Col
                                         lg={12}
                                         md={12}
