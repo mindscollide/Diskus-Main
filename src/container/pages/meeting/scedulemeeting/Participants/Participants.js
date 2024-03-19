@@ -3,8 +3,7 @@ import styles from "./Participants.module.css";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import emptyContributorState from "../../../../../assets/images/emptyStateContributor.svg";
 import addmore from "../../../../../assets/images/addmore.png";
-import rspvGreenIcon from "../../../../../assets/images/rspvGreen.svg";
-import NORSVP from "../../../../../assets/images/No-RSVP.png";
+
 import AwaitingResponse from "../../../../../assets/images/Awaiting-response.svg";
 import TentativelyAccepted from "../../../../../assets/images/Tentatively-accepted.svg";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
