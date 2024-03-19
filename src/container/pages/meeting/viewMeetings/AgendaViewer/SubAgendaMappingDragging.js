@@ -41,6 +41,7 @@ import {
 } from "../../../../DataRoom/SearchFunctionality/option";
 import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
 import CollapseIcon from "./AV-Images/Collapse-Icon.png";
+import { timeFormatFunction } from "../../../../../commen/functions/date_formater";
 
 const SubAgendaMappingDragging = ({
   data,
@@ -464,8 +465,9 @@ const SubAgendaMappingDragging = ({
                                                     className={`${styles["agendaCreaterTime"]} MontserratMedium-500`}
                                                   >
                                                     {moment(
-                                                      subAgendaData?.startDate,
-                                                      "HHmmss"
+                                                      timeFormatFunction(
+                                                        subAgendaData?.startDate
+                                                      )
                                                     ).format("hh:mm a")}
                                                     <span
                                                       className={
@@ -475,8 +477,9 @@ const SubAgendaMappingDragging = ({
                                                       -----
                                                     </span>
                                                     {moment(
-                                                      subAgendaData?.endDate,
-                                                      "HHmmss"
+                                                      timeFormatFunction(
+                                                        subAgendaData?.endDate
+                                                      )
                                                     ).format("hh:mm a")}
                                                   </p>
                                                   {printFlag === true ||

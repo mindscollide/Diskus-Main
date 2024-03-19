@@ -27,6 +27,7 @@ import LanguageSelector from "../../../../../components/elements/languageSelecto
 const EnterPassword = () => {
   const { t, i18n } = useTranslation();
   const { Authreducer, LanguageReducer } = useSelector((state) => state);
+  console.log(Authreducer, "AuthreducerAuthreducerAuthreducer");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [password, setPassword] = useState("");
@@ -42,6 +43,12 @@ const EnterPassword = () => {
   const showNewPassowrd = () => {
     setShowNewPasswordIcon(!showNewPasswordIcon);
   };
+
+  useEffect(() => {
+    return () => {
+      dispatch(cleareMessage());
+    };
+  }, []);
 
   // // translate Languages start
   // const languages = [
