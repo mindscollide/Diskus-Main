@@ -6,6 +6,7 @@ import { Button, Notification } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import CancelMeetingMaterial from "./CancelMeetingMaterial/CancelMeetingMaterial";
 import { useDispatch, useSelector } from "react-redux";
+import { Tooltip } from "antd";
 import {
   searchNewUserMeeting,
   viewAdvanceMeetingPublishPageFlag,
@@ -409,70 +410,77 @@ const AgendaViewer = ({
                     sm={12}
                     className="d-flex justify-content-end align-items-center text-end gap-2 mt-3"
                   >
-                    <div
-                      className={styles["box-agendas"]}
-                      onClick={fullScreenModal}
-                    >
-                      <img src={ExpandAgendaIcon} alt="" />
-                    </div>
-                    <div
-                      onClick={menuPopupAgenda}
-                      className={styles["box-agendas"]}
-                      ref={closeMenuAgenda}
-                    >
-                      <img src={MenuIcon} alt="" />
-                      {/* {menuAgenda ? ( */}
+                    <Tooltip placement="topRight" title={t("Expand")}>
                       <div
-                        className={
-                          menuAgenda
-                            ? `${
-                                styles["popup-agenda-menu"]
-                              } ${"opacity-1 pe-auto"}`
-                            : `${
-                                styles["popup-agenda-menu"]
-                              } ${"opacity-0 pe-none"}`
-                        }
+                        className={styles["box-agendas"]}
+                        onClick={fullScreenModal}
                       >
-                        <span
+                        <img src={ExpandAgendaIcon} alt="" />
+                      </div>
+                    </Tooltip>
+
+                    <Tooltip placement="topRight" title={t("More")}>
+                      <div
+                        onClick={menuPopupAgenda}
+                        className={styles["box-agendas"]}
+                        ref={closeMenuAgenda}
+                      >
+                        <img src={MenuIcon} alt="" />
+                        {/* {menuAgenda ? ( */}
+                        <div
                           className={
-                            editorRole.status === 9 || editorRole.status === "9"
-                              ? null
-                              : styles["disabledEntity"]
-                          }
-                          onClick={
-                            editorRole.status === 9 || editorRole.status === "9"
-                              ? participantModal
-                              : null
+                            menuAgenda
+                              ? `${
+                                  styles["popup-agenda-menu"]
+                                } ${"opacity-1 pe-auto"}`
+                              : `${
+                                  styles["popup-agenda-menu"]
+                                } ${"opacity-0 pe-none"}`
                           }
                         >
-                          <img
-                            width={20}
-                            src={
+                          <span
+                            className={
                               editorRole.status === 9 ||
                               editorRole.status === "9"
-                                ? ParticipantsInfo
-                                : ParticipantsInfoDisabled
+                                ? null
+                                : styles["disabledEntity"]
                             }
-                            alt=""
-                          />
-                          {t("Participants-info")}
-                        </span>
-                        <span onClick={printModal}>
-                          <img width={20} src={PrintIcon} alt="" />
-                          {t("Print")}
-                        </span>
-                        <span onClick={exportModal}>
-                          <img width={20} src={ExportIcon} alt="" />
+                            onClick={
+                              editorRole.status === 9 ||
+                              editorRole.status === "9"
+                                ? participantModal
+                                : null
+                            }
+                          >
+                            <img
+                              width={20}
+                              src={
+                                editorRole.status === 9 ||
+                                editorRole.status === "9"
+                                  ? ParticipantsInfo
+                                  : ParticipantsInfoDisabled
+                              }
+                              alt=""
+                            />
+                            {t("Participants-info")}
+                          </span>
+                          <span onClick={printModal}>
+                            <img width={20} src={PrintIcon} alt="" />
+                            {t("Print")}
+                          </span>
+                          <span onClick={exportModal}>
+                            <img width={20} src={ExportIcon} alt="" />
 
-                          {t("Export-pdf")}
-                        </span>
-                        <span onClick={shareEmailModal} className="border-0">
-                          <img width={20} src={ShareIcon} alt="" />
-                          {t("Share-email")}
-                        </span>
+                            {t("Export-pdf")}
+                          </span>
+                          <span onClick={shareEmailModal} className="border-0">
+                            <img width={20} src={ShareIcon} alt="" />
+                            {t("Share-email")}
+                          </span>
+                        </div>
+                        {/* ) : null} */}
                       </div>
-                      {/* ) : null} */}
-                    </div>
+                    </Tooltip>
                   </Col>
                 </Row>
               ) : null}

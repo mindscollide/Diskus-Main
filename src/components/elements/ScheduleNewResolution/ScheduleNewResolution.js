@@ -781,18 +781,20 @@ const ScheduleNewResolution = () => {
   const documentsUploadCall = async (folderID) => {
     let newFolder = [];
     let newfile = [];
-    const uploadPromises = fileForSend.map(async (newData) => {
-      await dispatch(
-        uploadDocumentsResolutionApi(navigate, t, newData, folderID, newfile)
-      );
-    });
+    if (fileForSend.length > 0) {
+      const uploadPromises = fileForSend.map(async (newData) => {
+        await dispatch(
+          uploadDocumentsResolutionApi(navigate, t, newData, folderID, newfile)
+        );
+      });
 
-    // Wait for all promises to resolve
-    await Promise.all(uploadPromises);
-    await dispatch(
-      saveFilesResolutionApi(navigate, t, newfile, folderID, newFolder)
-    );
-    console.log(newFolder, "newFoldernewFoldernewFoldernewFolder");
+      // Wait for all promises to resolve
+      await Promise.all(uploadPromises);
+      await dispatch(
+        saveFilesResolutionApi(navigate, t, newfile, folderID, newFolder)
+      );
+    }
+
     let resolutionID = localStorage.getItem("resolutionID");
     await dispatch(
       updateResolution(
