@@ -464,6 +464,8 @@ body[dir="rtl"] .BillingHeading {
 
 body[dir="rtl"] .Tableheading {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
+  display: flex !important;
+  justify-content: center !important;
 }
 
 .ChargesPerLicesense {
@@ -474,6 +476,8 @@ body[dir="rtl"] .Tableheading {
 
 body[dir="rtl"] .ChargesPerLicesense {
   font-family: "IBMPlexSansArabic-Bold" !important;
+  display: flex !important;
+  justify-content: center !important;
 }
 
 .TableheadingTotal {
@@ -484,6 +488,8 @@ body[dir="rtl"] .ChargesPerLicesense {
 
 body[dir="rtl"] .TableheadingTotal {
   font-family: "IBMPlexSansArabic-Bold" !important;
+  display: flex !important;
+  justify-content: center !important;
 }
 
 .PayNowButtons {
@@ -498,6 +504,11 @@ body[dir="rtl"] .TableheadingTotal {
 
 body[dir="rtl"] .PayNowButtons {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+body[dir="rtl"] .ButtonsArabicStylesSpan {
+  display: flex !important;
+  justify-content: center !important;
 }
 
 .PayNowButtons:is(:hover, :active, :focus, :focus-visible) {

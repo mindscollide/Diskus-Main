@@ -284,13 +284,25 @@ const PakageDetailsUserManagement = () => {
 
   const defaultRowWithButtons = {
     Monthlycharges: (
-      <Button text={t("Pay-now")} className={styles["PayNowButtons"]} />
+      <>
+        <span className={styles["ButtonsArabicStylesSpan"]}>
+          <Button text={t("Pay-now")} className={styles["PayNowButtons"]} />
+        </span>
+      </>
     ),
     Quarterlycharges: (
-      <Button text={t("Pay-now")} className={styles["PayNowButtons"]} />
+      <>
+        <span className={styles["ButtonsArabicStylesSpan"]}>
+          <Button text={t("Pay-now")} className={styles["PayNowButtons"]} />
+        </span>
+      </>
     ),
     Yearlycharges: (
-      <Button text={t("Pay-now")} className={styles["PayNowButtons"]} />
+      <>
+        <span className={styles["ButtonsArabicStylesSpan"]}>
+          <Button text={t("Pay-now")} className={styles["PayNowButtons"]} />
+        </span>
+      </>
     ),
   };
 
