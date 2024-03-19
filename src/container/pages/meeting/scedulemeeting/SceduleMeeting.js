@@ -32,7 +32,7 @@ import {
   actionsGlobalFlag,
   pollsGlobalFlag,
   attendanceGlobalFlag,
-  uploadGlobalFlag
+  uploadGlobalFlag,
 } from "../../../../store/actions/NewMeetingActions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -66,8 +66,8 @@ const SceduleMeeting = ({
 
   const apiCallsForComponentMound = async () => {
     try {
-      // Meeting Type Drop Down API
-      await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+      // // Meeting Type Drop Down API
+      // await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
       // Reminder Frequency Drop Down API
       await dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
       // Recurring Drop Down API
@@ -386,7 +386,12 @@ const SceduleMeeting = ({
         <Col lg={12} md={12} sm={12} className="mb-4">
           <Paper className={styles["Scedule_meeting_paper"]}>
             <Row>
-              <Col lg={12} md={12} sm={12} className="py-2 d-flex gap-2 flex-wrap">
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="py-2 d-flex gap-2 flex-wrap"
+              >
                 <Button
                   text={t("Meeting-details")}
                   className={
