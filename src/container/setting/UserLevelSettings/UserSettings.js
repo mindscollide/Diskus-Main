@@ -111,7 +111,7 @@ const UserSettings = () => {
   }, []);
 
   const handleGoogleLoginSuccess = (response) => {
-    console.log("handleGoogleLoginSuccess",response)
+    console.log("Google Code ",response.code)
     setSignUpCodeToken(response.code);
     setUserOptionsSettings({
       ...userOptionsSettings,
@@ -462,6 +462,7 @@ const UserSettings = () => {
       await redirectToUrl();
     }
     let code = localStorage.getItem("Ms");
+    console.log("MS Code",code)
     if (code) {
       await setUserOptionsSettings({
         ...userOptionsSettings,
