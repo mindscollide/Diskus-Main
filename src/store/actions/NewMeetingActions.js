@@ -7535,6 +7535,34 @@ const endMeetingStatusApi = (navigate, t, Data) => {
   };
 };
 
+const meetingAgendaContributorAdded = (response) => {
+  return {
+    type: actions.MQTT_MEETING_AC_ADDED,
+    response: response,
+  };
+};
+
+const meetingAgendaContributorRemoved = (response) => {
+  return {
+    type: actions.MQTT_MEETING_AC_REMOVED,
+    response: response,
+  };
+};
+
+const meetingOrganizerAdded = (response) => {
+  return {
+    type: actions.MQTT_MEETING_ORG_ADDED,
+    response: response,
+  };
+};
+
+const meetingOrganizerRemoved = (response) => {
+  return {
+    type: actions.MQTT_MEETING_ORG_REMOVED,
+    response: response,
+  };
+};
+
 export {
   clearResponseNewMeetingReducerMessage,
   getAllAgendaContributorApi,
@@ -7682,4 +7710,8 @@ export {
   endMeetingStatusApi,
   deleteSavedPollsMeeting,
   editFlowDeleteSavedPollsMeeting,
+  meetingAgendaContributorAdded,
+  meetingAgendaContributorRemoved,
+  meetingOrganizerAdded,
+  meetingOrganizerRemoved,
 };

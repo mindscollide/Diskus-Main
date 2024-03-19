@@ -26,6 +26,7 @@ import {
   GetAllVotingResultDisplay,
   clearResponseMessage,
   GetCurrentAgendaDetails,
+  getAgendaVotingDetails_success,
 } from "../../../../../../store/actions/MeetingAgenda_action";
 import { GetAllSavedparticipantsAPI } from "../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
@@ -71,7 +72,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
 
   const [votingResultDisplayData, setVotingResultDisplayData] = useState([]);
 
-  const [agendaVotingDetails, setAgendaVotingDetails] = useState([]);
+  // const [agendaVotingDetails, setAgendaVotingDetails] = useState([]);
 
   const [meetingParticipants, setMeetingParticipants] = useState([]);
 
@@ -143,10 +144,6 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
         3000
       );
     }
-  };
-
-  const handleSaveOption = (index) => {
-    console.log("Saved option:", saveOptions[index].text);
   };
 
   const openConfirmationModal = () => {
@@ -292,10 +289,6 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
   };
 
   useEffect(() => {
-    // let dataForAgendaDetails = {
-    //   AgendaVotingID: agendaDetails.agendaVotingID,
-    //   MeetingID: currentMeeting,
-    // };
     let dataForAllOrganizers = { MeetingID: currentMeeting };
     let dataForAllMeetingParticipants = {
       MeetingID: currentMeeting,
@@ -305,23 +298,22 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
     );
 
     dispatch(GetAllMeetingOrganizers(dataForAllOrganizers, navigate, t));
-    // dispatch(GetAgendaVotingDetails(dataForAgendaDetails, navigate, t));
     dispatch(GetAllVotingResultDisplay(navigate, t));
   }, []);
 
-  useEffect(() => {
-    if (
-      MeetingAgendaReducer.MeetingAgendaVotingDetailsData !== undefined &&
-      MeetingAgendaReducer.MeetingAgendaVotingDetailsData !== null &&
-      MeetingAgendaReducer.MeetingAgendaVotingDetailsData.length !== 0
-    ) {
-      setAgendaVotingDetails(
-        MeetingAgendaReducer.MeetingAgendaVotingDetailsData.agendaVotingDetails
-      );
-    } else {
-      setAgendaVotingDetails([]);
-    }
-  }, [MeetingAgendaReducer.MeetingAgendaVotingDetailsData]);
+  // useEffect(() => {
+  //   if (
+  //     MeetingAgendaReducer.MeetingAgendaVotingDetailsData !== undefined &&
+  //     MeetingAgendaReducer.MeetingAgendaVotingDetailsData !== null &&
+  //     MeetingAgendaReducer.MeetingAgendaVotingDetailsData.length !== 0
+  //   ) {
+  //     setAgendaVotingDetails(
+  //       MeetingAgendaReducer.MeetingAgendaVotingDetailsData.agendaVotingDetails
+  //     );
+  //   } else {
+  //     setAgendaVotingDetails([]);
+  //   }
+  // }, [MeetingAgendaReducer.MeetingAgendaVotingDetailsData]);
 
   useEffect(() => {
     if (
@@ -335,72 +327,67 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
     }
   }, [MeetingAgendaReducer.GetCurrentAgendaDetails]);
 
-  console.log("agendaVotingDetails", agendaVotingDetails);
+  // console.log("agendaVotingDetails", agendaVotingDetails);
 
-  useEffect(() => {
-    if (agendaVotingDetails.length !== 0) {
-      setAgendaDetails({
-        ...agendaDetails,
-        agendaTitle:
-          currentAgendaDetails && "title" in currentAgendaDetails
-            ? currentAgendaDetails.title
-            : currentAgendaDetails
-            ? currentAgendaDetails.subTitle
-            : "Default Title",
-        votingResultDisplay: agendaVotingDetails?.votingResultDisplay?.result,
-        votingResultDisplayID:
-          agendaVotingDetails?.votingResultDisplay?.votingResultDisplayID,
-        agendaId:
-          currentAgendaDetails && "iD" in currentAgendaDetails
-            ? currentAgendaDetails.iD
-            : currentAgendaDetails
-            ? currentAgendaDetails.subAgendaID
-            : 0,
-        agendaVotingID: agendaVotingDetails.agendaVotingID,
-        isvotingClosed: false,
-        userID: agendaVotingDetails.userID,
-        voteQuestion: agendaVotingDetails.voteQuestion,
-      });
-      const newSaveOptions = [...saveOptions];
-      let votingAnswerData = agendaVotingDetails.votingAnswers;
+  // useEffect(() => {
+  //   try {
+  //     if (
+  //       MeetingAgendaReducer.MeetingAgendaVotingDetailsData !== undefined &&
+  //       MeetingAgendaReducer.MeetingAgendaVotingDetailsData !== null &&
+  //       MeetingAgendaReducer.MeetingAgendaVotingDetailsData.length !== 0 &&
+  //       Object.keys(MeetingAgendaReducer.MeetingAgendaVotingDetailsData)
+  //         .length > 0
+  //     ) {
+  //       console.log("Going in the condition");
+  //       let agendaVotingDetails =
+  //         MeetingAgendaReducer.MeetingAgendaVotingDetailsData
+  //           .agendaVotingDetails;
+  //       console.log("Going in the condition", agendaVotingDetails);
+  //       setAgendaDetails({
+  //         ...agendaDetails,
+  //         userID: agendaVotingDetails.userID,
+  //         voteQuestion: agendaVotingDetails.voteQuestion,
+  //         agendaTitle: currentAgendaDetails.title,
+  //         votingResultDisplay: agendaVotingDetails?.votingResultDisplay?.result,
+  //         votingResultDisplayID:
+  //           agendaVotingDetails?.votingResultDisplay?.votingResultDisplayID,
+  //         agendaId: currentAgendaDetails.iD,
+  //         agendaVotingID: agendaVotingDetails.agendaVotingID,
+  //         isvotingClosed: false,
+  //       });
+  //       const newSaveOptions = [...saveOptions];
+  //       let votingAnswerData = agendaVotingDetails.votingAnswers;
 
-      if (Array.isArray(votingAnswerData)) {
-        votingAnswerData.forEach((item) => {
-          if (
-            !newSaveOptions.some(
-              (option) => option.votingAnswer === item.votingAnswer
-            )
-          ) {
-            newSaveOptions.push({
-              votingAnswer: item.votingAnswer,
-              votingAnswerID: item.votingAnswerID,
-              agendaID: item.agendaID,
-            });
-          }
-        });
-        setSaveOptions(newSaveOptions);
-      } else {
-        setSaveOptions(saveOptions);
-      }
-    }
-  }, [agendaVotingDetails]);
+  //       if (Array.isArray(votingAnswerData)) {
+  //         votingAnswerData.forEach((item) => {
+  //           if (
+  //             !newSaveOptions.some(
+  //               (option) => option.votingAnswer === item.votingAnswer
+  //             )
+  //           ) {
+  //             newSaveOptions.push({
+  //               votingAnswer: item.votingAnswer,
+  //               votingAnswerID: item.votingAnswerID,
+  //               agendaID: item.agendaID,
+  //             });
+  //           }
+  //         });
+  //         setSaveOptions(newSaveOptions);
+  //       } else {
+  //         setSaveOptions(saveOptions);
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.log("Going in the error condition", error);
+  //   }
+  // }, [MeetingAgendaReducer.MeetingAgendaVotingDetailsData]);
 
   useEffect(() => {
     if (currentAgendaDetails.length !== 0) {
       setAgendaDetails({
         ...agendaDetails,
-        agendaTitle:
-          currentAgendaDetails && "title" in currentAgendaDetails
-            ? currentAgendaDetails.title
-            : currentAgendaDetails
-            ? currentAgendaDetails.subTitle
-            : "Default Title",
-        agendaId:
-          currentAgendaDetails && "iD" in currentAgendaDetails
-            ? currentAgendaDetails.iD
-            : currentAgendaDetails
-            ? currentAgendaDetails.subAgendaID
-            : 0,
+        agendaTitle: currentAgendaDetails.title,
+        agendaId: currentAgendaDetails.iD,
         agendaVotingID: currentAgendaDetails.agendaVotingID,
       });
     }
@@ -560,6 +547,43 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
           ),
         });
       }
+      console.log("Going in the condition");
+      let agendaVotingDetails =
+        MeetingAgendaReducer.MeetingAgendaVotingDetailsData.agendaVotingDetails;
+      console.log("Going in the condition", agendaVotingDetails);
+      setAgendaDetails({
+        ...agendaDetails,
+        userID: agendaVotingDetails.userID,
+        voteQuestion: agendaVotingDetails.voteQuestion,
+        agendaTitle: currentAgendaDetails.title,
+        votingResultDisplay: agendaVotingDetails?.votingResultDisplay?.result,
+        votingResultDisplayID:
+          agendaVotingDetails?.votingResultDisplay?.votingResultDisplayID,
+        agendaId: currentAgendaDetails.iD,
+        agendaVotingID: agendaVotingDetails.agendaVotingID,
+        isvotingClosed: false,
+      });
+      const newSaveOptions = [...saveOptions];
+      let votingAnswerData = agendaVotingDetails.votingAnswers;
+
+      if (Array.isArray(votingAnswerData)) {
+        votingAnswerData.forEach((item) => {
+          if (
+            !newSaveOptions.some(
+              (option) => option.votingAnswer === item.votingAnswer
+            )
+          ) {
+            newSaveOptions.push({
+              votingAnswer: item.votingAnswer,
+              votingAnswerID: item.votingAnswerID,
+              agendaID: item.agendaID,
+            });
+          }
+        });
+        setSaveOptions(newSaveOptions);
+      } else {
+        setSaveOptions(saveOptions);
+      }
     }
   }, [
     MeetingAgendaReducer.MeetingAgendaVotingDetailsData,
@@ -609,11 +633,6 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
   }));
 
   const handleVoteSaveModal = () => {
-    console.log(
-      "Length Check",
-      Object.keys(agendaVotingDetails).length,
-      typeof agendaVotingDetails
-    );
     let votingOptionData = saveOptions.map((item) => ({
       AgendaID: agendaDetails.agendaId,
       VotingAnswer: item.votingAnswer,
@@ -643,7 +662,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
 
       console.log("Save Agenda Voting Data", Data);
       dispatch(SaveAgendaVoting(Data, navigate, t, currentMeeting));
-      dispatch(showVoteAgendaModal(false));
+      dispatch(getAgendaVotingDetails_success([], ""));
       setAgendaDetails({
         ...agendaDetails,
         agendaTitle: "",
@@ -657,15 +676,28 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
         votingResultDisplay: "",
         votingResultDisplayID: 0,
       });
+      setVoteModalAttrbutes({
+        ...voteModalAttrbutes,
+        voteQuestion: "",
+        Answer: "",
+        OptionsAdded: "",
+        SelectOrganizers: 0,
+        SelectOptions: 0,
+        YesAnswer: "Yes",
+        NOAnswer: "No",
+        AbstainAnswer: "Abstain",
+        Pending: "Pending",
+      });
       setOrganizers([]);
       setVotingResultDisplayData([]);
       setMeetingParticipants([]);
-      setSaveOptions(
+      setSaveOptions([
         { votingAnswer: "Pending", votingAnswerID: 0 },
         { votingAnswer: "Yes", votingAnswerID: 1 },
-        { votingAnswer: "No", votingAnswerID: 2 }
-      );
+        { votingAnswer: "No", votingAnswerID: 2 },
+      ]);
       dispatch(GetCurrentAgendaDetails([]));
+      dispatch(showVoteAgendaModal(false));
     } else {
       setTimeout(
         setOpen({
@@ -692,53 +724,32 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
       votingResultDisplay: "",
       votingResultDisplayID: 0,
     });
+    setVoteModalAttrbutes({
+      ...voteModalAttrbutes,
+      voteQuestion: "",
+      Answer: "",
+      OptionsAdded: "",
+      SelectOrganizers: 0,
+      SelectOptions: 0,
+      YesAnswer: "Yes",
+      NOAnswer: "No",
+      AbstainAnswer: "Abstain",
+      Pending: "Pending",
+    });
     setOrganizers([]);
     setVotingResultDisplayData([]);
     setMeetingParticipants([]);
-    setSaveOptions(
+    setSaveOptions([
       { votingAnswer: "Pending", votingAnswerID: 0 },
       { votingAnswer: "Yes", votingAnswerID: 1 },
-      { votingAnswer: "No", votingAnswerID: 2 }
-    );
+      { votingAnswer: "No", votingAnswerID: 2 },
+    ]);
+    dispatch(getAgendaVotingDetails_success([], ""));
     dispatch(showAllMeetingParticipantsSuccess([], ""));
     localStorage.setItem("currentAgendaVotingID", 0);
   };
 
-  const castVotePage = () => {
-    setenableVotingPage(true);
-    dispatch(showVoteAgendaModal(false));
-  };
-
-  useEffect(() => {
-    if (MeetingAgendaReducer.ResponseMessage === "Record saved") {
-      setTimeout(
-        setOpen({
-          open: true,
-          message: t("Record-saved"),
-        }),
-        3000
-      );
-    } else if (MeetingAgendaReducer.ResponseMessage === "Record Updated") {
-      setTimeout(
-        setOpen({
-          open: true,
-          message: t("Record-updated"),
-        }),
-        3000
-      );
-    }
-    dispatch(clearResponseMessage(""));
-  }, [MeetingAgendaReducer.ResponseMessage]);
-
-  console.log("MeetingAgendaReducer", MeetingAgendaReducer);
-
-  console.log("MeetingParticipants", meetingParticipants);
-
-  console.log("MeetingOrganizersReducer", MeetingOrganizersReducer);
-
-  console.log("NewMeetingreducer", NewMeetingreducer);
-
-  console.log("AgendaDetailsAgendaDetails", agendaDetails);
+  console.log("Going in the agenda Details condition", agendaDetails);
 
   return (
     <section>

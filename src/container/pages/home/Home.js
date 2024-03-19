@@ -190,7 +190,7 @@ const Home = () => {
   const [startDataUpdate, setStartDataUpdate] = useState("");
   const [endDataUpdate, setEndDataUpdate] = useState("");
   const [events, setEvents] = useState([]);
-
+  console.log(events, "eventseventseventsevents");
   const userID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let CalenderMonthsSpan =

@@ -2213,7 +2213,9 @@ const PrintMeetingAgenda = (Data, navigate, t) => {
                 )
               );
               const printWindow = window.open("", "_blank");
-              printWindow.document.write(response.data.responseResult.printTemplate);
+              printWindow.document.write(
+                response.data.responseResult.printTemplate
+              );
               printWindow.document.close();
               printWindow.print();
             } else if (

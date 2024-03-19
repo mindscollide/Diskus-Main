@@ -779,6 +779,10 @@ const UnpublishedProposedMeeting = ({
     }
   }, [NewMeetingreducer.meetingStatusPublishedMqttData]);
 
+  console.log("rowsrowsrows", rows)
+
+  console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer)
+
   return (
     <section>
       <Row>

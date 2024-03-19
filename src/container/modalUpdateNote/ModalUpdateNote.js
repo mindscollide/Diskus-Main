@@ -24,6 +24,7 @@ import {
 } from "../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
 import { validateInput } from "../../commen/functions/regex";
+import { Tooltip } from "antd";
 
 const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   //For Localization
@@ -536,21 +537,25 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                         {/* {t("Update-note")} */}
                       </p>
                       {isStarred ? (
-                        <img
-                          draggable="false"
-                          src={hollowstar}
-                          className={styles["star-updatenote"]}
-                          alt=""
-                          onClick={() => setIsStarrted(!isStarred)}
-                        />
+                        <Tooltip placement="topLeft" title={t("Starred")}>
+                          <img
+                            draggable="false"
+                            src={hollowstar}
+                            className={styles["star-updatenote"]}
+                            alt=""
+                            onClick={() => setIsStarrted(!isStarred)}
+                          />
+                        </Tooltip>
                       ) : (
-                        <img
-                          draggable="false"
-                          className={styles["star-updatenote"]}
-                          src={StarIcon}
-                          alt=""
-                          onClick={() => setIsStarrted(!isStarred)}
-                        />
+                        <Tooltip placement="topLeft" title={t("unstarred")}>
+                          <img
+                            draggable="false"
+                            className={styles["star-updatenote"]}
+                            src={StarIcon}
+                            alt=""
+                            onClick={() => setIsStarrted(!isStarred)}
+                          />
+                        </Tooltip>
                       )}
                     </Col>
                   </Row>
