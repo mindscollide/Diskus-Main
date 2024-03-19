@@ -33,6 +33,8 @@ const EmailValidation = () => {
   const { Authreducer, adminReducer, LanguageReducer } = useSelector(
     (state) => state
   );
+  console.log(Authreducer, "AuthreducerAuthreducerAuthreducer");
+
   const [email, setEmail] = useState("");
   const [errorBar, setErrorBar] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
