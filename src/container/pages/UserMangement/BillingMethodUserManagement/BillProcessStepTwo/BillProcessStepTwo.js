@@ -5,36 +5,95 @@ import { TextField } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import Select from "react-select";
 import locationImage from "../../../../../assets/images/Location.svg";
-const BillProcessStepTwo = () => {
+const BillProcessStepTwo = ({ billingAddress, setBillingAddress }) => {
   const { t } = useTranslation();
 
-  const [billingAddress, setBillingAddress] = useState({
-    Country: {
-      value: "",
-      errorMessage: "",
-      errorStatus: false,
-    },
-    PostalCode: {
-      value: "",
-      errorMessage: "",
-      errorStatus: false,
-    },
-    State: {
-      value: "",
-      errorMessage: "",
-      errorStatus: false,
-    },
-    City: {
-      value: "",
-      errorMessage: "",
-      errorStatus: false,
-    },
-    Address: {
-      value: "",
-      errorMessage: "",
-      errorStatus: false,
-    },
-  });
+  //onChange Method For Text Field
+
+  const billingAddressDetailsHandler = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === "PostalZipCode" && value !== "") {
+      setBillingAddress({
+        ...billingAddress,
+        PostalCode: {
+          value: value.trimStart(),
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    } else if (name === "PostalZipCode" && value === "") {
+      setBillingAddress({
+        ...billingAddress,
+        PostalCode: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    }
+
+    if (name === "StateProvince" && value !== "") {
+      setBillingAddress({
+        ...billingAddress,
+        State: {
+          value: value.trimStart(),
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    } else if (name === "StateProvince" && value === "") {
+      setBillingAddress({
+        ...billingAddress,
+        State: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    }
+
+    if (name === "City" && value !== "") {
+      setBillingAddress({
+        ...billingAddress,
+        City: {
+          value: value.trimStart(),
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    } else if (name === "City" && value === "") {
+      setBillingAddress({
+        ...billingAddress,
+        City: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    }
+
+    if (name === "Address" && value !== "") {
+      setBillingAddress({
+        ...billingAddress,
+        Address: {
+          value: value.trimStart(),
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    } else if (name === "Address" && value === "") {
+      setBillingAddress({
+        ...billingAddress,
+        Address: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    }
+  };
+
   return (
     <Container>
       <Row>
@@ -74,7 +133,22 @@ const BillProcessStepTwo = () => {
                         </span>
                       </>
                     }
+                    change={billingAddressDetailsHandler}
+                    name="PostalZipCode"
                   />
+                  <Row>
+                    <Col>
+                      <p
+                        className={
+                          billingAddress.PostalCode.value === ""
+                            ? ` ${styles["errorMessage"]} `
+                            : `${styles["errorMessage_hidden"]}`
+                        }
+                      >
+                        {billingAddress.PostalCode.errorMessage}
+                      </p>
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
               <Row className="mt-2">
@@ -89,7 +163,22 @@ const BillProcessStepTwo = () => {
                         </span>
                       </>
                     }
+                    change={billingAddressDetailsHandler}
+                    name="StateProvince"
                   />
+                  <Row>
+                    <Col>
+                      <p
+                        className={
+                          billingAddress.State.value === ""
+                            ? ` ${styles["errorMessage"]} `
+                            : `${styles["errorMessage_hidden"]}`
+                        }
+                      >
+                        {billingAddress.State.errorMessage}
+                      </p>
+                    </Col>
+                  </Row>
                 </Col>
                 <Col lg={6} md={6} sm={12} xs={12}>
                   <TextField
@@ -102,7 +191,23 @@ const BillProcessStepTwo = () => {
                         </span>
                       </>
                     }
+                    change={billingAddressDetailsHandler}
+                    name="City"
                   />
+
+                  <Row>
+                    <Col>
+                      <p
+                        className={
+                          billingAddress.City.value === ""
+                            ? ` ${styles["errorMessage"]} `
+                            : `${styles["errorMessage_hidden"]}`
+                        }
+                      >
+                        {billingAddress.City.errorMessage}
+                      </p>
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
               <Row className="mt-2">
@@ -117,7 +222,22 @@ const BillProcessStepTwo = () => {
                         </span>
                       </>
                     }
+                    change={billingAddressDetailsHandler}
+                    name="Address"
                   />
+                  <Row>
+                    <Col>
+                      <p
+                        className={
+                          billingAddress.Address.value === ""
+                            ? ` ${styles["errorMessage"]} `
+                            : `${styles["errorMessage_hidden"]}`
+                        }
+                      >
+                        {billingAddress.Address.errorMessage}
+                      </p>
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
             </Col>

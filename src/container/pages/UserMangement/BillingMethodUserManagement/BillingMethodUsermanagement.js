@@ -22,6 +22,12 @@ const BillingMethodUsermanagement = () => {
 
   const { UserManagementModals } = useSelector((state) => state);
 
+  const [activeComponent, setActiveComponent] = useState(
+    "billingContactDetails"
+  );
+
+  const [emailConditionMet, setEmailConditionMet] = useState(false);
+
   const [activeStep, setActiveStep] = useState(0);
 
   //Billing Contact States
@@ -49,6 +55,34 @@ const BillingMethodUsermanagement = () => {
     },
   });
 
+  const [billingAddress, setBillingAddress] = useState({
+    Country: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    PostalCode: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    State: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    City: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    Address: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+  });
+
   // translate Languages start
   const languages = [
     { name: "English", code: "en" },
@@ -65,7 +99,12 @@ const BillingMethodUsermanagement = () => {
   }, [currentLangObj, t]);
 
   const handleNext = () => {
-    if (billingContactDetails.Email.value !== "") {
+    if (
+      activeComponent === "billingContactDetails" &&
+      billingContactDetails.Email.value !== ""
+    ) {
+      setActiveComponent("billingAddress");
+      // Email condition is satisfied
       setActiveStep((prevActiveStep) => {
         if (prevActiveStep >= 3) {
           dispatch(showThankYouPaymentModal(true));
@@ -74,19 +113,61 @@ const BillingMethodUsermanagement = () => {
           return prevActiveStep < 4 ? prevActiveStep + 1 : prevActiveStep;
         }
       });
+      setEmailConditionMet(true);
     } else {
-      console.log("iamcomning");
+      // Email condition is satisfied
       setBillingContactDetails({
         ...billingContactDetails,
         Email: {
           value: billingContactDetails.Email.value,
-          errorMessage:
-            billingContactDetails.Email.value === ""
-              ? t("Email-address-is-required")
-              : billingContactDetails.Email.errorMessage,
+          errorMessage: t("Email-address-is-required"),
           errorStatus: billingContactDetails.Email.errorStatus,
         },
       });
+    }
+    if (emailConditionMet) {
+      if (
+        activeComponent === "billingAddress" &&
+        billingAddress.PostalCode.value !== "" &&
+        billingAddress.State.value !== "" &&
+        billingAddress.City.value !== "" &&
+        billingAddress.Address.value !== ""
+      ) {
+        setActiveComponent("billingAddress");
+        setActiveStep((prevActiveStep) => {
+          if (prevActiveStep >= 3) {
+            dispatch(showThankYouPaymentModal(true));
+            return prevActiveStep;
+          } else {
+            return prevActiveStep < 4 ? prevActiveStep + 1 : prevActiveStep;
+          }
+        });
+      } else {
+        // PostalCode condition is not satisfied
+        setBillingAddress({
+          ...billingAddress,
+          PostalCode: {
+            value: billingAddress.PostalCode.value,
+            errorMessage: t("Please add Postal/Zip code"),
+            errorStatus: billingAddress.PostalCode.errorStatus,
+          },
+          State: {
+            value: billingAddress.State.value,
+            errorMessage: t("Please enter state/province"),
+            errorStatus: billingAddress.State.errorStatus,
+          },
+          City: {
+            value: billingAddress.City.value,
+            errorMessage: t("Please enter city"),
+            errorStatus: billingAddress.City.errorStatus,
+          },
+          Address: {
+            value: billingAddress.Address.value,
+            errorMessage: t("Please enter address"),
+            errorStatus: billingAddress.Address.errorStatus,
+          },
+        });
+      }
     }
   };
 
@@ -208,14 +289,18 @@ const BillingMethodUsermanagement = () => {
           </Row>
           <Row>
             <Col lg={12} md={12} sm={12} xs={12}>
-              {activeStep === 0 ? (
+              {activeStep === 0 &&
+              activeComponent === "billingContactDetails" ? (
                 <BillProcessStepOne
                   billingContactDetails={billingContactDetails}
                   setBillingContactDetails={setBillingContactDetails}
                 />
-              ) : activeStep === 1 ? (
+              ) : activeStep === 1 && activeComponent === "billingAddress" ? (
                 <>
-                  <BillProcessStepTwo />
+                  <BillProcessStepTwo
+                    billingAddress={billingAddress}
+                    setBillingAddress={setBillingAddress}
+                  />
                 </>
               ) : activeStep === 2 ? (
                 <>
