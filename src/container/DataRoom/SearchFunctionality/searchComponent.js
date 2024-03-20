@@ -1706,8 +1706,8 @@ const SearchComponent = ({
                 {searchDataFields.StatusID === 1
                   ? t("My-documents")
                   : searchDataFields.StatusID === 2
-                  ? t("Shared-with-me")
-                  : t("Any-where-in-dataRoom")}
+                  ? t("Any-where-in-dataRoom")
+                  : t("Shared-with-me")}
               </p>
               <img
                 draggable="false"
