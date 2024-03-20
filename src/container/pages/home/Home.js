@@ -821,8 +821,7 @@ const Home = () => {
                     </p>
 
                     {upcomingEventsData.meetingDetails.statusID === 1 &&
-                    upcomingEventsData.meetingDetails.participantRoleID ===
-                      1 ? (
+                    upcomingEventsData.participantRoleID === 1 ? (
                       upcomingEventsData.meetingDetails.isQuickMeeting ===
                         true && minutesDifference < 15 ? (
                         // &&
@@ -857,8 +856,7 @@ const Home = () => {
                         </div>
                       ) : null
                     ) : upcomingEventsData.meetingDetails.statusID === 10 ? (
-                      upcomingEventsData.meetingDetails.participantRoleID ===
-                      2 ? (
+                      upcomingEventsData.participantRoleID === 2 ? (
                         <div className="width-100">
                           <Button
                             text={t("Join-meeting")}
@@ -868,8 +866,7 @@ const Home = () => {
                             }
                           />
                         </div>
-                      ) : upcomingEventsData.meetingDetails
-                          .participantRoleID === 4 ? (
+                      ) : upcomingEventsData.participantRoleID === 4 ? (
                         <div className="width-100">
                           <Button
                             text={t("Join-meeting")}
@@ -879,8 +876,7 @@ const Home = () => {
                             }
                           />
                         </div>
-                      ) : upcomingEventsData.meetingDetails
-                          .participantRoleID === 1 ? (
+                      ) : upcomingEventsData.participantRoleID === 1 ? (
                         <div className="width-100">
                           <Button
                             text={t("Join-meeting")}

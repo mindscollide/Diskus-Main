@@ -313,6 +313,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   };
 
   useEffect(() => {
+    console.log("Re Renders");
+
     if (talkStateData.ActiveChatData.messageType === "G") {
       let Data = {
         GroupID: talkStateData.ActiveChatData.id,
@@ -323,6 +325,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, []);
 
   useEffect(() => {
+    console.log("Re Renders");
+
     try {
       setMessageSendData({
         ...messageSendData,
@@ -332,6 +336,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [talkStateData.ActiveChatData]);
 
   useEffect(() => {
+    console.log("Re Renders");
+
     if (
       talkStateData.AllUserChats.AllUserChatsData !== undefined &&
       talkStateData.AllUserChats.AllUserChatsData !== null &&
@@ -344,6 +350,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [talkStateData?.AllUserChats?.AllUserChatsData?.allMessages]);
 
   useEffect(() => {
+    console.log("Re Renders");
+
     if (
       talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse !==
         undefined &&
@@ -370,6 +378,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   ]);
 
   useEffect(() => {
+    console.log("Re Renders");
+
     if (
       talkStateData?.ActiveUsersByBroadcastID?.ActiveUsersByBroadcastIDData !==
         undefined &&
@@ -404,6 +414,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   };
 
   useEffect(() => {
+    console.log("Re Renders");
+
     if (
       talkStateData.AllUsers.AllUsersData !== undefined &&
       talkStateData.AllUsers.AllUsersData !== null &&
@@ -414,6 +426,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [talkStateData?.AllUsers?.AllUsersData?.allUsers]);
 
   useEffect(() => {
+    console.log("Re Renders");
+
     let privateGroupMembers =
       talkStateData.GetPrivateGroupMembers.GetPrivateGroupMembersResponse
         .groupUsers;
@@ -438,6 +452,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   ]);
 
   useEffect(() => {
+    console.log("Re Renders");
+
     let shoutMembersData =
       talkStateData.ActiveUsersByBroadcastID.ActiveUsersByBroadcastIDData
         .broadcastUsers;
@@ -462,6 +478,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   ]);
 
   useEffect(() => {
+    console.log("Re Renders");
+
     if (
       talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData !==
         undefined &&
@@ -1470,6 +1488,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   };
 
   useEffect(() => {
+    console.log("Re Renders");
+
     let allChatMessages = talkStateData.AllMessagesData;
     if (
       allChatMessages !== undefined &&
@@ -1626,6 +1646,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   };
 
   useEffect(() => {
+    console.log("Re Renders");
+
     if (
       talkStateData.talkSocketDataUserBlockUnblock.socketBlockUser !== null &&
       talkStateData.talkSocketDataUserBlockUnblock.socketBlockUser !==
@@ -1658,9 +1680,13 @@ const ChatMainBody = ({ chatMessageClass }) => {
     }
   }, [talkStateData.talkSocketDataUserBlockUnblock.socketBlockUser]);
 
-  useEffect(() => {}, [talkStateData.ActiveChatData]);
+  useEffect(() => {
+    console.log("Re Renders");
+  }, [talkStateData.ActiveChatData]);
 
   useEffect(() => {
+    console.log("Re Renders");
+
     if (
       talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser !== null &&
       talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser !==
@@ -1697,6 +1723,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser]);
 
   useEffect(() => {
+    console.log("Re Renders");
+
     if (
       talkStateData.talkSocketDataStarUnstar.socketStarMessage !== null &&
       talkStateData.talkSocketDataStarUnstar.socketStarMessage !== undefined &&
@@ -1747,6 +1775,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [talkStateData?.talkSocketDataStarUnstar?.socketStarMessage]);
 
   useEffect(() => {
+    console.log("Re Renders");
+
     if (
       talkStateData.talkSocketDataStarUnstar.socketUnstarMessage !== null &&
       talkStateData.talkSocketDataStarUnstar.socketUnstarMessage !==
@@ -1765,6 +1795,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [talkStateData?.talkSocketDataStarUnstar?.socketUnstarMessage]);
 
   useEffect(() => {
+    console.log("Re Renders");
+
     if (
       talkStateData.talkSocketGroupCreation.groupCreatedData !== null &&
       talkStateData.talkSocketGroupCreation.groupCreatedData !== undefined &&
@@ -1775,6 +1807,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [talkStateData?.talkSocketGroupCreation?.groupCreatedData]);
 
   useEffect(() => {
+    console.log("Re Renders");
+
     if (
       talkStateData.talkSocketGroupUpdation.groupUpdatedData !== null &&
       talkStateData.talkSocketGroupUpdation.groupUpdatedData !== undefined &&
@@ -1785,6 +1819,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [talkStateData?.talkSocketGroupUpdation?.groupUpdatedData]);
 
   useEffect(() => {
+    console.log("Re Renders");
+
     if (
       talkStateData.talkSocketUnreadMessageCount.unreadMessageData !== null &&
       talkStateData.talkSocketUnreadMessageCount.unreadMessageData !==
@@ -1799,6 +1835,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   ]);
 
   useEffect(() => {
+    console.log("Re Renders");
+
     if (
       talkStateData?.MessageStatusUpdateData.MessageStatusUpdateResponse !==
         null &&
@@ -1834,32 +1872,34 @@ const ChatMainBody = ({ chatMessageClass }) => {
     }
   }, [talkStateData?.MessageStatusUpdateData?.MessageStatusUpdateResponse]);
 
-  useEffect(() => {
-    if (
-      talkStateData.MessageSendOTO.ResponseMessage !==
-        t("User-is-not-in-channel") &&
-      talkStateData.MessageSendOTO.ResponseMessage !==
-        t("OTO-message-inserted") &&
-      talkStateData.MessageSendOTO.ResponseMessage !==
-        t("OTO-message-not-inserted") &&
-      talkStateData.MessageSendOTO.ResponseMessage !==
-        t("Something-went-wrong") &&
-      talkStateData.MessageSendOTO.ResponseMessage !== ""
-    ) {
-      setNotification({
-        notificationShow: true,
-        message: talkStateData.MessageSendOTO.ResponseMessage,
-      });
-      setNotificationID(id);
-    }
-    setTimeout(() => {
-      setNotification({
-        notificationShow: false,
-        message: "",
-      });
-      dispatch(OTOMessageSendSuccess("", []));
-    }, 3000);
-  }, [talkStateData.MessageSendOTO]);
+  // useEffect(() => {
+  //   console.log("Re Renders");
+
+  //   if (
+  //     talkStateData.MessageSendOTO.ResponseMessage !==
+  //       t("User-is-not-in-channel") &&
+  //     talkStateData.MessageSendOTO.ResponseMessage !==
+  //       t("OTO-message-inserted") &&
+  //     talkStateData.MessageSendOTO.ResponseMessage !==
+  //       t("OTO-message-not-inserted") &&
+  //     talkStateData.MessageSendOTO.ResponseMessage !==
+  //       t("Something-went-wrong") &&
+  //     talkStateData.MessageSendOTO.ResponseMessage !== ""
+  //   ) {
+  //     setNotification({
+  //       notificationShow: true,
+  //       message: talkStateData.MessageSendOTO.ResponseMessage,
+  //     });
+  //     setNotificationID(id);
+  //   }
+  //   setTimeout(() => {
+  //     setNotification({
+  //       notificationShow: false,
+  //       message: "",
+  //     });
+  //     dispatch(OTOMessageSendSuccess("", []));
+  //   }, 3000);
+  // }, [talkStateData.MessageSendOTO]);
 
   const uniqueId = generateGUID();
 
@@ -2040,7 +2080,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
           messageCount: 0,
           attachmentLocation: "",
           uid: uniqueId,
-          sourceMessageBody: "Direct Message",
+          sourceMessageBody: "",
           sourceMessageId: 0,
           isRetry: false,
         };
@@ -2183,15 +2223,19 @@ const ChatMainBody = ({ chatMessageClass }) => {
   let unsentMessageObject =
     JSON.parse(localStorage.getItem("unsentMessage")) || [];
   let checkunsentMessageObject = [];
-  useEffect(() => {
-    if (Object.keys(unsentMessageObject).length > 0) {
-      if (checkunsentMessageObject !== unsentMessageObject) {
-        checkunsentMessageObject = unsentMessageObject;
-      }
-    }
-  }, [unsentMessageObject]);
+  // useEffect(() => {
+  //   console.log("Re Renders");
+
+  //   if (Object.keys(unsentMessageObject).length > 0) {
+  //     if (checkunsentMessageObject !== unsentMessageObject) {
+  //       checkunsentMessageObject = unsentMessageObject;
+  //     }
+  //   }
+  // }, [unsentMessageObject]);
 
   useEffect(() => {
+    console.log("Re Renders");
+
     if (
       talkStateData.talkSocketData.socketInsertOTOMessageData !== null &&
       talkStateData.talkSocketData.socketInsertOTOMessageData !== undefined &&
@@ -2355,6 +2399,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [talkStateData.talkSocketData.socketInsertOTOMessageData]);
 
   useEffect(() => {
+    console.log("Re Renders");
+
     if (
       talkStateData.talkSocketData.socketInsertGroupMessageData !== null &&
       talkStateData.talkSocketData.socketInsertGroupMessageData !== undefined &&
@@ -2362,13 +2408,26 @@ const ChatMainBody = ({ chatMessageClass }) => {
     ) {
       let mqttInsertGroupMessageData =
         talkStateData.talkSocketData.socketInsertGroupMessageData.data[0];
+      let frMessages = mqttInsertGroupMessageData.frMessages;
+      console.log(
+        "mqttInsertGroupMessageDatamqttInsertGroupMessageData",
+        mqttInsertGroupMessageData
+      );
+      if (
+        frMessages !== "Direct Message" &&
+        frMessages.length > 0 &&
+        frMessages !== undefined &&
+        typeof frMessages !== "object"
+      ) {
+        frMessages = frMessages.split("|");
+      }
       if (talkStateData.ActiveChatData.messageType === "G") {
         if (
-          mqttInsertGroupMessageData.senderID != undefined &&
-          mqttInsertGroupMessageData.senderID != null &&
-          mqttInsertGroupMessageData.senderID != 0 &&
-          mqttInsertGroupMessageData.senderID != "" &&
-          mqttInsertGroupMessageData.senderID != "0" &&
+          mqttInsertGroupMessageData.senderID !== undefined &&
+          mqttInsertGroupMessageData.senderID !== null &&
+          mqttInsertGroupMessageData.senderID !== 0 &&
+          mqttInsertGroupMessageData.senderID !== "" &&
+          mqttInsertGroupMessageData.senderID !== "0" &&
           talkStateData.ActiveChatData.id ===
             mqttInsertGroupMessageData.receiverID
         ) {
@@ -2384,10 +2443,58 @@ const ChatMainBody = ({ chatMessageClass }) => {
             fileGeneratedName: mqttInsertGroupMessageData.fileGeneratedName,
             fileName: mqttInsertGroupMessageData.fileName,
             shoutAll: mqttInsertGroupMessageData.shoutAll,
-            frMessages: mqttInsertGroupMessageData.frMessages,
+            frMessages: frMessages,
             messageCount: 0,
             attachmentLocation: mqttInsertGroupMessageData.attachmentLocation,
             uid: mqttInsertGroupMessageData.uid,
+            isRetry: false,
+            sourceMessageBody: mqttInsertGroupMessageData.sourceMessageBody,
+          };
+          setAllMessages((prevAllMessages) => {
+            const updatedMessages = prevAllMessages.map((message) => {
+              if (message.uid === insertMqttGroupMessageData.uid) {
+                return {
+                  ...message,
+                  ...insertMqttGroupMessageData,
+                };
+              }
+              return message;
+            });
+
+            const isUIDInArray = updatedMessages.some(
+              (message) => message.uid === insertMqttGroupMessageData.uid
+            );
+            if (!isUIDInArray) {
+              updatedMessages.push(insertMqttGroupMessageData);
+            }
+
+            return updatedMessages;
+          });
+        } else if (
+          mqttInsertGroupMessageData.senderID !== undefined &&
+          mqttInsertGroupMessageData.senderID !== null &&
+          mqttInsertGroupMessageData.senderID !== 0 &&
+          mqttInsertGroupMessageData.senderID !== "" &&
+          mqttInsertGroupMessageData.senderID !== "0" &&
+          parseInt(currentUserId) !== mqttInsertGroupMessageData.senderID
+        ) {
+          let insertMqttGroupMessageData = {
+            messageID: mqttInsertGroupMessageData.messageID,
+            senderID: mqttInsertGroupMessageData.senderID,
+            receiverID: mqttInsertGroupMessageData.receiverID,
+            messageBody: mqttInsertGroupMessageData.messageBody,
+            senderName: mqttInsertGroupMessageData.senderName,
+            isFlag: 0,
+            sentDate: mqttInsertGroupMessageData.sentDate,
+            currDate: mqttInsertGroupMessageData.currDate,
+            fileGeneratedName: mqttInsertGroupMessageData.fileGeneratedName,
+            fileName: mqttInsertGroupMessageData.fileName,
+            shoutAll: mqttInsertGroupMessageData.shoutAll,
+            frMessages: frMessages,
+            messageCount: 0,
+            attachmentLocation: mqttInsertGroupMessageData.attachmentLocation,
+            uid: mqttInsertGroupMessageData.uid,
+            sourceMessageBody: mqttInsertGroupMessageData.sourceMessageBody,
             isRetry: false,
           };
           setAllMessages((prevAllMessages) => {
@@ -2411,11 +2518,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
             return updatedMessages;
           });
         } else if (
-          mqttInsertGroupMessageData.senderID != undefined &&
-          mqttInsertGroupMessageData.senderID != null &&
-          mqttInsertGroupMessageData.senderID != 0 &&
-          mqttInsertGroupMessageData.senderID != "" &&
-          mqttInsertGroupMessageData.senderID != "0" &&
+          mqttInsertGroupMessageData.senderID !== undefined &&
+          mqttInsertGroupMessageData.senderID !== null &&
+          mqttInsertGroupMessageData.senderID !== 0 &&
+          mqttInsertGroupMessageData.senderID !== "" &&
+          mqttInsertGroupMessageData.senderID !== "0" &&
           parseInt(currentUserId) !== mqttInsertGroupMessageData.senderID
         ) {
           let insertMqttGroupMessageData = {
@@ -2430,56 +2537,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
             fileGeneratedName: mqttInsertGroupMessageData.fileGeneratedName,
             fileName: mqttInsertGroupMessageData.fileName,
             shoutAll: mqttInsertGroupMessageData.shoutAll,
-            frMessages: mqttInsertGroupMessageData.frMessages,
+            frMessages: frMessages,
             messageCount: 0,
             attachmentLocation: mqttInsertGroupMessageData.attachmentLocation,
             uid: mqttInsertGroupMessageData.uid,
-            isRetry: false,
-          };
-          setAllMessages((prevAllMessages) => {
-            const updatedMessages = prevAllMessages.map((message) => {
-              if (message.uid === insertMqttGroupMessageData.uid) {
-                return {
-                  ...message,
-                  ...insertMqttGroupMessageData,
-                };
-              }
-              return message;
-            });
-
-            const isUIDInArray = updatedMessages.some(
-              (message) => message.uid === insertMqttGroupMessageData.uid
-            );
-            if (!isUIDInArray) {
-              updatedMessages.push(insertMqttGroupMessageData);
-            }
-
-            return updatedMessages;
-          });
-        } else if (
-          mqttInsertGroupMessageData.senderID != undefined &&
-          mqttInsertGroupMessageData.senderID != null &&
-          mqttInsertGroupMessageData.senderID != 0 &&
-          mqttInsertGroupMessageData.senderID != "" &&
-          mqttInsertGroupMessageData.senderID != "0" &&
-          parseInt(currentUserId) !== mqttInsertGroupMessageData.senderID
-        ) {
-          let insertMqttGroupMessageData = {
-            messageID: mqttInsertGroupMessageData.messageID,
-            senderID: mqttInsertGroupMessageData.senderID,
-            receiverID: mqttInsertGroupMessageData.receiverID,
-            messageBody: mqttInsertGroupMessageData.messageBody,
-            senderName: mqttInsertGroupMessageData.senderName,
-            isFlag: 0,
-            sentDate: mqttInsertGroupMessageData.sentDate,
-            currDate: mqttInsertGroupMessageData.currDate,
-            fileGeneratedName: mqttInsertGroupMessageData.fileGeneratedName,
-            fileName: mqttInsertGroupMessageData.fileName,
-            shoutAll: mqttInsertGroupMessageData.shoutAll,
-            frMessages: mqttInsertGroupMessageData.frMessages,
-            messageCount: 0,
-            attachmentLocation: mqttInsertGroupMessageData.attachmentLocation,
-            uid: mqttInsertGroupMessageData.uid,
+            sourceMessageBody: mqttInsertGroupMessageData.sourceMessageBody,
             isRetry: false,
           };
           setAllMessages((prevAllMessages) => {
@@ -2551,6 +2613,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [talkStateData.talkSocketData.socketInsertGroupMessageData]);
 
   useEffect(() => {
+    console.log("Re Renders");
+
     if (
       talkStateData.talkSocketInsertBroadcastMessage
         .MessageSendBroadcastResponseData !== null &&
@@ -2597,6 +2661,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   };
 
   useEffect(() => {
+    console.log("Re Renders");
+
     document.addEventListener("click", handleOutsideClick);
     return () => {
       document.removeEventListener("click", handleOutsideClick);
@@ -2604,12 +2670,16 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [chatMenuActive, emojiActive, uploadOptions]);
 
   useEffect(() => {
+    console.log("Re Renders");
+
     if (inputRef.current) {
       inputRef.current.focus();
     }
   }, [inputChat]);
 
   useEffect(() => {
+    console.log("Re Renders");
+
     if (emojiSelected) {
       inputRef.current.focus();
       setEmojiSelected(false);
@@ -2651,6 +2721,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   };
 
   useEffect(() => {
+    console.log("Re Renders");
+
     if (
       talkStateData.UpdatePrivateGroup.UpdatePrivateGroupResponseMessage ===
       "Group-modified"
@@ -2719,6 +2791,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   };
 
   useEffect(() => {
+    console.log("Re Renders");
+
     if (talkStateData.LeaveGroup.LeaveGroupResponseMessage === "Group-left") {
       setNotification({
         notificationShow: true,
@@ -2730,6 +2804,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [talkStateData.LeaveGroup.LeaveGroupResponseMessage]);
 
   useEffect(() => {
+    console.log("Re Renders");
+
     if (
       talkStateData.CreateShoutAllList.CreateShoutAllListResponseMessage ===
       "Broadcast-list-created"
@@ -2755,6 +2831,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   };
 
   useEffect(() => {
+    console.log("Re Renders");
+
     if (
       talkStateData.DownloadChatData.DownloadChatResponse !== null &&
       talkStateData.DownloadChatData.DownloadChatResponse !== undefined &&
@@ -2769,6 +2847,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [talkStateData?.DownloadChatData?.DownloadChatResponse]);
 
   useEffect(() => {
+    console.log("Re Renders");
+
     if (
       talkStateData.MqttMessageDeleteData !== null &&
       talkStateData.MqttMessageDeleteData !== undefined &&
@@ -2801,7 +2881,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
     }
   }, [talkStateData?.MqttMessageDeleteData]);
 
-  useEffect(() => {}, [activeCall]);
+  useEffect(() => {
+    console.log("Re Renders");
+  }, [activeCall]);
 
   const initiateOtoCall = () => {
     let recipientData = {
@@ -3065,6 +3147,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   };
 
   useEffect(() => {
+    console.log("Re Renders");
+
     if (talkFeatureStates.RetryFlagState === true) {
       const storedSingleMessageObject =
         JSON.parse(localStorage.getItem("singleMessageObject")) || [];
@@ -3085,6 +3169,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [talkFeatureStates.RetryFlagState]);
 
   useEffect(() => {
+    console.log("Re Renders");
+
     let singleMessageObject = JSON.parse(
       localStorage.getItem("singleMessageObject")
     );
@@ -3128,6 +3214,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [currentConnection, allMessages]);
 
   useEffect(() => {
+    console.log("Re Renders");
+
     // Check if all objects have isRetry: false
     const allObjectsHaveIsRetryFalse = allMessages.every(
       (message) => !message.isRetry
@@ -3553,8 +3641,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               {messageData.attachmentLocation !==
                                                 "" &&
                                               (ext === "jpg" ||
+                                                ext === "JPG" ||
                                                 ext === "png" ||
-                                                ext === "jpeg") ? (
+                                                ext === "PNG" ||
+                                                ext === "jpeg" ||
+                                                ext === "JPEG") ? (
                                                 <div className="image-thumbnail-chat">
                                                   <a
                                                     href={
@@ -3624,8 +3715,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               {messageData.attachmentLocation !==
                                                 "" &&
                                               (ext === "jpg" ||
+                                                ext === "JPG" ||
                                                 ext === "png" ||
-                                                ext === "jpeg") ? (
+                                                ext === "PNG" ||
+                                                ext === "jpeg" ||
+                                                ext === "JPEG") ? (
                                                 <div className="image-thumbnail-chat">
                                                   <a
                                                     href={
@@ -3963,8 +4057,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                             {messageData.attachmentLocation !==
                                               "" &&
                                             (ext === "jpg" ||
+                                              ext === "JPG" ||
                                               ext === "png" ||
-                                              ext === "jpeg") ? (
+                                              ext === "PNG" ||
+                                              ext === "jpeg" ||
+                                              ext === "JPEG") ? (
                                               <div className="image-thumbnail-chat">
                                                 <a
                                                   href={
@@ -4199,8 +4296,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                             {messageData.attachmentLocation !==
                                               "" &&
                                             (ext === "jpg" ||
+                                              ext === "JPG" ||
                                               ext === "png" ||
-                                              ext === "jpeg") ? (
+                                              ext === "PNG" ||
+                                              ext === "jpeg" ||
+                                              ext === "JPEG") ? (
                                               <div className="image-thumbnail-chat">
                                                 <a
                                                   href={
@@ -4668,8 +4768,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               {messageData.attachmentLocation !==
                                                 "" &&
                                               (ext === "jpg" ||
+                                                ext === "JPG" ||
                                                 ext === "png" ||
-                                                ext === "jpeg") ? (
+                                                ext === "PNG" ||
+                                                ext === "jpeg" ||
+                                                ext === "JPEG") ? (
                                                 <div className="image-thumbnail-chat">
                                                   <a
                                                     href={
@@ -5551,7 +5654,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                     </div>
                     <div className="time-info">
                       {messageInfoData.sentDate === undefined ? (
-                        <p className="m-0">No Date Available</p>
+                        <p className="m-0">-</p>
                       ) : (
                         newTimeFormaterMIAsPerUTCTalkDateTime(
                           messageInfoData.sentDate
@@ -5570,7 +5673,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                     </div>
                     <div className="time-info">
                       {messageInfoData.receivedDate === undefined ? (
-                        <p className="m-0">No Date Available</p>
+                        <p className="m-0">-</p>
                       ) : (
                         newTimeFormaterMIAsPerUTCTalkDateTime(
                           messageInfoData.receivedDate
@@ -5585,7 +5688,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                     </div>
                     <div className="time-info">
                       {messageInfoData.seenDate === undefined ? (
-                        <p className="m-0">No Date Available</p>
+                        <p className="m-0">-</p>
                       ) : (
                         newTimeFormaterMIAsPerUTCTalkDateTime(
                           messageInfoData.seenDate
