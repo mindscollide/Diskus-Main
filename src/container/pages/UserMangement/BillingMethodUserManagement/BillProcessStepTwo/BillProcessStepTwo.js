@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./BillProcessStepTwo.module.css";
 import { Col, Container, Row } from "react-bootstrap";
 import { TextField } from "../../../../../components/elements";
@@ -7,6 +7,34 @@ import Select from "react-select";
 import locationImage from "../../../../../assets/images/Location.svg";
 const BillProcessStepTwo = () => {
   const { t } = useTranslation();
+
+  const [billingAddress, setBillingAddress] = useState({
+    Country: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    PostalCode: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    State: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    City: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    Address: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+  });
   return (
     <Container>
       <Row>

@@ -12,10 +12,7 @@ import BillProcessStepThree from "./BillProcessStepThree/BillProcessStepThree";
 import BillProcessStepFour from "./BillProcessStepFour/BillProcessStepFour";
 import { useSelector } from "react-redux";
 import ThankForPayment from "../ModalsUserManagement/ThankForPaymentModal/ThankForPayment";
-import {
-  showFailedPaymentModal,
-  showThankYouPaymentModal,
-} from "../../../../store/actions/UserMangementModalActions";
+import { showThankYouPaymentModal } from "../../../../store/actions/UserMangementModalActions";
 import { useDispatch } from "react-redux";
 import PaymentFailedModal from "../ModalsUserManagement/PaymentFailedModal/PaymentFailedModal";
 const BillingMethodUsermanagement = () => {
@@ -26,6 +23,31 @@ const BillingMethodUsermanagement = () => {
   const { UserManagementModals } = useSelector((state) => state);
 
   const [activeStep, setActiveStep] = useState(0);
+
+  //Billing Contact States
+  const [billingContactDetails, setBillingContactDetails] = useState({
+    Name: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+
+    LastName: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    CompanyName: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    Email: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+  });
 
   // translate Languages start
   const languages = [
@@ -43,14 +65,29 @@ const BillingMethodUsermanagement = () => {
   }, [currentLangObj, t]);
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => {
-      if (prevActiveStep >= 3) {
-        dispatch(showThankYouPaymentModal(true));
-        return prevActiveStep;
-      } else {
-        return prevActiveStep < 4 ? prevActiveStep + 1 : prevActiveStep;
-      }
-    });
+    if (billingContactDetails.Email.value !== "") {
+      setActiveStep((prevActiveStep) => {
+        if (prevActiveStep >= 3) {
+          dispatch(showThankYouPaymentModal(true));
+          return prevActiveStep;
+        } else {
+          return prevActiveStep < 4 ? prevActiveStep + 1 : prevActiveStep;
+        }
+      });
+    } else {
+      console.log("iamcomning");
+      setBillingContactDetails({
+        ...billingContactDetails,
+        Email: {
+          value: billingContactDetails.Email.value,
+          errorMessage:
+            billingContactDetails.Email.value === ""
+              ? t("Email-address-is-required")
+              : billingContactDetails.Email.errorMessage,
+          errorStatus: billingContactDetails.Email.errorStatus,
+        },
+      });
+    }
   };
 
   const handleBack = () => {
@@ -172,7 +209,10 @@ const BillingMethodUsermanagement = () => {
           <Row>
             <Col lg={12} md={12} sm={12} xs={12}>
               {activeStep === 0 ? (
-                <BillProcessStepOne />
+                <BillProcessStepOne
+                  billingContactDetails={billingContactDetails}
+                  setBillingContactDetails={setBillingContactDetails}
+                />
               ) : activeStep === 1 ? (
                 <>
                   <BillProcessStepTwo />

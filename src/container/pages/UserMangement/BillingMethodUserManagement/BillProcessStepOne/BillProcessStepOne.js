@@ -1,11 +1,103 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./BillProcessStepOne.module.css";
 import BillingFrame from "../../../../../assets/images/BillingContactFrame.svg";
 import { Col, Container, Row } from "react-bootstrap";
 import { TextField } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
-const BillProcessStepOne = () => {
+const BillProcessStepOne = ({
+  billingContactDetails,
+  setBillingContactDetails,
+}) => {
   const { t } = useTranslation();
+
+  const billingContactDetailsHandler = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === "Name" && value !== "") {
+      setBillingContactDetails({
+        ...billingContactDetails,
+        Name: {
+          value: value.trimStart(),
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    } else if (name === "Name" && value === "") {
+      setBillingContactDetails({
+        ...billingContactDetails,
+        Name: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    }
+
+    if (name === "LastName" && value !== "") {
+      setBillingContactDetails({
+        ...billingContactDetails,
+        LastName: {
+          value: value.trimStart(),
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    } else if (name === "LastName" && value === "") {
+      setBillingContactDetails({
+        ...billingContactDetails,
+        LastName: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    }
+
+    if (name === "CompanyName" && value !== "") {
+      if (value !== "") {
+        setBillingContactDetails({
+          ...billingContactDetails,
+          CompanyName: {
+            value: value.trimStart(),
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      }
+    } else if (name === "CompanyName" && value === "") {
+      setBillingContactDetails({
+        ...billingContactDetails,
+        CompanyName: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    }
+
+    if (name === "Email" && value !== "") {
+      if (value !== "") {
+        setBillingContactDetails({
+          ...billingContactDetails,
+          Email: {
+            value: value.trimStart(),
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      }
+    } else if (name === "Email" && value === "") {
+      setBillingContactDetails({
+        ...billingContactDetails,
+        Email: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    }
+  };
+
   return (
     <Container>
       <Row>
@@ -29,10 +121,16 @@ const BillProcessStepOne = () => {
                       </>
                     }
                     placeholder={t("First-name")}
+                    name="Name"
+                    change={billingContactDetailsHandler}
                   />
                 </Col>
                 <Col lg={6} md={6} sm={12} xs={12}>
-                  <TextField placeholder={t("Last-name")} />
+                  <TextField
+                    placeholder={t("Last-name")}
+                    name="LastName"
+                    change={billingContactDetailsHandler}
+                  />
                 </Col>
               </Row>
               <Row className="mt-2">
@@ -46,6 +144,8 @@ const BillProcessStepOne = () => {
                         </span>
                       </>
                     }
+                    name="CompanyName"
+                    change={billingContactDetailsHandler}
                   />
                 </Col>
               </Row>
@@ -61,7 +161,22 @@ const BillProcessStepOne = () => {
                         </span>
                       </>
                     }
+                    name="Email"
+                    change={billingContactDetailsHandler}
                   />
+                  <Row>
+                    <Col>
+                      <p
+                        className={
+                          billingContactDetails.Email.value === ""
+                            ? ` ${styles["errorMessage"]} `
+                            : `${styles["errorMessage_hidden"]}`
+                        }
+                      >
+                        {billingContactDetails.Email.errorMessage}
+                      </p>
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
             </Col>
