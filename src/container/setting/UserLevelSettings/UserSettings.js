@@ -40,7 +40,7 @@ const UserSettings = () => {
   const [polls, setpolls] = useState(false);
   const roleID = localStorage.getItem("roleID");
   const { loaded, clientId } = useGoogleLogin({
-    clientId:process.env.REACT_APP_GOOGLE_LOGIN_URL,
+    clientId: process.env.REACT_APP_GOOGLE_LOGIN_URL,
   });
   const [signUpCodeToken, setSignUpCodeToken] = useState("");
   const [userOptionsSettings, setUserOptionsSettings] = useState({
@@ -102,16 +102,14 @@ const UserSettings = () => {
     EmailWhenNewTODODeleted: false,
     EmailWhenNewTODOEdited: false,
   });
-  const [authMicrosoftAccessToken, setAuthMicrosoftAccessToken] = useState("");
-  const [authMicrosoftRefreshToken, setAuthMicrosoftRefreshToken] =
-    useState("");
+  const [authMicrosoftAccessCode, setAuthMicrosoftAccessCode] = useState("");
 
   useEffect(() => {
     dispatch(getUserSetting(navigate, t));
   }, []);
 
   const handleGoogleLoginSuccess = (response) => {
-    console.log("Google Code ",response.code)
+    console.log("Google Code ", response.code);
     setSignUpCodeToken(response.code);
     setUserOptionsSettings({
       ...userOptionsSettings,
@@ -462,20 +460,20 @@ const UserSettings = () => {
       await redirectToUrl();
     }
     let code = localStorage.getItem("Ms");
-    console.log("MS Code",code)
+    console.log("MS Code", code);
     if (code) {
       await setUserOptionsSettings({
         ...userOptionsSettings,
         AllowMicrosoftCalenderSync: value,
       });
-      await setAuthMicrosoftAccessToken(code);
+      await setAuthMicrosoftAccessCode(code);
       localStorage.removeItem("Ms");
     } else {
       setUserOptionsSettings({
         ...userOptionsSettings,
         AllowMicrosoftCalenderSync: false,
       });
-      setAuthMicrosoftAccessToken("");
+      setAuthMicrosoftAccessCode("");
       localStorage.removeItem("Ms");
     }
   };
@@ -776,34 +774,21 @@ const UserSettings = () => {
   };
 
   const updateOrganizationLevelSettings = async () => {
-    let AllowMicrosoftCalenderSyncCall =
-      userOptionsSettings.AllowMicrosoftCalenderSync;
+    let AllowMicrosoftCalenderSyncCall;
 
     if (userOptionsSettings.AllowMicrosoftCalenderSync !== false) {
-      if (authMicrosoftAccessToken !== "") {
-        await dispatch(
+      if (authMicrosoftAccessCode !== "") {
+        AllowMicrosoftCalenderSyncCall = await dispatch(
           getMicrosoftValidToken(
             navigate,
-            authMicrosoftAccessToken,
-            authMicrosoftRefreshToken,
+            authMicrosoftAccessCode,
             userOptionsSettings,
-            AllowMicrosoftCalenderSyncCall,
+            userOptionsSettings.AllowMicrosoftCalenderSync,
             t
           )
         );
       }
     }
-    console.log(
-      "AllowMicrosoftCalenderSyncCall",
-      AllowMicrosoftCalenderSyncCall
-    );
-    // global is tru and update local state is false then call revoke token api
-    // else if(){
-    // const tokenRevoke=await dispatch(
-    //   getMicroSoftRevokeToken(navigate, signUpCodeToken, userOptionsSettings, t,2)
-    // );
-    // AllowMicrosoftCalenderSyncCall=tokenRevoke
-    // }
     if (signUpCodeToken !== "") {
       if (userOptionsSettings.AllowGoogleCalenderSync) {
         await dispatch(
