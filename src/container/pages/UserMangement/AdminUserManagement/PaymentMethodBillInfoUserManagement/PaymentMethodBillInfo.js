@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./PaymentMethodBillInfo.module.css";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -9,6 +9,192 @@ import AmericanExpress from "../../../../../assets/images/American express.svg";
 import { Button, TextField } from "../../../../../components/elements";
 const PaymentMethodBillInfo = () => {
   const { t } = useTranslation();
+
+  const [paymentMethods, setPaymentMethods] = useState({
+    Name: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+
+    LastName: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+
+    CreditCardNumber: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+
+    CardExpirationDate: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+
+    CVV: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+  });
+
+  // onChange Method
+  const PaymentDetailsHandler = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === "Name" && value !== "") {
+      setPaymentMethods({
+        ...paymentMethods,
+        Name: {
+          value: value.trimStart(),
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    } else if (name === "Name" && value === "") {
+      setPaymentMethods({
+        ...paymentMethods,
+        Name: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    }
+
+    if (name === "LastName" && value !== "") {
+      setPaymentMethods({
+        ...paymentMethods,
+        LastName: {
+          value: value.trimStart(),
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    } else if (name === "LastName" && value === "") {
+      setPaymentMethods({
+        ...paymentMethods,
+        LastName: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    }
+
+    if (name === "CreditCardNumber" && value !== "") {
+      if (value !== "") {
+        setPaymentMethods({
+          ...paymentMethods,
+          CreditCardNumber: {
+            value: value.trimStart(),
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      }
+    } else if (name === "CreditCardNumber" && value === "") {
+      setPaymentMethods({
+        ...paymentMethods,
+        CreditCardNumber: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    }
+
+    if (name === "CreditCardExpiration" && value !== "") {
+      if (value !== "") {
+        setPaymentMethods({
+          ...paymentMethods,
+          CardExpirationDate: {
+            value: value.trimStart(),
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      }
+    } else if (name === "CreditCardExpiration" && value === "") {
+      setPaymentMethods({
+        ...paymentMethods,
+        CardExpirationDate: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    }
+
+    if (name === "CVV" && value !== "") {
+      if (value !== "") {
+        setPaymentMethods({
+          ...paymentMethods,
+          CVV: {
+            value: value.trimStart(),
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      }
+    } else if (name === "CVV" && value === "") {
+      setPaymentMethods({
+        ...paymentMethods,
+        CVV: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    }
+  };
+
+  //Confirm Billing Details
+
+  const handleConfirmBillingDetails = () => {
+    if (
+      paymentMethods.Name.value !== "" &&
+      paymentMethods.LastName.value !== "" &&
+      paymentMethods.CreditCardNumber.value !== "" &&
+      paymentMethods.CardExpirationDate.value !== "" &&
+      paymentMethods.CVV.value !== ""
+    ) {
+      return;
+    } else {
+      setPaymentMethods({
+        ...paymentMethods,
+        Name: {
+          value: paymentMethods.Name.value,
+          errorMessage: t("Name Required"),
+          errorStatus: paymentMethods.Name.errorStatus,
+        },
+        LastName: {
+          value: paymentMethods.LastName.value,
+          errorMessage: t("LastName Required"),
+          errorStatus: paymentMethods.LastName.errorStatus,
+        },
+        CreditCardNumber: {
+          value: paymentMethods.CreditCardNumber.value,
+          errorMessage: t("Credit Card Number Required"),
+          errorStatus: paymentMethods.CreditCardNumber.errorStatus,
+        },
+        CardExpirationDate: {
+          value: paymentMethods.CardExpirationDate.value,
+          errorMessage: t("Card Expiration Date Required"),
+          errorStatus: paymentMethods.CardExpirationDate.errorStatus,
+        },
+        CVV: {
+          value: paymentMethods.CVV.value,
+          errorMessage: t("CVV Required"),
+          errorStatus: paymentMethods.CVV.errorStatus,
+        },
+      });
+    }
+  };
   return (
     <Container className={styles["ContainerStylesPaymentHistory"]}>
       <Row>
@@ -38,10 +224,42 @@ const PaymentMethodBillInfo = () => {
                       <span className={styles["nameStyles"]}>{t("Name")}</span>
                     </>
                   }
-                />
+                  name="Name"
+                  change={PaymentDetailsHandler}
+                />{" "}
+                <Row>
+                  <Col>
+                    <p
+                      className={
+                        paymentMethods.Name.value === ""
+                          ? ` ${styles["errorMessage"]} `
+                          : `${styles["errorMessage_hidden"]}`
+                      }
+                    >
+                      {paymentMethods.Name.errorMessage}
+                    </p>
+                  </Col>
+                </Row>
               </Col>
               <Col lg={6} md={6} sm={12} xs={12}>
-                <TextField placeholder={t("Last-name")} />
+                <TextField
+                  placeholder={t("Last-name")}
+                  name="LastName"
+                  change={PaymentDetailsHandler}
+                />{" "}
+                <Row>
+                  <Col>
+                    <p
+                      className={
+                        paymentMethods.LastName.value === ""
+                          ? ` ${styles["errorMessage"]} `
+                          : `${styles["errorMessage_hidden"]}`
+                      }
+                    >
+                      {paymentMethods.LastName.errorMessage}
+                    </p>
+                  </Col>
+                </Row>
               </Col>
             </Row>
             <Row className="mt-2">
@@ -55,7 +273,22 @@ const PaymentMethodBillInfo = () => {
                       </span>
                     </>
                   }
-                />
+                  name="CreditCardNumber"
+                  change={PaymentDetailsHandler}
+                />{" "}
+                <Row>
+                  <Col>
+                    <p
+                      className={
+                        paymentMethods.CreditCardNumber.value === ""
+                          ? ` ${styles["errorMessage"]} `
+                          : `${styles["errorMessage_hidden"]}`
+                      }
+                    >
+                      {paymentMethods.CreditCardNumber.errorMessage}
+                    </p>
+                  </Col>
+                </Row>
               </Col>
             </Row>
             <Row className="mt-2">
@@ -69,7 +302,22 @@ const PaymentMethodBillInfo = () => {
                     </>
                   }
                   placeholder={t("00/00")}
-                />
+                  name="CreditCardExpiration"
+                  change={PaymentDetailsHandler}
+                />{" "}
+                <Row>
+                  <Col>
+                    <p
+                      className={
+                        paymentMethods.CardExpirationDate.value === ""
+                          ? ` ${styles["errorMessage"]} `
+                          : `${styles["errorMessage_hidden"]}`
+                      }
+                    >
+                      {paymentMethods.CardExpirationDate.errorMessage}
+                    </p>
+                  </Col>
+                </Row>
               </Col>
               <Col lg={6} md={6} sm={12} xs={12}>
                 <TextField
@@ -78,8 +326,23 @@ const PaymentMethodBillInfo = () => {
                       <span className={styles["nameStyles"]}>{t("CVV")} </span>
                     </>
                   }
+                  name="CVV"
                   placeholder={t("CVV")}
-                />
+                  change={PaymentDetailsHandler}
+                />{" "}
+                <Row>
+                  <Col>
+                    <p
+                      className={
+                        paymentMethods.CVV.value === ""
+                          ? ` ${styles["errorMessage"]} `
+                          : `${styles["errorMessage_hidden"]}`
+                      }
+                    >
+                      {paymentMethods.CVV.errorMessage}
+                    </p>
+                  </Col>
+                </Row>
               </Col>
             </Row>
             <Row className="mt-4">
@@ -106,6 +369,7 @@ const PaymentMethodBillInfo = () => {
                 <Button
                   text={t("Confirm-billing-details")}
                   className={styles["ConfirmBillingDetails"]}
+                  onClick={handleConfirmBillingDetails}
                 />
               </Col>
             </Row>
