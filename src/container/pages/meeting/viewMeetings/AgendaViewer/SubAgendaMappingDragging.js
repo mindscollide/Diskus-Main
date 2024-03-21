@@ -267,18 +267,6 @@ const SubAgendaMappingDragging = ({
         "_blank",
         "noopener noreferrer"
       );
-    } else {
-      let data = {
-        FileID: Number(record.originalAttachmentName),
-      };
-      dispatch(
-        DataRoomDownloadFileApiFunc(
-          navigate,
-          data,
-          t,
-          record.displayAttachmentName
-        )
-      );
     }
   };
 
@@ -692,9 +680,23 @@ const SubAgendaMappingDragging = ({
                                                                     )
                                                                   }
                                                                   className={
-                                                                    styles[
-                                                                      "fileNameAttachment"
-                                                                    ]
+                                                                    [
+                                                                      "pdf",
+                                                                      "doc",
+                                                                      "docx",
+                                                                      "xls",
+                                                                      "xlsx",
+                                                                    ].includes(
+                                                                      getFileExtension(
+                                                                        filesData?.displayAttachmentName
+                                                                      )
+                                                                    )
+                                                                      ? styles[
+                                                                          "fileNameAttachment"
+                                                                        ]
+                                                                      : styles[
+                                                                          "fileNameAttachmentNotOpened"
+                                                                        ]
                                                                   }
                                                                 >
                                                                   {
