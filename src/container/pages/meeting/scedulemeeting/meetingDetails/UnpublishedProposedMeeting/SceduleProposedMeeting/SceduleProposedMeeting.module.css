@@ -26,6 +26,9 @@
   font-family: "MontserratSemiBold" !important;
   color: #505050;
   white-space: nowrap;
+  width: 160px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
 .WidthOFSpan {
