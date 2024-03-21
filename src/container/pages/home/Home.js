@@ -112,6 +112,7 @@ const Home = () => {
     calendarReducer,
     toDoListReducer,
     meetingIdReducer,
+    NewMeetingreducer,
     auth,
     Authreducer,
     NotesReducer,
@@ -768,6 +769,22 @@ const Home = () => {
       }
     });
 
+    // Update the meeting status to 10 based on the response from the other reducer
+    if (
+      meetingIdReducer.MeetingStatusSocket.length !== 0 &&
+      Object.keys(meetingIdReducer.MeetingStatusSocket).length !== 0
+    ) {
+      console.log("Went in to condition")
+      meetingIdReducer.UpcomingEventsData.forEach((eventData) => {
+        if (
+          eventData.meetingDetails.pK_MDID ===
+          meetingIdReducer.MeetingStatusSocket.meeting.pK_MDID
+        ) {
+          eventData.meetingDetails.statusID = 10;
+        }
+      });
+    }
+
     return meetingIdReducer.UpcomingEventsData.map(
       (upcomingEventsData, index) => {
         let meetingDateTime =
@@ -1141,30 +1158,71 @@ const Home = () => {
     }
   };
 
+  // const handleClickonDate = (dateObject, dateSelect) => {
+  //   let selectDate = dateSelect.toString().split("/").join("");
+  //   if (
+  //     calendarReducer.CalenderData.length !== null &&
+  //     calendarReducer.CalenderData !== undefined &&
+  //     calendarReducer.CalenderData.length > 0
+  //   ) {
+  //     let findData = calendarReducer.CalenderData.filter(
+  //       (data, index) =>
+  //         startDateTimeMeetingCalendar(data.eventDate + data.startTime) ===
+  //         selectDate
+  //     );
+  //     if (findData.length > 0) {
+  //       setEvents(findData);
+  //       setEventsModal(true);
+  //     } else {
+  //       setOpen({
+  //         ...open,
+  //         open: true,
+  //         message: t("No-events-available-on-this-date"),
+  //       });
+  //     }
+  //   }
+  // };
+
   const handleClickonDate = (dateObject, dateSelect) => {
     let selectDate = dateSelect.toString().split("/").join("");
     if (
-      calendarReducer.CalenderData.length !== null &&
-      calendarReducer.CalenderData !== undefined &&
-      calendarReducer.CalenderData.length > 0
+        calendarReducer.CalenderData &&
+        calendarReducer.CalenderData.length > 0
     ) {
-      let findData = calendarReducer.CalenderData.filter(
-        (data, index) =>
-          startDateTimeMeetingCalendar(data.eventDate + data.startTime) ===
-          selectDate
-      );
-      if (findData.length > 0) {
-        setEvents(findData);
-        setEventsModal(true);
-      } else {
-        setOpen({
-          ...open,
-          open: true,
-          message: t("No-events-available-on-this-date"),
-        });
-      }
+        const findData = calendarReducer.CalenderData.find(
+            (data) =>
+                startDateTimeMeetingCalendar(
+                    data.eventDate + data.startTime
+                ) === selectDate
+        );
+        if (findData) {
+            setEvents([findData]);
+            setEventsModal(true);
+            // Check if the event's pK_MDID matches with MeetingStatusSocket's pK_MDID
+            if (
+                findData.pK_MDID ===
+                meetingIdReducer.MeetingStatusSocket.meeting.pK_MDID
+            ) {
+                // Update the statusID to 10
+                findData.statusID = 10;
+                // Dispatch an action to update the global state if needed
+                // dispatch(updateEventStatus(findData)); // Assuming you have a proper action
+            }
+        } else {
+            setOpen({
+                ...open,
+                open: true,
+                message: t("No-events-available-on-this-date"),
+            });
+        }
     }
-  };
+};
+
+
+  console.log("MeetingIDReducer", meetingIdReducer);
+
+  console.log("calendarReducer", calendarReducer);
+
   return (
     <>
       <Container fluid className="Dashboard-Main-Container">
