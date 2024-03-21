@@ -30,6 +30,7 @@ const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
   const [isActive, setIsActive] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [selectProposedDate, setSelectPropsed] = useState(null);
+
   const toggleActive = (index, record, formattedDate) => {
     setIsActive(!isActive);
     setActiveIndex(index);
@@ -104,6 +105,18 @@ const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
     dispatch(scheduleMeetingMainApi(navigate, t, scheduleMeeting));
   };
 
+  const totalCounts = formattedDates.map((_, index) => {
+    return updatedOrganizerRows.reduce((total, row) => {
+      if (row.selectedProposedDates[index].isSelected) {
+        return total + 1;
+      }
+      return total;
+    }, 0);
+  });
+
+  // Find the index of the date column with the highest total count
+  const maxTotalCountIndex = totalCounts.indexOf(Math.max(...totalCounts));
+
   const scheduleColumn = [
     {
       dataIndex: "userName",
@@ -112,7 +125,10 @@ const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
         <>
           <span className={styles["WidthOFSpan"]}>
             {record.userName === "Total" ? (
-              <span className={styles["TotalCount_HEading"]}>
+              <span
+                className={styles["TotalCount_HEading"]}
+                title={record.userName}
+              >
                 {record.userName}
               </span>
             ) : (
@@ -128,15 +144,23 @@ const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
 
     ...formattedDates.map((formattedDate, index) => {
       const record = organizerRows[index]; // Access the record using the index
+      const isSelectedCount = record.selectedProposedDates.reduce(
+        (count, date) => (date.isSelected ? count + 1 : count),
+        0
+      );
+      console.log(
+        `Date: ${formattedDate}, isSelectedCount: ${isSelectedCount}, maxTotalCountIndex: ${maxTotalCountIndex}`
+      );
+      const dateDetailClass =
+        index === maxTotalCountIndex
+          ? `${styles["Date-Object-Detail_active"]}`
+          : `${styles["Date-Object-Detail"]}`;
+
       console.log(record, "recordrecordrecord");
       return {
         title: (
           <span
-            className={
-              activeIndex === index
-                ? `${styles["Date-Object-Detail_active"]}`
-                : `${styles["Date-Object-Detail"]}`
-            }
+            className={dateDetailClass}
             onClick={() => toggleActive(index, record, formattedDate)}
           >
             {formattedDate}
@@ -150,7 +174,9 @@ const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
               const totalDate = record.selectedProposedDates.find(
                 (date) => date.isTotal === 0
               );
+              console.log(totalDate, "totaltotaltotaltotal");
               if (totalDate) {
+                console.log(totalDate, "totaltotaltotaltotal");
                 return (
                   <>
                     <span className={styles["TotalCount"]}>
