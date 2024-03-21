@@ -86,14 +86,14 @@ const PaymentMethodBillInfo = () => {
       });
     }
 
-    if (name === "CreditCardNumber") {
+    if (name === "CreditCardNumber" && value !== "") {
       const creditCardRegex = /^(?:\d[ -]*?){13,16}$/;
       if (creditCardRegex.test(value)) {
         // Input matches credit card pattern
         setPaymentMethods({
           ...paymentMethods,
           CreditCardNumber: {
-            value: value,
+            value: value.trim(),
             errorMessage: "",
             errorStatus: false,
           },
@@ -104,25 +104,48 @@ const PaymentMethodBillInfo = () => {
           ...paymentMethods,
           CreditCardNumber: {
             value: value.replace(/[^0-9-]/g, ""), // Remove non-numeric characters
-            errorMessage: "Invalid credit card number",
+            errorMessage: "",
             errorStatus: true,
           },
         });
       }
+    } else if (name === "CreditCardNumber" && value === "") {
+      setPaymentMethods({
+        ...paymentMethods,
+        CreditCardNumber: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
     }
 
     if (name === "CreditCardExpiration" && value !== "") {
-      if (value !== "") {
+      const expirationDateRegex = /^(0[1-9]|1[0-2])\/\d{2}$/; // MM/YY format
+
+      if (expirationDateRegex.test(value)) {
+        // Input matches the expected format
         setPaymentMethods({
           ...paymentMethods,
           CardExpirationDate: {
-            value: value.trimStart(),
+            value: value.trim(),
             errorMessage: "",
             errorStatus: false,
           },
         });
+      } else {
+        // Input doesn't match the expected format
+        setPaymentMethods({
+          ...paymentMethods,
+          CardExpirationDate: {
+            value: value.replace(/[^0-9/]/g, ""), // Remove non-numeric characters except '/'
+            errorMessage: "",
+            errorStatus: true,
+          },
+        });
       }
     } else if (name === "CreditCardExpiration" && value === "") {
+      // If the value is empty, reset the state
       setPaymentMethods({
         ...paymentMethods,
         CardExpirationDate: {
