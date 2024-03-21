@@ -141,6 +141,7 @@ const BillProcessStepThree = () => {
                 pagination={false}
                 id="PakageDetails"
                 rowHoverBg="none"
+                scroll={{ x: true }}
               />
             </Col>
             <Col lg={4} md={4} sm={12} xs={12}>
