@@ -12,7 +12,10 @@ import BillProcessStepThree from "./BillProcessStepThree/BillProcessStepThree";
 import BillProcessStepFour from "./BillProcessStepFour/BillProcessStepFour";
 import { useSelector } from "react-redux";
 import ThankForPayment from "../ModalsUserManagement/ThankForPaymentModal/ThankForPayment";
-import { showThankYouPaymentModal } from "../../../../store/actions/UserMangementModalActions";
+import {
+  showFailedPaymentModal,
+  showThankYouPaymentModal,
+} from "../../../../store/actions/UserMangementModalActions";
 import { useDispatch } from "react-redux";
 import PaymentFailedModal from "../ModalsUserManagement/PaymentFailedModal/PaymentFailedModal";
 const BillingMethodUsermanagement = () => {
@@ -134,11 +137,13 @@ const BillingMethodUsermanagement = () => {
     document.body.dir = currentLangObj.dir || "ltr";
   }, [currentLangObj, t]);
 
+  console.log(emailConditionMet, "emailConditionMet");
   const handleNext = () => {
     if (
       activeComponent === "billingContactDetails" &&
       billingContactDetails.Email.value !== ""
     ) {
+      setEmailConditionMet(true);
       setActiveComponent("billingAddress");
       // Email condition is satisfied
       setActiveStep((prevActiveStep) => {
@@ -146,10 +151,9 @@ const BillingMethodUsermanagement = () => {
           dispatch(showThankYouPaymentModal(true));
           return prevActiveStep;
         } else {
-          return prevActiveStep < 4 ? prevActiveStep + 1 : prevActiveStep;
+          return prevActiveStep < 3 ? prevActiveStep + 1 : prevActiveStep;
         }
       });
-      setEmailConditionMet(true);
     } else {
       // Email condition is not satisfied
       setBillingContactDetails({
@@ -176,7 +180,7 @@ const BillingMethodUsermanagement = () => {
             dispatch(showThankYouPaymentModal(true));
             return prevActiveStep;
           } else {
-            return prevActiveStep < 4 ? prevActiveStep + 1 : prevActiveStep;
+            return prevActiveStep < 3 ? prevActiveStep + 1 : prevActiveStep;
           }
         });
       } else {
@@ -214,7 +218,7 @@ const BillingMethodUsermanagement = () => {
           dispatch(showThankYouPaymentModal(true));
           return prevActiveStep;
         } else {
-          return prevActiveStep < 4 ? prevActiveStep + 1 : prevActiveStep;
+          return prevActiveStep < 3 ? prevActiveStep + 1 : prevActiveStep;
         }
       });
       setPaymentMethodPage(true);
@@ -235,7 +239,7 @@ const BillingMethodUsermanagement = () => {
             dispatch(showThankYouPaymentModal(true));
             return prevActiveStep;
           } else {
-            return prevActiveStep < 4 ? prevActiveStep + 1 : prevActiveStep;
+            return prevActiveStep < 3 ? prevActiveStep + 1 : prevActiveStep;
           }
         });
       } else {
@@ -272,9 +276,25 @@ const BillingMethodUsermanagement = () => {
   };
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => Math.max(prevActiveStep - 1, 0));
-    //Enable payment failed modal
-    // dispatch(showFailedPaymentModal(true));
+    if (activeComponent === "PaymentMethods") {
+      setActiveComponent("PakageDetails");
+      setActiveStep((prevActiveStep) => Math.max(prevActiveStep - 1, 0));
+    }
+
+    if (activeComponent === "PakageDetails") {
+      setActiveComponent("billingAddress");
+      setActiveStep((prevActiveStep) => Math.max(prevActiveStep - 1, 0));
+    }
+
+    if (activeComponent === "billingAddress") {
+      setActiveComponent("billingContactDetails");
+      setActiveStep((prevActiveStep) => Math.max(prevActiveStep - 1, 0));
+    }
+
+    if (activeComponent === "billingContactDetails") {
+      //Enable payment failed modal
+      dispatch(showFailedPaymentModal(true));
+    }
   };
 
   //React Stepper Numbers manuipulation
