@@ -86,26 +86,29 @@ const PaymentMethodBillInfo = () => {
       });
     }
 
-    if (name === "CreditCardNumber" && value !== "") {
-      if (value !== "") {
+    if (name === "CreditCardNumber") {
+      const creditCardRegex = /^(?:\d[ -]*?){13,16}$/;
+      if (creditCardRegex.test(value)) {
+        // Input matches credit card pattern
         setPaymentMethods({
           ...paymentMethods,
           CreditCardNumber: {
-            value: value.trimStart(),
+            value: value,
             errorMessage: "",
             errorStatus: false,
           },
         });
+      } else {
+        // Input doesn't match credit card pattern
+        setPaymentMethods({
+          ...paymentMethods,
+          CreditCardNumber: {
+            value: value.replace(/[^0-9-]/g, ""), // Remove non-numeric characters
+            errorMessage: "Invalid credit card number",
+            errorStatus: true,
+          },
+        });
       }
-    } else if (name === "CreditCardNumber" && value === "") {
-      setPaymentMethods({
-        ...paymentMethods,
-        CreditCardNumber: {
-          value: "",
-          errorMessage: "",
-          errorStatus: false,
-        },
-      });
     }
 
     if (name === "CreditCardExpiration" && value !== "") {
@@ -224,6 +227,7 @@ const PaymentMethodBillInfo = () => {
                       <span className={styles["nameStyles"]}>{t("Name")}</span>
                     </>
                   }
+                  value={paymentMethods.Name.value}
                   name="Name"
                   change={PaymentDetailsHandler}
                 />{" "}
@@ -245,6 +249,7 @@ const PaymentMethodBillInfo = () => {
                 <TextField
                   placeholder={t("Last-name")}
                   name="LastName"
+                  value={paymentMethods.LastName.value}
                   change={PaymentDetailsHandler}
                 />{" "}
                 <Row>
@@ -273,6 +278,7 @@ const PaymentMethodBillInfo = () => {
                       </span>
                     </>
                   }
+                  value={paymentMethods.CreditCardNumber.value}
                   name="CreditCardNumber"
                   change={PaymentDetailsHandler}
                 />{" "}
@@ -303,6 +309,7 @@ const PaymentMethodBillInfo = () => {
                   }
                   placeholder={t("00/00")}
                   name="CreditCardExpiration"
+                  value={paymentMethods.CardExpirationDate.value}
                   change={PaymentDetailsHandler}
                 />{" "}
                 <Row>
@@ -328,6 +335,7 @@ const PaymentMethodBillInfo = () => {
                   }
                   name="CVV"
                   placeholder={t("CVV")}
+                  value={paymentMethods.CVV.value}
                   change={PaymentDetailsHandler}
                 />{" "}
                 <Row>
