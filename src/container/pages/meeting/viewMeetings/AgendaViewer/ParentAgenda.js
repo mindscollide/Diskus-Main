@@ -627,6 +627,9 @@ const ParentAgenda = ({
                                               draggable={false}
                                               src={DownloadIcon}
                                               alt=""
+                                              onClick={() =>
+                                                downloadDocument(filesData)
+                                              }
                                             />
                                           </Col>
                                         </Row>
