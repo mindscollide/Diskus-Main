@@ -8,6 +8,18 @@ body[dir="rtl"] .Advance_permission_Confirmation {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
+.Advance_permission_Confirmation_Click_here {
+  font-size: 20px !important;
+  color: #6172d6 !important;
+  text-decoration: underline !important;
+  font-family: "MontserratSemiBold" !important;
+  cursor: pointer !important;
+}
+
+body[dir="rtl"] .Advance_permission_Confirmation_Click_here {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .No_confirmation {
   padding: 12px 30px !important;
   font-size: 12px !important;

@@ -282,25 +282,41 @@ const PakageDetailsUserManagement = () => {
     Yearlycharges: <span className={styles["ChargesPerLicesense"]}>3,072</span>,
   };
 
+  const handlePayNowClick = () => {
+    navigate("/signupUsermanagement");
+  };
+
   const defaultRowWithButtons = {
     Monthlycharges: (
       <>
         <span className={styles["ButtonsArabicStylesSpan"]}>
-          <Button text={t("Pay-now")} className={styles["PayNowButtons"]} />
+          <Button
+            text={t("Pay-now")}
+            className={styles["PayNowButtons"]}
+            onClick={handlePayNowClick}
+          />
         </span>
       </>
     ),
     Quarterlycharges: (
       <>
         <span className={styles["ButtonsArabicStylesSpan"]}>
-          <Button text={t("Pay-now")} className={styles["PayNowButtons"]} />
+          <Button
+            text={t("Pay-now")}
+            className={styles["PayNowButtons"]}
+            onClick={handlePayNowClick}
+          />
         </span>
       </>
     ),
     Yearlycharges: (
       <>
         <span className={styles["ButtonsArabicStylesSpan"]}>
-          <Button text={t("Pay-now")} className={styles["PayNowButtons"]} />
+          <Button
+            text={t("Pay-now")}
+            className={styles["PayNowButtons"]}
+            onClick={handlePayNowClick}
+          />
         </span>
       </>
     ),

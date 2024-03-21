@@ -101,7 +101,8 @@ const NavbarAdmin = () => {
                         >
                           <NavDropdown.Item
                             as={Link}
-                            to="Organization"
+                            // to="Organization"
+                            to="OrganizationlevelConfigUM"
                             eventKey="link-8"
                             className="text-black border-none "
                           >
@@ -109,7 +110,8 @@ const NavbarAdmin = () => {
                           </NavDropdown.Item>
                           <NavDropdown.Item
                             as={Link}
-                            to="setting"
+                            // to="setting"
+                            to="UserLevelConfigUM"
                             eventKey="link-8"
                             className="text-black border-none "
                           >
@@ -261,7 +263,8 @@ const NavbarAdmin = () => {
                         >
                           <NavDropdown.Item
                             as={Link}
-                            to="Organization"
+                            // to="Organization"
+                            to="OrganizationlevelConfigUM"
                             eventKey="link-8"
                             className="text-black border-none "
                           >
@@ -269,7 +272,8 @@ const NavbarAdmin = () => {
                           </NavDropdown.Item>
                           <NavDropdown.Item
                             as={Link}
-                            to="setting"
+                            // to="setting"
+                            to="UserLevelConfigUM"
                             eventKey="link-8"
                             className="text-black border-none "
                           >

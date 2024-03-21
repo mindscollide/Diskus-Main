@@ -146,7 +146,6 @@ export const router = createHashRouter(
           <Route path="Meeting/Useravailabilityformeeting" element={<RSVP />} />
           <Route path="videochat" element={<VideoChat />} />
           <Route path="setting" element={<UserSettings />} />
-          <Route path="UserLevelConfigUM" element={<UserLevelConfigUM />} />
           <Route path="faq's" element={<CustomMiscellaneous />} />
           <Route path="groups" element={<Groups />} />
           <Route path="changePassword" element={<ChangePassword />} />
@@ -168,7 +167,8 @@ export const router = createHashRouter(
           <Route path="loginreport" element={<Reports />} />
           <Route path="AddUser" element={<AddUser />} />
           <Route path="EditUser" element={<EditUser />} />
-          <Route path="ManageUsers" element={<ManageUsers />} />
+          <Route path="ManageUsers" element={<ManageUsers />} />{" "}
+          <Route path="UserLevelConfigUM" element={<UserLevelConfigUM />} />
           <Route path="AddUsersUsermanagement" element={<AddUsers />} />
           <Route path="Invoice" element={<Invoice />} />
           <Route path="PayOutstanding" element={<PayOutstanding />} />

@@ -25,6 +25,11 @@ const UpgradeNowModal = () => {
   const handleCrossIcon = () => {
     dispatch(showUpgradeNowModal(false));
   };
+
+  const handleClickhere = () => {
+    dispatch(showUpgradeNowModal(false));
+    navigate("/PaymentFormUserManagement");
+  };
   return (
     <section>
       <Modal
@@ -64,7 +69,18 @@ const UpgradeNowModal = () => {
                 className="d-flex justify-content-center"
               >
                 <span className={styles["Advance_permission_Confirmation"]}>
-                  {t("Your-trial-period-is-over-please-upgrade-your-Package")}
+                  {t("Your-trial-period-is-over")}{" "}
+                  <span
+                    className={
+                      styles["Advance_permission_Confirmation_Click_here"]
+                    }
+                    onClick={handleClickhere}
+                  >
+                    {t("Click-here")}
+                  </span>{" "}
+                  <span className={styles["Advance_permission_Confirmation"]}>
+                    {t("please-upgrade-your-Package")}
+                  </span>
                 </span>
               </Col>
             </Row>
