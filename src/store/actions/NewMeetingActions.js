@@ -371,7 +371,7 @@ const GetAllMeetingTypesNewFunction = (navigate, t, loader) => {
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
         // Retry the API request
-        await dispatch(GetAllMeetingTypesNewFunction(navigate, t));
+        await dispatch(GetAllMeetingTypesNewFunction(navigate, t, loader));
       } else if (response.data.responseCode === 200) {
         if (response.data.responseResult.isExecuted === true) {
           if (
@@ -414,8 +414,7 @@ const GetAllMeetingTypesNewFunction = (navigate, t, loader) => {
         dispatch(handlegetAllMeetingTypesFailed(t("Something-went-wrong")));
       }
     } catch (error) {
-      // Retry the API request in case of an error
-      await dispatch(GetAllMeetingTypesNewFunction(navigate, t));
+      dispatch(handlegetAllMeetingTypesFailed(t("Something-went-wrong")));
     }
   };
 };
@@ -7535,6 +7534,34 @@ const endMeetingStatusApi = (navigate, t, Data) => {
   };
 };
 
+const meetingAgendaContributorAdded = (response) => {
+  return {
+    type: actions.MQTT_MEETING_AC_ADDED,
+    response: response,
+  };
+};
+
+const meetingAgendaContributorRemoved = (response) => {
+  return {
+    type: actions.MQTT_MEETING_AC_REMOVED,
+    response: response,
+  };
+};
+
+const meetingOrganizerAdded = (response) => {
+  return {
+    type: actions.MQTT_MEETING_ORG_ADDED,
+    response: response,
+  };
+};
+
+const meetingOrganizerRemoved = (response) => {
+  return {
+    type: actions.MQTT_MEETING_ORG_REMOVED,
+    response: response,
+  };
+};
+
 export {
   clearResponseNewMeetingReducerMessage,
   getAllAgendaContributorApi,
@@ -7682,4 +7709,8 @@ export {
   endMeetingStatusApi,
   deleteSavedPollsMeeting,
   editFlowDeleteSavedPollsMeeting,
+  meetingAgendaContributorAdded,
+  meetingAgendaContributorRemoved,
+  meetingOrganizerAdded,
+  meetingOrganizerRemoved,
 };

@@ -135,6 +135,10 @@ const initialState = {
   uploadGlobalFlag: false,
 
   endMeetingStatus: null,
+  mqttMeetingAcAdded: null,
+  mqttMeetingAcRemoved: null,
+  mqttMeetingOrgAdded: null,
+  mqttMeetingOrgRemoved: null,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -1924,6 +1928,34 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         meetingStatusPublishedMqttData: action.response,
+      };
+    }
+
+    case actions.MQTT_MEETING_AC_ADDED: {
+      return {
+        ...state,
+        mqttMeetingAcAdded: action.response,
+      };
+    }
+
+    case actions.MQTT_MEETING_AC_REMOVED: {
+      return {
+        ...state,
+        mqttMeetingAcRemoved: action.response,
+      };
+    }
+
+    case actions.MQTT_MEETING_ORG_ADDED: {
+      return {
+        ...state,
+        mqttMeetingOrgAdded: action.response,
+      };
+    }
+
+    case actions.MQTT_MEETING_ORG_REMOVED: {
+      return {
+        ...state,
+        mqttMeetingOrgRemoved: action.response,
       };
     }
 

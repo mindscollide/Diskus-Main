@@ -7318,3 +7318,72 @@ tr.ant-table-row.ant-table-row-level-0.UpgradePakageDetails:last-child:hover {
 .ant-table-tbody > tr.UpgradePakageDetails > td {
   border-bottom: none !important;
 }
+/* this radiobutton is for polls vote start */
+.ant-radio-group.ant-radio-group-outline.AnotherRadioSelect
+  label.ant-radio-wrapper {
+  display: flex !important;
+  background: #ffffff !important;
+  padding: 0px 4px !important;
+  margin: 10px 0px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 50% !important;
+}
+
+.ant-radio-group.ant-radio-group-outline.AnotherRadioSelect
+  label.ant-radio-wrapper
+  span {
+  font-family: "MontserratMedium" !important;
+  font-style: normal !important;
+  font-weight: 600 !important;
+  color: #a2a2a2 !important;
+}
+
+.ant-radio-group.ant-radio-group-outline.AnotherRadioSelect
+  label.ant-radio-wrapper.ant-radio-wrapper-checked
+  span {
+  font-family: "MontserratMedium" !important;
+  font-style: normal !important;
+  font-weight: 600 !important;
+  color: #5a5a5a !important;
+}
+
+.ant-radio-group.ant-radio-group-outline.AnotherRadioSelect
+  label.ant-radio-wrapper.ant-radio-wrapper-checked
+  input {
+  display: none !important;
+}
+
+.ant-radio-group.ant-radio-group-outline.AnotherRadioSelect
+  label.ant-radio-wrapper
+  input {
+  display: none !important;
+}
+
+.ant-radio-group.ant-radio-group-outline.AnotherRadioSelect
+  label.ant-radio-wrapper.ant-radio-wrapper-checked
+  span
+  span.ant-radio-inner:after {
+  content: none !important;
+}
+
+.ant-radio-group.ant-radio-group-outline.AnotherRadioSelect
+  .ant-radio-checked
+  .ant-radio-inner {
+  background: #6172d6 !important;
+  transform: rotate(90deg) !important;
+  border: none !important;
+  width: 13px !important;
+  height: 13px !important;
+  top: 0px !important;
+}
+
+.ant-radio-group.ant-radio-group-outline.AnotherRadioSelect .ant-radio-inner {
+  background: #e1e1e1 !important;
+  transform: rotate(90deg) !important;
+  border: none !important;
+  width: 13px !important;
+  height: 13px !important;
+  top: 0px !important;
+}
+
+/* this radiobutton is for polls vote end */

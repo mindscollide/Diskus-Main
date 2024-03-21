@@ -19,6 +19,7 @@ import userImage from "../../../assets/images/user.png";
 import styles from "./UpadateGroup.module.css";
 import CrossIcon from "../../../assets/images/cancel_meeting_icon.svg";
 import Groups from "../../../container/Groups/Groups";
+import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import {
   SaveGroupsDocumentsApiFunc,
@@ -79,6 +80,13 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
   const [groupTypeValue, setGroupTypeValue] = useState("");
   const [organizationGroupType, setOrganizationGroupType] = useState([]);
+  const [allPresenters, setAllPresenters] = useState([]);
+  const [presenterValue, setPresenterValue] = useState({
+    value: 0,
+    label: "",
+    name: "",
+  });
+
   // for Participant id's
   const participantOptionsWithIDs = [
     { label: t("Head"), id: 2 },
@@ -238,6 +246,11 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
           setTaskAssignedTo(0);
           setParticipantRoleName("");
           setTaskAssignedToInput("");
+          setPresenterValue({
+            value: 0,
+            label: "",
+            name: "",
+          });
         } else {
           setOpen({
             flag: true,
@@ -269,6 +282,11 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         });
         setAttendees([]);
         setParticipantRoleName("");
+        setPresenterValue({
+          value: 0,
+          label: "",
+          name: "",
+        });
       } else {
         if (participantOptionsWithID !== undefined) {
           attendees.forEach((dataID, index) => {
@@ -294,6 +312,11 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
             setAttendees([]);
             setParticipantRoleName("");
           });
+          setPresenterValue({
+            value: 0,
+            label: "",
+            name: "",
+          });
         } else {
           setOpen({
             flag: true,
@@ -305,6 +328,11 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       setOpen({
         flag: true,
         message: t("Please-select-atleast-one-members"),
+      });
+      setPresenterValue({
+        value: 0,
+        label: "",
+        name: "",
       });
     }
   };
@@ -322,9 +350,40 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
 
   // for api reponce of list of all assignees
   useEffect(() => {
-    if (assignees.user.length > 0) {
-      setMeetingAttendeesList(assignees.user);
-    }
+    try {
+      if (Object.keys(assignees.user).length > 0) {
+        let newData = [];
+        setMeetingAttendeesList(assignees.user);
+        assignees.user.forEach((user, index) => {
+          newData.push({
+            label: (
+              <>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex gap-2 align-items-center"
+                  >
+                    <img
+                      src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
+                      height="16.45px"
+                      width="18.32px"
+                      draggable="false"
+                      alt=""
+                    />
+                    <span>{user.name}</span>
+                  </Col>
+                </Row>
+              </>
+            ),
+            value: user.pK_UID,
+            name: user.name,
+          });
+        });
+        setAllPresenters(newData);
+      }
+    } catch (error) {}
   }, [assignees.user]);
 
   // for api response of list group roles
@@ -362,15 +421,17 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   }, [GroupsReducer.getOrganizationGroupTypes]);
 
   //Input Field Assignee Change
-  const onChangeSearch = (e) => {
-    setOnclickFlag(false);
-    if (e.target.value.trimStart() != "") {
-      setTaskAssignedToInput(e.target.value.trimStart());
-    } else {
-      setTaskAssignedToInput("");
-      setTaskAssignedTo(0);
-      setTaskAssignedName("");
-    }
+  const onChangeSearch = (item) => {
+    setPresenterValue(item);
+    setTaskAssignedTo(item.value);
+    // setOnclickFlag(false);
+    // if (e.target.value.trimStart() != "") {
+    //   setTaskAssignedToInput(e.target.value.trimStart());
+    // } else {
+    //   setTaskAssignedToInput("");
+    //   setTaskAssignedTo(0);
+    //   setTaskAssignedName("");
+    // }
   };
 
   // onChange Function for set input values in state
@@ -691,16 +752,21 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   const GroupsDocumentCallUpload = async (folderID) => {
     let newfile = [...previousFileIDs];
     let fileObj = [];
-    const uploadPromises = fileForSend.map(async (newData) => {
+    if (fileForSend.length > 0) {
+      const uploadPromises = fileForSend.map(async (newData) => {
+        await dispatch(
+          uploadDocumentsGroupsApi(navigate, t, newData, folderID, fileObj)
+        );
+      });
+      // Wait for all promises to resolve
+      await Promise.all(uploadPromises);
+      console.log(newfile, "fileObjfileObjfileObjfileObj");
+      console.log(fileObj, "fileObjfileObjfileObjfileObj");
       await dispatch(
-        uploadDocumentsGroupsApi(navigate, t, newData, folderID, fileObj)
+        saveFilesGroupsApi(navigate, t, fileObj, folderID, newfile)
       );
-    });
-    // Wait for all promises to resolve
-    await Promise.all(uploadPromises);
-    console.log(newfile, "fileObjfileObjfileObjfileObj");
-    console.log(fileObj, "fileObjfileObjfileObjfileObj");
-    await dispatch(saveFilesGroupsApi(navigate, t, fileObj, folderID, newfile));
+    }
+
     let Data = {
       GroupID: Number(GroupDetails.GroupID),
       UpdateFileList: newfile.map((data, index) => {
@@ -720,6 +786,14 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       GroupsDocumentCallUpload(folderIDCreated);
     }
   }, [GroupsReducer.FolderID]);
+
+  const filterFunc = (options, searchText) => {
+    if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   return (
     <>
@@ -1161,7 +1235,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                               sm={12}
                               className="group-fields"
                             >
-                              <InputSearchFilter
+                              {/* <InputSearchFilter
                                 placeholder="Search member here"
                                 value={taskAssignedToInput}
                                 filteredDataHandler={searchFilterHandler(
@@ -1169,6 +1243,18 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                 )}
                                 change={onChangeSearch}
                                 onclickFlag={onclickFlag}
+                              /> */}
+                              <Select
+                                options={allPresenters}
+                                maxMenuHeight={140}
+                                onChange={onChangeSearch}
+                                value={
+                                  presenterValue.value === 0
+                                    ? null
+                                    : presenterValue
+                                }
+                                placeholder={t("Search-member-here") + " *"}
+                                filterOption={filterFunc}
                               />
                             </Col>
                           </Row>

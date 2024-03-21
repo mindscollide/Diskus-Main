@@ -21,6 +21,7 @@ import file_image from "../../../assets/images/file_image.svg";
 import pdfIcon from "../../../assets/images/pdf_icon.svg";
 import Rightploygon from "../../../assets/images/Polygon right.svg";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
+import Select from "react-select";
 import {
   getCommitteeMembersRole,
   getCommitteeTypes,
@@ -57,6 +58,12 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
   const [committeeMemberRolesValues, setCommitteeMemberRolesValues] = useState(
     []
   );
+  const [allPresenters, setAllPresenters] = useState([]);
+  const [presenterValue, setPresenterValue] = useState({
+    value: 0,
+    label: "",
+    name: "",
+  });
   let creatorID = JSON.parse(localStorage.getItem("userID"));
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
@@ -185,15 +192,17 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
   };
 
   //Input Field Assignee Change
-  const onChangeSearch = (e) => {
-    setOnclickFlag(false);
-    if (e.target.value.trimStart() !== "") {
-      setTaskAssignedToInput(e.target.value.trimStart());
-    } else {
-      setTaskAssignedToInput("");
-      setTaskAssignedTo(0);
-      setTaskAssignedName("");
-    }
+  const onChangeSearch = (item) => {
+    setPresenterValue(item);
+    setTaskAssignedTo(item.value);
+    // setOnclickFlag(false);
+    // if (e.target.value.trimStart() !== "") {
+    //   setTaskAssignedToInput(e.target.value.trimStart());
+    // } else {
+    //   setTaskAssignedToInput("");
+    //   setTaskAssignedTo(0);
+    //   setTaskAssignedName("");
+    // }
   };
 
   const checkAttendeeBox = (data, id, index) => {
@@ -275,6 +284,11 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
           setTaskAssignedTo(0);
           setParticipantRoleName("Regular");
           setTaskAssignedToInput("");
+          setPresenterValue({
+            value: 0,
+            label: "",
+            name: "",
+          });
         } else {
           setOpen({
             flag: true,
@@ -283,6 +297,11 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
           setTaskAssignedTo(0);
           setParticipantRoleName("Regular");
           setTaskAssignedToInput("");
+          setPresenterValue({
+            value: 0,
+            label: "",
+            name: "",
+          });
         }
       } else {
         setOpen({
@@ -333,6 +352,11 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
             setAttendees([]);
             setParticipantRoleName("Regular");
           });
+          setPresenterValue({
+            value: 0,
+            label: "",
+            name: "",
+          });
         } else {
           setOpen({
             flag: true,
@@ -344,6 +368,11 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       setOpen({
         flag: true,
         message: t("Please-select-atleast-one-members"),
+      });
+      setPresenterValue({
+        value: 0,
+        label: "",
+        name: "",
       });
     }
   };
@@ -437,9 +466,40 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
 
   // for api reponce of list of all assignees
   useEffect(() => {
-    if (assignees.user.length > 0) {
-      setMeetingAttendeesList(assignees.user);
-    }
+    try {
+      if (Object.keys(assignees.user).length > 0) {
+        let newData = [];
+        setMeetingAttendeesList(assignees.user);
+        assignees.user.forEach((user, index) => {
+          newData.push({
+            label: (
+              <>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex gap-2 align-items-center"
+                  >
+                    <img
+                      src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
+                      height="16.45px"
+                      width="18.32px"
+                      draggable="false"
+                      alt=""
+                    />
+                    <span>{user.name}</span>
+                  </Col>
+                </Row>
+              </>
+            ),
+            value: user.pK_UID,
+            name: user.name,
+          });
+        });
+        setAllPresenters(newData);
+      }
+    } catch (error) {}
   }, [assignees.user]);
 
   // dispatch apis for committee types and committee member roles
@@ -647,20 +707,23 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
   const documentsUploadCall = async (folderID) => {
     let newFolder = [...filesSending];
     let fileObj = [];
-    const uploadPromises = fileForSend.map(async (newData) => {
-      await dispatch(
-        uploadDocumentsCommitteesApi(navigate, t, newData, folderID, fileObj)
-      );
-    });
+    if (fileForSend.length > 0) {
+      const uploadPromises = fileForSend.map(async (newData) => {
+        await dispatch(
+          uploadDocumentsCommitteesApi(navigate, t, newData, folderID, fileObj)
+        );
+      });
 
-    // Wait for all promises to resolve
-    await Promise.all(uploadPromises);
-    console.log(fileObj, "newFoldernewFoldernewFolder");
-    // console.log(newfile, "newFoldernewFoldernewFolder");
-    await dispatch(
-      saveFilesCommitteesApi(navigate, t, fileObj, folderID, newFolder)
-    );
-    console.log(newFolder, "newFoldernewFoldernewFolder");
+      // Wait for all promises to resolve
+      await Promise.all(uploadPromises);
+
+      //
+
+      await dispatch(
+        saveFilesCommitteesApi(navigate, t, fileObj, folderID, newFolder)
+      );
+    }
+
     let newData = {
       CommitteeID: Number(committeeData.committeeID),
       UpdateFileList: newFolder.map((fileID) => ({
@@ -668,7 +731,6 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       })),
       // ),
     };
-    console.log(newData, "newFoldernewFoldernewFolder");
 
     await dispatch(
       saveCommitteeDocumentsApi(navigate, t, newData, setUpdateComponentpage)
@@ -683,6 +745,14 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       documentsUploadCall(folderIdCreated);
     }
   }, [CommitteeReducer.createUpdateCommitteeDataroom]);
+
+  const filterFunc = (options, searchText) => {
+    if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   return (
     <>
@@ -1541,7 +1611,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                               sm={12}
                               className="create-committee-fields Update_committee_input_searchfield"
                             >
-                              <InputSearchFilter
+                              {/* <InputSearchFilter
                                 placeholder={t("Search-member-here")}
                                 value={taskAssignedToInput}
                                 filteredDataHandler={searchFilterHandler(
@@ -1549,6 +1619,18 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                 )}
                                 change={onChangeSearch}
                                 onclickFlag={onclickFlag}
+                              /> */}
+                              <Select
+                                options={allPresenters}
+                                maxMenuHeight={140}
+                                onChange={onChangeSearch}
+                                value={
+                                  presenterValue.value === 0
+                                    ? null
+                                    : presenterValue
+                                }
+                                placeholder={t("Search-member-here") + " *"}
+                                filterOption={filterFunc}
                               />
                             </Col>
                           </Row>

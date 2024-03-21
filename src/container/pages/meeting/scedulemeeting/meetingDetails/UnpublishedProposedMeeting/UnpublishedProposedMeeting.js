@@ -39,6 +39,10 @@ import {
   pollsGlobalFlag,
   attendanceGlobalFlag,
   uploadGlobalFlag,
+  meetingAgendaContributorAdded,
+  meetingAgendaContributorRemoved,
+  meetingOrganizerAdded,
+  meetingOrganizerRemoved,
 } from "../../../../../../store/actions/NewMeetingActions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -325,11 +329,9 @@ const UnpublishedProposedMeeting = ({
       key: "MeetingPoll",
       width: "120px",
       render: (text, record) => {
-        console.log(record, "maxValuemaxValuemaxValue");
         let maxValue = record.meetingPoll?.totalNoOfDirectors;
         let value = record.meetingPoll?.totalNoOfDirectorsVoted;
         if (record.meetingPoll) {
-          console.log(record.meetingPoll, "meetingPollmeetingPoll");
           return (
             <>
               <Row>
@@ -402,7 +404,6 @@ const UnpublishedProposedMeeting = ({
       key: "Edit",
       width: "90px",
       render: (text, record) => {
-        console.log(record.status, "fjaanajdkamenmf");
         const isParticipant = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
@@ -773,11 +774,121 @@ const UnpublishedProposedMeeting = ({
           (obj) => obj.pK_MDID !== meetingData.pK_MDID
         );
         setRow(updatedRows);
-      } catch {
-        console.log("Error");
-      }
+      } catch {}
     }
   }, [NewMeetingreducer.meetingStatusPublishedMqttData]);
+
+  useEffect(() => {
+    if (
+      NewMeetingreducer.mqttMeetingAcAdded !== null &&
+      NewMeetingreducer.mqttMeetingAcAdded !== undefined
+    ) {
+      let newObj = NewMeetingreducer.mqttMeetingAcAdded;
+      // Convert the status value to string
+      newObj.status = String(newObj.status);
+      try {
+        setRow((prevState) => [
+          ...prevState,
+          {
+            ...newObj,
+            attendanceReportAvaliable: false,
+            canBeStarted: false,
+            isAttachment: false,
+            isChat: false,
+            isVideoCall: false,
+            meetingAgenda: [],
+            meetingAttendees: [],
+            meetingEndTime: "",
+            meetingTypeID: 0,
+            meetingURL: "",
+            orignalProfilePictureName: "",
+            talkGroupID: 0,
+          },
+        ]);
+        dispatch(meetingAgendaContributorAdded(null));
+        dispatch(meetingAgendaContributorRemoved(null));
+        dispatch(meetingOrganizerAdded(null));
+        dispatch(meetingOrganizerRemoved(null));
+      } catch {}
+    }
+  }, [NewMeetingreducer.mqttMeetingAcAdded]);
+
+  useEffect(() => {
+    if (
+      NewMeetingreducer.mqttMeetingAcRemoved !== null &&
+      NewMeetingreducer.mqttMeetingAcRemoved !== undefined
+    ) {
+      let meetingData = NewMeetingreducer.mqttMeetingAcRemoved;
+      try {
+        const updatedRows = rows.filter(
+          (obj) => obj.pK_MDID !== meetingData.pK_MDID
+        );
+        setRow(updatedRows);
+        dispatch(meetingAgendaContributorAdded(null));
+        dispatch(meetingAgendaContributorRemoved(null));
+        dispatch(meetingOrganizerAdded(null));
+        dispatch(meetingOrganizerRemoved(null));
+      } catch {}
+    }
+  }, [NewMeetingreducer.mqttMeetingAcRemoved]);
+
+  useEffect(() => {
+    if (
+      NewMeetingreducer.mqttMeetingOrgAdded !== null &&
+      NewMeetingreducer.mqttMeetingOrgAdded !== undefined
+    ) {
+      let newObj = NewMeetingreducer.mqttMeetingOrgAdded;
+      // Convert the status value to string
+      newObj.status = String(newObj.status);
+      try {
+        setRow((prevState) => [
+          ...prevState,
+          {
+            ...newObj,
+            attendanceReportAvaliable: false,
+            canBeStarted: false,
+            isAttachment: false,
+            isChat: false,
+            isVideoCall: false,
+            meetingAgenda: [],
+            meetingAttendees: [],
+            meetingEndTime: "",
+            meetingTypeID: 0,
+            meetingURL: "",
+            orignalProfilePictureName: "",
+            talkGroupID: 0,
+          },
+        ]);
+        dispatch(meetingAgendaContributorAdded(null));
+        dispatch(meetingAgendaContributorRemoved(null));
+        dispatch(meetingOrganizerAdded(null));
+        dispatch(meetingOrganizerRemoved(null));
+      } catch {}
+    }
+  }, [NewMeetingreducer.mqttMeetingOrgAdded]);
+
+  useEffect(() => {
+    if (
+      NewMeetingreducer.mqttMeetingOrgRemoved !== null &&
+      NewMeetingreducer.mqttMeetingOrgRemoved !== undefined
+    ) {
+      let meetingData = NewMeetingreducer.mqttMeetingOrgRemoved;
+      try {
+        const updatedRows = rows.filter(
+          (obj) => obj.pK_MDID !== meetingData.pK_MDID
+        );
+        setRow(updatedRows);
+        dispatch(meetingAgendaContributorAdded(null));
+        dispatch(meetingAgendaContributorRemoved(null));
+        dispatch(meetingOrganizerAdded(null));
+        dispatch(meetingOrganizerRemoved(null));
+      } catch {}
+    }
+  }, [NewMeetingreducer.mqttMeetingOrgRemoved]);
+
+  console.log("rowsrowsrows", rows);
+
+  console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
 
   return (
     <section>

@@ -68,6 +68,10 @@ import {
   meetingStatusProposedMqtt,
   meetingStatusPublishedMqtt,
   meetingNotConductedMQTT,
+  meetingAgendaContributorAdded,
+  meetingAgendaContributorRemoved,
+  meetingOrganizerAdded,
+  meetingOrganizerRemoved,
 } from "../../store/actions/NewMeetingActions";
 import {
   meetingAgendaStartedMQTT,
@@ -219,6 +223,103 @@ const Dashboard = () => {
       JSON.parse(msg.payloadString)
     );
     if (data.action.toLowerCase() === "Meeting".toLowerCase()) {
+      console.log("MEETINGMEETINGMEETING");
+      console.log(
+        data.message
+          .toLowerCase()
+          .includes("NEW_MEETING_ORGANIZER_ADDED".toLowerCase()),
+        data.message,
+        data.message.toLowerCase(),
+        "NEW_MEETING_ORGANIZER_ADDED"
+      );
+      console.log(
+        data.message
+          .toLowerCase()
+          .includes("MEETING_ORGANIZER_DELETED".toLowerCase()),
+        data.message,
+        data.message.toLowerCase(),
+        "MEETING_ORGANIZER_DELETED"
+      );
+      if (
+        data.message
+          .toLowerCase()
+          .includes("NEW_MEETING_AGENDA_CONTRIBUTOR_ADDED".toLowerCase())
+        // data.message.toLowerCase() ===
+        // "NEW_MEETING_AGENDA_CONTRIBUTOR_ADDED".toLowerCase()
+      ) {
+        // if (data.viewable) {
+        //   setNotification({
+        //     ...notification,
+        //     notificationShow: true,
+        //     message: changeMQTTJSONOne(
+        //       t("NEW_MEETING_CREATION"),
+        //       "[Place holder]",
+        //       data.payload.meetingTitle.substring(0, 100)
+        //     ),
+        //   });
+        // }
+        console.log("Meeting AC Added");
+        dispatch(meetingAgendaContributorAdded(data.payload));
+        setNotificationID(id);
+      }
+      if (
+        data.message
+          .toLowerCase()
+          .includes("NEW_MEETING_AGENDA_CONTRIBUTOR_DELETED".toLowerCase())
+      ) {
+        // if (data.viewable) {
+        //   setNotification({
+        //     ...notification,
+        //     notificationShow: true,
+        //     message: changeMQTTJSONOne(
+        //       t("NEW_MEETING_CREATION"),
+        //       "[Place holder]",
+        //       data.payload.meetingTitle.substring(0, 100)
+        //     ),
+        //   });
+        // }
+        console.log("Meeting AC Removed");
+        dispatch(meetingAgendaContributorRemoved(data.payload));
+        setNotificationID(id);
+      }
+      if (
+        data.message
+          .toLowerCase()
+          .includes("NEW_MEETING_ORGANIZER_ADDED".toLowerCase())
+      ) {
+        // if (data.viewable) {
+        //   setNotification({
+        //     ...notification,
+        //     notificationShow: true,
+        //     message: changeMQTTJSONOne(
+        //       t("NEW_MEETING_CREATION"),
+        //       "[Place holder]",
+        //       data.payload.meetingTitle.substring(0, 100)
+        //     ),
+        //   });
+        // }
+        dispatch(meetingOrganizerAdded(data.payload));
+        setNotificationID(id);
+      }
+      if (
+        data.message
+          .toLowerCase()
+          .includes("MEETING_ORGANIZER_DELETED".toLowerCase())
+      ) {
+        // if (data.viewable) {
+        //   setNotification({
+        //     ...notification,
+        //     notificationShow: true,
+        //     message: changeMQTTJSONOne(
+        //       t("NEW_MEETING_CREATION"),
+        //       "[Place holder]",
+        //       data.payload.meetingTitle.substring(0, 100)
+        //     ),
+        //   });
+        // }
+        dispatch(meetingOrganizerRemoved(data.payload));
+        setNotificationID(id);
+      }
       if (
         data.message.toLowerCase() ===
         "MeetingNotConductedNotification".toLowerCase()
