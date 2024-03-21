@@ -21,3 +21,47 @@ body[dir="rtl"] span.billing-address {
 .stericClass {
   color: #f16b6b !important;
 }
+
+.errorMessage {
+  margin: 4px;
+  height: 7px;
+  color: #f16b6b;
+  visibility: visible !important;
+}
+
+body[dir="rtl"] .errorMessage {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
+.errorMessage_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 7px;
+  color: #f16b6b !important;
+}
+
+body[dir="rtl"] .errorMessage_hidden {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
+.errorMessage {
+  margin: 4px;
+  height: 7px;
+  color: #f16b6b;
+  visibility: visible !important;
+}
+
+body[dir="rtl"] .errorMessage {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
+.errorMessage_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 7px;
+  color: #f16b6b !important;
+}
+
+body[dir="rtl"] .errorMessage_hidden {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}

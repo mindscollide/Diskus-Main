@@ -1,12 +1,118 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./BillProcessStepTwo.module.css";
 import { Col, Container, Row } from "react-bootstrap";
 import { TextField } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
-import Select from "react-select";
+import ReactFlagsSelect from "react-flags-select";
 import locationImage from "../../../../../assets/images/Location.svg";
-const BillProcessStepTwo = () => {
+const BillProcessStepTwo = ({ billingAddress, setBillingAddress }) => {
   const { t } = useTranslation();
+
+  const [select, setSelect] = useState("");
+
+  const [countryNames, setCountryNames] = useState([]);
+
+  //onChange Method For Text Field
+  const billingAddressDetailsHandler = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === "PostalZipCode" && value !== "") {
+      setBillingAddress({
+        ...billingAddress,
+        PostalCode: {
+          value: value.trimStart(),
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    } else if (name === "PostalZipCode" && value === "") {
+      setBillingAddress({
+        ...billingAddress,
+        PostalCode: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    }
+
+    if (name === "StateProvince" && value !== "") {
+      setBillingAddress({
+        ...billingAddress,
+        State: {
+          value: value.trimStart(),
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    } else if (name === "StateProvince" && value === "") {
+      setBillingAddress({
+        ...billingAddress,
+        State: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    }
+
+    if (name === "City" && value !== "") {
+      setBillingAddress({
+        ...billingAddress,
+        City: {
+          value: value.trimStart(),
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    } else if (name === "City" && value === "") {
+      setBillingAddress({
+        ...billingAddress,
+        City: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    }
+
+    if (name === "Address" && value !== "") {
+      setBillingAddress({
+        ...billingAddress,
+        Address: {
+          value: value.trimStart(),
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    } else if (name === "Address" && value === "") {
+      setBillingAddress({
+        ...billingAddress,
+        Address: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    }
+  };
+
+  //Flag Selector
+  const countryOnSelect = (code) => {
+    setSelect(code);
+    let a = Object.values(countryNames).find((obj) => {
+      return obj.shortCode === code;
+    });
+    // setSignUpDetails({
+    //   ...signUpDetails,
+    //   CountryName: {
+    //     value: a.pK_WorldCountryID,
+    //     errorMessage: "",
+    //     errorStatus: false,
+    //   },
+    // });
+  };
+
   return (
     <Container>
       <Row>
@@ -30,8 +136,18 @@ const BillProcessStepTwo = () => {
                     </Col>
                   </Row>
                   <Row>
-                    <Col lg={12} md={12} sm={12} xs={12}>
-                      <Select placeholder={t("Country*")} />
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      xs={12}
+                      className={styles["react-flag-Info-Signup"]}
+                    >
+                      <ReactFlagsSelect
+                        selected={select}
+                        onSelect={countryOnSelect}
+                        searchable={true}
+                      />
                     </Col>
                   </Row>
                 </Col>
@@ -46,7 +162,22 @@ const BillProcessStepTwo = () => {
                         </span>
                       </>
                     }
+                    change={billingAddressDetailsHandler}
+                    name="PostalZipCode"
                   />
+                  <Row>
+                    <Col>
+                      <p
+                        className={
+                          billingAddress.PostalCode.value === ""
+                            ? ` ${styles["errorMessage"]} `
+                            : `${styles["errorMessage_hidden"]}`
+                        }
+                      >
+                        {billingAddress.PostalCode.errorMessage}
+                      </p>
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
               <Row className="mt-2">
@@ -61,7 +192,22 @@ const BillProcessStepTwo = () => {
                         </span>
                       </>
                     }
+                    change={billingAddressDetailsHandler}
+                    name="StateProvince"
                   />
+                  <Row>
+                    <Col>
+                      <p
+                        className={
+                          billingAddress.State.value === ""
+                            ? ` ${styles["errorMessage"]} `
+                            : `${styles["errorMessage_hidden"]}`
+                        }
+                      >
+                        {billingAddress.State.errorMessage}
+                      </p>
+                    </Col>
+                  </Row>
                 </Col>
                 <Col lg={6} md={6} sm={12} xs={12}>
                   <TextField
@@ -74,7 +220,23 @@ const BillProcessStepTwo = () => {
                         </span>
                       </>
                     }
+                    change={billingAddressDetailsHandler}
+                    name="City"
                   />
+
+                  <Row>
+                    <Col>
+                      <p
+                        className={
+                          billingAddress.City.value === ""
+                            ? ` ${styles["errorMessage"]} `
+                            : `${styles["errorMessage_hidden"]}`
+                        }
+                      >
+                        {billingAddress.City.errorMessage}
+                      </p>
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
               <Row className="mt-2">
@@ -89,7 +251,22 @@ const BillProcessStepTwo = () => {
                         </span>
                       </>
                     }
+                    change={billingAddressDetailsHandler}
+                    name="Address"
                   />
+                  <Row>
+                    <Col>
+                      <p
+                        className={
+                          billingAddress.Address.value === ""
+                            ? ` ${styles["errorMessage"]} `
+                            : `${styles["errorMessage_hidden"]}`
+                        }
+                      >
+                        {billingAddress.Address.errorMessage}
+                      </p>
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
             </Col>

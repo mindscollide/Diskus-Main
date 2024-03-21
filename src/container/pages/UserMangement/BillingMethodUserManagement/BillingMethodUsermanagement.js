@@ -25,7 +25,102 @@ const BillingMethodUsermanagement = () => {
 
   const { UserManagementModals } = useSelector((state) => state);
 
+  const [activeComponent, setActiveComponent] = useState(
+    "billingContactDetails"
+  );
+
+  const [emailConditionMet, setEmailConditionMet] = useState(false);
+
+  const [paymentMethodPage, setPaymentMethodPage] = useState(false);
+
   const [activeStep, setActiveStep] = useState(0);
+
+  //Billing Contact States
+  const [billingContactDetails, setBillingContactDetails] = useState({
+    Name: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+
+    LastName: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    CompanyName: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    Email: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+  });
+
+  //Billing Address
+  const [billingAddress, setBillingAddress] = useState({
+    Country: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    PostalCode: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    State: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    City: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    Address: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+  });
+
+  //Payment method
+  const [paymentMethods, setPaymentMethods] = useState({
+    Name: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+
+    LastName: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+
+    CreditCardNumber: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+
+    CardExpirationDate: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+
+    CVV: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+  });
 
   // translate Languages start
   const languages = [
@@ -42,21 +137,164 @@ const BillingMethodUsermanagement = () => {
     document.body.dir = currentLangObj.dir || "ltr";
   }, [currentLangObj, t]);
 
+  console.log(emailConditionMet, "emailConditionMet");
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => {
-      if (prevActiveStep >= 3) {
-        dispatch(showThankYouPaymentModal(true));
-        return prevActiveStep;
+    if (
+      activeComponent === "billingContactDetails" &&
+      billingContactDetails.Email.value !== ""
+    ) {
+      setEmailConditionMet(true);
+      setActiveComponent("billingAddress");
+      // Email condition is satisfied
+      setActiveStep((prevActiveStep) => {
+        if (prevActiveStep >= 3) {
+          dispatch(showThankYouPaymentModal(true));
+          return prevActiveStep;
+        } else {
+          return prevActiveStep < 3 ? prevActiveStep + 1 : prevActiveStep;
+        }
+      });
+    } else {
+      // Email condition is not satisfied
+      setBillingContactDetails({
+        ...billingContactDetails,
+        Email: {
+          value: billingContactDetails.Email.value,
+          errorMessage: t("Email-address-is-required"),
+          errorStatus: billingContactDetails.Email.errorStatus,
+        },
+      });
+    }
+
+    if (emailConditionMet) {
+      if (
+        activeComponent === "billingAddress" &&
+        billingAddress.PostalCode.value !== "" &&
+        billingAddress.State.value !== "" &&
+        billingAddress.City.value !== "" &&
+        billingAddress.Address.value !== ""
+      ) {
+        setActiveComponent("PakageDetails");
+        setActiveStep((prevActiveStep) => {
+          if (prevActiveStep >= 3) {
+            dispatch(showThankYouPaymentModal(true));
+            return prevActiveStep;
+          } else {
+            return prevActiveStep < 3 ? prevActiveStep + 1 : prevActiveStep;
+          }
+        });
       } else {
-        return prevActiveStep < 4 ? prevActiveStep + 1 : prevActiveStep;
+        // PostalCode condition is not satisfied
+        setBillingAddress({
+          ...billingAddress,
+          PostalCode: {
+            value: billingAddress.PostalCode.value,
+            errorMessage: t("Please add Postal/Zip code"),
+            errorStatus: billingAddress.PostalCode.errorStatus,
+          },
+          State: {
+            value: billingAddress.State.value,
+            errorMessage: t("Please enter state/province"),
+            errorStatus: billingAddress.State.errorStatus,
+          },
+          City: {
+            value: billingAddress.City.value,
+            errorMessage: t("Please enter city"),
+            errorStatus: billingAddress.City.errorStatus,
+          },
+          Address: {
+            value: billingAddress.Address.value,
+            errorMessage: t("Please enter address"),
+            errorStatus: billingAddress.Address.errorStatus,
+          },
+        });
       }
-    });
+    }
+
+    if (activeComponent === "PakageDetails") {
+      setActiveComponent("PaymentMethods");
+      setActiveStep((prevActiveStep) => {
+        if (prevActiveStep >= 3) {
+          dispatch(showThankYouPaymentModal(true));
+          return prevActiveStep;
+        } else {
+          return prevActiveStep < 3 ? prevActiveStep + 1 : prevActiveStep;
+        }
+      });
+      setPaymentMethodPage(true);
+    }
+
+    if (paymentMethodPage) {
+      if (
+        activeComponent === "PaymentMethods" &&
+        paymentMethods.Name.value !== "" &&
+        paymentMethods.LastName.value !== "" &&
+        paymentMethods.CreditCardNumber.value !== "" &&
+        paymentMethods.CardExpirationDate.value !== "" &&
+        paymentMethods.CVV.value !== ""
+      ) {
+        setActiveComponent("billingAddress");
+        setActiveStep((prevActiveStep) => {
+          if (prevActiveStep >= 3) {
+            dispatch(showThankYouPaymentModal(true));
+            return prevActiveStep;
+          } else {
+            return prevActiveStep < 3 ? prevActiveStep + 1 : prevActiveStep;
+          }
+        });
+      } else {
+        setPaymentMethods({
+          ...paymentMethods,
+          Name: {
+            value: paymentMethods.Name.value,
+            errorMessage: t("Name Required"),
+            errorStatus: paymentMethods.Name.errorStatus,
+          },
+          LastName: {
+            value: paymentMethods.LastName.value,
+            errorMessage: t("LastName Required"),
+            errorStatus: paymentMethods.LastName.errorStatus,
+          },
+          CreditCardNumber: {
+            value: paymentMethods.CreditCardNumber.value,
+            errorMessage: t("Credit Card Number Required"),
+            errorStatus: paymentMethods.CreditCardNumber.errorStatus,
+          },
+          CardExpirationDate: {
+            value: paymentMethods.CardExpirationDate.value,
+            errorMessage: t("Card Expiration Date Required"),
+            errorStatus: paymentMethods.CardExpirationDate.errorStatus,
+          },
+          CVV: {
+            value: paymentMethods.CVV.value,
+            errorMessage: t("CVV Required"),
+            errorStatus: paymentMethods.CVV.errorStatus,
+          },
+        });
+      }
+    }
   };
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => Math.max(prevActiveStep - 1, 0));
-    //Enable payment failed modal
-    // dispatch(showFailedPaymentModal(true));
+    if (activeComponent === "PaymentMethods") {
+      setActiveComponent("PakageDetails");
+      setActiveStep((prevActiveStep) => Math.max(prevActiveStep - 1, 0));
+    }
+
+    if (activeComponent === "PakageDetails") {
+      setActiveComponent("billingAddress");
+      setActiveStep((prevActiveStep) => Math.max(prevActiveStep - 1, 0));
+    }
+
+    if (activeComponent === "billingAddress") {
+      setActiveComponent("billingContactDetails");
+      setActiveStep((prevActiveStep) => Math.max(prevActiveStep - 1, 0));
+    }
+
+    if (activeComponent === "billingContactDetails") {
+      //Enable payment failed modal
+      dispatch(showFailedPaymentModal(true));
+    }
   };
 
   //React Stepper Numbers manuipulation
@@ -171,20 +409,30 @@ const BillingMethodUsermanagement = () => {
           </Row>
           <Row>
             <Col lg={12} md={12} sm={12} xs={12}>
-              {activeStep === 0 ? (
-                <BillProcessStepOne />
-              ) : activeStep === 1 ? (
+              {activeStep === 0 &&
+              activeComponent === "billingContactDetails" ? (
+                <BillProcessStepOne
+                  billingContactDetails={billingContactDetails}
+                  setBillingContactDetails={setBillingContactDetails}
+                />
+              ) : activeStep === 1 && activeComponent === "billingAddress" ? (
                 <>
-                  <BillProcessStepTwo />
+                  <BillProcessStepTwo
+                    billingAddress={billingAddress}
+                    setBillingAddress={setBillingAddress}
+                  />
                 </>
-              ) : activeStep === 2 ? (
+              ) : activeStep === 2 && activeComponent === "PakageDetails" ? (
                 <>
                   <BillProcessStepThree />
                 </>
-              ) : activeStep === 3 ? (
+              ) : activeStep === 3 && activeComponent === "PaymentMethods" ? (
                 <>
                   <>
-                    <BillProcessStepFour />
+                    <BillProcessStepFour
+                      paymentMethods={paymentMethods}
+                      setPaymentMethods={setPaymentMethods}
+                    />
                   </>
                 </>
               ) : null}

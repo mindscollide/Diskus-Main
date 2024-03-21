@@ -76,7 +76,8 @@ const ForgotPassword = () => {
         message: "",
       });
       setErrorBar(false);
-      navigate("/verifyEmailOTP");
+      // navigate("/verifyEmailOTP");
+      navigate("/VerifyOTPUserManagement");
     }
   };
   const goForEnterOTP = () => {
