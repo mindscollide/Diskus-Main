@@ -646,10 +646,145 @@ const MicrosoftValidTokenFailed = (message) => {
   };
 };
 
+// const getMicrosoftValidToken = (
+//   navigate,
+//   authMicrosoftAccessCode,
+//   userOptionsSettings,
+//   AllowMicrosoftCalenderSyncCall,
+//   t
+// ) => {
+//   let token = JSON.parse(localStorage.getItem("token"));
+//   let currentUserID = localStorage.getItem("userID");
+//   let OrganizationID = localStorage.getItem("organizationID");
+//   let Data = {
+//     UserID: parseInt(currentUserID),
+//     OrganizationID: parseInt(OrganizationID),
+//     validCode: authMicrosoftAccessCode,
+//   };
+
+//   return async (dispatch) => {
+//     dispatch(MicrosoftValidTokeninit());
+//     let form = new FormData();
+//     form.append("RequestMethod", validateMicrosoftToken.RequestMethod);
+//     form.append("RequestData", JSON.stringify(Data));
+//     await axios({
+//       method: "post",
+//       url: getCalender,
+//       data: form,
+//       headers: {
+//         _token: token,
+//       },
+//     })
+//       .then(async (response) => {
+//         if (response.data.responseCode === 417) {
+//           await dispatch(RefreshToken(navigate, t));
+//           dispatch(
+//             getMicrosoftValidToken(
+//               navigate,
+//               authMicrosoftAccessCode,
+//               userOptionsSettings,
+//               AllowMicrosoftCalenderSyncCall,
+//               t
+//             )
+//           );
+//         } else if (response.data.responseCode === 200) {
+//           if (response.data.responseResult.isExecuted === true) {
+//             if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "Calender_CalenderServiceManager_GetMicrosoftValidToken_01".toLowerCase()
+//                 )
+//             ) {
+//               dispatch(
+//                 MicrosoftValidTokenSuccess(
+//                   t("Token-updated-and-calender-list-saved-successful")
+//                 )
+//               );
+//               return  true
+//             } else if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "Calender_CalenderServiceManager_GetMicrosoftValidToken_02".toLowerCase()
+//                 )
+//             ) {
+//               dispatch(
+//                 MicrosoftValidTokenSuccess(
+//                   t("Token-updated-but-failed-to-save-calender")
+//                 )
+//               );
+//               return  true
+//             } else if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "Calender_CalenderServiceManager_GetMicrosoftValidToken_03".toLowerCase()
+//                 )
+//             ) {
+//               dispatch(
+//                 MicrosoftValidTokenSuccess(
+//                   t("Token-updated-but-no-event-found-in-the-calendar")
+//                 )
+//               );
+//               return  true
+//             } else if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "Calender_CalenderServiceManager_GetMicrosoftValidToken_04".toLowerCase()
+//                 )
+//             ) {
+//               dispatch(MicrosoftValidTokenFailed(t("No-email-exist")));
+//               return  false
+//             } else if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "Calender_CalenderServiceManager_GetMicrosoftValidToken_05".toLowerCase()
+//                 )
+//             ) {
+//               dispatch(
+//                 MicrosoftValidTokenFailed(t("Failed-to-insert-configuration"))
+//               );
+//               return  false
+//             } else if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "Calender_CalenderServiceManager_GetMicrosoftValidToken_06".toLowerCase()
+//                 )
+//             ) {
+//               dispatch(MicrosoftValidTokenFailed(t("Code-is-invalid")));
+//               return  false
+//             } else if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "Calender_CalenderServiceManager_GetMicrosoftValidToken_07".toLowerCase()
+//                 )
+//             ) {
+//               dispatch(MicrosoftValidTokenFailed(t("Something-went-wrong")));
+//               return  false
+//             }
+//           } else {
+//             dispatch(MicrosoftValidTokenFailed(t("Something-went-wrong")));
+//             return  false
+//           }
+//         } else {
+//           dispatch(MicrosoftValidTokenFailed(t("Something-went-wrong")));
+//           return  false
+//         }
+//       })
+//       .catch((response) => {
+//         dispatch(MicrosoftValidTokenFailed(t("Something-went-wrong")));
+//         return  false
+//       });
+//   };
+// };
 const getMicrosoftValidToken = (
   navigate,
-  authMicrosoftAccessToken,
-  authMicrosoftRefreshToken,
+  authMicrosoftAccessCode,
   userOptionsSettings,
   AllowMicrosoftCalenderSyncCall,
   t
@@ -660,9 +795,7 @@ const getMicrosoftValidToken = (
   let Data = {
     UserID: parseInt(currentUserID),
     OrganizationID: parseInt(OrganizationID),
-    accessToken: authMicrosoftAccessToken,
-    refreshToken: authMicrosoftRefreshToken,
-    
+    validCode: authMicrosoftAccessCode,
   };
 
   return async (dispatch) => {
@@ -670,123 +803,118 @@ const getMicrosoftValidToken = (
     let form = new FormData();
     form.append("RequestMethod", validateMicrosoftToken.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    await axios({
-      method: "post",
-      url: getCalender,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            getMicrosoftValidToken(
-              navigate,
-              authMicrosoftAccessToken,
-              authMicrosoftRefreshToken,
-              userOptionsSettings,
-              AllowMicrosoftCalenderSyncCall,
-              t
-            )
-          );
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Calender_CalenderServiceManager_GetMicrosoftValidToken_01".toLowerCase()
-                )
-            ) {
-              dispatch(
-                MicrosoftValidTokenSuccess(
-                  t("Token-updated-and-calender-list-saved-successful")
-                )
-              );
-              AllowMicrosoftCalenderSyncCall = true;
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Calender_CalenderServiceManager_GetMicrosoftValidToken_02".toLowerCase()
-                )
-            ) {
-              dispatch(
-                MicrosoftValidTokenSuccess(
-                  t("Token-updated-but-failed-to-save-calender")
-                )
-              );
-              AllowMicrosoftCalenderSyncCall = true;
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Calender_CalenderServiceManager_GetMicrosoftValidToken_03".toLowerCase()
-                )
-            ) {
-              dispatch(
-                MicrosoftValidTokenSuccess(
-                  t("Token-updated-but-no-event-found-in-the-calendar")
-                )
-              );
-              AllowMicrosoftCalenderSyncCall = true;
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Calender_CalenderServiceManager_GetMicrosoftValidToken_04".toLowerCase()
-                )
-            ) {
-              dispatch(MicrosoftValidTokenFailed(t("No-email-exist")));
-              AllowMicrosoftCalenderSyncCall = false;
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Calender_CalenderServiceManager_GetMicrosoftValidToken_05".toLowerCase()
-                )
-            ) {
-              dispatch(
-                MicrosoftValidTokenFailed(t("Failed-to-insert-configuration"))
-              );
-              AllowMicrosoftCalenderSyncCall = false;
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Calender_CalenderServiceManager_GetMicrosoftValidToken_06".toLowerCase()
-                )
-            ) {
-              dispatch(MicrosoftValidTokenFailed(t("Code-is-invalid")));
-              AllowMicrosoftCalenderSyncCall = false;
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Calender_CalenderServiceManager_GetMicrosoftValidToken_07".toLowerCase()
-                )
-            ) {
-              dispatch(MicrosoftValidTokenFailed(t("Something-went-wrong")));
-              AllowMicrosoftCalenderSyncCall = false;
-            }
-          } else {
+    try {
+      const response = await axios.post(getCalender, form, {
+        headers: {
+          _token: token,
+        },
+      });
+
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        dispatch(
+          getMicrosoftValidToken(
+            navigate,
+            authMicrosoftAccessCode,
+            userOptionsSettings,
+            AllowMicrosoftCalenderSyncCall,
+            t
+          )
+        );
+      } else if (response.data.responseCode === 200) {
+        if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Calender_CalenderServiceManager_GetMicrosoftValidToken_01".toLowerCase()
+              )
+          ) {
+            dispatch(
+              MicrosoftValidTokenSuccess(
+                t("Token-updated-and-calender-list-saved-successful")
+              )
+            );
+            return true;
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Calender_CalenderServiceManager_GetMicrosoftValidToken_02".toLowerCase()
+              )
+          ) {
+            dispatch(
+              MicrosoftValidTokenSuccess(
+                t("Token-updated-but-failed-to-save-calender")
+              )
+            );
+            return true;
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Calender_CalenderServiceManager_GetMicrosoftValidToken_03".toLowerCase()
+              )
+          ) {
+            dispatch(
+              MicrosoftValidTokenSuccess(
+                t("Token-updated-but-no-event-found-in-the-calendar")
+              )
+            );
+            return true;
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Calender_CalenderServiceManager_GetMicrosoftValidToken_04".toLowerCase()
+              )
+          ) {
+            dispatch(MicrosoftValidTokenFailed(t("No-email-exist")));
+            return false;
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Calender_CalenderServiceManager_GetMicrosoftValidToken_05".toLowerCase()
+              )
+          ) {
+            dispatch(
+              MicrosoftValidTokenFailed(t("Failed-to-insert-configuration"))
+            );
+            return false;
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Calender_CalenderServiceManager_GetMicrosoftValidToken_06".toLowerCase()
+              )
+          ) {
+            dispatch(MicrosoftValidTokenFailed(t("Code-is-invalid")));
+            return false;
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Calender_CalenderServiceManager_GetMicrosoftValidToken_07".toLowerCase()
+              )
+          ) {
             dispatch(MicrosoftValidTokenFailed(t("Something-went-wrong")));
-            AllowMicrosoftCalenderSyncCall = false;
+            return false;
           }
         } else {
           dispatch(MicrosoftValidTokenFailed(t("Something-went-wrong")));
-          AllowMicrosoftCalenderSyncCall = false;
+          return false;
         }
-      })
-      .catch((response) => {
+      } else {
         dispatch(MicrosoftValidTokenFailed(t("Something-went-wrong")));
-        AllowMicrosoftCalenderSyncCall = false;
-      });
+        return false;
+      }
+    } catch (error) {
+      dispatch(MicrosoftValidTokenFailed(t("Something-went-wrong")));
+      return false;
+    }
   };
 };
-
 export {
   updateUserSettingFunc,
   updateUserMessageCleare,
