@@ -973,6 +973,19 @@ span.dashMinute {
   overflow: hidden;
   white-space: nowrap;
 }
+.fileNameAttachmentNotOpened {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  text-decoration-line: underline;
+  color: #5a5a5c;
+  font-family: "MontserratMedium-500";
+  margin-left: 10px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  cursor: default !important;
+}
 
 body[dir="rtl"] .fileNameAttachment {
   font-style: normal;

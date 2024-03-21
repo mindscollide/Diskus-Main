@@ -1705,7 +1705,7 @@ const SearchComponent = ({
               <p className={styles["overflow-text"]}>
                 {searchDataFields.StatusID === 1
                   ? t("My-documents")
-                  : searchDataFields.StatusID === 2
+                  : searchDataFields.StatusID === 3
                   ? t("Any-where-in-dataRoom")
                   : t("Shared-with-me")}
               </p>

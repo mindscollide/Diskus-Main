@@ -74,19 +74,20 @@ const AllFilesModal = ({
         "_blank",
         "noopener noreferrer"
       );
-    } else {
-      let data = {
-        FileID: Number(record.originalAttachmentName),
-      };
-      dispatch(
-        DataRoomDownloadFileApiFunc(
-          navigate,
-          data,
-          t,
-          record.displayAttachmentName
-        )
-      );
     }
+    // else {
+    //   let data = {
+    //     FileID: Number(record.originalAttachmentName),
+    //   };
+    //   dispatch(
+    //     DataRoomDownloadFileApiFunc(
+    //       navigate,
+    //       data,
+    //       t,
+    //       record.displayAttachmentName
+    //     )
+    //   );
+    // }
   };
 
   console.log("File Data", agendaName, fileDataAgenda);
@@ -161,7 +162,15 @@ const AllFilesModal = ({
                                 )
                               )
                             }
-                            className={styles["fileNameAttachment"]}
+                            className={
+                              ["pdf", "doc", "docx", "xls", "xlsx"].includes(
+                                getFileExtension(
+                                  filesData?.displayAttachmentName
+                                )
+                              )
+                                ? styles["fileNameAttachment"]
+                                : styles["fileNameAttachmentNotOpened"]
+                            }
                           >
                             {filesData?.displayAttachmentName}
                           </span>

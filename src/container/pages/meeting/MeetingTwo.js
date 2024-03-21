@@ -183,6 +183,7 @@ const NewMeeting = () => {
     message: "",
   });
   const [rows, setRow] = useState([]);
+  console.log(rows, "rowsrowsrowsrows");
   const [totalRecords, setTotalRecords] = useState(0);
   const [minutesAgo, setMinutesAgo] = useState(null);
   const [searchFields, setSearchFeilds] = useState({
@@ -1318,8 +1319,9 @@ const NewMeeting = () => {
                 title: data.title,
                 talkGroupID: data.talkGroupID,
                 key: index,
+                // meetingType: data.meetingTypeID,
                 meetingType:
-                  data.meetingTypeID === 1 && data.isQuickMeeting
+                  data.meetingTypeID === 1 && data.isQuickMeeting === true
                     ? 0
                     : data.meetingTypeID,
               });
