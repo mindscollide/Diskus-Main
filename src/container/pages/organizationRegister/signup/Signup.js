@@ -411,9 +411,15 @@ const Signup = () => {
             adminReducer.OrganisationCheck !== false &&
             adminReducer.EmailCheck !== false
           ) {
-            let PackageID = localStorage.getItem("PackageID");
-            let tenureOfSuscriptionID = localStorage.getItem(
-              "TenureOfSuscriptionID"
+            let PackageID = Number(localStorage.getItem("PackageID"));
+            let tenureOfSuscriptionID = Number(
+              localStorage.getItem("TenureOfSuscriptionID")
+            );
+            console.log(PackageID, typeof PackageID, "tenureOfSuscriptionID");
+            console.log(
+              tenureOfSuscriptionID,
+              typeof tenureOfSuscriptionID,
+              "tenureOfSuscriptionID"
             );
             let data = {
               SelectedPackageID: JSON.parse(PackageID),
@@ -577,13 +583,19 @@ const Signup = () => {
             adminReducer.OrganisationCheck !== false &&
             adminReducer.EmailCheck !== false
           ) {
-            let PackageID = localStorage.getItem("PackageID");
-            let tenureOfSuscriptionID = localStorage.getItem(
-              "TenureOfSuscriptionID"
+            let PackageID = Number(localStorage.getItem("PackageID"));
+            let tenureOfSuscriptionID = Number(
+              localStorage.getItem("TenureOfSuscriptionID")
             );
+            // console.log(PackageID, typeof PackageID, "tenureOfSuscriptionID");
+            // console.log(
+            //   tenureOfSuscriptionID,
+            //   typeof tenureOfSuscriptionID,
+            //   "tenureOfSuscriptionID"
+            // );
             let data = {
-              SelectedPackageID: JSON.parse(PackageID),
-              TenureOfSuscriptionID: JSON.parse(tenureOfSuscriptionID),
+              SelectedPackageID: PackageID,
+              TenureOfSuscriptionID: tenureOfSuscriptionID,
               Organization: {
                 OrganizationName: signUpDetails.CompanyName.value,
                 FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
@@ -771,11 +783,14 @@ const Signup = () => {
       adminReducer.OrganisationCheck &&
       adminReducer.EmailCheck
     ) {
-      let PackageID = localStorage.getItem("PackageID");
-      let tenureOfSuscriptionID = localStorage.getItem("TenureOfSuscriptionID");
+      let PackageID = Number(localStorage.getItem("PackageID"));
+      let tenureOfSuscriptionID = Number(
+        localStorage.getItem("TenureOfSuscriptionID")
+      );
+
       let data = {
-        SelectedPackageID: JSON.parse(PackageID),
-        TenureOfSuscriptionID: JSON.parse(tenureOfSuscriptionID),
+        SelectedPackageID: PackageID,
+        TenureOfSuscriptionID: tenureOfSuscriptionID,
         Organization: {
           OrganizationName: signUpDetails.CompanyName.value,
           FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
