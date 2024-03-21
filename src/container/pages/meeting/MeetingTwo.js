@@ -183,6 +183,7 @@ const NewMeeting = () => {
     message: "",
   });
   const [rows, setRow] = useState([]);
+  console.log(rows, "rowsrowsrowsrows")
   const [totalRecords, setTotalRecords] = useState(0);
   const [minutesAgo, setMinutesAgo] = useState(null);
   const [searchFields, setSearchFeilds] = useState({
@@ -748,16 +749,16 @@ const NewMeeting = () => {
       width: "115px",
       align: "center",
       ellipsis: true,
-      filters: isMeetingTypeFilter,
-      defaultFilteredValue: defaultFiltersValues || null,
-      filterResetToDefaultFilteredValue: true,
+      // filters: isMeetingTypeFilter,
+      // defaultFilteredValue: defaultFiltersValues || null,
+      // filterResetToDefaultFilteredValue: true,
       filterIcon: () => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
-      onFilter: (value, record) => {
-        const meetingType = Number(record.meetingType);
-        return meetingType === Number(value);
-      },
+      // onFilter: (value, record) => {
+      //   const meetingType = Number(record.meetingType);
+      //   return meetingType === Number(value);
+      // },
       render: (text, record) => {
         const meetingType = Number(record.meetingType);
         const matchedFilter = isMeetingTypeFilter.find(
@@ -1318,10 +1319,11 @@ const NewMeeting = () => {
                 title: data.title,
                 talkGroupID: data.talkGroupID,
                 key: index,
-                meetingType:
-                  data.meetingTypeID === 1 && data.isQuickMeeting
-                    ? 0
-                    : data.meetingTypeID,
+                meetingType: data.meetingTypeID,
+                // meetingType:
+                //   data.meetingTypeID === 1 && data.isQuickMeeting === true
+                //     ? 0
+                //     : data.meetingTypeID,
               });
             } catch {}
           });

@@ -179,23 +179,9 @@ const Dashboard = () => {
   const [currentLanguage, setCurrentLanguage] = useState("en");
   let Blur = localStorage.getItem("blur");
 
-  const [currentActiveChat, setCurrentActiveChat] = useState([]);
-
   const cancelModalMeetingDetails = useSelector(
     (state) => state.NewMeetingreducer.cancelModalMeetingDetails
   );
-
-  useEffect(() => {
-    if (
-      talkStateData.ActiveChatData !== undefined &&
-      talkStateData.ActiveChatData !== null &&
-      talkStateData.ActiveChatData.length !== 0
-    ) {
-      setCurrentActiveChat(talkStateData.ActiveChatData);
-    } else {
-      setCurrentActiveChat([]);
-    }
-  }, [talkStateData.ActiveChatData]);
 
   let newClient = Helper.socket;
   // for close the realtime Notification bar
