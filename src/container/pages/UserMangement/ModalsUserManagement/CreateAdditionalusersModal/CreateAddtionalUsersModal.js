@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./CreateAdditionalUsersModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import CrossIcon from "../../../../../assets/images/CrossIcon.svg";
+import profile from "../../../../../assets/images/newprofile.png";
 import { useSelector } from "react-redux";
 import { showCreateAddtionalUsersModal } from "../../../../../store/actions/UserMangementModalActions";
 import {
@@ -17,6 +19,21 @@ const CreateAddtionalUsersModal = () => {
   const dispatch = useDispatch();
 
   const { UserManagementModals } = useSelector((state) => state);
+
+  const [members, setMembers] = useState([
+    {
+      name: "Saif ul islam",
+    },
+    {
+      name: "huzaifa jahangir",
+    },
+    {
+      name: "Owais",
+    },
+    {
+      name: "mamdani",
+    },
+  ]);
 
   const handleCrossIcon = () => {
     dispatch(showCreateAddtionalUsersModal(false));
@@ -138,6 +155,52 @@ const CreateAddtionalUsersModal = () => {
                   />
                 </Col>
               </Row>
+              <Row className="mt-3">
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  xs={12}
+                  className={styles["Scroller_Users"]}
+                >
+                  <Row>
+                    {members.map((data, index) => {
+                      return (
+                        <Col lg={6} md={6} sm={12} className="mt-2">
+                          <Row>
+                            <Col lg={11} md={11} sm={12}>
+                              <Row className={styles["Card_border2"]}>
+                                <Col sm={12} md={10} lg={10}>
+                                  <img
+                                    src={profile}
+                                    width="33px"
+                                    height="33px"
+                                    alt=""
+                                    draggable="false"
+                                  />
+                                  <span className={styles["Name_cards"]}>
+                                    {data.name}
+                                  </span>
+                                </Col>
+                                <Col sm={12} md={2} lg={2}>
+                                  <img
+                                    src={CrossIcon}
+                                    width="14px"
+                                    height="14px"
+                                    alt=""
+                                    draggable="false"
+                                    style={{ cursor: "pointer" }}
+                                  />
+                                </Col>
+                              </Row>
+                            </Col>
+                          </Row>
+                        </Col>
+                      );
+                    })}
+                  </Row>
+                </Col>
+              </Row>
             </section>
           </>
         }
@@ -158,6 +221,10 @@ const CreateAddtionalUsersModal = () => {
                   <Button
                     text={t("Reset")}
                     className={styles["SkipandResetButtonClass"]}
+                  />
+                  <Button
+                    text={t("ADD")}
+                    className={styles["CreateButtonClass"]}
                   />
                   <Button
                     text={t("Create")}

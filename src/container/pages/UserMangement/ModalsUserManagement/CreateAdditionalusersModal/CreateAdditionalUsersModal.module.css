@@ -101,3 +101,44 @@ body[dir="rtl"] .SkipandResetButtonClass {
 body[dir="rtl"] .CreateButtonClass {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
+
+.Scroller_Users {
+  height: 10vh !important;
+  overflow-x: hidden !important;
+}
+
+.Scroller_Users::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_Users::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.Card_border2 {
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  margin-left: 0px;
+  padding: 8px 0;
+  display: flex;
+  align-items: center;
+}
+
+body[dir="rtl"] .Card_border2 {
+  margin-right: 0px !important;
+}
+
+.Name_cards {
+  font-size: 12px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold" !important;
+  margin-left: 5px !important;
+}
+
+body[dir="rtl"] .Name_cards {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
