@@ -90,8 +90,7 @@ const createOrganization = (data, navigate, t) => {
               localStorage.removeItem("PackageID");
               localStorage.setItem("minutes", 4);
               localStorage.setItem("seconds", 60);
-              // navigate("/verifyEmailOTP");
-              navigate("/VerifyOTPUserManagement");
+              navigate("/verifyEmailOTP");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -126,8 +125,7 @@ const createOrganization = (data, navigate, t) => {
               localStorage.setItem("minutes", 0);
               localStorage.setItem("seconds", 0);
               localStorage.removeItem("PackageID");
-              // navigate("/verifyEmailOTP");
-              navigate("/VerifyOTPUserManagement");
+              navigate("/verifyEmailOTP");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -332,8 +330,7 @@ const validationEmailAction = (email, navigate, t) => {
                   t("User-password-is-not-created-please-create-your-password")
                 )
               );
-              // navigate("/createpasswordorganization");
-              navigate("/PasswordCreationUM");
+              navigate("/createpasswordorganization");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -344,8 +341,7 @@ const validationEmailAction = (email, navigate, t) => {
               localStorage.setItem("seconds", 0);
               localStorage.setItem("minutes", 0);
               localStorage.setItem("UserEmail", email);
-              // navigate("/verifyEmailOTP");
-              navigate("/VerifyOTPUserManagement");
+              navigate("/verifyEmailOTP");
               dispatch(
                 validationEmailSuccess(
                   response.data.responseResult,
@@ -1447,8 +1443,7 @@ const verificationEmailOTP = (
               }
               localStorage.removeItem("seconds");
               localStorage.removeItem("minutes");
-              // navigate("/createpasswordorganization");
-              navigate("/PasswordCreationUM");
+              navigate("/createpasswordorganization");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

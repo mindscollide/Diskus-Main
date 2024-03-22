@@ -187,15 +187,14 @@ const EmailValidation = () => {
   }, []);
 
   const goForSignUp = () => {
-    // navigate("/packageselection");
-    navigate("/PakageDetailsUserManagement");
+    navigate("/packageselection");
   };
 
   const handleClickFreeTrail = () => {
     localStorage.setItem("PackageID", 4);
     localStorage.setItem("TenureOfSuscriptionID", 2);
-
-    navigate("/signuporganization", {
+    // signuporganization;
+    navigate("/signupUsermanagement", {
       state: {
         freeTrail: true,
       },

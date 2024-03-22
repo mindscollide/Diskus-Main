@@ -1029,7 +1029,7 @@ const SignUpOrganizationUM = () => {
                   className="d-flex justify-content-start align-items-center"
                 >
                   <span className={styles["signUp_goBack"]} />
-                  <Link to={"/PakageDetailsUserManagement"} color="black">
+                  <Link to={"/"} color="black">
                     {t("Go-back")}
                   </Link>
                 </Col>
