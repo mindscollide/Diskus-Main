@@ -3,26 +3,21 @@ import { Container, Row, Col, Form } from "react-bootstrap";
 import {
   Button,
   Paper,
-  TextField,
   Checkbox,
   Notification,
   Loader,
-  NotificationBar,
 } from "../../../../../components/elements";
-import { CopyOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
 import DiskusLogo from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
 import styles from "./EmailValidation.module.css";
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
-import AttachmentIcon from "../../../../../assets/images/Metro-attachment.png";
-import ErrorBar from "../../../../authentication/sign_up/errorbar/ErrorBar";
 import { validationEmail } from "../../../../../commen/functions/validations";
 import {
   cleareMessage,
   validationEmailAction,
 } from "../../../../../store/actions/Auth2_actions";
 import { useDispatch, useSelector } from "react-redux";
-import { useTranslation } from "react-i18next"; //ya
+import { useTranslation } from "react-i18next";
 import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
 
 const EmailValidation = () => {
