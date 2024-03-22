@@ -150,7 +150,7 @@ const BillProcessStepOne = ({
                 </Col>
               </Row>
               <Row className="mt-2">
-                <Col lg={12} md={12} sm={12} xs={12}>
+                <Col lg={6} md={6} sm={12} xs={12}>
                   <TextField
                     placeholder={t("Email")}
                     label={
@@ -177,6 +177,19 @@ const BillProcessStepOne = ({
                       </p>
                     </Col>
                   </Row>
+                </Col>
+                <Col lg={6} md={6} sm={12} xs={12}>
+                  <TextField
+                    placeholder={t("Contact")}
+                    label={
+                      <>
+                        <span className={styles["nameStyles"]}>
+                          {t("Contact")}{" "}
+                          <span className={styles["stericClass"]}>*</span>
+                        </span>
+                      </>
+                    }
+                  />
                 </Col>
               </Row>
             </Col>

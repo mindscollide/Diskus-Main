@@ -7,7 +7,7 @@ import {
   Notification,
   Loader,
 } from "../../../../../components/elements";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import DiskusLogo from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
 import styles from "./EmailValidation.module.css";
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";

@@ -133,7 +133,7 @@ const BillProcessStepThree = () => {
           className={styles["outerBoxForBilling"]}
         >
           <Row className="mt-3">
-            <Col lg={8} md={8} sm={12} xs={12}>
+            <Col lg={9} md={9} sm={12} xs={12}>
               <TableToDo
                 column={ColumnsPakageSelection}
                 className={"Billing_TablePakageSelection"}
@@ -144,7 +144,7 @@ const BillProcessStepThree = () => {
                 scroll={{ x: true }}
               />
             </Col>
-            <Col lg={4} md={4} sm={12} xs={12}>
+            <Col lg={3} md={3} sm={12} xs={12}>
               <section className={styles["OuterBoxExpiryNotification"]}>
                 <Row className="mt-0">
                   <Col

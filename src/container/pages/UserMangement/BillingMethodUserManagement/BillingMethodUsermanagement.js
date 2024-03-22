@@ -452,7 +452,7 @@ const BillingMethodUsermanagement = () => {
                 onClick={handleBack}
               />
               <Button
-                text={t("Next")}
+                text={activeStep === 3 ? t("Confirm-payment") : t("Next")}
                 className={styles["NextbuttonBillingMethod"]}
                 onClick={handleNext}
               />
