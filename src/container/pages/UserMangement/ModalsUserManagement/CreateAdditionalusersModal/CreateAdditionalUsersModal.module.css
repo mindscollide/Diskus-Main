@@ -120,16 +120,16 @@ body[dir="rtl"] .CreateButtonClass {
 }
 
 .Card_border2 {
-  border: 1px solid #e1e1e1 !important;
+  /* border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   margin-left: 0px;
   padding: 8px 0;
   display: flex;
-  align-items: center;
+  align-items: center; */
 }
 
 body[dir="rtl"] .Card_border2 {
-  margin-right: 0px !important;
+  /* margin-right: 0px !important; */
 }
 
 .Name_cards {
@@ -141,4 +141,48 @@ body[dir="rtl"] .Card_border2 {
 
 body[dir="rtl"] .Name_cards {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.RedSrtip {
+  width: 100% !important;
+  background: #ffe8e8 !important;
+  padding: 8px 10px !important;
+  border-radius: 4px !important;
+  align-items: center !important;
+}
+
+.RedStripContent {
+  font-family: "MontserratBold-700" !important;
+  font-size: 12px !important;
+  color: #f16b6b !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+body[dir="rtl"] .RedStripContent {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
+
+.Buttonclass {
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  height: 39px !important;
+}
+
+.Buttonclass:is(:hover, :focus, :focus-visible, :active) {
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  height: 39px !important;
+}
+
+.buttonStyles {
+  margin-top: 19px !important;
+  display: flex !important;
+  justify-content: end !important;
+}
+
+.PlusIcons {
+  margin-top: 2px !important;
 }
