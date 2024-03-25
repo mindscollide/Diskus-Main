@@ -1475,6 +1475,22 @@ const SaveOrganizationAndPakageSelection = {
   RequestMethod: "ServiceManager.SaveOrganizationsAndSelectedPackage",
 };
 
+const GetOrganizationSubscriptionExpiryDetails = {
+  RequestMethod: "ServiceManager.GetOrganizationSubscriptionExpiryDetails",
+};
+
+const ExtendOrganizationTrial = {
+  RequestMethod: "ServiceManager.ExtendOrganizationTrial",
+};
+
+const AddOrganizationsUser = {
+  RequestMethod: "ServiceManager.AddOrganizationsUser",
+};
+
+const EditOrganizationsUser = {
+  RequestMethod: "ServiceManager.EditOrganizationsUser",
+};
+
 export {
   UserLoginHistoryRM,
   getDataAnalyticsCountRM,
@@ -1870,4 +1886,8 @@ export {
   exportAgendaAsPDF,
   printMeetingAgenda,
   SaveOrganizationAndPakageSelection,
+  GetOrganizationSubscriptionExpiryDetails,
+  ExtendOrganizationTrial,
+  AddOrganizationsUser,
+  EditOrganizationsUser,
 };
