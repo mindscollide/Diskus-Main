@@ -237,7 +237,7 @@ body[dir="rtl"] .errorMessage_hidden {
   position: relative;
   width: 30px;
   height: 30px;
-
+  top: 15px;
   color: green;
 }
 
@@ -247,6 +247,7 @@ body[dir="rtl"] .errorMessage_hidden {
   width: 30px;
   height: 30px;
   bottom: 0px;
+  top: 10px;
   color: green;
 }
 
