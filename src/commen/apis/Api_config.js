@@ -1491,6 +1491,19 @@ const EditOrganizationsUser = {
   RequestMethod: "ServiceManager.EditOrganizationsUser",
 };
 
+const AllOrganizationsUsers = {
+  RequestMethod: "ServiceManager.AllOrganizationsUsers",
+};
+
+const OrganizationPackageDetailsAndUserStats = {
+  RequestMethod: "ServiceManager.OrganizationPackageDetailsAndUserStats",
+};
+
+const GetOrganizationSelectedPackagesByOrganizationID = {
+  RequestMethod:
+    "ServiceManager.GetOrganizationSelectedPackagesByOrganizationID",
+};
+
 export {
   UserLoginHistoryRM,
   getDataAnalyticsCountRM,
@@ -1890,4 +1903,7 @@ export {
   ExtendOrganizationTrial,
   AddOrganizationsUser,
   EditOrganizationsUser,
+  AllOrganizationsUsers,
+  OrganizationPackageDetailsAndUserStats,
+  GetOrganizationSelectedPackagesByOrganizationID,
 };

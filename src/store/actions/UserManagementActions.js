@@ -1,5 +1,7 @@
 import {
   AddOrganizationsUser,
+  AllOrganizationsUsers,
+  GetOrganizationSelectedPackagesByOrganizationID,
   GetOrganizationSubscriptionExpiryDetails,
   SaveOrganizationAndPakageSelection,
 } from "../../commen/apis/Api_config";
@@ -632,10 +634,345 @@ const EditOrganizationsUserApi = (navigate, t, data) => {
   };
 };
 
+//ALL ORGANIZATION USERS
+
+const allOrganizationUsersInit = () => {
+  return {
+    type: actions.ALL_ORGANIZAION_USERS_INIT,
+  };
+};
+
+const allOrganizationUsersSuccess = (response, message) => {
+  return {
+    type: actions.ALL_ORGANIZAION_USERS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const allOrganizationUsersFail = (message) => {
+  return {
+    type: actions.ALL_ORGANIZAION_USERS_FAIL,
+    message: message,
+  };
+};
+
+const AllOrganizationsUsersApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(allOrganizationUsersInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(data));
+    form.append("RequestMethod", AllOrganizationsUsers.RequestMethod);
+    axios({
+      method: "post",
+      url: getAdminURLs,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(AllOrganizationsUsersApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_AllOrganizationsUsers_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                allOrganizationUsersSuccess(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_AllOrganizationsUsers_03".toLowerCase()
+                )
+            ) {
+              dispatch(allOrganizationUsersFail(t("No-data-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_AllOrganizationsUsers_04".toLowerCase()
+                )
+            ) {
+              dispatch(allOrganizationUsersFail(t("Something-went-wrong")));
+            } else {
+              dispatch(allOrganizationUsersFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(allOrganizationUsersFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(allOrganizationUsersFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(allOrganizationUsersFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+//ALL ORGANIZATION PAKAGE DETAILS AND USER STATS
+
+const organzationPakageDetailsAnduserStatsInit = () => {
+  return {
+    type: actions.ORGANIZATION_PAKAGEDETAILS_AND_USERSTATS_INIT,
+  };
+};
+
+const organzationPakageDetailsAnduserStatsSuccess = (response, message) => {
+  return {
+    type: actions.ORGANIZATION_PAKAGEDETAILS_AND_USERSTATS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const organzationPakageDetailsAnduserStatsFailed = (message) => {
+  return {
+    type: actions.ORGANIZATION_PAKAGEDETAILS_AND_USERSTATS_FAIL,
+    message: message,
+  };
+};
+
+const OrganizationPackageDetailsAndUserStatsApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(organzationPakageDetailsAnduserStatsInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(data));
+    form.append("RequestMethod", AllOrganizationsUsers.RequestMethod);
+    axios({
+      method: "post",
+      url: getAdminURLs,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            OrganizationPackageDetailsAndUserStatsApi(navigate, t, data)
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_OrganizationPackageDetailsAndUserStats_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                organzationPakageDetailsAnduserStatsSuccess(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_OrganizationPackageDetailsAndUserStats_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                organzationPakageDetailsAnduserStatsFailed(t("No-data-found"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_OrganizationPackageDetailsAndUserStats_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                organzationPakageDetailsAnduserStatsFailed(
+                  t("Something-went-wrong")
+                )
+              );
+            } else {
+              dispatch(
+                organzationPakageDetailsAnduserStatsFailed(
+                  t("Something-went-wrong")
+                )
+              );
+            }
+          } else {
+            dispatch(
+              organzationPakageDetailsAnduserStatsFailed(
+                t("Something-went-wrong")
+              )
+            );
+          }
+        } else {
+          dispatch(
+            organzationPakageDetailsAnduserStatsFailed(
+              t("Something-went-wrong")
+            )
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          organzationPakageDetailsAnduserStatsFailed(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
+//GET ORGANIZATION PAKAGE SELECTED BY ORGANIZATION ID
+
+const organizationSelectedPakagebyOrganzationidInit = () => {
+  return {
+    type: actions.GET_ORGANZIATION_SELECTEDPAKAGE_BY_ORGANZATIONID_INIT,
+  };
+};
+
+const organizationSelectedPakagebyOrganzationidSuccess = (
+  response,
+  message
+) => {
+  return {
+    type: actions.GET_ORGANZIATION_SELECTEDPAKAGE_BY_ORGANZATIONID_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const organizationSelectedPakagebyOrganzationidFail = (message) => {
+  return {
+    type: actions.GET_ORGANZIATION_SELECTEDPAKAGE_BY_ORGANZATIONID_FAIL,
+    message: message,
+  };
+};
+
+const GetOrganizationSelectedPackagesByOrganizationIDApi = (
+  navigate,
+  t,
+  data
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(organizationSelectedPakagebyOrganzationidInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(data));
+    form.append(
+      "RequestMethod",
+      GetOrganizationSelectedPackagesByOrganizationID.RequestMethod
+    );
+    axios({
+      method: "post",
+      url: getAdminURLs,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            GetOrganizationSelectedPackagesByOrganizationIDApi(
+              navigate,
+              t,
+              data
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_GetOrganizationSelectedPackages_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                organizationSelectedPakagebyOrganzationidSuccess(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_GetOrganizationSelectedPackages_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                organizationSelectedPakagebyOrganzationidFail(
+                  t("No-data-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_GetOrganizationSelectedPackages_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                organizationSelectedPakagebyOrganzationidFail(
+                  t("Something-went-wrong")
+                )
+              );
+            } else {
+              dispatch(
+                organizationSelectedPakagebyOrganzationidFail(
+                  t("Something-went-wrong")
+                )
+              );
+            }
+          } else {
+            dispatch(
+              organizationSelectedPakagebyOrganzationidFail(
+                t("Something-went-wrong")
+              )
+            );
+          }
+        } else {
+          dispatch(
+            organizationSelectedPakagebyOrganzationidFail(
+              t("Something-went-wrong")
+            )
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          organizationSelectedPakagebyOrganzationidFail(
+            t("Something-went-wrong")
+          )
+        );
+      });
+  };
+};
+
 export {
   signUpOrganizationAndPakageSelection,
   getAllorganizationSubscriptionExpiryDetailsApi,
   ExtendOrganizationTrialApi,
   AddOrganizationsUserApi,
   EditOrganizationsUserApi,
+  AllOrganizationsUsersApi,
+  OrganizationPackageDetailsAndUserStatsApi,
+  GetOrganizationSelectedPackagesByOrganizationIDApi,
 };

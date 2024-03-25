@@ -8,6 +8,9 @@ const initialState = {
   extentOrganizationalTrialData: null,
   addOrganizationUsersData: null,
   editOrganizationUsersData: null,
+  allOrganizationUsersData: null,
+  organizationPakageDetailsUserStatsData: null,
+  organizationSelectedPakagesByOrganizationIDData: null,
 };
 
 const UserMangementReducer = (state = initialState, action) => {
@@ -123,6 +126,75 @@ const UserMangementReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         editOrganizationUsersData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.ALL_ORGANIZAION_USERS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.ALL_ORGANIZAION_USERS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        allOrganizationUsersData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.ALL_ORGANIZAION_USERS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        allOrganizationUsersData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.ORGANIZATION_PAKAGEDETAILS_AND_USERSTATS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.ORGANIZATION_PAKAGEDETAILS_AND_USERSTATS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        organizationPakageDetailsUserStatsData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.ORGANIZATION_PAKAGEDETAILS_AND_USERSTATS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        organizationPakageDetailsUserStatsData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ORGANZIATION_SELECTEDPAKAGE_BY_ORGANZATIONID_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GET_ORGANZIATION_SELECTEDPAKAGE_BY_ORGANZATIONID_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        organizationSelectedPakagesByOrganizationIDData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GET_ORGANZIATION_SELECTEDPAKAGE_BY_ORGANZATIONID_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        organizationSelectedPakagesByOrganizationIDData: null,
         ResponseMessage: action.message,
       };
     }
