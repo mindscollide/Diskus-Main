@@ -1471,6 +1471,10 @@ const printMeetingAgenda = {
   RequestMethod: "ServiceManager.PrintMeetingAgenda",
 };
 
+const SaveOrganizationAndPakageSelection = {
+  RequestMethod: "ServiceManager.SaveOrganizationsAndSelectedPackage",
+};
+
 export {
   UserLoginHistoryRM,
   getDataAnalyticsCountRM,
@@ -1865,4 +1869,5 @@ export {
   sendAgendaPDFAsEmail,
   exportAgendaAsPDF,
   printMeetingAgenda,
+  SaveOrganizationAndPakageSelection,
 };

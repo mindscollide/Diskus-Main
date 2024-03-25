@@ -13,6 +13,12 @@ import { countryNameforPhoneNumber } from "../../../Admin/AllUsers/AddUser/Count
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 import ReactFlagsSelect from "react-flags-select";
 import { Check2 } from "react-bootstrap-icons";
+import { signUpOrganizationAndPakageSelection } from "../../../../store/actions/UserManagementActions";
+import {
+  checkEmailExsist,
+  checkOraganisation,
+} from "../../../../store/actions/Admin_Organization";
+import { setLoader } from "../../../../store/actions/Auth2_actions";
 const SignUpOrganizationUM = () => {
   const { t } = useTranslation();
 
@@ -153,15 +159,15 @@ const SignUpOrganizationUM = () => {
   const handeEmailvlidate = () => {
     if (signUpDetails.Email.value !== "") {
       if (validateEmailEnglishAndArabicFormat(signUpDetails.Email.value)) {
-        // dispatch(
-        //   checkEmailExsist(
-        //     setCompanyEmailValidate,
-        //     setCompanyEmailValidateError,
-        //     signUpDetails,
-        //     t,
-        //     setEmailUnique
-        //   )
-        // );
+        dispatch(
+          checkEmailExsist(
+            setCompanyEmailValidate,
+            setCompanyEmailValidateError,
+            signUpDetails,
+            t,
+            setEmailUnique
+          )
+        );
       } else {
         setEmailUnique(false);
         setSignUpDetails({
@@ -419,18 +425,18 @@ const SignUpOrganizationUM = () => {
               // FK_CCID: signUpDetails.FK_CCID,
             },
           };
-          //   dispatch(createOrganization(data, navigate, t));
+          dispatch(signUpOrganizationAndPakageSelection(data, navigate, t));
         } else {
-          //   await dispatch(setLoader(true));
-          //   await dispatch(
-          //     checkOraganisation(
-          //       setCompanyNameValidate,
-          //       setCompanyNameValidateError,
-          //       signUpDetails,
-          //       t,
-          //       setCompanyNameUnique
-          //     )
-          //   );
+          await dispatch(setLoader(true));
+          await dispatch(
+            checkOraganisation(
+              setCompanyNameValidate,
+              setCompanyNameValidateError,
+              signUpDetails,
+              t,
+              setCompanyNameUnique
+            )
+          );
           handeEmailvlidate();
           setAgainCall(true);
         }
@@ -699,15 +705,15 @@ const SignUpOrganizationUM = () => {
                       </Row>
                       <TextField
                         onBlur={() => {
-                          //   dispatch(
-                          //     checkOraganisation(
-                          //       setCompanyNameValidate,
-                          //       setCompanyNameValidateError,
-                          //       signUpDetails,
-                          //       t,
-                          //       setCompanyNameUnique
-                          //     )
-                          //   );
+                          dispatch(
+                            checkOraganisation(
+                              setCompanyNameValidate,
+                              setCompanyNameValidateError,
+                              signUpDetails,
+                              t,
+                              setCompanyNameUnique
+                            )
+                          );
                         }}
                         autofill
                         labelClass="d-none"
