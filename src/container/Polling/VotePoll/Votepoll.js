@@ -366,7 +366,7 @@ const Votepoll = () => {
                         className="d-flex justify-content-start m-0 p-0 mt-2"
                       >
                         <span className={styles["Multiple_vote_poll"]}>
-                          {t("Mutiple-answer-allowed")}
+                          {t("You-can-select-multiple-options")}
                         </span>
                       </Col>
                     </Row>
