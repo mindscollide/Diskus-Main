@@ -391,7 +391,7 @@ const BillingMethodUsermanagement = () => {
                     </span>
                   }
                 />
-                <Step
+                {/* <Step
                   label={
                     <span
                       className={
@@ -403,7 +403,7 @@ const BillingMethodUsermanagement = () => {
                       {t("Payment-method")}
                     </span>
                   }
-                />
+                /> */}
               </Stepper>
             </Col>
           </Row>
