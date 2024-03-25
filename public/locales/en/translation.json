@@ -1882,5 +1882,13 @@
   "Note-created-successfully-with-attachments": "Note created successfully with attachments",
   "Notes-saved-successfully": "Notes saved successfully",
   "Your-trial-period-is-over": "Your trial period is over.",
-  "please-upgrade-your-Package": "Please upgrade your Package."
+  "please-upgrade-your-Package": "Please upgrade your Package.",
+  "Waqas-associates": "Waqas Associates",
+  "Package-assigned": "Package Assigned",
+  "is-admin-also": "is Admin also",
+  "Please-enter-full-name": "Please enter full name",
+  "Please-select-designation": "Please select Designation",
+  "Please-enter-mobile-number": "Please enter mobile number",
+  "Please-select-a-package": "Please select a package",
+  "Please-enter-email-address": "Please enter email address"
 }

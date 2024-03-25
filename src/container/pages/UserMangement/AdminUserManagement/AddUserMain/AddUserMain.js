@@ -25,12 +25,239 @@ import {
   Subscriptionwarninglimit,
 } from "../../../../../components/elements";
 import { countryNameforPhoneNumber } from "../../../../Admin/AllUsers/AddUser/CountryJson";
+import { validateEmailEnglishAndArabicFormat } from "../../../../../commen/functions/validations";
 
 const AddUserMain = () => {
   const { t } = useTranslation();
 
   const [selected, setSelected] = useState("US");
   const [selectedCountry, setSelectedCountry] = useState({});
+
+  const [userAddMain, setUserAddMain] = useState({
+    Name: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+
+    Designation: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+
+    MobileNumber: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+
+    PackageAssigned: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+
+    Email: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+  });
+
+  const addUserHandler = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+
+    if (name === "Name") {
+      if (/^[A-Za-z\s]+$/.test(value) || value === "") {
+        // Check if value contains only alphabetic characters or is empty
+        setUserAddMain({
+          ...userAddMain,
+          Name: {
+            value: value.trimStart(),
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      } else {
+        setUserAddMain({
+          ...userAddMain,
+          Name: {
+            value: userAddMain.Name.value,
+            errorMessage: "",
+            errorStatus: true,
+          },
+        });
+      }
+    }
+
+    if (name === "Designation") {
+      if (/^[A-Za-z\s]+$/.test(value) || value === "") {
+        // Check if value contains only alphabetic characters or is empty
+        setUserAddMain({
+          ...userAddMain,
+          Designation: {
+            value: value.trimStart(),
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      } else {
+        setUserAddMain({
+          ...userAddMain,
+          Designation: {
+            value: userAddMain.Designation.value,
+            errorMessage: "",
+            errorStatus: true,
+          },
+        });
+      }
+    }
+
+    if (name === "MobileNumber") {
+      if (/^\d+$/.test(value) || value === "") {
+        // Check if value contains only digits or is empty
+        setUserAddMain({
+          ...userAddMain,
+          MobileNumber: {
+            value: value.trimStart(),
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      } else {
+        setUserAddMain({
+          ...userAddMain,
+          MobileNumber: {
+            value: userAddMain.MobileNumber.value,
+            errorMessage: "",
+            errorStatus: true,
+          },
+        });
+      }
+    }
+
+    if (name === "Email" && value !== "") {
+      setUserAddMain({
+        ...userAddMain,
+        Email: {
+          value: value.trimStart(),
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    } else if (name === "Email" && value === "") {
+      setUserAddMain({
+        ...userAddMain,
+        Email: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    }
+  };
+
+  const handleCreate = () => {
+    let isValid = true;
+
+    // Validate email format if it's not empty
+    if (userAddMain.Email.value !== "") {
+      if (!validateEmailEnglishAndArabicFormat(userAddMain.Email.value)) {
+        setUserAddMain({
+          ...userAddMain,
+          Email: {
+            ...userAddMain.Email,
+            errorMessage: t("Enter-valid-email-address"),
+            errorStatus: true,
+          },
+        });
+        isValid = false;
+      }
+    }
+
+    if (
+      userAddMain.Name.value !== "" &&
+      userAddMain.Designation.value !== "" &&
+      userAddMain.MobileNumber.value !== "" &&
+      userAddMain.PackageAssigned.value !== "" &&
+      userAddMain.Email.value !== ""
+    ) {
+      alert("filled fields");
+    } else {
+      setUserAddMain({
+        ...userAddMain,
+        Name: {
+          value: userAddMain.Name.value,
+          errorMessage: t("Please-enter-full-name"),
+          errorStatus: userAddMain.Name.errorStatus,
+        },
+        Designation: {
+          value: userAddMain.Designation.value,
+          errorMessage: t("Please-select-designation"),
+          errorStatus: userAddMain.Designation.errorStatus,
+        },
+        MobileNumber: {
+          value: userAddMain.MobileNumber.value,
+          errorMessage: t("Please-enter-mobile-number"),
+          errorStatus: userAddMain.MobileNumber.errorStatus,
+        },
+        PackageAssigned: {
+          value: userAddMain.PackageAssigned.value,
+          errorMessage: t("Please-select-a-package"),
+          errorStatus: userAddMain.PackageAssigned.errorStatus,
+        },
+        Email: {
+          ...userAddMain.Email,
+          errorMessage:
+            userAddMain.Email.value === ""
+              ? t("Please-enter-email-address")
+              : userAddMain.Email.errorMessage, // Retain previous error message if field is not empty
+          errorStatus: userAddMain.Email.value === "",
+        },
+      });
+      isValid = false;
+    }
+    if (isValid) {
+      alert("filled fields");
+    }
+  };
+
+  const handleReset = () => {
+    setUserAddMain({
+      ...userAddMain,
+      Name: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+
+      Designation: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+
+      MobileNumber: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+
+      PackageAssigned: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+
+      Email: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+    });
+  };
 
   //for remove the grid from backgroun
   const options = {
@@ -58,16 +285,18 @@ const AddUserMain = () => {
     },
 
     bar: {
-      groupWidth: "95%",
+      groupWidth: "90%",
+      borderRadius: "10px",
     },
   };
 
   const data = [
-    ["Category", "Value"],
-    ["Enabled User", 50],
-    ["Disabled User", 30],
-    ["Locked User", 80],
-    ["Dorment User", 60],
+    // ["Category", "Value"],
+    ["Element", "Users", { role: "style" }, { role: "annotation" }],
+    ["Enabled Users", 50, "#6172D6", "50"],
+    ["Disabled Users", 30, "#6172D6", "30"],
+    ["Locked Users", 80, "#6172D6", "80"],
+    ["Dormant Users", 60, "#6172D6", "60"],
   ];
 
   const handleSelect = (country) => {
@@ -80,8 +309,7 @@ const AddUserMain = () => {
 
   return (
     <>
-      <Container>
-        {/* <Paper className={styles["papercolor-adduser"]}> */}
+      <Container className={styles["container-main-class"]}>
         <Row className="Add-User-Limit">
           <Col lg={6} md={6} sm={12} xs={12} className="mt-2">
             <Container>
@@ -113,7 +341,7 @@ const AddUserMain = () => {
                           xs={12}
                           className="MontserratSemiBold-600 color-5a5a5a font-14 Saved_money_Tagline"
                         >
-                          {t("4-of-9-Users")}
+                          4 of 9 Users
                         </Col>
                       </Row>
                       <Row className="d-flex justify-content-center">
@@ -183,7 +411,7 @@ const AddUserMain = () => {
             sm={12}
             xs={12}
             className="ms-auto"
-            style={{ marginTop: "10px" }}
+            style={{ marginTop: "20px" }}
           >
             {/* <Form> */}
             <Container className="mt-5">
@@ -199,10 +427,23 @@ const AddUserMain = () => {
                     <Form.Control
                       className={styles["formcontrol-name-fieldssss"]}
                       name="Name"
+                      value={userAddMain.Name.value}
                       placeholder={t("Name")}
                       maxLength={200}
+                      onChange={addUserHandler}
                       applyClass="form-control2"
                     />
+                    <Col>
+                      <p
+                        className={
+                          userAddMain.Name.value === ""
+                            ? ` ${styles["errorMessage"]}`
+                            : `${styles["errorMessage_hidden"]}`
+                        }
+                      >
+                        {userAddMain.Name.errorMessage}
+                      </p>
+                    </Col>
                   </Col>
                 </Row>
 
@@ -215,7 +456,6 @@ const AddUserMain = () => {
                   >
                     <label className={styles["label-styling"]}>
                       {t("Organization")}{" "}
-                      <span className={styles["aesterick-color"]}> *</span>
                     </label>
                     <span className={styles["associates-text"]}>
                       {t("Waqas-associates")}
@@ -230,7 +470,6 @@ const AddUserMain = () => {
                   >
                     <label className={styles["label-styling"]}>
                       {t("Organization-role")}{" "}
-                      <span className={styles["aesterick-color"]}> *</span>
                     </label>
 
                     <span>
@@ -251,10 +490,23 @@ const AddUserMain = () => {
                     <Form.Control
                       className={styles["formcontrol-name-fieldssss"]}
                       name="Designation"
+                      value={userAddMain.Designation.value}
                       placeholder={t("Designation")}
                       maxLength={200}
+                      onChange={addUserHandler}
                       applyClass="form-control2"
                     />
+                    <Col>
+                      <p
+                        className={
+                          userAddMain.Designation.value === ""
+                            ? ` ${styles["errorMessage"]} `
+                            : `${styles["errorMessage_hidden"]}`
+                        }
+                      >
+                        {userAddMain.Designation.errorMessage}
+                      </p>
+                    </Col>
                   </Col>
 
                   <Col lg={6} md={6} sm={6} xs={6}>
@@ -292,8 +544,21 @@ const AddUserMain = () => {
                           applyClass="form-control2"
                           maxLength={15}
                           minLength={4}
+                          onChange={addUserHandler}
+                          value={userAddMain.MobileNumber.value}
                           name="MobileNumber"
                         />
+                        <Col>
+                          <p
+                            className={
+                              userAddMain.MobileNumber.value === ""
+                                ? ` ${styles["errorMessage"]} `
+                                : `${styles["errorMessage_hidden"]}`
+                            }
+                          >
+                            {userAddMain.MobileNumber.errorMessage}
+                          </p>
+                        </Col>
                       </Col>
                     </Row>
                   </Col>
@@ -306,6 +571,17 @@ const AddUserMain = () => {
                       <span className={styles["aesterick-color"]}> *</span>
                     </label>
                     <Select />
+                    <Col>
+                      <p
+                        className={
+                          userAddMain.PackageAssigned.value === ""
+                            ? ` ${styles["errorMessage"]} `
+                            : `${styles["errorMessage_hidden"]}`
+                        }
+                      >
+                        {userAddMain.PackageAssigned.errorMessage}
+                      </p>
+                    </Col>
                   </Col>
 
                   <Col lg={6} md={6} sm={6}>
@@ -315,11 +591,24 @@ const AddUserMain = () => {
                     </label>
                     <Form.Control
                       className={styles["formcontrol-name-fieldssss"]}
-                      name="Name"
-                      placeholder={t("Name")}
+                      name="Email"
+                      onChange={addUserHandler}
+                      value={userAddMain.Email.value}
+                      placeholder={t("Email")}
                       maxLength={200}
                       applyClass="form-control2"
                     />
+                    <Col>
+                      <p
+                        className={
+                          userAddMain.Email.value === ""
+                            ? ` ${styles["errorMessage"]} `
+                            : `${styles["errorMessage_hidden"]}`
+                        }
+                      >
+                        {userAddMain.Email.errorMessage}
+                      </p>
+                    </Col>
                   </Col>
                 </Row>
 
@@ -334,10 +623,12 @@ const AddUserMain = () => {
                     <Button
                       className={styles["add-User-Reset-btn"]}
                       text={t("Reset")}
+                      onClick={handleReset}
                     ></Button>
                     <Button
                       className={styles["Add-User-Create"]}
                       text={t("Create")}
+                      onClick={handleCreate}
                     ></Button>
                   </Col>
                 </Row>
