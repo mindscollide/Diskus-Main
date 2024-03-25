@@ -1888,5 +1888,13 @@
   "Organization-and-admin-created-successfully": "Organization and Admin Created Successfully",
   "Organization-and-admin-created-successfully-but-failed-to-send-OTP": "Organization and Admin Created Successfully but failed to send OTP",
   "Organization-name-already-taken": "Organization Name Already Taken",
-  "Failed-to-save-organization": "Failed To Save Organization"
+  "Failed-to-save-organization": "Failed To Save Organization",
+  "Waqas-associates": "Waqas Associates",
+  "Package-assigned": "Package Assigned",
+  "is-admin-also": "is Admin also",
+  "Please-enter-full-name": "Please enter full name",
+  "Please-select-designation": "Please select Designation",
+  "Please-enter-mobile-number": "Please enter mobile number",
+  "Please-select-a-package": "Please select a package",
+  "Please-enter-email-address": "Please enter email address"
 }
