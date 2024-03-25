@@ -1058,7 +1058,10 @@ const SignUpOrganizationUM = () => {
                   className="d-flex justify-content-start align-items-center"
                 >
                   <span className={styles["signUp_goBack"]} />
-                  <Link to={"/"} color="black">
+                  <Link
+                    to={isFreeTrail ? "/" : "/PakageDetailsUserManagement"}
+                    color="black"
+                  >
                     {t("Go-back")}
                   </Link>
                 </Col>

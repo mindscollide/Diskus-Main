@@ -182,7 +182,8 @@ const EmailValidation = () => {
   }, []);
 
   const goForSignUp = () => {
-    navigate("/packageselection");
+    // navigate("/packageselection");
+    navigate("/PakageDetailsUserManagement");
   };
 
   const handleClickFreeTrail = () => {
