@@ -955,7 +955,7 @@ const Polling = () => {
                     sm={12}
                     md={12}
                     lg={12}
-                    className="d-flex justify-content-center align-items-center flex-column"
+                    className="d-flex justify-content-center align-items-center flex-column gap-2"
                   >
                     <img src={PollsEmpty} alt="poll_icon" draggable="false" />
                     <span className={styles["No_Poll_Heading"]}>
@@ -966,6 +966,26 @@ const Polling = () => {
                         "Be-the-first-to-create-a-poll-and-spark-the-conversation"
                       )}
                     </span>
+                    <Button
+                      text={t("New")}
+                      className={styles["new_Poll_Button"]}
+                      icon={
+                        <img
+                          src={plusbutton}
+                          height="7.6px"
+                          width="7.6px"
+                          alt=""
+                          className="align-items-center"
+                          draggable="false"
+                        />
+                      }
+                      onClick={() =>
+                        dispatch(
+                          setCreatePollModal(true),
+                          dispatch(LoaderState(true))
+                        )
+                      }
+                    />
                   </Col>
                 </Row>
               </Paper>

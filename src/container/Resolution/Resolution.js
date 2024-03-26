@@ -1619,6 +1619,25 @@ const Resolution = () => {
                         <p className={styles["NoResolution_Tagline"]}>
                           {t("Planning-to-get-a-thought-on-something?")}
                         </p>
+                        <Button
+                          className={styles["create-Resolution-btn"]}
+                          text={
+                            <span className={styles["Btn_create_text"]}>
+                              {t("Create-new-resolution")}
+                            </span>
+                          }
+                          icon={
+                            <img
+                              draggable="false"
+                              src={plusbutton}
+                              height="7.6px"
+                              width="7.6px"
+                              alt=""
+                              className="align-items-center"
+                            />
+                          }
+                          onClick={() => createresolution()}
+                        />
                       </Col>
                     </Row>
                   )}
@@ -1685,6 +1704,25 @@ const Resolution = () => {
                         <p className={styles["NoResolution_Tagline"]}>
                           {t("Planning-to-get-a-thought-on-something?")}
                         </p>
+                        <Button
+                          className={styles["create-Resolution-btn"]}
+                          text={
+                            <span className={styles["Btn_create_text"]}>
+                              {t("Create-new-resolution")}
+                            </span>
+                          }
+                          icon={
+                            <img
+                              draggable="false"
+                              src={plusbutton}
+                              height="7.6px"
+                              width="7.6px"
+                              alt=""
+                              className="align-items-center"
+                            />
+                          }
+                          onClick={() => createresolution()}
+                        />
                       </Col>
                     </Row>
                   )}
