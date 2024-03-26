@@ -39,6 +39,7 @@ import {
   getIconSource,
 } from "../../../../DataRoom/SearchFunctionality/option";
 import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
+import { timeFormatFunction } from "../../../../../commen/functions/date_formater";
 
 const SubAgendaMappingDragging = ({
   data,
@@ -615,18 +616,27 @@ const SubAgendaMappingDragging = ({
                                                         {/* {
                                                           subAgendaData?.presenterName
                                                         } */}
-                                                        {subAgendaData?.presenterName +
-                                                          " - (" +
-                                                          moment(
-                                                            subAgendaData?.startDate,
-                                                            "HHmmss"
-                                                          ).format("hh:mm a") +
-                                                          " - " +
-                                                          moment(
-                                                            subAgendaData?.endDate,
-                                                            "HHmmss"
-                                                          ).format("hh:mm a") +
-                                                          ")"}
+                                                        {
+                                                          subAgendaData?.presenterName +
+                                                            " - (" +
+                                                            moment(
+                                                              timeFormatFunction(
+                                                                data.startDate
+                                                              )
+                                                            ).format(
+                                                              "hh:mm a"
+                                                            ) +
+                                                            " - " +
+                                                            moment(
+                                                              timeFormatFunction(
+                                                                data.endDate
+                                                              )
+                                                            ).format("hh:mm a")
+                                                          // moment(
+                                                          //   subAgendaData?.endDate,
+                                                          //   "HHmmss"
+                                                          // ).format("hh:mm a") +
+                                                        }
                                                       </p>
                                                       {/* <span
                                                       className={

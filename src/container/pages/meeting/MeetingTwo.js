@@ -232,7 +232,7 @@ const NewMeeting = () => {
   }, [currentLanguage]);
   //  Call all search meetings api
   useEffect(() => {
-    const callApi = async () => {
+    // const callApi = async () => {
       try {
         if (meetingpageRow !== null && meetingPageCurrent !== null) {
           let searchData = {
@@ -244,9 +244,9 @@ const NewMeeting = () => {
             Length: Number(meetingpageRow),
             PublishedMeetings: true,
           };
-          await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
-          await dispatch(searchNewUserMeeting(navigate, searchData, t));
-          await dispatch(allAssignessList(navigate, t));
+          dispatch(searchNewUserMeeting(navigate, searchData, t));
+          dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+          dispatch(allAssignessList(navigate, t));
           localStorage.setItem("MeetingCurrentView", 1);
         } else {
           let searchData = {
@@ -260,9 +260,9 @@ const NewMeeting = () => {
           };
           localStorage.setItem("MeetingPageRows", 50);
           localStorage.setItem("MeetingPageCurrent", 1);
-          await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
-          await dispatch(searchNewUserMeeting(navigate, searchData, t));
-          await dispatch(allAssignessList(navigate, t));
+          dispatch(searchNewUserMeeting(navigate, searchData, t));
+          dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+          dispatch(allAssignessList(navigate, t));
 
           localStorage.setItem("MeetingCurrentView", 1);
         }
@@ -278,9 +278,9 @@ const NewMeeting = () => {
         // Handle any errors here
         console.error("Error in callApi:", error);
       }
-    };
+    // };
 
-    callApi();
+    // callApi();
     // setEditFlag(false);
     // setViewFlag(false);
     // dispatch(scheduleMeetingPageFlag(false));
@@ -1547,6 +1547,7 @@ const NewMeeting = () => {
 
   useEffect(() => {
     if (dashboardEventData !== null && dashboardEventData !== undefined) {
+      console.log("Check 1", dashboardEventData);
       let startMeetingRequest = {
         MeetingID: Number(dashboardEventData.pK_MDID),
         StatusID: 10,
@@ -1554,10 +1555,12 @@ const NewMeeting = () => {
 
       for (const meeting of rows) {
         if (Number(meeting.pK_MDID) === dashboardEventData.pK_MDID) {
+          console.log("Check 2");
           if (
             meeting.status === "10" &&
             dashboardEventData.participantRoleID === 2
           ) {
+            console.log("Check participant");
             handleViewMeeting(meeting.pK_MDID, meeting.isQuickMeeting);
             setEdiorRole({
               status: meeting.status,
@@ -1567,6 +1570,7 @@ const NewMeeting = () => {
             meeting.status === "10" &&
             dashboardEventData.participantRoleID === 4
           ) {
+            console.log("Check agenda contributor");
             handleViewMeeting(meeting.pK_MDID, meeting.isQuickMeeting);
             setEdiorRole({
               status: meeting.status,
@@ -1577,6 +1581,7 @@ const NewMeeting = () => {
             dashboardEventData.participantRoleID === 1
           ) {
             handleViewMeeting(meeting.pK_MDID, meeting.isQuickMeeting);
+            console.log("Check agenda contributor");
 
             // setIsOrganisers(isOrganiser);
             setEdiorRole({
@@ -1620,7 +1625,7 @@ const NewMeeting = () => {
       dispatch(dashboardCalendarEvent(null));
       setDashboardEventData(null);
     }
-  }, [dashboardEventData, rows]);
+  }, [rows, dashboardEventData]);
 
   useEffect(() => {
     if (

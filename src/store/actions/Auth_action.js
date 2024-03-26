@@ -43,9 +43,15 @@ const RefreshToken = (navigate, t) => {
         //
         if (response.data.responseCode === 200) {
           if (response.data.responseResult.responseCode === 205) {
+            console.log(
+              response.data,
+              "authenticationApiauthenticationApiauthenticationApi"
+            );
             let message2 = t("Your-session-has-expired-please-login-again");
+
             await dispatch(signOut(navigate, message2));
-            await dispatch(refreshtokenFail(message2));
+            // await dispatch(refreshtokenFail(message2));
+            navigate("/");
           } else {
             await dispatch(
               refreshtokenSuccess(
