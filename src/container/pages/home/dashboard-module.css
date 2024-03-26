@@ -286,6 +286,7 @@ body[dir="rtl"] h1.upcoming-events {
   margin: 5px 15px;
   color: #fff;
   font-size: 15px;
+  border: 1px solid #6172d6;
 }
 
 .upcoming_events {
@@ -1378,7 +1379,10 @@ body[dir="rtl"] svg.DatePickerIcon {
 
 .event-details-block {
   display: inline-block;
-  width: 60%;
+  width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .Start-Meeting-Upcoming,
