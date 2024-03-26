@@ -209,9 +209,9 @@ const EmailValidation = () => {
     navigate("/packageselection");
   };
 
-  const handleClickFreeTrail = () => {
-    localStorage.setItem("PackageID", 4);
-    localStorage.setItem("TenureOfSuscriptionID", 2);
+  const handleClickFreeTrail = async () => {
+    await localStorage.setItem("PackageID", 4);
+    await localStorage.setItem("TenureOfSuscriptionID", 2);
 
     navigate("/signuporganization", {
       state: {

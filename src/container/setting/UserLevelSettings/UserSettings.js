@@ -774,7 +774,7 @@ const UserSettings = () => {
   };
 
   const updateOrganizationLevelSettings = async () => {
-    let AllowMicrosoftCalenderSyncCall;
+    let AllowMicrosoftCalenderSyncCall=false;
 
     if (userOptionsSettings.AllowMicrosoftCalenderSync !== false) {
       if (authMicrosoftAccessCode !== "") {
