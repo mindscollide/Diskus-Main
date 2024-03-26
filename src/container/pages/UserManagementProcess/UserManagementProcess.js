@@ -5,9 +5,10 @@ import VerifyOTPUM from "../UserMangement/VerifyOTPUM/VerifyOTPUM";
 import TwoFactorVerifyUM from "../UserMangement/2FA Verification/TwoFactorVerifyUM";
 import TapOptions from "../UserMangement/2FA Verification/2FA Tap Options/TapOptions";
 import VerificationEmailAndNumber from "../UserMangement/2FA Verification/VerificationEmailAndNumber/VerificationEmailAndNumber";
+import VerifyDeniedUM from "../UserMangement/2FA Verification/VerifyDeniedUM/VerifyDeniedUM";
 
 const UserManagementProcess = () => {
-  const [currentStep, setCurrentStep] = useState(6); // Start from step 1
+  const [currentStep, setCurrentStep] = useState(7);
 
   let componentToRender;
 
@@ -23,6 +24,8 @@ const UserManagementProcess = () => {
     componentToRender = <TapOptions />;
   } else if (currentStep === 6) {
     componentToRender = <VerificationEmailAndNumber />;
+  } else if (currentStep === 7) {
+    componentToRender = <VerifyDeniedUM />;
   } else {
     componentToRender = null;
   }
