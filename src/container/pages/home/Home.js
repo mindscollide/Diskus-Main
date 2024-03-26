@@ -775,10 +775,7 @@ const Home = () => {
     });
 
     // Update the meeting status to 10 based on the response from the other reducer
-    if (
-      meetingIdReducer.MeetingStatusSocket.length !== 0 &&
-      Object.keys(meetingIdReducer.MeetingStatusSocket).length !== 0
-    ) {
+    if (meetingIdReducer.MeetingStatusSocket !== null) {
       console.log("Went in to condition");
       meetingIdReducer.UpcomingEventsData.forEach((eventData) => {
         if (
@@ -842,7 +839,8 @@ const Home = () => {
                 <Col lg={12} md={12} sm={12}>
                   <div
                     className={
-                      upcomingEventsData.meetingDetails.statusID === 1 ||
+                      (upcomingEventsData.meetingDetails.statusID === 1 &&
+                        minutesDifference < 15) ||
                       upcomingEventsData.meetingDetails.statusID === 10
                         ? "event-details upcoming_events todayEvent border-0 d-flex justify-content-center align-items-center"
                         : "event-details upcoming_events todayEvent border-0"
@@ -855,7 +853,8 @@ const Home = () => {
                   >
                     <div
                       className={
-                        upcomingEventsData.meetingDetails.statusID === 1 ||
+                        (upcomingEventsData.meetingDetails.statusID === 1 &&
+                          minutesDifference < 15) ||
                         upcomingEventsData.meetingDetails.statusID === 10
                           ? "event-details-block"
                           : ""
@@ -949,7 +948,8 @@ const Home = () => {
                   <Col lg={12} md={12} sm={12}>
                     <div
                       className={
-                        upcomingEventsData.meetingDetails.statusID === 1 ||
+                        (upcomingEventsData.meetingDetails.statusID === 1 &&
+                          minutesDifference < 15) ||
                         upcomingEventsData.meetingDetails.statusID === 10
                           ? "event-details d-flex justify-content-center align-items-center"
                           : "event-details"
@@ -962,7 +962,8 @@ const Home = () => {
                     >
                       <div
                         className={
-                          upcomingEventsData.meetingDetails.statusID === 1 ||
+                          (upcomingEventsData.meetingDetails.statusID === 1 &&
+                            minutesDifference < 15) ||
                           upcomingEventsData.meetingDetails.statusID === 10
                             ? "event-details-block"
                             : ""
@@ -1049,7 +1050,8 @@ const Home = () => {
                 <Col lg={12} md={12} sm={12}>
                   <div
                     className={
-                      upcomingEventsData.meetingDetails.statusID === 1 ||
+                      (upcomingEventsData.meetingDetails.statusID === 1 &&
+                        minutesDifference < 15) ||
                       upcomingEventsData.meetingDetails.statusID === 10
                         ? "event-details d-flex justify-content-center align-items-center"
                         : "event-details"
@@ -1062,7 +1064,8 @@ const Home = () => {
                   >
                     <div
                       className={
-                        upcomingEventsData.meetingDetails.statusID === 1 ||
+                        (upcomingEventsData.meetingDetails.statusID === 1 &&
+                          minutesDifference < 15) ||
                         upcomingEventsData.meetingDetails.statusID === 10
                           ? "event-details-block"
                           : ""
