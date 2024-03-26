@@ -286,7 +286,6 @@ body[dir="rtl"] h1.upcoming-events {
   margin: 5px 15px;
   color: #fff;
   font-size: 15px;
-  border: 1px solid #6172d6;
 }
 
 .upcoming_events {
@@ -1375,4 +1374,35 @@ body[dir="rtl"] svg.DatePickerIcon {
 
 .UpcomingEvent {
   color: #2299ea !important;
+}
+
+.event-details-block {
+  display: inline-block;
+  width: 60%;
+}
+
+.Start-Meeting-Upcoming,
+.Start-Meeting-Upcoming:is(:hover, :active, :focus, :focus-visible, :target) {
+  width: 110px;
+  height: 26px;
+  font-size: 11px;
+  background: #fff !important;
+  border: none;
+  border-radius: 2px !important;
+  color: #6172d6 !important;
+  font-weight: 600;
+  font-family: "MontserratMedium";
+}
+
+.joining-Meeting-Upcoming,
+.joining-Meeting-Upcoming:is(:hover, :active, :focus, :focus-visible, :target) {
+  width: 110px;
+  height: 26px;
+  font-size: 11px;
+  background: #fff !important;
+  border: none;
+  border-radius: 2px !important;
+  color: #81db86 !important;
+  font-weight: 600;
+  font-family: "MontserratMedium";
 }

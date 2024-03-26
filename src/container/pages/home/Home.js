@@ -65,6 +65,8 @@ import {
   GetUpcomingEvents,
   HideNotificationMeetings,
   SetSpinnerTrue,
+  getMeetingStatusfromSocket,
+  mqttCurrentMeetingEnded,
 } from "../../../store/actions/GetMeetingUserId";
 import "./dashboard-module.css";
 import {
@@ -748,7 +750,7 @@ const Home = () => {
       calenderEventType: "Meeting",
       timeZone: "Asia/Karachi",
       statusID: data.meetingDetails.statusID,
-      participantRoleID: data.meetingDetails.participantRoleID,
+      participantRoleID: data.participantRoleID,
       isQuickMeeting: data.meetingDetails.isQuickMeeting,
     };
     dispatch(dashboardCalendarEvent(dashboardData));
@@ -786,6 +788,22 @@ const Home = () => {
           eventData.meetingDetails.statusID = 10;
         }
       });
+      dispatch(getMeetingStatusfromSocket(null));
+      dispatch(mqttCurrentMeetingEnded(null));
+    }
+
+    if (meetingIdReducer.MeetingStatusEnded !== null) {
+      console.log("Went in to condition");
+      meetingIdReducer.UpcomingEventsData.forEach((eventData) => {
+        if (
+          eventData.meetingDetails.pK_MDID ===
+          meetingIdReducer.MeetingStatusEnded.meeting.pK_MDID
+        ) {
+          eventData.meetingDetails.statusID = 9;
+        }
+      });
+      dispatch(getMeetingStatusfromSocket(null));
+      dispatch(mqttCurrentMeetingEnded(null));
     }
 
     return meetingIdReducer.UpcomingEventsData.map(
@@ -823,23 +841,36 @@ const Home = () => {
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <div
-                    className="event-details upcoming_events todayEvent border-0"
+                    className={
+                      upcomingEventsData.meetingDetails.statusID === 1 ||
+                      upcomingEventsData.meetingDetails.statusID === 10
+                        ? "event-details upcoming_events todayEvent border-0 d-flex justify-content-center align-items-center"
+                        : "event-details upcoming_events todayEvent border-0"
+                    }
                     onClick={() =>
                       viewModalHandler(
                         upcomingEventsData.meetingDetails.pK_MDID
                       )
                     }
                   >
-                    <p className="events-description MontserratSemiBold-600">
-                      {upcomingEventsData.meetingDetails.title}
-                    </p>
-                    <p className="events-dateTime MontserratSemiBold-600">
-                      {newTimeFormaterAsPerUTCFullDate(
-                        upcomingEventsData.meetingEvent.meetingDate +
-                          upcomingEventsData.meetingEvent.startTime
-                      )}
-                    </p>
-
+                    <div
+                      className={
+                        upcomingEventsData.meetingDetails.statusID === 1 ||
+                        upcomingEventsData.meetingDetails.statusID === 10
+                          ? "event-details-block"
+                          : ""
+                      }
+                    >
+                      <p className="events-description MontserratSemiBold-600">
+                        {upcomingEventsData.meetingDetails.title}
+                      </p>
+                      <p className="events-dateTime MontserratSemiBold-600">
+                        {newTimeFormaterAsPerUTCFullDate(
+                          upcomingEventsData.meetingEvent.meetingDate +
+                            upcomingEventsData.meetingEvent.startTime
+                        )}
+                      </p>
+                    </div>
                     {upcomingEventsData.meetingDetails.statusID === 1 &&
                     upcomingEventsData.participantRoleID === 1 ? (
                       upcomingEventsData.meetingDetails.isQuickMeeting ===
@@ -852,7 +883,7 @@ const Home = () => {
                         <div className="width-100">
                           <Button
                             text={t("Start-meeting")}
-                            className={styles["Start-Meeting"]}
+                            className="Start-Meeting-Upcoming"
                             onClick={() =>
                               meetingDashboardCalendarEvent(upcomingEventsData)
                             }
@@ -868,7 +899,7 @@ const Home = () => {
                         <div className="width-100">
                           <Button
                             text={t("Start-meeting")}
-                            className={styles["Start-Meeting"]}
+                            className="Start-Meeting-Upcoming"
                             onClick={() =>
                               meetingDashboardCalendarEvent(upcomingEventsData)
                             }
@@ -880,7 +911,7 @@ const Home = () => {
                         <div className="width-100">
                           <Button
                             text={t("Join-meeting")}
-                            className={styles["joining-Meeting"]}
+                            className="joining-Meeting-Upcoming"
                             onClick={() =>
                               meetingDashboardCalendarEvent(upcomingEventsData)
                             }
@@ -890,7 +921,7 @@ const Home = () => {
                         <div className="width-100">
                           <Button
                             text={t("Join-meeting")}
-                            className={styles["joining-Meeting"]}
+                            className="joining-Meeting-Upcoming"
                             onClick={() =>
                               meetingDashboardCalendarEvent(upcomingEventsData)
                             }
@@ -900,7 +931,7 @@ const Home = () => {
                         <div className="width-100">
                           <Button
                             text={t("Join-meeting")}
-                            className={styles["joining-Meeting"]}
+                            className="joining-Meeting-Upcoming"
                             onClick={() =>
                               meetingDashboardCalendarEvent(upcomingEventsData)
                             }
@@ -917,22 +948,36 @@ const Home = () => {
                 <Row>
                   <Col lg={12} md={12} sm={12}>
                     <div
-                      className="event-details"
+                      className={
+                        upcomingEventsData.meetingDetails.statusID === 1 ||
+                        upcomingEventsData.meetingDetails.statusID === 10
+                          ? "event-details d-flex justify-content-center align-items-center"
+                          : "event-details"
+                      }
                       onClick={() =>
                         viewModalHandler(
                           upcomingEventsData.meetingDetails.pK_MDID
                         )
                       }
                     >
-                      <p className="events-description">
-                        {upcomingEventsData.meetingDetails.title}
-                      </p>
-                      <p className="events-dateTime">
-                        {newTimeFormaterAsPerUTCFullDate(
-                          upcomingEventsData.meetingEvent.meetingDate +
-                            upcomingEventsData.meetingEvent.startTime
-                        )}
-                      </p>
+                      <div
+                        className={
+                          upcomingEventsData.meetingDetails.statusID === 1 ||
+                          upcomingEventsData.meetingDetails.statusID === 10
+                            ? "event-details-block"
+                            : ""
+                        }
+                      >
+                        <p className="events-description">
+                          {upcomingEventsData.meetingDetails.title}
+                        </p>
+                        <p className="events-dateTime">
+                          {newTimeFormaterAsPerUTCFullDate(
+                            upcomingEventsData.meetingEvent.meetingDate +
+                              upcomingEventsData.meetingEvent.startTime
+                          )}
+                        </p>
+                      </div>
                       {upcomingEventsData.meetingDetails.statusID === 1 &&
                       upcomingEventsData.meetingDetails.participantRoleID ===
                         1 ? (
@@ -945,7 +990,7 @@ const Home = () => {
                           //   minutesDifference > 0
                           <Button
                             text={t("Start-meeting")}
-                            className={styles["Start-Meeting"]}
+                            className="Start-Meeting-Upcoming"
                             onClick={() =>
                               meetingDashboardCalendarEvent(upcomingEventsData)
                             }
@@ -959,7 +1004,7 @@ const Home = () => {
                           //     minutesDifference > 0
                           <Button
                             text={t("Start-meeting")}
-                            className={styles["Start-Meeting"]}
+                            className="Start-Meeting-Upcoming"
                             onClick={() =>
                               meetingDashboardCalendarEvent(upcomingEventsData)
                             }
@@ -970,7 +1015,7 @@ const Home = () => {
                         2 ? (
                           <Button
                             text={t("Join-meeting")}
-                            className={styles["joining-Meeting"]}
+                            className="joining-Meeting-Upcoming"
                             onClick={() =>
                               meetingDashboardCalendarEvent(upcomingEventsData)
                             }
@@ -979,7 +1024,7 @@ const Home = () => {
                             .participantRoleID === 4 ? (
                           <Button
                             text={t("Join-meeting")}
-                            className={styles["joining-Meeting"]}
+                            className="joining-Meeting-Upcoming"
                             onClick={() =>
                               meetingDashboardCalendarEvent(upcomingEventsData)
                             }
@@ -988,7 +1033,7 @@ const Home = () => {
                             .participantRoleID === 1 ? (
                           <Button
                             text={t("Join-meeting")}
-                            className={styles["joining-Meeting"]}
+                            className="joining-Meeting-Upcoming"
                             onClick={() =>
                               meetingDashboardCalendarEvent(upcomingEventsData)
                             }
@@ -1003,22 +1048,36 @@ const Home = () => {
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <div
-                    className="event-details"
+                    className={
+                      upcomingEventsData.meetingDetails.statusID === 1 ||
+                      upcomingEventsData.meetingDetails.statusID === 10
+                        ? "event-details d-flex justify-content-center align-items-center"
+                        : "event-details"
+                    }
                     onClick={() =>
                       viewModalHandler(
                         upcomingEventsData.meetingDetails.pK_MDID
                       )
                     }
                   >
-                    <p className="events-description">
-                      {upcomingEventsData.meetingDetails.title}
-                    </p>
-                    <p className="events-dateTime">
-                      {newTimeFormaterAsPerUTCFullDate(
-                        upcomingEventsData.meetingEvent.meetingDate +
-                          upcomingEventsData.meetingEvent.startTime
-                      )}
-                    </p>
+                    <div
+                      className={
+                        upcomingEventsData.meetingDetails.statusID === 1 ||
+                        upcomingEventsData.meetingDetails.statusID === 10
+                          ? "event-details-block"
+                          : ""
+                      }
+                    >
+                      <p className="events-description">
+                        {upcomingEventsData.meetingDetails.title}
+                      </p>
+                      <p className="events-dateTime">
+                        {newTimeFormaterAsPerUTCFullDate(
+                          upcomingEventsData.meetingEvent.meetingDate +
+                            upcomingEventsData.meetingEvent.startTime
+                        )}
+                      </p>
+                    </div>
                     {upcomingEventsData.meetingDetails.statusID === 1 &&
                     upcomingEventsData.meetingDetails.participantRoleID ===
                       1 ? (
@@ -1031,7 +1090,7 @@ const Home = () => {
                         //   minutesDifference > 0
                         <Button
                           text={t("Start-meeting")}
-                          className={styles["Start-Meeting"]}
+                          className="Start-Meeting-Upcoming"
                           onClick={() =>
                             meetingDashboardCalendarEvent(upcomingEventsData)
                           }
@@ -1045,7 +1104,7 @@ const Home = () => {
                         //     minutesDifference > 0
                         <Button
                           text={t("Start-meeting")}
-                          className={styles["Start-Meeting"]}
+                          className="Start-Meeting-Upcoming"
                           onClick={() =>
                             meetingDashboardCalendarEvent(upcomingEventsData)
                           }
@@ -1056,7 +1115,7 @@ const Home = () => {
                       2 ? (
                         <Button
                           text={t("Join-meeting")}
-                          className={styles["joining-Meeting"]}
+                          className="joining-Meeting-Upcoming"
                           onClick={() =>
                             meetingDashboardCalendarEvent(upcomingEventsData)
                           }
@@ -1065,7 +1124,7 @@ const Home = () => {
                           .participantRoleID === 4 ? (
                         <Button
                           text={t("Join-meeting")}
-                          className={styles["joining-Meeting"]}
+                          className="joining-Meeting-Upcoming"
                           onClick={() =>
                             meetingDashboardCalendarEvent(upcomingEventsData)
                           }
@@ -1074,7 +1133,7 @@ const Home = () => {
                           .participantRoleID === 1 ? (
                         <Button
                           text={t("Join-meeting")}
-                          className={styles["joining-Meeting"]}
+                          className="joining-Meeting-Upcoming"
                           onClick={() =>
                             meetingDashboardCalendarEvent(upcomingEventsData)
                           }
@@ -1160,31 +1219,6 @@ const Home = () => {
       dispatch(getCalendarDataResponse(navigate, t, calendarData, false));
     }
   };
-
-  // const handleClickonDate = (dateObject, dateSelect) => {
-  //   let selectDate = dateSelect.toString().split("/").join("");
-  //   if (
-  //     calendarReducer.CalenderData.length !== null &&
-  //     calendarReducer.CalenderData !== undefined &&
-  //     calendarReducer.CalenderData.length > 0
-  //   ) {
-  //     let findData = calendarReducer.CalenderData.filter(
-  //       (data, index) =>
-  //         startDateTimeMeetingCalendar(data.eventDate + data.startTime) ===
-  //         selectDate
-  //     );
-  //     if (findData.length > 0) {
-  //       setEvents(findData);
-  //       setEventsModal(true);
-  //     } else {
-  //       setOpen({
-  //         ...open,
-  //         open: true,
-  //         message: t("No-events-available-on-this-date"),
-  //       });
-  //     }
-  //   }
-  // };
 
   const handleClickonDate = (dateObject, dateSelect) => {
     let selectDate = dateSelect.toString().split("/").join("");
