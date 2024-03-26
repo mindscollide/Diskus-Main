@@ -557,7 +557,10 @@ const Home = () => {
     setUpcomingMeetingCountThisWeek(
       meetingIdReducer.TotalNumberOfUpcommingMeetingsInWeek
     );
-  }, [meetingIdReducer]);
+  }, [
+    meetingIdReducer.TotalMeetingCountThisWeek,
+    meetingIdReducer.TotalNumberOfUpcommingMeetingsInWeek,
+  ]);
 
   useEffect(() => {
     setTodoListThisWeek(toDoListReducer.TotalTodoCountThisWeek);
@@ -772,7 +775,10 @@ const Home = () => {
     });
 
     // Update the meeting status to 10 based on the response from the other reducer
-    if (meetingIdReducer.MeetingStatusSocket !== null) {
+    if (
+      meetingIdReducer.MeetingStatusSocket.length !== 0 &&
+      Object.keys(meetingIdReducer.MeetingStatusSocket).length !== 0
+    ) {
       console.log("Went in to condition");
       meetingIdReducer.UpcomingEventsData.forEach((eventData) => {
         if (
