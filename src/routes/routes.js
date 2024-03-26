@@ -102,7 +102,7 @@ export const router = createHashRouter(
         element={<PakageDetailsUserManagement />}
       />
       <Route path="/signuporganization" element={<Signup />} />
-      {/* <Route path="/" element={<ValidateEmail />} /> */}
+      <Route path="/" element={<ValidateEmail />} />
       <Route path="/forgotpasssowrd" element={<ForgotPassword />} />
       <Route
         path="/forgotpasswordVerification"
