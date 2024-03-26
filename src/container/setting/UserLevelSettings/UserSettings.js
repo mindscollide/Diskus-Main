@@ -24,12 +24,6 @@ import {
   revokeToken,
   updateUserSettingFunc,
 } from "../../../store/actions/UpdateUserGeneralSetting";
-import {
-  AuthenticatedTemplate,
-  UnauthenticatedTemplate,
-  useMsal,
-} from "@azure/msal-react";
-import { loginRequest } from "../../../auth-config";
 
 const UserSettings = () => {
   const { t } = useTranslation();
@@ -46,8 +40,7 @@ const UserSettings = () => {
   const [polls, setpolls] = useState(false);
   const roleID = localStorage.getItem("roleID");
   const { loaded, clientId } = useGoogleLogin({
-    clientId:
-      "103867674074-tllj4s4mt4c5t15omf2t0s92097622jv.apps.googleusercontent.com",
+    clientId: process.env.REACT_APP_GOOGLE_LOGIN_URL,
   });
   const [signUpCodeToken, setSignUpCodeToken] = useState("");
   const [userOptionsSettings, setUserOptionsSettings] = useState({
@@ -109,17 +102,14 @@ const UserSettings = () => {
     EmailWhenNewTODODeleted: false,
     EmailWhenNewTODOEdited: false,
   });
-  const { instance } = useMsal();
-  const activeAccount = instance.getActiveAccount();
-  const [authMicrosoftAccessToken, setAuthMicrosoftAccessToken] = useState("");
-  const [authMicrosoftRefreshToken, setAuthMicrosoftRefreshToken] =
-    useState("");
+  const [authMicrosoftAccessCode, setAuthMicrosoftAccessCode] = useState("");
 
   useEffect(() => {
     dispatch(getUserSetting(navigate, t));
   }, []);
 
   const handleGoogleLoginSuccess = (response) => {
+    console.log("Google Code ", response.code);
     setSignUpCodeToken(response.code);
     setUserOptionsSettings({
       ...userOptionsSettings,
@@ -448,57 +438,43 @@ const UserSettings = () => {
     }
   };
 
-  const signInMicrowSoft = async (value) => {
-    const response = await instance.loginPopup(loginRequest);
-    if (response) {
-      const gettingKeyForSessionStorage = response.idTokenClaims.aud;
-      if (gettingKeyForSessionStorage) {
-        const sessionStorageKey =
-          "msal.token.keys." + gettingKeyForSessionStorage;
-        const sessionStorageKeyResponce = JSON.parse(
-          sessionStorage.getItem(sessionStorageKey)
-        );
-        const getSessionStorageRefreshToken = JSON.parse(
-          sessionStorage.getItem(sessionStorageKeyResponce.refreshToken[0])
-        );
-        setAuthMicrosoftRefreshToken(getSessionStorageRefreshToken.secret);
-      }
-      setAuthMicrosoftAccessToken(response.accessToken);
-      setUserOptionsSettings({
-        ...userOptionsSettings,
-        AllowMicrosoftCalenderSync: value,
-      });
-    } else {
-    }
-  };
+  async function redirectToUrl() {
+    const url = process.env.REACT_APP_MS_LOGIN_URL;
+    const windowFeatures = "width=600,height=400,top=100,left=100";
+    const popup = window.open(url, "Microsoft Login", windowFeatures);
+
+    // Wait for the popup to close
+    await new Promise((resolve) => {
+      const checkClosed = setInterval(() => {
+        if (popup.closed) {
+          clearInterval(checkClosed);
+          resolve();
+        }
+      }, 1000); // Check every second
+    });
+  }
 
   const onChangeAllowMicrosoftCalenderSync = async (e) => {
     const value = e.target.checked;
     if (value) {
-      signInMicrowSoft(value);
+      await redirectToUrl();
+    }
+    let code = localStorage.getItem("Ms");
+    console.log("MS Code", code);
+    if (code) {
+      await setUserOptionsSettings({
+        ...userOptionsSettings,
+        AllowMicrosoftCalenderSync: value,
+      });
+      await setAuthMicrosoftAccessCode(code);
+      localStorage.removeItem("Ms");
     } else {
-      try {
-        // Initiate the logout process
-        await instance.logoutPopup();
-
-        // Check if the user is still authenticated after logout
-        const isAuthenticated = !!instance.getAllAccounts().length;
-
-        if (!isAuthenticated) {
-          setAuthMicrosoftAccessToken("");
-          setAuthMicrosoftRefreshToken("");
-
-          setUserOptionsSettings({
-            ...userOptionsSettings,
-            AllowMicrosoftCalenderSync: value,
-          });
-          // Perform any additional actions after successful logout
-        } else {
-          // Handle the case where the user is still authenticated after logout
-        }
-      } catch (error) {
-        // Handle any errors that occur during logout
-      }
+      setUserOptionsSettings({
+        ...userOptionsSettings,
+        AllowMicrosoftCalenderSync: false,
+      });
+      setAuthMicrosoftAccessCode("");
+      localStorage.removeItem("Ms");
     }
   };
 
@@ -798,34 +774,21 @@ const UserSettings = () => {
   };
 
   const updateOrganizationLevelSettings = async () => {
-    let AllowMicrosoftCalenderSyncCall =
-      userOptionsSettings.AllowMicrosoftCalenderSync;
+    let AllowMicrosoftCalenderSyncCall=false;
 
     if (userOptionsSettings.AllowMicrosoftCalenderSync !== false) {
-      if (authMicrosoftAccessToken !== "") {
-        await dispatch(
+      if (authMicrosoftAccessCode !== "") {
+        AllowMicrosoftCalenderSyncCall = await dispatch(
           getMicrosoftValidToken(
             navigate,
-            authMicrosoftAccessToken,
-            authMicrosoftRefreshToken,
+            authMicrosoftAccessCode,
             userOptionsSettings,
-            AllowMicrosoftCalenderSyncCall,
+            userOptionsSettings.AllowMicrosoftCalenderSync,
             t
           )
         );
       }
     }
-    console.log(
-      "AllowMicrosoftCalenderSyncCall",
-      AllowMicrosoftCalenderSyncCall
-    );
-    // global is tru and update local state is false then call revoke token api
-    // else if(){
-    // const tokenRevoke=await dispatch(
-    //   getMicroSoftRevokeToken(navigate, signUpCodeToken, userOptionsSettings, t,2)
-    // );
-    // AllowMicrosoftCalenderSyncCall=tokenRevoke
-    // }
     if (signUpCodeToken !== "") {
       if (userOptionsSettings.AllowGoogleCalenderSync) {
         await dispatch(

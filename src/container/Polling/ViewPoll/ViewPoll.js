@@ -42,6 +42,7 @@ const ViewPoll = () => {
 
   useEffect(() => {
     if (PollsReducer.Allpolls !== null && PollsReducer.Allpolls !== undefined) {
+      console.log(PollsReducer.Allpolls, "PollsReducer");
       let users = [];
       if (Object.keys(PollsReducer.Allpolls.poll.pollParticipants).length > 0) {
         PollsReducer.Allpolls.poll.pollParticipants.map((data, index) => {
@@ -62,6 +63,8 @@ const ViewPoll = () => {
       setViewPollmembers(users);
     }
   }, [PollsReducer.Allpolls]);
+
+  console.log(viewPollsDetails.date, "viewPollsDetails");
   return (
     <Container>
       <Modal
