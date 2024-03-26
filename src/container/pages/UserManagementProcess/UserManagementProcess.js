@@ -6,9 +6,10 @@ import TwoFactorVerifyUM from "../UserMangement/2FA Verification/TwoFactorVerify
 import TapOptions from "../UserMangement/2FA Verification/2FA Tap Options/TapOptions";
 import VerificationEmailAndNumber from "../UserMangement/2FA Verification/VerificationEmailAndNumber/VerificationEmailAndNumber";
 import VerifyDeniedUM from "../UserMangement/2FA Verification/VerifyDeniedUM/VerifyDeniedUM";
+import DeviceFor2FAVerify from "../UserMangement/2FA Verification/DevicesFor2FAVerify/DeviceFor2FAVerify";
 
 const UserManagementProcess = () => {
-  const [currentStep, setCurrentStep] = useState(7);
+  const [currentStep, setCurrentStep] = useState(8);
 
   let componentToRender;
 
@@ -26,6 +27,8 @@ const UserManagementProcess = () => {
     componentToRender = <VerificationEmailAndNumber />;
   } else if (currentStep === 7) {
     componentToRender = <VerifyDeniedUM />;
+  } else if (currentStep === 8) {
+    componentToRender = <DeviceFor2FAVerify />;
   } else {
     componentToRender = null;
   }
