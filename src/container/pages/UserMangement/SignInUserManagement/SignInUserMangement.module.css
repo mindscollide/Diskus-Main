@@ -365,3 +365,23 @@ body[dir="rtl"] .languageSelector {
   align-items: center;
   min-height: 100vh;
 }
+
+.languageSelector {
+  position: absolute;
+  right: 100px;
+  z-index: 99999 !important;
+  margin-top: 50px !important;
+  margin-right: 0 !important;
+  display: flex;
+  justify-content: flex-end;
+}
+
+body[dir="rtl"] .languageSelector {
+  position: absolute;
+  right: -100px;
+  z-index: 99999 !important;
+  margin-top: 50px !important;
+  margin-right: 0 !important;
+  display: flex;
+  justify-content: flex-end;
+}

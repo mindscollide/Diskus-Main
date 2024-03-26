@@ -5,12 +5,18 @@ import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg
 import styles from "./SignInUserMangement.module.css";
 import DiskusAuthPageLogo from "../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { useTranslation } from "react-i18next";
+import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 
 const SignInUserManagement = () => {
   const { t } = useTranslation();
   return (
     <>
       <Container fluid className={styles["auth_container"]}>
+        <Row className="position-relative">
+          <Col className={styles["languageSelector"]}>
+            <LanguageSelector />
+          </Col>
+        </Row>
         <Row>
           <Col lg={4} md={4} sm={12} className={styles["SignInEmailBox"]}>
             <Paper className={styles["EmailVerifyBox"]}>

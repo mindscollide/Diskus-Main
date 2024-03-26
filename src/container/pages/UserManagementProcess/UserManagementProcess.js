@@ -8,7 +8,7 @@ import VerificationEmailAndNumber from "../UserMangement/2FA Verification/Verifi
 import VerifyDeniedUM from "../UserMangement/2FA Verification/VerifyDeniedUM/VerifyDeniedUM";
 
 const UserManagementProcess = () => {
-  const [currentStep, setCurrentStep] = useState(7);
+  const [currentStep, setCurrentStep] = useState(1);
 
   let componentToRender;
 
