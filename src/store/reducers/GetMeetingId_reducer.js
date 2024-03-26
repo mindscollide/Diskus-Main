@@ -12,7 +12,7 @@ const initialState = {
   MeetingTableData: false,
   UpcomingEventsData: [],
   allMeetingsSocketData: [],
-  MeetingStatusSocket: [],
+  MeetingStatusSocket: null,
   searchRecordFound: false,
   MQTTUpcomingEvents: null,
   MeetingStatusEnded: null,

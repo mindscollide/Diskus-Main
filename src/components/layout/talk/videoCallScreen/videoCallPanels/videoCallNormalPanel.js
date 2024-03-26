@@ -182,6 +182,8 @@ const VideoPanelNormal = () => {
     }
   };
 
+  localStorage.setItem("videoIframe", iframeRef.current);
+
   return (
     <>
       <Row>

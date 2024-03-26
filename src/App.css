@@ -6987,3 +6987,6 @@ td.ant-table-cell.minutesParticipant {
 }
 
 /* this radiobutton is for polls vote end */
+.width-60 {
+  width: 60% !important;
+}
