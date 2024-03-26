@@ -240,6 +240,11 @@ export const router = createHashRouter(
         <Route path="/onboard" element={<OnBoard />} />
       </Route>
       <Route path="/Auth" element={<UserManagementProcess />} />
+      <Route path="/signupUsermanagement" element={<SignUpOrganizationUM />} />
+      <Route
+        path="/PasswordVerificationUM"
+        element={<PasswordVerification />}
+      />
     </>
   )
 );
