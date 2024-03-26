@@ -90,6 +90,7 @@ import CancelSubscriptionAdmin from "../container/pages/UserMangement/AdminUserM
 import DeleteOrganizationAdmin from "../container/pages/UserMangement/AdminUserManagement/DeleteOrganizationAdmin/DeleteOrganizationAdmin";
 import PaymentMethodBillInfo from "../container/pages/UserMangement/AdminUserManagement/PaymentMethodBillInfoUserManagement/PaymentMethodBillInfo";
 import AddUserMain from "../container/pages/UserMangement/AdminUserManagement/AddUserMain/AddUserMain";
+import UserManagementProcess from "../container/pages/UserManagementProcess/UserManagementProcess";
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
@@ -236,7 +237,7 @@ export const router = createHashRouter(
       <Route Route element={<PrivateRoutes />}>
         <Route path="/onboard" element={<OnBoard />} />
       </Route>
-
+      <Route path="/Auth" element={<UserManagementProcess />} />
       {/* User Management Routes Defined Below  */}
       <Route path="/signupUsermanagement" element={<SignUpOrganizationUM />} />
       <Route path="/VerifyOTPUserManagement" element={<VerifyOTPUM />} />

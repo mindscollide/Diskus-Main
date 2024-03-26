@@ -22,7 +22,7 @@ import { useDispatch } from "react-redux";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useMsal } from "@azure/msal-react";
+// import { useMsal } from "@azure/msal-react";
 // import { loginRequest } from "../../../../";
 import { Button } from "../../../../components/elements";
 const UserLevelConfigUM = () => {
@@ -103,8 +103,8 @@ const UserLevelConfigUM = () => {
     EmailWhenNewTODODeleted: false,
     EmailWhenNewTODOEdited: false,
   });
-  const { instance } = useMsal();
-  const activeAccount = instance.getActiveAccount();
+  // const { instance } = useMsal();
+  // const activeAccount = instance.getActiveAccount();
   const [authMicrosoftAccessToken, setAuthMicrosoftAccessToken] = useState("");
   const [authMicrosoftRefreshToken, setAuthMicrosoftRefreshToken] =
     useState("");
@@ -468,32 +468,32 @@ const UserLevelConfigUM = () => {
 
   const onChangeAllowMicrosoftCalenderSync = async (e) => {
     const value = e.target.checked;
-    if (value) {
-      // signInMicrowSoft(value);
-    } else {
-      try {
-        // Initiate the logout process
-        await instance.logoutPopup();
+    // if (value) {
+    //   // signInMicrowSoft(value);
+    // } else {
+    //   try {
+    //     // Initiate the logout process
+    //     await instance.logoutPopup();
 
-        // Check if the user is still authenticated after logout
-        const isAuthenticated = !!instance.getAllAccounts().length;
+    //     // Check if the user is still authenticated after logout
+    //     const isAuthenticated = !!instance.getAllAccounts().length;
 
-        if (!isAuthenticated) {
-          setAuthMicrosoftAccessToken("");
-          setAuthMicrosoftRefreshToken("");
+    //     if (!isAuthenticated) {
+    //       setAuthMicrosoftAccessToken("");
+    //       setAuthMicrosoftRefreshToken("");
 
-          setUserOptionsSettings({
-            ...userOptionsSettings,
-            AllowMicrosoftCalenderSync: value,
-          });
-          // Perform any additional actions after successful logout
-        } else {
-          // Handle the case where the user is still authenticated after logout
-        }
-      } catch (error) {
-        // Handle any errors that occur during logout
-      }
-    }
+    //       setUserOptionsSettings({
+    //         ...userOptionsSettings,
+    //         AllowMicrosoftCalenderSync: value,
+    //       });
+    //       // Perform any additional actions after successful logout
+    //     } else {
+    //       // Handle the case where the user is still authenticated after logout
+    //     }
+    //   } catch (error) {
+    //     // Handle any errors that occur during logout
+    //   }
+    // }
   };
 
   const onChangeEmailWhenAddedToCommittee = (e) => {
