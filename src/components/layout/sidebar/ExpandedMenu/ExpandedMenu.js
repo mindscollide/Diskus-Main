@@ -15,6 +15,12 @@ import {
 } from "../../../../store/actions/Groups_actions";
 import {
   showCancelModalmeetingDeitals,
+  scheduleMeetingPageFlag,
+  viewProposeDateMeetingPageFlag,
+  viewAdvanceMeetingPublishPageFlag,
+  viewAdvanceMeetingUnpublishPageFlag,
+  viewProposeOrganizerMeetingPageFlag,
+  proposeNewMeetingPageFlag,
   viewMeetingFlag,
   uploadGlobalFlag,
 } from "../../../../store/actions/NewMeetingActions";
@@ -61,6 +67,13 @@ const ExpandedMenu = () => {
       localStorage.setItem("navigateLocation", "dataroom");
     } else {
       setDataroomNavigation("dataroom");
+      dispatch(showCancelModalmeetingDeitals(false));
+      dispatch(scheduleMeetingPageFlag(false));
+      dispatch(viewProposeDateMeetingPageFlag(false));
+      dispatch(viewAdvanceMeetingPublishPageFlag(false));
+      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+      dispatch(viewProposeOrganizerMeetingPageFlag(false));
+      dispatch(proposeNewMeetingPageFlag(false));
       dispatch(viewMeetingFlag(false));
     }
     // navigate(`/${dataroomNavigation}`);
@@ -86,6 +99,13 @@ const ExpandedMenu = () => {
       dispatch(createGroupPageFlag(false));
       dispatch(updateGroupPageFlag(false));
       dispatch(viewGroupPageFlag(false));
+      dispatch(showCancelModalmeetingDeitals(false));
+      dispatch(scheduleMeetingPageFlag(false));
+      dispatch(viewProposeDateMeetingPageFlag(false));
+      dispatch(viewAdvanceMeetingPublishPageFlag(false));
+      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+      dispatch(viewProposeOrganizerMeetingPageFlag(false));
+      dispatch(proposeNewMeetingPageFlag(false));
       dispatch(viewMeetingFlag(false));
     }
     // navigate(`/${groupNavigation}`);
@@ -111,6 +131,13 @@ const ExpandedMenu = () => {
       dispatch(createCommitteePageFlag(false));
       dispatch(updateCommitteePageFlag(false));
       dispatch(viewCommitteePageFlag(false));
+      dispatch(showCancelModalmeetingDeitals(false));
+      dispatch(scheduleMeetingPageFlag(false));
+      dispatch(viewProposeDateMeetingPageFlag(false));
+      dispatch(viewAdvanceMeetingPublishPageFlag(false));
+      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+      dispatch(viewProposeOrganizerMeetingPageFlag(false));
+      dispatch(proposeNewMeetingPageFlag(false));
       dispatch(viewMeetingFlag(false));
     }
     // navigate(`/${committeeNavigation}`);
@@ -138,6 +165,13 @@ const ExpandedMenu = () => {
       dispatch(viewAttachmentFlag(false));
       dispatch(createResolutionModal(false));
       dispatch(viewResolutionModal(false));
+      dispatch(showCancelModalmeetingDeitals(false));
+      dispatch(scheduleMeetingPageFlag(false));
+      dispatch(viewProposeDateMeetingPageFlag(false));
+      dispatch(viewAdvanceMeetingPublishPageFlag(false));
+      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+      dispatch(viewProposeOrganizerMeetingPageFlag(false));
+      dispatch(proposeNewMeetingPageFlag(false));
       dispatch(viewMeetingFlag(false));
     }
     // navigate(`/${resolutionNavigation}`);
@@ -160,6 +194,13 @@ const ExpandedMenu = () => {
       localStorage.setItem("navigateLocation", "polling");
     } else {
       setPollNavigation("polling");
+      dispatch(showCancelModalmeetingDeitals(false));
+      dispatch(scheduleMeetingPageFlag(false));
+      dispatch(viewProposeDateMeetingPageFlag(false));
+      dispatch(viewAdvanceMeetingPublishPageFlag(false));
+      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+      dispatch(viewProposeOrganizerMeetingPageFlag(false));
+      dispatch(proposeNewMeetingPageFlag(false));
       dispatch(viewMeetingFlag(false));
     }
     // navigate(`/${pollNavigation}`);
