@@ -6986,4 +6986,10 @@ td.ant-table-cell.minutesParticipant {
   top: 0px !important;
 }
 
-/* this radiobutton is for polls vote end */
+
+.DataRoom_Table thead.ant-table-thead {
+  position: sticky !important;
+  z-index: 1 !important;
+  background-color: #ffffff !important;
+  top: 0 !important;
+}
