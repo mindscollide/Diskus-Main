@@ -460,7 +460,7 @@ export const optionsforFileEditor = (t) => [
   { label: t("Rename"), value: 3, labelIcon: PDFICON },
   { label: t("View-detail"), value: 4, labelIcon: PDFICON },
   { label: t("Download"), value: 5, labelIcon: PDFICON },
-  { label: t("Analytics"), value: 6, labelIcon: PDFICON },
+  { label: t("Analytics"), value: 7, labelIcon: PDFICON },
   // { label: t("Remove"), value: 6, labelIcon: PDFICON },
 ];
 export const optionsforFileEditableNonShareable = (t) => [

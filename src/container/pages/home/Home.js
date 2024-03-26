@@ -555,7 +555,10 @@ const Home = () => {
     setUpcomingMeetingCountThisWeek(
       meetingIdReducer.TotalNumberOfUpcommingMeetingsInWeek
     );
-  }, [meetingIdReducer]);
+  }, [
+    meetingIdReducer.TotalMeetingCountThisWeek,
+    meetingIdReducer.TotalNumberOfUpcommingMeetingsInWeek,
+  ]);
 
   useEffect(() => {
     setTodoListThisWeek(toDoListReducer.TotalTodoCountThisWeek);
@@ -774,7 +777,7 @@ const Home = () => {
       meetingIdReducer.MeetingStatusSocket.length !== 0 &&
       Object.keys(meetingIdReducer.MeetingStatusSocket).length !== 0
     ) {
-      console.log("Went in to condition")
+      console.log("Went in to condition");
       meetingIdReducer.UpcomingEventsData.forEach((eventData) => {
         if (
           eventData.meetingDetails.pK_MDID ===
@@ -1186,38 +1189,36 @@ const Home = () => {
   const handleClickonDate = (dateObject, dateSelect) => {
     let selectDate = dateSelect.toString().split("/").join("");
     if (
-        calendarReducer.CalenderData &&
-        calendarReducer.CalenderData.length > 0
+      calendarReducer.CalenderData &&
+      calendarReducer.CalenderData.length > 0
     ) {
-        const findData = calendarReducer.CalenderData.find(
-            (data) =>
-                startDateTimeMeetingCalendar(
-                    data.eventDate + data.startTime
-                ) === selectDate
-        );
-        if (findData) {
-            setEvents([findData]);
-            setEventsModal(true);
-            // Check if the event's pK_MDID matches with MeetingStatusSocket's pK_MDID
-            if (
-                findData.pK_MDID ===
-                meetingIdReducer.MeetingStatusSocket.meeting.pK_MDID
-            ) {
-                // Update the statusID to 10
-                findData.statusID = 10;
-                // Dispatch an action to update the global state if needed
-                // dispatch(updateEventStatus(findData)); // Assuming you have a proper action
-            }
-        } else {
-            setOpen({
-                ...open,
-                open: true,
-                message: t("No-events-available-on-this-date"),
-            });
+      const findData = calendarReducer.CalenderData.find(
+        (data) =>
+          startDateTimeMeetingCalendar(data.eventDate + data.startTime) ===
+          selectDate
+      );
+      if (findData) {
+        setEvents([findData]);
+        setEventsModal(true);
+        // Check if the event's pK_MDID matches with MeetingStatusSocket's pK_MDID
+        if (
+          findData.pK_MDID ===
+          meetingIdReducer.MeetingStatusSocket.meeting.pK_MDID
+        ) {
+          // Update the statusID to 10
+          findData.statusID = 10;
+          // Dispatch an action to update the global state if needed
+          // dispatch(updateEventStatus(findData)); // Assuming you have a proper action
         }
+      } else {
+        setOpen({
+          ...open,
+          open: true,
+          message: t("No-events-available-on-this-date"),
+        });
+      }
     }
-};
-
+  };
 
   console.log("MeetingIDReducer", meetingIdReducer);
 
