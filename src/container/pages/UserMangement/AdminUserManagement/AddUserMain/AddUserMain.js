@@ -139,44 +139,43 @@ const AddUserMain = () => {
     }
 
     if (name === "Email" && value !== "") {
-      setUserAddMain({
-        ...userAddMain,
-        Email: {
-          value: value.trimStart(),
-          errorMessage: "",
-          errorStatus: false,
-        },
-      });
-    } else if (name === "Email" && value === "") {
-      setUserAddMain({
-        ...userAddMain,
-        Email: {
-          value: "",
-          errorMessage: "",
-          errorStatus: false,
-        },
-      });
+      if (value !== "") {
+        // Check if email is not empty
+        if (validateEmailEnglishAndArabicFormat(value)) {
+          // Check if email format is valid
+          setUserAddMain({
+            ...userAddMain,
+            Email: {
+              value: value.trimStart(),
+              errorMessage: "", // Clear error message when email is valid
+              errorStatus: false, // Set error status to false when email is valid
+            },
+          });
+        } else {
+          setUserAddMain({
+            ...userAddMain,
+            Email: {
+              value: value.trimStart(),
+              errorMessage: t("Enter-valid-email-address"), // Set error message when email is invalid
+              errorStatus: true, // Set error status to true when email is invalid
+            },
+          });
+        }
+      } else {
+        // Handle case when email is empty
+        setUserAddMain({
+          ...userAddMain,
+          Email: {
+            value: "",
+            errorMessage: "", // Clear error message when email is empty
+            errorStatus: false, // Set error status to false when email is empty
+          },
+        });
+      }
     }
   };
 
   const handleCreate = () => {
-    let isValid = true;
-
-    // Validate email format if it's not empty
-    if (userAddMain.Email.value !== "") {
-      if (!validateEmailEnglishAndArabicFormat(userAddMain.Email.value)) {
-        setUserAddMain({
-          ...userAddMain,
-          Email: {
-            ...userAddMain.Email,
-            errorMessage: t("Enter-valid-email-address"),
-            errorStatus: true,
-          },
-        });
-        isValid = false;
-      }
-    }
-
     if (
       userAddMain.Name.value !== "" &&
       userAddMain.Designation.value !== "" &&
@@ -217,10 +216,6 @@ const AddUserMain = () => {
           errorStatus: userAddMain.Email.value === "",
         },
       });
-      isValid = false;
-    }
-    if (isValid) {
-      alert("filled fields");
     }
   };
 
@@ -601,7 +596,8 @@ const AddUserMain = () => {
                     <Col>
                       <p
                         className={
-                          userAddMain.Email.value === ""
+                          userAddMain.Email.value === "" ||
+                          userAddMain.Email.errorStatus
                             ? ` ${styles["errorMessage"]} `
                             : `${styles["errorMessage_hidden"]}`
                         }
