@@ -5,7 +5,7 @@ import VerifyOTPUM from "../UserMangement/VerifyOTPUM/VerifyOTPUM";
 import TwoFactorVerifyUM from "../UserMangement/2FA Verification/TwoFactorVerifyUM";
 
 const UserManagementProcess = () => {
-  const [currentStep, setCurrentStep] = useState(1); // Start from step 1
+  const [currentStep, setCurrentStep] = useState(4); // Start from step 1
 
   let componentToRender;
 
