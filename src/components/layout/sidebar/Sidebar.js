@@ -96,12 +96,14 @@ const Sidebar = () => {
       dispatch(showCancelModalmeetingDeitals(true));
       dispatch(uploadGlobalFlag(false));
     } else {
+      dispatch(showCancelModalmeetingDeitals(false));
       dispatch(scheduleMeetingPageFlag(false));
       dispatch(viewProposeDateMeetingPageFlag(false));
       dispatch(viewAdvanceMeetingPublishPageFlag(false));
       dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
       dispatch(viewProposeOrganizerMeetingPageFlag(false));
       dispatch(proposeNewMeetingPageFlag(false));
+      dispatch(viewMeetingFlag(false));
       if (
         (NewMeetingreducer.scheduleMeetingPageFlag === true ||
           NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
@@ -176,6 +178,13 @@ const Sidebar = () => {
       dispatch(uploadGlobalFlag(false));
     } else {
       setTodoListNavigation("todolist");
+      dispatch(showCancelModalmeetingDeitals(false));
+      dispatch(scheduleMeetingPageFlag(false));
+      dispatch(viewProposeDateMeetingPageFlag(false));
+      dispatch(viewAdvanceMeetingPublishPageFlag(false));
+      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+      dispatch(viewProposeOrganizerMeetingPageFlag(false));
+      dispatch(proposeNewMeetingPageFlag(false));
       dispatch(viewMeetingFlag(false));
     }
     // navigate(`/${todoListNavigation}`);
@@ -198,6 +207,13 @@ const Sidebar = () => {
       dispatch(uploadGlobalFlag(false));
     } else {
       setCalendarNavigation("calendar");
+      dispatch(showCancelModalmeetingDeitals(false));
+      dispatch(scheduleMeetingPageFlag(false));
+      dispatch(viewProposeDateMeetingPageFlag(false));
+      dispatch(viewAdvanceMeetingPublishPageFlag(false));
+      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+      dispatch(viewProposeOrganizerMeetingPageFlag(false));
+      dispatch(proposeNewMeetingPageFlag(false));
       dispatch(viewMeetingFlag(false));
     }
     // navigate(`/${calendarNavigation}`);
@@ -220,6 +236,13 @@ const Sidebar = () => {
       dispatch(uploadGlobalFlag(false));
     } else {
       setNotesNavigation("Notes");
+      dispatch(showCancelModalmeetingDeitals(false));
+      dispatch(scheduleMeetingPageFlag(false));
+      dispatch(viewProposeDateMeetingPageFlag(false));
+      dispatch(viewAdvanceMeetingPublishPageFlag(false));
+      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+      dispatch(viewProposeOrganizerMeetingPageFlag(false));
+      dispatch(proposeNewMeetingPageFlag(false));
       dispatch(viewMeetingFlag(false));
     }
     // navigate(`/${notesNavigation}`);

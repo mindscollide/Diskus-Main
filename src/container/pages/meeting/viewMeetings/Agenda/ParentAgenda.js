@@ -40,6 +40,7 @@ import {
   getIconSource,
 } from "../../../../DataRoom/SearchFunctionality/option";
 import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
+import { timeFormatFunction } from "../../../../../commen/functions/date_formater";
 
 const ParentAgenda = ({
   data,
@@ -388,14 +389,12 @@ const ParentAgenda = ({
                                       {data?.presenterName +
                                         " - (" +
                                         moment(
-                                          data?.startDate,
-                                          "HHmmss"
+                                          timeFormatFunction(data.startDate)
                                         ).format("hh:mm a") +
                                         " - " +
-                                        moment(data?.endDate, "HHmmss").format(
-                                          "hh:mm a"
-                                        ) +
-                                        ")"}
+                                        moment(
+                                          timeFormatFunction(data.endDate)
+                                        ).format("hh:mm a")}
                                     </p>
                                     {/* <span
                                     className={styles["agendaCreationTime"]}

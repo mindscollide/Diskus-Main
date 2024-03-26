@@ -172,6 +172,10 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
     localStorage.setItem("isMeetingVideo", false);
   };
 
+  const disableMic = () => {};
+
+  const disableVideo = () => {};
+
   useEffect(() => {
     if (callerObject !== undefined && callerObject !== null) {
       let callerObjectObj = JSON.parse(callerObject);
@@ -383,11 +387,13 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                 src={MinimizeVideoIcon}
                 className={"minimize-video-icon cursor-pointer"}
                 alt="Minimize Video Icon"
+                onClick={disableVideo}
               />
               <img
                 className="cursor-pointer"
                 src={MinimizeMicIcon}
                 alt="Minimize Mic Icon"
+                onClick={disableMic}
               />
               {videoFeatureReducer.LeaveCallModalFlag === true &&
               callerID === currentUserID ? (

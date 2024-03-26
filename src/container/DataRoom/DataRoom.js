@@ -589,6 +589,7 @@ const DataRoom = () => {
 
   const fileOptionsSelect = (data, record, pdfDataJson) => {
     if (data.value === 1) {
+      // Open on Apryse
       let ext = record.name.split(".").pop();
       if (ext === "pdf") {
         window.open(
@@ -598,19 +599,36 @@ const DataRoom = () => {
         );
       }
     } else if (data.value === 3) {
+      // Rename File
       setShowRenameFile(true);
       setRenameFileData(record);
     } else if (data.value === 2) {
+      // Share File Modal
       showShareFileModal(record.id, record.name);
     } else if (data.value === 6) {
+      // Delete File
       dispatch(deleteFileDataroom(navigate, record.id, t));
     } else if (data.value === 4) {
+      // get File and Folder Details
       let Data = {
         ID: record.id,
         isFolder: false,
       };
       dispatch(getFilesandFolderDetailsApi(navigate, t, Data, setDetailView));
+    } else if (data.value === 5) {
+      if (record.isFolder === true) {
+        let data = {
+          FolderID: Number(record.id),
+        };
+        dispatch(DataRoomDownloadFolderApiFunc(navigate, data, t, record.name));
+      } else {
+        let data = {
+          FileID: Number(record.id),
+        };
+        dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, record.name));
+      }
     } else if (data.value === 7) {
+      // Get Anayltics  for the document
       let Data = {
         FileID: Number(record.id),
       };
@@ -624,6 +642,7 @@ const DataRoom = () => {
         )
       );
     } else if (data.value === 8) {
+      // Create Signature Flow
       let dataRoomData = {
         FileID: Number(record.id),
       };
@@ -1758,7 +1777,7 @@ const DataRoom = () => {
                         />
                       </span>
                     </Tooltip>
-                    {record.permissionID === 1 ||
+                    {/* {record.permissionID === 1 ||
                     record.permissionID === 3 ? null : (
                       <Tooltip placement="topRight" title={t("Delete")}>
                         <span className={styles["delete__Icon"]}>
@@ -1796,7 +1815,7 @@ const DataRoom = () => {
                           />
                         </span>
                       </Tooltip>
-                    )}
+                    )} */}
                   </div>
 
                   <Tooltip placement="topRight" title={t("More")}>

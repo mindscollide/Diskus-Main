@@ -7388,3 +7388,13 @@ tr.ant-table-row.ant-table-row-level-0.UpgradePakageDetails:last-child:hover {
 }
 
 /* this radiobutton is for polls vote end */
+.width-60 {
+  width: 60% !important;
+}
+
+.DataRoom_Table thead.ant-table-thead {
+  position: sticky !important;
+  z-index: 1 !important;
+  background-color: #ffffff !important;
+  top: 0 !important;
+}
