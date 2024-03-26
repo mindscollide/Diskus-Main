@@ -102,7 +102,7 @@ export const router = createHashRouter(
         element={<PakageDetailsUserManagement />}
       />
       <Route path="/signuporganization" element={<Signup />} />
-      <Route path="/" element={<ValidateEmail />} />
+      {/* <Route path="/" element={<ValidateEmail />} /> */}
       <Route path="/forgotpasssowrd" element={<ForgotPassword />} />
       <Route
         path="/forgotpasswordVerification"
@@ -241,14 +241,14 @@ export const router = createHashRouter(
       </Route>
       <Route path="/Auth" element={<UserManagementProcess />} />
       {/* User Management Routes Defined Below  */}
-      <Route path="/signupUsermanagement" element={<SignUpOrganizationUM />} />
+      {/* <Route path="/signupUsermanagement" element={<SignUpOrganizationUM />} />
       <Route path="/VerifyOTPUserManagement" element={<VerifyOTPUM />} />
       <Route path="/PasswordCreationUM" element={<PasswordCreationUM />} />
       <Route path="/TwoFactorVerifyUM" element={<TwoFactorVerifyUM />} />
       <Route
         path="/PasswordVerificationUM"
         element={<PasswordVerification />}
-      />
+      /> */}
     </>
   )
 );
