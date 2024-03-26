@@ -55,13 +55,25 @@ const BillProcessStepFour = ({ paymentMethods, setPaymentMethods }) => {
     }
 
     if (name === "CreditCardNumber" && value !== "") {
-      if (value !== "") {
+      const creditCardRegex = /^(?:\d[ -]*?){13,16}$/;
+      if (creditCardRegex.test(value)) {
+        // Input matches credit card pattern
         setPaymentMethods({
           ...paymentMethods,
           CreditCardNumber: {
-            value: value.trimStart(),
+            value: value.trim(),
             errorMessage: "",
             errorStatus: false,
+          },
+        });
+      } else {
+        // Input doesn't match credit card pattern
+        setPaymentMethods({
+          ...paymentMethods,
+          CreditCardNumber: {
+            value: value.replace(/[^0-9-]/g, ""), // Remove non-numeric characters
+            errorMessage: "",
+            errorStatus: true,
           },
         });
       }
@@ -76,18 +88,66 @@ const BillProcessStepFour = ({ paymentMethods, setPaymentMethods }) => {
       });
     }
 
+    // if (name === "CreditCardNumber" && value !== "") {
+    //   const creditCardRegex = /^(?:\d[ -]*?){13,16}$/;
+    //   if (creditCardRegex.test(value)) {
+    //     // Input matches credit card pattern
+    //     setPaymentMethods({
+    //       ...paymentMethods,
+    //       CreditCardNumber: {
+    //         value: value.trim(),
+    //         errorMessage: "",
+    //         errorStatus: false,
+    //       },
+    //     });
+    //   } else {
+    //     // Input doesn't match credit card pattern
+    //     setPaymentMethods({
+    //       ...paymentMethods,
+    //       CreditCardNumber: {
+    //         value: value.replace(/[^0-9-]/g, ""), // Remove non-numeric characters
+    //         errorMessage: "",
+    //         errorStatus: true,
+    //       },
+    //     });
+    //   }
+    // } else if (name === "CreditCardNumber" && value === "") {
+    //   setPaymentMethods({
+    //     ...paymentMethods,
+    //     CreditCardNumber: {
+    //       value: "",
+    //       errorMessage: "",
+    //       errorStatus: false,
+    //     },
+    //   });
+    // }
+
     if (name === "CreditCardExpiration" && value !== "") {
-      if (value !== "") {
+      const expirationDateRegex = /^(0[1-9]|1[0-2])\/\d{2}$/; // MM/YY format
+
+      if (expirationDateRegex.test(value)) {
+        // Input matches the expected format
         setPaymentMethods({
           ...paymentMethods,
           CardExpirationDate: {
-            value: value.trimStart(),
+            value: value.trim(),
             errorMessage: "",
             errorStatus: false,
           },
         });
+      } else {
+        // Input doesn't match the expected format
+        setPaymentMethods({
+          ...paymentMethods,
+          CardExpirationDate: {
+            value: value.replace(/[^0-9/]/g, ""), // Remove non-numeric characters except '/'
+            errorMessage: "",
+            errorStatus: true,
+          },
+        });
       }
     } else if (name === "CreditCardExpiration" && value === "") {
+      // If the value is empty, reset the state
       setPaymentMethods({
         ...paymentMethods,
         CardExpirationDate: {
@@ -145,6 +205,7 @@ const BillProcessStepFour = ({ paymentMethods, setPaymentMethods }) => {
                       </>
                     }
                     name="Name"
+                    value={paymentMethods.Name.value}
                     change={PaymentDetailsHandler}
                   />
                   <Row>
@@ -165,6 +226,7 @@ const BillProcessStepFour = ({ paymentMethods, setPaymentMethods }) => {
                   <TextField
                     placeholder={t("Last-name")}
                     name="LastName"
+                    value={paymentMethods.LastName.value}
                     change={PaymentDetailsHandler}
                   />
                   <Row>
@@ -194,6 +256,7 @@ const BillProcessStepFour = ({ paymentMethods, setPaymentMethods }) => {
                       </>
                     }
                     name="CreditCardNumber"
+                    value={paymentMethods.CreditCardNumber.value}
                     change={PaymentDetailsHandler}
                   />
                   <Row>
@@ -223,6 +286,7 @@ const BillProcessStepFour = ({ paymentMethods, setPaymentMethods }) => {
                     }
                     name="CreditCardExpiration"
                     change={PaymentDetailsHandler}
+                    value={paymentMethods.CardExpirationDate.value}
                     placeholder={t("00/00")}
                   />
                   <Row>
@@ -250,6 +314,7 @@ const BillProcessStepFour = ({ paymentMethods, setPaymentMethods }) => {
                     }
                     name="CVV"
                     change={PaymentDetailsHandler}
+                    value={paymentMethods.CVV.value}
                     placeholder={t("CVV")}
                   />
                   <Row>

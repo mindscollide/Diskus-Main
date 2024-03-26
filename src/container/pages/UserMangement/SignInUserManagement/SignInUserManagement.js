@@ -1,19 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
-import {
-  Button,
-  Paper,
-  TextField,
-  Checkbox,
-  Notification,
-  Loader,
-} from "../../../../components/elements";
+import { Button, Paper, Checkbox } from "../../../../components/elements";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
-import styles from "./SignIn.module.css";
+import styles from "./SignInUserMangement.module.css";
 import DiskusAuthPageLogo from "../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { useTranslation } from "react-i18next";
 
-const SignIn = () => {
+const SignInUserManagement = () => {
   const { t } = useTranslation();
   return (
     <>
@@ -140,4 +133,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignInUserManagement;

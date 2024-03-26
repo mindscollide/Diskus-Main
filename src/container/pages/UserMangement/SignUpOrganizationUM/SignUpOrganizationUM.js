@@ -13,6 +13,12 @@ import { countryNameforPhoneNumber } from "../../../Admin/AllUsers/AddUser/Count
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 import ReactFlagsSelect from "react-flags-select";
 import { Check2 } from "react-bootstrap-icons";
+import { signUpOrganizationAndPakageSelection } from "../../../../store/actions/UserManagementActions";
+import {
+  checkEmailExsist,
+  checkOraganisation,
+} from "../../../../store/actions/Admin_Organization";
+import { setLoader } from "../../../../store/actions/Auth2_actions";
 const SignUpOrganizationUM = () => {
   const { t } = useTranslation();
 
@@ -115,6 +121,7 @@ const SignUpOrganizationUM = () => {
       }
     }
   }, [location.state]);
+
   const countryOnSelect = (code) => {
     setSelect(code);
     let a = Object.values(countryNames).find((obj) => {
@@ -153,15 +160,15 @@ const SignUpOrganizationUM = () => {
   const handeEmailvlidate = () => {
     if (signUpDetails.Email.value !== "") {
       if (validateEmailEnglishAndArabicFormat(signUpDetails.Email.value)) {
-        // dispatch(
-        //   checkEmailExsist(
-        //     setCompanyEmailValidate,
-        //     setCompanyEmailValidateError,
-        //     signUpDetails,
-        //     t,
-        //     setEmailUnique
-        //   )
-        // );
+        dispatch(
+          checkEmailExsist(
+            setCompanyEmailValidate,
+            setCompanyEmailValidateError,
+            signUpDetails,
+            t,
+            setEmailUnique
+          )
+        );
       } else {
         setEmailUnique(false);
         setSignUpDetails({
@@ -396,9 +403,31 @@ const SignUpOrganizationUM = () => {
           let tenureOfSuscriptionID = localStorage.getItem(
             "TenureOfSuscriptionID"
           );
+          // let data = {
+          //   SelectedPackageID: JSON.parse(PackageID),
+          //   TenureOfSuscriptionID: JSON.parse(tenureOfSuscriptionID),
+          //   Organization: {
+          //     OrganizationName: signUpDetails.CompanyName.value,
+          //     FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
+          //     ContactPersonName: signUpDetails.FullName.value,
+          //     ContactPersonEmail: signUpDetails.Email.value,
+          //     ContactPersonNumber: signUpDetails.PhoneNumber.value,
+          //     FK_NumberWorldCountryID: JSON.parse(
+          //       signUpDetails.PhoneNumberCountryID
+          //     ),
+          //     CustomerReferenceNumber: "",
+          //     PersonalNumber: signUpDetails.PhoneNumber.value,
+          //     OrganizationAddress1: signUpDetails.Address1.value,
+          //     OrganizationAddress2: signUpDetails.Address2.value,
+          //     City: signUpDetails.City.value,
+          //     StateProvince: signUpDetails.State.value,
+          //     PostalCode: signUpDetails.PostalCode.value,
+          //     FK_SubscriptionStatusID: 0,
+          //     // FK_CCID: signUpDetails.FK_CCID,
+          //   },
+          // };
           let data = {
-            SelectedPackageID: JSON.parse(PackageID),
-            TenureOfSuscriptionID: JSON.parse(tenureOfSuscriptionID),
+            TenureOfSubscriptionID: JSON.parse(tenureOfSuscriptionID),
             Organization: {
               OrganizationName: signUpDetails.CompanyName.value,
               FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
@@ -415,22 +444,22 @@ const SignUpOrganizationUM = () => {
               City: signUpDetails.City.value,
               StateProvince: signUpDetails.State.value,
               PostalCode: signUpDetails.PostalCode.value,
-              FK_SubscriptionStatusID: 0,
-              // FK_CCID: signUpDetails.FK_CCID,
+              TimeZoneID: 1,
             },
+            Packages: [{ PackageID: 4, HeadCount: 5 }],
           };
-          //   dispatch(createOrganization(data, navigate, t));
+          dispatch(signUpOrganizationAndPakageSelection(data, navigate, t));
         } else {
-          //   await dispatch(setLoader(true));
-          //   await dispatch(
-          //     checkOraganisation(
-          //       setCompanyNameValidate,
-          //       setCompanyNameValidateError,
-          //       signUpDetails,
-          //       t,
-          //       setCompanyNameUnique
-          //     )
-          //   );
+          await dispatch(setLoader(true));
+          await dispatch(
+            checkOraganisation(
+              setCompanyNameValidate,
+              setCompanyNameValidateError,
+              signUpDetails,
+              t,
+              setCompanyNameUnique
+            )
+          );
           handeEmailvlidate();
           setAgainCall(true);
         }
@@ -699,15 +728,15 @@ const SignUpOrganizationUM = () => {
                       </Row>
                       <TextField
                         onBlur={() => {
-                          //   dispatch(
-                          //     checkOraganisation(
-                          //       setCompanyNameValidate,
-                          //       setCompanyNameValidateError,
-                          //       signUpDetails,
-                          //       t,
-                          //       setCompanyNameUnique
-                          //     )
-                          //   );
+                          dispatch(
+                            checkOraganisation(
+                              setCompanyNameValidate,
+                              setCompanyNameValidateError,
+                              signUpDetails,
+                              t,
+                              setCompanyNameUnique
+                            )
+                          );
                         }}
                         autofill
                         labelClass="d-none"
@@ -1029,7 +1058,10 @@ const SignUpOrganizationUM = () => {
                   className="d-flex justify-content-start align-items-center"
                 >
                   <span className={styles["signUp_goBack"]} />
-                  <Link to={"/PakageDetailsUserManagement"} color="black">
+                  <Link
+                    to={isFreeTrail ? "/" : "/PakageDetailsUserManagement"}
+                    color="black"
+                  >
                     {t("Go-back")}
                   </Link>
                 </Col>

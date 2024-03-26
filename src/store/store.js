@@ -51,6 +51,7 @@ import { webViewerReducer } from "./reducers";
 import attendanceMeetingReducer from "./reducers/Attendance_Reducer";
 import actionMeetingReducer from "./reducers/ActionMeeting_Reducer";
 import UserManagementModals from "./reducers/UserManagementModals";
+import UserMangementReducer from "./reducers/UserManagementReducer";
 
 const AppReducer = combineReducers({
   auth: authReducer,
@@ -101,6 +102,7 @@ const AppReducer = combineReducers({
   UserReportReducer: UserReportReducer,
   SignatureWorkFlowReducer: SignatureWorkFlowReducer,
   UserManagementModals: UserManagementModals,
+  UserMangementReducer: UserMangementReducer,
 });
 
 const rootReducer = (state, action) => {

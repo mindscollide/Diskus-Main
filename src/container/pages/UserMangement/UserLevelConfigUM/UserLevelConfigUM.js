@@ -23,7 +23,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useMsal } from "@azure/msal-react";
-import { loginRequest } from "../../../../auth-config";
+// import { loginRequest } from "../../../../";
 import { Button } from "../../../../components/elements";
 const UserLevelConfigUM = () => {
   const { t } = useTranslation();
@@ -442,34 +442,34 @@ const UserLevelConfigUM = () => {
     }
   };
 
-  const signInMicrowSoft = async (value) => {
-    const response = await instance.loginPopup(loginRequest);
-    if (response) {
-      const gettingKeyForSessionStorage = response.idTokenClaims.aud;
-      if (gettingKeyForSessionStorage) {
-        const sessionStorageKey =
-          "msal.token.keys." + gettingKeyForSessionStorage;
-        const sessionStorageKeyResponce = JSON.parse(
-          sessionStorage.getItem(sessionStorageKey)
-        );
-        const getSessionStorageRefreshToken = JSON.parse(
-          sessionStorage.getItem(sessionStorageKeyResponce.refreshToken[0])
-        );
-        setAuthMicrosoftRefreshToken(getSessionStorageRefreshToken.secret);
-      }
-      setAuthMicrosoftAccessToken(response.accessToken);
-      setUserOptionsSettings({
-        ...userOptionsSettings,
-        AllowMicrosoftCalenderSync: value,
-      });
-    } else {
-    }
-  };
+  // const signInMicrowSoft = async (value) => {
+  //   const response = await instance.loginPopup(loginRequest);
+  //   if (response) {
+  //     const gettingKeyForSessionStorage = response.idTokenClaims.aud;
+  //     if (gettingKeyForSessionStorage) {
+  //       const sessionStorageKey =
+  //         "msal.token.keys." + gettingKeyForSessionStorage;
+  //       const sessionStorageKeyResponce = JSON.parse(
+  //         sessionStorage.getItem(sessionStorageKey)
+  //       );
+  //       const getSessionStorageRefreshToken = JSON.parse(
+  //         sessionStorage.getItem(sessionStorageKeyResponce.refreshToken[0])
+  //       );
+  //       setAuthMicrosoftRefreshToken(getSessionStorageRefreshToken.secret);
+  //     }
+  //     setAuthMicrosoftAccessToken(response.accessToken);
+  //     setUserOptionsSettings({
+  //       ...userOptionsSettings,
+  //       AllowMicrosoftCalenderSync: value,
+  //     });
+  //   } else {
+  //   }
+  // };
 
   const onChangeAllowMicrosoftCalenderSync = async (e) => {
     const value = e.target.checked;
     if (value) {
-      signInMicrowSoft(value);
+      // signInMicrowSoft(value);
     } else {
       try {
         // Initiate the logout process

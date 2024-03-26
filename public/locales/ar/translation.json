@@ -1844,6 +1844,12 @@
   "Notes-saved-successfully": "Notes saved successfully",
   "Your-trial-period-is-over": "Your trial period is over.",
   "please-upgrade-your-Package": "Please upgrade your Package.",
+  "Confirm-payment": "Confirm Payment",
+  "You-can-select-multiple-options": "You can select multiple options",
+  "Organization-and-admin-created-successfully": "Organization and Admin Created Successfully",
+  "Organization-and-admin-created-successfully-but-failed-to-send-OTP": "Organization and Admin Created Successfully but failed to send OTP",
+  "Organization-name-already-taken": "Organization Name Already Taken",
+  "Failed-to-save-organization": "Failed To Save Organization",
   "Waqas-associates": "Waqas Associates",
   "Package-assigned": "Package Assigned",
   "is-admin-also": "is Admin also",
@@ -1852,5 +1858,14 @@
   "Please-enter-mobile-number": "Please enter mobile number",
   "Please-select-a-package": "Please select a package",
   "Please-enter-email-address": "Please enter email address",
-  "You-can-select-multiple-options": "You can select multiple options"
+  "Invalid-data-provided": "Invalid Data Provided",
+  "Subscription-not-found": "Subscription Not Found",
+  "Trial-status-added-but-not-not-extended": "Trial status added but not not extended",
+  "Trial-status-not-added-successfully": "Trial status added but not not extended",
+  "Extension-request-not-found": "Extension Request not found",
+  "User-was-created-successfully": "User was created successfully but failed to generate OTP",
+  "User-created-successfully-and-the-OTP": "User created successfully and the OTP has been generated. Please verify you email",
+  "Failed-to-create-user-Package-not-found": "Failed to Create User (Package Not Found)",
+  "Failed-to-create-user-headCount-exceeded": "Failed to Create User HeadCount Exceeded",
+  "The-user-has-been-edited-but-selected-package-limit-exceeded": "The user has been edited but selected package limit exceeded"
 }
