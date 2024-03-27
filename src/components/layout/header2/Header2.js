@@ -378,6 +378,9 @@ const Header2 = () => {
                       onClick={modalUserProfileHandler}
                     >
                       <Nav.Link className="d-flex text-black border-none FontClass">
+                        {t("Organization-admin")}
+                      </Nav.Link>
+                      <Nav.Link className="d-flex text-black border-none FontClass">
                         {t("My-profile")}
                       </Nav.Link>
                     </Dropdown.Item>
@@ -701,6 +704,9 @@ const Header2 = () => {
                       className={currentLanguage}
                       onClick={modalUserProfileHandler}
                     >
+                      <Nav.Link className="d-flex text-black border-none FontClass">
+                        {t("Organization-admin")}
+                      </Nav.Link>
                       <Nav.Link className="d-flex text-black border-none FontClass">
                         {t("My-profile")}
                       </Nav.Link>
