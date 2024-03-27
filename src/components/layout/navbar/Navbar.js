@@ -108,7 +108,8 @@ const NavbarAdmin = () => {
                           >
                             {t("Organization-level-configurations")}
                           </NavDropdown.Item>
-                          <NavDropdown.Item
+                          {/* user Level Configuration */}
+                          {/* <NavDropdown.Item
                             as={Link}
                             // to="setting"
                             to="UserLevelConfigUM"
@@ -116,7 +117,7 @@ const NavbarAdmin = () => {
                             className="text-black border-none "
                           >
                             {t("User-level-configurations")}
-                          </NavDropdown.Item>
+                          </NavDropdown.Item> */}
                           {/* <NavDropdown.Item
                             as={Link}
                             to="setting"
@@ -271,7 +272,7 @@ const NavbarAdmin = () => {
                             {t("Organization-level-configurations")}
                           </NavDropdown.Item>
                           {/* User level Orgnization  */}
-                          <NavDropdown.Item
+                          {/* <NavDropdown.Item
                             as={Link}
                             // to="setting"
                             to="UserLevelConfigUM"
@@ -279,7 +280,7 @@ const NavbarAdmin = () => {
                             className="text-black border-none "
                           >
                             {t("User-level-configurations")}
-                          </NavDropdown.Item>
+                          </NavDropdown.Item> */}
                           {/* <NavDropdown.Item
                             as={Link}
                             to="setting"
