@@ -230,67 +230,69 @@ const NewMeeting = () => {
       }
     }
   }, [currentLanguage]);
+
+  const callApi = async () => {
+    console.log("owais callApi in");
+
+    try {
+      if (meetingpageRow !== null && meetingPageCurrent !== null) {
+        let searchData = {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber: Number(meetingPageCurrent),
+          Length: Number(meetingpageRow),
+          PublishedMeetings: true,
+        };
+        await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+        await dispatch(allAssignessList(navigate, t));
+        await dispatch(searchNewUserMeeting(navigate, searchData, t));
+        localStorage.setItem("MeetingCurrentView", 1);
+      } else {
+        let searchData = {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber: 1,
+          Length: 50,
+          PublishedMeetings: true,
+        };
+        localStorage.setItem("MeetingPageRows", 50);
+        localStorage.setItem("MeetingPageCurrent", 1);
+        await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+        await dispatch(allAssignessList(navigate, t));
+        await dispatch(searchNewUserMeeting(navigate, searchData, t));
+
+        localStorage.setItem("MeetingCurrentView", 1);
+      }
+    } catch (error) {
+      console.error("Error in callApi:", error);
+    }
+  };
+
   //  Call all search meetings api
   useEffect(() => {
-    // const callApi = async () => {
-      try {
-        if (meetingpageRow !== null && meetingPageCurrent !== null) {
-          let searchData = {
-            Date: "",
-            Title: "",
-            HostName: "",
-            UserID: Number(userID),
-            PageNumber: Number(meetingPageCurrent),
-            Length: Number(meetingpageRow),
-            PublishedMeetings: true,
-          };
-          dispatch(searchNewUserMeeting(navigate, searchData, t));
-          dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
-          dispatch(allAssignessList(navigate, t));
-          localStorage.setItem("MeetingCurrentView", 1);
-        } else {
-          let searchData = {
-            Date: "",
-            Title: "",
-            HostName: "",
-            UserID: Number(userID),
-            PageNumber: 1,
-            Length: 50,
-            PublishedMeetings: true,
-          };
-          localStorage.setItem("MeetingPageRows", 50);
-          localStorage.setItem("MeetingPageCurrent", 1);
-          dispatch(searchNewUserMeeting(navigate, searchData, t));
-          dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
-          dispatch(allAssignessList(navigate, t));
-
-          localStorage.setItem("MeetingCurrentView", 1);
-        }
-        setEditFlag(false);
-        setViewFlag(false);
-        dispatch(scheduleMeetingPageFlag(false));
-        dispatch(viewProposeDateMeetingPageFlag(false));
-        dispatch(viewAdvanceMeetingPublishPageFlag(false));
-        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-        dispatch(viewProposeOrganizerMeetingPageFlag(false));
-        dispatch(proposeNewMeetingPageFlag(false));
-      } catch (error) {
-        // Handle any errors here
-        console.error("Error in callApi:", error);
-      }
-    // };
-
-    // callApi();
-    // setEditFlag(false);
-    // setViewFlag(false);
-    // dispatch(scheduleMeetingPageFlag(false));
-    // dispatch(viewProposeDateMeetingPageFlag(false));
-    // dispatch(viewAdvanceMeetingPublishPageFlag(false));
-    // dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-    // dispatch(viewProposeOrganizerMeetingPageFlag(false));
-    // dispatch(proposeNewMeetingPageFlag(false));
+    console.log("owais callApi");
+    callApi();
+    setEditFlag(false);
+    setViewFlag(false);
+    dispatch(scheduleMeetingPageFlag(false));
+    dispatch(viewProposeDateMeetingPageFlag(false));
+    dispatch(viewAdvanceMeetingPublishPageFlag(false));
+    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+    dispatch(viewProposeOrganizerMeetingPageFlag(false));
+    dispatch(proposeNewMeetingPageFlag(false));
     return () => {
       setResponseByDate("");
+      setDashboardEventData(null);
+      // setRow([]);
+      // setEdiorRole({
+      //   status: null,
+      //   role: null,
+      //   isPrimaryOrganizer: false,
+      // });
     };
   }, []);
 
@@ -317,6 +319,7 @@ const NewMeeting = () => {
       }
     } catch (error) {}
   }, [getALlMeetingTypes.meetingTypes]);
+
   useEffect(() => {
     if (isMeetingTypeFilter.length > 0) {
       const newData = isMeetingTypeFilter.map((meeting) =>
@@ -325,6 +328,7 @@ const NewMeeting = () => {
       setDefaultFilterValues(newData);
     }
   }, [isMeetingTypeFilter]);
+
   const HandleShowSearch = () => {
     setSearchMeeting(!searchMeeting);
     setSearchText("");
@@ -620,12 +624,12 @@ const NewMeeting = () => {
         const isParticipant = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.role === "Participant"
+            attendee.meetingAttendeeRole.pK_MARID === 2
         );
         const isAgendaContributor = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.role === "Agenda Contributor"
+            attendee.meetingAttendeeRole.pK_MARID === 4
         );
         const isPrimaryOrganizer = record.meetingAttendees.some(
           (attendee) =>
@@ -779,7 +783,7 @@ const NewMeeting = () => {
         const isOrganiser = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.role === "Organizer"
+            attendee.meetingAttendeeRole.pK_MARID === 1
         );
         return (
           <>
@@ -893,17 +897,17 @@ const NewMeeting = () => {
         const isParticipant = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.role === "Participant"
+            attendee.meetingAttendeeRole.pK_MARID === 2
         );
         const isAgendaContributor = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.role === "Agenda Contributor"
+            attendee.meetingAttendeeRole.pK_MARID === 4
         );
         const isOrganiser = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.role === "Organizer"
+            attendee.meetingAttendeeRole.pK_MARID === 1
         );
         const isPrimaryOrganizer = record.meetingAttendees.some(
           (attendee) =>
@@ -996,7 +1000,11 @@ const NewMeeting = () => {
                         setEdiorRole,
                         // setAdvanceMeetingModalID,
                         setDataroomMapFolderId,
-                        setViewAdvanceMeetingModal
+                        setViewAdvanceMeetingModal,
+
+                        setAdvanceMeetingModalID,
+                        setViewAdvanceMeetingModal,
+                        isPrimaryOrganizer
                       )
                     );
                     localStorage.setItem("currentMeetingID", record.pK_MDID);
@@ -1084,19 +1092,19 @@ const NewMeeting = () => {
         const isParticipant = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.role === "Participant"
+            attendee.meetingAttendeeRole.pK_MARID === 2
         );
 
         const isOrganiser = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.role === "Organizer"
+            attendee.meetingAttendeeRole.pK_MARID === 1
         );
 
         const isAgendaContributor = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.role === "Agenda Contributor"
+            attendee.meetingAttendeeRole.pK_MARID === 4
         );
 
         const isPrimaryOrganizer = record.meetingAttendees.some(
@@ -1279,11 +1287,16 @@ const NewMeeting = () => {
   useEffect(() => {
     if (
       NewMeetingreducer.CalendarDashboardEventData !== null &&
-      NewMeetingreducer.CalendarDashboardEventData !== undefined
+      NewMeetingreducer.CalendarDashboardEventData !== undefined &&
+      rows.length !== 0
     ) {
+      console.log(
+        "owais callApi on update rows add data in DashboardEventData if exsist"
+      );
+
       setDashboardEventData(NewMeetingreducer.CalendarDashboardEventData);
     }
-  }, [NewMeetingreducer.CalendarDashboardEventData]);
+  }, [rows]);
 
   useEffect(() => {
     try {
@@ -1328,6 +1341,7 @@ const NewMeeting = () => {
             } catch {}
           });
           setRow(newRowData);
+          console.log("owais callApi on update rows add data in rows");
         }
       } else {
         setRow([]);
@@ -1547,49 +1561,64 @@ const NewMeeting = () => {
 
   useEffect(() => {
     if (dashboardEventData !== null && dashboardEventData !== undefined) {
-      console.log("Check 1", dashboardEventData);
+      console.log("owais dashboardEventData", dashboardEventData);
       let startMeetingRequest = {
         MeetingID: Number(dashboardEventData.pK_MDID),
         StatusID: 10,
       };
 
       for (const meeting of rows) {
+        console.log(
+          "owais dashboardEventData",
+          Number(meeting.pK_MDID) === dashboardEventData.pK_MDID
+        );
+        console.log("owais dashboardEventData meeting", meeting);
         if (Number(meeting.pK_MDID) === dashboardEventData.pK_MDID) {
-          console.log("Check 2");
+          console.log(
+            "owais Check dashboardEventData",
+            Number(meeting.pK_MDID) === dashboardEventData.pK_MDID
+          );
           if (
             meeting.status === "10" &&
             dashboardEventData.participantRoleID === 2
           ) {
-            console.log("Check participant");
+            console.log("owais Check participant");
             handleViewMeeting(meeting.pK_MDID, meeting.isQuickMeeting);
             setEdiorRole({
               status: meeting.status,
               role: "Participant",
+              isPrimaryOrganizer: false,
             });
+            dispatch(viewMeetingFlag(true));
           } else if (
             meeting.status === "10" &&
             dashboardEventData.participantRoleID === 4
           ) {
-            console.log("Check agenda contributor");
+            console.log("owais Check agenda contributor");
             handleViewMeeting(meeting.pK_MDID, meeting.isQuickMeeting);
             setEdiorRole({
               status: meeting.status,
               role: "Agenda Contributor",
+              isPrimaryOrganizer: false,
             });
+            dispatch(viewMeetingFlag(true));
           } else if (
             meeting.status === "10" &&
             dashboardEventData.participantRoleID === 1
           ) {
-            handleViewMeeting(meeting.pK_MDID, meeting.isQuickMeeting);
-            console.log("Check agenda contributor");
-
-            // setIsOrganisers(isOrganiser);
             setEdiorRole({
               status: meeting.status,
               role: "Organizer",
+              isPrimaryOrganizer: false,
             });
+            dispatch(viewMeetingFlag(true));
+            handleViewMeeting(meeting.pK_MDID, meeting.isQuickMeeting);
+            console.log("owais Check agenda contributor");
+            // setIsOrganisers(isOrganiser);
           } else if (meeting.status === "1") {
+            console.log("owais Check agenda contributor");
             if (meeting.isQuickMeeting === true) {
+              console.log("owais Check agenda contributor");
               dispatch(
                 UpdateOrganizersMeeting(
                   navigate,
@@ -1605,6 +1634,7 @@ const NewMeeting = () => {
                 )
               );
             } else if (meeting.isQuickMeeting === false) {
+              console.log("owais Check agenda contributor");
               dispatch(
                 UpdateOrganizersMeeting(
                   navigate,
@@ -1617,6 +1647,20 @@ const NewMeeting = () => {
                   setViewAdvanceMeetingModal
                 )
               );
+              localStorage.setItem(
+                "currentMeetingID",
+                dashboardEventData.pK_MDID
+              );
+              setAdvanceMeetingModalID(dashboardEventData.pK_MDID);
+              dispatch(viewMeetingFlag(true));
+              setViewAdvanceMeetingModal(true);
+              dispatch(viewAdvanceMeetingPublishPageFlag(true));
+              dispatch(scheduleMeetingPageFlag(false));
+              setEdiorRole({
+                status: 10,
+                role: "Organizer",
+                isPrimaryOrganizer: false,
+              });
             }
           }
           break;
@@ -1625,7 +1669,7 @@ const NewMeeting = () => {
       dispatch(dashboardCalendarEvent(null));
       setDashboardEventData(null);
     }
-  }, [rows, dashboardEventData]);
+  }, [dashboardEventData]);
 
   useEffect(() => {
     if (
