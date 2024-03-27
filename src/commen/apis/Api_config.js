@@ -1471,6 +1471,14 @@ const printMeetingAgenda = {
   RequestMethod: "ServiceManager.PrintMeetingAgenda",
 };
 
+const joinMeeting = {
+  RequestMethod: "ServiceManager.JoinMeeting",
+};
+
+const leaveMeeting = {
+  RequestMethod: "ServiceManager.LeaveMeeting",
+};
+
 export {
   UserLoginHistoryRM,
   getDataAnalyticsCountRM,
@@ -1865,4 +1873,6 @@ export {
   sendAgendaPDFAsEmail,
   exportAgendaAsPDF,
   printMeetingAgenda,
+  joinMeeting,
+  leaveMeeting,
 };
