@@ -7001,6 +7001,7 @@ const meetingStatusProposedMqtt = (response) => {
 };
 
 const meetingStatusPublishedMqtt = (response) => {
+  console.log(response, "meetingStatusPublishedMqttmeetingStatusPublishedMqtt");
   return {
     type: actions.MQTT_MEETING_STATUS_PUBLISHED,
     response: response,

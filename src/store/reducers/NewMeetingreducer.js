@@ -1925,6 +1925,11 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.MQTT_MEETING_STATUS_PUBLISHED: {
+      console.log(
+        action,
+        "meetingStatusPublishedMqttmeetingStatusPublishedMqtt"
+      );
+
       return {
         ...state,
         meetingStatusPublishedMqttData: action.response,
