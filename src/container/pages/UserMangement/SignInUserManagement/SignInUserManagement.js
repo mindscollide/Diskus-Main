@@ -5,12 +5,25 @@ import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg
 import styles from "./SignInUserMangement.module.css";
 import DiskusAuthPageLogo from "../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { useTranslation } from "react-i18next";
+import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
+import { useNavigate } from "react-router-dom";
 
 const SignInUserManagement = () => {
   const { t } = useTranslation();
+
+  const navigate = useNavigate();
+
+  const handleSubscribeNowButton = () => {
+    navigate("/PakageDetailsUserManagement");
+  };
   return (
     <>
       <Container fluid className={styles["auth_container"]}>
+        <Row className="position-relative">
+          <Col className={styles["languageSelector"]}>
+            <LanguageSelector />
+          </Col>
+        </Row>
         <Row>
           <Col lg={4} md={4} sm={12} className={styles["SignInEmailBox"]}>
             <Paper className={styles["EmailVerifyBox"]}>
@@ -97,6 +110,7 @@ const SignInUserManagement = () => {
                   >
                     <Button
                       text={t("Subscribe-now")}
+                      onClick={handleSubscribeNowButton}
                       className={styles["subscribNow_button_EmailVerify"]}
                     />
                   </Col>

@@ -390,18 +390,10 @@ const PakageDetailsUserManagement = () => {
                           </>
                         </Col>
                       </Row>
-                      <Row className="my-0">
-                        <Col sm={false} md={3} lg={3}></Col>
-                        <Col sm={12} md={6} lg={6} className={"m-1"}>
-                          <div
-                            className={
-                              monthlyPackageShow
-                                ? `${styles["packagecard_pricebox"]}`
-                                : currentPackageId === data.PackageID
-                                ? `${styles["packagecard_pricebox_Active"]}`
-                                : `${styles["packagecard_pricebox"]}`
-                            }
-                          >
+                      <Row className="mt-3">
+                        <Col sm={false} md={2} lg={2}></Col>
+                        <Col sm={12} md={8} lg={8}>
+                          <div className={styles["packagecard_pricebox"]}>
                             <span className={styles["package_actualPrice"]}>
                               ${data.price}/
                               <p className={styles["package_actualPrice_p"]}>
@@ -410,14 +402,14 @@ const PakageDetailsUserManagement = () => {
                             </span>
                           </div>
                         </Col>
-                        <Col sm={false} md={3} lg={3}></Col>
+                        <Col sm={false} md={2} lg={2}></Col>
                       </Row>
-                      <Row className="mt-3">
-                        <Col lg={2} md={2} sm={2}></Col>
+                      <Row className="mt-5">
+                        <Col lg={1} md={1} sm={1}></Col>
                         <Col
-                          lg={10}
-                          md={10}
-                          sm={10}
+                          lg={11}
+                          md={11}
+                          sm={11}
                           className="d-flex flex-column flex-wrap gap-2"
                         >
                           <span className={styles["MeetingHeading"]}>
