@@ -6,9 +6,10 @@ import styles from "./SignInUserMangement.module.css";
 import DiskusAuthPageLogo from "../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
+import SignUpOrganizationUM from "../../UserMangement/SignUpOrganizationUM/SignUpOrganizationUM";
 import { useNavigate } from "react-router-dom";
 
-const SignInUserManagement = () => {
+const SignInUserManagement = ({ setCurrentStep }) => {
   const { t } = useTranslation();
 
   const navigate = useNavigate();
@@ -18,9 +19,10 @@ const SignInUserManagement = () => {
   };
 
   const handleClickFreeTrail = () => {
+    setCurrentStep(9);
     localStorage.setItem("PackageID", 4);
     localStorage.setItem("TenureOfSuscriptionID", 2);
-    navigate("/signupUsermanagement", {
+    navigate("/Auth", {
       state: {
         freeTrail: true,
       },
