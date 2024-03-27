@@ -137,6 +137,11 @@ const CancelSubscriptionAdmin = () => {
   const handleCancelSubsModal = () => {
     dispatch(showCancelSubscriptionModal(true));
   };
+
+  const handleCompletionofContract = () => {
+    dispatch(showCancelSubscriptionModal(true));
+  };
+
   return (
     <Container className="p-3">
       <Row className="mt-3">
@@ -231,6 +236,7 @@ const CancelSubscriptionAdmin = () => {
           <Button
             text={t("Completion-of-contract")}
             className={styles["ConfirmSubsStyles"]}
+            onClick={handleCompletionofContract}
           />
         </Col>
         <Col lg={1} md={1} sm={12} xs={12}></Col>

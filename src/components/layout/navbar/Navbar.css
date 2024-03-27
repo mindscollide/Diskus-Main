@@ -125,9 +125,13 @@ body[dir="rtl"] .DiskusAdminNavBar a:nth-child(1) {
 .DiskusAdminNavBar > .dropdown-menu .dropdown-item {
   text-align: center;
   padding: 10px 10px;
-  font-size: 13px !important;
-  font-family: "MontserratMedium";
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold-600" !important;
   border-bottom: 1px solid #dadada !important;
   white-space: nowrap !important;
   width: 100%;
+}
+
+.DiskusAdminNavBar > .dropdown-menu .dropdown-item:last-child {
+  border: none !important;
 }
