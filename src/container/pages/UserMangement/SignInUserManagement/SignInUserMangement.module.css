@@ -329,41 +329,12 @@ body[dir="rtl"] .languageSelector {
   display: flex;
   justify-content: flex-end;
 }
-.freetrail_banner {
-  position: relative;
-  background-color: #6172d6;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  padding: 8px 0;
-  margin-top: 20px;
-  border-radius: 4px;
-}
-.freetrail_heading {
-  color: #fff !important;
-  font-family: "MontserratMedium-500";
 
-  font-size: 16px !important;
-}
-.Free-Trial_btn {
-  color: #5a5a5a;
-  background-color: #fff;
-  padding: 8px 20px;
-  font-family: "MontserratSemiBold-600" !important;
-  border-radius: 4px;
-  text-transform: uppercase;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 .SignInEmailBox {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  min-height: 88vh;
 }
 
 .languageSelector {
@@ -384,4 +355,36 @@ body[dir="rtl"] .languageSelector {
   margin-right: 0 !important;
   display: flex;
   justify-content: flex-end;
+}
+
+.freetrail_heading {
+  color: #fff !important;
+  font-family: "MontserratMedium-500";
+  font-size: 16px !important;
+}
+
+.Free-Trial_btn {
+  color: #5a5a5a;
+  background-color: #fff;
+  padding: 8px 20px;
+  font-family: "MontserratSemiBold-600" !important;
+  border-radius: 4px;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.freetrail_banner {
+  position: relative;
+  background-color: #6172d6;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 8px 0;
+  margin-top: 20px;
+  border-radius: 4px;
 }

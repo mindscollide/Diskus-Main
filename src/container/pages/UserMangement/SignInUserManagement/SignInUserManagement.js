@@ -16,9 +16,34 @@ const SignInUserManagement = () => {
   const handleSubscribeNowButton = () => {
     navigate("/PakageDetailsUserManagement");
   };
+
+  const handleClickFreeTrail = () => {
+    localStorage.setItem("PackageID", 4);
+    localStorage.setItem("TenureOfSuscriptionID", 2);
+    navigate("/signupUsermanagement", {
+      state: {
+        freeTrail: true,
+      },
+    });
+  };
   return (
     <>
       <Container fluid className={styles["auth_container"]}>
+        <Row>
+          <Col sm={12} md={12} lg={12}>
+            <section className={styles["freetrail_banner"]}>
+              <span className={styles["freetrail_heading"]}>
+                {t("Start-your-Free-Trial-now")}
+              </span>
+              <span
+                className={styles["Free-Trial_btn"]}
+                onClick={handleClickFreeTrail}
+              >
+                {t("Free-Trial")}
+              </span>
+            </section>
+          </Col>
+        </Row>
         <Row className="position-relative">
           <Col className={styles["languageSelector"]}>
             <LanguageSelector />

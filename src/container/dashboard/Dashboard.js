@@ -148,6 +148,7 @@ const Dashboard = () => {
     DataRoomReducer,
     DataRoomFileAndFoldersDetailsReducer,
     SignatureWorkFlowReducer,
+    UserMangementReducer,
   } = useSelector((state) => state);
   // const [socket, setSocket] = useState(Helper.socket);
   console.log(Authreducer, "AuthreducerAuthreducerAuthreducer");
@@ -1925,7 +1926,8 @@ const Dashboard = () => {
             OrganizationBillingReducer.Loading ||
             DataRoomReducer.Loading ||
             DataRoomFileAndFoldersDetailsReducer.Loading ||
-            SignatureWorkFlowReducer.Loading ? (
+            SignatureWorkFlowReducer.Loading ||
+            UserMangementReducer.Loading ? (
             <Loader />
           ) : null}
 
