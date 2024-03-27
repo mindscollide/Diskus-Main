@@ -22,7 +22,7 @@ const SignInUserManagement = ({ setCurrentStep }) => {
     setCurrentStep(9);
     localStorage.setItem("PackageID", 4);
     localStorage.setItem("TenureOfSuscriptionID", 2);
-    navigate("/Auth", {
+    navigate("/", {
       state: {
         freeTrail: true,
       },
