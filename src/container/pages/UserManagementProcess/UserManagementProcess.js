@@ -12,7 +12,7 @@ import ForgotPasswordUM from "../UserMangement/ForgotPassword/ForgotPasswordUM";
 import PasswordCreationUM from "../UserMangement/PasswordCreationUM/PasswordCreationUM";
 
 const UserManagementProcess = () => {
-  const [currentStep, setCurrentStep] = useState(11);
+  const [currentStep, setCurrentStep] = useState(1);
 
   let componentToRender;
 

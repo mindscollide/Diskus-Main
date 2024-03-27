@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import { Button, Paper, Checkbox } from "../../../../components/elements";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
@@ -8,16 +8,94 @@ import { useTranslation } from "react-i18next";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 import SignUpOrganizationUM from "../../UserMangement/SignUpOrganizationUM/SignUpOrganizationUM";
 import { useNavigate } from "react-router-dom";
+import { validationEmail } from "../../../../commen/functions/validations";
+import {
+  cleareMessage,
+  validationEmailAction,
+} from "../../../../store/actions/Auth2_actions";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 const SignInUserManagement = ({ setCurrentStep }) => {
-  const { t } = useTranslation();
-
   const navigate = useNavigate();
 
+  const { t } = useTranslation();
+
+  const dispatch = useDispatch();
+
+  const emailRef = useRef();
+
+  const { Authreducer, adminReducer, LanguageReducer } = useSelector(
+    (state) => state
+  );
+
+  //States For Email Validation Integration
+  const [email, setEmail] = useState("");
+  const [errorBar, setErrorBar] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [rememberEmail, setRemeberEmail] = useState(false);
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+  });
+
+  //OnChange For Email
+  const emailChangeHandler = (e) => {
+    let value = e.target.value;
+    let nValue = value.trim();
+    if (nValue === "" && validationEmail(value)) {
+      setErrorBar(true);
+    } else {
+      setErrorBar(false);
+      let RememberEmailLocal = JSON.parse(
+        localStorage.getItem("rememberEmail")
+      );
+      if (RememberEmailLocal === true) {
+        setEmail(nValue);
+        localStorage.setItem("rememberEmailValue", nValue);
+      } else {
+        setEmail(nValue);
+      }
+    }
+  };
+
+  //Form Submission Handler
+  const loginHandler = (e) => {
+    e.preventDefault();
+    if (email === "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: t("Please-enter-email"),
+      });
+    } else if (validationEmail(email) === false) {
+      setErrorBar(true);
+      setErrorMessage(t("Error-should-be-in-email-format"));
+    } else {
+      setErrorBar(false);
+      dispatch(validationEmailAction(email, navigate, t));
+    }
+  };
+
+  //Remeber Password Functionality
+  const rememberChangeEmail = () => {
+    setRemeberEmail(!rememberEmail);
+
+    if (!rememberEmail === true) {
+      localStorage.setItem("rememberEmail", true);
+      localStorage.setItem("rememberEmailValue", email);
+    } else {
+      localStorage.setItem("rememberEmail", false);
+      localStorage.setItem("rememberEmailValue", "");
+    }
+  };
+
+  //Subscribe now
   const handleSubscribeNowButton = () => {
     navigate("/PakageDetailsUserManagement");
   };
 
+  //Handle Free Trial
   const handleClickFreeTrail = () => {
     setCurrentStep(9);
     localStorage.setItem("PackageID", 4);
@@ -28,6 +106,229 @@ const SignInUserManagement = ({ setCurrentStep }) => {
       },
     });
   };
+
+  useEffect(() => {
+    let RememberEmailLocal = JSON.parse(localStorage.getItem("rememberEmail"));
+    let RememberPasswordLocal = JSON.parse(
+      localStorage.getItem("remeberPassword")
+    );
+    let reLang = localStorage.getItem("i18nextLng");
+
+    let RSVP = localStorage.getItem("RSVP");
+    let DataRoomEmailValue = localStorage.getItem("DataRoomEmail");
+    if (RememberEmailLocal === true && RememberPasswordLocal === true) {
+      let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
+
+      let RememberPasswordLocalValue = localStorage.getItem(
+        "rememberPasswordValue"
+      );
+
+      localStorage.clear();
+      if (reLang != undefined && reLang != null) {
+        localStorage.setItem("i18nextLng", reLang);
+      }
+      if (RSVP) {
+        localStorage.setItem("RSVP", RSVP);
+      }
+      if (DataRoomEmailValue) {
+        localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
+      }
+      localStorage.setItem("remeberPassword", RememberPasswordLocal);
+      localStorage.setItem("rememberPasswordValue", RememberPasswordLocalValue);
+      localStorage.setItem("rememberEmail", RememberEmailLocal);
+      localStorage.setItem("rememberEmailValue", RememberEmailLocalValue);
+      setErrorMessage("");
+      setErrorBar(false);
+      setRemeberEmail(RememberEmailLocal);
+      setEmail(RememberEmailLocalValue);
+    } else if (RememberEmailLocal === true) {
+      let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
+      localStorage.clear();
+      if (reLang != undefined && reLang != null) {
+        localStorage.setItem("i18nextLng", reLang);
+      }
+      if (RSVP) {
+        localStorage.setItem("RSVP", RSVP);
+      }
+      if (DataRoomEmailValue) {
+        localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
+      }
+      localStorage.setItem("rememberEmail", RememberEmailLocal);
+      localStorage.setItem("rememberEmailValue", RememberEmailLocalValue);
+      setErrorMessage("");
+      setErrorBar(false);
+      setRemeberEmail(RememberEmailLocal);
+      setEmail(RememberEmailLocalValue);
+    } else if (RememberPasswordLocal === true) {
+      let RememberPasswordLocalValue = localStorage.getItem(
+        "rememberPasswordValue"
+      );
+      localStorage.clear();
+      if (reLang != undefined && reLang != null) {
+        localStorage.setItem("i18nextLng", reLang);
+      }
+      if (RSVP) {
+        localStorage.setItem("RSVP", RSVP);
+      }
+      if (DataRoomEmailValue) {
+        localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
+      }
+      localStorage.setItem("remeberPassword", RememberPasswordLocal);
+      localStorage.setItem("rememberPasswordValue", RememberPasswordLocalValue);
+      setErrorMessage("");
+      setErrorBar(false);
+    } else {
+      localStorage.clear();
+      if (reLang != undefined && reLang != null) {
+        localStorage.setItem("i18nextLng", reLang);
+      }
+      if (RSVP) {
+        localStorage.setItem("RSVP", RSVP);
+      }
+      if (DataRoomEmailValue) {
+        localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
+      }
+      localStorage.setItem("rememberEmail", false);
+      localStorage.setItem("rememberEmailValue", "");
+      localStorage.setItem("remeberPassword", false);
+      localStorage.setItem("rememberPasswordValue", "");
+      setErrorMessage("");
+      setErrorBar(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    emailRef.current.focus();
+  }, []);
+
+  // const handleClickFreeTrail = () => {
+  //   localStorage.setItem("PackageID", 4);
+  //   localStorage.setItem("TenureOfSuscriptionID", 2);
+  //   navigate("/signuporganization", {
+  //     state: {
+  //       freeTrail: true,
+  //     },
+  //   });
+  // };
+
+  useEffect(() => {
+    if (adminReducer.DeleteOrganizationResponseMessage !== "") {
+      setOpen({
+        open: true,
+        message: adminReducer.DeleteOrganizationResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          open: false,
+          message: "",
+        });
+      }, 4000);
+      dispatch(cleareMessage());
+    }
+  }, [adminReducer.DeleteOrganizationResponseMessage]);
+
+  useEffect(() => {
+    if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.VerifyOTPEmailResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (Authreducer.EnterPasswordResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.EnterPasswordResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (Authreducer.OrganizationCreateResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.OrganizationCreateResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (Authreducer.CreatePasswordResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.CreatePasswordResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (Authreducer.GetSelectedPackageResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.GetSelectedPackageResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (Authreducer.EmailValidationResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.EmailValidationResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else {
+      dispatch(cleareMessage());
+    }
+  }, [
+    Authreducer.EnterPasswordResponseMessage,
+    Authreducer.VerifyOTPEmailResponseMessage,
+    Authreducer.OrganizationCreateResponseMessage,
+    Authreducer.CreatePasswordResponseMessage,
+    Authreducer.EmailValidationResponseMessage,
+    Authreducer.GetSelectedPackageResponseMessage,
+  ]);
   return (
     <>
       <Container fluid className={styles["auth_container"]}>
@@ -72,7 +373,7 @@ const SignInUserManagement = ({ setCurrentStep }) => {
                     </span>
                   </Col>
                 </Row>
-                <Form>
+                <Form onSubmit={loginHandler}>
                   <Row className="">
                     <Col
                       sm={12}
@@ -83,9 +384,12 @@ const SignInUserManagement = ({ setCurrentStep }) => {
                       <Form.Control
                         required
                         className={styles["inputEmailField"]}
+                        onChange={emailChangeHandler}
+                        value={email || ""}
                         width="100%"
                         placeholder={t("Email")}
                         maxLength={160}
+                        ref={emailRef}
                       />
                     </Col>
                   </Row>
@@ -98,7 +402,9 @@ const SignInUserManagement = ({ setCurrentStep }) => {
                       className="d-flex gap-2 align-items-center"
                     >
                       <Checkbox
+                        checked={rememberEmail}
                         classNameDiv=""
+                        onChange={rememberChangeEmail}
                         className={styles["RememberEmail"]}
                       />
                       <span className="Remember_checkbox_styles Arabicstyles_Subtotal_Not_include_taxes">
