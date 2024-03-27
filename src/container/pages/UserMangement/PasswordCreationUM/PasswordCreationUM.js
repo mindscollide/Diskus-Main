@@ -2,7 +2,8 @@ import React, { useRef, useState } from "react";
 import styles from "./PasswordCreationUM.module.css";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 import { Col, Container, Form, Row } from "react-bootstrap";
-import { Button, Checkbox, Paper } from "../../../../components/elements";
+import { Button, Paper } from "../../../../components/elements";
+import { Checkbox } from "antd";
 import { useTranslation } from "react-i18next";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
 import { useSelector } from "react-redux";
@@ -69,7 +70,7 @@ const PasswordCreationUM = () => {
                 </Col>
               </Row>
               <Row className="mt-4 mb-3">
-                <Col className="">
+                <Col className="d-flex justify-content-start">
                   <span className={styles["signIn_heading"]}>
                     {t("Create-password")}
                   </span>
@@ -145,11 +146,7 @@ const PasswordCreationUM = () => {
 
                 <Row className="mb-3">
                   <Col sm={12} md={12} lg={12} className="d-flex gap-2">
-                    <Checkbox
-                      classNameDiv=""
-                      //   checked={remeberPassword}
-                      //   onChange={rememberPasswordCheck}
-                    />
+                    <Checkbox />
                     <span className={styles["Create_password_remember_check"]}>
                       {t("Remember-password")}
                     </span>
