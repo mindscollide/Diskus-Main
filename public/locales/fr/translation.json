@@ -1359,5 +1359,12 @@
   "User-created-successfully-and-the-OTP": "User created successfully and the OTP has been generated. Please verify you email",
   "Failed-to-create-user-Package-not-found": "Failed to Create User (Package Not Found)",
   "Failed-to-create-user-headCount-exceeded": "Failed to Create User HeadCount Exceeded",
-  "The-user-has-been-edited-but-selected-package-limit-exceeded": "The user has been edited but selected package limit exceeded"
+  "The-user-has-been-edited-but-selected-package-limit-exceeded": "The user has been edited but selected package limit exceeded",
+  "Organization-admin": "Organization Admin",
+  "Failed-to-save-organization-settings": "Failed to Save Organization Settings",
+  "Failed-to-save-admin-user-alloted-package": "Failed To Save Admin User Alloted Package",
+  "Failed-to-add-organization-user-mapping": "Failed To Add Organization User Mapping",
+  "Failed-to-create-admin-user": "Failed To Create Admin User",
+  "Failed-to-save-subscriptions": "Failed To Save Subscriptions",
+  "Manage-users": "Manage Users"
 }

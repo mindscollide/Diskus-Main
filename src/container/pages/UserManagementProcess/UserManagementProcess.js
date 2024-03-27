@@ -9,7 +9,7 @@ import VerifyDeniedUM from "../UserMangement/2FA Verification/VerifyDeniedUM/Ver
 import DeviceFor2FAVerify from "../UserMangement/2FA Verification/DevicesFor2FAVerify/DeviceFor2FAVerify";
 
 const UserManagementProcess = () => {
-  const [currentStep, setCurrentStep] = useState(6);
+  const [currentStep, setCurrentStep] = useState(1);
 
   let componentToRender;
 

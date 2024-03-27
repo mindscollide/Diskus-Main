@@ -373,11 +373,16 @@ const Header2 = () => {
                   </Dropdown.Menu>
                 ) : (
                   <Dropdown.Menu className="Profile_dropdown_menu">
+                    <Dropdown.Item className={currentLanguage}>
+                      <Nav.Link className="d-flex text-black FontClass">
+                        {t("Organization-admin")}
+                      </Nav.Link>
+                    </Dropdown.Item>
                     <Dropdown.Item
                       className={currentLanguage}
                       onClick={modalUserProfileHandler}
                     >
-                      <Nav.Link className="d-flex text-black border-none FontClass">
+                      <Nav.Link className="d-flex text-black FontClass">
                         {t("My-profile")}
                       </Nav.Link>
                     </Dropdown.Item>
@@ -451,7 +456,6 @@ const Header2 = () => {
                         {t("Change-password")}
                       </Nav.Link>
                     </Dropdown.Item>
-
                     <Dropdown.Item
                       className={currentLanguage}
                       onClick={modalLogoutHandler}
@@ -697,11 +701,16 @@ const Header2 = () => {
                   </Dropdown.Menu>
                 ) : (
                   <Dropdown.Menu className="Profile_dropdown_menu">
+                    <Dropdown.Item className={currentLanguage}>
+                      <Nav.Link className="d-flex text-black FontClass">
+                        {t("Organization-admin")}
+                      </Nav.Link>
+                    </Dropdown.Item>
                     <Dropdown.Item
                       className={currentLanguage}
                       onClick={modalUserProfileHandler}
                     >
-                      <Nav.Link className="d-flex text-black border-none FontClass">
+                      <Nav.Link className="d-flex text-black FontClass">
                         {t("My-profile")}
                       </Nav.Link>
                     </Dropdown.Item>
@@ -775,7 +784,6 @@ const Header2 = () => {
                         {t("Change-password")}
                       </Nav.Link>
                     </Dropdown.Item>
-
                     <Dropdown.Item
                       className={currentLanguage}
                       onClick={modalLogoutHandler}
