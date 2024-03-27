@@ -92,6 +92,7 @@ import PaymentMethodBillInfo from "../container/pages/UserMangement/AdminUserMan
 import AddUserMain from "../container/pages/UserMangement/AdminUserManagement/AddUserMain/AddUserMain";
 import UserManagementProcess from "../container/pages/UserManagementProcess/UserManagementProcess";
 import PasswordVerification from "../container/pages/UserMangement/PasswordVerification/PasswordVerification";
+import SignupProcessUserManagement from "../container/pages/SignUpProcessUserManagement/SignupProcessUserManagement";
 
 export const router = createHashRouter(
   createRoutesFromElements(
@@ -240,6 +241,10 @@ export const router = createHashRouter(
         <Route path="/onboard" element={<OnBoard />} />
       </Route>
       <Route path="/Auth" element={<UserManagementProcess />} />
+
+      {/* For All Signup Route */}
+      <Route path="/Signup" element={<SignupProcessUserManagement />} />
+
       <Route path="/signupUsermanagement" element={<SignUpOrganizationUM />} />
       <Route
         path="/PasswordVerificationUM"
