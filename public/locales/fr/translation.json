@@ -1365,7 +1365,7 @@
   "Failed-to-add-organization-user-mapping": "Failed To Add Organization User Mapping",
   "Failed-to-create-admin-user": "Failed To Create Admin User",
   "Failed-to-save-subscriptions": "Failed To Save Subscriptions",
-  "Manage-users": "Manage Users",
   "You-can-select-multiple-options": "You can select multiple options",
+  "Manage-users": "Manage Users",
   "Time-should-be-greater-then-system-time": "Time should be greater then the system time"
 }
