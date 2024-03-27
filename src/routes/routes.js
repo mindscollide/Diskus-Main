@@ -240,7 +240,7 @@ export const router = createHashRouter(
       <Route Route element={<PrivateRoutes />}>
         <Route path="/onboard" element={<OnBoard />} />
       </Route>
-      <Route path="/Auth" element={<UserManagementProcess />} />
+      <Route path="/" element={<UserManagementProcess />} />
 
       {/* For All Signup Route */}
       <Route path="/Signup" element={<SignupProcessUserManagement />} />
