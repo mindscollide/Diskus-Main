@@ -9,9 +9,10 @@ import VerifyDeniedUM from "../UserMangement/2FA Verification/VerifyDeniedUM/Ver
 import DeviceFor2FAVerify from "../UserMangement/2FA Verification/DevicesFor2FAVerify/DeviceFor2FAVerify";
 import SignUpOrganizationUM from "../UserMangement/SignUpOrganizationUM/SignUpOrganizationUM";
 import ForgotPasswordUM from "../UserMangement/ForgotPassword/ForgotPasswordUM";
+import PasswordCreationUM from "../UserMangement/PasswordCreationUM/PasswordCreationUM";
 
 const UserManagementProcess = () => {
-  const [currentStep, setCurrentStep] = useState(10);
+  const [currentStep, setCurrentStep] = useState(11);
 
   let componentToRender;
 
@@ -35,6 +36,8 @@ const UserManagementProcess = () => {
     componentToRender = <SignUpOrganizationUM />;
   } else if (currentStep === 10) {
     componentToRender = <ForgotPasswordUM />;
+  } else if (currentStep === 11) {
+    componentToRender = <PasswordCreationUM />;
   } else {
     componentToRender = null;
   }
