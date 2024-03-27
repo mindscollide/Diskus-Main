@@ -1504,6 +1504,14 @@ const GetOrganizationSelectedPackagesByOrganizationID = {
     "ServiceManager.GetOrganizationSelectedPackagesByOrganizationID",
 };
 
+const joinMeeting = {
+  RequestMethod: "ServiceManager.JoinMeeting",
+};
+
+const leaveMeeting = {
+  RequestMethod: "ServiceManager.LeaveMeeting",
+};
+
 export {
   UserLoginHistoryRM,
   getDataAnalyticsCountRM,
@@ -1906,4 +1914,6 @@ export {
   AllOrganizationsUsers,
   OrganizationPackageDetailsAndUserStats,
   GetOrganizationSelectedPackagesByOrganizationID,
+  joinMeeting,
+  leaveMeeting,
 };

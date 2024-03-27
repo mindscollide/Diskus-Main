@@ -62,6 +62,8 @@ import {
   getAllCommittesandGroupsforPolls,
   getUserWiseProposeDateOrganizer,
   endMeetingStatus,
+  joinMeeting,
+  leaveMeeting,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -7001,6 +7003,7 @@ const meetingStatusProposedMqtt = (response) => {
 };
 
 const meetingStatusPublishedMqtt = (response) => {
+  console.log(response, "meetingStatusPublishedMqttmeetingStatusPublishedMqtt");
   return {
     type: actions.MQTT_MEETING_STATUS_PUBLISHED,
     response: response,
@@ -7562,6 +7565,91 @@ const meetingOrganizerRemoved = (response) => {
   };
 };
 
+// Join meeting new Api
+const joinMeetingInit = () => {
+  return {
+    type: actions.JOIN_MEETING_INIT,
+  };
+};
+
+const joinMeetingSuccess = (response, message) => {
+  return {
+    type: actions.JOIN_MEETING_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const joinMeetingFail = (message) => {
+  return {
+    type: actions.JOIN_MEETING_FAIL,
+    message: message,
+  };
+};
+
+const JoinCurrentMeeting = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    await dispatch(joinMeetingInit());
+    let form = new FormData();
+    form.append("RequestMethod", joinMeeting.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(JoinCurrentMeeting(navigate, t, Data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinMeeting_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                joinMeetingSuccess(response.data.responseResult, t("Success"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinMeeting_02".toLowerCase()
+                )
+            ) {
+              dispatch(joinMeetingFail(t("Unsuccessful")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinMeeting_03".toLowerCase()
+                )
+            ) {
+              dispatch(joinMeetingFail(t("Something-went-wrong")));
+            } else {
+              dispatch(joinMeetingFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(joinMeetingFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(joinMeetingFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(joinMeetingFail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   clearResponseNewMeetingReducerMessage,
   getAllAgendaContributorApi,
@@ -7713,4 +7801,5 @@ export {
   meetingAgendaContributorRemoved,
   meetingOrganizerAdded,
   meetingOrganizerRemoved,
+  JoinCurrentMeeting,
 };
