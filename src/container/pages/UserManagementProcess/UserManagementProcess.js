@@ -10,6 +10,7 @@ import DeviceFor2FAVerify from "../UserMangement/2FA Verification/DevicesFor2FAV
 import SignUpOrganizationUM from "../UserMangement/SignUpOrganizationUM/SignUpOrganizationUM";
 import ForgotPasswordUM from "../UserMangement/ForgotPassword/ForgotPasswordUM";
 import PasswordCreationUM from "../UserMangement/PasswordCreationUM/PasswordCreationUM";
+import ForgotPasswordVerificationUM from "../UserMangement/ForgotPasswordVerification/ForgotPasswordVerificationUM";
 
 const UserManagementProcess = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -37,9 +38,11 @@ const UserManagementProcess = () => {
   } else if (currentStep === 9) {
     componentToRender = <SignUpOrganizationUM />;
   } else if (currentStep === 10) {
-    componentToRender = <ForgotPasswordUM />;
+    componentToRender = <ForgotPasswordUM setCurrentStep={setCurrentStep} />;
   } else if (currentStep === 11) {
     componentToRender = <PasswordCreationUM />;
+  } else if (currentStep === 12) {
+    componentToRender = <ForgotPasswordVerificationUM />;
   } else {
     componentToRender = null;
   }

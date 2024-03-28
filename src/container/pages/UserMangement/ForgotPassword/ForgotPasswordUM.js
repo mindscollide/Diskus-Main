@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ForgotPasswordUM.module.css";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import DiskusLogo from "./../../../../assets/images/newElements/Diskus_newLogo.svg";
@@ -6,9 +6,95 @@ import DiskusAuthPageLogo from "./../../../../assets/images/newElements/Diskus_n
 import LanguageSelector from "./../../../../components/elements/languageSelector/Language-selector";
 import { Button, Paper } from "./../../../../components/elements";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
-const ForgotPasswordUM = () => {
+import { Link, useNavigate } from "react-router-dom";
+import {
+  changePasswordRequest,
+  cleareChangePasswordMessage,
+} from "../../../../store/actions/Auth_Forgot_Password";
+import { validateEmail } from "../../../../commen/functions/validations";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+const ForgotPasswordUM = ({ setCurrentStep }) => {
+  const navigate = useNavigate();
+
   const { t } = useTranslation();
+
+  const state = useSelector((state) => state);
+
+  const { auth } = state;
+
+  //States for Forgot Password Screen
+  const [email, setEmail] = useState("");
+  const [messege, setMessege] = useState("");
+  const dispatch = useDispatch();
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+  });
+
+  //Form Submission of Forgot Password
+  const submitForm = async (e) => {
+    e.preventDefault();
+    if (email !== "") {
+      if (validateEmail(email)) {
+        setMessege("");
+        await dispatch(
+          changePasswordRequest(email, t, navigate, setCurrentStep)
+        );
+      } else {
+        setMessege(t("Please-enter-a-valid-email"));
+      }
+    } else {
+      setOpen({
+        ...open,
+        open: true,
+        message: t("Please-enter-email"),
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+      setMessege("");
+    }
+  };
+
+  //onChange for the Field
+  const handleChange = (e) => {
+    e.preventDefault();
+    let name = e.target.name;
+    let value = e.target.value;
+    if (value != "" && name === "forgotEmail") {
+      setEmail(value);
+    } else {
+      setEmail("");
+    }
+  };
+
+  //For Response messeges
+  useEffect(() => {
+    if (auth.ResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: auth.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareChangePasswordMessage());
+    } else {
+      dispatch(cleareChangePasswordMessage());
+    }
+  }, [auth.ResponseMessage]);
+
   return (
     <Container fluid className={styles["auth_container"]}>
       <Row>
@@ -57,7 +143,7 @@ const ForgotPasswordUM = () => {
                   </span>
                 </Col>
               </Row>
-              <Form>
+              <Form onSubmit={submitForm}>
                 <Row className="mt-5">
                   <Col
                     lg={12}
@@ -80,12 +166,14 @@ const ForgotPasswordUM = () => {
                       required
                       type="email"
                       className={styles["Forgot_Password_Email_Field"]}
+                      onChange={handleChange}
+                      value={email}
                       name="forgotEmail"
                       width="100%"
                       placeholder={t("Email")}
                       maxLength={160}
                     />
-                    {/* <p className={styles["ErrorMessege"]}>{messege}</p> */}
+                    <p className={styles["ErrorMessege"]}>{messege}</p>
                   </Col>
                 </Row>
 
@@ -98,6 +186,7 @@ const ForgotPasswordUM = () => {
                   >
                     <Button
                       text={t("Next")}
+                      onClick={submitForm}
                       className={
                         styles["Forgot_PasswordNext_button_EmailVerify"]
                       }

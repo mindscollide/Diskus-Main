@@ -104,7 +104,7 @@ export const router = createHashRouter(
       />
       <Route path="/signuporganization" element={<Signup />} />
       {/* <Route path="/" element={<ValidateEmail />} /> */}
-      <Route path="/forgotpasssowrd" element={<ForgotPassword />} />
+      {/* <Route path="/forgotpasssowrd" element={<ForgotPassword />} /> */}
       <Route
         path="/forgotpasswordVerification"
         element={<ForgotPasswordVerification />}
