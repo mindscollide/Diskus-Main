@@ -19,7 +19,9 @@ const UserManagementProcess = () => {
   if (currentStep === 1) {
     componentToRender = <SignInComponent setCurrentStep={setCurrentStep} />;
   } else if (currentStep === 2) {
-    componentToRender = <PasswordVerification />;
+    componentToRender = (
+      <PasswordVerification setCurrentStep={setCurrentStep} />
+    );
   } else if (currentStep === 3) {
     componentToRender = <VerifyOTPUM />;
   } else if (currentStep === 4) {
