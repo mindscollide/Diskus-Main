@@ -42,7 +42,9 @@ const UserManagementProcess = () => {
   } else if (currentStep === 11) {
     componentToRender = <PasswordCreationUM />;
   } else if (currentStep === 12) {
-    componentToRender = <ForgotPasswordVerificationUM />;
+    componentToRender = (
+      <ForgotPasswordVerificationUM setCurrentStep={setCurrentStep} />
+    );
   } else {
     componentToRender = null;
   }

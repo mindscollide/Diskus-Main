@@ -21,7 +21,7 @@ import {
   cleareMessage,
   verificationEmailOTP,
 } from "../../../../store/actions/Auth2_actions";
-const ForgotPasswordVerificationUM = () => {
+const ForgotPasswordVerificationUM = ({ setCurrentStep }) => {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -189,7 +189,8 @@ const ForgotPasswordVerificationUM = () => {
           t,
           true,
           setSeconds,
-          setMinutes
+          setMinutes,
+          setCurrentStep
         )
       );
     }
