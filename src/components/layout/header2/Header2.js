@@ -259,7 +259,10 @@ const Header2 = () => {
   const handleRequestExtentionModal = () => {
     dispatch(showRequestExtentionModal(true));
   };
-
+  const openAdminTab = () => {
+    window.open(window.location.origin + '/#/Diskus/Admin', '_blank');
+  };
+  openAdminTab;
   return (
     <>
       {activateBlur ? (
@@ -701,7 +704,10 @@ const Header2 = () => {
                   </Dropdown.Menu>
                 ) : (
                   <Dropdown.Menu className="Profile_dropdown_menu">
-                    <Dropdown.Item className={currentLanguage}>
+                    <Dropdown.Item
+                      className={currentLanguage}
+                      onClick={openAdminTab}
+                    >
                       <Nav.Link className="d-flex text-black FontClass">
                         {t("Organization-admin")}
                       </Nav.Link>
