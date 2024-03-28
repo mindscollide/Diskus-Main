@@ -7,7 +7,12 @@ import { useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import { Spinner, Container, Row, Col, Form } from "react-bootstrap";
 import DiskusnewRoundIconSignUp from "../../../../assets/images/newElements/DiskusWhiteGroupIcon.svg";
-import { Button, TextField } from "../../../../components/elements";
+import {
+  Button,
+  TextField,
+  Loader,
+  Notification,
+} from "../../../../components/elements";
 import { validateEmailEnglishAndArabicFormat } from "../../../../commen/functions/validations";
 import { countryNameforPhoneNumber } from "../../../Admin/AllUsers/AddUser/CountryJson";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
@@ -19,11 +24,17 @@ import {
   checkOraganisation,
 } from "../../../../store/actions/Admin_Organization";
 import { setLoader } from "../../../../store/actions/Auth2_actions";
+import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
 const SignUpOrganizationUM = () => {
   const { t } = useTranslation();
 
-  const { countryNamesReducer, Authreducer, adminReducer, LanguageReducer } =
-    useSelector((state) => state);
+  const {
+    countryNamesReducer,
+    Authreducer,
+    adminReducer,
+    LanguageReducer,
+    UserMangementReducer,
+  } = useSelector((state) => state);
 
   const location = useLocation();
 
@@ -123,10 +134,12 @@ const SignUpOrganizationUM = () => {
   }, [location.state]);
 
   const countryOnSelect = (code) => {
+    console.log(code, "countryOnSelect");
     setSelect(code);
     let a = Object.values(countryNames).find((obj) => {
       return obj.shortCode === code;
     });
+    console.log(a, "countryOnSelect");
     setSignUpDetails({
       ...signUpDetails,
       CountryName: {
@@ -137,17 +150,17 @@ const SignUpOrganizationUM = () => {
     });
   };
 
-  //   const handleSelect = (country) => {
-  //     setSelected(country);
-  //     let a = Object.values(countryNameforPhoneNumber).find((obj) => {
-  //       return obj.primary == country;
-  //     });
-  //     setSignUpDetails({
-  //       ...signUpDetails,
-  //       FK_CCID: a.id,
-  //       PhoneNumberCountryID: a.id,
-  //     });
-  //   };
+  const handleSelect = (country) => {
+    setSelected(country);
+    let a = Object.values(countryNameforPhoneNumber).find((obj) => {
+      return obj.primary == country;
+    });
+    setSignUpDetails({
+      ...signUpDetails,
+      FK_CCID: a.id,
+      PhoneNumberCountryID: a.id,
+    });
+  };
 
   const currentLangObj = languages.find((lang) => lang.code === currentLocale);
 
@@ -386,185 +399,323 @@ const SignUpOrganizationUM = () => {
       });
     }
   };
-
+  console.log(signUpDetails.CountryName.value, "signUpDetails");
   const handlerSignup = async () => {
-    if (
-      signUpDetails.CompanyName.value !== "" &&
-      signUpDetails.FullName.value !== "" &&
-      signUpDetails.Email.value !== "" &&
-      signUpDetails.FullName.value !== ""
-    ) {
-      if (validateEmailEnglishAndArabicFormat(signUpDetails.Email.value)) {
-        if (
-          adminReducer.OrganisationCheck !== false &&
-          adminReducer.EmailCheck !== false
-        ) {
-          let PackageID = localStorage.getItem("PackageID");
-          let tenureOfSuscriptionID = localStorage.getItem(
-            "TenureOfSuscriptionID"
-          );
-          // let data = {
-          //   SelectedPackageID: JSON.parse(PackageID),
-          //   TenureOfSuscriptionID: JSON.parse(tenureOfSuscriptionID),
-          //   Organization: {
-          //     OrganizationName: signUpDetails.CompanyName.value,
-          //     FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
-          //     ContactPersonName: signUpDetails.FullName.value,
-          //     ContactPersonEmail: signUpDetails.Email.value,
-          //     ContactPersonNumber: signUpDetails.PhoneNumber.value,
-          //     FK_NumberWorldCountryID: JSON.parse(
-          //       signUpDetails.PhoneNumberCountryID
-          //     ),
-          //     CustomerReferenceNumber: "",
-          //     PersonalNumber: signUpDetails.PhoneNumber.value,
-          //     OrganizationAddress1: signUpDetails.Address1.value,
-          //     OrganizationAddress2: signUpDetails.Address2.value,
-          //     City: signUpDetails.City.value,
-          //     StateProvince: signUpDetails.State.value,
-          //     PostalCode: signUpDetails.PostalCode.value,
-          //     FK_SubscriptionStatusID: 0,
-          //     // FK_CCID: signUpDetails.FK_CCID,
-          //   },
-          // };
-          let data = {
-            TenureOfSubscriptionID: JSON.parse(tenureOfSuscriptionID),
-            Organization: {
-              OrganizationName: signUpDetails.CompanyName.value,
-              FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
-              ContactPersonName: signUpDetails.FullName.value,
-              ContactPersonEmail: signUpDetails.Email.value,
-              ContactPersonNumber: signUpDetails.PhoneNumber.value,
-              FK_NumberWorldCountryID: JSON.parse(
-                signUpDetails.PhoneNumberCountryID
-              ),
-              CustomerReferenceNumber: "",
-              PersonalNumber: signUpDetails.PhoneNumber.value,
-              OrganizationAddress1: signUpDetails.Address1.value,
-              OrganizationAddress2: signUpDetails.Address2.value,
-              City: signUpDetails.City.value,
-              StateProvince: signUpDetails.State.value,
-              PostalCode: signUpDetails.PostalCode.value,
-              TimeZoneID: 1,
-            },
-            Packages: [{ PackageID: 4, HeadCount: 5 }],
-          };
-          dispatch(signUpOrganizationAndPakageSelection(data, navigate, t));
+    if (isFreeTrail === true) {
+      if (
+        signUpDetails.CompanyName.value !== "" &&
+        signUpDetails.FullName.value !== "" &&
+        signUpDetails.Email.value !== "" &&
+        signUpDetails.FullName.value !== ""
+      ) {
+        if (validateEmailEnglishAndArabicFormat(signUpDetails.Email.value)) {
+          if (
+            adminReducer.OrganisationCheck !== false &&
+            adminReducer.EmailCheck !== false
+          ) {
+            let PackageID = localStorage.getItem("PackageID");
+            let tenureOfSuscriptionID = localStorage.getItem(
+              "TenureOfSuscriptionID"
+            );
+
+            let data = {
+              TenureOfSubscriptionID: JSON.parse(tenureOfSuscriptionID),
+              Organization: {
+                OrganizationName: signUpDetails.CompanyName.value,
+                FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
+                ContactPersonName: signUpDetails.FullName.value,
+                ContactPersonEmail: signUpDetails.Email.value,
+                ContactPersonNumber: signUpDetails.PhoneNumber.value,
+                FK_NumberWorldCountryID: JSON.parse(
+                  signUpDetails.PhoneNumberCountryID
+                ),
+                CustomerReferenceNumber: "",
+                PersonalNumber: signUpDetails.PhoneNumber.value,
+                OrganizationAddress1: signUpDetails.Address1.value,
+                OrganizationAddress2: signUpDetails.Address2.value,
+                City: signUpDetails.City.value,
+                StateProvince: signUpDetails.State.value,
+                PostalCode: signUpDetails.PostalCode.value,
+                TimeZoneID: 1,
+              },
+              Packages: [{ PackageID: Number(PackageID), HeadCount: 20 }],
+            };
+            dispatch(signUpOrganizationAndPakageSelection(data, navigate, t));
+          } else {
+            await dispatch(setLoader(true));
+            await dispatch(
+              checkOraganisation(
+                setCompanyNameValidate,
+                setCompanyNameValidateError,
+                signUpDetails,
+                t,
+                setCompanyNameUnique
+              )
+            );
+            handeEmailvlidate();
+            setAgainCall(true);
+          }
         } else {
-          await dispatch(setLoader(true));
-          await dispatch(
-            checkOraganisation(
-              setCompanyNameValidate,
-              setCompanyNameValidateError,
-              signUpDetails,
-              t,
-              setCompanyNameUnique
-            )
-          );
-          handeEmailvlidate();
-          setAgainCall(true);
+          setOpen({
+            ...open,
+            open: true,
+            message: t("Email-should-be-in-email-format"),
+          });
         }
       } else {
+        setSignUpDetails({
+          ...signUpDetails,
+          CompanyName: {
+            value: signUpDetails.CompanyName.value,
+            errorMessage:
+              signUpDetails.CompanyName.value === ""
+                ? t("Company-name-is-required")
+                : signUpDetails.CompanyName.errorMessage,
+            errorStatus:
+              signUpDetails.CompanyName.value === ""
+                ? true
+                : signUpDetails.CompanyName.errorStatus,
+          },
+          CountryName: {
+            value: signUpDetails.CountryName.value,
+            errorMessage:
+              signUpDetails.CountryName.value === ""
+                ? t("Country-name-is-required")
+                : signUpDetails.CountryName.errorMessage,
+            errorStatus:
+              signUpDetails.CountryName.value === ""
+                ? true
+                : signUpDetails.CountryName.errorStatus,
+          },
+          Address1: {
+            value: signUpDetails.Address1.value,
+            errorMessage:
+              signUpDetails.Address1.value === ""
+                ? t("Address-1-is-required")
+                : signUpDetails.Address1.errorMessage,
+            errorStatus:
+              signUpDetails.Address1.value === ""
+                ? true
+                : signUpDetails.Address1.errorStatus,
+          },
+          Address2: {
+            value: signUpDetails.Address2.value,
+            errorMessage:
+              signUpDetails.Address2.value === ""
+                ? t("Address-2-is-required")
+                : signUpDetails.Address2.errorMessage,
+            errorStatus:
+              signUpDetails.Address2.value === ""
+                ? true
+                : signUpDetails.Address2.errorStatus,
+          },
+          State: {
+            value: signUpDetails.State.value,
+            errorMessage: "",
+          },
+          City: {
+            value: signUpDetails.City.value,
+            errorMessage: "",
+          },
+          PostalCode: {
+            value: signUpDetails.PostalCode.value,
+            errorMessage: "",
+          },
+          FullName: {
+            value: signUpDetails.FullName.value,
+            errorMessage:
+              signUpDetails.FullName.value === ""
+                ? t("Full-name-is-required")
+                : signUpDetails.FullName.errorMessage,
+            errorStatus:
+              signUpDetails.FullName.value === ""
+                ? true
+                : signUpDetails.FullName.errorStatus,
+          },
+          Email: {
+            value: signUpDetails.Email.value,
+            errorMessage:
+              signUpDetails.Email.value === ""
+                ? t("Email-address-is-required")
+                : signUpDetails.Email.errorMessage,
+            errorStatus: signUpDetails.Email.errorStatus,
+          },
+          PhoneNumber: {
+            value: signUpDetails.PhoneNumber.value,
+            errorMessage:
+              signUpDetails.PhoneNumber.value === ""
+                ? t("Phone-number-is-required")
+                : signUpDetails.PhoneNumber.errorMessage,
+            errorStatus:
+              signUpDetails.PhoneNumber.value === ""
+                ? true
+                : signUpDetails.PhoneNumber.errorStatus,
+          },
+        });
         setOpen({
           ...open,
           open: true,
-          message: t("Email-should-be-in-email-format"),
+          message: t("Please-fill-all-the-fields"),
         });
       }
     } else {
-      setSignUpDetails({
-        ...signUpDetails,
-        CompanyName: {
-          value: signUpDetails.CompanyName.value,
-          errorMessage:
-            signUpDetails.CompanyName.value === ""
-              ? t("Company-name-is-required")
-              : signUpDetails.CompanyName.errorMessage,
-          errorStatus:
-            signUpDetails.CompanyName.value === ""
-              ? true
-              : signUpDetails.CompanyName.errorStatus,
-        },
-        CountryName: {
-          value: signUpDetails.CountryName.value,
-          errorMessage:
-            signUpDetails.CountryName.value === ""
-              ? t("Country-name-is-required")
-              : signUpDetails.CountryName.errorMessage,
-          errorStatus:
-            signUpDetails.CountryName.value === ""
-              ? true
-              : signUpDetails.CountryName.errorStatus,
-        },
-        Address1: {
-          value: signUpDetails.Address1.value,
-          errorMessage:
-            signUpDetails.Address1.value === ""
-              ? t("Address-1-is-required")
-              : signUpDetails.Address1.errorMessage,
-          errorStatus:
-            signUpDetails.Address1.value === ""
-              ? true
-              : signUpDetails.Address1.errorStatus,
-        },
-        Address2: {
-          value: signUpDetails.Address2.value,
-          errorMessage:
-            signUpDetails.Address2.value === ""
-              ? t("Address-2-is-required")
-              : signUpDetails.Address2.errorMessage,
-          errorStatus:
-            signUpDetails.Address2.value === ""
-              ? true
-              : signUpDetails.Address2.errorStatus,
-        },
-        State: {
-          value: signUpDetails.State.value,
-          errorMessage: "",
-        },
-        City: {
-          value: signUpDetails.City.value,
-          errorMessage: "",
-        },
-        PostalCode: {
-          value: signUpDetails.PostalCode.value,
-          errorMessage: "",
-        },
-        FullName: {
-          value: signUpDetails.FullName.value,
-          errorMessage:
-            signUpDetails.FullName.value === ""
-              ? t("Full-name-is-required")
-              : signUpDetails.FullName.errorMessage,
-          errorStatus:
-            signUpDetails.FullName.value === ""
-              ? true
-              : signUpDetails.FullName.errorStatus,
-        },
-        Email: {
-          value: signUpDetails.Email.value,
-          errorMessage:
-            signUpDetails.Email.value === ""
-              ? t("Email-address-is-required")
-              : signUpDetails.Email.errorMessage,
-          errorStatus: signUpDetails.Email.errorStatus,
-        },
-        PhoneNumber: {
-          value: signUpDetails.PhoneNumber.value,
-          errorMessage:
-            signUpDetails.PhoneNumber.value === ""
-              ? t("Phone-number-is-required")
-              : signUpDetails.PhoneNumber.errorMessage,
-          errorStatus:
-            signUpDetails.PhoneNumber.value === ""
-              ? true
-              : signUpDetails.PhoneNumber.errorStatus,
-        },
-      });
-      setOpen({
-        ...open,
-        open: true,
-        message: t("Please-fill-all-the-fields"),
-      });
+      //if its not a free trial in User Management
+      if (
+        signUpDetails.CompanyName.value !== "" &&
+        signUpDetails.FullName.value !== "" &&
+        signUpDetails.Email.value !== "" &&
+        signUpDetails.FullName.value !== ""
+      ) {
+        if (validateEmailEnglishAndArabicFormat(signUpDetails.Email.value)) {
+          if (
+            adminReducer.OrganisationCheck !== false &&
+            adminReducer.EmailCheck !== false
+          ) {
+            let PackageID = localStorage.getItem("PackageID");
+            let tenureOfSuscriptionID = localStorage.getItem(
+              "TenureOfSuscriptionID"
+            );
+
+            let data = {
+              TenureOfSubscriptionID: JSON.parse(tenureOfSuscriptionID),
+              Organization: {
+                OrganizationName: signUpDetails.CompanyName.value,
+                FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
+                ContactPersonName: signUpDetails.FullName.value,
+                ContactPersonEmail: signUpDetails.Email.value,
+                ContactPersonNumber: signUpDetails.PhoneNumber.value,
+                FK_NumberWorldCountryID: JSON.parse(
+                  signUpDetails.PhoneNumberCountryID
+                ),
+                CustomerReferenceNumber: "",
+                PersonalNumber: signUpDetails.PhoneNumber.value,
+                OrganizationAddress1: signUpDetails.Address1.value,
+                OrganizationAddress2: signUpDetails.Address2.value,
+                City: signUpDetails.City.value,
+                StateProvince: signUpDetails.State.value,
+                PostalCode: signUpDetails.PostalCode.value,
+                TimeZoneID: 1,
+              },
+              Packages: [{ PackageID: 4, HeadCount: 5 }],
+            };
+            dispatch(signUpOrganizationAndPakageSelection(data, navigate, t));
+          } else {
+            await dispatch(setLoader(true));
+            await dispatch(
+              checkOraganisation(
+                setCompanyNameValidate,
+                setCompanyNameValidateError,
+                signUpDetails,
+                t,
+                setCompanyNameUnique
+              )
+            );
+            handeEmailvlidate();
+            setAgainCall(true);
+          }
+        } else {
+          setOpen({
+            ...open,
+            open: true,
+            message: t("Email-should-be-in-email-format"),
+          });
+        }
+      } else {
+        setSignUpDetails({
+          ...signUpDetails,
+          CompanyName: {
+            value: signUpDetails.CompanyName.value,
+            errorMessage:
+              signUpDetails.CompanyName.value === ""
+                ? t("Company-name-is-required")
+                : signUpDetails.CompanyName.errorMessage,
+            errorStatus:
+              signUpDetails.CompanyName.value === ""
+                ? true
+                : signUpDetails.CompanyName.errorStatus,
+          },
+          CountryName: {
+            value: signUpDetails.CountryName.value,
+            errorMessage:
+              signUpDetails.CountryName.value === ""
+                ? t("Country-name-is-required")
+                : signUpDetails.CountryName.errorMessage,
+            errorStatus:
+              signUpDetails.CountryName.value === ""
+                ? true
+                : signUpDetails.CountryName.errorStatus,
+          },
+          Address1: {
+            value: signUpDetails.Address1.value,
+            errorMessage:
+              signUpDetails.Address1.value === ""
+                ? t("Address-1-is-required")
+                : signUpDetails.Address1.errorMessage,
+            errorStatus:
+              signUpDetails.Address1.value === ""
+                ? true
+                : signUpDetails.Address1.errorStatus,
+          },
+          Address2: {
+            value: signUpDetails.Address2.value,
+            errorMessage:
+              signUpDetails.Address2.value === ""
+                ? t("Address-2-is-required")
+                : signUpDetails.Address2.errorMessage,
+            errorStatus:
+              signUpDetails.Address2.value === ""
+                ? true
+                : signUpDetails.Address2.errorStatus,
+          },
+          State: {
+            value: signUpDetails.State.value,
+            errorMessage: "",
+          },
+          City: {
+            value: signUpDetails.City.value,
+            errorMessage: "",
+          },
+          PostalCode: {
+            value: signUpDetails.PostalCode.value,
+            errorMessage: "",
+          },
+          FullName: {
+            value: signUpDetails.FullName.value,
+            errorMessage:
+              signUpDetails.FullName.value === ""
+                ? t("Full-name-is-required")
+                : signUpDetails.FullName.errorMessage,
+            errorStatus:
+              signUpDetails.FullName.value === ""
+                ? true
+                : signUpDetails.FullName.errorStatus,
+          },
+          Email: {
+            value: signUpDetails.Email.value,
+            errorMessage:
+              signUpDetails.Email.value === ""
+                ? t("Email-address-is-required")
+                : signUpDetails.Email.errorMessage,
+            errorStatus: signUpDetails.Email.errorStatus,
+          },
+          PhoneNumber: {
+            value: signUpDetails.PhoneNumber.value,
+            errorMessage:
+              signUpDetails.PhoneNumber.value === ""
+                ? t("Phone-number-is-required")
+                : signUpDetails.PhoneNumber.errorMessage,
+            errorStatus:
+              signUpDetails.PhoneNumber.value === ""
+                ? true
+                : signUpDetails.PhoneNumber.errorStatus,
+          },
+        });
+        setOpen({
+          ...open,
+          open: true,
+          message: t("Please-fill-all-the-fields"),
+        });
+      }
     }
   };
 
@@ -578,9 +729,9 @@ const SignUpOrganizationUM = () => {
     setSelected(findUSCountryCode);
   }, []);
 
-  //   useEffect(() => {
-  //     dispatch(getCountryNamesAction(navigate, t));
-  //   }, []);
+  useEffect(() => {
+    dispatch(getCountryNamesAction(navigate, t));
+  }, []);
 
   useEffect(() => {
     if (companyNameValidateError !== "") {
@@ -649,6 +800,7 @@ const SignUpOrganizationUM = () => {
       countryNamesReducer.CountryNamesData !== null &&
       countryNamesReducer.CountryNamesData !== undefined
     ) {
+      console.log(countryNamesReducer.CountryNamesData, "countryOnSelect");
       setCountryNames(countryNamesReducer.CountryNamesData);
     }
   }, [countryNamesReducer.CountryNamesData]);
@@ -1007,7 +1159,7 @@ const SignUpOrganizationUM = () => {
                           <ReactFlagsSelect
                             fullWidth={false}
                             selected={selected}
-                            // onSelect={handleSelect}
+                            onSelect={handleSelect}
                             searchable={true}
                             placeholder={"Select Co...."}
                             customLabels={countryNameforPhoneNumber}
@@ -1089,7 +1241,15 @@ const SignUpOrganizationUM = () => {
               className={styles["rightsection_roundLogo"]}
             />
           </Col>
-        </Row>
+        </Row>{" "}
+        {UserMangementReducer.Loading || LanguageReducer.Loading ? (
+          <Loader />
+        ) : null}{" "}
+        <Notification
+          setOpen={setOpen}
+          open={open.open}
+          message={open.message}
+        />
       </Container>
     </>
   );

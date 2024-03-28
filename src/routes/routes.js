@@ -92,6 +92,7 @@ import PaymentMethodBillInfo from "../container/pages/UserMangement/AdminUserMan
 import AddUserMain from "../container/pages/UserMangement/AdminUserManagement/AddUserMain/AddUserMain";
 import UserManagementProcess from "../container/pages/UserManagementProcess/UserManagementProcess";
 import PasswordVerification from "../container/pages/UserMangement/PasswordVerification/PasswordVerification";
+import SignupProcessUserManagement from "../container/pages/SignUpProcessUserManagement/SignupProcessUserManagement";
 
 export const router = createHashRouter(
   createRoutesFromElements(
@@ -102,7 +103,7 @@ export const router = createHashRouter(
         element={<PakageDetailsUserManagement />}
       />
       <Route path="/signuporganization" element={<Signup />} />
-      <Route path="/" element={<ValidateEmail />} />
+      {/* <Route path="/" element={<ValidateEmail />} /> */}
       <Route path="/forgotpasssowrd" element={<ForgotPassword />} />
       <Route
         path="/forgotpasswordVerification"
@@ -144,7 +145,7 @@ export const router = createHashRouter(
           <Route path="todolist" element={<TodoList />} />
           <Route path="documentViewer" element={<DocumentViewer />} />
           <Route path="signatureviewer" element={<SignatureViewer />} />
-          <Route path="forgotpassword" element={<ForgotPassword />} />
+          {/* <Route path="forgotpassword" element={<ForgotPassword />} /> */}
           <Route path="calendar" element={<CalendarPage />} />
           <Route path="Meeting" element={<NewMeeting />} />
           <Route path="Meeting/Useravailabilityformeeting" element={<RSVP />} />
@@ -239,7 +240,12 @@ export const router = createHashRouter(
       <Route Route element={<PrivateRoutes />}>
         <Route path="/onboard" element={<OnBoard />} />
       </Route>
-      <Route path="/Auth" element={<UserManagementProcess />} />
+      {/* for all login Routes  */}
+      <Route path="/" element={<UserManagementProcess />} />
+
+      {/* For All Signup Route */}
+      <Route path="/Signup" element={<SignupProcessUserManagement />} />
+
       <Route path="/signupUsermanagement" element={<SignUpOrganizationUM />} />
       <Route
         path="/PasswordVerificationUM"

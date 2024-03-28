@@ -1786,7 +1786,7 @@
   "Billing-contact": "Billing Contact",
   "Billing-address": "Billing Address",
   "Payment-method": "Payment Method",
-  "Charges-per-license-US$": "Charges-per license US$",
+  "Charges-per-license-US$": "Charges per license US$",
   "Number-of-licenses": "Number of licenses",
   "Yearly-charges-in": "Yearly Charges in US$",
   "Your-subscription-will-expire-on": "Your subscription will expire on",
@@ -1869,5 +1869,11 @@
   "Failed-to-create-user-headCount-exceeded": "Failed to Create User HeadCount Exceeded",
   "The-user-has-been-edited-but-selected-package-limit-exceeded": "The user has been edited but selected package limit exceeded",
   "Organization-admin": "Organization Admin",
+  "Failed-to-save-organization-settings": "Failed to Save Organization Settings",
+  "Failed-to-save-admin-user-alloted-package": "Failed To Save Admin User Alloted Package",
+  "Failed-to-add-organization-user-mapping": "Failed To Add Organization User Mapping",
+  "Failed-to-create-admin-user": "Failed To Create Admin User",
+  "Failed-to-save-subscriptions": "Failed To Save Subscriptions",
+  "Manage-users": "Manage Users",
   "Time-should-be-greater-then-system-time": "Time should be greater then the system time"
 }

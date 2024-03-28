@@ -45,7 +45,7 @@ const NavbarAdmin = () => {
                       <Nav className="MontserratSemiBold-600 me-auto d-flex justify-content-evenly w-100 py-1">
                         <NavDropdown
                           disabled={true}
-                          title={t("User")}
+                          title={t("Manage-users")}
                           id="collasible-nav-dropdown"
                           className="DiskusAdminNavBar"
                           // as={Link}
@@ -108,7 +108,8 @@ const NavbarAdmin = () => {
                           >
                             {t("Organization-level-configurations")}
                           </NavDropdown.Item>
-                          <NavDropdown.Item
+                          {/* user Level Configuration */}
+                          {/* <NavDropdown.Item
                             as={Link}
                             // to="setting"
                             to="UserLevelConfigUM"
@@ -116,7 +117,7 @@ const NavbarAdmin = () => {
                             className="text-black border-none "
                           >
                             {t("User-level-configurations")}
-                          </NavDropdown.Item>
+                          </NavDropdown.Item> */}
                           {/* <NavDropdown.Item
                             as={Link}
                             to="setting"
@@ -209,13 +210,13 @@ const NavbarAdmin = () => {
                     <Navbar.Collapse id="responsive-navbar-nav">
                       <Nav className="me-auto d-flex justify-content-evenly w-100 py-1">
                         <NavDropdown
-                          title={t("User")}
+                          title={t("Manage-users")}
                           id="collasible-nav-dropdown"
                           className="DiskusAdminNavBar"
-                          // as={Link}
-                          // to="AllUserPage"
+                          as={Link}
+                          to="ManageUsers"
                         >
-                          <NavDropdown.Item
+                          {/* <NavDropdown.Item
                             as={Link}
                             to="AllUserPage"
                             eventKey="link-7"
@@ -230,7 +231,7 @@ const NavbarAdmin = () => {
                             className="text-black border-none"
                           >
                             {t("Add-user")}
-                          </NavDropdown.Item>
+                          </NavDropdown.Item> */}
                           <NavDropdown.Item
                             as={Link}
                             to="ManageUsers"
@@ -240,8 +241,8 @@ const NavbarAdmin = () => {
                             {t("Edit-user")}
                           </NavDropdown.Item>
                         </NavDropdown>
-
-                        <NavDropdown
+                        {/* Meeting Drop down Comment */}
+                        {/* <NavDropdown
                           title={t("Meetings")}
                           id="collasible-nav-dropdown"
                           className="DiskusAdminNavBar"
@@ -254,7 +255,7 @@ const NavbarAdmin = () => {
                           >
                             {t("All-meeting")}
                           </NavDropdown.Item>
-                        </NavDropdown>
+                        </NavDropdown> */}
 
                         <NavDropdown
                           title={t("Configurations")}
@@ -270,7 +271,8 @@ const NavbarAdmin = () => {
                           >
                             {t("Organization-level-configurations")}
                           </NavDropdown.Item>
-                          <NavDropdown.Item
+                          {/* User level Orgnization  */}
+                          {/* <NavDropdown.Item
                             as={Link}
                             // to="setting"
                             to="UserLevelConfigUM"
@@ -278,7 +280,7 @@ const NavbarAdmin = () => {
                             className="text-black border-none "
                           >
                             {t("User-level-configurations")}
-                          </NavDropdown.Item>
+                          </NavDropdown.Item> */}
                           {/* <NavDropdown.Item
                             as={Link}
                             to="setting"

@@ -271,6 +271,19 @@ body[dir="rtl"] .spandefault {
   margin-bottom: 0;
 }
 
+@media screen and (max-width: 1050px) {
+  .package_actualPrice {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-family: "MontserratBold";
+    color: #fff !important;
+    font-size: 40px !important;
+    margin-bottom: 0;
+  }
+}
+
 body[dir="rtl"] .package_actualPrice {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
