@@ -190,7 +190,15 @@ const sendTwoFacOtpFail = (message) => {
   };
 };
 
-const sendTwoFacAction = (t, navigate, Data, selectDevice, setCurrentStep) => {
+// t, navigate, Data, selectDevice, setCurrentStep; Previous Props
+const sendTwoFacAction = (
+  t,
+  navigate,
+  Data,
+  setSeconds,
+  setMinutes,
+  setCurrentStep
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(sendTwoFacOtpInit());
@@ -209,7 +217,14 @@ const sendTwoFacAction = (t, navigate, Data, selectDevice, setCurrentStep) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            sendTwoFacAction(t, navigate, Data, selectDevice, setCurrentStep)
+            sendTwoFacAction(
+              t,
+              navigate,
+              Data,
+              setSeconds,
+              setMinutes,
+              setCurrentStep
+            )
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {

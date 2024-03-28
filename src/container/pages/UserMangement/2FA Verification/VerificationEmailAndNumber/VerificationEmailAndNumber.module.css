@@ -233,3 +233,23 @@ body[dir="rtl"] .select-language-signin_2FAverificationotp {
 body[dir="rtl"] .languageIcon_2FAverificationotp {
   right: 80.7%;
 }
+
+.languageSelector {
+  position: absolute;
+  right: 100px;
+  z-index: 99999 !important;
+  margin-top: 50px;
+  margin-right: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+body[dir="rtl"] .languageSelector {
+  position: absolute;
+  right: -100px;
+  z-index: 99999 !important;
+  margin-top: 50px;
+  margin-right: 0 !important;
+  display: flex;
+  justify-content: flex-end;
+}

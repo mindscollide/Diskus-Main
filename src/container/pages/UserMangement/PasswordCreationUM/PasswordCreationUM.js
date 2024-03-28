@@ -16,7 +16,7 @@ import PasswordEyeIcon from "../../../../assets/images/newElements/password.svg"
 import PasswordChecklist from "react-password-checklist";
 import PasswordHideEyeIcon from "../../../../assets/images/newElements/password_hide.svg";
 import DiskusAuthPageLogo from "../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { showCreateAddtionalUsersModal } from "../../../../store/actions/UserMangementModalActions";
 import { useDispatch } from "react-redux";
 import CreateAddtionalUsersModal from "../ModalsUserManagement/CreateAdditionalusersModal/CreateAddtionalUsersModal";
@@ -563,6 +563,21 @@ const PasswordCreationUM = ({ setCurrentStep }) => {
                         }
                         className={styles["subscribNow_button_EmailVerify"]}
                       />
+                    </Col>
+                  </Row>
+                  <Row className="mt-2">
+                    <Col
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className={styles["forogt_email_link"]}
+                    >
+                      <Link
+                        onClick={() => setCurrentStep(1)}
+                        className={styles["ForgotPassword"]}
+                      >
+                        {t("Go-back")}
+                      </Link>
                     </Col>
                   </Row>
                 </Form>

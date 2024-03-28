@@ -77,7 +77,16 @@ const TwoFactorVerifyUM = ({ setCurrentStep }) => {
       UserDevices: [],
     };
     localStorage.setItem("GobackSelection", 1);
-    dispatch(sendTwoFacAction(t, navigate, Data, setSeconds, setMinutes));
+    dispatch(
+      sendTwoFacAction(
+        t,
+        navigate,
+        Data,
+        setSeconds,
+        setMinutes,
+        setCurrentStep
+      )
+    );
   };
 
   let newClient = Helper.socket;
