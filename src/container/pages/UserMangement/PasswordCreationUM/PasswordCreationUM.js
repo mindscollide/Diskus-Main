@@ -26,7 +26,7 @@ import {
   createPasswordAction,
   updatePasswordAction,
 } from "../../../../store/actions/Auth2_actions";
-const PasswordCreationUM = () => {
+const PasswordCreationUM = ({ setCurrentStep }) => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
@@ -168,7 +168,14 @@ const PasswordCreationUM = () => {
       ) {
         dispatch(updatePasswordAction(passwordDetails.Password, navigate, t));
       } else {
-        dispatch(createPasswordAction(passwordDetails.Password, navigate, t));
+        dispatch(
+          createPasswordAction(
+            passwordDetails.Password,
+            navigate,
+            t,
+            setCurrentStep
+          )
+        );
       }
     }
   };

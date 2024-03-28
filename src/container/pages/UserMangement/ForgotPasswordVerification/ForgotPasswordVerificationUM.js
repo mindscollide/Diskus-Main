@@ -333,7 +333,9 @@ const ForgotPasswordVerificationUM = ({ setCurrentStep }) => {
                       styles["Forgot_passwordforogt_verification_email_link"]
                     }
                   >
-                    <Link to="/">{t("Back-to-sign-in")}</Link>
+                    <Link onClick={() => setCurrentStep(1)}>
+                      {t("Back-to-sign-in")}
+                    </Link>
                   </Col>
                 </Row>
               </Col>

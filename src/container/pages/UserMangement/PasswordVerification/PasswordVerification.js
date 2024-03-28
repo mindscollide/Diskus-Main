@@ -121,7 +121,7 @@ const PasswordVerification = ({ setCurrentStep }) => {
       });
     } else {
       setErrorBar(false);
-      dispatch(enterPasswordvalidation(password, navigate, t));
+      dispatch(enterPasswordvalidation(password, navigate, t, setCurrentStep));
     }
   };
 

@@ -462,7 +462,7 @@ const enterPasswordFail = (message, response) => {
     message: message,
   };
 };
-const enterPasswordvalidation = (value, navigate, t) => {
+const enterPasswordvalidation = (value, navigate, t, setCurrentStep) => {
   let userID = localStorage.getItem("userID");
   var min = 10000;
   var max = 90000;
@@ -599,7 +599,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t,
                     response.data.responseResult.organizationID,
                     data.UserID,
-                    navigate
+                    navigate,
+                    setCurrentStep
                   )
                 );
                 // navigate("/");
@@ -618,7 +619,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t,
                     response.data.responseResult.organizationID,
                     data.UserID,
-                    navigate
+                    navigate,
+                    setCurrentStep
                   )
                 );
                 mqttConnection(response.data.responseResult.authToken.userID);
@@ -639,7 +641,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t,
                     response.data.responseResult.organizationID,
                     data.UserID,
-                    navigate
+                    navigate,
+                    setCurrentStep
                   )
                 );
                 mqttConnection(response.data.responseResult.authToken.userID);
@@ -786,7 +789,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t,
                     response.data.responseResult.organizationID,
                     data.UserID,
-                    navigate
+                    navigate,
+                    setCurrentStep
                   )
                 );
                 mqttConnection(response.data.responseResult.authToken.userID);
@@ -806,7 +810,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t,
                     response.data.responseResult.organizationID,
                     data.UserID,
-                    navigate
+                    navigate,
+                    setCurrentStep
                   )
                 );
                 localStorage.setItem(
@@ -831,7 +836,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t,
                     response.data.responseResult.organizationID,
                     data.UserID,
-                    navigate
+                    navigate,
+                    setCurrentStep
                   )
                 );
                 // navigate("/");
@@ -1526,7 +1532,7 @@ const createPasswordFail = (message) => {
     message: message,
   };
 };
-const createPasswordAction = (value, navigate, t) => {
+const createPasswordAction = (value, navigate, t, setCurrentStep) => {
   let userID = localStorage.getItem("userID");
   let data = { UserID: JSON.parse(userID), Password: value };
   return (dispatch) => {
@@ -1664,8 +1670,9 @@ const createPasswordAction = (value, navigate, t) => {
                   TwoFaAuthenticate(
                     t,
                     response.data.responseResult.organizationID,
-                    userID,
-                    navigate
+                    data.UserID,
+                    navigate,
+                    setCurrentStep
                   )
                 );
                 mqttConnection(response.data.responseResult.authToken.userID);
@@ -1684,8 +1691,9 @@ const createPasswordAction = (value, navigate, t) => {
                   TwoFaAuthenticate(
                     t,
                     response.data.responseResult.organizationID,
-                    userID,
-                    navigate
+                    data.UserID,
+                    navigate,
+                    setCurrentStep
                   )
                 );
                 mqttConnection(response.data.responseResult.authToken.userID);
@@ -1704,8 +1712,9 @@ const createPasswordAction = (value, navigate, t) => {
                   TwoFaAuthenticate(
                     t,
                     response.data.responseResult.organizationID,
-                    userID,
-                    navigate
+                    data.UserID,
+                    navigate,
+                    setCurrentStep
                   )
                 );
                 mqttConnection(response.data.responseResult.authToken.userID);
