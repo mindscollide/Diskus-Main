@@ -205,7 +205,7 @@ const userPasswordCreation = {
   RequestMethod: "ServiceManager.UserPasswordCreation",
 };
 const userEmailValidation = {
-  RequestMethod: "ServiceManager.LoginWithEmail",
+  RequestMethod: "ServiceManager.LoginWithUserEmail",
 };
 const userPasswordVerify = {
   RequestMethod: "ServiceManager.PasswordVerification",
