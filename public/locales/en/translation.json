@@ -1884,7 +1884,6 @@
   "Your-trial-period-is-over": "Your trial period is over.",
   "please-upgrade-your-Package": "Please upgrade your Package.",
   "Confirm-payment": "Confirm Payment",
-  "You-can-select-multiple-options": "You can select multiple options",
   "Organization-and-admin-created-successfully": "Organization and Admin Created Successfully",
   "Organization-and-admin-created-successfully-but-failed-to-send-OTP": "Organization and Admin Created Successfully but failed to send OTP",
   "Organization-name-already-taken": "Organization Name Already Taken",
@@ -1907,5 +1906,7 @@
   "Failed-to-create-user-Package-not-found": "Failed to Create User (Package Not Found)",
   "Failed-to-create-user-headCount-exceeded": "Failed to Create User HeadCount Exceeded",
   "The-user-has-been-edited-but-selected-package-limit-exceeded": "The user has been edited but selected package limit exceeded",
-  "Organization-admin": "Organization Admin"
+  "Organization-admin": "Organization Admin",
+  "You-can-select-multiple-options": "You can select multiple options",
+  "Time-should-be-greater-then-system-time": "Time should be greater then the system time"
 }

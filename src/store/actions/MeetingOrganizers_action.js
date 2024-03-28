@@ -346,12 +346,11 @@ const UpdateOrganizersMeeting = (
                       setDataroomMapFolderId
                     )
                   );
-                  setSceduleMeeting(false);
-                  // await dispatch(scheduleMeetingPageFlag(false));
-                  // setPublishState(true);
+                  // setSceduleMeeting(false);
                   setEdiorRole({
                     status: "10",
                     role: "Organizer",
+                    isPrimaryOrganizer: false,
                   });
                 } else if (route === 4) {
                   let requestDataForMeetingDetails = {
@@ -372,10 +371,11 @@ const UpdateOrganizersMeeting = (
                   setEdiorRole({
                     status: "10",
                     role: "Organizer",
+                    isPrimaryOrganizer: false,
                   });
-                  if (dashboardFlag) {
-                    navigate("/Diskus/Meeting");
-                  }
+                  // if (dashboardFlag) {
+                  //   navigate("/Diskus/Meeting");
+                  // }
                 } else if (route === 5) {
                   let currentView = localStorage.getItem("MeetingCurrentView");
                   let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -431,7 +431,9 @@ const UpdateOrganizersMeeting = (
                   };
                   dispatch(getMeetingbyGroupApi(navigate, t, searchData));
                 }
-              } catch {}
+              } catch {
+                console.error("error")
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
