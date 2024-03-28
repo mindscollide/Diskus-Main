@@ -110,7 +110,7 @@ export const router = createHashRouter(
         element={<ForgotPasswordVerification />}
       />
       <Route path="/updatepassword" element={<UpdatePasswordSuccessfully />} />
-      <Route path="/enterPassword" element={<EnterPassword />} />
+      {/* <Route path="/enterPassword" element={<EnterPassword />} /> */}
       <Route path="/createpasswordorganization" element={<CreatePassword />} />
       <Route path="/verifyEmailOTP" element={<VerifyEmailOTP />} />
       <Route path="/selectedpackage" element={<PackageSelected />} />
