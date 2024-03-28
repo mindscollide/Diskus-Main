@@ -238,7 +238,7 @@ const validationEmailFail = (message) => {
     message: message,
   };
 };
-const validationEmailAction = (email, navigate, t) => {
+const validationEmailAction = (email, navigate, t, setCurrentStep) => {
   var min = 10000;
   var max = 90000;
   var id = min + Math.random() * (max - min);
@@ -303,7 +303,8 @@ const validationEmailAction = (email, navigate, t) => {
                   t("Users-password-is-created")
                 )
               );
-              navigate("/enterPassword");
+              setCurrentStep(2);
+              // navigate("/enterPassword");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

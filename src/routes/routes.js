@@ -145,7 +145,7 @@ export const router = createHashRouter(
           <Route path="todolist" element={<TodoList />} />
           <Route path="documentViewer" element={<DocumentViewer />} />
           <Route path="signatureviewer" element={<SignatureViewer />} />
-          <Route path="forgotpassword" element={<ForgotPassword />} />
+          {/* <Route path="forgotpassword" element={<ForgotPassword />} /> */}
           <Route path="calendar" element={<CalendarPage />} />
           <Route path="Meeting" element={<NewMeeting />} />
           <Route path="Meeting/Useravailabilityformeeting" element={<RSVP />} />
@@ -240,6 +240,7 @@ export const router = createHashRouter(
       <Route Route element={<PrivateRoutes />}>
         <Route path="/onboard" element={<OnBoard />} />
       </Route>
+      {/* for all login Routes  */}
       <Route path="/" element={<UserManagementProcess />} />
 
       {/* For All Signup Route */}

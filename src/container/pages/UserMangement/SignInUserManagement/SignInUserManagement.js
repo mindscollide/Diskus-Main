@@ -1,6 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
-import { Button, Paper, Checkbox } from "../../../../components/elements";
+import {
+  Button,
+  Paper,
+  Checkbox,
+  Notification,
+  Loader,
+} from "../../../../components/elements";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
 import styles from "./SignInUserMangement.module.css";
 import DiskusAuthPageLogo from "../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
@@ -73,7 +79,7 @@ const SignInUserManagement = ({ setCurrentStep }) => {
       setErrorMessage(t("Error-should-be-in-email-format"));
     } else {
       setErrorBar(false);
-      dispatch(validationEmailAction(email, navigate, t));
+      dispatch(validationEmailAction(email, navigate, t, setCurrentStep));
     }
   };
 
@@ -421,6 +427,7 @@ const SignInUserManagement = ({ setCurrentStep }) => {
                     >
                       <Button
                         text={t("Next")}
+                        onClick={loginHandler}
                         className={styles["Next_button_EmailVerify"]}
                       />
                     </Col>
@@ -475,6 +482,12 @@ const SignInUserManagement = ({ setCurrentStep }) => {
             </Col>
           </Col>
         </Row>
+        <Notification
+          setOpen={setOpen}
+          open={open.open}
+          message={open.message}
+        />
+        {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
       </Container>
     </>
   );
