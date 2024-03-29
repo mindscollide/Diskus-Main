@@ -22,6 +22,7 @@ import {
 } from "../../../../store/actions/Auth2_actions";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { signupCurrentPageStep } from "../../SignUpProcessUserManagement/SignupProcessUserManagement";
 
 const SignInUserManagement = ({ setCurrentStep }) => {
   const navigate = useNavigate();
