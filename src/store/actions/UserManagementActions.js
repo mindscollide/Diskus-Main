@@ -66,12 +66,31 @@ const signUpOrganizationAndPakageSelection = (
                     "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_01".toLowerCase()
                   )
               ) {
+                localStorage.setItem(
+                  "OrganizatioName",
+                  data.Organization.OrganizationName
+                );
+                localStorage.setItem(
+                  "userID",
+                  response.data.responseResult.userID
+                );
+                localStorage.setItem(
+                  "OrganizationID",
+                  response.data.responseResult.organizationID
+                );
+                localStorage.setItem(
+                  "UserEmail",
+                  data.Organization.ContactPersonEmail
+                );
                 dispatch(
                   createOrganizationAndPakageSelectionSuccess(
                     response.data.responseResult,
                     t("Organization-and-admin-created-successfully")
                   )
                 );
+                localStorage.removeItem("PackageID");
+                localStorage.setItem("minutes", 4);
+                localStorage.setItem("seconds", 60);
                 setSignupStep(3);
                 navigate("/Signup");
               } else if (
@@ -81,6 +100,22 @@ const signUpOrganizationAndPakageSelection = (
                     "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_02".toLowerCase()
                   )
               ) {
+                localStorage.setItem(
+                  "userID",
+                  response.data.responseResult.userID
+                );
+                localStorage.setItem(
+                  "OrganizationID",
+                  response.data.responseResult.organizationID
+                );
+                localStorage.setItem(
+                  "UserEmail",
+                  data.Organization.ContactPersonEmail
+                );
+                localStorage.setItem(
+                  "OrganizatioName",
+                  data.Organization.OrganizationName
+                );
                 dispatch(
                   createOrganizationAndPakageSelectionSuccess(
                     response.data.responseResult,
@@ -89,6 +124,11 @@ const signUpOrganizationAndPakageSelection = (
                     )
                   )
                 );
+                localStorage.setItem("minutes", 0);
+                localStorage.setItem("seconds", 0);
+                localStorage.removeItem("PackageID");
+                setSignupStep(3);
+                navigate("/Signup");
               } else if (
                 response.data.responseResult.responseMessage
                   .toLowerCase()
