@@ -1064,7 +1064,6 @@ const NewMeeting = () => {
                         // setAdvanceMeetingModalID,
                         setDataroomMapFolderId,
                         setViewAdvanceMeetingModal,
-
                         setAdvanceMeetingModalID,
                         setViewAdvanceMeetingModal,
                         isPrimaryOrganizer
