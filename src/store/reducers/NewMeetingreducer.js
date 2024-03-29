@@ -140,6 +140,7 @@ const initialState = {
   mqttMeetingOrgAdded: null,
   mqttMeetingOrgRemoved: null,
   joinMeetingResponse: null,
+  leaveMeetingResponse: null,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -2192,6 +2193,31 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         joinMeetingResponse: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.LEAVE_MEETING_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.LEAVE_MEETING_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        leaveMeetingResponse: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.LEAVE_MEETING_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        leaveMeetingResponse: null,
         ResponseMessage: action.message,
       };
     }

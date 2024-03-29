@@ -3,6 +3,7 @@ import "./ModalView.css";
 import FileIcon, { defaultStyles } from "react-file-icon";
 import {
   EditmeetingDateFormat,
+  getCurrentDateTimeUTC,
   newTimeFormaterAsPerUTCFullDate,
   RemoveTimeDashes,
 } from "../../commen/functions/date_formater";
@@ -32,6 +33,7 @@ import {
   endMeetingStatusApi,
   FetchMeetingURLApi,
   FetchMeetingURLClipboard,
+  LeaveCurrentMeeting,
   searchNewUserMeeting,
 } from "../../store/actions/NewMeetingActions";
 import copyToClipboard from "../../hooks/useClipBoard";
@@ -687,31 +689,23 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   };
 
   const endMeeting = async () => {
-    await setViewFlag(false);
+    // await setViewFlag(false);
     let meetingID = assignees.ViewMeetingDetails.meetingDetails.pK_MDID;
     let newData = {
       MeetingID: meetingID,
       StatusID: 9,
     };
-    await dispatch(endMeetingStatusApi(navigate, t, newData));
+    await dispatch(endMeetingStatusApi(navigate, t, newData, setViewFlag));
   };
-  const leaveMeeting = async () => {
-    await setViewFlag(false);
-    // let meetingID = assignees.ViewMeetingDetails.meetingDetails.pK_MDID;
-    // let Data = {
-    //   MeetingID: meetingID,
-    //   UserID: parseInt(createrID),
-    // };
-    // let Data2 = {
-    //   Date: "",
-    //   Title: "",
-    //   HostName: "",
-    //   UserID: parseInt(createrID),
-    //   PageNumber: 1,
-    //   Length: 50,
-    //   PublishedMeetings: true,
-    // };
-    // await dispatch(EndMeeting(navigate, Data, t, Data2));
+  const leaveMeeting = async (id) => {
+    let leaveMeetingData = {
+      FK_MDID: id,
+      DateTime: getCurrentDateTimeUTC(),
+    };
+    dispatch(
+      LeaveCurrentMeeting(navigate, t, leaveMeetingData, true, setViewFlag)
+    );
+    // await setViewFlag(false);
   };
 
   const downloadClick = (e, record) => {
@@ -875,12 +869,21 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     }
   }, [meetingIdReducer.MeetingStatusEnded]);
 
+  console.log("MeetingDetailsMeetingDetails", allMeetingDetails);
+
   return (
     <>
       <Container>
         <Modal
           onHide={() => {
-            setViewFlag(false);
+            if (
+              allMeetingDetails.meetingStatus.status === "10" ||
+              allMeetingDetails.meetingStatus.status === 10
+            ) {
+              leaveMeeting(allMeetingDetails.meetingDetails.pK_MDID);
+            } else {
+              setViewFlag(false);
+            }
           }}
           show={viewFlag}
           size="lg"
@@ -1492,7 +1495,11 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                     <>
                       {allMeetingDetails.meetingStatus.status === "10" ? (
                         <Button
-                          onClick={leaveMeeting}
+                          onClick={() =>
+                            leaveMeeting(
+                              allMeetingDetails.meetingDetails.pK_MDID
+                            )
+                          }
                           className={
                             "MontserratSemiBold-600  end-meeting-btn_view" +
                             " " +
