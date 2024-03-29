@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./VerifyOTPUM.module.css";
 import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import DiskusAuthPageLogo from "../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
@@ -13,7 +13,7 @@ import {
   VerificationInputField,
 } from "../../../../components/elements";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
-const VerifyOTPUM = () => {
+const VerifyOTPUM = ({ setSignupStep }) => {
   const { t, i18n } = useTranslation();
 
   const currentLocale = Cookies.get("i18next") || "en";
@@ -49,6 +49,11 @@ const VerifyOTPUM = () => {
   const changeHandler = (e) => {
     let otpval = e.toUpperCase();
     setVerifyOTP(otpval);
+  };
+
+  const verifyOTPClickHandler = (e) => {
+    setSignupStep(4);
+    Navigate("/Signup");
   };
 
   return (
@@ -152,7 +157,7 @@ const VerifyOTPUM = () => {
                   >
                     <Button
                       text={t("Resend-code")}
-                      //   onClick={verifyOTPClickHandler}
+                      onClick={verifyOTPClickHandler}
                       className={styles["subscribNow_button_EmailVerify"]}
                     />
                   </Col>

@@ -8,6 +8,7 @@ import VerificationEmailAndNumber from "../UserMangement/2FA Verification/Verifi
 import VerifyDeniedUM from "../UserMangement/2FA Verification/VerifyDeniedUM/VerifyDeniedUM";
 import DeviceFor2FAVerify from "../UserMangement/2FA Verification/DevicesFor2FAVerify/DeviceFor2FAVerify";
 import SignUpOrganizationUM from "../UserMangement/SignUpOrganizationUM/SignUpOrganizationUM";
+import SignupProcessUserManagement from "../SignUpProcessUserManagement/SignupProcessUserManagement";
 import ForgotPasswordUM from "../UserMangement/ForgotPassword/ForgotPasswordUM";
 import PasswordCreationUM from "../UserMangement/PasswordCreationUM/PasswordCreationUM";
 import ForgotPasswordVerificationUM from "../UserMangement/ForgotPasswordVerification/ForgotPasswordVerificationUM";
@@ -48,7 +49,9 @@ const UserManagementProcess = () => {
   } else if (currentStep === 8) {
     componentToRender = <DeviceFor2FAVerify setCurrentStep={setCurrentStep} />;
   } else if (currentStep === 9) {
-    componentToRender = <SignUpOrganizationUM />;
+    componentToRender = (
+      <SignUpOrganizationUM setCurrentStep={setCurrentStep} />
+    );
   } else if (currentStep === 10) {
     componentToRender = <ForgotPasswordUM setCurrentStep={setCurrentStep} />;
   } else if (currentStep === 11) {

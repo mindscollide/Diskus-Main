@@ -4,19 +4,34 @@ import VerifyOTPUM from "../UserMangement/VerifyOTPUM/VerifyOTPUM";
 import PakageDetailsUserManagement from "../UserMangement/PakageDetailsUserManagement/PakageDetailsUserManagement";
 import BillingMethodUsermanagement from "../UserMangement/BillingMethodUserManagement/BillingMethodUsermanagement";
 import PasswordCreationUM from "../UserMangement/PasswordCreationUM/PasswordCreationUM";
+import { useLocation } from "react-router-dom";
 
 const SignupProcessUserManagement = () => {
-  const [signupStep, setSignupStep] = useState(1);
+  const location = useLocation();
+  console.log("location", location.state);
+  console.log("location", location.state !== null?.freeTrail);
+  console.log("location", location.state !== null ? 2 : 1);
+  const [signupStep, setSignupStep] = useState(
+    location.state && location.state?.freeTrail ? 2 : 1
+  );
 
   let SignupComponent;
-
   if (signupStep === 1) {
-    SignupComponent = <SignUpOrganizationUM />;
+    SignupComponent = (
+      <PakageDetailsUserManagement setSignupStep={setSignupStep} />
+    );
   } else if (signupStep === 2) {
-    SignupComponent = <VerifyOTPUM />;
+    SignupComponent = <SignUpOrganizationUM setSignupStep={setSignupStep} />;
   } else if (signupStep === 3) {
-    SignupComponent = <PasswordCreationUM />;
+    SignupComponent = <VerifyOTPUM setSignupStep={setSignupStep} />;
   } else if (signupStep === 4) {
+    SignupComponent = (
+      <PasswordCreationUM
+        setSignupStep={setSignupStep}
+        signupStep={signupStep}
+      />
+    );
+  } else if (signupStep === 5) {
     SignupComponent = <BillingMethodUsermanagement />;
   } else {
     SignupComponent = null;

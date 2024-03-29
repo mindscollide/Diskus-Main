@@ -16,6 +16,7 @@ import PasswordEyeIcon from "../../../../assets/images/newElements/password.svg"
 import PasswordChecklist from "react-password-checklist";
 import PasswordHideEyeIcon from "../../../../assets/images/newElements/password_hide.svg";
 import DiskusAuthPageLogo from "../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
+
 import { Link, useNavigate } from "react-router-dom";
 import { showCreateAddtionalUsersModal } from "../../../../store/actions/UserMangementModalActions";
 import { useDispatch } from "react-redux";
@@ -26,8 +27,8 @@ import {
   createPasswordAction,
   updatePasswordAction,
 } from "../../../../store/actions/Auth2_actions";
-const PasswordCreationUM = ({ setCurrentStep }) => {
-  const { t } = useTranslation();
+const PasswordCreationUM = ({ setCurrentStep, signupStep, setSignupStep }) => {
+  const { t, i18n } = useTranslation();
 
   const dispatch = useDispatch();
 
@@ -378,7 +379,12 @@ const PasswordCreationUM = ({ setCurrentStep }) => {
   console.log("createpasswordorganization", passwordDetails);
 
   const handleSignupButton = () => {
-    dispatch(showCreateAddtionalUsersModal(true));
+    if (signupStep === 4) {
+      setSignupStep(5);
+      navigate("/Signup");
+    } else {
+      dispatch(showCreateAddtionalUsersModal(true));
+    }
   };
 
   return (
