@@ -260,9 +260,8 @@ const Header2 = () => {
     dispatch(showRequestExtentionModal(true));
   };
   const openAdminTab = () => {
-    window.open(window.location.origin + '/#/Diskus/Admin', '_blank');
+    window.open(window.location.origin + "/#/Diskus/Admin", "_blank");
   };
-  openAdminTab;
   return (
     <>
       {activateBlur ? (

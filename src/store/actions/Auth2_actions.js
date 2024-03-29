@@ -1425,7 +1425,9 @@ const verificationEmailOTP = (
   updateFlag,
   setSeconds,
   setMinutes,
-  setCurrentStep
+  setCurrentStep,
+  signupCurrentPageStep,
+  setSignupStep
 ) => {
   let userID = localStorage.getItem("userID");
   let email = localStorage.getItem("UserEmail");
@@ -1466,7 +1468,10 @@ const verificationEmailOTP = (
               }
               localStorage.removeItem("seconds");
               localStorage.removeItem("minutes");
-              setCurrentStep(11);
+              localStorage.setItem("signupCurrentPage", 4);
+              navigate("/Signup");
+              // signupCurrentPageStep(4, setSignupStep);
+              // navigate("/Signup");
               // navigate("/createpasswordorganization");
             } else if (
               response.data.responseResult.responseMessage

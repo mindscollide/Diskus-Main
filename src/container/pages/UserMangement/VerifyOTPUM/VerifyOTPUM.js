@@ -21,6 +21,8 @@ import {
 } from "../../../../store/actions/Auth2_actions";
 import { ResendOTP } from "../../../../store/actions/Auth_Verify_Opt";
 import { useSelector } from "react-redux";
+import { signupCurrentPageStep } from "../../SignUpProcessUserManagement/SignupProcessUserManagement";
+
 const VerifyOTPUM = ({ setSignupStep }) => {
   const { t } = useTranslation();
 
@@ -68,6 +70,7 @@ const VerifyOTPUM = ({ setSignupStep }) => {
   const verifyOTPClickHandler = (e) => {
     console.log("hello");
     e.preventDefault();
+
     if (verifyOTP.length !== 6) {
       setVerifyOTP("");
       setErrorBar(true);
@@ -84,7 +87,9 @@ const VerifyOTPUM = ({ setSignupStep }) => {
           t,
           false,
           setSeconds,
-          setMinutes
+          setMinutes,
+          signupCurrentPageStep,
+          setSignupStep
         )
       );
     }

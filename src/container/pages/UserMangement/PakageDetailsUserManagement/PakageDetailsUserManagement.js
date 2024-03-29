@@ -284,7 +284,7 @@ const PakageDetailsUserManagement = ({ setSignupStep }) => {
   };
 
   const handlePayNowClick = () => {
-    signupCurrentPageStep(2, setSignupStep);
+    localStorage.setItem("signupCurrentPage", 2);
     navigate("/Signup");
   };
 

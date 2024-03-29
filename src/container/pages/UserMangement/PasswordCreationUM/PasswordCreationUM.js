@@ -27,7 +27,14 @@ import {
   createPasswordAction,
   updatePasswordAction,
 } from "../../../../store/actions/Auth2_actions";
-const PasswordCreationUM = ({ setCurrentStep, signupStep, setSignupStep }) => {
+import { signupCurrentPageStep } from "../../SignUpProcessUserManagement/SignupProcessUserManagement";
+
+const PasswordCreationUM = ({
+  setCurrentStep,
+  signupStep,
+  setSignupStep,
+  currentStage,
+}) => {
   const { t, i18n } = useTranslation();
 
   const dispatch = useDispatch();
@@ -379,9 +386,11 @@ const PasswordCreationUM = ({ setCurrentStep, signupStep, setSignupStep }) => {
   console.log("createpasswordorganization", passwordDetails);
 
   const handleSignupButton = () => {
-    if (signupStep === 4) {
-      setSignupStep(5);
+    if (currentStage === 4) {
+      localStorage.setItem("signupCurrentPage", 5);
       navigate("/Signup");
+      // signupCurrentPageStep(5, setSignupStep);
+      // navigate("/Signup");
     } else {
       dispatch(showCreateAddtionalUsersModal(true));
     }

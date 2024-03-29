@@ -40,6 +40,7 @@ const signUpOrganizationAndPakageSelection = (
   data,
   navigate,
   t,
+  signupCurrentPageStep,
   setSignupStep
 ) => {
   return (dispatch) => {
@@ -91,7 +92,7 @@ const signUpOrganizationAndPakageSelection = (
                 localStorage.removeItem("PackageID");
                 localStorage.setItem("minutes", 4);
                 localStorage.setItem("seconds", 60);
-                setSignupStep(3);
+                localStorage.setItem("signupCurrentPage", 3);
                 navigate("/Signup");
               } else if (
                 response.data.responseResult.responseMessage
@@ -127,7 +128,7 @@ const signUpOrganizationAndPakageSelection = (
                 localStorage.setItem("minutes", 0);
                 localStorage.setItem("seconds", 0);
                 localStorage.removeItem("PackageID");
-                setSignupStep(3);
+                localStorage.setItem("signupCurrentPage", 3);
                 navigate("/Signup");
               } else if (
                 response.data.responseResult.responseMessage
