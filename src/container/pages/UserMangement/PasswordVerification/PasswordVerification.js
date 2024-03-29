@@ -255,6 +255,13 @@ const PasswordVerification = ({ setCurrentStep }) => {
     passwordRef.current.focus();
   }, []);
 
+  //handling Goback Functionality
+
+  const handleGoback = () => {
+    localStorage.setItem("page", 1);
+    navigate("/");
+  };
+
   return (
     <>
       <Container fluid className={styles["auth_container"]}>
@@ -390,7 +397,7 @@ const PasswordVerification = ({ setCurrentStep }) => {
                     className={styles["forogt_email_link"]}
                   >
                     <Link
-                      onClick={() => setCurrentStep(1)}
+                      onClick={handleGoback}
                       className={styles["ForgotPassword"]}
                     >
                       {t("Go-back")}

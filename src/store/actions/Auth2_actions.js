@@ -238,7 +238,7 @@ const validationEmailFail = (message) => {
     message: message,
   };
 };
-const validationEmailAction = (email, navigate, t, setCurrentStep) => {
+const validationEmailAction = (email, navigate, t) => {
   var min = 10000;
   var max = 90000;
   var id = min + Math.random() * (max - min);
@@ -307,7 +307,8 @@ const validationEmailAction = (email, navigate, t, setCurrentStep) => {
                   t("Users-password-is-created")
                 )
               );
-              setCurrentStep(2);
+              localStorage.setItem("page", 2);
+              navigate("/");
               // navigate("/enterPassword");
             } else if (
               response.data.responseResult.responseMessage
@@ -335,7 +336,9 @@ const validationEmailAction = (email, navigate, t, setCurrentStep) => {
                   t("User-password-is-not-created-please-create-your-password")
                 )
               );
-              navigate("/createpasswordorganization");
+              localStorage.setItem("page", 11);
+              navigate("/");
+              // navigate("/createpasswordorganization");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -346,7 +349,9 @@ const validationEmailAction = (email, navigate, t, setCurrentStep) => {
               localStorage.setItem("seconds", 0);
               localStorage.setItem("minutes", 0);
               localStorage.setItem("UserEmail", email);
-              navigate("/verifyEmailOTP");
+              localStorage.setItem("page", 3);
+              navigate("/");
+              // navigate("/verifyEmailOTP");
               dispatch(
                 validationEmailSuccess(
                   response.data.responseResult,

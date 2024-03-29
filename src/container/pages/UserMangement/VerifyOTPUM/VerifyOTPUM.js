@@ -24,9 +24,12 @@ import { useSelector } from "react-redux";
 const VerifyOTPUM = ({ setSignupStep }) => {
   const { t } = useTranslation();
 
-  const { Authreducer, LanguageReducer } = useSelector((state) => state);
   const dispatch = useDispatch();
+
   const navigate = useNavigate();
+
+  const { Authreducer, LanguageReducer } = useSelector((state) => state);
+
   const [key, setKey] = useState(1);
   const [errorBar, setErrorBar] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
