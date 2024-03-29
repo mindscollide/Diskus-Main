@@ -7795,6 +7795,7 @@ const LeaveCurrentMeeting = (
                   "Meeting_MeetingServiceManager_LeaveMeeting_01".toLowerCase()
                 )
             ) {
+              dispatch(currentMeetingStatus(0));
               if (isQuickMeeting) {
                 dispatch(
                   leaveMeetingQuickSuccess(
@@ -7820,9 +7821,7 @@ const LeaveCurrentMeeting = (
                   )
                 );
               }
-
               setViewFlag(false);
-              dispatch(currentMeetingStatus(0));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -7891,6 +7890,7 @@ const LeaveCurrentMeetingOtherMenus = (navigate, t, Data) => {
                   "Meeting_MeetingServiceManager_LeaveMeeting_01".toLowerCase()
                 )
             ) {
+              dispatch(currentMeetingStatus(0));
               dispatch(
                 leaveMeetingAdvancedSuccess(
                   response.data.responseResult,
