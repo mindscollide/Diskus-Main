@@ -21,6 +21,7 @@ import {
   cleareMessage,
   verificationEmailOTP,
 } from "../../../../store/actions/Auth2_actions";
+import { LoginFlowRoutes } from "../../../../store/actions/UserManagementActions";
 const ForgotPasswordVerificationUM = () => {
   const dispatch = useDispatch();
 
@@ -195,6 +196,11 @@ const ForgotPasswordVerificationUM = () => {
     }
   };
 
+  const handleBacktoSignIn = () => {
+    localStorage.setItem("LoginFlowPageRoute", 1);
+    dispatch(LoginFlowRoutes(1));
+  };
+
   return (
     <>
       <Container fluid className={styles["auth_container"]}>
@@ -332,7 +338,7 @@ const ForgotPasswordVerificationUM = () => {
                       styles["Forgot_passwordforogt_verification_email_link"]
                     }
                   >
-                    <Link onClick={() => setCurrentStep(1)}>
+                    <Link onClick={handleBacktoSignIn}>
                       {t("Back-to-sign-in")}
                     </Link>
                   </Col>
