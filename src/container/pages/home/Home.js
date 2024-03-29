@@ -159,7 +159,6 @@ const Home = () => {
   const navigate = useNavigate();
   const [calenderData, setCalenderData] = useState([]);
   const [calendarEvents, setCalendarEvents] = useState([]);
-  console.log(calendarEvents, "calendarEventscalendarEventscalendarEvents");
   const [recentActivityData, setRecentActivityData] = useState([]);
   // get new date
   let date = new Date();
@@ -169,6 +168,10 @@ const Home = () => {
   let format = "YYYYMMDD";
 
   const [dates, setDates] = useState([]);
+  console.log(
+    { calendarEvents, calenderData, dates },
+    "calendarEventscalendarEventscalendarEvents"
+  );
 
   const [activateBlur, setActivateBlur] = useState(false);
 
@@ -343,12 +346,7 @@ const Home = () => {
               let date = startDateTimeMeetingCalendar(
                 cData.eventDate + cData.startTime
               );
-              setCalenderData((calendarData2) =>
-                calendarData2.filter(
-                  (meetingData) =>
-                    Number(meetingData.pK_MDID) !== Number(meetingID)
-                )
-              );
+
               console.log("cDatacDatacDatacData", meetingID, cData, newList);
               // Update Calendar Data
               return;
@@ -409,6 +407,11 @@ const Home = () => {
       updateCalendarData();
     }
   }, [calendarReducer.CalenderData]);
+
+  useEffect(() => {
+    if (NewMeetingreducer.meetingStatusPublishedMqttData !== null) {
+    }
+  }, [NewMeetingreducer.meetingStatusPublishedMqttData]);
 
   //  Update Meeting Status
   useEffect(() => {
@@ -883,12 +886,12 @@ const Home = () => {
     Authreducer.GetSelectedPackageResponseMessage,
   ]);
 
-  const calendarClickFunction = async (value) => {
-    //
-    if (!dates.includes(value)) {
-      setDates([...dates, value]);
-    }
-  };
+  // const calendarClickFunction = async (value) => {
+  //   //
+  //   if (!dates.includes(value)) {
+  //     setDates([...dates, value]);
+  //   }
+  // };
 
   const closeModal = () => {
     setActivateBlur(false);
@@ -1474,7 +1477,7 @@ const Home = () => {
                                 handleClickonDate(dateFocused, dateClicked);
                               }}
                               multiple={false}
-                              onChange={calendarClickFunction}
+                              // onChange={calendarClickFunction}
                               className="custom-multi-date-picker"
                               onMonthChange={handleMonthChange}
                               currentDate={currentDateObject}
