@@ -23,7 +23,7 @@ import {
   proposeNewMeetingPageFlag,
   viewMeetingFlag,
   uploadGlobalFlag,
-  LeaveCurrentMeetingOtherMenus,
+  LeaveCurrentMeeting,
 } from "../../../../store/actions/NewMeetingActions";
 import {
   createCommitteePageFlag,
@@ -88,7 +88,7 @@ const ExpandedMenu = () => {
         DateTime: getCurrentDateTimeUTC(),
       };
       if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
+        dispatch(LeaveCurrentMeeting(navigate, t, Data));
       }
     }
     // navigate(`/${dataroomNavigation}`);
@@ -127,7 +127,7 @@ const ExpandedMenu = () => {
         DateTime: getCurrentDateTimeUTC(),
       };
       if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
+        dispatch(LeaveCurrentMeeting(navigate, t, Data));
       }
     }
     // navigate(`/${groupNavigation}`);
@@ -166,7 +166,7 @@ const ExpandedMenu = () => {
         DateTime: getCurrentDateTimeUTC(),
       };
       if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
+        dispatch(LeaveCurrentMeeting(navigate, t, Data));
       }
     }
     // navigate(`/${committeeNavigation}`);
@@ -207,7 +207,7 @@ const ExpandedMenu = () => {
         DateTime: getCurrentDateTimeUTC(),
       };
       if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
+        dispatch(LeaveCurrentMeeting(navigate, t, Data));
       }
     }
     // navigate(`/${resolutionNavigation}`);
@@ -243,7 +243,7 @@ const ExpandedMenu = () => {
         DateTime: getCurrentDateTimeUTC(),
       };
       if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
+        dispatch(LeaveCurrentMeeting(navigate, t, Data));
       }
     }
     // navigate(`/${pollNavigation}`);

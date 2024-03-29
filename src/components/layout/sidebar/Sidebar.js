@@ -27,6 +27,7 @@ import {
   attendanceGlobalFlag,
   uploadGlobalFlag,
   LeaveCurrentMeetingOtherMenus,
+  LeaveCurrentMeeting
 } from "../../../store/actions/NewMeetingActions";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { showCancelModalmeetingDeitals } from "../../../store/actions/NewMeetingActions";
@@ -206,7 +207,7 @@ const Sidebar = () => {
         DateTime: getCurrentDateTimeUTC(),
       };
       if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
+        dispatch(LeaveCurrentMeeting(navigate, t, Data));
       }
     }
     // navigate(`/${todoListNavigation}`);
@@ -242,7 +243,7 @@ const Sidebar = () => {
         DateTime: getCurrentDateTimeUTC(),
       };
       if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
+        dispatch(LeaveCurrentMeeting(navigate, t, Data));
       }
     }
     // navigate(`/${calendarNavigation}`);
@@ -278,7 +279,7 @@ const Sidebar = () => {
         DateTime: getCurrentDateTimeUTC(),
       };
       if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
+        dispatch(LeaveCurrentMeeting(navigate, t, Data));
       }
     }
     // navigate(`/${notesNavigation}`);

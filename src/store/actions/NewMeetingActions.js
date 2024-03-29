@@ -7802,6 +7802,16 @@ const LeaveCurrentMeeting = (
                     t("Successful")
                   )
                 );
+                let searchData = {
+                  Date: "",
+                  Title: "",
+                  HostName: "",
+                  UserID: Number(userID),
+                  PageNumber: Number(meetingPageCurrent),
+                  Length: Number(meetingpageRow),
+                  PublishedMeetings: true,
+                };
+                await dispatch(searchNewUserMeeting(navigate, searchData, t));
               } else {
                 dispatch(
                   leaveMeetingAdvancedSuccess(

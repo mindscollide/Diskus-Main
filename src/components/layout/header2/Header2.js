@@ -24,7 +24,7 @@ import {
   proposeNewMeetingPageFlag,
   viewMeetingFlag,
   uploadGlobalFlag,
-  LeaveCurrentMeetingOtherMenus,
+  LeaveCurrentMeeting,
 } from "../../../store/actions/NewMeetingActions";
 import {
   getUserDetails,
@@ -176,7 +176,7 @@ const Header2 = () => {
         DateTime: getCurrentDateTimeUTC(),
       };
       if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
+        dispatch(LeaveCurrentMeeting(navigate, t, Data));
       }
     }
   };
@@ -208,7 +208,7 @@ const Header2 = () => {
           DateTime: getCurrentDateTimeUTC(),
         };
         if (CurrentMeetingStatus === 10) {
-          dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
+          dispatch(LeaveCurrentMeeting(navigate, t, Data));
         }
       }
     }
@@ -241,7 +241,7 @@ const Header2 = () => {
           DateTime: getCurrentDateTimeUTC(),
         };
         if (CurrentMeetingStatus === 10) {
-          dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
+          dispatch(LeaveCurrentMeeting(navigate, t, Data));
         }
       }
     }
@@ -274,7 +274,7 @@ const Header2 = () => {
           DateTime: getCurrentDateTimeUTC(),
         };
         if (CurrentMeetingStatus === 10) {
-          dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
+          dispatch(LeaveCurrentMeeting(navigate, t, Data));
         }
       }
     }
