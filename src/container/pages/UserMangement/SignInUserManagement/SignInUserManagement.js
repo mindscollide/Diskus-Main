@@ -22,8 +22,9 @@ import {
 } from "../../../../store/actions/Auth2_actions";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { signupCurrentPageStep } from "../../SignUpProcessUserManagement/SignupProcessUserManagement";
 
-const SignInUserManagement = ({ setCurrentStep }) => {
+const SignInUserManagement = ({ setCurrentStep, setSignupStep }) => {
   const navigate = useNavigate();
 
   const { t } = useTranslation();
@@ -99,7 +100,7 @@ const SignInUserManagement = ({ setCurrentStep }) => {
 
   //Subscribe now
   const handleSubscribeNowButton = () => {
-    setCurrentStep(9);
+    localStorage.setItem("signupCurrentPage", 1);
     navigate("/Signup");
   };
 
@@ -107,7 +108,9 @@ const SignInUserManagement = ({ setCurrentStep }) => {
   const handleClickFreeTrail = () => {
     localStorage.setItem("PackageID", 4);
     localStorage.setItem("TenureOfSuscriptionID", 2);
-    setCurrentStep(9);
+    localStorage.setItem("signupCurrentPage", 2);
+
+    // setCurrentStep(9);
     navigate("/Signup", {
       state: {
         freeTrail: true,

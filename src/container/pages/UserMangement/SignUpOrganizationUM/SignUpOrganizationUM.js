@@ -25,6 +25,8 @@ import {
 } from "../../../../store/actions/Admin_Organization";
 import { setLoader } from "../../../../store/actions/Auth2_actions";
 import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
+import { signupCurrentPageStep } from "../../SignUpProcessUserManagement/SignupProcessUserManagement";
+
 const SignUpOrganizationUM = ({ setSignupStep, setCurrentStep }) => {
   console.log(
     setSignupStep,
@@ -449,6 +451,7 @@ const SignUpOrganizationUM = ({ setSignupStep, setCurrentStep }) => {
                 data,
                 navigate,
                 t,
+                signupCurrentPageStep,
                 setSignupStep
               )
             );
@@ -614,6 +617,7 @@ const SignUpOrganizationUM = ({ setSignupStep, setCurrentStep }) => {
                 data,
                 navigate,
                 t,
+                signupCurrentPageStep,
                 setSignupStep
               )
             );
@@ -856,7 +860,8 @@ const SignUpOrganizationUM = ({ setSignupStep, setCurrentStep }) => {
   const onClickLink = () => {
     if (isFreeTrail === true) {
       setCurrentStep(1);
-      navigate("/");
+      // localStorage.removeItem("signupCurrentPage");
+      // navigate("/");
     } else {
       setSignupStep(1);
       navigate("/Signup");

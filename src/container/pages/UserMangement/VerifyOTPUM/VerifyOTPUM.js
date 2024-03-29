@@ -21,6 +21,7 @@ import {
 } from "../../../../store/actions/Auth2_actions";
 import { ResendOTP } from "../../../../store/actions/Auth_Verify_Opt";
 import { useSelector } from "react-redux";
+
 const VerifyOTPUM = () => {
   const { t } = useTranslation();
 
@@ -71,6 +72,7 @@ const VerifyOTPUM = () => {
   const verifyOTPClickHandler = (e) => {
     console.log("hello");
     e.preventDefault();
+
     if (verifyOTP.length !== 6) {
       setVerifyOTP("");
       setErrorBar(true);

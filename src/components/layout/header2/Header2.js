@@ -299,7 +299,6 @@ const Header2 = () => {
   const openAdminTab = () => {
     window.open(window.location.origin + "/#/Diskus/Admin", "_blank");
   };
-
   return (
     <>
       {activateBlur ? (
