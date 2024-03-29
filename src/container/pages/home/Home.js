@@ -422,12 +422,12 @@ const Home = () => {
           .includes("MEETING_STATUS_EDITED_CANCELLED".toLowerCase())
       ) {
         updateCalendarData(true, meetingID);
-        // setUpComingEvents((upcomingeventData) =>
-        //   upcomingeventData.filter(
-        //     (meetingData) =>
-        //       Number(meetingData.meetingDetails.pK_MDID) !== Number(meetingID)
-        //   )
-        // );
+        setUpComingEvents((upcomingeventData) =>
+          upcomingeventData.filter(
+            (meetingData) =>
+              Number(meetingData.meetingDetails.pK_MDID) !== Number(meetingID)
+          )
+        );
       }
       // else if (
       //   meetingIdReducer.MeetingStatusSocket.message
@@ -552,6 +552,8 @@ const Home = () => {
         meetingIdReducer.UpcomingEventsData !== undefined
       ) {
         setUpComingEvents(meetingIdReducer.UpcomingEventsData);
+      } else {
+        setUpComingEvents([]);
       }
     } catch {}
   }, [meetingIdReducer.UpcomingEventsData]);
