@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import SignInComponent from "../UserMangement/SignInUserManagement/SignInUserManagement";
 import PasswordVerification from "../UserMangement/PasswordVerification/PasswordVerification";
 import VerifyOTPUM from "../UserMangement/VerifyOTPUM/VerifyOTPUM";
@@ -8,7 +8,6 @@ import VerificationEmailAndNumber from "../UserMangement/2FA Verification/Verifi
 import VerifyDeniedUM from "../UserMangement/2FA Verification/VerifyDeniedUM/VerifyDeniedUM";
 import DeviceFor2FAVerify from "../UserMangement/2FA Verification/DevicesFor2FAVerify/DeviceFor2FAVerify";
 import SignUpOrganizationUM from "../UserMangement/SignUpOrganizationUM/SignUpOrganizationUM";
-import SignupProcessUserManagement from "../SignUpProcessUserManagement/SignupProcessUserManagement";
 import ForgotPasswordUM from "../UserMangement/ForgotPassword/ForgotPasswordUM";
 import PasswordCreationUM from "../UserMangement/PasswordCreationUM/PasswordCreationUM";
 import ForgotPasswordVerificationUM from "../UserMangement/ForgotPasswordVerification/ForgotPasswordVerificationUM";
@@ -16,13 +15,13 @@ import TwoFactorMultipleDevices from "../UserMangement/2FA Verification/TwoFacto
 
 const UserManagementProcess = () => {
   // Define setCurrentStep function
-  // const setCurrentStep = (step) => {
-  //   localStorage.setItem("currentStep", step);
-  //   setCurrentStepValue(step);
-  // };
+  const setCurrentStep = (step) => {
+    localStorage.setItem("currentStep", step);
+    setCurrentStepValue(step);
+  };
 
   // Retrieve currentStep value from localStorage, default to 1 if not found
-  const [currentStep, setCurrentStep] = useState(() => {
+  const [currentStep, setCurrentStepValue] = useState(() => {
     return parseInt(localStorage.getItem("currentStep")) || 1;
   });
 
@@ -49,9 +48,7 @@ const UserManagementProcess = () => {
   } else if (currentStep === 8) {
     componentToRender = <DeviceFor2FAVerify setCurrentStep={setCurrentStep} />;
   } else if (currentStep === 9) {
-    componentToRender = (
-      <SignUpOrganizationUM setCurrentStep={setCurrentStep} />
-    );
+    componentToRender = <SignUpOrganizationUM />;
   } else if (currentStep === 10) {
     componentToRender = <ForgotPasswordUM setCurrentStep={setCurrentStep} />;
   } else if (currentStep === 11) {
