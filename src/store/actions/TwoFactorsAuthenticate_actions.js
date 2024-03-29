@@ -7,7 +7,7 @@ import {
   verifyTwoFacOTP,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
-import { LoginFlowRoutes } from "./UserMangementModalActions";
+import { LoginFlowRoutes } from "./UserManagementActions";
 
 const TwoFaAuthenticateInit = () => {
   return {

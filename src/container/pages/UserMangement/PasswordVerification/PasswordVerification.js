@@ -21,7 +21,8 @@ import {
 } from "../../../../store/actions/Auth2_actions";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { LoginFlowRoutes } from "../../../../store/actions/UserMangementModalActions";
+import { LoginFlowRoutes } from "../../../../store/actions/UserManagementActions";
+
 const PasswordVerification = () => {
   const { t } = useTranslation();
 

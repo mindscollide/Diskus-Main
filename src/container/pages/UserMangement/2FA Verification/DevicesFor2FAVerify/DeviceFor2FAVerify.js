@@ -17,7 +17,8 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import { sendTwoFacAction } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
-import { LoginFlowRoutes } from "../../../../../store/actions/UserMangementModalActions";
+import { LoginFlowRoutes } from "../../../../../store/actions/UserManagementActions";
+
 const DeviceFor2FAVerify = () => {
   const navigate = useNavigate();
 

@@ -19,7 +19,8 @@ import {
 import { validateEmail } from "../../../../commen/functions/validations";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { LoginFlowRoutes } from "../../../../store/actions/UserMangementModalActions";
+import { LoginFlowRoutes } from "../../../../store/actions/UserManagementActions";
+
 const ForgotPasswordUM = () => {
   const navigate = useNavigate();
 

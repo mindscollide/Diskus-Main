@@ -3,7 +3,7 @@ import { forgetpassword } from "../../commen/apis/Api_config";
 import { authenticationApi } from "../../commen/apis/Api_ends_points";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { LoginFlowRoutes } from "./UserMangementModalActions";
+import { LoginFlowRoutes } from "./UserManagementActions";
 
 const forgotPasswordInit = () => {
   return {
