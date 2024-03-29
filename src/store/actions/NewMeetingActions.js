@@ -76,9 +76,12 @@ import {
   normalizeVideoPanelFlag,
   videoChatPanel,
 } from "./VideoFeature_actions";
-
+import { ViewMeeting } from "./Get_List_Of_Assignees";
 import { SaveMeetingOrganizers } from "./MeetingOrganizers_action";
-import { createConvert } from "../../commen/functions/date_formater";
+import {
+  createConvert,
+  getCurrentDateTimeUTC,
+} from "../../commen/functions/date_formater";
 
 const ClearMessegeMeetingdetails = () => {
   return {
@@ -7414,8 +7417,12 @@ const endMeetingFail = (message) => {
   };
 };
 
-const endMeetingStatusApi = (navigate, t, Data) => {
+const endMeetingStatusApi = (navigate, t, Data, setViewFlag) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  let leaveMeetingData = {
+    FK_MDID: Data.MeetingID,
+    DateTime: getCurrentDateTimeUTC(),
+  };
   return async (dispatch) => {
     await dispatch(endMeetingInit());
     let form = new FormData();
@@ -7432,7 +7439,7 @@ const endMeetingStatusApi = (navigate, t, Data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(endMeetingStatusApi(navigate, t, Data));
+          dispatch(endMeetingStatusApi(navigate, t, Data, setViewFlag));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -7448,7 +7455,15 @@ const endMeetingStatusApi = (navigate, t, Data) => {
                   t("Record-updated")
                 )
               );
-
+              dispatch(
+                LeaveCurrentMeeting(
+                  navigate,
+                  t,
+                  leaveMeetingData,
+                  true,
+                  setViewFlag
+                )
+              );
               let currentView = localStorage.getItem("MeetingCurrentView");
               let meetingpageRow = localStorage.getItem("MeetingPageRows");
               let meetingPageCurrent = parseInt(
@@ -7587,7 +7602,18 @@ const joinMeetingFail = (message) => {
   };
 };
 
-const JoinCurrentMeeting = (navigate, t, Data) => {
+const JoinCurrentMeeting = (
+  isQuickMeeting,
+  navigate,
+  t,
+  Data,
+  setViewFlag,
+  setEditFlag,
+  setSceduleMeeting,
+  no,
+  setAdvanceMeetingModalID,
+  setViewAdvanceMeetingModal
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     await dispatch(joinMeetingInit());
@@ -7605,7 +7631,20 @@ const JoinCurrentMeeting = (navigate, t, Data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(JoinCurrentMeeting(navigate, t, Data));
+          dispatch(
+            JoinCurrentMeeting(
+              isQuickMeeting,
+              navigate,
+              t,
+              Data,
+              setViewFlag,
+              setEditFlag,
+              setSceduleMeeting,
+              no,
+              setAdvanceMeetingModalID,
+              setViewAdvanceMeetingModal
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -7616,8 +7655,31 @@ const JoinCurrentMeeting = (navigate, t, Data) => {
                 )
             ) {
               dispatch(
-                joinMeetingSuccess(response.data.responseResult, t("Success"))
+                joinMeetingSuccess(
+                  response.data.responseResult,
+                  t("Successful")
+                )
               );
+              if (isQuickMeeting === true) {
+                let viewMeetingData = { MeetingID: Data.FK_MDID };
+                await dispatch(
+                  ViewMeeting(
+                    navigate,
+                    viewMeetingData,
+                    t,
+                    setViewFlag,
+                    setEditFlag,
+                    setSceduleMeeting,
+                    no
+                  )
+                );
+              } else {
+                setAdvanceMeetingModalID(Data.FK_MDID);
+                setViewAdvanceMeetingModal(true);
+                dispatch(viewAdvanceMeetingPublishPageFlag(true));
+                dispatch(scheduleMeetingPageFlag(false));
+                localStorage.setItem("currentMeetingID", Data.FK_MDID);
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -7646,6 +7708,113 @@ const JoinCurrentMeeting = (navigate, t, Data) => {
       })
       .catch((response) => {
         dispatch(joinMeetingFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// Leave meeting new Api
+const leaveMeetingInit = () => {
+  return {
+    type: actions.LEAVE_MEETING_INIT,
+  };
+};
+
+const leaveMeetingSuccess = (response, message) => {
+  return {
+    type: actions.LEAVE_MEETING_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const leaveMeetingFail = (message) => {
+  return {
+    type: actions.LEAVE_MEETING_FAIL,
+    message: message,
+  };
+};
+
+const LeaveCurrentMeeting = (
+  navigate,
+  t,
+  Data,
+  isQuickMeeting,
+  setViewFlag
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    await dispatch(leaveMeetingInit());
+    let form = new FormData();
+    form.append("RequestMethod", leaveMeeting.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            LeaveCurrentMeeting(navigate, t, Data, isQuickMeeting, setViewFlag)
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_LeaveMeeting_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                leaveMeetingSuccess(
+                  response.data.responseResult,
+                  t("Successful")
+                )
+              );
+              if (isQuickMeeting === true) {
+                setViewFlag(false);
+              }
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_LeaveMeeting_02".toLowerCase()
+                )
+            ) {
+              dispatch(leaveMeetingFail(t("Unsuccessful")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_LeaveMeeting_04".toLowerCase()
+                )
+            ) {
+              dispatch(leaveMeetingFail(t("Join-Log-Not-Found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinMeeting_03".toLowerCase()
+                )
+            ) {
+              dispatch(leaveMeetingFail(t("Something-went-wrong")));
+            } else {
+              dispatch(leaveMeetingFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(leaveMeetingFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(leaveMeetingFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(leaveMeetingFail(t("Something-went-wrong")));
       });
   };
 };
@@ -7802,4 +7971,5 @@ export {
   meetingOrganizerAdded,
   meetingOrganizerRemoved,
   JoinCurrentMeeting,
+  LeaveCurrentMeeting,
 };
