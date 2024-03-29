@@ -1636,6 +1636,7 @@ const NewMeeting = () => {
       ResponseMessage !== t("No-data-available") &&
       ResponseMessage !== t("Successful") &&
       ResponseMessage !== t("Record-updated") &&
+      ResponseMessage !== t("Something-went-wrong") &&
       ResponseMessage !== undefined
     ) {
       setOpen({

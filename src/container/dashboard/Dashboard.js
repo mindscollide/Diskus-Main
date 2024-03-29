@@ -442,9 +442,9 @@ const Dashboard = () => {
               UserID: Number(createrID),
             };
             dispatch(GetUpcomingEvents(navigate, Data2, t, false));
-            // dispatch(
-            //   setMQTTRequestUpcomingEvents(data.payload.upcomingEvents[0])
-            // );
+            dispatch(
+              setMQTTRequestUpcomingEvents(data.payload.upcomingEvents[0])
+            );
           } else if (
             data.payload.message.toLowerCase() ===
             "MEETING_STATUS_EDITED_PROPOSED".toLowerCase()
