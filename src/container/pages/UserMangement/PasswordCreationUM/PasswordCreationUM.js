@@ -11,11 +11,11 @@ import PasswordEyeIcon from "../../../../assets/images/newElements/password.svg"
 import PasswordChecklist from "react-password-checklist";
 import PasswordHideEyeIcon from "../../../../assets/images/newElements/password_hide.svg";
 import DiskusAuthPageLogo from "../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { showCreateAddtionalUsersModal } from "../../../../store/actions/UserMangementModalActions";
 import { useDispatch } from "react-redux";
 import CreateAddtionalUsersModal from "../ModalsUserManagement/CreateAdditionalusersModal/CreateAddtionalUsersModal";
-const PasswordCreationUM = () => {
+const PasswordCreationUM = ({ setSignupStep, signupStep }) => {
   const { t, i18n } = useTranslation();
 
   const dispatch = useDispatch();
@@ -35,7 +35,12 @@ const PasswordCreationUM = () => {
   const [password, setPassword] = useState("");
 
   const handleSignupButton = () => {
-    dispatch(showCreateAddtionalUsersModal(true));
+    if (signupStep === 4) {
+      setSignupStep(5);
+      Navigate("/Signup");
+    } else {
+      dispatch(showCreateAddtionalUsersModal(true));
+    }
   };
 
   return (

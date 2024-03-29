@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import { Button, Paper, Checkbox } from "../../../../components/elements";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 import SignUpOrganizationUM from "../../UserMangement/SignUpOrganizationUM/SignUpOrganizationUM";
 import { useNavigate } from "react-router-dom";
+// import SignupProcessUserManagement from "../../SignUpProcessUserManagement/SignupProcessUserManagement";
 
 const SignInUserManagement = ({ setCurrentStep }) => {
   const { t } = useTranslation();
@@ -15,14 +16,15 @@ const SignInUserManagement = ({ setCurrentStep }) => {
   const navigate = useNavigate();
 
   const handleSubscribeNowButton = () => {
-    navigate("/PakageDetailsUserManagement");
+    setCurrentStep(9);
+    navigate("/Signup");
   };
 
   const handleClickFreeTrail = () => {
-    setCurrentStep(9);
     localStorage.setItem("PackageID", 4);
     localStorage.setItem("TenureOfSuscriptionID", 2);
-    navigate("/", {
+    setCurrentStep(9);
+    navigate("/Signup", {
       state: {
         freeTrail: true,
       },

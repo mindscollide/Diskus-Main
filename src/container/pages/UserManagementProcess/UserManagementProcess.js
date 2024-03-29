@@ -8,6 +8,7 @@ import VerificationEmailAndNumber from "../UserMangement/2FA Verification/Verifi
 import VerifyDeniedUM from "../UserMangement/2FA Verification/VerifyDeniedUM/VerifyDeniedUM";
 import DeviceFor2FAVerify from "../UserMangement/2FA Verification/DevicesFor2FAVerify/DeviceFor2FAVerify";
 import SignUpOrganizationUM from "../UserMangement/SignUpOrganizationUM/SignUpOrganizationUM";
+import SignupProcessUserManagement from "../SignUpProcessUserManagement/SignupProcessUserManagement";
 
 const UserManagementProcess = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -31,7 +32,9 @@ const UserManagementProcess = () => {
   } else if (currentStep === 8) {
     componentToRender = <DeviceFor2FAVerify />;
   } else if (currentStep === 9) {
-    componentToRender = <SignUpOrganizationUM />;
+    componentToRender = (
+      <SignUpOrganizationUM setCurrentStep={setCurrentStep} />
+    );
   } else {
     componentToRender = null;
   }

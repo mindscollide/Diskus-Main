@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, TableToDo, TextField } from "../../../../components/elements";
-const PakageDetailsUserManagement = () => {
+const PakageDetailsUserManagement = ({ setSignupStep }) => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -283,7 +283,8 @@ const PakageDetailsUserManagement = () => {
   };
 
   const handlePayNowClick = () => {
-    navigate("/signupUsermanagement");
+    setSignupStep(2);
+    navigate("/Signup");
   };
 
   const defaultRowWithButtons = {

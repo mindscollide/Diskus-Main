@@ -25,7 +25,11 @@ import {
 } from "../../../../store/actions/Admin_Organization";
 import { setLoader } from "../../../../store/actions/Auth2_actions";
 import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
-const SignUpOrganizationUM = () => {
+const SignUpOrganizationUM = ({ setSignupStep, setCurrentStep }) => {
+  console.log(
+    setSignupStep,
+    "setSignupStepsetSignupStepsetSignupStepsetSignupStep"
+  );
   const { t } = useTranslation();
 
   const {
@@ -440,7 +444,14 @@ const SignUpOrganizationUM = () => {
               },
               Packages: [{ PackageID: Number(PackageID), HeadCount: 20 }],
             };
-            dispatch(signUpOrganizationAndPakageSelection(data, navigate, t));
+            dispatch(
+              signUpOrganizationAndPakageSelection(
+                data,
+                navigate,
+                t,
+                setSignupStep
+              )
+            );
           } else {
             await dispatch(setLoader(true));
             await dispatch(
@@ -598,7 +609,14 @@ const SignUpOrganizationUM = () => {
               },
               Packages: [{ PackageID: 4, HeadCount: 5 }],
             };
-            dispatch(signUpOrganizationAndPakageSelection(data, navigate, t));
+            dispatch(
+              signUpOrganizationAndPakageSelection(
+                data,
+                navigate,
+                t,
+                setSignupStep
+              )
+            );
           } else {
             await dispatch(setLoader(true));
             await dispatch(
@@ -833,6 +851,16 @@ const SignUpOrganizationUM = () => {
         border: "1px solid #e1e1e1 !important",
       },
     }),
+  };
+
+  const onClickLink = () => {
+    if (isFreeTrail === true) {
+      setCurrentStep(1);
+      navigate("/");
+    } else {
+      setSignupStep(1);
+      navigate("/Signup");
+    }
   };
 
   return (
@@ -1210,10 +1238,7 @@ const SignUpOrganizationUM = () => {
                   className="d-flex justify-content-start align-items-center"
                 >
                   <span className={styles["signUp_goBack"]} />
-                  <Link
-                    to={isFreeTrail ? "/" : "/PakageDetailsUserManagement"}
-                    color="black"
-                  >
+                  <Link onClick={onClickLink} color="black">
                     {t("Go-back")}
                   </Link>
                 </Col>
