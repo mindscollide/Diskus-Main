@@ -16,13 +16,13 @@ import TwoFactorMultipleDevices from "../UserMangement/2FA Verification/TwoFacto
 
 const UserManagementProcess = () => {
   // Define setCurrentStep function
-  const setCurrentStep = (step) => {
-    localStorage.setItem("currentStep", step);
-    setCurrentStepValue(step);
-  };
+  // const setCurrentStep = (step) => {
+  //   localStorage.setItem("currentStep", step);
+  //   setCurrentStepValue(step);
+  // };
 
   // Retrieve currentStep value from localStorage, default to 1 if not found
-  const [currentStep, setCurrentStepValue] = useState(() => {
+  const [currentStep, setCurrentStep] = useState(() => {
     return parseInt(localStorage.getItem("currentStep")) || 1;
   });
 
