@@ -1187,7 +1187,8 @@ const enterPasswordvalidation = (value, navigate, t, setCurrentStep) => {
                     t("User-is-not-activated-please-contact-your-admin")
                   )
                 );
-                navigate("/");
+                setCurrentStep(1);
+                // navigate("/");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 2
               ) {
@@ -1196,7 +1197,8 @@ const enterPasswordvalidation = (value, navigate, t, setCurrentStep) => {
                     t("User-is-not-activated-please-contact-your-admin")
                   )
                 );
-                navigate("/");
+                setCurrentStep(1);
+                // navigate("/");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 3
               ) {
@@ -1205,14 +1207,16 @@ const enterPasswordvalidation = (value, navigate, t, setCurrentStep) => {
                     t("User-is-not-activated-please-contact-your-admin")
                   )
                 );
-                navigate("/");
+                setCurrentStep(1);
+                // navigate("/");
               } else {
                 dispatch(
                   enterPasswordFail(
                     t("User-is-not-activated-please-contact-your-admin")
                   )
                 );
-                navigate("/");
+                setCurrentStep(1);
+                // navigate("/");
               }
             } else if (
               response.data.responseResult.responseMessage
