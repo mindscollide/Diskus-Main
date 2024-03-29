@@ -31,6 +31,12 @@ const getCalendarDataFail = (message) => {
   };
 };
 
+const clearCalendarState = () => {
+  return {
+    type: actions.CLEAR_CALENDAR_STATE,
+  };
+};
+
 const getCalendarDataResponse = (navigate, t, data, flag) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -283,4 +289,5 @@ export {
   getCalendarDataInit,
   getEventsTypes,
   getEventsDetails,
+  clearCalendarState,
 };

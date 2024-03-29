@@ -12,6 +12,7 @@ import { Plus } from "react-bootstrap-icons";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 import {
+  clearCalendarState,
   getCalendarDataResponse,
   getEventsDetails,
   getEventsTypes,
@@ -110,8 +111,7 @@ const CalendarPage = () => {
       dispatch(getEventsDetails(navigate, Data, t, setCalendarViewModal));
     }
   };
-  // calling Api for getting data for calendar
-  useEffect(() => {
+  const callApi = async () => {
     let calendarData = {
       UserID: parseInt(userID),
       OrganizationID: parseInt(OrganizationID),
@@ -121,8 +121,13 @@ const CalendarPage = () => {
 
     setStartDataUpdate(newDateFormaterAsPerUTC(startDate));
     setEndDataUpdate(newDateFormaterAsPerUTC(endDate));
-    dispatch(getCalendarDataResponse(navigate, t, calendarData, true));
-    dispatch(getEventsTypes(navigate, t));
+    await dispatch(getEventsTypes(navigate, t));
+
+    await dispatch(getCalendarDataResponse(navigate, t, calendarData, true));
+  };
+  // calling Api for getting data for calendar
+  useEffect(() => {
+    callApi();
     window.addEventListener("click", function (e) {
       var clsname = e.target.className;
       let prev = "ant-picker-prev-icon";
@@ -171,6 +176,9 @@ const CalendarPage = () => {
         }
       }
     });
+    return () => {
+      dispatch(clearCalendarState());
+    };
   }, []);
 
   function onChange(value) {
@@ -261,7 +269,7 @@ const CalendarPage = () => {
             calendarTypeId: Number(cData.fK_CETID),
             isQuickMeeting: cData.isQuickMeeting,
           });
-        } else if (cData.fK_CESID === 2) {
+        } else if (cData.fK_CESID === 2 || cData.fK_CESID === 4) {
           newList.push({
             id: parseInt(cData.pK_CEID),
             eventID: parseInt(cData.fK_CESID),
