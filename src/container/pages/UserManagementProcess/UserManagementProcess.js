@@ -22,7 +22,7 @@ const UserManagementProcess = () => {
 
   // Retrieve currentStep value from localStorage, default to 1 if not found
   const [currentStep, setCurrentStepValue] = useState(() => {
-    return Number(localStorage.getItem("page")) || 1;
+    return Number(localStorage.getItem("LoginFlowPageRoute")) || 1;
   });
 
   useEffect(() => {

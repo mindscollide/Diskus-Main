@@ -259,7 +259,7 @@ const PasswordVerification = ({ setCurrentStep }) => {
   //handling Goback Functionality
 
   const handleGoback = () => {
-    localStorage.setItem("page", 1);
+    localStorage.setItem("LoginFlowPageRoute", 1);
     dispatch(LoginFlowRoutes(1));
   };
 
