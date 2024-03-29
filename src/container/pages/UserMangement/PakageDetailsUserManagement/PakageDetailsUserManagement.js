@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, TableToDo, TextField } from "../../../../components/elements";
+import { signupCurrentPageStep } from "../../SignUpProcessUserManagement/SignupProcessUserManagement";
 const PakageDetailsUserManagement = ({ setSignupStep }) => {
   const navigate = useNavigate();
 
@@ -283,7 +284,7 @@ const PakageDetailsUserManagement = ({ setSignupStep }) => {
   };
 
   const handlePayNowClick = () => {
-    setSignupStep(2);
+    signupCurrentPageStep(2, setSignupStep);
     navigate("/Signup");
   };
 

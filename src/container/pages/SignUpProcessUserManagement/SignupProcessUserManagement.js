@@ -41,3 +41,8 @@ const SignupProcessUserManagement = () => {
 };
 
 export default SignupProcessUserManagement;
+
+export const signupCurrentPageStep = (step, setSignupStep) => {
+  localStorage.setItem("signupCurrentPage", step);
+  setSignupStep(step);
+};
