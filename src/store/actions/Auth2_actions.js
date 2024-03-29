@@ -541,7 +541,7 @@ const enterPasswordvalidation = (value, navigate, t, setCurrentStep) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_01".toLowerCase()
+                  "ERM_AuthService_AuthManager_UserPasswordVerification_01".toLowerCase()
                 )
             ) {
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
@@ -559,7 +559,7 @@ const enterPasswordvalidation = (value, navigate, t, setCurrentStep) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_02".toLowerCase()
+                  "ERM_AuthService_AuthManager_UserPasswordVerification_02".toLowerCase()
                 )
             ) {
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
@@ -577,7 +577,7 @@ const enterPasswordvalidation = (value, navigate, t, setCurrentStep) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_03".toLowerCase()
+                  "ERM_AuthService_AuthManager_UserPasswordVerification_03".toLowerCase()
                 )
             ) {
               if (
@@ -655,7 +655,7 @@ const enterPasswordvalidation = (value, navigate, t, setCurrentStep) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_04".toLowerCase()
+                  "ERM_AuthService_AuthManager_UserPasswordVerification_04".toLowerCase()
                 )
             ) {
               if (
@@ -722,7 +722,7 @@ const enterPasswordvalidation = (value, navigate, t, setCurrentStep) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_05".toLowerCase()
+                  "ERM_AuthService_AuthManager_UserPasswordVerification_05".toLowerCase()
                 )
             ) {
               if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
@@ -768,7 +768,7 @@ const enterPasswordvalidation = (value, navigate, t, setCurrentStep) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_07".toLowerCase()
+                  "ERM_AuthService_AuthManager_UserPasswordVerification_07".toLowerCase()
                 )
             ) {
               if (
@@ -851,7 +851,7 @@ const enterPasswordvalidation = (value, navigate, t, setCurrentStep) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_08".toLowerCase()
+                  "ERM_AuthService_AuthManager_UserPasswordVerification_08".toLowerCase()
                 )
             ) {
               if (
@@ -918,7 +918,7 @@ const enterPasswordvalidation = (value, navigate, t, setCurrentStep) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_09".toLowerCase()
+                  "ERM_AuthService_AuthManager_UserPasswordVerification_09".toLowerCase()
                 )
             ) {
               if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
@@ -964,7 +964,7 @@ const enterPasswordvalidation = (value, navigate, t, setCurrentStep) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_10".toLowerCase()
+                  "ERM_AuthService_AuthManager_UserPasswordVerification_10".toLowerCase()
                 )
             ) {
               if (
@@ -1050,7 +1050,7 @@ const enterPasswordvalidation = (value, navigate, t, setCurrentStep) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_11".toLowerCase()
+                  "ERM_AuthService_AuthManager_UserPasswordVerification_11".toLowerCase()
                 )
             ) {
               if (
@@ -1144,7 +1144,7 @@ const enterPasswordvalidation = (value, navigate, t, setCurrentStep) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_12".toLowerCase()
+                  "ERM_AuthService_AuthManager_UserPasswordVerification_12".toLowerCase()
                 )
             ) {
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
@@ -1178,7 +1178,7 @@ const enterPasswordvalidation = (value, navigate, t, setCurrentStep) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_13".toLowerCase()
+                  "ERM_AuthService_AuthManager_UserPasswordVerification_13".toLowerCase()
                 )
             ) {
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
@@ -1218,7 +1218,7 @@ const enterPasswordvalidation = (value, navigate, t, setCurrentStep) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_14".toLowerCase()
+                  "ERM_AuthService_AuthManager_UserPasswordVerification_14".toLowerCase()
                 )
             ) {
               dispatch(
@@ -1364,7 +1364,7 @@ const enterPasswordvalidation = (value, navigate, t, setCurrentStep) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_18".toLowerCase()
+                  "ERM_AuthService_AuthManager_UserPasswordVerification_18".toLowerCase()
                 )
             ) {
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
