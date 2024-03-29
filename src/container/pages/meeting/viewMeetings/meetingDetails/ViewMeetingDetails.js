@@ -25,11 +25,14 @@ import {
   viewAdvanceMeetingUnpublishPageFlag,
   viewProposeOrganizerMeetingPageFlag,
   proposeNewMeetingPageFlag,
+  LeaveCurrentMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
-import { utcConvertintoGMT } from "../../../../../commen/functions/date_formater";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { resolutionResultTable } from "../../../../../commen/functions/date_formater";
+import {
+  resolutionResultTable,
+  getCurrentDateTimeUTC,
+} from "../../../../../commen/functions/date_formater";
 import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
 import {
   GetAllUsers,
@@ -120,6 +123,8 @@ const ViewMeetingDetails = ({
   const [initiateVideoModalOto, setInitiateVideoModalOto] = useState(false);
 
   const [initiateVideoModalGroup, setInitiateVideoModalGroup] = useState(false);
+
+  const [viewFlag, setViewFlag] = useState(false);
 
   //For Custom language datepicker
   const [open, setOpen] = useState({
@@ -249,31 +254,32 @@ const ViewMeetingDetails = ({
 
   //funciton cancel button
   const handleCancelMeetingNoPopup = () => {
-    let searchData = {
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(userID),
-      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-      PublishedMeetings:
-        currentView && Number(currentView) === 1 ? true : false,
-    };
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
-    localStorage.removeItem("folderDataRoomMeeting");
-
-    setEdiorRole({ status: null, role: null });
-    setAdvanceMeetingModalID(null);
-    // setMeetingDetails(false);
-    setViewAdvanceMeetingModal(false);
-    dispatch(viewAdvanceMeetingPublishPageFlag(false));
-    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-
-    // setAgenda(false);
-    // setCancelModalView(false);
-    // setPolls(false);
-    // setMinutes(false);
-    // setAttendance(false);
+    if (meetingStatus === 10 || meetingStatus === "10") {
+      let leaveMeetingData = {
+        FK_MDID: currentMeeting,
+        DateTime: getCurrentDateTimeUTC(),
+      };
+      dispatch(LeaveCurrentMeeting(navigate, t, leaveMeetingData, false, setViewFlag, setEdiorRole, setAdvanceMeetingModalID, setViewAdvanceMeetingModal));
+    } else {
+      let searchData = {
+        Date: "",
+        Title: "",
+        HostName: "",
+        UserID: Number(userID),
+        PageNumber:
+          meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+        Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+        PublishedMeetings:
+          currentView && Number(currentView) === 1 ? true : false,
+      };
+      dispatch(searchNewUserMeeting(navigate, searchData, t));
+      localStorage.removeItem("folderDataRoomMeeting");
+      setEdiorRole({ status: null, role: null });
+      setAdvanceMeetingModalID(null);
+      setViewAdvanceMeetingModal(false);
+      dispatch(viewAdvanceMeetingPublishPageFlag(false));
+      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+    }
   };
 
   let endMeetingRequest = {
