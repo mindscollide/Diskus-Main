@@ -205,10 +205,10 @@ const userPasswordCreation = {
   RequestMethod: "ServiceManager.UserPasswordCreation",
 };
 const userEmailValidation = {
-  RequestMethod: "ServiceManager.LoginWithEmail",
+  RequestMethod: "ServiceManager.LoginWithUserEmail",
 };
 const userPasswordVerify = {
-  RequestMethod: "ServiceManager.PasswordVerification",
+  RequestMethod: "ServiceManager.UserPasswordVerification",
 };
 const getSelectedPacakge_Detail = {
   RequestMethod: "ServiceManager.GetOrganizationSeletedPackage",

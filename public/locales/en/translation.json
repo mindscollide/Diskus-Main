@@ -1907,6 +1907,7 @@
   "Failed-to-create-user-headCount-exceeded": "Failed to Create User HeadCount Exceeded",
   "The-user-has-been-edited-but-selected-package-limit-exceeded": "The user has been edited but selected package limit exceeded",
   "Organization-admin": "Organization Admin",
+  "You-can-select-multiple-options": "You can select multiple options",
   "Failed-to-save-organization-settings": "Failed to Save Organization Settings",
   "Failed-to-save-admin-user-alloted-package": "Failed To Save Admin User Alloted Package",
   "Failed-to-add-organization-user-mapping": "Failed To Add Organization User Mapping",

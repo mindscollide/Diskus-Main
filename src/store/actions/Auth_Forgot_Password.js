@@ -25,7 +25,7 @@ const forgotPasswordFail = (message) => {
   };
 };
 
-const changePasswordRequest = (email, t, navigate) => {
+const changePasswordRequest = (email, t, navigate, setCurrentStep) => {
   var min = 10000;
   var max = 90000;
   var id = min + Math.random() * (max - min);
@@ -81,7 +81,8 @@ const changePasswordRequest = (email, t, navigate) => {
                 t("OTP-has-been-sent-to-your-email")
               )
             );
-            navigate("/forgotpasswordVerification");
+            setCurrentStep(12);
+            // navigate("/forgotpasswordVerification");
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()

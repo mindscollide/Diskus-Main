@@ -104,13 +104,13 @@ export const router = createHashRouter(
       />
       <Route path="/signuporganization" element={<Signup />} />
       {/* <Route path="/" element={<ValidateEmail />} /> */}
-      <Route path="/forgotpasssowrd" element={<ForgotPassword />} />
+      {/* <Route path="/forgotpasssowrd" element={<ForgotPassword />} /> */}
       <Route
         path="/forgotpasswordVerification"
         element={<ForgotPasswordVerification />}
       />
       <Route path="/updatepassword" element={<UpdatePasswordSuccessfully />} />
-      <Route path="/enterPassword" element={<EnterPassword />} />
+      {/* <Route path="/enterPassword" element={<EnterPassword />} /> */}
       <Route path="/createpasswordorganization" element={<CreatePassword />} />
       <Route path="/verifyEmailOTP" element={<VerifyEmailOTP />} />
       <Route path="/selectedpackage" element={<PackageSelected />} />
@@ -125,10 +125,10 @@ export const router = createHashRouter(
       />
       {/* Two Fac Routes */}
       <Route path="/twofac" element={<TwoFactor />} />
-      <Route path="/sendmailwithdevice" element={<SendEmailRealmeXtra />} />
+      {/* <Route path="/sendmailwithdevice" element={<SendEmailRealmeXtra />} /> */}
       <Route path="/twofacmultidevice" element={<TwoFacSendEmail />} />
       <Route path="/selectfrommultidevices" element={<VerificationIphone />} />
-      <Route path="/2FAverificationotp" element={<VerificationCodeOne />} />
+      {/* <Route path="/2FAverificationotp" element={<VerificationCodeOne />} /> */}
       <Route
         path="/2FAverificationdevieotp"
         element={<VerificationCodeThree />}
@@ -240,6 +240,7 @@ export const router = createHashRouter(
       <Route Route element={<PrivateRoutes />}>
         <Route path="/onboard" element={<OnBoard />} />
       </Route>
+      {/* for all login Routes  */}
       <Route path="/" element={<UserManagementProcess />} />
 
       {/* For All Signup Route */}

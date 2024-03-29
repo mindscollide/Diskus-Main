@@ -238,10 +238,11 @@ const validationEmailFail = (message) => {
     message: message,
   };
 };
-const validationEmailAction = (email, navigate, t) => {
+const validationEmailAction = (email, navigate, t, setCurrentStep) => {
   var min = 10000;
   var max = 90000;
   var id = min + Math.random() * (max - min);
+  let token = JSON.parse(localStorage.getItem("token"));
   let data = { UserEmail: email, Device: "Browser", DeviceID: "1" };
   return (dispatch) => {
     dispatch(validationEmailInit());
@@ -252,6 +253,9 @@ const validationEmailAction = (email, navigate, t) => {
       method: "post",
       url: authenticationApi,
       data: form,
+      headers: {
+        _token: token,
+      },
     })
       .then((response) => {
         if (response.data.responseCode === 200) {
@@ -260,7 +264,7 @@ const validationEmailAction = (email, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithEmail_01".toLowerCase()
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_01".toLowerCase()
                 )
             ) {
               dispatch(
@@ -273,7 +277,7 @@ const validationEmailAction = (email, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithEmail_02".toLowerCase()
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_02".toLowerCase()
                 )
             ) {
               dispatch(
@@ -286,7 +290,7 @@ const validationEmailAction = (email, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithEmail_03".toLowerCase()
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_03".toLowerCase()
                 )
             ) {
               localStorage.setItem(
@@ -303,12 +307,13 @@ const validationEmailAction = (email, navigate, t) => {
                   t("Users-password-is-created")
                 )
               );
-              navigate("/enterPassword");
+              setCurrentStep(2);
+              // navigate("/enterPassword");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithEmail_04".toLowerCase()
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_04".toLowerCase()
                 )
             ) {
               dispatch(
@@ -321,7 +326,7 @@ const validationEmailAction = (email, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithEmail_05".toLowerCase()
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_05".toLowerCase()
                 )
             ) {
               dispatch(
@@ -335,7 +340,7 @@ const validationEmailAction = (email, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithEmail_06".toLowerCase()
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_06".toLowerCase()
                 )
             ) {
               localStorage.setItem("seconds", 0);
@@ -352,7 +357,7 @@ const validationEmailAction = (email, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithEmail_07".toLowerCase()
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_07".toLowerCase()
                 )
             ) {
               dispatch(
@@ -368,7 +373,7 @@ const validationEmailAction = (email, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithEmail_01".toLowerCase()
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_01".toLowerCase()
                 )
             ) {
               MessageResponce = t("Device-does-not-exists");
@@ -376,7 +381,7 @@ const validationEmailAction = (email, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithEmail_02".toLowerCase()
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_02".toLowerCase()
                 )
             ) {
               MessageResponce = t("Device-id-does-not-exists");
@@ -384,7 +389,7 @@ const validationEmailAction = (email, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithEmail_03".toLowerCase()
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_03".toLowerCase()
                 )
             ) {
               MessageResponce = t("Users-password-is-created");
@@ -392,7 +397,7 @@ const validationEmailAction = (email, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithEmail_04".toLowerCase()
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_04".toLowerCase()
                 )
             ) {
               MessageResponce = t(
@@ -402,7 +407,7 @@ const validationEmailAction = (email, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithEmail_05".toLowerCase()
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_05".toLowerCase()
                 )
             ) {
               MessageResponce = t(
@@ -412,7 +417,7 @@ const validationEmailAction = (email, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithEmail_06".toLowerCase()
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_06".toLowerCase()
                 )
             ) {
               MessageResponce = t(
@@ -422,7 +427,7 @@ const validationEmailAction = (email, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithEmail_07".toLowerCase()
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_07".toLowerCase()
                 )
             ) {
               MessageResponce = t(
@@ -461,7 +466,7 @@ const enterPasswordFail = (message, response) => {
     message: message,
   };
 };
-const enterPasswordvalidation = (value, navigate, t) => {
+const enterPasswordvalidation = (value, navigate, t, setCurrentStep) => {
   let userID = localStorage.getItem("userID");
   var min = 10000;
   var max = 90000;
@@ -598,7 +603,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t,
                     response.data.responseResult.organizationID,
                     data.UserID,
-                    navigate
+                    navigate,
+                    setCurrentStep
                   )
                 );
                 // navigate("/");
@@ -617,7 +623,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t,
                     response.data.responseResult.organizationID,
                     data.UserID,
-                    navigate
+                    navigate,
+                    setCurrentStep
                   )
                 );
                 mqttConnection(response.data.responseResult.authToken.userID);
@@ -638,7 +645,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t,
                     response.data.responseResult.organizationID,
                     data.UserID,
-                    navigate
+                    navigate,
+                    setCurrentStep
                   )
                 );
                 mqttConnection(response.data.responseResult.authToken.userID);
@@ -785,7 +793,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t,
                     response.data.responseResult.organizationID,
                     data.UserID,
-                    navigate
+                    navigate,
+                    setCurrentStep
                   )
                 );
                 mqttConnection(response.data.responseResult.authToken.userID);
@@ -805,7 +814,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t,
                     response.data.responseResult.organizationID,
                     data.UserID,
-                    navigate
+                    navigate,
+                    setCurrentStep
                   )
                 );
                 localStorage.setItem(
@@ -830,7 +840,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t,
                     response.data.responseResult.organizationID,
                     data.UserID,
-                    navigate
+                    navigate,
+                    setCurrentStep
                   )
                 );
                 // navigate("/");
@@ -1409,7 +1420,8 @@ const verificationEmailOTP = (
   t,
   updateFlag,
   setSeconds,
-  setMinutes
+  setMinutes,
+  setCurrentStep
 ) => {
   let userID = localStorage.getItem("userID");
   let email = localStorage.getItem("UserEmail");
@@ -1450,7 +1462,8 @@ const verificationEmailOTP = (
               }
               localStorage.removeItem("seconds");
               localStorage.removeItem("minutes");
-              navigate("/createpasswordorganization");
+              setCurrentStep(11);
+              // navigate("/createpasswordorganization");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1523,7 +1536,7 @@ const createPasswordFail = (message) => {
     message: message,
   };
 };
-const createPasswordAction = (value, navigate, t) => {
+const createPasswordAction = (value, navigate, t, setCurrentStep) => {
   let userID = localStorage.getItem("userID");
   let data = { UserID: JSON.parse(userID), Password: value };
   return (dispatch) => {
@@ -1661,8 +1674,9 @@ const createPasswordAction = (value, navigate, t) => {
                   TwoFaAuthenticate(
                     t,
                     response.data.responseResult.organizationID,
-                    userID,
-                    navigate
+                    data.UserID,
+                    navigate,
+                    setCurrentStep
                   )
                 );
                 mqttConnection(response.data.responseResult.authToken.userID);
@@ -1681,8 +1695,9 @@ const createPasswordAction = (value, navigate, t) => {
                   TwoFaAuthenticate(
                     t,
                     response.data.responseResult.organizationID,
-                    userID,
-                    navigate
+                    data.UserID,
+                    navigate,
+                    setCurrentStep
                   )
                 );
                 mqttConnection(response.data.responseResult.authToken.userID);
@@ -1701,8 +1716,9 @@ const createPasswordAction = (value, navigate, t) => {
                   TwoFaAuthenticate(
                     t,
                     response.data.responseResult.organizationID,
-                    userID,
-                    navigate
+                    data.UserID,
+                    navigate,
+                    setCurrentStep
                   )
                 );
                 mqttConnection(response.data.responseResult.authToken.userID);
