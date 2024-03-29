@@ -1509,20 +1509,28 @@ const NewMeeting = () => {
       meetingIdReducer.MeetingStatusSocket !== undefined &&
       meetingIdReducer.MeetingStatusSocket.length !== 0
     ) {
+      let meetingID = meetingIdReducer.MeetingStatusSocket.meetingID;
+      let meetingStatusID =
+        meetingIdReducer.MeetingStatusSocket.MeetingStatusID;
       try {
-        let startMeetingData = meetingIdReducer.MeetingStatusSocket.meeting;
-        const indexToUpdate = rows.findIndex(
-          (obj) => obj.pK_MDID === startMeetingData.pK_MDID
+        setRow((rowsData) => {
+          return rowsData.map((item) => {
+            if (item.pK_MDID === meetingID) {
+              return {
+                ...item,
+                status: String(meetingStatusID),
+              };
+            } else {
+              return item; // Return the original item if the condition is not met
+            }
+          });
+        });
+      } catch (error) {
+        console.log(
+          error,
+          "meetingIDmeetingIDmeetingIDmeetingIDmeetingIDmeetingID"
         );
-        if (indexToUpdate !== -1) {
-          let updatedRows = [...rows];
-          updatedRows[indexToUpdate] = startMeetingData;
-          setRow(updatedRows);
-        } else {
-          let updatedRows = [...rows, startMeetingData];
-          setRow(updatedRows);
-        }
-      } catch {}
+      }
     }
   }, [meetingIdReducer.MeetingStatusSocket]);
 
@@ -1582,7 +1590,25 @@ const NewMeeting = () => {
       }
     }
   }, [meetingIdReducer.MeetingStatusEnded, NewMeetingreducer]);
-
+  useEffect(() => {
+    if (
+      meetingIdReducer.allMeetingsSocketData !== [] &&
+      meetingIdReducer.allMeetingsSocketData !== null &&
+      meetingIdReducer.allMeetingsSocketData !== undefined
+    ) {
+      let meetingID = meetingIdReducer.allMeetingsSocketData.pK_MDID;
+      let meetingData = meetingIdReducer.allMeetingsSocketData;
+      setRow((rowsData) => {
+        return rowsData.map((item) => {
+          if (item.pK_MDID === meetingID) {
+            return meetingData;
+          } else {
+            return item; // Return the original item if the condition is not met
+          }
+        });
+      });
+    }
+  }, [meetingIdReducer.allMeetingsSocketData]);
   useEffect(() => {
     if (
       ResponseMessages !== "" &&
