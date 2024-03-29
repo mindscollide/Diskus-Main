@@ -81,7 +81,7 @@ const SignInUserManagement = ({ setCurrentStep, setSignupStep }) => {
       setErrorMessage(t("Error-should-be-in-email-format"));
     } else {
       setErrorBar(false);
-      dispatch(validationEmailAction(email, navigate, t, setCurrentStep));
+      dispatch(validationEmailAction(email, navigate, t));
     }
   };
 

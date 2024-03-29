@@ -21,6 +21,7 @@ import {
 } from "../../../../store/actions/Auth2_actions";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { LoginFlowRoutes } from "../../../../store/actions/UserMangementModalActions";
 const PasswordVerification = ({ setCurrentStep }) => {
   const { t } = useTranslation();
 
@@ -255,6 +256,13 @@ const PasswordVerification = ({ setCurrentStep }) => {
     passwordRef.current.focus();
   }, []);
 
+  //handling Goback Functionality
+
+  const handleGoback = () => {
+    localStorage.setItem("LoginFlowPageRoute", 1);
+    dispatch(LoginFlowRoutes(1));
+  };
+
   return (
     <>
       <Container fluid className={styles["auth_container"]}>
@@ -390,7 +398,7 @@ const PasswordVerification = ({ setCurrentStep }) => {
                     className={styles["forogt_email_link"]}
                   >
                     <Link
-                      onClick={() => setCurrentStep(1)}
+                      onClick={handleGoback}
                       className={styles["ForgotPassword"]}
                     >
                       {t("Go-back")}

@@ -23,6 +23,7 @@ import { TwoFaAuthenticate } from "./TwoFactorsAuthenticate_actions";
 import { mqttConnection } from "../../commen/functions/mqttconnection";
 import Helper from "../../commen/functions/history_logout";
 import { getSubscriptionPaymentDetail } from "./Admin_PackageDetail";
+import { LoginFlowRoutes } from "./UserMangementModalActions";
 const createOrganizationInit = () => {
   return {
     type: actions.SIGNUPORGANIZATION_INIT,
@@ -238,7 +239,7 @@ const validationEmailFail = (message) => {
     message: message,
   };
 };
-const validationEmailAction = (email, navigate, t, setCurrentStep) => {
+const validationEmailAction = (email, navigate, t) => {
   var min = 10000;
   var max = 90000;
   var id = min + Math.random() * (max - min);
@@ -307,7 +308,8 @@ const validationEmailAction = (email, navigate, t, setCurrentStep) => {
                   t("Users-password-is-created")
                 )
               );
-              setCurrentStep(2);
+              localStorage.setItem("LoginFlowPageRoute", 2);
+              dispatch(LoginFlowRoutes(2));
               // navigate("/enterPassword");
             } else if (
               response.data.responseResult.responseMessage
@@ -335,7 +337,9 @@ const validationEmailAction = (email, navigate, t, setCurrentStep) => {
                   t("User-password-is-not-created-please-create-your-password")
                 )
               );
-              navigate("/createpasswordorganization");
+              localStorage.setItem("LoginFlowPageRoute", 11);
+              dispatch(LoginFlowRoutes(11));
+              // navigate("/createpasswordorganization");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -346,7 +350,9 @@ const validationEmailAction = (email, navigate, t, setCurrentStep) => {
               localStorage.setItem("seconds", 0);
               localStorage.setItem("minutes", 0);
               localStorage.setItem("UserEmail", email);
-              navigate("/verifyEmailOTP");
+              localStorage.setItem("LoginFlowPageRoute", 3);
+              dispatch(LoginFlowRoutes(3));
+              // navigate("/verifyEmailOTP");
               dispatch(
                 validationEmailSuccess(
                   response.data.responseResult,
@@ -1418,6 +1424,7 @@ const verifyOTPFail = (message) => {
     message: message,
   };
 };
+
 const verificationEmailOTP = (
   OTPValue,
   navigate,
