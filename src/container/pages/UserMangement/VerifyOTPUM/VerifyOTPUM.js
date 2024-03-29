@@ -84,7 +84,8 @@ const VerifyOTPUM = ({ setSignupStep }) => {
           t,
           false,
           setSeconds,
-          setMinutes
+          setMinutes,
+          setSignupStep
         )
       );
     }

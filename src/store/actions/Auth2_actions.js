@@ -1418,6 +1418,7 @@ const verifyOTPFail = (message) => {
     message: message,
   };
 };
+
 const verificationEmailOTP = (
   OTPValue,
   navigate,
@@ -1425,7 +1426,7 @@ const verificationEmailOTP = (
   updateFlag,
   setSeconds,
   setMinutes,
-  setCurrentStep
+  setSignupStep
 ) => {
   let userID = localStorage.getItem("userID");
   let email = localStorage.getItem("UserEmail");
@@ -1466,7 +1467,7 @@ const verificationEmailOTP = (
               }
               localStorage.removeItem("seconds");
               localStorage.removeItem("minutes");
-              setCurrentStep(11);
+              setSignupStep(4);
               // navigate("/createpasswordorganization");
             } else if (
               response.data.responseResult.responseMessage
