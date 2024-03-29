@@ -21,6 +21,7 @@ import {
 } from "../../../../store/actions/Auth2_actions";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { LoginFlowRoutes } from "../../../../store/actions/UserMangementModalActions";
 const PasswordVerification = ({ setCurrentStep }) => {
   const { t } = useTranslation();
 
@@ -259,7 +260,7 @@ const PasswordVerification = ({ setCurrentStep }) => {
 
   const handleGoback = () => {
     localStorage.setItem("page", 1);
-    navigate("/");
+    dispatch(LoginFlowRoutes(1));
   };
 
   return (

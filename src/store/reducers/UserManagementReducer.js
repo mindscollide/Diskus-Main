@@ -11,6 +11,7 @@ const initialState = {
   allOrganizationUsersData: null,
   organizationPakageDetailsUserStatsData: null,
   organizationSelectedPakagesByOrganizationIDData: null,
+  defaultRoutingValue: 1,
 };
 
 const UserMangementReducer = (state = initialState, action) => {
@@ -198,6 +199,14 @@ const UserMangementReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
+
+    case actions.ROUTING_ON_PAGES_USERMANAGEMENT: {
+      return {
+        ...state,
+        defaultRoutingValue: action.response,
+      };
+    }
+
     default:
       return { ...state };
   }

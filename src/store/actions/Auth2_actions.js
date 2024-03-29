@@ -23,6 +23,7 @@ import { TwoFaAuthenticate } from "./TwoFactorsAuthenticate_actions";
 import { mqttConnection } from "../../commen/functions/mqttconnection";
 import Helper from "../../commen/functions/history_logout";
 import { getSubscriptionPaymentDetail } from "./Admin_PackageDetail";
+import { LoginFlowRoutes } from "./UserMangementModalActions";
 const createOrganizationInit = () => {
   return {
     type: actions.SIGNUPORGANIZATION_INIT,
@@ -307,8 +308,8 @@ const validationEmailAction = (email, navigate, t) => {
                   t("Users-password-is-created")
                 )
               );
-              localStorage.setItem("page", 2);
-              navigate("/");
+              localStorage.setItem("LoginFlowPageRoute", 2);
+              dispatch(LoginFlowRoutes(2));
               // navigate("/enterPassword");
             } else if (
               response.data.responseResult.responseMessage
@@ -336,8 +337,8 @@ const validationEmailAction = (email, navigate, t) => {
                   t("User-password-is-not-created-please-create-your-password")
                 )
               );
-              localStorage.setItem("page", 11);
-              navigate("/");
+              localStorage.setItem("LoginFlowPageRoute", 11);
+              dispatch(LoginFlowRoutes(11));
               // navigate("/createpasswordorganization");
             } else if (
               response.data.responseResult.responseMessage
@@ -349,8 +350,8 @@ const validationEmailAction = (email, navigate, t) => {
               localStorage.setItem("seconds", 0);
               localStorage.setItem("minutes", 0);
               localStorage.setItem("UserEmail", email);
-              localStorage.setItem("page", 3);
-              navigate("/");
+              localStorage.setItem("LoginFlowPageRoute", 3);
+              dispatch(LoginFlowRoutes(3));
               // navigate("/verifyEmailOTP");
               dispatch(
                 validationEmailSuccess(
