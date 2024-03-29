@@ -22,7 +22,7 @@ import {
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { LoginFlowRoutes } from "../../../../store/actions/UserMangementModalActions";
-const PasswordVerification = ({ setCurrentStep }) => {
+const PasswordVerification = () => {
   const { t } = useTranslation();
 
   const navigate = useNavigate();
@@ -122,7 +122,7 @@ const PasswordVerification = ({ setCurrentStep }) => {
       });
     } else {
       setErrorBar(false);
-      dispatch(enterPasswordvalidation(password, navigate, t, setCurrentStep));
+      dispatch(enterPasswordvalidation(password, navigate, t));
     }
   };
 
@@ -236,6 +236,13 @@ const PasswordVerification = ({ setCurrentStep }) => {
     Authreducer.EmailValidationResponseMessage,
     Authreducer.GetSelectedPackageResponseMessage,
   ]);
+
+  //Handle Goback functionality
+
+  const handleGoBack = () => {
+    localStorage.setItem("LoginFlowPageRoute", 10);
+    dispatch(LoginFlowRoutes(10));
+  };
 
   //Password Remeber
   useEffect(() => {
@@ -383,7 +390,7 @@ const PasswordVerification = ({ setCurrentStep }) => {
                     className={styles["forogt_email_link"]}
                   >
                     <Link
-                      onClick={() => setCurrentStep(10)}
+                      onClick={handleGoBack}
                       className={styles["ForgotPassword"]}
                     >
                       {t("Forgot-password")}

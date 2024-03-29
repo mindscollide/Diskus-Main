@@ -472,7 +472,7 @@ const enterPasswordFail = (message, response) => {
     message: message,
   };
 };
-const enterPasswordvalidation = (value, navigate, t, setCurrentStep) => {
+const enterPasswordvalidation = (value, navigate, t) => {
   let userID = localStorage.getItem("userID");
   var min = 10000;
   var max = 90000;
@@ -609,8 +609,7 @@ const enterPasswordvalidation = (value, navigate, t, setCurrentStep) => {
                     t,
                     response.data.responseResult.organizationID,
                     data.UserID,
-                    navigate,
-                    setCurrentStep
+                    navigate
                   )
                 );
                 // navigate("/");
@@ -629,8 +628,7 @@ const enterPasswordvalidation = (value, navigate, t, setCurrentStep) => {
                     t,
                     response.data.responseResult.organizationID,
                     data.UserID,
-                    navigate,
-                    setCurrentStep
+                    navigate
                   )
                 );
                 mqttConnection(response.data.responseResult.authToken.userID);
@@ -651,8 +649,7 @@ const enterPasswordvalidation = (value, navigate, t, setCurrentStep) => {
                     t,
                     response.data.responseResult.organizationID,
                     data.UserID,
-                    navigate,
-                    setCurrentStep
+                    navigate
                   )
                 );
                 mqttConnection(response.data.responseResult.authToken.userID);
@@ -799,8 +796,7 @@ const enterPasswordvalidation = (value, navigate, t, setCurrentStep) => {
                     t,
                     response.data.responseResult.organizationID,
                     data.UserID,
-                    navigate,
-                    setCurrentStep
+                    navigate
                   )
                 );
                 mqttConnection(response.data.responseResult.authToken.userID);
@@ -820,8 +816,7 @@ const enterPasswordvalidation = (value, navigate, t, setCurrentStep) => {
                     t,
                     response.data.responseResult.organizationID,
                     data.UserID,
-                    navigate,
-                    setCurrentStep
+                    navigate
                   )
                 );
                 localStorage.setItem(
@@ -846,8 +841,7 @@ const enterPasswordvalidation = (value, navigate, t, setCurrentStep) => {
                     t,
                     response.data.responseResult.organizationID,
                     data.UserID,
-                    navigate,
-                    setCurrentStep
+                    navigate
                   )
                 );
                 // navigate("/");
@@ -1193,7 +1187,9 @@ const enterPasswordvalidation = (value, navigate, t, setCurrentStep) => {
                     t("User-is-not-activated-please-contact-your-admin")
                   )
                 );
-                setCurrentStep(1);
+
+                localStorage.setItem("LoginFlowPageRoute", 1);
+                dispatch(LoginFlowRoutes(1));
                 // navigate("/");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 2
@@ -1203,7 +1199,8 @@ const enterPasswordvalidation = (value, navigate, t, setCurrentStep) => {
                     t("User-is-not-activated-please-contact-your-admin")
                   )
                 );
-                setCurrentStep(1);
+                localStorage.setItem("LoginFlowPageRoute", 1);
+                dispatch(LoginFlowRoutes(1));
                 // navigate("/");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 3
@@ -1213,7 +1210,8 @@ const enterPasswordvalidation = (value, navigate, t, setCurrentStep) => {
                     t("User-is-not-activated-please-contact-your-admin")
                   )
                 );
-                setCurrentStep(1);
+                localStorage.setItem("LoginFlowPageRoute", 1);
+                dispatch(LoginFlowRoutes(1));
                 // navigate("/");
               } else {
                 dispatch(
@@ -1221,7 +1219,9 @@ const enterPasswordvalidation = (value, navigate, t, setCurrentStep) => {
                     t("User-is-not-activated-please-contact-your-admin")
                   )
                 );
-                setCurrentStep(1);
+
+                localStorage.setItem("LoginFlowPageRoute", 1);
+                dispatch(LoginFlowRoutes(1));
                 // navigate("/");
               }
             } else if (
@@ -1431,8 +1431,7 @@ const verificationEmailOTP = (
   t,
   updateFlag,
   setSeconds,
-  setMinutes,
-  setSignupStep
+  setMinutes
 ) => {
   let userID = localStorage.getItem("userID");
   let email = localStorage.getItem("UserEmail");
@@ -1473,7 +1472,8 @@ const verificationEmailOTP = (
               }
               localStorage.removeItem("seconds");
               localStorage.removeItem("minutes");
-              setSignupStep(4);
+              localStorage.setItem("LoginFlowPageRoute", 4);
+              dispatch(LoginFlowRoutes(4));
               // navigate("/createpasswordorganization");
             } else if (
               response.data.responseResult.responseMessage
@@ -1547,7 +1547,7 @@ const createPasswordFail = (message) => {
     message: message,
   };
 };
-const createPasswordAction = (value, navigate, t, setCurrentStep) => {
+const createPasswordAction = (value, navigate, t) => {
   let userID = localStorage.getItem("userID");
   let data = { UserID: JSON.parse(userID), Password: value };
   return (dispatch) => {
@@ -1686,8 +1686,7 @@ const createPasswordAction = (value, navigate, t, setCurrentStep) => {
                     t,
                     response.data.responseResult.organizationID,
                     data.UserID,
-                    navigate,
-                    setCurrentStep
+                    navigate
                   )
                 );
                 mqttConnection(response.data.responseResult.authToken.userID);
@@ -1707,8 +1706,7 @@ const createPasswordAction = (value, navigate, t, setCurrentStep) => {
                     t,
                     response.data.responseResult.organizationID,
                     data.UserID,
-                    navigate,
-                    setCurrentStep
+                    navigate
                   )
                 );
                 mqttConnection(response.data.responseResult.authToken.userID);
@@ -1728,8 +1726,7 @@ const createPasswordAction = (value, navigate, t, setCurrentStep) => {
                     t,
                     response.data.responseResult.organizationID,
                     data.UserID,
-                    navigate,
-                    setCurrentStep
+                    navigate
                   )
                 );
                 mqttConnection(response.data.responseResult.authToken.userID);

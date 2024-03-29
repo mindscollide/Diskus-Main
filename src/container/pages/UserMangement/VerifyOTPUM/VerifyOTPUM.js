@@ -21,7 +21,7 @@ import {
 } from "../../../../store/actions/Auth2_actions";
 import { ResendOTP } from "../../../../store/actions/Auth_Verify_Opt";
 import { useSelector } from "react-redux";
-const VerifyOTPUM = ({ setSignupStep }) => {
+const VerifyOTPUM = () => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
@@ -87,8 +87,7 @@ const VerifyOTPUM = ({ setSignupStep }) => {
           t,
           false,
           setSeconds,
-          setMinutes,
-          setSignupStep
+          setMinutes
         )
       );
     }

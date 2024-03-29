@@ -16,7 +16,7 @@ import { useDispatch } from "react-redux";
 import { sendTwoFacAction } from "../../../../store/actions/TwoFactorsAuthenticate_actions";
 import Helper from "../../../../commen/functions/history_logout";
 import { mqttConnection } from "../../../../commen/functions/mqttconnection";
-const TwoFactorVerifyUM = ({ setCurrentStep }) => {
+const TwoFactorVerifyUM = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -77,16 +77,7 @@ const TwoFactorVerifyUM = ({ setCurrentStep }) => {
       UserDevices: [],
     };
     localStorage.setItem("GobackSelection", 1);
-    dispatch(
-      sendTwoFacAction(
-        t,
-        navigate,
-        Data,
-        setSeconds,
-        setMinutes,
-        setCurrentStep
-      )
-    );
+    dispatch(sendTwoFacAction(t, navigate, Data, setSeconds, setMinutes));
   };
 
   let newClient = Helper.socket;

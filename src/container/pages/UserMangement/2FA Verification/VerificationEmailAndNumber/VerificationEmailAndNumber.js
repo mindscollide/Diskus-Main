@@ -25,7 +25,7 @@ import {
   verificationTwoFacOtp,
 } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
 import { cleareMessage } from "../../../../../store/actions/Auth2_actions";
-const VerificationEmailAndNumber = ({ setCurrentStep }) => {
+const VerificationEmailAndNumber = () => {
   const { t, i18n } = useTranslation();
 
   const dispatch = useDispatch();
@@ -105,16 +105,7 @@ const VerificationEmailAndNumber = ({ setCurrentStep }) => {
       isDevice: false,
       UserDevices: [],
     };
-    dispatch(
-      resendTwoFacAction(
-        t,
-        Data,
-        navigate,
-        setSeconds,
-        setMinutes,
-        setCurrentStep
-      )
-    );
+    dispatch(resendTwoFacAction(t, Data, navigate, setSeconds, setMinutes));
   };
 
   useEffect(() => {
