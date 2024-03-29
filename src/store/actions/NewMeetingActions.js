@@ -7680,6 +7680,7 @@ const JoinCurrentMeeting = (
                 dispatch(scheduleMeetingPageFlag(false));
                 localStorage.setItem("currentMeetingID", Data.FK_MDID);
               }
+              dispatch(currentMeetingStatus(10));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -7719,9 +7720,17 @@ const leaveMeetingInit = () => {
   };
 };
 
-const leaveMeetingSuccess = (response, message) => {
+const leaveMeetingQuickSuccess = (response, message) => {
   return {
-    type: actions.LEAVE_MEETING_SUCCESS,
+    type: actions.LEAVE_MEETING_SUCCESS_QUICK,
+    response: response,
+    message: message,
+  };
+};
+
+const leaveMeetingAdvancedSuccess = (response, message) => {
+  return {
+    type: actions.LEAVE_MEETING_SUCCESS_ADVANCED,
     response: response,
     message: message,
   };
@@ -7739,9 +7748,16 @@ const LeaveCurrentMeeting = (
   t,
   Data,
   isQuickMeeting,
-  setViewFlag
+  setViewFlag,
+  setEdiorRole,
+  setAdvanceMeetingModalID,
+  setViewAdvanceMeetingModal
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  let userID = localStorage.getItem("userID");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let currentView = localStorage.getItem("MeetingCurrentView");
   return async (dispatch) => {
     await dispatch(leaveMeetingInit());
     let form = new FormData();
@@ -7759,7 +7775,16 @@ const LeaveCurrentMeeting = (
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            LeaveCurrentMeeting(navigate, t, Data, isQuickMeeting, setViewFlag)
+            LeaveCurrentMeeting(
+              navigate,
+              t,
+              Data,
+              isQuickMeeting,
+              setViewFlag,
+              setEdiorRole,
+              setAdvanceMeetingModalID,
+              setViewAdvanceMeetingModal
+            )
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -7770,15 +7795,24 @@ const LeaveCurrentMeeting = (
                   "Meeting_MeetingServiceManager_LeaveMeeting_01".toLowerCase()
                 )
             ) {
-              dispatch(
-                leaveMeetingSuccess(
-                  response.data.responseResult,
-                  t("Successful")
-                )
-              );
-              if (isQuickMeeting === true) {
-                setViewFlag(false);
+              if (isQuickMeeting) {
+                dispatch(
+                  leaveMeetingQuickSuccess(
+                    response.data.responseResult,
+                    t("Successful")
+                  )
+                );
+              } else {
+                dispatch(
+                  leaveMeetingAdvancedSuccess(
+                    response.data.responseResult,
+                    t("Successful")
+                  )
+                );
               }
+
+              setViewFlag(false);
+              dispatch(currentMeetingStatus(0));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -7816,6 +7850,88 @@ const LeaveCurrentMeeting = (
       .catch((response) => {
         dispatch(leaveMeetingFail(t("Something-went-wrong")));
       });
+  };
+};
+
+const LeaveCurrentMeetingOtherMenus = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    await dispatch(leaveMeetingInit());
+    let form = new FormData();
+    form.append("RequestMethod", leaveMeeting.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_LeaveMeeting_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                leaveMeetingAdvancedSuccess(
+                  response.data.responseResult,
+                  t("Successful")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_LeaveMeeting_02".toLowerCase()
+                )
+            ) {
+              dispatch(leaveMeetingFail(t("Unsuccessful")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_LeaveMeeting_04".toLowerCase()
+                )
+            ) {
+              dispatch(leaveMeetingFail(t("Join-Log-Not-Found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinMeeting_03".toLowerCase()
+                )
+            ) {
+              dispatch(leaveMeetingFail(t("Something-went-wrong")));
+            } else {
+              dispatch(leaveMeetingFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(leaveMeetingFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(leaveMeetingFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(leaveMeetingFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+//Meetin Status Current
+const currentMeetingStatus = (response) => {
+  return {
+    type: actions.CURRENT_MEETING_STATUS,
+    response: response,
   };
 };
 
@@ -7972,4 +8088,6 @@ export {
   meetingOrganizerRemoved,
   JoinCurrentMeeting,
   LeaveCurrentMeeting,
+  LeaveCurrentMeetingOtherMenus,
+  currentMeetingStatus,
 };
