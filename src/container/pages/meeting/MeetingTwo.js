@@ -1592,7 +1592,7 @@ const NewMeeting = () => {
   }, [meetingIdReducer.MeetingStatusEnded, NewMeetingreducer]);
   useEffect(() => {
     if (
-      meetingIdReducer.allMeetingsSocketData !== [] &&
+      meetingIdReducer.allMeetingsSocketData.length !== 0 &&
       meetingIdReducer.allMeetingsSocketData !== null &&
       meetingIdReducer.allMeetingsSocketData !== undefined
     ) {

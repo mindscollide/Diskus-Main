@@ -1222,7 +1222,7 @@
   "There-is-no-pending-task": "There is no pending task",
   "Create-new-task": "Create new task",
   "Agenda-contributor-updated": "Agenda Contributors Updated",
-  "Agenda-contributor-added": "Agenda Contributor's Added",
+  "Agenda-contributor-added": "Agenda Contributors Added",
   "Start-your-Free-Trial-now": "Start your free trial now",
   "Please-select-any-of-the-given-options": "Please select any of the given options",
   "Downloading-file": "Downloading file",
@@ -1265,5 +1265,6 @@
   "Note-created-successfully-with-attachments": "Note created successfully with attachments",
   "Notes-saved-successfully": "Notes saved successfully",
   "You-can-select-multiple-options": "You can select multiple options",
-  "Time-should-be-greater-then-system-time": "Time should be greater then the system time"
+  "Time-should-be-greater-then-system-time": "Time should be greater then the system time",
+  "Disable-video-call": "Disable video call"
 }

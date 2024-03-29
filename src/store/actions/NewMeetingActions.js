@@ -6523,7 +6523,7 @@ const UpdateMeetingUserForAgendaContributor = (
                     AgendaListRightsAll: data.agendaListRightsAll,
                     MeetingID:
                       currentMeeting !== null ? Number(currentMeeting) : 0,
-                    IsContributorNotified: data.isContributedNotified,
+                    IsContributorNotified: data.isContributorNotified,
                   });
                 });
                 let Data = {
@@ -6551,7 +6551,7 @@ const UpdateMeetingUserForAgendaContributor = (
                     AgendaListRightsAll: data.agendaListRightsAll,
                     MeetingID:
                       currentMeeting !== null ? Number(currentMeeting) : 0,
-                    IsContributorNotified: data.isContributedNotified,
+                    IsContributorNotified: data.isContributorNotified,
                   });
                 });
                 let Data = {
@@ -7820,6 +7820,22 @@ const LeaveCurrentMeeting = (
                     t("Successful")
                   )
                 );
+                let searchData = {
+                  Date: "",
+                  Title: "",
+                  HostName: "",
+                  UserID: Number(userID),
+                  PageNumber: Number(meetingPageCurrent),
+                  Length: Number(meetingpageRow),
+                  PublishedMeetings: true,
+                };
+                await dispatch(searchNewUserMeeting(navigate, searchData, t));
+                localStorage.removeItem("folderDataRoomMeeting");
+                setEdiorRole({ status: null, role: null });
+                setAdvanceMeetingModalID(null);
+                setViewAdvanceMeetingModal(false);
+                dispatch(viewAdvanceMeetingPublishPageFlag(false));
+                dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
               }
               setViewFlag(false);
             } else if (

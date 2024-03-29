@@ -259,7 +259,18 @@ const ViewMeetingDetails = ({
         FK_MDID: currentMeeting,
         DateTime: getCurrentDateTimeUTC(),
       };
-      dispatch(LeaveCurrentMeeting(navigate, t, leaveMeetingData, false, setViewFlag, setEdiorRole, setAdvanceMeetingModalID, setViewAdvanceMeetingModal));
+      dispatch(
+        LeaveCurrentMeeting(
+          navigate,
+          t,
+          leaveMeetingData,
+          false,
+          setViewFlag,
+          setEdiorRole,
+          setAdvanceMeetingModalID,
+          setViewAdvanceMeetingModal
+        )
+      );
     } else {
       let searchData = {
         Date: "",

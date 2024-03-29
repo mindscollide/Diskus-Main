@@ -60,7 +60,7 @@ const FullScreenAgendaModal = ({
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
 
-  let currentMeeting = Number(localStorage.getItem("currentMeetingLS"));
+  let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
   let currentUserID = Number(localStorage.getItem("userID"));
   let currentOrganization = Number(localStorage.getItem("organizationID"));
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));

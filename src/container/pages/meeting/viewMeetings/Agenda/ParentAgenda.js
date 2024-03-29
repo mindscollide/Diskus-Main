@@ -394,7 +394,7 @@ const ParentAgenda = ({
                                         " - " +
                                         moment(
                                           timeFormatFunction(data.endDate)
-                                        ).format("hh:mm a")}
+                                        ).format("hh:mm a") + ")"}
                                     </p>
                                     {/* <span
                                     className={styles["agendaCreationTime"]}

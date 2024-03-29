@@ -61,7 +61,7 @@ const NotifyAgendaModal = ({
       return prevRowsData.map((row, index) => {
         return {
           ...row,
-          isContributedNotified: e.target.checked,
+          isContributorNotified: e.target.checked,
         };
       });
     });
@@ -73,7 +73,7 @@ const NotifyAgendaModal = ({
         if (row.userID === userID) {
           return {
             ...row,
-            isContributedNotified: e.target.checked,
+            isContributorNotified: e.target.checked,
           };
         }
         return row;
@@ -179,7 +179,7 @@ const NotifyAgendaModal = ({
                     <>
                       <Checkbox
                         checked={notifiedMembersData.every(
-                          (data) => data.isContributedNotified === true
+                          (data) => data.isContributorNotified === true
                         )}
                         onChange={handleCheckAll}
                       />
@@ -263,7 +263,7 @@ const NotifyAgendaModal = ({
                                         <Col lg={2} md={2} sm={12}>
                                           <Checkbox
                                             checked={
-                                              mapData.isContributedNotified
+                                              mapData.isContributorNotified
                                             }
                                             onChange={(checked) =>
                                               handleChangeBox(
@@ -316,7 +316,7 @@ const NotifyAgendaModal = ({
                                         </Col>
                                         <Col lg={2} md={2} sm={12}>
                                           <Checkbox
-                                            checked={data.isContributedNotified}
+                                            checked={data.isContributorNotified}
                                             onChange={(checked) =>
                                               handleChangeBox(
                                                 checked,

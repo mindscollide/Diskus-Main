@@ -27,7 +27,8 @@ import {
   attendanceGlobalFlag,
   uploadGlobalFlag,
   LeaveCurrentMeetingOtherMenus,
-  LeaveCurrentMeeting
+  LeaveCurrentMeeting,
+  currentMeetingStatus
 } from "../../../store/actions/NewMeetingActions";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { showCancelModalmeetingDeitals } from "../../../store/actions/NewMeetingActions";
@@ -119,6 +120,7 @@ const Sidebar = () => {
       };
       if (CurrentMeetingStatus === 10) {
         dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
+        dispatch(currentMeetingStatus(0));
       }
       if (
         (NewMeetingreducer.scheduleMeetingPageFlag === true ||
@@ -208,6 +210,7 @@ const Sidebar = () => {
       };
       if (CurrentMeetingStatus === 10) {
         dispatch(LeaveCurrentMeeting(navigate, t, Data));
+        dispatch(currentMeetingStatus(0));
       }
     }
     // navigate(`/${todoListNavigation}`);
@@ -244,6 +247,7 @@ const Sidebar = () => {
       };
       if (CurrentMeetingStatus === 10) {
         dispatch(LeaveCurrentMeeting(navigate, t, Data));
+        dispatch(currentMeetingStatus(0));
       }
     }
     // navigate(`/${calendarNavigation}`);
@@ -280,6 +284,7 @@ const Sidebar = () => {
       };
       if (CurrentMeetingStatus === 10) {
         dispatch(LeaveCurrentMeeting(navigate, t, Data));
+        dispatch(currentMeetingStatus(0));
       }
     }
     // navigate(`/${notesNavigation}`);
