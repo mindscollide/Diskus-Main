@@ -103,6 +103,7 @@ const SignUpOrganizationUM = ({ setSignupStep, setCurrentStep }) => {
     PhoneNumberCountryID: 212,
   });
   const [isFreeTrail, setIsFreeTrail] = useState(false);
+  console.log(isFreeTrail, "Hahahahahahahahahah");
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -858,13 +859,20 @@ const SignUpOrganizationUM = ({ setSignupStep, setCurrentStep }) => {
   };
 
   const onClickLink = () => {
-    if (isFreeTrail === true) {
-      setCurrentStep(1);
-      // localStorage.removeItem("signupCurrentPage");
-      // navigate("/");
+    const currentPage = localStorage.getItem("signupCurrentPage");
+
+    if (!isFreeTrail) {
+      if (currentPage === "2") {
+        // If on page 2, navigate back to page 1
+        localStorage.setItem("signupCurrentPage", "1");
+        navigate("/Signup");
+      }
     } else {
-      setSignupStep(1);
-      navigate("/Signup");
+      if (currentPage === "2") {
+        // Navigate to the home page ("/") if on free trial
+        localStorage.removeItem("signupCurrentPage");
+        navigate("/");
+      }
     }
   };
 
