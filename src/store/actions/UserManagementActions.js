@@ -13,6 +13,13 @@ import * as actions from "../action_types";
 import axios from "axios";
 import { RefreshToken } from "./Auth_action";
 
+const signUpFlowRoutes = (response) => {
+  return {
+    type: actions.ROUTES_FOR_SIGNUP_FLOW_UM,
+    response: response,
+  };
+};
+
 //Organization SignUp And Pakage Selection
 
 const createOrganizationAndPakageSelectionInit = () => {
@@ -1099,4 +1106,5 @@ export {
   AllOrganizationsUsersApi,
   OrganizationPackageDetailsAndUserStatsApi,
   GetOrganizationSelectedPackagesByOrganizationIDApi,
+  signUpFlowRoutes,
 };

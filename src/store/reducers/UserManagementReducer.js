@@ -12,6 +12,7 @@ const initialState = {
   organizationPakageDetailsUserStatsData: null,
   organizationSelectedPakagesByOrganizationIDData: null,
   defaultRoutingValue: 1,
+  defaulSignUpRoute: 1,
 };
 
 const UserMangementReducer = (state = initialState, action) => {
@@ -207,6 +208,12 @@ const UserMangementReducer = (state = initialState, action) => {
       };
     }
 
+    case actions.ROUTES_FOR_SIGNUP_FLOW_UM: {
+      return {
+        ...state,
+        defaulSignUpRoute: action.response,
+      };
+    }
     default:
       return { ...state };
   }

@@ -23,6 +23,7 @@ import {
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { signupCurrentPageStep } from "../../SignUpProcessUserManagement/SignupProcessUserManagement";
+import { signUpFlowRoutes } from "../../../../store/actions/UserManagementActions";
 
 const SignInUserManagement = ({ setCurrentStep, setSignupStep }) => {
   const navigate = useNavigate();
@@ -101,6 +102,7 @@ const SignInUserManagement = ({ setCurrentStep, setSignupStep }) => {
   //Subscribe now
   const handleSubscribeNowButton = () => {
     localStorage.setItem("signupCurrentPage", 1);
+    // dispatch(signUpFlowRoutes(1));
     navigate("/Signup");
   };
 

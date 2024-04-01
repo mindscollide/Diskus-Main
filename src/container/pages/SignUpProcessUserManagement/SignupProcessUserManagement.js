@@ -5,8 +5,10 @@ import PakageDetailsUserManagement from "../UserMangement/PakageDetailsUserManag
 import BillingMethodUsermanagement from "../UserMangement/BillingMethodUserManagement/BillingMethodUsermanagement";
 import PasswordCreationUM from "../UserMangement/PasswordCreationUM/PasswordCreationUM";
 import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const SignupProcessUserManagement = () => {
+  const { UserMangementReducer } = useSelector((state) => state);
   const location = useLocation();
   let currentStage = Number(localStorage.getItem("signupCurrentPage"));
   const [isFreetrail, setFreetrail] = useState(false);
@@ -25,6 +27,16 @@ const SignupProcessUserManagement = () => {
       setCurrentPage(currentStage);
     }
   }, [currentStage]);
+
+  //Updating the state of the local storage routes pages
+  useEffect(() => {
+    try {
+      if (UserMangementReducer.defaultRoutingValue) {
+        setCurrentPage(UserMangementReducer.defaultRoutingValue);
+      }
+    } catch {}
+  }, [UserMangementReducer.defaultRoutingValue]);
+
   console.log("location", location.state !== null?.freeTrail);
   console.log("location", location.state !== null ? 2 : 1);
 
