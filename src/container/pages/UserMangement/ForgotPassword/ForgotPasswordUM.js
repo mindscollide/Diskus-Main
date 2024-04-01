@@ -19,7 +19,9 @@ import {
 import { validateEmail } from "../../../../commen/functions/validations";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-const ForgotPasswordUM = ({ setCurrentStep }) => {
+import { LoginFlowRoutes } from "../../../../store/actions/UserManagementActions";
+
+const ForgotPasswordUM = () => {
   const navigate = useNavigate();
 
   const { t } = useTranslation();
@@ -43,9 +45,7 @@ const ForgotPasswordUM = ({ setCurrentStep }) => {
     if (email !== "") {
       if (validateEmail(email)) {
         setMessege("");
-        await dispatch(
-          changePasswordRequest(email, t, navigate, setCurrentStep)
-        );
+        await dispatch(changePasswordRequest(email, t, navigate));
       } else {
         setMessege(t("Please-enter-a-valid-email"));
       }
@@ -64,6 +64,13 @@ const ForgotPasswordUM = ({ setCurrentStep }) => {
       }, 3000);
       setMessege("");
     }
+  };
+
+  //handle Go Back Function
+
+  const handleGoBackFunction = () => {
+    localStorage.setItem("LoginFlowPageRoute", 1);
+    dispatch(LoginFlowRoutes(1));
   };
 
   //onChange for the Field
@@ -207,7 +214,7 @@ const ForgotPasswordUM = ({ setCurrentStep }) => {
                     lg={12}
                     className={styles["Forgot_passwordforogt_email_link"]}
                   >
-                    <Link onClick={() => setCurrentStep(1)}>
+                    <Link onClick={handleGoBackFunction}>
                       {t("Back-to-sign-in")}
                     </Link>
                   </Col>

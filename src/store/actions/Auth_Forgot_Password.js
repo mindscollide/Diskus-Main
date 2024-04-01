@@ -3,6 +3,7 @@ import { forgetpassword } from "../../commen/apis/Api_config";
 import { authenticationApi } from "../../commen/apis/Api_ends_points";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { LoginFlowRoutes } from "./UserManagementActions";
 
 const forgotPasswordInit = () => {
   return {
@@ -25,7 +26,7 @@ const forgotPasswordFail = (message) => {
   };
 };
 
-const changePasswordRequest = (email, t, navigate, setCurrentStep) => {
+const changePasswordRequest = (email, t, navigate) => {
   var min = 10000;
   var max = 90000;
   var id = min + Math.random() * (max - min);
@@ -81,7 +82,8 @@ const changePasswordRequest = (email, t, navigate, setCurrentStep) => {
                 t("OTP-has-been-sent-to-your-email")
               )
             );
-            setCurrentStep(12);
+            localStorage.setItem("LoginFlowPageRoute", 12);
+            dispatch(LoginFlowRoutes(12));
             // navigate("/forgotpasswordVerification");
           } else if (
             response.data.responseResult.responseMessage

@@ -17,7 +17,9 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import { sendTwoFacAction } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
-const DeviceFor2FAVerify = ({ setCurrentStep }) => {
+import { LoginFlowRoutes } from "../../../../../store/actions/UserManagementActions";
+
+const DeviceFor2FAVerify = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -118,6 +120,11 @@ const DeviceFor2FAVerify = ({ setCurrentStep }) => {
         sendTwoFacAction(t, navigate, Data, setSeconds, setMinutes)
       );
     }
+  };
+
+  const handleGoBack = () => {
+    localStorage.setItem("LoginFlowPageRoute", 1);
+    dispatch(LoginFlowRoutes(1));
   };
 
   useEffect(() => {
@@ -355,9 +362,7 @@ const DeviceFor2FAVerify = ({ setCurrentStep }) => {
                   </Col>
                   <Row className="">
                     <Col sm={12} md={12} lg={12} className="forogt_email_link">
-                      <Link onClick={() => setCurrentStep(1)}>
-                        {t("Go-back")}
-                      </Link>
+                      <Link onClick={handleGoBack}>{t("Go-back")}</Link>
                     </Col>
                   </Row>
                 </Paper>

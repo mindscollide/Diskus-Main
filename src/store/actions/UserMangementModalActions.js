@@ -28,13 +28,6 @@ const showDeleteUsersModal = (response) => {
   };
 };
 
-const LoginFlowRoutes = (response) => {
-  return {
-    type: actions.ROUTING_ON_PAGES_USERMANAGEMENT,
-    response: response,
-  };
-};
-
 const showEditUserModal = (response) => {
   return {
     type: actions.EDIT_USER_MODAL,
@@ -87,5 +80,4 @@ export {
   showFailedPaymentModal,
   showCancelSubscriptionModal,
   showReasonForLeavingModal,
-  LoginFlowRoutes,
 };

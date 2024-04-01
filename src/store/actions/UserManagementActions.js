@@ -20,6 +20,13 @@ const signUpFlowRoutes = (response) => {
   };
 };
 
+const LoginFlowRoutes = (response) => {
+  return {
+    type: actions.ROUTING_ON_PAGES_USERMANAGEMENT,
+    response: response,
+  };
+};
+
 //Organization SignUp And Pakage Selection
 
 const createOrganizationAndPakageSelectionInit = () => {
@@ -1107,4 +1114,5 @@ export {
   OrganizationPackageDetailsAndUserStatsApi,
   GetOrganizationSelectedPackagesByOrganizationIDApi,
   signUpFlowRoutes,
+  LoginFlowRoutes,
 };

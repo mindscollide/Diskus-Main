@@ -176,14 +176,7 @@ const PasswordCreationUM = ({
       ) {
         dispatch(updatePasswordAction(passwordDetails.Password, navigate, t));
       } else {
-        dispatch(
-          createPasswordAction(
-            passwordDetails.Password,
-            navigate,
-            t,
-            setCurrentStep
-          )
-        );
+        dispatch(createPasswordAction(passwordDetails.Password, navigate, t));
       }
     }
   };

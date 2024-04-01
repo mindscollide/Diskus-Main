@@ -21,7 +21,8 @@ import {
   cleareMessage,
   verificationEmailOTP,
 } from "../../../../store/actions/Auth2_actions";
-const ForgotPasswordVerificationUM = ({ setCurrentStep }) => {
+import { LoginFlowRoutes } from "../../../../store/actions/UserManagementActions";
+const ForgotPasswordVerificationUM = () => {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -189,11 +190,15 @@ const ForgotPasswordVerificationUM = ({ setCurrentStep }) => {
           t,
           true,
           setSeconds,
-          setMinutes,
-          setCurrentStep
+          setMinutes
         )
       );
     }
+  };
+
+  const handleBacktoSignIn = () => {
+    localStorage.setItem("LoginFlowPageRoute", 1);
+    dispatch(LoginFlowRoutes(1));
   };
 
   return (
@@ -333,7 +338,7 @@ const ForgotPasswordVerificationUM = ({ setCurrentStep }) => {
                       styles["Forgot_passwordforogt_verification_email_link"]
                     }
                   >
-                    <Link onClick={() => setCurrentStep(1)}>
+                    <Link onClick={handleBacktoSignIn}>
                       {t("Back-to-sign-in")}
                     </Link>
                   </Col>
