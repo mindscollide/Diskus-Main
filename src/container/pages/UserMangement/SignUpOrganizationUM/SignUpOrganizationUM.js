@@ -860,15 +860,11 @@ const SignUpOrganizationUM = ({ setSignupStep, setCurrentStepValue }) => {
   };
 
   const onClickLink = () => {
-    const currentPage = localStorage.getItem("signupCurrentPage");
-    const signInPage = "/";
-    let componentToRender;
-    if (Number(currentPage) === 2) {
-      if (isFreeTrail === true) {
-        localStorage.removeItem("signupCurrentPage", 2);
-      } else {
-        localStorage.setItem("signupCurrentPage", 1);
-      }
+    if (isFreeTrail === true) {
+      localStorage.removeItem("signupCurrentPage", 2);
+      navigate("/");
+    } else {
+      localStorage.setItem("signupCurrentPage", 1);
     }
   };
 
