@@ -1148,6 +1148,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_UserPasswordVerification_12".toLowerCase()
                 )
             ) {
+              localStorage.setItem("signupCurrentPage", 5);
+              navigate("/Signup");
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(
                   enterPasswordFail(
