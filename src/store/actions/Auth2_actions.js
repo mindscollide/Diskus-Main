@@ -1471,11 +1471,17 @@ const verificationEmailOTP = (
               } else {
                 localStorage.setItem("updatePasswordCheck", false);
               }
-              localStorage.removeItem("seconds");
-              localStorage.removeItem("minutes");
-              localStorage.setItem("LoginFlowPageRoute", 4);
-              dispatch(LoginFlowRoutes(4));
-              // navigate("/createpasswordorganization");
+              const signupValue = localStorage.getItem("signupCurrentPage");
+              if (signupValue === "3") {
+                localStorage.setItem("signupCurrentPage", 4);
+                navigate("/Signup");
+              } else {
+                localStorage.removeItem("seconds");
+                localStorage.removeItem("minutes");
+                localStorage.setItem("LoginFlowPageRoute", 4);
+                dispatch(LoginFlowRoutes(4));
+                // navigate("/createpasswordorganization");
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
