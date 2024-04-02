@@ -388,6 +388,11 @@ const PasswordCreationUM = ({ currentStage }) => {
     }
   };
 
+  const goBackButton = () => {
+    localStorage.removeItem("signupCurrentPage", 4);
+    localStorage.setItem("signupCurrentPage", 3);
+  };
+
   return (
     <>
       <Container fluid>
@@ -579,7 +584,10 @@ const PasswordCreationUM = ({ currentStage }) => {
                       lg={12}
                       className={styles["forogt_email_link"]}
                     >
-                      <Link className={styles["ForgotPassword"]}>
+                      <Link
+                        onClick={goBackButton}
+                        className={styles["ForgotPassword"]}
+                      >
                         {t("Go-back")}
                       </Link>
                     </Col>
