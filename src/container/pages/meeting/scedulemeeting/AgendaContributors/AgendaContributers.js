@@ -206,8 +206,8 @@ const AgendaContributers = ({
     },
     {
       title: t("Notification"),
-      dataIndex: "isNotifed",
-      key: "isNotified",
+      dataIndex: "isContributorNotified",
+      key: "isContributorNotified",
       align: "center",
       width: "80px",
       className: "notification-class-table",
@@ -230,7 +230,7 @@ const AgendaContributers = ({
               >
                 <img
                   draggable={false}
-                  src={greenMailIcon}
+                  src={record.isContributorNotified ? greenMailIcon : redMailIcon}
                   className={
                     record.isEdit === true ? "cursor-pointer" : "pe-none"
                   }
@@ -241,7 +241,7 @@ const AgendaContributers = ({
               </Col>
             </Row>
           );
-        } else if (record.isContributedNotified) {
+        } else if (record.isContributorNotified) {
           return (
             <Row>
               <Col
@@ -252,7 +252,7 @@ const AgendaContributers = ({
               >
                 <img
                   draggable={false}
-                  src={greenMailIcon}
+                  src={record.isContributorNotified ? greenMailIcon : redMailIcon}
                   className={
                     record.isEdit === true ? "cursor-pointer" : "pe-none"
                   }
@@ -275,7 +275,7 @@ const AgendaContributers = ({
               >
                 <img
                   draggable={false}
-                  src={redMailIcon}
+                  src={record.isContributorNotified ? greenMailIcon : redMailIcon}
                   className={
                     record.isEdit === true ? "cursor-pointer" : "pe-none"
                   }
@@ -649,7 +649,7 @@ const AgendaContributers = ({
           Title: AgConData.contributorTitle,
           isRSVP: AgConData.rsvp,
           isEdit: true,
-          isContributedNotified: true,
+          isContributorNotified: AgConData.isContributorNotified,
           agendaListRightsAll: AgConData.agendaListRightsAll,
           attendeeAvailability: AgConData.attendeeAvailability,
         });
@@ -679,6 +679,8 @@ const AgendaContributers = ({
   //   dispatch(uploadDocument_success(null, ""));
   //   dispatch(getAllVotingResultDisplay_success([], ""));
   // }, []);
+
+  console.log("rowsDatarowsData", rowsData)
 
   return (
     <>
