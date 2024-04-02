@@ -119,6 +119,19 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     }
   }, [PollsReducer.todoGetGroupTask]);
 
+  useEffect(() => {
+    try {
+      if (toDoListReducer.createTaskGroup !== null) {
+        let taskData = toDoListReducer.createTaskGroup;
+        if (Number(taskData.groupID) === Number(ViewGroupID)) {
+          setRowToDo([...rowsToDo, taskData.todoList]);
+        }
+      }
+    } catch (error) {
+      console.log(error, "errorerrorerrorerrorerror");
+    }
+  }, [toDoListReducer.createTaskGroup]);
+
   // SET STATUS VALUES
   useEffect(() => {
     let optionsArr = [];

@@ -45,7 +45,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const [isCreateTodo, setIsCreateTodo] = useState(true);
   const [fileForSend, setFileForSend] = useState([]);
   const [createTodoTime, setCreateTodoTime] = useState("");
-  const [createTodoDate, setCreateTodoDate] = useState("");
+  const [createTodoDate, setCreateTodoDate] = useState(current_Date);
   const state = useSelector((state) => state);
   const { toDoListReducer } = state;
 
@@ -60,7 +60,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     message: "",
   });
 
-  const [toDoDate, setToDoDate] = useState("");
+  const [toDoDate, setToDoDate] = useState(current_value);
   const [allPresenters, setAllPresenters] = useState([]);
   const [presenterValue, setPresenterValue] = useState({
     value: 0,
@@ -124,7 +124,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //Uploaded  objects
   const [uploadObjects, setUploadObjects] = useState([]);
   const [isUploadComplete, setIsUploadComplete] = useState(false);
-
+  console.log({ task, toDoDate, createTodoDate }, "tasktasktasktasktasktask");
   useEffect(() => {
     try {
       if (
@@ -144,20 +144,40 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //To Set task Creater ID
   useEffect(() => {
-    setTaskCreatorID(parseInt(createrID));
-    setTask({
-      ...task,
-      DeadLineDate: current_Date,
-      DeadLineTime: currentTime,
-      CreationDateTime: "",
-      timeforView: dateObject,
-    });
-    setCreateTodoDate(current_Date);
-    setToDoDate(current_value);
-    return () => {
-      setCloseConfirmationBox(false);
-      setIsCreateTodo(true);
-    };
+    try {
+      setTask({
+        ...task,
+        DeadLineDate: current_Date,
+        DeadLineTime: currentTime,
+        CreationDateTime: "",
+        timeforView: dateObject,
+      });
+      setCreateTodoDate(current_Date);
+      setToDoDate(current_value);
+      setTaskCreatorID(parseInt(createrID));
+
+      return () => {
+        setCloseConfirmationBox(false);
+        setIsCreateTodo(true);
+        setTask({
+          ...task,
+          PK_TID: 1,
+          Title: "",
+          Description: "",
+          IsMainTask: true,
+          DeadLineDate: "",
+          DeadLineTime: "",
+          CreationDateTime: "",
+        });
+        setCreateTodoDate("");
+        setTaskAssignedTo([]);
+        setTaskAssignedName([]);
+        setToDoDate("");
+        setAssignees([]);
+        setFileForSend([]);
+        setTasksAttachments({ TasksAttachments: [] });
+      };
+    } catch {}
   }, []);
 
   //To Set task Creater ID
@@ -561,24 +581,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       await dispatch(
         saveTaskDocumentsAndAssigneesApi(navigate, Data, t, 1, setShow)
       );
-      setTask({
-        ...task,
-        PK_TID: 1,
-        Title: "",
-        Description: "",
-        IsMainTask: true,
-        DeadLineDate: "",
-        DeadLineTime: "",
-        CreationDateTime: "",
-      });
-      setCreateTodoDate("");
-      setCreateTodoTime("");
-      setTaskAssignedTo([]);
-      setTaskAssignedName([]);
-      setToDoDate("");
-      setAssignees([]);
-      setFileForSend([]);
-      setTasksAttachments({ TasksAttachments: [] });
     } catch (error) {
       console.log(error, "errorerrorerrorerrorerror");
     }

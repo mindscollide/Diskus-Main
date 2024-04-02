@@ -139,14 +139,6 @@ const Actions = ({
     }
   }, [getTodosStatus.UpdateTodoStatusMessage, removeTodo]);
 
-  useEffect(() => {
-    if (
-      toDoListReducer.SocketTodoActivityData !== null &&
-      toDoListReducer.SocketTodoActivityData !== undefined
-    ) {
-      setActionsRows([toDoListReducer.SocketTodoActivityData, ...actionsRows]);
-    }
-  }, [toDoListReducer.SocketTodoActivityData]);
   // CHANGE HANDLER STATUS
   const statusChangeHandler = (e, statusdata) => {
     if (e === 6) {
@@ -420,56 +412,6 @@ const Actions = ({
       )
     );
   };
-  // for Socket Update meeting status update
-  useEffect(() => {
-    if (
-      toDoListReducer.socketTodoStatusData &&
-      Object.keys(toDoListReducer.socketTodoStatusData).length > 0
-    ) {
-      let tableRowsData = [...actionsRows];
-      var foundIndex = tableRowsData.findIndex(
-        (x) => x.pK_TID === toDoListReducer.socketTodoStatusData.todoid
-      );
-      if (foundIndex !== -1) {
-        if (Number(toDoListReducer.socketTodoStatusData.todoStatusID) === 6) {
-          let removeDeleteIndex = tableRowsData.filter(
-            (data, index) =>
-              data.pK_TID !== toDoListReducer.socketTodoStatusData.todoid
-          );
-          setActionsRows(removeDeleteIndex);
-        } else {
-          let newArr = tableRowsData.map((rowObj, index) => {
-            if (index === foundIndex) {
-              let statusID = toDoListReducer.socketTodoStatusData.todoStatusID;
-              const newData = {
-                ...rowObj,
-                status: {
-                  pK_TSID: statusID,
-                  status:
-                    statusID === 1
-                      ? "In Progress"
-                      : statusID === 2
-                      ? "Pending"
-                      : statusID === 3
-                      ? "Upcoming"
-                      : statusID === 4
-                      ? "Cancelled"
-                      : statusID === 5
-                      ? "Completed"
-                      : statusID === 6
-                      ? "Deleted"
-                      : null,
-                },
-              };
-              return newData;
-            }
-            return rowObj;
-          });
-          setActionsRows(newArr);
-        }
-      }
-    }
-  }, [toDoListReducer.socketTodoStatusData]);
 
   useEffect(() => {
     try {
@@ -486,6 +428,19 @@ const Actions = ({
       }
     } catch {}
   }, [actionMeetingReducer.todoListMeetingTask]);
+
+  useEffect(() => {
+    try {
+      if (toDoListReducer.createTaskMeeting !== null) {
+        let taskData = toDoListReducer.createTaskMeeting;
+        if (Number(taskData.meetingID) === Number(currentMeeting)) {
+          setActionsRows([...actionsRows, taskData.todoList]);
+        }
+      }
+    } catch (error) {
+      console.log(error, "errorerrorerrorerrorerror");
+    }
+  }, [toDoListReducer.createTaskMeeting]);
 
   // for pagination in Create Task
   const handleForPagination = (current, pageSize) => {

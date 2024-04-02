@@ -153,6 +153,19 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
     }
   }, [PollsReducer.getTodoCommitteeTask]);
 
+  useEffect(() => {
+    try {
+      if (toDoListReducer.createTaskCommittee !== null) {
+        let taskData = toDoListReducer.createTaskCommittee;
+        if (Number(taskData.comitteeID) === Number(ViewCommitteeID)) {
+          setRowToDo([...rowsToDo, taskData.todoList]);
+        }
+      }
+    } catch (error) {
+      console.log(error, "errorerrorerrorerrorerror");
+    }
+  }, [toDoListReducer.createTaskCommittee]);
+
   // SET STATUS VALUES
   useEffect(() => {
     let optionsArr = [];

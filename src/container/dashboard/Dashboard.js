@@ -61,6 +61,9 @@ import Helper from "../../commen/functions/history_logout";
 import IconMetroAttachment from "../../assets/images/newElements/Icon metro-attachment.svg";
 // import io from "socket.io-client";
 import {
+  createTaskCommitteeMQTT,
+  createTaskGroupMQTT,
+  createTaskMeetingMQTT,
   setTodoListActivityData,
   setTodoStatusDataFormSocket,
   TodoCounter,
@@ -596,6 +599,28 @@ const Dashboard = () => {
           }
           dispatch(deleteCommentsMQTT(data.payload));
           setNotificationID(id);
+        } else if (
+          data.payload.message
+            .toLowerCase()
+            .includes("NEW_ADVANCE_MEETING_TODO".toLowerCase())
+        ) {
+          dispatch(createTaskMeetingMQTT(data.payload));
+          console.log(data, "NEW_ADVANCE_MEETING_TODO");
+        } else if (
+          data.payload.message
+            .toLowerCase()
+            .includes("NEW_GROUP_TODO".toLowerCase())
+        ) {
+          dispatch(createTaskGroupMQTT(data.payload));
+
+          console.log(data, "NEW_GROUP_TODONEW_GROUP_TODO");
+        } else if (
+          data.payload.message
+            .toLowerCase()
+            .includes("NEW_COMMITTEE_TODO".toLowerCase())
+        ) {
+          dispatch(createTaskCommitteeMQTT(data.payload));
+          console.log(data, "NEW_COMMITTEE_TODO");
         }
       }
       if (data.action.toLowerCase() === "COMMENT".toLowerCase()) {

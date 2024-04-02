@@ -47,7 +47,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const [isCreateTodo, setIsCreateTodo] = useState(true);
   const [fileForSend, setFileForSend] = useState([]);
   const [createTodoTime, setCreateTodoTime] = useState("");
-  const [createTodoDate, setCreateTodoDate] = useState("");
+  const [createTodoDate, setCreateTodoDate] = useState(current_Date);
 
   const state = useSelector((state) => state);
 
@@ -63,7 +63,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     flag: false,
     message: "",
   });
-  const [toDoDate, setToDoDate] = useState("");
+  const [toDoDate, setToDoDate] = useState(current_value);
 
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -128,20 +128,40 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //To Set task Creater ID
   useEffect(() => {
-    setTaskCreatorID(parseInt(createrID));
-    setTask({
-      ...task,
-      DeadLineDate: current_Date,
-      DeadLineTime: currentTime,
-      CreationDateTime: "",
-      timeforView: dateObject,
-    });
-    setCreateTodoDate(current_Date);
-    setToDoDate(current_value);
-    return () => {
-      setCloseConfirmationBox(false);
-      setIsCreateTodo(true);
-    };
+    try {
+      setTask({
+        ...task,
+        DeadLineDate: current_Date,
+        DeadLineTime: currentTime,
+        CreationDateTime: "",
+        timeforView: dateObject,
+      });
+      setCreateTodoDate(current_Date);
+      setToDoDate(current_value);
+      setTaskCreatorID(parseInt(createrID));
+
+      return () => {
+        setCloseConfirmationBox(false);
+        setIsCreateTodo(true);
+        setTask({
+          ...task,
+          PK_TID: 1,
+          Title: "",
+          Description: "",
+          IsMainTask: true,
+          DeadLineDate: "",
+          DeadLineTime: "",
+          CreationDateTime: "",
+        });
+        setCreateTodoDate("");
+        setTaskAssignedTo([]);
+        setTaskAssignedName([]);
+        setToDoDate("");
+        setAssignees([]);
+        setFileForSend([]);
+        setTasksAttachments({ TasksAttachments: [] });
+      };
+    } catch {}
   }, []);
 
   //To Set task Creater ID
@@ -521,23 +541,26 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     try {
       let newfile = [];
       let newFolder = [];
-      const uploadPromises = fileForSend.map(async (newData) => {
+      if (fileForSend.length > 0) {
+        const uploadPromises = fileForSend.map(async (newData) => {
+          await dispatch(
+            uploadDocumentsTaskApi(
+              navigate,
+              t,
+              newData,
+              folderID,
+              // newFolder,
+              newfile
+            )
+          );
+        });
+        // Wait for all promises to resolve
+        await Promise.all(uploadPromises); //till here the files get upload
         await dispatch(
-          uploadDocumentsTaskApi(
-            navigate,
-            t,
-            newData,
-            folderID,
-            // newFolder,
-            newfile
-          )
+          saveFilesTaskApi(navigate, t, newfile, folderID, newFolder)
         );
-      });
-      // Wait for all promises to resolve
-      await Promise.all(uploadPromises); //till here the files get upload
-      await dispatch(
-        saveFilesTaskApi(navigate, t, newfile, folderID, newFolder)
-      );
+      }
+
       console.log(newFolder, "newFoldernewFoldernewFolder");
       let newAttachmentData = newFolder.map((data, index) => {
         console.log(data, "newFoldernewFoldernewFolder");
@@ -560,24 +583,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       await dispatch(
         saveTaskDocumentsAndAssigneesApi(navigate, Data, t, 3, setShow)
       );
-      setTask({
-        ...task,
-        PK_TID: 1,
-        Title: "",
-        Description: "",
-        IsMainTask: true,
-        DeadLineDate: "",
-        DeadLineTime: "",
-        CreationDateTime: "",
-      });
-      setCreateTodoDate("");
-      setCreateTodoTime("");
-      setTaskAssignedTo([]);
-      setTaskAssignedName([]);
-      setToDoDate("");
-      setAssignees([]);
-      setFileForSend([]);
-      setTasksAttachments({ TasksAttachments: [] });
     } catch (error) {
       console.log(error, "errorerrorerrorerrorerror");
     }
@@ -637,8 +642,9 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //Selecter Assignee onChange
 
   const onChangeSearch = (item) => {
+    console.log(item, "itemitemitem");
     setPresenterValue(item);
-    setTaskCreatorID(item.value);
+    setTaskAssignedTo([item.value]);
   };
 
   //Searchable Filter
