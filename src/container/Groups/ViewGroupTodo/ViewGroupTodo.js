@@ -93,6 +93,21 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     }
   }, []);
 
+  // Remove task from mqtt response
+  useEffect(() => {
+    try {
+      if (toDoListReducer.socketTodoStatusData !== null) {
+        let payloadData = toDoListReducer.socketTodoStatusData;
+        if (payloadData.todoStatusID === 6) {
+          setRowToDo((rowsData) => {
+            return rowsData.filter((newData, index) => {
+              return newData.pK_TID !== payloadData.todoid;
+            });
+          });
+        }
+      }
+    } catch {}
+  }, [toDoListReducer.socketTodoStatusData]);
   //get todolist reducer
   useEffect(() => {
     if (
@@ -393,7 +408,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       width: "120px",
       render: (record, index) => {
         if (
-          parseInt(record?.pK_UID) === parseInt(createrID) &&
+          Number(record?.pK_UID) === Number(createrID) &&
           Number(groupStatus) === 3
         ) {
           return (

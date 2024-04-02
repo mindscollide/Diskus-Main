@@ -411,6 +411,24 @@ export const optionsforFolder = (t) => [
   { label: t("Remove"), value: 5 },
   { label: t("Analytics"), value: 6, labelIcon: PDFICON },
 ];
+
+export const shareFolderOptionsView = (t) => [
+  { label: t("Share"), value: 1 },
+  // { label: t("Rename"), value: 2 },
+  { label: t("View-detail"), value: 3 },
+  { label: t("Download"), value: 4 },
+  // { label: t("Remove"), value: 5 },
+  // { label: t("Analytics"), value: 6, labelIcon: PDFICON },
+];
+export const shareFolderOptionsEditor = (t) => [
+  { label: t("Share"), value: 1 },
+  { label: t("Rename"), value: 2 },
+  { label: t("View-detail"), value: 3 },
+  { label: t("Download"), value: 4 },
+  { label: t("Remove"), value: 5 },
+  // { label: t("Analytics"), value: 6, labelIcon: PDFICON },
+];
+
 export const optionsforFolderViewer = (t) => [
   // { label: t("Share"), value: 1 },
   // { label: t("Rename"), value: 2 },

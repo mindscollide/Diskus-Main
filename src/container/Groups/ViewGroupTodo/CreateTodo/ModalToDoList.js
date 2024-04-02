@@ -370,92 +370,73 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //To Set task Creater ID
   useEffect(() => {
-    let data = [...toDoListReducer.AllAssigneesData];
-    if (
-      data !== undefined &&
-      data !== null &&
-      data.length !== 0 &&
-      Object(data).length > 0
-    ) {
-      const filterData = data.filter(
-        (obj) => parseInt(obj.pK_UID) !== parseInt(createrID)
-      );
-      setTaskAssigneeApiData(filterData);
-
-      let PresenterData = [];
-      data.forEach((user, index) => {
-        PresenterData.push({
-          label: (
-            <>
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex gap-2 align-items-center"
-                >
-                  <img
-                    src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
-                    height="16.45px"
-                    width="18.32px"
-                    draggable="false"
-                    alt=""
-                  />
-                  <span>{user.name}</span>
-                </Col>
-              </Row>
-            </>
-          ),
-          value: user.pK_UID,
-          name: user.name,
+    try {
+      if (
+        GroupsReducer.getGroupByGroupIdResponse !== null &&
+        GroupsReducer.getGroupByGroupIdResponse !== undefined
+      ) {
+        let getUserDetails =
+          GroupsReducer.getGroupByGroupIdResponse.groupMembers;
+        let PresenterData = [];
+        getUserDetails.forEach((user, index) => {
+          PresenterData.push({
+            label: (
+              <>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex gap-2 align-items-center"
+                  >
+                    <img
+                      src={`data:image/jpeg;base64,${user.userProfilePicture.displayProfilePictureName}`}
+                      height="16.45px"
+                      width="18.32px"
+                      draggable="false"
+                      alt=""
+                    />
+                    <span>{user.userName}</span>
+                  </Col>
+                </Row>
+              </>
+            ),
+            value: user.pK_UID,
+            name: user.userName,
+          });
+          if (Number(user.pK_UID) === Number(createrID)) {
+            setTaskAssignedTo([user.pK_UID]);
+            setPresenterValue({
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={`data:image/jpeg;base64,${user.userProfilePicture.displayProfilePictureName}`}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
+                      />
+                      <span>{user.userName}</span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              value: user.pK_UID,
+              name: user.userName,
+            });
+          }
         });
-      });
-      setAllPresenters(PresenterData);
-    }
-  }, [toDoListReducer.AllAssigneesData]);
-
-  //Input Field Assignee Change
-  // const onChangeSearch = (e) => {
-  //   setTaskAssignedToInput(e.target.value.trimStart());
-  // };
-
-  //Drop Down Values
-  // const searchFilterHandler = (value) => {
-  //   let getUserDetails = GroupsReducer?.getGroupByGroupIdResponse?.groupMembers;
-
-  //   if (
-  //     getUserDetails !== undefined &&
-  //     getUserDetails !== null &&
-  //     getUserDetails.length > 0
-  //   ) {
-  //     return getUserDetails
-  //       .filter((item) => {
-  //         const searchTerm = value.toLowerCase();
-  //         const assigneesName = item.userName.toLowerCase();
-
-  //         return (
-  //           searchTerm && assigneesName.startsWith(searchTerm)
-  //           // assigneesName !== searchTerm.toLowerCase()
-  //         );
-  //       })
-  //       .slice(0, 10)
-  //       .map((item) => (
-  //         <div
-  //           onClick={() => onSearch(item.userName, item.pK_UID, item)}
-  //           className="dropdown-row-assignee d-flex align-items-center flex-row"
-  //           key={item.pK_UID}
-  //         >
-  //           <img
-  //             src={`data:image/jpeg;base64,${item?.userProfilePicture?.displayProfilePictureName}`}
-  //             alt=""
-  //             className="user-img"
-  //           />
-  //           <p className="p-0 m-0">{item.userName}</p>
-  //         </div>
-  //       ));
-  //   } else {
-  //   }
-  // };
+        setAllPresenters(PresenterData);
+      }
+    } catch {}
+  }, [GroupsReducer.getGroupByGroupIdResponse]);
 
   const toDoDateHandler = (date, format = "YYYYMMDD") => {
     let toDoDateValueFormat = new DateObject(date).format("DD/MM/YYYY");

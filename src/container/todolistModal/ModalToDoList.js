@@ -189,11 +189,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       data.length !== 0 &&
       Object(data).length > 0
     ) {
-      const filterData = data.filter(
-        (obj) => parseInt(obj.pK_UID) !== parseInt(createrID)
-      );
-      setTaskAssigneeApiData(filterData);
-
       let PresenterData = [];
       data.forEach((user, index) => {
         PresenterData.push({
@@ -221,7 +216,36 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           value: user.pK_UID,
           name: user.name,
         });
+        if (Number(user.pK_UID) === Number(createrID)) {
+          setTaskAssignedTo([user.pK_UID]);
+          setPresenterValue({
+            label: (
+              <>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex gap-2 align-items-center"
+                  >
+                    <img
+                      src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
+                      height="16.45px"
+                      width="18.32px"
+                      draggable="false"
+                      alt=""
+                    />
+                    <span>{user.name}</span>
+                  </Col>
+                </Row>
+              </>
+            ),
+            value: user.pK_UID,
+            name: user.name,
+          });
+        }
       });
+
       setAllPresenters(PresenterData);
     }
   }, [toDoListReducer.AllAssigneesData]);

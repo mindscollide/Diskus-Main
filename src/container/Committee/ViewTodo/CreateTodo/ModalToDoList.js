@@ -159,22 +159,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     } catch {}
   }, []);
 
-  //To Set task Creater ID
-  useEffect(() => {
-    let data = [...toDoListReducer.AllAssigneesData];
-    if (
-      data !== undefined &&
-      data !== null &&
-      data !== [] &&
-      Object(data).length > 0
-    ) {
-      const filterData = data.filter(
-        (obj) => parseInt(obj.pK_UID) !== parseInt(createrID)
-      );
-      setTaskAssigneeApiData(filterData);
-    }
-  }, [toDoListReducer.AllAssigneesData]);
-
   const deleteFilefromAttachments = (data, index) => {
     let fileSizefound = fileSize - data.fileSize;
     let fileForSendingIndex = fileForSend.findIndex(
@@ -500,49 +484,74 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   }, [toDoListReducer.todoDocumentsMapping]);
 
   useEffect(() => {
-    let data = [...toDoListReducer.AllAssigneesData];
-    if (
-      data !== undefined &&
-      data !== null &&
-      data.length !== 0 &&
-      Object(data).length > 0
-    ) {
-      const filterData = data.filter(
-        (obj) => parseInt(obj.pK_UID) !== parseInt(createrID)
-      );
-      setTaskAssigneeApiData(filterData);
+    try {
+      if (
+        CommitteeReducer.getCommitteeByCommitteeID !== null &&
+        CommitteeReducer.getCommitteeByCommitteeID !== undefined
+      ) {
+        let getUserDetails =
+          CommitteeReducer.getCommitteeByCommitteeID.committeMembers;
 
-      let PresenterData = [];
-      data.forEach((user, index) => {
-        PresenterData.push({
-          label: (
-            <>
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex gap-2 align-items-center"
-                >
-                  <img
-                    src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
-                    height="16.45px"
-                    width="18.32px"
-                    draggable="false"
-                    alt=""
-                  />
-                  <span>{user.name}</span>
-                </Col>
-              </Row>
-            </>
-          ),
-          value: user.pK_UID,
-          name: user.name,
+        let PresenterData = [];
+        getUserDetails.forEach((user, index) => {
+          PresenterData.push({
+            label: (
+              <>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex gap-2 align-items-center"
+                  >
+                    <img
+                      src={`data:image/jpeg;base64,${user.userProfilePicture.displayProfilePictureName}`}
+                      height="16.45px"
+                      width="18.32px"
+                      draggable="false"
+                      alt=""
+                    />
+                    <span>{user.userName}</span>
+                  </Col>
+                </Row>
+              </>
+            ),
+            value: user.pK_UID,
+            name: user.userName,
+          });
+          if (Number(user.pK_UID) === Number(createrID)) {
+            setTaskAssignedTo([user.pK_UID]);
+            setPresenterValue({
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={`data:image/jpeg;base64,${user.userProfilePicture.displayProfilePictureName}`}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
+                      />
+                      <span>{user.userName}</span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              value: user.pK_UID,
+              name: user.userName,
+            });
+          }
         });
-      });
-      setAllPresenters(PresenterData);
-    }
-  }, [toDoListReducer.AllAssigneesData]);
+        setAllPresenters(PresenterData);
+      }
+    } catch {}
+  }, [CommitteeReducer.getCommitteeByCommitteeID]);
 
   const handleDeleteAttendee = (data, index) => {
     let newDataAssignees = [...assignees];

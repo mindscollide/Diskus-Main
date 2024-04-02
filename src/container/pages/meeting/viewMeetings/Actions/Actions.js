@@ -123,6 +123,22 @@ const Actions = ({
     setStatusOptions(optionsArr);
   }, [todoStatus]);
 
+  // Remove task from mqtt response
+  useEffect(() => {
+    try {
+      if (toDoListReducer.socketTodoStatusData !== null) {
+        let payloadData = toDoListReducer.socketTodoStatusData;
+        if (payloadData.todoStatusID === 6) {
+          setActionsRows((rowsData) => {
+            return rowsData.filter((newData, index) => {
+              return newData.pK_TID !== payloadData.todoid;
+            });
+          });
+        }
+      }
+    } catch {}
+  }, [toDoListReducer.socketTodoStatusData]);
+
   useEffect(() => {
     if (removeTodo !== 0) {
       if (
@@ -379,16 +395,18 @@ const Actions = ({
       key: "RedCrossIcon",
       width: "50px",
       render: (text, record) => {
-        return (
-          <i>
-            <img
-              alt={"Cross"}
-              src={del}
-              className={styles["action-delete-cursor"]}
-              onClick={() => deleteActionHandler(record)}
-            />
-          </i>
-        );
+        if (Number(record?.taskCreator?.pK_UID) === Number(userID)) {
+          return (
+            <i>
+              <img
+                alt={"Cross"}
+                src={del}
+                className={styles["action-delete-cursor"]}
+                onClick={() => deleteActionHandler(record)}
+              />
+            </i>
+          );
+        }
       },
     },
   ];
