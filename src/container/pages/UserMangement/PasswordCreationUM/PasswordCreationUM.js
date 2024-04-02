@@ -29,12 +29,7 @@ import {
 } from "../../../../store/actions/Auth2_actions";
 import { signupCurrentPageStep } from "../../SignUpProcessUserManagement/SignupProcessUserManagement";
 
-const PasswordCreationUM = ({
-  setCurrentStep,
-  signupStep,
-  setSignupStep,
-  currentStage,
-}) => {
+const PasswordCreationUM = ({ currentStage }) => {
   const { t, i18n } = useTranslation();
 
   const dispatch = useDispatch();
@@ -380,10 +375,7 @@ const PasswordCreationUM = ({
 
   const handleSignupButton = () => {
     if (currentStage === 4) {
-      localStorage.setItem("signupCurrentPage", 5);
-      navigate("/Signup");
-      // signupCurrentPageStep(5, setSignupStep);
-      // navigate("/Signup");
+      // dispatch(createPasswordAction(passwordDetails.Password, navigate, t));
     } else {
       dispatch(showCreateAddtionalUsersModal(true));
     }
@@ -580,10 +572,7 @@ const PasswordCreationUM = ({
                       lg={12}
                       className={styles["forogt_email_link"]}
                     >
-                      <Link
-                        onClick={() => setCurrentStep(1)}
-                        className={styles["ForgotPassword"]}
-                      >
+                      <Link className={styles["ForgotPassword"]}>
                         {t("Go-back")}
                       </Link>
                     </Col>

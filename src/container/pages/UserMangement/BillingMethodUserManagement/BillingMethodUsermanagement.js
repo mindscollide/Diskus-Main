@@ -58,6 +58,11 @@ const BillingMethodUsermanagement = () => {
       errorMessage: "",
       errorStatus: false,
     },
+    Contact: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
   });
 
   //Billing Address
@@ -137,7 +142,7 @@ const BillingMethodUsermanagement = () => {
     document.body.dir = currentLangObj.dir || "ltr";
   }, [currentLangObj, t]);
 
-  console.log(emailConditionMet, "emailConditionMet");
+  console.log(billingContactDetails.Email, "billingContactDetails");
   const handleNext = () => {
     if (
       activeComponent === "billingContactDetails" &&

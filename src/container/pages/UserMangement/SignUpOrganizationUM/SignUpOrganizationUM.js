@@ -593,7 +593,7 @@ const SignUpOrganizationUM = ({ setSignupStep, setCurrentStepValue }) => {
             );
 
             let data = {
-              TenureOfSubscriptionID: JSON.parse(tenureOfSuscriptionID),
+              TenureOfSubscriptionID: JSON.parse(2),
               Organization: {
                 OrganizationName: signUpDetails.CompanyName.value,
                 FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
@@ -612,7 +612,12 @@ const SignUpOrganizationUM = ({ setSignupStep, setCurrentStepValue }) => {
                 PostalCode: signUpDetails.PostalCode.value,
                 TimeZoneID: 1,
               },
-              Packages: [{ PackageID: 4, HeadCount: 5 }],
+              Packages: [
+                // { PackageID: Number(PackageID), HeadCount: 20 },
+                { PackageID: Number(1), HeadCount: 20 },
+                { PackageID: Number(2), HeadCount: 20 },
+                { PackageID: Number(3), HeadCount: 20 },
+              ],
             };
             dispatch(
               signUpOrganizationAndPakageSelection(
