@@ -19,7 +19,11 @@ import { countryNameforPhoneNumber } from "../../../Admin/AllUsers/AddUser/Count
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 import ReactFlagsSelect from "react-flags-select";
 import { Check2 } from "react-bootstrap-icons";
-import { signUpOrganizationAndPakageSelection } from "../../../../store/actions/UserManagementActions";
+import {
+  LoginFlowRoutes,
+  signUpFlowRoutes,
+  signUpOrganizationAndPakageSelection,
+} from "../../../../store/actions/UserManagementActions";
 import {
   checkEmailExsist,
   checkOraganisation,
@@ -863,8 +867,11 @@ const SignUpOrganizationUM = ({ setSignupStep, setCurrentStepValue }) => {
     if (isFreeTrail === true) {
       localStorage.removeItem("signupCurrentPage", 2);
       localStorage.setItem("LoginFlowPageRoute", 1);
+      dispatch(LoginFlowRoutes(1));
       navigate("/");
     } else {
+      navigate("/Signup");
+
       localStorage.setItem("signupCurrentPage", 1);
     }
   };
@@ -1244,9 +1251,9 @@ const SignUpOrganizationUM = ({ setSignupStep, setCurrentStepValue }) => {
                   className="d-flex justify-content-start align-items-center"
                 >
                   <span className={styles["signUp_goBack"]} />
-                  <Link onClick={onClickLink} color="black">
+                  <span onClick={onClickLink} color="black">
                     {t("Go-back")}
-                  </Link>
+                  </span>
                 </Col>
                 <Col
                   sm={5}
