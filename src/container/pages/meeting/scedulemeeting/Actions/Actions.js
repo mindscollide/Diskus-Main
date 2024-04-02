@@ -37,7 +37,10 @@ import CancelActions from "./CancelActions/CancelActions";
 import { _justShowDateformatBilling } from "../../../../../commen/functions/date_formater";
 import CustomPagination from "../../../../../commen/functions/customPagination/Paginations";
 import ModalViewToDo from "../../../../todolistviewModal/ModalViewToDo";
-import { ViewToDoList } from "../../../../../store/actions/ToDoList_action";
+import {
+  ViewToDoList,
+  createTaskMeetingMQTT,
+} from "../../../../../store/actions/ToDoList_action";
 import { Select } from "antd";
 import {
   getTodoStatus,
@@ -488,6 +491,7 @@ const Actions = ({
         if (Number(taskData.meetingID) === Number(currentMeeting)) {
           setActionsRows([...actionsRows, taskData.todoList]);
         }
+        dispatch(createTaskMeetingMQTT(null));
       }
     } catch (error) {
       console.log(error, "errorerrorerrorerrorerror");

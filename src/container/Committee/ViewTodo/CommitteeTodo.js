@@ -35,6 +35,7 @@ import {
   SearchTodoListApi,
   deleteCommitteeTaskApi,
   saveTaskDocumentsApi,
+  createTaskCommitteeMQTT,
 } from "../../../store/actions/ToDoList_action";
 import "antd/dist/antd.css";
 
@@ -176,6 +177,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
         if (Number(taskData.comitteeID) === Number(ViewCommitteeID)) {
           setRowToDo([...rowsToDo, taskData.todoList]);
         }
+        dispatch(createTaskCommitteeMQTT(null));
       }
     } catch (error) {
       console.log(error, "errorerrorerrorerrorerror");

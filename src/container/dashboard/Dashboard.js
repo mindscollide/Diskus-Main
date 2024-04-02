@@ -604,18 +604,51 @@ const Dashboard = () => {
             .includes("NEW_ADVANCE_MEETING_TODO".toLowerCase())
         ) {
           dispatch(createTaskMeetingMQTT(data.payload));
+          if (data.viewable) {
+            setNotification({
+              notificationShow: true,
+              message: changeMQTTJSONOne(
+                t("NEW_TODO_CREATION"),
+                "[Task Title]",
+                data.payload.todoTitle.substring(0, 100)
+              ),
+            });
+          }
+          setNotificationID(id);
         } else if (
           data.payload.message
             .toLowerCase()
             .includes("NEW_GROUP_TODO".toLowerCase())
         ) {
           dispatch(createTaskGroupMQTT(data.payload));
+          if (data.viewable) {
+            setNotification({
+              notificationShow: true,
+              message: changeMQTTJSONOne(
+                t("NEW_TODO_CREATION"),
+                "[Task Title]",
+                data.payload.todoTitle.substring(0, 100)
+              ),
+            });
+          }
+          setNotificationID(id);
         } else if (
           data.payload.message
             .toLowerCase()
             .includes("NEW_COMMITTEE_TODO".toLowerCase())
         ) {
           dispatch(createTaskCommitteeMQTT(data.payload));
+          if (data.viewable) {
+            setNotification({
+              notificationShow: true,
+              message: changeMQTTJSONOne(
+                t("NEW_TODO_CREATION"),
+                "[Task Title]",
+                data.payload.todoTitle.substring(0, 100)
+              ),
+            });
+          }
+          setNotificationID(id);
         }
       }
       if (data.action.toLowerCase() === "COMMENT".toLowerCase()) {

@@ -14,6 +14,7 @@ import del from "../../../assets/images/del.png";
 import {
   ViewToDoList,
   clearResponce,
+  createTaskGroupMQTT,
   saveTaskDocumentsApi,
 } from "../../../store/actions/ToDoList_action";
 import "antd/dist/antd.css";
@@ -141,6 +142,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         if (Number(taskData.groupID) === Number(ViewGroupID)) {
           setRowToDo([...rowsToDo, taskData.todoList]);
         }
+        dispatch(createTaskGroupMQTT(null));
       }
     } catch (error) {
       console.log(error, "errorerrorerrorerrorerror");

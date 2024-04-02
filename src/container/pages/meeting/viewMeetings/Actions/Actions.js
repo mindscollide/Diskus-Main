@@ -30,7 +30,10 @@ import CancelActions from "./CancelActions/CancelActions";
 import { _justShowDateformatBilling } from "../../../../../commen/functions/date_formater";
 import CustomPagination from "../../../../../commen/functions/customPagination/Paginations";
 import { clearAttendanceState } from "../../../../../store/actions/Attendance_Meeting";
-import { ViewToDoList } from "../../../../../store/actions/ToDoList_action";
+import {
+  ViewToDoList,
+  createTaskMeetingMQTT,
+} from "../../../../../store/actions/ToDoList_action";
 import ModalViewToDo from "../../../../todolistviewModal/ModalViewToDo";
 import { Select } from "antd";
 import {
@@ -454,6 +457,7 @@ const Actions = ({
         if (Number(taskData.meetingID) === Number(currentMeeting)) {
           setActionsRows([...actionsRows, taskData.todoList]);
         }
+        dispatch(createTaskMeetingMQTT(null));
       }
     } catch (error) {
       console.log(error, "errorerrorerrorerrorerror");
