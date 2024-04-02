@@ -593,7 +593,7 @@ const SignUpOrganizationUM = ({ setSignupStep, setCurrentStepValue }) => {
             );
 
             let data = {
-              TenureOfSubscriptionID: JSON.parse(tenureOfSuscriptionID),
+              TenureOfSubscriptionID: JSON.parse(2),
               Organization: {
                 OrganizationName: signUpDetails.CompanyName.value,
                 FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
