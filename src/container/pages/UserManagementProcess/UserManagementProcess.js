@@ -24,6 +24,7 @@ const UserManagementProcess = () => {
   const [currentStep, setCurrentStepValue] = useState(() => {
     return Number(localStorage.getItem("LoginFlowPageRoute")) || 1;
   });
+  console.log("currentStep", currentStep);
 
   useEffect(() => {
     try {
@@ -63,6 +64,7 @@ const UserManagementProcess = () => {
     componentToRender = <TwoFactorMultipleDevices />;
   } else {
     componentToRender = null;
+    console.log("Errorr in route");
   }
 
   return componentToRender;

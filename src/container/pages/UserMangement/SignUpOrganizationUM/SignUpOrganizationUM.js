@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import { Spinner, Container, Row, Col, Form } from "react-bootstrap";
+import SignInComponent from "../../UserMangement/SignInUserManagement/SignInUserManagement";
 import DiskusnewRoundIconSignUp from "../../../../assets/images/newElements/DiskusWhiteGroupIcon.svg";
 import {
   Button,
@@ -27,7 +28,7 @@ import { setLoader } from "../../../../store/actions/Auth2_actions";
 import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
 import { signupCurrentPageStep } from "../../SignUpProcessUserManagement/SignupProcessUserManagement";
 
-const SignUpOrganizationUM = ({ setSignupStep, setCurrentStep }) => {
+const SignUpOrganizationUM = ({ setSignupStep, setCurrentStepValue }) => {
   console.log(
     setSignupStep,
     "setSignupStepsetSignupStepsetSignupStepsetSignupStep"
@@ -860,17 +861,15 @@ const SignUpOrganizationUM = ({ setSignupStep, setCurrentStep }) => {
 
   const onClickLink = () => {
     const currentPage = localStorage.getItem("signupCurrentPage");
-    if (currentPage === "2") {
-      localStorage.removeItem("signupCurrentPage");
-      if (isFreeTrail === true) {
-        console.log(isFreeTrail, "isFreeTrailisFreeTrail");
-        navigate("/");
-      } else {
-        localStorage.setItem("signupCurrentPage", "1");
-        navigate("/Signup");
-        console.log(isFreeTrail, "isFreeTrailisFreeTrail");
-      }
+    const signInPage = "/";
+    let componentToRender;
+    // if (Number(currentPage) === 2) {
+    if (isFreeTrail === true) {
+      localStorage.removeItem("signupCurrentPage", 2);
+    } else {
+      localStorage.setItem("signupCurrentPage", 1);
     }
+    // }
   };
 
   return (

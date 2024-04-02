@@ -53,6 +53,7 @@ const SignupProcessUserManagement = () => {
     SignupComponent = <BillingMethodUsermanagement />;
   } else {
     SignupComponent = null;
+    console.log("Errorr in route");
   }
 
   return SignupComponent;
