@@ -1235,143 +1235,147 @@ const enterPasswordvalidation = (value, navigate, t) => {
               dispatch(
                 enterPasswordFail(t("Password-verification-failed-try-again"))
               );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_15".toLowerCase()
-                )
-            ) {
-              if (
-                parseInt(
-                  response.data.responseResult.organizationSubscriptionStatusID
-                ) === parseInt(5)
-              ) {
-                localStorage.setItem("revokeCancellation", true);
-              } else {
-                localStorage.setItem("revokeCancellation", false);
-              }
-              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
-                dispatch(enterPasswordFail(t("The-user-is-a-partial-admin")));
-                navigate("/");
-              } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 2
-              ) {
-                localStorage.setItem(
-                  "roleID",
-                  JSON.parse(response.data.responseResult.userRoleId)
-                );
-                localStorage.setItem(
-                  "organizationID",
-                  response.data.responseResult.organizationID
-                );
-                localStorage.setItem(
-                  "organizationRoleID",
-                  response.data.responseResult.organizationRoleID
-                );
-                enterPasswordSuccess(
-                  response.data.responseResult,
-                  t("The-user-is-a-partial-admin")
-                );
-                navigate("/Diskus/Admin/");
-              } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 3
-              ) {
-                dispatch(enterPasswordFail(t("The-user-is-a-partial-admin")));
-              }
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_16".toLowerCase()
-                )
-            ) {
-              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
-                dispatch(
-                  enterPasswordFail(
-                    t(
-                      "The-user-is-a-partial-admin-user-the-organization-subscription-is-not-active-please-contact-your-admin"
-                    )
-                  )
-                );
-                navigate("/");
-              } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 3
-              ) {
-                enterPasswordFail(
-                  t(
-                    "The-user-is-a-partial-admin-user-the-organization-subscription-is-not-active-please-contact-your-admin"
-                  )
-                );
-                navigate("/");
-              } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 2
-              ) {
-                localStorage.setItem("blur", true);
-                localStorage.setItem(
-                  "roleID",
-                  JSON.parse(response.data.responseResult.userRoleId)
-                );
-                localStorage.setItem(
-                  "organizationID",
-                  response.data.responseResult.organizationID
-                );
-                localStorage.setItem(
-                  "organizationRoleID",
-                  response.data.responseResult.organizationRoleID
-                );
-                enterPasswordSuccess(
-                  response.data.responseResult,
-                  t(
-                    "The-user-is-a-partial-admin-user-the-organization-subscription-is-not-active-please-contact-your-admin"
-                  )
-                );
-                navigate("/DisKus/Admin/Nonactive/");
-              }
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_17".toLowerCase()
-                )
-            ) {
-              if (
-                parseInt(
-                  response.data.responseResult.organizationSubscriptionStatusID
-                ) === parseInt(5)
-              ) {
-                localStorage.setItem("revokeCancellation", true);
-              } else {
-                localStorage.setItem("revokeCancellation", false);
-              }
-              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
-                dispatch(enterPasswordFail(t("The-user-is-a-partial-admin")));
-              } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 2
-              ) {
-                localStorage.setItem(
-                  "roleID",
-                  JSON.parse(response.data.responseResult.userRoleId)
-                );
-                localStorage.setItem(
-                  "organizationID",
-                  response.data.responseResult.organizationID
-                );
-                localStorage.setItem(
-                  "organizationRoleID",
-                  response.data.responseResult.organizationRoleID
-                );
-                enterPasswordSuccess(
-                  response.data.responseResult,
-                  t("The-user-is-a-partial-admin")
-                );
-                navigate("/Diskus/Admin/");
-              } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 3
-              ) {
-                dispatch(enterPasswordFail(t("The-user-is-a-partial-admin")));
-              }
-            } else if (
+            }
+            //  else if (
+            //   response.data.responseResult.responseMessage
+            //     .toLowerCase()
+            //     .includes(
+            //       "ERM_AuthService_AuthManager_PasswordVerification_15".toLowerCase()
+            //     )
+            // ) {
+            //   if (
+            //     parseInt(
+            //       response.data.responseResult.organizationSubscriptionStatusID
+            //     ) === parseInt(5)
+            //   ) {
+            //     localStorage.setItem("revokeCancellation", true);
+            //   } else {
+            //     localStorage.setItem("revokeCancellation", false);
+            //   }
+            //   if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+            //     dispatch(enterPasswordFail(t("The-user-is-a-partial-admin")));
+            //     navigate("/");
+            //   } else if (
+            //     JSON.parse(response.data.responseResult.userRoleId) === 2
+            //   ) {
+            //     localStorage.setItem(
+            //       "roleID",
+            //       JSON.parse(response.data.responseResult.userRoleId)
+            //     );
+            //     localStorage.setItem(
+            //       "organizationID",
+            //       response.data.responseResult.organizationID
+            //     );
+            //     localStorage.setItem(
+            //       "organizationRoleID",
+            //       response.data.responseResult.organizationRoleID
+            //     );
+            //     enterPasswordSuccess(
+            //       response.data.responseResult,
+            //       t("The-user-is-a-partial-admin")
+            //     );
+            //     navigate("/Diskus/Admin/");
+            //   } else if (
+            //     JSON.parse(response.data.responseResult.userRoleId) === 3
+            //   ) {
+            //     dispatch(enterPasswordFail(t("The-user-is-a-partial-admin")));
+            //   }
+            // }
+            // else if (
+            //   response.data.responseResult.responseMessage
+            //     .toLowerCase()
+            //     .includes(
+            //       "ERM_AuthService_AuthManager_PasswordVerification_16".toLowerCase()
+            //     )
+            // ) {
+            //   if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+            //     dispatch(
+            //       enterPasswordFail(
+            //         t(
+            //           "The-user-is-a-partial-admin-user-the-organization-subscription-is-not-active-please-contact-your-admin"
+            //         )
+            //       )
+            //     );
+            //     navigate("/");
+            //   } else if (
+            //     JSON.parse(response.data.responseResult.userRoleId) === 3
+            //   ) {
+            //     enterPasswordFail(
+            //       t(
+            //         "The-user-is-a-partial-admin-user-the-organization-subscription-is-not-active-please-contact-your-admin"
+            //       )
+            //     );
+            //     navigate("/");
+            //   } else if (
+            //     JSON.parse(response.data.responseResult.userRoleId) === 2
+            //   ) {
+            //     localStorage.setItem("blur", true);
+            //     localStorage.setItem(
+            //       "roleID",
+            //       JSON.parse(response.data.responseResult.userRoleId)
+            //     );
+            //     localStorage.setItem(
+            //       "organizationID",
+            //       response.data.responseResult.organizationID
+            //     );
+            //     localStorage.setItem(
+            //       "organizationRoleID",
+            //       response.data.responseResult.organizationRoleID
+            //     );
+            //     enterPasswordSuccess(
+            //       response.data.responseResult,
+            //       t(
+            //         "The-user-is-a-partial-admin-user-the-organization-subscription-is-not-active-please-contact-your-admin"
+            //       )
+            //     );
+            //     navigate("/DisKus/Admin/Nonactive/");
+            //   }
+            // }
+            // else if (
+            //   response.data.responseResult.responseMessage
+            //     .toLowerCase()
+            //     .includes(
+            //       "ERM_AuthService_AuthManager_PasswordVerification_17".toLowerCase()
+            //     )
+            // ) {
+            //   if (
+            //     parseInt(
+            //       response.data.responseResult.organizationSubscriptionStatusID
+            //     ) === parseInt(5)
+            //   ) {
+            //     localStorage.setItem("revokeCancellation", true);
+            //   } else {
+            //     localStorage.setItem("revokeCancellation", false);
+            //   }
+            //   if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+            //     dispatch(enterPasswordFail(t("The-user-is-a-partial-admin")));
+            //   } else if (
+            //     JSON.parse(response.data.responseResult.userRoleId) === 2
+            //   ) {
+            //     localStorage.setItem(
+            //       "roleID",
+            //       JSON.parse(response.data.responseResult.userRoleId)
+            //     );
+            //     localStorage.setItem(
+            //       "organizationID",
+            //       response.data.responseResult.organizationID
+            //     );
+            //     localStorage.setItem(
+            //       "organizationRoleID",
+            //       response.data.responseResult.organizationRoleID
+            //     );
+            //     enterPasswordSuccess(
+            //       response.data.responseResult,
+            //       t("The-user-is-a-partial-admin")
+            //     );
+            //     navigate("/Diskus/Admin/");
+            //   } else if (
+            //     JSON.parse(response.data.responseResult.userRoleId) === 3
+            //   ) {
+            //     dispatch(enterPasswordFail(t("The-user-is-a-partial-admin")));
+            //   }
+            // }
+            else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
