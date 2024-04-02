@@ -202,7 +202,7 @@ const userEmailVerification = {
   RequestMethod: "ServiceManager.UserEmailVerification",
 };
 const userPasswordCreation = {
-  RequestMethod: "ServiceManager.UserPasswordCreation",
+  RequestMethod: "ServiceManager.UsersPasswordCreation",
 };
 const userEmailValidation = {
   RequestMethod: "ServiceManager.LoginWithUserEmail",

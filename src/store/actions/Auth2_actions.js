@@ -1612,7 +1612,7 @@ const createPasswordAction = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_01".toLowerCase()
+                  "ERM_AuthService_SignUpManager_UsersPasswordCreation_01".toLowerCase()
                 )
             ) {
               if (
@@ -1667,7 +1667,7 @@ const createPasswordAction = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_02".toLowerCase()
+                  "ERM_AuthService_SignUpManager_UsersPasswordCreation_02".toLowerCase()
                 )
             ) {
               localStorage.setItem(
@@ -1743,68 +1743,70 @@ const createPasswordAction = (value, navigate, t) => {
                 mqttConnection(response.data.responseResult.authToken.userID);
                 // navigate("/");
               }
-            } else if (
+            }
+            // else if (
+            //   response.data.responseResult.responseMessage
+            //     .toLowerCase()
+            //     .includes(
+            //       "ERM_AuthService_SignUpManager_UserPasswordCreation_03".toLowerCase()
+            //     )
+            // ) {
+            //   if (
+            //     parseInt(
+            //       response.data.responseResult.organizationSubscriptionStatusID
+            //     ) === parseInt(5)
+            //   ) {
+            //     localStorage.setItem("revokeCancellation", true);
+            //   } else {
+            //     localStorage.setItem("revokeCancellation", false);
+            //   }
+            //   localStorage.setItem(
+            //     "roleID",
+            //     JSON.parse(response.data.responseResult.userRoleId)
+            //   );
+            //   localStorage.setItem(
+            //     "organizationID",
+            //     response.data.responseResult.organizationID
+            //   );
+            //   localStorage.setItem(
+            //     "organizationRoleID",
+            //     response.data.responseResult.organizationRoleID
+            //   );
+            //   if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+            //     dispatch(
+            //       createPasswordSuccess(
+            //         response.data.responseResult,
+            //         t("Tthe-user-is-a-partial-admin-user")
+            //       )
+            //     );
+            //     navigate("/Diskus/Admin/");
+            //   } else if (
+            //     JSON.parse(response.data.responseResult.userRoleId) === 2
+            //   ) {
+            //     dispatch(
+            //       createPasswordSuccess(
+            //         response.data.responseResult,
+            //         t("Tthe-user-is-a-partial-admin-user")
+            //       )
+            //     );
+            //     navigate("/Diskus/Admin/");
+            //   } else if (
+            //     JSON.parse(response.data.responseResult.userRoleId) === 3
+            //   ) {
+            //     dispatch(
+            //       createPasswordFail(
+            //         response.data.responseResult,
+            //         t("Tthe-user-is-a-partial-admin-user")
+            //       )
+            //     );
+            //     navigate("/");
+            //   }
+            // }
+            else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_03".toLowerCase()
-                )
-            ) {
-              if (
-                parseInt(
-                  response.data.responseResult.organizationSubscriptionStatusID
-                ) === parseInt(5)
-              ) {
-                localStorage.setItem("revokeCancellation", true);
-              } else {
-                localStorage.setItem("revokeCancellation", false);
-              }
-              localStorage.setItem(
-                "roleID",
-                JSON.parse(response.data.responseResult.userRoleId)
-              );
-              localStorage.setItem(
-                "organizationID",
-                response.data.responseResult.organizationID
-              );
-              localStorage.setItem(
-                "organizationRoleID",
-                response.data.responseResult.organizationRoleID
-              );
-              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t("Tthe-user-is-a-partial-admin-user")
-                  )
-                );
-                navigate("/Diskus/Admin/");
-              } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 2
-              ) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t("Tthe-user-is-a-partial-admin-user")
-                  )
-                );
-                navigate("/Diskus/Admin/");
-              } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 3
-              ) {
-                dispatch(
-                  createPasswordFail(
-                    response.data.responseResult,
-                    t("Tthe-user-is-a-partial-admin-user")
-                  )
-                );
-                navigate("/");
-              }
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_04".toLowerCase()
+                  "ERM_AuthService_SignUpManager_UsersPasswordCreation_04".toLowerCase()
                 )
             ) {
               if (
@@ -1897,7 +1899,7 @@ const createPasswordAction = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_05".toLowerCase()
+                  "ERM_AuthService_SignUpManager_UsersPasswordCreation_05".toLowerCase()
                 )
             ) {
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
@@ -1939,52 +1941,7 @@ const createPasswordAction = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_06".toLowerCase()
-                )
-            ) {
-              if (
-                parseInt(
-                  response.data.responseResult.organizationSubscriptionStatusID
-                ) === parseInt(5)
-              ) {
-                localStorage.setItem("revokeCancellation", true);
-              } else {
-                localStorage.setItem("revokeCancellation", false);
-              }
-              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t("User-is-not-a-new-user-2fa-enabled")
-                  )
-                );
-                navigate("/");
-              } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 2
-              ) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t("User-is-not-a-new-user-2fa-enabled")
-                  )
-                );
-                navigate("/");
-              } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 3
-              ) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t("User-is-not-a-new-user-2fa-enabled")
-                  )
-                );
-                navigate("/");
-              }
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_07".toLowerCase()
+                  "ERM_AuthService_SignUpManager_UsersPasswordCreation_06".toLowerCase()
                 )
             ) {
               if (
@@ -1996,70 +1953,117 @@ const createPasswordAction = (value, navigate, t) => {
               } else {
                 localStorage.setItem("revokeCancellation", false);
               }
-              if (response.data.responseResult.organizationName !== undefined) {
-                localStorage.setItem(
-                  "OrganizatioName",
-                  response.data.responseResult.organizationName
-                );
-              }
-              if (response.data.responseResult.authToken !== null) {
-                localStorage.setItem(
-                  "name",
-                  response.data.responseResult.authToken.name
-                );
-                localStorage.setItem(
-                  "userEmail",
-                  response.data.responseResult.authToken.userName
-                );
-                localStorage.setItem(
-                  "token",
-                  JSON.stringify(response.data.responseResult.authToken.token)
-                );
-                localStorage.setItem(
-                  "refreshToken",
-                  JSON.stringify(
-                    response.data.responseResult.authToken.refreshToken
-                  )
-                );
-                localStorage.setItem(
-                  "roleID",
-                  JSON.parse(response.data.responseResult.userRoleId)
-                );
-              }
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
-                    t("User-is-not-a-new-user-the-user-is-a-partial-admin-user")
+                    t("User-is-not-a-new-user-2fa-enabled")
                   )
                 );
-                navigate("/Diskus/Admin/");
+                navigate("/");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 2
               ) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
-                    t("User-is-not-a-new-user-the-user-is-a-partial-admin-user")
+                    t("User-is-not-a-new-user-2fa-enabled")
                   )
                 );
-                navigate("/Diskus/Admin/");
+                navigate("/");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 3
               ) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
-                    t("User-is-not-a-new-user-the-user-is-a-partial-admin-user")
+                    t("User-is-not-a-new-user-2fa-enabled")
                   )
                 );
                 navigate("/");
               }
-            } else if (
+            }
+            //  else if (
+            //   response.data.responseResult.responseMessage
+            //     .toLowerCase()
+            //     .includes(
+            //       "ERM_AuthService_SignUpManager_UserPasswordCreation_07".toLowerCase()
+            //     )
+            // ) {
+            //   if (
+            //     parseInt(
+            //       response.data.responseResult.organizationSubscriptionStatusID
+            //     ) === parseInt(5)
+            //   ) {
+            //     localStorage.setItem("revokeCancellation", true);
+            //   } else {
+            //     localStorage.setItem("revokeCancellation", false);
+            //   }
+            //   if (response.data.responseResult.organizationName !== undefined) {
+            //     localStorage.setItem(
+            //       "OrganizatioName",
+            //       response.data.responseResult.organizationName
+            //     );
+            //   }
+            //   if (response.data.responseResult.authToken !== null) {
+            //     localStorage.setItem(
+            //       "name",
+            //       response.data.responseResult.authToken.name
+            //     );
+            //     localStorage.setItem(
+            //       "userEmail",
+            //       response.data.responseResult.authToken.userName
+            //     );
+            //     localStorage.setItem(
+            //       "token",
+            //       JSON.stringify(response.data.responseResult.authToken.token)
+            //     );
+            //     localStorage.setItem(
+            //       "refreshToken",
+            //       JSON.stringify(
+            //         response.data.responseResult.authToken.refreshToken
+            //       )
+            //     );
+            //     localStorage.setItem(
+            //       "roleID",
+            //       JSON.parse(response.data.responseResult.userRoleId)
+            //     );
+            //   }
+            //   if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+            //     dispatch(
+            //       createPasswordSuccess(
+            //         response.data.responseResult,
+            //         t("User-is-not-a-new-user-the-user-is-a-partial-admin-user")
+            //       )
+            //     );
+            //     navigate("/Diskus/Admin/");
+            //   } else if (
+            //     JSON.parse(response.data.responseResult.userRoleId) === 2
+            //   ) {
+            //     dispatch(
+            //       createPasswordSuccess(
+            //         response.data.responseResult,
+            //         t("User-is-not-a-new-user-the-user-is-a-partial-admin-user")
+            //       )
+            //     );
+            //     navigate("/Diskus/Admin/");
+            //   } else if (
+            //     JSON.parse(response.data.responseResult.userRoleId) === 3
+            //   ) {
+            //     dispatch(
+            //       createPasswordSuccess(
+            //         response.data.responseResult,
+            //         t("User-is-not-a-new-user-the-user-is-a-partial-admin-user")
+            //       )
+            //     );
+            //     navigate("/");
+            //   }
+            // }
+            else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_08".toLowerCase()
+                  "ERM_AuthService_SignUpManager_UsersPasswordCreation_08".toLowerCase()
                 )
             ) {
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
@@ -2139,9 +2143,11 @@ const createPasswordAction = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_09".toLowerCase()
+                  "ERM_AuthService_SignUpManager_UsersPasswordCreation_09".toLowerCase()
                 )
             ) {
+              localStorage.setItem("signupCurrentPage", 5);
+              navigate("/Signup");
               localStorage.setItem("blur", true);
               localStorage.setItem(
                 "OrganizatioName",
@@ -2190,7 +2196,7 @@ const createPasswordAction = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_10".toLowerCase()
+                  "ERM_AuthService_SignUpManager_UsersPasswordCreation_10".toLowerCase()
                 )
             ) {
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
@@ -2227,7 +2233,7 @@ const createPasswordAction = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_11".toLowerCase()
+                  "ERM_AuthService_SignUpManager_UsersPasswordCreation_11".toLowerCase()
                 )
             ) {
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
@@ -2256,47 +2262,49 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
               }
-            } else if (
+            }
+            // else if (
+            //   response.data.responseResult.responseMessage
+            //     .toLowerCase()
+            //     .includes(
+            //       "ERM_AuthService_SignUpManager_UserPasswordCreation_12".toLowerCase()
+            //     )
+            // ) {
+            //   if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+            //     dispatch(
+            //       createPasswordSuccess(
+            //         response.data.responseResult,
+            //         t("User-is-not-active-please-activate")
+            //       )
+            //     );
+            //     navigate("/");
+            //   } else if (
+            //     JSON.parse(response.data.responseResult.userRoleId) === 2
+            //   ) {
+            //     dispatch(
+            //       createPasswordSuccess(
+            //         response.data.responseResult,
+            //         t("User-is-not-active-please-activate")
+            //       )
+            //     );
+            //     navigate("/");
+            //   } else if (
+            //     JSON.parse(response.data.responseResult.userRoleId) === 3
+            //   ) {
+            //     dispatch(
+            //       createPasswordSuccess(
+            //         response.data.responseResult,
+            //         t("User-is-not-active-please-activate")
+            //       )
+            //     );
+            //     navigate("/");
+            //   }
+            // }
+            else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_12".toLowerCase()
-                )
-            ) {
-              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t("User-is-not-active-please-activate")
-                  )
-                );
-                navigate("/");
-              } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 2
-              ) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t("User-is-not-active-please-activate")
-                  )
-                );
-                navigate("/");
-              } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 3
-              ) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t("User-is-not-active-please-activate")
-                  )
-                );
-                navigate("/");
-              }
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_13".toLowerCase()
+                  "ERM_AuthService_SignUpManager_UsersPasswordCreation_13".toLowerCase()
                 )
             ) {
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
@@ -2445,164 +2453,166 @@ const createPasswordAction = (value, navigate, t) => {
                   navigate("/Diskus/");
                 }
               }
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_14".toLowerCase()
-                )
-            ) {
-              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
-                localStorage.setItem("blur", true);
-                if (
-                  response.data.responseResult.organizationName !== undefined
-                ) {
-                  localStorage.setItem(
-                    "OrganizatioName",
-                    response.data.responseResult.organizationName
-                  );
-                }
-                if (response.data.responseResult.authToken !== null) {
-                  localStorage.setItem(
-                    "name",
-                    response.data.responseResult.authToken.name
-                  );
-                  localStorage.setItem(
-                    "userEmail",
-                    response.data.responseResult.authToken.userName
-                  );
-                  localStorage.setItem(
-                    "token",
-                    JSON.stringify(response.data.responseResult.authToken.token)
-                  );
-                  localStorage.setItem(
-                    "refreshToken",
-                    JSON.stringify(
-                      response.data.responseResult.authToken.refreshToken
-                    )
-                  );
-                  localStorage.setItem(
-                    "roleID",
-                    JSON.parse(response.data.responseResult.userRoleId)
-                  );
-                }
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t(
-                      "Organization-subscription-is-in-active-and-this-is-a-partial-admin-user"
-                    )
-                  )
-                );
-                navigate("/Diskus/Admin/PayOutstanding");
-              } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 2
-              ) {
-                localStorage.setItem("blur", true);
-                if (
-                  response.data.responseResult.organizationName !== undefined
-                ) {
-                  localStorage.setItem(
-                    "OrganizatioName",
-                    response.data.responseResult.organizationName
-                  );
-                }
-                if (response.data.responseResult.authToken !== null) {
-                  localStorage.setItem(
-                    "name",
-                    response.data.responseResult.authToken.name
-                  );
-                  localStorage.setItem(
-                    "userEmail",
-                    response.data.responseResult.authToken.userName
-                  );
-                  localStorage.setItem(
-                    "token",
-                    JSON.stringify(response.data.responseResult.authToken.token)
-                  );
-                  localStorage.setItem(
-                    "refreshToken",
-                    JSON.stringify(
-                      response.data.responseResult.authToken.refreshToken
-                    )
-                  );
-                  localStorage.setItem(
-                    "roleID",
-                    JSON.parse(response.data.responseResult.userRoleId)
-                  );
-                }
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t(
-                      "Organization-subscription-is-in-active-and-this-is-a-partial-admin-user"
-                    )
-                  )
-                );
-                navigate("/Diskus/Admin/Nonactive");
-              } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 3
-              ) {
-                localStorage.setItem("blur", true);
-                if (
-                  response.data.responseResult.organizationName !== undefined
-                ) {
-                  localStorage.setItem(
-                    "OrganizatioName",
-                    response.data.responseResult.organizationName
-                  );
-                }
-                if (response.data.responseResult.authToken !== null) {
-                  localStorage.setItem(
-                    "name",
-                    response.data.responseResult.authToken.name
-                  );
-                  localStorage.setItem(
-                    "userEmail",
-                    response.data.responseResult.authToken.userName
-                  );
-                  localStorage.setItem(
-                    "token",
-                    JSON.stringify(response.data.responseResult.authToken.token)
-                  );
-                  localStorage.setItem(
-                    "refreshToken",
-                    JSON.stringify(
-                      response.data.responseResult.authToken.refreshToken
-                    )
-                  );
-                  localStorage.setItem(
-                    "roleID",
-                    JSON.parse(response.data.responseResult.userRoleId)
-                  );
-                }
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t(
-                      "Organization-subscription-is-in-active-and-this-is-a-partial-admin-user"
-                    )
-                  )
-                );
-                let RSVP = localStorage.getItem("RSVP");
-                let dataroomValue = localStorage.getItem("DataRoomEmail");
+            }
+            // else if (
+            //   response.data.responseResult.responseMessage
+            //     .toLowerCase()
+            //     .includes(
+            //       "ERM_AuthService_SignUpManager_UserPasswordCreation_14".toLowerCase()
+            //     )
+            // ) {
+            //   if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+            //     localStorage.setItem("blur", true);
+            //     if (
+            //       response.data.responseResult.organizationName !== undefined
+            //     ) {
+            //       localStorage.setItem(
+            //         "OrganizatioName",
+            //         response.data.responseResult.organizationName
+            //       );
+            //     }
+            //     if (response.data.responseResult.authToken !== null) {
+            //       localStorage.setItem(
+            //         "name",
+            //         response.data.responseResult.authToken.name
+            //       );
+            //       localStorage.setItem(
+            //         "userEmail",
+            //         response.data.responseResult.authToken.userName
+            //       );
+            //       localStorage.setItem(
+            //         "token",
+            //         JSON.stringify(response.data.responseResult.authToken.token)
+            //       );
+            //       localStorage.setItem(
+            //         "refreshToken",
+            //         JSON.stringify(
+            //           response.data.responseResult.authToken.refreshToken
+            //         )
+            //       );
+            //       localStorage.setItem(
+            //         "roleID",
+            //         JSON.parse(response.data.responseResult.userRoleId)
+            //       );
+            //     }
+            //     dispatch(
+            //       createPasswordSuccess(
+            //         response.data.responseResult,
+            //         t(
+            //           "Organization-subscription-is-in-active-and-this-is-a-partial-admin-user"
+            //         )
+            //       )
+            //     );
+            //     navigate("/Diskus/Admin/PayOutstanding");
+            //   } else if (
+            //     JSON.parse(response.data.responseResult.userRoleId) === 2
+            //   ) {
+            //     localStorage.setItem("blur", true);
+            //     if (
+            //       response.data.responseResult.organizationName !== undefined
+            //     ) {
+            //       localStorage.setItem(
+            //         "OrganizatioName",
+            //         response.data.responseResult.organizationName
+            //       );
+            //     }
+            //     if (response.data.responseResult.authToken !== null) {
+            //       localStorage.setItem(
+            //         "name",
+            //         response.data.responseResult.authToken.name
+            //       );
+            //       localStorage.setItem(
+            //         "userEmail",
+            //         response.data.responseResult.authToken.userName
+            //       );
+            //       localStorage.setItem(
+            //         "token",
+            //         JSON.stringify(response.data.responseResult.authToken.token)
+            //       );
+            //       localStorage.setItem(
+            //         "refreshToken",
+            //         JSON.stringify(
+            //           response.data.responseResult.authToken.refreshToken
+            //         )
+            //       );
+            //       localStorage.setItem(
+            //         "roleID",
+            //         JSON.parse(response.data.responseResult.userRoleId)
+            //       );
+            //     }
+            //     dispatch(
+            //       createPasswordSuccess(
+            //         response.data.responseResult,
+            //         t(
+            //           "Organization-subscription-is-in-active-and-this-is-a-partial-admin-user"
+            //         )
+            //       )
+            //     );
+            //     navigate("/Diskus/Admin/Nonactive");
+            //   } else if (
+            //     JSON.parse(response.data.responseResult.userRoleId) === 3
+            //   ) {
+            //     localStorage.setItem("blur", true);
+            //     if (
+            //       response.data.responseResult.organizationName !== undefined
+            //     ) {
+            //       localStorage.setItem(
+            //         "OrganizatioName",
+            //         response.data.responseResult.organizationName
+            //       );
+            //     }
+            //     if (response.data.responseResult.authToken !== null) {
+            //       localStorage.setItem(
+            //         "name",
+            //         response.data.responseResult.authToken.name
+            //       );
+            //       localStorage.setItem(
+            //         "userEmail",
+            //         response.data.responseResult.authToken.userName
+            //       );
+            //       localStorage.setItem(
+            //         "token",
+            //         JSON.stringify(response.data.responseResult.authToken.token)
+            //       );
+            //       localStorage.setItem(
+            //         "refreshToken",
+            //         JSON.stringify(
+            //           response.data.responseResult.authToken.refreshToken
+            //         )
+            //       );
+            //       localStorage.setItem(
+            //         "roleID",
+            //         JSON.parse(response.data.responseResult.userRoleId)
+            //       );
+            //     }
+            //     dispatch(
+            //       createPasswordSuccess(
+            //         response.data.responseResult,
+            //         t(
+            //           "Organization-subscription-is-in-active-and-this-is-a-partial-admin-user"
+            //         )
+            //       )
+            //     );
+            //     let RSVP = localStorage.getItem("RSVP");
+            //     let dataroomValue = localStorage.getItem("DataRoomEmail");
 
-                if (RSVP !== undefined && RSVP !== null) {
-                  navigate("/DisKus/Meeting/Useravailabilityformeeting");
-                } else if (
-                  dataroomValue !== null &&
-                  dataroomValue !== undefined
-                ) {
-                  navigate("/Diskus/dataroom");
-                } else {
-                  navigate("/Diskus/");
-                }
-              }
-            } else if (
+            //     if (RSVP !== undefined && RSVP !== null) {
+            //       navigate("/DisKus/Meeting/Useravailabilityformeeting");
+            //     } else if (
+            //       dataroomValue !== null &&
+            //       dataroomValue !== undefined
+            //     ) {
+            //       navigate("/Diskus/dataroom");
+            //     } else {
+            //       navigate("/Diskus/");
+            //     }
+            //   }
+            // }
+            else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_15".toLowerCase()
+                  "ERM_AuthService_SignUpManager_UsersPasswordCreation_15".toLowerCase()
                 )
             ) {
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {

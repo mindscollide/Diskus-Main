@@ -122,6 +122,7 @@ const BillProcessStepOne = ({
                     }
                     placeholder={t("First-name")}
                     name="Name"
+                    value={billingContactDetails.Name.value}
                     change={billingContactDetailsHandler}
                   />
                 </Col>
@@ -129,6 +130,7 @@ const BillProcessStepOne = ({
                   <TextField
                     placeholder={t("Last-name")}
                     name="LastName"
+                    value={billingContactDetails.LastName.value}
                     change={billingContactDetailsHandler}
                   />
                 </Col>
@@ -137,6 +139,7 @@ const BillProcessStepOne = ({
                 <Col lg={12} md={12} sm={12} xs={12}>
                   <TextField
                     placeholder={t("Company-name")}
+                    value={billingContactDetails.CompanyName.value}
                     label={
                       <>
                         <span className={styles["nameStyles"]}>
@@ -153,6 +156,7 @@ const BillProcessStepOne = ({
                 <Col lg={6} md={6} sm={12} xs={12}>
                   <TextField
                     placeholder={t("Email")}
+                    value={billingContactDetails.Email.value}
                     label={
                       <>
                         <span className={styles["nameStyles"]}>
@@ -180,6 +184,7 @@ const BillProcessStepOne = ({
                 </Col>
                 <Col lg={6} md={6} sm={12} xs={12}>
                   <TextField
+                    value={billingContactDetails.Contact.value}
                     placeholder={t("Contact")}
                     label={
                       <>
