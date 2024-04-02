@@ -384,7 +384,7 @@ const PasswordCreationUM = ({ currentStage }) => {
     if (currentStage === 4) {
       // dispatch(createPasswordAction(passwordDetails.Password, navigate, t));
     } else {
-      dispatch(showCreateAddtionalUsersModal(true));
+      // dispatch(showCreateAddtionalUsersModal(true));
     }
   };
 
