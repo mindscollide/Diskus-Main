@@ -24,6 +24,7 @@ import { mqttConnection } from "../../commen/functions/mqttconnection";
 import Helper from "../../commen/functions/history_logout";
 import { getSubscriptionPaymentDetail } from "./Admin_PackageDetail";
 import { LoginFlowRoutes } from "./UserManagementActions";
+import { showCreateAddtionalUsersModal } from "./UserMangementModalActions";
 
 const createOrganizationInit = () => {
   return {
@@ -1558,7 +1559,7 @@ const createPasswordFail = (message) => {
     message: message,
   };
 };
-const createPasswordAction = (value, navigate, t) => {
+const createPasswordAction = (value, navigate, t, currentStage) => {
   let userID = localStorage.getItem("userID");
   let data = { UserID: JSON.parse(userID), Password: value };
   return (dispatch) => {
@@ -2148,6 +2149,7 @@ const createPasswordAction = (value, navigate, t) => {
             ) {
               localStorage.setItem("signupCurrentPage", 5);
               navigate("/Signup");
+
               localStorage.setItem("blur", true);
               localStorage.setItem(
                 "OrganizatioName",
@@ -2765,11 +2767,30 @@ const createPasswordAction = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_16".toLowerCase()
+                  "ERM_AuthService_SignUpManager_UsersPasswordCreation_16".toLowerCase()
                 )
             ) {
               dispatch(createPasswordSuccess(response.data.responseResult, ""));
               navigate("/");
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_UsersPasswordCreation_17".toLowerCase()
+                )
+            ) {
+              dispatch(createPasswordSuccess(response.data.responseResult, ""));
+              // navigate("/");
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_UsersPasswordCreation_18".toLowerCase()
+                )
+            ) {
+              dispatch(createPasswordSuccess(response.data.responseResult, ""));
+              dispatch(showCreateAddtionalUsersModal(true));
+              // navigate("/");
             } else {
               dispatch(createPasswordFail(t("Something-went-wrong")));
             }
