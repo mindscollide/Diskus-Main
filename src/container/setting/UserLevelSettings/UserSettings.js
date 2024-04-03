@@ -776,6 +776,7 @@ const UserSettings = () => {
   const updateOrganizationLevelSettings = async () => {
     let AllowMicrosoftCalenderSyncCall = false;
     if (settingReducer.UserProfileData.userAllowMicrosoftCalendarSynch) {
+      // AllowMicrosoftCalenderSyncCall = true;
     } else if (userOptionsSettings.AllowMicrosoftCalenderSync !== false) {
       if (authMicrosoftAccessCode !== "") {
         AllowMicrosoftCalenderSyncCall = await dispatch(

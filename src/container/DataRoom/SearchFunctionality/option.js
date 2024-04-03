@@ -570,3 +570,5 @@ export const getFileExtension = (fileName) => {
   const lowercaseExtension = fileName.toLowerCase().split(".").pop();
   return lowercaseExtension;
 };
+
+// export const
