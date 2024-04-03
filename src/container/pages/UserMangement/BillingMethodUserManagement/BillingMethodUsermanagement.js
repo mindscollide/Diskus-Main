@@ -18,6 +18,7 @@ import {
 } from "../../../../store/actions/UserMangementModalActions";
 import { useDispatch } from "react-redux";
 import PaymentFailedModal from "../ModalsUserManagement/PaymentFailedModal/PaymentFailedModal";
+import { validateEmailEnglishAndArabicFormat } from "../../../../commen/functions/validations";
 const BillingMethodUsermanagement = () => {
   const { t } = useTranslation();
 
@@ -146,7 +147,8 @@ const BillingMethodUsermanagement = () => {
   const handleNext = () => {
     if (
       activeComponent === "billingContactDetails" &&
-      billingContactDetails.Email.value !== ""
+      billingContactDetails.Email.value !== "" &&
+      validateEmailEnglishAndArabicFormat(billingContactDetails.Email.value)
     ) {
       setEmailConditionMet(true);
       setActiveComponent("billingAddress");

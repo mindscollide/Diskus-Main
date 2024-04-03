@@ -13,8 +13,7 @@ const SignupProcessUserManagement = () => {
   let currentStage = Number(localStorage.getItem("signupCurrentPage"));
   const [isFreetrail, setFreetrail] = useState(false);
   const [currentPage, setCurrentPage] = useState(null);
-  console.log("location", location.state);
-  console.log("currentPage", currentStage);
+
   useEffect(() => {
     if (location.state !== null) {
       if (location.state?.freeTrail) {
