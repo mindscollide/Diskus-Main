@@ -135,23 +135,24 @@ const BillProcessStepThree = () => {
   ];
 
   const calculateTotals = (data) => {
-    // Calculate total licenses (which seems to be correctly calculated in your provided code).
     const totalLicenses = data.reduce(
       (acc, cur) => acc + (Number(cur.headCount) || 0),
       0
     );
 
-    // Calculate total yearly charges.
+    // Sum up the yearly charges directly, without multiplying by 12 for the total row.
     const totalYearlyCharges = data.reduce(
-      (acc, cur) => acc + (Number(cur.price) || 0) * cur.headCount * 12,
+      (acc, cur) => acc + cur.yearlyCharge,
       0
     );
+
+    console.log(totalYearlyCharges, "totalYearlyCharges");
 
     // Return an object with the totals that can be used as a row in your table.
     return {
       name: "Total",
       headCount: totalLicenses,
-      Yearlycharges: totalYearlyCharges.toLocaleString(), // Convert to a string with thousand separators.
+      Yearlycharges: totalYearlyCharges, // Format to string with thousand separators.
     };
   };
 
