@@ -686,6 +686,7 @@
   "Add-Members": "إضافة أعضاء",
   "Add-note": "اضف ملاحظة",
   "Archived": "مؤرشف",
+  "Archive": "Archive",
   "Created-on": "تم إنشاؤها على",
   "Are-you-sure-you-want-to-create": "هل أنت متأكد أنك تريد إنشاء",
   "this-note": "هذه المذكرة",
@@ -1691,7 +1692,7 @@
   "Agenda-builder": "Agenda Builder",
   "Agenda-viewer": "Agenda Viewer",
   "Agenda-contributor-updated": "Agenda Contributors Updated",
-  "Agenda-contributor-added": "Agenda Contributor's Added",
+  "Agenda-contributor-added": "Agenda Contributors Added",
   "Start-your-Free-Trial-now": "Start your free trial now",
   "Meeting-cannot-be-published-after-time-has-elapsed": "Meeting cannot be published after Time has elapsed",
   "Please-select-any-of-the-given-options": "Please select any of the given options",
@@ -1875,5 +1876,6 @@
   "Failed-to-save-subscriptions": "Failed To Save Subscriptions",
   "Manage-users": "Manage Users",
   "You-can-select-multiple-options": "You can select multiple options",
-  "Time-should-be-greater-then-system-time": "Time should be greater then the system time"
+  "Time-should-be-greater-then-system-time": "Time should be greater then the system time",
+  "Disable-video-call": "Disable video call"
 }

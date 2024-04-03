@@ -42,7 +42,7 @@ const Card = ({
   const { t } = useTranslation();
   const [editItems, setEditItems] = useState([
     { key: t("In-active"), value: 1 },
-    { key: t("Archived"), value: 2 },
+    { key: t("Archive"), value: 2 },
     { key: t("Active"), value: 3 },
   ]);
   const cardRef = useRef();

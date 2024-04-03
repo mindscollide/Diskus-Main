@@ -25,6 +25,9 @@ const initialState = {
   todoSaveFilesTodo: [],
   saveTodoDocuments: null,
   saveTaskandAssignees: null,
+  createTaskGroup: null,
+  createTaskCommittee: null,
+  createTaskMeeting: null,
 };
 
 const toDoListReducer = (state = initialState, action) => {
@@ -419,6 +422,24 @@ const toDoListReducer = (state = initialState, action) => {
         Loading: false,
         deleteComment: null,
         ResponseMessage: action.message,
+      };
+    }
+    case actions.TODO_CREATE_GROUP: {
+      return {
+        ...state,
+        createTaskGroup: action.response,
+      };
+    }
+    case actions.TODO_CREATE_COMMITTEE: {
+      return {
+        ...state,
+        createTaskCommittee: action.response,
+      };
+    }
+    case actions.TODO_CREATE_ADVANCED_MEETING: {
+      return {
+        ...state,
+        createTaskMeeting: action.response,
       };
     }
     default:

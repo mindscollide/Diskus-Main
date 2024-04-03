@@ -9,6 +9,7 @@ import {
   GetAllUsersGroupsRoomsList,
   GetGroupMessages,
   activeChat,
+  GetAllUserChats,
 } from "../../../store/actions/Talk_action";
 import {
   recentChatFlag,
@@ -453,6 +454,14 @@ const NewMeeting = () => {
         NumberOfMessages: 50,
         OffsetMessage: 0,
       };
+      dispatch(
+        GetAllUserChats(
+          navigate,
+          parseInt(currentUserId),
+          parseInt(currentOrganizationId),
+          t
+        )
+      );
       dispatch(GetGroupMessages(navigate, chatGroupData, t));
       dispatch(
         GetAllUsers(
@@ -577,6 +586,15 @@ const NewMeeting = () => {
           )
         );
 
+        dispatch(
+          GetAllUserChats(
+            navigate,
+            parseInt(currentUserId),
+            parseInt(currentOrganizationId),
+            t
+          )
+        );
+
         // setAdvanceMeetingModalID(id);
         // setViewAdvanceMeetingModal(true);
         // dispatch(viewAdvanceMeetingPublishPageFlag(true));
@@ -604,6 +622,14 @@ const NewMeeting = () => {
         dispatch(viewAdvanceMeetingPublishPageFlag(true));
         dispatch(scheduleMeetingPageFlag(false));
         localStorage.setItem("currentMeetingID", id);
+        dispatch(
+          GetAllUserChats(
+            navigate,
+            parseInt(currentUserId),
+            parseInt(currentOrganizationId),
+            t
+          )
+        );
       }
     }
   };
@@ -1592,7 +1618,7 @@ const NewMeeting = () => {
   }, [meetingIdReducer.MeetingStatusEnded, NewMeetingreducer]);
   useEffect(() => {
     if (
-      meetingIdReducer.allMeetingsSocketData !== [] &&
+      meetingIdReducer.allMeetingsSocketData.length !== 0 &&
       meetingIdReducer.allMeetingsSocketData !== null &&
       meetingIdReducer.allMeetingsSocketData !== undefined
     ) {
@@ -1804,6 +1830,8 @@ const NewMeeting = () => {
     }
     dispatch(meetingNotConductedMQTT(null));
   }, [NewMeetingreducer.meetingStatusNotConductedMqttData, rows]);
+
+  console.log("talkStateDatatalkStateData", talkStateData)
 
   return (
     <section className={styles["NewMeeting_container"]}>

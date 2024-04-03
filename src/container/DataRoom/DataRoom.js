@@ -2229,11 +2229,13 @@ const DataRoom = () => {
       sortDirections: ["descend", "ascend"],
       sortOrder: currentSort,
       render: (text, record) => {
-        return (
-          <span className={styles["dataroom_table_heading"]}>
-            {_justShowDateformat(text)}
-          </span>
-        );
+        if (text !== "") {
+          return (
+            <span className={styles["dataroom_table_heading"]}>
+              {_justShowDateformat(text)}
+            </span>
+          );
+        }
       },
     },
   ];

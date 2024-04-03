@@ -159,7 +159,6 @@ const Home = () => {
   const navigate = useNavigate();
   const [calenderData, setCalenderData] = useState([]);
   const [calendarEvents, setCalendarEvents] = useState([]);
-  console.log(calendarEvents, "calendarEventscalendarEventscalendarEvents");
   const [recentActivityData, setRecentActivityData] = useState([]);
   // get new date
   let date = new Date();
@@ -169,6 +168,10 @@ const Home = () => {
   let format = "YYYYMMDD";
 
   const [dates, setDates] = useState([]);
+  console.log(
+    { calendarEvents, calenderData, dates },
+    "calendarEventscalendarEventscalendarEvents"
+  );
 
   const [activateBlur, setActivateBlur] = useState(false);
 
@@ -343,12 +346,7 @@ const Home = () => {
               let date = startDateTimeMeetingCalendar(
                 cData.eventDate + cData.startTime
               );
-              setCalenderData((calendarData2) =>
-                calendarData2.filter(
-                  (meetingData) =>
-                    Number(meetingData.pK_MDID) !== Number(meetingID)
-                )
-              );
+
               console.log("cDatacDatacDatacData", meetingID, cData, newList);
               // Update Calendar Data
               return;
@@ -409,6 +407,11 @@ const Home = () => {
       updateCalendarData();
     }
   }, [calendarReducer.CalenderData]);
+
+  useEffect(() => {
+    if (NewMeetingreducer.meetingStatusPublishedMqttData !== null) {
+    }
+  }, [NewMeetingreducer.meetingStatusPublishedMqttData]);
 
   //  Update Meeting Status
   useEffect(() => {
@@ -557,6 +560,21 @@ const Home = () => {
       }
     } catch {}
   }, [meetingIdReducer.UpcomingEventsData]);
+  // Remove task from mqtt response
+  useEffect(() => {
+    try {
+      if (toDoListReducer.socketTodoStatusData !== null) {
+        let payloadData = toDoListReducer.socketTodoStatusData;
+        if (payloadData.todoStatusID === 6) {
+          setRowToDo((rowsData) => {
+            return rowsData.filter((newData, index) => {
+              return newData.pK_TID !== payloadData.todoid;
+            });
+          });
+        }
+      }
+    } catch {}
+  }, [toDoListReducer.socketTodoStatusData]);
 
   // render Notes Data
   useEffect(() => {
@@ -581,22 +599,36 @@ const Home = () => {
   }, [NotesReducer.GetAllNotesResponse]);
 
   useEffect(() => {
-    let dataToSort =
-      toDoListReducer.SocketTodoActivityData !== null &&
-      toDoListReducer.SocketTodoActivityData !== undefined
-        ? [toDoListReducer.SocketTodoActivityData, ...rowsToDo]
-        : [...rowsToDo];
+    try {
+      if (
+        toDoListReducer.SocketTodoActivityData !== null &&
+        toDoListReducer.SocketTodoActivityData !== undefined
+      ) {
+        if (
+          toDoListReducer.SocketTodoActivityData.comitteeID === -1 &&
+          toDoListReducer.SocketTodoActivityData.groupID === -1 &&
+          toDoListReducer.SocketTodoActivityData.meetingID === -1
+        ) {
+          let dataToSort = [
+            toDoListReducer.SocketTodoActivityData.todoList,
+            ...rowsToDo,
+          ];
 
-    const sortedTasks = dataToSort.sort((taskA, taskB) => {
-      const deadlineA = taskA?.deadlineDateTime;
-      const deadlineB = taskB?.deadlineDateTime;
+          const sortedTasks = dataToSort.sort((taskA, taskB) => {
+            const deadlineA = taskA?.deadlineDateTime;
+            const deadlineB = taskB?.deadlineDateTime;
 
-      // Compare the deadlineDateTime values as numbers for sorting
-      return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
-    });
+            // Compare the deadlineDateTime values as numbers for sorting
+            return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
+          });
 
-    setTotalRecordTodo(sortedTasks.length);
-    setRowToDo(sortedTasks.slice(0, 15));
+          setTotalRecordTodo(sortedTasks.length);
+          setRowToDo(sortedTasks.slice(0, 15));
+        }
+      }
+    } catch (error) {
+      console.log(error, "SocketTodoActivityDataSocketTodoActivityData");
+    }
   }, [toDoListReducer.SocketTodoActivityData]);
 
   useEffect(() => {
@@ -883,12 +915,12 @@ const Home = () => {
     Authreducer.GetSelectedPackageResponseMessage,
   ]);
 
-  const calendarClickFunction = async (value) => {
-    //
-    if (!dates.includes(value)) {
-      setDates([...dates, value]);
-    }
-  };
+  // const calendarClickFunction = async (value) => {
+  //   //
+  //   if (!dates.includes(value)) {
+  //     setDates([...dates, value]);
+  //   }
+  // };
 
   const closeModal = () => {
     setActivateBlur(false);
@@ -1474,7 +1506,7 @@ const Home = () => {
                                 handleClickonDate(dateFocused, dateClicked);
                               }}
                               multiple={false}
-                              onChange={calendarClickFunction}
+                              // onChange={calendarClickFunction}
                               className="custom-multi-date-picker"
                               onMonthChange={handleMonthChange}
                               currentDate={currentDateObject}

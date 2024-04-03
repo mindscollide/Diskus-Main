@@ -770,6 +770,7 @@
   "Group-title": "Group Title *",
   "Survey-polls": "Survey Polls",
   "Assign-remove-group": "Assign/Remove Group",
+  "Archive": "Archive",
   "Active": "Active",
   "Committee-title": "Committee Title",
   "Committee-title-Committee": "Committee Title *",
@@ -1730,7 +1731,7 @@
   "Agenda-builder": "Agenda Builder",
   "Agenda-viewer": "Agenda Viewer",
   "Agenda-contributor-updated": "Agenda Contributors Updated",
-  "Agenda-contributor-added": "Agenda Contributor's Added",
+  "Agenda-contributor-added": "Agenda Contributors Added",
   "Start-your-Free-Trial-now": "Start your free trial now",
   "Meeting-cannot-be-published-after-time-has-elapsed": "Meeting cannot be published after Time has elapsed",
   "Please-select-any-of-the-given-options": "Please select any of the given options",
@@ -1913,7 +1914,7 @@
   "Failed-to-add-organization-user-mapping": "Failed To Add Organization User Mapping",
   "Failed-to-create-admin-user": "Failed To Create Admin User",
   "Failed-to-save-subscriptions": "Failed To Save Subscriptions",
-  "You-can-select-multiple-options": "You can select multiple options",
   "Manage-users": "Manage Users",
-  "Time-should-be-greater-then-system-time": "Time should be greater then the system time"
+  "Time-should-be-greater-then-system-time": "Time should be greater then the system time",
+  "Disable-video-call": "Disable video call"
 }

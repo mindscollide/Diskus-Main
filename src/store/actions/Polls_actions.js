@@ -21,6 +21,7 @@ import {
   deleteGroupPollsRM,
   deleteCommitteePollRM,
 } from "../../commen/apis/Api_config";
+import { showunsavedEditPollsMeetings } from "./NewMeetingActions";
 import { pollApi, toDoListApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
@@ -849,6 +850,8 @@ const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
               )
             );
             setEditPolls(true);
+    dispatch(showunsavedEditPollsMeetings(false))
+
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
