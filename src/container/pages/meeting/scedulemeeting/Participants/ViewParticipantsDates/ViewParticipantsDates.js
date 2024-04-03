@@ -466,7 +466,7 @@ const ViewParticipantsDates = ({
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Prposed_On_Heading"]}>
                       {t("Send-response-by")}{" "}
-                      <span className={styles["Steric_Color"]}>*</span>
+                      {/* <span className={styles["Steric_Color"]}>*</span> */}
                     </span>
                   </Col>
                 </Row>

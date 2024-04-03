@@ -60,7 +60,7 @@ const FullScreenAgendaModal = ({
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
 
-  let currentMeeting = Number(localStorage.getItem("currentMeetingLS"));
+  let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
   let currentUserID = Number(localStorage.getItem("userID"));
   let currentOrganization = Number(localStorage.getItem("organizationID"));
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
@@ -249,7 +249,7 @@ const FullScreenAgendaModal = ({
               sm={12}
               className={styles["agendaViewerHeader"]}
             >
-              <p className={styles["FileModalTitle"]}>{t("Agenda-Viewer")}</p>
+              <p className={styles["FileModalTitle"]}>{t("Agenda-viewer")}</p>
 
               <Tooltip placement="topRight" title={t("unExpand")}>
                 <div

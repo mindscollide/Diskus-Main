@@ -70,8 +70,6 @@ const LanguageSelector = () => {
               ? t("English")
               : langValues.systemSupportedLanguageID === 2
               ? t("Arabic")
-              : langValues.systemSupportedLanguageID === 3
-              ? t("French")
               : "",
           systemSupportedLanguageID: langValues.systemSupportedLanguageID,
         });
@@ -97,8 +95,6 @@ const LanguageSelector = () => {
             ? "en"
             : LanguageReducer.SetLanguageData.systemSupportedLanguageID === 2
             ? "ar"
-            : LanguageReducer.SetLanguageData.systemSupportedLanguageID === 3
-            ? "fr"
             : "",
       });
     }
@@ -136,19 +132,20 @@ const LanguageSelector = () => {
         // window.location.reload()
         i18n.changeLanguage("ar");
       }, 100);
-    } else {
-      setSelectedLanguage({
-        languageTitle: "French",
-        systemSupportedLanguageID: 3,
-        code: "fr",
-      });
-      localStorage.setItem("i18nextLng", "fr");
-      moment.locale("fr");
-      setTimeout(() => {
-        // window.location.reload()
-        i18n.changeLanguage("fr");
-      }, 1000);
     }
+    //  else {
+    //   setSelectedLanguage({
+    //     languageTitle: "French",
+    //     systemSupportedLanguageID: 3,
+    //     code: "fr",
+    //   });
+    //   localStorage.setItem("i18nextLng", "fr");
+    //   moment.locale("fr");
+    //   setTimeout(() => {
+    //     // window.location.reload()
+    //     i18n.changeLanguage("fr");
+    //   }, 1000);
+    // }
   };
 
   const handleOutsideClick = (event) => {
@@ -171,9 +168,6 @@ const LanguageSelector = () => {
     if (currentLanguage === "ar") {
       document.body.dir = "rtl";
       i18n.changeLanguage("ar");
-    } else if (currentLanguage === "fr") {
-      document.body.dir = "ltr";
-      i18n.changeLanguage("fr");
     } else {
       document.body.dir = "ltr";
       i18n.changeLanguage("en");
@@ -215,8 +209,6 @@ const LanguageSelector = () => {
           ? t("EN")
           : currentLanguage === "ar"
           ? t("AR")
-          : currentLanguage === "fr"
-          ? t("FR")
           : t("EN")}
         {languageDropdown ? (
           <img

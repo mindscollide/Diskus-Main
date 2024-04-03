@@ -22,9 +22,10 @@ const SetLoaderFalse = () => {
   };
 };
 
-const SetSpinnerTrue = () => {
+const SetSpinnerTrue = (response) => {
   return {
     type: actions.SET_SPINNER_TRUE,
+    response: response,
   };
 };
 
@@ -265,13 +266,13 @@ const getWeeklyMeetingsCountFail = (message) => {
 };
 
 //Get Week meetings
-const GetWeeklyMeetingsCount = (navigate, id, t) => {
+const GetWeeklyMeetingsCount = (navigate, id, t, loader) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let Data = {
     UserId: parseInt(id),
   };
   return (dispatch) => {
-    dispatch(SetSpinnerTrue());
+    dispatch(SetSpinnerTrue(loader));
     let form = new FormData();
     form.append("RequestMethod", getWeekMeetings.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
@@ -361,10 +362,10 @@ const getUpcomingEventsFail = (response) => {
 };
 
 //Get Week meetings
-const GetUpcomingEvents = (navigate, data, t) => {
+const GetUpcomingEvents = (navigate, data, t, loader) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
-    dispatch(SetSpinnerTrue());
+    dispatch(SetSpinnerTrue(loader));
     let form = new FormData();
     form.append("RequestMethod", upcomingEvents.RequestMethod);
     form.append("RequestData", JSON.stringify(data));

@@ -24,6 +24,8 @@ import {
   proposeNewMeetingPageFlag,
   viewMeetingFlag,
   uploadGlobalFlag,
+  LeaveCurrentMeeting,
+  currentMeetingStatus,
 } from "../../../store/actions/NewMeetingActions";
 import {
   getUserDetails,
@@ -45,6 +47,7 @@ import {
   showUpgradeNowModal,
 } from "../../../store/actions/UserMangementModalActions.js";
 import RequestExtensionModal from "../../../container/pages/UserMangement/ModalsUserManagement/RequestExtentionModal/RequestExtensionModal.js";
+import { getCurrentDateTimeUTC } from "../../../commen/functions/date_formater.js";
 
 const Header2 = () => {
   const location = useLocation();
@@ -73,6 +76,13 @@ const Header2 = () => {
   let Blur = localStorage.getItem("blur");
 
   let currentLanguage = localStorage.getItem("i18nextLng");
+
+  let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
+
+  const CurrentMeetingStatus = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingStatus
+  );
+
   const [show, setShow] = useState(false);
   const { t } = useTranslation();
 
@@ -171,6 +181,14 @@ const Header2 = () => {
       dispatch(viewProposeOrganizerMeetingPageFlag(false));
       dispatch(proposeNewMeetingPageFlag(false));
       dispatch(viewMeetingFlag(false));
+      let Data = {
+        FK_MDID: currentMeeting,
+        DateTime: getCurrentDateTimeUTC(),
+      };
+      if (CurrentMeetingStatus === 10) {
+        dispatch(LeaveCurrentMeeting(navigate, t, Data));
+        dispatch(currentMeetingStatus(0));
+      }
     }
   };
 
@@ -196,6 +214,14 @@ const Header2 = () => {
         dispatch(viewProposeOrganizerMeetingPageFlag(false));
         dispatch(proposeNewMeetingPageFlag(false));
         dispatch(viewMeetingFlag(false));
+        let Data = {
+          FK_MDID: currentMeeting,
+          DateTime: getCurrentDateTimeUTC(),
+        };
+        if (CurrentMeetingStatus === 10) {
+          dispatch(LeaveCurrentMeeting(navigate, t, Data));
+          dispatch(currentMeetingStatus(0));
+        }
       }
     }
   };
@@ -222,6 +248,14 @@ const Header2 = () => {
         dispatch(viewProposeOrganizerMeetingPageFlag(false));
         dispatch(proposeNewMeetingPageFlag(false));
         dispatch(viewMeetingFlag(false));
+        let Data = {
+          FK_MDID: currentMeeting,
+          DateTime: getCurrentDateTimeUTC(),
+        };
+        if (CurrentMeetingStatus === 10) {
+          dispatch(LeaveCurrentMeeting(navigate, t, Data));
+          dispatch(currentMeetingStatus(0));
+        }
       }
     }
   };
@@ -248,6 +282,14 @@ const Header2 = () => {
         dispatch(viewProposeOrganizerMeetingPageFlag(false));
         dispatch(proposeNewMeetingPageFlag(false));
         dispatch(viewMeetingFlag(false));
+        let Data = {
+          FK_MDID: currentMeeting,
+          DateTime: getCurrentDateTimeUTC(),
+        };
+        if (CurrentMeetingStatus === 10) {
+          dispatch(LeaveCurrentMeeting(navigate, t, Data));
+          dispatch(currentMeetingStatus(0));
+        }
       }
     }
   };
@@ -260,7 +302,7 @@ const Header2 = () => {
     dispatch(showRequestExtentionModal(true));
   };
   const openAdminTab = () => {
-    window.open(window.location.origin + '/#/Diskus/Admin', '_blank');
+    window.open(window.location.origin + "/#/Diskus/Admin", "_blank");
   };
   openAdminTab;
   return (

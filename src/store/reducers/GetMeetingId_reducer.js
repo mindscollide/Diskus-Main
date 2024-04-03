@@ -29,7 +29,7 @@ const meetingIdReducer = (state = initialState, action) => {
       return { ...state, Loading: false };
 
     case actions.SET_SPINNER_TRUE:
-      return { ...state, Spinner: true };
+      return { ...state, Spinner: action.response };
 
     case actions.SET_SPINNER_FALSE:
       return { ...state, Spinner: false };
@@ -176,10 +176,13 @@ const meetingIdReducer = (state = initialState, action) => {
     }
     case actions.UPCOMINGEVENTS_MQTT: {
       let newEvent = [...state.UpcomingEventsData];
-      if (Object.keys(state.UpcomingEventsData).length > 0) {
+      if (Array.isArray(state.UpcomingEventsData)) {
         if (Object.keys(action.response).length > 0) {
           newEvent.unshift(action.response);
         }
+      } else {
+        // Initialize UpcomingEventsData as an empty array if it's not already
+        newEvent = [];
       }
 
       return {
@@ -188,6 +191,7 @@ const meetingIdReducer = (state = initialState, action) => {
         MQTTUpcomingEvents: action.response,
       };
     }
+
     case actions.HIDE: {
       return {
         ...state,

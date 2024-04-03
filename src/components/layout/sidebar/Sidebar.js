@@ -26,9 +26,13 @@ import {
   pollsGlobalFlag,
   attendanceGlobalFlag,
   uploadGlobalFlag,
+  LeaveCurrentMeetingOtherMenus,
+  LeaveCurrentMeeting,
+  currentMeetingStatus
 } from "../../../store/actions/NewMeetingActions";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { showCancelModalmeetingDeitals } from "../../../store/actions/NewMeetingActions";
+import { getCurrentDateTimeUTC } from "../../../commen/functions/date_formater";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -36,6 +40,11 @@ const Sidebar = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { NewMeetingreducer } = useSelector((state) => state);
+
+  const CurrentMeetingStatus = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingStatus
+  );
+
   const [activateBlur, setActivateBlur] = useState(false);
   const [showMore, setShowMore] = useState(false);
   let Blur = localStorage.getItem("blur");
@@ -43,6 +52,7 @@ const Sidebar = () => {
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let userID = localStorage.getItem("userID");
+  let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
 
   const [meetingNavigation, setMeetingNavigation] = useState("Meeting");
   const [todoListNavigation, setTodoListNavigation] = useState("todolist");
@@ -104,6 +114,14 @@ const Sidebar = () => {
       dispatch(viewProposeOrganizerMeetingPageFlag(false));
       dispatch(proposeNewMeetingPageFlag(false));
       dispatch(viewMeetingFlag(false));
+      let Data = {
+        FK_MDID: currentMeeting,
+        DateTime: getCurrentDateTimeUTC(),
+      };
+      if (CurrentMeetingStatus === 10) {
+        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
+        dispatch(currentMeetingStatus(0));
+      }
       if (
         (NewMeetingreducer.scheduleMeetingPageFlag === true ||
           NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
@@ -186,6 +204,14 @@ const Sidebar = () => {
       dispatch(viewProposeOrganizerMeetingPageFlag(false));
       dispatch(proposeNewMeetingPageFlag(false));
       dispatch(viewMeetingFlag(false));
+      let Data = {
+        FK_MDID: currentMeeting,
+        DateTime: getCurrentDateTimeUTC(),
+      };
+      if (CurrentMeetingStatus === 10) {
+        dispatch(LeaveCurrentMeeting(navigate, t, Data));
+        dispatch(currentMeetingStatus(0));
+      }
     }
     // navigate(`/${todoListNavigation}`);
   };
@@ -215,6 +241,14 @@ const Sidebar = () => {
       dispatch(viewProposeOrganizerMeetingPageFlag(false));
       dispatch(proposeNewMeetingPageFlag(false));
       dispatch(viewMeetingFlag(false));
+      let Data = {
+        FK_MDID: currentMeeting,
+        DateTime: getCurrentDateTimeUTC(),
+      };
+      if (CurrentMeetingStatus === 10) {
+        dispatch(LeaveCurrentMeeting(navigate, t, Data));
+        dispatch(currentMeetingStatus(0));
+      }
     }
     // navigate(`/${calendarNavigation}`);
   };
@@ -244,6 +278,14 @@ const Sidebar = () => {
       dispatch(viewProposeOrganizerMeetingPageFlag(false));
       dispatch(proposeNewMeetingPageFlag(false));
       dispatch(viewMeetingFlag(false));
+      let Data = {
+        FK_MDID: currentMeeting,
+        DateTime: getCurrentDateTimeUTC(),
+      };
+      if (CurrentMeetingStatus === 10) {
+        dispatch(LeaveCurrentMeeting(navigate, t, Data));
+        dispatch(currentMeetingStatus(0));
+      }
     }
     // navigate(`/${notesNavigation}`);
   };

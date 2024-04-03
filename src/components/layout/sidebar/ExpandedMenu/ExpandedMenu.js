@@ -23,6 +23,8 @@ import {
   proposeNewMeetingPageFlag,
   viewMeetingFlag,
   uploadGlobalFlag,
+  LeaveCurrentMeeting,
+  currentMeetingStatus
 } from "../../../../store/actions/NewMeetingActions";
 import {
   createCommitteePageFlag,
@@ -36,6 +38,7 @@ import {
   createResolutionModal,
   viewResolutionModal,
 } from "../../../../store/actions/Resolution_actions";
+import { getCurrentDateTimeUTC } from "../../../../commen/functions/date_formater";
 
 const ExpandedMenu = () => {
   const location = useLocation();
@@ -49,6 +52,12 @@ const ExpandedMenu = () => {
   const [resolutionNavigation, setResolutionNavigation] =
     useState("resolution");
   const [pollNavigation, setPollNavigation] = useState("polling");
+
+  let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
+
+  const CurrentMeetingStatus = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingStatus
+  );
 
   // //Dataroom Sidebar Click
   const handleMeetingSidebarDataroom = () => {
@@ -75,6 +84,14 @@ const ExpandedMenu = () => {
       dispatch(viewProposeOrganizerMeetingPageFlag(false));
       dispatch(proposeNewMeetingPageFlag(false));
       dispatch(viewMeetingFlag(false));
+      let Data = {
+        FK_MDID: currentMeeting,
+        DateTime: getCurrentDateTimeUTC(),
+      };
+      if (CurrentMeetingStatus === 10) {
+        dispatch(LeaveCurrentMeeting(navigate, t, Data));
+        dispatch(currentMeetingStatus(0));
+      }
     }
     // navigate(`/${dataroomNavigation}`);
   };
@@ -107,6 +124,14 @@ const ExpandedMenu = () => {
       dispatch(viewProposeOrganizerMeetingPageFlag(false));
       dispatch(proposeNewMeetingPageFlag(false));
       dispatch(viewMeetingFlag(false));
+      let Data = {
+        FK_MDID: currentMeeting,
+        DateTime: getCurrentDateTimeUTC(),
+      };
+      if (CurrentMeetingStatus === 10) {
+        dispatch(LeaveCurrentMeeting(navigate, t, Data));
+        dispatch(currentMeetingStatus(0));
+      }
     }
     // navigate(`/${groupNavigation}`);
   };
@@ -139,6 +164,14 @@ const ExpandedMenu = () => {
       dispatch(viewProposeOrganizerMeetingPageFlag(false));
       dispatch(proposeNewMeetingPageFlag(false));
       dispatch(viewMeetingFlag(false));
+      let Data = {
+        FK_MDID: currentMeeting,
+        DateTime: getCurrentDateTimeUTC(),
+      };
+      if (CurrentMeetingStatus === 10) {
+        dispatch(LeaveCurrentMeeting(navigate, t, Data));
+        dispatch(currentMeetingStatus(0));
+      }
     }
     // navigate(`/${committeeNavigation}`);
   };
@@ -173,6 +206,14 @@ const ExpandedMenu = () => {
       dispatch(viewProposeOrganizerMeetingPageFlag(false));
       dispatch(proposeNewMeetingPageFlag(false));
       dispatch(viewMeetingFlag(false));
+      let Data = {
+        FK_MDID: currentMeeting,
+        DateTime: getCurrentDateTimeUTC(),
+      };
+      if (CurrentMeetingStatus === 10) {
+        dispatch(LeaveCurrentMeeting(navigate, t, Data));
+        dispatch(currentMeetingStatus(0));
+      }
     }
     // navigate(`/${resolutionNavigation}`);
   };
@@ -202,6 +243,14 @@ const ExpandedMenu = () => {
       dispatch(viewProposeOrganizerMeetingPageFlag(false));
       dispatch(proposeNewMeetingPageFlag(false));
       dispatch(viewMeetingFlag(false));
+      let Data = {
+        FK_MDID: currentMeeting,
+        DateTime: getCurrentDateTimeUTC(),
+      };
+      if (CurrentMeetingStatus === 10) {
+        dispatch(LeaveCurrentMeeting(navigate, t, Data));
+        dispatch(currentMeetingStatus(0));
+      }
     }
     // navigate(`/${pollNavigation}`);
   };
