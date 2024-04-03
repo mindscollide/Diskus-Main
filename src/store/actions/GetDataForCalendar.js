@@ -31,72 +31,95 @@ const getCalendarDataFail = (message) => {
   };
 };
 
+const clearCalendarState = () => {
+  return {
+    type: actions.CLEAR_CALENDAR_STATE,
+  };
+};
+const calendarLoader = (payload) => {
+  return {
+    type: actions.CALENDAR_LOADER,
+    payload: payload,
+  };
+};
 const getCalendarDataResponse = (navigate, t, data, flag) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
-    dispatch(getCalendarDataInit(flag));
-    let form = new FormData();
-    form.append("RequestMethod", calendarDataRequest.RequestMethod);
-    form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: getCalender,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(getCalendarDataResponse(navigate, t, data, flag));
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Calender_CalenderServiceManager_GetCalenderList_01".toLowerCase()
-                )
-            ) {
-              await dispatch(
-                getCalendarDataSuccess(
-                  response.data.responseResult,
-                  false,
-                  t("Record-found")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Calender_CalenderServiceManager_GetCalenderList_02".toLowerCase()
-                )
-            ) {
-              await dispatch(getCalendarDataFail(t("No-records-found")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Calender_CalenderServiceManager_GetCalenderList_03".toLowerCase()
-                )
-            ) {
-              await dispatch(getCalendarDataFail(t("Something-went-wrong")));
+    try {
+      dispatch(getCalendarDataInit(flag));
+      dispatch(calendarLoader(true));
+      let form = new FormData();
+      form.append("RequestMethod", calendarDataRequest.RequestMethod);
+      form.append("RequestData", JSON.stringify(data));
+      axios({
+        method: "post",
+        url: getCalender,
+        data: form,
+        headers: {
+          _token: token,
+        },
+      })
+        .then(async (response) => {
+          if (response.data.responseCode === 417) {
+            await dispatch(RefreshToken(navigate, t));
+            dispatch(getCalendarDataResponse(navigate, t, data, flag));
+          } else if (response.data.responseCode === 200) {
+            if (response.data.responseResult.isExecuted === true) {
+              if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "Calender_CalenderServiceManager_GetCalenderList_01".toLowerCase()
+                  )
+              ) {
+                await dispatch(
+                  getCalendarDataSuccess(
+                    response.data.responseResult,
+                    false,
+                    t("Record-found")
+                  )
+                );
+                dispatch(calendarLoader(false));
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "Calender_CalenderServiceManager_GetCalenderList_02".toLowerCase()
+                  )
+              ) {
+                await dispatch(getCalendarDataFail(t("No-records-found")));
+                dispatch(calendarLoader(false));
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "Calender_CalenderServiceManager_GetCalenderList_03".toLowerCase()
+                  )
+              ) {
+                await dispatch(getCalendarDataFail(t("Something-went-wrong")));
+                dispatch(calendarLoader(false));
+              } else {
+                await dispatch(getCalendarDataFail(t("Something-went-wrong")));
+                dispatch(calendarLoader(false));
+              }
+
+              //   dispatch(SetLoaderFalse());
             } else {
               await dispatch(getCalendarDataFail(t("Something-went-wrong")));
+              dispatch(calendarLoader(false));
             }
-
-            //   dispatch(SetLoaderFalse());
           } else {
             await dispatch(getCalendarDataFail(t("Something-went-wrong")));
+            dispatch(calendarLoader(false));
           }
-        } else {
-          await dispatch(getCalendarDataFail(t("Something-went-wrong")));
-        }
-      })
-      .catch((response) => {
-        dispatch(getCalendarDataFail(t("Something-went-wrong")));
-      });
+        })
+        .catch((response) => {
+          dispatch(getCalendarDataFail(t("Something-went-wrong")));
+          dispatch(calendarLoader(false));
+        });
+    } catch (error) {
+      console.log(error, "errorerrorerrorerrorerror");
+    }
   };
 };
 
@@ -127,8 +150,8 @@ const getEventsType_fail = (message) => {
 const getEventsTypes = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
-  return (dispatch) => {
-    dispatch(getEventsType_init());
+  return async (dispatch) => {
+    await dispatch(getEventsType_init());
     let form = new FormData();
     form.append("RequestMethod", getEventsTypeRM.RequestMethod);
     axios({
@@ -152,7 +175,7 @@ const getEventsTypes = (navigate, t) => {
                   "Calender_CalenderServiceManager_GetAllEventTypes_01".toLowerCase()
                 )
             ) {
-              dispatch(
+              await dispatch(
                 getEventsType_success(
                   response.data.responseResult.eventTypes,
                   t("Data-available")
@@ -283,4 +306,5 @@ export {
   getCalendarDataInit,
   getEventsTypes,
   getEventsDetails,
+  clearCalendarState,
 };

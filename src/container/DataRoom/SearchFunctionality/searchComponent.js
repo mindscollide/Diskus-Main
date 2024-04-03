@@ -76,6 +76,8 @@ const SearchComponent = ({
   let userID = localStorage.getItem("userID");
   let lang = localStorage.getItem("i18nextLng");
   let organizationID = localStorage.getItem("organizationID");
+
+  console.log({ searchDataFields }, "searchDataFields");
   // these are search columns
   const searchColumns = [
     {

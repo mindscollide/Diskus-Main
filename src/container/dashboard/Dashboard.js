@@ -61,6 +61,9 @@ import Helper from "../../commen/functions/history_logout";
 import IconMetroAttachment from "../../assets/images/newElements/Icon metro-attachment.svg";
 // import io from "socket.io-client";
 import {
+  createTaskCommitteeMQTT,
+  createTaskGroupMQTT,
+  createTaskMeetingMQTT,
   setTodoListActivityData,
   setTodoStatusDataFormSocket,
   TodoCounter,
@@ -151,7 +154,7 @@ const Dashboard = () => {
     SignatureWorkFlowReducer,
   } = useSelector((state) => state);
   // const [socket, setSocket] = useState(Helper.socket);
-  console.log(Authreducer, "AuthreducerAuthreducerAuthreducer");
+
   const navigate = useNavigate();
   let createrID = localStorage.getItem("userID");
   let currentOrganization = localStorage.getItem("organizationID");
@@ -227,7 +230,7 @@ const Dashboard = () => {
             //     ),
             //   });
             // }
-            console.log("Meeting AC Added");
+
             dispatch(meetingAgendaContributorAdded(data.payload));
             setNotificationID(id);
           } else if (
@@ -246,7 +249,7 @@ const Dashboard = () => {
                 ),
               });
             }
-            console.log("Meeting AC Removed");
+
             dispatch(meetingAgendaContributorRemoved(data.payload));
             setNotificationID(id);
           } else if (
@@ -464,7 +467,6 @@ const Dashboard = () => {
             data.payload.message.toLowerCase() ===
             "MEETING_STATUS_EDITED_PUBLISHED".toLowerCase()
           ) {
-            console.log("MEETING_STATUS_EDITED_PUBLISHED", data.payload);
             dispatch(meetingStatusPublishedMqtt(data.payload.meeting));
             if (data.viewable) {
               setNotification({
@@ -526,7 +528,7 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "NEW_TODO_CREATION".toLowerCase()
         ) {
-          dispatch(setTodoListActivityData(data.payload.todoList));
+          dispatch(setTodoListActivityData(data.payload));
           if (data.viewable) {
             setNotification({
               notificationShow: true,
@@ -595,6 +597,57 @@ const Dashboard = () => {
             });
           }
           dispatch(deleteCommentsMQTT(data.payload));
+          setNotificationID(id);
+        } else if (
+          data.payload.message
+            .toLowerCase()
+            .includes("NEW_ADVANCE_MEETING_TODO".toLowerCase())
+        ) {
+          dispatch(createTaskMeetingMQTT(data.payload));
+          if (data.viewable) {
+            setNotification({
+              notificationShow: true,
+              message: changeMQTTJSONOne(
+                t("NEW_TODO_CREATION"),
+                "[Task Title]",
+                data.payload.todoTitle.substring(0, 100)
+              ),
+            });
+          }
+          setNotificationID(id);
+        } else if (
+          data.payload.message
+            .toLowerCase()
+            .includes("NEW_GROUP_TODO".toLowerCase())
+        ) {
+          dispatch(createTaskGroupMQTT(data.payload));
+          if (data.viewable) {
+            setNotification({
+              notificationShow: true,
+              message: changeMQTTJSONOne(
+                t("NEW_TODO_CREATION"),
+                "[Task Title]",
+                data.payload.todoTitle.substring(0, 100)
+              ),
+            });
+          }
+          setNotificationID(id);
+        } else if (
+          data.payload.message
+            .toLowerCase()
+            .includes("NEW_COMMITTEE_TODO".toLowerCase())
+        ) {
+          dispatch(createTaskCommitteeMQTT(data.payload));
+          if (data.viewable) {
+            setNotification({
+              notificationShow: true,
+              message: changeMQTTJSONOne(
+                t("NEW_TODO_CREATION"),
+                "[Task Title]",
+                data.payload.todoTitle.substring(0, 100)
+              ),
+            });
+          }
           setNotificationID(id);
         }
       }
@@ -1719,9 +1772,7 @@ const Dashboard = () => {
           dispatch(setRecentActivityDataNotification(data2));
         }
       }
-    } catch (error) {
-      console.log("errorerrorerror", error);
-    }
+    } catch (error) {}
   };
 
   const onConnectionLost = () => {

@@ -554,7 +554,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
                     <DatePicker
                       value={meetingDate}
                       format={"DD/MM/YYYY"}
-                      // minDate={moment().}
+                      minDate={new Date()}
                       placeholder="DD/MM/YYYY"
                       render={
                         <InputIcon

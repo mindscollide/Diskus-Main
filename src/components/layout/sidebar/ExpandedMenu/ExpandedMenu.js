@@ -24,6 +24,7 @@ import {
   viewMeetingFlag,
   uploadGlobalFlag,
   LeaveCurrentMeeting,
+  currentMeetingStatus
 } from "../../../../store/actions/NewMeetingActions";
 import {
   createCommitteePageFlag,
@@ -89,6 +90,7 @@ const ExpandedMenu = () => {
       };
       if (CurrentMeetingStatus === 10) {
         dispatch(LeaveCurrentMeeting(navigate, t, Data));
+        dispatch(currentMeetingStatus(0));
       }
     }
     // navigate(`/${dataroomNavigation}`);
@@ -128,6 +130,7 @@ const ExpandedMenu = () => {
       };
       if (CurrentMeetingStatus === 10) {
         dispatch(LeaveCurrentMeeting(navigate, t, Data));
+        dispatch(currentMeetingStatus(0));
       }
     }
     // navigate(`/${groupNavigation}`);
@@ -167,6 +170,7 @@ const ExpandedMenu = () => {
       };
       if (CurrentMeetingStatus === 10) {
         dispatch(LeaveCurrentMeeting(navigate, t, Data));
+        dispatch(currentMeetingStatus(0));
       }
     }
     // navigate(`/${committeeNavigation}`);
@@ -208,6 +212,7 @@ const ExpandedMenu = () => {
       };
       if (CurrentMeetingStatus === 10) {
         dispatch(LeaveCurrentMeeting(navigate, t, Data));
+        dispatch(currentMeetingStatus(0));
       }
     }
     // navigate(`/${resolutionNavigation}`);
@@ -244,6 +249,7 @@ const ExpandedMenu = () => {
       };
       if (CurrentMeetingStatus === 10) {
         dispatch(LeaveCurrentMeeting(navigate, t, Data));
+        dispatch(currentMeetingStatus(0));
       }
     }
     // navigate(`/${pollNavigation}`);

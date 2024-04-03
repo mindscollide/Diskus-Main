@@ -47,7 +47,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const [isCreateTodo, setIsCreateTodo] = useState(true);
   const [fileForSend, setFileForSend] = useState([]);
   const [createTodoTime, setCreateTodoTime] = useState("");
-  const [createTodoDate, setCreateTodoDate] = useState("");
+  const [createTodoDate, setCreateTodoDate] = useState(current_Date);
 
   const state = useSelector((state) => state);
 
@@ -63,7 +63,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     flag: false,
     message: "",
   });
-  const [toDoDate, setToDoDate] = useState("");
+  const [toDoDate, setToDoDate] = useState(current_value);
 
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -128,20 +128,40 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //To Set task Creater ID
   useEffect(() => {
-    setTaskCreatorID(parseInt(createrID));
-    setTask({
-      ...task,
-      DeadLineDate: current_Date,
-      DeadLineTime: currentTime,
-      CreationDateTime: "",
-      timeforView: dateObject,
-    });
-    setCreateTodoDate(current_Date);
-    setToDoDate(current_value);
-    return () => {
-      setCloseConfirmationBox(false);
-      setIsCreateTodo(true);
-    };
+    try {
+      setTask({
+        ...task,
+        DeadLineDate: current_Date,
+        DeadLineTime: currentTime,
+        CreationDateTime: "",
+        timeforView: dateObject,
+      });
+      setCreateTodoDate(current_Date);
+      setToDoDate(current_value);
+      setTaskCreatorID(parseInt(createrID));
+
+      return () => {
+        setCloseConfirmationBox(false);
+        setIsCreateTodo(true);
+        setTask({
+          ...task,
+          PK_TID: 1,
+          Title: "",
+          Description: "",
+          IsMainTask: true,
+          DeadLineDate: "",
+          DeadLineTime: "",
+          CreationDateTime: "",
+        });
+        setCreateTodoDate("");
+        setTaskAssignedTo([]);
+        setTaskAssignedName([]);
+        setToDoDate("");
+        setAssignees([]);
+        setFileForSend([]);
+        setTasksAttachments({ TasksAttachments: [] });
+      };
+    } catch {}
   }, []);
 
   //To Set task Creater ID
@@ -350,92 +370,73 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //To Set task Creater ID
   useEffect(() => {
-    let data = [...toDoListReducer.AllAssigneesData];
-    if (
-      data !== undefined &&
-      data !== null &&
-      data.length !== 0 &&
-      Object(data).length > 0
-    ) {
-      const filterData = data.filter(
-        (obj) => parseInt(obj.pK_UID) !== parseInt(createrID)
-      );
-      setTaskAssigneeApiData(filterData);
-
-      let PresenterData = [];
-      data.forEach((user, index) => {
-        PresenterData.push({
-          label: (
-            <>
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex gap-2 align-items-center"
-                >
-                  <img
-                    src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
-                    height="16.45px"
-                    width="18.32px"
-                    draggable="false"
-                    alt=""
-                  />
-                  <span>{user.name}</span>
-                </Col>
-              </Row>
-            </>
-          ),
-          value: user.pK_UID,
-          name: user.name,
+    try {
+      if (
+        GroupsReducer.getGroupByGroupIdResponse !== null &&
+        GroupsReducer.getGroupByGroupIdResponse !== undefined
+      ) {
+        let getUserDetails =
+          GroupsReducer.getGroupByGroupIdResponse.groupMembers;
+        let PresenterData = [];
+        getUserDetails.forEach((user, index) => {
+          PresenterData.push({
+            label: (
+              <>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex gap-2 align-items-center"
+                  >
+                    <img
+                      src={`data:image/jpeg;base64,${user.userProfilePicture.displayProfilePictureName}`}
+                      height="16.45px"
+                      width="18.32px"
+                      draggable="false"
+                      alt=""
+                    />
+                    <span>{user.userName}</span>
+                  </Col>
+                </Row>
+              </>
+            ),
+            value: user.pK_UID,
+            name: user.userName,
+          });
+          if (Number(user.pK_UID) === Number(createrID)) {
+            setTaskAssignedTo([user.pK_UID]);
+            setPresenterValue({
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={`data:image/jpeg;base64,${user.userProfilePicture.displayProfilePictureName}`}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
+                      />
+                      <span>{user.userName}</span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              value: user.pK_UID,
+              name: user.userName,
+            });
+          }
         });
-      });
-      setAllPresenters(PresenterData);
-    }
-  }, [toDoListReducer.AllAssigneesData]);
-
-  //Input Field Assignee Change
-  // const onChangeSearch = (e) => {
-  //   setTaskAssignedToInput(e.target.value.trimStart());
-  // };
-
-  //Drop Down Values
-  // const searchFilterHandler = (value) => {
-  //   let getUserDetails = GroupsReducer?.getGroupByGroupIdResponse?.groupMembers;
-
-  //   if (
-  //     getUserDetails !== undefined &&
-  //     getUserDetails !== null &&
-  //     getUserDetails.length > 0
-  //   ) {
-  //     return getUserDetails
-  //       .filter((item) => {
-  //         const searchTerm = value.toLowerCase();
-  //         const assigneesName = item.userName.toLowerCase();
-
-  //         return (
-  //           searchTerm && assigneesName.startsWith(searchTerm)
-  //           // assigneesName !== searchTerm.toLowerCase()
-  //         );
-  //       })
-  //       .slice(0, 10)
-  //       .map((item) => (
-  //         <div
-  //           onClick={() => onSearch(item.userName, item.pK_UID, item)}
-  //           className="dropdown-row-assignee d-flex align-items-center flex-row"
-  //           key={item.pK_UID}
-  //         >
-  //           <img
-  //             src={`data:image/jpeg;base64,${item?.userProfilePicture?.displayProfilePictureName}`}
-  //             alt=""
-  //             className="user-img"
-  //           />
-  //           <p className="p-0 m-0">{item.userName}</p>
-  //         </div>
-  //       ));
-  //   } else {
-  //   }
-  // };
+        setAllPresenters(PresenterData);
+      }
+    } catch {}
+  }, [GroupsReducer.getGroupByGroupIdResponse]);
 
   const toDoDateHandler = (date, format = "YYYYMMDD") => {
     let toDoDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
@@ -521,23 +522,26 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     try {
       let newfile = [];
       let newFolder = [];
-      const uploadPromises = fileForSend.map(async (newData) => {
+      if (fileForSend.length > 0) {
+        const uploadPromises = fileForSend.map(async (newData) => {
+          await dispatch(
+            uploadDocumentsTaskApi(
+              navigate,
+              t,
+              newData,
+              folderID,
+              // newFolder,
+              newfile
+            )
+          );
+        });
+        // Wait for all promises to resolve
+        await Promise.all(uploadPromises); //till here the files get upload
         await dispatch(
-          uploadDocumentsTaskApi(
-            navigate,
-            t,
-            newData,
-            folderID,
-            // newFolder,
-            newfile
-          )
+          saveFilesTaskApi(navigate, t, newfile, folderID, newFolder)
         );
-      });
-      // Wait for all promises to resolve
-      await Promise.all(uploadPromises); //till here the files get upload
-      await dispatch(
-        saveFilesTaskApi(navigate, t, newfile, folderID, newFolder)
-      );
+      }
+
       console.log(newFolder, "newFoldernewFoldernewFolder");
       let newAttachmentData = newFolder.map((data, index) => {
         console.log(data, "newFoldernewFoldernewFolder");
@@ -560,24 +564,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       await dispatch(
         saveTaskDocumentsAndAssigneesApi(navigate, Data, t, 3, setShow)
       );
-      setTask({
-        ...task,
-        PK_TID: 1,
-        Title: "",
-        Description: "",
-        IsMainTask: true,
-        DeadLineDate: "",
-        DeadLineTime: "",
-        CreationDateTime: "",
-      });
-      setCreateTodoDate("");
-      setCreateTodoTime("");
-      setTaskAssignedTo([]);
-      setTaskAssignedName([]);
-      setToDoDate("");
-      setAssignees([]);
-      setFileForSend([]);
-      setTasksAttachments({ TasksAttachments: [] });
     } catch (error) {
       console.log(error, "errorerrorerrorerrorerror");
     }
@@ -637,8 +623,9 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //Selecter Assignee onChange
 
   const onChangeSearch = (item) => {
+    console.log(item, "itemitemitem");
     setPresenterValue(item);
-    setTaskCreatorID(item.value);
+    setTaskAssignedTo([item.value]);
   };
 
   //Searchable Filter

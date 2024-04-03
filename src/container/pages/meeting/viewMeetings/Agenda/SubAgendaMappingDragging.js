@@ -631,7 +631,7 @@ const SubAgendaMappingDragging = ({
                                                               timeFormatFunction(
                                                                 data.endDate
                                                               )
-                                                            ).format("hh:mm a")
+                                                            ).format("hh:mm a")+")"
                                                           // moment(
                                                           //   subAgendaData?.endDate,
                                                           //   "HHmmss"
