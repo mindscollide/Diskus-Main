@@ -100,6 +100,8 @@ import {
   optionsforFolderEditor,
   optionsforFolder,
   optionsforPDFandSignatureFlow,
+  optionShareTabForViewerRole,
+  optionShareTabForEditorRole,
 } from "./SearchFunctionality/option";
 import { allAssignessList } from "../../store/actions/Get_List_Of_Assignees";
 import axios from "axios";
@@ -650,6 +652,95 @@ const DataRoom = () => {
     }
   };
   //
+
+  const dataroomOptionsHandler = (data, record, pdfDataJson) => {
+    if (data.value === 1) {
+      // Open File
+      // Open on Apryse
+      let ext = record.name.split(".").pop();
+      if (ext === "pdf") {
+        window.open(
+          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+          "_blank",
+          "noopener noreferrer"
+        );
+      }
+    } else if (data.value === 2) {
+      // Share File or Folder
+      if (record.isFolder) {
+        showShareFolderModal(record.id, record.name);
+      } else {
+        // Share File Modal
+        showShareFileModal(record.id, record.name);
+      }
+    } else if (data.value === 3) {
+      // Rename file or folder
+      if (record.isFolder) {
+        setShowreanmemodal(true);
+        setRenameFolderData(record);
+      } else {
+        // Rename File
+        setShowRenameFile(true);
+        setRenameFileData(record);
+      }
+    } else if (data.value === 4) {
+      // get File and Folder Details
+      if (record.isFolder) {
+        let Data = {
+          ID: record.id,
+          isFolder: true,
+        };
+        dispatch(getFilesandFolderDetailsApi(navigate, t, Data, setDetailView));
+      } else {
+        let Data = {
+          ID: record.id,
+          isFolder: false,
+        };
+        dispatch(getFilesandFolderDetailsApi(navigate, t, Data, setDetailView));
+      }
+    } else if (data.value === 5) {
+      // Download File and Foler
+      if (record.isFolder === true) {
+        let data = {
+          FolderID: Number(record.id),
+        };
+        dispatch(DataRoomDownloadFolderApiFunc(navigate, data, t, record.name));
+      } else {
+        let data = {
+          FileID: Number(record.id),
+        };
+        dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, record.name));
+      }
+    } else if (data.value === 6) {
+      // Delete File and Folder
+      if (record.isFolder) {
+        dispatch(deleteFolder(navigate, record.id, t));
+      } else {
+        dispatch(deleteFileDataroom(navigate, record.id, t));
+      }
+      // Delete File
+    } else if (data.value === 7) {
+      // Get Anayltics  for the document
+      let Data = {
+        FileID: Number(record.id),
+      };
+      dispatch(
+        getDataAnalyticsCountApi(
+          navigate,
+          t,
+          Data,
+          record,
+          setFileDataforAnalyticsCount
+        )
+      );
+    } else if (data.value === 8) {
+      // Create Signature Flow
+      let dataRoomData = {
+        FileID: Number(record.id),
+      };
+      dispatch(createWorkflowApi(dataRoomData, navigate, t, pdfDataJson));
+    }
+  };
   const folderOptionsSelect = (data, record) => {
     if (data.value === 2) {
       setShowreanmemodal(true);
@@ -660,11 +751,6 @@ const DataRoom = () => {
       dispatch(deleteFolder(navigate, record.id, t));
     } else if (data.value === 3) {
       // Detail View Folder
-      let Data = {
-        ID: record.id,
-        isFolder: true,
-      };
-      dispatch(getFilesandFolderDetailsApi(navigate, t, Data, setDetailView));
       // setDetailView(true);
     } else if (data.value === 6) {
       let Data = {
@@ -1170,31 +1256,35 @@ const DataRoom = () => {
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
                             {record.permissionID === 1
-                              ? optionsforFolderEditor(t).map((data, index) => {
-                                  return (
-                                    <Dropdown.Item
-                                      key={index}
-                                      onClick={() =>
-                                        folderOptionsSelect(data, record)
-                                      }
-                                    >
-                                      {data.label}
-                                    </Dropdown.Item>
-                                  );
-                                })
+                              ? optionShareTabForViewerRole(t).map(
+                                  (data, index) => {
+                                    return (
+                                      <Dropdown.Item
+                                        key={index}
+                                        onClick={() =>
+                                          folderOptionsSelect(data, record)
+                                        }
+                                      >
+                                        {data.label}
+                                      </Dropdown.Item>
+                                    );
+                                  }
+                                )
                               : record.permissionID === 2
-                              ? optionsforFolderViewer(t).map((data, index) => {
-                                  return (
-                                    <Dropdown.Item
-                                      key={index}
-                                      onClick={() =>
-                                        folderOptionsSelect(data, record)
-                                      }
-                                    >
-                                      {data.label}
-                                    </Dropdown.Item>
-                                  );
-                                })
+                              ? optionShareTabForEditorRole(t).map(
+                                  (data, index) => {
+                                    return (
+                                      <Dropdown.Item
+                                        key={index}
+                                        onClick={() =>
+                                          folderOptionsSelect(data, record)
+                                        }
+                                      >
+                                        {data.label}
+                                      </Dropdown.Item>
+                                    );
+                                  }
+                                )
                               : record.permissionID === 3
                               ? optionsforFolderEditableNonShareable(t).map(
                                   (data, index) => {
