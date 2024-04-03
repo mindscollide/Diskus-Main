@@ -700,48 +700,43 @@ const Home = () => {
       width: "25%",
       className: "statusDashboard",
       render: (text, record) => {
-        //
-        return toDoListReducer.AllTodolistData.map((data, index) => {
-          if (index === 0) {
-            if (text.pK_TSID === 1) {
-              return (
-                <span className="MontserratSemiBold-600 InProgress cursor-pointer">
-                  {text.status}
-                </span>
-              );
-            } else if (text.pK_TSID === 2) {
-              return (
-                <span className="MontserratSemiBold-600 Pending cursor-pointer">
-                  {text.status}
-                </span>
-              );
-            } else if (text.pK_TSID === 3) {
-              return (
-                <span className="MontserratSemiBold-600 Upcoming cursor-pointer">
-                  {text.status}
-                </span>
-              );
-            } else if (text.pK_TSID === 4) {
-              return (
-                <span className="MontserratSemiBold-600 Cancelled cursor-pointer">
-                  {text.status}
-                </span>
-              );
-            } else if (text.pK_TSID === 5) {
-              return (
-                <span className="MontserratSemiBold-600 Completed cursor-pointer">
-                  {text.status}
-                </span>
-              );
-            } else if (text.pK_TSID === 6) {
-              return (
-                <span className="MontserratSemiBold-600 color-F68732 cursor-pointer">
-                  {text.status}
-                </span>
-              );
-            }
-          }
-        });
+        if (record.status.pK_TSID === 1) {
+          return (
+            <span className="MontserratSemiBold-600 InProgress cursor-pointer">
+              {text.status}
+            </span>
+          );
+        } else if (record.status.pK_TSID === 2) {
+          return (
+            <span className="MontserratSemiBold-600 Pending cursor-pointer">
+              {text.status}
+            </span>
+          );
+        } else if (record.status.pK_TSID === 3) {
+          return (
+            <span className="MontserratSemiBold-600 Upcoming cursor-pointer">
+              {text.status}
+            </span>
+          );
+        } else if (record.status.pK_TSID === 4) {
+          return (
+            <span className="MontserratSemiBold-600 Cancelled cursor-pointer">
+              {text.status}
+            </span>
+          );
+        } else if (record.status.pK_TSID === 5) {
+          return (
+            <span className="MontserratSemiBold-600 Completed cursor-pointer">
+              {text.status}
+            </span>
+          );
+        } else if (record.status.pK_TSID === 6) {
+          return (
+            <span className="MontserratSemiBold-600 color-F68732 cursor-pointer">
+              {text.status}
+            </span>
+          );
+        }
       },
     },
   ];
