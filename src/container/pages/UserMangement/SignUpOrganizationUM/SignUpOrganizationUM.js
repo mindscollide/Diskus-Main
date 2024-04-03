@@ -591,13 +591,8 @@ const SignUpOrganizationUM = ({ setSignupStep, setCurrentStepValue }) => {
             adminReducer.OrganisationCheck !== false &&
             adminReducer.EmailCheck !== false
           ) {
-            let PackageID = localStorage.getItem("PackageID");
-            let tenureOfSuscriptionID = localStorage.getItem(
-              "TenureOfSuscriptionID"
-            );
-
             let data = {
-              TenureOfSubscriptionID: JSON.parse(tenureOfSuscriptionID),
+              TenureOfSubscriptionID: JSON.parse(2),
               Organization: {
                 OrganizationName: signUpDetails.CompanyName.value,
                 FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
@@ -616,7 +611,11 @@ const SignUpOrganizationUM = ({ setSignupStep, setCurrentStepValue }) => {
                 PostalCode: signUpDetails.PostalCode.value,
                 TimeZoneID: 1,
               },
-              Packages: [{ PackageID: 4, HeadCount: 5 }],
+              Packages: [
+                { PackageID: 1, HeadCount: 5 },
+                { PackageID: 2, HeadCount: 5 },
+                { PackageID: 3, HeadCount: 5 },
+              ],
             };
             dispatch(
               signUpOrganizationAndPakageSelection(
