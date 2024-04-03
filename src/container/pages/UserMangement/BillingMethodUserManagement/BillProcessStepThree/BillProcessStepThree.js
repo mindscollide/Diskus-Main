@@ -7,15 +7,7 @@ import ellipses from "../../../../../assets/images/ellipses.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrganizationSelectedPakagesAPI } from "../../../../../store/actions/UserManagementActions";
 import { useNavigate } from "react-router-dom";
-import {
-  convertAndFormatDateTimeGMT,
-  convertDateTimeRangeToGMT,
-  convertDateTimetoGMTMeetingDetail,
-  convertTimetoGMT,
-  convertUTCDateToLocalDate,
-  formatDate,
-  utcConvertintoGMT,
-} from "../../../../../commen/functions/date_formater";
+import { convertUTCDateToLocalDate } from "../../../../../commen/functions/date_formater";
 const BillProcessStepThree = () => {
   const { t } = useTranslation();
 
@@ -24,8 +16,6 @@ const BillProcessStepThree = () => {
   const navigate = useNavigate();
 
   let currentLanguage = localStorage.getItem("i18nextLng");
-
-  console.log(currentLanguage, "currentLanguage");
 
   const { UserMangementReducer } = useSelector((state) => state);
 
@@ -48,10 +38,6 @@ const BillProcessStepThree = () => {
       UserMangementReducer.getAllSelectedPakagesData !== null &&
       UserMangementReducer.getAllSelectedPakagesData !== undefined
     ) {
-      console.log(
-        UserMangementReducer.getAllSelectedPakagesData,
-        "UserMangementReducer"
-      );
       setGetAllPakagesData(
         UserMangementReducer.getAllSelectedPakagesData
           .organizationSelectedPackages
@@ -63,8 +49,6 @@ const BillProcessStepThree = () => {
       );
     }
   }, [UserMangementReducer.getAllSelectedPakagesData]);
-
-  console.log(expiryDate, "getAllSelectedPakagesData");
 
   const ColumnsPakageSelection = [
     {
@@ -78,7 +62,6 @@ const BillProcessStepThree = () => {
       key: "name",
       align: "center",
       render: (text, record) => {
-        console.log(record, "renderrender");
         return (
           <>
             <span className={styles["Tableheading"]}>{record.name}</span>
@@ -137,7 +120,6 @@ const BillProcessStepThree = () => {
       align: "center",
       width: 100,
       render: (text, record) => {
-        console.log(record, "recordrecord");
         if (record.name === "Total") {
           // For the total row, directly use the calculated value
           return (
