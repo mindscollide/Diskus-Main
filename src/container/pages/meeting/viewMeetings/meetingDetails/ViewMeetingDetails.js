@@ -159,6 +159,7 @@ const ViewMeetingDetails = ({
       label: "",
     },
     IsVideoCall: false,
+    TalkGroupID: 0,
   });
 
   const callApiOnComponentMount = async () => {
@@ -220,6 +221,7 @@ const ViewMeetingDetails = ({
           label: "",
         },
         IsVideoCall: false,
+        TalkGroupID: 0,
       });
       // dispatch(showGetAllMeetingDetialsFailed(""));
       dispatch(cleareAllState());
@@ -366,6 +368,7 @@ const ViewMeetingDetails = ({
             label: getmeetingRecurrance.recurrance,
           },
           IsVideoCall: MeetingData.isVideo,
+          TalkGroupID: MeetingData.talkGroupID
         });
         let newDateTimeData = [];
         if (
@@ -505,8 +508,9 @@ const ViewMeetingDetails = ({
   };
 
   const groupChatInitiation = (data) => {
+    console.log("groupChatInitiationgroupChatInitiation", data)
     if (
-      data.talkGroupID !== 0 &&
+      data.TalkGroupID !== 0 &&
       talkStateData.AllUserChats.AllUserChatsData !== undefined &&
       talkStateData.AllUserChats.AllUserChatsData !== null &&
       talkStateData.AllUserChats.AllUserChatsData.length !== 0
@@ -524,7 +528,7 @@ const ViewMeetingDetails = ({
       let chatGroupData = {
         UserID: parseInt(userID),
         ChannelID: currentOrganization,
-        GroupID: data.talkGroupID,
+        GroupID: data.TalkGroupID,
         NumberOfMessages: 50,
         OffsetMessage: 0,
       };
@@ -534,12 +538,12 @@ const ViewMeetingDetails = ({
       let allChatMessages =
         talkStateData.AllUserChats.AllUserChatsData.allMessages;
       const foundRecord = allChatMessages.find(
-        (item) => item.id === data.talkGroupID
+        (item) => item.id === data.TalkGroupID
       );
       if (foundRecord) {
         dispatch(activeChat(foundRecord));
       }
-      localStorage.setItem("activeOtoChatID", data.talkGroupID);
+      localStorage.setItem("activeOtoChatID", data.TalkGroupID);
     }
   };
 
