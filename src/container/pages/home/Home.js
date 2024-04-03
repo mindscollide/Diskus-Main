@@ -333,7 +333,7 @@ const Home = () => {
       setActivateBlur(false);
     }
   }, [Blur]);
-
+  //  Render Calendar Data
   const updateCalendarData = (flag, meetingID) => {
     let Data = calendarReducer.CalenderData;
     if (Object.keys(Data).length > 0) {
@@ -431,24 +431,23 @@ const Home = () => {
               Number(meetingData.meetingDetails.pK_MDID) !== Number(meetingID)
           )
         );
+      } else if (
+        meetingIdReducer.MeetingStatusSocket.message
+          .toLowerCase()
+          .includes("MEETING_STATUS_EDITED_STARTED".toLowerCase())
+      ) {
+        setUpComingEvents((upcomingeventData) =>
+          upcomingeventData.map((meetingData) => {
+            if (
+              Number(meetingData.meetingDetails.pK_MDID) === Number(meetingID)
+            ) {
+              // Update the statusID of the meeting data
+              meetingData.meetingDetails.statusID = 10;
+            }
+            return meetingData; // Return the meeting data whether modified or not
+          })
+        );
       }
-      // else if (
-      //   meetingIdReducer.MeetingStatusSocket.message
-      //     .toLowerCase()
-      //     .includes("MEETING_STATUS_EDITED_STARTED".toLowerCase())
-      // ) {
-      //   setUpComingEvents((upcomingeventData) =>
-      //     upcomingeventData.map((meetingData) => {
-      //       if (
-      //         Number(meetingData.meetingDetails.pK_MDID) === Number(meetingID)
-      //       ) {
-      //         // Update the statusID of the meeting data
-      //         meetingData.meetingDetails.statusID = 10;
-      //       }
-      //       return meetingData; // Return the meeting data whether modified or not
-      //     })
-      //   );
-      // }
 
       dispatch(getMeetingStatusfromSocket(null));
       dispatch(mqttCurrentMeetingEnded(null));
