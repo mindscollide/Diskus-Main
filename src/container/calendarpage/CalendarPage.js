@@ -112,19 +112,24 @@ const CalendarPage = () => {
     }
   };
   const callApi = async () => {
-    let calendarData = {
-      UserID: parseInt(userID),
-      OrganizationID: parseInt(OrganizationID),
-      StartDate: newDateFormaterAsPerUTC(startDate) + "000000",
-      EndDate: newDateFormaterAsPerUTC(endDate) + "000000",
-    };
+    try {
+      let calendarData = {
+        UserID: parseInt(userID),
+        OrganizationID: parseInt(OrganizationID),
+        StartDate: newDateFormaterAsPerUTC(startDate) + "000000",
+        EndDate: newDateFormaterAsPerUTC(endDate) + "000000",
+      };
 
-    setStartDataUpdate(newDateFormaterAsPerUTC(startDate));
-    setEndDataUpdate(newDateFormaterAsPerUTC(endDate));
-    await dispatch(getEventsTypes(navigate, t));
+      setStartDataUpdate(newDateFormaterAsPerUTC(startDate));
+      setEndDataUpdate(newDateFormaterAsPerUTC(endDate));
 
-    await dispatch(getCalendarDataResponse(navigate, t, calendarData, true));
+      await dispatch(getEventsTypes(navigate, t));
+      await dispatch(getCalendarDataResponse(navigate, t, calendarData, true));
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
   };
+
   // calling Api for getting data for calendar
   useEffect(() => {
     callApi();

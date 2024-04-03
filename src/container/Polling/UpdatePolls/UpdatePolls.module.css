@@ -343,7 +343,7 @@ body[dir="rtl"] .Card_border2 {
 
 .Add_another_options {
   padding: 12px 30px !important;
-  background: #fff;
+  background: #fff !important;
   color: #d4d4d4 !important;
   width: 100%;
   font-size: 12px !important;

@@ -44,7 +44,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const [isCreateTodo, setIsCreateTodo] = useState(true);
   const [fileForSend, setFileForSend] = useState([]);
   const [createTodoTime, setCreateTodoTime] = useState("");
-  const [createTodoDate, setCreateTodoDate] = useState("");
+  const [createTodoDate, setCreateTodoDate] = useState(current_Date);
   const state = useSelector((state) => state);
   const { toDoListReducer, CommitteeReducer } = state;
 
@@ -59,7 +59,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     message: "",
   });
 
-  const [toDoDate, setToDoDate] = useState("");
+  const [toDoDate, setToDoDate] = useState(current_value);
   const [createTaskID, setCreateTaskID] = useState(0);
 
   //For Custom language datepicker
@@ -123,37 +123,41 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //To Set task Creater ID
   useEffect(() => {
-    setTaskCreatorID(parseInt(createrID));
-    setTask({
-      ...task,
-      DeadLineDate: current_Date,
-      DeadLineTime: currentTime,
-      CreationDateTime: "",
-      timeforView: dateObject,
-    });
-    setCreateTodoDate(current_Date);
-    setToDoDate(current_value);
-    return () => {
-      setCloseConfirmationBox(false);
-      setIsCreateTodo(true);
-    };
-  }, []);
+    try {
+      setTask({
+        ...task,
+        DeadLineDate: current_Date,
+        DeadLineTime: currentTime,
+        CreationDateTime: "",
+        timeforView: dateObject,
+      });
+      setCreateTodoDate(current_Date);
+      setToDoDate(current_value);
+      setTaskCreatorID(parseInt(createrID));
 
-  //To Set task Creater ID
-  useEffect(() => {
-    let data = [...toDoListReducer.AllAssigneesData];
-    if (
-      data !== undefined &&
-      data !== null &&
-      data !== [] &&
-      Object(data).length > 0
-    ) {
-      const filterData = data.filter(
-        (obj) => parseInt(obj.pK_UID) !== parseInt(createrID)
-      );
-      setTaskAssigneeApiData(filterData);
-    }
-  }, [toDoListReducer.AllAssigneesData]);
+      return () => {
+        setCloseConfirmationBox(false);
+        setIsCreateTodo(true);
+        setTask({
+          ...task,
+          PK_TID: 1,
+          Title: "",
+          Description: "",
+          IsMainTask: true,
+          DeadLineDate: "",
+          DeadLineTime: "",
+          CreationDateTime: "",
+        });
+        setCreateTodoDate("");
+        setTaskAssignedTo([]);
+        setTaskAssignedName([]);
+        setToDoDate("");
+        setAssignees([]);
+        setFileForSend([]);
+        setTasksAttachments({ TasksAttachments: [] });
+      };
+    } catch {}
+  }, []);
 
   const deleteFilefromAttachments = (data, index) => {
     let fileSizefound = fileSize - data.fileSize;
@@ -426,23 +430,26 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     try {
       let newfile = [];
       let newFolder = [];
-      const uploadPromises = fileForSend.map(async (newData) => {
+      if (fileForSend.length > 0) {
+        const uploadPromises = fileForSend.map(async (newData) => {
+          await dispatch(
+            uploadDocumentsTaskApi(
+              navigate,
+              t,
+              newData,
+              folderID,
+              // newFolder,
+              newfile
+            )
+          );
+        });
+        // Wait for all promises to resolve
+        await Promise.all(uploadPromises); //till here the files get upload
         await dispatch(
-          uploadDocumentsTaskApi(
-            navigate,
-            t,
-            newData,
-            folderID,
-            // newFolder,
-            newfile
-          )
+          saveFilesTaskApi(navigate, t, newfile, folderID, newFolder)
         );
-      });
-      // Wait for all promises to resolve
-      await Promise.all(uploadPromises); //till here the files get upload
-      await dispatch(
-        saveFilesTaskApi(navigate, t, newfile, folderID, newFolder)
-      );
+      }
+
       console.log(newFolder, "newFoldernewFoldernewFolder");
       let newAttachmentData = newFolder.map((data, index) => {
         console.log(data, "newFoldernewFoldernewFolder");
@@ -465,24 +472,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       await dispatch(
         saveTaskDocumentsAndAssigneesApi(navigate, Data, t, 5, setShow)
       );
-      setTask({
-        ...task,
-        PK_TID: 1,
-        Title: "",
-        Description: "",
-        IsMainTask: true,
-        DeadLineDate: "",
-        DeadLineTime: "",
-        CreationDateTime: "",
-      });
-      setCreateTodoDate("");
-      setCreateTodoTime("");
-      setTaskAssignedTo([]);
-      setTaskAssignedName([]);
-      setToDoDate("");
-      setAssignees([]);
-      setFileForSend([]);
-      setTasksAttachments({ TasksAttachments: [] });
     } catch (error) {
       console.log(error, "errorerrorerrorerrorerror");
     }
@@ -495,49 +484,74 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   }, [toDoListReducer.todoDocumentsMapping]);
 
   useEffect(() => {
-    let data = [...toDoListReducer.AllAssigneesData];
-    if (
-      data !== undefined &&
-      data !== null &&
-      data.length !== 0 &&
-      Object(data).length > 0
-    ) {
-      const filterData = data.filter(
-        (obj) => parseInt(obj.pK_UID) !== parseInt(createrID)
-      );
-      setTaskAssigneeApiData(filterData);
+    try {
+      if (
+        CommitteeReducer.getCommitteeByCommitteeID !== null &&
+        CommitteeReducer.getCommitteeByCommitteeID !== undefined
+      ) {
+        let getUserDetails =
+          CommitteeReducer.getCommitteeByCommitteeID.committeMembers;
 
-      let PresenterData = [];
-      data.forEach((user, index) => {
-        PresenterData.push({
-          label: (
-            <>
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex gap-2 align-items-center"
-                >
-                  <img
-                    src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
-                    height="16.45px"
-                    width="18.32px"
-                    draggable="false"
-                    alt=""
-                  />
-                  <span>{user.name}</span>
-                </Col>
-              </Row>
-            </>
-          ),
-          value: user.pK_UID,
-          name: user.name,
+        let PresenterData = [];
+        getUserDetails.forEach((user, index) => {
+          PresenterData.push({
+            label: (
+              <>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex gap-2 align-items-center"
+                  >
+                    <img
+                      src={`data:image/jpeg;base64,${user.userProfilePicture.displayProfilePictureName}`}
+                      height="16.45px"
+                      width="18.32px"
+                      draggable="false"
+                      alt=""
+                    />
+                    <span>{user.userName}</span>
+                  </Col>
+                </Row>
+              </>
+            ),
+            value: user.pK_UID,
+            name: user.userName,
+          });
+          if (Number(user.pK_UID) === Number(createrID)) {
+            setTaskAssignedTo([user.pK_UID]);
+            setPresenterValue({
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={`data:image/jpeg;base64,${user.userProfilePicture.displayProfilePictureName}`}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
+                      />
+                      <span>{user.userName}</span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              value: user.pK_UID,
+              name: user.userName,
+            });
+          }
         });
-      });
-      setAllPresenters(PresenterData);
-    }
-  }, [toDoListReducer.AllAssigneesData]);
+        setAllPresenters(PresenterData);
+      }
+    } catch {}
+  }, [CommitteeReducer.getCommitteeByCommitteeID]);
 
   const handleDeleteAttendee = (data, index) => {
     let newDataAssignees = [...assignees];
@@ -607,8 +621,9 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //Selecter Assignee onChange
 
   const onChangeSearch = (item) => {
+    console.log(item, "itemitemitem");
     setPresenterValue(item);
-    setTaskCreatorID(item.value);
+    setTaskAssignedTo([item.value]);
   };
 
   //Searchable Filter

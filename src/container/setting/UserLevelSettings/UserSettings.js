@@ -774,9 +774,10 @@ const UserSettings = () => {
   };
 
   const updateOrganizationLevelSettings = async () => {
-    let AllowMicrosoftCalenderSyncCall=false;
-
-    if (userOptionsSettings.AllowMicrosoftCalenderSync !== false) {
+    let AllowMicrosoftCalenderSyncCall = false;
+    if (settingReducer.UserProfileData.userAllowMicrosoftCalendarSynch) {
+      // AllowMicrosoftCalenderSyncCall = true;
+    } else if (userOptionsSettings.AllowMicrosoftCalenderSync !== false) {
       if (authMicrosoftAccessCode !== "") {
         AllowMicrosoftCalenderSyncCall = await dispatch(
           getMicrosoftValidToken(
@@ -788,6 +789,10 @@ const UserSettings = () => {
           )
         );
       }
+      console.log(
+        AllowMicrosoftCalenderSyncCall,
+        "AllowMicrosoftCalenderSyncCallAllowMicrosoftCalenderSyncCall"
+      );
     }
     if (signUpCodeToken !== "") {
       if (userOptionsSettings.AllowGoogleCalenderSync) {

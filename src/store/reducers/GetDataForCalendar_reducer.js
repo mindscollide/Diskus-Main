@@ -59,7 +59,7 @@ const calendarReducer = (state = initialState, action) => {
       return {
         ...state,
         // CalenderData: [],
-        Loading: true,
+        Loading: action.flag,
         Spinner: action.flag,
       };
     }
@@ -92,7 +92,12 @@ const calendarReducer = (state = initialState, action) => {
         ...state,
         ResponseMessage: "",
       };
-
+    case actions.CALENDAR_LOADER: {
+      return {
+        ...state,
+        Loading: action.payload,
+      };
+    }
     default:
       return { ...state };
   }

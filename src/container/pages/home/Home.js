@@ -560,6 +560,21 @@ const Home = () => {
       }
     } catch {}
   }, [meetingIdReducer.UpcomingEventsData]);
+  // Remove task from mqtt response
+  useEffect(() => {
+    try {
+      if (toDoListReducer.socketTodoStatusData !== null) {
+        let payloadData = toDoListReducer.socketTodoStatusData;
+        if (payloadData.todoStatusID === 6) {
+          setRowToDo((rowsData) => {
+            return rowsData.filter((newData, index) => {
+              return newData.pK_TID !== payloadData.todoid;
+            });
+          });
+        }
+      }
+    } catch {}
+  }, [toDoListReducer.socketTodoStatusData]);
 
   // render Notes Data
   useEffect(() => {
@@ -584,22 +599,36 @@ const Home = () => {
   }, [NotesReducer.GetAllNotesResponse]);
 
   useEffect(() => {
-    let dataToSort =
-      toDoListReducer.SocketTodoActivityData !== null &&
-      toDoListReducer.SocketTodoActivityData !== undefined
-        ? [toDoListReducer.SocketTodoActivityData, ...rowsToDo]
-        : [...rowsToDo];
+    try {
+      if (
+        toDoListReducer.SocketTodoActivityData !== null &&
+        toDoListReducer.SocketTodoActivityData !== undefined
+      ) {
+        if (
+          toDoListReducer.SocketTodoActivityData.comitteeID === -1 &&
+          toDoListReducer.SocketTodoActivityData.groupID === -1 &&
+          toDoListReducer.SocketTodoActivityData.meetingID === -1
+        ) {
+          let dataToSort = [
+            toDoListReducer.SocketTodoActivityData.todoList,
+            ...rowsToDo,
+          ];
 
-    const sortedTasks = dataToSort.sort((taskA, taskB) => {
-      const deadlineA = taskA?.deadlineDateTime;
-      const deadlineB = taskB?.deadlineDateTime;
+          const sortedTasks = dataToSort.sort((taskA, taskB) => {
+            const deadlineA = taskA?.deadlineDateTime;
+            const deadlineB = taskB?.deadlineDateTime;
 
-      // Compare the deadlineDateTime values as numbers for sorting
-      return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
-    });
+            // Compare the deadlineDateTime values as numbers for sorting
+            return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
+          });
 
-    setTotalRecordTodo(sortedTasks.length);
-    setRowToDo(sortedTasks.slice(0, 15));
+          setTotalRecordTodo(sortedTasks.length);
+          setRowToDo(sortedTasks.slice(0, 15));
+        }
+      }
+    } catch (error) {
+      console.log(error, "SocketTodoActivityDataSocketTodoActivityData");
+    }
   }, [toDoListReducer.SocketTodoActivityData]);
 
   useEffect(() => {

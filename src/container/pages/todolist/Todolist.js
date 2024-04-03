@@ -146,28 +146,41 @@ const TodoList = () => {
       toDoListReducer.SocketTodoActivityData !== null &&
       toDoListReducer.SocketTodoActivityData !== undefined
     ) {
-      let dataToSort = [toDoListReducer.SocketTodoActivityData, ...rowsToDo];
-      const sortedTasks = dataToSort.sort((taskA, taskB) => {
-        const deadlineA = taskA?.deadlineDateTime;
-        const deadlineB = taskB?.deadlineDateTime;
+      if (
+        toDoListReducer.SocketTodoActivityData.comitteeID === -1 &&
+        toDoListReducer.SocketTodoActivityData.groupID === -1 &&
+        toDoListReducer.SocketTodoActivityData.meetingID === -1
+      ) {
+        let dataToSort = [
+          toDoListReducer.SocketTodoActivityData.todoList,
+          ...rowsToDo,
+        ];
+        const sortedTasks = dataToSort.sort((taskA, taskB) => {
+          const deadlineA = taskA?.deadlineDateTime;
+          const deadlineB = taskB?.deadlineDateTime;
 
-        // Compare the deadlineDateTime values as numbers for sorting
-        return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
-      });
-      setRowToDo(sortedTasks);
-    } else {
-      let dataToSort = [...rowsToDo];
-      const sortedTasks = dataToSort.sort((taskA, taskB) => {
-        const deadlineA = taskA?.deadlineDateTime;
-        const deadlineB = taskB?.deadlineDateTime;
-
-        // Compare the deadlineDateTime values as numbers for sorting
-        return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
-      });
-      setRowToDo(sortedTasks);
+          // Compare the deadlineDateTime values as numbers for sorting
+          return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
+        });
+        setRowToDo(sortedTasks);
+      }
     }
   }, [toDoListReducer.SocketTodoActivityData]);
 
+  useEffect(() => {
+    try {
+      if (toDoListReducer.socketTodoStatusData !== null) {
+        let payloadData = toDoListReducer.socketTodoStatusData;
+        if (payloadData.todoStatusID === 6) {
+          setRowToDo((rowsData) => {
+            return rowsData.filter((newData, index) => {
+              return newData.pK_TID !== payloadData.todoid;
+            });
+          });
+        }
+      }
+    } catch {}
+  }, [toDoListReducer.socketTodoStatusData]);
   // SET STATUS VALUES
   useEffect(() => {
     let optionsArr = [];
@@ -193,57 +206,6 @@ const TodoList = () => {
     setShow(true);
   };
 
-  // for Socket Update meeting status update
-  useEffect(() => {
-    if (
-      toDoListReducer.socketTodoStatusData &&
-      Object.keys(toDoListReducer.socketTodoStatusData).length > 0
-    ) {
-      let tableRowsData = [...rowsToDo];
-      var foundIndex = tableRowsData.findIndex(
-        (x) => x.pK_TID === toDoListReducer.socketTodoStatusData.todoid
-      );
-      if (foundIndex !== -1) {
-        if (Number(toDoListReducer.socketTodoStatusData.todoStatusID) === 6) {
-          let removeDeleteIndex = tableRowsData.filter(
-            (data, index) =>
-              data.pK_TID !== toDoListReducer.socketTodoStatusData.todoid
-          );
-          setRowToDo(removeDeleteIndex);
-        } else {
-          let newArr = tableRowsData.map((rowObj, index) => {
-            if (index === foundIndex) {
-              let statusID = toDoListReducer.socketTodoStatusData.todoStatusID;
-              const newData = {
-                ...rowObj,
-                status: {
-                  pK_TSID: statusID,
-                  status:
-                    statusID === 1
-                      ? "In Progress"
-                      : statusID === 2
-                      ? "Pending"
-                      : statusID === 3
-                      ? "Upcoming"
-                      : statusID === 4
-                      ? "Cancelled"
-                      : statusID === 5
-                      ? "Completed"
-                      : statusID === 6
-                      ? "Deleted"
-                      : null,
-                },
-              };
-              return newData;
-            }
-            return rowObj;
-          });
-          setRowToDo(newArr);
-        }
-      }
-    }
-  }, [toDoListReducer.socketTodoStatusData]);
-
   const ShowHide = () => {
     setExpand(!isExpand);
     setSearchData({
@@ -260,32 +222,6 @@ const TodoList = () => {
     dispatch(
       ViewToDoList(navigate, Data, t, setViewFlagToDo, setTodoViewModal)
     );
-  };
-
-  // for search Date handler
-  const tableTodoChange = (pagination, filters, sorter) => {
-    let newArrData = [];
-    let todoStatus = filters.status;
-    if (
-      todoStatus !== null &&
-      todoStatus !== undefined &&
-      todoStatus.length > 0
-    ) {
-      todoStatus.map((statusValue, index) => {
-        let newArr = toDoListReducer.SearchTodolist.toDoLists.filter(
-          (data, index) => {
-            return data.status.status === statusValue;
-          }
-        );
-        if (newArr.length > 0) {
-          setRowToDo(newArr);
-        } else {
-          setRowToDo([]);
-        }
-      });
-    } else if (todoStatus === null) {
-      setRowToDo(toDoListReducer.SearchTodolist.toDoLists);
-    }
   };
 
   const deleteTodolist = async (record) => {
