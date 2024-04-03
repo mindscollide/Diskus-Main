@@ -24,7 +24,6 @@ const UserManagementProcess = () => {
   const [currentStep, setCurrentStepValue] = useState(() => {
     return Number(localStorage.getItem("LoginFlowPageRoute")) || 1;
   });
-  console.log("currentStep", currentStep);
 
   useEffect(() => {
     try {
