@@ -403,93 +403,79 @@ export const optionsLastmodified = (t) => [
   { value: 7, label: t("Custome-range") },
 ];
 
+// Options is My Document Tab
 export const optionsforFolder = (t) => [
   { label: t("Share"), value: 1 },
   { label: t("Rename"), value: 2 },
   { label: t("View-detail"), value: 3 },
   { label: t("Download"), value: 4 },
-  { label: t("Remove"), value: 5 },
-  { label: t("Analytics"), value: 6, labelIcon: PDFICON },
+  { label: t("Delete"), value: 5 },
+  { label: t("Analytics"), value: 6 },
 ];
 
-export const shareFolderOptionsView = (t) => [
-  { label: t("Share"), value: 1 },
-  // { label: t("Rename"), value: 2 },
-  { label: t("View-detail"), value: 3 },
-  { label: t("Download"), value: 4 },
-  // { label: t("Remove"), value: 5 },
-  // { label: t("Analytics"), value: 6, labelIcon: PDFICON },
-];
-export const shareFolderOptionsEditor = (t) => [
-  { label: t("Share"), value: 1 },
-  { label: t("Rename"), value: 2 },
-  { label: t("View-detail"), value: 3 },
-  { label: t("Download"), value: 4 },
-  { label: t("Remove"), value: 5 },
-  // { label: t("Analytics"), value: 6, labelIcon: PDFICON },
-];
-
+// Viewer Options and Permission Id is 01
 export const optionsforFolderViewer = (t) => [
-  // { label: t("Share"), value: 1 },
-  // { label: t("Rename"), value: 2 },
   { label: t("View-detail"), value: 3 },
   { label: t("Download"), value: 4 },
-  // { label: t("Remove"), value: 5 },
+  { label: t("Remove"), value: 9 },
 ];
 
+// Editor Options and Permission Id is 02
 export const optionsforFolderEditor = (t) => [
   { label: t("Share"), value: 1 },
   { label: t("Rename"), value: 2 },
   { label: t("View-detail"), value: 3 },
   { label: t("Download"), value: 4 },
-  // { label: t("Remove"), value: 5 },
-  { label: t("Analytics"), value: 6, labelIcon: PDFICON },
+  { label: t("Analytics"), value: 6 },
+  { label: t("Remove"), value: 9 },
 ];
+
+// Non Shareable Editor Options and Permission Id is 03
 export const optionsforFolderEditableNonShareable = (t) => [
-  // { label: t("Share"), value: 1 },
   { label: t("Rename"), value: 2 },
   { label: t("View-detail"), value: 3 },
   { label: t("Download"), value: 4 },
-  // { label: t("Remove"), value: 5 },
-  { label: t("Analytics"), value: 6, labelIcon: PDFICON },
+  { label: t("Analytics"), value: 6 },
 ];
 
+// Options is My Document Tab
 export const optionsforFile = (t) => [
-  { label: t("Open"), value: 1, labelIcon: PDFICON },
-  { label: t("Share"), value: 2, labelIcon: PDFICON },
-  { label: t("Rename"), value: 3, labelIcon: PDFICON },
-  { label: t("View-detail"), value: 4, labelIcon: PDFICON },
-  { label: t("Download"), value: 5, labelIcon: PDFICON },
-  { label: t("Remove"), value: 6, labelIcon: PDFICON },
-  { label: t("Analytics"), value: 7, labelIcon: PDFICON },
+  { label: t("Open"), value: 1 },
+  { label: t("Share"), value: 2 },
+  { label: t("Rename"), value: 3 },
+  { label: t("View-detail"), value: 4 },
+  { label: t("Download"), value: 5 },
+  { label: t("Delete"), value: 6 },
+  { label: t("Analytics"), value: 7 },
 ];
+
+// Viewer Options and Permission Id is 01
 export const optionsforFileViewer = (t) => [
-  { label: t("Open"), value: 1, labelIcon: PDFICON },
-  // { label: t("Share"), value: 2, labelIcon: PDFICON },
-  // { label: t("Rename"), value: 3, labelIcon: PDFICON },
-  { label: t("View-detail"), value: 4, labelIcon: PDFICON },
-  { label: t("Download"), value: 5, labelIcon: PDFICON },
-  // { label: t("Remove"), value: 6, labelIcon: PDFICON },
-  { label: t("Analytics"), value: 7, labelIcon: PDFICON },
+  { label: t("Open"), value: 1 },
+  { label: t("View-detail"), value: 4 },
+  { label: t("Download"), value: 5 },
+  { label: t("Analytics"), value: 7 },
+  { label: t("Remove"), value: 9 },
 ];
+
+// Editor Options and Permission Id is 02
 export const optionsforFileEditor = (t) => [
-  { label: t("Open"), value: 1, labelIcon: PDFICON },
-  { label: t("Share"), value: 2, labelIcon: PDFICON },
-  { label: t("Rename"), value: 3, labelIcon: PDFICON },
-  { label: t("View-detail"), value: 4, labelIcon: PDFICON },
-  { label: t("Download"), value: 5, labelIcon: PDFICON },
-  { label: t("Analytics"), value: 7, labelIcon: PDFICON },
-  // { label: t("Remove"), value: 6, labelIcon: PDFICON },
+  { label: t("Open"), value: 1 },
+  { label: t("Share"), value: 2 },
+  { label: t("Rename"), value: 3 },
+  { label: t("View-detail"), value: 4 },
+  { label: t("Download"), value: 5 },
+  { label: t("Analytics"), value: 7 },
+  { label: t("Remove"), value: 9 },
 ];
+
+// Non Shareable Editor Options and Permission Id is 03
 export const optionsforFileEditableNonShareable = (t) => [
   { label: t("Open"), value: 1, labelIcon: PDFICON },
-  // { label: t("Share"), value: 2, labelIcon: PDFICON },
   { label: t("Rename"), value: 3, labelIcon: PDFICON },
   { label: t("View-detail"), value: 4, labelIcon: PDFICON },
   { label: t("Download"), value: 5, labelIcon: PDFICON },
   { label: t("Analytics"), value: 7, labelIcon: PDFICON },
-
-  // { label: t("Remove"), value: 6, labelIcon: PDFICON },
 ];
 
 export const optionsforPDFandSignatureFlow = (t) => [
@@ -502,6 +488,7 @@ export const optionsforPDFandSignatureFlow = (t) => [
   { label: t("Analytics"), value: 7, labelIcon: PDFICON },
   { label: t("Signaure"), value: 8, labelIcon: PDFICON },
 ];
+
 export const getIconSource = (extension) => {
   switch (extension) {
     case "pdf":
@@ -571,4 +558,46 @@ export const getFileExtension = (fileName) => {
   return lowercaseExtension;
 };
 
-// export const
+// Viewer Permission will should be a 2
+export const optionShareTabForEditorRole = (t) => [
+  // { label: t("Open"), value: 1 },
+  { label: t("Share"), value: 2 },
+  { label: t("Rename"), value: 3 },
+  { label: t("View-detail"), value: 4 },
+  { label: t("Download"), value: 5 },
+  { label: t("Remove"), value: 6 },
+  // { label: t("Analytics"), value: 7 },
+];
+// Viewer Permission will should be a 1
+export const optionShareTabForViewerRole = (t) => [
+  // { label: t("Open"), value: 1 },
+  { label: t("Share"), value: 2 },
+  // { label: t("Rename"), value: 3 },
+  { label: t("View-detail"), value: 4 },
+  { label: t("Download"), value: 5 },
+  // { label: t("Remove"), value: 6 },
+  // { label: t("Analytics"), value: 7 },
+];
+
+export const optionMyDocumentsTab = (t) => [
+  { label: t("Open"), value: 1 },
+  { label: t("Share"), value: 2 },
+  { label: t("Rename"), value: 3 },
+  { label: t("View-detail"), value: 4 },
+  { label: t("Download"), value: 5 },
+  { label: t("Remove"), value: 6 },
+  { label: t("Analytics"), value: 7 },
+];
+
+export const optionMyDocumentsTabForSignature = (t) => [
+  { label: t("Open"), value: 1 },
+  { label: t("Share"), value: 2 },
+  { label: t("Rename"), value: 3 },
+  { label: t("View-detail"), value: 4 },
+  { label: t("Download"), value: 5 },
+  { label: t("Remove"), value: 6 },
+  { label: t("Analytics"), value: 7 },
+  { label: t("Signaure"), value: 8 },
+];
+
+// Permission ID 1 = Viewer , 2 = Editor, 3 = Not share , 4 =

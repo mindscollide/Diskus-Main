@@ -1917,5 +1917,6 @@
   "Failed-to-save-subscriptions": "Failed To Save Subscriptions",
   "Manage-users": "Manage Users",
   "Time-should-be-greater-then-system-time": "Time should be greater then the system time",
-  "Disable-video-call": "Disable video call"
+  "Disable-video-call": "Disable video call",
+  "Email-initiated": "Email initiated"
 }

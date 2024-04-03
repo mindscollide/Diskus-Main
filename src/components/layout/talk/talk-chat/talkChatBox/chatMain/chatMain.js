@@ -28,6 +28,7 @@ import {
   ResetLeaveGroupMessage,
   ResetGroupModify,
   ResetShoutAllCreated,
+  PrintChat,
   DeleteShout,
   UpdateShoutAll,
   DownloadChat,
@@ -864,7 +865,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
         },
       },
     };
-    dispatch(DownloadChat(Data, t, navigate));
+    dispatch(PrintChat(Data, t, navigate));
     setPrint(false);
     setTodayCheckState(false);
     setAllCheckState(false);
@@ -912,6 +913,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
       },
     };
     dispatch(EmailChat(Data, t, navigate));
+      setNotification({
+        notificationShow: true,
+        message: t("Email-initiated"),
+      });
+    setNotificationID(id);
     setEmail(false);
     setTodayCheckState(false);
     setAllCheckState(false);
