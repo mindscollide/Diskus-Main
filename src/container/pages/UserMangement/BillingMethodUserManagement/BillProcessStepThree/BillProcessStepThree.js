@@ -114,6 +114,7 @@ const BillProcessStepThree = () => {
       align: "center",
       width: 100,
       render: (text, record) => {
+        console.log(record, "recordrecord");
         if (record.name === "Total") {
           // For the total row, directly use the calculated value
           return (
@@ -123,7 +124,7 @@ const BillProcessStepThree = () => {
           );
         } else {
           // For regular rows, calculate the yearly charges
-          const yearlyCharge = (record.price || 0) * 12;
+          const yearlyCharge = (record.price * record.headCount || 0) * 12;
           return (
             <span className={styles["ChargesPerLicesense"]}>
               {yearlyCharge.toLocaleString()}
@@ -140,13 +141,10 @@ const BillProcessStepThree = () => {
       0
     );
 
-    // Sum up the yearly charges directly, without multiplying by 12 for the total row.
     const totalYearlyCharges = data.reduce(
-      (acc, cur) => acc + cur.yearlyCharge,
+      (acc, cur) => acc + (Number(cur.price * cur.headCount) * 12 || 0),
       0
     );
-
-    console.log(totalYearlyCharges, "totalYearlyCharges");
 
     // Return an object with the totals that can be used as a row in your table.
     return {
