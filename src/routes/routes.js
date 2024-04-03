@@ -93,7 +93,8 @@ import AddUserMain from "../container/pages/UserMangement/AdminUserManagement/Ad
 import UserManagementProcess from "../container/pages/UserManagementProcess/UserManagementProcess";
 import PasswordVerification from "../container/pages/UserMangement/PasswordVerification/PasswordVerification";
 import SignupProcessUserManagement from "../container/pages/SignUpProcessUserManagement/SignupProcessUserManagement";
-
+import RouteWrapperUser from "./RouteWrapperUser";
+import RouteWrapperAdmin from "./RouteWrapperAdmin";
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
@@ -138,87 +139,461 @@ export const router = createHashRouter(
       <Route path="*" element={<NotFound />} />
 
       <Route element={<PrivateRoutes />}>
-        <Route exact path="/Diskus/" element={<Dashboard />}>
-          <Route path="maximizePanel" element={<VideoPanelMaximize />} />
-          <Route path="" element={<Home />} />
-          <Route path="home" element={<Home />} />
-          <Route path="todolist" element={<TodoList />} />
-          <Route path="documentViewer" element={<DocumentViewer />} />
-          <Route path="signatureviewer" element={<SignatureViewer />} />
+        <Route
+          exact
+          path="/Diskus/"
+          element={
+            <RouteWrapperUser name="Diskus">
+              <Dashboard />
+            </RouteWrapperUser>
+          }
+        >
+          <Route
+            path="maximizePanel"
+            element={
+              <RouteWrapperUser name="maximizePanel">
+                <VideoPanelMaximize />
+              </RouteWrapperUser>
+            }
+          />
+          <Route
+            path=""
+            element={
+              <RouteWrapperUser name="">
+                <Home />
+              </RouteWrapperUser>
+            }
+          />
+          <Route
+            path="home"
+            element={
+              <RouteWrapperUser name="home">
+                <Home />
+              </RouteWrapperUser>
+            }
+          />
+          <Route
+            path="todolist"
+            element={
+              <RouteWrapperUser name="todolist">
+                <TodoList />
+              </RouteWrapperUser>
+            }
+          />
+          <Route
+            path="documentViewer"
+            element={
+              <RouteWrapperUser name="documentViewer">
+                <DocumentViewer />
+              </RouteWrapperUser>
+            }
+          />
+          <Route
+            path="signatureviewer"
+            element={
+              <RouteWrapperUser name="signatureviewer">
+                <SignatureViewer />
+              </RouteWrapperUser>
+            }
+          />
           {/* <Route path="forgotpassword" element={<ForgotPassword />} /> */}
-          <Route path="calendar" element={<CalendarPage />} />
-          <Route path="Meeting" element={<NewMeeting />} />
-          <Route path="Meeting/Useravailabilityformeeting" element={<RSVP />} />
-          <Route path="videochat" element={<VideoChat />} />
-          <Route path="setting" element={<UserSettings />} />
-          <Route path="faq's" element={<CustomMiscellaneous />} />
-          <Route path="groups" element={<Groups />} />
-          <Route path="changePassword" element={<ChangePassword />} />
-          <Route path="notes" element={<Notes />} />
-          <Route path="VideoIncoming" element={<VideoIncoming />} />
-          <Route path="VideoOutgoing" element={<VideoOutgoing />} />
-          <Route path="VideoMultiple" element={<VideoMultiple />} />
-          <Route path="VideoScreens" element={<VideoScreens />} />
-          <Route path="committee" element={<Committee />} />
-          <Route path="resolution" element={<Resolution />} />
-          <Route path="dataroom" element={<DataRoom />} />
-          <Route path="polling" element={<Polling />} />
+          <Route
+            path="calendar"
+            element={
+              <RouteWrapperUser name="calendar">
+                <CalendarPage />
+              </RouteWrapperUser>
+            }
+          />
+          <Route
+            path="Meeting"
+            element={
+              <RouteWrapperUser name="Meeting">
+                <NewMeeting />
+              </RouteWrapperUser>
+            }
+          />
+          <Route
+            path="Meeting/Useravailabilityformeeting"
+            element={
+              <RouteWrapperUser name="Meeting/Useravailabilityformeeting">
+                <RSVP />
+              </RouteWrapperUser>
+            }
+          />
+          <Route
+            path="videochat"
+            element={
+              <RouteWrapperUser name="videochat">
+                <VideoChat />
+              </RouteWrapperUser>
+            }
+          />
+          <Route
+            path="setting"
+            element={
+              <RouteWrapperUser name="setting">
+                <UserSettings />
+              </RouteWrapperUser>
+            }
+          />
+          <Route
+            path="faq's"
+            element={
+              <RouteWrapperUser name="faq's">
+                <CustomMiscellaneous />
+              </RouteWrapperUser>
+            }
+          />
+          <Route
+            path="groups"
+            element={
+              <RouteWrapperUser name="groups">
+                <Groups />
+              </RouteWrapperUser>
+            }
+          />
+          <Route
+            path="changePassword"
+            element={
+              <RouteWrapperUser name="changePassword">
+                <ChangePassword />
+              </RouteWrapperUser>
+            }
+          />
+          <Route
+            path="notes"
+            element={
+              <RouteWrapperUser name="notes">
+                <Notes />
+              </RouteWrapperUser>
+            }
+          />
+          <Route
+            path="VideoIncoming"
+            element={
+              <RouteWrapperUser name="VideoIncoming">
+                <VideoIncoming />
+              </RouteWrapperUser>
+            }
+          />
+          <Route
+            path="VideoOutgoing"
+            element={
+              <RouteWrapperUser name="VideoOutgoing">
+                <VideoOutgoing />
+              </RouteWrapperUser>
+            }
+          />
+          <Route
+            path="VideoMultiple"
+            element={
+              <RouteWrapperUser name="VideoMultiple">
+                <VideoMultiple />
+              </RouteWrapperUser>
+            }
+          />
+          <Route
+            path="VideoScreens"
+            element={
+              <RouteWrapperUser name="VideoScreens">
+                <VideoScreens />
+              </RouteWrapperUser>
+            }
+          />
+          <Route
+            path="committee"
+            element={
+              <RouteWrapperUser name="committee">
+                <Committee />
+              </RouteWrapperUser>
+            }
+          />
+          <Route
+            path="resolution"
+            element={
+              <RouteWrapperUser name="resolution">
+                <Resolution />
+              </RouteWrapperUser>
+            }
+          />
+          <Route
+            path="dataroom"
+            element={
+              <RouteWrapperUser name="dataroom">
+                <DataRoom />
+              </RouteWrapperUser>
+            }
+          />
+          <Route
+            path="polling"
+            element={
+              <RouteWrapperUser name="polling">
+                <Polling />
+                <Polling />
+              </RouteWrapperUser>
+            }
+          />
         </Route>
       </Route>
       <Route element={<PrivateAdminRoute />}>
-        <Route exact path="/Diskus/Admin/" element={<AdminHome />}>
-          <Route path="" element={<Summary />} />
-          <Route path="AllUserPage" element={<AllUserPage />} />
-          <Route path="loginreport" element={<Reports />} />
-          <Route path="AddUser" element={<AddUser />} />
-          <Route path="EditUser" element={<EditUser />} />
-          <Route path="ManageUsers" element={<ManageUsers />} />{" "}
-          <Route path="UserLevelConfigUM" element={<UserLevelConfigUM />} />
-          <Route path="AddUsersUsermanagement" element={<AddUserMain />} />
-          <Route path="Invoice" element={<Invoice />} />
-          <Route path="PayOutstanding" element={<PayOutstanding />} />
-          <Route path="PaymentHistory" element={<PaymentHistory />} />
+        <Route
+          exact
+          path="/Diskus/Admin/"
+          element={
+            <RouteWrapperAdmin name="Admin">
+              <AdminHome />
+            </RouteWrapperAdmin>
+          }
+        >
+          <Route
+            path=""
+            element={
+              <RouteWrapperAdmin name="Admin">
+                <Summary />
+              </RouteWrapperAdmin>
+            }
+          />
+          <Route
+            path="AllUserPage"
+            element={
+              <RouteWrapperAdmin name="AllUserPage">
+                <AllUserPage />
+              </RouteWrapperAdmin>
+            }
+          />
+          <Route
+            path="loginreport"
+            element={
+              <RouteWrapperAdmin name="loginreport">
+                <Reports />
+              </RouteWrapperAdmin>
+            }
+          />
+          <Route
+            path="AddUser"
+            element={
+              <RouteWrapperAdmin name="AddUser">
+                <AddUser />
+              </RouteWrapperAdmin>
+            }
+          />
+          <Route
+            path="EditUser"
+            element={
+              <RouteWrapperAdmin name="EditUser">
+                <EditUser />
+              </RouteWrapperAdmin>
+            }
+          />
+          <Route
+            path="ManageUsers"
+            element={
+              <RouteWrapperAdmin name="ManageUsers">
+                <ManageUsers />
+              </RouteWrapperAdmin>
+            }
+          />{" "}
+          <Route
+            path="UserLevelConfigUM"
+            element={
+              <RouteWrapperAdmin name="UserLevelConfigUM">
+                <UserLevelConfigUM />
+              </RouteWrapperAdmin>
+            }
+          />
+          <Route
+            path="AddUsersUsermanagement"
+            element={
+              <RouteWrapperAdmin name="AddUsersUsermanagement">
+                <AddUserMain />
+              </RouteWrapperAdmin>
+            }
+          />
+          <Route
+            path="Invoice"
+            element={
+              <RouteWrapperAdmin name="Invoice">
+                <Invoice />
+              </RouteWrapperAdmin>
+            }
+          />
+          <Route
+            path="PayOutstanding"
+            element={
+              <RouteWrapperAdmin name="PayOutstanding">
+                <PayOutstanding />
+              </RouteWrapperAdmin>
+            }
+          />
+          <Route
+            path="PaymentHistory"
+            element={
+              <RouteWrapperAdmin name="PaymentHistory">
+                <PaymentHistory />
+              </RouteWrapperAdmin>
+            }
+          />
           <Route
             path="PaymentHistoryusermanagement"
-            element={<PaymentMethodBillInfo />}
+            element={
+              <RouteWrapperAdmin name="PaymentHistoryusermanagement">
+                <PaymentMethodBillInfo />
+              </RouteWrapperAdmin>
+            }
           />
-          <Route path="Summary" element={<Summary />} />
-          <Route path="Organization" element={<OrganizationLevelSetting />} />
+          <Route
+            path="Summary"
+            element={
+              <RouteWrapperAdmin name="Summary">
+                <Summary />
+              </RouteWrapperAdmin>
+            }
+          />
+          <Route
+            path="Organization"
+            element={
+              <RouteWrapperAdmin name="Organization">
+                <OrganizationLevelSetting />
+              </RouteWrapperAdmin>
+            }
+          />
           <Route
             path="OrganizationlevelConfigUM"
-            element={<OrganizationLevelConfigUM />}
+            element={
+              <RouteWrapperAdmin name="OrganizationlevelConfigUM">
+                <OrganizationLevelConfigUM />
+              </RouteWrapperAdmin>
+            }
           />
-          <Route path="AllMeeting" element={<AllMeetings />} />
-          <Route path="CancelSub" element={<CancelSubs />} />
+          <Route
+            path="AllMeeting"
+            element={
+              <RouteWrapperAdmin name="AllMeeting">
+                <AllMeetings />
+              </RouteWrapperAdmin>
+            }
+          />
+          <Route
+            path="CancelSub"
+            element={
+              <RouteWrapperAdmin name="CancelSub">
+                <CancelSubs />
+              </RouteWrapperAdmin>
+            }
+          />
           <Route
             path="CancelSubscriptionUserManagement"
-            element={<CancelSubscriptionAdmin />}
+            element={
+              <RouteWrapperAdmin name="CancelSubscriptionUserManagement">
+                <CancelSubscriptionAdmin />
+              </RouteWrapperAdmin>
+            }
           />
-          <Route path="PackageDetail" element={<PackageDetails />} />
+          <Route
+            path="PackageDetail"
+            element={
+              <RouteWrapperAdmin name="PackageDetail">
+                <PackageDetails />
+              </RouteWrapperAdmin>
+            }
+          />
           <Route
             path="PackageDetailsUserManagement"
-            element={<PakageDetailsAdmin />}
+            element={
+              <RouteWrapperAdmin name="PackageDetailsUserManagement">
+                <PakageDetailsAdmin />
+              </RouteWrapperAdmin>
+            }
           />
-          <Route path="EmptyState" element={<EmptyState />} />
-          <Route path="UpgradePackage" element={<PackageUpgrade />} />
-          <Route path="changePassword" element={<ChangePassword />} />
-          <Route path="faq's" element={<CustomMiscellaneous />} />
-          <Route path="deleteorganization" element={<DeleteOrganization />} />
+          <Route
+            path="EmptyState"
+            element={
+              <RouteWrapperAdmin name="EmptyState">
+                <EmptyState />
+              </RouteWrapperAdmin>
+            }
+          />
+          <Route
+            path="UpgradePackage"
+            element={
+              <RouteWrapperAdmin name="UpgradePackage">
+                <PackageUpgrade />
+              </RouteWrapperAdmin>
+            }
+          />
+          <Route
+            path="changePassword"
+            element={
+              <RouteWrapperAdmin name="changePassword">
+                <ChangePassword />
+              </RouteWrapperAdmin>
+            }
+          />
+          <Route
+            path="faq's"
+            element={
+              <RouteWrapperAdmin name="faq's">
+                <CustomMiscellaneous />
+              </RouteWrapperAdmin>
+            }
+          />
+          <Route
+            path="deleteorganization"
+            element={
+              <RouteWrapperAdmin name="deleteorganization">
+                <DeleteOrganization />
+              </RouteWrapperAdmin>
+            }
+          />
           <Route
             path="deleteorganizationUserMangement"
-            element={<DeleteOrganizationAdmin />}
+            element={
+              <RouteWrapperAdmin name="deleteorganizationUserMangement">
+                <DeleteOrganizationAdmin />
+              </RouteWrapperAdmin>
+            }
           />
-          <Route path="paymentForm" element={<PaymentForm2 />} />
+          <Route
+            path="paymentForm"
+            element={
+              <RouteWrapperAdmin name="paymentForm">
+                <PaymentForm2 />
+              </RouteWrapperAdmin>
+            }
+          />
           <Route
             path="UpgradePackageDetail"
-            element={<PackageUpgradeDetail />}
+            element={
+              <RouteWrapperAdmin name="UpgradePackageDetail">
+                <PackageUpgradeDetail />
+              </RouteWrapperAdmin>
+            }
           />
           <Route
             path="UpgradePackageSelect"
-            element={<PackageUpgradeSelect />}
+            element={
+              <RouteWrapperAdmin name="UpgradePackageSelect">
+                <PackageUpgradeSelect />
+              </RouteWrapperAdmin>
+            }
           />
-          <Route path="CustomerInformation" element={<CustomerInformation />} />
-          <Route path="setting" element={<UserSettings />} />
+          <Route
+            path="CustomerInformation"
+            element={
+              <RouteWrapperAdmin name="CustomerInformation">
+                <CustomerInformation />
+              </RouteWrapperAdmin>
+            }
+          />
+          <Route
+            path="setting"
+            element={
+              <RouteWrapperAdmin name="setting">
+                <UserSettings />
+              </RouteWrapperAdmin>
+            }
+          />
         </Route>
       </Route>
       <Route element={<PrivateAdminRouteNonActive />}>

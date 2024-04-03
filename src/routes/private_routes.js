@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 const PrivateRoutes = () => {
   const currentUrl = window.location.href;
+  const location = useLocation();
+  const allowedRoutes = JSON.parse(localStorage.getItem("LocalRoutes") || "[]");
+  const currentPath = location.pathname;
+  console.log("allowedRoutes",allowedRoutes)
   useEffect(() => {
     if (
       currentUrl.includes("DisKus/Meeting/Useravailabilityformeeting?action=")

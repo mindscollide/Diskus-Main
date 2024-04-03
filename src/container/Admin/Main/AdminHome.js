@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { NavbarAdmin } from "../../../components/layout";
 import Header2 from "../../../components/layout/header2/Header2";
 import ar_EG from "antd/es/locale/ar_EG";
@@ -29,6 +29,7 @@ const AdminHome = () => {
   const navigate = useNavigate();
   const state = useSelector((state) => state);
   // settingReducer.Loading;
+  const location = useLocation();
   const { GetSubscriptionPackage, settingReducer, UserReportReducer } = state;
   const [currentLanguge, setCurrentLanguage] = useState("en");
   const { t } = useTranslation();
@@ -57,6 +58,8 @@ const AdminHome = () => {
   useEffect(() => {
     setCurrentLanguage(currentLanguageSelect);
   }, [currentLanguageSelect]);
+
+  console.log("location.pathname", location.pathname);
 
   const onMessageArrived = (msg) => {
     let data = JSON.parse(msg.payloadString);

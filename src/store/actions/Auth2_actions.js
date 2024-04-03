@@ -911,6 +911,27 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_PasswordVerification_09".toLowerCase()
                 )
             ) {
+              let LocalUserRoutes = [
+                { name: "Meeting", id: 1 },
+                { name: "todolist", id: 2 },
+                { name: "calendar", id: 3 },
+                { name: "Diskus", id: 4 },
+                { name: "setting", id: 5 },
+                { name: "faq's", id: 6 },
+                { name: "changePassword", id: 7 },
+                { name: "home", id: 8 },
+                { name: "", id: 9 },
+              ];
+              let LocalAdminRoutes = [
+                { name: "Admin", id: 1 },
+                { name: "ManageUsers", id: 2 },
+                { name: "OrganizationlevelConfigUM", id: 3 },
+                { name: "PackageDetailsUserManagement", id: 4 },
+                { name: "Summary", id: 5 },
+              ];
+              localStorage.setItem("LocalUserRoutes", JSON.stringify(LocalUserRoutes));
+              localStorage.setItem("LocalAdminRoutes", JSON.stringify(LocalAdminRoutes));
+
               if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 localStorage.setItem(
                   "roleID",
