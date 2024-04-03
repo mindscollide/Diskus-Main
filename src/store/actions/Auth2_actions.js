@@ -1618,6 +1618,8 @@ const createPasswordAction = (value, navigate, t, currentStage) => {
                   "ERM_AuthService_SignUpManager_UsersPasswordCreation_01".toLowerCase()
                 )
             ) {
+              localStorage.setItem("signupCurrentPage", 5);
+              navigate("/Signup");
               if (
                 parseInt(
                   response.data.responseResult.organizationSubscriptionStatusID

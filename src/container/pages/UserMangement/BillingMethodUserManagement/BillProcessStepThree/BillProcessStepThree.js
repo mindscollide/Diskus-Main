@@ -1,11 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./BillProcessStepThree.module.css";
 import { Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Button, TableToDo } from "../../../../../components/elements";
 import ellipses from "../../../../../assets/images/ellipses.svg";
+import { useDispatch } from "react-redux";
+import { getOrganizationSelectedPakagesAPI } from "../../../../../store/actions/UserManagementActions";
+import { useNavigate } from "react-router-dom";
 const BillProcessStepThree = () => {
   const { t } = useTranslation();
+
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
+  //States
+  const [getAllPakagesData, setGetAllPakagesData] = useState([]);
+
+  //UseEffect For Get All Organziation Selected Pakages
+
+  useEffect(() => {
+    let data = {};
+    dispatch(getOrganizationSelectedPakagesAPI(navigate, t, data));
+  }, []);
+
   const ColumnsPakageSelection = [
     {
       title: (
