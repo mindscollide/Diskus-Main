@@ -1250,8 +1250,10 @@ const SignUpOrganizationUM = ({ setSignupStep, setCurrentStepValue }) => {
                   lg={7}
                   className="d-flex justify-content-start align-items-center"
                 >
-                  <span className={styles["signUp_goBack"]} />
-                  <span onClick={onClickLink} color="black">
+                  <span
+                    onClick={onClickLink}
+                    className={styles["signUp_goBack"]}
+                  >
                     {t("Go-back")}
                   </span>
                 </Col>
