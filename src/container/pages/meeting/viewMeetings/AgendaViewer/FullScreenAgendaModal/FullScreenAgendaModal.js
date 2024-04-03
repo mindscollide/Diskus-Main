@@ -249,7 +249,7 @@ const FullScreenAgendaModal = ({
               sm={12}
               className={styles["agendaViewerHeader"]}
             >
-              <p className={styles["FileModalTitle"]}>{t("Agenda-Viewer")}</p>
+              <p className={styles["FileModalTitle"]}>{t("Agenda-viewer")}</p>
 
               <Tooltip placement="topRight" title={t("unExpand")}>
                 <div

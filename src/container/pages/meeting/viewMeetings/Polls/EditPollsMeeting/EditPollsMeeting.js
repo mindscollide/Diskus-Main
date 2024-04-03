@@ -449,7 +449,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
     } else {
       dispatch(clearPollsMesseges());
     }
-  }, [PollsReducer.ResponseMessage]);
+  }, [PollsReducer.ResponseMessage]);  
 
   return (
     <section>
