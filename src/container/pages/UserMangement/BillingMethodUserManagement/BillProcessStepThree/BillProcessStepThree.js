@@ -7,6 +7,15 @@ import ellipses from "../../../../../assets/images/ellipses.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrganizationSelectedPakagesAPI } from "../../../../../store/actions/UserManagementActions";
 import { useNavigate } from "react-router-dom";
+import {
+  convertAndFormatDateTimeGMT,
+  convertDateTimeRangeToGMT,
+  convertDateTimetoGMTMeetingDetail,
+  convertTimetoGMT,
+  convertUTCDateToLocalDate,
+  formatDate,
+  utcConvertintoGMT,
+} from "../../../../../commen/functions/date_formater";
 const BillProcessStepThree = () => {
   const { t } = useTranslation();
 
@@ -14,11 +23,16 @@ const BillProcessStepThree = () => {
 
   const navigate = useNavigate();
 
+  let currentLanguage = localStorage.getItem("i18nextLng");
+
+  console.log(currentLanguage, "currentLanguage");
+
   const { UserMangementReducer } = useSelector((state) => state);
 
   const organizationName = localStorage.getItem("OrganizatioName");
   //States
   const [getAllPakagesData, setGetAllPakagesData] = useState([]);
+  const [expiryDate, setExpiryDate] = useState(null);
 
   //UseEffect For Get All Organziation Selected Pakages
 
@@ -34,14 +48,23 @@ const BillProcessStepThree = () => {
       UserMangementReducer.getAllSelectedPakagesData !== null &&
       UserMangementReducer.getAllSelectedPakagesData !== undefined
     ) {
+      console.log(
+        UserMangementReducer.getAllSelectedPakagesData,
+        "UserMangementReducer"
+      );
       setGetAllPakagesData(
         UserMangementReducer.getAllSelectedPakagesData
           .organizationSelectedPackages
       );
+
+      setExpiryDate(
+        UserMangementReducer.getAllSelectedPakagesData.organizationSubscription
+          .subscriptionExpiryDate
+      );
     }
   }, [UserMangementReducer.getAllSelectedPakagesData]);
 
-  console.log(getAllPakagesData, "getAllSelectedPakagesData");
+  console.log(expiryDate, "getAllSelectedPakagesData");
 
   const ColumnsPakageSelection = [
     {
@@ -213,7 +236,10 @@ const BillProcessStepThree = () => {
                     className="d-flex justify-content-center align-items-center"
                   >
                     <span className={styles["dateStyles"]}>
-                      20 December 2024
+                      {convertUTCDateToLocalDate(
+                        expiryDate + "000000",
+                        currentLanguage
+                      )}
                     </span>
                   </Col>
                 </Row>
