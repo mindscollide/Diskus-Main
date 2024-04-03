@@ -21,7 +21,9 @@ import {
 } from "../../../../store/actions/Auth2_actions";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-const PasswordVerification = ({ setCurrentStep }) => {
+import { LoginFlowRoutes } from "../../../../store/actions/UserManagementActions";
+
+const PasswordVerification = () => {
   const { t } = useTranslation();
 
   const navigate = useNavigate();
@@ -236,6 +238,13 @@ const PasswordVerification = ({ setCurrentStep }) => {
     Authreducer.GetSelectedPackageResponseMessage,
   ]);
 
+  //Handle Goback functionality
+
+  const handleGoBack = () => {
+    localStorage.setItem("LoginFlowPageRoute", 10);
+    dispatch(LoginFlowRoutes(10));
+  };
+
   //Password Remeber
   useEffect(() => {
     let RememberPasswordLocal = JSON.parse(
@@ -254,6 +263,13 @@ const PasswordVerification = ({ setCurrentStep }) => {
     }
     passwordRef.current.focus();
   }, []);
+
+  //handling Goback Functionality
+
+  const handleGoback = () => {
+    localStorage.setItem("LoginFlowPageRoute", 1);
+    dispatch(LoginFlowRoutes(1));
+  };
 
   return (
     <>
@@ -375,7 +391,7 @@ const PasswordVerification = ({ setCurrentStep }) => {
                     className={styles["forogt_email_link"]}
                   >
                     <Link
-                      onClick={() => setCurrentStep(10)}
+                      onClick={handleGoBack}
                       className={styles["ForgotPassword"]}
                     >
                       {t("Forgot-password")}
@@ -390,7 +406,7 @@ const PasswordVerification = ({ setCurrentStep }) => {
                     className={styles["forogt_email_link"]}
                   >
                     <Link
-                      onClick={() => setCurrentStep(1)}
+                      onClick={handleGoback}
                       className={styles["ForgotPassword"]}
                     >
                       {t("Go-back")}

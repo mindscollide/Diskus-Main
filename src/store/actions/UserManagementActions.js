@@ -4,6 +4,7 @@ import {
   GetOrganizationSelectedPackagesByOrganizationID,
   GetOrganizationSubscriptionExpiryDetails,
   SaveOrganizationAndPakageSelection,
+  getOrganizationSelectedPakages,
 } from "../../commen/apis/Api_config";
 import {
   authenticationApi,
@@ -12,6 +13,20 @@ import {
 import * as actions from "../action_types";
 import axios from "axios";
 import { RefreshToken } from "./Auth_action";
+
+const signUpFlowRoutes = (response) => {
+  return {
+    type: actions.ROUTES_FOR_SIGNUP_FLOW_UM,
+    response: response,
+  };
+};
+
+const LoginFlowRoutes = (response) => {
+  return {
+    type: actions.ROUTING_ON_PAGES_USERMANAGEMENT,
+    response: response,
+  };
+};
 
 //Organization SignUp And Pakage Selection
 
@@ -36,7 +51,13 @@ const createOrganizationAndPakageSelectionFailed = (message) => {
   };
 };
 
-const signUpOrganizationAndPakageSelection = (data, navigate, t) => {
+const signUpOrganizationAndPakageSelection = (
+  data,
+  navigate,
+  t,
+  signupCurrentPageStep,
+  setSignupStep
+) => {
   return (dispatch) => {
     dispatch(createOrganizationAndPakageSelectionInit());
     let form = new FormData();
@@ -51,144 +72,194 @@ const signUpOrganizationAndPakageSelection = (data, navigate, t) => {
       data: form,
     })
       .then((response) => {
-        if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_01".toLowerCase()
-                )
-            ) {
-              dispatch(
-                createOrganizationAndPakageSelectionSuccess(
-                  response.data.responseResult,
-                  t("Organization-and-admin-created-successfully")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_02".toLowerCase()
-                )
-            ) {
-              dispatch(
-                createOrganizationAndPakageSelectionSuccess(
-                  response.data.responseResult,
-                  t(
-                    "Organization-and-admin-created-successfully-but-failed-to-send-OTP"
+        try {
+          if (response.data.responseCode === 200) {
+            if (response.data.responseResult.isExecuted === true) {
+              if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_01".toLowerCase()
                   )
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_03".toLowerCase()
-                )
-            ) {
-              dispatch(
-                createOrganizationAndPakageSelectionFailed(
-                  t("Email-already-exists")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_04".toLowerCase()
-                )
-            ) {
-              dispatch(
-                createOrganizationAndPakageSelectionFailed(
-                  t("Organization-name-already-taken")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_05".toLowerCase()
-                )
-            ) {
-              dispatch(
-                createOrganizationAndPakageSelectionFailed(
-                  t("Failed-to-save-organization")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_06".toLowerCase()
-                )
-            ) {
-              dispatch(
-                createOrganizationAndPakageSelectionFailed(
-                  t("Failed-to-save-subscriptions")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_07".toLowerCase()
-                )
-            ) {
-              dispatch(
-                createOrganizationAndPakageSelectionFailed(
-                  t("Failed-to-create-admin-user")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_08".toLowerCase()
-                )
-            ) {
-              dispatch(
-                createOrganizationAndPakageSelectionFailed(
-                  t("Failed-to-add-organization-user-mapping")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_09".toLowerCase()
-                )
-            ) {
-              dispatch(
-                createOrganizationAndPakageSelectionFailed(
-                  t("Failed-to-save-admin-user-alloted-package")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_10".toLowerCase()
-                )
-            ) {
-              dispatch(
-                createOrganizationAndPakageSelectionFailed(
-                  t("Failed-to-save-organization-settings")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_11".toLowerCase()
-                )
-            ) {
-              dispatch(
-                createOrganizationAndPakageSelectionFailed(
-                  t("Something-went-wrong")
-                )
-              );
+              ) {
+                localStorage.setItem(
+                  "OrganizatioName",
+                  data.Organization.OrganizationName
+                );
+                localStorage.setItem(
+                  "userID",
+                  response.data.responseResult.userID
+                );
+                localStorage.setItem(
+                  "OrganizationID",
+                  response.data.responseResult.organizationID
+                );
+                localStorage.setItem(
+                  "UserEmail",
+                  data.Organization.ContactPersonEmail
+                );
+                dispatch(
+                  createOrganizationAndPakageSelectionSuccess(
+                    response.data.responseResult,
+                    t("Organization-and-admin-created-successfully")
+                  )
+                );
+                localStorage.removeItem("PackageID");
+                localStorage.setItem("minutes", 4);
+                localStorage.setItem("seconds", 60);
+                localStorage.setItem("signupCurrentPage", 3);
+                navigate("/Signup");
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_02".toLowerCase()
+                  )
+              ) {
+                localStorage.setItem(
+                  "userID",
+                  response.data.responseResult.userID
+                );
+                localStorage.setItem(
+                  "OrganizationID",
+                  response.data.responseResult.organizationID
+                );
+                localStorage.setItem(
+                  "UserEmail",
+                  data.Organization.ContactPersonEmail
+                );
+                localStorage.setItem(
+                  "OrganizatioName",
+                  data.Organization.OrganizationName
+                );
+                dispatch(
+                  createOrganizationAndPakageSelectionSuccess(
+                    response.data.responseResult,
+                    t(
+                      "Organization-and-admin-created-successfully-but-failed-to-send-OTP"
+                    )
+                  )
+                );
+                localStorage.setItem("minutes", 0);
+                localStorage.setItem("seconds", 0);
+                localStorage.removeItem("PackageID");
+                localStorage.setItem("signupCurrentPage", 3);
+                navigate("/Signup");
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_03".toLowerCase()
+                  )
+              ) {
+                dispatch(
+                  createOrganizationAndPakageSelectionFailed(
+                    t("Email-already-exists")
+                  )
+                );
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_04".toLowerCase()
+                  )
+              ) {
+                dispatch(
+                  createOrganizationAndPakageSelectionFailed(
+                    t("Organization-name-already-taken")
+                  )
+                );
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_05".toLowerCase()
+                  )
+              ) {
+                dispatch(
+                  createOrganizationAndPakageSelectionFailed(
+                    t("Failed-to-save-organization")
+                  )
+                );
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_06".toLowerCase()
+                  )
+              ) {
+                dispatch(
+                  createOrganizationAndPakageSelectionFailed(
+                    t("Failed-to-save-subscriptions")
+                  )
+                );
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_07".toLowerCase()
+                  )
+              ) {
+                dispatch(
+                  createOrganizationAndPakageSelectionFailed(
+                    t("Failed-to-create-admin-user")
+                  )
+                );
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_08".toLowerCase()
+                  )
+              ) {
+                dispatch(
+                  createOrganizationAndPakageSelectionFailed(
+                    t("Failed-to-add-organization-user-mapping")
+                  )
+                );
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_09".toLowerCase()
+                  )
+              ) {
+                dispatch(
+                  createOrganizationAndPakageSelectionFailed(
+                    t("Failed-to-save-admin-user-alloted-package")
+                  )
+                );
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_10".toLowerCase()
+                  )
+              ) {
+                dispatch(
+                  createOrganizationAndPakageSelectionFailed(
+                    t("Failed-to-save-organization-settings")
+                  )
+                );
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_11".toLowerCase()
+                  )
+              ) {
+                dispatch(
+                  createOrganizationAndPakageSelectionFailed(
+                    t("Something-went-wrong")
+                  )
+                );
+              } else {
+                dispatch(
+                  createOrganizationAndPakageSelectionFailed(
+                    t("Something-went-wrong")
+                  )
+                );
+              }
             } else {
               dispatch(
                 createOrganizationAndPakageSelectionFailed(
@@ -203,12 +274,8 @@ const signUpOrganizationAndPakageSelection = (data, navigate, t) => {
               )
             );
           }
-        } else {
-          dispatch(
-            createOrganizationAndPakageSelectionFailed(
-              t("Something-went-wrong")
-            )
-          );
+        } catch (error) {
+          console.log(error, "errorerrorerrorerrorerror");
         }
       })
       .catch((response) => {
@@ -1038,6 +1105,108 @@ const GetOrganizationSelectedPackagesByOrganizationIDApi = (
   };
 };
 
+//GET ORGANIZATION SELECTED PAKAGES
+
+const getOrganizationSelectedPakagesInit = () => {
+  return {
+    type: actions.GET_ALL_ORGANIZATION_SELECTED_PAKAGES_INIT,
+  };
+};
+
+const getOrganizationSelectedPakagesSuccess = (response, message) => {
+  return {
+    type: actions.GET_ALL_ORGANIZATION_SELECTED_PAKAGES_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getOrganizationSelectedPakagesFailed = (message) => {
+  return {
+    type: actions.GET_ALL_ORGANIZATION_SELECTED_PAKAGES_FAIL,
+    message: message,
+  };
+};
+
+const getOrganizationSelectedPakagesAPI = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(getOrganizationSelectedPakagesInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(data));
+    form.append("RequestMethod", getOrganizationSelectedPakages.RequestMethod);
+    axios({
+      method: "post",
+      url: getAdminURLs,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getOrganizationSelectedPakagesAPI(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_GetOrganizationSelectedPackages_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getOrganizationSelectedPakagesSuccess(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_GetOrganizationSelectedPackages_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getOrganizationSelectedPakagesFailed(t("No-data-found"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_GetOrganizationSelectedPackages_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getOrganizationSelectedPakagesFailed(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                getOrganizationSelectedPakagesFailed(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              getOrganizationSelectedPakagesFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            getOrganizationSelectedPakagesFailed(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          getOrganizationSelectedPakagesFailed(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
 export {
   signUpOrganizationAndPakageSelection,
   getAllorganizationSubscriptionExpiryDetailsApi,
@@ -1047,4 +1216,7 @@ export {
   AllOrganizationsUsersApi,
   OrganizationPackageDetailsAndUserStatsApi,
   GetOrganizationSelectedPackagesByOrganizationIDApi,
+  signUpFlowRoutes,
+  LoginFlowRoutes,
+  getOrganizationSelectedPakagesAPI,
 };

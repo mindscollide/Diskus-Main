@@ -202,13 +202,13 @@ const userEmailVerification = {
   RequestMethod: "ServiceManager.UserEmailVerification",
 };
 const userPasswordCreation = {
-  RequestMethod: "ServiceManager.UserPasswordCreation",
+  RequestMethod: "ServiceManager.UsersPasswordCreation",
 };
 const userEmailValidation = {
-  RequestMethod: "ServiceManager.LoginWithEmail",
+  RequestMethod: "ServiceManager.LoginWithUserEmail",
 };
 const userPasswordVerify = {
-  RequestMethod: "ServiceManager.PasswordVerification",
+  RequestMethod: "ServiceManager.UserPasswordVerification",
 };
 const getSelectedPacakge_Detail = {
   RequestMethod: "ServiceManager.GetOrganizationSeletedPackage",
@@ -1512,6 +1512,10 @@ const leaveMeeting = {
   RequestMethod: "ServiceManager.LeaveMeeting",
 };
 
+const getOrganizationSelectedPakages = {
+  RequestMethod: "ServiceManager.GetOrganizationSelectedPackages",
+};
+
 export {
   UserLoginHistoryRM,
   getDataAnalyticsCountRM,
@@ -1916,4 +1920,5 @@ export {
   GetOrganizationSelectedPackagesByOrganizationID,
   joinMeeting,
   leaveMeeting,
+  getOrganizationSelectedPakages,
 };

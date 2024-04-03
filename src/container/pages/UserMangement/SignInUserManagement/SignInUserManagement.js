@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 import SignUpOrganizationUM from "../../UserMangement/SignUpOrganizationUM/SignUpOrganizationUM";
 import { useNavigate } from "react-router-dom";
+// import SignupProcessUserManagement from "../../SignUpProcessUserManagement/SignupProcessUserManagement";
 import { validationEmail } from "../../../../commen/functions/validations";
 import {
   cleareMessage,
@@ -21,8 +22,10 @@ import {
 } from "../../../../store/actions/Auth2_actions";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { signupCurrentPageStep } from "../../SignUpProcessUserManagement/SignupProcessUserManagement";
+import { signUpFlowRoutes } from "../../../../store/actions/UserManagementActions";
 
-const SignInUserManagement = ({ setCurrentStep }) => {
+const SignInUserManagement = ({ setCurrentStep, setSignupStep }) => {
   const navigate = useNavigate();
 
   const { t } = useTranslation();
@@ -79,7 +82,7 @@ const SignInUserManagement = ({ setCurrentStep }) => {
       setErrorMessage(t("Error-should-be-in-email-format"));
     } else {
       setErrorBar(false);
-      dispatch(validationEmailAction(email, navigate, t, setCurrentStep));
+      dispatch(validationEmailAction(email, navigate, t));
     }
   };
 
@@ -98,15 +101,19 @@ const SignInUserManagement = ({ setCurrentStep }) => {
 
   //Subscribe now
   const handleSubscribeNowButton = () => {
-    navigate("/PakageDetailsUserManagement");
+    localStorage.setItem("signupCurrentPage", 1);
+    // dispatch(signUpFlowRoutes(1));
+    navigate("/Signup");
   };
 
   //Handle Free Trial
   const handleClickFreeTrail = () => {
-    setCurrentStep(9);
     localStorage.setItem("PackageID", 4);
     localStorage.setItem("TenureOfSuscriptionID", 2);
-    navigate("/", {
+    localStorage.setItem("signupCurrentPage", 2);
+
+    // setCurrentStep(9);
+    navigate("/Signup", {
       state: {
         freeTrail: true,
       },

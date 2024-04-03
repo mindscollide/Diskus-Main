@@ -1846,7 +1846,6 @@
   "Your-trial-period-is-over": "Your trial period is over.",
   "please-upgrade-your-Package": "Please upgrade your Package.",
   "Confirm-payment": "Confirm Payment",
-  "You-can-select-multiple-options": "You can select multiple options",
   "Organization-and-admin-created-successfully": "Organization and Admin Created Successfully",
   "Organization-and-admin-created-successfully-but-failed-to-send-OTP": "Organization and Admin Created Successfully but failed to send OTP",
   "Organization-name-already-taken": "Organization Name Already Taken",
@@ -1876,6 +1875,7 @@
   "Failed-to-create-admin-user": "Failed To Create Admin User",
   "Failed-to-save-subscriptions": "Failed To Save Subscriptions",
   "Manage-users": "Manage Users",
+  "You-can-select-multiple-options": "You can select multiple options",
   "Time-should-be-greater-then-system-time": "Time should be greater then the system time",
   "Disable-video-call": "Disable video call"
 }

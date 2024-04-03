@@ -1,41 +1,55 @@
 import React, { useEffect, useState } from "react";
-import { Button, Paper, Loader } from "../../../../../components/elements";
+import styles from "./TwoFactorMultipleDevices.module.css";
+import { mqttConnection } from "../../../../../commen/functions/mqttconnection";
+import Helper from "../../../../../commen/functions/history_logout";
+import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
+import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
-import { Col, Container, Form, Row } from "react-bootstrap";
 import img1 from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
 import img2 from "../../../../../assets/images/2.png";
+import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import img5 from "../../../../../assets/images/5.png";
 import img6 from "../../../../../assets/images/6.png";
 import img10 from "../../../../../assets/images/10.png";
-import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
-import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
-import styles from "./DeviceFor2FAVerify.module.css";
-import { useTranslation } from "react-i18next";
-import Helper from "../../../../../commen/functions/history_logout";
-import { mqttConnection } from "../../../../../commen/functions/mqttconnection";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import {
+  TwoFaAuthenticate,
+  sendTwoFacAction,
+} from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
 import Cookies from "js-cookie";
-import { sendTwoFacAction } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
-import { LoginFlowRoutes } from "../../../../../store/actions/UserManagementActions";
+import { Col, Container, Form, Row } from "react-bootstrap";
+import {
+  Button,
+  Paper,
+  Notification,
+  Loader,
+} from "../../../../../components/elements";
+const TwoFactorMultipleDevices = () => {
+  const { Authreducer, LanguageReducer } = useSelector((state) => state);
 
-const DeviceFor2FAVerify = () => {
+  const { t } = useTranslation();
+
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
-  const { Authreducer, LanguageReducer } = useSelector((state) => state);
-
-  const [xtrazoom, setXtrazoom] = useState(false);
-  const [codeemail, setCodeemail] = useState(false);
-  const [codesms, setCodesms] = useState(false);
-  const { t } = useTranslation();
-
-  const [currentDevice, setCurrentDevice] = useState({
-    DeviceName: "",
-    UserDeviceID: 0,
-    DeviceRegistrationToken: "",
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
   });
+
+  const [currentDevice, setCurrentDevice] = useState([
+    {
+      DeviceName: "",
+      UserDeviceID: "",
+      DeviceRegistrationToken: "",
+    },
+  ]);
+
+  const [notificationdevice, setNotificationdevice] = useState(false);
+  const [notificationemail, setNotificationemail] = useState(false);
+  const [notificationsms, setNotificationsms] = useState(false);
 
   // translate Languages start
   const languages = [
@@ -46,11 +60,12 @@ const DeviceFor2FAVerify = () => {
 
   const currentLocale = Cookies.get("i18next") || "en";
 
-  const [language, setLanguage] = useState(currentLocale);
+  let newClient = Helper.socket;
 
   const [minutes, setMinutes] = useState(
     localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4
   );
+
   const [seconds, setSeconds] = useState(
     localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60
   );
@@ -61,70 +76,58 @@ const DeviceFor2FAVerify = () => {
     document.body.dir = currentLangObj.dir || "ltr";
   }, [currentLangObj, t]);
 
-  const onChangeHandlerSendRealmeXtra1 = (e) => {
-    setXtrazoom(true);
-    setCodeemail(false);
-    setCodesms(false);
-  };
-  const onChangeHandlerSendRealmeXtra2 = (e) => {
-    setCodeemail(true);
-    setXtrazoom(false);
-    setCodesms(false);
-  };
-  const onChangeHandlerSendRealmeXtra3 = (e) => {
-    setCodesms(true);
-    setCodeemail(false);
-    setXtrazoom(false);
+  const changeHandler1 = (e) => {
+    setNotificationdevice(true);
+    setNotificationemail(false);
+    setNotificationsms(false);
   };
 
-  const onClickRealmeXtra = async (e) => {
-    let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
-    let UserID = localStorage.getItem("userID");
+  const changeHandler2 = (e) => {
+    setNotificationemail(true);
+    setNotificationdevice(false);
+    setNotificationsms(false);
+  };
+
+  const changeHandler3 = (e) => {
+    setNotificationsms(true);
+    setNotificationdevice(false);
+    setNotificationemail(false);
+  };
+
+  const onClickSendOnDevice = (e) => {
     e.preventDefault();
-    if (xtrazoom) {
-      let Data = {
-        UserID: JSON.parse(UserID),
-        Device: "BROWSER",
-        DeviceID: "1",
-        OrganizationID: OrganizationID,
-        isEmail: codeemail,
-        isSMS: codesms,
-        isDevice: xtrazoom,
-        UserDevices: [
-          {
-            DeviceName: currentDevice.DeviceName,
-            UserDeviceID: currentDevice.UserDeviceID,
-            DeviceRegistrationToken: currentDevice.DeviceRegistrationToken,
-          },
-        ],
-      };
-      await dispatch(
-        sendTwoFacAction(t, navigate, Data, setSeconds, setMinutes)
-      );
-      localStorage.setItem("GobackSelection", 2);
-      localStorage.setItem("currentDevice", JSON.stringify(currentDevice));
-      // await navigate("/2FAverificationdevieotp", { state: { currentDevice } });
+    let UserID = localStorage.getItem("userID");
+    let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
+    if (notificationdevice) {
+      if (currentDevice[0].DeviceName !== "") {
+        localStorage.setItem("GobackSelection", 3);
+        navigate("/selectfrommultidevices", { state: { currentDevice } });
+      } else {
+        setOpen({
+          open: true,
+          message: "0 Device Not Found",
+        });
+        setTimeout(() => {
+          setOpen({
+            open: false,
+            message: "",
+          });
+        }, 2000);
+      }
     } else {
       let Data = {
         UserID: JSON.parse(UserID),
         Device: "BROWSER",
         DeviceID: "1",
         OrganizationID: OrganizationID,
-        isEmail: codeemail,
-        isSMS: codesms,
-        isDevice: xtrazoom,
+        isEmail: notificationemail,
+        isSMS: notificationsms,
+        isDevice: notificationdevice,
         UserDevices: [],
       };
-      localStorage.setItem("GobackSelection", 2);
-      await dispatch(
-        sendTwoFacAction(t, navigate, Data, setSeconds, setMinutes)
-      );
+      localStorage.setItem("GobackSelection", 3);
+      dispatch(sendTwoFacAction(t, navigate, Data, setSeconds, setMinutes));
     }
-  };
-
-  const handleGoBack = () => {
-    localStorage.setItem("LoginFlowPageRoute", 1);
-    dispatch(LoginFlowRoutes(1));
   };
 
   useEffect(() => {
@@ -133,41 +136,39 @@ const DeviceFor2FAVerify = () => {
       Authreducer.AuthenticateAFAResponse !== undefined
     ) {
       if (Authreducer.AuthenticateAFAResponse.userDevices.length > 0) {
-        console.log(" Authreducer.AuthenticateAFAResponse.userDevices");
         let DeviceDetail = Authreducer.AuthenticateAFAResponse.userDevices;
-        let data = {
-          DeviceName: DeviceDetail[0].deviceName,
-          UserDeviceID: DeviceDetail[0].pK_UDID,
-          DeviceRegistrationToken: DeviceDetail[0].deviceRegistrationToken,
-        };
-        localStorage.setItem("currentDevice", JSON.stringify(data));
-        setCurrentDevice({
-          DeviceName: DeviceDetail[0].deviceName,
-          UserDeviceID: DeviceDetail[0].pK_UDID,
-          DeviceRegistrationToken: DeviceDetail[0].deviceRegistrationToken,
+        let Devices = [];
+        DeviceDetail.map((data, index) => {
+          Devices.push({
+            DeviceName: data.deviceName,
+            UserDeviceID: data.pK_UDID,
+            DeviceRegistrationToken: data.deviceRegistrationToken,
+          });
         });
-      }
-    }
-    if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
-      let currentDevice = JSON.parse(localStorage.getItem("currentDevice"));
-      console.log(
-        " Authreducer.AuthenticateAFAResponse.userDevices",
-        currentDevice
-      );
-
-      if (currentDevice != undefined && currentDevice != null) {
-        console.log(" Authreducer.AuthenticateAFAResponse.userDevices");
-
-        setCurrentDevice({
-          DeviceName: currentDevice.DeviceName,
-          UserDeviceID: currentDevice.UserDeviceID,
-          DeviceRegistrationToken: currentDevice.DeviceRegistrationToken,
-        });
+        setCurrentDevice(Devices);
       }
     }
   }, [Authreducer.AuthenticateAFAResponse]);
 
-  let newClient = Helper.socket;
+  useEffect(() => {
+    if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
+      let organizationID = localStorage.getItem("organizationID");
+      let userID = localStorage.getItem("userID");
+      if (organizationID != undefined && userID != undefined) {
+        dispatch(
+          TwoFaAuthenticate(
+            t,
+            organizationID,
+            userID,
+            navigate,
+            setSeconds,
+            setMinutes
+          )
+        );
+      }
+    }
+  }, []);
+
   useEffect(() => {
     if (newClient != null && newClient != "" && newClient != undefined) {
     } else {
@@ -178,9 +179,9 @@ const DeviceFor2FAVerify = () => {
 
   return (
     <>
-      <Container fluid className="auth_container">
+      <Container fluid className={styles["auth_container"]}>
         <Row className="position-relative">
-          <Col className="languageSelector">
+          <Col className={styles["languageSelector"]}>
             <LanguageSelector />
           </Col>
         </Row>
@@ -193,14 +194,12 @@ const DeviceFor2FAVerify = () => {
                 sm={12}
                 className="d-flex justify-content-center align-items-center min-vh-100"
               >
-                <Paper
-                  className={styles["Send_Email_Realme_sendmailwithdevice"]}
-                >
+                <Paper className={styles["Send_Email_multipleDevice"]}>
                   <Col
                     sm={12}
                     lg={12}
                     md={12}
-                    className={styles["EmailVerifyBox_sendmailwithdevice"]}
+                    className={styles["EmailVerifyBoxSendEmail"]}
                   >
                     <Row>
                       <Col
@@ -219,7 +218,7 @@ const DeviceFor2FAVerify = () => {
                     </Row>
 
                     <Form>
-                      <Row className=" ">
+                      <Row>
                         <Col
                           sm={12}
                           md={12}
@@ -228,18 +227,30 @@ const DeviceFor2FAVerify = () => {
                         >
                           <h3
                             className={
-                              styles["VerifyHeading_sendmailwithdevice"]
+                              styles[
+                                "VerifyHeadingTwofacSendEmail_twofacmultidevice "
+                              ]
                             }
                           >
                             {t("2fa-verification")}
                           </h3>
-                          <span className={styles["SelectLine"]}>
+                          <span
+                            className={
+                              styles[
+                                "SelectLineTwofacSendEmail_twofacmultidevice"
+                              ]
+                            }
+                          >
                             {t("Select-any-one-option")}
                           </span>
                         </Col>
                       </Row>
 
-                      <Row className="">
+                      <Row
+                        className={
+                          styles["EmailBoxSendRealme_twofacmultidevice"]
+                        }
+                      >
                         <Col sm={12} md={12} lg={12} className="mx-2">
                           <Row>
                             <Col sm={12} md={1} lg={1}>
@@ -247,7 +258,7 @@ const DeviceFor2FAVerify = () => {
                                 draggable="false"
                                 width={"15px"}
                                 className={
-                                  !xtrazoom
+                                  !notificationdevice
                                     ? styles["two_fac_image"]
                                     : styles["two_fac_image_active"]
                                 }
@@ -256,33 +267,35 @@ const DeviceFor2FAVerify = () => {
                               />
                             </Col>
                             <Col sm={12} md={9} lg={9}>
+                              {" "}
                               <span
                                 className={
-                                  !xtrazoom
-                                    ? styles["SendRealmeXtraZoomColor_active"]
-                                    : styles["SendRealmeXtraZoomColor"]
+                                  !notificationdevice
+                                    ? styles["SendEmailOnDeiveColor_active"]
+                                    : styles["SendEmailOnDeiveColor"]
                                 }
                               >
-                                {t("Send-notification-on-device")}{" "}
-                                {currentDevice?.DeviceName}
+                                {t("Send-notification-on-device")}
                               </span>
                             </Col>
                             <Col sm={12} md={2} lg={2}>
                               <Form.Check
                                 type="radio"
-                                name="faSendEmailRealmeXtra"
-                                onChange={onChangeHandlerSendRealmeXtra1}
+                                onChange={changeHandler1}
+                                value={"SEND NOTIFICATION ON DEVICE"}
+                                name="2faverificationSendEmail"
                               />
                             </Col>
                           </Row>
-
+                          {/* </Col>
+                        <Col sm={12} md={12} lg={12} className="my-2"> */}
                           <Row className="my-2">
                             <Col sm={12} md={1} lg={1}>
                               <img
                                 draggable="false"
                                 width={"17px"}
                                 className={
-                                  !codeemail
+                                  !notificationemail
                                     ? styles["two_fac_image"]
                                     : styles["two_fac_image_active"]
                                 }
@@ -291,32 +304,37 @@ const DeviceFor2FAVerify = () => {
                               />
                             </Col>
                             <Col sm={12} md={9} lg={9}>
+                              {" "}
                               <span
                                 className={
-                                  !codeemail
-                                    ? styles["SendRealmeXtraZoomColor_active"]
-                                    : styles["SendRealmeXtraZoomColor"]
+                                  !notificationemail
+                                    ? styles["SendEmailOnDeiveColor_active"]
+                                    : styles["SendEmailOnDeiveColor"]
                                 }
                               >
                                 {t("Send-code-on-email")}
                               </span>
                             </Col>
                             <Col sm={12} md={2} lg={2}>
+                              {" "}
                               <Form.Check
+                                onChange={changeHandler2}
                                 type="radio"
-                                name="faSendEmailRealmeXtra"
-                                onChange={onChangeHandlerSendRealmeXtra2}
+                                value={"SEND CODE ON EMAIL"}
+                                name="2faverificationSendEmail"
                               />
                             </Col>
                           </Row>
-
+                          {/* </Col>
+                        <Col sm={12} md={12} lg={12} > */}
                           <Row>
                             <Col sm={12} md={1} lg={1}>
+                              {" "}
                               <img
                                 draggable="false"
                                 width={"17px"}
                                 className={
-                                  !codesms
+                                  !notificationsms
                                     ? styles["two_fac_image"]
                                     : styles["two_fac_image_active"]
                                 }
@@ -325,11 +343,12 @@ const DeviceFor2FAVerify = () => {
                               />
                             </Col>
                             <Col sm={12} md={9} lg={9}>
+                              {" "}
                               <span
                                 className={
-                                  !codesms
-                                    ? styles["SendRealmeXtraZoomColor_active"]
-                                    : styles["SendRealmeXtraZoomColor"]
+                                  !notificationsms
+                                    ? styles["SendEmailOnDeiveColor_active"]
+                                    : styles["SendEmailOnDeiveColor"]
                                 }
                               >
                                 {t("Send-code-on-sms")}
@@ -337,32 +356,50 @@ const DeviceFor2FAVerify = () => {
                             </Col>
                             <Col sm={12} md={2} lg={2}>
                               <Form.Check
-                                type="radio"
-                                name="faSendEmailRealmeXtra"
+                                onChange={changeHandler3}
                                 value={"SEND CODE ON SMS"}
-                                onChange={onChangeHandlerSendRealmeXtra3}
-                              />
+                                type="radio"
+                                name="2faverificationSendEmail"
+                              />{" "}
                             </Col>
                           </Row>
                         </Col>
                       </Row>
-                      <Row className="d-flex justify-content-center mt-5 mb-1">
-                        <Col sm={12} lg={12} md={12}>
+                      <Row>
+                        <Col
+                          sm={12}
+                          lg={12}
+                          md={12}
+                          className="d-flex justify-content-center"
+                        >
                           <Button
                             text={t("Send-code")}
-                            className="Next_button_EmailVerifySendEmailRealme"
-                            onClick={onClickRealmeXtra}
+                            className={
+                              styles[
+                                "Next_button_EmailVerifySendEmail_sendCode"
+                              ]
+                            }
+                            onClick={onClickSendOnDevice}
                             disableBtn={
-                              xtrazoom || codeemail || codesms ? false : true
+                              notificationsms ||
+                              notificationemail ||
+                              notificationdevice
+                                ? false
+                                : true
                             }
                           />
                         </Col>
                       </Row>
                     </Form>
                   </Col>
-                  <Row className="">
-                    <Col sm={12} md={12} lg={12} className="forogt_email_link">
-                      <Link onClick={handleGoBack}>{t("Go-back")}</Link>
+                  <Row className="mb-2 mt-1">
+                    <Col
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className={styles["forogt_email_link "]}
+                    >
+                      <Link>{t("Go-back")}</Link>
                     </Col>
                   </Row>
                 </Paper>
@@ -386,16 +423,21 @@ const DeviceFor2FAVerify = () => {
                   src={DiskusAuthPageLogo}
                   alt="auth_icon"
                   width="600px"
-                  className="Auth_Icon"
+                  className={styles["MultiFac_Auth_Icon"]}
                 />
               </Col>
             </Row>
           </Col>
         </Row>
-      </Container>{" "}
+      </Container>
       {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
+      <Notification
+        open={open.open}
+        setOpen={open.open}
+        message={open.message}
+      />
     </>
   );
 };
 
-export default DeviceFor2FAVerify;
+export default TwoFactorMultipleDevices;

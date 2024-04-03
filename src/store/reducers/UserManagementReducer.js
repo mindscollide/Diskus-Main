@@ -11,6 +11,9 @@ const initialState = {
   allOrganizationUsersData: null,
   organizationPakageDetailsUserStatsData: null,
   organizationSelectedPakagesByOrganizationIDData: null,
+  defaultRoutingValue: 1,
+  defaulSignUpRoute: 1,
+  getAllSelectedPakagesData: null,
 };
 
 const UserMangementReducer = (state = initialState, action) => {
@@ -198,6 +201,44 @@ const UserMangementReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
+
+    case actions.ROUTING_ON_PAGES_USERMANAGEMENT: {
+      return {
+        ...state,
+        defaultRoutingValue: action.response,
+      };
+    }
+
+    case actions.ROUTES_FOR_SIGNUP_FLOW_UM: {
+      return {
+        ...state,
+        defaulSignUpRoute: action.response,
+      };
+    }
+
+    case actions.GET_ALL_ORGANIZATION_SELECTED_PAKAGES_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GET_ALL_ORGANIZATION_SELECTED_PAKAGES_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getAllSelectedPakagesData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GET_ALL_ORGANIZATION_SELECTED_PAKAGES_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getAllSelectedPakagesData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
     default:
       return { ...state };
   }

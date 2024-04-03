@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./VerifyOTPUM.module.css";
 import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
@@ -11,12 +11,25 @@ import {
   Button,
   Paper,
   VerificationInputField,
+  Notification,
+  Loader,
 } from "../../../../components/elements";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
-const VerifyOTPUM = () => {
-  const { t, i18n } = useTranslation();
+import {
+  cleareMessage,
+  verificationEmailOTP,
+} from "../../../../store/actions/Auth2_actions";
+import { ResendOTP } from "../../../../store/actions/Auth_Verify_Opt";
+import { useSelector } from "react-redux";
 
-  const currentLocale = Cookies.get("i18next") || "en";
+const VerifyOTPUM = () => {
+  const { t } = useTranslation();
+
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
+  const { Authreducer, LanguageReducer } = useSelector((state) => state);
 
   const [key, setKey] = useState(1);
   const [errorBar, setErrorBar] = useState(true);
@@ -28,7 +41,10 @@ const VerifyOTPUM = () => {
   const [seconds, setSeconds] = useState(
     localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60
   );
-  const [startTimer, setStartTimer] = useState(false);
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+  });
 
   const languages = [
     { name: "English", code: "en" },
@@ -36,20 +52,211 @@ const VerifyOTPUM = () => {
     { name: "العربية", code: "ar", dir: "rtl" },
   ];
 
-  const [language, setLanguage] = useState(currentLocale);
+  const currentLocale = Cookies.get("i18next") || "en";
 
-  // Languages
-  const handleChangeLocale = (e) => {
-    const lang = e.target.value;
-    setLanguage(lang);
-    localStorage.setItem("i18nextLng", lang);
-    i18n.changeLanguage(lang);
-  };
+  const currentLangObj = languages.find((lang) => lang.code === currentLocale);
 
   const changeHandler = (e) => {
     let otpval = e.toUpperCase();
     setVerifyOTP(otpval);
   };
+
+  useEffect(() => {
+    // if value was cleared, set key to re-render the element
+    if (verifyOTP.length === 0) {
+      setKey(key + 1);
+      return;
+    }
+  }, [verifyOTP]);
+
+  const verifyOTPClickHandler = (e) => {
+    console.log("hello");
+    e.preventDefault();
+
+    if (verifyOTP.length !== 6) {
+      setVerifyOTP("");
+      setErrorBar(true);
+      setErrorMessage("OTP should be a 6 digit code");
+    } else {
+      setErrorBar(false);
+      setErrorMessage("");
+      setVerifyOTP("");
+      setVerifyOTP("");
+      dispatch(
+        verificationEmailOTP(
+          verifyOTP,
+          navigate,
+          t,
+          false,
+          setSeconds,
+          setMinutes
+        )
+      );
+    }
+  };
+
+  useEffect(() => {
+    document.body.dir = currentLangObj.dir || "ltr";
+  }, [currentLangObj, t]);
+
+  const sendRequestResend = () => {
+    let nEmail = localStorage.getItem("UserEmail");
+    let data = {
+      Email: nEmail,
+    };
+
+    localStorage.removeItem("seconds");
+    localStorage.removeItem("minutes");
+    dispatch(ResendOTP(t, data, setSeconds, setMinutes));
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds(seconds - 1);
+        localStorage.setItem("seconds", seconds - 1);
+        localStorage.setItem("minutes", minutes);
+      }
+      if (seconds === 0) {
+        if (minutes === 0) {
+          clearInterval(interval);
+          localStorage.removeItem("seconds");
+          localStorage.removeItem("minutes");
+        } else {
+          setSeconds(59);
+          setMinutes(minutes - 1);
+          localStorage.setItem("seconds", 59);
+          localStorage.setItem("minutes", minutes - 1);
+        }
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [seconds]);
+
+  useEffect(() => {
+    let s = localStorage.getItem("seconds");
+    let m = localStorage.getItem("minutes");
+    window.addEventListener("beforeunload ", (e) => {
+      e.preventDefault();
+      if (m !== undefined && s !== undefined) {
+        if (s === 1) {
+          setSeconds(59);
+          setMinutes(m - 1);
+        } else {
+          setSeconds(s - 1);
+          setMinutes(minutes);
+        }
+      } else {
+        setSeconds(59);
+        setMinutes(4);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.VerifyOTPEmailResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (Authreducer.EnterPasswordResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.EnterPasswordResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (Authreducer.OrganizationCreateResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.OrganizationCreateResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (Authreducer.CreatePasswordResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.CreatePasswordResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (Authreducer.GetSelectedPackageResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.GetSelectedPackageResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (Authreducer.EmailValidationResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.EmailValidationResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else {
+    }
+  }, [
+    Authreducer.EnterPasswordResponseMessage,
+    Authreducer.VerifyOTPEmailResponseMessage,
+    Authreducer.OrganizationCreateResponseMessage,
+    Authreducer.CreatePasswordResponseMessage,
+    Authreducer.EmailValidationResponseMessage,
+    Authreducer.GetSelectedPackageResponseMessage,
+  ]);
 
   return (
     <>
@@ -118,13 +325,13 @@ const VerifyOTPUM = () => {
                 </Row>
 
                 <Row>
-                  <Col className="text-left d-flex justify-content-center gap-3">
-                    {/* <Button
+                  <Col className="text-left d-flex justify-content-start gap-3">
+                    <Button
                       className={styles["resendCode_btn"]}
                       disableBtn={seconds > 0 || minutes > 0}
                       text={t("Resend-code-in")}
-                      //   onClick={sendRequestResend}
-                    /> */}
+                      onClick={sendRequestResend}
+                    />
                     <span className={styles["OTPCounter"]}>
                       0{minutes}: {seconds < 10 ? "0" + seconds : seconds}
                     </span>
@@ -143,7 +350,7 @@ const VerifyOTPUM = () => {
                     </p>
                   </Col>
                 </Row>
-                <Row className="d-flex mt-3 justify-content-center">
+                <Row className="d-flex mt-5 justify-content-center">
                   <Col
                     sm={12}
                     lg={12}
@@ -151,8 +358,8 @@ const VerifyOTPUM = () => {
                     className="d-flex justify-content-center"
                   >
                     <Button
-                      text={t("Resend-code")}
-                      //   onClick={verifyOTPClickHandler}
+                      text={t("Verify")}
+                      onClick={verifyOTPClickHandler}
                       className={styles["subscribNow_button_EmailVerify"]}
                     />
                   </Col>
@@ -185,6 +392,8 @@ const VerifyOTPUM = () => {
           </Col>
         </Row>
       </Container>
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
   );
 };

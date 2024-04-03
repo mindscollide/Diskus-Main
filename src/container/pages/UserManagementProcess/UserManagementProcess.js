@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SignInComponent from "../UserMangement/SignInUserManagement/SignInUserManagement";
 import PasswordVerification from "../UserMangement/PasswordVerification/PasswordVerification";
 import VerifyOTPUM from "../UserMangement/VerifyOTPUM/VerifyOTPUM";
@@ -8,20 +8,38 @@ import VerificationEmailAndNumber from "../UserMangement/2FA Verification/Verifi
 import VerifyDeniedUM from "../UserMangement/2FA Verification/VerifyDeniedUM/VerifyDeniedUM";
 import DeviceFor2FAVerify from "../UserMangement/2FA Verification/DevicesFor2FAVerify/DeviceFor2FAVerify";
 import SignUpOrganizationUM from "../UserMangement/SignUpOrganizationUM/SignUpOrganizationUM";
+import SignupProcessUserManagement from "../SignUpProcessUserManagement/SignupProcessUserManagement";
 import ForgotPasswordUM from "../UserMangement/ForgotPassword/ForgotPasswordUM";
 import PasswordCreationUM from "../UserMangement/PasswordCreationUM/PasswordCreationUM";
+import ForgotPasswordVerificationUM from "../UserMangement/ForgotPasswordVerification/ForgotPasswordVerificationUM";
+import TwoFactorMultipleDevices from "../UserMangement/2FA Verification/TwoFactorMultipleDevices/TwoFactorMultipleDevices";
+import { useSelector } from "react-redux";
 
 const UserManagementProcess = () => {
-  const [currentStep, setCurrentStep] = useState(1);
+  // Define setCurrentStep function
+
+  const { UserMangementReducer } = useSelector((state) => state);
+
+  // Retrieve currentStep value from localStorage, default to 1 if not found
+  const [currentStep, setCurrentStepValue] = useState(() => {
+    return Number(localStorage.getItem("LoginFlowPageRoute")) || 1;
+  });
+  console.log("currentStep", currentStep);
+
+  useEffect(() => {
+    try {
+      if (UserMangementReducer.defaultRoutingValue) {
+        setCurrentStepValue(UserMangementReducer.defaultRoutingValue);
+      }
+    } catch {}
+  }, [UserMangementReducer.defaultRoutingValue]);
 
   let componentToRender;
 
   if (currentStep === 1) {
-    componentToRender = <SignInComponent setCurrentStep={setCurrentStep} />;
+    componentToRender = <SignInComponent />;
   } else if (currentStep === 2) {
-    componentToRender = (
-      <PasswordVerification setCurrentStep={setCurrentStep} />
-    );
+    componentToRender = <PasswordVerification />;
   } else if (currentStep === 3) {
     componentToRender = <VerifyOTPUM />;
   } else if (currentStep === 4) {
@@ -40,8 +58,13 @@ const UserManagementProcess = () => {
     componentToRender = <ForgotPasswordUM />;
   } else if (currentStep === 11) {
     componentToRender = <PasswordCreationUM />;
+  } else if (currentStep === 12) {
+    componentToRender = <ForgotPasswordVerificationUM />;
+  } else if (currentStep === 13) {
+    componentToRender = <TwoFactorMultipleDevices />;
   } else {
     componentToRender = null;
+    console.log("Errorr in route");
   }
 
   return componentToRender;

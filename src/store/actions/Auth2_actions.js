@@ -23,6 +23,9 @@ import { TwoFaAuthenticate } from "./TwoFactorsAuthenticate_actions";
 import { mqttConnection } from "../../commen/functions/mqttconnection";
 import Helper from "../../commen/functions/history_logout";
 import { getSubscriptionPaymentDetail } from "./Admin_PackageDetail";
+import { LoginFlowRoutes } from "./UserManagementActions";
+import { showCreateAddtionalUsersModal } from "./UserMangementModalActions";
+
 const createOrganizationInit = () => {
   return {
     type: actions.SIGNUPORGANIZATION_INIT,
@@ -238,10 +241,11 @@ const validationEmailFail = (message) => {
     message: message,
   };
 };
-const validationEmailAction = (email, navigate, t, setCurrentStep) => {
+const validationEmailAction = (email, navigate, t) => {
   var min = 10000;
   var max = 90000;
   var id = min + Math.random() * (max - min);
+  let token = JSON.parse(localStorage.getItem("token"));
   let data = { UserEmail: email, Device: "Browser", DeviceID: "1" };
   return (dispatch) => {
     dispatch(validationEmailInit());
@@ -252,6 +256,9 @@ const validationEmailAction = (email, navigate, t, setCurrentStep) => {
       method: "post",
       url: authenticationApi,
       data: form,
+      headers: {
+        _token: token,
+      },
     })
       .then((response) => {
         if (response.data.responseCode === 200) {
@@ -260,7 +267,7 @@ const validationEmailAction = (email, navigate, t, setCurrentStep) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithEmail_01".toLowerCase()
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_01".toLowerCase()
                 )
             ) {
               dispatch(
@@ -273,7 +280,7 @@ const validationEmailAction = (email, navigate, t, setCurrentStep) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithEmail_02".toLowerCase()
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_02".toLowerCase()
                 )
             ) {
               dispatch(
@@ -286,7 +293,7 @@ const validationEmailAction = (email, navigate, t, setCurrentStep) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithEmail_03".toLowerCase()
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_03".toLowerCase()
                 )
             ) {
               localStorage.setItem(
@@ -303,13 +310,14 @@ const validationEmailAction = (email, navigate, t, setCurrentStep) => {
                   t("Users-password-is-created")
                 )
               );
-              setCurrentStep(2);
+              localStorage.setItem("LoginFlowPageRoute", 2);
+              dispatch(LoginFlowRoutes(2));
               // navigate("/enterPassword");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithEmail_04".toLowerCase()
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_04".toLowerCase()
                 )
             ) {
               dispatch(
@@ -322,7 +330,7 @@ const validationEmailAction = (email, navigate, t, setCurrentStep) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithEmail_05".toLowerCase()
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_05".toLowerCase()
                 )
             ) {
               dispatch(
@@ -331,18 +339,22 @@ const validationEmailAction = (email, navigate, t, setCurrentStep) => {
                   t("User-password-is-not-created-please-create-your-password")
                 )
               );
-              navigate("/createpasswordorganization");
+              localStorage.setItem("LoginFlowPageRoute", 11);
+              dispatch(LoginFlowRoutes(11));
+              // navigate("/createpasswordorganization");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithEmail_06".toLowerCase()
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_06".toLowerCase()
                 )
             ) {
               localStorage.setItem("seconds", 0);
               localStorage.setItem("minutes", 0);
               localStorage.setItem("UserEmail", email);
-              navigate("/verifyEmailOTP");
+              localStorage.setItem("LoginFlowPageRoute", 3);
+              dispatch(LoginFlowRoutes(3));
+              // navigate("/verifyEmailOTP");
               dispatch(
                 validationEmailSuccess(
                   response.data.responseResult,
@@ -353,7 +365,7 @@ const validationEmailAction = (email, navigate, t, setCurrentStep) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithEmail_07".toLowerCase()
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_07".toLowerCase()
                 )
             ) {
               dispatch(
@@ -369,7 +381,7 @@ const validationEmailAction = (email, navigate, t, setCurrentStep) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithEmail_01".toLowerCase()
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_01".toLowerCase()
                 )
             ) {
               MessageResponce = t("Device-does-not-exists");
@@ -377,7 +389,7 @@ const validationEmailAction = (email, navigate, t, setCurrentStep) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithEmail_02".toLowerCase()
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_02".toLowerCase()
                 )
             ) {
               MessageResponce = t("Device-id-does-not-exists");
@@ -385,7 +397,7 @@ const validationEmailAction = (email, navigate, t, setCurrentStep) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithEmail_03".toLowerCase()
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_03".toLowerCase()
                 )
             ) {
               MessageResponce = t("Users-password-is-created");
@@ -393,7 +405,7 @@ const validationEmailAction = (email, navigate, t, setCurrentStep) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithEmail_04".toLowerCase()
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_04".toLowerCase()
                 )
             ) {
               MessageResponce = t(
@@ -403,7 +415,7 @@ const validationEmailAction = (email, navigate, t, setCurrentStep) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithEmail_05".toLowerCase()
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_05".toLowerCase()
                 )
             ) {
               MessageResponce = t(
@@ -413,7 +425,7 @@ const validationEmailAction = (email, navigate, t, setCurrentStep) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithEmail_06".toLowerCase()
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_06".toLowerCase()
                 )
             ) {
               MessageResponce = t(
@@ -423,7 +435,7 @@ const validationEmailAction = (email, navigate, t, setCurrentStep) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithEmail_07".toLowerCase()
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_07".toLowerCase()
                 )
             ) {
               MessageResponce = t(
@@ -537,7 +549,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_01".toLowerCase()
+                  "ERM_AuthService_AuthManager_UserPasswordVerification_01".toLowerCase()
                 )
             ) {
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
@@ -555,7 +567,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_02".toLowerCase()
+                  "ERM_AuthService_AuthManager_UserPasswordVerification_02".toLowerCase()
                 )
             ) {
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
@@ -573,7 +585,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_03".toLowerCase()
+                  "ERM_AuthService_AuthManager_UserPasswordVerification_03".toLowerCase()
                 )
             ) {
               if (
@@ -648,7 +660,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_04".toLowerCase()
+                  "ERM_AuthService_AuthManager_UserPasswordVerification_04".toLowerCase()
                 )
             ) {
               if (
@@ -715,7 +727,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_05".toLowerCase()
+                  "ERM_AuthService_AuthManager_UserPasswordVerification_05".toLowerCase()
                 )
             ) {
               if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
@@ -761,7 +773,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_07".toLowerCase()
+                  "ERM_AuthService_AuthManager_UserPasswordVerification_07".toLowerCase()
                 )
             ) {
               if (
@@ -841,7 +853,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_08".toLowerCase()
+                  "ERM_AuthService_AuthManager_UserPasswordVerification_08".toLowerCase()
                 )
             ) {
               if (
@@ -908,7 +920,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_09".toLowerCase()
+                  "ERM_AuthService_AuthManager_UserPasswordVerification_09".toLowerCase()
                 )
             ) {
               let LocalUserRoutes = [
@@ -975,7 +987,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_10".toLowerCase()
+                  "ERM_AuthService_AuthManager_UserPasswordVerification_10".toLowerCase()
                 )
             ) {
               if (
@@ -1061,7 +1073,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_11".toLowerCase()
+                  "ERM_AuthService_AuthManager_UserPasswordVerification_11".toLowerCase()
                 )
             ) {
               if (
@@ -1155,9 +1167,11 @@ const enterPasswordvalidation = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_12".toLowerCase()
+                  "ERM_AuthService_AuthManager_UserPasswordVerification_12".toLowerCase()
                 )
             ) {
+              localStorage.setItem("signupCurrentPage", 5);
+              navigate("/Signup");
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(
                   enterPasswordFail(
@@ -1189,7 +1203,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_13".toLowerCase()
+                  "ERM_AuthService_AuthManager_UserPasswordVerification_13".toLowerCase()
                 )
             ) {
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
@@ -1198,7 +1212,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("User-is-not-activated-please-contact-your-admin")
                   )
                 );
-                navigate("/");
+
+                localStorage.setItem("LoginFlowPageRoute", 1);
+                dispatch(LoginFlowRoutes(1));
+                // navigate("/");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 2
               ) {
@@ -1207,7 +1224,9 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("User-is-not-activated-please-contact-your-admin")
                   )
                 );
-                navigate("/");
+                localStorage.setItem("LoginFlowPageRoute", 1);
+                dispatch(LoginFlowRoutes(1));
+                // navigate("/");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 3
               ) {
@@ -1216,166 +1235,175 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("User-is-not-activated-please-contact-your-admin")
                   )
                 );
-                navigate("/");
+                localStorage.setItem("LoginFlowPageRoute", 1);
+                dispatch(LoginFlowRoutes(1));
+                // navigate("/");
               } else {
                 dispatch(
                   enterPasswordFail(
                     t("User-is-not-activated-please-contact-your-admin")
                   )
                 );
-                navigate("/");
+
+                localStorage.setItem("LoginFlowPageRoute", 1);
+                dispatch(LoginFlowRoutes(1));
+                // navigate("/");
               }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_14".toLowerCase()
+                  "ERM_AuthService_AuthManager_UserPasswordVerification_14".toLowerCase()
                 )
             ) {
               dispatch(
                 enterPasswordFail(t("Password-verification-failed-try-again"))
               );
-            } else if (
+            }
+            //  else if (
+            //   response.data.responseResult.responseMessage
+            //     .toLowerCase()
+            //     .includes(
+            //       "ERM_AuthService_AuthManager_PasswordVerification_15".toLowerCase()
+            //     )
+            // ) {
+            //   if (
+            //     parseInt(
+            //       response.data.responseResult.organizationSubscriptionStatusID
+            //     ) === parseInt(5)
+            //   ) {
+            //     localStorage.setItem("revokeCancellation", true);
+            //   } else {
+            //     localStorage.setItem("revokeCancellation", false);
+            //   }
+            //   if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+            //     dispatch(enterPasswordFail(t("The-user-is-a-partial-admin")));
+            //     navigate("/");
+            //   } else if (
+            //     JSON.parse(response.data.responseResult.userRoleId) === 2
+            //   ) {
+            //     localStorage.setItem(
+            //       "roleID",
+            //       JSON.parse(response.data.responseResult.userRoleId)
+            //     );
+            //     localStorage.setItem(
+            //       "organizationID",
+            //       response.data.responseResult.organizationID
+            //     );
+            //     localStorage.setItem(
+            //       "organizationRoleID",
+            //       response.data.responseResult.organizationRoleID
+            //     );
+            //     enterPasswordSuccess(
+            //       response.data.responseResult,
+            //       t("The-user-is-a-partial-admin")
+            //     );
+            //     navigate("/Diskus/Admin/");
+            //   } else if (
+            //     JSON.parse(response.data.responseResult.userRoleId) === 3
+            //   ) {
+            //     dispatch(enterPasswordFail(t("The-user-is-a-partial-admin")));
+            //   }
+            // }
+            // else if (
+            //   response.data.responseResult.responseMessage
+            //     .toLowerCase()
+            //     .includes(
+            //       "ERM_AuthService_AuthManager_PasswordVerification_16".toLowerCase()
+            //     )
+            // ) {
+            //   if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+            //     dispatch(
+            //       enterPasswordFail(
+            //         t(
+            //           "The-user-is-a-partial-admin-user-the-organization-subscription-is-not-active-please-contact-your-admin"
+            //         )
+            //       )
+            //     );
+            //     navigate("/");
+            //   } else if (
+            //     JSON.parse(response.data.responseResult.userRoleId) === 3
+            //   ) {
+            //     enterPasswordFail(
+            //       t(
+            //         "The-user-is-a-partial-admin-user-the-organization-subscription-is-not-active-please-contact-your-admin"
+            //       )
+            //     );
+            //     navigate("/");
+            //   } else if (
+            //     JSON.parse(response.data.responseResult.userRoleId) === 2
+            //   ) {
+            //     localStorage.setItem("blur", true);
+            //     localStorage.setItem(
+            //       "roleID",
+            //       JSON.parse(response.data.responseResult.userRoleId)
+            //     );
+            //     localStorage.setItem(
+            //       "organizationID",
+            //       response.data.responseResult.organizationID
+            //     );
+            //     localStorage.setItem(
+            //       "organizationRoleID",
+            //       response.data.responseResult.organizationRoleID
+            //     );
+            //     enterPasswordSuccess(
+            //       response.data.responseResult,
+            //       t(
+            //         "The-user-is-a-partial-admin-user-the-organization-subscription-is-not-active-please-contact-your-admin"
+            //       )
+            //     );
+            //     navigate("/DisKus/Admin/Nonactive/");
+            //   }
+            // }
+            // else if (
+            //   response.data.responseResult.responseMessage
+            //     .toLowerCase()
+            //     .includes(
+            //       "ERM_AuthService_AuthManager_PasswordVerification_17".toLowerCase()
+            //     )
+            // ) {
+            //   if (
+            //     parseInt(
+            //       response.data.responseResult.organizationSubscriptionStatusID
+            //     ) === parseInt(5)
+            //   ) {
+            //     localStorage.setItem("revokeCancellation", true);
+            //   } else {
+            //     localStorage.setItem("revokeCancellation", false);
+            //   }
+            //   if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+            //     dispatch(enterPasswordFail(t("The-user-is-a-partial-admin")));
+            //   } else if (
+            //     JSON.parse(response.data.responseResult.userRoleId) === 2
+            //   ) {
+            //     localStorage.setItem(
+            //       "roleID",
+            //       JSON.parse(response.data.responseResult.userRoleId)
+            //     );
+            //     localStorage.setItem(
+            //       "organizationID",
+            //       response.data.responseResult.organizationID
+            //     );
+            //     localStorage.setItem(
+            //       "organizationRoleID",
+            //       response.data.responseResult.organizationRoleID
+            //     );
+            //     enterPasswordSuccess(
+            //       response.data.responseResult,
+            //       t("The-user-is-a-partial-admin")
+            //     );
+            //     navigate("/Diskus/Admin/");
+            //   } else if (
+            //     JSON.parse(response.data.responseResult.userRoleId) === 3
+            //   ) {
+            //     dispatch(enterPasswordFail(t("The-user-is-a-partial-admin")));
+            //   }
+            // }
+            else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_15".toLowerCase()
-                )
-            ) {
-              if (
-                parseInt(
-                  response.data.responseResult.organizationSubscriptionStatusID
-                ) === parseInt(5)
-              ) {
-                localStorage.setItem("revokeCancellation", true);
-              } else {
-                localStorage.setItem("revokeCancellation", false);
-              }
-              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
-                dispatch(enterPasswordFail(t("The-user-is-a-partial-admin")));
-                navigate("/");
-              } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 2
-              ) {
-                localStorage.setItem(
-                  "roleID",
-                  JSON.parse(response.data.responseResult.userRoleId)
-                );
-                localStorage.setItem(
-                  "organizationID",
-                  response.data.responseResult.organizationID
-                );
-                localStorage.setItem(
-                  "organizationRoleID",
-                  response.data.responseResult.organizationRoleID
-                );
-                enterPasswordSuccess(
-                  response.data.responseResult,
-                  t("The-user-is-a-partial-admin")
-                );
-                navigate("/Diskus/Admin/");
-              } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 3
-              ) {
-                dispatch(enterPasswordFail(t("The-user-is-a-partial-admin")));
-              }
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_16".toLowerCase()
-                )
-            ) {
-              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
-                dispatch(
-                  enterPasswordFail(
-                    t(
-                      "The-user-is-a-partial-admin-user-the-organization-subscription-is-not-active-please-contact-your-admin"
-                    )
-                  )
-                );
-                navigate("/");
-              } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 3
-              ) {
-                enterPasswordFail(
-                  t(
-                    "The-user-is-a-partial-admin-user-the-organization-subscription-is-not-active-please-contact-your-admin"
-                  )
-                );
-                navigate("/");
-              } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 2
-              ) {
-                localStorage.setItem("blur", true);
-                localStorage.setItem(
-                  "roleID",
-                  JSON.parse(response.data.responseResult.userRoleId)
-                );
-                localStorage.setItem(
-                  "organizationID",
-                  response.data.responseResult.organizationID
-                );
-                localStorage.setItem(
-                  "organizationRoleID",
-                  response.data.responseResult.organizationRoleID
-                );
-                enterPasswordSuccess(
-                  response.data.responseResult,
-                  t(
-                    "The-user-is-a-partial-admin-user-the-organization-subscription-is-not-active-please-contact-your-admin"
-                  )
-                );
-                navigate("/DisKus/Admin/Nonactive/");
-              }
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_17".toLowerCase()
-                )
-            ) {
-              if (
-                parseInt(
-                  response.data.responseResult.organizationSubscriptionStatusID
-                ) === parseInt(5)
-              ) {
-                localStorage.setItem("revokeCancellation", true);
-              } else {
-                localStorage.setItem("revokeCancellation", false);
-              }
-              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
-                dispatch(enterPasswordFail(t("The-user-is-a-partial-admin")));
-              } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 2
-              ) {
-                localStorage.setItem(
-                  "roleID",
-                  JSON.parse(response.data.responseResult.userRoleId)
-                );
-                localStorage.setItem(
-                  "organizationID",
-                  response.data.responseResult.organizationID
-                );
-                localStorage.setItem(
-                  "organizationRoleID",
-                  response.data.responseResult.organizationRoleID
-                );
-                enterPasswordSuccess(
-                  response.data.responseResult,
-                  t("The-user-is-a-partial-admin")
-                );
-                navigate("/Diskus/Admin/");
-              } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 3
-              ) {
-                dispatch(enterPasswordFail(t("The-user-is-a-partial-admin")));
-              }
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_AuthManager_PasswordVerification_18".toLowerCase()
+                  "ERM_AuthService_AuthManager_UserPasswordVerification_18".toLowerCase()
                 )
             ) {
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
@@ -1425,6 +1453,7 @@ const verifyOTPFail = (message) => {
     message: message,
   };
 };
+
 const verificationEmailOTP = (
   OTPValue,
   navigate,
@@ -1470,9 +1499,17 @@ const verificationEmailOTP = (
               } else {
                 localStorage.setItem("updatePasswordCheck", false);
               }
-              localStorage.removeItem("seconds");
-              localStorage.removeItem("minutes");
-              navigate("/createpasswordorganization");
+              const signupValue = localStorage.getItem("signupCurrentPage");
+              if (signupValue === "3") {
+                localStorage.setItem("signupCurrentPage", 4);
+                navigate("/Signup");
+              } else {
+                localStorage.removeItem("seconds");
+                localStorage.removeItem("minutes");
+                localStorage.setItem("LoginFlowPageRoute", 4);
+                dispatch(LoginFlowRoutes(4));
+                // navigate("/createpasswordorganization");
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1545,7 +1582,7 @@ const createPasswordFail = (message) => {
     message: message,
   };
 };
-const createPasswordAction = (value, navigate, t) => {
+const createPasswordAction = (value, navigate, t, currentStage) => {
   let userID = localStorage.getItem("userID");
   let data = { UserID: JSON.parse(userID), Password: value };
   return (dispatch) => {
@@ -1599,9 +1636,11 @@ const createPasswordAction = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_01".toLowerCase()
+                  "ERM_AuthService_SignUpManager_UsersPasswordCreation_01".toLowerCase()
                 )
             ) {
+              localStorage.setItem("signupCurrentPage", 5);
+              navigate("/Signup");
               if (
                 parseInt(
                   response.data.responseResult.organizationSubscriptionStatusID
@@ -1654,7 +1693,7 @@ const createPasswordAction = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_02".toLowerCase()
+                  "ERM_AuthService_SignUpManager_UsersPasswordCreation_02".toLowerCase()
                 )
             ) {
               localStorage.setItem(
@@ -1683,7 +1722,7 @@ const createPasswordAction = (value, navigate, t) => {
                   TwoFaAuthenticate(
                     t,
                     response.data.responseResult.organizationID,
-                    userID,
+                    data.UserID,
                     navigate
                   )
                 );
@@ -1703,7 +1742,7 @@ const createPasswordAction = (value, navigate, t) => {
                   TwoFaAuthenticate(
                     t,
                     response.data.responseResult.organizationID,
-                    userID,
+                    data.UserID,
                     navigate
                   )
                 );
@@ -1723,75 +1762,77 @@ const createPasswordAction = (value, navigate, t) => {
                   TwoFaAuthenticate(
                     t,
                     response.data.responseResult.organizationID,
-                    userID,
+                    data.UserID,
                     navigate
                   )
                 );
                 mqttConnection(response.data.responseResult.authToken.userID);
                 // navigate("/");
               }
-            } else if (
+            }
+            // else if (
+            //   response.data.responseResult.responseMessage
+            //     .toLowerCase()
+            //     .includes(
+            //       "ERM_AuthService_SignUpManager_UserPasswordCreation_03".toLowerCase()
+            //     )
+            // ) {
+            //   if (
+            //     parseInt(
+            //       response.data.responseResult.organizationSubscriptionStatusID
+            //     ) === parseInt(5)
+            //   ) {
+            //     localStorage.setItem("revokeCancellation", true);
+            //   } else {
+            //     localStorage.setItem("revokeCancellation", false);
+            //   }
+            //   localStorage.setItem(
+            //     "roleID",
+            //     JSON.parse(response.data.responseResult.userRoleId)
+            //   );
+            //   localStorage.setItem(
+            //     "organizationID",
+            //     response.data.responseResult.organizationID
+            //   );
+            //   localStorage.setItem(
+            //     "organizationRoleID",
+            //     response.data.responseResult.organizationRoleID
+            //   );
+            //   if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+            //     dispatch(
+            //       createPasswordSuccess(
+            //         response.data.responseResult,
+            //         t("Tthe-user-is-a-partial-admin-user")
+            //       )
+            //     );
+            //     navigate("/Diskus/Admin/");
+            //   } else if (
+            //     JSON.parse(response.data.responseResult.userRoleId) === 2
+            //   ) {
+            //     dispatch(
+            //       createPasswordSuccess(
+            //         response.data.responseResult,
+            //         t("Tthe-user-is-a-partial-admin-user")
+            //       )
+            //     );
+            //     navigate("/Diskus/Admin/");
+            //   } else if (
+            //     JSON.parse(response.data.responseResult.userRoleId) === 3
+            //   ) {
+            //     dispatch(
+            //       createPasswordFail(
+            //         response.data.responseResult,
+            //         t("Tthe-user-is-a-partial-admin-user")
+            //       )
+            //     );
+            //     navigate("/");
+            //   }
+            // }
+            else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_03".toLowerCase()
-                )
-            ) {
-              if (
-                parseInt(
-                  response.data.responseResult.organizationSubscriptionStatusID
-                ) === parseInt(5)
-              ) {
-                localStorage.setItem("revokeCancellation", true);
-              } else {
-                localStorage.setItem("revokeCancellation", false);
-              }
-              localStorage.setItem(
-                "roleID",
-                JSON.parse(response.data.responseResult.userRoleId)
-              );
-              localStorage.setItem(
-                "organizationID",
-                response.data.responseResult.organizationID
-              );
-              localStorage.setItem(
-                "organizationRoleID",
-                response.data.responseResult.organizationRoleID
-              );
-              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t("Tthe-user-is-a-partial-admin-user")
-                  )
-                );
-                navigate("/Diskus/Admin/");
-              } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 2
-              ) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t("Tthe-user-is-a-partial-admin-user")
-                  )
-                );
-                navigate("/Diskus/Admin/");
-              } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 3
-              ) {
-                dispatch(
-                  createPasswordFail(
-                    response.data.responseResult,
-                    t("Tthe-user-is-a-partial-admin-user")
-                  )
-                );
-                navigate("/");
-              }
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_04".toLowerCase()
+                  "ERM_AuthService_SignUpManager_UsersPasswordCreation_04".toLowerCase()
                 )
             ) {
               if (
@@ -1884,7 +1925,7 @@ const createPasswordAction = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_05".toLowerCase()
+                  "ERM_AuthService_SignUpManager_UsersPasswordCreation_05".toLowerCase()
                 )
             ) {
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
@@ -1926,52 +1967,7 @@ const createPasswordAction = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_06".toLowerCase()
-                )
-            ) {
-              if (
-                parseInt(
-                  response.data.responseResult.organizationSubscriptionStatusID
-                ) === parseInt(5)
-              ) {
-                localStorage.setItem("revokeCancellation", true);
-              } else {
-                localStorage.setItem("revokeCancellation", false);
-              }
-              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t("User-is-not-a-new-user-2fa-enabled")
-                  )
-                );
-                navigate("/");
-              } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 2
-              ) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t("User-is-not-a-new-user-2fa-enabled")
-                  )
-                );
-                navigate("/");
-              } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 3
-              ) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t("User-is-not-a-new-user-2fa-enabled")
-                  )
-                );
-                navigate("/");
-              }
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_07".toLowerCase()
+                  "ERM_AuthService_SignUpManager_UsersPasswordCreation_06".toLowerCase()
                 )
             ) {
               if (
@@ -1983,70 +1979,117 @@ const createPasswordAction = (value, navigate, t) => {
               } else {
                 localStorage.setItem("revokeCancellation", false);
               }
-              if (response.data.responseResult.organizationName !== undefined) {
-                localStorage.setItem(
-                  "OrganizatioName",
-                  response.data.responseResult.organizationName
-                );
-              }
-              if (response.data.responseResult.authToken !== null) {
-                localStorage.setItem(
-                  "name",
-                  response.data.responseResult.authToken.name
-                );
-                localStorage.setItem(
-                  "userEmail",
-                  response.data.responseResult.authToken.userName
-                );
-                localStorage.setItem(
-                  "token",
-                  JSON.stringify(response.data.responseResult.authToken.token)
-                );
-                localStorage.setItem(
-                  "refreshToken",
-                  JSON.stringify(
-                    response.data.responseResult.authToken.refreshToken
-                  )
-                );
-                localStorage.setItem(
-                  "roleID",
-                  JSON.parse(response.data.responseResult.userRoleId)
-                );
-              }
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
-                    t("User-is-not-a-new-user-the-user-is-a-partial-admin-user")
+                    t("User-is-not-a-new-user-2fa-enabled")
                   )
                 );
-                navigate("/Diskus/Admin/");
+                navigate("/");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 2
               ) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
-                    t("User-is-not-a-new-user-the-user-is-a-partial-admin-user")
+                    t("User-is-not-a-new-user-2fa-enabled")
                   )
                 );
-                navigate("/Diskus/Admin/");
+                navigate("/");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 3
               ) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
-                    t("User-is-not-a-new-user-the-user-is-a-partial-admin-user")
+                    t("User-is-not-a-new-user-2fa-enabled")
                   )
                 );
                 navigate("/");
               }
-            } else if (
+            }
+            //  else if (
+            //   response.data.responseResult.responseMessage
+            //     .toLowerCase()
+            //     .includes(
+            //       "ERM_AuthService_SignUpManager_UserPasswordCreation_07".toLowerCase()
+            //     )
+            // ) {
+            //   if (
+            //     parseInt(
+            //       response.data.responseResult.organizationSubscriptionStatusID
+            //     ) === parseInt(5)
+            //   ) {
+            //     localStorage.setItem("revokeCancellation", true);
+            //   } else {
+            //     localStorage.setItem("revokeCancellation", false);
+            //   }
+            //   if (response.data.responseResult.organizationName !== undefined) {
+            //     localStorage.setItem(
+            //       "OrganizatioName",
+            //       response.data.responseResult.organizationName
+            //     );
+            //   }
+            //   if (response.data.responseResult.authToken !== null) {
+            //     localStorage.setItem(
+            //       "name",
+            //       response.data.responseResult.authToken.name
+            //     );
+            //     localStorage.setItem(
+            //       "userEmail",
+            //       response.data.responseResult.authToken.userName
+            //     );
+            //     localStorage.setItem(
+            //       "token",
+            //       JSON.stringify(response.data.responseResult.authToken.token)
+            //     );
+            //     localStorage.setItem(
+            //       "refreshToken",
+            //       JSON.stringify(
+            //         response.data.responseResult.authToken.refreshToken
+            //       )
+            //     );
+            //     localStorage.setItem(
+            //       "roleID",
+            //       JSON.parse(response.data.responseResult.userRoleId)
+            //     );
+            //   }
+            //   if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+            //     dispatch(
+            //       createPasswordSuccess(
+            //         response.data.responseResult,
+            //         t("User-is-not-a-new-user-the-user-is-a-partial-admin-user")
+            //       )
+            //     );
+            //     navigate("/Diskus/Admin/");
+            //   } else if (
+            //     JSON.parse(response.data.responseResult.userRoleId) === 2
+            //   ) {
+            //     dispatch(
+            //       createPasswordSuccess(
+            //         response.data.responseResult,
+            //         t("User-is-not-a-new-user-the-user-is-a-partial-admin-user")
+            //       )
+            //     );
+            //     navigate("/Diskus/Admin/");
+            //   } else if (
+            //     JSON.parse(response.data.responseResult.userRoleId) === 3
+            //   ) {
+            //     dispatch(
+            //       createPasswordSuccess(
+            //         response.data.responseResult,
+            //         t("User-is-not-a-new-user-the-user-is-a-partial-admin-user")
+            //       )
+            //     );
+            //     navigate("/");
+            //   }
+            // }
+            else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_08".toLowerCase()
+                  "ERM_AuthService_SignUpManager_UsersPasswordCreation_08".toLowerCase()
                 )
             ) {
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
@@ -2126,9 +2169,12 @@ const createPasswordAction = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_09".toLowerCase()
+                  "ERM_AuthService_SignUpManager_UsersPasswordCreation_09".toLowerCase()
                 )
             ) {
+              localStorage.setItem("signupCurrentPage", 5);
+              navigate("/Signup");
+
               localStorage.setItem("blur", true);
               localStorage.setItem(
                 "OrganizatioName",
@@ -2177,7 +2223,7 @@ const createPasswordAction = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_10".toLowerCase()
+                  "ERM_AuthService_SignUpManager_UsersPasswordCreation_10".toLowerCase()
                 )
             ) {
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
@@ -2214,7 +2260,7 @@ const createPasswordAction = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_11".toLowerCase()
+                  "ERM_AuthService_SignUpManager_UsersPasswordCreation_11".toLowerCase()
                 )
             ) {
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
@@ -2243,47 +2289,49 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
               }
-            } else if (
+            }
+            // else if (
+            //   response.data.responseResult.responseMessage
+            //     .toLowerCase()
+            //     .includes(
+            //       "ERM_AuthService_SignUpManager_UserPasswordCreation_12".toLowerCase()
+            //     )
+            // ) {
+            //   if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+            //     dispatch(
+            //       createPasswordSuccess(
+            //         response.data.responseResult,
+            //         t("User-is-not-active-please-activate")
+            //       )
+            //     );
+            //     navigate("/");
+            //   } else if (
+            //     JSON.parse(response.data.responseResult.userRoleId) === 2
+            //   ) {
+            //     dispatch(
+            //       createPasswordSuccess(
+            //         response.data.responseResult,
+            //         t("User-is-not-active-please-activate")
+            //       )
+            //     );
+            //     navigate("/");
+            //   } else if (
+            //     JSON.parse(response.data.responseResult.userRoleId) === 3
+            //   ) {
+            //     dispatch(
+            //       createPasswordSuccess(
+            //         response.data.responseResult,
+            //         t("User-is-not-active-please-activate")
+            //       )
+            //     );
+            //     navigate("/");
+            //   }
+            // }
+            else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_12".toLowerCase()
-                )
-            ) {
-              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t("User-is-not-active-please-activate")
-                  )
-                );
-                navigate("/");
-              } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 2
-              ) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t("User-is-not-active-please-activate")
-                  )
-                );
-                navigate("/");
-              } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 3
-              ) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t("User-is-not-active-please-activate")
-                  )
-                );
-                navigate("/");
-              }
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_13".toLowerCase()
+                  "ERM_AuthService_SignUpManager_UsersPasswordCreation_13".toLowerCase()
                 )
             ) {
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
@@ -2432,164 +2480,166 @@ const createPasswordAction = (value, navigate, t) => {
                   navigate("/Diskus/");
                 }
               }
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_14".toLowerCase()
-                )
-            ) {
-              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
-                localStorage.setItem("blur", true);
-                if (
-                  response.data.responseResult.organizationName !== undefined
-                ) {
-                  localStorage.setItem(
-                    "OrganizatioName",
-                    response.data.responseResult.organizationName
-                  );
-                }
-                if (response.data.responseResult.authToken !== null) {
-                  localStorage.setItem(
-                    "name",
-                    response.data.responseResult.authToken.name
-                  );
-                  localStorage.setItem(
-                    "userEmail",
-                    response.data.responseResult.authToken.userName
-                  );
-                  localStorage.setItem(
-                    "token",
-                    JSON.stringify(response.data.responseResult.authToken.token)
-                  );
-                  localStorage.setItem(
-                    "refreshToken",
-                    JSON.stringify(
-                      response.data.responseResult.authToken.refreshToken
-                    )
-                  );
-                  localStorage.setItem(
-                    "roleID",
-                    JSON.parse(response.data.responseResult.userRoleId)
-                  );
-                }
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t(
-                      "Organization-subscription-is-in-active-and-this-is-a-partial-admin-user"
-                    )
-                  )
-                );
-                navigate("/Diskus/Admin/PayOutstanding");
-              } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 2
-              ) {
-                localStorage.setItem("blur", true);
-                if (
-                  response.data.responseResult.organizationName !== undefined
-                ) {
-                  localStorage.setItem(
-                    "OrganizatioName",
-                    response.data.responseResult.organizationName
-                  );
-                }
-                if (response.data.responseResult.authToken !== null) {
-                  localStorage.setItem(
-                    "name",
-                    response.data.responseResult.authToken.name
-                  );
-                  localStorage.setItem(
-                    "userEmail",
-                    response.data.responseResult.authToken.userName
-                  );
-                  localStorage.setItem(
-                    "token",
-                    JSON.stringify(response.data.responseResult.authToken.token)
-                  );
-                  localStorage.setItem(
-                    "refreshToken",
-                    JSON.stringify(
-                      response.data.responseResult.authToken.refreshToken
-                    )
-                  );
-                  localStorage.setItem(
-                    "roleID",
-                    JSON.parse(response.data.responseResult.userRoleId)
-                  );
-                }
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t(
-                      "Organization-subscription-is-in-active-and-this-is-a-partial-admin-user"
-                    )
-                  )
-                );
-                navigate("/Diskus/Admin/Nonactive");
-              } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 3
-              ) {
-                localStorage.setItem("blur", true);
-                if (
-                  response.data.responseResult.organizationName !== undefined
-                ) {
-                  localStorage.setItem(
-                    "OrganizatioName",
-                    response.data.responseResult.organizationName
-                  );
-                }
-                if (response.data.responseResult.authToken !== null) {
-                  localStorage.setItem(
-                    "name",
-                    response.data.responseResult.authToken.name
-                  );
-                  localStorage.setItem(
-                    "userEmail",
-                    response.data.responseResult.authToken.userName
-                  );
-                  localStorage.setItem(
-                    "token",
-                    JSON.stringify(response.data.responseResult.authToken.token)
-                  );
-                  localStorage.setItem(
-                    "refreshToken",
-                    JSON.stringify(
-                      response.data.responseResult.authToken.refreshToken
-                    )
-                  );
-                  localStorage.setItem(
-                    "roleID",
-                    JSON.parse(response.data.responseResult.userRoleId)
-                  );
-                }
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t(
-                      "Organization-subscription-is-in-active-and-this-is-a-partial-admin-user"
-                    )
-                  )
-                );
-                let RSVP = localStorage.getItem("RSVP");
-                let dataroomValue = localStorage.getItem("DataRoomEmail");
+            }
+            // else if (
+            //   response.data.responseResult.responseMessage
+            //     .toLowerCase()
+            //     .includes(
+            //       "ERM_AuthService_SignUpManager_UserPasswordCreation_14".toLowerCase()
+            //     )
+            // ) {
+            //   if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+            //     localStorage.setItem("blur", true);
+            //     if (
+            //       response.data.responseResult.organizationName !== undefined
+            //     ) {
+            //       localStorage.setItem(
+            //         "OrganizatioName",
+            //         response.data.responseResult.organizationName
+            //       );
+            //     }
+            //     if (response.data.responseResult.authToken !== null) {
+            //       localStorage.setItem(
+            //         "name",
+            //         response.data.responseResult.authToken.name
+            //       );
+            //       localStorage.setItem(
+            //         "userEmail",
+            //         response.data.responseResult.authToken.userName
+            //       );
+            //       localStorage.setItem(
+            //         "token",
+            //         JSON.stringify(response.data.responseResult.authToken.token)
+            //       );
+            //       localStorage.setItem(
+            //         "refreshToken",
+            //         JSON.stringify(
+            //           response.data.responseResult.authToken.refreshToken
+            //         )
+            //       );
+            //       localStorage.setItem(
+            //         "roleID",
+            //         JSON.parse(response.data.responseResult.userRoleId)
+            //       );
+            //     }
+            //     dispatch(
+            //       createPasswordSuccess(
+            //         response.data.responseResult,
+            //         t(
+            //           "Organization-subscription-is-in-active-and-this-is-a-partial-admin-user"
+            //         )
+            //       )
+            //     );
+            //     navigate("/Diskus/Admin/PayOutstanding");
+            //   } else if (
+            //     JSON.parse(response.data.responseResult.userRoleId) === 2
+            //   ) {
+            //     localStorage.setItem("blur", true);
+            //     if (
+            //       response.data.responseResult.organizationName !== undefined
+            //     ) {
+            //       localStorage.setItem(
+            //         "OrganizatioName",
+            //         response.data.responseResult.organizationName
+            //       );
+            //     }
+            //     if (response.data.responseResult.authToken !== null) {
+            //       localStorage.setItem(
+            //         "name",
+            //         response.data.responseResult.authToken.name
+            //       );
+            //       localStorage.setItem(
+            //         "userEmail",
+            //         response.data.responseResult.authToken.userName
+            //       );
+            //       localStorage.setItem(
+            //         "token",
+            //         JSON.stringify(response.data.responseResult.authToken.token)
+            //       );
+            //       localStorage.setItem(
+            //         "refreshToken",
+            //         JSON.stringify(
+            //           response.data.responseResult.authToken.refreshToken
+            //         )
+            //       );
+            //       localStorage.setItem(
+            //         "roleID",
+            //         JSON.parse(response.data.responseResult.userRoleId)
+            //       );
+            //     }
+            //     dispatch(
+            //       createPasswordSuccess(
+            //         response.data.responseResult,
+            //         t(
+            //           "Organization-subscription-is-in-active-and-this-is-a-partial-admin-user"
+            //         )
+            //       )
+            //     );
+            //     navigate("/Diskus/Admin/Nonactive");
+            //   } else if (
+            //     JSON.parse(response.data.responseResult.userRoleId) === 3
+            //   ) {
+            //     localStorage.setItem("blur", true);
+            //     if (
+            //       response.data.responseResult.organizationName !== undefined
+            //     ) {
+            //       localStorage.setItem(
+            //         "OrganizatioName",
+            //         response.data.responseResult.organizationName
+            //       );
+            //     }
+            //     if (response.data.responseResult.authToken !== null) {
+            //       localStorage.setItem(
+            //         "name",
+            //         response.data.responseResult.authToken.name
+            //       );
+            //       localStorage.setItem(
+            //         "userEmail",
+            //         response.data.responseResult.authToken.userName
+            //       );
+            //       localStorage.setItem(
+            //         "token",
+            //         JSON.stringify(response.data.responseResult.authToken.token)
+            //       );
+            //       localStorage.setItem(
+            //         "refreshToken",
+            //         JSON.stringify(
+            //           response.data.responseResult.authToken.refreshToken
+            //         )
+            //       );
+            //       localStorage.setItem(
+            //         "roleID",
+            //         JSON.parse(response.data.responseResult.userRoleId)
+            //       );
+            //     }
+            //     dispatch(
+            //       createPasswordSuccess(
+            //         response.data.responseResult,
+            //         t(
+            //           "Organization-subscription-is-in-active-and-this-is-a-partial-admin-user"
+            //         )
+            //       )
+            //     );
+            //     let RSVP = localStorage.getItem("RSVP");
+            //     let dataroomValue = localStorage.getItem("DataRoomEmail");
 
-                if (RSVP !== undefined && RSVP !== null) {
-                  navigate("/DisKus/Meeting/Useravailabilityformeeting");
-                } else if (
-                  dataroomValue !== null &&
-                  dataroomValue !== undefined
-                ) {
-                  navigate("/Diskus/dataroom");
-                } else {
-                  navigate("/Diskus/");
-                }
-              }
-            } else if (
+            //     if (RSVP !== undefined && RSVP !== null) {
+            //       navigate("/DisKus/Meeting/Useravailabilityformeeting");
+            //     } else if (
+            //       dataroomValue !== null &&
+            //       dataroomValue !== undefined
+            //     ) {
+            //       navigate("/Diskus/dataroom");
+            //     } else {
+            //       navigate("/Diskus/");
+            //     }
+            //   }
+            // }
+            else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_15".toLowerCase()
+                  "ERM_AuthService_SignUpManager_UsersPasswordCreation_15".toLowerCase()
                 )
             ) {
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
@@ -2742,11 +2792,30 @@ const createPasswordAction = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_16".toLowerCase()
+                  "ERM_AuthService_SignUpManager_UsersPasswordCreation_16".toLowerCase()
                 )
             ) {
               dispatch(createPasswordSuccess(response.data.responseResult, ""));
               navigate("/");
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_UsersPasswordCreation_17".toLowerCase()
+                )
+            ) {
+              dispatch(createPasswordSuccess(response.data.responseResult, ""));
+              // navigate("/");
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_UsersPasswordCreation_18".toLowerCase()
+                )
+            ) {
+              dispatch(createPasswordSuccess(response.data.responseResult, ""));
+              dispatch(showCreateAddtionalUsersModal(true));
+              // navigate("/");
             } else {
               dispatch(createPasswordFail(t("Something-went-wrong")));
             }

@@ -1,24 +1,234 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./VerificationEmailAndNumber.module.css";
 import { Col, Container, Row } from "react-bootstrap";
 import img2 from "../../../../../assets/images/7.png";
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import DiskusLogo from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
-import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
+import Helper from "../../../../../commen/functions/history_logout";
+import { mqttConnection } from "../../../../../commen/functions/mqttconnection";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { countryNameforPhoneNumber } from "../../../../Admin/AllUsers/AddUser/CountryJson";
 import {
   Button,
   Paper,
   VerificationInputField,
+  Notification,
+  Loader,
 } from "../../../../../components/elements";
 import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import {
+  resendTwoFacAction,
+  verificationTwoFacOtp,
+} from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
+import { cleareMessage } from "../../../../../store/actions/Auth2_actions";
 const VerificationEmailAndNumber = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
+  //
+  const storedValue = localStorage.getItem("value");
+
+  const [value, setValue] = useState(null);
+  const { Authreducer, LanguageReducer } = useSelector((state) => state);
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [worldCountryIDS, setWorldCountryIDS] = useState("");
+  const [otpCode, setOtpCode] = useState("");
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+  });
+  let GobackSelection = localStorage.getItem("GobackSelection");
+  const [minutes, setMinutes] = useState(
+    localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4
+  );
+  const [key, setKey] = useState(1);
+  const [seconds, setSeconds] = useState(
+    localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60
+  );
+
+  const handleChange = (e) => {
+    setOtpCode(e.toUpperCase());
+  };
+
+  useEffect(() => {
+    // if value was cleared, set key to re-render the element
+    if (otpCode.length === 0) {
+      setKey(key + 1);
+      return;
+    }
+  }, [otpCode]);
+
+  // Languages
+  const languages = [
+    { name: "English", code: "en" },
+    { name: "Français", code: "fr" },
+    { name: "العربية", code: "ar", dir: "rtl" },
+  ];
+
+  const currentLocale = Cookies.get("i18next") || "en";
+
+  const currentLangObj = languages.find((lang) => lang.code === currentLocale);
+
+  useEffect(() => {
+    document.body.dir = currentLangObj.dir || "ltr";
+  }, [currentLangObj, t]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let userID = localStorage.getItem("userID");
+    let Data = { UserID: JSON.parse(userID), Email: email, OTP: otpCode };
+    setOtpCode("");
+    dispatch(verificationTwoFacOtp(Data, t, navigate, setOtpCode));
+  };
+
+  const resendOtpHandleClick = () => {
+    let userID = localStorage.getItem("userID");
+    let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
+    localStorage.removeItem("seconds");
+    localStorage.removeItem("minutes");
+    setOtpCode("");
+    let Data = {
+      UserID: JSON.parse(userID),
+      Device: "Browser",
+      DeviceID: "1",
+      OrganizationID: JSON.parse(OrganizationID),
+      isEmail: value === 0 ? false : value === 1 ? true : false,
+      isSMS: value === 0 ? true : value === 1 ? false : false,
+      isDevice: false,
+      UserDevices: [],
+    };
+    dispatch(resendTwoFacAction(t, Data, navigate, setSeconds, setMinutes));
+  };
+
+  useEffect(() => {
+    if (Authreducer.AuthenticateAFAResponse !== null) {
+      console.log(
+        Authreducer.AuthenticateAFAResponse,
+        "Authreducer.AuthenticateAFAResponse"
+      );
+      localStorage.setItem(
+        "email",
+        Authreducer.AuthenticateAFAResponse.emailAddress
+      );
+      localStorage.setItem(
+        "phoneNumber",
+        Authreducer.AuthenticateAFAResponse.mobileNumber
+      );
+      localStorage.setItem(
+        "worldCountryID",
+        Authreducer.AuthenticateAFAResponse.worldCountryID
+      );
+    }
+  }, [Authreducer.AuthenticateAFAResponse]);
+
+  useEffect(() => {
+    if (
+      Authreducer.SendTwoFacOTPResponseMessage === t("Failed-to-verify-otp")
+    ) {
+      setOpen({
+        open: true,
+        message: Authreducer.SendTwoFacOTPResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          open: false,
+          message: "",
+        });
+      }, 3000);
+      dispatch(cleareMessage());
+    } else {
+      dispatch(cleareMessage());
+    }
+  }, [Authreducer.SendTwoFacOTPResponseMessage]);
+
+  useEffect(() => {
+    let value = localStorage.getItem("value");
+    let email = localStorage.getItem("email");
+    let phoneNumber = localStorage.getItem("phoneNumber");
+    let worldCountryID = localStorage.getItem("worldCountryID");
+    console.log("first1", worldCountryID);
+
+    let a = Object.values(countryNameforPhoneNumber).find((obj) => {
+      return parseInt(obj.id) === parseInt(worldCountryID);
+    });
+    console.log("first2", a);
+    setValue(JSON.parse(value));
+    setEmail(email);
+    setPhoneNumber(phoneNumber);
+    if (a != undefined) {
+      setWorldCountryIDS(a.secondary);
+    }
+  }, [value]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds(seconds - 1);
+        localStorage.setItem("seconds", seconds - 1);
+        localStorage.setItem("minutes", minutes);
+      }
+      if (seconds === 0) {
+        if (minutes === 0) {
+          clearInterval(interval);
+          localStorage.removeItem("seconds");
+          localStorage.removeItem("minutes");
+        } else {
+          setSeconds(59);
+          setMinutes(minutes - 1);
+          localStorage.setItem("seconds", 59);
+          localStorage.setItem("minutes", minutes - 1);
+        }
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [seconds]);
+
+  useEffect(() => {
+    let s = localStorage.getItem("seconds");
+    let m = localStorage.getItem("minutes");
+    window.addEventListener("beforeunload ", (e) => {
+      console.log("ttt");
+      e.preventDefault();
+      if (m != undefined && s != undefined) {
+        if (s === 1) {
+          setSeconds(59);
+          setMinutes(m - 1);
+        } else {
+          setSeconds(s - 1);
+          setMinutes(minutes);
+        }
+      } else {
+        setSeconds(59);
+        setMinutes(4);
+      }
+    });
+  }, []);
+
+  let newClient = Helper.socket;
+  useEffect(() => {
+    if (newClient != null && newClient != "" && newClient != undefined) {
+    } else {
+      let userID = localStorage.getItem("userID");
+      mqttConnection(userID);
+    }
+  }, [Helper.socket]);
+
   return (
     <div>
-      <Container fluid className="VerifyCodeOneOverflow">
+      <Container fluid className={styles["VerifyCodeOneOverflow"]}>
         <Row className="position-relative">
-          <Col className="languageSelector">
+          <Col className={styles["languageSelector"]}>
             <LanguageSelector />
           </Col>
         </Row>
@@ -29,8 +239,13 @@ const VerificationEmailAndNumber = () => {
             sm={12}
             className="d-flex justify-content-center align-items-center min-vh-100"
           >
-            <Paper className="OTP_auth_paper">
-              <Col sm={12} lg={12} md={12} className="EmailVerifyOTPbox">
+            <Paper className={styles["OTP_auth_paper"]}>
+              <Col
+                sm={12}
+                lg={12}
+                md={12}
+                className={styles["EmailVerifyOTPbox"]}
+              >
                 <Row>
                   <Col
                     sm={12}
@@ -59,37 +274,52 @@ const VerificationEmailAndNumber = () => {
                     <p className={styles["verify_heading_line1"]}>
                       {t("6-digit-code-has-sent-on-to-this")}
                     </p>
-                    <p className={styles["verify_heading_line2"]}>
-                      {t("Number")}:
-                    </p>
-                    <p className={styles["verify_heading_line2"]}>
-                      {t("Email")}:
-                    </p>
+                    {value === 0 ? (
+                      <p className={styles["verify_heading_line2"]}>
+                        {t("Number")} : {worldCountryIDS} {phoneNumber}
+                      </p>
+                    ) : value === 1 ? (
+                      <p className={styles["verify_heading_line2"]}>
+                        {t("Email")}: {email}
+                      </p>
+                    ) : (
+                      <>
+                        <p className={styles["verify_heading_line2"]}>
+                          {t("Number")}: {phoneNumber}
+                        </p>
+                        <p className={styles["verify_heading_line2"]}>
+                          {t("Email")}: {email}
+                        </p>
+                      </>
+                    )}
                   </Col>
                 </Row>
                 <Row className="mt-4">
-                  <Col
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    className={styles["Enter-Code-Label"]}
-                  >
+                  <Col sm={12} md={12} lg={12} className="Enter-Code-Label">
                     <VerificationInputField
                       label={t("Enter-code")}
                       fields={6}
                       applyClass="OTPInput"
+                      change={handleChange}
+                      key={key}
+                      value={otpCode}
                     />
                   </Col>
                 </Row>
                 <Row>
                   <Col className="text-left d-flex justify-content-start align-items-center gap-2">
                     <Button
-                      className={styles["resendCode_btn"]}
+                      className="resendCode_btn"
+                      disableBtn={seconds > 0 || minutes > 0}
                       text={t("Resend-code-in")}
+                      onClick={resendOtpHandleClick}
                     />
-                    <span className="OTPCounter">0:00</span>
+                    <span className="OTPCounter">
+                      0{minutes}: {seconds < 10 ? "0" + seconds : seconds}
+                    </span>
                   </Col>
                 </Row>
+
                 <Row className=" mt-5 d-flex justify-content-center">
                   <Col
                     sm={12}
@@ -99,7 +329,9 @@ const VerificationEmailAndNumber = () => {
                   >
                     <Button
                       text={t("Verify")}
+                      disableBtn={otpCode.length !== 6 ? true : false}
                       className={styles["subscribNow_button_EmailVerify"]}
+                      onClick={handleSubmit}
                       type="submit"
                     />
                   </Col>
@@ -111,7 +343,19 @@ const VerificationEmailAndNumber = () => {
                     lg={12}
                     className={styles["Go_back_link_VerifyCodeOne"]}
                   >
-                    <Link>{t("Go-back")}</Link>
+                    <Link
+                      to={
+                        parseInt(GobackSelection) === 1
+                          ? "/twofac"
+                          : parseInt(GobackSelection) === 2
+                          ? "/sendmailwithdevice"
+                          : parseInt(GobackSelection) === 3
+                          ? "/twofacmultidevice"
+                          : "/twofac"
+                      }
+                    >
+                      {t("Go-back")}
+                    </Link>
                   </Col>
                 </Row>
               </Col>
@@ -141,6 +385,8 @@ const VerificationEmailAndNumber = () => {
           </Col>
         </Row>
       </Container>
+      {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
+      <Notification open={open.open} setOpen={setOpen} message={open.message} />
     </div>
   );
 };

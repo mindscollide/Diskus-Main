@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import { Spinner, Container, Row, Col, Form } from "react-bootstrap";
+import SignInComponent from "../../UserMangement/SignInUserManagement/SignInUserManagement";
 import DiskusnewRoundIconSignUp from "../../../../assets/images/newElements/DiskusWhiteGroupIcon.svg";
 import {
   Button,
@@ -18,14 +19,24 @@ import { countryNameforPhoneNumber } from "../../../Admin/AllUsers/AddUser/Count
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 import ReactFlagsSelect from "react-flags-select";
 import { Check2 } from "react-bootstrap-icons";
-import { signUpOrganizationAndPakageSelection } from "../../../../store/actions/UserManagementActions";
+import {
+  LoginFlowRoutes,
+  signUpFlowRoutes,
+  signUpOrganizationAndPakageSelection,
+} from "../../../../store/actions/UserManagementActions";
 import {
   checkEmailExsist,
   checkOraganisation,
 } from "../../../../store/actions/Admin_Organization";
 import { setLoader } from "../../../../store/actions/Auth2_actions";
 import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
-const SignUpOrganizationUM = () => {
+import { signupCurrentPageStep } from "../../SignUpProcessUserManagement/SignupProcessUserManagement";
+
+const SignUpOrganizationUM = ({ setSignupStep, setCurrentStepValue }) => {
+  console.log(
+    setSignupStep,
+    "setSignupStepsetSignupStepsetSignupStepsetSignupStep"
+  );
   const { t } = useTranslation();
 
   const {
@@ -97,6 +108,7 @@ const SignUpOrganizationUM = () => {
     PhoneNumberCountryID: 212,
   });
   const [isFreeTrail, setIsFreeTrail] = useState(false);
+  console.log(isFreeTrail, "MainFreeTrail");
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -440,7 +452,15 @@ const SignUpOrganizationUM = () => {
               },
               Packages: [{ PackageID: Number(PackageID), HeadCount: 20 }],
             };
-            dispatch(signUpOrganizationAndPakageSelection(data, navigate, t));
+            dispatch(
+              signUpOrganizationAndPakageSelection(
+                data,
+                navigate,
+                t,
+                signupCurrentPageStep,
+                setSignupStep
+              )
+            );
           } else {
             await dispatch(setLoader(true));
             await dispatch(
@@ -571,13 +591,8 @@ const SignUpOrganizationUM = () => {
             adminReducer.OrganisationCheck !== false &&
             adminReducer.EmailCheck !== false
           ) {
-            let PackageID = localStorage.getItem("PackageID");
-            let tenureOfSuscriptionID = localStorage.getItem(
-              "TenureOfSuscriptionID"
-            );
-
             let data = {
-              TenureOfSubscriptionID: JSON.parse(tenureOfSuscriptionID),
+              TenureOfSubscriptionID: JSON.parse(2),
               Organization: {
                 OrganizationName: signUpDetails.CompanyName.value,
                 FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
@@ -596,9 +611,21 @@ const SignUpOrganizationUM = () => {
                 PostalCode: signUpDetails.PostalCode.value,
                 TimeZoneID: 1,
               },
-              Packages: [{ PackageID: 4, HeadCount: 5 }],
+              Packages: [
+                { PackageID: 1, HeadCount: 5 },
+                { PackageID: 2, HeadCount: 5 },
+                { PackageID: 3, HeadCount: 5 },
+              ],
             };
-            dispatch(signUpOrganizationAndPakageSelection(data, navigate, t));
+            dispatch(
+              signUpOrganizationAndPakageSelection(
+                data,
+                navigate,
+                t,
+                signupCurrentPageStep,
+                setSignupStep
+              )
+            );
           } else {
             await dispatch(setLoader(true));
             await dispatch(
@@ -833,6 +860,19 @@ const SignUpOrganizationUM = () => {
         border: "1px solid #e1e1e1 !important",
       },
     }),
+  };
+
+  const onClickLink = () => {
+    if (isFreeTrail === true) {
+      localStorage.removeItem("signupCurrentPage", 2);
+      localStorage.setItem("LoginFlowPageRoute", 1);
+      dispatch(LoginFlowRoutes(1));
+      navigate("/");
+    } else {
+      navigate("/Signup");
+
+      localStorage.setItem("signupCurrentPage", 1);
+    }
   };
 
   return (
@@ -1209,13 +1249,12 @@ const SignUpOrganizationUM = () => {
                   lg={7}
                   className="d-flex justify-content-start align-items-center"
                 >
-                  <span className={styles["signUp_goBack"]} />
-                  <Link
-                    to={isFreeTrail ? "/" : "/PakageDetailsUserManagement"}
-                    color="black"
+                  <span
+                    onClick={onClickLink}
+                    className={styles["signUp_goBack"]}
                   >
                     {t("Go-back")}
-                  </Link>
+                  </span>
                 </Col>
                 <Col
                   sm={5}
