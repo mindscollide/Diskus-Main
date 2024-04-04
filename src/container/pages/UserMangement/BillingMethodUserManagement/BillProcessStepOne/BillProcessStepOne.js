@@ -4,6 +4,10 @@ import BillingFrame from "../../../../../assets/images/BillingContactFrame.svg";
 import { Col, Container, Row } from "react-bootstrap";
 import { TextField } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
+import {
+  regexOnlyCharacters,
+  regexOnlyNumbers,
+} from "../../../../../commen/functions/regex";
 const BillProcessStepOne = ({
   billingContactDetails,
   setBillingContactDetails,
@@ -13,15 +17,19 @@ const BillProcessStepOne = ({
   const billingContactDetailsHandler = (e) => {
     let name = e.target.name;
     let value = e.target.value;
+
     if (name === "Name" && value !== "") {
-      setBillingContactDetails({
-        ...billingContactDetails,
-        Name: {
-          value: value.trimStart(),
-          errorMessage: "",
-          errorStatus: false,
-        },
-      });
+      let valueName = regexOnlyCharacters(value);
+      if (valueName !== "") {
+        setBillingContactDetails({
+          ...billingContactDetails,
+          Name: {
+            value: valueName.trimStart(),
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      }
     } else if (name === "Name" && value === "") {
       setBillingContactDetails({
         ...billingContactDetails,
@@ -34,14 +42,17 @@ const BillProcessStepOne = ({
     }
 
     if (name === "LastName" && value !== "") {
-      setBillingContactDetails({
-        ...billingContactDetails,
-        LastName: {
-          value: value.trimStart(),
-          errorMessage: "",
-          errorStatus: false,
-        },
-      });
+      let valueName = regexOnlyCharacters(value);
+      if (valueName !== "") {
+        setBillingContactDetails({
+          ...billingContactDetails,
+          LastName: {
+            value: valueName.trimStart(),
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      }
     } else if (name === "LastName" && value === "") {
       setBillingContactDetails({
         ...billingContactDetails,
@@ -98,7 +109,7 @@ const BillProcessStepOne = ({
     }
 
     if (name === "Contact" && value !== "") {
-      let valueCheck = value.replace(/[^\d]/g, "");
+      let valueCheck = regexOnlyNumbers(value);
       if (valueCheck !== "") {
         setBillingContactDetails({
           ...billingContactDetails,
@@ -195,7 +206,8 @@ const BillProcessStepOne = ({
                     <Col>
                       <p
                         className={
-                          billingContactDetails.Email.value === ""
+                          billingContactDetails.Email.value === "" ||
+                          billingContactDetails.Email.value !== ""
                             ? ` ${styles["errorMessage"]} `
                             : `${styles["errorMessage_hidden"]}`
                         }

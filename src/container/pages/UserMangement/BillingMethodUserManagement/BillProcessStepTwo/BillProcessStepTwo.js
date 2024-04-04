@@ -5,6 +5,10 @@ import { TextField } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import ReactFlagsSelect from "react-flags-select";
 import locationImage from "../../../../../assets/images/Location.svg";
+import {
+  regexOnlyCharacters,
+  regexOnlyNumbers,
+} from "../../../../../commen/functions/regex";
 const BillProcessStepTwo = ({ billingAddress, setBillingAddress }) => {
   const { t } = useTranslation();
 
@@ -16,16 +20,19 @@ const BillProcessStepTwo = ({ billingAddress, setBillingAddress }) => {
   const billingAddressDetailsHandler = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-    if (name === "PostalZipCode" && value !== "") {
-      setBillingAddress({
-        ...billingAddress,
-        PostalCode: {
-          value: value.trimStart(),
-          errorMessage: "",
-          errorStatus: false,
-        },
-      });
-    } else if (name === "PostalZipCode" && value === "") {
+    if (name === "PostalCode" && value !== "") {
+      let valueName = regexOnlyNumbers(value);
+      if (valueName !== "") {
+        setBillingAddress({
+          ...billingAddress,
+          PostalCode: {
+            value: valueName.trimStart(),
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      }
+    } else if (name === "PostalCode" && value === "") {
       setBillingAddress({
         ...billingAddress,
         PostalCode: {
@@ -36,16 +43,19 @@ const BillProcessStepTwo = ({ billingAddress, setBillingAddress }) => {
       });
     }
 
-    if (name === "StateProvince" && value !== "") {
-      setBillingAddress({
-        ...billingAddress,
-        State: {
-          value: value.trimStart(),
-          errorMessage: "",
-          errorStatus: false,
-        },
-      });
-    } else if (name === "StateProvince" && value === "") {
+    if (name === "State" && value !== "") {
+      let valueName = regexOnlyCharacters(value);
+      if (valueName !== "") {
+        setBillingAddress({
+          ...billingAddress,
+          State: {
+            value: valueName.trimStart(),
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      }
+    } else if (name === "State" && value === "") {
       setBillingAddress({
         ...billingAddress,
         State: {
@@ -57,14 +67,17 @@ const BillProcessStepTwo = ({ billingAddress, setBillingAddress }) => {
     }
 
     if (name === "City" && value !== "") {
-      setBillingAddress({
-        ...billingAddress,
-        City: {
-          value: value.trimStart(),
-          errorMessage: "",
-          errorStatus: false,
-        },
-      });
+      let valueName = regexOnlyCharacters(value);
+      if (valueName !== "") {
+        setBillingAddress({
+          ...billingAddress,
+          City: {
+            value: valueName.trimStart(),
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      }
     } else if (name === "City" && value === "") {
       setBillingAddress({
         ...billingAddress,
@@ -147,6 +160,7 @@ const BillProcessStepTwo = ({ billingAddress, setBillingAddress }) => {
                         selected={select}
                         onSelect={countryOnSelect}
                         searchable={true}
+                        required={true}
                       />
                     </Col>
                   </Row>
@@ -163,7 +177,8 @@ const BillProcessStepTwo = ({ billingAddress, setBillingAddress }) => {
                       </>
                     }
                     change={billingAddressDetailsHandler}
-                    name="PostalZipCode"
+                    value={billingAddress.PostalCode.value}
+                    name="PostalCode"
                   />
                   <Row>
                     <Col>
@@ -192,8 +207,9 @@ const BillProcessStepTwo = ({ billingAddress, setBillingAddress }) => {
                         </span>
                       </>
                     }
+                    value={billingAddress.State.value}
                     change={billingAddressDetailsHandler}
-                    name="StateProvince"
+                    name="State"
                   />
                   <Row>
                     <Col>
@@ -220,6 +236,7 @@ const BillProcessStepTwo = ({ billingAddress, setBillingAddress }) => {
                         </span>
                       </>
                     }
+                    value={billingAddress.City.value}
                     change={billingAddressDetailsHandler}
                     name="City"
                   />
@@ -243,6 +260,7 @@ const BillProcessStepTwo = ({ billingAddress, setBillingAddress }) => {
                 <Col lg={12} md={12} sm={12} xs={12}>
                   <TextField
                     placeholder={t("Address*")}
+                    value={billingAddress.Address.value}
                     label={
                       <>
                         <span className={styles["nameStyles"]}>
