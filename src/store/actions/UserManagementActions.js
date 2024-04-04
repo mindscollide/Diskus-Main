@@ -51,13 +51,7 @@ const createOrganizationAndPakageSelectionFailed = (message) => {
   };
 };
 
-const signUpOrganizationAndPakageSelection = (
-  data,
-  navigate,
-  t,
-  signupCurrentPageStep,
-  setSignupStep
-) => {
+const signUpOrganizationAndPakageSelection = (data, navigate, t) => {
   return (dispatch) => {
     dispatch(createOrganizationAndPakageSelectionInit());
     let form = new FormData();

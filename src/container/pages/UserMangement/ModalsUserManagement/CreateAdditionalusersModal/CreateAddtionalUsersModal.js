@@ -23,6 +23,10 @@ const CreateAddtionalUsersModal = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  let organzataionID = localStorage.getItem("OrganizationID");
+
+  let OrganizatioName = localStorage.getItem("OrganizatioName");
+
   const { UserManagementModals } = useSelector((state) => state);
 
   //States
@@ -152,19 +156,37 @@ const CreateAddtionalUsersModal = () => {
   //handle Create button
   const handleCreatebutton = () => {
     let data = {
-      UserName: createAddionalUsers.Name,
-      OrganizationName: "test new flow org",
-      Designation: createAddionalUsers.Designation,
-      MobileNumber: "3083660883",
-      UserEmail: createAddionalUsers.Email,
-      OrganizationID: 471,
+      UserName: createAddionalUsers.Name.value,
+      OrganizationName: OrganizatioName,
+      Designation: createAddionalUsers.Designation.value,
+      MobileNumber: "",
+      UserEmail: createAddionalUsers.Email.value,
+      OrganizationID: organzataionID,
       isAdmin: true,
-      FK_NumberWorldCountryID: 153,
-      OrganizationSelectedPackageID: 18,
+      FK_NumberWorldCountryID: 1,
+      OrganizationSelectedPackageID: 4,
     };
 
-    console.log(data, "datadatadata");
+    console.log(data, "AddOrganizationsUserApi");
     // dispatch(AddOrganizationsUserApi(navigate, t, data));
+    setCreateAddionalUsers({
+      Name: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+
+      Email: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+      Designation: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+    });
   };
 
   return (
@@ -249,6 +271,9 @@ const CreateAddtionalUsersModal = () => {
                       </>
                     }
                     applyClass={"updateNotes_titleInput"}
+                    value={createAddionalUsers.Designation.value}
+                    name="Designation"
+                    change={createAddiotionalUsersHandler}
                   />
                 </Col>
               </Row>

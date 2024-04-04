@@ -2882,6 +2882,10 @@ const createPasswordAction = (value, navigate, t) => {
                   "ERM_AuthService_SignUpManager_UsersPasswordCreation_18".toLowerCase()
                 )
             ) {
+              localStorage.setItem(
+                "OrganizationName",
+                response.data.responseResult.organizationName
+              );
               dispatch(showCreateAddtionalUsersModal(true));
               dispatch(createPasswordSuccess(response.data.responseResult, ""));
               // navigate("/");
