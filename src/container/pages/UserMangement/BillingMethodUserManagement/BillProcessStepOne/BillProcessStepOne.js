@@ -96,6 +96,29 @@ const BillProcessStepOne = ({
         },
       });
     }
+
+    if (name === "Contact" && value !== "") {
+      let valueCheck = value.replace(/[^\d]/g, "");
+      if (valueCheck !== "") {
+        setBillingContactDetails({
+          ...billingContactDetails,
+          Contact: {
+            value: valueCheck.trimStart(),
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      }
+    } else if (name === "Contact" && value === "") {
+      setBillingContactDetails({
+        ...billingContactDetails,
+        Contact: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    }
   };
 
   return (
@@ -184,13 +207,15 @@ const BillProcessStepOne = ({
                 </Col>
                 <Col lg={6} md={6} sm={12} xs={12}>
                   <TextField
+                    name="Contact"
                     value={billingContactDetails.Contact.value}
                     placeholder={t("Contact")}
+                    change={billingContactDetailsHandler}
                     label={
                       <>
                         <span className={styles["nameStyles"]}>
                           {t("Contact")}{" "}
-                          <span className={styles["stericClass"]}>*</span>
+                          {/* <span className={styles["stericClass"]}>*</span> */}
                         </span>
                       </>
                     }
