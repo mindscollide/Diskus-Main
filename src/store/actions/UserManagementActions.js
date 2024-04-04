@@ -51,7 +51,13 @@ const createOrganizationAndPakageSelectionFailed = (message) => {
   };
 };
 
-const signUpOrganizationAndPakageSelection = (data, navigate, t) => {
+const signUpOrganizationAndPakageSelection = (
+  data,
+  navigate,
+  t,
+  signupCurrentPageStep,
+  setSignupStep
+) => {
   return (dispatch) => {
     dispatch(createOrganizationAndPakageSelectionInit());
     let form = new FormData();
@@ -537,7 +543,6 @@ const ExtendOrganizationTrialApi = (navigate, t, data) => {
 };
 
 //ADD Organization Users
-
 const addOrganizationUsersInit = () => {
   return {
     type: actions.ADD_ORGANIZATION_USERS_INIT,
@@ -768,7 +773,6 @@ const EditOrganizationsUserApi = (navigate, t, data) => {
 };
 
 //ALL ORGANIZATION USERS
-
 const allOrganizationUsersInit = () => {
   return {
     type: actions.ALL_ORGANIZAION_USERS_INIT,
@@ -858,7 +862,6 @@ const AllOrganizationsUsersApi = (navigate, t, data) => {
 };
 
 //ALL ORGANIZATION PAKAGE DETAILS AND USER STATS
-
 const organzationPakageDetailsAnduserStatsInit = () => {
   return {
     type: actions.ORGANIZATION_PAKAGEDETAILS_AND_USERSTATS_INIT,
@@ -970,7 +973,6 @@ const OrganizationPackageDetailsAndUserStatsApi = (navigate, t, data) => {
 };
 
 //GET ORGANIZATION PAKAGE SELECTED BY ORGANIZATION ID
-
 const organizationSelectedPakagebyOrganzationidInit = () => {
   return {
     type: actions.GET_ORGANZIATION_SELECTEDPAKAGE_BY_ORGANZATIONID_INIT,
@@ -1100,7 +1102,6 @@ const GetOrganizationSelectedPackagesByOrganizationIDApi = (
 };
 
 //GET ORGANIZATION SELECTED PAKAGES
-
 const getOrganizationSelectedPakagesInit = () => {
   return {
     type: actions.GET_ALL_ORGANIZATION_SELECTED_PAKAGES_INIT,

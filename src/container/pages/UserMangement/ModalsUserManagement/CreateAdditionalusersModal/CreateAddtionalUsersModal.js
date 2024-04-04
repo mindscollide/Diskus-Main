@@ -16,9 +16,12 @@ import {
 import crossicon from "../../../../../assets/images/BlackCrossIconModals.svg";
 import { Col, Row } from "react-bootstrap";
 import EmployeeinfoCard from "../../../../../components/elements/Employeeinfocard/EmployeeinfoCard";
+import { AddOrganizationsUserApi } from "../../../../../store/actions/UserManagementActions";
+import { useNavigate } from "react-router-dom";
 const CreateAddtionalUsersModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { UserManagementModals } = useSelector((state) => state);
 
@@ -147,7 +150,22 @@ const CreateAddtionalUsersModal = () => {
   };
 
   //handle Create button
-  const handleCreatebutton = () => {};
+  const handleCreatebutton = () => {
+    let data = {
+      UserName: createAddionalUsers.Name,
+      OrganizationName: "test new flow org",
+      Designation: createAddionalUsers.Designation,
+      MobileNumber: "3083660883",
+      UserEmail: createAddionalUsers.Email,
+      OrganizationID: 471,
+      isAdmin: true,
+      FK_NumberWorldCountryID: 153,
+      OrganizationSelectedPackageID: 18,
+    };
+
+    console.log(data, "datadatadata");
+    // dispatch(AddOrganizationsUserApi(navigate, t, data));
+  };
 
   return (
     <section>
