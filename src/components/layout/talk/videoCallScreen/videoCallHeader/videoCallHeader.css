@@ -59,7 +59,7 @@
     border: 1px solid #b4b4b4;
     border-radius: 4px !important;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
-    z-index: 999999 !important;
+    z-index: 99 !important;
 }
 
 /* Aun work on RTL in video screens */
@@ -74,7 +74,7 @@ body[dir="rtl"] .videoCallGroupScreen-minmizeVideoCall {
     border: 1px solid #b4b4b4;
     border-radius: 4px !important;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
-    z-index: 999999 !important;
+    z-index: 99 !important;
 }
 
 .videoCallGroupScreen-minmizeVideoCall .title-heading {
