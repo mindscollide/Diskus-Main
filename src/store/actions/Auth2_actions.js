@@ -941,8 +941,14 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 { name: "PackageDetailsUserManagement", id: 4 },
                 { name: "Summary", id: 5 },
               ];
-              localStorage.setItem("LocalUserRoutes", JSON.stringify(LocalUserRoutes));
-              localStorage.setItem("LocalAdminRoutes", JSON.stringify(LocalAdminRoutes));
+              localStorage.setItem(
+                "LocalUserRoutes",
+                JSON.stringify(LocalUserRoutes)
+              );
+              localStorage.setItem(
+                "LocalAdminRoutes",
+                JSON.stringify(LocalAdminRoutes)
+              );
 
               if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 localStorage.setItem(
@@ -1465,8 +1471,6 @@ const verificationEmailOTP = (
   let userID = localStorage.getItem("userID");
   let email = localStorage.getItem("UserEmail");
   let data = { UserID: JSON.parse(userID), Email: email, OTP: OTPValue };
-
-  // 3P3KVX
   return (dispatch) => {
     dispatch(verifyOTPInit());
     let form = new FormData();
@@ -1493,23 +1497,28 @@ const verificationEmailOTP = (
                   t("The-users-email-has-been-verified")
                 )
               );
-              // localStorage.removeItem("OrganizationID");
               if (updateFlag === true) {
                 localStorage.setItem("updatePasswordCheck", true);
               } else {
                 localStorage.setItem("updatePasswordCheck", false);
               }
-              const signupValue = localStorage.getItem("signupCurrentPage");
-              if (signupValue === "3") {
-                localStorage.setItem("signupCurrentPage", 4);
-                navigate("/Signup");
-              } else {
-                localStorage.removeItem("seconds");
-                localStorage.removeItem("minutes");
-                localStorage.setItem("LoginFlowPageRoute", 4);
-                dispatch(LoginFlowRoutes(4));
-                // navigate("/createpasswordorganization");
-              }
+              //  this is used on when we ccaome from verify emaol otp of qrganaisation creation 
+              localStorage.removeItem("seconds");
+              localStorage.removeItem("minutes");
+              dispatch(LoginFlowRoutes(11));
+              localStorage.getItem("LoginFlowPageRoute", 11);
+              
+              // const signupValue = localStorage.getItem("signupCurrentPage");
+              // if (signupValue === "3") {
+              //   localStorage.setItem("signupCurrentPage", 4);
+              //   navigate("/Signup");
+              // } else {
+              //   localStorage.removeItem("seconds");
+              //   localStorage.removeItem("minutes");
+              //   localStorage.setItem("LoginFlowPageRoute", 4);
+              //   dispatch(LoginFlowRoutes(4));
+              //   // navigate("/createpasswordorganization");
+              // }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1520,8 +1529,6 @@ const verificationEmailOTP = (
               dispatch(
                 verifyOTPFail(t("Invalid-otp-failed-to-verify-user-email"))
               );
-              // return setSeconds(0), setMinutes(0);
-              // navigate("/createpasswordorganization");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1532,7 +1539,6 @@ const verificationEmailOTP = (
               dispatch(
                 verifyOTPFail(t("The-users-email-has-not-been-verified"))
               );
-              // return setSeconds(0), setMinutes(0);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1547,20 +1553,15 @@ const verificationEmailOTP = (
               );
               navigate("/");
             }
-            // navigate("/createpasswordorganization")
-            //    dispatch(verifyOTPSuccess(response.data.responseResult, response.data.responseResult.responseMessage))
           } else {
             dispatch(verifyOTPFail(t("Something-went-wrong")));
-            // return setSeconds(0), setMinutes(0);
           }
         } else if (response.data.responseCode === 400) {
           dispatch(verifyOTPFail(t("Something-went-wrong")));
-          // return setSeconds(0), setMinutes(0);
         }
       })
       .catch((response) => {
         dispatch(verifyOTPFail(t("Something-went-wrong")));
-        // return setSeconds(0), setMinutes(0);
       });
   };
 };

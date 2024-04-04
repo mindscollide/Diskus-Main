@@ -121,6 +121,7 @@ const SignInUserManagement = ({ setCurrentStep, setSignupStep }) => {
   };
 
   useEffect(() => {
+    emailRef.current.focus();
     let RememberEmailLocal = JSON.parse(localStorage.getItem("rememberEmail"));
     let RememberPasswordLocal = JSON.parse(
       localStorage.getItem("remeberPassword")
@@ -234,10 +235,6 @@ const SignInUserManagement = ({ setCurrentStep, setSignupStep }) => {
       setErrorMessage("");
       setErrorBar(false);
     }
-  }, []);
-
-  useEffect(() => {
-    emailRef.current.focus();
   }, []);
 
   useEffect(() => {

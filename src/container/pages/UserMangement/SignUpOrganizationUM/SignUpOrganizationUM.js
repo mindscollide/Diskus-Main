@@ -33,10 +33,6 @@ import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames
 import { signupCurrentPageStep } from "../../SignUpProcessUserManagement/SignupProcessUserManagement";
 
 const SignUpOrganizationUM = ({ setSignupStep, setCurrentStepValue }) => {
-  console.log(
-    setSignupStep,
-    "setSignupStepsetSignupStepsetSignupStepsetSignupStep"
-  );
   const { t } = useTranslation();
 
   const {
@@ -108,7 +104,6 @@ const SignUpOrganizationUM = ({ setSignupStep, setCurrentStepValue }) => {
     PhoneNumberCountryID: 212,
   });
   const [isFreeTrail, setIsFreeTrail] = useState(false);
-  console.log(isFreeTrail, "MainFreeTrail");
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -180,7 +175,17 @@ const SignUpOrganizationUM = ({ setSignupStep, setCurrentStepValue }) => {
     document.body.dir = currentLangObj.dir || "ltr";
   }, [currentLangObj, t]);
 
-  // translate Languages end
+  useEffect(() => {
+    dispatch(getCountryNamesAction(navigate, t));
+
+    let findUSCountryID = countryNameforPhoneNumber.US.id;
+    let findUSCountryCode = countryNameforPhoneNumber.US.primary;
+    setSignUpDetails({
+      ...signUpDetails,
+      PhoneNumberCountryID: findUSCountryID,
+    });
+    setSelected(findUSCountryCode);
+  }, []);
 
   const handeEmailvlidate = () => {
     if (signUpDetails.Email.value !== "") {
@@ -411,7 +416,7 @@ const SignUpOrganizationUM = ({ setSignupStep, setCurrentStepValue }) => {
       });
     }
   };
-  console.log(signUpDetails.CountryName.value, "signUpDetails");
+
   const handlerSignup = async () => {
     if (isFreeTrail === true) {
       if (
@@ -747,20 +752,6 @@ const SignUpOrganizationUM = ({ setSignupStep, setCurrentStepValue }) => {
   };
 
   useEffect(() => {
-    let findUSCountryID = countryNameforPhoneNumber.US.id;
-    let findUSCountryCode = countryNameforPhoneNumber.US.primary;
-    setSignUpDetails({
-      ...signUpDetails,
-      PhoneNumberCountryID: findUSCountryID,
-    });
-    setSelected(findUSCountryCode);
-  }, []);
-
-  useEffect(() => {
-    dispatch(getCountryNamesAction(navigate, t));
-  }, []);
-
-  useEffect(() => {
     if (companyNameValidateError !== "") {
       setSignUpDetails({
         ...signUpDetails,
@@ -847,20 +838,6 @@ const SignUpOrganizationUM = ({ setSignupStep, setCurrentStepValue }) => {
       });
     }
   }, [Authreducer.OrganizationCreateResponseMessage]);
-
-  // to change select border color functionality
-  const borderChanges = {
-    control: (base, state) => ({
-      ...base,
-      border: "1px solid #e1e1e1 !important",
-      borderRadius: "4px !important",
-      boxShadow: "0 !important",
-
-      "&:focus-within": {
-        border: "1px solid #e1e1e1 !important",
-      },
-    }),
-  };
 
   const onClickLink = () => {
     if (isFreeTrail === true) {

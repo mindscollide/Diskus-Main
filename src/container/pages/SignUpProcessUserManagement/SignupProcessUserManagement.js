@@ -10,11 +10,12 @@ import { useSelector } from "react-redux";
 const SignupProcessUserManagement = () => {
   const { UserMangementReducer } = useSelector((state) => state);
   const location = useLocation();
-  let currentStage = Number(localStorage.getItem("signupCurrentPage"));
+  let currentStage = Number(localStorage.getItem("signupCurrentPage"))
+    ? Number(localStorage.getItem("signupCurrentPage"))
+    : 1;
   const [isFreetrail, setFreetrail] = useState(false);
   const [currentPage, setCurrentPage] = useState(null);
-  console.log("location", location.state);
-  console.log("currentPage", currentStage);
+
   useEffect(() => {
     if (location.state !== null) {
       if (location.state?.freeTrail) {
@@ -22,23 +23,23 @@ const SignupProcessUserManagement = () => {
       }
     }
   }, [location.state]);
+
   useEffect(() => {
     if (currentStage !== null) {
       setCurrentPage(currentStage);
+      localStorage.setItem("signupCurrentPage", currentStage);
     }
   }, [currentStage]);
 
   //Updating the state of the local storage routes pages
   useEffect(() => {
+    localStorage.removeItem("LoginFlowPageRoute");
     try {
       if (UserMangementReducer.defaultRoutingValue) {
         setCurrentPage(UserMangementReducer.defaultRoutingValue);
       }
     } catch {}
   }, [UserMangementReducer.defaultRoutingValue]);
-
-  console.log("location", location.state !== null?.freeTrail);
-  console.log("location", location.state !== null ? 2 : 1);
 
   let SignupComponent;
   if (currentStage === 1) {
@@ -48,7 +49,7 @@ const SignupProcessUserManagement = () => {
   } else if (currentStage === 3) {
     SignupComponent = <VerifyOTPUM />;
   } else if (currentStage === 4) {
-    SignupComponent = <PasswordCreationUM currentStage={currentStage} />;
+    SignupComponent = <PasswordCreationUM />;
   } else if (currentStage === 5) {
     SignupComponent = <BillingMethodUsermanagement />;
   } else {

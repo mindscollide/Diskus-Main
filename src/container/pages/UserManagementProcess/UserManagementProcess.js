@@ -27,6 +27,7 @@ const UserManagementProcess = () => {
 
   useEffect(() => {
     try {
+      localStorage.removeItem("signupCurrentPage");
       if (UserMangementReducer.defaultRoutingValue) {
         setCurrentStepValue(UserMangementReducer.defaultRoutingValue);
       }

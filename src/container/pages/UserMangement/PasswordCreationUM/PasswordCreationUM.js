@@ -389,8 +389,10 @@ const PasswordCreationUM = ({ currentStage }) => {
   };
 
   const goBackButton = () => {
-    localStorage.removeItem("signupCurrentPage", 4);
-    localStorage.setItem("signupCurrentPage", 3);
+    localStorage.removeItem("signupCurrentPage");
+    localStorage.setItem("LoginFlowPageRoute", 1);
+    dispatch(LoginFlowRoutes(1));
+    navigate("/");
   };
 
   return (
@@ -584,12 +586,12 @@ const PasswordCreationUM = ({ currentStage }) => {
                       lg={12}
                       className={styles["forogt_email_link"]}
                     >
-                      <Link
+                      <span
                         onClick={goBackButton}
                         className={styles["ForgotPassword"]}
                       >
                         {t("Go-back")}
-                      </Link>
+                      </span>
                     </Col>
                   </Row>
                 </Form>
