@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./BillProcessStepThree.module.css";
 import { Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { Button, TableToDo } from "../../../../../components/elements";
+import { Button, TableToDo, Loader } from "../../../../../components/elements";
 import ellipses from "../../../../../assets/images/ellipses.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrganizationSelectedPakagesAPI } from "../../../../../store/actions/UserManagementActions";
@@ -17,7 +17,9 @@ const BillProcessStepThree = () => {
 
   let currentLanguage = localStorage.getItem("i18nextLng");
 
-  const { UserMangementReducer } = useSelector((state) => state);
+  const { UserMangementReducer, LanguageReducer } = useSelector(
+    (state) => state
+  );
 
   const organizationName = localStorage.getItem("OrganizatioName");
   //States
@@ -162,83 +164,88 @@ const BillProcessStepThree = () => {
   const totalRow = calculateTotals(getAllPakagesData);
 
   return (
-    <Container>
-      <Row>
-        <Col
-          lg={12}
-          md={12}
-          sm={12}
-          xs={12}
-          className={styles["outerBoxForBilling"]}
-        >
-          <Row className="mt-3">
-            <Col lg={9} md={9} sm={12} xs={12}>
-              <TableToDo
-                column={ColumnsPakageSelection}
-                className={"Billing_TablePakageSelection"}
-                rows={[...getAllPakagesData, totalRow]}
-                pagination={false}
-                id="PakageDetails"
-                rowHoverBg="none"
-                scroll={{ x: true }}
-              />
-            </Col>
-            <Col lg={3} md={3} sm={12} xs={12}>
-              <section className={styles["OuterBoxExpiryNotification"]}>
-                <Row className="mt-0">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-center align-items-center"
-                  >
-                    <img src={ellipses} alt="" />
-                  </Col>
-                </Row>
-                <Row className="mt-3">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-center align-items-center"
-                  >
-                    <span className={styles["AlertHeading"]}>
-                      {t("Your-subscription-will-expire-on")}
-                    </span>
-                  </Col>
-                </Row>
-                <Row className="mt-1">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-center align-items-center"
-                  >
-                    <span className={styles["dateStyles"]}>
-                      {convertUTCDateToLocalDate(
-                        expiryDate + "000000",
-                        currentLanguage
-                      )}
-                    </span>
-                  </Col>
-                </Row>
-                <Row className="mt-3">
-                  <Col lg={12} md={12} sm={12} xs={12}>
-                    <Button
-                      text={t("Change-pakage-details")}
-                      className={styles["ChangePakageDetailsButton"]}
-                    />
-                  </Col>
-                </Row>
-              </section>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
-    </Container>
+    <>
+      <Container>
+        <Row>
+          <Col
+            lg={12}
+            md={12}
+            sm={12}
+            xs={12}
+            className={styles["outerBoxForBilling"]}
+          >
+            <Row className="mt-3">
+              <Col lg={9} md={9} sm={12} xs={12}>
+                <TableToDo
+                  column={ColumnsPakageSelection}
+                  className={"Billing_TablePakageSelection"}
+                  rows={[...getAllPakagesData, totalRow]}
+                  pagination={false}
+                  id="PakageDetails"
+                  rowHoverBg="none"
+                  scroll={{ x: true }}
+                />
+              </Col>
+              <Col lg={3} md={3} sm={12} xs={12}>
+                <section className={styles["OuterBoxExpiryNotification"]}>
+                  <Row className="mt-0">
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      xs={12}
+                      className="d-flex justify-content-center align-items-center"
+                    >
+                      <img src={ellipses} alt="" />
+                    </Col>
+                  </Row>
+                  <Row className="mt-3">
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      xs={12}
+                      className="d-flex justify-content-center align-items-center"
+                    >
+                      <span className={styles["AlertHeading"]}>
+                        {t("Your-subscription-will-expire-on")}
+                      </span>
+                    </Col>
+                  </Row>
+                  <Row className="mt-1">
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      xs={12}
+                      className="d-flex justify-content-center align-items-center"
+                    >
+                      <span className={styles["dateStyles"]}>
+                        {convertUTCDateToLocalDate(
+                          expiryDate + "000000",
+                          currentLanguage
+                        )}
+                      </span>
+                    </Col>
+                  </Row>
+                  <Row className="mt-3">
+                    <Col lg={12} md={12} sm={12} xs={12}>
+                      <Button
+                        text={t("Change-pakage-details")}
+                        className={styles["ChangePakageDetailsButton"]}
+                      />
+                    </Col>
+                  </Row>
+                </section>
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+      </Container>
+      {UserMangementReducer.Loading || LanguageReducer.Loading ? (
+        <Loader />
+      ) : null}
+    </>
   );
 };
 
