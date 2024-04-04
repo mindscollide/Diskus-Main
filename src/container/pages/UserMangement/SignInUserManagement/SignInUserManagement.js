@@ -22,7 +22,6 @@ import {
 } from "../../../../store/actions/Auth2_actions";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { signupCurrentPageStep } from "../../SignUpProcessUserManagement/SignupProcessUserManagement";
 import { signUpFlowRoutes } from "../../../../store/actions/UserManagementActions";
 
 const SignInUserManagement = () => {
@@ -121,6 +120,7 @@ const SignInUserManagement = () => {
   };
 
   useEffect(() => {
+    emailRef.current.focus();
     let RememberEmailLocal = JSON.parse(localStorage.getItem("rememberEmail"));
     let RememberPasswordLocal = JSON.parse(
       localStorage.getItem("remeberPassword")
@@ -234,10 +234,6 @@ const SignInUserManagement = () => {
       setErrorMessage("");
       setErrorBar(false);
     }
-  }, []);
-
-  useEffect(() => {
-    emailRef.current.focus();
   }, []);
 
   useEffect(() => {

@@ -621,7 +621,6 @@ export const router = createHashRouter(
       {/* For All Signup Route */}
       <Route path="/Signup" element={<SignupProcessUserManagement />} />
 
-      <Route path="/signupUsermanagement" element={<SignUpOrganizationUM />} />
       <Route
         path="/PasswordVerificationUM"
         element={<PasswordVerification />}

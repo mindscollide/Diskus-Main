@@ -6,11 +6,16 @@ import BillingMethodUsermanagement from "../UserMangement/BillingMethodUserManag
 import PasswordCreationUM from "../UserMangement/PasswordCreationUM/PasswordCreationUM";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { LoginFlowRoutes } from "../../../store/actions/UserManagementActions";
 
 const SignupProcessUserManagement = () => {
   const { UserMangementReducer } = useSelector((state) => state);
+  const dispatch = useDispatch();
   const location = useLocation();
-  let currentStage = Number(localStorage.getItem("signupCurrentPage"));
+  let currentStage = Number(localStorage.getItem("signupCurrentPage"))
+    ? Number(localStorage.getItem("signupCurrentPage"))
+    : 1;
   const [isFreetrail, setFreetrail] = useState(false);
   const [currentPage, setCurrentPage] = useState(null);
 
@@ -21,23 +26,24 @@ const SignupProcessUserManagement = () => {
       }
     }
   }, [location.state]);
+
   useEffect(() => {
     if (currentStage !== null) {
       setCurrentPage(currentStage);
+      localStorage.setItem("signupCurrentPage", currentStage);
     }
   }, [currentStage]);
 
   //Updating the state of the local storage routes pages
   useEffect(() => {
+    localStorage.removeItem("LoginFlowPageRoute");
+    dispatch(LoginFlowRoutes(null));
     try {
       if (UserMangementReducer.defaultRoutingValue) {
         setCurrentPage(UserMangementReducer.defaultRoutingValue);
       }
     } catch {}
   }, [UserMangementReducer.defaultRoutingValue]);
-
-  console.log("location", location.state !== null?.freeTrail);
-  console.log("location", location.state !== null ? 2 : 1);
 
   let SignupComponent;
   if (currentStage === 1) {
@@ -47,7 +53,7 @@ const SignupProcessUserManagement = () => {
   } else if (currentStage === 3) {
     SignupComponent = <VerifyOTPUM />;
   } else if (currentStage === 4) {
-    SignupComponent = <PasswordCreationUM currentStage={currentStage} />;
+    SignupComponent = <PasswordCreationUM isFreetrail={isFreetrail} />;
   } else if (currentStage === 5) {
     SignupComponent = <BillingMethodUsermanagement />;
   } else {
@@ -59,9 +65,3 @@ const SignupProcessUserManagement = () => {
 };
 
 export default SignupProcessUserManagement;
-
-export const signupCurrentPageStep = (step, setSignupStep) => {
-  localStorage.setItem("signupCurrentPage", step);
-  setSignupStep(step);
-  console.log(setSignupStep, "setSignupStepsetSignupStep");
-};

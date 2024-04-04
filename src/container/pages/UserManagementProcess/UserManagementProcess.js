@@ -21,12 +21,15 @@ const UserManagementProcess = () => {
   const { UserMangementReducer } = useSelector((state) => state);
 
   // Retrieve currentStep value from localStorage, default to 1 if not found
-  const [currentStep, setCurrentStepValue] = useState(() => {
-    return Number(localStorage.getItem("LoginFlowPageRoute")) || 1;
-  });
+  const [currentStep, setCurrentStepValue] = useState(
+    localStorage.getItem("LoginFlowPageRoute") !== null
+      ? Number(localStorage.getItem("LoginFlowPageRoute"))
+      : 1
+  );
 
   useEffect(() => {
     try {
+      localStorage.removeItem("signupCurrentPage");
       if (UserMangementReducer.defaultRoutingValue) {
         setCurrentStepValue(UserMangementReducer.defaultRoutingValue);
       }
