@@ -154,11 +154,11 @@ const BillingMethodUsermanagement = () => {
       setActiveComponent("billingAddress");
       // Email condition is satisfied
       setActiveStep((prevActiveStep) => {
-        if (prevActiveStep >= 3) {
+        if (prevActiveStep >= 2) {
           dispatch(showThankYouPaymentModal(true));
           return prevActiveStep;
         } else {
-          return prevActiveStep < 3 ? prevActiveStep + 1 : prevActiveStep;
+          return prevActiveStep < 2 ? prevActiveStep + 1 : prevActiveStep;
         }
       });
     } else {
@@ -183,11 +183,11 @@ const BillingMethodUsermanagement = () => {
       ) {
         setActiveComponent("PakageDetails");
         setActiveStep((prevActiveStep) => {
-          if (prevActiveStep >= 3) {
+          if (prevActiveStep >= 2) {
             dispatch(showThankYouPaymentModal(true));
             return prevActiveStep;
           } else {
-            return prevActiveStep < 3 ? prevActiveStep + 1 : prevActiveStep;
+            return prevActiveStep < 2 ? prevActiveStep + 1 : prevActiveStep;
           }
         });
       } else {
@@ -221,11 +221,11 @@ const BillingMethodUsermanagement = () => {
     if (activeComponent === "PakageDetails") {
       setActiveComponent("PaymentMethods");
       setActiveStep((prevActiveStep) => {
-        if (prevActiveStep >= 3) {
+        if (prevActiveStep >= 2) {
           dispatch(showThankYouPaymentModal(true));
           return prevActiveStep;
         } else {
-          return prevActiveStep < 3 ? prevActiveStep + 1 : prevActiveStep;
+          return prevActiveStep < 2 ? prevActiveStep + 1 : prevActiveStep;
         }
       });
       setPaymentMethodPage(true);
@@ -242,11 +242,11 @@ const BillingMethodUsermanagement = () => {
       ) {
         setActiveComponent("billingAddress");
         setActiveStep((prevActiveStep) => {
-          if (prevActiveStep >= 3) {
+          if (prevActiveStep >= 2) {
             dispatch(showThankYouPaymentModal(true));
             return prevActiveStep;
           } else {
-            return prevActiveStep < 3 ? prevActiveStep + 1 : prevActiveStep;
+            return prevActiveStep < 2 ? prevActiveStep + 1 : prevActiveStep;
           }
         });
       } else {
