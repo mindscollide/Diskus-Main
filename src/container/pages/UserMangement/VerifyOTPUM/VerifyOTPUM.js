@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./VerifyOTPUM.module.css";
 import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DiskusAuthPageLogo from "../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
@@ -21,6 +21,7 @@ import {
 } from "../../../../store/actions/Auth2_actions";
 import { ResendOTP } from "../../../../store/actions/Auth_Verify_Opt";
 import { useSelector } from "react-redux";
+import { LoginFlowRoutes } from "../../../../store/actions/UserManagementActions";
 
 const VerifyOTPUM = () => {
   const { t } = useTranslation();
@@ -258,6 +259,13 @@ const VerifyOTPUM = () => {
     Authreducer.GetSelectedPackageResponseMessage,
   ]);
 
+  const handleBacktoSignIn = () => {
+    localStorage.removeItem("signupCurrentPage", 3);
+    localStorage.setItem("LoginFlowPageRoute", 1);
+    dispatch(LoginFlowRoutes(1));
+    navigate("/");
+  };
+
   return (
     <>
       <Row>
@@ -362,6 +370,19 @@ const VerifyOTPUM = () => {
                       onClick={verifyOTPClickHandler}
                       className={styles["subscribNow_button_EmailVerify"]}
                     />
+                  </Col>
+                </Row>
+
+                <Row className="mt-3">
+                  <Col
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    className={
+                      styles["Forgot_passwordforogt_verification_email_link"]
+                    }
+                  >
+                    <span onClick={handleBacktoSignIn}>{t("Go-back")}</span>
                   </Col>
                 </Row>
               </Col>

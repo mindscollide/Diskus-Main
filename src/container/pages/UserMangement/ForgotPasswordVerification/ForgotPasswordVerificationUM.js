@@ -329,7 +329,7 @@ const ForgotPasswordVerificationUM = () => {
                     </Col>
                   </Row>
                 </Form>
-                <Row className="mt-1">
+                <Row className="mt-3">
                   <Col
                     sm={12}
                     md={12}
@@ -338,9 +338,7 @@ const ForgotPasswordVerificationUM = () => {
                       styles["Forgot_passwordforogt_verification_email_link"]
                     }
                   >
-                    <Link onClick={handleBacktoSignIn}>
-                      {t("Back-to-sign-in")}
-                    </Link>
+                    <Link onClick={handleBacktoSignIn}>{t("Go-back")}</Link>
                   </Col>
                 </Row>
               </Col>

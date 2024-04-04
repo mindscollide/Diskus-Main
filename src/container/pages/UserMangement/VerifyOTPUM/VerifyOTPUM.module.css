@@ -296,3 +296,19 @@ body[dir="rtl"] .languageSelector {
   display: flex;
   justify-content: flex-end;
 }
+
+.Forgot_passwordforogt_verification_email_link {
+  display: flex;
+  justify-content: center;
+  text-decoration: underline;
+  /* font-size: calc(12px - 20%) !important; */
+  margin-top: 4px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratRegular";
+  cursor: pointer !important;
+}
+
+.Forgot_passwordforogt_verification_email_link a {
+  color: #5a5a5a !important;
+  font-family: "MontserratRegular";
+}

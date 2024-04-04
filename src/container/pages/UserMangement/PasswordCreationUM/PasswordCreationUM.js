@@ -30,7 +30,7 @@ import {
 import { signupCurrentPageStep } from "../../SignUpProcessUserManagement/SignupProcessUserManagement";
 
 const PasswordCreationUM = ({ currentStage }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
