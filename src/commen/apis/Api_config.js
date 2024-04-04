@@ -1512,6 +1512,10 @@ const leaveMeeting = {
   RequestMethod: "ServiceManager.LeaveMeeting",
 };
 
+const getOrganizationSelectedPakages = {
+  RequestMethod: "ServiceManager.GetOrganizationSelectedPackages",
+};
+
 export {
   UserLoginHistoryRM,
   getDataAnalyticsCountRM,
@@ -1916,4 +1920,5 @@ export {
   GetOrganizationSelectedPackagesByOrganizationID,
   joinMeeting,
   leaveMeeting,
+  getOrganizationSelectedPakages,
 };

@@ -74,16 +74,14 @@ body[dir="rtl"] .signUp_NextBtn {
 
 .signUp_goBack {
   color: #000;
-}
-
-body[dir="rtl"] .signUp_goBack + a {
-  font-family: "IBMPlexSansArabic-Regular" !important;
-}
-
-.signUp_goBack + a {
-  color: #000;
   margin: 21px 0 0 0 !important;
   text-decoration: underline;
+  cursor: pointer !important;
+  font-family: "Montserrat";
+}
+
+body[dir="rtl"] .signUp_goBack {
+  font-family: "IBMPlexSansArabic-Regular" !important;
 }
 
 .signUp_NextBtn:hover {

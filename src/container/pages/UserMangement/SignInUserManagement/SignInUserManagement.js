@@ -25,7 +25,7 @@ import { useSelector } from "react-redux";
 import { signupCurrentPageStep } from "../../SignUpProcessUserManagement/SignupProcessUserManagement";
 import { signUpFlowRoutes } from "../../../../store/actions/UserManagementActions";
 
-const SignInUserManagement = ({ setCurrentStep, setSignupStep }) => {
+const SignInUserManagement = () => {
   const navigate = useNavigate();
 
   const { t } = useTranslation();
@@ -129,6 +129,10 @@ const SignInUserManagement = ({ setCurrentStep, setSignupStep }) => {
 
     let RSVP = localStorage.getItem("RSVP");
     let DataRoomEmailValue = localStorage.getItem("DataRoomEmail");
+    let LoginFlowPageRoute = JSON.parse(
+      localStorage.getItem("LoginFlowPageRoute")
+    );
+
     if (RememberEmailLocal === true && RememberPasswordLocal === true) {
       let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
 
@@ -137,6 +141,11 @@ const SignInUserManagement = ({ setCurrentStep, setSignupStep }) => {
       );
 
       localStorage.clear();
+      try {
+        if (Number(LoginFlowPageRoute) !== 1) {
+          localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
+        }
+      } catch {}
       if (reLang != undefined && reLang != null) {
         localStorage.setItem("i18nextLng", reLang);
       }
@@ -157,6 +166,11 @@ const SignInUserManagement = ({ setCurrentStep, setSignupStep }) => {
     } else if (RememberEmailLocal === true) {
       let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
       localStorage.clear();
+      try {
+        if (Number(LoginFlowPageRoute) !== 1) {
+          localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
+        }
+      } catch {}
       if (reLang != undefined && reLang != null) {
         localStorage.setItem("i18nextLng", reLang);
       }
@@ -177,6 +191,12 @@ const SignInUserManagement = ({ setCurrentStep, setSignupStep }) => {
         "rememberPasswordValue"
       );
       localStorage.clear();
+      try {
+        if (Number(LoginFlowPageRoute) !== 1) {
+          localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
+        }
+      } catch {}
+
       if (reLang != undefined && reLang != null) {
         localStorage.setItem("i18nextLng", reLang);
       }
@@ -192,6 +212,12 @@ const SignInUserManagement = ({ setCurrentStep, setSignupStep }) => {
       setErrorBar(false);
     } else {
       localStorage.clear();
+      try {
+        if (Number(LoginFlowPageRoute) !== 1) {
+          localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
+        }
+      } catch {}
+
       if (reLang != undefined && reLang != null) {
         localStorage.setItem("i18nextLng", reLang);
       }
@@ -213,16 +239,6 @@ const SignInUserManagement = ({ setCurrentStep, setSignupStep }) => {
   useEffect(() => {
     emailRef.current.focus();
   }, []);
-
-  // const handleClickFreeTrail = () => {
-  //   localStorage.setItem("PackageID", 4);
-  //   localStorage.setItem("TenureOfSuscriptionID", 2);
-  //   navigate("/signuporganization", {
-  //     state: {
-  //       freeTrail: true,
-  //     },
-  //   });
-  // };
 
   useEffect(() => {
     if (adminReducer.DeleteOrganizationResponseMessage !== "") {
@@ -342,6 +358,7 @@ const SignInUserManagement = ({ setCurrentStep, setSignupStep }) => {
     Authreducer.EmailValidationResponseMessage,
     Authreducer.GetSelectedPackageResponseMessage,
   ]);
+
   return (
     <>
       <Container fluid className={styles["auth_container"]}>

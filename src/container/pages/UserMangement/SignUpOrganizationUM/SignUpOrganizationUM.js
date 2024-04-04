@@ -591,11 +591,6 @@ const SignUpOrganizationUM = ({ setSignupStep, setCurrentStepValue }) => {
             adminReducer.OrganisationCheck !== false &&
             adminReducer.EmailCheck !== false
           ) {
-            let PackageID = localStorage.getItem("PackageID");
-            let tenureOfSuscriptionID = localStorage.getItem(
-              "TenureOfSuscriptionID"
-            );
-
             let data = {
               TenureOfSubscriptionID: JSON.parse(2),
               Organization: {
@@ -616,7 +611,11 @@ const SignUpOrganizationUM = ({ setSignupStep, setCurrentStepValue }) => {
                 PostalCode: signUpDetails.PostalCode.value,
                 TimeZoneID: 1,
               },
-              Packages: [{ PackageID: 4, HeadCount: 5 }],
+              Packages: [
+                { PackageID: 1, HeadCount: 5 },
+                { PackageID: 2, HeadCount: 5 },
+                { PackageID: 3, HeadCount: 5 },
+              ],
             };
             dispatch(
               signUpOrganizationAndPakageSelection(
@@ -1250,8 +1249,10 @@ const SignUpOrganizationUM = ({ setSignupStep, setCurrentStepValue }) => {
                   lg={7}
                   className="d-flex justify-content-start align-items-center"
                 >
-                  <span className={styles["signUp_goBack"]} />
-                  <span onClick={onClickLink} color="black">
+                  <span
+                    onClick={onClickLink}
+                    className={styles["signUp_goBack"]}
+                  >
                     {t("Go-back")}
                   </span>
                 </Col>

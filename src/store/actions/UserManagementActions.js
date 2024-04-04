@@ -4,6 +4,7 @@ import {
   GetOrganizationSelectedPackagesByOrganizationID,
   GetOrganizationSubscriptionExpiryDetails,
   SaveOrganizationAndPakageSelection,
+  getOrganizationSelectedPakages,
 } from "../../commen/apis/Api_config";
 import {
   authenticationApi,
@@ -1104,6 +1105,108 @@ const GetOrganizationSelectedPackagesByOrganizationIDApi = (
   };
 };
 
+//GET ORGANIZATION SELECTED PAKAGES
+
+const getOrganizationSelectedPakagesInit = () => {
+  return {
+    type: actions.GET_ALL_ORGANIZATION_SELECTED_PAKAGES_INIT,
+  };
+};
+
+const getOrganizationSelectedPakagesSuccess = (response, message) => {
+  return {
+    type: actions.GET_ALL_ORGANIZATION_SELECTED_PAKAGES_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getOrganizationSelectedPakagesFailed = (message) => {
+  return {
+    type: actions.GET_ALL_ORGANIZATION_SELECTED_PAKAGES_FAIL,
+    message: message,
+  };
+};
+
+const getOrganizationSelectedPakagesAPI = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(getOrganizationSelectedPakagesInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(data));
+    form.append("RequestMethod", getOrganizationSelectedPakages.RequestMethod);
+    axios({
+      method: "post",
+      url: authenticationApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getOrganizationSelectedPakagesAPI(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_GetOrganizationSelectedPackages_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getOrganizationSelectedPakagesSuccess(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_GetOrganizationSelectedPackages_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getOrganizationSelectedPakagesFailed(t("No-data-found"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_GetOrganizationSelectedPackages_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getOrganizationSelectedPakagesFailed(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                getOrganizationSelectedPakagesFailed(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              getOrganizationSelectedPakagesFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            getOrganizationSelectedPakagesFailed(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          getOrganizationSelectedPakagesFailed(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
 export {
   signUpOrganizationAndPakageSelection,
   getAllorganizationSubscriptionExpiryDetailsApi,
@@ -1115,4 +1218,5 @@ export {
   GetOrganizationSelectedPackagesByOrganizationIDApi,
   signUpFlowRoutes,
   LoginFlowRoutes,
+  getOrganizationSelectedPakagesAPI,
 };

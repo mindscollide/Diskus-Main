@@ -276,6 +276,8 @@ const validationEmailAction = (email, navigate, t) => {
                   t("Device-does-not-exists")
                 )
               );
+              localStorage.setItem("LoginFlowPageRoute", 2);
+              dispatch(LoginFlowRoutes(2));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -312,6 +314,7 @@ const validationEmailAction = (email, navigate, t) => {
               );
               localStorage.setItem("LoginFlowPageRoute", 2);
               dispatch(LoginFlowRoutes(2));
+
               // navigate("/enterPassword");
             } else if (
               response.data.responseResult.responseMessage
@@ -326,6 +329,8 @@ const validationEmailAction = (email, navigate, t) => {
                   t("Users-password-is-created-but-somthing-went-wrong")
                 )
               );
+              localStorage.setItem("LoginFlowPageRoute", 2);
+              dispatch(LoginFlowRoutes(2));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -923,6 +928,27 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_UserPasswordVerification_09".toLowerCase()
                 )
             ) {
+              let LocalUserRoutes = [
+                { name: "Meeting", id: 1 },
+                { name: "todolist", id: 2 },
+                { name: "calendar", id: 3 },
+                { name: "Diskus", id: 4 },
+                { name: "setting", id: 5 },
+                { name: "faq's", id: 6 },
+                { name: "changePassword", id: 7 },
+                { name: "home", id: 8 },
+                { name: "", id: 9 },
+              ];
+              let LocalAdminRoutes = [
+                { name: "Admin", id: 1 },
+                { name: "ManageUsers", id: 2 },
+                { name: "OrganizationlevelConfigUM", id: 3 },
+                { name: "PackageDetailsUserManagement", id: 4 },
+                { name: "Summary", id: 5 },
+              ];
+              localStorage.setItem("LocalUserRoutes", JSON.stringify(LocalUserRoutes));
+              localStorage.setItem("LocalAdminRoutes", JSON.stringify(LocalAdminRoutes));
+
               if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 localStorage.setItem(
                   "roleID",
@@ -1618,6 +1644,8 @@ const createPasswordAction = (value, navigate, t, currentStage) => {
                   "ERM_AuthService_SignUpManager_UsersPasswordCreation_01".toLowerCase()
                 )
             ) {
+              localStorage.setItem("signupCurrentPage", 5);
+              navigate("/Signup");
               if (
                 parseInt(
                   response.data.responseResult.organizationSubscriptionStatusID
