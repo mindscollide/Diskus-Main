@@ -1491,37 +1491,36 @@ const verificationEmailOTP = (
                   "ERM_AuthService_SignUpManager_UserEmailVerification_01".toLowerCase()
                 )
             ) {
-              console.log("LoginFlowPageRoute")
+              console.log("LoginFlowPageRoute");
               dispatch(
                 verifyOTPSuccess(
                   response.data.responseResult,
                   t("The-users-email-has-been-verified")
                 )
               );
-              console.log("LoginFlowPageRoute")
+              console.log("LoginFlowPageRoute");
               if (updateFlag === true) {
                 localStorage.setItem("updatePasswordCheck", true);
               } else {
                 localStorage.setItem("updatePasswordCheck", false);
               }
-              let signUp=localStorage.getItem("signupCurrentPage")
-              if(signUp){
-                console.log("LoginFlowPageRoute")
+              let signUp = localStorage.getItem("signupCurrentPage");
+              if (signUp) {
+                console.log("LoginFlowPageRoute");
                 localStorage.removeItem("seconds");
                 localStorage.removeItem("minutes");
                 localStorage.setItem("signupCurrentPage", 4);
-                console.log("LoginFlowPageRoute")
-              }else{
-                  //  this is used on when we ccaome from verify emaol otp of qrganaisation creation
-              console.log("LoginFlowPageRoute")
-              localStorage.removeItem("seconds");
-              localStorage.removeItem("minutes");
-              localStorage.getItem("LoginFlowPageRoute", 11);
-              console.log("LoginFlowPageRoute")
-              dispatch(LoginFlowRoutes(11));
-              console.log("LoginFlowPageRoute")
+                console.log("LoginFlowPageRoute");
+              } else {
+                //  this is used on when we ccaome from verify emaol otp of qrganaisation creation
+                console.log("LoginFlowPageRoute");
+                localStorage.removeItem("seconds");
+                localStorage.removeItem("minutes");
+                localStorage.getItem("LoginFlowPageRoute", 11);
+                console.log("LoginFlowPageRoute");
+                dispatch(LoginFlowRoutes(11));
+                console.log("LoginFlowPageRoute");
               }
-            
 
               // const signupValue = localStorage.getItem("signupCurrentPage");
               // if (signupValue === "3") {
@@ -1622,13 +1621,10 @@ const createPasswordAction = (value, navigate, t) => {
                 response.data.responseResult.organizationName
               );
             }
-            if (response.data.responseResult.isTrial !== undefined) {
-              localStorage.setItem(
-                "isTrial",
-                   
-              );
-            }
-            
+            try {
+              localStorage.setItem("isTrial");
+            } catch {}
+
             if (response.data.responseResult.authToken !== null) {
               localStorage.setItem(
                 "name",
@@ -1664,48 +1660,48 @@ const createPasswordAction = (value, navigate, t) => {
                   "ERM_AuthService_SignUpManager_UsersPasswordCreation_01".toLowerCase()
                 )
             ) {
-              console.log("UsersPasswordCreation")
+              console.log("UsersPasswordCreation");
               if (
                 parseInt(
                   response.data.responseResult.organizationSubscriptionStatusID
                 ) === parseInt(5)
               ) {
-              console.log("UsersPasswordCreation")
-              localStorage.setItem("revokeCancellation", true);
+                console.log("UsersPasswordCreation");
+                localStorage.setItem("revokeCancellation", true);
               } else {
-              console.log("UsersPasswordCreation")
-              localStorage.setItem("revokeCancellation", false);
+                console.log("UsersPasswordCreation");
+                localStorage.setItem("revokeCancellation", false);
               }
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
-              console.log("UsersPasswordCreation")
-              dispatch(
+                console.log("UsersPasswordCreation");
+                dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
                     t("The-user-is-an-admin-user")
                   )
                 );
-              console.log("UsersPasswordCreation")
-              localStorage.setItem(
+                console.log("UsersPasswordCreation");
+                localStorage.setItem(
                   "organizationID",
                   response.data.responseResult.organizationID
                 );
                 // navigate("/selectedpackage");
-              console.log("UsersPasswordCreation")
-              localStorage.setItem("signupCurrentPage", 5);
-              console.log("UsersPasswordCreation")
-              navigate("/Signup");
+                console.log("UsersPasswordCreation");
+                localStorage.setItem("signupCurrentPage", 5);
+                console.log("UsersPasswordCreation");
+                navigate("/Signup");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 2
               ) {
-              console.log("UsersPasswordCreation")
-              dispatch(
+                console.log("UsersPasswordCreation");
+                dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
                     t("The-user-is-an-admin-user")
                   )
                 );
-              console.log("UsersPasswordCreation")
-              localStorage.setItem(
+                console.log("UsersPasswordCreation");
+                localStorage.setItem(
                   "organizationID",
                   response.data.responseResult.organizationID
                 );
@@ -1715,15 +1711,15 @@ const createPasswordAction = (value, navigate, t) => {
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 3
               ) {
-              console.log("UsersPasswordCreation")
-              dispatch(
+                console.log("UsersPasswordCreation");
+                dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
                     t("The-user-is-an-admin-user")
                   )
                 );
-              console.log("UsersPasswordCreation")
-              navigate("/");
+                console.log("UsersPasswordCreation");
+                navigate("/");
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -2886,8 +2882,12 @@ const createPasswordAction = (value, navigate, t) => {
                   "ERM_AuthService_SignUpManager_UsersPasswordCreation_18".toLowerCase()
                 )
             ) {
-              dispatch(createPasswordSuccess(response.data.responseResult, ""));
+              localStorage.setItem(
+                "OrganizationName",
+                response.data.responseResult.organizationName
+              );
               dispatch(showCreateAddtionalUsersModal(true));
+              dispatch(createPasswordSuccess(response.data.responseResult, ""));
               // navigate("/");
             } else {
               dispatch(createPasswordFail(t("Something-went-wrong")));

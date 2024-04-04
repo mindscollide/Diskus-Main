@@ -16,9 +16,16 @@ import {
 import crossicon from "../../../../../assets/images/BlackCrossIconModals.svg";
 import { Col, Row } from "react-bootstrap";
 import EmployeeinfoCard from "../../../../../components/elements/Employeeinfocard/EmployeeinfoCard";
+import { AddOrganizationsUserApi } from "../../../../../store/actions/UserManagementActions";
+import { useNavigate } from "react-router-dom";
 const CreateAddtionalUsersModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  let organzataionID = localStorage.getItem("OrganizationID");
+
+  let OrganizatioName = localStorage.getItem("OrganizatioName");
 
   const { UserManagementModals } = useSelector((state) => state);
 
@@ -147,7 +154,40 @@ const CreateAddtionalUsersModal = () => {
   };
 
   //handle Create button
-  const handleCreatebutton = () => {};
+  const handleCreatebutton = () => {
+    let data = {
+      UserName: createAddionalUsers.Name.value,
+      OrganizationName: OrganizatioName,
+      Designation: createAddionalUsers.Designation.value,
+      MobileNumber: "",
+      UserEmail: createAddionalUsers.Email.value,
+      OrganizationID: organzataionID,
+      isAdmin: true,
+      FK_NumberWorldCountryID: 1,
+      OrganizationSelectedPackageID: 4,
+    };
+
+    console.log(data, "AddOrganizationsUserApi");
+    // dispatch(AddOrganizationsUserApi(navigate, t, data));
+    setCreateAddionalUsers({
+      Name: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+
+      Email: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+      Designation: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+    });
+  };
 
   return (
     <section>
@@ -231,6 +271,9 @@ const CreateAddtionalUsersModal = () => {
                       </>
                     }
                     applyClass={"updateNotes_titleInput"}
+                    value={createAddionalUsers.Designation.value}
+                    name="Designation"
+                    change={createAddiotionalUsersHandler}
                   />
                 </Col>
               </Row>
