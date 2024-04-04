@@ -38,13 +38,14 @@ const assigneesReducer = (state = initialState, action) => {
     case actions.ASSIGNESS_LIST_INIT: {
       return {
         ...state,
-        // Loading: false,
+        Loading: true,
       };
     }
     case actions.ASSIGNESS_LIST_SUCCESS: {
       return {
         ...state,
         user: action.response,
+        Loading: false,
         ResponseMessage: action.message,
       };
     }
@@ -52,6 +53,7 @@ const assigneesReducer = (state = initialState, action) => {
       return {
         ...state,
         user: [],
+        Loading: false,
         ResponseMessage: action.message,
       };
     }

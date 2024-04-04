@@ -81,13 +81,23 @@ const calendarReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
-
+    case actions.CLEAR_CALENDAR_STATE: {
+      return {
+        ...state,
+        CalenderData: [],
+      };
+    }
     case actions.HIDE:
       return {
         ...state,
         ResponseMessage: "",
       };
-
+    case actions.CALENDAR_LOADER: {
+      return {
+        ...state,
+        Loading: action.payload,
+      };
+    }
     default:
       return { ...state };
   }

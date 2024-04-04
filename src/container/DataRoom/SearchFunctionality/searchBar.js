@@ -1213,62 +1213,62 @@ const SearchBarComponent = ({
     setIsEndOpen(false);
     setCustomRangeVisible(false);
     //Back To intial State of Search As Defined
-    setSearchDataFields({
-      UserID: userID ? parseInt(userID) : 0,
-      OrganizationID: organizationID
-        ? parseInt(organizationID)
-        : organizationID,
-      StatusID: 3,
-      Title: "",
-      isDocument: false,
-      isSpreadSheet: false,
-      isPresentation: false,
-      isForms: false,
-      isPDF: false,
-      isFolders: false,
-      isVideos: false,
-      isImages: false,
-      isAudios: false,
-      isSites: false,
-      LastModifiedStartDate: "",
-      LastModifiedEndDate: "",
-      UserIDToSearch: 0,
-      isOwnedByMe: 2,
-      // isNotOwnedByMe: false,
-      isSpecificUser: false,
-      sRow: 0,
-      Length: 10,
+    // setSearchDataFields({
+    //   UserID: userID ? parseInt(userID) : 0,
+    //   OrganizationID: organizationID
+    //     ? parseInt(organizationID)
+    //     : organizationID,
+    //   StatusID: 3,
+    //   Title: "",
+    //   isDocument: false,
+    //   isSpreadSheet: false,
+    //   isPresentation: false,
+    //   isForms: false,
+    //   isPDF: false,
+    //   isFolders: false,
+    //   isVideos: false,
+    //   isImages: false,
+    //   isAudios: false,
+    //   isSites: false,
+    //   LastModifiedStartDate: "",
+    //   LastModifiedEndDate: "",
+    //   UserIDToSearch: 0,
+    //   isOwnedByMe: 2,
+    //   // isNotOwnedByMe: false,
+    //   isSpecificUser: false,
+    //   sRow: 0,
+    //   Length: 10,
 
-      SortBy: 0,
-      isDescending: false,
-    });
-    setSearchResultFields({
-      Date: null,
-      Type: null,
-      Location: null,
-      People: null,
-    });
-    setSearchResultBoxFields({
-      documentType: {
-        value: 0,
-        label: "",
-      },
-      lastModifedDate: {
-        value: 0,
-        label: "",
-      },
-      documetLocation: {
-        value: 0,
-        label: "",
-      },
-      itemname: "",
-      haswords: "",
-      owner: {
-        value: 0,
-        label: "",
-      },
-      specifiPeople: "",
-    });
+    //   SortBy: 0,
+    //   isDescending: false,
+    // });
+    // setSearchResultFields({
+    //   Date: null,
+    //   Type: null,
+    //   Location: null,
+    //   People: null,
+    // });
+    // setSearchResultBoxFields({
+    //   documentType: {
+    //     value: 0,
+    //     label: "",
+    //   },
+    //   lastModifedDate: {
+    //     value: 0,
+    //     label: "",
+    //   },
+    //   documetLocation: {
+    //     value: 0,
+    //     label: "",
+    //   },
+    //   itemname: "",
+    //   haswords: "",
+    //   owner: {
+    //     value: 0,
+    //     label: "",
+    //   },
+    //   specifiPeople: "",
+    // });
   };
 
   const handleOutsideClick = (event) => {

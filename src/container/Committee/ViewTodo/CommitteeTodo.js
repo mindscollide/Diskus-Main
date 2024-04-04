@@ -35,6 +35,7 @@ import {
   SearchTodoListApi,
   deleteCommitteeTaskApi,
   saveTaskDocumentsApi,
+  createTaskCommitteeMQTT,
 } from "../../../store/actions/ToDoList_action";
 import "antd/dist/antd.css";
 
@@ -127,6 +128,22 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
     }
   }, []);
 
+  // Remove task from mqtt response
+  useEffect(() => {
+    try {
+      if (toDoListReducer.socketTodoStatusData !== null) {
+        let payloadData = toDoListReducer.socketTodoStatusData;
+        if (payloadData.todoStatusID === 6) {
+          setRowToDo((rowsData) => {
+            return rowsData.filter((newData, index) => {
+              return newData.pK_TID !== payloadData.todoid;
+            });
+          });
+        }
+      }
+    } catch {}
+  }, [toDoListReducer.socketTodoStatusData]);
+
   //get todolist reducer
   useEffect(() => {
     if (
@@ -152,6 +169,20 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       setRowToDo([]);
     }
   }, [PollsReducer.getTodoCommitteeTask]);
+
+  useEffect(() => {
+    try {
+      if (toDoListReducer.createTaskCommittee !== null) {
+        let taskData = toDoListReducer.createTaskCommittee;
+        if (Number(taskData.comitteeID) === Number(ViewCommitteeID)) {
+          setRowToDo([...rowsToDo, taskData.todoList]);
+        }
+        dispatch(createTaskCommitteeMQTT(null));
+      }
+    } catch (error) {
+      console.log(error, "errorerrorerrorerrorerror");
+    }
+  }, [toDoListReducer.createTaskCommittee]);
 
   // SET STATUS VALUES
   useEffect(() => {
@@ -192,11 +223,6 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       UpdateFileList: [],
     };
     dispatch(saveTaskDocumentsApi(navigate, NewData, t, 6, setShow));
-    // let data = {
-    //   FK_TID: record.pK_TID,
-    //   CommitteeID: Number(ViewCommitteeID),
-    // };
-    // dispatch(deleteCommitteeTaskApi(navigate, t, data));
   };
 
   const columnsToDo = [

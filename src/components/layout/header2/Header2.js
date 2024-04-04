@@ -25,6 +25,7 @@ import {
   viewMeetingFlag,
   uploadGlobalFlag,
   LeaveCurrentMeeting,
+  currentMeetingStatus
 } from "../../../store/actions/NewMeetingActions";
 import {
   getUserDetails,
@@ -186,6 +187,7 @@ const Header2 = () => {
       };
       if (CurrentMeetingStatus === 10) {
         dispatch(LeaveCurrentMeeting(navigate, t, Data));
+        dispatch(currentMeetingStatus(0));
       }
     }
   };
@@ -218,7 +220,8 @@ const Header2 = () => {
         };
         if (CurrentMeetingStatus === 10) {
           dispatch(LeaveCurrentMeeting(navigate, t, Data));
-        }
+        dispatch(currentMeetingStatus(0));
+      }
       }
     }
   };
@@ -251,7 +254,8 @@ const Header2 = () => {
         };
         if (CurrentMeetingStatus === 10) {
           dispatch(LeaveCurrentMeeting(navigate, t, Data));
-        }
+        dispatch(currentMeetingStatus(0));
+      }
       }
     }
   };
@@ -284,7 +288,8 @@ const Header2 = () => {
         };
         if (CurrentMeetingStatus === 10) {
           dispatch(LeaveCurrentMeeting(navigate, t, Data));
-        }
+        dispatch(currentMeetingStatus(0));
+      }
       }
     }
   };
