@@ -25,7 +25,7 @@ import { useSelector } from "react-redux";
 import { signupCurrentPageStep } from "../../SignUpProcessUserManagement/SignupProcessUserManagement";
 import { signUpFlowRoutes } from "../../../../store/actions/UserManagementActions";
 
-const SignInUserManagement = ({ setCurrentStep, setSignupStep }) => {
+const SignInUserManagement = () => {
   const navigate = useNavigate();
 
   const { t } = useTranslation();

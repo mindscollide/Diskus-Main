@@ -908,3 +908,26 @@ export function getCurrentDateTimeUTC() {
   const seconds = String(now.getUTCSeconds()).padStart(2, "0");
   return `${year}${month}${day}${hours}${minutes}${seconds}`;
 }
+
+//Huzaifa Sir Global Date Formatter Function Same As Global Admin
+export const convertUTCDateToLocalDate = (utcDateTime, locale) => {
+  try {
+    const date = new Date(
+      `${utcDateTime.slice(0, 4)}-${utcDateTime.slice(
+        4,
+        6
+      )}-${utcDateTime.slice(6, 8)}T${utcDateTime.slice(
+        8,
+        10
+      )}:${utcDateTime.slice(10, 12)}:${utcDateTime.slice(12, 14)}.000Z`
+    );
+
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+      numberingSystem: locale === "ar" ? "arab" : "latn",
+    };
+    return date.toLocaleString(locale, options);
+  } catch {}
+};

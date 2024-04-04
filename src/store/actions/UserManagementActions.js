@@ -1138,7 +1138,7 @@ const getOrganizationSelectedPakagesAPI = (navigate, t, data) => {
     form.append("RequestMethod", getOrganizationSelectedPakages.RequestMethod);
     axios({
       method: "post",
-      url: getAdminURLs,
+      url: authenticationApi,
       data: form,
       headers: {
         _token: token,

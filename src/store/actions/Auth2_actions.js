@@ -276,6 +276,8 @@ const validationEmailAction = (email, navigate, t) => {
                   t("Device-does-not-exists")
                 )
               );
+              localStorage.setItem("LoginFlowPageRoute", 2);
+              dispatch(LoginFlowRoutes(2));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -312,6 +314,7 @@ const validationEmailAction = (email, navigate, t) => {
               );
               localStorage.setItem("LoginFlowPageRoute", 2);
               dispatch(LoginFlowRoutes(2));
+
               // navigate("/enterPassword");
             } else if (
               response.data.responseResult.responseMessage
@@ -326,6 +329,8 @@ const validationEmailAction = (email, navigate, t) => {
                   t("Users-password-is-created-but-somthing-went-wrong")
                 )
               );
+              localStorage.setItem("LoginFlowPageRoute", 2);
+              dispatch(LoginFlowRoutes(2));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
