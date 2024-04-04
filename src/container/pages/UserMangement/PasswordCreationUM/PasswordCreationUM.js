@@ -17,7 +17,7 @@ import PasswordChecklist from "react-password-checklist";
 import PasswordHideEyeIcon from "../../../../assets/images/newElements/password_hide.svg";
 import DiskusAuthPageLogo from "../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { showCreateAddtionalUsersModal } from "../../../../store/actions/UserMangementModalActions";
 import { useDispatch } from "react-redux";
 import CreateAddtionalUsersModal from "../ModalsUserManagement/CreateAdditionalusersModal/CreateAddtionalUsersModal";
@@ -27,14 +27,14 @@ import {
   createPasswordAction,
   updatePasswordAction,
 } from "../../../../store/actions/Auth2_actions";
-import { signupCurrentPageStep } from "../../SignUpProcessUserManagement/SignupProcessUserManagement";
 
-const PasswordCreationUM = ({ currentStage }) => {
+const PasswordCreationUM = ({ isFreetrail }) => {
   const { t, i18n } = useTranslation();
 
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const passwordRef = useRef();
 
@@ -176,7 +176,7 @@ const PasswordCreationUM = ({ currentStage }) => {
             passwordDetails.Password,
             navigate,
             t,
-            currentStage
+            // currentStage
           )
         );
       }
@@ -378,13 +378,12 @@ const PasswordCreationUM = ({ currentStage }) => {
     }
     passwordRef.current.focus();
   }, []);
-  console.log("createpasswordorganization", passwordDetails);
 
   const handleSignupButton = () => {
-    if (currentStage === 4) {
-      // dispatch(createPasswordAction(passwordDetails.Password, navigate, t));
-    } else {
+    if (isFreetrail) {
       dispatch(showCreateAddtionalUsersModal(true));
+    } else {
+      // dispatch(createPasswordAction(passwordDetails.Password, navigate, t));
     }
   };
 
@@ -557,7 +556,7 @@ const PasswordCreationUM = ({ currentStage }) => {
                     >
                       <Button
                         type="submit"
-                        onClick={handleSignupButton}
+                        onClick={verifyHandlePassword}
                         text={
                           updateCheckPasswordFlag !== undefined &&
                           updateCheckPasswordFlag !== null &&

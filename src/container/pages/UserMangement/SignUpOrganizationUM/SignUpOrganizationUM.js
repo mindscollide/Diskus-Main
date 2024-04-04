@@ -30,9 +30,8 @@ import {
 } from "../../../../store/actions/Admin_Organization";
 import { setLoader } from "../../../../store/actions/Auth2_actions";
 import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
-import { signupCurrentPageStep } from "../../SignUpProcessUserManagement/SignupProcessUserManagement";
 
-const SignUpOrganizationUM = ({ setSignupStep, setCurrentStepValue }) => {
+const SignUpOrganizationUM = () => {
   const { t } = useTranslation();
 
   const {
@@ -462,8 +461,6 @@ const SignUpOrganizationUM = ({ setSignupStep, setCurrentStepValue }) => {
                 data,
                 navigate,
                 t,
-                signupCurrentPageStep,
-                setSignupStep
               )
             );
           } else {
@@ -627,8 +624,6 @@ const SignUpOrganizationUM = ({ setSignupStep, setCurrentStepValue }) => {
                 data,
                 navigate,
                 t,
-                signupCurrentPageStep,
-                setSignupStep
               )
             );
           } else {

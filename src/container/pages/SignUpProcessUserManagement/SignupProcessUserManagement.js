@@ -6,9 +6,12 @@ import BillingMethodUsermanagement from "../UserMangement/BillingMethodUserManag
 import PasswordCreationUM from "../UserMangement/PasswordCreationUM/PasswordCreationUM";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { LoginFlowRoutes } from "../../../store/actions/UserManagementActions";
 
 const SignupProcessUserManagement = () => {
   const { UserMangementReducer } = useSelector((state) => state);
+  const dispatch = useDispatch();
   const location = useLocation();
   let currentStage = Number(localStorage.getItem("signupCurrentPage"))
     ? Number(localStorage.getItem("signupCurrentPage"))
@@ -34,6 +37,7 @@ const SignupProcessUserManagement = () => {
   //Updating the state of the local storage routes pages
   useEffect(() => {
     localStorage.removeItem("LoginFlowPageRoute");
+    dispatch(LoginFlowRoutes(null));
     try {
       if (UserMangementReducer.defaultRoutingValue) {
         setCurrentPage(UserMangementReducer.defaultRoutingValue);
@@ -49,7 +53,7 @@ const SignupProcessUserManagement = () => {
   } else if (currentStage === 3) {
     SignupComponent = <VerifyOTPUM />;
   } else if (currentStage === 4) {
-    SignupComponent = <PasswordCreationUM />;
+    SignupComponent = <PasswordCreationUM isFreetrail={isFreetrail} />;
   } else if (currentStage === 5) {
     SignupComponent = <BillingMethodUsermanagement />;
   } else {
@@ -61,9 +65,3 @@ const SignupProcessUserManagement = () => {
 };
 
 export default SignupProcessUserManagement;
-
-export const signupCurrentPageStep = (step, setSignupStep) => {
-  localStorage.setItem("signupCurrentPage", step);
-  setSignupStep(step);
-  console.log(setSignupStep, "setSignupStepsetSignupStep");
-};

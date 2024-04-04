@@ -22,7 +22,6 @@ import {
 } from "../../../../store/actions/Auth2_actions";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { signupCurrentPageStep } from "../../SignUpProcessUserManagement/SignupProcessUserManagement";
 import { signUpFlowRoutes } from "../../../../store/actions/UserManagementActions";
 
 const SignInUserManagement = () => {

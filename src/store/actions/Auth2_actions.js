@@ -276,8 +276,6 @@ const validationEmailAction = (email, navigate, t) => {
                   t("Device-does-not-exists")
                 )
               );
-              localStorage.setItem("LoginFlowPageRoute", 2);
-              dispatch(LoginFlowRoutes(2));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -314,7 +312,6 @@ const validationEmailAction = (email, navigate, t) => {
               );
               localStorage.setItem("LoginFlowPageRoute", 2);
               dispatch(LoginFlowRoutes(2));
-
               // navigate("/enterPassword");
             } else if (
               response.data.responseResult.responseMessage
@@ -329,8 +326,6 @@ const validationEmailAction = (email, navigate, t) => {
                   t("Users-password-is-created-but-somthing-went-wrong")
                 )
               );
-              localStorage.setItem("LoginFlowPageRoute", 2);
-              dispatch(LoginFlowRoutes(2));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1496,23 +1491,38 @@ const verificationEmailOTP = (
                   "ERM_AuthService_SignUpManager_UserEmailVerification_01".toLowerCase()
                 )
             ) {
+              console.log("LoginFlowPageRoute")
               dispatch(
                 verifyOTPSuccess(
                   response.data.responseResult,
                   t("The-users-email-has-been-verified")
                 )
               );
+              console.log("LoginFlowPageRoute")
               if (updateFlag === true) {
                 localStorage.setItem("updatePasswordCheck", true);
               } else {
                 localStorage.setItem("updatePasswordCheck", false);
               }
-              //  this is used on when we ccaome from verify emaol otp of qrganaisation creation 
+              let signUp=localStorage.getItem("signupCurrentPage")
+              if(signUp){
+                console.log("LoginFlowPageRoute")
+                localStorage.removeItem("seconds");
+                localStorage.removeItem("minutes");
+                localStorage.setItem("signupCurrentPage", 4);
+                console.log("LoginFlowPageRoute")
+              }else{
+                  //  this is used on when we ccaome from verify emaol otp of qrganaisation creation
+              console.log("LoginFlowPageRoute")
               localStorage.removeItem("seconds");
               localStorage.removeItem("minutes");
-              dispatch(LoginFlowRoutes(11));
               localStorage.getItem("LoginFlowPageRoute", 11);
-              
+              console.log("LoginFlowPageRoute")
+              dispatch(LoginFlowRoutes(11));
+              console.log("LoginFlowPageRoute")
+              }
+            
+
               // const signupValue = localStorage.getItem("signupCurrentPage");
               // if (signupValue === "3") {
               //   localStorage.setItem("signupCurrentPage", 4);
@@ -1556,6 +1566,8 @@ const verificationEmailOTP = (
                   t("The-user-has-reached-the-maximum-faileda-attempts")
                 )
               );
+              localStorage.removeItem("LoginFlowPageRoute");
+              localStorage.removeItem("signupCurrentPage");
               navigate("/");
             }
           } else {
@@ -1588,7 +1600,7 @@ const createPasswordFail = (message) => {
     message: message,
   };
 };
-const createPasswordAction = (value, navigate, t, currentStage) => {
+const createPasswordAction = (value, navigate, t) => {
   let userID = localStorage.getItem("userID");
   let data = { UserID: JSON.parse(userID), Password: value };
   return (dispatch) => {
@@ -1610,6 +1622,13 @@ const createPasswordAction = (value, navigate, t, currentStage) => {
                 response.data.responseResult.organizationName
               );
             }
+            if (response.data.responseResult.isTrial !== undefined) {
+              localStorage.setItem(
+                "isTrial",
+                   
+              );
+            }
+            
             if (response.data.responseResult.authToken !== null) {
               localStorage.setItem(
                 "name",
@@ -1645,55 +1664,66 @@ const createPasswordAction = (value, navigate, t, currentStage) => {
                   "ERM_AuthService_SignUpManager_UsersPasswordCreation_01".toLowerCase()
                 )
             ) {
-              localStorage.setItem("signupCurrentPage", 5);
-              navigate("/Signup");
+              console.log("UsersPasswordCreation")
               if (
                 parseInt(
                   response.data.responseResult.organizationSubscriptionStatusID
                 ) === parseInt(5)
               ) {
-                localStorage.setItem("revokeCancellation", true);
+              console.log("UsersPasswordCreation")
+              localStorage.setItem("revokeCancellation", true);
               } else {
-                localStorage.setItem("revokeCancellation", false);
+              console.log("UsersPasswordCreation")
+              localStorage.setItem("revokeCancellation", false);
               }
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
-                // localStorage.setItem("globalPassowrdChecker", true);
-
-                dispatch(
+              console.log("UsersPasswordCreation")
+              dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
                     t("The-user-is-an-admin-user")
                   )
                 );
-                localStorage.setItem(
+              console.log("UsersPasswordCreation")
+              localStorage.setItem(
                   "organizationID",
                   response.data.responseResult.organizationID
                 );
-                navigate("/selectedpackage");
+                // navigate("/selectedpackage");
+              console.log("UsersPasswordCreation")
+              localStorage.setItem("signupCurrentPage", 5);
+              console.log("UsersPasswordCreation")
+              navigate("/Signup");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 2
               ) {
-                dispatch(
+              console.log("UsersPasswordCreation")
+              dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
                     t("The-user-is-an-admin-user")
                   )
                 );
-                localStorage.setItem(
+              console.log("UsersPasswordCreation")
+              localStorage.setItem(
                   "organizationID",
                   response.data.responseResult.organizationID
                 );
-                navigate("/selectedpackage");
+                // navigate("/selectedpackage");
+                localStorage.setItem("signupCurrentPage", 5);
+                navigate("/Signup");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 3
               ) {
-                dispatch(
+              console.log("UsersPasswordCreation")
+              dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
                     t("The-user-is-an-admin-user")
                   )
                 );
-                navigate("/");
+              console.log("UsersPasswordCreation")
+              navigate("/");
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -1733,6 +1763,7 @@ const createPasswordAction = (value, navigate, t, currentStage) => {
                   )
                 );
                 mqttConnection(response.data.responseResult.authToken.userID);
+                localStorage.setItem("LoginFlowPageRoute", 13);
                 // navigate("/");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 2
@@ -1753,6 +1784,7 @@ const createPasswordAction = (value, navigate, t, currentStage) => {
                   )
                 );
                 mqttConnection(response.data.responseResult.authToken.userID);
+                localStorage.setItem("LoginFlowPageRoute", 13);
                 // navigate("/");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 3
@@ -1773,6 +1805,7 @@ const createPasswordAction = (value, navigate, t, currentStage) => {
                   )
                 );
                 mqttConnection(response.data.responseResult.authToken.userID);
+                localStorage.setItem("LoginFlowPageRoute", 13);
                 // navigate("/");
               }
             }
@@ -1887,6 +1920,8 @@ const createPasswordAction = (value, navigate, t, currentStage) => {
                     t("The-user-is-not-an-admin-user")
                   )
                 );
+                localStorage.setItem("LoginFlowPageRoute", 1);
+                dispatch(LoginFlowRoutes(1));
                 navigate("/");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 2
@@ -1897,6 +1932,8 @@ const createPasswordAction = (value, navigate, t, currentStage) => {
                     t("The-user-is-not-an-admin-user")
                   )
                 );
+                localStorage.setItem("LoginFlowPageRoute", 1);
+                dispatch(LoginFlowRoutes(1));
                 navigate("/");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 3
@@ -1910,19 +1947,27 @@ const createPasswordAction = (value, navigate, t, currentStage) => {
                 if (
                   response.data.responseResult.authToken.isFirstLogIn === true
                 ) {
+                  localStorage.removeItem("LoginFlowPageRoute");
+                  dispatch(LoginFlowRoutes(null));
                   navigate("/onboard");
                 } else {
                   let RSVP = localStorage.getItem("RSVP");
                   let dataroomValue = localStorage.getItem("DataRoomEmail");
 
                   if (RSVP !== undefined && RSVP !== null) {
+                    localStorage.removeItem("LoginFlowPageRoute");
+                    dispatch(LoginFlowRoutes(null));
                     navigate("/DisKus/Meeting/Useravailabilityformeeting");
                   } else if (
                     dataroomValue !== null &&
                     dataroomValue !== undefined
                   ) {
+                    localStorage.removeItem("LoginFlowPageRoute");
+                    dispatch(LoginFlowRoutes(null));
                     navigate("/Diskus/dataroom");
                   } else {
+                    localStorage.removeItem("LoginFlowPageRoute");
+                    dispatch(LoginFlowRoutes(null));
                     navigate("/Diskus/");
                   }
                 }
@@ -1943,6 +1988,8 @@ const createPasswordAction = (value, navigate, t, currentStage) => {
                     )
                   )
                 );
+                localStorage.setItem("LoginFlowPageRoute", 1);
+                dispatch(LoginFlowRoutes(1));
                 navigate("/");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 2
@@ -1955,6 +2002,8 @@ const createPasswordAction = (value, navigate, t, currentStage) => {
                     )
                   )
                 );
+                localStorage.setItem("LoginFlowPageRoute", 1);
+                dispatch(LoginFlowRoutes(1));
                 navigate("/");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 3
@@ -1967,6 +2016,8 @@ const createPasswordAction = (value, navigate, t, currentStage) => {
                     )
                   )
                 );
+                localStorage.setItem("LoginFlowPageRoute", 1);
+                dispatch(LoginFlowRoutes(1));
                 navigate("/");
               }
             } else if (
@@ -1992,6 +2043,8 @@ const createPasswordAction = (value, navigate, t, currentStage) => {
                     t("User-is-not-a-new-user-2fa-enabled")
                   )
                 );
+                localStorage.setItem("LoginFlowPageRoute", 1);
+                dispatch(LoginFlowRoutes(1));
                 navigate("/");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 2
@@ -2002,6 +2055,8 @@ const createPasswordAction = (value, navigate, t, currentStage) => {
                     t("User-is-not-a-new-user-2fa-enabled")
                   )
                 );
+                localStorage.setItem("LoginFlowPageRoute", 1);
+                dispatch(LoginFlowRoutes(1));
                 navigate("/");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 3
@@ -2012,6 +2067,8 @@ const createPasswordAction = (value, navigate, t, currentStage) => {
                     t("User-is-not-a-new-user-2fa-enabled")
                   )
                 );
+                localStorage.setItem("LoginFlowPageRoute", 1);
+                dispatch(LoginFlowRoutes(1));
                 navigate("/");
               }
             }
@@ -2105,6 +2162,8 @@ const createPasswordAction = (value, navigate, t, currentStage) => {
                     t("User-is-not-a-new-user-the-user-is-not-an-admin-user")
                   )
                 );
+                localStorage.setItem("LoginFlowPageRoute", 1);
+                dispatch(LoginFlowRoutes(1));
                 navigate("/");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 2
@@ -2115,6 +2174,8 @@ const createPasswordAction = (value, navigate, t, currentStage) => {
                     t("User-is-not-a-new-user-the-user-is-not-an-admin-user")
                   )
                 );
+                localStorage.setItem("LoginFlowPageRoute", 1);
+                dispatch(LoginFlowRoutes(1));
                 navigate("/");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 3
@@ -2161,13 +2222,19 @@ const createPasswordAction = (value, navigate, t, currentStage) => {
                 let dataroomValue = localStorage.getItem("DataRoomEmail");
 
                 if (RSVP !== undefined && RSVP !== null) {
+                  localStorage.removeItem("LoginFlowPageRoute");
+                  dispatch(LoginFlowRoutes(null));
                   navigate("/DisKus/Meeting/Useravailabilityformeeting");
                 } else if (
                   dataroomValue !== null &&
                   dataroomValue !== undefined
                 ) {
+                  localStorage.removeItem("LoginFlowPageRoute");
+                  dispatch(LoginFlowRoutes(null));
                   navigate("/Diskus/dataroom");
                 } else {
+                  localStorage.removeItem("LoginFlowPageRoute");
+                  dispatch(LoginFlowRoutes(null));
                   navigate("/Diskus/");
                 }
               }
@@ -2810,7 +2877,7 @@ const createPasswordAction = (value, navigate, t, currentStage) => {
                   "ERM_AuthService_SignUpManager_UsersPasswordCreation_17".toLowerCase()
                 )
             ) {
-              dispatch(createPasswordSuccess(response.data.responseResult, ""));
+              dispatch(createPasswordFail(response.data.responseResult, ""));
               // navigate("/");
             } else if (
               response.data.responseResult.responseMessage
