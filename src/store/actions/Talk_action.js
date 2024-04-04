@@ -3791,64 +3791,46 @@ const DownloadChat = (object, t, navigate) => {
       headers: {
         _token: token,
       },
+      // responseType: "blob",
     })
       .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(DownloadChat(object, t, navigate));
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Talk_TalkServiceManager_DownloadFile_01".toLowerCase()
-                )
-            ) {
-              await dispatch(
-                downloadChatSuccess(
-                  response.data.responseResult.talkResponse,
-                  t("Chat-downloaded-successfully")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Talk_TalkServiceManager_DownloadFile_02".toLowerCase()
-                )
-            ) {
-              await dispatch(
-                downloadChatSuccess(
-                  response.data.responseResult.talkResponse,
-                  t("No-data-found")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Talk_TalkServiceManager_DownloadFile_03".toLowerCase()
-                )
-            ) {
-              await dispatch(downloadChatFail(t("Exception")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Talk_TalkServiceManager_DownloadFile_04".toLowerCase()
-                )
-            ) {
-              await dispatch(
-                downloadChatFail(t("Exception-while-writing-to-stream"))
-              );
-            }
-          } else {
-            await dispatch(downloadChatFail(t("Something-went-wrong")));
-          }
-        } else {
-          await dispatch(downloadChatFail(t("Something-went-wrong")));
-        }
+        console.log("Talk Chat Response", response);
+        const blob = new Blob([response.data], { type: "application/txt" });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "ChatMessages.txt");
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch((response) => {
+        dispatch(downloadChatFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const PrintChat = (object, t, navigate) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(downloadChatInit());
+    let form = new FormData();
+    form.append("RequestMethod", downloadChat.RequestMethod);
+    form.append("RequestData", JSON.stringify(object));
+    axios({
+      method: "post",
+      url: talkApiReport,
+      data: form,
+      headers: {
+        _token: token,
+      },
+      // responseType: "blob",
+    })
+      .then(async (response) => {
+        console.log("Talk Chat Response", response);
+        const printWindow = window.open("", "_blank");
+        printWindow.document.write("<pre>" + response.data + "</pre>");
+        printWindow.document.close();
+        printWindow.print();
       })
       .catch((response) => {
         dispatch(downloadChatFail(t("Something-went-wrong")));
@@ -4335,4 +4317,5 @@ export {
   DeleteMultipleMessages,
   lastMessageDeletion,
   OTOMessageSendSuccess,
+  PrintChat,
 };
