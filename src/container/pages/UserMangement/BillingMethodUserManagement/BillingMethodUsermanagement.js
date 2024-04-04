@@ -433,16 +433,17 @@ const BillingMethodUsermanagement = () => {
                 <>
                   <BillProcessStepThree />
                 </>
-              ) : activeStep === 3 && activeComponent === "PaymentMethods" ? (
-                <>
-                  <>
-                    <BillProcessStepFour
-                      paymentMethods={paymentMethods}
-                      setPaymentMethods={setPaymentMethods}
-                    />
-                  </>
-                </>
-              ) : null}
+              ) : // : activeStep === 3 && activeComponent === "PaymentMethods" ? (
+              //   <>
+              //     <>
+              //       <BillProcessStepFour
+              //         paymentMethods={paymentMethods}
+              //         setPaymentMethods={setPaymentMethods}
+              //       />
+              //     </>
+              //   </>
+              // )
+              null}
             </Col>
           </Row>
           <Row className="mt-3">
