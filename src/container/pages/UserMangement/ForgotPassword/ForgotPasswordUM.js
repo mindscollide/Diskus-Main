@@ -207,16 +207,14 @@ const ForgotPasswordUM = () => {
                     </Col>
                   </Row>
                 </Form>
-                <Row>
+                <Row className="mt-3">
                   <Col
                     sm={12}
                     md={12}
                     lg={12}
                     className={styles["Forgot_passwordforogt_email_link"]}
                   >
-                    <Link onClick={handleGoBackFunction}>
-                      {t("Back-to-sign-in")}
-                    </Link>
+                    <Link onClick={handleGoBackFunction}>{t("Go-back")}</Link>
                   </Col>
                 </Row>
               </Col>
