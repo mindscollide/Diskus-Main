@@ -116,6 +116,13 @@ const BillProcessStepTwo = ({ billingAddress, setBillingAddress }) => {
     let a = Object.values(countryNames).find((obj) => {
       return obj.shortCode === code;
     });
+    setBillingAddress({
+      ...billingAddress,
+      Country: {
+        ...billingAddress.Country,
+        errorMessage: "", // Empty error message
+      },
+    });
     // setSignUpDetails({
     //   ...signUpDetails,
     //   CountryName: {
@@ -161,8 +168,23 @@ const BillProcessStepTwo = ({ billingAddress, setBillingAddress }) => {
                         onSelect={countryOnSelect}
                         searchable={true}
                         required={true}
+                        value={billingAddress.Country.value}
+                        name="Country"
                       />
                     </Col>
+                    <Row>
+                      <Col>
+                        <p
+                          className={
+                            billingAddress.Country.value === ""
+                              ? ` ${styles["errorMessage"]} `
+                              : `${styles["errorMessage_hidden"]}`
+                          }
+                        >
+                          {billingAddress.Country.errorMessage}
+                        </p>
+                      </Col>
+                    </Row>
                   </Row>
                 </Col>
                 <Col lg={6} md={6} sm={12} xs={12}>

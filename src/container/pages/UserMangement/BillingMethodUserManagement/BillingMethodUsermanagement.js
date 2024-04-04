@@ -206,6 +206,11 @@ const BillingMethodUsermanagement = () => {
         // PostalCode condition is not satisfied
         setBillingAddress({
           ...billingAddress,
+          Country: {
+            value: billingAddress.Country.value,
+            errorMessage: t("Please-select-country"),
+            errorStatus: billingAddress.Country.errorStatus,
+          },
           PostalCode: {
             value: billingAddress.PostalCode.value,
             errorMessage: t("Please add Postal/Zip code"),
