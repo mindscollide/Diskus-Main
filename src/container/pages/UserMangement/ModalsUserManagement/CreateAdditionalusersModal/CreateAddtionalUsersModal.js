@@ -48,6 +48,8 @@ const CreateAddtionalUsersModal = () => {
       errorMessage: "",
       errorStatus: false,
     },
+
+    isAdminCheck: false,
   });
 
   //OnChange For Text Fields
@@ -162,13 +164,13 @@ const CreateAddtionalUsersModal = () => {
       MobileNumber: "",
       UserEmail: createAddionalUsers.Email.value,
       OrganizationID: organzataionID,
-      isAdmin: true,
+      isAdmin: createAddionalUsers.isAdminCheck,
       FK_NumberWorldCountryID: 1,
       OrganizationSelectedPackageID: 4,
     };
 
     console.log(data, "AddOrganizationsUserApi");
-    // dispatch(AddOrganizationsUserApi(navigate, t, data));
+    dispatch(AddOrganizationsUserApi(navigate, t, data));
     setCreateAddionalUsers({
       Name: {
         value: "",
@@ -186,6 +188,13 @@ const CreateAddtionalUsersModal = () => {
         errorMessage: "",
         errorStatus: false,
       },
+    });
+  };
+
+  const HandleCheck = () => {
+    setCreateAddionalUsers({
+      ...createAddionalUsers,
+      isAdminCheck: !createAddionalUsers.isAdminCheck,
     });
   };
 
@@ -238,6 +247,19 @@ const CreateAddtionalUsersModal = () => {
                     }
                     applyClass={"updateNotes_titleInput"}
                   />
+                  <Row>
+                    <Col>
+                      <p
+                        className={
+                          createAddionalUsers.Name.value === ""
+                            ? ` ${styles["errorMessage"]} `
+                            : `${styles["errorMessage_hidden"]}`
+                        }
+                      >
+                        {createAddionalUsers.Name.errorMessage}
+                      </p>
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
 
@@ -258,6 +280,19 @@ const CreateAddtionalUsersModal = () => {
                     value={createAddionalUsers.Email.value}
                     change={createAddiotionalUsersHandler}
                   />
+                  <Row>
+                    <Col>
+                      <p
+                        className={
+                          createAddionalUsers.Email.value === ""
+                            ? ` ${styles["errorMessage"]} `
+                            : `${styles["errorMessage_hidden"]}`
+                        }
+                      >
+                        {createAddionalUsers.Email.errorMessage}
+                      </p>
+                    </Col>
+                  </Row>
                 </Col>{" "}
                 <Col lg={6} md={6} sm={12}>
                   <TextField
@@ -275,6 +310,19 @@ const CreateAddtionalUsersModal = () => {
                     name="Designation"
                     change={createAddiotionalUsersHandler}
                   />
+                  <Row>
+                    <Col>
+                      <p
+                        className={
+                          createAddionalUsers.Designation.value === ""
+                            ? ` ${styles["errorMessage"]} `
+                            : `${styles["errorMessage_hidden"]}`
+                        }
+                      >
+                        {createAddionalUsers.Designation.errorMessage}
+                      </p>
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
               <Row className="mt-4">
@@ -302,7 +350,12 @@ const CreateAddtionalUsersModal = () => {
                   </span>
                   <Row>
                     <Col lg={12} md={12} sm={12} className="d-flex gap-2">
-                      <Checkbox classNameCheckBoxP="m-0 p-0" classNameDiv="" />
+                      <Checkbox
+                        classNameCheckBoxP="m-0 p-0"
+                        classNameDiv=""
+                        checked={createAddionalUsers.isAdminCheck}
+                        onChange={HandleCheck}
+                      />
                       <span className={styles["AdminAlsoClass"]}>
                         {t("Is-admin-also")}
                       </span>
