@@ -380,14 +380,6 @@ const PasswordCreationUM = ({ isFreetrail }) => {
     passwordRef.current.focus();
   }, []);
 
-  const handleSignupButton = () => {
-    if (isFreetrail) {
-      dispatch(showCreateAddtionalUsersModal(true));
-    } else {
-      // dispatch(createPasswordAction(passwordDetails.Password, navigate, t));
-    }
-  };
-
   const goBackButton = () => {
     localStorage.removeItem("signupCurrentPage");
     localStorage.setItem("LoginFlowPageRoute", 1);

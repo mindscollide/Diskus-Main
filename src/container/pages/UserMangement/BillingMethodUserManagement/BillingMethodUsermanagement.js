@@ -161,6 +161,18 @@ const BillingMethodUsermanagement = () => {
           return prevActiveStep < 3 ? prevActiveStep + 1 : prevActiveStep;
         }
       });
+    } else if (
+      billingContactDetails.Email.value !== "" &&
+      !validateEmailEnglishAndArabicFormat(billingContactDetails.Email.value)
+    ) {
+      setBillingContactDetails({
+        ...billingContactDetails,
+        Email: {
+          value: billingContactDetails.Email.value,
+          errorMessage: t("Enter-valid-email-address"),
+          errorStatus: billingContactDetails.Email.errorStatus,
+        },
+      });
     } else {
       // Email condition is not satisfied
       setBillingContactDetails({

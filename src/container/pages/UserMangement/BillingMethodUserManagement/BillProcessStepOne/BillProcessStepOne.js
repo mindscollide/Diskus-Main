@@ -4,6 +4,10 @@ import BillingFrame from "../../../../../assets/images/BillingContactFrame.svg";
 import { Col, Container, Row } from "react-bootstrap";
 import { TextField } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
+import {
+  regexOnlyCharacters,
+  regexOnlyNumbers,
+} from "../../../../../commen/functions/regex";
 const BillProcessStepOne = ({
   billingContactDetails,
   setBillingContactDetails,
@@ -13,15 +17,19 @@ const BillProcessStepOne = ({
   const billingContactDetailsHandler = (e) => {
     let name = e.target.name;
     let value = e.target.value;
+
     if (name === "Name" && value !== "") {
-      setBillingContactDetails({
-        ...billingContactDetails,
-        Name: {
-          value: value.trimStart(),
-          errorMessage: "",
-          errorStatus: false,
-        },
-      });
+      let valueName = regexOnlyCharacters(value);
+      if (valueName !== "") {
+        setBillingContactDetails({
+          ...billingContactDetails,
+          Name: {
+            value: valueName.trimStart(),
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      }
     } else if (name === "Name" && value === "") {
       setBillingContactDetails({
         ...billingContactDetails,
@@ -34,14 +42,17 @@ const BillProcessStepOne = ({
     }
 
     if (name === "LastName" && value !== "") {
-      setBillingContactDetails({
-        ...billingContactDetails,
-        LastName: {
-          value: value.trimStart(),
-          errorMessage: "",
-          errorStatus: false,
-        },
-      });
+      let valueName = regexOnlyCharacters(value);
+      if (valueName !== "") {
+        setBillingContactDetails({
+          ...billingContactDetails,
+          LastName: {
+            value: valueName.trimStart(),
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      }
     } else if (name === "LastName" && value === "") {
       setBillingContactDetails({
         ...billingContactDetails,
@@ -90,6 +101,29 @@ const BillProcessStepOne = ({
       setBillingContactDetails({
         ...billingContactDetails,
         Email: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    }
+
+    if (name === "Contact" && value !== "") {
+      let valueCheck = regexOnlyNumbers(value);
+      if (valueCheck !== "") {
+        setBillingContactDetails({
+          ...billingContactDetails,
+          Contact: {
+            value: valueCheck.trimStart(),
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      }
+    } else if (name === "Contact" && value === "") {
+      setBillingContactDetails({
+        ...billingContactDetails,
+        Contact: {
           value: "",
           errorMessage: "",
           errorStatus: false,
@@ -172,7 +206,8 @@ const BillProcessStepOne = ({
                     <Col>
                       <p
                         className={
-                          billingContactDetails.Email.value === ""
+                          billingContactDetails.Email.value === "" ||
+                          billingContactDetails.Email.value !== ""
                             ? ` ${styles["errorMessage"]} `
                             : `${styles["errorMessage_hidden"]}`
                         }
@@ -184,13 +219,15 @@ const BillProcessStepOne = ({
                 </Col>
                 <Col lg={6} md={6} sm={12} xs={12}>
                   <TextField
+                    name="Contact"
                     value={billingContactDetails.Contact.value}
                     placeholder={t("Contact")}
+                    change={billingContactDetailsHandler}
                     label={
                       <>
                         <span className={styles["nameStyles"]}>
                           {t("Contact")}{" "}
-                          <span className={styles["stericClass"]}>*</span>
+                          {/* <span className={styles["stericClass"]}>*</span> */}
                         </span>
                       </>
                     }
