@@ -25,6 +25,7 @@ import DeleteUserModal from "../../ModalsUserManagement/DeleteUserModal/DeleteUs
 import { useSelector } from "react-redux";
 import EditUserModal from "../../ModalsUserManagement/EditUserModal/EditUserModal";
 import SuccessfullyUpdateModal from "../../ModalsUserManagement/SuccessFullyUpdatedModal/SuccessfullyUpdateModal";
+import { AllOrganizationsUsersApi } from "../../../../../store/actions/UserManagementActions";
 const ManageUsers = () => {
   const { t } = useTranslation();
 
@@ -32,13 +33,21 @@ const ManageUsers = () => {
 
   const dispatch = useDispatch();
 
-  const { UserManagementModals } = useSelector((state) => state);
+  let organizationID = localStorage.getItem("organizationID");
+
+  let userID = localStorage.getItem("userID");
+
+  const { UserMangementReducer, UserManagementModals } = useSelector(
+    (state) => state
+  );
 
   const [searchbox, setsearchbox] = useState(false);
 
   const [userTrialAlert, setUserTrialAlert] = useState(true);
 
   const [showSearches, setshowSearches] = useState(false);
+
+  const [manageUserGrid, setManageUserGrid] = useState([]);
 
   const [searchDetails, setsearchDetails] = useState({
     Name: "",
@@ -49,7 +58,18 @@ const ManageUsers = () => {
     },
   });
 
+  //AllOrganizationsUsers Api
   useEffect(() => {
+    try {
+      let data = {
+        OrganizationID: Number(organizationID),
+        RequestingUserID: 1096,
+      };
+      dispatch(AllOrganizationsUsersApi(navigate, t, data));
+    } catch (error) {
+      console.log(error);
+    }
+
     return () => {
       setUserTrialAlert(true);
       setshowSearches(false);
@@ -64,47 +84,148 @@ const ManageUsers = () => {
     };
   }, []);
 
+  //AllOrganizationsUsers Api Data
+  useEffect(() => {
+    try {
+      if (
+        UserMangementReducer.allOrganizationUsersData !== undefined &&
+        UserMangementReducer.allOrganizationUsersData !== null
+      ) {
+        setManageUserGrid(
+          UserMangementReducer.allOrganizationUsersData.organizationUsers
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [UserMangementReducer.allOrganizationUsersData]);
+
   const ManageUsersColumn = [
     {
       title: t("Name"),
-      dataIndex: "Names",
-      key: "Names",
+      dataIndex: "userName",
+      key: "userName",
       align: "left",
       ellipsis: true,
       sorter: (a, b) => a.Names.localeCompare(b.Names.toLowerCase),
+      render: (text, record) => {
+        return (
+          <>
+            <span className={styles["NameStylesTable"]}>{record.userName}</span>
+          </>
+        );
+      },
     },
     {
       title: t("Designation"),
-      dataIndex: "Designation",
-      key: "Designation",
+      dataIndex: "designation",
+      key: "designation",
       align: "left",
       ellipsis: true,
       sorter: (a, b) => a.Designation.localeCompare(b.Designation.toLowerCase),
+      render: (text, record) => {
+        return (
+          <>
+            <span className={styles["DesignationStyles"]}>
+              {record.designation}
+            </span>
+          </>
+        );
+      },
     },
     {
       title: t("Email"),
-      dataIndex: "Emails",
-      key: "Emails",
+      dataIndex: "email",
+      key: "email",
       align: "left",
       ellipsis: true,
+      render: (text, record) => {
+        return (
+          <>
+            <span className={styles["DesignationStyles"]}>{record.email}</span>
+          </>
+        );
+      },
     },
     {
       title: t("Is-admin-also"),
-      dataIndex: "IsAdmin",
-      key: "IsAdmin",
+      dataIndex: "userRole",
+      key: "userRole",
       align: "center",
       ellipsis: true,
       sorter: (a, b) =>
         a.OrganizationRole.localeCompare(b.OrganizationRole.toLowerCase),
+      render: (text, record) => {
+        return (
+          <>
+            {(() => {
+              if (record.userRole === "Admin") {
+                return <img src={greenCheck} alt="" />;
+              } else {
+                return;
+              }
+            })()}
+          </>
+        );
+      },
     },
 
     {
-      title: t("User-status"),
-      dataIndex: "Userstatus",
-      key: "Userstatus",
+      title: "User Status",
+      dataIndex: "userStatus",
+      key: "userStatus",
       align: "left",
       ellipsis: true,
+      render: (text, record) => {
+        console.log(record, "record");
+        return (
+          <>
+            {(() => {
+              if (record.userStatus === "Enabled") {
+                return (
+                  <div className="d-flex">
+                    <span className="userstatus-signal-enabled"></span>
+                    <p className="m-0 userName FontArabicRegular">Enabled</p>
+                  </div>
+                );
+              } else if (record.userStatus === "Disabled") {
+                return (
+                  <div className="d-flex">
+                    <span className="userstatus-signal-disabled"></span>
+                    <p className="m-0 userName FontArabicRegular">Disabled</p>
+                  </div>
+                );
+              } else if (record.userStatus === "Dormant") {
+                return (
+                  <div className="d-flex">
+                    <span className="userstatus-signal-dormant"></span>
+                    <p className="m-0 userName FontArabicRegular">Dormant</p>
+                  </div>
+                );
+              } else if (record.userStatus === "Locked") {
+                return (
+                  <div className="d-flex">
+                    <span className="userstatus-signal-locked"></span>
+                    <p className="m-0 userName FontArabicRegular">Locked</p>
+                  </div>
+                );
+              } else if (record.userStatus === "Closed") {
+                return (
+                  <div className="d-flex">
+                    <span className="userstatus-signal-closed"></span>
+                    <p className="m-0 Disabled-Close userName FontArabicRegular">
+                      Closed
+                    </p>
+                  </div>
+                );
+              } else {
+              }
+            })()}
+          </>
+        );
+      },
     },
+
     {
       title: t(""),
       dataIndex: "Delete",
@@ -132,101 +253,13 @@ const ManageUsers = () => {
     },
   ];
 
-  const rows = [
-    {
-      Names: <span className={styles["NameStylesTable"]}>Saif</span>,
-      Designation: (
-        <span className={styles["DesignationStyles"]}>React Js Developer</span>
-      ),
-      Emails: (
-        <span className={styles["DesignationStyles"]}>
-          saifiiyousuf4002@gmail.com
-        </span>
-      ),
-      IsAdmin: <img src={greenCheck} alt="" />,
-      Userstatus: (
-        <div className="d-flex">
-          <span className="userstatus-signal-enabled"></span>
-          <p className="m-0 userName FontArabicRegular">Enabled</p>
-        </div>
-      ),
-    },
-    {
-      Names: (
-        <span className={styles["NameStylesTable"]}>Muhammad Usama Khan</span>
-      ),
-      Designation: (
-        <span className={styles["DesignationStyles"]}>React Js Developer</span>
-      ),
-      Emails: (
-        <span className={styles["DesignationStyles"]}>Usama@gmail.com</span>
-      ),
-      IsAdmin: <img src={greenCheck} alt="" />,
-      Userstatus: (
-        <div className="d-flex">
-          <span className="userstatus-signal-disabled"></span>
-          <p className="m-0 userName FontArabicRegular">Disabled</p>
-        </div>
-      ),
-    },
-    {
-      Names: <span className={styles["NameStylesTable"]}>Salar Shah</span>,
-      Designation: (
-        <span className={styles["DesignationStyles"]}>React Js Developer</span>
-      ),
-      Emails: (
-        <span className={styles["DesignationStyles"]}>Salar@gmail.com</span>
-      ),
-      IsAdmin: <img src={greenCheck} alt="" />,
-      Userstatus: (
-        <div className="d-flex">
-          <span className="userstatus-signal-locked"></span>
-          <p className="m-0 userName FontArabicRegular">locked</p>
-        </div>
-      ),
-    },
-    {
-      Names: <span className={styles["NameStylesTable"]}>Shoaib</span>,
-      Designation: (
-        <span className={styles["DesignationStyles"]}>React Js Developer</span>
-      ),
-      Emails: (
-        <span className={styles["DesignationStyles"]}>Salar@gmail.com</span>
-      ),
-      IsAdmin: <img src={greenCheck} alt="" />,
-      Userstatus: (
-        <div className="d-flex">
-          <span className="userstatus-signal-dormant"></span>
-          <p className="m-0 userName FontArabicRegular">Dormant</p>
-        </div>
-      ),
-    },
-    {
-      Names: <span className={styles["NameStylesTable"]}>Behram khan</span>,
-      Designation: (
-        <span className={styles["DesignationStyles"]}>React Js Developer</span>
-      ),
-      Emails: (
-        <span className={styles["DesignationStyles"]}>Salar@gmail.com</span>
-      ),
-      IsAdmin: <img src={greenCheck} alt="" />,
-      Userstatus: (
-        <div className="d-flex">
-          <span className="userstatus-signal-closed"></span>
-          <p className="m-0 Disabled-Close userName FontArabicRegular">
-            closed
-          </p>
-        </div>
-      ),
-    },
-  ];
-
   const handleAddusers = () => {
     navigate("/Diskus/Admin/AddUsersUsermanagement");
   };
 
   const handleSearchBoxOpen = () => {
     setsearchbox(!searchbox);
+    setshowSearches(false);
   };
 
   const handleCrossSearchBox = () => {
@@ -265,15 +298,54 @@ const ManageUsers = () => {
     }
   };
 
+  // const handleSearch = () => {
+  //   if (searchDetails.Name !== "" && searchDetails.Email !== "") {
+  //     setsearchbox(false);
+  //     setshowSearches(true);
+  //   }
+  // };
+
   const handleSearch = () => {
-    if (searchDetails.Name !== "" && searchDetails.Email !== "") {
-      setsearchbox(false);
-      setshowSearches(true);
-    }
+    console.log("cliked");
+    const filteredData =
+      UserMangementReducer.allOrganizationUsersData.organizationUsers.filter(
+        (user) => {
+          console.log(user, "filteredDatafilteredData");
+          const matchesName =
+            searchDetails.Name === "" ||
+            user.userName
+              .toLowerCase()
+              .includes(searchDetails.Name.toLowerCase());
+          console.log(matchesName, "filteredDatafilteredData");
+          const matchesEmail =
+            searchDetails.Email === "" ||
+            user.email
+              .toLowerCase()
+              .includes(searchDetails.Email.toLowerCase());
+          console.log(matchesEmail, "filteredDatafilteredData");
+
+          return matchesName && matchesEmail;
+        }
+      );
+
+    console.log(filteredData, "filteredDatafilteredData");
+
+    setManageUserGrid(filteredData);
+    setsearchbox(false);
+    setshowSearches(true);
   };
 
-  const handleRemoveSearchSnippet = () => {
-    setshowSearches(false);
+  const handleRemoveSearchSnippet = (data, fieldName) => {
+    console.log(data, fieldName, "fieldNamefieldNamefieldName");
+    // setsearchDetails({
+    //   ...searchDetails,
+    //   [fieldName]: "",
+    // });
+    let Reqdata = {
+      OrganizationID: Number(organizationID),
+      RequestingUserID: 1096,
+    };
+    dispatch(AllOrganizationsUsersApi(navigate, t, Reqdata));
   };
 
   const handleResetButton = () => {
@@ -295,6 +367,9 @@ const ManageUsers = () => {
   const handleClickEditIcon = () => {
     dispatch(showEditUserModal(true));
   };
+
+  console.log(showSearches, "showSearchesshowSearches");
+  console.log(searchDetails.Email, "showSearchesshowSearchesv");
 
   return (
     <Container>
@@ -471,10 +546,13 @@ const ManageUsers = () => {
                       alt=""
                       className={styles["CrossIcon_Class"]}
                       width={13}
-                      onClick={handleRemoveSearchSnippet}
+                      onClick={() =>
+                        handleRemoveSearchSnippet(searchDetails.Name, "Name")
+                      }
                     />
                   </div>
                 ) : null}
+
                 {showSearches && searchDetails.Email !== "" ? (
                   <div className={styles["SearchablesItems"]}>
                     <span className={styles["Searches"]}>
@@ -485,7 +563,10 @@ const ManageUsers = () => {
                       alt=""
                       className={styles["CrossIcon_Class"]}
                       width={13}
-                      onClick={handleRemoveSearchSnippet}
+                      onClick={handleRemoveSearchSnippet(
+                        searchDetails.Email,
+                        "Email"
+                      )}
                     />
                   </div>
                 ) : null}
@@ -531,7 +612,7 @@ const ManageUsers = () => {
       <Row className={styles["tablecolumnrow"]}>
         <Col lg={12} md={12} sm={12} xs={12}>
           <Table
-            rows={rows}
+            rows={manageUserGrid}
             column={ManageUsersColumn}
             scroll={{ y: 400 }}
             pagination={false}
