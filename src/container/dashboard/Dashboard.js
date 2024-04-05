@@ -29,6 +29,7 @@ import {
   setMQTTRequestUpcomingEvents,
   mqttCurrentMeetingEnded,
   GetUpcomingEvents,
+  GetUpcomingEventsForMQTT,
 } from "../../store/actions/GetMeetingUserId";
 import {
   mqttInsertOtoMessage,
@@ -385,8 +386,9 @@ const Dashboard = () => {
             dispatch(getMeetingStatusfromSocket(data.payload));
             setNotificationID(id);
           } else if (
-            data.payload.message.toLowerCase() ===
-            "MEETING_STATUS_EDITED_END".toLowerCase()
+            data.payload.message
+              .toLowerCase()
+              .includes("MEETING_STATUS_EDITED_END".toLowerCase())
           ) {
             if (data.viewable) {
               setNotification({
@@ -399,6 +401,10 @@ const Dashboard = () => {
                 ),
               });
             }
+            // let Data2 = {
+            //   UserID: Number(createrID),
+            // };
+            // dispatch(GetUpcomingEventsForMQTT(navigate, Data2, t, false));
             dispatch(mqttCurrentMeetingEnded(data.payload));
             setNotificationID(id);
           } else if (
@@ -443,7 +449,7 @@ const Dashboard = () => {
             let Data2 = {
               UserID: Number(createrID),
             };
-            dispatch(GetUpcomingEvents(navigate, Data2, t, false));
+            dispatch(GetUpcomingEventsForMQTT(navigate, Data2, t, false));
             dispatch(
               setMQTTRequestUpcomingEvents(data.payload.upcomingEvents[0])
             );
@@ -1772,7 +1778,9 @@ const Dashboard = () => {
           dispatch(setRecentActivityDataNotification(data2));
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error, "MEETING_STATUS_EDITED_ENDMEETING_STATUS_EDITED_END");
+    }
   };
 
   const onConnectionLost = () => {
