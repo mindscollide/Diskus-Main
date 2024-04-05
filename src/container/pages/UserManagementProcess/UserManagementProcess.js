@@ -21,11 +21,9 @@ const UserManagementProcess = () => {
   const { UserMangementReducer } = useSelector((state) => state);
 
   // Retrieve currentStep value from localStorage, default to 1 if not found
-  const [currentStep, setCurrentStepValue] = useState(
-    localStorage.getItem("LoginFlowPageRoute") !== null
-      ? Number(localStorage.getItem("LoginFlowPageRoute"))
-      : 1
-  );
+  const initialStep = Number(localStorage.getItem("LoginFlowPageRoute"));
+  const validInitialStep = !isNaN(initialStep) && initialStep >= 1 && initialStep <= 13 ? initialStep : 1;
+  const [currentStep, setCurrentStepValue] = useState(validInitialStep);
 
   useEffect(() => {
     try {
