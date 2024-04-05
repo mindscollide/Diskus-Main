@@ -94,7 +94,10 @@ import { getUserSetting } from "../../../store/actions/GetUserSetting";
 import EventsModal from "../../EventsModal/EventsModal";
 import ModalViewNote from "../../modalViewNote/ModalViewNote";
 import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
-import { dashboardCalendarEvent } from "../../../store/actions/NewMeetingActions";
+import {
+  dashboardCalendarEvent,
+  meetingStatusPublishedMqtt,
+} from "../../../store/actions/NewMeetingActions";
 import ModalToDoList from "../../todolistModal/ModalToDoList";
 // import Todolis from "../../modalView/ModalView";
 
@@ -275,10 +278,8 @@ const Home = () => {
     dispatch(GetUpcomingEvents(navigate, Data2, t));
     dispatch(getNotifications(navigate, createrID, t));
   };
-  useEffect(() => {
-    // let CalenderMonthsSpans = localStorage.getItem("calenderMonthsSpan");
-    //
 
+  const calendarApiCall = async () => {
     if (CalenderMonthsSpan !== null && CalenderMonthsSpan !== undefined) {
       dispatch(getCalendarDataInit(true));
 
@@ -318,9 +319,12 @@ const Home = () => {
     } else {
       dispatch(getCalendarDataInit(false));
     }
-  }, []);
+  };
+
   useEffect(() => {
+    calendarApiCall();
     callApi();
+
     return () => {
       dispatch(cleareAssigneesState());
     };
@@ -333,6 +337,7 @@ const Home = () => {
       setActivateBlur(false);
     }
   }, [Blur]);
+
   //  Render Calendar Data
   const updateCalendarData = (flag, meetingID) => {
     let Data = calendarReducer.CalenderData;
@@ -346,10 +351,10 @@ const Home = () => {
               let date = startDateTimeMeetingCalendar(
                 cData.eventDate + cData.startTime
               );
+              // just remove the  data from list and add it to first position of
+              // at there we needs to remove the date field.
 
-              console.log("cDatacDatacDatacData", meetingID, cData, newList);
               // Update Calendar Data
-              return;
             } else {
               let date = startDateTimeMeetingCalendar(
                 cData.eventDate + cData.startTime
@@ -408,15 +413,9 @@ const Home = () => {
     }
   }, [calendarReducer.CalenderData]);
 
-  useEffect(() => {
-    if (NewMeetingreducer.meetingStatusPublishedMqttData !== null) {
-    }
-  }, [NewMeetingreducer.meetingStatusPublishedMqttData]);
-
-  //  Update Meeting Status
+  //  Update Meeting Status Cancelled and Start Meeting
   useEffect(() => {
     if (meetingIdReducer.MeetingStatusSocket !== null) {
-      let meetingID = meetingIdReducer.MeetingStatusSocket.meetingID;
       let meetingStatusID =
         meetingIdReducer.MeetingStatusSocket.meetingStatusID;
       if (
@@ -424,6 +423,7 @@ const Home = () => {
           .toLowerCase()
           .includes("MEETING_STATUS_EDITED_CANCELLED".toLowerCase())
       ) {
+        let meetingID = meetingIdReducer.MeetingStatusSocket.meetingID;
         updateCalendarData(true, meetingID);
         setUpComingEvents((upcomingeventData) =>
           upcomingeventData.filter(
@@ -431,11 +431,42 @@ const Home = () => {
               Number(meetingData.meetingDetails.pK_MDID) !== Number(meetingID)
           )
         );
+        setEvents((event) =>
+          event.filter((eventData, index) => {
+            return eventData.pK_MDID !== Number(meetingID);
+          })
+        );
+        setUpComingEvents((upcomingeventData) =>
+          upcomingeventData.map((meetingData) => {
+            return (
+              Number(meetingData.meetingDetails.pK_MDID) !== Number(meetingID)
+            );
+          })
+        );
       } else if (
         meetingIdReducer.MeetingStatusSocket.message
           .toLowerCase()
           .includes("MEETING_STATUS_EDITED_STARTED".toLowerCase())
       ) {
+        let meetingID = meetingIdReducer.MeetingStatusSocket.meeting.pK_MDID;
+        setCalendarEvents((calendarEventData) => {
+          return calendarEventData.map((data) => {
+            if (Number(data.pK_MDID) === Number(meetingID)) {
+              // Assuming statusID is defined somewhere and you want to update it for this data item
+              data.statusID = 10;
+            }
+            return data; // Always return the data item
+          });
+        });
+
+        setEvents((event) =>
+          event.map((eventData, index) => {
+            if (eventData.pK_MDID === Number(meetingID)) {
+              eventData.status = 10;
+            }
+            return eventData;
+          })
+        );
         setUpComingEvents((upcomingeventData) =>
           upcomingeventData.map((meetingData) => {
             if (
@@ -450,7 +481,6 @@ const Home = () => {
       }
 
       dispatch(getMeetingStatusfromSocket(null));
-      dispatch(mqttCurrentMeetingEnded(null));
       // if (meetingStatusID === 4) {
       //   updateCalendarData(true, meetingID);
       // }
@@ -483,69 +513,221 @@ const Home = () => {
   const handleClickNoteModal = () => {
     setModalNote(true);
   };
-  //  Upcoming Event MQTT For Meeting
-  // useEffect(() => {
-  //   try {
-  //     if (
-  //       meetingIdReducer.MQTTUpcomingEvents !== null &&
-  //       meetingIdReducer.MQTTUpcomingEvents !== undefined
-  //     ) {
-  //       const meetingData = meetingIdReducer.MQTTUpcomingEvents;
-  //       const meetingId = meetingData.meetingDetails.pK_MDID;
-  //       const meetingDates = meetingData.meetingEvent.meetingDate;
-  //       const formattedDate =
-  //         meetingDates && new DateObject(forHomeCalendar(meetingDates));
+  // Set Meeting Data in Calendar and Events Modal
+  useEffect(() => {
+    try {
+      if (NewMeetingreducer.meetingStatusPublishedMqttData !== null) {
+        let meetingData = NewMeetingreducer.meetingStatusPublishedMqttData;
 
-  //       // Logging for debugging purposes
-  //       console.log(
-  //         "Delete MeetingMeetingMeetingMeeting",
-  //         meetingData,
-  //         meetingId,
-  //         upComingEvents
-  //       );
+        const formattedDate =
+          meetingData.dateOfMeeting &&
+          new DateObject(
+            forHomeCalendar(
+              meetingData.dateOfMeeting + meetingData.meetingStartTime
+            )
+          );
+        let findPartcipantRoleID = meetingData.meetingAttendees.find(
+          (attendeeData, index) => {
+            if (attendeeData.user.pK_UID === parseInt(userID)) {
+              return attendeeData.meetingAttendeeRole.pK_MARID;
+            }
+          }
+        )?.meetingAttendeeRole.pK_MARID;
 
-  //       // Check if the meeting ID already exists in the upComingEvents array
-  //       const isExistAlready = upComingEvents.findIndex(
-  //         (data) => data.meetingDetails.pK_MDID === meetingId
-  //       );
+        console.log(
+          findPartcipantRoleID,
+          "findPartcipantRoleIDfindPartcipantRoleIDfindPartcipantRoleID"
+        );
+        let dashboardData = {
+          pK_MDID: meetingData.pK_MDID,
+          pK_CEID: meetingData.pK_CEID,
+          fK_TZID: meetingData.fK_TZID,
+          fK_CETID: meetingData.fK_CETID,
+          fK_CESID: meetingData.fK_CESID,
+          location: meetingData.location,
+          eventDate: meetingData.dateOfMeeting,
+          startTime: meetingData.meetingStartTime,
+          endTime: meetingData.meetingEndTime,
+          title: meetingData.title,
+          description: "",
+          calenderEventSource:
+            meetingData.fK_CESID === 1
+              ? "Google"
+              : meetingData.fK_CESID === 2
+              ? "Office"
+              : meetingData.fK_CESID === 3
+              ? "Diskus"
+              : meetingData.fK_CESID === 4
+              ? "Microsoft"
+              : "",
+          calenderEventType:
+            meetingData.fK_CETID === 1
+              ? "None"
+              : meetingData.fK_CETID === 2
+              ? "Meeting"
+              : meetingData.fK_CETID === 3
+              ? "Task"
+              : meetingData.fK_CETID === 4
+              ? "Resolution"
+              : meetingData.fK_CETID === 5
+              ? "Polls"
+              : "",
+          timeZone: meetingData.timeZone,
+          statusID: meetingData.status,
+          participantRoleID: findPartcipantRoleID,
+          isQuickMeeting: meetingData.isQuickMeeting,
+        };
+        // Check if the meeting ID already exists in the upComingEvents array
+        const isExistAlready = calendarEvents.findIndex(
+          (data) => data.pK_MDID === meetingData.pK_MDID
+        );
+        // Its Check if the event calendar modal is open and also a for a  same date  modal
+        if (eventModal) {
+          events.find((newData, index) => {
+            if (newData.eventDate === dashboardData.eventDate) {
+              setEvents([...events, dashboardData]);
+            }
+          });
+        }
+        // If meeting ID doesn't exist, add the meeting data to upComingEvents
+        if (isExistAlready === -1) {
+          setCalendarEvents([...calendarEvents, dashboardData]);
+          setDates((prev) => [...prev, formattedDate]);
 
-  //       // If meeting ID doesn't exist, add the meeting data to upComingEvents
-  //       if (isExistAlready === -1) {
-  //         console.log(
-  //           "Delete MeetingMeetingMeetingMeeting",
-  //           isExistAlready,
-  //           meetingData,
-  //           meetingId,
-  //           upComingEvents
-  //         );
-  //         setDates((prev) => [...prev, formattedDate]);
-  //         setUpComingEvents((prev) => [...prev, meetingData]);
-  //       } else {
-  //         console.log(
-  //           "Delete MeetingMeetingMeetingMeeting",
-  //           isExistAlready,
-  //           meetingData,
-  //           meetingId,
-  //           upComingEvents
-  //         );
-  //         // If meeting ID exists, update the existing entry
-  //         setUpComingEvents((prev) =>
-  //           prev.map((item) =>
-  //             Number(item.meetingDetails.pK_MDID) === Number(meetingId)
-  //               ? meetingData
-  //               : item
-  //           )
-  //         );
-  //       }
-  //     }
-  //     dispatch(setMQTTRequestUpcomingEvents(null));
-  //   } catch (error) {
-  //     // Proper error handling
-  //     console.error("Error in useEffect:", error);
-  //   }
-  // }, [meetingIdReducer.MQTTUpcomingEvents]);
+          // setUpComingEvents((prev) => [...prev, meetingData]);
+        } else {
+          setCalendarEvents((calendarEventData) => {
+            return calendarEventData.map((data) => {
+              if (Number(data.pK_MDID) === Number(dashboardData.pK_MDID)) {
+                return dashboardData;
+              } else {
+                return data;
+              }
+            });
+          });
+        }
+      }
+    } catch {}
+  }, [NewMeetingreducer.meetingStatusPublishedMqttData]);
 
-  // Update UpComing Event  Api Response Data
+  useEffect(() => {
+    try {
+      if (meetingIdReducer.allMeetingsSocketData !== null) {
+        let meetingData = meetingIdReducer.allMeetingsSocketData;
+
+        const formattedDate =
+          meetingData.dateOfMeeting &&
+          new DateObject(
+            forHomeCalendar(
+              meetingData.dateOfMeeting + meetingData.meetingStartTime
+            )
+          );
+        let findPartcipantRoleID = meetingData.meetingAttendees.find(
+          (attendeeData, index) => {
+            if (attendeeData.user.pK_UID === parseInt(userID)) {
+              return attendeeData.meetingAttendeeRole.pK_MARID;
+            }
+          }
+        )?.meetingAttendeeRole.pK_MARID;
+
+        let dashboardData = {
+          pK_MDID: meetingData.pK_MDID,
+          pK_CEID: meetingData.pK_CEID,
+          fK_TZID: meetingData.fK_TZID,
+          fK_CETID: meetingData.fK_CETID,
+          fK_CESID: meetingData.fK_CESID,
+          location: meetingData.location,
+          eventDate: meetingData.dateOfMeeting,
+          startTime: meetingData.meetingStartTime,
+          endTime: meetingData.meetingEndTime,
+          title: meetingData.title,
+          description: "",
+          calenderEventSource:
+            meetingData.fK_CESID === 1
+              ? "Google"
+              : meetingData.fK_CESID === 2
+              ? "Office"
+              : meetingData.fK_CESID === 3
+              ? "Diskus"
+              : meetingData.fK_CESID === 4
+              ? "Microsoft"
+              : "",
+          calenderEventType:
+            meetingData.fK_CETID === 1
+              ? "None"
+              : meetingData.fK_CETID === 2
+              ? "Meeting"
+              : meetingData.fK_CETID === 3
+              ? "Task"
+              : meetingData.fK_CETID === 4
+              ? "Resolution"
+              : meetingData.fK_CETID === 5
+              ? "Polls"
+              : "",
+          timeZone: meetingData.timeZone,
+          statusID: meetingData.status,
+          participantRoleID: findPartcipantRoleID,
+          isQuickMeeting: meetingData.isQuickMeeting,
+        };
+        // Check if the meeting ID already exists in the upComingEvents array
+        const isExistAlready = calendarEvents.findIndex(
+          (data) => data.pK_MDID === meetingData.pK_MDID
+        );
+        // Its Check if the event calendar modal is open and also a for a  same date  modal
+        if (eventModal) {
+          const existingEvent = events.find(
+            (newData) => newData.eventDate === dashboardData.eventDate
+          );
+
+          if (existingEvent) {
+            // If event with the same date already exists, update its details
+            setEvents((eventDetails) =>
+              eventDetails.map((event_data) => {
+                if (event_data.pK_MDID === dashboardData.pK_MDID) {
+                  return dashboardData;
+                } else {
+                  return event_data;
+                }
+              })
+            );
+          } else {
+            // If event with the same date doesn't exist, add new event
+            setEvents([...events, dashboardData]);
+          }
+        }
+
+        // If meeting ID doesn't exist, add the meeting data to upComingEvents
+        if (isExistAlready !== -1) {
+          setCalendarEvents((calendarEventData) => {
+            return calendarEventData.map((data) => {
+              return Number(data.pK_MDID) === Number(dashboardData.pK_MDID)
+                ? dashboardData
+                : data;
+            });
+          });
+
+          // setCalendarEvents([...calendarEvents, dashboardData]);
+          // setDates((prev) => [...prev, formattedDate]);
+
+          // setUpComingEvents((prev) => [...prev, meetingData]);
+        }
+        //  else {
+        //   setCalendarEvents((calendarEventData) => {
+        //     return calendarEventData.map((data) => {
+        //       if (Number(data.pK_MDID) === Number(dashboardData.pK_MDID)) {
+        //         return dashboardData;
+        //       } else {
+        //         return data;
+        //       }
+        //     });
+        //   });
+        // }
+      }
+    } catch (error) {
+      console.log(error, "errorerrorerrorerrorerror");
+    }
+  }, [meetingIdReducer.allMeetingsSocketData]);
+  //  Set Upcoming Events
   useEffect(() => {
     try {
       if (
@@ -553,12 +735,29 @@ const Home = () => {
         meetingIdReducer.UpcomingEventsData !== null &&
         meetingIdReducer.UpcomingEventsData !== undefined
       ) {
-        setUpComingEvents(meetingIdReducer.UpcomingEventsData);
+        // Create a new array with updated objects without mutating the original state
+        const updatedUpcomingEvents = meetingIdReducer.UpcomingEventsData.map(
+          (event) => {
+            // Assuming statusID is within each event object
+            return {
+              ...event, // Spread the properties of the original event object
+              meetingDetails: {
+                ...event.meetingDetails, // Spread the properties of meetingDetails
+                statusID: event.meetingDetails.statusID /* updated value */, // Update the statusID here
+              },
+            };
+          }
+        );
+
+        setUpComingEvents(updatedUpcomingEvents); // Set the updated state
       } else {
         setUpComingEvents([]);
       }
-    } catch {}
+    } catch (error) {
+      // Log any errors for debugging
+    }
   }, [meetingIdReducer.UpcomingEventsData]);
+
   // Remove task from mqtt response
   useEffect(() => {
     try {
@@ -625,9 +824,7 @@ const Home = () => {
           setRowToDo(sortedTasks.slice(0, 15));
         }
       }
-    } catch (error) {
-      console.log(error, "SocketTodoActivityDataSocketTodoActivityData");
-    }
+    } catch (error) {}
   }, [toDoListReducer.SocketTodoActivityData]);
 
   useEffect(() => {
@@ -909,12 +1106,12 @@ const Home = () => {
     Authreducer.GetSelectedPackageResponseMessage,
   ]);
 
-  // const calendarClickFunction = async (value) => {
-  //   //
-  //   if (!dates.includes(value)) {
-  //     setDates([...dates, value]);
-  //   }
-  // };
+  const calendarClickFunction = async (value) => {
+    //
+    if (!dates.includes(value)) {
+      setDates([...dates, value]);
+    }
+  };
 
   const closeModal = () => {
     setActivateBlur(false);
@@ -946,25 +1143,38 @@ const Home = () => {
     navigate("/DisKus/Meeting");
   };
 
-  // useEffect(() => {
-  //   if (meetingIdReducer.MeetingStatusEnded !== null) {
-  //     let meetingID = meetingIdReducer.MeetingStatusSocket.meetingID;
-
-  //     setUpComingEvents((upcomingeventData) =>
-  //       upcomingeventData.map((meetingData) => {
-  //         if (
-  //           Number(meetingData.meetingDetails.pK_MDID) === Number(meetingID)
-  //         ) {
-  //           // Update the statusID of the meeting data
-  //           meetingData.meetingDetails.statusID = 9;
-  //         }
-  //         return meetingData; // Return the meeting data whether modified or not
-  //       })
-  //     );
-  //     dispatch(getMeetingStatusfromSocket(null));
-  //     dispatch(mqttCurrentMeetingEnded(null));
-  //   }
-  // }, [meetingIdReducer.MeetingStatusEnded]);
+  // Meeting Status End Updated
+  useEffect(() => {
+    if (meetingIdReducer.MeetingStatusEnded !== null) {
+      let meetingID = meetingIdReducer.MeetingStatusEnded?.meeting?.pK_MDID;
+      setUpComingEvents((upcomingeventData) => {
+        return upcomingeventData.filter((meetingData) => {
+          return (
+            Number(meetingData.meetingDetails.pK_MDID) !== Number(meetingID)
+          );
+        });
+      });
+      setCalendarEvents((calendarEventData) => {
+        return calendarEventData.map((data) => {
+          if (Number(data.pK_MDID) === Number(meetingID)) {
+            // Assuming statusID is defined somewhere and you want to update it for this data item
+            data.statusID = 9;
+          }
+          return data; // Always return the data item
+        });
+      });
+      setEvents((event) =>
+        event.map((eventData, index) => {
+          if (eventData.pK_MDID === Number(meetingID)) {
+            eventData.status = 9;
+          }
+          return eventData;
+        })
+      );
+      // dispatch(getMeetingStatusfromSocket(null));
+      dispatch(mqttCurrentMeetingEnded(null));
+    }
+  }, [meetingIdReducer.MeetingStatusEnded]);
 
   const upcomingEventsHandler = (upComingEvents) => {
     let flag = false;
@@ -1500,7 +1710,7 @@ const Home = () => {
                                 handleClickonDate(dateFocused, dateClicked);
                               }}
                               multiple={false}
-                              // onChange={calendarClickFunction}
+                              onChange={calendarClickFunction}
                               className="custom-multi-date-picker"
                               onMonthChange={handleMonthChange}
                               currentDate={currentDateObject}

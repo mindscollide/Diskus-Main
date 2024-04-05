@@ -85,6 +85,7 @@ const getMeetingStatusfromSocket = (response) => {
 };
 
 const mqttCurrentMeetingEnded = (response) => {
+  console.log(response, "MEETING_STATUS_ENDED");
   return {
     type: actions.MEETING_STATUS_ENDED,
     response: response,
@@ -432,7 +433,77 @@ const GetUpcomingEvents = (navigate, data, t, loader) => {
       });
   };
 };
+//Get Week meetings
+const GetUpcomingEventsForMQTT = (navigate, data, t, loader) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    // dispatch(SetSpinnerTrue(loader));
+    let form = new FormData();
+    form.append("RequestMethod", upcomingEvents.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetUpcomingEvents(navigate, data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetUpcomingMeetingEventsByUserId_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                getUpcomingEventsSuccess(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+              // dispatch(SetSpinnerFalse());
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetUpcomingMeetingEventsByUserId_02".toLowerCase()
+                )
+            ) {
+              await dispatch(getUpcomingEventsFail(t("No-records-found")));
+              // await dispatch(SetSpinnerFalse());
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetUpcomingMeetingEventsByUserId_03".toLowerCase()
+                )
+            ) {
+              await dispatch(getUpcomingEventsFail(t("Something-went-wrong")));
+              // await dispatch(SetSpinnerFalse());
+            }
+          } else {
+            await dispatch(getUpcomingEventsFail(t("Something-went-wrong")));
+            // await dispatch(SetSpinnerFalse());
+          }
+        } else {
+          await dispatch(getUpcomingEventsFail(t("Something-went-wrong")));
+          // await dispatch(SetSpinnerFalse());
+        }
+      })
 
+      .catch((response) => {
+        dispatch(getUpcomingEventsFail(t("Something-went-wrong")));
+        // dispatch(SetSpinnerFalse());
+      });
+  };
+};
 // Search Meeting Init
 const SearchMeeting_Init = () => {
   return {
@@ -559,4 +630,5 @@ export {
   searchUserMeeting,
   SetSpinnerTrue,
   mqttCurrentMeetingEnded,
+  GetUpcomingEventsForMQTT,
 };
