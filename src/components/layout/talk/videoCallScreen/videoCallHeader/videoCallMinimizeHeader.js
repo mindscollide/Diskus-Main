@@ -22,6 +22,8 @@ import MinimizeVideoIcon from "../../../../../assets/images/newElements/Minimize
 import CallEndRedIcon from "../../../../../assets/images/newElements/CallRedIcon.svg";
 import MinToNormalIcon from "../../../../../assets/images/newElements/Min-to-normal-Icon.svg";
 import ActiveParticipantIcon from "../../../../../assets/images/Active-Participant-Icon.png";
+import MicOffIcon from "../../../../../assets/images/Mic-OFF-WB.svg";
+import VideoOffIcon from "../../../../../assets/images/Video-OFF-WB.svg";
 
 import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
 
@@ -35,6 +37,12 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
   const [currentParticipants, setCurrentParticipants] = useState([]);
 
   const [participantStatus, setParticipantStatus] = useState([]);
+
+  let micStatus = JSON.parse(localStorage.getItem("MicOff"));
+  let vidStatus = JSON.parse(localStorage.getItem("VidOff"));
+
+  const [localMicStatus, setLocalMicStatus] = useState(micStatus);
+  const [localVidStatus, setLocalVidStatus] = useState(vidStatus);
 
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
   let organizationName = localStorage.getItem("OrganizatioName");
@@ -145,6 +153,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
       localStorage.setItem("acceptedRecipientID", 0);
       localStorage.setItem("isMeetingVideo", false);
     }
+    localStorage.setItem("MicOff", true);
+    localStorage.setItem("VidOff", true);
   };
 
   const cancelLeaveCallOption = () => {
@@ -170,11 +180,35 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
     dispatch(leaveCallModal(false));
     dispatch(minimizeParticipantPopup(false));
     localStorage.setItem("isMeetingVideo", false);
+    localStorage.setItem("MicOff", true);
+    localStorage.setItem("VidOff", true);
   };
 
-  const disableMic = () => {};
+  const disableMic = () => {
+    console.log("Disable Mic");
+    localStorage.setItem("MicOff", false);
+    setLocalMicStatus(false);
+  };
 
-  const disableVideo = () => {};
+  const enableMic = () => {
+    console.log("Enable Mic");
+    localStorage.setItem("MicOff", true);
+    setLocalMicStatus(true);
+  };
+
+  const disableVideo = () => {
+    console.log("Disable Video");
+    localStorage.setItem("VidOff", false);
+    setLocalVidStatus(false);
+  };
+
+  const enableVideo = () => {
+    console.log("Enable Video");
+    localStorage.setItem("VidOff", true);
+    setLocalVidStatus(true);
+  };
+
+  useEffect(() => {}, [localMicStatus, localVidStatus]);
 
   useEffect(() => {
     if (callerObject !== undefined && callerObject !== null) {
@@ -189,6 +223,12 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
       document.removeEventListener("click", handleOutsideClick);
     };
   }, [videoFeatureReducer.MinimizeParticipantPopupFlag]);
+
+  useEffect(() => {
+    setLocalMicStatus(micStatus)
+    setLocalVidStatus(vidStatus)
+  }, [videoFeatureReducer.MinimizeVideoFlag])
+  
 
   return (
     <>
@@ -383,18 +423,36 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
 
               {/* <img src={MinimizeParticipant} alt="Mininmize Participants" /> */}
               {/* <img src={MinimizeScreenShare} alt="Mininmize Screen Icon" /> */}
-              <img
-                src={MinimizeVideoIcon}
-                className={"minimize-video-icon cursor-pointer"}
-                alt="Minimize Video Icon"
-                onClick={disableVideo}
-              />
-              <img
-                className="cursor-pointer"
-                src={MinimizeMicIcon}
-                alt="Minimize Mic Icon"
-                onClick={disableMic}
-              />
+              {localVidStatus === true ? (
+                <img
+                  src={MinimizeVideoIcon}
+                  className={"minimize-video-icon cursor-pointer"}
+                  alt="Minimize Video Icon"
+                  onClick={disableVideo}
+                />
+              ) : (
+                <img
+                  src={VideoOffIcon}
+                  className={"minimize-video-icon cursor-pointer"}
+                  alt="Minimize Video Icon"
+                  onClick={enableVideo}
+                />
+              )}
+              {localMicStatus === true ? (
+                <img
+                  className="cursor-pointer"
+                  src={MinimizeMicIcon}
+                  alt="Minimize Mic Icon"
+                  onClick={disableMic}
+                />
+              ) : (
+                <img
+                  className="cursor-pointer"
+                  src={MicOffIcon}
+                  alt="Minimize Mic Icon"
+                  onClick={enableMic}
+                />
+              )}
               {videoFeatureReducer.LeaveCallModalFlag === true &&
               callerID === currentUserID ? (
                 <img

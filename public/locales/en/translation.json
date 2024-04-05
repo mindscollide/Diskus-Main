@@ -1805,5 +1805,9 @@
   "You-can-select-multiple-options": "You can select multiple options",
   "Time-should-be-greater-then-system-time": "Time should be greater then the system time",
   "Disable-video-call": "Disable video call",
-  "Email-initiated": "Email initiated"
+  "Email-initiated": "Email initiated",
+  "Disable-video": "Disable Video",
+  "Enable-video": "Enable Video",
+  "Disable-mic": "Disable Mic",
+  "Enable-mic": "Enable Mic"
 }
