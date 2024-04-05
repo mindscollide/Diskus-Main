@@ -297,13 +297,6 @@ const ManageUsers = () => {
     }
   };
 
-  // const handleSearch = () => {
-  //   if (searchDetails.Name !== "" && searchDetails.Email !== "") {
-  //     setsearchbox(false);
-  //     setshowSearches(true);
-  //   }
-  // };
-
   const handleSearch = () => {
     console.log("cliked");
     const filteredData =
@@ -329,15 +322,9 @@ const ManageUsers = () => {
 
     console.log(filteredData, "filteredDatafilteredData");
 
-    if (filteredData.length > 0) {
-      setManageUserGrid(filteredData);
-      setsearchbox(false);
-      setshowSearches(true);
-    } else {
-      // Handle case where no results are found. Maybe show a message or keep the grid as is.
-      setsearchbox(false);
-      setshowSearches(true);
-    }
+    setManageUserGrid(filteredData);
+    setsearchbox(false);
+    setshowSearches(true);
   };
 
   const handleRemoveSearchSnippet = (identifier) => {
@@ -346,6 +333,11 @@ const ManageUsers = () => {
 
     if (!updatedSearchDetails.Name && !updatedSearchDetails.Email) {
       setshowSearches(false);
+      let data = {
+        OrganizationID: Number(organizationID),
+        RequestingUserID: 1096,
+      };
+      dispatch(AllOrganizationsUsersApi(navigate, t, data));
     }
   };
 
