@@ -14,6 +14,7 @@ const initialState = {
   defaultRoutingValue: null,
   defaulSignUpRoute: 1,
   getAllSelectedPakagesData: null,
+  getOrganizationUserStatsGraph: null,
 };
 
 const UserMangementReducer = (state = initialState, action) => {
@@ -238,6 +239,29 @@ const UserMangementReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
+
+    //action Case For OrganizationUserListStatistics
+    case actions.USERADMIN_LIST_OF_STATS_GRAPH_INIT:
+      return {
+        ...state,
+        Loading: true,
+      };
+
+    case actions.USERADMIN_LIST_OF_STATS_GRAPH_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        getOrganizationUserStatsGraph: action.response,
+        ResponseMessage: action.message,
+      };
+
+    case actions.USERADMIN_LIST_OF_STATS_GRAPH_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        getOrganizationUserStatsGraph: null,
+        ResponseMessage: action.message,
+      };
 
     default:
       return { ...state };

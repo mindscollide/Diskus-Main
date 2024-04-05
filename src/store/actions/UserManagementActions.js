@@ -5,6 +5,7 @@ import {
   GetOrganizationSubscriptionExpiryDetails,
   SaveOrganizationAndPakageSelection,
   getOrganizationSelectedPakages,
+  OrganizationPackageDetailsAndUserStats,
 } from "../../commen/apis/Api_config";
 import {
   authenticationApi,
@@ -637,20 +638,50 @@ const AddOrganizationsUserApi = (navigate, t, data) => {
                   t("Failed-to-create-user-headCount-exceeded")
                 )
               );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_AddOrganizationsUser_06".toLowerCase()
+                )
+            ) {
+              dispatch(addOrganizationUsersFailed(t("Email-already-in-use")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_AddOrganizationsUser_09".toLowerCase()
+                )
+            ) {
+              dispatch(addOrganizationUsersFailed(t("Failed-to-create-user")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_AddOrganizationsUser_010".toLowerCase()
+                )
+            ) {
+              dispatch(addOrganizationUsersFailed(t("Failed-to-create-user")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_AddOrganizationsUser_11".toLowerCase()
+                )
+            ) {
+              dispatch(addOrganizationUsersFailed(t("Something-went-wrong")));
             } else {
-              dispatch(
-                organizationTrialExtendedFail(t("Something-went-wrong"))
-              );
+              dispatch(addOrganizationUsersFailed(t("Something-went-wrong")));
             }
           } else {
-            dispatch(organizationTrialExtendedFail(t("Something-went-wrong")));
+            dispatch(addOrganizationUsersFailed(t("Something-went-wrong")));
           }
         } else {
-          dispatch(organizationTrialExtendedFail(t("Something-went-wrong")));
+          dispatch(addOrganizationUsersFailed(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        dispatch(organizationTrialExtendedFail(t("Something-went-wrong")));
+        dispatch(addOrganizationUsersFailed(t("Something-went-wrong")));
       });
   };
 };
@@ -1196,6 +1227,109 @@ const getOrganizationSelectedPakagesAPI = (navigate, t, data) => {
   };
 };
 
+// Stats Graph Api for USER ADMIN
+const getOrganizationPackageUserStatsInit = () => {
+  return {
+    type: actions.USERADMIN_LIST_OF_STATS_GRAPH_INIT,
+  };
+};
+
+const getOrganizationPackageUserStatsSuccess = (response, message) => {
+  return {
+    type: actions.USERADMIN_LIST_OF_STATS_GRAPH_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getOrganizationPackageUserStatsFail = (message) => {
+  return {
+    type: actions.USERADMIN_LIST_OF_STATS_GRAPH_FAIL,
+    message: message,
+  };
+};
+
+//Api to Show data in graph in userManagment Add user
+
+const getOrganizationPackageUserStatsAPI = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getOrganizationPackageUserStatsInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(data));
+    form.append(
+      "RequestMethod",
+      OrganizationPackageDetailsAndUserStats.RequestMethod
+    );
+    axios({
+      method: "post",
+      url: getAdminURLs,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getOrganizationPackageUserStatsAPI(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_OrganizationPackageDetailsAndUserStats_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getOrganizationPackageUserStatsSuccess(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_OrganizationPackageDetailsAndUserStats_02".toLowerCase()
+                )
+            ) {
+              dispatch(getOrganizationPackageUserStatsFail(t("No-data-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_OrganizationPackageDetailsAndUserStats_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getOrganizationPackageUserStatsFail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                getOrganizationPackageUserStatsFail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              getOrganizationPackageUserStatsFail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            getOrganizationPackageUserStatsFail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          getOrganizationPackageUserStatsFail(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
 export {
   signUpOrganizationAndPakageSelection,
   getAllorganizationSubscriptionExpiryDetailsApi,
@@ -1208,4 +1342,5 @@ export {
   signUpFlowRoutes,
   LoginFlowRoutes,
   getOrganizationSelectedPakagesAPI,
+  getOrganizationPackageUserStatsAPI,
 };
