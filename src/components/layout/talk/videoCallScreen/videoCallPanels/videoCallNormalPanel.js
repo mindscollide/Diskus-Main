@@ -55,6 +55,12 @@ const VideoPanelNormal = () => {
   const [isNote2Active, setIsNote2Active] = useState(false);
   const [isScreenActive, setIsScreenActive] = useState(false);
 
+  let micStatus = JSON.parse(localStorage.getItem("MicOff"));
+  let vidStatus = JSON.parse(localStorage.getItem("VidOff"));
+
+  const [isMicActive, setIsMicActive] = useState(micStatus);
+  const [isVideoActive, setIsVideoActive] = useState(vidStatus);
+
   const onClickCloseChatHandler = () => {
     if (isActiveIcon === false) {
       dispatch(chatEnableNormalFlag(true));
@@ -182,6 +188,70 @@ const VideoPanelNormal = () => {
     }
   };
 
+  const disableMicFunction = () => {
+    const iframe = iframeRef.current;
+    iframe.contentWindow.postMessage("MicOff", "*");
+    setIsMicActive(!isMicActive);
+    localStorage.setItem("MicOff", !isMicActive);
+  };
+
+  const disableVideoFunction = () => {
+    const iframe = iframeRef.current;
+    iframe.contentWindow.postMessage("VidOff", "*");
+    setIsVideoActive(!isVideoActive);
+    localStorage.setItem("VidOff", !isVideoActive);
+  };
+
+  // useEffect(() => {
+  //   console.log("UseEffect", isMicActive, micStatus);
+  //   const iframe = iframeRef.current;
+  //   if (iframe && iframe.contentWindow !== null) {
+  //     iframe.contentWindow.postMessage("MicOff", "*");
+  //   }
+  // }, [isMicActive]);
+
+  // useEffect(() => {
+  //   console.log("UseEffect", isVideoActive, vidStatus);
+
+  //   const iframe = iframeRef.current;
+  //   if (iframe && iframe.contentWindow !== null) {
+  //     iframe.contentWindow.postMessage("VidOff", "*");
+  //     console.log("Check Check");
+  //   }
+  // }, [isVideoActive]);
+
+  useEffect(() => {
+    console.log(
+      "Normalize UseEffect Check",
+      micStatus,
+      isMicActive
+    );
+    const iframe = iframeRef.current;
+    if (iframe && iframe.contentWindow !== null) {
+      if (micStatus !== isMicActive) {
+        console.log("Mic Check");
+        iframe.contentWindow.postMessage("MicOff", "*");
+        setIsMicActive(!isMicActive);
+      }
+    }
+  }, [videoFeatureReducer.NormalizeVideoFlag, isMicActive, micStatus]);
+
+  useEffect(() => {
+    console.log(
+      "Normalize UseEffect Check",
+      vidStatus,
+      isVideoActive,
+    );
+    const iframe = iframeRef.current;
+    if (iframe && iframe.contentWindow !== null) {
+      if (vidStatus !== isVideoActive) {
+        console.log("Video Check");
+        iframe.contentWindow.postMessage("VidOff", "*");
+        setIsVideoActive(!isVideoActive);
+      }
+    }
+  }, [videoFeatureReducer.NormalizeVideoFlag, isVideoActive, vidStatus]);
+
   localStorage.setItem("videoIframe", iframeRef.current);
 
   return (
@@ -215,6 +285,10 @@ const VideoPanelNormal = () => {
                   screenShareButton={handleScreenShareButton}
                   layoutCurrentChange={layoutCurrentChange}
                   isScreenActive={isScreenActive}
+                  disableMic={disableMicFunction}
+                  disableVideo={disableVideoFunction}
+                  isVideoActive={isVideoActive}
+                  isMicActive={isMicActive}
                 />
                 {videoFeatureReducer.VideoOutgoingCallFlag === true ? (
                   <VideoOutgoing />
