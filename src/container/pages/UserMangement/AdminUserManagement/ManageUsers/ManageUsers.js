@@ -233,7 +233,7 @@ const ManageUsers = () => {
       dataIndex: "Delete",
       key: "Delete",
       align: "center",
-      render: () => {
+      render: (text, record) => {
         return (
           <>
             <div className="edit-icon-edituser icon-edit-list icon-size-one beachGreen">
@@ -242,12 +242,12 @@ const ManageUsers = () => {
                   draggable="false"
                   alt=""
                   src={EditIcon2}
-                  onClick={handleClickEditIcon}
+                  onClick={handleClickEditIcon(record)}
                 />
               </i>
             </div>
             <i style={{ cursor: "pointer", color: "#000" }}>
-              <Trash size={22} onClick={handleDeleteModal} />
+              <Trash size={22} onClick={handleDeleteModal(record)} />
             </i>
           </>
         );
@@ -345,6 +345,7 @@ const ManageUsers = () => {
     }
   };
 
+  //Handle Reset Button
   const handleResetButton = () => {
     setshowSearches(false);
     setsearchDetails({
@@ -358,11 +359,14 @@ const ManageUsers = () => {
   };
 
   //Handle Delele user Modal
-  const handleDeleteModal = () => {
+  const handleDeleteModal = (record) => {
+    console.log(record, "showDeleteUsersModal");
     dispatch(showDeleteUsersModal(true));
   };
 
-  const handleClickEditIcon = () => {
+  // handle Edit User Modal
+  const handleClickEditIcon = (record) => {
+    console.log(record, "handleClickEditIcon");
     dispatch(showEditUserModal(true));
   };
 

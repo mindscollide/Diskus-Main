@@ -560,7 +560,6 @@ const addOrganizationUsersFailed = (message) => {
 
 const AddOrganizationsUserApi = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
-
   return (dispatch) => {
     dispatch(addOrganizationUsersInit());
     let form = new FormData();
