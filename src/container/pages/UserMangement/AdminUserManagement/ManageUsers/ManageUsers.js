@@ -35,6 +35,8 @@ const ManageUsers = () => {
 
   let organizationID = localStorage.getItem("organizationID");
 
+  let userID = localStorage.getItem("userID");
+
   const { UserMangementReducer, UserManagementModals } = useSelector(
     (state) => state
   );
@@ -83,7 +85,6 @@ const ManageUsers = () => {
   }, []);
 
   //AllOrganizationsUsers Api Data
-
   useEffect(() => {
     try {
       if (
@@ -258,6 +259,7 @@ const ManageUsers = () => {
 
   const handleSearchBoxOpen = () => {
     setsearchbox(!searchbox);
+    setshowSearches(false);
   };
 
   const handleCrossSearchBox = () => {
@@ -296,15 +298,54 @@ const ManageUsers = () => {
     }
   };
 
+  // const handleSearch = () => {
+  //   if (searchDetails.Name !== "" && searchDetails.Email !== "") {
+  //     setsearchbox(false);
+  //     setshowSearches(true);
+  //   }
+  // };
+
   const handleSearch = () => {
-    if (searchDetails.Name !== "" && searchDetails.Email !== "") {
-      setsearchbox(false);
-      setshowSearches(true);
-    }
+    console.log("cliked");
+    const filteredData =
+      UserMangementReducer.allOrganizationUsersData.organizationUsers.filter(
+        (user) => {
+          console.log(user, "filteredDatafilteredData");
+          const matchesName =
+            searchDetails.Name === "" ||
+            user.userName
+              .toLowerCase()
+              .includes(searchDetails.Name.toLowerCase());
+          console.log(matchesName, "filteredDatafilteredData");
+          const matchesEmail =
+            searchDetails.Email === "" ||
+            user.email
+              .toLowerCase()
+              .includes(searchDetails.Email.toLowerCase());
+          console.log(matchesEmail, "filteredDatafilteredData");
+
+          return matchesName && matchesEmail;
+        }
+      );
+
+    console.log(filteredData, "filteredDatafilteredData");
+
+    setManageUserGrid(filteredData);
+    setsearchbox(false);
+    setshowSearches(true);
   };
 
-  const handleRemoveSearchSnippet = () => {
-    setshowSearches(false);
+  const handleRemoveSearchSnippet = (data, fieldName) => {
+    console.log(data, fieldName, "fieldNamefieldNamefieldName");
+    // setsearchDetails({
+    //   ...searchDetails,
+    //   [fieldName]: "",
+    // });
+    let Reqdata = {
+      OrganizationID: Number(organizationID),
+      RequestingUserID: 1096,
+    };
+    dispatch(AllOrganizationsUsersApi(navigate, t, Reqdata));
   };
 
   const handleResetButton = () => {
@@ -326,6 +367,9 @@ const ManageUsers = () => {
   const handleClickEditIcon = () => {
     dispatch(showEditUserModal(true));
   };
+
+  console.log(showSearches, "showSearchesshowSearches");
+  console.log(searchDetails.Email, "showSearchesshowSearchesv");
 
   return (
     <Container>
@@ -502,10 +546,13 @@ const ManageUsers = () => {
                       alt=""
                       className={styles["CrossIcon_Class"]}
                       width={13}
-                      onClick={handleRemoveSearchSnippet}
+                      onClick={() =>
+                        handleRemoveSearchSnippet(searchDetails.Name, "Name")
+                      }
                     />
                   </div>
                 ) : null}
+
                 {showSearches && searchDetails.Email !== "" ? (
                   <div className={styles["SearchablesItems"]}>
                     <span className={styles["Searches"]}>
@@ -516,7 +563,10 @@ const ManageUsers = () => {
                       alt=""
                       className={styles["CrossIcon_Class"]}
                       width={13}
-                      onClick={handleRemoveSearchSnippet}
+                      onClick={handleRemoveSearchSnippet(
+                        searchDetails.Email,
+                        "Email"
+                      )}
                     />
                   </div>
                 ) : null}
