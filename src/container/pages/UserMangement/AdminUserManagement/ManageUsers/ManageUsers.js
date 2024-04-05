@@ -340,8 +340,13 @@ const ManageUsers = () => {
     }
   };
 
-  const handleRemoveSearchSnippet = () => {
-    setshowSearches(false);
+  const handleRemoveSearchSnippet = (identifier) => {
+    const updatedSearchDetails = { ...searchDetails, [identifier]: "" };
+    setsearchDetails(updatedSearchDetails);
+
+    if (!updatedSearchDetails.Name && !updatedSearchDetails.Email) {
+      setshowSearches(false);
+    }
   };
 
   const handleResetButton = () => {
@@ -539,7 +544,7 @@ const ManageUsers = () => {
                       alt=""
                       className={styles["CrossIcon_Class"]}
                       width={13}
-                      onClick={handleRemoveSearchSnippet}
+                      onClick={() => handleRemoveSearchSnippet("Name")}
                     />
                   </div>
                 ) : null}
@@ -553,7 +558,7 @@ const ManageUsers = () => {
                       alt=""
                       className={styles["CrossIcon_Class"]}
                       width={13}
-                      onClick={handleRemoveSearchSnippet}
+                      onClick={() => handleRemoveSearchSnippet("Email")}
                     />
                   </div>
                 ) : null}
