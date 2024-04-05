@@ -41,6 +41,7 @@ const ManageUsers = () => {
     (state) => state
   );
 
+  //States
   const [searchbox, setsearchbox] = useState(false);
 
   const [userTrialAlert, setUserTrialAlert] = useState(true);
@@ -100,6 +101,7 @@ const ManageUsers = () => {
     }
   }, [UserMangementReducer.allOrganizationUsersData]);
 
+  //Table Columns All Users
   const ManageUsersColumn = [
     {
       title: t("Name"),
@@ -253,22 +255,27 @@ const ManageUsers = () => {
     },
   ];
 
+  //navigating to Add user Page
   const handleAddusers = () => {
     navigate("/Diskus/Admin/AddUsersUsermanagement");
   };
 
+  // opening of the search box
   const handleSearchBoxOpen = () => {
     setsearchbox(!searchbox);
   };
 
+  //Closing  the search Box
   const handleCrossSearchBox = () => {
     setsearchbox(false);
   };
 
+  //Red Strip Trial removed
   const handleTrialAlertRemove = () => {
     setUserTrialAlert(false);
   };
 
+  //onChnage  of the Search Box Fields
   const handleSearchBox = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -297,36 +304,33 @@ const ManageUsers = () => {
     }
   };
 
+  //manual filteration performed on the GRID
   const handleSearch = () => {
     console.log("cliked");
     const filteredData =
       UserMangementReducer.allOrganizationUsersData.organizationUsers.filter(
         (user) => {
-          console.log(user, "filteredDatafilteredData");
           const matchesName =
             searchDetails.Name === "" ||
             user.userName
               .toLowerCase()
               .includes(searchDetails.Name.toLowerCase());
-          console.log(matchesName, "filteredDatafilteredData");
           const matchesEmail =
             searchDetails.Email === "" ||
             user.email
               .toLowerCase()
               .includes(searchDetails.Email.toLowerCase());
-          console.log(matchesEmail, "filteredDatafilteredData");
 
           return matchesName && matchesEmail;
         }
       );
-
-    console.log(filteredData, "filteredDatafilteredData");
 
     setManageUserGrid(filteredData);
     setsearchbox(false);
     setshowSearches(true);
   };
 
+  //handle removing the searched snippets
   const handleRemoveSearchSnippet = (identifier) => {
     const updatedSearchDetails = { ...searchDetails, [identifier]: "" };
     setsearchDetails(updatedSearchDetails);
@@ -353,6 +357,7 @@ const ManageUsers = () => {
     });
   };
 
+  //Handle Delele user Modal
   const handleDeleteModal = () => {
     dispatch(showDeleteUsersModal(true));
   };
