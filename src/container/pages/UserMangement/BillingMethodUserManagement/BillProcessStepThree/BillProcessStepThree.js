@@ -29,26 +29,34 @@ const BillProcessStepThree = () => {
   //UseEffect For Get All Organziation Selected Pakages
 
   useEffect(() => {
-    let data = { OrganizationName: organizationName };
-    dispatch(getOrganizationSelectedPakagesAPI(navigate, t, data));
+    try {
+      let data = { OrganizationName: organizationName };
+      dispatch(getOrganizationSelectedPakagesAPI(navigate, t, data));
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
   //excreting the data for  Get All Organziation Selected Pakages
 
   useEffect(() => {
-    if (
-      UserMangementReducer.getAllSelectedPakagesData !== null &&
-      UserMangementReducer.getAllSelectedPakagesData !== undefined
-    ) {
-      setGetAllPakagesData(
-        UserMangementReducer.getAllSelectedPakagesData
-          .organizationSelectedPackages
-      );
+    try {
+      if (
+        UserMangementReducer.getAllSelectedPakagesData !== null &&
+        UserMangementReducer.getAllSelectedPakagesData !== undefined
+      ) {
+        setGetAllPakagesData(
+          UserMangementReducer.getAllSelectedPakagesData
+            .organizationSelectedPackages
+        );
 
-      setExpiryDate(
-        UserMangementReducer.getAllSelectedPakagesData.organizationSubscription
-          .subscriptionExpiryDate
-      );
+        setExpiryDate(
+          UserMangementReducer.getAllSelectedPakagesData
+            .organizationSubscription.subscriptionExpiryDate
+        );
+      }
+    } catch (error) {
+      console.log(error);
     }
   }, [UserMangementReducer.getAllSelectedPakagesData]);
 

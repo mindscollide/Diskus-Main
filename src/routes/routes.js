@@ -387,14 +387,15 @@ export const router = createHashRouter(
               </RouteWrapperAdmin>
             }
           />
-          <Route
+          {/* Commented in the private Route so to integrate  */}
+          {/* <Route
             path="ManageUsers"
             element={
               <RouteWrapperAdmin name="ManageUsers">
                 <ManageUsers />
               </RouteWrapperAdmin>
             }
-          />{" "}
+          /> */}
           <Route
             path="UserLevelConfigUM"
             element={
