@@ -500,6 +500,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 "userEmail",
                 response.data.responseResult.authToken.userName
               );
+              localStorage.setItem("MicOff", true);
+              localStorage.setItem("VidOff", true);
               localStorage.setItem(
                 "token",
                 JSON.stringify(response.data.responseResult.authToken.token)
@@ -1554,6 +1556,8 @@ const createPasswordAction = (value, navigate, t) => {
                 "userEmail",
                 response.data.responseResult.authToken.userName
               );
+              localStorage.setItem("MicOff", true);
+              localStorage.setItem("VidOff", true);
               localStorage.setItem(
                 "token",
                 JSON.stringify(response.data.responseResult.authToken.token)
@@ -1796,6 +1800,8 @@ const createPasswordAction = (value, navigate, t) => {
                   "userEmail",
                   response.data.responseResult.authToken.userName
                 );
+                localStorage.setItem("MicOff", true);
+                localStorage.setItem("VidOff", true);
                 localStorage.setItem(
                   "token",
                   JSON.stringify(response.data.responseResult.authToken.token)
@@ -1976,6 +1982,8 @@ const createPasswordAction = (value, navigate, t) => {
                   "userEmail",
                   response.data.responseResult.authToken.userName
                 );
+                localStorage.setItem("MicOff", true);
+                localStorage.setItem("VidOff", true);
                 localStorage.setItem(
                   "token",
                   JSON.stringify(response.data.responseResult.authToken.token)
@@ -2065,6 +2073,8 @@ const createPasswordAction = (value, navigate, t) => {
                     "userEmail",
                     response.data.responseResult.authToken.userName
                   );
+                  localStorage.setItem("MicOff", true);
+                  localStorage.setItem("VidOff", true);
                   localStorage.setItem(
                     "token",
                     JSON.stringify(response.data.responseResult.authToken.token)
@@ -2283,6 +2293,8 @@ const createPasswordAction = (value, navigate, t) => {
                     "userEmail",
                     response.data.responseResult.authToken.userName
                   );
+                  localStorage.setItem("MicOff", true);
+                  localStorage.setItem("VidOff", true);
                   localStorage.setItem(
                     "token",
                     JSON.stringify(response.data.responseResult.authToken.token)
@@ -2328,6 +2340,8 @@ const createPasswordAction = (value, navigate, t) => {
                     "userEmail",
                     response.data.responseResult.authToken.userName
                   );
+                  localStorage.setItem("MicOff", true);
+                  localStorage.setItem("VidOff", true);
                   localStorage.setItem(
                     "token",
                     JSON.stringify(response.data.responseResult.authToken.token)
@@ -2373,6 +2387,8 @@ const createPasswordAction = (value, navigate, t) => {
                     "userEmail",
                     response.data.responseResult.authToken.userName
                   );
+                  localStorage.setItem("MicOff", true);
+                  localStorage.setItem("VidOff", true);
                   localStorage.setItem(
                     "token",
                     JSON.stringify(response.data.responseResult.authToken.token)
@@ -2436,6 +2452,8 @@ const createPasswordAction = (value, navigate, t) => {
                     "userEmail",
                     response.data.responseResult.authToken.userName
                   );
+                  localStorage.setItem("MicOff", true);
+                  localStorage.setItem("VidOff", true);
                   localStorage.setItem(
                     "token",
                     JSON.stringify(response.data.responseResult.authToken.token)
@@ -2481,6 +2499,8 @@ const createPasswordAction = (value, navigate, t) => {
                     "userEmail",
                     response.data.responseResult.authToken.userName
                   );
+                  localStorage.setItem("MicOff", true);
+                  localStorage.setItem("VidOff", true);
                   localStorage.setItem(
                     "token",
                     JSON.stringify(response.data.responseResult.authToken.token)
@@ -2526,6 +2546,8 @@ const createPasswordAction = (value, navigate, t) => {
                     "userEmail",
                     response.data.responseResult.authToken.userName
                   );
+                  localStorage.setItem("MicOff", true);
+                  localStorage.setItem("VidOff", true);
                   localStorage.setItem(
                     "token",
                     JSON.stringify(response.data.responseResult.authToken.token)
@@ -2589,6 +2611,8 @@ const createPasswordAction = (value, navigate, t) => {
                     "userEmail",
                     response.data.responseResult.authToken.userName
                   );
+                  localStorage.setItem("MicOff", true);
+                  localStorage.setItem("VidOff", true);
                   localStorage.setItem(
                     "token",
                     JSON.stringify(response.data.responseResult.authToken.token)
@@ -2634,6 +2658,8 @@ const createPasswordAction = (value, navigate, t) => {
                     "userEmail",
                     response.data.responseResult.authToken.userName
                   );
+                  localStorage.setItem("MicOff", true);
+                  localStorage.setItem("VidOff", true);
                   localStorage.setItem(
                     "token",
                     JSON.stringify(response.data.responseResult.authToken.token)
@@ -2679,6 +2705,8 @@ const createPasswordAction = (value, navigate, t) => {
                     "userEmail",
                     response.data.responseResult.authToken.userName
                   );
+                  localStorage.setItem("MicOff", true);
+                  localStorage.setItem("VidOff", true);
                   localStorage.setItem(
                     "token",
                     JSON.stringify(response.data.responseResult.authToken.token)
