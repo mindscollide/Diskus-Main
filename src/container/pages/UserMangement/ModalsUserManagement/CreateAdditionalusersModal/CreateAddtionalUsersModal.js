@@ -18,6 +18,7 @@ import { Col, Row } from "react-bootstrap";
 import EmployeeinfoCard from "../../../../../components/elements/Employeeinfocard/EmployeeinfoCard";
 import { AddOrganizationsUserApi } from "../../../../../store/actions/UserManagementActions";
 import { useNavigate } from "react-router-dom";
+import { validateEmailEnglishAndArabicFormat } from "../../../../../commen/functions/validations";
 const CreateAddtionalUsersModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -25,7 +26,7 @@ const CreateAddtionalUsersModal = () => {
 
   let organzataionID = localStorage.getItem("OrganizationID");
 
-  let OrganizatioName = localStorage.getItem("OrganizatioName");
+  let OrganizatioName = localStorage.getItem("OrganizationName");
 
   const { UserManagementModals } = useSelector((state) => state);
 
@@ -130,13 +131,6 @@ const CreateAddtionalUsersModal = () => {
         ...prevMembers,
         { name: Name.value, email: Email.value },
       ]);
-
-      // Reset the input fields
-      setCreateAddionalUsers({
-        ...createAddionalUsers,
-        Name: { ...Name, value: "" },
-        Email: { ...Email, value: "" },
-      });
     } else {
       // Optionally handle the case where Name or Email is empty
       // e.g., set error messages in createAddionalUsers
@@ -157,38 +151,56 @@ const CreateAddtionalUsersModal = () => {
 
   //handle Create button
   const handleCreatebutton = () => {
-    let data = {
-      UserName: createAddionalUsers.Name.value,
-      OrganizationName: OrganizatioName,
-      Designation: createAddionalUsers.Designation.value,
-      MobileNumber: "",
-      UserEmail: createAddionalUsers.Email.value,
-      OrganizationID: organzataionID,
-      isAdmin: createAddionalUsers.isAdminCheck,
-      FK_NumberWorldCountryID: 1,
-      OrganizationSelectedPackageID: 4,
-    };
+    if (
+      createAddionalUsers.Name.value !== "" &&
+      createAddionalUsers.Designation.value !== "" &&
+      createAddionalUsers.Email.value !== ""
+    ) {
+      if (
+        validateEmailEnglishAndArabicFormat(createAddionalUsers.Email.value)
+      ) {
+        let data = {
+          UserName: createAddionalUsers.Name.value,
+          OrganizationName: OrganizatioName,
+          Designation: createAddionalUsers.Designation.value,
+          MobileNumber: "",
+          UserEmail: createAddionalUsers.Email.value,
+          OrganizationID: Number(organzataionID),
+          isAdmin: createAddionalUsers.isAdminCheck,
+          FK_NumberWorldCountryID: 1,
+          OrganizationSelectedPackageID: 4,
+        };
+        console.log(data, "AddOrganizationsUserApi");
+        dispatch(AddOrganizationsUserApi(navigate, t, data));
+      } else {
+        setCreateAddionalUsers({
+          Email: {
+            value: createAddionalUsers.Email.value,
+            errorMessage: t("Enter-valid-email-address"),
+            errorStatus: createAddionalUsers.Email.errorStatus,
+          },
+        });
+      }
+    } else {
+      setCreateAddionalUsers({
+        Name: {
+          value: createAddionalUsers.Name.value,
+          errorMessage: "please enter name",
+          errorStatus: createAddionalUsers.Name.errorStatus,
+        },
 
-    console.log(data, "AddOrganizationsUserApi");
-    dispatch(AddOrganizationsUserApi(navigate, t, data));
-    setCreateAddionalUsers({
-      Name: {
-        value: "",
-        errorMessage: "",
-        errorStatus: false,
-      },
-
-      Email: {
-        value: "",
-        errorMessage: "",
-        errorStatus: false,
-      },
-      Designation: {
-        value: "",
-        errorMessage: "",
-        errorStatus: false,
-      },
-    });
+        Email: {
+          value: createAddionalUsers.Email.value,
+          errorMessage: "please enter Email",
+          errorStatus: createAddionalUsers.Email.errorStatus,
+        },
+        Designation: {
+          value: createAddionalUsers.Designation.value,
+          errorMessage: "please enter Designation",
+          errorStatus: createAddionalUsers.Designation.errorStatus,
+        },
+      });
+    }
   };
 
   const HandleCheck = () => {
@@ -336,7 +348,7 @@ const CreateAddtionalUsersModal = () => {
                   <span className={styles["NameCreateAddtional"]}>
                     {t("Organization")}
                   </span>
-                  <span className={styles["NameClass"]}>Waqas Associates</span>
+                  <span className={styles["NameClass"]}>{OrganizatioName}</span>
                 </Col>
                 <Col
                   lg={5}
