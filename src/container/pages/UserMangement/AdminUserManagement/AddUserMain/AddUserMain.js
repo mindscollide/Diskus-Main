@@ -29,6 +29,7 @@ import { validateEmailEnglishAndArabicFormat } from "../../../../../commen/funct
 
 const AddUserMain = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   const [selected, setSelected] = useState("US");
   const [selectedCountry, setSelectedCountry] = useState({});

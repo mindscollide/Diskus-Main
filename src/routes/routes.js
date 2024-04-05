@@ -336,6 +336,7 @@ export const router = createHashRouter(
           />
         </Route>
       </Route>
+
       <Route element={<PrivateAdminRoute />}>
         <Route
           exact
@@ -621,10 +622,15 @@ export const router = createHashRouter(
       {/* For All Signup Route */}
       <Route path="/Signup" element={<SignupProcessUserManagement />} />
 
+      <Route path="/signupUsermanagement" element={<SignUpOrganizationUM />} />
       <Route
         path="/PasswordVerificationUM"
         element={<PasswordVerification />}
       />
+
+      {/* <Route path="AddUsersUsermanagement" element={<AddUserMain />} /> */}
+
+      <Route path="/ManageUserrsss" element={<ManageUsers />} />
     </>
   )
 );
