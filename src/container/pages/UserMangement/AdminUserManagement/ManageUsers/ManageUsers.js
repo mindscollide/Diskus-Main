@@ -259,7 +259,6 @@ const ManageUsers = () => {
 
   const handleSearchBoxOpen = () => {
     setsearchbox(!searchbox);
-    setshowSearches(false);
   };
 
   const handleCrossSearchBox = () => {
@@ -330,22 +329,19 @@ const ManageUsers = () => {
 
     console.log(filteredData, "filteredDatafilteredData");
 
-    setManageUserGrid(filteredData);
-    setsearchbox(false);
-    setshowSearches(true);
+    if (filteredData.length > 0) {
+      setManageUserGrid(filteredData);
+      setsearchbox(false);
+      setshowSearches(true);
+    } else {
+      // Handle case where no results are found. Maybe show a message or keep the grid as is.
+      setsearchbox(false);
+      setshowSearches(true);
+    }
   };
 
-  const handleRemoveSearchSnippet = (data, fieldName) => {
-    console.log(data, fieldName, "fieldNamefieldNamefieldName");
-    // setsearchDetails({
-    //   ...searchDetails,
-    //   [fieldName]: "",
-    // });
-    let Reqdata = {
-      OrganizationID: Number(organizationID),
-      RequestingUserID: 1096,
-    };
-    dispatch(AllOrganizationsUsersApi(navigate, t, Reqdata));
+  const handleRemoveSearchSnippet = () => {
+    setshowSearches(false);
   };
 
   const handleResetButton = () => {
@@ -367,9 +363,6 @@ const ManageUsers = () => {
   const handleClickEditIcon = () => {
     dispatch(showEditUserModal(true));
   };
-
-  console.log(showSearches, "showSearchesshowSearches");
-  console.log(searchDetails.Email, "showSearchesshowSearchesv");
 
   return (
     <Container>
@@ -546,13 +539,10 @@ const ManageUsers = () => {
                       alt=""
                       className={styles["CrossIcon_Class"]}
                       width={13}
-                      onClick={() =>
-                        handleRemoveSearchSnippet(searchDetails.Name, "Name")
-                      }
+                      onClick={handleRemoveSearchSnippet}
                     />
                   </div>
                 ) : null}
-
                 {showSearches && searchDetails.Email !== "" ? (
                   <div className={styles["SearchablesItems"]}>
                     <span className={styles["Searches"]}>
@@ -563,10 +553,7 @@ const ManageUsers = () => {
                       alt=""
                       className={styles["CrossIcon_Class"]}
                       width={13}
-                      onClick={handleRemoveSearchSnippet(
-                        searchDetails.Email,
-                        "Email"
-                      )}
+                      onClick={handleRemoveSearchSnippet}
                     />
                   </div>
                 ) : null}
