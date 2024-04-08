@@ -26,13 +26,21 @@ import {
 } from "../../../../../components/elements";
 import { countryNameforPhoneNumber } from "../../../../Admin/AllUsers/AddUser/CountryJson";
 import { validateEmailEnglishAndArabicFormat } from "../../../../../commen/functions/validations";
+import { getOrganizationPackageUserStatsAPI } from "../../../../../store/actions/UserManagementActions";
 
 const AddUserMain = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { UserMangementReducer } = useSelector((state) => state);
+  console.log(
+    UserMangementReducer.getOrganizationUserStatsGraph,
+    "getOrganizationUserStatsGraph"
+  );
 
   const [selected, setSelected] = useState("US");
   const [selectedCountry, setSelectedCountry] = useState({});
+  const [graphData, setGraphData] = useState([]);
 
   const [userAddMain, setUserAddMain] = useState({
     Name: {
@@ -65,6 +73,15 @@ const AddUserMain = () => {
       errorStatus: false,
     },
   });
+
+  //For Now I set static data in this getOrganizationPackageUserStatsAPI Api
+  useEffect(() => {
+    let data = {
+      OrganizationID: 554,
+      RequestingUserID: 1196,
+    };
+    dispatch(getOrganizationPackageUserStatsAPI(navigate, t, data));
+  }, []);
 
   const addUserHandler = (e) => {
     let name = e.target.name;
@@ -286,14 +303,71 @@ const AddUserMain = () => {
     },
   };
 
-  const data = [
-    // ["Category", "Value"],
-    ["Element", "Users", { role: "style" }, { role: "annotation" }],
-    ["Enabled Users", 50, "#6172D6", "50"],
-    ["Disabled Users", 30, "#6172D6", "30"],
-    ["Locked Users", 80, "#6172D6", "80"],
-    ["Dormant Users", 60, "#6172D6", "60"],
-  ];
+  // const data = [
+  //   // ["Category", "Value"],
+  //   ["Element", "Users", { role: "style" }, { role: "annotation" }],
+  //   ["Enabled Users", 50, "#6172D6", "50"],
+  //   ["Disabled Users", 30, "#6172D6", "30"],
+  //   ["Locked Users", 80, "#6172D6", "80"],
+  //   ["Dormant Users", 60, "#6172D6", "60"],
+  // ];
+
+  // useEffect to set data in graph
+  useEffect(() => {
+    if (
+      UserMangementReducer.getOrganizationUserStatsGraph !== null &&
+      UserMangementReducer.getOrganizationUserStatsGraph !== undefined &&
+      Object.keys(UserMangementReducer.getOrganizationUserStatsGraph).length > 0
+    ) {
+      const data = [
+        // ["Category", "Value"],
+        ["Element", "Users", { role: "style" }, { role: "annotation" }],
+        [
+          "Enabled Users",
+          parseInt(
+            UserMangementReducer.getOrganizationUserStatsGraph.userStats
+              .enabledUsers
+          ),
+          "#6172D6",
+          UserMangementReducer.getOrganizationUserStatsGraph.userStats.enabledUsers.toString(),
+          ,
+        ],
+        [
+          "Disabled Users",
+          parseInt(
+            UserMangementReducer.getOrganizationUserStatsGraph.userStats
+              .disabledUsers
+          ),
+          "#6172D6",
+          UserMangementReducer.getOrganizationUserStatsGraph.userStats.disabledUsers.toString(),
+        ],
+        [
+          "Locked Users",
+          parseInt(
+            UserMangementReducer.getOrganizationUserStatsGraph.userStats
+              .lockedUsers
+          ),
+          "#6172D6",
+          UserMangementReducer.getOrganizationUserStatsGraph.userStats.lockedUsers.toString(),
+          ,
+        ],
+        [
+          "Dormant Users",
+          parseInt(
+            UserMangementReducer.getOrganizationUserStatsGraph.userStats
+              .dormantUsers
+          ),
+          "#6172D6",
+          UserMangementReducer.getOrganizationUserStatsGraph.userStats.dormantUsers.toString(),
+        ],
+      ];
+      setGraphData(data);
+
+      let EssentialBar = parseInt(
+        UserMangementReducer.getOrganizationUserStatsGraph
+      );
+    }
+  }, [UserMangementReducer.getOrganizationUserStatsGraph]);
 
   const handleSelect = (country) => {
     setSelected(country);
@@ -325,7 +399,7 @@ const AddUserMain = () => {
                         width="100%"
                         height="250px"
                         radius={10}
-                        data={data}
+                        data={graphData}
                         options={options}
                         className={styles["Addchart"]}
                       />
@@ -353,7 +427,7 @@ const AddUserMain = () => {
                       <Row>
                         <Col lg={8} md={8} sm={8} xs={12} className="">
                           <label className={styles["labelChart-Title"]}>
-                            {t("Board-member")}
+                            {t("Essential")}
                           </label>
                         </Col>
                         <Col lg={4} md={4} sm={4} xs={12}>
@@ -366,7 +440,7 @@ const AddUserMain = () => {
                       <Row>
                         <Col lg={8} md={8} sm={8} xs={12} className="">
                           <label className={styles["Admin-labelChart-Title"]}>
-                            {t("Admin-member")}
+                            {t("Professional")}
                           </label>
                         </Col>
                         <Col lg={4} md={4} sm={4} xs={12}>
@@ -382,7 +456,7 @@ const AddUserMain = () => {
                             className={styles["Admin-labelChart-Title"]}
                             // className={styles["labelChart-Remain-Title"]}
                           >
-                            {t("Client-member")}
+                            {t("Premium")}
                           </label>
                         </Col>
                         <Col lg={4} md={4} sm={4} xs={12}>
