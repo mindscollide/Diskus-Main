@@ -9,62 +9,62 @@ import LanguageSelector from "../../../../components/elements/languageSelector/L
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Button, TableToDo, TextField } from "../../../../components/elements";
-const PakageDetailsUserManagement = ({ setSignupStep }) => {
+import {
+  Button,
+  TableToDo,
+  TextField,
+  Notification,
+} from "../../../../components/elements";
+import {
+  LoginFlowRoutes,
+  getAllUserTypePackagesApi,
+} from "../../../../store/actions/UserManagementActions";
+import { render } from "@testing-library/react";
+import { regexOnlyNumbers } from "../../../../commen/functions/regex";
+const PakageDetailsUserManagement = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
 
-  const { GetSubscriptionPackage, Authreducer, LanguageReducer } = useSelector(
+  const { UserMangementReducer, LanguageReducer } = useSelector(
     (state) => state
   );
 
-  let flagForSelectedPackeg = localStorage.getItem("flagForSelectedPackeg");
-  const [currentPackageId, setCurrentPackageId] = useState(0);
-  const [annualPackageShow, setAnnualPackageShow] = useState(false);
-  const [monthlyPackageShow, setMonthlyPackageShow] = useState(true);
+  //States
+  const [tableData, setTableData] = useState([]);
+  const [lisence, setlisence] = useState({
+    TotalLisence: "",
+  });
+  const [packageDetail, setPackageDetail] = useState([]);
   const [open, setOpen] = useState({
     open: false,
     message: "",
   });
-  //   const [packageDetail, setPackageDetail] = useState([
-  //     {
-  //       PackageName: "",
-  //       PackageID: 0,
-  //       MontlyPackageAmount: 0,
-  //       AnnuallyPackageAmount: 0,
-  //       BoardMembers: 0,
-  //       AdminMembers: 0,
-  //       PackageDescription: "",
-  //       PackageBadgeColor: "",
-  //       PackageAnuallyDiscountAmount: 0,
-  //       PackageVisibility: false,
-  //       yearlyDiscountedPrice: 0,
-  //       FirstYearDiscountedPrice: 0,
-  //     },
-  //   ]);
 
-  const [packageDetail, setPackageDetail] = useState([
-    {
-      name: "Essential",
-      price: "10",
-    },
-    {
-      name: "Professional",
-      price: "22",
-    },
-    {
-      name: "Premium",
-      price: "35",
-    },
-  ]);
-  const handleManualPackage = (packageId) => {
-    setCurrentPackageId(packageId);
-    setAnnualPackageShow(false);
-    setMonthlyPackageShow(true);
-  };
+  //get All user pakages Api call
+  useEffect(() => {
+    try {
+      dispatch(getAllUserTypePackagesApi(navigate, t));
+    } catch (error) {
+      console.log(error, "error");
+    }
+  }, []);
+
+  //Fetching the data for pakage selection
+  useEffect(() => {
+    try {
+      if (UserMangementReducer.getAllUserTypePackagesData !== []) {
+        setPackageDetail(
+          UserMangementReducer.getAllUserTypePackagesData.packages
+        );
+        setTableData(UserMangementReducer.getAllUserTypePackagesData.packages);
+      }
+    } catch (error) {
+      console.log(error, "error");
+    }
+  }, [UserMangementReducer.getAllUserTypePackagesData]);
 
   // translate Languages start
   const languages = [
@@ -89,9 +89,16 @@ const PakageDetailsUserManagement = ({ setSignupStep }) => {
         </span>
       ),
       width: 100,
-      dataIndex: "Pakagedetails",
-      key: "Pakagedetails",
+      dataIndex: "name",
+      key: "name",
       align: "center",
+      render: (text, response) => {
+        return (
+          <>
+            <span className={styles["Tableheading"]}>{response.name}</span>
+          </>
+        );
+      },
     },
     {
       title: (
@@ -102,10 +109,19 @@ const PakageDetailsUserManagement = ({ setSignupStep }) => {
           </span>
         </span>
       ),
-      dataIndex: "Chargesperlicense",
-      key: "Chargesperlicense",
+      dataIndex: "price",
+      key: "price",
       width: 100,
       align: "center",
+      render: (text, response) => {
+        return (
+          <>
+            <span className={styles["ChargesPerLicesense"]}>
+              {response.price}
+            </span>
+          </>
+        );
+      },
     },
     {
       title: (
@@ -120,6 +136,44 @@ const PakageDetailsUserManagement = ({ setSignupStep }) => {
       dataIndex: "Numberoflicenses",
       key: "Numberoflicenses",
       align: "center",
+      render: (text, row) => {
+        if (row.shouldDisplayTextField) {
+          return;
+        } else {
+          if (row.isTotalRow) {
+            return (
+              <span className={styles["ChargesPerLicesense"]}>
+                {row.Numberoflicenses}
+              </span>
+            );
+          } else {
+            const handleChange = (newValue) => {
+              const newData = tableData.map((item) => {
+                console.log(item, "itemitem");
+                if (item.pK_PackageID === row.pK_PackageID) {
+                  return { ...item, licenseCount: newValue };
+                }
+                return item;
+              });
+              setTableData(newData);
+            };
+
+            return (
+              <Row>
+                <Col className="d-flex justify-content-center">
+                  <TextField
+                    labelClass="d-none"
+                    applyClass="PakageDetails"
+                    name="noofLisence"
+                    value={row.licenseCount || ""}
+                    change={(e) => handleChange(e.target.value)}
+                  />
+                </Col>
+              </Row>
+            );
+          }
+        }
+      },
     },
     {
       title: (
@@ -165,111 +219,6 @@ const PakageDetailsUserManagement = ({ setSignupStep }) => {
     },
   ];
 
-  const Data = [
-    {
-      Pakagedetails: (
-        <span className={styles["Tableheading"]}>{t("Essential")}</span>
-      ),
-      Chargesperlicense: (
-        <>
-          <span className={styles["ChargesPerLicesense"]}>25</span>
-        </>
-      ),
-      Numberoflicenses: (
-        <>
-          <Row>
-            <Col className="d-flex justify-content-center">
-              <TextField labelClass={"d-none"} applyClass={"PakageDetails"} />
-            </Col>
-          </Row>
-        </>
-      ),
-      Monthlycharges: (
-        <>
-          <span className={styles["ChargesPerLicesense"]}>4,432</span>
-        </>
-      ),
-      Quarterlycharges: (
-        <>
-          <span className={styles["ChargesPerLicesense"]}>906</span>
-        </>
-      ),
-      Yearlycharges: (
-        <>
-          <span className={styles["ChargesPerLicesense"]}>1,024</span>
-        </>
-      ),
-    },
-    {
-      Pakagedetails: (
-        <span className={styles["Tableheading"]}>{t("Professional")}</span>
-      ),
-      Chargesperlicense: (
-        <>
-          <span className={styles["ChargesPerLicesense"]}>35</span>
-        </>
-      ),
-      Numberoflicenses: (
-        <>
-          <Row>
-            <Col className="d-flex justify-content-center">
-              <TextField labelClass={"d-none"} applyClass={"PakageDetails"} />
-            </Col>
-          </Row>
-        </>
-      ),
-      Monthlycharges: (
-        <>
-          <span className={styles["ChargesPerLicesense"]}>2,222</span>
-        </>
-      ),
-      Quarterlycharges: (
-        <>
-          <span className={styles["ChargesPerLicesense"]}>567</span>
-        </>
-      ),
-      Yearlycharges: (
-        <>
-          <span className={styles["ChargesPerLicesense"]}>875</span>
-        </>
-      ),
-    },
-    {
-      Pakagedetails: (
-        <span className={styles["Tableheading"]}>{t("Premium")}</span>
-      ),
-      Chargesperlicense: (
-        <>
-          <span className={styles["ChargesPerLicesense"]}>45</span>
-        </>
-      ),
-      Numberoflicenses: (
-        <>
-          <Row>
-            <Col className="d-flex justify-content-center">
-              <TextField labelClass={"d-none"} applyClass={"PakageDetails"} />
-            </Col>
-          </Row>
-        </>
-      ),
-      Monthlycharges: (
-        <>
-          <span className={styles["ChargesPerLicesense"]}>967</span>
-        </>
-      ),
-      Quarterlycharges: (
-        <>
-          <span className={styles["ChargesPerLicesense"]}>906</span>
-        </>
-      ),
-      Yearlycharges: (
-        <>
-          <span className={styles["ChargesPerLicesense"]}>9,024</span>
-        </>
-      ),
-    },
-  ];
-
   const defaultRow = {
     Pakagedetails: <span className={styles["TableheadingTotal"]}>Total</span>,
     Numberoflicenses: <span className={styles["ChargesPerLicesense"]}>43</span>,
@@ -281,6 +230,8 @@ const PakageDetailsUserManagement = ({ setSignupStep }) => {
     ),
     Yearlycharges: <span className={styles["ChargesPerLicesense"]}>3,072</span>,
   };
+
+  console.log(lisence.TotalLisence, "TotalLisence");
 
   const handlePayNowClick = () => {
     localStorage.setItem("signupCurrentPage", 2);
@@ -321,6 +272,33 @@ const PakageDetailsUserManagement = ({ setSignupStep }) => {
         </span>
       </>
     ),
+    shouldDisplayTextField: true,
+  };
+
+  //Calculating the totals
+
+  const calculateTotals = (data) => {
+    const totalLicenses = tableData.reduce(
+      (total, row) => total + (Number(row.licenseCount) || 0),
+      0
+    );
+
+    // Return an object with the totals that can be used as a row in your table.
+    return {
+      name: "Total",
+      Numberoflicenses: totalLicenses,
+    };
+  };
+  const totalRow = {
+    ...calculateTotals(tableData),
+    isTotalRow: true,
+  };
+  //Handle Goback Function
+  const onClickLink = () => {
+    localStorage.removeItem("signupCurrentPage", 1);
+    localStorage.setItem("LoginFlowPageRoute", 1);
+    dispatch(LoginFlowRoutes(1));
+    navigate("/");
   };
 
   return (
@@ -351,17 +329,12 @@ const PakageDetailsUserManagement = ({ setSignupStep }) => {
       <Row className="mt-3 ">
         {packageDetail.length > 0 ? (
           packageDetail.map((data, index) => {
-            // let packageColorPath1 =
-            //   data.PackageBadgeColor.split("_SEPERATOR_")[0];
-            // let packageColorPath2 =
-            //   data.PackageBadgeColor.split("_SEPERATOR_")[1];
             return (
               <Col
                 sm={12}
                 lg={4}
                 md={4}
                 className={index === 1 && index === 3 ? "p-0" : "my-2"}
-                // key={data.pK_SubscriptionPackageID}
               >
                 <Row className="g-4">
                   <Col sm={12} className={styles["packageCardBox"]}>
@@ -404,41 +377,43 @@ const PakageDetailsUserManagement = ({ setSignupStep }) => {
                           </div>
                         </Col>
                         <Col sm={false} md={2} lg={2}></Col>
-                      </Row>
-                      <Row className="mt-5">
+                      </Row>{" "}
+                      <Row className="mt-3">
+                        {" "}
                         <Col lg={1} md={1} sm={1}></Col>
-                        <Col
-                          lg={11}
-                          md={11}
-                          sm={11}
-                          className="d-flex flex-column flex-wrap gap-2"
-                        >
+                        <Col lg={11} md={11} sm={11} xs={12}>
                           <span className={styles["MeetingHeading"]}>
                             {t("Meeting")}
                           </span>
-                          <span className={styles["keypoints"]}>
-                            Meeting Organizer (Quick Meeting)
-                          </span>
-                          <span className={styles["keypoints"]}>
-                            View Document & Files
-                          </span>
-                          <span className={styles["keypoints"]}>
-                            Secured Instant Messaging
-                          </span>
-                          <span className={styles["keypoints"]}>
-                            Video Conferencing & Recording
-                          </span>
-                          <span className={styles["keypoints"]}>
-                            Screen Sharing
-                          </span>
-                          <span className={styles["keypoints"]}>Notes</span>
-                          <span className={styles["keypoints"]}>
-                            Calendar with two way Syncs
-                          </span>
-                          <span className={styles["keypoints"]}>
-                            Organization Admin
-                          </span>
                         </Col>
+                      </Row>
+                      <Row className="mt-2">
+                        <section
+                          className={styles["Scroller_PakagesSelectionCard"]}
+                        >
+                          {data.packageFeatures !== null &&
+                          data.packageFeatures !== undefined
+                            ? data.packageFeatures.map((features, index) => {
+                                return (
+                                  <>
+                                    <Row>
+                                      <Col lg={1} md={1} sm={1}></Col>
+                                      <Col
+                                        lg={11}
+                                        md={11}
+                                        sm={11}
+                                        className="d-flex flex-column flex-wrap gap-3 mt-1"
+                                      >
+                                        <span className={styles["keypoints"]}>
+                                          {features.name}
+                                        </span>
+                                      </Col>
+                                    </Row>
+                                  </>
+                                );
+                              })
+                            : null}
+                        </section>
                       </Row>
                     </Card>
                   </Col>
@@ -462,13 +437,24 @@ const PakageDetailsUserManagement = ({ setSignupStep }) => {
           <TableToDo
             column={ColumnsPakageSelection}
             className={"Billing_TablePakageSelection"}
-            rows={[...Data, defaultRow, defaultRowWithButtons]}
+            rows={[...tableData, totalRow, defaultRowWithButtons]}
             pagination={false}
             id="saif"
             rowHoverBg="none"
           />
         </Col>
       </Row>
+      <Row className="mt-3">
+        <Col lg={12} md={12} sm={12} className="d-flex justify-content-center">
+          <span onClick={onClickLink} className={styles["signUp_goBack"]}>
+            {t("Go-back")}
+          </span>
+        </Col>
+      </Row>
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      {UserMangementReducer.Loading || LanguageReducer.Loading ? (
+        <Loader />
+      ) : null}
     </Container>
   );
 };
