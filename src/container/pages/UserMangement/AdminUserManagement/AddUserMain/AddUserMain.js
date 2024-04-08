@@ -77,8 +77,8 @@ const AddUserMain = () => {
   //For Now I set static data in this getOrganizationPackageUserStatsAPI Api
   useEffect(() => {
     let data = {
-      OrganizationID: 471,
-      RequestingUserID: 1096,
+      OrganizationID: 554,
+      RequestingUserID: 1196,
     };
     dispatch(getOrganizationPackageUserStatsAPI(navigate, t, data));
   }, []);
@@ -325,39 +325,47 @@ const AddUserMain = () => {
         [
           "Enabled Users",
           parseInt(
-            UserMangementReducer.getOrganizationUserStatsGraph.enabledUsers
+            UserMangementReducer.getOrganizationUserStatsGraph.userStats
+              .enabledUsers
           ),
           "#6172D6",
-          UserMangementReducer.getOrganizationUserStatsGraph.enabledUsers.toString(),
+          UserMangementReducer.getOrganizationUserStatsGraph.userStats.enabledUsers.toString(),
           ,
         ],
         [
           "Disabled Users",
           parseInt(
-            UserMangementReducer.getOrganizationUserStatsGraph.disabledUsers
+            UserMangementReducer.getOrganizationUserStatsGraph.userStats
+              .disabledUsers
           ),
           "#6172D6",
-          UserMangementReducer.getOrganizationUserStatsGraph.disabledUsers.toString(),
+          UserMangementReducer.getOrganizationUserStatsGraph.userStats.disabledUsers.toString(),
         ],
         [
           "Locked Users",
           parseInt(
-            UserMangementReducer.getOrganizationUserStatsGraph.lockedUsers
+            UserMangementReducer.getOrganizationUserStatsGraph.userStats
+              .lockedUsers
           ),
           "#6172D6",
-          UserMangementReducer.getOrganizationUserStatsGraph.lockedUsers.toString(),
+          UserMangementReducer.getOrganizationUserStatsGraph.userStats.lockedUsers.toString(),
           ,
         ],
         [
           "Dormant Users",
           parseInt(
-            UserMangementReducer.getOrganizationUserStatsGraph.dormantUsers
+            UserMangementReducer.getOrganizationUserStatsGraph.userStats
+              .dormantUsers
           ),
           "#6172D6",
-          UserMangementReducer.getOrganizationUserStatsGraph.dormantUsers.toString(),
+          UserMangementReducer.getOrganizationUserStatsGraph.userStats.dormantUsers.toString(),
         ],
       ];
       setGraphData(data);
+
+      let EssentialBar = parseInt(
+        UserMangementReducer.getOrganizationUserStatsGraph
+      );
     }
   }, [UserMangementReducer.getOrganizationUserStatsGraph]);
 
