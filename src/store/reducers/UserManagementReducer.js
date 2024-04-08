@@ -14,8 +14,8 @@ const initialState = {
   defaultRoutingValue: null,
   defaulSignUpRoute: 1,
   getAllSelectedPakagesData: null,
-  getAllUserTypePackagesData: [],
   getOrganizationUserStatsGraph: null,
+  getAllUserTypePackagesData: [],
 };
 
 const UserMangementReducer = (state = initialState, action) => {

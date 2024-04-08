@@ -1880,5 +1880,8 @@
   "Disable-video-call": "Disable video call",
   "Email-initiated": "Email initiated",
   "Please-select-country": "Please Select Country",
-  "Email-already-in-use": "Email Already in use"
+  "Email-already-in-use": "Email Already in use",
+  "Start-video-call": "Start video call",
+  "Normalize-screen": "Normalize screen",
+  "Maximize-screen": "Maximize screen"
 }

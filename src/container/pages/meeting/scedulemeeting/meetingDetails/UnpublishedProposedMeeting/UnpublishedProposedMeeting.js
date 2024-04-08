@@ -44,7 +44,10 @@ import {
   meetingOrganizerAdded,
   meetingOrganizerRemoved,
 } from "../../../../../../store/actions/NewMeetingActions";
-import { GetAllUserChats, activeChat } from "../../../../../../store/actions/Talk_action";
+import {
+  GetAllUserChats,
+  activeChat,
+} from "../../../../../../store/actions/Talk_action";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import SceduleProposedmeeting from "./SceduleProposedMeeting/SceduleProposedmeeting";
@@ -640,7 +643,7 @@ const UnpublishedProposedMeeting = ({
   ];
 
   useEffect(() => {
-    if (Object.keys(allMeetingsSocketData).length > 0) {
+    if (allMeetingsSocketData !== null) {
       let tableRowsData = [...rows];
       var foundIndex = tableRowsData.findIndex(
         (x) => x.pK_MDID === allMeetingsSocketData.pK_MDID

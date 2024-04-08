@@ -405,37 +405,37 @@ export const optionsLastmodified = (t) => [
 
 // Options is My Document Tab
 export const optionsforFolder = (t) => [
-  { label: t("Share"), value: 1 },
-  { label: t("Rename"), value: 2 },
-  { label: t("View-detail"), value: 3 },
-  { label: t("Download"), value: 4 },
-  { label: t("Delete"), value: 5 },
-  { label: t("Analytics"), value: 6 },
+  { label: t("Share"), value: 2 },
+  { label: t("Rename"), value: 3 },
+  { label: t("View-detail"), value: 4 },
+  { label: t("Download"), value: 5 },
+  { label: t("Delete"), value: 6 },
+  { label: t("Analytics"), value: 7 },
 ];
 
 // Viewer Options and Permission Id is 01
 export const optionsforFolderViewer = (t) => [
-  { label: t("View-detail"), value: 3 },
-  { label: t("Download"), value: 4 },
+  { label: t("View-detail"), value: 4 },
+  { label: t("Download"), value: 5 },
   { label: t("Remove"), value: 9 },
 ];
 
 // Editor Options and Permission Id is 02
 export const optionsforFolderEditor = (t) => [
-  { label: t("Share"), value: 1 },
-  { label: t("Rename"), value: 2 },
-  { label: t("View-detail"), value: 3 },
-  { label: t("Download"), value: 4 },
-  { label: t("Analytics"), value: 6 },
+  { label: t("Share"), value: 2 },
+  { label: t("Rename"), value: 3 },
+  { label: t("View-detail"), value: 4 },
+  { label: t("Download"), value: 5 },
+  { label: t("Analytics"), value: 7 },
   { label: t("Remove"), value: 9 },
 ];
 
 // Non Shareable Editor Options and Permission Id is 03
 export const optionsforFolderEditableNonShareable = (t) => [
-  { label: t("Rename"), value: 2 },
-  { label: t("View-detail"), value: 3 },
-  { label: t("Download"), value: 4 },
-  { label: t("Analytics"), value: 6 },
+  { label: t("Rename"), value: 3 },
+  { label: t("View-detail"), value: 4 },
+  { label: t("Download"), value: 5 },
+  { label: t("Analytics"), value: 7 },
 ];
 
 // Options is My Document Tab

@@ -174,7 +174,6 @@ const Sidebar = () => {
         dispatch(uploadGlobalFlag(false));
       }
     }
-    console.log("Navigation works", meetingNavigation, `/${meetingNavigation}`);
     // navigate(`/${meetingNavigation}`);
   };
 
@@ -189,7 +188,6 @@ const Sidebar = () => {
         NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
       NewMeetingreducer.viewMeetingFlag === false
     ) {
-      console.log("todoListNavigationtodoListNavigation", todoListNavigation);
       setTodoListNavigation("Meeting");
       dispatch(showCancelModalmeetingDeitals(true));
       localStorage.setItem("navigateLocation", "todolist");
@@ -289,8 +287,6 @@ const Sidebar = () => {
     }
     // navigate(`/${notesNavigation}`);
   };
-
-  console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
 
   return (
     <>

@@ -6,6 +6,7 @@ import {
   SaveOrganizationAndPakageSelection,
   getOrganizationSelectedPakages,
   OrganizationPackageDetailsAndUserStats,
+  GetAllUserTypePackages,
 } from "../../commen/apis/Api_config";
 import {
   authenticationApi,
@@ -1329,6 +1330,93 @@ const getOrganizationPackageUserStatsAPI = (navigate, t, data) => {
   };
 };
 
+//Get All UserType Packages
+const getAllUserTypePackagesInit = () => {
+  return {
+    type: actions.GET_ALL_USER_TYPES_PAKAGES_INIT,
+  };
+};
+
+const getAllUserTypePackagesSuccess = (response, message) => {
+  return {
+    type: actions.GET_ALL_USER_TYPES_PAKAGES_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getAllUserTypePackagesFail = (message) => {
+  return {
+    type: actions.GET_ALL_USER_TYPES_PAKAGES_FAIL,
+    message: message,
+  };
+};
+
+const getAllUserTypePackagesApi = (navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getAllUserTypePackagesInit());
+    let form = new FormData();
+    form.append("RequestMethod", GetAllUserTypePackages.RequestMethod);
+    axios({
+      method: "post",
+      url: authenticationApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getAllUserTypePackagesApi(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_GetAllUserTypePackages_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllUserTypePackagesSuccess(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_GetAllUserTypePackages_02".toLowerCase()
+                )
+            ) {
+              dispatch(getAllUserTypePackagesFail(t("No-data-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_GetAllUserTypePackages_03".toLowerCase()
+                )
+            ) {
+              dispatch(getAllUserTypePackagesFail(t("Something-went-wrong")));
+            } else {
+              dispatch(getAllUserTypePackagesFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(getAllUserTypePackagesFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(getAllUserTypePackagesFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(getAllUserTypePackagesFail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   signUpOrganizationAndPakageSelection,
   getAllorganizationSubscriptionExpiryDetailsApi,
@@ -1342,4 +1430,5 @@ export {
   LoginFlowRoutes,
   getOrganizationSelectedPakagesAPI,
   getOrganizationPackageUserStatsAPI,
+  getAllUserTypePackagesApi,
 };
