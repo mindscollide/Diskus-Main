@@ -26,7 +26,10 @@ import {
 } from "../../../../../components/elements";
 import { countryNameforPhoneNumber } from "../../../../Admin/AllUsers/AddUser/CountryJson";
 import { validateEmailEnglishAndArabicFormat } from "../../../../../commen/functions/validations";
-import { getOrganizationPackageUserStatsAPI } from "../../../../../store/actions/UserManagementActions";
+import {
+  getOrganizationPackageUserStatsAPI,
+  AddOrganizationsUserApi,
+} from "../../../../../store/actions/UserManagementActions";
 
 const AddUserMain = () => {
   const { t } = useTranslation();
@@ -41,6 +44,9 @@ const AddUserMain = () => {
   const [selected, setSelected] = useState("US");
   const [selectedCountry, setSelectedCountry] = useState({});
   const [graphData, setGraphData] = useState([]);
+  console.log(graphData, "hbdhbabjajkdbhbca");
+
+  const [loading, setLoading] = useState(true);
 
   const [userAddMain, setUserAddMain] = useState({
     Name: {
@@ -72,6 +78,13 @@ const AddUserMain = () => {
       errorMessage: "",
       errorStatus: false,
     },
+
+    isAdmin: {
+      value: false,
+      errorMessage: "",
+      errorStatus: false,
+    },
+    FK_NumberWorldCountryID: 0,
   });
 
   //For Now I set static data in this getOrganizationPackageUserStatsAPI Api
@@ -193,15 +206,27 @@ const AddUserMain = () => {
     }
   };
 
-  const handleCreate = () => {
+  // API hit on create button
+  const handleCreate = async () => {
     if (
       userAddMain.Name.value !== "" &&
       userAddMain.Designation.value !== "" &&
       userAddMain.MobileNumber.value !== "" &&
-      userAddMain.PackageAssigned.value !== "" &&
+      // userAddMain.PackageAssigned.value !== "" &&
       userAddMain.Email.value !== ""
     ) {
-      alert("filled fields");
+      let createData = {
+        UserName: userAddMain.Name.value,
+        // OrganizationName: "test new flow org",
+        Designation: userAddMain.Designation.value,
+        MobileNumber: userAddMain.MobileNumber.value,
+        UserEmail: userAddMain.Email.value,
+        // OrganizationID: 471,
+        isAdmin: userAddMain.isAdmin.value,
+        FK_NumberWorldCountryID: userAddMain.FK_NumberWorldCountryID,
+        // OrganizationSelectedPackageID: 18,
+      };
+      await dispatch(AddOrganizationsUserApi(navigate, t, createData));
     } else {
       setUserAddMain({
         ...userAddMain,
@@ -220,11 +245,11 @@ const AddUserMain = () => {
           errorMessage: t("Please-enter-mobile-number"),
           errorStatus: userAddMain.MobileNumber.errorStatus,
         },
-        PackageAssigned: {
-          value: userAddMain.PackageAssigned.value,
-          errorMessage: t("Please-select-a-package"),
-          errorStatus: userAddMain.PackageAssigned.errorStatus,
-        },
+        // PackageAssigned: {
+        //   value: userAddMain.PackageAssigned.value,
+        //   errorMessage: t("Please-select-a-package"),
+        //   errorStatus: userAddMain.PackageAssigned.errorStatus,
+        // },
         Email: {
           ...userAddMain.Email,
           errorMessage:
@@ -303,77 +328,80 @@ const AddUserMain = () => {
     },
   };
 
-  // const data = [
-  //   // ["Category", "Value"],
-  //   ["Element", "Users", { role: "style" }, { role: "annotation" }],
-  //   ["Enabled Users", 50, "#6172D6", "50"],
-  //   ["Disabled Users", 30, "#6172D6", "30"],
-  //   ["Locked Users", 80, "#6172D6", "80"],
-  //   ["Dormant Users", 60, "#6172D6", "60"],
-  // ];
+  useEffect(() => {
+    if (Object.keys(graphData).length > 0) {
+      setLoading(false);
+    } else {
+      console.log("Noloading");
+    }
+  }, [graphData]);
 
   // useEffect to set data in graph
   useEffect(() => {
     if (
-      UserMangementReducer.getOrganizationUserStatsGraph !== null &&
-      UserMangementReducer.getOrganizationUserStatsGraph !== undefined &&
+      UserMangementReducer.getOrganizationUserStatsGraph &&
       Object.keys(UserMangementReducer.getOrganizationUserStatsGraph).length > 0
     ) {
-      const data = [
-        // ["Category", "Value"],
-        ["Element", "Users", { role: "style" }, { role: "annotation" }],
-        [
-          "Enabled Users",
-          parseInt(
-            UserMangementReducer.getOrganizationUserStatsGraph.userStats
-              .enabledUsers
-          ),
-          "#6172D6",
-          UserMangementReducer.getOrganizationUserStatsGraph.userStats.enabledUsers.toString(),
-          ,
-        ],
-        [
-          "Disabled Users",
-          parseInt(
-            UserMangementReducer.getOrganizationUserStatsGraph.userStats
-              .disabledUsers
-          ),
-          "#6172D6",
-          UserMangementReducer.getOrganizationUserStatsGraph.userStats.disabledUsers.toString(),
-        ],
-        [
-          "Locked Users",
-          parseInt(
-            UserMangementReducer.getOrganizationUserStatsGraph.userStats
-              .lockedUsers
-          ),
-          "#6172D6",
-          UserMangementReducer.getOrganizationUserStatsGraph.userStats.lockedUsers.toString(),
-          ,
-        ],
-        [
-          "Dormant Users",
-          parseInt(
-            UserMangementReducer.getOrganizationUserStatsGraph.userStats
-              .dormantUsers
-          ),
-          "#6172D6",
-          UserMangementReducer.getOrganizationUserStatsGraph.userStats.dormantUsers.toString(),
-        ],
-      ];
-      setGraphData(data);
+      const userStats =
+        UserMangementReducer.getOrganizationUserStatsGraph.userStats;
 
-      let EssentialBar = parseInt(
-        UserMangementReducer.getOrganizationUserStatsGraph
-      );
+      // Ensure that userStats object is not empty
+      if (userStats) {
+        const data = [
+          ["Element", "Users", { role: "style" }, { role: "annotation" }],
+          [
+            "Enabled Users",
+            parseInt(userStats.enabledUsers),
+            "#6172D6",
+            userStats.enabledUsers.toString(),
+          ],
+          [
+            "Disabled Users",
+            parseInt(userStats.disabledUsers),
+            "#6172D6",
+            userStats.disabledUsers.toString(),
+          ],
+          [
+            "Locked Users",
+            parseInt(userStats.lockedUsers),
+            "#6172D6",
+            userStats.lockedUsers.toString(),
+          ],
+          [
+            "Dormant Users",
+            parseInt(userStats.dormantUsers),
+            "#6172D6",
+            userStats.dormantUsers.toString(),
+          ],
+        ];
+
+        setGraphData(data);
+      }
     }
   }, [UserMangementReducer.getOrganizationUserStatsGraph]);
 
+  //handle select for checkbox is Admin
+  const handleAdminChange = (isChecked) => {
+    setUserAddMain((prevState) => ({
+      ...prevState,
+      isAdmin: {
+        ...prevState.isAdmin,
+        value: isChecked,
+      },
+    }));
+  };
+
+  // handle select for country Flag
   const handleSelect = (country) => {
     setSelected(country);
     setSelectedCountry(country);
     let a = Object.values(countryNameforPhoneNumber).find((obj) => {
       return obj.primary == country;
+    });
+
+    setUserAddMain({
+      ...userAddMain,
+      FK_NumberWorldCountryID: a.id,
     });
   };
 
@@ -394,15 +422,32 @@ const AddUserMain = () => {
                 <Row>
                   <Col lg={9} md={9} sm={12} xs={12} className="mt-2">
                     <div className={styles["chartbarBorder-adduser"]}>
-                      <Chart
-                        chartType="ColumnChart"
-                        width="100%"
-                        height="250px"
-                        radius={10}
-                        data={graphData}
-                        options={options}
-                        className={styles["Addchart"]}
-                      />
+                      {loading ? (
+                        <div>
+                          <Row className="mt-5 mb-5">
+                            <Col
+                              lg={6}
+                              md={6}
+                              sm={6}
+                              xs={12}
+                              className="d-flex justify-content-end ms-4 mt-5 mb-5"
+                            >
+                              <Spin />
+                            </Col>
+                          </Row>
+                        </div>
+                      ) : (
+                        <Chart
+                          chartType="ColumnChart"
+                          width="100%"
+                          height="250px"
+                          radius={10}
+                          data={graphData}
+                          options={options}
+                          className={styles["Addchart"]}
+                        />
+                      )}
+
                       <Row className="d-flex justify-content-center">
                         <Col
                           lg={8}
@@ -424,48 +469,204 @@ const AddUserMain = () => {
                         </Col>
                       </Row>
 
+                      {/* <Row>
+                        <Col>
+                          {UserMangementReducer.getOrganizationUserStatsGraph &&
+                            UserMangementReducer.getOrganizationUserStatsGraph
+                              .selectedPackages &&
+                            UserMangementReducer.getOrganizationUserStatsGraph.selectedPackages.map(
+                              (packages, index) => (
+                                <>
+                                  <Row key={index}>
+                                    <Col
+                                      lg={8}
+                                      md={8}
+                                      sm={8}
+                                      xs={12}
+                                      className=""
+                                    >
+                                      <label
+                                        className={styles["labelChart-Title"]}
+                                      >
+                                        {packages.name}
+                                      </label>
+                                    </Col>
+                                    <Col lg={4} md={4} sm={4} xs={12}>
+                                      <label
+                                        className={styles["labelChart-Number"]}
+                                      >
+                                        {`${packages.allotedUsers} /${packages.headCount}`}
+                                      </label>
+                                    </Col>
+                                    <div
+                                      className={styles["borderLine-title"]}
+                                    />
+                                  </Row>
+                                  <Row>
+                                    <Col
+                                      lg={8}
+                                      md={8}
+                                      sm={8}
+                                      xs={12}
+                                      className=""
+                                    >
+                                      <label
+                                        className={
+                                          styles["Admin-labelChart-Title"]
+                                        }
+                                      >
+                                        {UserMangementReducer
+                                          .getOrganizationUserStatsGraph
+                                          .selectedPackages[index + 1]?.name ||
+                                          ""}
+                                      </label>
+                                    </Col>
+                                    <Col lg={4} md={4} sm={4} xs={12}>
+                                      <label
+                                        className={
+                                          styles["Admin-labelChart-Number"]
+                                        }
+                                      >
+                                        {`${
+                                          UserMangementReducer
+                                            .getOrganizationUserStatsGraph
+                                            .selectedPackages[index + 1]
+                                            ?.allotedUsers || ""
+                                        } / ${
+                                          UserMangementReducer
+                                            .getOrganizationUserStatsGraph
+                                            .selectedPackages[index + 1]
+                                            ?.headCount || ""
+                                        }`}
+                                      </label>
+                                    </Col>
+                                    <div
+                                      className={styles["borderLine-title"]}
+                                    />
+                                  </Row>
+                                  <Row>
+                                    <Col
+                                      lg={8}
+                                      md={8}
+                                      sm={8}
+                                      xs={12}
+                                      className=""
+                                    >
+                                      <label
+                                        className={
+                                          styles["Admin-labelChart-Title"]
+                                        }
+                                      >
+                                        {UserMangementReducer
+                                          .getOrganizationUserStatsGraph
+                                          .selectedPackages[index + 2]?.name ||
+                                          ""}
+                                      </label>
+                                    </Col>
+                                    <Col lg={4} md={4} sm={4} xs={12}>
+                                      <label
+                                        className={
+                                          styles["Admin-labelChart-Number"]
+                                        }
+                                      >
+                                        {`${
+                                          UserMangementReducer
+                                            .getOrganizationUserStatsGraph
+                                            .selectedPackages[index + 2]
+                                            ?.allotedUsers || ""
+                                        } / ${
+                                          UserMangementReducer
+                                            .getOrganizationUserStatsGraph
+                                            .selectedPackages[index + 2]
+                                            ?.headCount || ""
+                                        }`}
+                                      </label>
+                                    </Col>
+                                  </Row>
+                                </>
+                              )
+                            )}
+                        </Col>
+                      </Row> */}
+
                       <Row>
-                        <Col lg={8} md={8} sm={8} xs={12} className="">
-                          <label className={styles["labelChart-Title"]}>
-                            {t("Essential")}
-                          </label>
-                        </Col>
-                        <Col lg={4} md={4} sm={4} xs={12}>
-                          <label className={styles["labelChart-Number"]}>
-                            {t("1/3")}
-                          </label>
-                        </Col>
-                        <div className={styles["borderLine-title"]} />
-                      </Row>
-                      <Row>
-                        <Col lg={8} md={8} sm={8} xs={12} className="">
-                          <label className={styles["Admin-labelChart-Title"]}>
-                            {t("Professional")}
-                          </label>
-                        </Col>
-                        <Col lg={4} md={4} sm={4} xs={12}>
-                          <label className={styles["Admin-labelChart-Number"]}>
-                            {t("1/2")}
-                          </label>
-                        </Col>
-                        <div className={styles["borderLine-title"]} />
-                      </Row>
-                      <Row>
-                        <Col lg={8} md={8} sm={8} xs={12} className="">
-                          <label
-                            className={styles["Admin-labelChart-Title"]}
-                            // className={styles["labelChart-Remain-Title"]}
-                          >
-                            {t("Premium")}
-                          </label>
-                        </Col>
-                        <Col lg={4} md={4} sm={4} xs={12}>
-                          <label
-                            // className={styles["labelChart-RemainNum"]}
-                            className={styles["Admin-labelChart-Number"]}
-                          >
-                            {t("2/4")}
-                          </label>
+                        <Col>
+                          {UserMangementReducer.getOrganizationUserStatsGraph?.selectedPackages?.map(
+                            (packages, index) => {
+                              if (
+                                packages.name !== "Professional" &&
+                                packages.name !== "Premium"
+                              ) {
+                                return (
+                                  <Row key={index}>
+                                    <Col
+                                      lg={8}
+                                      md={8}
+                                      sm={8}
+                                      xs={12}
+                                      className=""
+                                    >
+                                      <label
+                                        className={styles["labelChart-Title"]}
+                                      >
+                                        {packages.name}
+                                      </label>
+                                    </Col>
+                                    <Col lg={4} md={4} sm={4} xs={12}>
+                                      <label
+                                        className={styles["labelChart-Number"]}
+                                      >
+                                        {`${packages.allotedUsers} / ${packages.headCount}`}
+                                      </label>
+                                    </Col>
+                                    <div
+                                      className={styles["borderLine-title"]}
+                                    />
+                                  </Row>
+                                );
+                              }
+                              return null;
+                            }
+                          )}
+
+                          {["Professional", "Premium"].map((packageName) => {
+                            const packageData =
+                              UserMangementReducer.getOrganizationUserStatsGraph?.selectedPackages?.find(
+                                (packages) => packages.name === packageName
+                              );
+
+                            return (
+                              packageData && (
+                                <Row key={packageName}>
+                                  <Col
+                                    lg={8}
+                                    md={8}
+                                    sm={8}
+                                    xs={12}
+                                    className=""
+                                  >
+                                    <label
+                                      className={
+                                        styles["Admin-labelChart-Title"]
+                                      }
+                                    >
+                                      {packageName}
+                                    </label>
+                                  </Col>
+                                  <Col lg={4} md={4} sm={4} xs={12}>
+                                    <label
+                                      className={
+                                        styles["Admin-labelChart-Number"]
+                                      }
+                                    >
+                                      {`${packageData.allotedUsers} / ${packageData.headCount}`}
+                                    </label>
+                                  </Col>
+                                  <div className={styles["borderLine-title"]} />
+                                </Row>
+                              )
+                            );
+                          })}
                         </Col>
                       </Row>
                     </div>
@@ -543,7 +744,10 @@ const AddUserMain = () => {
                     </label>
 
                     <span>
-                      <Checkbox />
+                      <Checkbox
+                        value={userAddMain.isAdmin.value}
+                        onChange={(e) => handleAdminChange(e.target.checked)}
+                      />
                       <label className={styles["checkbox-label"]}>
                         {t("is-admin-also")}
                       </label>

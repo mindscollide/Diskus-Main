@@ -628,7 +628,7 @@ export const router = createHashRouter(
         element={<PasswordVerification />}
       />
 
-      {/* <Route path="AddUsersUsermanagement" element={<AddUserMain />} /> */}
+      <Route path="/AddUsersUsermanagement" element={<AddUserMain />} />
     </>
   )
 );
