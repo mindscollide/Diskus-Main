@@ -32,6 +32,7 @@ import {
   postAssgineeComment,
   HideNotificationTodoComment,
   emptyCommentState,
+  postComments,
 } from "../../store/actions/Post_AssigneeComments";
 import { DownloadFile } from "../../store/actions/Download_action";
 import { useTranslation } from "react-i18next";
@@ -249,7 +250,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
     "commentIndex2commentIndex2commentIndex2commentIndex2"
   );
 
-  // // for comment from socket
+  // for comment from socket
   useEffect(() => {
     if (Comments !== null) {
       let commentIndex = taskAssigneeComments.findIndex((data, index) => {
@@ -277,7 +278,9 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
         });
 
         setTaskAssigneeComments(newArr);
-        dispatch(emptyCommentState());
+        dispatch(postComments(null));
+
+        // dispatch(emptyCommentState());
       } else if (commentIndex2 === undefined && commentIndex === -1) {
         // Comment does not exist, add it
         let newComment = {
@@ -291,10 +294,10 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
         };
 
         setTaskAssigneeComments((prev) => [...prev, newComment]);
-        dispatch(emptyCommentState());
+        // dispatch(emptyCommentState());
+        dispatch(postComments(null));
       }
     }
-    return;
   }, [Comments]);
 
   // for Comment delete from MQTT Notification

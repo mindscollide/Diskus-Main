@@ -99,7 +99,12 @@ import {
 } from "../../store/actions/Committee_actions";
 import { mqttConnection } from "../../commen/functions/mqttconnection";
 import { useTranslation } from "react-i18next";
-import { notifyPollingSocket } from "../../store/actions/Polls_actions";
+import {
+  createPollCommitteesMQTT,
+  createPollGroupsMQTT,
+  createPollMeetingMQTT,
+  notifyPollingSocket,
+} from "../../store/actions/Polls_actions";
 import {
   changeMQTTJSONOne,
   changeMQQTTJSONTwo,
@@ -1207,7 +1212,7 @@ const Dashboard = () => {
             });
           }
 
-          dispatch(notifyPollingSocket(data.payload.polls));
+          dispatch(notifyPollingSocket(data.payload));
           setNotificationID(id);
         } else if (
           data.payload.message.toLowerCase() === "POLL_UPDATED".toLowerCase()
@@ -1258,6 +1263,58 @@ const Dashboard = () => {
           }
           dispatch(notifyPollingSocket(data.payload.polls));
           setNotificationID(id);
+        } else if (
+          data.payload.message
+            .toLowerCase()
+            .includes("NEW_POLL_PUBLISHED_GROUP".toLowerCase())
+        ) {
+          dispatch(createPollGroupsMQTT(data.payload));
+          if (data.viewable) {
+            setNotification({
+              ...notification,
+              notificationShow: true,
+              message: changeMQTTJSONOne(
+                t("NEW_POLL_PUBLISHED"),
+                "[Poll Title]",
+                data.payload.pollTitle
+              ),
+            });
+          }
+        } else if (
+          data.payload.message
+            .toLowerCase()
+            .includes("NEW_POLL_PUBLISHED_COMMITTEE".toLowerCase())
+        ) {
+          dispatch(createPollCommitteesMQTT(data.payload));
+          if (data.viewable) {
+            setNotification({
+              ...notification,
+              notificationShow: true,
+              message: changeMQTTJSONOne(
+                t("NEW_POLL_PUBLISHED"),
+                "[Poll Title]",
+                data.payload.pollTitle
+              ),
+            });
+          }
+        } else if (
+          data.payload.message
+            .toLowerCase()
+            .includes("NEW_POLL_PUBLISHED_MEETING".toLowerCase())
+        ) {
+          dispatch(createPollMeetingMQTT(data.payload));
+
+          if (data.viewable) {
+            setNotification({
+              ...notification,
+              notificationShow: true,
+              message: changeMQTTJSONOne(
+                t("NEW_POLL_PUBLISHED"),
+                "[Poll Title]",
+                data.payload.pollTitle
+              ),
+            });
+          }
         }
       }
       if (data.action.toLowerCase() === "Resolution".toLowerCase()) {
