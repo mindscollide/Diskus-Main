@@ -6,7 +6,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { TextField, Modal, Button } from "../../../../../elements";
 import { Container, Row, Col } from "react-bootstrap";
 import "./videoPanelBody.css";
-import { Spin } from "antd";
+import { Spin, Tooltip } from "antd";
 import { LoaderPanel } from "../../../../../elements";
 import moment from "moment";
 import {
@@ -530,11 +530,16 @@ const VideoPanelBodyRecent = () => {
                       </div>
                     </Col>
                     <Col lg={2} md={2} sm={12} className="video_call_icon mt-4">
-                      <img
-                        className="cursor-pointer"
-                        src={VideoCallIcon}
-                        onClick={() => otoVideoCall(recentCallData)}
-                      />
+                      <Tooltip
+                        placement="bottomLeft"
+                        title={t("Start-video-call")}
+                      >
+                        <img
+                          className="cursor-pointer"
+                          src={VideoCallIcon}
+                          onClick={() => otoVideoCall(recentCallData)}
+                        />
+                      </Tooltip>
                     </Col>
                   </Row>
                 </>

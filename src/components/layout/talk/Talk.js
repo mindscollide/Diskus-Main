@@ -15,6 +15,7 @@ import {
   createGroupScreen,
   chatBoxActiveFlag,
   activeChatBoxGS,
+  globalChatsSearchFlag,
 } from "../../../store/actions/Talk_Feature_actions";
 import {
   participantPopup,
@@ -71,6 +72,7 @@ const Talk = () => {
       dispatch(recentVideoFlag(false));
       setActiveVideoIcon(true);
       dispatch(activeChatBoxGS(false));
+      dispatch(globalChatsSearchFlag(false));
       dispatch(videoChatSearchFlag(false));
     } else {
       dispatch(videoChatPanel(false));
@@ -78,6 +80,7 @@ const Talk = () => {
       dispatch(activeChatBoxGS(false));
       dispatch(contactVideoFlag(false));
       dispatch(recentVideoFlag(false));
+      dispatch(globalChatsSearchFlag(false));
       dispatch(videoChatSearchFlag(false));
     }
   };
@@ -86,6 +89,7 @@ const Talk = () => {
     // setSubIcons(!subIcons)
     dispatch(activeChatBoxGS(false));
     setActiveVideoIcon(false);
+    dispatch(globalChatsSearchFlag(false));
     dispatch(videoChatPanel(false));
   };
 
@@ -128,6 +132,7 @@ const Talk = () => {
       dispatch(headerShowHideStatus(true));
       dispatch(footerShowHideStatus(true));
       dispatch(activeChatBoxGS(true));
+      dispatch(globalChatsSearchFlag(false))
     }
     // else if (activeVideoIcon === false) {
     //   dispatch(recentVideoFlag(false))
@@ -143,6 +148,7 @@ const Talk = () => {
       dispatch(contactVideoFlag(false));
       dispatch(recentVideoFlag(false));
       dispatch(videoChatSearchFlag(false));
+      dispatch(globalChatsSearchFlag(false))
     }
   };
 

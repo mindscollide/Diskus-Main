@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Row, Col } from "react-bootstrap";
 import { Button } from "./../../../../elements";
 import videoEndIcon from "../../../../../assets/images/newElements/VideoEndIcon.png";
-
+import { Tooltip } from "antd";
 import "./videoCallHeader.css";
 import {
   normalizeVideoPanelFlag,
@@ -225,10 +225,9 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
   }, [videoFeatureReducer.MinimizeParticipantPopupFlag]);
 
   useEffect(() => {
-    setLocalMicStatus(micStatus)
-    setLocalVidStatus(vidStatus)
-  }, [videoFeatureReducer.MinimizeVideoFlag])
-  
+    setLocalMicStatus(micStatus);
+    setLocalVidStatus(vidStatus);
+  }, [videoFeatureReducer.MinimizeVideoFlag]);
 
   return (
     <>
@@ -320,18 +319,20 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                 >
                   {videoFeatureReducer.MinimizeParticipantPopupFlag === true ? (
                     <>
-                      <img
-                        className={
-                          videoFeatureReducer.LeaveCallModalFlag === true
-                            ? "grayScaleImage"
-                            : "cursor-pointer"
-                        }
-                        src={ActiveParticipantIcon}
-                        alt="Normal Screen Participant"
-                        onClick={closeParticipantHandler}
-                        height={30}
-                        width={30}
-                      />
+                      <Tooltip placement="bottomLeft" title={t("Participants")}>
+                        <img
+                          className={
+                            videoFeatureReducer.LeaveCallModalFlag === true
+                              ? "grayScaleImage"
+                              : "cursor-pointer"
+                          }
+                          src={ActiveParticipantIcon}
+                          alt="Normal Screen Participant"
+                          onClick={closeParticipantHandler}
+                          height={30}
+                          width={30}
+                        />
+                      </Tooltip>
                       <div
                         className="minimize-participants-list"
                         key={Math.random()}
@@ -392,18 +393,20 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                       </div>
                     </>
                   ) : (
-                    <img
-                      className={
-                        videoFeatureReducer.LeaveCallModalFlag === true
-                          ? "grayScaleImage"
-                          : "cursor-pointer"
-                      }
-                      src={MinimizeParticipant}
-                      onClick={closeParticipantHandler}
-                      height={20}
-                      alt={"Minimize Participant"}
-                      width={25}
-                    />
+                    <Tooltip placement="bottomLeft" title={t("Participants")}>
+                      <img
+                        className={
+                          videoFeatureReducer.LeaveCallModalFlag === true
+                            ? "grayScaleImage"
+                            : "cursor-pointer"
+                        }
+                        src={MinimizeParticipant}
+                        onClick={closeParticipantHandler}
+                        height={20}
+                        alt={"Minimize Participant"}
+                        width={25}
+                      />
+                    </Tooltip>
                   )}
                 </div>
               ) : null}
@@ -424,77 +427,95 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
               {/* <img src={MinimizeParticipant} alt="Mininmize Participants" /> */}
               {/* <img src={MinimizeScreenShare} alt="Mininmize Screen Icon" /> */}
               {localVidStatus === true ? (
-                <img
-                  src={MinimizeVideoIcon}
-                  className={"minimize-video-icon cursor-pointer"}
-                  alt="Minimize Video Icon"
-                  onClick={disableVideo}
-                />
+                <Tooltip placement="bottomLeft" title={t("Disable-video")}>
+                  <img
+                    src={MinimizeVideoIcon}
+                    className={"minimize-video-icon cursor-pointer"}
+                    alt="Minimize Video Icon"
+                    onClick={disableVideo}
+                  />
+                </Tooltip>
               ) : (
-                <img
-                  src={VideoOffIcon}
-                  className={"minimize-video-icon cursor-pointer"}
-                  alt="Minimize Video Icon"
-                  onClick={enableVideo}
-                />
+                <Tooltip placement="bottomLeft" title={t("Enable-video")}>
+                  <img
+                    src={VideoOffIcon}
+                    className={"minimize-video-icon cursor-pointer"}
+                    alt="Minimize Video Icon"
+                    onClick={enableVideo}
+                  />
+                </Tooltip>
               )}
               {localMicStatus === true ? (
-                <img
-                  className="cursor-pointer"
-                  src={MinimizeMicIcon}
-                  alt="Minimize Mic Icon"
-                  onClick={disableMic}
-                />
+                <Tooltip placement="bottomLeft" title={t("Disable-mic")}>
+                  <img
+                    className="cursor-pointer"
+                    src={MinimizeMicIcon}
+                    alt="Minimize Mic Icon"
+                    onClick={disableMic}
+                  />
+                </Tooltip>
               ) : (
-                <img
-                  className="cursor-pointer"
-                  src={MicOffIcon}
-                  alt="Minimize Mic Icon"
-                  onClick={enableMic}
-                />
+                <Tooltip placement="bottomLeft" title={t("Enable-mic")}>
+                  <img
+                    className="cursor-pointer"
+                    src={MicOffIcon}
+                    alt="Minimize Mic Icon"
+                    onClick={enableMic}
+                  />
+                </Tooltip>
               )}
               {videoFeatureReducer.LeaveCallModalFlag === true &&
               callerID === currentUserID ? (
-                <img
-                  width={25}
-                  onClick={cancelLeaveCallOption}
-                  src={videoEndIcon}
-                  alt="Icon Video"
-                  className="cursor-pointer"
-                />
+                <Tooltip placement="bottomLeft" title={t("Cancel")}>
+                  <img
+                    width={25}
+                    onClick={cancelLeaveCallOption}
+                    src={videoEndIcon}
+                    alt="Icon Video"
+                    className="cursor-pointer"
+                  />
+                </Tooltip>
               ) : (videoFeatureReducer.LeaveCallModalFlag === false &&
                   callerID === currentUserID) ||
                 callerID === 0 ? (
-                <img
-                  width={25}
-                  src={CallEndRedIcon}
-                  onClick={openVideoPanel}
-                  alt="Icon Video"
-                  className="cursor-pointer"
-                />
+                <Tooltip placement="bottomLeft" title={t("End-call")}>
+                  <img
+                    width={25}
+                    src={CallEndRedIcon}
+                    onClick={openVideoPanel}
+                    alt="Icon Video"
+                    className="cursor-pointer"
+                  />
+                </Tooltip>
               ) : videoFeatureReducer.LeaveCallModalFlag === false &&
                 callerID !== currentUserID ? (
-                <img
-                  width={35}
-                  src={CallEndRedIcon}
-                  onClick={minimizeEndCallParticipant}
-                  alt="Icon Video"
-                  className="cursor-pointer"
-                />
+                <Tooltip placement="bottomLeft" title={t("End-call")}>
+                  <img
+                    width={35}
+                    src={CallEndRedIcon}
+                    onClick={minimizeEndCallParticipant}
+                    alt="Icon Video"
+                    className="cursor-pointer"
+                  />
+                </Tooltip>
               ) : null}
-              <img
-                src={MinToNormalIcon}
-                onClick={normalizePanel}
-                className="min-to-normal-icon cursor-pointer"
-                alt="Icon Video"
-              />
-              <img
-                src={MinimizeExpandIcon}
-                // className="minimize-expand-icon"
-                onClick={maximizePanel}
-                className="min-to-max-icon cursor-pointer"
-                alt="Icon Video"
-              />
+              <Tooltip placement="bottomLeft" title={t("Normalize-screen")}>
+                <img
+                  src={MinToNormalIcon}
+                  onClick={normalizePanel}
+                  className="min-to-normal-icon cursor-pointer"
+                  alt="Icon Video"
+                />
+              </Tooltip>
+              <Tooltip placement="bottomLeft" title={t("Maximize-screen")}>
+                <img
+                  src={MinimizeExpandIcon}
+                  // className="minimize-expand-icon"
+                  onClick={maximizePanel}
+                  className="min-to-max-icon cursor-pointer"
+                  alt="Icon Video"
+                />
+              </Tooltip>
             </div>
 
             {/* <div className="minimizeGroup-expand-icon"> */}
