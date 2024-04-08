@@ -122,6 +122,13 @@ body[dir="rtl"] .modal-Note-Title-Input {
   font-family: "MontserratSemiBold";
 }
 
+.Choose_file_style {
+  font-size: 12px !important;
+  color: #6172d6 !important;
+  font-family: "MontserratSemiBold";
+  margin-left: 3px !important;
+}
+
 body[dir="rtl"] .ant-upload-text {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
