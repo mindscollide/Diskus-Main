@@ -185,6 +185,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
   const [save, setSave] = useState(false);
   const [print, setPrint] = useState(false);
   const [email, setEmail] = useState(false);
+  const [leave, setLeave] = useState(false);
   const [deleteMessage, setDeleteMessage] = useState(false);
   const [messageInfo, setMessageInfo] = useState(false);
   const [showGroupInfo, setShowGroupInfo] = useState(false);
@@ -633,6 +634,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setSave(false);
     setPrint(false);
     setEmail(false);
+    setLeave(false);
     setDeleteMessage(false);
     setMessageInfo(false);
     setShowGroupInfo(false);
@@ -718,6 +720,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
   const modalHandlerSave = async (data) => {
     setSave(true);
     setPrint(false);
+    setLeave(false);
     setEmail(false);
     setDeleteMessage(false);
     setMessageInfo(false);
@@ -733,6 +736,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
   const modalHandlerPrint = async (e) => {
     setSave(false);
     setPrint(true);
+    setLeave(false);
     setEmail(false);
     setDeleteMessage(false);
     setMessageInfo(false);
@@ -747,6 +751,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
   const modalHandlerEmail = async (e) => {
     setSave(false);
+    setLeave(false);
     setPrint(false);
     setEmail(true);
     setDeleteMessage(false);
@@ -821,6 +826,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     dispatch(DownloadChat(Data, t, navigate));
     setSave(false);
     setTodayCheckState(false);
+    setLeave(false);
     setAllCheckState(false);
     setCustomCheckState(false);
   };
@@ -913,10 +919,10 @@ const ChatMainBody = ({ chatMessageClass }) => {
       },
     };
     dispatch(EmailChat(Data, t, navigate));
-      setNotification({
-        notificationShow: true,
-        message: t("Email-initiated"),
-      });
+    setNotification({
+      notificationShow: true,
+      message: t("Email-initiated"),
+    });
     setNotificationID(id);
     setEmail(false);
     setTodayCheckState(false);
@@ -927,6 +933,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
   const handleCancel = () => {
     setSave(false);
     setPrint(false);
+    setLeave(false);
     setEmail(false);
     setDeleteMessage(false);
     setMessageInfo(false);
@@ -2752,6 +2759,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setChatMenuActive(false);
     dispatch(videoChatMessagesFlag(false));
     dispatch(resetCloseChatFlags());
+    setLeave(false);
     setSave(false);
     setPrint(false);
     setEmail(false);
@@ -2932,6 +2940,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     dispatch(resetCloseChatFlags());
     setSave(false);
     setPrint(false);
+    setLeave(false);
     setEmail(false);
     setDeleteMessage(false);
     setMessageInfo(false);
@@ -3027,6 +3036,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     dispatch(resetCloseChatFlags());
     setSave(false);
     setPrint(false);
+    setLeave(false);
     setEmail(false);
     setDeleteMessage(false);
     setMessageInfo(false);
@@ -3247,7 +3257,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                     save === true ||
                     print === true ||
                     email === true ||
-                    deleteMessage === true
+                    deleteMessage === true ||
+                    leave === true
                       ? "chat-header applyBlur"
                       : "chat-header"
                   }
@@ -3363,10 +3374,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                   {t("Delete-messages")}
                                 </span>
                                 <span
-                                  onClick={() =>
-                                    leaveGroupHandlerChat(
-                                      talkStateData.ActiveChatData
-                                    )
+                                  onClick={
+                                    () => setLeave(true)
+                                    // leaveGroupHandlerChat(
+                                    //   talkStateData.ActiveChatData
+                                    // )
                                   }
                                 >
                                   {t("Leave-Group")}
@@ -3521,7 +3533,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         save === true ||
                         print === true ||
                         email === true ||
-                        deleteMessage === true
+                        deleteMessage === true ||
+                        leave === true
                           ? "chat-section applyBlur"
                           : showChatSearch === true
                           ? "chat-section searchField"
@@ -5364,6 +5377,44 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 />
                               </Col>
                               <Col lg={2} md={2} sm={12}></Col>
+                            </Row>
+                          </div>
+                        </>
+                      ) : leave === true ? (
+                        <>
+                          <div className="chat-menu-popups">
+                            <Row>
+                              <Col lg={12} md={12} sm={12}>
+                                {" "}
+                                <div className="chat-modal-Heading">
+                                  <h1>
+                                    {t("Are-you-sure-you-want-to-leave-group")}
+                                  </h1>
+                                </div>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="text-center"
+                              >
+                                <Button
+                                  className="MontserratSemiBold Ok-btn mx-2"
+                                  text={t("Yes")}
+                                  onClick={() =>
+                                    leaveGroupHandlerChat(
+                                      talkStateData.ActiveChatData
+                                    )
+                                  }
+                                />
+                                <Button
+                                  className="MontserratSemiBold White-btn"
+                                  text={t("Cancel")}
+                                  onClick={() => setLeave(false)}
+                                />
+                              </Col>
                             </Row>
                           </div>
                         </>

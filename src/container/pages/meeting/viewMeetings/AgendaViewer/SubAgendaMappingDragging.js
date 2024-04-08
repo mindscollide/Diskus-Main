@@ -486,21 +486,38 @@ const SubAgendaMappingDragging = ({
                                                         Number(currentUserID) &&
                                                       !subAgendaData.voteOwner
                                                         ?.currentVotingClosed ? (
-                                                        <Button
-                                                          text={t(
-                                                            "Start-voting"
-                                                          )}
-                                                          className={
-                                                            styles[
-                                                              "startVotingButton"
-                                                            ]
-                                                          }
-                                                          onClick={() =>
-                                                            startVoting(
-                                                              subAgendaData
-                                                            )
-                                                          }
-                                                        />
+                                                        <>
+                                                          <Button
+                                                            text={t(
+                                                              "Start-voting"
+                                                            )}
+                                                            className={
+                                                              styles[
+                                                                "startVotingButton"
+                                                              ]
+                                                            }
+                                                            onClick={() =>
+                                                              startVoting(
+                                                                subAgendaData
+                                                              )
+                                                            }
+                                                          />
+                                                          <Button
+                                                            text={t(
+                                                              "View-votes"
+                                                            )}
+                                                            className={
+                                                              styles[
+                                                                "ViewVoteButton"
+                                                              ]
+                                                            }
+                                                            onClick={() =>
+                                                              EnableViewVoteModal(
+                                                                subAgendaData
+                                                              )
+                                                            }
+                                                          />
+                                                        </>
                                                       ) : Number(
                                                           subAgendaData.agendaVotingID
                                                         ) !== 0 &&
@@ -550,8 +567,11 @@ const SubAgendaMappingDragging = ({
                                                         </>
                                                       ) : editorRole.role ===
                                                           "Organizer" &&
-                                                        subAgendaData.voteOwner
-                                                          ?.currentVotingClosed ? (
+                                                        (subAgendaData.voteOwner
+                                                          ?.currentVotingClosed ||
+                                                          Number(
+                                                            subAgendaData.agendaVotingID
+                                                          ) !== 0) ? (
                                                         <>
                                                           <Button
                                                             text={t(
