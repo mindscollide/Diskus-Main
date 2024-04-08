@@ -437,7 +437,7 @@ const SceduleMeeting = ({
                     />
                     <Button
                       disableBtn={Number(currentMeeting) === 0 ? true : false}
-                      text={t("Add-agenda")}
+                      text={t("Agenda-builder")}
                       className={
                         agenda === true
                           ? styles["Schedule_meetings_options_active"]
