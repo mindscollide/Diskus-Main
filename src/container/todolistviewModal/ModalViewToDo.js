@@ -123,8 +123,11 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   const UserName = localStorage.getItem("name");
   //To Set task Creater ID
   useEffect(() => {
+    dispatch(postComments(null));
+
     setTaskCreatorID(parseInt(createrID));
     return () => {
+      dispatch(postComments(null));
       setTaskAssigneeComments([]);
       //task Object
       setTask({
@@ -253,13 +256,16 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   // for comment from socket
   useEffect(() => {
     if (Comments !== null) {
+      // First Compare Random ID and replace with
       let commentIndex = taskAssigneeComments.findIndex((data, index) => {
         return data?.CommentID === Comments.commentFrontEndID.toString();
       });
+      // Update Comment ID
       let commentIndex2 = taskAssigneeComments.find(
         (data, index) => data?.taskCommentID === Number(Comments.pK_TCID)
       );
       console.log(commentIndex, commentIndex2, "commentIndex2commentIndex2");
+      // Update Comment ID
       if (commentIndex !== -1) {
         let newArr = taskAssigneeComments.map((comment, index) => {
           if (index === commentIndex) {
@@ -327,6 +333,8 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   //Get All Assignees API hit
   useEffect(() => {
     if (viewFlagToDo) {
+      dispatch(postComments(null));
+
       dispatch(GetAllAssigneesToDoList(navigate, 1, t));
     } else {
       setViewFlagToDo(false);

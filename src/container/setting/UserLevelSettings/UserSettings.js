@@ -778,10 +778,6 @@ const UserSettings = () => {
 
     // userOptionsSettings.AllowMicrosoftCalenderSync;
     if (settingReducer.UserProfileData.userAllowMicrosoftCalendarSynch) {
-      console.log(
-        "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
-        AllowMicrosoftCalenderSyncCall
-      );
       if (userOptionsSettings.AllowMicrosoftCalenderSync === false) {
         // revoke token api hit
         console.log(
@@ -790,30 +786,8 @@ const UserSettings = () => {
         );
         AllowMicrosoftCalenderSyncCall = false;
       } else {
-        console.log(
-          "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
-          AllowMicrosoftCalenderSyncCall
-        );
-        if (authMicrosoftAccessCode !== "") {
-          console.log(
-            "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
-            AllowMicrosoftCalenderSyncCall
-          );
-          AllowMicrosoftCalenderSyncCall = await dispatch(
-            getMicrosoftValidToken(
-              navigate,
-              authMicrosoftAccessCode,
-              userOptionsSettings,
-              userOptionsSettings.AllowMicrosoftCalenderSync,
-              t
-            )
-          );
-        }
+        AllowMicrosoftCalenderSyncCall = true;
       }
-      console.log(
-        "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
-        AllowMicrosoftCalenderSyncCall
-      );
     } else if (userOptionsSettings.AllowMicrosoftCalenderSync) {
       console.log(
         "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
@@ -835,10 +809,6 @@ const UserSettings = () => {
         );
       }
     }
-    console.log(
-      "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
-      AllowMicrosoftCalenderSyncCall
-    );
     if (signUpCodeToken !== "") {
       console.log(
         "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
