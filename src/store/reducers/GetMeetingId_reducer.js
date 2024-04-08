@@ -11,7 +11,7 @@ const initialState = {
   TotalNumberOfUpcommingMeetingsInWeek: 0,
   MeetingTableData: false,
   UpcomingEventsData: [],
-  allMeetingsSocketData: [],
+  allMeetingsSocketData: null,
   MeetingStatusSocket: null,
   searchRecordFound: false,
   MQTTUpcomingEvents: null,
@@ -66,6 +66,8 @@ const meetingIdReducer = (state = initialState, action) => {
     }
 
     case actions.MEETING_STATUS_ENDED: {
+      console.log(action, "MEETING_STATUS_ENDED");
+
       return {
         ...state,
         MeetingStatusEnded: action.response,
@@ -175,19 +177,19 @@ const meetingIdReducer = (state = initialState, action) => {
       };
     }
     case actions.UPCOMINGEVENTS_MQTT: {
-      let newEvent = [...state.UpcomingEventsData];
-      if (Array.isArray(state.UpcomingEventsData)) {
-        if (Object.keys(action.response).length > 0) {
-          newEvent.unshift(action.response);
-        }
-      } else {
-        // Initialize UpcomingEventsData as an empty array if it's not already
-        newEvent = [];
-      }
+      // let newEvent = [...state.UpcomingEventsData];
+      // if (Array.isArray(state.UpcomingEventsData)) {
+      //   if (action.response && Object.keys(action.response).length > 0) {
+      //     newEvent.unshift(action.response);
+      //   }
+      // } else {
+      //   // Initialize UpcomingEventsData as an empty array if it's not already
+      //   newEvent = [];
+      // }
 
       return {
         ...state,
-        UpcomingEventsData: newEvent,
+        // UpcomingEventsData: ,
         MQTTUpcomingEvents: action.response,
       };
     }

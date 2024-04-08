@@ -14,13 +14,6 @@ import { router } from "./routes/routes";
 import { manageTabs } from "./commen/functions/validations";
 
 const App = () => {
-  useEffect(() => {
-    // logoutAllTabs();
-    // moment.tz.setDefault("America/New_York");
-    const cleanup = manageTabs();
-    return () => cleanup();
-  }, []);
-
   return (
     <Suspense fallback={<Loader />}>
       {/* Define your routes here */}

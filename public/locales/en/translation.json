@@ -84,7 +84,7 @@
   "Url": "Url",
   "On-board-discussion": "Onboard discussion",
   "Attachement": "Attachments",
-  "Add-agenda": "Add agenda",
+  "Add-agenda": "Add Agenda",
   "Update-agenda": "Update agenda",
   "Add-attendees": "Add attendees",
   "Participant": "Participant",
@@ -1920,5 +1920,9 @@
   "Disable-video-call": "Disable video call",
   "Email-initiated": "Email initiated",
   "Please-select-country": "Please Select Country",
-  "Email-already-in-use": "Email Already in use"
+  "Email-already-in-use": "Email Already in use",
+  "Disable-video": "Disable Video",
+  "Enable-video": "Enable Video",
+  "Disable-mic": "Disable Mic",
+  "Enable-mic": "Enable Mic"
 }
