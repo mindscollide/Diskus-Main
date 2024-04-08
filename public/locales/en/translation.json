@@ -1225,7 +1225,7 @@
   "Create-Group": "Create Group",
   "Yesterday": "Yesterday",
   "New-Conversation": "New Conversation",
-  "Search-Chat": "Search-Chat",
+  "Search-Chat": "Search",
   "Block": "Block",
   "Unblock": "Unblock",
   "Leave-Group": "Leave Group",
@@ -1924,5 +1924,10 @@
   "Disable-video": "Disable Video",
   "Enable-video": "Enable Video",
   "Disable-mic": "Disable Mic",
-  "Enable-mic": "Enable Mic"
+  "Enable-mic": "Enable Mic",
+  "Start-video-call": "Start video call",
+  "Normalize-screen": "Normalize screen",
+  "Maximize-screen": "Maximize screen",
+  "Are-you-sure-you-want-to-leave-group": "Are you sure to leave the group?",
+  "Delete-messages": "Delete messages"
 }
