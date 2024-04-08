@@ -1030,7 +1030,7 @@ const AgendaWise = ({
                       {t("Drag-&-drop-or")}
                       <span className={styles["Choose_file_style"]}>
                         {t("Choose-file")}
-                      </span>
+                      </span>{" "}
                       <span className={styles["here_text"]}>{t("Here")}</span>
                     </p>
                   </Dragger>

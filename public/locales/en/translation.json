@@ -84,7 +84,7 @@
   "Url": "Url",
   "On-board-discussion": "Onboard discussion",
   "Attachement": "Attachments",
-  "Add-agenda": "Add agenda",
+  "Add-agenda": "Add Agenda",
   "Update-agenda": "Update agenda",
   "Add-attendees": "Add attendees",
   "Participant": "Participant",
@@ -1919,5 +1919,9 @@
   "Time-should-be-greater-then-system-time": "Time should be greater then the system time",
   "Disable-video-call": "Disable video call",
   "Email-initiated": "Email initiated",
-  "Please-select-country": "Please Select Country"
+  "Please-select-country": "Please Select Country",
+  "Disable-video": "Disable Video",
+  "Enable-video": "Enable Video",
+  "Disable-mic": "Disable Mic",
+  "Enable-mic": "Enable Mic"
 }

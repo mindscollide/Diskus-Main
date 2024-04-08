@@ -1618,7 +1618,6 @@ const NewMeeting = () => {
   }, [meetingIdReducer.MeetingStatusEnded, NewMeetingreducer]);
   useEffect(() => {
     if (
-      meetingIdReducer.allMeetingsSocketData.length !== 0 &&
       meetingIdReducer.allMeetingsSocketData !== null &&
       meetingIdReducer.allMeetingsSocketData !== undefined
     ) {
@@ -1831,7 +1830,7 @@ const NewMeeting = () => {
     dispatch(meetingNotConductedMQTT(null));
   }, [NewMeetingreducer.meetingStatusNotConductedMqttData, rows]);
 
-  console.log("talkStateDatatalkStateData", talkStateData)
+  console.log("talkStateDatatalkStateData", talkStateData);
 
   return (
     <section className={styles["NewMeeting_container"]}>

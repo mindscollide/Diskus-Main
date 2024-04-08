@@ -832,20 +832,33 @@ export const get_CurrentDateTime = () => {
   return { currentTime, current_Date, dateObject: currentDate, current_value };
 };
 
-export const getDifferentisDateisPassed = (curentDate, dataDateValue) => {
+export const getDifferentisDateisPassed = (currentDate, dataDateValue) => {
   if (
-    curentDate instanceof Date &&
-    !isNaN(curentDate) &&
+    currentDate instanceof Date &&
+    !isNaN(currentDate) &&
     dataDateValue instanceof Date &&
     !isNaN(dataDateValue)
   ) {
-    if (curentDate > dataDateValue) {
-      return true;
+    // Create new Date objects with only date parts
+    const currentDateOnlyDate = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate()
+    );
+    const dataDateValueOnlyDate = new Date(
+      dataDateValue.getFullYear(),
+      dataDateValue.getMonth(),
+      dataDateValue.getDate()
+    );
+
+    // Compare the dates
+    if (currentDateOnlyDate > dataDateValueOnlyDate) {
+      return true; // currentDate is after dataDateValue
     } else {
-      return false;
+      return false; // currentDate is not after dataDateValue
     }
   }
-  return false;
+  return false; // Invalid input dates
 };
 
 // this function made by Huj For proposed meeting date
