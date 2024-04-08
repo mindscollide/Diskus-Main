@@ -115,6 +115,14 @@ import {
   resolutionMQTTCreate,
 } from "../../store/actions/Resolution_actions";
 import { useWindowSize } from "../../commen/functions/test";
+import {
+  createGoogleEventMQTT,
+  createMicrosftEventMQTT,
+  deleteGoogleEventMQTT,
+  deleteMicrosftEventMQTT,
+  updateGoogletEventMQTT,
+  updateMicrosftEventMQTT,
+} from "../../store/actions/GetDataForCalendar";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -1833,6 +1841,49 @@ const Dashboard = () => {
           };
 
           dispatch(setRecentActivityDataNotification(data2));
+        }
+      }
+      if (data.action.toLowerCase() === "Calendar".toLowerCase()) {
+        if (
+          data.payload.message
+            .toLowerCase()
+            .includes("EVENT_CREATED_FROM_GOOGLE_CALENDAR".toLowerCase())
+        ) {
+          dispatch(createGoogleEventMQTT(data.payload));
+        } else if (
+          data.payload.message
+            .toLowerCase()
+            .includes("EVENT_UPDATED_FROM_GOOGLE_CALENDAR".toLowerCase())
+        ) {
+          dispatch(updateGoogletEventMQTT(data.payload));
+        } else if (
+          data.payload.message
+            .toLowerCase()
+            .includes("EVENT_DELETED_FROM_GOOGLE_CALENDAR".toLowerCase())
+        ) {
+          // deleteGoogleEventMQTT;
+          dispatch(deleteGoogleEventMQTT(data.payload));
+        } else if (
+          data.payload.message
+            .toLowerCase()
+            .includes("NEW_MICROSOFT_EVENT_CREATION".toLowerCase())
+        ) {
+          dispatch(createMicrosftEventMQTT(data.payload));
+        } else if (
+          data.payload.message
+            .toLowerCase()
+            .includes("NEW_MICROSOFT_EVENT_UPDATED".toLowerCase())
+        ) {
+          dispatch(updateMicrosftEventMQTT(data.payload));
+          // updateMicrosftEventMQTT,
+          //
+        } else if (
+          data.payload.message
+            .toLowerCase()
+            .includes("NEW_MICROSOFT_EVENT_DELETED".toLowerCase())
+        ) {
+          dispatch(deleteMicrosftEventMQTT(data.payload));
+          // deleteMicrosftEventMQTT;
         }
       }
     } catch (error) {

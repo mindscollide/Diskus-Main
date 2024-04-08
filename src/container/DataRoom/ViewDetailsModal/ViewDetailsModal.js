@@ -290,8 +290,16 @@ const ViewDetailsModal = ({
                                           alt=""
                                           height="30px"
                                           width="30px"
-                                          className={styles["profileClass"]}
-                                          title="this will be displayed as a tooltip"
+                                          className={`${styles["profileClass"]} title_tooltip`}
+                                          title={`${data.userName} can ${
+                                            data.permissionID === 1
+                                              ? "view"
+                                              : data.permissionID === 2
+                                              ? "edit"
+                                              : data.permissionID === 3
+                                              ? "view and edit"
+                                              : null
+                                          }`}
                                         />
                                       );
                                     }
@@ -362,7 +370,7 @@ const ViewDetailsModal = ({
                                         {data.userName}
                                         {index <
                                           documentDetails.sharedUsers.length -
-                                            1 && "and "}{" "}
+                                            1 && " and "}{" "}
                                         {/* Add comma if not the last user */}
                                       </React.Fragment>
                                     )

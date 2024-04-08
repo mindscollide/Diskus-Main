@@ -307,6 +307,34 @@ const CalendarPage = () => {
       setCalenderDatae(newList);
     }
   }, [calendarReducer.CalenderData]);
+  useEffect(() => {
+    if (calendarReducer.googleEventCreate !== null) {
+    }
+  }, [calendarReducer.googleEventCreate]);
+  useEffect(() => {
+    if (calendarReducer.googleEventUpdate !== null) {
+    }
+  }, [calendarReducer.googleEventUpdate]);
+
+  useEffect(() => {
+    if (calendarReducer.googleEventDelete !== null) {
+    }
+  }, [calendarReducer.googleEventDelete]);
+
+  useEffect(() => {
+    if (calendarReducer.microsoftEventCreate !== null) {
+    }
+  }, [calendarReducer.microsoftEventCreate]);
+
+  useEffect(() => {
+    if (calendarReducer.microsoftEventUpdate !== null) {
+    }
+  }, [calendarReducer.microsoftEventUpdate]);
+
+  useEffect(() => {
+    if (calendarReducer.microsoftEventDelete !== null) {
+    }
+  }, [calendarReducer.microsoftEventDelete]);
 
   // setting view flag
   useEffect(() => {
