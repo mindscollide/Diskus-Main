@@ -184,10 +184,43 @@ const PakageDetailsUserManagement = () => {
           </span>
         </span>
       ),
-      dataIndex: "Monthlycharges",
-      key: "Monthlycharges",
+      dataIndex: "price",
+      key: "price",
       width: 100,
       align: "center",
+      render: (text, row) => {
+        console.log(row, "Monthlycharges");
+        const monthlyCharges =
+          row.price && row.licenseCount ? row.price * row.licenseCount : 0;
+        console.log(monthlyCharges, "licenseCount");
+        if (row.shouldDisplayTextField) {
+          return (
+            <>
+              <span className={styles["ButtonsArabicStylesSpan"]}>
+                <Button
+                  text={t("Pay-now")}
+                  className={styles["PayNowButtons"]}
+                  onClick={handlePayNowClick}
+                />
+              </span>
+            </>
+          );
+        } else {
+          if (row.isTotalRow) {
+            return;
+          } else {
+            return (
+              <>
+                <>
+                  <span className={styles["ChargesPerLicesense"]}>
+                    {monthlyCharges}
+                  </span>
+                </>
+              </>
+            );
+          }
+        }
+      },
     },
     {
       title: (
@@ -202,6 +235,35 @@ const PakageDetailsUserManagement = () => {
       key: "Quarterlycharges",
       align: "center",
       width: 100,
+      render: (text, row) => {
+        const quarterlyCharges =
+          row.price && row.licenseCount ? row.price * row.licenseCount * 3 : 0;
+        if (row.shouldDisplayTextField) {
+          return (
+            <>
+              <span className={styles["ButtonsArabicStylesSpan"]}>
+                <Button
+                  text={t("Pay-now")}
+                  className={styles["PayNowButtons"]}
+                  onClick={handlePayNowClick}
+                />
+              </span>
+            </>
+          );
+        } else {
+          if (row.isTotalRow) {
+            return;
+          } else {
+            return (
+              <>
+                <span className={styles["ChargesPerLicesense"]}>
+                  {quarterlyCharges}
+                </span>
+              </>
+            );
+          }
+        }
+      },
     },
     {
       title: (
@@ -216,67 +278,50 @@ const PakageDetailsUserManagement = () => {
       key: "Yearlycharges",
       align: "center",
       width: 100,
+      render: (text, row) => {
+        const YearlyCharges =
+          row.price && row.licenseCount ? row.price * row.licenseCount * 12 : 0;
+        if (row.shouldDisplayTextField) {
+          return (
+            <>
+              <span className={styles["ButtonsArabicStylesSpan"]}>
+                <Button
+                  text={t("Pay-now")}
+                  className={styles["PayNowButtons"]}
+                  onClick={handlePayNowClick}
+                />
+              </span>
+            </>
+          );
+        } else {
+          if (row.isTotalRow) {
+            return;
+          } else {
+            return (
+              <>
+                <span className={styles["ChargesPerLicesense"]}>
+                  {YearlyCharges}
+                </span>
+              </>
+            );
+          }
+        }
+      },
     },
   ];
 
-  const defaultRow = {
-    Pakagedetails: <span className={styles["TableheadingTotal"]}>Total</span>,
-    Numberoflicenses: <span className={styles["ChargesPerLicesense"]}>43</span>,
-    Monthlycharges: (
-      <span className={styles["ChargesPerLicesense"]}>5,786</span>
-    ),
-    Quarterlycharges: (
-      <span className={styles["ChargesPerLicesense"]}>2,718</span>
-    ),
-    Yearlycharges: <span className={styles["ChargesPerLicesense"]}>3,072</span>,
-  };
-
-  console.log(lisence.TotalLisence, "TotalLisence");
-
+  //Pay Now B Button On Click
   const handlePayNowClick = () => {
     localStorage.setItem("signupCurrentPage", 2);
     navigate("/Signup");
   };
 
+  //For buttons default row flag
   const defaultRowWithButtons = {
-    Monthlycharges: (
-      <>
-        <span className={styles["ButtonsArabicStylesSpan"]}>
-          <Button
-            text={t("Pay-now")}
-            className={styles["PayNowButtons"]}
-            onClick={handlePayNowClick}
-          />
-        </span>
-      </>
-    ),
-    Quarterlycharges: (
-      <>
-        <span className={styles["ButtonsArabicStylesSpan"]}>
-          <Button
-            text={t("Pay-now")}
-            className={styles["PayNowButtons"]}
-            onClick={handlePayNowClick}
-          />
-        </span>
-      </>
-    ),
-    Yearlycharges: (
-      <>
-        <span className={styles["ButtonsArabicStylesSpan"]}>
-          <Button
-            text={t("Pay-now")}
-            className={styles["PayNowButtons"]}
-            onClick={handlePayNowClick}
-          />
-        </span>
-      </>
-    ),
     shouldDisplayTextField: true,
   };
 
   //Calculating the totals
-
   const calculateTotals = (data) => {
     const totalLicenses = tableData.reduce(
       (total, row) => total + (Number(row.licenseCount) || 0),
@@ -289,10 +334,13 @@ const PakageDetailsUserManagement = () => {
       Numberoflicenses: totalLicenses,
     };
   };
+
+  //Total row Flag
   const totalRow = {
     ...calculateTotals(tableData),
     isTotalRow: true,
   };
+
   //Handle Goback Function
   const onClickLink = () => {
     localStorage.removeItem("signupCurrentPage", 1);
