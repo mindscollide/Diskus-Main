@@ -29,6 +29,7 @@ import { validateEmailEnglishAndArabicFormat } from "../../../../../commen/funct
 import {
   getOrganizationPackageUserStatsAPI,
   AddOrganizationsUserApi,
+  GetOrganizationSelectedPackagesByOrganizationIDApi,
 } from "../../../../../store/actions/UserManagementActions";
 
 const AddUserMain = () => {
@@ -37,9 +38,16 @@ const AddUserMain = () => {
   const navigate = useNavigate();
   const { UserMangementReducer } = useSelector((state) => state);
   console.log(
-    UserMangementReducer.getOrganizationUserStatsGraph,
+    UserMangementReducer.organizationSelectedPakagesByOrganizationIDData,
     "getOrganizationUserStatsGraph"
   );
+
+  // organizationName from Local Storage
+  const organizationName = localStorage.getItem("OrganizatioName");
+  const organizationID = localStorage.getItem("organizationID");
+
+  const [packageAssignedOption, setPackageAssignedOption] = useState([]);
+  const [packageAssignedValue, setPackageAssignedValue] = useState([]);
 
   const [selected, setSelected] = useState("US");
   const [selectedCountry, setSelectedCountry] = useState({});
@@ -94,6 +102,13 @@ const AddUserMain = () => {
       RequestingUserID: 1196,
     };
     dispatch(getOrganizationPackageUserStatsAPI(navigate, t, data));
+
+    let newdata = {
+      OrganizationID: 569,
+    };
+    dispatch(
+      GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t, newdata)
+    );
   }, []);
 
   const addUserHandler = (e) => {
@@ -212,7 +227,7 @@ const AddUserMain = () => {
       userAddMain.Name.value !== "" &&
       userAddMain.Designation.value !== "" &&
       userAddMain.MobileNumber.value !== "" &&
-      // userAddMain.PackageAssigned.value !== "" &&
+      userAddMain.PackageAssigned.value !== "" &&
       userAddMain.Email.value !== ""
     ) {
       let createData = {
@@ -224,7 +239,7 @@ const AddUserMain = () => {
         // OrganizationID: 471,
         isAdmin: userAddMain.isAdmin.value,
         FK_NumberWorldCountryID: userAddMain.FK_NumberWorldCountryID,
-        // OrganizationSelectedPackageID: 18,
+        OrganizationSelectedPackageID: userAddMain.PackageAssigned.value,
       };
       await dispatch(AddOrganizationsUserApi(navigate, t, createData));
     } else {
@@ -245,11 +260,11 @@ const AddUserMain = () => {
           errorMessage: t("Please-enter-mobile-number"),
           errorStatus: userAddMain.MobileNumber.errorStatus,
         },
-        // PackageAssigned: {
-        //   value: userAddMain.PackageAssigned.value,
-        //   errorMessage: t("Please-select-a-package"),
-        //   errorStatus: userAddMain.PackageAssigned.errorStatus,
-        // },
+        PackageAssigned: {
+          value: userAddMain.PackageAssigned.value,
+          errorMessage: t("Please-select-a-package"),
+          errorStatus: userAddMain.PackageAssigned.errorStatus,
+        },
         Email: {
           ...userAddMain.Email,
           errorMessage:
@@ -288,6 +303,11 @@ const AddUserMain = () => {
         errorMessage: "",
         errorStatus: false,
       },
+      isAdmin: {
+        value: false,
+        errorMessage: "",
+        errorStatus: false,
+      },
 
       Email: {
         value: "",
@@ -295,6 +315,7 @@ const AddUserMain = () => {
         errorStatus: false,
       },
     });
+    setPackageAssignedValue([]);
   };
 
   //for remove the grid from backgroun
@@ -403,6 +424,50 @@ const AddUserMain = () => {
       ...userAddMain,
       FK_NumberWorldCountryID: a.id,
     });
+  };
+
+  useEffect(() => {
+    if (
+      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData &&
+      Object.keys(
+        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
+      ).length > 0
+    ) {
+      let temp = [];
+      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData.organizationSelectedPackages.map(
+        (data, index) => {
+          temp.push({
+            value: data.pK_PackageID,
+            label: data.name,
+          });
+        }
+      );
+      setPackageAssignedOption(temp);
+    }
+  }, [UserMangementReducer.organizationSelectedPakagesByOrganizationIDData]);
+
+  // handler of package Assigned
+  const handlePackageAssigned = async (selectedOption) => {
+    setPackageAssignedValue(selectedOption);
+    if (selectedOption && selectedOption.value) {
+      setUserAddMain({
+        ...userAddMain,
+        PackageAssigned: {
+          value: selectedOption.value,
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    } else {
+      setUserAddMain({
+        ...userAddMain,
+        PackageAssigned: {
+          value: "",
+          errorMessage: t("Please-select-a-package"),
+          errorStatus: true,
+        },
+      });
+    }
   };
 
   return (
@@ -844,7 +909,13 @@ const AddUserMain = () => {
                       {t("Package-assigned")}{" "}
                       <span className={styles["aesterick-color"]}> *</span>
                     </label>
-                    <Select />
+                    <Select
+                      name="PackageAssigned"
+                      value={packageAssignedValue}
+                      options={packageAssignedOption}
+                      onChange={handlePackageAssigned}
+                      placeholder={t("Please-select-one-option")}
+                    />
                     <Col>
                       <p
                         className={

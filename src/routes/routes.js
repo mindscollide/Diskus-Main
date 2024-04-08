@@ -629,6 +629,11 @@ export const router = createHashRouter(
       />
 
       <Route path="/AddUsersUsermanagement" element={<AddUserMain />} />
+
+      <Route
+        path="/PackageDetailsUserManagement"
+        element={<PakageDetailsAdmin />}
+      />
     </>
   )
 );
