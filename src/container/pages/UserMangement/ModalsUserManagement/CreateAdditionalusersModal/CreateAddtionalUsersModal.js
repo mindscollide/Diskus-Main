@@ -26,7 +26,9 @@ const CreateAddtionalUsersModal = () => {
 
   let organzataionID = localStorage.getItem("OrganizationID");
 
-  let OrganizatioName = localStorage.getItem("OrganizationName");
+  let OrganizatioName = localStorage.getItem("OrganizatioName");
+
+  let LocalUserRoute = localStorage.getItem("LocalAdminRoutes");
 
   const { UserManagementModals } = useSelector((state) => state);
 
@@ -147,6 +149,7 @@ const CreateAddtionalUsersModal = () => {
   //Handle Skip Button
   const handleSkipButton = () => {
     dispatch(showCreateAddtionalUsersModal(false));
+    navigate("/Diskus");
   };
 
   //handle Create button
