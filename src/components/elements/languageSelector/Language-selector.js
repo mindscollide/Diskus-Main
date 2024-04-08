@@ -42,18 +42,23 @@ const LanguageSelector = () => {
   });
 
   useEffect(() => {
-    dispatch(getAllLanguages(navigate, t));
-  }, []);
-
-  useEffect(() => {
-    if (
-      currentUserID !== null &&
-      currentUserID !== undefined &&
-      currentUserID !== 0
-    ) {
-      let data = { UserID: currentUserID };
-      dispatch(getSelectedLanguage(data, navigate, t));
-    }
+    try {
+      if (
+        LanguageReducer.AllLanguagesData === null ||
+        LanguageReducer.AllLanguagesData === undefined ||
+        LanguageReducer.AllLanguagesData.length === 0
+      ) {
+        dispatch(getAllLanguages(navigate, t));
+      }
+      if (
+        currentUserID !== null &&
+        currentUserID !== undefined &&
+        currentUserID !== 0
+      ) {
+        let data = { UserID: currentUserID };
+        dispatch(getSelectedLanguage(data, navigate, t));
+      }
+    } catch {}
   }, []);
 
   useEffect(() => {
