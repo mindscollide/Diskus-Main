@@ -14,6 +14,7 @@ const initialState = {
   defaultRoutingValue: null,
   defaulSignUpRoute: 1,
   getAllSelectedPakagesData: null,
+  getAllUserTypePackagesData: [],
   getOrganizationUserStatsGraph: null,
 };
 
@@ -236,6 +237,31 @@ const UserMangementReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         getAllSelectedPakagesData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALL_USER_TYPES_PAKAGES_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_ALL_USER_TYPES_PAKAGES_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getAllUserTypePackagesData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALL_USER_TYPES_PAKAGES_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getAllUserTypePackagesData: [],
         ResponseMessage: action.message,
       };
     }

@@ -149,7 +149,7 @@ const CreateAddtionalUsersModal = () => {
   //Handle Skip Button
   const handleSkipButton = () => {
     dispatch(showCreateAddtionalUsersModal(false));
-    navigate("/Diskus");
+    navigate("/Diskus/");
   };
 
   //handle Create button
