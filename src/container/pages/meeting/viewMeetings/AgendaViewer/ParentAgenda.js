@@ -362,11 +362,22 @@ const ParentAgenda = ({
                                     Number(data.voteOwner.userid) ===
                                       Number(currentUserID) &&
                                     !data.voteOwner?.currentVotingClosed ? (
-                                      <Button
-                                        text={t("Start-voting")}
-                                        className={styles["startVotingButton"]}
-                                        onClick={() => startVoting(data)}
-                                      />
+                                      <>
+                                        <Button
+                                          text={t("Start-voting")}
+                                          className={
+                                            styles["startVotingButton"]
+                                          }
+                                          onClick={() => startVoting(data)}
+                                        />
+                                        <Button
+                                          text={t("View-votes")}
+                                          className={styles["ViewVoteButton"]}
+                                          onClick={() =>
+                                            EnableViewVoteModal(data)
+                                          }
+                                        />
+                                      </>
                                     ) : Number(data.agendaVotingID) !== 0 &&
                                       Number(editorRole.status) === 10 &&
                                       Number(data.voteOwner.userid) ===
@@ -389,7 +400,8 @@ const ParentAgenda = ({
                                         />
                                       </>
                                     ) : editorRole.role === "Organizer" &&
-                                      data.voteOwner?.currentVotingClosed ? (
+                                      (data.voteOwner?.currentVotingClosed ||
+                                        Number(data.agendaVotingID) !== 0) ? (
                                       <>
                                         <Button
                                           text={t("View-votes")}

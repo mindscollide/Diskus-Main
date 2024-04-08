@@ -568,32 +568,38 @@ const VideoCallNormalHeader = ({
             </div>
             {videoFeatureReducer.LeaveCallModalFlag === true &&
             callerID === currentUserID ? (
-              <img
-                width={25}
-                onClick={cancelLeaveCallOption}
-                src={videoEndIcon}
-                className="cursor-pointer"
-                alt=""
-              />
+              <Tooltip placement="topRight" title={t("Cancel")}>
+                <img
+                  width={25}
+                  onClick={cancelLeaveCallOption}
+                  src={videoEndIcon}
+                  className="cursor-pointer"
+                  alt=""
+                />
+              </Tooltip>
             ) : (videoFeatureReducer.LeaveCallModalFlag === false &&
                 callerID === currentUserID) ||
               callerID === 0 ? (
-              <img
-                className="cursor-pointer"
-                width={25}
-                src={CallEndRedIcon}
-                onClick={openVideoPanel}
-                alt=""
-              />
+              <Tooltip placement="topRight" title={t("End-call")}>
+                <img
+                  className="cursor-pointer"
+                  width={25}
+                  src={CallEndRedIcon}
+                  onClick={openVideoPanel}
+                  alt=""
+                />
+              </Tooltip>
             ) : videoFeatureReducer.LeaveCallModalFlag === false &&
               callerID !== currentUserID ? (
-              <img
-                className="cursor-pointer"
-                width={35}
-                src={CallEndRedIcon}
-                onClick={endCallParticipant}
-                alt=""
-              />
+              <Tooltip placement="topRight" title={t("End-call")}>
+                <img
+                  className="cursor-pointer"
+                  width={35}
+                  src={CallEndRedIcon}
+                  onClick={endCallParticipant}
+                  alt=""
+                />
+              </Tooltip>
             ) : null}
             <Tooltip placement="topRight" title={t("Minimize")}>
               <div
