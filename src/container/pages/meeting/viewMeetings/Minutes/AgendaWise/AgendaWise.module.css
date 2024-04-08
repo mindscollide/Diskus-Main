@@ -18,6 +18,13 @@
   font-family: "MontserratSemiBold" !important;
 }
 
+.Choose_file_style {
+  font-size: 12px !important;
+  color: #6172d6 !important;
+  font-family: "MontserratSemiBold";
+  margin-left: 3px !important;
+}
+
 .RedCrossClass {
   position: absolute !important;
   right: -8px;
