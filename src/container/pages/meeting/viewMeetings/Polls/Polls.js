@@ -36,6 +36,7 @@ import CancelPolls from "./CancelPolls/CancelPolls";
 import { _justShowDateformatBilling } from "../../../../../commen/functions/date_formater";
 import {
   clearPollsMesseges,
+  createPollMeetingMQTT,
   deleteMeetingPollApi,
   getPollByPollIdforMeeting,
   getPollsByPollIdApi,
@@ -208,6 +209,21 @@ const Polls = ({
       }
     } catch {}
   }, [NewMeetingreducer.getPollsMeetingID]);
+
+  // MQTT Response of Polls for Meeting
+  useEffect(() => {
+    try {
+      if (PollsReducer.newPollMeeting !== null) {
+        let PollData = PollsReducer.newPollMeeting;
+        if (Number(PollData.meetingID) === Number(currentMeeting)) {
+          setPollsRows([PollData.polls, ...pollsRows]);
+        }
+        dispatch(createPollMeetingMQTT(null));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [PollsReducer.newPollMeeting]);
 
   const voteCastModal = (record) => {
     let data = {
