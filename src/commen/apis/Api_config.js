@@ -210,7 +210,6 @@ const userEmailValidation = {
 const userPasswordVerify = {
   RequestMethod: "ServiceManager.UserPasswordVerification",
   // RequestMethod: "ServiceManager.PasswordVerification",
-
 };
 const getSelectedPacakge_Detail = {
   RequestMethod: "ServiceManager.GetOrganizationSeletedPackage",
@@ -1518,6 +1517,10 @@ const getOrganizationSelectedPakages = {
   RequestMethod: "ServiceManager.GetOrganizationSelectedPackages",
 };
 
+const GetAllUserTypePackages = {
+  RequestMethod: "ServiceManager.GetAllUserTypePackages",
+};
+
 export {
   UserLoginHistoryRM,
   getDataAnalyticsCountRM,
@@ -1923,4 +1926,5 @@ export {
   joinMeeting,
   leaveMeeting,
   getOrganizationSelectedPakages,
+  GetAllUserTypePackages,
 };

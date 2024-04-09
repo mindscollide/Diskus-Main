@@ -7,6 +7,7 @@ import {
   setLastSelectedLanguage,
 } from "../../commen/apis/Api_config";
 import { getAdminURLs } from "../../commen/apis/Api_ends_points";
+import { getAllorganizationSubscriptionExpiryDetailsApi } from "./UserManagementActions";
 
 const getAllLanguagesInitial = () => {
   return {
@@ -29,12 +30,13 @@ const getAllLanguagesFail = (message) => {
   };
 };
 
-const getAllLanguages = (navigate, t) => {
+const getAllLanguages = (navigate, t, flag) => {
   // let token =
   //   localStorage.getItem("token") !== undefined &&
   //   localStorage.getItem("token") !== null
   //     ? JSON.parse(localStorage.getItem("token"))
   //     : "";
+  let currentUserID = Number(localStorage.getItem("userID"));
   return (dispatch) => {
     dispatch(getAllLanguagesInitial());
     let form = new FormData();
@@ -50,7 +52,7 @@ const getAllLanguages = (navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getAllLanguages(navigate, t));
+          dispatch(getAllLanguages(navigate, t, flag));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -66,6 +68,11 @@ const getAllLanguages = (navigate, t) => {
                   t("Record-found")
                 )
               );
+              //For Skip Create Addional users
+              if (flag) {
+                let data = { UserID: currentUserID };
+                dispatch(getSelectedLanguage(data, navigate, t));
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -217,6 +224,8 @@ const getSelectedLanguageFail = (message) => {
 
 const getSelectedLanguage = (data, navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  let organzataionID = localStorage.getItem("organizationID");
+  console.log(organzataionID, "organzataionIDorganzataionID");
   return (dispatch) => {
     dispatch(getSelectedLanguageInitial());
     let form = new FormData();
@@ -247,6 +256,16 @@ const getSelectedLanguage = (data, navigate, t) => {
                 getSelectedLanguageSuccess(
                   response.data.responseResult.userSelectedLanguage,
                   t("Record-found")
+                )
+              );
+              let data = {
+                OrganizationID: Number(organzataionID),
+              };
+              dispatch(
+                getAllorganizationSubscriptionExpiryDetailsApi(
+                  navigate,
+                  t,
+                  data
                 )
               );
               if (

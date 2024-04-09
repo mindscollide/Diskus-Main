@@ -14,6 +14,8 @@ const initialState = {
   defaultRoutingValue: null,
   defaulSignUpRoute: 1,
   getAllSelectedPakagesData: null,
+  getOrganizationUserStatsGraph: null,
+  getAllUserTypePackagesData: [],
 };
 
 const UserMangementReducer = (state = initialState, action) => {
@@ -50,7 +52,7 @@ const UserMangementReducer = (state = initialState, action) => {
     case actions.GET_ORGANIZATION_SUBSCRIPTION_EXPIRYDETAILS_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         getOrganizationSubscriptionExpiryDetailsData: action.response,
         ResponseMessage: action.message,
       };
@@ -238,6 +240,54 @@ const UserMangementReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
+
+    case actions.GET_ALL_USER_TYPES_PAKAGES_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_ALL_USER_TYPES_PAKAGES_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getAllUserTypePackagesData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALL_USER_TYPES_PAKAGES_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getAllUserTypePackagesData: [],
+        ResponseMessage: action.message,
+      };
+    }
+
+    //action Case For OrganizationUserListStatistics
+    case actions.USERADMIN_LIST_OF_STATS_GRAPH_INIT:
+      return {
+        ...state,
+        Loading: true,
+      };
+
+    case actions.USERADMIN_LIST_OF_STATS_GRAPH_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        getOrganizationUserStatsGraph: action.response,
+        ResponseMessage: action.message,
+      };
+
+    case actions.USERADMIN_LIST_OF_STATS_GRAPH_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        getOrganizationUserStatsGraph: null,
+        ResponseMessage: action.message,
+      };
 
     default:
       return { ...state };

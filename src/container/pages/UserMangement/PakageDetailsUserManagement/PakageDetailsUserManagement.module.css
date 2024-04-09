@@ -533,3 +533,33 @@ body[dir="rtl"] .ButtonsArabicStylesSpan {
   background: #6172d6 !important;
   color: #fff !important;
 }
+
+.signUp_goBack {
+  color: #000;
+  margin: 21px 0 0 0 !important;
+  text-decoration: underline;
+  cursor: pointer !important;
+  font-family: "Montserrat";
+}
+
+body[dir="rtl"] .signUp_goBack {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
+.Scroller_PakagesSelectionCard {
+  height: 40vh !important;
+  overflow-x: hidden !important;
+  gap: 5px !important;
+}
+
+.Scroller_PakagesSelectionCard::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_PakagesSelectionCard::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}

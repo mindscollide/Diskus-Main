@@ -184,3 +184,14 @@ body[dir="rtl"] .RedStripContent {
 .PlusIcons {
   margin-top: 2px !important;
 }
+
+.errorMessage {
+  margin: 4px;
+  height: 7px;
+  color: #f16b6b;
+  visibility: visible !important;
+}
+
+body[dir="rtl"] .errorMessage {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}

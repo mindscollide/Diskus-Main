@@ -5,6 +5,8 @@ import {
   GetOrganizationSubscriptionExpiryDetails,
   SaveOrganizationAndPakageSelection,
   getOrganizationSelectedPakages,
+  OrganizationPackageDetailsAndUserStats,
+  GetAllUserTypePackages,
 } from "../../commen/apis/Api_config";
 import {
   authenticationApi,
@@ -13,6 +15,7 @@ import {
 import * as actions from "../action_types";
 import axios from "axios";
 import { RefreshToken } from "./Auth_action";
+import { getUserSetting } from "./GetUserSetting";
 
 const signUpFlowRoutes = (response) => {
   return {
@@ -345,6 +348,7 @@ const getAllorganizationSubscriptionExpiryDetailsApi = (navigate, t, data) => {
                   t("Successful")
                 )
               );
+              dispatch(getUserSetting(navigate, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -537,7 +541,6 @@ const ExtendOrganizationTrialApi = (navigate, t, data) => {
 };
 
 //ADD Organization Users
-
 const addOrganizationUsersInit = () => {
   return {
     type: actions.ADD_ORGANIZATION_USERS_INIT,
@@ -561,7 +564,6 @@ const addOrganizationUsersFailed = (message) => {
 
 const AddOrganizationsUserApi = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
-
   return (dispatch) => {
     dispatch(addOrganizationUsersInit());
     let form = new FormData();
@@ -638,20 +640,50 @@ const AddOrganizationsUserApi = (navigate, t, data) => {
                   t("Failed-to-create-user-headCount-exceeded")
                 )
               );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_AddOrganizationsUser_06".toLowerCase()
+                )
+            ) {
+              dispatch(addOrganizationUsersFailed(t("Email-already-in-use")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_AddOrganizationsUser_09".toLowerCase()
+                )
+            ) {
+              dispatch(addOrganizationUsersFailed(t("Failed-to-create-user")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_AddOrganizationsUser_010".toLowerCase()
+                )
+            ) {
+              dispatch(addOrganizationUsersFailed(t("Failed-to-create-user")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_AddOrganizationsUser_11".toLowerCase()
+                )
+            ) {
+              dispatch(addOrganizationUsersFailed(t("Something-went-wrong")));
             } else {
-              dispatch(
-                organizationTrialExtendedFail(t("Something-went-wrong"))
-              );
+              dispatch(addOrganizationUsersFailed(t("Something-went-wrong")));
             }
           } else {
-            dispatch(organizationTrialExtendedFail(t("Something-went-wrong")));
+            dispatch(addOrganizationUsersFailed(t("Something-went-wrong")));
           }
         } else {
-          dispatch(organizationTrialExtendedFail(t("Something-went-wrong")));
+          dispatch(addOrganizationUsersFailed(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        dispatch(organizationTrialExtendedFail(t("Something-went-wrong")));
+        dispatch(addOrganizationUsersFailed(t("Something-went-wrong")));
       });
   };
 };
@@ -768,7 +800,6 @@ const EditOrganizationsUserApi = (navigate, t, data) => {
 };
 
 //ALL ORGANIZATION USERS
-
 const allOrganizationUsersInit = () => {
   return {
     type: actions.ALL_ORGANIZAION_USERS_INIT,
@@ -858,7 +889,6 @@ const AllOrganizationsUsersApi = (navigate, t, data) => {
 };
 
 //ALL ORGANIZATION PAKAGE DETAILS AND USER STATS
-
 const organzationPakageDetailsAnduserStatsInit = () => {
   return {
     type: actions.ORGANIZATION_PAKAGEDETAILS_AND_USERSTATS_INIT,
@@ -970,7 +1000,6 @@ const OrganizationPackageDetailsAndUserStatsApi = (navigate, t, data) => {
 };
 
 //GET ORGANIZATION PAKAGE SELECTED BY ORGANIZATION ID
-
 const organizationSelectedPakagebyOrganzationidInit = () => {
   return {
     type: actions.GET_ORGANZIATION_SELECTEDPAKAGE_BY_ORGANZATIONID_INIT,
@@ -1100,7 +1129,6 @@ const GetOrganizationSelectedPackagesByOrganizationIDApi = (
 };
 
 //GET ORGANIZATION SELECTED PAKAGES
-
 const getOrganizationSelectedPakagesInit = () => {
   return {
     type: actions.GET_ALL_ORGANIZATION_SELECTED_PAKAGES_INIT,
@@ -1201,6 +1229,196 @@ const getOrganizationSelectedPakagesAPI = (navigate, t, data) => {
   };
 };
 
+// Stats Graph Api for USER ADMIN
+const getOrganizationPackageUserStatsInit = () => {
+  return {
+    type: actions.USERADMIN_LIST_OF_STATS_GRAPH_INIT,
+  };
+};
+
+const getOrganizationPackageUserStatsSuccess = (response, message) => {
+  return {
+    type: actions.USERADMIN_LIST_OF_STATS_GRAPH_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getOrganizationPackageUserStatsFail = (message) => {
+  return {
+    type: actions.USERADMIN_LIST_OF_STATS_GRAPH_FAIL,
+    message: message,
+  };
+};
+
+//Api to Show data in graph in userManagment Add user
+
+const getOrganizationPackageUserStatsAPI = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getOrganizationPackageUserStatsInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(data));
+    form.append(
+      "RequestMethod",
+      OrganizationPackageDetailsAndUserStats.RequestMethod
+    );
+    axios({
+      method: "post",
+      url: getAdminURLs,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getOrganizationPackageUserStatsAPI(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_OrganizationPackageDetailsAndUserStats_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getOrganizationPackageUserStatsSuccess(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_OrganizationPackageDetailsAndUserStats_02".toLowerCase()
+                )
+            ) {
+              dispatch(getOrganizationPackageUserStatsFail(t("No-data-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_OrganizationPackageDetailsAndUserStats_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getOrganizationPackageUserStatsFail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                getOrganizationPackageUserStatsFail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              getOrganizationPackageUserStatsFail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            getOrganizationPackageUserStatsFail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          getOrganizationPackageUserStatsFail(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
+//Get All UserType Packages
+const getAllUserTypePackagesInit = () => {
+  return {
+    type: actions.GET_ALL_USER_TYPES_PAKAGES_INIT,
+  };
+};
+
+const getAllUserTypePackagesSuccess = (response, message) => {
+  return {
+    type: actions.GET_ALL_USER_TYPES_PAKAGES_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getAllUserTypePackagesFail = (message) => {
+  return {
+    type: actions.GET_ALL_USER_TYPES_PAKAGES_FAIL,
+    message: message,
+  };
+};
+
+const getAllUserTypePackagesApi = (navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getAllUserTypePackagesInit());
+    let form = new FormData();
+    form.append("RequestMethod", GetAllUserTypePackages.RequestMethod);
+    axios({
+      method: "post",
+      url: authenticationApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getAllUserTypePackagesApi(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_GetAllUserTypePackages_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllUserTypePackagesSuccess(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_GetAllUserTypePackages_02".toLowerCase()
+                )
+            ) {
+              dispatch(getAllUserTypePackagesFail(t("No-data-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_GetAllUserTypePackages_03".toLowerCase()
+                )
+            ) {
+              dispatch(getAllUserTypePackagesFail(t("Something-went-wrong")));
+            } else {
+              dispatch(getAllUserTypePackagesFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(getAllUserTypePackagesFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(getAllUserTypePackagesFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(getAllUserTypePackagesFail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   signUpOrganizationAndPakageSelection,
   getAllorganizationSubscriptionExpiryDetailsApi,
@@ -1213,4 +1431,6 @@ export {
   signUpFlowRoutes,
   LoginFlowRoutes,
   getOrganizationSelectedPakagesAPI,
+  getOrganizationPackageUserStatsAPI,
+  getAllUserTypePackagesApi,
 };

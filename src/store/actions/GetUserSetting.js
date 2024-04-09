@@ -127,6 +127,7 @@ const getUserSetting = (navigate, t) => {
                   t("Record-found")
                 )
               );
+              navigate("/Diskus/Admin/ManageUsers");
             } else if (
               response.data.responseResult.responseMessage ===
               "Settings_SettingsServiceManager_GetUserSettings_02"

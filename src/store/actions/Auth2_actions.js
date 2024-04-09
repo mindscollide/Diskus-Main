@@ -545,6 +545,33 @@ const enterPasswordvalidation = (value, navigate, t) => {
               localStorage.setItem("meetingTitle", "");
             }
 
+            let LocalUserRoutes = [
+              { name: "Meeting", id: 1 },
+              { name: "todolist", id: 2 },
+              { name: "calendar", id: 3 },
+              { name: "Diskus", id: 4 },
+              { name: "setting", id: 5 },
+              { name: "faq's", id: 6 },
+              { name: "changePassword", id: 7 },
+              { name: "home", id: 8 },
+              { name: "", id: 9 },
+            ];
+            let LocalAdminRoutes = [
+              { name: "Admin", id: 1 },
+              { name: "ManageUsers", id: 2 },
+              { name: "OrganizationlevelConfigUM", id: 3 },
+              { name: "PackageDetailsUserManagement", id: 4 },
+              { name: "Summary", id: 5 },
+            ];
+            localStorage.setItem(
+              "LocalUserRoutes",
+              JSON.stringify(LocalUserRoutes)
+            );
+            localStorage.setItem(
+              "LocalAdminRoutes",
+              JSON.stringify(LocalAdminRoutes)
+            );
+
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -923,33 +950,6 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_UserPasswordVerification_09".toLowerCase()
                 )
             ) {
-              let LocalUserRoutes = [
-                { name: "Meeting", id: 1 },
-                { name: "todolist", id: 2 },
-                { name: "calendar", id: 3 },
-                { name: "Diskus", id: 4 },
-                { name: "setting", id: 5 },
-                { name: "faq's", id: 6 },
-                { name: "changePassword", id: 7 },
-                { name: "home", id: 8 },
-                { name: "", id: 9 },
-              ];
-              let LocalAdminRoutes = [
-                { name: "Admin", id: 1 },
-                { name: "ManageUsers", id: 2 },
-                { name: "OrganizationlevelConfigUM", id: 3 },
-                { name: "PackageDetailsUserManagement", id: 4 },
-                { name: "Summary", id: 5 },
-              ];
-              localStorage.setItem(
-                "LocalUserRoutes",
-                JSON.stringify(LocalUserRoutes)
-              );
-              localStorage.setItem(
-                "LocalAdminRoutes",
-                JSON.stringify(LocalAdminRoutes)
-              );
-
               if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 localStorage.setItem(
                   "roleID",
@@ -1622,7 +1622,10 @@ const createPasswordAction = (value, navigate, t) => {
               );
             }
             try {
-              localStorage.setItem("isTrial");
+              localStorage.setItem(
+                "isTrial",
+                response.data.responseResult.isTrial
+              );
             } catch {}
 
             if (response.data.responseResult.authToken !== null) {
@@ -2151,6 +2154,40 @@ const createPasswordAction = (value, navigate, t) => {
                   "ERM_AuthService_SignUpManager_UsersPasswordCreation_08".toLowerCase()
                 )
             ) {
+              try {
+                localStorage.setItem(
+                  "isTrial",
+                  response.data.responseResult.isTrial
+                );
+              } catch {}
+
+              let LocalUserRoutes = [
+                { name: "Meeting", id: 1 },
+                { name: "todolist", id: 2 },
+                { name: "calendar", id: 3 },
+                { name: "Diskus", id: 4 },
+                { name: "setting", id: 5 },
+                { name: "faq's", id: 6 },
+                { name: "changePassword", id: 7 },
+                { name: "home", id: 8 },
+                { name: "", id: 9 },
+              ];
+              let LocalAdminRoutes = [
+                { name: "Admin", id: 1 },
+                { name: "ManageUsers", id: 2 },
+                { name: "OrganizationlevelConfigUM", id: 3 },
+                { name: "PackageDetailsUserManagement", id: 4 },
+                { name: "Summary", id: 5 },
+              ];
+              localStorage.setItem(
+                "LocalUserRoutes",
+                JSON.stringify(LocalUserRoutes)
+              );
+              localStorage.setItem(
+                "LocalAdminRoutes",
+                JSON.stringify(LocalAdminRoutes)
+              );
+              dispatch(showCreateAddtionalUsersModal(true));
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(
                   createPasswordSuccess(
@@ -2882,6 +2919,67 @@ const createPasswordAction = (value, navigate, t) => {
                   "ERM_AuthService_SignUpManager_UsersPasswordCreation_18".toLowerCase()
                 )
             ) {
+              try {
+                localStorage.setItem(
+                  "isTrial",
+                  response.data.responseResult.isTrial
+                );
+              } catch {}
+
+              if (response.data.responseResult.authToken !== null) {
+                localStorage.setItem(
+                  "name",
+                  response.data.responseResult.authToken.name
+                );
+                localStorage.setItem(
+                  "userEmail",
+                  response.data.responseResult.authToken.userName
+                );
+                localStorage.setItem(
+                  "token",
+                  JSON.stringify(response.data.responseResult.authToken.token)
+                );
+                localStorage.setItem(
+                  "refreshToken",
+                  JSON.stringify(
+                    response.data.responseResult.authToken.refreshToken
+                  )
+                );
+                localStorage.setItem(
+                  "roleID",
+                  response.data.responseResult.authToken.roleID
+                );
+                localStorage.setItem(
+                  "OrganizationName",
+                  response.data.responseResult.organizationName
+                );
+              }
+              let LocalUserRoutes = [
+                { name: "Meeting", id: 1 },
+                { name: "todolist", id: 2 },
+                { name: "calendar", id: 3 },
+                { name: "Diskus", id: 4 },
+                { name: "setting", id: 5 },
+                { name: "faq's", id: 6 },
+                { name: "changePassword", id: 7 },
+                { name: "home", id: 8 },
+                { name: "", id: 9 },
+              ];
+              let LocalAdminRoutes = [
+                { name: "Admin", id: 1 },
+                { name: "ManageUsers", id: 2 },
+                { name: "OrganizationlevelConfigUM", id: 3 },
+                { name: "PackageDetailsUserManagement", id: 4 },
+                { name: "Summary", id: 5 },
+              ];
+              localStorage.setItem(
+                "LocalUserRoutes",
+                JSON.stringify(LocalUserRoutes)
+              );
+              localStorage.setItem(
+                "LocalAdminRoutes",
+                JSON.stringify(LocalAdminRoutes)
+              );
               dispatch(showCreateAddtionalUsersModal(true));
               dispatch(createPasswordSuccess(response.data.responseResult, ""));
               // navigate("/");
