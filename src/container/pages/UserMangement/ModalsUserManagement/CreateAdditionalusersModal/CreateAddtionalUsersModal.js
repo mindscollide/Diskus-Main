@@ -22,6 +22,7 @@ import {
 } from "../../../../../store/actions/UserManagementActions";
 import { useNavigate } from "react-router-dom";
 import { validateEmailEnglishAndArabicFormat } from "../../../../../commen/functions/validations";
+import { getAllLanguages } from "../../../../../store/actions/Language_actions";
 const CreateAddtionalUsersModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -152,11 +153,7 @@ const CreateAddtionalUsersModal = () => {
   //Handle Skip Button
   const handleSkipButton = () => {
     dispatch(showCreateAddtionalUsersModal(false));
-    let data = {
-      OrganizationID: Number(organzataionID),
-    };
-    dispatch(getAllorganizationSubscriptionExpiryDetailsApi(navigate, t, data));
-    // navigate("/Diskus/Admin/ManageUsers");
+    dispatch(getAllLanguages(navigate, t, true));
   };
 
   //handle Create button
