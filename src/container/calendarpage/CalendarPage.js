@@ -309,30 +309,42 @@ const CalendarPage = () => {
   }, [calendarReducer.CalenderData]);
   useEffect(() => {
     if (calendarReducer.googleEventCreate !== null) {
+      // Google Calenadar Event Source ID # 01
+      // Add New Event in State
     }
   }, [calendarReducer.googleEventCreate]);
   useEffect(() => {
     if (calendarReducer.googleEventUpdate !== null) {
+      // Google Calenadar Event Source ID # 01
+      // Update Existing Event in State
     }
   }, [calendarReducer.googleEventUpdate]);
 
   useEffect(() => {
     if (calendarReducer.googleEventDelete !== null) {
+      // Google Calenadar Event Source ID # 01
+      // Remove Existing Event in State
     }
   }, [calendarReducer.googleEventDelete]);
 
   useEffect(() => {
     if (calendarReducer.microsoftEventCreate !== null) {
+      // Microsoft Calenadar Event Source ID # 02 & 04
+      // Add New Event in State
     }
   }, [calendarReducer.microsoftEventCreate]);
 
   useEffect(() => {
     if (calendarReducer.microsoftEventUpdate !== null) {
+      // Microsoft Calenadar Event Source ID # 02 & 04
+      // Update Existing Event in State
     }
   }, [calendarReducer.microsoftEventUpdate]);
 
   useEffect(() => {
     if (calendarReducer.microsoftEventDelete !== null) {
+      // Microsoft Calenadar Event Source ID # 02 & 04
+      // Remove Existing Event in State
     }
   }, [calendarReducer.microsoftEventDelete]);
 
