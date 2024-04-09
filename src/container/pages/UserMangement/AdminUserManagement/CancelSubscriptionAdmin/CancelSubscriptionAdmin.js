@@ -10,6 +10,9 @@ import { showCancelSubscriptionModal } from "../../../../../store/actions/UserMa
 import { useDispatch } from "react-redux";
 import ReasonForCancelSubs from "../../ModalsUserManagement/ResonsForCancelSubscriptionModal/ReasonForCancelSubs";
 import { GetOrganizationSelectedPackagesByOrganizationIDApi } from "../../../../../store/actions/UserManagementActions";
+import { _justShowDateformat } from "../../../../../commen/functions/date_formater";
+
+import { useState } from "react";
 const CancelSubscriptionAdmin = () => {
   const { t } = useTranslation();
 
@@ -17,17 +20,48 @@ const CancelSubscriptionAdmin = () => {
 
   const navigate = useNavigate();
 
-  const { UserManagementModals } = useSelector((state) => state);
+  const { UserManagementModals, UserMangementReducer } = useSelector(
+    (state) => state
+  );
 
+  console.log(
+    UserMangementReducer.organizationSelectedPakagesByOrganizationIDData,
+    "meezzzajajjj"
+  );
+
+  const [cancelSubsDetail, setCancelSubsDetail] = useState({
+    cancelPackageName: "",
+    cancelSubscriptionDate: "",
+    cancelExpiryDate: "",
+  });
+
+  // useEffect to hit an API
   useEffect(() => {
     let data = {
-      OrganizationID: 471,
+      OrganizationID: 569,
     };
     dispatch(
       GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t, data)
     );
   }, []);
 
+  //useEffect to render data in expiry and subscription date
+  useEffect(() => {
+    let cancelPackage =
+      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData;
+
+    if (cancelPackage !== null && cancelPackage !== undefined) {
+      setCancelSubsDetail({
+        cancelPackageName: cancelPackage.organizationSelectedPackages.name,
+        cancelSubscriptionDate:
+          cancelPackage.organizationSubscription.subscriptionStartDate,
+        cancelExpiryDate:
+          cancelPackage.organizationSubscription.subscriptionExpiryDate,
+      });
+    }
+  }, [UserMangementReducer.organizationSelectedPakagesByOrganizationIDData]);
+
+  // col for Cancel Subs package details
   const ColumnsPakageSelection = [
     {
       title: (
@@ -74,76 +108,58 @@ const CancelSubscriptionAdmin = () => {
       width: 100,
     },
   ];
-  const Data = [
-    {
-      Pakagedetails: (
-        <span className={styles["Tableheading"]}>{t("Essential")}</span>
-      ),
-      Chargesperlicense: (
-        <>
-          <span className={styles["ChargesPerLicesense"]}>25</span>
-        </>
-      ),
-      Numberoflicenses: (
-        <>
-          <span className={styles["ChargesPerLicesense"]}>12</span>
-        </>
-      ),
 
-      Yearlycharges: (
-        <>
-          <span className={styles["ChargesPerLicesense"]}>1,024</span>
-        </>
-      ),
-    },
-    {
-      Pakagedetails: (
-        <span className={styles["Tableheading"]}>{t("Professional")}</span>
-      ),
-      Chargesperlicense: (
-        <>
-          <span className={styles["ChargesPerLicesense"]}>35</span>
-        </>
-      ),
-      Numberoflicenses: (
-        <>
-          <span className={styles["ChargesPerLicesense"]}>35</span>
-        </>
-      ),
+  // col data in package details
+  const organizationSelectedPackages =
+    UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
+      ?.organizationSelectedPackages;
 
-      Yearlycharges: (
-        <>
-          <span className={styles["ChargesPerLicesense"]}>875</span>
-        </>
-      ),
-    },
-    {
+  let Data = [];
+  if (organizationSelectedPackages) {
+    Data = organizationSelectedPackages.map((packages) => ({
       Pakagedetails: (
-        <span className={styles["Tableheading"]}>{t("Premium")}</span>
+        <span className={styles["Tableheading"]}>{packages.name}</span>
       ),
       Chargesperlicense: (
-        <>
-          <span className={styles["ChargesPerLicesense"]}>45</span>
-        </>
+        <span className={styles["ChargesPerLicesense"]}>{packages.price}</span>
       ),
       Numberoflicenses: (
-        <span className={styles["ChargesPerLicesense"]}>45</span>
+        <span className={styles["ChargesPerLicesense"]}>
+          {packages.headCount}
+        </span>
       ),
       Yearlycharges: (
-        <>
-          <span className={styles["ChargesPerLicesense"]}>9,024</span>
-        </>
+        <span className={styles["ChargesPerLicesense"]}>
+          {packages.price * packages.headCount * 12}
+        </span>
       ),
-    },
-  ];
+    }));
+  }
+
+  // COunt number or add number of Number of license and Yearly Charges
+  let totalLicenses = 0;
+  let totalYearlyCharges = 0;
+
+  UserMangementReducer.organizationSelectedPakagesByOrganizationIDData?.organizationSelectedPackages.map(
+    (packages) => {
+      totalLicenses += packages.headCount;
+      totalYearlyCharges += packages.price * packages.headCount * 12;
+    }
+  );
 
   const defaultRow = {
-    Pakagedetails: <span className={styles["TableheadingTotal"]}>Total</span>,
+    Pakagedetails: (
+      <span className={styles["TableheadingTotal"]}>{t("Total")}</span>
+    ),
     Numberoflicenses: (
-      <span className={styles["ChargesPerLicesensetotal"]}>43</span>
+      <span className={styles["ChargesPerLicesensetotal"]}>
+        {totalLicenses}
+      </span>
     ),
     Yearlycharges: (
-      <span className={styles["ChargesPerLicesensetotal"]}>13,072</span>
+      <span className={styles["ChargesPerLicesensetotal"]}>
+        {totalYearlyCharges}
+      </span>
     ),
   };
 
@@ -225,11 +241,19 @@ const CancelSubscriptionAdmin = () => {
                 <p className={styles["subcriptionkey_1"]}>
                   {t("Subscription-date")}
                 </p>
-                <p className={styles["subcriptionvalue_1"]}>22 December 2023</p>
+                <p className={styles["subcriptionvalue_1"]}>
+                  {_justShowDateformat(
+                    cancelSubsDetail.cancelSubscriptionDate + "000000"
+                  )}
+                </p>
               </Col>
               <Col xs={12} sm={12} md={6} lg={6} className="text-center ps-0">
                 <p className={styles["subcriptionkey_2"]}>{t("Expiry-date")}</p>
-                <p className={styles["subcriptionvalue_2"]}>21 December 2024</p>
+                <p className={styles["subcriptionvalue_2"]}>
+                  {_justShowDateformat(
+                    cancelSubsDetail.cancelExpiryDate + "000000"
+                  )}
+                </p>
               </Col>
             </Row>
           </Card>

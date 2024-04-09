@@ -74,8 +74,8 @@ const PakageDetailsAdmin = () => {
 
   useEffect(() => {
     let newdata = {
-      // OrganizationID: 569,
-      OrganizationID: Number(organizationID),
+      OrganizationID: 569,
+      // OrganizationID: Number(organizationID),
     };
     dispatch(
       GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t, newdata)
@@ -97,41 +97,37 @@ const PakageDetailsAdmin = () => {
   }, [UserMangementReducer.organizationSelectedPakagesByOrganizationIDData]);
 
   // table data in which Package details should be shown
-  const Data =
-    UserMangementReducer.organizationSelectedPakagesByOrganizationIDData.organizationSelectedPackages.map(
-      (packages) => ({
-        Pakagedetails: (
-          <span className={styles["Tableheading"]}>{packages.name}</span>
-        ),
-        Chargesperlicense: (
-          <>
-            <span className={styles["ChargesPerLicesense"]}>
-              {packages.price}
-            </span>
-          </>
-        ),
-        Numberoflicenses: (
-          <>
-            <span className={styles["ChargesPerLicesense"]}>
-              {packages.headCount}
-            </span>
-          </>
-        ),
-        Yearlycharges: (
-          <>
-            <span className={styles["ChargesPerLicesense"]}>
-              {packages.price * packages.headCount * 12}
-            </span>
-          </>
-        ),
-      })
-    );
+  const organizationSelectedPackages =
+    UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
+      ?.organizationSelectedPackages;
+
+  let Data = [];
+  if (organizationSelectedPackages) {
+    Data = organizationSelectedPackages.map((packages) => ({
+      Pakagedetails: (
+        <span className={styles["Tableheading"]}>{packages.name}</span>
+      ),
+      Chargesperlicense: (
+        <span className={styles["ChargesPerLicesense"]}>{packages.price}</span>
+      ),
+      Numberoflicenses: (
+        <span className={styles["ChargesPerLicesense"]}>
+          {packages.headCount}
+        </span>
+      ),
+      Yearlycharges: (
+        <span className={styles["ChargesPerLicesense"]}>
+          {packages.price * packages.headCount * 12}
+        </span>
+      ),
+    }));
+  }
 
   // counter of Number of license and Yearly Charges
   let totalLicenses = 0;
   let totalYearlyCharges = 0;
 
-  UserMangementReducer.organizationSelectedPakagesByOrganizationIDData.organizationSelectedPackages.map(
+  UserMangementReducer.organizationSelectedPakagesByOrganizationIDData?.organizationSelectedPackages.map(
     (packages) => {
       totalLicenses += packages.headCount;
       totalYearlyCharges += packages.price * packages.headCount * 12;

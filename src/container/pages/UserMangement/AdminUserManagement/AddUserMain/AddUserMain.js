@@ -38,7 +38,7 @@ const AddUserMain = () => {
   const navigate = useNavigate();
   const { UserMangementReducer } = useSelector((state) => state);
   console.log(
-    UserMangementReducer.organizationSelectedPakagesByOrganizationIDData,
+    UserMangementReducer.getOrganizationUserStatsGraph,
     "getOrganizationUserStatsGraph"
   );
 
@@ -232,11 +232,11 @@ const AddUserMain = () => {
     ) {
       let createData = {
         UserName: userAddMain.Name.value,
-        // OrganizationName: "test new flow org",
+        OrganizationName: organizationName,
         Designation: userAddMain.Designation.value,
         MobileNumber: userAddMain.MobileNumber.value,
         UserEmail: userAddMain.Email.value,
-        // OrganizationID: 471,
+        OrganizationID: Number(organizationID),
         isAdmin: userAddMain.isAdmin.value,
         FK_NumberWorldCountryID: userAddMain.FK_NumberWorldCountryID,
         OrganizationSelectedPackageID: userAddMain.PackageAssigned.value,
@@ -470,6 +470,25 @@ const AddUserMain = () => {
     }
   };
 
+  // this is how I show alloted users and headcount
+  const selectedPackages =
+    UserMangementReducer.getOrganizationUserStatsGraph?.selectedPackages;
+
+  // Calculate total alloted users and headCount
+  let totalAllotedUsers = 0;
+  let totalHeadCount = 0;
+
+  selectedPackages?.forEach((packages) => {
+    totalAllotedUsers += packages.allotedUsers;
+    totalHeadCount += packages.headCount;
+  });
+
+  console.log(
+    totalAllotedUsers,
+    totalHeadCount,
+    "totalAllotedUserstotalAllotedUsers"
+  );
+
   return (
     <>
       <Container className={styles["container-main-class"]}>
@@ -521,14 +540,15 @@ const AddUserMain = () => {
                           xs={12}
                           className="MontserratSemiBold-600 color-5a5a5a font-14 Saved_money_Tagline"
                         >
-                          4 of 9 Users
+                          {Number(totalAllotedUsers)} {t("Of")}{" "}
+                          {Number(totalHeadCount)} {t("Users")}
                         </Col>
                       </Row>
                       <Row className="d-flex justify-content-center">
                         <Col lg={8} md={8} sm={8} xs={12}>
                           <ProgressBar
-                            now={5}
-                            max={10}
+                            now={totalAllotedUsers}
+                            max={totalHeadCount}
                             className={styles["AddProgressBar"]}
                           />
                         </Col>
