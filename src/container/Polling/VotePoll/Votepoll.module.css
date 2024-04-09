@@ -14,10 +14,9 @@
   font-size: 16px !important;
   color: #5a5a5a;
   font-family: "MontserratSemiBold" !important;
-  word-wrap: break-word!important;
-  white-space: pre-wrap!important;
+  word-wrap: break-word !important;
+  white-space: pre-wrap !important;
   width: 100% !important;
- 
 }
 
 .Vote_Poll_cross_ICon {
@@ -29,8 +28,8 @@
 .ViewTitleTOShowOnProgress {
   font-size: 14px !important;
   margin-top: 10px !important;
-  word-wrap: break-word!important;
-  white-space: pre-wrap!important;
+  word-wrap: break-word !important;
+  white-space: pre-wrap !important;
 }
 
 .Border_box {
@@ -124,10 +123,11 @@
 }
 .scrollable-title {
   max-height: 100px;
-  min-height: 39px; /* Set the maximum height you desire for the title */
+  min-height: 39px;
   overflow: hidden;
-  overflow-y: auto; /* Enable vertical scrolling when text overflows */
-  
+  width: 100%;
+  word-break: break-all;
+  overflow-y: auto;
 }
 .scrollable-title::-webkit-scrollbar {
   width: 0.5rem;
@@ -139,8 +139,8 @@
   background: #ccc;
   margin-left: -15px;
 }
-.scrollable-title2{
-  min-height: 39px!important;
+.scrollable-title2 {
+  min-height: 39px !important;
 }
 .Scroller_View_Poll_Published {
   height: 28vh !important;

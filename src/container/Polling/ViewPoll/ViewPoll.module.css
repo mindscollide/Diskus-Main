@@ -150,10 +150,11 @@ body[dir="rtl"] .Card_border2 {
 }
 .scrollable-title {
   max-height: 100px;
-  min-height: 39px; /* Set the maximum height you desire for the title */
+  min-height: 39px;
   overflow: hidden;
-  overflow-y: auto; /* Enable vertical scrolling when text overflows */
-  
+  width: 100%;
+  word-break: break-all;
+  overflow-y: auto;
 }
 .scrollable-title::-webkit-scrollbar {
   width: 0.5rem;
@@ -165,7 +166,7 @@ body[dir="rtl"] .Card_border2 {
   background: #ccc;
   margin-left: -15px;
 }
-.OptionBodyMaxHeight{
+.OptionBodyMaxHeight {
   margin-top: 14px;
   max-height: 17vh; /* Set the maximum height you desire for the title */
   overflow: hidden;
@@ -183,12 +184,12 @@ body[dir="rtl"] .Card_border2 {
   margin-left: -15px;
 }
 
-.innerRowOFviewunpubmodalOptions{
-margin-top: 4px !important;
-width: 100% !important;
+.innerRowOFviewunpubmodalOptions {
+  margin-top: 4px !important;
+  width: 100% !important;
 }
-.scrollable-title2{
-  min-height: 39px!important;
+.scrollable-title2 {
+  min-height: 39px !important;
 }
 .scroll-height {
   height: 17vh !important;
