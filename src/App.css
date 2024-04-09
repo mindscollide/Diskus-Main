@@ -6997,3 +6997,20 @@ td.ant-table-cell.minutesParticipant {
   background-color: #ffffff !important;
   top: 0 !important;
 }
+
+.title_tooltip:hover::after {
+  content: attr(title);
+  background-color: black;
+  color: white;
+  padding: 5px;
+  border-radius: 3px;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  z-index: 1; /* Ensure tooltip appears on top of other elements */
+}
+.title_tooltip {
+  border-radius: 50%;
+}

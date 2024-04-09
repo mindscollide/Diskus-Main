@@ -28,6 +28,7 @@ import ViewPollsUnPublished from "./VIewPollsUnPublished/ViewPollsUnPublished";
 import ViewPollsPublishedScreen from "./ViewPollsPublishedScreen/ViewPollsPublishedScreen";
 import { _justShowDateformatBilling } from "../../../commen/functions/date_formater";
 import {
+  createPollGroupsMQTT,
   deleteGroupPollApi,
   getPollByPollIdforGroups,
   getPollsByGroupMainApi,
@@ -90,6 +91,21 @@ const GroupViewPolls = ({ groupStatus }) => {
       }
     } catch {}
   }, [PollsReducer.getPollByGroupID]);
+
+  // MQTT Response of Polls for Groups
+  useEffect(() => {
+    try {
+      if (PollsReducer.newPollGroups !== null) {
+        let PollData = PollsReducer.newPollGroups;
+        if (Number(PollData.committeeID) === Number(ViewGroupID)) {
+          setPollsRows([PollData.polls, ...pollsRows]);
+        }
+        dispatch(createPollGroupsMQTT(null));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [PollsReducer.newPollGroups]);
 
   const handleEditBtn = (record) => {
     let data = {

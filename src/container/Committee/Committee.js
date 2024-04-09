@@ -162,13 +162,15 @@ const Committee = () => {
   useEffect(() => {
     if (CommitteeReducer.realtimeCommitteeCreateResponse !== null) {
       let committeeData = CommitteeReducer.realtimeCommitteeCreateResponse;
+      let CommitteeMembers = [...committeeData.committeeMembers];
       let newCommitteeData = {
         committeesTitle: committeeData.committeesTitle,
         committeeID: committeeData.committeeID,
         userCount: committeeData.userCount,
-        committeeMembers: committeeData.committeeMembers,
+        committeeMembers: CommitteeMembers,
         committeeStatusID: committeeData.committeeStatusID,
         listofGroups: committeeData.listOfGroups,
+        creatorId: committeeData.creatorID,
       };
 
       setGetCommitteeData([newCommitteeData, ...getcommitteedata]);

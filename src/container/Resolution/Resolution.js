@@ -111,15 +111,19 @@ const Resolution = () => {
         localStorage.setItem("moderatorRows", 50);
         localStorage.setItem("voterPage", 1);
         localStorage.setItem("voterRows", 50);
-        localStorage.setItem("resolutionView", 1);
+        localStorage.setItem("resolutionView", 2);
         localStorage.setItem("ButtonTab", 1);
-        dispatch(getResolutions(navigate, 1, t));
+        dispatch(getVoterResolution(navigate, 1, t));
+
+        // dispatch(getResolutions(navigate, 1, t));
       }
     } catch {}
 
     return () => {
       localStorage.removeItem("moderatorPage");
       localStorage.removeItem("moderatorRows");
+      localStorage.removeItem("resolutionView");
+      localStorage.removeItem("ButtonTab");
       localStorage.removeItem("voterPage");
       localStorage.removeItem("voterRows");
       localStorage.removeItem("ResolutionID");
