@@ -15,6 +15,7 @@ import {
 import * as actions from "../action_types";
 import axios from "axios";
 import { RefreshToken } from "./Auth_action";
+import { getUserSetting } from "./GetUserSetting";
 
 const signUpFlowRoutes = (response) => {
   return {
@@ -347,6 +348,7 @@ const getAllorganizationSubscriptionExpiryDetailsApi = (navigate, t, data) => {
                   t("Successful")
                 )
               );
+              dispatch(getUserSetting(navigate, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

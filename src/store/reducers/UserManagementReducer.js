@@ -52,7 +52,7 @@ const UserMangementReducer = (state = initialState, action) => {
     case actions.GET_ORGANIZATION_SUBSCRIPTION_EXPIRYDETAILS_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         getOrganizationSubscriptionExpiryDetailsData: action.response,
         ResponseMessage: action.message,
       };
