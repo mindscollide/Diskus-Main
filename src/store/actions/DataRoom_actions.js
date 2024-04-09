@@ -1164,7 +1164,8 @@ const shareFilesApi = (navigate, FileData, t, setShareFile) => {
                   "DataRoom_DataRoomServiceManager_ShareFiles_02".toLowerCase()
                 )
             ) {
-              dispatch(shareFiles_fail(t("Failed-to-share-file")));
+              dispatch(shareFiles_fail(""));
+              setShareFile(false);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1274,7 +1275,9 @@ const shareFoldersApi = (navigate, FolderData, t, setSharefolder) => {
                   "DataRoom_DataRoomServiceManager_ShareFolders_02".toLowerCase()
                 )
             ) {
-              dispatch(shareFolders_fail(t("Failed-to-share-folder")));
+              setSharefolder(false);
+
+              dispatch(shareFolders_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
