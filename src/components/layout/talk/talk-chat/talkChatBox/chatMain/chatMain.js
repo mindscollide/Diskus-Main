@@ -3373,14 +3373,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 <span onClick={deleteMultipleMessages}>
                                   {t("Delete-messages")}
                                 </span>
-                                <span
-                                  onClick={
-                                    () => setLeave(true)
-                                    // leaveGroupHandlerChat(
-                                    //   talkStateData.ActiveChatData
-                                    // )
-                                  }
-                                >
+                                <span onClick={() => setLeave(true)}>
                                   {t("Leave-Group")}
                                 </span>
                                 <span
