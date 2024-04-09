@@ -3,44 +3,29 @@ import { Row, Col } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./videoCallHeader.css";
-import { Button, NotificationBar } from "./../../../../elements";
+import { Button } from "./../../../../elements";
 import { Tooltip } from "antd";
-import MicVideo from "../../../../../assets/images/newElements/micVideo.png";
-import VideoCallIcon from "../../../../../assets/images/newElements/VideoIconExpand.png";
-import ExpandIcon from "../../../../../assets/images/ExpandColorfullIcon.png";
-import MinimizeIcon from "../../../../../assets/images/MinimizeIcon.png";
-import ActiveScreenShare from "../../../../../assets/images/newElements/ActiveScreenShareIcon.svg";
-import NonActiveScreenShare from "../../../../../assets/images/NonActiveScreenShare.png";
-import ScreenShare from "../../../../../assets/images/newElements/ScreenShareIcon.png";
-import HandRaise from "../../../../../assets/images/newElements/HandRaiseIcon.svg";
-import Board from "../../../../../assets/images/newElements/WhiteBoard.svg";
-import ThreeDots from "../../../../../assets/images/newElements/ThreeDotsIcon.svg";
-import videoEndIcon from "../../../../../assets/images/newElements/VideoEndIcon.png";
-import LayoutIconPurple from "../../../../../assets/images/Layout-Icon-Purple.svg";
-import MicOn from "../../../../../assets/images/Mic-ON.svg";
-import VideoOn from "../../../../../assets/images/Video-ON.svg";
-import MicOff from "../../../../../assets/images/Mic-OFF.svg";
-import VideoOff from "../../../../../assets/images/Video-OFF.svg";
-import LayoutIconSelected from "../../../../../assets/images/Layout-Icon-Selected-with-shape.svg";
-import LayoutIconWhite from "../../../../../assets/images/Layout-Icon-White.svg";
-import ChatNonActive from "../../../../../assets/images/newElements/ChatIconNonActive.svg";
-import ActiveChat from "../../../../../assets/images/newElements/ActiveChatIcon.svg";
+import ExpandIcon from "./../../talk-Video/video-images/Expand.svg";
+import MinimizeIcon from "./../../talk-Video/video-images/Minimize.svg";
+import NonActiveScreenShare from "./../../talk-Video/video-images/Screen share.svg";
+import videoEndIcon from "./../../talk-Video/video-images/Leave call Selected.svg";
+import LayoutIconPurple from "./../../talk-Video/video-images/Tile View 3.svg";
+import MicOn from "./../../talk-Video/video-images/Mic ON.svg";
+import VideoOn from "./../../talk-Video/video-images/Video ON.svg";
+import MicOff from "./../../talk-Video/video-images/Mic OFF.svg";
+import VideoOff from "./../../talk-Video/video-images/Video OFF.svg";
 import ChatIcon from "../../../../../assets/images/Chat-Icon.png";
-import CallEndRedIcon from "../../../../../assets/images/newElements/CallRedIcon.svg";
-import NormalizeIcon from "../../../../../assets/images/Normalize-Icon.png";
-import CancelIcon from "../../../../../assets/images/Artboard9.png";
+import CallEndRedIcon from "./../../talk-Video/video-images/Leave call.svg";
+import NormalizeIcon from "./../../talk-Video/video-images/Collapse.svg";
 import CloseNotification from "../../../../../assets/images/Close-Notification.png";
-import ActiveParticipantIcon from "../../../../../assets/images/Active-Participant-Icon.png";
-import AddParticipantIcon from "../../../../../assets/images/Add-Participant-Icon.png";
-import ParticipantsIcon from "../../../../../assets/images/Participants-Icon.png";
+import ActiveParticipantIcon from "./../../talk-Video/video-images/User Selected.svg";
+import ParticipantsIcon from "./../../talk-Video/video-images/Users.svg";
 import { activeChat } from "../../../../../store/actions/Talk_action";
 import {
   maximizeVideoPanelFlag,
   minimizeVideoPanelFlag,
   normalizeVideoPanelFlag,
-  agendaEnableNormalFlag,
   chatEnableNormalFlag,
-  minutesMeetingEnableNormalFlag,
   leaveCallModal,
   participantPopup,
   videoChatMessagesFlag,
@@ -297,7 +282,7 @@ const VideoCallNormalHeader = ({
       !participantPopupDisable.current.contains(event.target) &&
       videoFeatureReducer.ParticipantPopupFlag
     ) {
-      dispatch(participantPopup(false));
+      // dispatch(participantPopup(false));
     }
     // if (
     //   leaveModalPopupRef.current &&
@@ -353,6 +338,8 @@ const VideoCallNormalHeader = ({
     videoFeatureReducer.ParticipantPopupFlag,
     // videoFeatureReducer.LeaveCallModalFlag,
   ]);
+
+  console.log("Video Feature Reducer", videoFeatureReducer)
 
   return (
     <>
@@ -610,7 +597,7 @@ const VideoCallNormalHeader = ({
                     : "cursor-pointer"
                 }
               >
-                <img src={MinimizeIcon} />
+                <img src={MinimizeIcon} alt="" />
               </div>
             </Tooltip>
             {videoFeatureReducer.NormalizeVideoFlag === true &&

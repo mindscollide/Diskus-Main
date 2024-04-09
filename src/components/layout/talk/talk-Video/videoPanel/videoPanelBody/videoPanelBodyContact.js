@@ -177,6 +177,7 @@ const VideoPanelBodyContact = () => {
         localStorage.setItem("isCaller", true);
         localStorage.setItem("activeCall", true);
         localStorage.setItem("callerID", currentUserID);
+        localStorage.setItem("callTypeID", Data.CallTypeID)
         dispatch(callRequestReceivedMQTT({}, ""));
         dispatch(groupCallRecipients(groupCallActiveUsers));
         // dispatch(getVideoRecipentData(userData))
