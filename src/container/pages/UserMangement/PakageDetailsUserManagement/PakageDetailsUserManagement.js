@@ -148,14 +148,15 @@ const PakageDetailsUserManagement = () => {
             );
           } else {
             const handleChange = (newValue) => {
-              const newData = tableData.map((item) => {
-                console.log(item, "itemitem");
-                if (item.pK_PackageID === row.pK_PackageID) {
-                  return { ...item, licenseCount: newValue };
-                }
-                return item;
-              });
-              setTableData(newData);
+              if (/^\d+$/.test(newValue)) {
+                const newData = tableData.map((item) => {
+                  if (item.pK_PackageID === row.pK_PackageID) {
+                    return { ...item, licenseCount: newValue };
+                  }
+                  return item;
+                });
+                setTableData(newData);
+              }
             };
 
             return (
