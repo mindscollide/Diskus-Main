@@ -224,7 +224,7 @@ const getSelectedLanguageFail = (message) => {
 
 const getSelectedLanguage = (data, navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let organzataionID = localStorage.getItem("organizationID");
+  let organzataionID = localStorage.getItem("OrganizationID");
   console.log(organzataionID, "organzataionIDorganzataionID");
   return (dispatch) => {
     dispatch(getSelectedLanguageInitial());
