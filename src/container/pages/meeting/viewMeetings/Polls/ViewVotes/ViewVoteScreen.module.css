@@ -26,6 +26,7 @@
   color: #5a5a5a !important;
   font-family: "MontserratSemiBold" !important;
   font-size: 16px !important;
+  word-wrap: break-word !important;
 }
 
 .Partipants_box {

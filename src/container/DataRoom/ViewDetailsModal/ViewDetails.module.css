@@ -82,6 +82,19 @@ body[dir="rtl"] .Activity_Buttons_active {
   border-radius: 50% !important;
 }
 
+.profileClass:hover::after {
+  content: attr(title);
+  background-color: black;
+  color: white;
+  padding: 5px;
+  border-radius: 3px;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  z-index: 1; /* Ensure tooltip appears on top of other elements */
+}
 .Activity_Buttons {
   padding: 12px 30px !important;
   font-size: 12px !important;
