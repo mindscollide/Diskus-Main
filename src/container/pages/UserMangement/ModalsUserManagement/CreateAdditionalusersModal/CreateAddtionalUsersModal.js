@@ -16,7 +16,10 @@ import {
 import crossicon from "../../../../../assets/images/BlackCrossIconModals.svg";
 import { Col, Row } from "react-bootstrap";
 import EmployeeinfoCard from "../../../../../components/elements/Employeeinfocard/EmployeeinfoCard";
-import { AddOrganizationsUserApi } from "../../../../../store/actions/UserManagementActions";
+import {
+  AddOrganizationsUserApi,
+  getAllorganizationSubscriptionExpiryDetailsApi,
+} from "../../../../../store/actions/UserManagementActions";
 import { useNavigate } from "react-router-dom";
 import { validateEmailEnglishAndArabicFormat } from "../../../../../commen/functions/validations";
 const CreateAddtionalUsersModal = () => {
@@ -24,7 +27,7 @@ const CreateAddtionalUsersModal = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  let organzataionID = localStorage.getItem("OrganizationID");
+  let organzataionID = localStorage.getItem("organizationID");
 
   let OrganizatioName = localStorage.getItem("OrganizatioName");
 
@@ -149,7 +152,11 @@ const CreateAddtionalUsersModal = () => {
   //Handle Skip Button
   const handleSkipButton = () => {
     dispatch(showCreateAddtionalUsersModal(false));
-    navigate("/Diskus/Admin/ManageUsers");
+    let data = {
+      OrganizationID: Number(organzataionID),
+    };
+    dispatch(getAllorganizationSubscriptionExpiryDetailsApi(navigate, t, data));
+    // navigate("/Diskus/Admin/ManageUsers");
   };
 
   //handle Create button
