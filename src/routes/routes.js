@@ -483,14 +483,14 @@ export const router = createHashRouter(
               </RouteWrapperAdmin>
             }
           />
-          <Route
+          {/* <Route
             path="CancelSubscriptionUserManagement"
             element={
               <RouteWrapperAdmin name="CancelSubscriptionUserManagement">
                 <CancelSubscriptionAdmin />
               </RouteWrapperAdmin>
             }
-          />
+          /> */}
           <Route
             path="PackageDetail"
             element={
@@ -634,6 +634,11 @@ export const router = createHashRouter(
         path="/PackageDetailsUserManagement"
         element={<PakageDetailsAdmin />}
       /> */}
+
+      <Route
+        path="CancelSubscriptionUserManagement"
+        element={<CancelSubscriptionAdmin />}
+      />
     </>
   )
 );
