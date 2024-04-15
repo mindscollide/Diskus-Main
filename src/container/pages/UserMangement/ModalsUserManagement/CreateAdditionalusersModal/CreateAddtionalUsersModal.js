@@ -16,7 +16,6 @@ import {
 } from "../../../../../components/elements";
 import Cookies from "js-cookie";
 import { Col, Row } from "react-bootstrap";
-import EmployeeinfoCard from "../../../../../components/elements/Employeeinfocard/EmployeeinfoCard";
 import { AddOrganizationsUserApi } from "../../../../../store/actions/UserManagementActions";
 import { useNavigate } from "react-router-dom";
 import { validateEmailEnglishAndArabicFormat } from "../../../../../commen/functions/validations";

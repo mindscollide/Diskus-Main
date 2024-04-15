@@ -1525,6 +1525,10 @@ const leaveFileSharingRM = {
   RequestMethod: "ServiceManager.DeleteFileSharing",
 };
 
+const ResendForgotPasswordCode = {
+  RequestMethod: "ServiceManager.ResendForgotPasswordCode",
+};
+
 export {
   leaveFileSharingRM,
   UserLoginHistoryRM,
@@ -1932,4 +1936,5 @@ export {
   leaveMeeting,
   getOrganizationSelectedPakages,
   GetAllUserTypePackages,
+  ResendForgotPasswordCode,
 };

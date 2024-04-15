@@ -16,6 +16,7 @@ const initialState = {
   getAllSelectedPakagesData: null,
   getOrganizationUserStatsGraph: null,
   getAllUserTypePackagesData: [],
+  ResendForgotPasswordCodedData: null,
 };
 
 const UserMangementReducer = (state = initialState, action) => {
@@ -286,6 +287,28 @@ const UserMangementReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         getOrganizationUserStatsGraph: null,
+        ResponseMessage: action.message,
+      };
+
+    case actions.RESEND_FORGOT_PASSWORD_CODE_INIT:
+      return {
+        ...state,
+        Loading: true,
+      };
+
+    case actions.RESEND_FORGOT_PASSWORD_CODE_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        ResendForgotPasswordCodedData: action.response,
+        ResponseMessage: action.message,
+      };
+
+    case actions.RESEND_FORGOT_PASSWORD_CODE_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        ResendForgotPasswordCodedData: null,
         ResponseMessage: action.message,
       };
 
