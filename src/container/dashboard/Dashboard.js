@@ -30,6 +30,8 @@ import {
   mqttCurrentMeetingEnded,
   GetUpcomingEvents,
   GetUpcomingEventsForMQTT,
+  createGroupMeeting,
+  createCommitteeMeeting,
 } from "../../store/actions/GetMeetingUserId";
 import {
   mqttInsertOtoMessage,
@@ -539,6 +541,38 @@ const Dashboard = () => {
             "NEW_MEETINGS_COUNT".toLowerCase()
           ) {
             dispatch(meetingCount(data.payload));
+          } else if (
+            data.payload.message.toLowerCase() ===
+            "MEETING_STATUS_EDITED_PUBLISHED_GROUP".toLowerCase()
+          ) {
+            dispatch(createGroupMeeting(data.payload));
+            if (data.viewable) {
+              setNotification({
+                ...notification,
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("MEETING_STATUS_EDITED_PUBLISHED"),
+                  "[Meeting Title]",
+                  data.payload.meetingTitle.substring(0, 100)
+                ),
+              });
+            }
+          } else if (
+            data.payload.message.toLowerCase() ===
+            "MEETING_STATUS_EDITED_PUBLISHED_COMMITTEE".toLowerCase()
+          ) {
+            dispatch(createCommitteeMeeting(data.payload));
+            if (data.viewable) {
+              setNotification({
+                ...notification,
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("MEETING_STATUS_EDITED_PUBLISHED"),
+                  "[Meeting Title]",
+                  data.payload.meetingTitle.substring(0, 100)
+                ),
+              });
+            }
           }
         }
       }
@@ -1886,9 +1920,7 @@ const Dashboard = () => {
           // deleteMicrosftEventMQTT;
         }
       }
-    } catch (error) {
-      console.log(error, "MEETING_STATUS_EDITED_ENDMEETING_STATUS_EDITED_END");
-    }
+    } catch (error) {}
   };
 
   const onConnectionLost = () => {
