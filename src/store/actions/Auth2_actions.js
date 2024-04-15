@@ -2165,15 +2165,16 @@ const createPasswordAction = (value, navigate, t) => {
                 } catch (error) {
                   console.error("testpasswordCreation", error);
                 }
-                console.log(response.data.responseResult, "responseResult");
-                response.data.responseResult.userFeatures.map(
-                  (dataId, index) => {
-                    localStorage.setItem(
-                      "PakageSelectedID",
-                      dataId.organizationSelectedPackageID
-                    );
-                  }
+                let findSelectedPackageID =
+                  response.data.responseResult.userFeatures[0]
+                    .organizationSelectedPackageID;
+                console.log(
+                  findSelectedPackageID,
+                  "findSelectedPackageIDfindSelectedPackageID"
                 );
+                localStorage.setItem("PakageSelectedID", findSelectedPackageID);
+                console.log(response.data.responseResult, "responseResult");
+
                 try {
                   localStorage.setItem(
                     "isTrial",
