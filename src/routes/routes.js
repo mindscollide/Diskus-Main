@@ -631,7 +631,7 @@ export const router = createHashRouter(
 
       <Route path="/AddUsersUsermanagement" element={<AddUserMain />} />
 
-      {/* <Route
+      <Route
         path="/PackageDetailsUserManagement"
         element={<PakageDetailsAdmin />}
       />
@@ -644,7 +644,7 @@ export const router = createHashRouter(
       <Route
         path="/PackageDetailUMupgrade"
         element={<PakageDetailsUMUpgrade />}
-      /> */}
+      />
     </>
   )
 );

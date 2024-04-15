@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./PakageDetailsAdmin.module.css";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { Button, TableToDo } from "../../../../../components/elements";
+import { Button, Loader, TableToDo } from "../../../../../components/elements";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { GetOrganizationSelectedPackagesByOrganizationIDApi } from "../../../../../store/actions/UserManagementActions";
@@ -150,6 +150,19 @@ const PakageDetailsAdmin = () => {
     ),
   };
 
+  const upgradeOnclickHandler = () => {
+    const organizationSelectedPackages =
+      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
+        ?.organizationSelectedPackages;
+    if (organizationSelectedPackages) {
+      navigate("/PackageDetailUMupgrade", {
+        state: { organizationSelectedPackages },
+      });
+    } else {
+      // Handle if organizationSelectedPackages is empty
+    }
+  };
+
   return (
     <Container className="p-3">
       <Row className="mt-3">
@@ -259,6 +272,7 @@ const PakageDetailsAdmin = () => {
                 <Button
                   text={t("Upgrade")}
                   className={styles["UpdateButtonPakageDetails"]}
+                  onClick={upgradeOnclickHandler}
                 />
               </Col>
             </Row>
@@ -284,6 +298,7 @@ const PakageDetailsAdmin = () => {
           </Card>
         </Col>
       </Row>
+      {UserMangementReducer.Loading ? <Loader /> : null}
     </Container>
   );
 };

@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./CancelSubscriptionAdmin.module.css";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { Button, TableToDo } from "../../../../../components/elements";
+import { Button, Loader, TableToDo } from "../../../../../components/elements";
 import CancelSubscriptionModal from "../../ModalsUserManagement/CancelSubscriptionModal/CancelSubscriptionModal";
 import { useSelector } from "react-redux";
 import { showCancelSubscriptionModal } from "../../../../../store/actions/UserMangementModalActions";
@@ -10,12 +10,15 @@ import { useDispatch } from "react-redux";
 import ReasonForCancelSubs from "../../ModalsUserManagement/ResonsForCancelSubscriptionModal/ReasonForCancelSubs";
 import { GetOrganizationSelectedPackagesByOrganizationIDApi } from "../../../../../store/actions/UserManagementActions";
 import { _justShowDateformat } from "../../../../../commen/functions/date_formater";
+import { useNavigate } from "react-router-dom";
 const CancelSubscriptionAdmin = () => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
+
+  const organizationID = localStorage.getItem("organizationID");
 
   const { UserManagementModals, UserMangementReducer } = useSelector(
     (state) => state
@@ -35,7 +38,8 @@ const CancelSubscriptionAdmin = () => {
   // useEffect to hit an API
   useEffect(() => {
     let data = {
-      OrganizationID: 569,
+      // OrganizationID: 569,
+      OrganizationID: Number(organizationID),
     };
     dispatch(
       GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t, data)
@@ -279,6 +283,7 @@ const CancelSubscriptionAdmin = () => {
         <CancelSubscriptionModal />
       )}
       {UserManagementModals.reasonForleavingModal && <ReasonForCancelSubs />}
+      {UserMangementReducer.Loading ? <Loader /> : null}
     </Container>
   );
 };

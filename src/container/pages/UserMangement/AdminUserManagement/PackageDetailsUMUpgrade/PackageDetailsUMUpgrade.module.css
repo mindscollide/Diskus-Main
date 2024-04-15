@@ -1,25 +1,25 @@
 @font-face {
   font-family: "MontserratBold";
-  src: url("../../../../assets/fonts-new/montserrat-700-webfont.woff"),
-    url("../../../../assets/fonts-new/montserrat-700-webfont.woff2");
+  src: url("../../../../../assets/fonts-new/montserrat-700-webfont.woff"),
+    url("../../../../../assets/fonts-new/montserrat-700-webfont.woff2");
 }
 
 @font-face {
   font-family: "MontserratMedium";
-  src: url("../../../../assets/fonts-new/montserrat-500-webfont.woff"),
-    url("../../../../assets/fonts-new/montserrat-500-webfont.woff2");
+  src: url("../../../../../assets/fonts-new/montserrat-500-webfont.woff"),
+    url("../../../../../assets/fonts-new/montserrat-500-webfont.woff2");
 }
 
 @font-face {
   font-family: "MontserratRegular";
-  src: url("../../../../assets/fonts-new/montserrat-regular-webfont.woff"),
-    url("../../../../assets/fonts-new/montserrat-regular-webfont.woff2");
+  src: url("../../../../../assets/fonts-new/montserrat-regular-webfont.woff"),
+    url("../../../../../assets/fonts-new/montserrat-regular-webfont.woff2");
 }
 
 @font-face {
   font-family: "MontserratSemiBold";
-  src: url("../../../../assets/fonts-new/montserrat-600-webfont.woff"),
-    url("../../../../assets/fonts-new/montserrat-600-webfont.woff2");
+  src: url("../../../../../assets/fonts-new/montserrat-600-webfont.woff"),
+    url("../../../../../assets/fonts-new/montserrat-600-webfont.woff2");
 }
 
 .packageselection_heading {
@@ -96,7 +96,7 @@ body[dir="rtl"] .packageRibbon svg path {
 
 .packagecard_pricebox {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
-  padding: 5px 12px;
+  padding: 10px 12px;
   border-radius: 4px;
 }
 
@@ -269,19 +269,6 @@ body[dir="rtl"] .spandefault {
   color: #fff !important;
   font-size: 60px;
   margin-bottom: 0;
-}
-
-@media screen and (max-width: 1050px) {
-  .package_actualPrice {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    font-family: "MontserratBold";
-    color: #fff !important;
-    font-size: 40px !important;
-    margin-bottom: 0;
-  }
 }
 
 body[dir="rtl"] .package_actualPrice {
@@ -477,8 +464,6 @@ body[dir="rtl"] .BillingHeading {
 
 body[dir="rtl"] .Tableheading {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
-  display: flex !important;
-  justify-content: center !important;
 }
 
 .ChargesPerLicesense {
@@ -489,8 +474,6 @@ body[dir="rtl"] .Tableheading {
 
 body[dir="rtl"] .ChargesPerLicesense {
   font-family: "IBMPlexSansArabic-Bold" !important;
-  display: flex !important;
-  justify-content: center !important;
 }
 
 .TableheadingTotal {
@@ -501,8 +484,6 @@ body[dir="rtl"] .ChargesPerLicesense {
 
 body[dir="rtl"] .TableheadingTotal {
   font-family: "IBMPlexSansArabic-Bold" !important;
-  display: flex !important;
-  justify-content: center !important;
 }
 
 .PayNowButtons {
@@ -519,11 +500,6 @@ body[dir="rtl"] .PayNowButtons {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
-body[dir="rtl"] .ButtonsArabicStylesSpan {
-  display: flex !important;
-  justify-content: center !important;
-}
-
 .PayNowButtons:is(:hover, :active, :focus, :focus-visible) {
   padding: 12px 30px !important;
   font-size: 12px !important;
@@ -532,4 +508,22 @@ body[dir="rtl"] .ButtonsArabicStylesSpan {
   font-family: "MontserratSemiBold-600" !important;
   background: #6172d6 !important;
   color: #fff !important;
+}
+
+.Scroller_PakagesSelectionCard {
+  height: 40vh !important;
+  overflow-x: hidden !important;
+  gap: 5px !important;
+}
+
+.Scroller_PakagesSelectionCard::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_PakagesSelectionCard::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
 }
