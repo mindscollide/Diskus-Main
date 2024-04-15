@@ -140,7 +140,7 @@ const AgendaViewer = ({
 
   useEffect(() => {
     let Data = {
-      MeetingID: currentMeetingID,
+      MeetingID: Number(advanceMeetingModalID),
     };
     dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
     return () => {
@@ -468,7 +468,7 @@ const AgendaViewer = ({
         MeetingAgendaReducer.MeetingAgendaUpdatedMqtt.meetingID
       ) {
         let Data = {
-          MeetingID: currentMeetingID,
+          MeetingID: Number(advanceMeetingModalID),
         };
         dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
       }
