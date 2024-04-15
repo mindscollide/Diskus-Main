@@ -191,34 +191,40 @@ const Polling = () => {
         PollsReducer.pollingSocket !== undefined
       ) {
         if (Object.keys(PollsReducer.pollingSocket).length > 0) {
-          let pollData = PollsReducer.pollingSocket;
-
-          let rowCopy = [...rows];
-          let findIndex = rowCopy.findIndex(
-            (rowData, index) => rowData?.pollID === pollData?.pollID
-          );
-          if (findIndex !== -1) {
-            const newState = rowCopy.map((obj, index) => {
-              // 👇️ if id equals 2 replace object
-              if (
-                findIndex === index &&
-                Number(pollData.pollStatus.pollStatusId) === 4
-              ) {
-                rowCopy.splice(findIndex, 1);
-                // return rowCopy;
-              } else if (
-                findIndex === index &&
-                Number(pollData.pollStatus.pollStatusId) === 3
-              ) {
-                rowCopy[index] = pollData;
-                // return rowCopy;
-              } else {
-                // return obj;
-              }
-            });
-            setRows(rowCopy);
-          } else {
-            setRows([pollData, ...rowCopy]);
+          let pollData = PollsReducer.pollingSocket.polls;
+          let pollMQTT = PollsReducer.pollingSocket;
+          if (
+            pollMQTT.committeeID === -1 &&
+            pollMQTT.groupID === -1 &&
+            pollMQTT.meetingID === -1
+          ) {
+            let rowCopy = [...rows];
+            let findIndex = rowCopy.findIndex(
+              (rowData, index) => rowData?.pollID === pollData?.pollID
+            );
+            if (findIndex !== -1) {
+              const newState = rowCopy.map((obj, index) => {
+                // 👇️ if id equals 2 replace object
+                if (
+                  findIndex === index &&
+                  Number(pollData.pollStatus.pollStatusId) === 4
+                ) {
+                  rowCopy.splice(findIndex, 1);
+                  // return rowCopy;
+                } else if (
+                  findIndex === index &&
+                  Number(pollData.pollStatus.pollStatusId) === 3
+                ) {
+                  rowCopy[index] = pollData;
+                  // return rowCopy;
+                } else {
+                  // return obj;
+                }
+              });
+              setRows(rowCopy);
+            } else {
+              setRows([pollData, ...rowCopy]);
+            }
           }
         }
       }

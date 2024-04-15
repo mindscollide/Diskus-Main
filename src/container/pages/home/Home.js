@@ -678,21 +678,24 @@ const Home = () => {
           const existingEvent = events.find(
             (newData) => newData.eventDate === dashboardData.eventDate
           );
-
+          const isEventAlreadyExist = events.findIndex(
+            (eventDetails) => eventDetails.pK_MDID === dashboardData.pK_MDID
+          );
           if (existingEvent) {
             // If event with the same date already exists, update its details
-            setEvents((eventDetails) =>
-              eventDetails.map((event_data) => {
-                if (event_data.pK_MDID === dashboardData.pK_MDID) {
-                  return dashboardData;
-                } else {
-                  return event_data;
-                }
-              })
-            );
-          } else {
-            // If event with the same date doesn't exist, add new event
-            setEvents([...events, dashboardData]);
+            if (isEventAlreadyExist !== -1) {
+              setEvents((eventDetails) =>
+                eventDetails.map((event_data) => {
+                  if (event_data.pK_MDID === dashboardData.pK_MDID) {
+                    return dashboardData;
+                  } else {
+                    return event_data;
+                  }
+                })
+              );
+            } else {
+              setEvents([...events, dashboardData]);
+            }
           }
         }
 

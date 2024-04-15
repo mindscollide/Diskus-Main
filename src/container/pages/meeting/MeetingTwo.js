@@ -1532,30 +1532,57 @@ const NewMeeting = () => {
   useEffect(() => {
     if (
       meetingIdReducer.MeetingStatusSocket !== null &&
-      meetingIdReducer.MeetingStatusSocket !== undefined &&
-      meetingIdReducer.MeetingStatusSocket.length !== 0
+      meetingIdReducer.MeetingStatusSocket !== undefined
     ) {
-      let meetingID = meetingIdReducer.MeetingStatusSocket.meetingID;
-      let meetingStatusID =
-        meetingIdReducer.MeetingStatusSocket.MeetingStatusID;
-      try {
-        setRow((rowsData) => {
-          return rowsData.map((item) => {
-            if (item.pK_MDID === meetingID) {
-              return {
-                ...item,
-                status: String(meetingStatusID),
-              };
-            } else {
-              return item; // Return the original item if the condition is not met
-            }
+      if (
+        meetingIdReducer.MeetingStatusSocket.message
+          .toLowerCase()
+          .includes("MEETING_STATUS_EDITED_STARTED".toLowerCase())
+      ) {
+        let meetingStatusID =
+          meetingIdReducer.MeetingStatusSocket.meeting.status;
+        let meetingID = meetingIdReducer.MeetingStatusSocket.meeting.pK_MDID;
+        try {
+          setRow((rowsData) => {
+            return rowsData.map((item) => {
+              if (item.pK_MDID === meetingID) {
+                return {
+                  ...item,
+                  status: String(meetingStatusID),
+                };
+              } else {
+                return item; // Return the original item if the condition is not met
+              }
+            });
           });
-        });
-      } catch (error) {
-        console.log(
-          error,
-          "meetingIDmeetingIDmeetingIDmeetingIDmeetingIDmeetingID"
-        );
+        } catch (error) {
+          console.log(
+            error,
+            "meetingIDmeetingIDmeetingIDmeetingIDmeetingIDmeetingID"
+          );
+        }
+      } else if (
+        meetingIdReducer.MeetingStatusSocket.message
+          .toLowerCase()
+          .includes("MEETING_STATUS_EDITED_CANCELLED".toLowerCase())
+      ) {
+        let meetingStatusID =
+          meetingIdReducer.MeetingStatusSocket?.meetingStatusID;
+        let meetingID = meetingIdReducer.MeetingStatusSocket?.meetingID;
+        try {
+          setRow((rowsData) => {
+            return rowsData.map((item) => {
+              if (item.pK_MDID === meetingID) {
+                return {
+                  ...item,
+                  status: String(meetingStatusID),
+                };
+              } else {
+                return item; // Return the original item if the condition is not met
+              }
+            });
+          });
+        } catch {}
       }
     }
   }, [meetingIdReducer.MeetingStatusSocket]);
@@ -1616,6 +1643,7 @@ const NewMeeting = () => {
       }
     }
   }, [meetingIdReducer.MeetingStatusEnded, NewMeetingreducer]);
+
   useEffect(() => {
     if (
       meetingIdReducer.allMeetingsSocketData !== null &&

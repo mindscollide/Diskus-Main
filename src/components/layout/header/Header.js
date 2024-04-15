@@ -48,7 +48,7 @@ const Header = ({ currentUserImage }) => {
     let currentUserID = localStorage.getItem("userID");
     if (reload === true) {
       dispatch(getNotifications(navigate, JSON.parse(currentUserID)));
-      dispatch(getUserSetting(navigate, JSON.parse(currentUserID)));
+      dispatch(getUserSetting(navigate, JSON.parse(currentUserID), false));
       setReload(false);
     }
   }, [reload]);

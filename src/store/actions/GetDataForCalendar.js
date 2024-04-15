@@ -380,6 +380,42 @@ const getEventsDetails = (navigate, Data, t, setCalendarViewModal) => {
       });
   };
 };
+const createMicrosftEventMQTT = (response) => {
+  return {
+    type: actions.MICROSOFT_CREATE_EVENT,
+    response: response,
+  };
+};
+const updateMicrosftEventMQTT = (response) => {
+  return {
+    type: actions.MICROSOFT_UPDATE_EVENT,
+    response: response,
+  };
+};
+const deleteMicrosftEventMQTT = (response) => {
+  return {
+    type: actions.MICROSOFT_DELETE_EVENT,
+    response: response,
+  };
+};
+const createGoogleEventMQTT = (response) => {
+  return {
+    type: actions.GOOGLE_CREATE_EVENT,
+    response: response,
+  };
+};
+const updateGoogletEventMQTT = (response) => {
+  return {
+    type: actions.GOOGLE_UPDATE_EVENT,
+    response: response,
+  };
+};
+const deleteGoogleEventMQTT = (response) => {
+  return {
+    type: actions.GOOGLE_DELETE_EVENT,
+    response: response,
+  };
+};
 export {
   getCalendarDataResponse,
   HideNotificationCalendarData,
@@ -388,4 +424,10 @@ export {
   getEventsDetails,
   clearCalendarState,
   getCalendarDataResponseMQTT,
+  createMicrosftEventMQTT,
+  updateMicrosftEventMQTT,
+  deleteMicrosftEventMQTT,
+  createGoogleEventMQTT,
+  updateGoogletEventMQTT,
+  deleteGoogleEventMQTT,
 };

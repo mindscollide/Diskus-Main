@@ -71,7 +71,7 @@ const getAllLanguages = (navigate, t, flag) => {
               //For Skip Create Addional users
               if (flag) {
                 let data = { UserID: currentUserID };
-                dispatch(getSelectedLanguage(data, navigate, t));
+                dispatch(getSelectedLanguage(data, navigate, t, true, true));
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -207,11 +207,12 @@ const getSelectedLanguageInitial = () => {
   };
 };
 
-const getSelectedLanguageSuccess = (response, message) => {
+const getSelectedLanguageSuccess = (response, message, loader) => {
   return {
     type: actions.GET_SELECTED_LANGUAGE_SUCCESS,
     response: response,
     message: message,
+    loader: loader,
   };
 };
 
@@ -222,7 +223,7 @@ const getSelectedLanguageFail = (message) => {
   };
 };
 
-const getSelectedLanguage = (data, navigate, t) => {
+const getSelectedLanguage = (data, navigate, t, flag, loader) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let organzataionID = localStorage.getItem("OrganizationID");
   console.log(organzataionID, "organzataionIDorganzataionID");
@@ -242,7 +243,7 @@ const getSelectedLanguage = (data, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getSelectedLanguage(data, navigate, t));
+          dispatch(getSelectedLanguage(data, navigate, t, flag, loader));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -255,19 +256,27 @@ const getSelectedLanguage = (data, navigate, t) => {
               await dispatch(
                 getSelectedLanguageSuccess(
                   response.data.responseResult.userSelectedLanguage,
-                  t("Record-found")
+                  t("Record-found"),
+                  loader
                 )
               );
-              let data = {
-                OrganizationID: Number(organzataionID),
-              };
-              dispatch(
-                getAllorganizationSubscriptionExpiryDetailsApi(
-                  navigate,
-                  t,
-                  data
-                )
-              );
+              try {
+                if (flag) {
+                  let data = {
+                    OrganizationID: Number(organzataionID),
+                  };
+                  dispatch(
+                    getAllorganizationSubscriptionExpiryDetailsApi(
+                      navigate,
+                      t,
+                      data
+                    )
+                  );
+                } else {
+                  return;
+                }
+              } catch {}
+
               if (
                 response.data.responseResult.userSelectedLanguage
                   .systemSupportedLanguageID === 1

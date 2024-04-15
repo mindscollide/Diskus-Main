@@ -1485,7 +1485,7 @@ const ExtendOrganizationTrial = {
 };
 
 const AddOrganizationsUser = {
-  RequestMethod: "ServiceManager.AddOrganizationsUser",
+  RequestMethod: "ServiceManager.AddOrganizationsUsers",
 };
 
 const EditOrganizationsUser = {
@@ -1521,7 +1521,12 @@ const GetAllUserTypePackages = {
   RequestMethod: "ServiceManager.GetAllUserTypePackages",
 };
 
+const leaveFileSharingRM = {
+  RequestMethod: "ServiceManager.DeleteFileSharing",
+};
+
 export {
+  leaveFileSharingRM,
   UserLoginHistoryRM,
   getDataAnalyticsCountRM,
   updateAndOpenByAndDescriptionRM,

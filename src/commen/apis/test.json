@@ -1,20 +1,15 @@
 {
-  "TenureOfSubscriptionID": 2,
-  "Organization": {
-    "OrganizationName": "Usermanagement testing ",
-    "FK_WorldCountryID": 2,
-    "ContactPersonName": "usermangement user ",
-    "ContactPersonEmail": "usermanagement@yopmail.com",
-    "ContactPersonNumber": "66666",
-    "FK_NumberWorldCountryID": 153,
-    "CustomerReferenceNumber": "",
-    "PersonalNumber": "66666",
-    "OrganizationAddress1": "muhammad ali society",
-    "OrganizationAddress2": "",
-    "City": "karachi ",
-    "StateProvince": "sindh",
-    "PostalCode": "234234",
-    "TimeZoneID": 1
-  },
-  "Packages": [{ "PackageID": 4, "HeadCount": 20 }]
+  "UserDataList": [
+    {
+      "UserName": "wahab",
+      "OrganizationName": "beef",
+      "Designation": "developer",
+      "MobileNumber": "",
+      "UserEmail": "wahab@gmail.com",
+      "OrganizationID": 585,
+      "isAdmin": true,
+      "FK_NumberWorldCountryID": 1,
+      "OrganizationSelectedPackageID": 4
+    }
+  ]
 }

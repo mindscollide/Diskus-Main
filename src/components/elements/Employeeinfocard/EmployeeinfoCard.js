@@ -9,11 +9,7 @@ const EmployeeinfoCard = ({
   Employeeemail,
   Icon,
   EmployeePic,
-  IconOnClick,
 }) => {
-  console.log(EmployeePic, "EmployeePicEmployeePicEmployeePic");
-  //   let UserName = localStorage.getItem("UserName");
-  let currentLanguage = localStorage.getItem("i18nextLng");
   return (
     <>
       <Row>

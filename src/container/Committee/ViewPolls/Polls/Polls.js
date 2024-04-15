@@ -26,6 +26,7 @@ import CancelPolls from "./CancelPolls/CancelPolls";
 import { _justShowDateformatBilling } from "../../../../commen/functions/date_formater";
 import {
   GetPollsByCommitteeIDapi,
+  createPollCommitteesMQTT,
   deleteCommitteePollApi,
   getPollsByPollIdApi,
   getPollsByPollIdforCommitteeApi,
@@ -226,6 +227,22 @@ const Polls = ({ committeeStatus }) => {
       }
     } catch {}
   }, [PollsReducer.getPollByCommitteeID]);
+
+  // MQTT Response of Polls for Committees
+  useEffect(() => {
+    try {
+      if (PollsReducer.newPollCommittees !== null) {
+        let PollData = PollsReducer.newPollCommittees;
+        console.log("New Poll Added", PollData);
+        if (Number(PollData.committeeID) === Number(ViewCommitteeID)) {
+          setPollsRows([PollData.polls, ...pollsRows]);
+        }
+        dispatch(createPollCommitteesMQTT(null));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [PollsReducer.newPollCommittees]);
 
   const PollsColoumn = [
     {

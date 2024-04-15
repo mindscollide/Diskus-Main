@@ -21,7 +21,6 @@ import ReactFlagsSelect from "react-flags-select";
 import { Check2 } from "react-bootstrap-icons";
 import {
   LoginFlowRoutes,
-  signUpFlowRoutes,
   signUpOrganizationAndPakageSelection,
 } from "../../../../store/actions/UserManagementActions";
 import {
@@ -456,13 +455,7 @@ const SignUpOrganizationUM = () => {
               },
               Packages: [{ PackageID: Number(PackageID), HeadCount: 20 }],
             };
-            dispatch(
-              signUpOrganizationAndPakageSelection(
-                data,
-                navigate,
-                t,
-              )
-            );
+            dispatch(signUpOrganizationAndPakageSelection(data, navigate, t));
           } else {
             await dispatch(setLoader(true));
             await dispatch(
@@ -619,13 +612,7 @@ const SignUpOrganizationUM = () => {
                 { PackageID: 3, HeadCount: 5 },
               ],
             };
-            dispatch(
-              signUpOrganizationAndPakageSelection(
-                data,
-                navigate,
-                t,
-              )
-            );
+            dispatch(signUpOrganizationAndPakageSelection(data, navigate, t));
           } else {
             await dispatch(setLoader(true));
             await dispatch(

@@ -49,6 +49,7 @@ import {
   DataRoomDownloadFolderApiFunc,
   deleteFileDataroom,
   deleteFolder,
+  deleteSharedFileDataroom,
   FileisExist,
   getDocumentsAndFolderApi,
   getDocumentsAndFolderApiScrollbehaviour,
@@ -600,24 +601,39 @@ const DataRoom = () => {
           "noopener noreferrer"
         );
       }
-    } else if (data.value === 3) {
-      // Rename File
-      setShowRenameFile(true);
-      setRenameFileData(record);
     } else if (data.value === 2) {
       // Share File Modal
-      showShareFileModal(record.id, record.name);
-    } else if (data.value === 6) {
-      // Delete File
-      dispatch(deleteFileDataroom(navigate, record.id, t));
+      if (record.isFolder) {
+        showShareFolderModal(record.id, record.name);
+      } else {
+        showShareFileModal(record.id, record.name);
+      }
+    } else if (data.value === 3) {
+      // Rename Folder and File
+      if (record.isFolder) {
+        setShowreanmemodal(true);
+        setRenameFolderData(record);
+      } else {
+        setShowRenameFile(true);
+        setRenameFileData(record);
+      }
     } else if (data.value === 4) {
-      // get File and Folder Details
-      let Data = {
-        ID: record.id,
-        isFolder: false,
-      };
-      dispatch(getFilesandFolderDetailsApi(navigate, t, Data, setDetailView));
+      // View Details File and Folder
+      if (record.isFolder) {
+        let Data = {
+          ID: record.id,
+          isFolder: true,
+        };
+        dispatch(getFilesandFolderDetailsApi(navigate, t, Data, setDetailView));
+      } else {
+        let Data = {
+          ID: record.id,
+          isFolder: false,
+        };
+        dispatch(getFilesandFolderDetailsApi(navigate, t, Data, setDetailView));
+      }
     } else if (data.value === 5) {
+      // Download File and Folder
       if (record.isFolder === true) {
         let data = {
           FolderID: Number(record.id),
@@ -629,26 +645,55 @@ const DataRoom = () => {
         };
         dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, record.name));
       }
+    } else if (data.value === 6) {
+      // Delete File and Folder
+      if (record.isFolder) {
+        dispatch(deleteFolder(navigate, record.id, t));
+      } else {
+        dispatch(deleteFileDataroom(navigate, record.id, t));
+      }
+      // Delete File
     } else if (data.value === 7) {
-      // Get Anayltics  for the document
-      let Data = {
-        FileID: Number(record.id),
-      };
-      dispatch(
-        getDataAnalyticsCountApi(
-          navigate,
-          t,
-          Data,
-          record,
-          setFileDataforAnalyticsCount
-        )
-      );
+      if (record.isFolder) {
+        let Data = {
+          FileID: Number(record.id),
+        };
+        dispatch(
+          getDataAnalyticsCountApi(
+            navigate,
+            t,
+            Data,
+            record,
+            setFileDataforAnalyticsCount
+          )
+        );
+      } else {
+        // Get Anayltics  for the document
+        let Data = {
+          FileID: Number(record.id),
+        };
+        dispatch(
+          getDataAnalyticsCountApi(
+            navigate,
+            t,
+            Data,
+            record,
+            setFileDataforAnalyticsCount
+          )
+        );
+      }
     } else if (data.value === 8) {
       // Create Signature Flow
       let dataRoomData = {
         FileID: Number(record.id),
       };
       dispatch(createWorkflowApi(dataRoomData, navigate, t, pdfDataJson));
+    } else if (data.value === 9) {
+      // Remove Shared File
+      let removeShareData = {
+        FileSharingID: record.id,
+      };
+      dispatch(deleteSharedFileDataroom(navigate, removeShareData, t));
     }
   };
   //
@@ -748,7 +793,6 @@ const DataRoom = () => {
     } else if (data.value === 1) {
       showShareFolderModal(record.id, record.name);
     } else if (data.value === 5) {
-      dispatch(deleteFolder(navigate, record.id, t));
     } else if (data.value === 3) {
       // Detail View Folder
       // setDetailView(true);
@@ -1133,6 +1177,7 @@ const DataRoom = () => {
           attachmentID: record.id,
           isPermission: record.permissionID,
         };
+        let fileExtension = getFileExtension(record.name);
         const pdfDataJson = JSON.stringify(pdfData);
         const pdfDataforSignature = {
           taskId: record.id,
@@ -1143,6 +1188,7 @@ const DataRoom = () => {
           isNew: true,
         };
         const pdfDataJsonSignature = JSON.stringify(pdfDataforSignature);
+
         if (record.isShared) {
           return (
             <>
@@ -1154,8 +1200,10 @@ const DataRoom = () => {
                   className="d-flex justify-content-end gap-2 position-relative otherstuff"
                 >
                   <div className="tablerowFeatures">
-                    {record.permissionID === 2 ||
+                    {record.permissionID === 1 ||
                     record.permissionID === 3 ? null : (
+                      //  Share Icon
+
                       <Tooltip placement="topRight" title={t("Share")}>
                         <span className={styles["share__Icon"]}>
                           <svg
@@ -1184,7 +1232,7 @@ const DataRoom = () => {
                         </span>
                       </Tooltip>
                     )}
-
+                    {/* Download Icon */}
                     <Tooltip placement="topRight" title={t("Download")}>
                       <span className={styles["download__Icon"]}>
                         <img
@@ -1197,8 +1245,7 @@ const DataRoom = () => {
                         />
                       </span>
                     </Tooltip>
-                    {record.permissionID === 1 ||
-                    record.permissionID === 2 ||
+                    {/* {record.permissionID === 1 ||
                     record.permissionID === 3 ? null : (
                       <Tooltip placement="topRight" title={t("Delete")}>
                         <span className={styles["delete__Icon"]}>
@@ -1236,8 +1283,9 @@ const DataRoom = () => {
                           />
                         </span>
                       </Tooltip>
-                    )}
+                    )} */}
                   </div>
+
                   <Tooltip placement="topRight" title={t("More")}>
                     <span className={styles["threeDot__Icon"]}>
                       {record.isFolder ? (
@@ -1255,36 +1303,32 @@ const DataRoom = () => {
                             />
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
-                            {record.permissionID === 1
-                              ? optionShareTabForViewerRole(t).map(
-                                  (data, index) => {
-                                    return (
-                                      <Dropdown.Item
-                                        key={index}
-                                        onClick={() =>
-                                          folderOptionsSelect(data, record)
-                                        }
-                                      >
-                                        {data.label}
-                                      </Dropdown.Item>
-                                    );
-                                  }
-                                )
-                              : record.permissionID === 2
-                              ? optionShareTabForEditorRole(t).map(
-                                  (data, index) => {
-                                    return (
-                                      <Dropdown.Item
-                                        key={index}
-                                        onClick={() =>
-                                          folderOptionsSelect(data, record)
-                                        }
-                                      >
-                                        {data.label}
-                                      </Dropdown.Item>
-                                    );
-                                  }
-                                )
+                            {record.permissionID === 2
+                              ? optionsforFolderEditor(t).map((data, index) => {
+                                  return (
+                                    <Dropdown.Item
+                                      key={index}
+                                      onClick={() =>
+                                        fileOptionsSelect(data, record)
+                                      }
+                                    >
+                                      {data.label}
+                                    </Dropdown.Item>
+                                  );
+                                })
+                              : record.permissionID === 1
+                              ? optionsforFolderViewer(t).map((data, index) => {
+                                  return (
+                                    <Dropdown.Item
+                                      key={index}
+                                      onClick={() =>
+                                        fileOptionsSelect(data, record)
+                                      }
+                                    >
+                                      {data.label}
+                                    </Dropdown.Item>
+                                  );
+                                })
                               : record.permissionID === 3
                               ? optionsforFolderEditableNonShareable(t).map(
                                   (data, index) => {
@@ -1292,7 +1336,7 @@ const DataRoom = () => {
                                       <Dropdown.Item
                                         key={index}
                                         onClick={() =>
-                                          folderOptionsSelect(data, record)
+                                          fileOptionsSelect(data, record)
                                         }
                                       >
                                         {data.label}
@@ -1318,7 +1362,7 @@ const DataRoom = () => {
                             />
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
-                            {record.permissionID === 1
+                            {record.permissionID === 2
                               ? optionsforFileEditor(t).map((data, index) => {
                                   return (
                                     <Dropdown.Item
@@ -1335,7 +1379,7 @@ const DataRoom = () => {
                                     </Dropdown.Item>
                                   );
                                 })
-                              : record.permissionID === 2
+                              : record.permissionID === 1
                               ? optionsforFileViewer(t).map((data, index) => {
                                   return (
                                     <Dropdown.Item
@@ -1492,7 +1536,7 @@ const DataRoom = () => {
                                 <Dropdown.Item
                                   key={index}
                                   onClick={() =>
-                                    folderOptionsSelect(data, record)
+                                    fileOptionsSelect(data, record)
                                   }
                                 >
                                   {data.label}
@@ -1516,18 +1560,42 @@ const DataRoom = () => {
                             />
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
-                            {optionsforFile(t).map((data, index) => {
-                              return (
-                                <Dropdown.Item
-                                  key={index}
-                                  onClick={() =>
-                                    fileOptionsSelect(data, record, pdfDataJson)
+                            {fileExtension === "pdf"
+                              ? optionsforPDFandSignatureFlow(t).map(
+                                  (data, index) => {
+                                    return (
+                                      <Dropdown.Item
+                                        key={index}
+                                        onClick={() =>
+                                          fileOptionsSelect(
+                                            data,
+                                            record,
+                                            pdfDataJsonSignature
+                                          )
+                                        }
+                                      >
+                                        {data.label}
+                                      </Dropdown.Item>
+                                    );
                                   }
-                                >
-                                  {data.label}
-                                </Dropdown.Item>
-                              );
-                            })}
+                                )
+                              : optionsforFile(t).map((data, index) => {
+                                  return (
+                                    <Dropdown.Item
+                                      key={index}
+                                      onClick={() =>
+                                        fileOptionsSelect(
+                                          data,
+                                          record,
+                                          pdfDataJson
+                                        )
+                                      }
+                                    >
+                                      {data.label}
+                                    </Dropdown.Item>
+                                  );
+                                })}
+                            {}
                           </Dropdown.Menu>
                         </Dropdown>
                       )}
@@ -1931,7 +1999,7 @@ const DataRoom = () => {
                                     <Dropdown.Item
                                       key={index}
                                       onClick={() =>
-                                        folderOptionsSelect(data, record)
+                                        fileOptionsSelect(data, record)
                                       }
                                     >
                                       {data.label}
@@ -1944,7 +2012,7 @@ const DataRoom = () => {
                                     <Dropdown.Item
                                       key={index}
                                       onClick={() =>
-                                        folderOptionsSelect(data, record)
+                                        fileOptionsSelect(data, record)
                                       }
                                     >
                                       {data.label}
@@ -1958,7 +2026,7 @@ const DataRoom = () => {
                                       <Dropdown.Item
                                         key={index}
                                         onClick={() =>
-                                          folderOptionsSelect(data, record)
+                                          fileOptionsSelect(data, record)
                                         }
                                       >
                                         {data.label}
@@ -2158,7 +2226,7 @@ const DataRoom = () => {
                                 <Dropdown.Item
                                   key={index}
                                   onClick={() =>
-                                    folderOptionsSelect(data, record)
+                                    fileOptionsSelect(data, record)
                                   }
                                 >
                                   {data.label}
@@ -2182,36 +2250,42 @@ const DataRoom = () => {
                             />
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
-                            {optionsforPDFandSignatureFlow(t).map(
-                              (data, index) => {
-                                return (
-                                  <Dropdown.Item
-                                    key={index}
-                                    onClick={() =>
-                                      fileOptionsSelect(
-                                        data,
-                                        record,
-                                        pdfDataJsonSignature
-                                      )
-                                    }
-                                  >
-                                    {data.label}
-                                  </Dropdown.Item>
-                                );
-                              }
-                            )}
-                            {/* {optionsforFile(t).map((data, index) => {
-                            return (
-                              <Dropdown.Item
-                                key={index}
-                                onClick={() =>
-                                  fileOptionsSelect(data, record, pdfDataJson)
-                                }
-                              >
-                                {data.label}
-                              </Dropdown.Item>
-                            );
-                          })} */}
+                            {fileExtension === "pdf"
+                              ? optionsforPDFandSignatureFlow(t).map(
+                                  (data, index) => {
+                                    return (
+                                      <Dropdown.Item
+                                        key={index}
+                                        onClick={() =>
+                                          fileOptionsSelect(
+                                            data,
+                                            record,
+                                            pdfDataJsonSignature
+                                          )
+                                        }
+                                      >
+                                        {data.label}
+                                      </Dropdown.Item>
+                                    );
+                                  }
+                                )
+                              : optionsforFile(t).map((data, index) => {
+                                  return (
+                                    <Dropdown.Item
+                                      key={index}
+                                      onClick={() =>
+                                        fileOptionsSelect(
+                                          data,
+                                          record,
+                                          pdfDataJson
+                                        )
+                                      }
+                                    >
+                                      {data.label}
+                                    </Dropdown.Item>
+                                  );
+                                })}
+                            {}
                           </Dropdown.Menu>
                         </Dropdown>
                       )}
@@ -2326,6 +2400,268 @@ const DataRoom = () => {
             </span>
           );
         }
+      },
+    },
+    {
+      dataIndex: "OtherStuff",
+      key: "OtherStuff",
+      width: "180px",
+      sortDirections: ["descend", "ascend"],
+      render: (text, record) => {
+        const pdfData = {
+          taskId: record.id,
+          commingFrom: 4,
+          fileName: record.name,
+          attachmentID: record.id,
+          isPermission: record.permissionID,
+        };
+        let fileExtension = getFileExtension(record.name);
+        const pdfDataJson = JSON.stringify(pdfData);
+        const pdfDataforSignature = {
+          taskId: record.id,
+          commingFrom: 4,
+          fileName: record.name,
+          attachmentID: record.id,
+          isPermission: record.permissionID,
+          isNew: true,
+        };
+        const pdfDataJsonSignature = JSON.stringify(pdfDataforSignature);
+
+        return (
+          <>
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-end gap-2 position-relative otherstuff"
+              >
+                <div className="tablerowFeatures">
+                  {record.permissionID === 1 ||
+                  record.permissionID === 3 ? null : (
+                    //  Share Icon
+
+                    <Tooltip placement="topRight" title={t("Share")}>
+                      <span className={styles["share__Icon"]}>
+                        <svg
+                          className={styles["share__Icon_img"]}
+                          onClick={() => {
+                            if (record.isFolder) {
+                              showShareFolderModal(record.id, record.name);
+                            } else {
+                              showShareFileModal(record.id, record.name);
+                            }
+                          }}
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16.022"
+                          height="11.71"
+                          viewBox="0 0 16.022 11.71"
+                        >
+                          <path
+                            id="Icon_material-group-add"
+                            data-name="Icon material-group-add"
+                            d="M6.325,11.619H3.953V9.148H2.372v2.472H0v1.648H2.372v2.472H3.953V13.267H6.325Zm3.953.824a2.413,2.413,0,0,0,2.364-2.472,2.37,2.37,0,1,0-4.736,0A2.42,2.42,0,0,0,10.278,12.443Zm0,1.648c-1.581,0-4.744.824-4.744,2.472V18.21h9.488V16.562C15.022,14.915,11.859,14.091,10.278,14.091Z"
+                            transform="translate(0.5 -7)"
+                            fill="none"
+                            stroke="#5a5a5a"
+                          />
+                        </svg>
+                      </span>
+                    </Tooltip>
+                  )}
+                  {/* Download Icon */}
+                  <Tooltip placement="topRight" title={t("Download")}>
+                    <span className={styles["download__Icon"]}>
+                      <img
+                        src={download}
+                        alt=""
+                        height="10.71px"
+                        width="15.02px"
+                        className={styles["download__Icon_img"]}
+                        onClick={() => showRequestingAccessModal(record)}
+                      />
+                    </span>
+                  </Tooltip>
+                  {/* {record.permissionID === 1 ||
+                    record.permissionID === 3 ? null : (
+                      <Tooltip placement="topRight" title={t("Delete")}>
+                        <span className={styles["delete__Icon"]}>
+                          <img
+                            src={hoverdelete}
+                            height="10.71px"
+                            alt=""
+                            width="15.02px"
+                            className={styles["delete__Icon_img_hover"]}
+                            onClick={() => {
+                              if (record.isFolder) {
+                                dispatch(deleteFolder(navigate, record.id, t));
+                              } else {
+                                dispatch(
+                                  deleteFileDataroom(navigate, record.id, t)
+                                );
+                              }
+                            }}
+                          />
+                          <img
+                            src={del}
+                            height="12.17px"
+                            alt=""
+                            width="9.47px"
+                            className={styles["delete__Icon_img"]}
+                            onClick={() => {
+                              if (record.isFolder) {
+                                dispatch(deleteFolder(navigate, record.id, t));
+                              } else {
+                                dispatch(
+                                  deleteFileDataroom(navigate, record.id, t)
+                                );
+                              }
+                            }}
+                          />
+                        </span>
+                      </Tooltip>
+                    )} */}
+                </div>
+
+                <Tooltip placement="topRight" title={t("More")}>
+                  <span className={styles["threeDot__Icon"]}>
+                    {record.isFolder ? (
+                      <Dropdown
+                        className={`${
+                          styles["options_dropdown"]
+                        } ${"dataroom_options"}`}
+                      >
+                        <Dropdown.Toggle id="dropdown-autoclose-true">
+                          <img
+                            src={dot}
+                            alt=""
+                            width="15.02px"
+                            height="10.71px"
+                          />
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                          {record.permissionID === 2
+                            ? optionsforFolderEditor(t).map((data, index) => {
+                                return (
+                                  <Dropdown.Item
+                                    key={index}
+                                    onClick={() =>
+                                      fileOptionsSelect(data, record)
+                                    }
+                                  >
+                                    {data.label}
+                                  </Dropdown.Item>
+                                );
+                              })
+                            : record.permissionID === 1
+                            ? optionsforFolderViewer(t).map((data, index) => {
+                                return (
+                                  <Dropdown.Item
+                                    key={index}
+                                    onClick={() =>
+                                      fileOptionsSelect(data, record)
+                                    }
+                                  >
+                                    {data.label}
+                                  </Dropdown.Item>
+                                );
+                              })
+                            : record.permissionID === 3
+                            ? optionsforFolderEditableNonShareable(t).map(
+                                (data, index) => {
+                                  return (
+                                    <Dropdown.Item
+                                      key={index}
+                                      onClick={() =>
+                                        fileOptionsSelect(data, record)
+                                      }
+                                    >
+                                      {data.label}
+                                    </Dropdown.Item>
+                                  );
+                                }
+                              )
+                            : null}
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    ) : (
+                      <Dropdown
+                        className={`${
+                          styles["options_dropdown"]
+                        } ${"dataroom_options"}`}
+                      >
+                        <Dropdown.Toggle id="dropdown-autoclose-true">
+                          <img
+                            src={dot}
+                            alt=""
+                            width="15.02px"
+                            height="10.71px"
+                          />
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                          {record.permissionID === 2
+                            ? optionsforFileEditor(t).map((data, index) => {
+                                return (
+                                  <Dropdown.Item
+                                    key={index}
+                                    onClick={() =>
+                                      fileOptionsSelect(
+                                        data,
+                                        record,
+                                        pdfDataJson
+                                      )
+                                    }
+                                  >
+                                    {data.label}
+                                  </Dropdown.Item>
+                                );
+                              })
+                            : record.permissionID === 1
+                            ? optionsforFileViewer(t).map((data, index) => {
+                                return (
+                                  <Dropdown.Item
+                                    key={index}
+                                    onClick={() =>
+                                      fileOptionsSelect(
+                                        data,
+                                        record,
+                                        pdfDataJson
+                                      )
+                                    }
+                                  >
+                                    {data.label}
+                                  </Dropdown.Item>
+                                );
+                              })
+                            : record.permissionID === 3
+                            ? optionsforFileEditableNonShareable(t).map(
+                                (data, index) => {
+                                  return (
+                                    <Dropdown.Item
+                                      key={index}
+                                      onClick={() =>
+                                        fileOptionsSelect(
+                                          data,
+                                          record,
+                                          pdfDataJson
+                                        )
+                                      }
+                                    >
+                                      {data.label}
+                                    </Dropdown.Item>
+                                  );
+                                }
+                              )
+                            : null}
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    )}
+                  </span>
+                </Tooltip>
+              </Col>
+            </Row>
+          </>
+        );
       },
     },
   ];

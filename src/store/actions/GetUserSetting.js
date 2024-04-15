@@ -13,11 +13,12 @@ const settingInit = () => {
     type: actions.GETSETTING_INIT,
   };
 };
-const settingSuccess = (response, message) => {
+const settingSuccess = (response, message, loader) => {
   return {
     type: actions.GETSETTING_SUCCESS,
     response: response,
     message: message,
+    loader: loader,
   };
 };
 const settingFail = (response, message) => {
@@ -34,7 +35,7 @@ const setRecentActivityDataNotification = (response) => {
   };
 };
 
-const getUserSetting = (navigate, t) => {
+const getUserSetting = (navigate, t, loader) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let userID = localStorage.getItem("userID");
   let userSettingData = {
@@ -56,7 +57,7 @@ const getUserSetting = (navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getUserSetting(navigate, t));
+          dispatch(getUserSetting(navigate, t, loader));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -124,7 +125,8 @@ const getUserSetting = (navigate, t) => {
               await dispatch(
                 settingSuccess(
                   response.data.responseResult.userSettings,
-                  t("Record-found")
+                  t("Record-found"),
+                  loader
                 )
               );
               navigate("/Diskus/Admin/ManageUsers");
