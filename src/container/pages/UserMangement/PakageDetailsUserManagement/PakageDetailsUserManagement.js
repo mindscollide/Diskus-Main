@@ -55,7 +55,12 @@ const PakageDetailsUserManagement = () => {
   //Fetching the data for pakage selection
   useEffect(() => {
     try {
-      if (UserMangementReducer.getAllUserTypePackagesData !== []) {
+      const pakageDetails = UserMangementReducer.getAllUserTypePackagesData;
+      if (
+        pakageDetails &&
+        pakageDetails.packages &&
+        pakageDetails.packages.length > 0
+      ) {
         setPackageDetail(
           UserMangementReducer.getAllUserTypePackagesData.packages
         );
