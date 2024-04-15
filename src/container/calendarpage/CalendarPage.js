@@ -25,7 +25,8 @@ import {
   newTimeFormaterAsPerUTC,
   _justShowDateformat,
   newTimeFormaterAsPerUTCTalkTime,
-  convertTimetoGMT,
+  formattedString,
+  utcConvertintoGMT,
 } from "../../commen/functions/date_formater";
 import ModalMeeting from "../modalmeeting/ModalMeeting";
 import TodoListModal from "../todolistModal/ModalToDoList";
@@ -328,10 +329,10 @@ const CalendarPage = () => {
             " - " +
             calendarData.model?.summary,
           allDay: true,
-          start: convertTimetoGMT(
+          start: utcConvertintoGMT(
             formattedString(calendarData.model?.start?.dateTime)
           ),
-          end: convertTimetoGMT(
+          end: utcConvertintoGMT(
             formattedString(calendarData.model?.end?.dateTime)
           ),
           border: `2px solid ${googleEventColor}`,
@@ -365,10 +366,10 @@ const CalendarPage = () => {
             " - " +
             calendarData.model?.summary,
           allDay: true,
-          start: convertTimetoGMT(
+          start: utcConvertintoGMT(
             formattedString(calendarData.model?.start?.dateTime)
           ),
-          end: convertTimetoGMT(
+          end: utcConvertintoGMT(
             formattedString(calendarData.model?.end?.dateTime)
           ),
           border: `2px solid ${googleEventColor}`,
@@ -427,10 +428,10 @@ const CalendarPage = () => {
             " - " +
             calendarData.model?.subject,
           allDay: true,
-          start: convertTimetoGMT(
+          start: utcConvertintoGMT(
             formattedString(calendarData.model?.start?.dateTime)
           ),
-          end: convertTimetoGMT(
+          end: utcConvertintoGMT(
             formattedString(calendarData.model?.end?.dateTime)
           ),
           border: `2px solid ${officeEventColor}`,
@@ -463,10 +464,10 @@ const CalendarPage = () => {
             " - " +
             calendarData.model?.subject,
           allDay: true,
-          start: convertTimetoGMT(
+          start: utcConvertintoGMT(
             formattedString(calendarData.model?.start?.dateTime)
           ),
-          end: convertTimetoGMT(
+          end: utcConvertintoGMT(
             formattedString(calendarData.model?.end?.dateTime)
           ),
           border: `2px solid ${officeEventColor}`,
