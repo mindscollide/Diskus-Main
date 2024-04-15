@@ -172,14 +172,7 @@ const PasswordCreationUM = ({ isFreetrail }) => {
       ) {
         dispatch(updatePasswordAction(passwordDetails.Password, navigate, t));
       } else {
-        dispatch(
-          createPasswordAction(
-            passwordDetails.Password,
-            navigate,
-            t
-            // currentStage
-          )
-        );
+        dispatch(createPasswordAction(passwordDetails.Password, navigate, t));
       }
     }
   };
