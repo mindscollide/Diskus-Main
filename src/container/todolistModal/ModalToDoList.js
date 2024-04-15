@@ -406,27 +406,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     }
   }, [show]);
 
-  //On Click Of Dropdown Value
-  const onSearch = (name, id, users) => {
-    if (taskAssignedName.length === 1) {
-      setOpen({
-        flag: true,
-        message: t("Only-one-assignee-allow"),
-      });
-      setTaskAssignedToInput("");
-    } else {
-      setTaskAssignedToInput(name);
-      let temp = taskAssignedName;
-      let temp2 = TaskAssignedTo;
-      temp.push(name);
-      temp2.push(id);
-      setTaskAssignedTo(temp2);
-      setTaskAssignedName(temp);
-      setTaskAssignedToInput("");
-      setAssignees([...assignees, users]);
-    }
-  };
-
   useEffect(() => {
     if (taskAssignedName.length > 1) {
       setOpen({
@@ -440,43 +419,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //Input Field Assignee Change
   const onChangeSearch = (item) => {
-    console.log(item, "itemitemitem");
     setPresenterValue(item);
     setTaskAssignedTo([item.value]);
-  };
-
-  //Drop Down Values
-  const searchFilterHandler = (value) => {
-    let allAssignees = taskAssigneeApiData;
-    if (
-      allAssignees !== undefined &&
-      allAssignees !== null &&
-      allAssignees.length !== 0
-    ) {
-      return allAssignees
-        .filter((item) => {
-          const searchTerm = value.toLowerCase();
-          const assigneesName = item.name.toLowerCase();
-          return searchTerm && assigneesName.startsWith(searchTerm);
-        })
-        .slice(0, 10)
-        .map((item) => (
-          <div
-            onClick={() => onSearch(item.name, item.pK_UID, item)}
-            className="dropdown-row-assignee d-flex align-items-center flex-row"
-            key={item.pK_UID}
-          >
-            <img
-              draggable="false"
-              src={`data:image/jpeg;base64,${item?.displayProfilePictureName}`}
-              alt=""
-              className="user-img"
-            />
-            <p className="p-0 m-0">{item.name}</p>
-          </div>
-        ));
-    } else {
-    }
   };
 
   const toDoDateHandler = (date, format = "YYYYMMDD") => {

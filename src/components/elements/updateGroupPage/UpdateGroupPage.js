@@ -506,15 +506,13 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       if (Object.keys(membersData).length === 0) {
         setOpen({
           flag: true,
-          message: t("Please-add-atleast-one-group-head-and-one-group-member"),
+          message: t("Please-add-atleast-one-group-head"),
         });
       } else {
         if (!checkGroupHead(membersData)) {
           setOpen({
             flag: true,
-            message: t(
-              "Please-add-atleast-one-group-head-and-one-group-member"
-            ),
+            message: t("Please-add-atleast-one-group-head"),
           });
         } else {
           setErrorBar(false);

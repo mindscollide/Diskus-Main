@@ -850,8 +850,7 @@ const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
               )
             );
             setEditPolls(true);
-    dispatch(showunsavedEditPollsMeetings(false))
-
+            dispatch(showunsavedEditPollsMeetings(false));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -2805,7 +2804,19 @@ const getPollByPollIdforMeeting = (
     });
   };
 };
+const createPollGroupsMQTT = (response) => {
+  return { type: actions.POLL_CREATE_GROUP, response: response };
+};
+const createPollCommitteesMQTT = (response) => {
+  return { type: actions.POLL_CREATE_COMMITTEE, response: response };
+};
+const createPollMeetingMQTT = (response) => {
+  return { type: actions.POLL_CREATE_ADVANCED_MEETING, response: response };
+};
 export {
+  createPollGroupsMQTT,
+  createPollCommitteesMQTT,
+  createPollMeetingMQTT,
   deleteGroupPollApi,
   deleteMeetingPollApi,
   deleteCommitteePollApi,

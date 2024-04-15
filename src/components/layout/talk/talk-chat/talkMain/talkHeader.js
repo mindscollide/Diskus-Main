@@ -55,19 +55,43 @@ const TalkHeader = () => {
 
   useEffect(() => {
     if (talkFeatureStates.RecentChatsFlag) {
+      setChatFilter({
+        label: t("Recent-Chats"),
+        value: 1,
+      });
       setChatFilterName(t("Recent-Chats"));
     } else if (talkFeatureStates.PrivateChatsFlag) {
+      setChatFilter({
+        label: t("Private-Message"),
+        value: 2,
+      });
       setChatFilterName(t("Private-Message"));
     } else if (talkFeatureStates.PrivateGroupChatsFlag) {
+      setChatFilter({
+        label: t("Private-Group"),
+        value: 3,
+      });
       setChatFilterName(t("Private-Group"));
     } else if (talkFeatureStates.StarredMessageFlag) {
+      setChatFilter({
+        label: t("Starred-Message"),
+        value: 4,
+      });
       setChatFilterName(t("Starred-Message"));
     } else if (talkFeatureStates.BlockedUsersFlag) {
-      setChatFilterName(t("Shout-All"));
-    } else if (talkFeatureStates.ShoutAllMessageFlag) {
+      setChatFilter({
+        label: t("Blocked-User"),
+        value: 6,
+      });
       setChatFilterName(t("Blocked-User"));
+    } else if (talkFeatureStates.ShoutAllMessageFlag) {
+      setChatFilter({
+        label: t("Shout-All"),
+        value: 5,
+      });
+      setChatFilterName(t("Shout-All"));
     }
-  }, []);
+  }, [talkFeatureStates]);
 
   // Onchange Select Filter
   const chatFilterHandler = (e, value) => {

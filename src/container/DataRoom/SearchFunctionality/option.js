@@ -415,6 +415,7 @@ export const optionsforFolder = (t) => [
 
 // Viewer Options and Permission Id is 01
 export const optionsforFolderViewer = (t) => [
+  { label: t("Rename"), value: 3 },
   { label: t("View-detail"), value: 4 },
   { label: t("Download"), value: 5 },
   { label: t("Remove"), value: 9 },
@@ -448,6 +449,17 @@ export const optionsforFile = (t) => [
   { label: t("Delete"), value: 6 },
   { label: t("Analytics"), value: 7 },
 ];
+// Options for Signature Flow
+export const optionsforPDFandSignatureFlow = (t) => [
+  { label: t("Open"), value: 1 },
+  { label: t("Share"), value: 2 },
+  { label: t("Rename"), value: 3 },
+  { label: t("View-detail"), value: 4 },
+  { label: t("Download"), value: 5 },
+  { label: t("Remove"), value: 6 },
+  { label: t("Analytics"), value: 7 },
+  { label: t("Signaure"), value: 8 },
+];
 
 // Viewer Options and Permission Id is 01
 export const optionsforFileViewer = (t) => [
@@ -471,22 +483,11 @@ export const optionsforFileEditor = (t) => [
 
 // Non Shareable Editor Options and Permission Id is 03
 export const optionsforFileEditableNonShareable = (t) => [
-  { label: t("Open"), value: 1, labelIcon: PDFICON },
-  { label: t("Rename"), value: 3, labelIcon: PDFICON },
-  { label: t("View-detail"), value: 4, labelIcon: PDFICON },
-  { label: t("Download"), value: 5, labelIcon: PDFICON },
-  { label: t("Analytics"), value: 7, labelIcon: PDFICON },
-];
-
-export const optionsforPDFandSignatureFlow = (t) => [
-  { label: t("Open"), value: 1, labelIcon: PDFICON },
-  { label: t("Share"), value: 2, labelIcon: PDFICON },
-  { label: t("Rename"), value: 3, labelIcon: PDFICON },
-  { label: t("View-detail"), value: 4, labelIcon: PDFICON },
-  { label: t("Download"), value: 5, labelIcon: PDFICON },
-  { label: t("Remove"), value: 6, labelIcon: PDFICON },
-  { label: t("Analytics"), value: 7, labelIcon: PDFICON },
-  { label: t("Signaure"), value: 8, labelIcon: PDFICON },
+  { label: t("Open"), value: 1 },
+  { label: t("Rename"), value: 3 },
+  { label: t("View-detail"), value: 4 },
+  { label: t("Download"), value: 5 },
+  { label: t("Analytics"), value: 7 },
 ];
 
 export const getIconSource = (extension) => {

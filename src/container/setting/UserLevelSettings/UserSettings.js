@@ -775,10 +775,29 @@ const UserSettings = () => {
 
   const updateOrganizationLevelSettings = async () => {
     let AllowMicrosoftCalenderSyncCall = false;
+
+    // userOptionsSettings.AllowMicrosoftCalenderSync;
     if (settingReducer.UserProfileData.userAllowMicrosoftCalendarSynch) {
-      // AllowMicrosoftCalenderSyncCall = true;
-    } else if (userOptionsSettings.AllowMicrosoftCalenderSync !== false) {
+      if (userOptionsSettings.AllowMicrosoftCalenderSync === false) {
+        // revoke token api hit
+        console.log(
+          "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
+          AllowMicrosoftCalenderSyncCall
+        );
+        AllowMicrosoftCalenderSyncCall = false;
+      } else {
+        AllowMicrosoftCalenderSyncCall = true;
+      }
+    } else if (userOptionsSettings.AllowMicrosoftCalenderSync) {
+      console.log(
+        "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
+        AllowMicrosoftCalenderSyncCall
+      );
       if (authMicrosoftAccessCode !== "") {
+        console.log(
+          "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
+          AllowMicrosoftCalenderSyncCall
+        );
         AllowMicrosoftCalenderSyncCall = await dispatch(
           getMicrosoftValidToken(
             navigate,
@@ -789,13 +808,17 @@ const UserSettings = () => {
           )
         );
       }
-      console.log(
-        AllowMicrosoftCalenderSyncCall,
-        "AllowMicrosoftCalenderSyncCallAllowMicrosoftCalenderSyncCall"
-      );
     }
     if (signUpCodeToken !== "") {
+      console.log(
+        "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
+        AllowMicrosoftCalenderSyncCall
+      );
       if (userOptionsSettings.AllowGoogleCalenderSync) {
+        console.log(
+          "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
+          AllowMicrosoftCalenderSyncCall
+        );
         await dispatch(
           getGoogleValidToken(
             navigate,
@@ -806,6 +829,10 @@ const UserSettings = () => {
           )
         );
       } else {
+        console.log(
+          "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
+          AllowMicrosoftCalenderSyncCall
+        );
         await dispatch(
           updateUserSettingFunc(
             navigate,
@@ -819,7 +846,15 @@ const UserSettings = () => {
       setSignUpCodeToken("");
     } else {
       if (settingReducer.UserProfileData.userAllowGoogleCalendarSynch) {
+        console.log(
+          "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
+          AllowMicrosoftCalenderSyncCall
+        );
         if (userOptionsSettings.AllowGoogleCalenderSync) {
+          console.log(
+            "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
+            AllowMicrosoftCalenderSyncCall
+          );
           await dispatch(
             updateUserSettingFunc(
               navigate,
@@ -830,6 +865,10 @@ const UserSettings = () => {
             )
           );
         } else {
+          console.log(
+            "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
+            AllowMicrosoftCalenderSyncCall
+          );
           await dispatch(
             revokeToken(
               navigate,
@@ -840,6 +879,10 @@ const UserSettings = () => {
           );
         }
       } else {
+        console.log(
+          "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
+          AllowMicrosoftCalenderSyncCall
+        );
         await dispatch(
           updateUserSettingFunc(
             navigate,

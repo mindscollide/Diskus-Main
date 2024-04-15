@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setviewpollModal } from "../../../store/actions/Polls_actions";
 import moment from "moment";
+import { newTimeFormaterAsPerUTCTalkDate } from "../../../commen/functions/date_formater";
 
 const ViewPoll = () => {
   const dispatch = useDispatch();
@@ -103,7 +104,7 @@ const ViewPoll = () => {
                     <span className={styles["Due_Date_viewPoll"]}>
                       {t("Due-date-on")}{" "}
                       <span>
-                        {changeDateStartHandler2(viewPollsDetails.date)}
+                        {newTimeFormaterAsPerUTCTalkDate(viewPollsDetails.date)}
                       </span>
                     </span>
                   </Col>
