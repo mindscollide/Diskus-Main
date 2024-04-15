@@ -45,6 +45,7 @@ const initialState = {
   fileDetials: false,
   userAvailabilityDataRoom: null,
   downloadMessage: 0,
+  deleteSharedFile: null,
 };
 
 const DataRoomReducer = (state = initialState, action) => {
@@ -755,7 +756,28 @@ const DataRoomReducer = (state = initialState, action) => {
         downloadMessage: action.payload,
       };
     }
-
+    case actions.DELETE_SHARED_FILE_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.DELETE_SHARED_FILE_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        deleteSharedFile: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.DELETE_SHARED_FILE_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        deleteSharedFile: null,
+        ResponseMessage: action.message,
+      };
+    }
     default:
       return { ...state };
   }
