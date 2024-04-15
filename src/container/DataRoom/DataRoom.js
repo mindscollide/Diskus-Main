@@ -49,6 +49,7 @@ import {
   DataRoomDownloadFolderApiFunc,
   deleteFileDataroom,
   deleteFolder,
+  deleteSharedFileDataroom,
   FileisExist,
   getDocumentsAndFolderApi,
   getDocumentsAndFolderApiScrollbehaviour,
@@ -687,6 +688,12 @@ const DataRoom = () => {
         FileID: Number(record.id),
       };
       dispatch(createWorkflowApi(dataRoomData, navigate, t, pdfDataJson));
+    } else if (data.value === 9) {
+      // Remove Shared File
+      let removeShareData = {
+        FileSharingID: record.id,
+      };
+      dispatch(deleteSharedFileDataroom(navigate, removeShareData, t));
     }
   };
   //

@@ -1561,6 +1561,28 @@ const NewMeeting = () => {
             "meetingIDmeetingIDmeetingIDmeetingIDmeetingIDmeetingID"
           );
         }
+      } else if (
+        meetingIdReducer.MeetingStatusSocket.message
+          .toLowerCase()
+          .includes("MEETING_STATUS_EDITED_CANCELLED".toLowerCase())
+      ) {
+        let meetingStatusID =
+          meetingIdReducer.MeetingStatusSocket?.meetingStatusID;
+        let meetingID = meetingIdReducer.MeetingStatusSocket?.meetingID;
+        try {
+          setRow((rowsData) => {
+            return rowsData.map((item) => {
+              if (item.pK_MDID === meetingID) {
+                return {
+                  ...item,
+                  status: String(meetingStatusID),
+                };
+              } else {
+                return item; // Return the original item if the condition is not met
+              }
+            });
+          });
+        } catch {}
       }
     }
   }, [meetingIdReducer.MeetingStatusSocket]);
