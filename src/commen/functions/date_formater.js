@@ -921,3 +921,7 @@ export function getCurrentDateTimeUTC() {
   const seconds = String(now.getUTCSeconds()).padStart(2, "0");
   return `${year}${month}${day}${hours}${minutes}${seconds}`;
 }
+
+export const formattedString = (dateString) => {
+  return dateString.replace("T", "").replace(/:/g, "").replace(/-/g, "");
+};

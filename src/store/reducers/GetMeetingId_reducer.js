@@ -16,6 +16,8 @@ const initialState = {
   searchRecordFound: false,
   MQTTUpcomingEvents: null,
   MeetingStatusEnded: null,
+  GroupMeetingMQTT: null,
+  CommitteeMeetingMQTT: null,
 };
 
 //Get meetingreducer
@@ -198,6 +200,18 @@ const meetingIdReducer = (state = initialState, action) => {
       return {
         ...state,
         ResponseMessage: "",
+      };
+    }
+    case actions.MEETING_CREATE_COMMITTEE: {
+      return {
+        ...state,
+        CommitteeMeetingMQTT: action.response,
+      };
+    }
+    case actions.MEETING_CREATE_GROUP: {
+      return {
+        ...state,
+        GroupMeetingMQTT: action.response,
       };
     }
 

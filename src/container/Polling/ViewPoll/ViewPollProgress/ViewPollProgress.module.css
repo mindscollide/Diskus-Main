@@ -53,8 +53,8 @@
 .ViewTitleTOShowOnProgress {
   width: 100%;
   font-size: 14px !important;
-  word-wrap: break-word!important;
-  white-space: pre-wrap!important;
+  word-wrap: break-word !important;
+  white-space: pre-wrap !important;
   margin: 4px !important;
 }
 
@@ -199,8 +199,8 @@ body[dir="rtl"] .Card_border2 {
   font-size: 16px !important;
   font-family: "MontserratSemiBold" !important;
   color: #5a5a5a;
-  word-wrap: break-word!important;
-  white-space: pre-wrap!important;
+  word-wrap: break-word !important;
+  white-space: pre-wrap !important;
   width: 100% !important;
 }
 
@@ -218,10 +218,11 @@ body[dir="rtl"] .Card_border2 {
 }
 .scrollable-title {
   max-height: 100px;
-  min-height: 39px; /* Set the maximum height you desire for the title */
+  min-height: 39px;
   overflow: hidden;
-  overflow-y: auto; /* Enable vertical scrolling when text overflows */
-  
+  width: 100%;
+  word-break: break-all;
+  overflow-y: auto;
 }
 .scrollable-title::-webkit-scrollbar {
   width: 0.5rem;
@@ -233,6 +234,6 @@ body[dir="rtl"] .Card_border2 {
   background: #ccc;
   margin-left: -15px;
 }
-.scrollable-title2{
-  min-height: 39px!important;
+.scrollable-title2 {
+  min-height: 39px !important;
 }

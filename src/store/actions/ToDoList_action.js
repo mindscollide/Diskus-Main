@@ -27,6 +27,7 @@ import {
   setTasksByGroupApi,
 } from "./Polls_actions";
 import { updateTodoStatusFunc } from "./GetTodos";
+import { emptyCommentState } from "./Post_AssigneeComments";
 
 const ClearMappingFolderID = () => {
   return {
@@ -470,6 +471,8 @@ const ViewToDoList = (
                 )
             ) {
               await dispatch(ShowNotification(t("Record-found")));
+              dispatch(emptyCommentState());
+
               await dispatch(ViewToDoSuccess(response.data.responseResult));
 
               if (typeof setViewFlagToDo === "function") {

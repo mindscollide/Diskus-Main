@@ -617,7 +617,22 @@ const HideNotificationMeetings = () => {
   };
 };
 
+const createGroupMeeting = (response) => {
+  return {
+    type: actions.MEETING_CREATE_GROUP,
+    response: response,
+  };
+};
+const createCommitteeMeeting = (response) => {
+  return {
+    type: actions.MEETING_CREATE_COMMITTEE,
+    response: response,
+  };
+};
+
 export {
+  createGroupMeeting,
+  createCommitteeMeeting,
   getMeetingUserId,
   // searchMeetingUserId,
   GetWeeklyMeetingsCount,
