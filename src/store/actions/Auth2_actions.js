@@ -2161,20 +2161,11 @@ const createPasswordAction = (value, navigate, t) => {
                     "ERM_AuthService_SignUpManager_UsersPasswordCreation_08".toLowerCase()
                   )
               ) {
-                try {
-                } catch (error) {
-                  console.error("testpasswordCreation", error);
-                }
                 let findSelectedPackageID =
-                  response.data.responseResult.userFeatures[0]
-                    .organizationSelectedPackageID;
-                console.log(
-                  findSelectedPackageID,
-                  "findSelectedPackageIDfindSelectedPackageID"
-                );
-                localStorage.setItem("PakageSelectedID", findSelectedPackageID);
-                console.log(response.data.responseResult, "responseResult");
+                  response.data.responseResult
+                    .organizationSelectedUserPackageID;
 
+                localStorage.setItem("PakageSelectedID", findSelectedPackageID);
                 try {
                   localStorage.setItem(
                     "isTrial",
