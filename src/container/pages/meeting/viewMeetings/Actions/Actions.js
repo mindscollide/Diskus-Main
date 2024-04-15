@@ -455,7 +455,22 @@ const Actions = ({
       if (toDoListReducer.createTaskMeeting !== null) {
         let taskData = toDoListReducer.createTaskMeeting;
         if (Number(taskData.meetingID) === Number(currentMeeting)) {
-          setActionsRows([...actionsRows, taskData.todoList]);
+          let findisAlreadExist = actionsRows.findIndex(
+            (data, index) => data.pK_TID === taskData.todoList.pK_TID
+          );
+          if (findisAlreadExist !== -1) {
+            setActionsRows((actionRows) => {
+              actionRows.map((newData, index) => {
+                if (newData.pK_TID === taskData.todoList.pK_TID) {
+                  return taskData.todoList;
+                } else {
+                  newData;
+                }
+              });
+            });
+          } else {
+            setActionsRows([...actionsRows, taskData.todoList]);
+          }
         }
         dispatch(createTaskMeetingMQTT(null));
       }

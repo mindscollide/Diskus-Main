@@ -95,7 +95,7 @@ const ModalShareFolder = ({
   const [organizationMembers, setOrganizationMembers] = useState([]);
   const [isMembers, setMembers] = useState([]);
   const [ownerInfo, setOwnerInfo] = useState(null);
-
+  const [message, setMessage] = useState("");
   const [flag, setFlag] = useState(1);
   const [onclickFlag, setOnclickFlag] = useState(false);
   let organizationName = localStorage.getItem("OrganizatioName");
@@ -146,13 +146,13 @@ const ModalShareFolder = ({
       label: SelectedOptions.label,
       value: SelectedOptions.value,
     });
-    if (SelectedOptions.value === 1) {
-      setEditNotification(false);
-      setAccessupdate(true);
-    } else if (SelectedOptions.value === 2) {
-      setEditNotification(true);
-      setAccessupdate(false);
-    }
+    // if (SelectedOptions.value === 1) {
+    //   setEditNotification(false);
+    //   setAccessupdate(true);
+    // } else if (SelectedOptions.value === 2) {
+    //   setEditNotification(true);
+    //   setAccessupdate(false);
+    // }
   };
 
   const NotificationForlinkCopied = () => {
@@ -296,6 +296,7 @@ const ModalShareFolder = ({
     // if (folderData.Folders.length > 0) {
     let ShareFolderData = {
       FolderID: Number(folderId),
+      Message: message,
       Folders: folderData.Folders,
     };
 
@@ -774,6 +775,8 @@ const ModalShareFolder = ({
                         type="text"
                         as={"textarea"}
                         rows="4"
+                        value={message}
+                        change={(e) => setMessage(e.target.value)}
                         placeholder={t("Messege")}
                         required={true}
                       />
