@@ -1,11 +1,11 @@
-import * as actions from '../action_types'
+import * as actions from "../action_types";
 
 const initialState = {
   Loading: false,
-  ResponseMessage: '',
+  ResponseMessage: "",
   AllLanguagesData: [],
   SetLanguageData: [],
-}
+};
 
 const LanguageReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -13,7 +13,7 @@ const LanguageReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: true,
-      }
+      };
     }
 
     case actions.GET_ALL_LANGUAGES_SUCCESS: {
@@ -22,7 +22,7 @@ const LanguageReducer = (state = initialState, action) => {
         Loading: false,
         AllLanguagesData: action.response,
         ResponseMessage: action.message,
-      }
+      };
     }
 
     case actions.GET_ALL_LANGUAGES_FAIL: {
@@ -31,14 +31,14 @@ const LanguageReducer = (state = initialState, action) => {
         Loading: false,
         AllLanguagesData: [],
         ResponseMessage: action.message,
-      }
+      };
     }
 
     case actions.SET_SELECTED_LANGUAGE_INITIAL: {
       return {
         ...state,
         Loading: true,
-      }
+      };
     }
 
     case actions.SET_SELECTED_LANGUAGE_SUCCESS: {
@@ -46,7 +46,7 @@ const LanguageReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
-      }
+      };
     }
 
     case actions.SET_SELECTED_LANGUAGE_FAIL: {
@@ -54,23 +54,23 @@ const LanguageReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
-      }
+      };
     }
 
     case actions.GET_SELECTED_LANGUAGE_INITIAL: {
       return {
         ...state,
         Loading: true,
-      }
+      };
     }
 
     case actions.GET_SELECTED_LANGUAGE_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: action.loader,
         SetLanguageData: action.response,
         ResponseMessage: action.message,
-      }
+      };
     }
 
     case actions.GET_SELECTED_LANGUAGE_FAIL: {
@@ -79,12 +79,12 @@ const LanguageReducer = (state = initialState, action) => {
         Loading: false,
         SetLanguageData: [],
         ResponseMessage: action.message,
-      }
+      };
     }
 
     default:
-      return { ...state }
+      return { ...state };
   }
-}
+};
 
-export default LanguageReducer
+export default LanguageReducer;

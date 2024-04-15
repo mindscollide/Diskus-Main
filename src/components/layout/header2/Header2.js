@@ -105,7 +105,7 @@ const Header2 = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(getUserSetting(navigate, t));
+    dispatch(getUserSetting(navigate, t, false));
   }, []);
 
   useEffect(() => {

@@ -167,18 +167,23 @@ const CreateAddtionalUsersModal = () => {
         validateEmailEnglishAndArabicFormat(createAddionalUsers.Email.value)
       ) {
         let data = {
-          UserName: createAddionalUsers.Name.value,
-          OrganizationName: OrganizatioName,
-          Designation: createAddionalUsers.Designation.value,
-          MobileNumber: "",
-          UserEmail: createAddionalUsers.Email.value,
-          OrganizationID: Number(organzataionID),
-          isAdmin: createAddionalUsers.isAdminCheck,
-          FK_NumberWorldCountryID: 1,
-          OrganizationSelectedPackageID: 4,
+          UserDataList: [
+            {
+              UserName: createAddionalUsers.Name.value,
+              OrganizationName: OrganizatioName,
+              Designation: createAddionalUsers.Designation.value,
+              MobileNumber: "",
+              UserEmail: createAddionalUsers.Email.value,
+              OrganizationID: Number(organzataionID),
+              isAdmin: createAddionalUsers.isAdminCheck,
+              FK_NumberWorldCountryID: 1,
+              OrganizationSelectedPackageID: 4,
+            },
+          ],
         };
+
         console.log(data, "AddOrganizationsUserApi");
-        dispatch(AddOrganizationsUserApi(navigate, t, data));
+        dispatch(AddOrganizationsUserApi(navigate, t, data, true));
       } else {
         setCreateAddionalUsers({
           Email: {

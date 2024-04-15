@@ -105,7 +105,7 @@ const UserSettings = () => {
   const [authMicrosoftAccessCode, setAuthMicrosoftAccessCode] = useState("");
 
   useEffect(() => {
-    dispatch(getUserSetting(navigate, t));
+    dispatch(getUserSetting(navigate, t, false));
   }, []);
 
   const handleGoogleLoginSuccess = (response) => {

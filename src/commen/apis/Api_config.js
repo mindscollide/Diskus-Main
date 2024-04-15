@@ -1485,7 +1485,7 @@ const ExtendOrganizationTrial = {
 };
 
 const AddOrganizationsUser = {
-  RequestMethod: "ServiceManager.AddOrganizationsUser",
+  RequestMethod: "ServiceManager.AddOrganizationsUsers",
 };
 
 const EditOrganizationsUser = {

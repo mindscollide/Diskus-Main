@@ -98,7 +98,7 @@ const UserMangementReducer = (state = initialState, action) => {
     case actions.ADD_ORGANIZATION_USERS_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: action.loader,
         addOrganizationUsersData: action.response,
         ResponseMessage: action.message,
       };
