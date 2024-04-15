@@ -12,6 +12,7 @@ import {
   Modal,
   TextField,
   Loader,
+  AddtionalUserCard,
 } from "../../../../../components/elements";
 import Cookies from "js-cookie";
 import { Col, Row } from "react-bootstrap";
@@ -448,7 +449,7 @@ const CreateAddtionalUsersModal = () => {
                           <Col lg={6} md={6} sm={12} className="mt-2">
                             <Row>
                               <Col lg={12} md={12} sm={12}>
-                                <EmployeeinfoCard
+                                <AddtionalUserCard
                                   Employeename={data?.name}
                                   Employeeemail={data?.email}
                                   EmployeePic={data?.displayProfilePictureName}
