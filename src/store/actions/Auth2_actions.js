@@ -2154,13 +2154,19 @@ const createPasswordAction = (value, navigate, t) => {
                   "ERM_AuthService_SignUpManager_UsersPasswordCreation_08".toLowerCase()
                 )
             ) {
+              console.log(response.data.responseResult, "responseResult");
+              response.data.responseResult.userFeatures.map((dataId, index) => {
+                localStorage.setItem(
+                  "PakageSelectedID",
+                  dataId.organizationSelectedPackageID
+                );
+              });
               try {
                 localStorage.setItem(
                   "isTrial",
                   response.data.responseResult.isTrial
                 );
               } catch {}
-
               let LocalUserRoutes = [
                 { name: "Meeting", id: 1 },
                 { name: "todolist", id: 2 },

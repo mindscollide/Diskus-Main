@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./CreateAdditionalUsersModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import plusFaddes from "../../../../../assets/images/NewBluePLus.svg";
 import CrossIcon from "../../../../../assets/images/CrossIcon.svg";
-import profile from "../../../../../assets/images/newprofile.png";
 import { useSelector } from "react-redux";
 import { showCreateAddtionalUsersModal } from "../../../../../store/actions/UserMangementModalActions";
 import {
@@ -12,14 +11,12 @@ import {
   Checkbox,
   Modal,
   TextField,
+  Loader,
 } from "../../../../../components/elements";
-import crossicon from "../../../../../assets/images/BlackCrossIconModals.svg";
+import Cookies from "js-cookie";
 import { Col, Row } from "react-bootstrap";
 import EmployeeinfoCard from "../../../../../components/elements/Employeeinfocard/EmployeeinfoCard";
-import {
-  AddOrganizationsUserApi,
-  getAllorganizationSubscriptionExpiryDetailsApi,
-} from "../../../../../store/actions/UserManagementActions";
+import { AddOrganizationsUserApi } from "../../../../../store/actions/UserManagementActions";
 import { useNavigate } from "react-router-dom";
 import { validateEmailEnglishAndArabicFormat } from "../../../../../commen/functions/validations";
 import { getAllLanguages } from "../../../../../store/actions/Language_actions";
@@ -28,14 +25,31 @@ const CreateAddtionalUsersModal = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const languages = [
+    { name: "English", code: "en" },
+    { name: "Français", code: "fr" },
+    { name: "العربية", code: "ar", dir: "rtl" },
+  ];
+
+  const currentLocale = Cookies.get("i18next") || "en";
+
+  const currentLangObj = languages.find((lang) => lang.code === currentLocale);
+
+  useEffect(() => {
+    document.body.dir = currentLangObj.dir || "ltr";
+  }, [currentLangObj, t]);
+
   let organzataionID = localStorage.getItem("organizationID");
 
   let OrganizatioName = localStorage.getItem("OrganizatioName");
 
-  let LocalUserRoute = localStorage.getItem("LocalAdminRoutes");
+  let pakageSelectedID = localStorage.getItem("PakageSelectedID");
 
-  const { UserManagementModals } = useSelector((state) => state);
+  const { UserManagementModals, UserMangementReducer } = useSelector(
+    (state) => state
+  );
 
+  console.log(UserMangementReducer, "UserMangementReducer");
   //States
   const [members, setMembers] = useState([]);
   const [createAddionalUsers, setCreateAddionalUsers] = useState({
@@ -177,13 +191,12 @@ const CreateAddtionalUsersModal = () => {
               OrganizationID: Number(organzataionID),
               isAdmin: createAddionalUsers.isAdminCheck,
               FK_NumberWorldCountryID: 1,
-              OrganizationSelectedPackageID: 4,
+              OrganizationSelectedPackageID: Number(pakageSelectedID),
             },
           ],
         };
-
         console.log(data, "AddOrganizationsUserApi");
-        dispatch(AddOrganizationsUserApi(navigate, t, data, true));
+        dispatch(AddOrganizationsUserApi(navigate, t, data, false));
       } else {
         setCreateAddionalUsers({
           Email: {
@@ -215,6 +228,7 @@ const CreateAddtionalUsersModal = () => {
     }
   };
 
+  //IsAdmin  Check
   const HandleCheck = () => {
     setCreateAddionalUsers({
       ...createAddionalUsers,
@@ -485,7 +499,8 @@ const CreateAddtionalUsersModal = () => {
                   />
                 </Col>
               </Row>
-            </section>
+            </section>{" "}
+            {UserMangementReducer.Loading ? <Loader /> : null}
           </>
         }
       />
