@@ -43,6 +43,9 @@ const PakageDetailsUMUpgrade = () => {
     message: "",
   });
 
+  const [organizationPackagePrice, setOrganizationPackagePrice] = useState([]);
+  console.log(organizationPackagePrice, "organizationPackagePrice");
+
   //get All user pakages Api call
   useEffect(() => {
     try {
@@ -56,15 +59,15 @@ const PakageDetailsUMUpgrade = () => {
     // Check if organizationSelectedPackages are present in the location state
     if (location.state && location.state.organizationSelectedPackages) {
       const selectedPackages = location.state.organizationSelectedPackages;
-      // Extracting name and price from each package object
+      const prices = selectedPackages.map((packages) => packages.price); // Extract prices from packages
+      setOrganizationPackagePrice(prices);
       const newData = selectedPackages.map((packages) => ({
         name: packages.name,
         price: packages.price,
-        ...packages, // Include other properties from the package
+        ...packages,
       }));
       setPackageTableData(newData);
     } else {
-      // Reset table data if organizationSelectedPackages is not present
       setPackageTableData([]);
     }
   }, [location.state]);
@@ -153,7 +156,7 @@ const PakageDetailsUMUpgrade = () => {
       dataIndex: "Numberoflicenses",
       key: "Numberoflicenses",
       align: "center",
-      render: (text, row) => {
+      render: (text, row, index) => {
         if (row.shouldDisplayTextField) {
           return;
         } else {
@@ -166,24 +169,27 @@ const PakageDetailsUMUpgrade = () => {
           } else {
             const handleChange = (newValue) => {
               if (/^\d+$/.test(newValue)) {
-                const newData = tableData.map((item) => {
-                  if (item.pK_PackageID === row.pK_PackageID) {
+                const newData = tableData.map((item, i) => {
+                  if (i === index) {
+                    // Check if the index matches the current row
                     return { ...item, licenseCount: newValue };
                   }
                   return item;
                 });
+                console.log(newData, "newDatanewData");
                 setTableData(newData);
               }
             };
-
+            const priceValue = organizationPackagePrice[index] || "";
+            console.log(priceValue, "priceValueeeee");
             return (
               <Row>
                 <Col className="d-flex justify-content-center">
                   <TextField
                     labelClass="d-none"
-                    applyClass="PakageDetails"
+                    applyClass="PakageDetails_UMUpgrade"
                     name="noofLisence"
-                    value={row.licenseCount || ""}
+                    value={Number(priceValue)}
                     change={(e) => handleChange(e.target.value)}
                   />
                 </Col>
@@ -206,10 +212,10 @@ const PakageDetailsUMUpgrade = () => {
       key: "price",
       width: 100,
       align: "center",
-      render: (text, row) => {
+      render: (text, row, index) => {
         console.log(row, "Monthlycharges");
         const monthlyCharges =
-          row.price && row.licenseCount ? row.price * row.licenseCount : 0;
+          row.price * Number(organizationPackagePrice[index]);
         console.log(monthlyCharges, "licenseCount");
         if (row.shouldDisplayTextField) {
           return (
@@ -218,7 +224,7 @@ const PakageDetailsUMUpgrade = () => {
                 <Button
                   text={t("Pay-now")}
                   className={styles["PayNowButtons"]}
-                  onClick={handlePayNowClick}
+                  // onClick={handlePayNowClick}
                 />
               </span>
             </>
@@ -233,7 +239,7 @@ const PakageDetailsUMUpgrade = () => {
               <>
                 <>
                   <span className={styles["ChargesPerLicesense"]}>
-                    {monthlyCharges}
+                    {Number(monthlyCharges)}
                   </span>
                 </>
               </>
@@ -255,9 +261,10 @@ const PakageDetailsUMUpgrade = () => {
       key: "Quarterlycharges",
       align: "center",
       width: 100,
-      render: (text, row) => {
-        const quarterlyCharges =
-          row.price && row.licenseCount ? row.price * row.licenseCount * 3 : 0;
+      render: (text, row, index) => {
+        const quarterlyCharges = row.price
+          ? row.price * Number(organizationPackagePrice[index]) * 3
+          : 0;
         if (row.shouldDisplayTextField) {
           return (
             <>
@@ -265,7 +272,7 @@ const PakageDetailsUMUpgrade = () => {
                 <Button
                   text={t("Pay-now")}
                   className={styles["PayNowButtons"]}
-                  onClick={handlePayNowClick}
+                  // onClick={handlePayNowClick}
                 />
               </span>
             </>
@@ -279,7 +286,7 @@ const PakageDetailsUMUpgrade = () => {
             return (
               <>
                 <span className={styles["ChargesPerLicesense"]}>
-                  {quarterlyCharges}
+                  {Number(quarterlyCharges)}
                 </span>
               </>
             );
@@ -300,9 +307,10 @@ const PakageDetailsUMUpgrade = () => {
       key: "YearlychargesTotal",
       align: "center",
       width: 100,
-      render: (text, row) => {
-        const YearlyCharges =
-          row.price && row.licenseCount ? row.price * row.licenseCount * 12 : 0;
+      render: (text, row, index) => {
+        const YearlyCharges = row.price
+          ? row.price * Number(organizationPackagePrice[index]) * 12
+          : 0;
         if (row.shouldDisplayTextField) {
           return (
             <>
@@ -310,7 +318,7 @@ const PakageDetailsUMUpgrade = () => {
                 <Button
                   text={t("Pay-now")}
                   className={styles["PayNowButtons"]}
-                  onClick={handlePayNowClick}
+                  // onClick={handlePayNowClick}
                 />
               </span>
             </>
@@ -324,7 +332,7 @@ const PakageDetailsUMUpgrade = () => {
             return (
               <>
                 <span className={styles["ChargesPerLicesense"]}>
-                  {YearlyCharges}
+                  {Number(YearlyCharges)}
                 </span>
               </>
             );
@@ -347,31 +355,33 @@ const PakageDetailsUMUpgrade = () => {
 
   //Calculating the totals
   const calculateTotals = (data) => {
-    const totalLicenses = data.reduce(
-      (total, row) => total + (Number(row.licenseCount) || 0),
+    const totalOrganizationPackagePrice = organizationPackagePrice.reduce(
+      (total, value) => total + Number(value || 0),
       0
     );
 
     // Calculate total monthly charges
-    const totalMonthlyCharges = data.reduce((total, row) => {
-      const monthlyCharge = row.price * (Number(row.licenseCount) || 0);
+    const totalMonthlyCharges = data.reduce((total, row, index) => {
+      const monthlyCharge = row.price * Number(organizationPackagePrice[index]);
       return total + monthlyCharge;
     }, 0);
 
-    const totalQuarterlyCharges = data.reduce((total, row) => {
-      const quarterlyCharge = row.price * (Number(row.licenseCount) || 0) * 3; // Multiply by 3 for quarterly
+    const totalQuarterlyCharges = data.reduce((total, row, index) => {
+      const quarterlyCharge =
+        row.price * Number(organizationPackagePrice[index]) * 3; // Multiply by 3 for quarterly
       return total + quarterlyCharge;
     }, 0);
 
-    const totalYearlyCharges = data.reduce((total, row) => {
-      const yearlyCharge = row.price * (Number(row.licenseCount) || 0) * 12; // Multiply by 12 for yearly
+    const totalYearlyCharges = data.reduce((total, row, index) => {
+      const yearlyCharge =
+        row.price * Number(organizationPackagePrice[index]) * 12; // Multiply by 12 for yearly
       return total + yearlyCharge;
     }, 0);
 
     // Return an object with the totals that can be used as a row in your table.
     return {
       name: "Total",
-      Numberoflicenses: totalLicenses,
+      Numberoflicenses: totalOrganizationPackagePrice,
       price: totalMonthlyCharges,
       Quarterlycharges: totalQuarterlyCharges,
       YearlychargesTotal: totalYearlyCharges,
@@ -430,7 +440,7 @@ const PakageDetailsUMUpgrade = () => {
                       <Row className="mt-3">
                         <Col sm={12}>
                           <>
-                            <span className="icon-star package-icon-style">
+                            {/* <span className="icon-star package-icon-style">
                               <span
                                 className="path1"
                                 // style={{ color: packageColorPath1 }}
@@ -443,7 +453,7 @@ const PakageDetailsUMUpgrade = () => {
                                 className="path3"
                                 // style={{ color: packageColorPath2 }}
                               ></span>
-                            </span>
+                            </span> */}
                             <span className={styles["package_title"]}>
                               {/* {t("Gold")} */}
                               {/* {data.PackageName} */}
