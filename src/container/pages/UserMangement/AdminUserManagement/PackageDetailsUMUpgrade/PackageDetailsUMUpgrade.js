@@ -69,11 +69,6 @@ const PakageDetailsUMUpgrade = () => {
     }
   }, [location.state]);
 
-  console.log(
-    location.state.organizationSelectedPackages,
-    "organizationSelectedPackagesorganizationSelectedPackages"
-  );
-
   //Fetching the data for pakage selection
   useEffect(() => {
     try {
@@ -117,7 +112,7 @@ const PakageDetailsUMUpgrade = () => {
       render: (text, response) => {
         return (
           <>
-            <span className={styles["Tableheading"]}>{text}</span>
+            <span className={styles["Tableheading"]}>{response.name}</span>
           </>
         );
       },
@@ -138,7 +133,9 @@ const PakageDetailsUMUpgrade = () => {
       render: (text, response) => {
         return (
           <>
-            <span className={styles["ChargesPerLicesense"]}>{text}</span>
+            <span className={styles["ChargesPerLicesense"]}>
+              {response.price}
+            </span>
           </>
         );
       },
@@ -169,13 +166,13 @@ const PakageDetailsUMUpgrade = () => {
           } else {
             const handleChange = (newValue) => {
               if (/^\d+$/.test(newValue)) {
-                const newData = packageTableData.map((item) => {
+                const newData = tableData.map((item) => {
                   if (item.pK_PackageID === row.pK_PackageID) {
                     return { ...item, licenseCount: newValue };
                   }
                   return item;
                 });
-                setPackageTableData(newData);
+                setTableData(newData);
               }
             };
 
@@ -383,16 +380,13 @@ const PakageDetailsUMUpgrade = () => {
 
   //Total row Flag
   const totalRow = {
-    ...calculateTotals(packageTableData),
+    ...calculateTotals(tableData),
     isTotalRow: true,
   };
 
   //Handle Goback Function
   const onClickLink = () => {
-    localStorage.removeItem("signupCurrentPage", 1);
-    localStorage.setItem("LoginFlowPageRoute", 1);
-    dispatch(LoginFlowRoutes(1));
-    navigate("/");
+    navigate("/PackageDetailsUserManagement");
   };
 
   return (
@@ -531,7 +525,7 @@ const PakageDetailsUMUpgrade = () => {
           <TableToDo
             column={ColumnsPakageSelection}
             className={"Billing_TablePakageSelection"}
-            rows={[...packageTableData, totalRow, defaultRowWithButtons]}
+            rows={[...tableData, totalRow, defaultRowWithButtons]}
             pagination={false}
             id="saif"
             rowHoverBg="none"

@@ -629,6 +629,8 @@ export const router = createHashRouter(
         element={<PasswordVerification />}
       />
 
+      {/* Routes for testing puprose start */}
+
       <Route path="/AddUsersUsermanagement" element={<AddUserMain />} />
 
       <Route
@@ -645,6 +647,13 @@ export const router = createHashRouter(
         path="/PackageDetailUMupgrade"
         element={<PakageDetailsUMUpgrade />}
       />
+
+      <Route
+        path="/deleteorganizationUserMangement"
+        element={<DeleteOrganizationAdmin />}
+      />
+
+      {/* Routes for testing puprose End */}
     </>
   )
 );

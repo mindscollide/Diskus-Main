@@ -16,6 +16,7 @@ const initialState = {
   getAllSelectedPakagesData: null,
   getOrganizationUserStatsGraph: null,
   getAllUserTypePackagesData: [],
+  deleteOrganizationUserAdmin: null,
 };
 
 const UserMangementReducer = (state = initialState, action) => {
@@ -286,6 +287,30 @@ const UserMangementReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         getOrganizationUserStatsGraph: null,
+        ResponseMessage: action.message,
+      };
+
+    // delete organization User admin reducer
+
+    case actions.DELETE_ORGANIZATION_USER_INIT:
+      return {
+        ...state,
+        Loading: true,
+      };
+
+    case actions.DELETE_ORGANIZATION_USER_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        deleteOrganizationUserAdmin: action.response,
+        ResponseMessage: action.message,
+      };
+
+    case actions.DELETE_ORGANIZATION_USER_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        deleteOrganizationUserAdmin: null,
         ResponseMessage: action.message,
       };
 

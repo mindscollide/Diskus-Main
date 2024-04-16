@@ -1525,6 +1525,11 @@ const leaveFileSharingRM = {
   RequestMethod: "ServiceManager.DeleteFileSharing",
 };
 
+// const delete organization User for Admin
+const deleteOrganizationUserApi = {
+  RequestMethod: "ServiceManager.DeleteOrganizationsUser",
+};
+
 export {
   leaveFileSharingRM,
   UserLoginHistoryRM,
@@ -1932,4 +1937,5 @@ export {
   leaveMeeting,
   getOrganizationSelectedPakages,
   GetAllUserTypePackages,
+  deleteOrganizationUserApi,
 };
