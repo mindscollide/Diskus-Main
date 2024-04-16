@@ -48,8 +48,9 @@ import UploadTextField from "./Dragger/UploadFile";
 import UploadProgressBar from "./upload_progressbar/Upload_Progressbar";
 import CustomRadio2 from "./radio/Radio2";
 import AddtionalUserCard from "./AddtionalUsersCard/AddtionalUsersCard";
-
+import AttachmentViewer from "./fileAttachment/attachment";
 export {
+  AttachmentViewer,
   CustomOnboardModal,
   // UploadButton,
   Welcome,

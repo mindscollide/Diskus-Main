@@ -51,10 +51,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   const { toDoListReducer, postAssigneeComments } = state;
   const [commentID, setCommentID] = useState(0);
   const { Comments } = postAssigneeComments;
-  console.log(
-    postAssigneeComments,
-    "postAssigneeCommentspostAssigneeCommentspostAssigneeComments"
-  );
 
   //To Display Modal
   const dispatch = useDispatch();
@@ -216,10 +212,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
         setTasksAttachments({ ["TasksAttachments"]: tem });
       }
       let assgineeeComments = toDoListReducer.ToDoDetails.taskComments;
-      console.log(
-        assgineeeComments,
-        "assgineeeCommentsassgineeeCommentsassgineeeComments"
-      );
+
       if (assgineeeComments.length > 0) {
         let assigneescommentsArr = [];
         assgineeeComments.forEach((assgineeData) => {
@@ -248,10 +241,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
       setAssgieeComments([]);
     }
   }, [toDoListReducer.ToDoDetails]);
-  console.log(
-    { taskAssigneeComments, Comments },
-    "commentIndex2commentIndex2commentIndex2commentIndex2"
-  );
 
   // for comment from socket
   useEffect(() => {
@@ -264,14 +253,11 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
       let commentIndex2 = taskAssigneeComments.find(
         (data, index) => data?.taskCommentID === Number(Comments.pK_TCID)
       );
-      console.log(commentIndex, commentIndex2, "commentIndex2commentIndex2");
+
       // Update Comment ID
       if (commentIndex !== -1) {
         let newArr = taskAssigneeComments.map((comment, index) => {
           if (index === commentIndex) {
-            console.log(
-              "testcommentIndex2commentIndex2commentIndex2commentIndex2"
-            );
             const newData = {
               ...comment,
               taskCommentID: Number(Comments.pK_TCID),
@@ -284,9 +270,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
         });
 
         setTaskAssigneeComments(newArr);
-        dispatch(postComments(null));
-
-        // dispatch(emptyCommentState());
       } else if (commentIndex2 === undefined && commentIndex === -1) {
         // Comment does not exist, add it
         let newComment = {
@@ -300,8 +283,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
         };
 
         setTaskAssigneeComments((prev) => [...prev, newComment]);
-        // dispatch(emptyCommentState());
-        dispatch(postComments(null));
+        dispatch(emptyCommentState());
       }
     }
   }, [Comments]);
@@ -431,14 +413,16 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
     dispatch(HideNotificationTodoComment());
   }, [postAssigneeComments.ResponseMessage]);
 
+  const handleClose = () => {
+    dispatch(emptyCommentState());
+    setViewFlagToDo(false);
+  };
+
   return (
     <>
       <Container>
         <Modal
-          onHide={() => {
-            setViewFlagToDo(false);
-            dispatch(emptyCommentState());
-          }}
+          onHide={handleClose}
           show={viewFlagToDo}
           setShow={setViewFlagToDo}
           className="todview-modal"
@@ -925,8 +909,8 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                 >
                   <Button
                     className={"cancelButton_createTodo"}
-                    onClick={() => setViewFlagToDo(false)}
-                    text="Close"
+                    onClick={handleClose}
+                    text={t("Close")}
                   />
                 </Col>
               </Row>

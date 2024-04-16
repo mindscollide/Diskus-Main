@@ -1884,5 +1884,6 @@
   "Normalize-screen": "Normalize screen",
   "Maximize-screen": "Maximize screen",
   "Error-occurred-while-adding-users": "Error Occurred While Adding Users",
-  "Users-added-successfully": "Users Added Successfully"
+  "Users-added-successfully": "Users Added Successfully",
+  "Folder-share-successfully": "Folder share successfully"
 }

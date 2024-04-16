@@ -57,7 +57,7 @@ const ModalShareFile = ({
   const [inviteedit, setInviteedit] = useState(false);
   const [notifyPeople, setNotifyPeople] = useState(false);
   const [ownerInfo, setOwnerInfo] = useState(null);
-
+  const [message, setMessage] = useState("");
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [meetingDate, setMeetingDate] = useState("");
@@ -190,15 +190,15 @@ const ModalShareFile = ({
       label: SelectedOptions.label,
       value: SelectedOptions.value,
     });
-    if (SelectedOptions.value === 1) {
-      // setExpirationheader(false);
-      setEditNotification(false);
-      setAccessupdate(true);
-    } else if (SelectedOptions.value === 2) {
-      // setExpirationheader(false);
-      setEditNotification(true);
-      setAccessupdate(false);
-    }
+    // if (SelectedOptions.value === 1) {
+    //   // setExpirationheader(false);
+    //   setEditNotification(false);
+    //   setAccessupdate(true);
+    // } else if (SelectedOptions.value === 2) {
+    //   // setExpirationheader(false);
+    //   setEditNotification(true);
+    //   setAccessupdate(false);
+    // }
   };
 
   // copy link api calling
@@ -272,6 +272,7 @@ const ModalShareFile = ({
     if (fileData.Files.length > 0) {
       let ShareFilesData = {
         FileID: Number(folderId),
+        Message: message,
         Files: fileData.Files,
       };
       dispatch(shareFilesApi(navigate, ShareFilesData, t));
@@ -283,7 +284,11 @@ const ModalShareFile = ({
   const openAccessRequestModalClick = () => {
     // if (fileData.Files.length > 0) {
     // setShareFile(false);
-    let ShareFilesData = { FileID: Number(folderId), Files: fileData.Files };
+    let ShareFilesData = {
+      FileID: Number(folderId),
+      Files: fileData.Files,
+      Message: message,
+    };
     dispatch(shareFilesApi(navigate, ShareFilesData, t, setShareFile));
     // } else {
     //   setOpen({
@@ -724,6 +729,8 @@ const ModalShareFile = ({
                           type="text"
                           as={"textarea"}
                           rows="4"
+                          value={message}
+                          change={(e) => setMessage(e.target.value)}
                           placeholder={t("Messege")}
                           required={true}
                         />

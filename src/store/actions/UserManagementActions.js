@@ -8,6 +8,7 @@ import {
   OrganizationPackageDetailsAndUserStats,
   GetAllUserTypePackages,
   deleteOrganizationUserApi,
+  ResendForgotPasswordCode,
 } from "../../commen/apis/Api_config";
 import {
   authenticationApi,
@@ -1456,6 +1457,86 @@ const deleteOrganizationUserMainApi = (navigate, t, data) => {
   };
 };
 
+//Resend Forgot Password Code
+
+const ResendForgotPasswordCodeInit = () => {
+  return {
+    type: actions.GET_ALL_USER_TYPES_PAKAGES_INIT,
+  };
+};
+
+const ResendForgotPasswordCodeSuccess = (response, message) => {
+  return {
+    type: actions.RESEND_FORGOT_PASSWORD_CODE_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const ResendForgotPasswordCodefail = (message) => {
+  return {
+    type: actions.RESEND_FORGOT_PASSWORD_CODE_FAIL,
+    message: message,
+  };
+};
+
+const ResendForgotPasswordCodeApi = (
+  t,
+  verificationData,
+  setSeconds,
+  setMinutes
+) => {
+  return (dispatch) => {
+    dispatch(ResendForgotPasswordCodeInit());
+    let form = new FormData();
+    form.append("RequestMethod", ResendForgotPasswordCode.RequestMethod);
+    form.append("RequestData", JSON.stringify(verificationData));
+    axios({
+      method: "post",
+      url: authenticationApi,
+      data: form,
+    })
+      .then((response) => {
+        if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage ===
+            "ERM_AuthService_SignUpManager_ResendForgotPasswordCode_01"
+          ) {
+            let newMessage = t("Successful");
+            dispatch(
+              ResendForgotPasswordCodeSuccess(
+                response.data.responseResult,
+                newMessage
+              )
+            );
+            return setSeconds(60), setMinutes(4);
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "ERM_AuthService_SignUpManager_ResendForgotPasswordCode_02"
+          ) {
+            let newMessage = t("Unsuccessful");
+            dispatch(ResendForgotPasswordCodefail(newMessage));
+            return setSeconds(0), setMinutes(0);
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "ERM_AuthService_SignUpManager_ResendForgotPasswordCode_03"
+          ) {
+            let newMessage = t("Something-went-wrong");
+            dispatch(ResendForgotPasswordCodefail(newMessage));
+            return setSeconds(0), setMinutes(0);
+          }
+        } else {
+          let newMessage = t("Something-went-wrong");
+          dispatch(ResendForgotPasswordCodefail(newMessage));
+          return setSeconds(0), setMinutes(0);
+        }
+      })
+      .catch((response) => {
+        dispatch(ResendForgotPasswordCodefail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   signUpOrganizationAndPakageSelection,
   getAllorganizationSubscriptionExpiryDetailsApi,
@@ -1471,4 +1552,5 @@ export {
   getOrganizationPackageUserStatsAPI,
   getAllUserTypePackagesApi,
   deleteOrganizationUserMainApi,
+  ResendForgotPasswordCodeApi,
 };

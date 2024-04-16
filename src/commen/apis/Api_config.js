@@ -1530,6 +1530,10 @@ const deleteOrganizationUserApi = {
   RequestMethod: "ServiceManager.DeleteOrganizationsUser",
 };
 
+const ResendForgotPasswordCode = {
+  RequestMethod: "ServiceManager.ResendForgotPasswordCode",
+};
+
 export {
   leaveFileSharingRM,
   UserLoginHistoryRM,
@@ -1938,4 +1942,5 @@ export {
   getOrganizationSelectedPakages,
   GetAllUserTypePackages,
   deleteOrganizationUserApi,
+  ResendForgotPasswordCode,
 };
