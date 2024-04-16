@@ -464,7 +464,7 @@ const Actions = ({
                 if (newData.pK_TID === taskData.todoList.pK_TID) {
                   return taskData.todoList;
                 } else {
-                  newData;
+                  return newData;
                 }
               });
             });

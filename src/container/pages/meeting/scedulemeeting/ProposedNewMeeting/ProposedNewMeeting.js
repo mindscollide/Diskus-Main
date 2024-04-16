@@ -17,7 +17,6 @@ import {
 } from "../../../../../components/elements";
 import { useState } from "react";
 import DatePicker from "react-multi-date-picker";
-import arabic from "react-date-object/calendars/arabic";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import { DateObject } from "react-multi-date-picker";
@@ -27,11 +26,9 @@ import gregorian_en from "react-date-object/locales/gregorian_en";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import moment from "moment";
 import {
-  convertGMTDateintoUTC,
   convertToUTC,
   createConvert,
 } from "../../../../../commen/functions/date_formater";
-import { containsStringandNumericCharacters } from "../../../../../commen/functions/regex";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -40,15 +37,11 @@ import { getAllCommitteesandGroups } from "../../../../../store/actions/Polls_ac
 import {
   getCurrentDate,
   getNextDay,
-  getCurrentDatewithIndexIncrement,
   getEndTimeWitlCeilFunction,
   getStartTimeWithCeilFunction,
   incrementDateforPropsedMeeting,
 } from "../../../../../commen/functions/time_formatter";
-import {
-  GetAllMeetingTypesNewFunction,
-  SaveMeetingDetialsNewApiFunction,
-} from "../../../../../store/actions/NewMeetingActions";
+import { SaveMeetingDetialsNewApiFunction } from "../../../../../store/actions/NewMeetingActions";
 
 const ProposedNewMeeting = ({
   setProposedNewMeeting,
@@ -628,7 +621,6 @@ const ProposedNewMeeting = ({
         return a.EndTime.localeCompare(b.EndTime);
       }
     });
-    console.log(Dates, "handleProposedButtonProposedMeeting");
 
     if (
       proposedMeetingDetails.MeetingTitle !== "" &&
@@ -645,7 +637,7 @@ const ProposedNewMeeting = ({
           IsVideoChat: true,
           IsTalkGroup: false,
           OrganizationId: Number(OrganizationID),
-          MeetingDates: Dates,
+          MeetingDates: Dates[0] ? [Dates[0]] : [],
           MeetingReminders: [4],
           Notes: "",
           AllowRSVP: true,
