@@ -84,6 +84,11 @@ const RecentChats = () => {
       talkStateData.AllUserChats.AllUserChatsData.length !== 0
     ) {
       setAllChatData(talkStateData.AllUserChats.AllUserChatsData.allMessages);
+    } else {
+      setAllChatData([]);
+    }
+    return () => {
+      setAllChatData([])
     }
   }, [talkStateData.AllUserChats.AllUserChatsData]);
 
