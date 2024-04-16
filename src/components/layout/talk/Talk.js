@@ -147,8 +147,6 @@ const Talk = () => {
     }
   };
 
-  console.log("Talk State Data", talkStateData);
-
   const [unreadMessageCount, setUnreadMessageCount] = useState(0);
 
   const [missedCallCount, setMissedCallCount] = useState(0);
