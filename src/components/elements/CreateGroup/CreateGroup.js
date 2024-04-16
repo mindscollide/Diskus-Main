@@ -1291,7 +1291,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                 className="mt-2 "
                                               >
                                                 <Checkbox
-                                                  // checked={false}
                                                   checked={
                                                     attendees.includes(
                                                       attendeelist.pK_UID
