@@ -491,35 +491,35 @@ const Resolution = () => {
         let newDate = new Date();
         let votingDeadline = resolutionResultTable(data?.votingDeadline);
         if (data.resolutionStatus === "Circulated") {
-          if (votingDeadline < newDate) {
-            return (
-              <Tooltip placement="bottomLeft" title={t("Result")}>
-                <img
-                  draggable="false"
-                  src={ResultResolutionIcon}
-                  onClick={() => getResultHandle(data.resolutionID)}
-                  className={styles["Result_icon"]}
-                  alt=""
-                />
-              </Tooltip>
-            );
-          } else {
-            return "";
-          }
+          // if (votingDeadline < newDate) {
+          return (
+            <Tooltip placement="bottomLeft" title={t("Result")}>
+              <img
+                draggable="false"
+                src={ResultResolutionIcon}
+                onClick={() => getResultHandle(data.resolutionID)}
+                className={styles["Result_icon"]}
+                alt=""
+              />
+            </Tooltip>
+          );
+          // } else {
+          //   return "";
+          // }
         } else if (data.resolutionStatus === "Closed") {
-          if (votingDeadline < newDate) {
-            return (
-              <Tooltip placement="bottomLeft" title={t("Result")}>
-                <img
-                  draggable="false"
-                  src={ResultResolutionIcon}
-                  onClick={() => getResultHandle(data.resolutionID)}
-                  className={styles["Result_icon"]}
-                  alt=""
-                />
-              </Tooltip>
-            );
-          }
+          // if (votingDeadline < newDate) {
+          return (
+            <Tooltip placement="bottomLeft" title={t("Result")}>
+              <img
+                draggable="false"
+                src={ResultResolutionIcon}
+                onClick={() => getResultHandle(data.resolutionID)}
+                className={styles["Result_icon"]}
+                alt=""
+              />
+            </Tooltip>
+          );
+          // }
         }
       },
     },

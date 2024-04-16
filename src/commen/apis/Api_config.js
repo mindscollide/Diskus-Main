@@ -1521,7 +1521,11 @@ const GetAllUserTypePackages = {
   RequestMethod: "ServiceManager.GetAllUserTypePackages",
 };
 
+const leaveFileSharingRM = {
+  RequestMethod: "ServiceManager.DeleteFileSharing",
+};
 export {
+  leaveFileSharingRM,
   UserLoginHistoryRM,
   getDataAnalyticsCountRM,
   updateAndOpenByAndDescriptionRM,

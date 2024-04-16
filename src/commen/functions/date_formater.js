@@ -944,3 +944,7 @@ export const convertUTCDateToLocalDate = (utcDateTime, locale) => {
     return date.toLocaleString(locale, options);
   } catch {}
 };
+
+export const formattedString = (dateString) => {
+  return dateString.replace("T", "").replace(/:/g, "").replace(/-/g, "");
+};

@@ -37,9 +37,9 @@ import {
 import CustomPagination from "../../../commen/functions/customPagination/Paginations";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
 import { UpdateOrganizersMeeting } from "../../../store/actions/MeetingOrganizers_action";
+import { createGroupMeeting } from "../../../store/actions/GetMeetingUserId";
 
 const CommitteeMeetingTab = ({ groupStatus }) => {
-  console.log(groupStatus, "groupStatusgroupStatusgroupStatus");
   const { t } = useTranslation();
   const getMeetingbyGroupID = useSelector(
     (state) => state.NewMeetingreducer.getMeetingbyGroupID
@@ -47,7 +47,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
   const meetingStatusNotConductedMqttData = useSelector(
     (state) => state.NewMeetingreducer.meetingStatusNotConductedMqttData
   );
-
+  const { GroupMeetingMQTT } = useSelector((state) => state.meetingIdReducer);
   const [isOrganisers, setIsOrganisers] = useState(false);
   const [rows, setRow] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -589,6 +589,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       },
     },
   ];
+
   useEffect(() => {
     if (
       meetingStatusNotConductedMqttData !== null &&
@@ -622,6 +623,33 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
     }
     dispatch(meetingNotConductedMQTT(null));
   }, [meetingStatusNotConductedMqttData, rows]);
+
+  useEffect(() => {
+    try {
+      if (GroupMeetingMQTT !== null) {
+        if (Number(ViewGroupID) === Number(GroupMeetingMQTT.groupID)) {
+          let meetingData = GroupMeetingMQTT.meeting;
+          let findIsExist = rows.findIndex(
+            (data, index) => data.pK_MDID === meetingData.pK_MDID
+          );
+          if (findIsExist !== -1) {
+            setRow((rowsData) => {
+              return rowsData.map((newData, index) => {
+                if (newData.pK_MDID === meetingData.pK_MDID) {
+                  return meetingData;
+                } else {
+                  return newData;
+                }
+              });
+            });
+          } else {
+            setRow([...rows, meetingData]);
+          }
+        }
+        dispatch(createGroupMeeting(null));
+      }
+    } catch (error) {}
+  }, [GroupMeetingMQTT]);
 
   const handelCreateMeeting = () => {
     setCreateMeetingModal(true);

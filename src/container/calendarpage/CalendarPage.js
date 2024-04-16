@@ -24,6 +24,9 @@ import {
   newDateFormaterAsPerUTC,
   newTimeFormaterAsPerUTC,
   _justShowDateformat,
+  newTimeFormaterAsPerUTCTalkTime,
+  formattedString,
+  utcConvertintoGMT,
 } from "../../commen/functions/date_formater";
 import ModalMeeting from "../modalmeeting/ModalMeeting";
 import TodoListModal from "../todolistModal/ModalToDoList";
@@ -307,44 +310,202 @@ const CalendarPage = () => {
       setCalenderDatae(newList);
     }
   }, [calendarReducer.CalenderData]);
+
   useEffect(() => {
-    if (calendarReducer.googleEventCreate !== null) {
-      // Google Calenadar Event Source ID # 01
-      // Add New Event in State
+    try {
+      if (calendarReducer.googleEventCreate !== null) {
+        // Google Calenadar Event Source ID # 01
+        // Add New Event in State
+        let googleEventColor = localStorage.getItem("googleEventColor");
+
+        let calendarData = calendarReducer.googleEventCreate;
+        let newData = {
+          id: Number(calendarData.calendarEventID),
+          eventID: Number(calendarData.calendarEventSourceID),
+          title:
+            newTimeFormaterAsPerUTCTalkTime(
+              formattedString(calendarData.model?.start?.dateTime)
+            ) +
+            " - " +
+            calendarData.model?.summary,
+          allDay: true,
+          start: utcConvertintoGMT(
+            formattedString(calendarData.model?.start?.dateTime)
+          ),
+          end: utcConvertintoGMT(
+            formattedString(calendarData.model?.end?.dateTime)
+          ),
+          border: `2px solid ${googleEventColor}`,
+          // color: "#ffff",
+          backgroundColor: googleEventColor,
+          calendarTypeId: Number(calendarData.calendarEventTypeID),
+          isQuickMeeting: true,
+        };
+        setCalenderDatae([...calenderData, newData]);
+      }
+    } catch (error) {
+      console.log(error);
     }
   }, [calendarReducer.googleEventCreate]);
+
   useEffect(() => {
-    if (calendarReducer.googleEventUpdate !== null) {
-      // Google Calenadar Event Source ID # 01
-      // Update Existing Event in State
+    try {
+      if (calendarReducer.googleEventUpdate !== null) {
+        // Google Calenadar Event Source ID # 01
+        // Update Existing Event in State
+        let googleEventColor = localStorage.getItem("googleEventColor");
+
+        let calendarData = calendarReducer.googleEventUpdate;
+        let newData = {
+          id: Number(calendarData.calendarEventID),
+          eventID: Number(calendarData.calendarEventSourceID),
+          title:
+            newTimeFormaterAsPerUTCTalkTime(
+              formattedString(calendarData.model?.start?.dateTime)
+            ) +
+            " - " +
+            calendarData.model?.summary,
+          allDay: true,
+          start: utcConvertintoGMT(
+            formattedString(calendarData.model?.start?.dateTime)
+          ),
+          end: utcConvertintoGMT(
+            formattedString(calendarData.model?.end?.dateTime)
+          ),
+          border: `2px solid ${googleEventColor}`,
+          // color: "#ffff",
+          backgroundColor: googleEventColor,
+          calendarTypeId: Number(calendarData.calendarEventTypeID),
+          isQuickMeeting: true,
+        };
+        setCalenderDatae((calendarData2) =>
+          calendarData2.map((data2, index) => {
+            if (data2.id === newData.id) {
+              return newData;
+            } else {
+              return data2;
+            }
+          })
+        );
+      }
+    } catch (error) {
+      console.log(error);
     }
   }, [calendarReducer.googleEventUpdate]);
 
   useEffect(() => {
-    if (calendarReducer.googleEventDelete !== null) {
-      // Google Calenadar Event Source ID # 01
-      // Remove Existing Event in State
+    try {
+      if (calendarReducer.googleEventDelete !== null) {
+        // Google Calenadar Event Source ID # 01
+        // Remove Existing Event in State
+
+        let calendarData = calendarReducer.googleEventDelete;
+        setCalenderDatae((calendarData2) =>
+          calendarData2.filter(
+            (data2, index) => data2.id !== calendarData.calendarEventID
+          )
+        );
+      }
+    } catch (error) {
+      console.log(error);
     }
   }, [calendarReducer.googleEventDelete]);
 
   useEffect(() => {
-    if (calendarReducer.microsoftEventCreate !== null) {
-      // Microsoft Calenadar Event Source ID # 02 & 04
-      // Add New Event in State
+    try {
+      if (calendarReducer.microsoftEventCreate !== null) {
+        // Microsoft Calenadar Event Source ID # 02 & 04
+        // Add New Event in State
+        let officeEventColor = localStorage.getItem("officeEventColor");
+        let calendarData = calendarReducer.microsoftEventCreate;
+        let newData = {
+          id: Number(calendarData.calendarEventID),
+          eventID: Number(calendarData.calendarEventSourceID),
+          title:
+            newTimeFormaterAsPerUTCTalkTime(
+              formattedString(calendarData.model?.start?.dateTime)
+            ) +
+            " - " +
+            calendarData.model?.subject,
+          allDay: true,
+          start: utcConvertintoGMT(
+            formattedString(calendarData.model?.start?.dateTime)
+          ),
+          end: utcConvertintoGMT(
+            formattedString(calendarData.model?.end?.dateTime)
+          ),
+          border: `2px solid ${officeEventColor}`,
+          // color: "#ffff",
+          backgroundColor: officeEventColor,
+          calendarTypeId: Number(calendarData.calendarEventTypeID),
+          isQuickMeeting: true,
+        };
+        setCalenderDatae([...calenderData, newData]);
+      }
+    } catch (error) {
+      console.log(error);
     }
   }, [calendarReducer.microsoftEventCreate]);
 
   useEffect(() => {
-    if (calendarReducer.microsoftEventUpdate !== null) {
-      // Microsoft Calenadar Event Source ID # 02 & 04
-      // Update Existing Event in State
+    try {
+      if (calendarReducer.microsoftEventUpdate !== null) {
+        // Microsoft Calenadar Event Source ID # 02 & 04
+        // Update Existing Event in State
+        let officeEventColor = localStorage.getItem("officeEventColor");
+        let calendarData = calendarReducer.microsoftEventUpdate;
+        let newData = {
+          id: Number(calendarData.calendarEventID),
+          eventID: Number(calendarData.calendarEventSourceID),
+          title:
+            newTimeFormaterAsPerUTCTalkTime(
+              formattedString(calendarData.model?.start?.dateTime)
+            ) +
+            " - " +
+            calendarData.model?.subject,
+          allDay: true,
+          start: utcConvertintoGMT(
+            formattedString(calendarData.model?.start?.dateTime)
+          ),
+          end: utcConvertintoGMT(
+            formattedString(calendarData.model?.end?.dateTime)
+          ),
+          border: `2px solid ${officeEventColor}`,
+          // color: "#ffff",
+          backgroundColor: officeEventColor,
+          calendarTypeId: Number(calendarData.calendarEventTypeID),
+          isQuickMeeting: true,
+        };
+        setCalenderDatae((calendarData2) =>
+          calendarData2.map((data2, index) => {
+            if (data2.id === newData.id) {
+              return newData;
+            } else {
+              return data2;
+            }
+          })
+        );
+      }
+    } catch (error) {
+      console.log(error);
     }
   }, [calendarReducer.microsoftEventUpdate]);
 
   useEffect(() => {
-    if (calendarReducer.microsoftEventDelete !== null) {
-      // Microsoft Calenadar Event Source ID # 02 & 04
-      // Remove Existing Event in State
+    try {
+      if (calendarReducer.microsoftEventDelete !== null) {
+        // Microsoft Calenadar Event Source ID # 02 & 04
+        // Remove Existing Event in State
+
+        let calendarData = calendarReducer.microsoftEventDelete;
+        setCalenderDatae((calendarData2) =>
+          calendarData2.filter(
+            (data2, index) => data2.id !== calendarData.calendarEventID
+          )
+        );
+      }
+    } catch (error) {
+      console.log(error);
     }
   }, [calendarReducer.microsoftEventDelete]);
 
@@ -646,6 +807,11 @@ const CalendarPage = () => {
       setMeetingData(calendarReducer.eventsDetails.diskusCalendarEvent);
     }
   }, [calendarReducer.eventsDetails]);
+  console.log(
+    calenderData,
+    calendarReducer,
+    "calendarReducercalendarReducercalendarReducercalendarReducer"
+  );
   return (
     <>
       <div className="calendar_container">
