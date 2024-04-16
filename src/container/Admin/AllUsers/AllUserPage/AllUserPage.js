@@ -215,7 +215,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   // onclick AddUser User should be navigate to AddUser
   const gotoAddUser = () => {
-    navigate("/Diskus/Admin/AddUser");
+    navigate("/Admin/AddUser");
   };
 
   const EditUserColumn = [

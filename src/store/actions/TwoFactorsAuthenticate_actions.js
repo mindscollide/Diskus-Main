@@ -642,9 +642,9 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
               );
               localStorage.setItem("TowApproval", true);
               if (JSON.parse(localStorage.getItem("roleID")) === 1) {
-                navigate("/Diskus/Admin/");
+                navigate("/Admin/");
               } else if (JSON.parse(localStorage.getItem("roleID")) === 2) {
-                navigate("/Diskus/Admin/");
+                navigate("/Admin/");
               } else if (JSON.parse(localStorage.getItem("roleID")) === 3) {
                 if (JSON.parse(localStorage.getItem("isFirstLogin"))) {
                   navigate("/onboard");

@@ -70,7 +70,7 @@ const signIn = (UserData, navigate, t) => {
             navigate("/onboard");
           } else {
             if (response.data.responseResult.userID === 187) {
-              navigate("/Diskus/Admin/Summary");
+              navigate("/Admin/Summary");
             } else {
               navigate("/DisKus/home");
             }

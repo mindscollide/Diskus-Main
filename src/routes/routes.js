@@ -12,11 +12,6 @@ import {
   NotFound,
   OnBoard,
   TodoList,
-  VideoPanelMaximize,
-  VideoScreens,
-  VideoMultiple,
-  VideoIncoming,
-  VideoOutgoing,
   AddUser,
   AllUserPage,
   EditUser,
@@ -33,24 +28,18 @@ import {
   PackageUpgrade,
   PackageUpgradeDetail,
   PackageUpgradeSelect,
-  ForgotPassword,
   PasswordUpdateMessage,
   CreatePassword,
   PackageSelection,
   PaymentForm,
   PackageSelected,
-  EnterPassword,
   Signup,
   VerifyEmailOTP,
-  VideoChat,
   Notes,
-  ValidateEmail,
   CalendarPage,
   TwoFactor,
   TwoFacSendEmail,
-  SendEmailRealmeXtra,
   VerificationIphone,
-  VerificationCodeOne,
   VerificationCodeThree,
   SigninDenied,
   ForgotPasswordVerification,
@@ -150,14 +139,6 @@ export const router = createHashRouter(
           }
         >
           <Route
-            path="maximizePanel"
-            element={
-              <RouteWrapperUser name="maximizePanel">
-                <VideoPanelMaximize />
-              </RouteWrapperUser>
-            }
-          />
-          <Route
             path=""
             element={
               <RouteWrapperUser name="">
@@ -223,14 +204,6 @@ export const router = createHashRouter(
             }
           />
           <Route
-            path="videochat"
-            element={
-              <RouteWrapperUser name="videochat">
-                <VideoChat />
-              </RouteWrapperUser>
-            }
-          />
-          <Route
             path="setting"
             element={
               <RouteWrapperUser name="setting">
@@ -267,38 +240,6 @@ export const router = createHashRouter(
             element={
               <RouteWrapperUser name="notes">
                 <Notes />
-              </RouteWrapperUser>
-            }
-          />
-          <Route
-            path="VideoIncoming"
-            element={
-              <RouteWrapperUser name="VideoIncoming">
-                <VideoIncoming />
-              </RouteWrapperUser>
-            }
-          />
-          <Route
-            path="VideoOutgoing"
-            element={
-              <RouteWrapperUser name="VideoOutgoing">
-                <VideoOutgoing />
-              </RouteWrapperUser>
-            }
-          />
-          <Route
-            path="VideoMultiple"
-            element={
-              <RouteWrapperUser name="VideoMultiple">
-                <VideoMultiple />
-              </RouteWrapperUser>
-            }
-          />
-          <Route
-            path="VideoScreens"
-            element={
-              <RouteWrapperUser name="VideoScreens">
-                <VideoScreens />
               </RouteWrapperUser>
             }
           />
@@ -341,7 +282,7 @@ export const router = createHashRouter(
       <Route element={<PrivateAdminRoute />}>
         <Route
           exact
-          path="/Diskus/Admin/"
+          path="/Admin/"
           element={
             <RouteWrapperAdmin name="Admin">
               <AdminHome />
@@ -599,9 +540,9 @@ export const router = createHashRouter(
         </Route>
       </Route>
       <Route element={<PrivateAdminRouteNonActive />}>
-        <Route exact path="/DisKus/Admin/Payment/" element={<AdminHome />}>
+        <Route exact path="/Admin/Payment/" element={<AdminHome />}>
           <Route path="PayOutstanding" element={<PayOutstanding />} />
-          <Route path="/DisKus/Admin/Payment/" element={<PayOutstanding />} />
+          <Route path="/Admin/Payment/" element={<PayOutstanding />} />
         </Route>
       </Route>
       <Route element={<PrivateNonActive />}>
@@ -610,7 +551,7 @@ export const router = createHashRouter(
         </Route>
       </Route>
       <Route element={<PrivateParAdminRouteNonActive />}>
-        <Route exact path="/DisKus/Admin/Nonactive/" element={<AdminHome />}>
+        <Route exact path="/Admin/Nonactive/" element={<AdminHome />}>
           <Route path="" element={<Summary />} />
         </Route>
       </Route>

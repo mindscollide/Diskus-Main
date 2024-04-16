@@ -15,7 +15,7 @@ const AddUsers = () => {
   const navigate = useNavigate();
 
   const handleCancelButton = () => {
-    navigate("/Diskus/Admin/ManageUsers");
+    navigate("/Admin/ManageUsers");
   };
   return (
     <Container className={styles["PageAlignment"]}>
