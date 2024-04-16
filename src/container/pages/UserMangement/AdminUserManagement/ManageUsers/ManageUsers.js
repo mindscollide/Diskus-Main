@@ -35,6 +35,8 @@ const ManageUsers = () => {
 
   let organizationID = localStorage.getItem("organizationID");
 
+  let isTrial = localStorage.getItem("isTrial");
+
   let userID = localStorage.getItem("userID");
 
   const { UserMangementReducer, UserManagementModals } = useSelector(
@@ -257,7 +259,11 @@ const ManageUsers = () => {
 
   //navigating to Add user Page
   const handleAddusers = () => {
-    navigate("/Admin/AddUsersUsermanagement");
+    if (isTrial) {
+      navigate("/Admin/AddUsersUsermanagement");
+    } else {
+      navigate("/Admin/AddUser");
+    }
   };
 
   // opening of the search box
