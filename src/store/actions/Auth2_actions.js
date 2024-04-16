@@ -544,25 +544,77 @@ const enterPasswordvalidation = (value, navigate, t) => {
               );
               localStorage.setItem("meetingTitle", "");
             }
-
+            try {
+              localStorage.setItem(
+                "isTrial",
+                response.data.responseResult.isTrial
+              );
+            } catch {}
+            try {
+              localStorage.setItem(
+                "hasUserRights",
+                response.data.responseResult.hasUserRights
+              );
+            } catch {}
+            try {
+              localStorage.setItem(
+                "hasAdminRights",
+                response.data.responseResult.hasAdminRights
+              );
+            } catch {}
             let LocalUserRoutes = [
-              { name: "Meeting", id: 1 },
-              { name: "todolist", id: 2 },
-              { name: "calendar", id: 3 },
-              { name: "Diskus", id: 4 },
-              { name: "setting", id: 5 },
-              { name: "faq's", id: 6 },
-              { name: "changePassword", id: 7 },
-              { name: "home", id: 8 },
-              { name: "", id: 9 },
+              { name: "Diskus", id: 100 },
+              { name: "home", id: 101 },
+              { name: "", id: 102 },
+              { name: "changePassword", id: 103 },
+              { name: "faq's", id: 104 },
+              { name: "setting", id: 105 },
             ];
-            let LocalAdminRoutes = [
-              { name: "Admin", id: 1 },
-              { name: "ManageUsers", id: 2 },
-              { name: "OrganizationlevelConfigUM", id: 3 },
-              { name: "PackageDetailsUserManagement", id: 4 },
-              { name: "Summary", id: 5 },
-            ];
+            let LocalAdminRoutes = [];
+            if (response.data.responseResult.isTrial) {
+              LocalUserRoutes.push(
+                { name: "Meeting", id: 106 },
+                { name: "Meeting/Useravailabilityformeeting", id: 107 },
+                { name: "notes", id: 6 },
+                { name: "calendar", id: 7 },
+                { name: "dataroom", id: 13 },
+                { name: "todolist", id: 14 },
+                { name: "polling", id: 15 },
+                { name: "groups", id: 16 },
+                { name: "committee", id: 17 },
+                { name: "resolution", id: 18 },
+                { name: "signatureviewer", id: 19 },
+                { name: "documentViewer", id: 20 }
+              );
+              LocalAdminRoutes = [
+                { name: "Admin", id: 200 },
+                { name: "Admin", id: 201 },
+                { name: "", id: 202 },
+                { name: "ManageUsers", id: 2 },
+                { name: "OrganizationlevelConfigUM", id: 3 },
+                { name: "PackageDetailsUserManagement", id: 4 },
+                { name: "Summary", id: 5 },
+              ];
+            } else {
+              LocalUserRoutes.push(
+                { name: "Meeting", id: 106 },
+                { name: "Meeting/Useravailabilityformeeting", id: 107 },
+                { name: "notes", id: 6 },
+                { name: "calendar", id: 7 },
+                { name: "dataroom", id: 13 },
+                { name: "todolist", id: 14 },
+              );
+              LocalAdminRoutes = [
+                { name: "Admin", id: 200 },
+                { name: "Admin", id: 201 },
+                { name: "", id: 202 },
+                { name: "ManageUsers", id: 2 },
+                { name: "OrganizationlevelConfigUM", id: 3 },
+                { name: "PackageDetailsUserManagement", id: 4 },
+                { name: "Summary", id: 5 },
+              ];
+            }
+
             localStorage.setItem(
               "LocalUserRoutes",
               JSON.stringify(LocalUserRoutes)
@@ -718,7 +770,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("The-user-is-an-admin-user")
                   )
                 );
-                navigate("/Diskus/Admin/");
+                navigate("/Admin/");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 2
               ) {
@@ -748,7 +800,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("The-user-is-an-admin-user")
                   )
                 );
-                navigate("/Diskus/Admin/");
+                navigate("/Admin/");
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -892,7 +944,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               } else {
                 localStorage.setItem("revokeCancellation", false);
               }
-              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+              if (JSON.parse(response.data.responseResult.roleId) === 1) {
                 await dispatch(
                   getPackageExpiryDetail(
                     navigate,
@@ -902,16 +954,16 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 );
                 localStorage.setItem(
                   "roleID",
-                  JSON.parse(response.data.responseResult.userRoleId)
+                  JSON.parse(response.data.responseResult.roleID)
                 );
                 localStorage.setItem(
                   "organizationID",
                   response.data.responseResult.organizationID
                 );
-                localStorage.setItem(
-                  "organizationRoleID",
-                  response.data.responseResult.organizationRoleID
-                );
+                // localStorage.setItem(
+                //   "organizationRoleID",
+                //   response.data.responseResult.organizationRoleID
+                // );
 
                 dispatch(
                   enterPasswordSuccess(
@@ -919,29 +971,36 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("The-user-is-an-admin-user")
                   )
                 );
-                navigate("/Diskus/Admin/");
+                navigate("/Admin/");
               } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 2
+                JSON.parse(response.data.responseResult.roleId) === 4
               ) {
+                await dispatch(
+                  getPackageExpiryDetail(
+                    navigate,
+                    response.data.responseResult.organizationID,
+                    t
+                  )
+                );
                 localStorage.setItem(
                   "roleID",
-                  JSON.parse(response.data.responseResult.userRoleId)
+                  JSON.parse(response.data.responseResult.roleId)
                 );
                 localStorage.setItem(
                   "organizationID",
                   response.data.responseResult.organizationID
                 );
-                localStorage.setItem(
-                  "organizationRoleID",
-                  response.data.responseResult.organizationRoleID
-                );
+                // localStorage.setItem(
+                //   "organizationRoleID",
+                //   response.data.responseResult.organizationRoleID
+                // );
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
                     t("The-user-is-an-admin-user")
                   )
                 );
-                navigate("/Diskus/Admin/");
+                navigate("/Admin/");
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -1027,7 +1086,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     )
                   )
                 );
-                navigate("/DisKus/Admin/Payment/PayOutstanding");
+                navigate("/Admin/Payment/PayOutstanding");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 2
               ) {
@@ -1052,7 +1111,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     )
                   )
                 );
-                navigate("/Diskus/Admin/Nonactive/");
+                navigate("/Admin/Nonactive/");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 3
               ) {
@@ -1113,7 +1172,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     )
                   )
                 );
-                navigate("/DisKus/Admin/Payment/PayOutstanding");
+                navigate("/Admin/Payment/PayOutstanding");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 2
               ) {
@@ -1138,7 +1197,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     )
                   )
                 );
-                navigate("/DisKus/Admin/Nonactive/");
+                navigate("/Admin/Nonactive/");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 3
               ) {
@@ -1304,7 +1363,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
             //       response.data.responseResult,
             //       t("The-user-is-a-partial-admin")
             //     );
-            //     navigate("/Diskus/Admin/");
+            //     navigate("/Admin/");
             //   } else if (
             //     JSON.parse(response.data.responseResult.userRoleId) === 3
             //   ) {
@@ -1358,7 +1417,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
             //         "The-user-is-a-partial-admin-user-the-organization-subscription-is-not-active-please-contact-your-admin"
             //       )
             //     );
-            //     navigate("/DisKus/Admin/Nonactive/");
+            //     navigate("/Admin/Nonactive/");
             //   }
             // }
             // else if (
@@ -1398,7 +1457,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
             //       response.data.responseResult,
             //       t("The-user-is-a-partial-admin")
             //     );
-            //     navigate("/Diskus/Admin/");
+            //     navigate("/Admin/");
             //   } else if (
             //     JSON.parse(response.data.responseResult.userRoleId) === 3
             //   ) {
@@ -1622,12 +1681,6 @@ const createPasswordAction = (value, navigate, t) => {
                   response.data.responseResult.organizationName
                 );
               }
-              try {
-                localStorage.setItem(
-                  "isTrial",
-                  response.data.responseResult.isTrial
-                );
-              } catch {}
 
               if (response.data.responseResult.authToken !== null) {
                 localStorage.setItem(
@@ -1656,6 +1709,79 @@ const createPasswordAction = (value, navigate, t) => {
               localStorage.setItem(
                 "organizationID",
                 response.data.responseResult.organizationID
+              );
+              try {
+                localStorage.setItem(
+                  "hasUserRights",
+                  response.data.responseResult.hasUserRights
+                );
+              } catch {}
+              try {
+                localStorage.setItem(
+                  "hasAdminRights",
+                  response.data.responseResult.hasAdminRights
+                );
+              } catch {}
+              let LocalUserRoutes = [
+                { name: "Diskus", id: 100 },
+                { name: "home", id: 101 },
+                { name: "", id: 102 },
+                { name: "changePassword", id: 103 },
+                { name: "faq's", id: 104 },
+                { name: "setting", id: 105 },
+              ];
+              let LocalAdminRoutes = [];
+              if (response.data.responseResult.isTrial) {
+                LocalUserRoutes.push(
+                  { name: "Meeting", id: 106 },
+                  { name: "Meeting/Useravailabilityformeeting", id: 107 },
+                  { name: "notes", id: 6 },
+                  { name: "calendar", id: 7 },
+                  { name: "dataroom", id: 13 },
+                  { name: "todolist", id: 14 },
+                  { name: "polling", id: 15 },
+                  { name: "groups", id: 16 },
+                  { name: "committee", id: 17 },
+                  { name: "resolution", id: 18 },
+                  { name: "signatureviewer", id: 19 },
+                  { name: "documentViewer", id: 20 }
+                );
+                LocalAdminRoutes = [
+                  { name: "Admin", id: 200 },
+                  { name: "Admin", id: 201 },
+                  { name: "", id: 202 },
+                  { name: "ManageUsers", id: 2 },
+                  { name: "OrganizationlevelConfigUM", id: 3 },
+                  { name: "PackageDetailsUserManagement", id: 4 },
+                  { name: "Summary", id: 5 },
+                ];
+              } else {
+                LocalUserRoutes.push(
+                  { name: "Meeting", id: 106 },
+                  { name: "Meeting/Useravailabilityformeeting", id: 107 },
+                  { name: "notes", id: 6 },
+                  { name: "calendar", id: 7 },
+                  { name: "dataroom", id: 13 },
+                  { name: "todolist", id: 14 },
+                );
+                LocalAdminRoutes = [
+                  { name: "Admin", id: 200 },
+                  { name: "Admin", id: 201 },
+                  { name: "", id: 202 },
+                  { name: "ManageUsers", id: 2 },
+                  { name: "OrganizationlevelConfigUM", id: 3 },
+                  { name: "PackageDetailsUserManagement", id: 4 },
+                  { name: "Summary", id: 5 },
+                ];
+              }
+
+              localStorage.setItem(
+                "LocalUserRoutes",
+                JSON.stringify(LocalUserRoutes)
+              );
+              localStorage.setItem(
+                "LocalAdminRoutes",
+                JSON.stringify(LocalAdminRoutes)
               );
               if (
                 response.data.responseResult.responseMessage
@@ -1846,7 +1972,7 @@ const createPasswordAction = (value, navigate, t) => {
               //         t("Tthe-user-is-a-partial-admin-user")
               //       )
               //     );
-              //     navigate("/Diskus/Admin/");
+              //     navigate("/Admin/");
               //   } else if (
               //     JSON.parse(response.data.responseResult.userRoleId) === 2
               //   ) {
@@ -1856,7 +1982,7 @@ const createPasswordAction = (value, navigate, t) => {
               //         t("Tthe-user-is-a-partial-admin-user")
               //       )
               //     );
-              //     navigate("/Diskus/Admin/");
+              //     navigate("/Admin/");
               //   } else if (
               //     JSON.parse(response.data.responseResult.userRoleId) === 3
               //   ) {
@@ -2131,7 +2257,7 @@ const createPasswordAction = (value, navigate, t) => {
               //         t("User-is-not-a-new-user-the-user-is-a-partial-admin-user")
               //       )
               //     );
-              //     navigate("/Diskus/Admin/");
+              //     navigate("/Admin/");
               //   } else if (
               //     JSON.parse(response.data.responseResult.userRoleId) === 2
               //   ) {
@@ -2141,7 +2267,7 @@ const createPasswordAction = (value, navigate, t) => {
               //         t("User-is-not-a-new-user-the-user-is-a-partial-admin-user")
               //       )
               //     );
-              //     navigate("/Diskus/Admin/");
+              //     navigate("/Admin/");
               //   } else if (
               //     JSON.parse(response.data.responseResult.userRoleId) === 3
               //   ) {
@@ -2166,38 +2292,7 @@ const createPasswordAction = (value, navigate, t) => {
                     .organizationSelectedUserPackageID;
 
                 localStorage.setItem("PakageSelectedID", findSelectedPackageID);
-                try {
-                  localStorage.setItem(
-                    "isTrial",
-                    response.data.responseResult.isTrial
-                  );
-                } catch {}
-                let LocalUserRoutes = [
-                  { name: "Meeting", id: 1 },
-                  { name: "todolist", id: 2 },
-                  { name: "calendar", id: 3 },
-                  { name: "Diskus", id: 4 },
-                  { name: "setting", id: 5 },
-                  { name: "faq's", id: 6 },
-                  { name: "changePassword", id: 7 },
-                  { name: "home", id: 8 },
-                  { name: "", id: 9 },
-                ];
-                let LocalAdminRoutes = [
-                  { name: "Admin", id: 1 },
-                  { name: "ManageUsers", id: 2 },
-                  { name: "OrganizationlevelConfigUM", id: 3 },
-                  { name: "PackageDetailsUserManagement", id: 4 },
-                  { name: "Summary", id: 5 },
-                ];
-                localStorage.setItem(
-                  "LocalUserRoutes",
-                  JSON.stringify(LocalUserRoutes)
-                );
-                localStorage.setItem(
-                  "LocalAdminRoutes",
-                  JSON.stringify(LocalAdminRoutes)
-                );
+
                 dispatch(showCreateAddtionalUsersModal(true));
                 dispatch(
                   createPasswordSuccess(
@@ -2509,7 +2604,7 @@ const createPasswordAction = (value, navigate, t) => {
                       )
                     )
                   );
-                  navigate("/Diskus/Admin/PayOutstanding");
+                  navigate("/Admin/PayOutstanding");
                 } else if (
                   JSON.parse(response.data.responseResult.userRoleId) === 2
                 ) {
@@ -2556,7 +2651,7 @@ const createPasswordAction = (value, navigate, t) => {
                       )
                     )
                   );
-                  navigate("/Diskus/Admin/Nonactive");
+                  navigate("/Admin/Nonactive");
                 } else if (
                   JSON.parse(response.data.responseResult.userRoleId) === 3
                 ) {
@@ -2667,7 +2762,7 @@ const createPasswordAction = (value, navigate, t) => {
               //         )
               //       )
               //     );
-              //     navigate("/Diskus/Admin/PayOutstanding");
+              //     navigate("/Admin/PayOutstanding");
               //   } else if (
               //     JSON.parse(response.data.responseResult.userRoleId) === 2
               //   ) {
@@ -2712,7 +2807,7 @@ const createPasswordAction = (value, navigate, t) => {
               //         )
               //       )
               //     );
-              //     navigate("/Diskus/Admin/Nonactive");
+              //     navigate("/Admin/Nonactive");
               //   } else if (
               //     JSON.parse(response.data.responseResult.userRoleId) === 3
               //   ) {
@@ -2823,7 +2918,7 @@ const createPasswordAction = (value, navigate, t) => {
                       )
                     )
                   );
-                  navigate("/Diskus/Admin/PayOutstanding");
+                  navigate("/Admin/PayOutstanding");
                 } else if (
                   JSON.parse(response.data.responseResult.userRoleId) === 2
                 ) {
@@ -2870,7 +2965,7 @@ const createPasswordAction = (value, navigate, t) => {
                       )
                     )
                   );
-                  navigate("/Diskus/Admin/Nonactive");
+                  navigate("/Admin/Nonactive");
                 } else if (
                   JSON.parse(response.data.responseResult.userRoleId) === 3
                 ) {
@@ -2958,13 +3053,6 @@ const createPasswordAction = (value, navigate, t) => {
                     "ERM_AuthService_SignUpManager_UsersPasswordCreation_18".toLowerCase()
                   )
               ) {
-                try {
-                  localStorage.setItem(
-                    "isTrial",
-                    response.data.responseResult.isTrial
-                  );
-                } catch {}
-
                 if (response.data.responseResult.authToken !== null) {
                   localStorage.setItem(
                     "name",
@@ -2993,32 +3081,6 @@ const createPasswordAction = (value, navigate, t) => {
                     response.data.responseResult.organizationName
                   );
                 }
-                let LocalUserRoutes = [
-                  { name: "Meeting", id: 1 },
-                  { name: "todolist", id: 2 },
-                  { name: "calendar", id: 3 },
-                  { name: "Diskus", id: 4 },
-                  { name: "setting", id: 5 },
-                  { name: "faq's", id: 6 },
-                  { name: "changePassword", id: 7 },
-                  { name: "home", id: 8 },
-                  { name: "", id: 9 },
-                ];
-                let LocalAdminRoutes = [
-                  { name: "Admin", id: 1 },
-                  { name: "ManageUsers", id: 2 },
-                  { name: "OrganizationlevelConfigUM", id: 3 },
-                  { name: "PackageDetailsUserManagement", id: 4 },
-                  { name: "Summary", id: 5 },
-                ];
-                localStorage.setItem(
-                  "LocalUserRoutes",
-                  JSON.stringify(LocalUserRoutes)
-                );
-                localStorage.setItem(
-                  "LocalAdminRoutes",
-                  JSON.stringify(LocalAdminRoutes)
-                );
                 dispatch(showCreateAddtionalUsersModal(true));
                 dispatch(
                   createPasswordSuccess(response.data.responseResult, "")
@@ -3321,7 +3383,7 @@ const organizationPackageReselection = (
                   t("Organization-package-not-selected")
                 )
               );
-              // navigate("/Diskus/Admin/PackageDetail");
+              // navigate("/Admin/PackageDetail");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -3335,7 +3397,7 @@ const organizationPackageReselection = (
                   t("Organization-package-not-save")
                 )
               );
-              navigate("/Diskus/Admin/PackageDetail");
+              navigate("/Admin/PackageDetail");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -3349,7 +3411,7 @@ const organizationPackageReselection = (
                   t("Previous-package-not-deleted")
                 )
               );
-              navigate("/Diskus/Admin/PackageDetail");
+              navigate("/Admin/PackageDetail");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -3363,7 +3425,7 @@ const organizationPackageReselection = (
                   t("Previous-subscription-not-deleted")
                 )
               );
-              navigate("/Diskus/Admin/PackageDetail");
+              navigate("/Admin/PackageDetail");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -3377,7 +3439,7 @@ const organizationPackageReselection = (
                   t("Something-went-wrong")
                 )
               );
-              navigate("/Diskus/Admin/PackageDetail");
+              navigate("/Admin/PackageDetail");
             } else {
               dispatch(
                 organizationPackageReselectionFail(t("Something-went-wrong"))

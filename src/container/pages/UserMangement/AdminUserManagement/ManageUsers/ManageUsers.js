@@ -58,17 +58,19 @@ const ManageUsers = () => {
       label: "",
     },
   });
+  const [flagForStopRerendring, setFlagForStopRerendring] = useState(false);
 
   //AllOrganizationsUsers Api
   useEffect(() => {
-    try {
-      let data = {
-        OrganizationID: Number(organizationID),
-        RequestingUserID: 1096,
-      };
-      dispatch(AllOrganizationsUsersApi(navigate, t, data));
-    } catch (error) {
-      console.log(error);
+    if (!flagForStopRerendring) {
+      try {
+        let data = {
+          OrganizationID: Number(organizationID),
+          RequestingUserID: 1096,
+        };
+        dispatch(AllOrganizationsUsersApi(navigate, t, data));
+      } catch {}
+      setFlagForStopRerendring(true);
     }
 
     return () => {
@@ -83,7 +85,7 @@ const ManageUsers = () => {
         },
       });
     };
-  }, []);
+  }, [flagForStopRerendring]);
 
   //AllOrganizationsUsers Api Data
   useEffect(() => {
@@ -92,13 +94,11 @@ const ManageUsers = () => {
         UserMangementReducer.allOrganizationUsersData !== undefined &&
         UserMangementReducer.allOrganizationUsersData !== null
       ) {
-        setManageUserGrid(
-          UserMangementReducer.allOrganizationUsersData.organizationUsers
-        );
+        //       setManageUserGrid(
+        //         UserMangementReducer.allOrganizationUsersData.organizationUsers
+        //       );
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch {}
   }, [UserMangementReducer.allOrganizationUsersData]);
 
   //Table Columns All Users
@@ -257,7 +257,7 @@ const ManageUsers = () => {
 
   //navigating to Add user Page
   const handleAddusers = () => {
-    navigate("/Diskus/Admin/AddUsersUsermanagement");
+    navigate("/Admin/AddUsersUsermanagement");
   };
 
   // opening of the search box

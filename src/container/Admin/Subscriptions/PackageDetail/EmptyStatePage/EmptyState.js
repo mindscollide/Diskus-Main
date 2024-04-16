@@ -9,7 +9,7 @@ const EmptyState = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const handleGoBack = () => {
-    navigate("/Diskus/Admin/PackageDetail");
+    navigate("/Admin/PackageDetail");
   };
   return (
     <Container>

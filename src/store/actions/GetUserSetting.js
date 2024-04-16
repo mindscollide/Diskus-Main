@@ -64,10 +64,7 @@ const getUserSetting = (navigate, t, loader) => {
               response.data.responseResult.responseMessage ===
               "Settings_SettingsServiceManager_GetUserSettings_01"
             ) {
-              console.log(
-                "officeEventColor",
-                response.data.responseResult.userSettings
-              );
+          
               localStorage.setItem(
                 "calenderMonthsSpan",
                 response.data.responseResult.userSettings.calenderMonthsSpan
@@ -129,7 +126,7 @@ const getUserSetting = (navigate, t, loader) => {
                   loader
                 )
               );
-              navigate("/Diskus/Admin/ManageUsers");
+              // navigate("/Admin/ManageUsers");
             } else if (
               response.data.responseResult.responseMessage ===
               "Settings_SettingsServiceManager_GetUserSettings_02"

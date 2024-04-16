@@ -78,7 +78,7 @@ const PackageUpgrade = () => {
       localStorage.setItem("TenureOfSuscriptionID", JSON.parse(2));
     }
     console.log(data, "updatedata");
-    navigate("/Diskus/Admin/UpgradePackageDetail", { state: data });
+    navigate("/Admin/UpgradePackageDetail", { state: data });
   };
 
   const calculateAnnuallyPrice = (ActualPrice, YearlyDiscountPercentage) => {

@@ -350,7 +350,8 @@ const getAllorganizationSubscriptionExpiryDetailsApi = (navigate, t, data) => {
                   t("Successful")
                 )
               );
-              dispatch(getUserSetting(navigate, t, true));
+
+              await dispatch(getUserSetting(navigate, t, true));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -600,7 +601,6 @@ const AddOrganizationsUserApi = (navigate, t, data, loader) => {
                   loader
                 )
               );
-              dispatch(getAllLanguages(navigate, t, true));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -772,7 +772,7 @@ const allOrganizationUsersFail = (message) => {
 
 const AllOrganizationsUsersApi = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
-
+  console.log("AllOrganizationsUsersApi");
   return (dispatch) => {
     dispatch(allOrganizationUsersInit());
     let form = new FormData();

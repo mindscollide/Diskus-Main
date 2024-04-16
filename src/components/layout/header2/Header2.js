@@ -302,7 +302,7 @@ const Header2 = () => {
     dispatch(showRequestExtentionModal(true));
   };
   const openAdminTab = () => {
-    window.open(window.location.origin + "/#/Diskus/Admin", "_blank");
+    window.open(window.location.origin + "/#/Admin", "_blank");
   };
   return (
     <>
@@ -314,7 +314,7 @@ const Header2 = () => {
               as={Link}
               to={
                 location.pathname.includes("/Admin")
-                  ? "/Diskus/Admin/Summary"
+                  ? "/Admin/Summary"
                   : "/DisKus/home"
               }
               // onClick={homePageDashboardClick}
@@ -517,7 +517,7 @@ const Header2 = () => {
                 disabled={true}
                 to={
                   location.pathname.includes("/Admin")
-                    ? "/Diskus/Admin/faq's"
+                    ? "/Admin/faq's"
                     : (NewMeetingreducer.scheduleMeetingPageFlag === true ||
                         NewMeetingreducer.viewProposeDateMeetingPageFlag ===
                           true ||
@@ -559,12 +559,12 @@ const Header2 = () => {
               as={Link}
               // to={
               //   location.pathname.includes("/Admin")
-              //     ? "/Diskus/Admin/Summary"
+              //     ? "/Admin/Summary"
               //     : "/DisKus/home"
               // }
               to={
                 location.pathname.includes("/Admin")
-                  ? "/Diskus/Admin/Summary"
+                  ? "/Admin/Summary"
                   : (NewMeetingreducer.scheduleMeetingPageFlag === true ||
                       NewMeetingreducer.viewProposeDateMeetingPageFlag ===
                         true ||
@@ -626,8 +626,8 @@ const Header2 = () => {
               <Nav.Link className="me-2">
                 <Tooltip placement="topRight" title={t("Shortcuts")}>
                   <div className="dropdown-btn_dotted">
-                    {location.pathname.includes("/Diskus/Admin") ||
-                    location.pathname.includes("/DisKus/Admin") ? null : (
+                    {location.pathname.includes("/Admin") ||
+                    location.pathname.includes("/Admin") ? null : (
                       <DropdownButton
                         id="dropdown-btn_dotted"
                         className="dropdown-btn_dotted"
@@ -848,7 +848,7 @@ const Header2 = () => {
                 as={Link}
                 to={
                   location.pathname.includes("/Admin")
-                    ? "/Diskus/Admin/faq's"
+                    ? "/Admin/faq's"
                     : (NewMeetingreducer.scheduleMeetingPageFlag === true ||
                         NewMeetingreducer.viewProposeDateMeetingPageFlag ===
                           true ||

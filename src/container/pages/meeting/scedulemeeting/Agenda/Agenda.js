@@ -223,30 +223,38 @@ const Agenda = ({
   const [currentState, setCurrentState] = useState(rows);
 
   useEffect(() => {
-    console.log("updated Rows ROWS ROWS");
-    setRows({
-      ...rows,
-      iD: getRandomUniqueNumber().toString() + "A",
-      title: "",
-      agendaVotingID: 0,
-      presenterID: allSavedPresenters[0]?.value,
-      presenterName: allSavedPresenters[0]?.label,
-      description: "",
-      startDate: "",
-      endDate: "",
-      selectedRadio: 1,
-      urlFieldMain: "",
-      mainNote: "",
-      requestContributorURlName: "",
-      files: [],
-      isLocked: false,
-      voteOwner: null,
-      isAttachment: false,
-      userID: 0,
-      subAgenda: [],
-      canView: true,
-      canEdit: true,
-    });
+    if (
+      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData ===
+        undefined ||
+      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData === null ||
+      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.length === 0 || 
+      Object.keys(MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData).length === 0
+    ) {
+      console.log("updated Rows ROWS ROWS");
+      setRows({
+        ...rows,
+        iD: getRandomUniqueNumber().toString() + "A",
+        title: "",
+        agendaVotingID: 0,
+        presenterID: allSavedPresenters[0]?.value,
+        presenterName: allSavedPresenters[0]?.label,
+        description: "",
+        startDate: "",
+        endDate: "",
+        selectedRadio: 1,
+        urlFieldMain: "",
+        mainNote: "",
+        requestContributorURlName: "",
+        files: [],
+        isLocked: false,
+        voteOwner: null,
+        isAttachment: false,
+        userID: 0,
+        subAgenda: [],
+        canView: true,
+        canEdit: true,
+      });
+    }
   }, []);
 
   //Function For Adding Main Agendas
@@ -826,11 +834,19 @@ const Agenda = ({
   console.log("fileForSendAgendafileForSendAgenda", fileForSend);
 
   useEffect(() => {
-    let updatedRows = [...rows];
-    updatedRows[0].presenterID = allSavedPresenters[0]?.value;
-    updatedRows[0].presenterName = allSavedPresenters[0]?.label;
-    setRows(updatedRows);
-    console.log("updated Rows ROWS ROWS");
+    if (
+      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData === null ||
+      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData ===
+        undefined ||
+      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.length === 0 ||
+      Object.keys(MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData).length === 0
+    ) {
+      let updatedRows = [...rows];
+      updatedRows[0].presenterID = allSavedPresenters[0]?.value;
+      updatedRows[0].presenterName = allSavedPresenters[0]?.label;
+      setRows(updatedRows);
+      console.log("updated Rows ROWS ROWS");
+    }
   }, [allSavedPresenters, allUsersRC]);
 
   useEffect(() => {
