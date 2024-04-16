@@ -1002,6 +1002,7 @@ const AddUserMain = () => {
             </Container>
           </Col>
         </Row>
+        {UserMangementReducer.Loading ? <Loader /> : null}
       </Container>
     </>
   );
