@@ -23,11 +23,9 @@ import {
   setProposedMeetingDateApiFunc,
   GetAllMeetingDetailsApiFunc,
   cleareAllProposedMeetingDates,
-  searchNewUserMeeting,
 } from "../../../../../../store/actions/NewMeetingActions";
 import {
   convertDateTimetoGMTMeetingDetail,
-  convertGMTDateintoUTC,
   convertToUTC,
   createConvert,
   resolutionResultTable,
@@ -35,14 +33,12 @@ import {
 import {
   getCurrentDate,
   getEndTimeWitlCeilFunction,
-  getHoursMinutesSec,
   getStartTimeWithCeilFunction,
   incrementDateforPropsedMeeting,
 } from "../../../../../../commen/functions/time_formatter";
 const ProposedMeetingDate = ({
   setProposedMeetingDates,
   setParticipants,
-  setViewProposedMeetingDate,
   currentMeeting,
   setCurrentMeetingID,
   setSceduleMeeting,
