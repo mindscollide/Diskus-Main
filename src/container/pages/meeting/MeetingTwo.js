@@ -1512,7 +1512,8 @@ const NewMeeting = () => {
       NewMeetingreducer.meetingStatusPublishedMqttData !== null &&
       NewMeetingreducer.meetingStatusPublishedMqttData !== undefined
     ) {
-      let meetingData = NewMeetingreducer.meetingStatusPublishedMqttData;
+      let meetingData =
+        NewMeetingreducer.meetingStatusPublishedMqttData.meeting;
       try {
         const indexToUpdate = rows.findIndex(
           (obj) => obj.pK_MDID === meetingData.pK_MDID
@@ -1522,8 +1523,7 @@ const NewMeeting = () => {
           updatedRows[indexToUpdate] = meetingData;
           setRow(updatedRows);
         } else {
-          let updatedRows = [...rows, meetingData];
-          setRow(updatedRows);
+          setRow([...rows, meetingData]);
         }
       } catch {}
     }
