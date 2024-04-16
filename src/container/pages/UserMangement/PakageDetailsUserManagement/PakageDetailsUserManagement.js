@@ -421,7 +421,7 @@ const PakageDetailsUserManagement = () => {
                       <Row className="mt-3">
                         <Col sm={12}>
                           <>
-                            <span className="icon-star package-icon-style">
+                            {/* <span className="icon-star package-icon-style">
                               <span
                                 className="path1"
                                 // style={{ color: packageColorPath1 }}
@@ -434,7 +434,7 @@ const PakageDetailsUserManagement = () => {
                                 className="path3"
                                 // style={{ color: packageColorPath2 }}
                               ></span>
-                            </span>
+                            </span> */}
                             <span className={styles["package_title"]}>
                               {/* {t("Gold")} */}
                               {/* {data.PackageName} */}

@@ -220,7 +220,11 @@ const PakageDetailsUMUpgrade = () => {
       render: (text, row, index) => {
         console.log(row, "Monthlycharges");
         const monthlyCharges =
-          row.price * Number(organizationPackagePrice[index]);
+          row.price &&
+          !isNaN(row.price) &&
+          !isNaN(organizationPackagePrice[index])
+            ? row.price * Number(organizationPackagePrice[index])
+            : 0;
         console.log(monthlyCharges, "licenseCount");
         if (row.shouldDisplayTextField) {
           return (
@@ -267,9 +271,12 @@ const PakageDetailsUMUpgrade = () => {
       align: "center",
       width: 100,
       render: (text, row, index) => {
-        const quarterlyCharges = row.price
-          ? row.price * Number(organizationPackagePrice[index]) * 3
-          : 0;
+        const quarterlyCharges =
+          row.price &&
+          !isNaN(row.price) &&
+          !isNaN(organizationPackagePrice[index])
+            ? row.price * Number(organizationPackagePrice[index]) * 3
+            : 0;
         if (row.shouldDisplayTextField) {
           return (
             <>
@@ -313,9 +320,12 @@ const PakageDetailsUMUpgrade = () => {
       align: "center",
       width: 100,
       render: (text, row, index) => {
-        const YearlyCharges = row.price
-          ? row.price * Number(organizationPackagePrice[index]) * 12
-          : 0;
+        const YearlyCharges =
+          row.price &&
+          !isNaN(row.price) &&
+          !isNaN(organizationPackagePrice[index])
+            ? row.price * Number(organizationPackagePrice[index]) * 12
+            : 0;
         if (row.shouldDisplayTextField) {
           return (
             <>
@@ -367,29 +377,42 @@ const PakageDetailsUMUpgrade = () => {
 
     // Calculate total monthly charges
     const totalMonthlyCharges = data.reduce((total, row, index) => {
-      const monthlyCharge = row.price * Number(organizationPackagePrice[index]);
+      const monthlyCharge =
+        row.price &&
+        !isNaN(row.price) &&
+        !isNaN(organizationPackagePrice[index])
+          ? row.price * Number(organizationPackagePrice[index])
+          : 0;
       return total + monthlyCharge;
     }, 0);
 
     const totalQuarterlyCharges = data.reduce((total, row, index) => {
       const quarterlyCharge =
-        row.price * Number(organizationPackagePrice[index]) * 3; // Multiply by 3 for quarterly
+        row.price &&
+        !isNaN(row.price) &&
+        !isNaN(organizationPackagePrice[index])
+          ? row.price * Number(organizationPackagePrice[index]) * 3
+          : 0; // Multiply by 3 for quarterly
       return total + quarterlyCharge;
     }, 0);
 
     const totalYearlyCharges = data.reduce((total, row, index) => {
       const yearlyCharge =
-        row.price * Number(organizationPackagePrice[index]) * 12; // Multiply by 12 for yearly
+        row.price &&
+        !isNaN(row.price) &&
+        !isNaN(organizationPackagePrice[index])
+          ? row.price * Number(organizationPackagePrice[index]) * 12
+          : 0; // Multiply by 12 for yearly
       return total + yearlyCharge;
     }, 0);
 
     // Return an object with the totals that can be used as a row in your table.
     return {
       name: "Total",
-      Numberoflicenses: totalOrganizationPackagePrice,
-      price: totalMonthlyCharges,
-      Quarterlycharges: totalQuarterlyCharges,
-      YearlychargesTotal: totalYearlyCharges,
+      Numberoflicenses: Number(totalOrganizationPackagePrice),
+      price: Number(totalMonthlyCharges),
+      Quarterlycharges: Number(totalQuarterlyCharges),
+      YearlychargesTotal: Number(totalYearlyCharges),
     };
   };
 
@@ -401,7 +424,7 @@ const PakageDetailsUMUpgrade = () => {
 
   //Handle Goback Function
   const onClickLink = () => {
-    navigate("/PackageDetailsUserManagement");
+    navigate("/Admin/PackageDetailsUserManagement");
   };
 
   return (

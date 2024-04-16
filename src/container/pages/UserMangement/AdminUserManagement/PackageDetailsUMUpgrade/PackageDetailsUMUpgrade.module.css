@@ -527,3 +527,15 @@ body[dir="rtl"] .PayNowButtons {
   background: #ccc;
   margin-left: -15px;
 }
+
+.signUp_goBack {
+  color: #000;
+  margin: 21px 0 0 0 !important;
+  text-decoration: underline;
+  cursor: pointer !important;
+  font-family: "Montserrat";
+}
+
+body[dir="rtl"] .signUp_goBack {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
