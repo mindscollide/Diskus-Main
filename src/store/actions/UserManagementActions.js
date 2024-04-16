@@ -350,7 +350,8 @@ const getAllorganizationSubscriptionExpiryDetailsApi = (navigate, t, data) => {
                   t("Successful")
                 )
               );
-              dispatch(getUserSetting(navigate, t, true));
+              
+             await dispatch(getUserSetting(navigate, t, true));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -600,7 +601,6 @@ const AddOrganizationsUserApi = (navigate, t, data, loader) => {
                   loader
                 )
               );
-              dispatch(getAllLanguages(navigate, t, true));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

@@ -12,11 +12,6 @@ import {
   NotFound,
   OnBoard,
   TodoList,
-  VideoPanelMaximize,
-  VideoScreens,
-  VideoMultiple,
-  VideoIncoming,
-  VideoOutgoing,
   AddUser,
   AllUserPage,
   EditUser,
@@ -33,24 +28,18 @@ import {
   PackageUpgrade,
   PackageUpgradeDetail,
   PackageUpgradeSelect,
-  ForgotPassword,
   PasswordUpdateMessage,
   CreatePassword,
   PackageSelection,
   PaymentForm,
   PackageSelected,
-  EnterPassword,
   Signup,
   VerifyEmailOTP,
-  VideoChat,
   Notes,
-  ValidateEmail,
   CalendarPage,
   TwoFactor,
   TwoFacSendEmail,
-  SendEmailRealmeXtra,
   VerificationIphone,
-  VerificationCodeOne,
   VerificationCodeThree,
   SigninDenied,
   ForgotPasswordVerification,
@@ -149,14 +138,6 @@ export const router = createHashRouter(
           }
         >
           <Route
-            path="maximizePanel"
-            element={
-              <RouteWrapperUser name="maximizePanel">
-                <VideoPanelMaximize />
-              </RouteWrapperUser>
-            }
-          />
-          <Route
             path=""
             element={
               <RouteWrapperUser name="">
@@ -222,14 +203,6 @@ export const router = createHashRouter(
             }
           />
           <Route
-            path="videochat"
-            element={
-              <RouteWrapperUser name="videochat">
-                <VideoChat />
-              </RouteWrapperUser>
-            }
-          />
-          <Route
             path="setting"
             element={
               <RouteWrapperUser name="setting">
@@ -266,38 +239,6 @@ export const router = createHashRouter(
             element={
               <RouteWrapperUser name="notes">
                 <Notes />
-              </RouteWrapperUser>
-            }
-          />
-          <Route
-            path="VideoIncoming"
-            element={
-              <RouteWrapperUser name="VideoIncoming">
-                <VideoIncoming />
-              </RouteWrapperUser>
-            }
-          />
-          <Route
-            path="VideoOutgoing"
-            element={
-              <RouteWrapperUser name="VideoOutgoing">
-                <VideoOutgoing />
-              </RouteWrapperUser>
-            }
-          />
-          <Route
-            path="VideoMultiple"
-            element={
-              <RouteWrapperUser name="VideoMultiple">
-                <VideoMultiple />
-              </RouteWrapperUser>
-            }
-          />
-          <Route
-            path="VideoScreens"
-            element={
-              <RouteWrapperUser name="VideoScreens">
-                <VideoScreens />
               </RouteWrapperUser>
             }
           />

@@ -48,7 +48,7 @@ const LanguageSelector = () => {
         LanguageReducer.AllLanguagesData === undefined ||
         LanguageReducer.AllLanguagesData.length === 0
       ) {
-        dispatch(getAllLanguages(navigate, t, false));
+        dispatch(getAllLanguages(navigate, t));
       }
       if (
         currentUserID !== null &&
@@ -56,7 +56,7 @@ const LanguageSelector = () => {
         currentUserID !== 0
       ) {
         let data = { UserID: currentUserID };
-        dispatch(getSelectedLanguage(data, navigate, t, false, false));
+        dispatch(getSelectedLanguage(data, navigate, t));
       }
     } catch {}
   }, []);

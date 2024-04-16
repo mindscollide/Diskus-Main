@@ -58,7 +58,7 @@ const PrivateRoutes = () => {
   //     : false
   // );
   const [currentUser, setCurrentUser] = useState(
-    RoleID === "3" && (Blur === undefined || Blur === null) ? true : null
+    RoleID === "4" && (Blur === undefined || Blur === null) ? true : null
   );
 
   return currentUser && token ? (

@@ -30,7 +30,7 @@ const getAllLanguagesFail = (message) => {
   };
 };
 
-const getAllLanguages = (navigate, t, flag) => {
+const getAllLanguages = (navigate, t) => {
   // let token =
   //   localStorage.getItem("token") !== undefined &&
   //   localStorage.getItem("token") !== null
@@ -52,7 +52,7 @@ const getAllLanguages = (navigate, t, flag) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getAllLanguages(navigate, t, flag));
+          dispatch(getAllLanguages(navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -68,11 +68,6 @@ const getAllLanguages = (navigate, t, flag) => {
                   t("Record-found")
                 )
               );
-              //For Skip Create Addional users
-              if (flag) {
-                let data = { UserID: currentUserID };
-                dispatch(getSelectedLanguage(data, navigate, t, true, true));
-              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -260,23 +255,6 @@ const getSelectedLanguage = (data, navigate, t, flag, loader) => {
                   loader
                 )
               );
-              try {
-                if (flag) {
-                  let data = {
-                    OrganizationID: Number(organzataionID),
-                  };
-                  dispatch(
-                    getAllorganizationSubscriptionExpiryDetailsApi(
-                      navigate,
-                      t,
-                      data
-                    )
-                  );
-                } else {
-                  return;
-                }
-              } catch {}
-
               if (
                 response.data.responseResult.userSelectedLanguage
                   .systemSupportedLanguageID === 1
