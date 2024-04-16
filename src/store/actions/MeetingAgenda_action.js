@@ -2181,7 +2181,7 @@ const printMeetingAgenda_fail = (message) => {
 const PrintMeetingAgenda = (Data, navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
-    // dispatch(printMeetingAgenda_init());
+    dispatch(printMeetingAgenda_init());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", printMeetingAgenda.RequestMethod);
@@ -2217,7 +2217,9 @@ const PrintMeetingAgenda = (Data, navigate, t) => {
                 response.data.responseResult.printTemplate
               );
               printWindow.document.close();
-              printWindow.print();
+              setTimeout(() => {
+                printWindow.print();
+              }, 1500);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
