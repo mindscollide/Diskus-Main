@@ -22,9 +22,10 @@ const SetLoaderFalse = () => {
   };
 };
 
-const SetSpinnerTrue = () => {
+const SetSpinnerTrue = (response) => {
   return {
     type: actions.SET_SPINNER_TRUE,
+    response: response,
   };
 };
 
@@ -84,6 +85,7 @@ const getMeetingStatusfromSocket = (response) => {
 };
 
 const mqttCurrentMeetingEnded = (response) => {
+  console.log(response, "MEETING_STATUS_ENDED");
   return {
     type: actions.MEETING_STATUS_ENDED,
     response: response,
@@ -265,13 +267,13 @@ const getWeeklyMeetingsCountFail = (message) => {
 };
 
 //Get Week meetings
-const GetWeeklyMeetingsCount = (navigate, id, t) => {
+const GetWeeklyMeetingsCount = (navigate, id, t, loader) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let Data = {
     UserId: parseInt(id),
   };
   return (dispatch) => {
-    dispatch(SetSpinnerTrue());
+    dispatch(SetSpinnerTrue(loader));
     let form = new FormData();
     form.append("RequestMethod", getWeekMeetings.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
@@ -361,10 +363,10 @@ const getUpcomingEventsFail = (response) => {
 };
 
 //Get Week meetings
-const GetUpcomingEvents = (navigate, data, t) => {
+const GetUpcomingEvents = (navigate, data, t, loader) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
-    dispatch(SetSpinnerTrue());
+    dispatch(SetSpinnerTrue(loader));
     let form = new FormData();
     form.append("RequestMethod", upcomingEvents.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
@@ -431,7 +433,77 @@ const GetUpcomingEvents = (navigate, data, t) => {
       });
   };
 };
+//Get Week meetings
+const GetUpcomingEventsForMQTT = (navigate, data, t, loader) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    // dispatch(SetSpinnerTrue(loader));
+    let form = new FormData();
+    form.append("RequestMethod", upcomingEvents.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetUpcomingEvents(navigate, data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetUpcomingMeetingEventsByUserId_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                getUpcomingEventsSuccess(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+              // dispatch(SetSpinnerFalse());
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetUpcomingMeetingEventsByUserId_02".toLowerCase()
+                )
+            ) {
+              await dispatch(getUpcomingEventsFail(t("No-records-found")));
+              // await dispatch(SetSpinnerFalse());
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetUpcomingMeetingEventsByUserId_03".toLowerCase()
+                )
+            ) {
+              await dispatch(getUpcomingEventsFail(t("Something-went-wrong")));
+              // await dispatch(SetSpinnerFalse());
+            }
+          } else {
+            await dispatch(getUpcomingEventsFail(t("Something-went-wrong")));
+            // await dispatch(SetSpinnerFalse());
+          }
+        } else {
+          await dispatch(getUpcomingEventsFail(t("Something-went-wrong")));
+          // await dispatch(SetSpinnerFalse());
+        }
+      })
 
+      .catch((response) => {
+        dispatch(getUpcomingEventsFail(t("Something-went-wrong")));
+        // dispatch(SetSpinnerFalse());
+      });
+  };
+};
 // Search Meeting Init
 const SearchMeeting_Init = () => {
   return {
@@ -545,7 +617,22 @@ const HideNotificationMeetings = () => {
   };
 };
 
+const createGroupMeeting = (response) => {
+  return {
+    type: actions.MEETING_CREATE_GROUP,
+    response: response,
+  };
+};
+const createCommitteeMeeting = (response) => {
+  return {
+    type: actions.MEETING_CREATE_COMMITTEE,
+    response: response,
+  };
+};
+
 export {
+  createGroupMeeting,
+  createCommitteeMeeting,
   getMeetingUserId,
   // searchMeetingUserId,
   GetWeeklyMeetingsCount,
@@ -558,4 +645,5 @@ export {
   searchUserMeeting,
   SetSpinnerTrue,
   mqttCurrentMeetingEnded,
+  GetUpcomingEventsForMQTT,
 };

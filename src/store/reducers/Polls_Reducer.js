@@ -33,6 +33,9 @@ const initialState = {
   deleteCommitteePolls: null,
   deleteGroupPolls: null,
   deleteMeetingPolls: null,
+  newPollGroups: null,
+  newPollCommittees: null,
+  newPollMeeting: null,
 };
 
 const PollsReducer = (state = initialState, action) => {
@@ -570,6 +573,24 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         deleteGroupPolls: null,
         ResponseMessage: action.message,
+      };
+    }
+    case actions.POLL_CREATE_GROUP: {
+      return {
+        ...state,
+        newPollGroups: action.response,
+      };
+    }
+    case actions.POLL_CREATE_COMMITTEE: {
+      return {
+        ...state,
+        newPollCommittees: action.response,
+      };
+    }
+    case actions.POLL_CREATE_ADVANCED_MEETING: {
+      return {
+        ...state,
+        newPollMeeting: action.response,
       };
     }
     default: {

@@ -6,7 +6,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import { TextField, Loader, Modal, Button } from "../../../../../elements";
 import "./videoPanelBody.css";
 import VideoCallIcon from "../../../../../../assets/images/VideoCall-Icon.png";
-import { Spin } from "antd";
+import { Spin, Tooltip } from "antd";
 import { LoaderPanel } from "../../../../../elements";
 import { Checkbox } from "antd";
 import {
@@ -177,6 +177,7 @@ const VideoPanelBodyContact = () => {
         localStorage.setItem("isCaller", true);
         localStorage.setItem("activeCall", true);
         localStorage.setItem("callerID", currentUserID);
+        localStorage.setItem("callTypeID", Data.CallTypeID)
         dispatch(callRequestReceivedMQTT({}, ""));
         dispatch(groupCallRecipients(groupCallActiveUsers));
         // dispatch(getVideoRecipentData(userData))
@@ -382,11 +383,13 @@ const VideoPanelBodyContact = () => {
                   </div>
                 </Col>
                 <Col lg={2} md={2} sm={2} className="video_call_icon mt-4">
-                  <img
-                    className="cursor-pointer"
-                    src={VideoCallIcon}
-                    onClick={() => otoVideoCall(userData)}
-                  />
+                  <Tooltip placement="bottomLeft" title={t("Start-video-call")}>
+                    <img
+                      className="cursor-pointer"
+                      src={VideoCallIcon}
+                      onClick={() => otoVideoCall(userData)}
+                    />
+                  </Tooltip>
                 </Col>
               </Row>
             );

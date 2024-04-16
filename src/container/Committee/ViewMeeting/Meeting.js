@@ -36,6 +36,7 @@ import CustomPagination from "../../../commen/functions/customPagination/Paginat
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
 import { UpdateOrganizersMeeting } from "../../../store/actions/MeetingOrganizers_action";
 import { truncateString } from "../../../commen/functions/regex";
+import { createCommitteeMeeting } from "../../../store/actions/GetMeetingUserId";
 
 const CommitteeMeetingTab = ({ committeeStatus }) => {
   const { t } = useTranslation();
@@ -44,6 +45,9 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
   );
   const meetingStatusNotConductedMqttData = useSelector(
     (state) => state.NewMeetingreducer.meetingStatusNotConductedMqttData
+  );
+  const { CommitteeMeetingMQTT } = useSelector(
+    (state) => state.meetingIdReducer
   );
   const [isOrganisers, setIsOrganisers] = useState(false);
   const [rows, setRow] = useState([]);
@@ -591,6 +595,37 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
       },
     },
   ];
+
+  useEffect(() => {
+    try {
+      if (CommitteeMeetingMQTT !== null) {
+        if (
+          Number(ViewCommitteeID) === Number(CommitteeMeetingMQTT.committeeID)
+        ) {
+          let meetingData = CommitteeMeetingMQTT.meeting;
+          let findIsExist = rows.findIndex(
+            (data, index) => data.pK_MDID === meetingData.pK_MDID
+          );
+          if (findIsExist !== -1) {
+            setRow((rowsData) => {
+              return rowsData.map((newData, index) => {
+                if (newData.pK_MDID === meetingData.pK_MDID) {
+                  return meetingData;
+                } else {
+                  return newData;
+                }
+              });
+            });
+          } else {
+            setRow([...rows, meetingData]);
+          }
+        }
+        dispatch(createCommitteeMeeting(null));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [CommitteeMeetingMQTT]);
 
   const handelCreateMeeting = () => {
     setCreateMeetingModal(true);

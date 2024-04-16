@@ -1953,7 +1953,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                           ) : (
                             <Tooltip
                               placement="bottomLeft"
-                              title={t("Enable-video-call")}
+                              title={t("Disable-video-call")}
                             >
                               <img src={MeetingVideoChatIconActive} alt="" />
                             </Tooltip>

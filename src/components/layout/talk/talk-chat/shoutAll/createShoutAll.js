@@ -1,60 +1,60 @@
-import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import { Row, Col, Container, Form } from 'react-bootstrap'
-import { TextField, Button } from '../../../../elements'
-import { Checkbox } from 'antd'
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { Row, Col, Container, Form } from "react-bootstrap";
+import { TextField, Button } from "../../../../elements";
+import { Checkbox } from "antd";
 import {
   headerShowHideStatus,
   footerActionStatus,
   footerShowHideStatus,
   shoutallChatFlag,
   createShoutAllScreen,
-} from '../../../../../store/actions/Talk_Feature_actions'
+} from "../../../../../store/actions/Talk_Feature_actions";
 import {
   CreateShoutAll,
   GetAllUsers,
-} from '../../../../../store/actions/Talk_action'
-import CloseChatIcon from '../../../../../assets/images/Cross-Chat-Icon.png'
+} from "../../../../../store/actions/Talk_action";
+import CloseChatIcon from "../../../../../assets/images/Cross-Chat-Icon.png";
 
 const CreateNewShoutAll = () => {
-  const { talkStateData } = useSelector((state) => state)
+  const { talkStateData } = useSelector((state) => state);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   //Current User ID
-  let currentUserId = localStorage.getItem('userID')
+  let currentUserId = localStorage.getItem("userID");
 
   //Current Organization
-  let currentOrganizationId = localStorage.getItem('organizationID')
+  let currentOrganizationId = localStorage.getItem("organizationID");
 
   //Create Group Participant Check
-  const [noParticipant, setNoParticipant] = useState(false)
+  const [noParticipant, setNoParticipant] = useState(false);
 
   //all users states
-  const [allUsers, setAllUsers] = useState([])
+  const [allUsers, setAllUsers] = useState([]);
 
   //Shout Name State for Creation/Modification
-  const [shoutNameValue, setShoutNameValue] = useState('')
+  const [shoutNameValue, setShoutNameValue] = useState("");
 
   //search shout all user states
-  const [searchShoutAllUserValue, setSearchShoutAllUserValue] = useState('')
+  const [searchShoutAllUserValue, setSearchShoutAllUserValue] = useState("");
 
   //Shout All Users Checked
-  const [shoutAllUsersChecked, setShoutAllUsersChecked] = useState([])
+  const [shoutAllUsersChecked, setShoutAllUsersChecked] = useState([]);
 
   const closeAddShoutAllScreen = async () => {
-    await dispatch(createShoutAllScreen(false))
-    await dispatch(footerActionStatus(false))
-    await dispatch(headerShowHideStatus(true))
-    await dispatch(footerShowHideStatus(true))
-    await dispatch(shoutallChatFlag(true))
-  }
+    await dispatch(createShoutAllScreen(false));
+    await dispatch(footerActionStatus(false));
+    await dispatch(headerShowHideStatus(true));
+    await dispatch(footerShowHideStatus(true));
+    await dispatch(shoutallChatFlag(true));
+  };
 
   useEffect(() => {
     dispatch(
@@ -62,66 +62,66 @@ const CreateNewShoutAll = () => {
         navigate,
         parseInt(currentUserId),
         parseInt(currentOrganizationId),
-        t,
-      ),
-    )
-  }, [])
+        t
+      )
+    );
+  }, []);
 
   //Setting state data of all users
   useEffect(() => {
     if (
       talkStateData.AllUsers.AllUsersData !== undefined &&
       talkStateData.AllUsers.AllUsersData !== null &&
-      talkStateData.AllUsers.AllUsersData !== []
+      talkStateData.AllUsers.AllUsersData.length !== 0
     ) {
-      setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers)
+      setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers);
     }
-  }, [talkStateData?.AllUsers?.AllUsersData?.allUsers])
+  }, [talkStateData?.AllUsers?.AllUsersData?.allUsers]);
 
   //Search Shout All User
   const searchShoutAllUserUser = (e) => {
-    if (e !== '') {
-      setSearchShoutAllUserValue(e)
+    if (e !== "") {
+      setSearchShoutAllUserValue(e);
       let filteredData = talkStateData.AllUsers.AllUsersData.allUsers.filter(
         (value) => {
           return value.fullName
             .toLowerCase()
-            .includes(searchShoutAllUserValue.toLowerCase())
-        },
-      )
+            .includes(searchShoutAllUserValue.toLowerCase());
+        }
+      );
       if (filteredData.length === 0) {
-        setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers)
+        setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers);
       } else {
-        setAllUsers(filteredData)
+        setAllUsers(filteredData);
       }
-    } else if (e === '' || e === null) {
-      let data = talkStateData.AllUsers.AllUsersData.allUsers
-      setSearchShoutAllUserValue('')
-      setAllUsers(data)
+    } else if (e === "" || e === null) {
+      let data = talkStateData.AllUsers.AllUsersData.allUsers;
+      setSearchShoutAllUserValue("");
+      setAllUsers(data);
     }
-  }
+  };
 
   //On Change Shout All Users
   const shoutAllUsersCheckedHandler = (data, id, index) => {
     if (shoutAllUsersChecked.includes(id)) {
       let groupUserIndex = shoutAllUsersChecked.findIndex(
-        (data2, index) => data2 === id,
-      )
+        (data2, index) => data2 === id
+      );
       if (groupUserIndex !== -1) {
-        shoutAllUsersChecked.splice(groupUserIndex, 1)
-        setShoutAllUsersChecked([...shoutAllUsersChecked])
+        shoutAllUsersChecked.splice(groupUserIndex, 1);
+        setShoutAllUsersChecked([...shoutAllUsersChecked]);
       }
     } else {
-      shoutAllUsersChecked.push(id)
-      setShoutAllUsersChecked([...shoutAllUsersChecked])
+      shoutAllUsersChecked.push(id);
+      setShoutAllUsersChecked([...shoutAllUsersChecked]);
     }
-  }
+  };
 
   const createShoutAllList = () => {
     if (shoutAllUsersChecked.length === 0) {
-      setNoParticipant(true)
+      setNoParticipant(true);
     } else {
-      setNoParticipant(false)
+      setNoParticipant(false);
       let Data = {
         TalkRequest: {
           UserID: parseInt(currentUserId),
@@ -131,15 +131,15 @@ const CreateNewShoutAll = () => {
             Users: shoutAllUsersChecked.toString(),
           },
         },
-      }
-      dispatch(CreateShoutAll(navigate, Data, t))
-      dispatch(createShoutAllScreen(false))
-      dispatch(footerActionStatus(false))
-      dispatch(headerShowHideStatus(true))
-      dispatch(footerShowHideStatus(true))
-      dispatch(shoutallChatFlag(true))
+      };
+      dispatch(CreateShoutAll(navigate, Data, t));
+      dispatch(createShoutAllScreen(false));
+      dispatch(footerActionStatus(false));
+      dispatch(headerShowHideStatus(true));
+      dispatch(footerShowHideStatus(true));
+      dispatch(shoutallChatFlag(true));
     }
-  }
+  };
 
   return (
     <>
@@ -167,12 +167,12 @@ const CreateNewShoutAll = () => {
               maxLength={200}
               applyClass="form-control2"
               name="Name"
-              placeholder={'List Name'}
+              placeholder={"List Name"}
               change={(e) => {
-                setShoutNameValue(e.target.value)
+                setShoutNameValue(e.target.value);
               }}
               value={shoutNameValue}
-              labelClass={'d-none'}
+              labelClass={"d-none"}
             />
           </Col>
         </Row>
@@ -182,12 +182,12 @@ const CreateNewShoutAll = () => {
               maxLength={200}
               applyClass="form-control2"
               name="Name"
-              placeholder={t('Search-User')}
+              placeholder={t("Search-User")}
               change={(e) => {
-                searchShoutAllUserUser(e.target.value)
+                searchShoutAllUserUser(e.target.value);
               }}
               value={searchShoutAllUserValue}
-              labelClass={'d-none'}
+              labelClass={"d-none"}
             />
           </Col>
         </Row>
@@ -224,7 +224,7 @@ const CreateNewShoutAll = () => {
                       </div>
                     </Col>
                     <Col lg={8} md={8} sm={8}>
-                      <div className={'group-add-user'}>
+                      <div className={"group-add-user"}>
                         <p className="chat-username-group m-0">
                           {dataItem.fullName}
                         </p>
@@ -242,14 +242,14 @@ const CreateNewShoutAll = () => {
                           shoutAllUsersCheckedHandler(
                             dataItem,
                             dataItem.id,
-                            index,
+                            index
                           )
                         }
                         className="chat-message-checkbox-group"
                       />
                     </Col>
                   </Row>
-                )
+                );
               })
             : null}
         </div>
@@ -259,19 +259,19 @@ const CreateNewShoutAll = () => {
           <Col className="text-center">
             {noParticipant === true ? (
               <p className="participant-warning m-0">
-                {t('At-least-add-one-participant')}
+                {t("At-least-add-one-participant")}
               </p>
             ) : null}
             <Button
               className="MontserratSemiBold Ok-btn forward-user"
-              text={t('Create-Shout')}
+              text={t("Create-Shout")}
               onClick={createShoutAllList}
             />
           </Col>
         </Row>
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default CreateNewShoutAll
+export default CreateNewShoutAll;

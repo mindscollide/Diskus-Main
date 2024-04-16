@@ -144,8 +144,8 @@ const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
 
     ...formattedDates.map((formattedDate, index) => {
       const record = organizerRows[index]; // Access the record using the index
-      const isSelectedCount = record.selectedProposedDates.reduce(
-        (count, date) => (date.isSelected ? count + 1 : count),
+      const isSelectedCount = record?.selectedProposedDates?.reduce(
+        (count, date) => (date?.isSelected ? count + 1 : count),
         0
       );
       console.log(
@@ -171,8 +171,8 @@ const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
         render: (text, record, columnIndex) => {
           try {
             if (record.userName === "Total") {
-              const totalDate = record.selectedProposedDates.find(
-                (date) => date.isTotal === 0
+              const totalDate = record?.selectedProposedDates?.find(
+                (date) => date?.isTotal === 0
               );
               console.log(totalDate, "totaltotaltotaltotal");
               if (totalDate) {
@@ -187,9 +187,9 @@ const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
               }
             } else if (record.userName !== "Total") {
               if (
-                record.selectedProposedDates &&
-                record.selectedProposedDates[index] &&
-                record.selectedProposedDates[index].isSelected
+                record?.selectedProposedDates &&
+                record?.selectedProposedDates[index] &&
+                record?.selectedProposedDates[index]?.isSelected
               ) {
                 return (
                   <img

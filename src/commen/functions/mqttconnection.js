@@ -6,9 +6,12 @@ let newClient;
 
 export const onConnected = (newClient, subscribeID) => {
   console.log("Connected to MQTT broker onConnected");
-  newClient.subscribe(subscribeID.toString());
+  if (newClient.isConnected()) {
+    newClient.subscribe(subscribeID.toString());
+  } else {
+    console.log("WebSocket is not in OPEN state for subscription.");
+  }
 };
-
 export const onConnectionLost = (subscribeID) => {
   console.log("Connected to MQTT broker onConnectionLost");
   setTimeout(mqttConnection(subscribeID), 3000);

@@ -7,6 +7,12 @@ const initialState = {
   Spinner: false,
   getEventTypeIds: [],
   eventsDetails: null,
+  googleEventCreate: null,
+  googleEventUpdate: null,
+  googleEventDelete: null,
+  microsoftEventCreate: null,
+  microsoftEventUpdate: null,
+  microsoftEventDelete: null,
 };
 
 const calendarReducer = (state = initialState, action) => {
@@ -81,13 +87,59 @@ const calendarReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
-
+    case actions.CLEAR_CALENDAR_STATE: {
+      return {
+        ...state,
+        CalenderData: [],
+      };
+    }
     case actions.HIDE:
       return {
         ...state,
         ResponseMessage: "",
       };
-
+    case actions.CALENDAR_LOADER: {
+      return {
+        ...state,
+        Loading: action.payload,
+      };
+    }
+    case actions.GOOGLE_CREATE_EVENT: {
+      return {
+        ...state,
+        googleEventCreate: action.response,
+      };
+    }
+    case actions.GOOGLE_UPDATE_EVENT: {
+      return {
+        ...state,
+        googleEventUpdate: action.response,
+      };
+    }
+    case actions.GOOGLE_DELETE_EVENT: {
+      return {
+        ...state,
+        googleEventDelete: action.response,
+      };
+    }
+    case actions.MICROSOFT_CREATE_EVENT: {
+      return {
+        ...state,
+        microsoftEventCreate: action.response,
+      };
+    }
+    case actions.MICROSOFT_UPDATE_EVENT: {
+      return {
+        ...state,
+        microsoftEventUpdate: action.response,
+      };
+    }
+    case actions.MICROSOFT_DELETE_EVENT: {
+      return {
+        ...state,
+        microsoftEventDelete: action.response,
+      };
+    }
     default:
       return { ...state };
   }

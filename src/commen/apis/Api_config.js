@@ -1471,7 +1471,19 @@ const printMeetingAgenda = {
   RequestMethod: "ServiceManager.PrintMeetingAgenda",
 };
 
+const joinMeeting = {
+  RequestMethod: "ServiceManager.JoinMeeting",
+};
+
+const leaveMeeting = {
+  RequestMethod: "ServiceManager.LeaveMeeting",
+};
+
+const leaveFileSharingRM = {
+  RequestMethod: "ServiceManager.DeleteFileSharing",
+};
 export {
+  leaveFileSharingRM,
   UserLoginHistoryRM,
   getDataAnalyticsCountRM,
   updateAndOpenByAndDescriptionRM,
@@ -1865,4 +1877,6 @@ export {
   sendAgendaPDFAsEmail,
   exportAgendaAsPDF,
   printMeetingAgenda,
+  joinMeeting,
+  leaveMeeting,
 };

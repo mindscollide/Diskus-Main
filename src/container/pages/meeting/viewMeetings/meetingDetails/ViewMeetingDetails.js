@@ -25,11 +25,14 @@ import {
   viewAdvanceMeetingUnpublishPageFlag,
   viewProposeOrganizerMeetingPageFlag,
   proposeNewMeetingPageFlag,
+  LeaveCurrentMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
-import { utcConvertintoGMT } from "../../../../../commen/functions/date_formater";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { resolutionResultTable } from "../../../../../commen/functions/date_formater";
+import {
+  resolutionResultTable,
+  getCurrentDateTimeUTC,
+} from "../../../../../commen/functions/date_formater";
 import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
 import {
   GetAllUsers,
@@ -121,6 +124,8 @@ const ViewMeetingDetails = ({
 
   const [initiateVideoModalGroup, setInitiateVideoModalGroup] = useState(false);
 
+  const [viewFlag, setViewFlag] = useState(false);
+
   //For Custom language datepicker
   const [open, setOpen] = useState({
     flag: false,
@@ -154,6 +159,7 @@ const ViewMeetingDetails = ({
       label: "",
     },
     IsVideoCall: false,
+    TalkGroupID: 0,
   });
 
   const callApiOnComponentMount = async () => {
@@ -215,6 +221,7 @@ const ViewMeetingDetails = ({
           label: "",
         },
         IsVideoCall: false,
+        TalkGroupID: 0,
       });
       // dispatch(showGetAllMeetingDetialsFailed(""));
       dispatch(cleareAllState());
@@ -249,31 +256,43 @@ const ViewMeetingDetails = ({
 
   //funciton cancel button
   const handleCancelMeetingNoPopup = () => {
-    let searchData = {
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(userID),
-      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-      PublishedMeetings:
-        currentView && Number(currentView) === 1 ? true : false,
-    };
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
-    localStorage.removeItem("folderDataRoomMeeting");
-
-    setEdiorRole({ status: null, role: null });
-    setAdvanceMeetingModalID(null);
-    // setMeetingDetails(false);
-    setViewAdvanceMeetingModal(false);
-    dispatch(viewAdvanceMeetingPublishPageFlag(false));
-    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-
-    // setAgenda(false);
-    // setCancelModalView(false);
-    // setPolls(false);
-    // setMinutes(false);
-    // setAttendance(false);
+    if (meetingStatus === 10 || meetingStatus === "10") {
+      let leaveMeetingData = {
+        FK_MDID: currentMeeting,
+        DateTime: getCurrentDateTimeUTC(),
+      };
+      dispatch(
+        LeaveCurrentMeeting(
+          navigate,
+          t,
+          leaveMeetingData,
+          false,
+          setViewFlag,
+          setEdiorRole,
+          setAdvanceMeetingModalID,
+          setViewAdvanceMeetingModal
+        )
+      );
+    } else {
+      let searchData = {
+        Date: "",
+        Title: "",
+        HostName: "",
+        UserID: Number(userID),
+        PageNumber:
+          meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+        Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+        PublishedMeetings:
+          currentView && Number(currentView) === 1 ? true : false,
+      };
+      dispatch(searchNewUserMeeting(navigate, searchData, t));
+      localStorage.removeItem("folderDataRoomMeeting");
+      setEdiorRole({ status: null, role: null });
+      setAdvanceMeetingModalID(null);
+      setViewAdvanceMeetingModal(false);
+      dispatch(viewAdvanceMeetingPublishPageFlag(false));
+      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+    }
   };
 
   let endMeetingRequest = {
@@ -349,6 +368,7 @@ const ViewMeetingDetails = ({
             label: getmeetingRecurrance.recurrance,
           },
           IsVideoCall: MeetingData.isVideo,
+          TalkGroupID: MeetingData.talkGroupID
         });
         let newDateTimeData = [];
         if (
@@ -488,8 +508,9 @@ const ViewMeetingDetails = ({
   };
 
   const groupChatInitiation = (data) => {
+    console.log("groupChatInitiationgroupChatInitiation", data)
     if (
-      data.talkGroupID !== 0 &&
+      data.TalkGroupID !== 0 &&
       talkStateData.AllUserChats.AllUserChatsData !== undefined &&
       talkStateData.AllUserChats.AllUserChatsData !== null &&
       talkStateData.AllUserChats.AllUserChatsData.length !== 0
@@ -507,7 +528,7 @@ const ViewMeetingDetails = ({
       let chatGroupData = {
         UserID: parseInt(userID),
         ChannelID: currentOrganization,
-        GroupID: data.talkGroupID,
+        GroupID: data.TalkGroupID,
         NumberOfMessages: 50,
         OffsetMessage: 0,
       };
@@ -517,12 +538,12 @@ const ViewMeetingDetails = ({
       let allChatMessages =
         talkStateData.AllUserChats.AllUserChatsData.allMessages;
       const foundRecord = allChatMessages.find(
-        (item) => item.id === data.talkGroupID
+        (item) => item.id === data.TalkGroupID
       );
       if (foundRecord) {
         dispatch(activeChat(foundRecord));
       }
-      localStorage.setItem("activeOtoChatID", data.talkGroupID);
+      localStorage.setItem("activeOtoChatID", data.TalkGroupID);
     }
   };
 
@@ -553,17 +574,7 @@ const ViewMeetingDetails = ({
     }
   }, [NewMeetingreducer.ResponseMessage]);
 
-  console.log("NewMeetingReducerNewMeetingReducer", NewMeetingreducer);
-  console.log("meetingDetailsmeetingDetails", meetingDetails);
-
-  console.log(
-    "setDataroomMapFolderIdsetDataroomMapFolderId",
-    setDataroomMapFolderId
-  );
-
-  console.log("setEdiorRolesetEdiorRole", setEdiorRole);
-
-  console.log("setAdvanceMeetingModalID", setAdvanceMeetingModalID);
+  console.log("talkStateDatatalkStateData", talkStateData)
 
   return (
     <>

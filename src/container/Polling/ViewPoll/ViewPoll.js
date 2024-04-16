@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setviewpollModal } from "../../../store/actions/Polls_actions";
 import moment from "moment";
+import { newTimeFormaterAsPerUTCTalkDate } from "../../../commen/functions/date_formater";
 
 const ViewPoll = () => {
   const dispatch = useDispatch();
@@ -42,6 +43,7 @@ const ViewPoll = () => {
 
   useEffect(() => {
     if (PollsReducer.Allpolls !== null && PollsReducer.Allpolls !== undefined) {
+      console.log(PollsReducer.Allpolls, "PollsReducer");
       let users = [];
       if (Object.keys(PollsReducer.Allpolls.poll.pollParticipants).length > 0) {
         PollsReducer.Allpolls.poll.pollParticipants.map((data, index) => {
@@ -62,6 +64,8 @@ const ViewPoll = () => {
       setViewPollmembers(users);
     }
   }, [PollsReducer.Allpolls]);
+
+  console.log(viewPollsDetails.date, "viewPollsDetails");
   return (
     <Container>
       <Modal
@@ -100,7 +104,7 @@ const ViewPoll = () => {
                     <span className={styles["Due_Date_viewPoll"]}>
                       {t("Due-date-on")}{" "}
                       <span>
-                        {changeDateStartHandler2(viewPollsDetails.date)}
+                        {newTimeFormaterAsPerUTCTalkDate(viewPollsDetails.date)}
                       </span>
                     </span>
                   </Col>

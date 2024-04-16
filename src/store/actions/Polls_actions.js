@@ -21,6 +21,7 @@ import {
   deleteGroupPollsRM,
   deleteCommitteePollRM,
 } from "../../commen/apis/Api_config";
+import { showunsavedEditPollsMeetings } from "./NewMeetingActions";
 import { pollApi, toDoListApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
@@ -849,6 +850,7 @@ const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
               )
             );
             setEditPolls(true);
+            dispatch(showunsavedEditPollsMeetings(false));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -2802,7 +2804,19 @@ const getPollByPollIdforMeeting = (
     });
   };
 };
+const createPollGroupsMQTT = (response) => {
+  return { type: actions.POLL_CREATE_GROUP, response: response };
+};
+const createPollCommitteesMQTT = (response) => {
+  return { type: actions.POLL_CREATE_COMMITTEE, response: response };
+};
+const createPollMeetingMQTT = (response) => {
+  return { type: actions.POLL_CREATE_ADVANCED_MEETING, response: response };
+};
 export {
+  createPollGroupsMQTT,
+  createPollCommitteesMQTT,
+  createPollMeetingMQTT,
   deleteGroupPollApi,
   deleteMeetingPollApi,
   deleteCommitteePollApi,

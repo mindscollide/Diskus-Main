@@ -11,11 +11,13 @@ const initialState = {
   TotalNumberOfUpcommingMeetingsInWeek: 0,
   MeetingTableData: false,
   UpcomingEventsData: [],
-  allMeetingsSocketData: [],
-  MeetingStatusSocket: [],
+  allMeetingsSocketData: null,
+  MeetingStatusSocket: null,
   searchRecordFound: false,
   MQTTUpcomingEvents: null,
   MeetingStatusEnded: null,
+  GroupMeetingMQTT: null,
+  CommitteeMeetingMQTT: null,
 };
 
 //Get meetingreducer
@@ -29,7 +31,7 @@ const meetingIdReducer = (state = initialState, action) => {
       return { ...state, Loading: false };
 
     case actions.SET_SPINNER_TRUE:
-      return { ...state, Spinner: true };
+      return { ...state, Spinner: action.response };
 
     case actions.SET_SPINNER_FALSE:
       return { ...state, Spinner: false };
@@ -66,6 +68,8 @@ const meetingIdReducer = (state = initialState, action) => {
     }
 
     case actions.MEETING_STATUS_ENDED: {
+      console.log(action, "MEETING_STATUS_ENDED");
+
       return {
         ...state,
         MeetingStatusEnded: action.response,
@@ -175,23 +179,39 @@ const meetingIdReducer = (state = initialState, action) => {
       };
     }
     case actions.UPCOMINGEVENTS_MQTT: {
-      let newEvent = [...state.UpcomingEventsData];
-      if (Object.keys(state.UpcomingEventsData).length > 0) {
-        if (Object.keys(action.response).length > 0) {
-          newEvent.unshift(action.response);
-        }
-      }
+      // let newEvent = [...state.UpcomingEventsData];
+      // if (Array.isArray(state.UpcomingEventsData)) {
+      //   if (action.response && Object.keys(action.response).length > 0) {
+      //     newEvent.unshift(action.response);
+      //   }
+      // } else {
+      //   // Initialize UpcomingEventsData as an empty array if it's not already
+      //   newEvent = [];
+      // }
 
       return {
         ...state,
-        UpcomingEventsData: newEvent,
+        // UpcomingEventsData: ,
         MQTTUpcomingEvents: action.response,
       };
     }
+
     case actions.HIDE: {
       return {
         ...state,
         ResponseMessage: "",
+      };
+    }
+    case actions.MEETING_CREATE_COMMITTEE: {
+      return {
+        ...state,
+        CommitteeMeetingMQTT: action.response,
+      };
+    }
+    case actions.MEETING_CREATE_GROUP: {
+      return {
+        ...state,
+        GroupMeetingMQTT: action.response,
       };
     }
 

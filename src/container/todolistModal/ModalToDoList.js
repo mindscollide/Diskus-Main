@@ -45,7 +45,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const [isCreateTodo, setIsCreateTodo] = useState(true);
   const [fileForSend, setFileForSend] = useState([]);
   const [createTodoTime, setCreateTodoTime] = useState("");
-  const [createTodoDate, setCreateTodoDate] = useState("");
+  const [createTodoDate, setCreateTodoDate] = useState(current_Date);
   const state = useSelector((state) => state);
   const { toDoListReducer } = state;
 
@@ -60,7 +60,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     message: "",
   });
 
-  const [toDoDate, setToDoDate] = useState("");
+  const [toDoDate, setToDoDate] = useState(current_value);
   const [allPresenters, setAllPresenters] = useState([]);
   const [presenterValue, setPresenterValue] = useState({
     value: 0,
@@ -124,7 +124,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //Uploaded  objects
   const [uploadObjects, setUploadObjects] = useState([]);
   const [isUploadComplete, setIsUploadComplete] = useState(false);
-
+  console.log({ task, toDoDate, createTodoDate }, "tasktasktasktasktasktask");
   useEffect(() => {
     try {
       if (
@@ -144,20 +144,40 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //To Set task Creater ID
   useEffect(() => {
-    setTaskCreatorID(parseInt(createrID));
-    setTask({
-      ...task,
-      DeadLineDate: current_Date,
-      DeadLineTime: currentTime,
-      CreationDateTime: "",
-      timeforView: dateObject,
-    });
-    setCreateTodoDate(current_Date);
-    setToDoDate(current_value);
-    return () => {
-      setCloseConfirmationBox(false);
-      setIsCreateTodo(true);
-    };
+    try {
+      setTask({
+        ...task,
+        DeadLineDate: current_Date,
+        DeadLineTime: currentTime,
+        CreationDateTime: "",
+        timeforView: dateObject,
+      });
+      setCreateTodoDate(current_Date);
+      setToDoDate(current_value);
+      setTaskCreatorID(parseInt(createrID));
+
+      return () => {
+        setCloseConfirmationBox(false);
+        setIsCreateTodo(true);
+        setTask({
+          ...task,
+          PK_TID: 1,
+          Title: "",
+          Description: "",
+          IsMainTask: true,
+          DeadLineDate: "",
+          DeadLineTime: "",
+          CreationDateTime: "",
+        });
+        setCreateTodoDate("");
+        setTaskAssignedTo([]);
+        setTaskAssignedName([]);
+        setToDoDate("");
+        setAssignees([]);
+        setFileForSend([]);
+        setTasksAttachments({ TasksAttachments: [] });
+      };
+    } catch {}
   }, []);
 
   //To Set task Creater ID
@@ -169,11 +189,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       data.length !== 0 &&
       Object(data).length > 0
     ) {
-      const filterData = data.filter(
-        (obj) => parseInt(obj.pK_UID) !== parseInt(createrID)
-      );
-      setTaskAssigneeApiData(filterData);
-
       let PresenterData = [];
       data.forEach((user, index) => {
         PresenterData.push({
@@ -201,7 +216,36 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           value: user.pK_UID,
           name: user.name,
         });
+        if (Number(user.pK_UID) === Number(createrID)) {
+          setTaskAssignedTo([user.pK_UID]);
+          setPresenterValue({
+            label: (
+              <>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex gap-2 align-items-center"
+                  >
+                    <img
+                      src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
+                      height="16.45px"
+                      width="18.32px"
+                      draggable="false"
+                      alt=""
+                    />
+                    <span>{user.name}</span>
+                  </Col>
+                </Row>
+              </>
+            ),
+            value: user.pK_UID,
+            name: user.name,
+          });
+        }
       });
+
       setAllPresenters(PresenterData);
     }
   }, [toDoListReducer.AllAssigneesData]);
@@ -362,27 +406,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     }
   }, [show]);
 
-  //On Click Of Dropdown Value
-  const onSearch = (name, id, users) => {
-    if (taskAssignedName.length === 1) {
-      setOpen({
-        flag: true,
-        message: t("Only-one-assignee-allow"),
-      });
-      setTaskAssignedToInput("");
-    } else {
-      setTaskAssignedToInput(name);
-      let temp = taskAssignedName;
-      let temp2 = TaskAssignedTo;
-      temp.push(name);
-      temp2.push(id);
-      setTaskAssignedTo(temp2);
-      setTaskAssignedName(temp);
-      setTaskAssignedToInput("");
-      setAssignees([...assignees, users]);
-    }
-  };
-
   useEffect(() => {
     if (taskAssignedName.length > 1) {
       setOpen({
@@ -396,43 +419,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //Input Field Assignee Change
   const onChangeSearch = (item) => {
-    console.log(item, "itemitemitem");
     setPresenterValue(item);
     setTaskAssignedTo([item.value]);
-  };
-
-  //Drop Down Values
-  const searchFilterHandler = (value) => {
-    let allAssignees = taskAssigneeApiData;
-    if (
-      allAssignees !== undefined &&
-      allAssignees !== null &&
-      allAssignees.length !== 0
-    ) {
-      return allAssignees
-        .filter((item) => {
-          const searchTerm = value.toLowerCase();
-          const assigneesName = item.name.toLowerCase();
-          return searchTerm && assigneesName.startsWith(searchTerm);
-        })
-        .slice(0, 10)
-        .map((item) => (
-          <div
-            onClick={() => onSearch(item.name, item.pK_UID, item)}
-            className="dropdown-row-assignee d-flex align-items-center flex-row"
-            key={item.pK_UID}
-          >
-            <img
-              draggable="false"
-              src={`data:image/jpeg;base64,${item?.displayProfilePictureName}`}
-              alt=""
-              className="user-img"
-            />
-            <p className="p-0 m-0">{item.name}</p>
-          </div>
-        ));
-    } else {
-    }
   };
 
   const toDoDateHandler = (date, format = "YYYYMMDD") => {
@@ -561,24 +549,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       await dispatch(
         saveTaskDocumentsAndAssigneesApi(navigate, Data, t, 1, setShow)
       );
-      setTask({
-        ...task,
-        PK_TID: 1,
-        Title: "",
-        Description: "",
-        IsMainTask: true,
-        DeadLineDate: "",
-        DeadLineTime: "",
-        CreationDateTime: "",
-      });
-      setCreateTodoDate("");
-      setCreateTodoTime("");
-      setTaskAssignedTo([]);
-      setTaskAssignedName([]);
-      setToDoDate("");
-      setAssignees([]);
-      setFileForSend([]);
-      setTasksAttachments({ TasksAttachments: [] });
     } catch (error) {
       console.log(error, "errorerrorerrorerrorerror");
     }

@@ -1,7 +1,7 @@
 .videoCallScreen {
     position: fixed;
     left: 65px;
-    width: 95%;
+    width: 90%;
     height: 55vh;
     background-color: #fff !important;
     bottom: 0;
@@ -12,14 +12,14 @@
     align-items: center;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
     animation: slideUp 0.5s ease-in-out;
-    z-index: 99999999 !important;
+    z-index: 99 !important;
 }
 
 body[dir="rtl"] .videoCallScreen {
     position: fixed;
     left: auto;
     right: 65px;
-    width: 95%;
+    width: 90%;
     height: 55vh;
     background-color: #fff !important;
     bottom: 0;
@@ -43,7 +43,7 @@ body[dir="rtl"] .videoCallScreen {
     z-index: 1 !important;
     padding: 0px 30px;
     box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.4);
-    width: 95%;
+    width: 90%;
     left: 65px;
 }
 

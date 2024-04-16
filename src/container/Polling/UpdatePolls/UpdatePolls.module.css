@@ -343,7 +343,7 @@ body[dir="rtl"] .Card_border2 {
 
 .Add_another_options {
   padding: 12px 30px !important;
-  background: #fff;
+  background: #fff !important;
   color: #d4d4d4 !important;
   width: 100%;
   font-size: 12px !important;
@@ -461,11 +461,11 @@ body[dir="rtl"] .errorMessage-inLogin_1 {
 
 .scrollable-title {
   max-height: 100px;
-  min-height: 39px !important; /* Set the maximum height you desire for the title */
-  overflow: hidden !important;
-  overflow-y: auto !important;
-  white-space: normal !important;
-  word-wrap: break-word !important; /* Enable vertical scrolling when text overflows */
+  min-height: 39px;
+  overflow: hidden;
+  width: 100%;
+  word-break: break-all;
+  overflow-y: auto;
 }
 
 .scrollable-title::-webkit-scrollbar {

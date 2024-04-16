@@ -111,15 +111,19 @@ const Resolution = () => {
         localStorage.setItem("moderatorRows", 50);
         localStorage.setItem("voterPage", 1);
         localStorage.setItem("voterRows", 50);
-        localStorage.setItem("resolutionView", 1);
+        localStorage.setItem("resolutionView", 2);
         localStorage.setItem("ButtonTab", 1);
-        dispatch(getResolutions(navigate, 1, t));
+        dispatch(getVoterResolution(navigate, 1, t));
+
+        // dispatch(getResolutions(navigate, 1, t));
       }
     } catch {}
 
     return () => {
       localStorage.removeItem("moderatorPage");
       localStorage.removeItem("moderatorRows");
+      localStorage.removeItem("resolutionView");
+      localStorage.removeItem("ButtonTab");
       localStorage.removeItem("voterPage");
       localStorage.removeItem("voterRows");
       localStorage.removeItem("ResolutionID");
@@ -487,35 +491,35 @@ const Resolution = () => {
         let newDate = new Date();
         let votingDeadline = resolutionResultTable(data?.votingDeadline);
         if (data.resolutionStatus === "Circulated") {
-          if (votingDeadline < newDate) {
-            return (
-              <Tooltip placement="bottomLeft" title={t("Result")}>
-                <img
-                  draggable="false"
-                  src={ResultResolutionIcon}
-                  onClick={() => getResultHandle(data.resolutionID)}
-                  className={styles["Result_icon"]}
-                  alt=""
-                />
-              </Tooltip>
-            );
-          } else {
-            return "";
-          }
+          // if (votingDeadline < newDate) {
+          return (
+            <Tooltip placement="bottomLeft" title={t("Result")}>
+              <img
+                draggable="false"
+                src={ResultResolutionIcon}
+                onClick={() => getResultHandle(data.resolutionID)}
+                className={styles["Result_icon"]}
+                alt=""
+              />
+            </Tooltip>
+          );
+          // } else {
+          //   return "";
+          // }
         } else if (data.resolutionStatus === "Closed") {
-          if (votingDeadline < newDate) {
-            return (
-              <Tooltip placement="bottomLeft" title={t("Result")}>
-                <img
-                  draggable="false"
-                  src={ResultResolutionIcon}
-                  onClick={() => getResultHandle(data.resolutionID)}
-                  className={styles["Result_icon"]}
-                  alt=""
-                />
-              </Tooltip>
-            );
-          }
+          // if (votingDeadline < newDate) {
+          return (
+            <Tooltip placement="bottomLeft" title={t("Result")}>
+              <img
+                draggable="false"
+                src={ResultResolutionIcon}
+                onClick={() => getResultHandle(data.resolutionID)}
+                className={styles["Result_icon"]}
+                alt=""
+              />
+            </Tooltip>
+          );
+          // }
         }
       },
     },
@@ -1619,6 +1623,25 @@ const Resolution = () => {
                         <p className={styles["NoResolution_Tagline"]}>
                           {t("Planning-to-get-a-thought-on-something?")}
                         </p>
+                        <Button
+                          className={styles["create-Resolution-btn"]}
+                          text={
+                            <span className={styles["Btn_create_text"]}>
+                              {t("Create-new-resolution")}
+                            </span>
+                          }
+                          icon={
+                            <img
+                              draggable="false"
+                              src={plusbutton}
+                              height="7.6px"
+                              width="7.6px"
+                              alt=""
+                              className="align-items-center"
+                            />
+                          }
+                          onClick={() => createresolution()}
+                        />
                       </Col>
                     </Row>
                   )}
@@ -1685,6 +1708,25 @@ const Resolution = () => {
                         <p className={styles["NoResolution_Tagline"]}>
                           {t("Planning-to-get-a-thought-on-something?")}
                         </p>
+                        <Button
+                          className={styles["create-Resolution-btn"]}
+                          text={
+                            <span className={styles["Btn_create_text"]}>
+                              {t("Create-new-resolution")}
+                            </span>
+                          }
+                          icon={
+                            <img
+                              draggable="false"
+                              src={plusbutton}
+                              height="7.6px"
+                              width="7.6px"
+                              alt=""
+                              className="align-items-center"
+                            />
+                          }
+                          onClick={() => createresolution()}
+                        />
                       </Col>
                     </Row>
                   )}

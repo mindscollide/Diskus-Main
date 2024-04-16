@@ -84,6 +84,11 @@ const RecentChats = () => {
       talkStateData.AllUserChats.AllUserChatsData.length !== 0
     ) {
       setAllChatData(talkStateData.AllUserChats.AllUserChatsData.allMessages);
+    } else {
+      setAllChatData([]);
+    }
+    return () => {
+      setAllChatData([])
     }
   }, [talkStateData.AllUserChats.AllUserChatsData]);
 
@@ -848,7 +853,11 @@ const RecentChats = () => {
         allChatData.length > 0 ? (
         allChatData.map((dataItem, index) => {
           return (
-            <Row key={index} className="single-chat">
+            <Row
+              key={index}
+              className="single-chat"
+              onClick={() => chatClick(dataItem)}
+            >
               <Col lg={2} md={2} sm={2} className="bottom-border">
                 <div className="chat-profile-icon">
                   {dataItem.messageType === "O" ? (
@@ -871,14 +880,14 @@ const RecentChats = () => {
               <Col lg={10} md={10} sm={10} className="bottom-border">
                 <div className={"chat-block"}>
                   <p
-                    onClick={() => chatClick(dataItem)}
+                    // onClick={() => chatClick(dataItem)}
                     className="chat-username m-0"
                   >
                     {" "}
                     {dataItem.fullName}
                   </p>
                   <p
-                    onClick={() => chatClick(dataItem)}
+                    // onClick={() => chatClick(dataItem)}
                     className="chat-message m-0"
                   >
                     {dataItem.messageType === "O" ? (
@@ -940,7 +949,7 @@ const RecentChats = () => {
                     )}
                   </p>
                   <p
-                    onClick={() => chatClick(dataItem)}
+                    // onClick={() => chatClick(dataItem)}
                     className="chat-date m-0"
                   >
                     {dataItem.messageDate.slice(0, 8) === currentUtcDate &&

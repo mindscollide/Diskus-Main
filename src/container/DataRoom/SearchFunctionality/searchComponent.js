@@ -76,6 +76,8 @@ const SearchComponent = ({
   let userID = localStorage.getItem("userID");
   let lang = localStorage.getItem("i18nextLng");
   let organizationID = localStorage.getItem("organizationID");
+
+  console.log({ searchDataFields }, "searchDataFields");
   // these are search columns
   const searchColumns = [
     {
@@ -1705,7 +1707,7 @@ const SearchComponent = ({
               <p className={styles["overflow-text"]}>
                 {searchDataFields.StatusID === 1
                   ? t("My-documents")
-                  : searchDataFields.StatusID === 2
+                  : searchDataFields.StatusID === 3
                   ? t("Any-where-in-dataRoom")
                   : t("Shared-with-me")}
               </p>

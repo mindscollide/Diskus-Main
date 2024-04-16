@@ -65,6 +65,9 @@ import {
   GetUpcomingEvents,
   HideNotificationMeetings,
   SetSpinnerTrue,
+  getMeetingStatusfromSocket,
+  mqttCurrentMeetingEnded,
+  setMQTTRequestUpcomingEvents,
 } from "../../../store/actions/GetMeetingUserId";
 import "./dashboard-module.css";
 import {
@@ -91,7 +94,10 @@ import { getUserSetting } from "../../../store/actions/GetUserSetting";
 import EventsModal from "../../EventsModal/EventsModal";
 import ModalViewNote from "../../modalViewNote/ModalViewNote";
 import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
-import { dashboardCalendarEvent } from "../../../store/actions/NewMeetingActions";
+import {
+  dashboardCalendarEvent,
+  meetingStatusPublishedMqtt,
+} from "../../../store/actions/NewMeetingActions";
 import ModalToDoList from "../../todolistModal/ModalToDoList";
 // import Todolis from "../../modalView/ModalView";
 
@@ -112,6 +118,7 @@ const Home = () => {
     calendarReducer,
     toDoListReducer,
     meetingIdReducer,
+    NewMeetingreducer,
     auth,
     Authreducer,
     NotesReducer,
@@ -120,6 +127,11 @@ const Home = () => {
   } = state;
   const { RecentActivityData, SocketRecentActivityData } = settingReducer;
   const [notes, setNotes] = useState([]);
+  const [upComingEvents, setUpComingEvents] = useState([]);
+  console.log(
+    upComingEvents,
+    "upCmingEventsupCmingEventsupCmingEventsupCmingEvents"
+  );
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -149,7 +161,7 @@ const Home = () => {
   const calendarRef = useRef();
   const navigate = useNavigate();
   const [calenderData, setCalenderData] = useState([]);
-
+  const [calendarEvents, setCalendarEvents] = useState([]);
   const [recentActivityData, setRecentActivityData] = useState([]);
   // get new date
   let date = new Date();
@@ -159,6 +171,11 @@ const Home = () => {
   let format = "YYYYMMDD";
 
   const [dates, setDates] = useState([]);
+  console.log(
+    { calendarEvents, calenderData, dates },
+    "calendarEventscalendarEventscalendarEvents"
+  );
+
   const [activateBlur, setActivateBlur] = useState(false);
 
   let Blur = localStorage.getItem("blur");
@@ -190,7 +207,7 @@ const Home = () => {
   const [startDataUpdate, setStartDataUpdate] = useState("");
   const [endDataUpdate, setEndDataUpdate] = useState("");
   const [events, setEvents] = useState([]);
-  console.log(events, "eventseventseventsevents");
+
   const userID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let CalenderMonthsSpan =
@@ -237,7 +254,7 @@ const Home = () => {
 
   const callApi = async () => {
     dispatch(getTodoListInit());
-    dispatch(SetSpinnerTrue());
+    dispatch(SetSpinnerTrue(true));
     dispatch(SetSpinnersTrue());
     dispatch(getusernotificationinit());
     // dispatch(getCalendarDataInit(true));
@@ -261,10 +278,8 @@ const Home = () => {
     dispatch(GetUpcomingEvents(navigate, Data2, t));
     dispatch(getNotifications(navigate, createrID, t));
   };
-  useEffect(() => {
-    // let CalenderMonthsSpans = localStorage.getItem("calenderMonthsSpan");
-    //
 
+  const calendarApiCall = async () => {
     if (CalenderMonthsSpan !== null && CalenderMonthsSpan !== undefined) {
       dispatch(getCalendarDataInit(true));
 
@@ -304,9 +319,12 @@ const Home = () => {
     } else {
       dispatch(getCalendarDataInit(false));
     }
-  }, []);
+  };
+
   useEffect(() => {
+    calendarApiCall();
     callApi();
+
     return () => {
       dispatch(cleareAssigneesState());
     };
@@ -320,34 +338,154 @@ const Home = () => {
     }
   }, [Blur]);
 
-  // set Data for Calendar
-  useEffect(() => {
+  //  Render Calendar Data
+  const updateCalendarData = (flag, meetingID) => {
     let Data = calendarReducer.CalenderData;
     if (Object.keys(Data).length > 0) {
+      setCalendarEvents(Data);
       if (Object.keys(calenderData).length > 0) {
         let newList = calenderData;
         Data.map((cData, index) => {
-          let date = startDateTimeMeetingCalendar(
-            cData.eventDate + cData.startTime
-          );
-          return newList.push({
-            meetingDate: date,
-          });
+          if (flag) {
+            if (cData.pK_MDID === meetingID) {
+              let date = startDateTimeMeetingCalendar(
+                cData.eventDate + cData.startTime
+              );
+              // just remove the  data from list and add it to first position of
+              // at there we needs to remove the date field.
+
+              // Update Calendar Data
+            } else {
+              let date = startDateTimeMeetingCalendar(
+                cData.eventDate + cData.startTime
+              );
+              return newList.push({
+                meetingDate: date,
+              });
+            }
+          } else {
+            let date = startDateTimeMeetingCalendar(
+              cData.eventDate + cData.startTime
+            );
+            return newList.push({
+              meetingDate: date,
+            });
+          }
         });
       } else {
         let newList = [];
         Data.map((cData, index) => {
-          let date = moment(
-            startDateTimeMeetingCalendar(cData.eventDate + cData.startTime)
-          ).format("YYYYMMDDHHMMss");
-          return newList.push({
-            meetingDate: date,
-          });
+          if (flag) {
+            if (cData.pK_MDID === meetingID) {
+              console.log(
+                "Delete MeetingMeetingMeetingMeeting",
+                cData,
+                meetingID
+              );
+              return;
+            } else {
+              let date = moment(
+                startDateTimeMeetingCalendar(cData.eventDate + cData.startTime)
+              ).format("YYYYMMDDHHMMss");
+              return newList.push({
+                meetingDate: date,
+              });
+            }
+          } else {
+            let date = moment(
+              startDateTimeMeetingCalendar(cData.eventDate + cData.startTime)
+            ).format("YYYYMMDDHHMMss");
+            return newList.push({
+              meetingDate: date,
+            });
+          }
         });
         setCalenderData(newList);
       }
     }
+  };
+
+  // set Data for Calendar
+  useEffect(() => {
+    let Data = calendarReducer.CalenderData;
+    if (Object.keys(Data).length > 0) {
+      updateCalendarData();
+    }
   }, [calendarReducer.CalenderData]);
+
+  //  Update Meeting Status Cancelled and Start Meeting
+  useEffect(() => {
+    if (meetingIdReducer.MeetingStatusSocket !== null) {
+      let meetingStatusID =
+        meetingIdReducer.MeetingStatusSocket.meetingStatusID;
+      if (
+        meetingIdReducer.MeetingStatusSocket.message
+          .toLowerCase()
+          .includes("MEETING_STATUS_EDITED_CANCELLED".toLowerCase())
+      ) {
+        let meetingID = meetingIdReducer.MeetingStatusSocket.meetingID;
+        updateCalendarData(true, meetingID);
+        setUpComingEvents((upcomingeventData) =>
+          upcomingeventData.filter(
+            (meetingData) =>
+              Number(meetingData.meetingDetails.pK_MDID) !== Number(meetingID)
+          )
+        );
+        setEvents((event) =>
+          event.filter((eventData, index) => {
+            return eventData.pK_MDID !== Number(meetingID);
+          })
+        );
+        setUpComingEvents((upcomingeventData) =>
+          upcomingeventData.map((meetingData) => {
+            return (
+              Number(meetingData.meetingDetails.pK_MDID) !== Number(meetingID)
+            );
+          })
+        );
+      } else if (
+        meetingIdReducer.MeetingStatusSocket.message
+          .toLowerCase()
+          .includes("MEETING_STATUS_EDITED_STARTED".toLowerCase())
+      ) {
+        let meetingID = meetingIdReducer.MeetingStatusSocket.meeting.pK_MDID;
+        setCalendarEvents((calendarEventData) => {
+          return calendarEventData.map((data) => {
+            if (Number(data.pK_MDID) === Number(meetingID)) {
+              // Assuming statusID is defined somewhere and you want to update it for this data item
+              data.statusID = 10;
+            }
+            return data; // Always return the data item
+          });
+        });
+
+        setEvents((event) =>
+          event.map((eventData, index) => {
+            if (eventData.pK_MDID === Number(meetingID)) {
+              eventData.status = 10;
+            }
+            return eventData;
+          })
+        );
+        setUpComingEvents((upcomingeventData) =>
+          upcomingeventData.map((meetingData) => {
+            if (
+              Number(meetingData.meetingDetails.pK_MDID) === Number(meetingID)
+            ) {
+              // Update the statusID of the meeting data
+              meetingData.meetingDetails.statusID = 10;
+            }
+            return meetingData; // Return the meeting data whether modified or not
+          })
+        );
+      }
+
+      dispatch(getMeetingStatusfromSocket(null));
+      // if (meetingStatusID === 4) {
+      //   updateCalendarData(true, meetingID);
+      // }
+    }
+  }, [meetingIdReducer.MeetingStatusSocket]);
 
   useEffect(() => {
     if (Object.keys(calenderData).length > 0) {
@@ -372,27 +510,272 @@ const Home = () => {
     }
   }, [SocketRecentActivityData]);
 
-  // for view modal  handler
-  const viewModalHandler = (id) => {};
-
   const handleClickNoteModal = () => {
     setModalNote(true);
   };
+  // Set Meeting Data in Calendar and Events Modal
+  useEffect(() => {
+    try {
+      if (NewMeetingreducer.meetingStatusPublishedMqttData !== null) {
+        let meetingData = NewMeetingreducer.meetingStatusPublishedMqttData;
+
+        const formattedDate =
+          meetingData.dateOfMeeting &&
+          new DateObject(
+            forHomeCalendar(
+              meetingData.dateOfMeeting + meetingData.meetingStartTime
+            )
+          );
+        let findPartcipantRoleID = meetingData.meetingAttendees.find(
+          (attendeeData, index) => {
+            if (attendeeData.user.pK_UID === parseInt(userID)) {
+              return attendeeData.meetingAttendeeRole.pK_MARID;
+            }
+          }
+        )?.meetingAttendeeRole.pK_MARID;
+
+        console.log(
+          findPartcipantRoleID,
+          "findPartcipantRoleIDfindPartcipantRoleIDfindPartcipantRoleID"
+        );
+        let dashboardData = {
+          pK_MDID: meetingData.pK_MDID,
+          pK_CEID: meetingData.pK_CEID,
+          fK_TZID: meetingData.fK_TZID,
+          fK_CETID: meetingData.fK_CETID,
+          fK_CESID: meetingData.fK_CESID,
+          location: meetingData.location,
+          eventDate: meetingData.dateOfMeeting,
+          startTime: meetingData.meetingStartTime,
+          endTime: meetingData.meetingEndTime,
+          title: meetingData.title,
+          description: "",
+          calenderEventSource:
+            meetingData.fK_CESID === 1
+              ? "Google"
+              : meetingData.fK_CESID === 2
+              ? "Office"
+              : meetingData.fK_CESID === 3
+              ? "Diskus"
+              : meetingData.fK_CESID === 4
+              ? "Microsoft"
+              : "",
+          calenderEventType:
+            meetingData.fK_CETID === 1
+              ? "None"
+              : meetingData.fK_CETID === 2
+              ? "Meeting"
+              : meetingData.fK_CETID === 3
+              ? "Task"
+              : meetingData.fK_CETID === 4
+              ? "Resolution"
+              : meetingData.fK_CETID === 5
+              ? "Polls"
+              : "",
+          timeZone: meetingData.timeZone,
+          statusID: meetingData.status,
+          participantRoleID: findPartcipantRoleID,
+          isQuickMeeting: meetingData.isQuickMeeting,
+        };
+        // Check if the meeting ID already exists in the upComingEvents array
+        const isExistAlready = calendarEvents.findIndex(
+          (data) => data.pK_MDID === meetingData.pK_MDID
+        );
+        // Its Check if the event calendar modal is open and also a for a  same date  modal
+        if (eventModal) {
+          events.find((newData, index) => {
+            if (newData.eventDate === dashboardData.eventDate) {
+              setEvents([...events, dashboardData]);
+            }
+          });
+        }
+        // If meeting ID doesn't exist, add the meeting data to upComingEvents
+        if (isExistAlready === -1) {
+          setCalendarEvents([...calendarEvents, dashboardData]);
+          setDates((prev) => [...prev, formattedDate]);
+
+          // setUpComingEvents((prev) => [...prev, meetingData]);
+        } else {
+          setCalendarEvents((calendarEventData) => {
+            return calendarEventData.map((data) => {
+              if (Number(data.pK_MDID) === Number(dashboardData.pK_MDID)) {
+                return dashboardData;
+              } else {
+                return data;
+              }
+            });
+          });
+        }
+      }
+    } catch {}
+  }, [NewMeetingreducer.meetingStatusPublishedMqttData]);
 
   useEffect(() => {
     try {
+      if (meetingIdReducer.allMeetingsSocketData !== null) {
+        let meetingData = meetingIdReducer.allMeetingsSocketData;
+
+        const formattedDate =
+          meetingData.dateOfMeeting &&
+          new DateObject(
+            forHomeCalendar(
+              meetingData.dateOfMeeting + meetingData.meetingStartTime
+            )
+          );
+        let findPartcipantRoleID = meetingData.meetingAttendees.find(
+          (attendeeData, index) => {
+            if (attendeeData.user.pK_UID === parseInt(userID)) {
+              return attendeeData.meetingAttendeeRole.pK_MARID;
+            }
+          }
+        )?.meetingAttendeeRole.pK_MARID;
+
+        let dashboardData = {
+          pK_MDID: meetingData.pK_MDID,
+          pK_CEID: meetingData.pK_CEID,
+          fK_TZID: meetingData.fK_TZID,
+          fK_CETID: meetingData.fK_CETID,
+          fK_CESID: meetingData.fK_CESID,
+          location: meetingData.location,
+          eventDate: meetingData.dateOfMeeting,
+          startTime: meetingData.meetingStartTime,
+          endTime: meetingData.meetingEndTime,
+          title: meetingData.title,
+          description: "",
+          calenderEventSource:
+            meetingData.fK_CESID === 1
+              ? "Google"
+              : meetingData.fK_CESID === 2
+              ? "Office"
+              : meetingData.fK_CESID === 3
+              ? "Diskus"
+              : meetingData.fK_CESID === 4
+              ? "Microsoft"
+              : "",
+          calenderEventType:
+            meetingData.fK_CETID === 1
+              ? "None"
+              : meetingData.fK_CETID === 2
+              ? "Meeting"
+              : meetingData.fK_CETID === 3
+              ? "Task"
+              : meetingData.fK_CETID === 4
+              ? "Resolution"
+              : meetingData.fK_CETID === 5
+              ? "Polls"
+              : "",
+          timeZone: meetingData.timeZone,
+          statusID: meetingData.status,
+          participantRoleID: findPartcipantRoleID,
+          isQuickMeeting: meetingData.isQuickMeeting,
+        };
+        // Check if the meeting ID already exists in the upComingEvents array
+        const isExistAlready = calendarEvents.findIndex(
+          (data) => data.pK_MDID === meetingData.pK_MDID
+        );
+        // Its Check if the event calendar modal is open and also a for a  same date  modal
+        if (eventModal) {
+          const existingEvent = events.find(
+            (newData) => newData.eventDate === dashboardData.eventDate
+          );
+          const isEventAlreadyExist = events.findIndex(
+            (eventDetails) => eventDetails.pK_MDID === dashboardData.pK_MDID
+          );
+          if (existingEvent) {
+            // If event with the same date already exists, update its details
+            if (isEventAlreadyExist !== -1) {
+              setEvents((eventDetails) =>
+                eventDetails.map((event_data) => {
+                  if (event_data.pK_MDID === dashboardData.pK_MDID) {
+                    return dashboardData;
+                  } else {
+                    return event_data;
+                  }
+                })
+              );
+            } else {
+              setEvents([...events, dashboardData]);
+            }
+          }
+        }
+
+        // If meeting ID doesn't exist, add the meeting data to upComingEvents
+        if (isExistAlready !== -1) {
+          setCalendarEvents((calendarEventData) => {
+            return calendarEventData.map((data) => {
+              return Number(data.pK_MDID) === Number(dashboardData.pK_MDID)
+                ? dashboardData
+                : data;
+            });
+          });
+
+          // setCalendarEvents([...calendarEvents, dashboardData]);
+          // setDates((prev) => [...prev, formattedDate]);
+
+          // setUpComingEvents((prev) => [...prev, meetingData]);
+        }
+        //  else {
+        //   setCalendarEvents((calendarEventData) => {
+        //     return calendarEventData.map((data) => {
+        //       if (Number(data.pK_MDID) === Number(dashboardData.pK_MDID)) {
+        //         return dashboardData;
+        //       } else {
+        //         return data;
+        //       }
+        //     });
+        //   });
+        // }
+      }
+    } catch (error) {
+      console.log(error, "errorerrorerrorerrorerror");
+    }
+  }, [meetingIdReducer.allMeetingsSocketData]);
+  //  Set Upcoming Events
+  useEffect(() => {
+    try {
       if (
-        meetingIdReducer.MQTTUpcomingEvents !== null &&
-        meetingIdReducer.MQTTUpcomingEvents !== undefined
+        meetingIdReducer.UpcomingEventsData.length > 0 &&
+        meetingIdReducer.UpcomingEventsData !== null &&
+        meetingIdReducer.UpcomingEventsData !== undefined
       ) {
-        let meetingDates =
-          meetingIdReducer.MQTTUpcomingEvents.meetingEvent.meetingDate;
-        let formattedDate =
-          meetingDates && new DateObject(forHomeCalendar(meetingDates));
-        setDates((prev) => [...prev, formattedDate]);
+        // Create a new array with updated objects without mutating the original state
+        const updatedUpcomingEvents = meetingIdReducer.UpcomingEventsData.map(
+          (event) => {
+            // Assuming statusID is within each event object
+            return {
+              ...event, // Spread the properties of the original event object
+              meetingDetails: {
+                ...event.meetingDetails, // Spread the properties of meetingDetails
+                statusID: event.meetingDetails.statusID /* updated value */, // Update the statusID here
+              },
+            };
+          }
+        );
+
+        setUpComingEvents(updatedUpcomingEvents); // Set the updated state
+      } else {
+        setUpComingEvents([]);
+      }
+    } catch (error) {
+      // Log any errors for debugging
+    }
+  }, [meetingIdReducer.UpcomingEventsData]);
+
+  // Remove task from mqtt response
+  useEffect(() => {
+    try {
+      if (toDoListReducer.socketTodoStatusData !== null) {
+        let payloadData = toDoListReducer.socketTodoStatusData;
+        if (payloadData.todoStatusID === 6) {
+          setRowToDo((rowsData) => {
+            return rowsData.filter((newData, index) => {
+              return newData.pK_TID !== payloadData.todoid;
+            });
+          });
+        }
       }
     } catch {}
-  }, [meetingIdReducer.MQTTUpcomingEvents]);
+  }, [toDoListReducer.socketTodoStatusData]);
 
   // render Notes Data
   useEffect(() => {
@@ -417,22 +800,34 @@ const Home = () => {
   }, [NotesReducer.GetAllNotesResponse]);
 
   useEffect(() => {
-    let dataToSort =
-      toDoListReducer.SocketTodoActivityData !== null &&
-      toDoListReducer.SocketTodoActivityData !== undefined
-        ? [toDoListReducer.SocketTodoActivityData, ...rowsToDo]
-        : [...rowsToDo];
+    try {
+      if (
+        toDoListReducer.SocketTodoActivityData !== null &&
+        toDoListReducer.SocketTodoActivityData !== undefined
+      ) {
+        if (
+          toDoListReducer.SocketTodoActivityData.comitteeID === -1 &&
+          toDoListReducer.SocketTodoActivityData.groupID === -1 &&
+          toDoListReducer.SocketTodoActivityData.meetingID === -1
+        ) {
+          let dataToSort = [
+            toDoListReducer.SocketTodoActivityData.todoList,
+            ...rowsToDo,
+          ];
 
-    const sortedTasks = dataToSort.sort((taskA, taskB) => {
-      const deadlineA = taskA?.deadlineDateTime;
-      const deadlineB = taskB?.deadlineDateTime;
+          const sortedTasks = dataToSort.sort((taskA, taskB) => {
+            const deadlineA = taskA?.deadlineDateTime;
+            const deadlineB = taskB?.deadlineDateTime;
 
-      // Compare the deadlineDateTime values as numbers for sorting
-      return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
-    });
+            // Compare the deadlineDateTime values as numbers for sorting
+            return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
+          });
 
-    setTotalRecordTodo(sortedTasks.length);
-    setRowToDo(sortedTasks.slice(0, 15));
+          setTotalRecordTodo(sortedTasks.length);
+          setRowToDo(sortedTasks.slice(0, 15));
+        }
+      }
+    } catch (error) {}
   }, [toDoListReducer.SocketTodoActivityData]);
 
   useEffect(() => {
@@ -469,6 +864,8 @@ const Home = () => {
   const handleOpenTodoListModal = () => {
     setShowTodo(true);
   };
+  // for view modal  handler
+  const viewModalHandler = (id) => {};
 
   const columnsToDo = [
     {
@@ -503,48 +900,43 @@ const Home = () => {
       width: "25%",
       className: "statusDashboard",
       render: (text, record) => {
-        //
-        return toDoListReducer.AllTodolistData.map((data, index) => {
-          if (index === 0) {
-            if (text.pK_TSID === 1) {
-              return (
-                <span className="MontserratSemiBold-600 InProgress cursor-pointer">
-                  {text.status}
-                </span>
-              );
-            } else if (text.pK_TSID === 2) {
-              return (
-                <span className="MontserratSemiBold-600 Pending cursor-pointer">
-                  {text.status}
-                </span>
-              );
-            } else if (text.pK_TSID === 3) {
-              return (
-                <span className="MontserratSemiBold-600 Upcoming cursor-pointer">
-                  {text.status}
-                </span>
-              );
-            } else if (text.pK_TSID === 4) {
-              return (
-                <span className="MontserratSemiBold-600 Cancelled cursor-pointer">
-                  {text.status}
-                </span>
-              );
-            } else if (text.pK_TSID === 5) {
-              return (
-                <span className="MontserratSemiBold-600 Completed cursor-pointer">
-                  {text.status}
-                </span>
-              );
-            } else if (text.pK_TSID === 6) {
-              return (
-                <span className="MontserratSemiBold-600 color-F68732 cursor-pointer">
-                  {text.status}
-                </span>
-              );
-            }
-          }
-        });
+        if (record.status.pK_TSID === 1) {
+          return (
+            <span className="MontserratSemiBold-600 InProgress cursor-pointer">
+              {text.status}
+            </span>
+          );
+        } else if (record.status.pK_TSID === 2) {
+          return (
+            <span className="MontserratSemiBold-600 Pending cursor-pointer">
+              {text.status}
+            </span>
+          );
+        } else if (record.status.pK_TSID === 3) {
+          return (
+            <span className="MontserratSemiBold-600 Upcoming cursor-pointer">
+              {text.status}
+            </span>
+          );
+        } else if (record.status.pK_TSID === 4) {
+          return (
+            <span className="MontserratSemiBold-600 Cancelled cursor-pointer">
+              {text.status}
+            </span>
+          );
+        } else if (record.status.pK_TSID === 5) {
+          return (
+            <span className="MontserratSemiBold-600 Completed cursor-pointer">
+              {text.status}
+            </span>
+          );
+        } else if (record.status.pK_TSID === 6) {
+          return (
+            <span className="MontserratSemiBold-600 color-F68732 cursor-pointer">
+              {text.status}
+            </span>
+          );
+        }
       },
     },
   ];
@@ -554,7 +946,10 @@ const Home = () => {
     setUpcomingMeetingCountThisWeek(
       meetingIdReducer.TotalNumberOfUpcommingMeetingsInWeek
     );
-  }, [meetingIdReducer]);
+  }, [
+    meetingIdReducer.TotalMeetingCountThisWeek,
+    meetingIdReducer.TotalNumberOfUpcommingMeetingsInWeek,
+  ]);
 
   useEffect(() => {
     setTodoListThisWeek(toDoListReducer.TotalTodoCountThisWeek);
@@ -744,17 +1139,50 @@ const Home = () => {
       calenderEventType: "Meeting",
       timeZone: "Asia/Karachi",
       statusID: data.meetingDetails.statusID,
-      participantRoleID: data.meetingDetails.participantRoleID,
+      participantRoleID: data.participantRoleID,
       isQuickMeeting: data.meetingDetails.isQuickMeeting,
     };
     dispatch(dashboardCalendarEvent(dashboardData));
     navigate("/DisKus/Meeting");
   };
 
-  const upcomingEventsHandler = (meetingIdReducer) => {
+  // Meeting Status End Updated
+  useEffect(() => {
+    if (meetingIdReducer.MeetingStatusEnded !== null) {
+      let meetingID = meetingIdReducer.MeetingStatusEnded?.meeting?.pK_MDID;
+      setUpComingEvents((upcomingeventData) => {
+        return upcomingeventData.filter((meetingData) => {
+          return (
+            Number(meetingData.meetingDetails.pK_MDID) !== Number(meetingID)
+          );
+        });
+      });
+      setCalendarEvents((calendarEventData) => {
+        return calendarEventData.map((data) => {
+          if (Number(data.pK_MDID) === Number(meetingID)) {
+            // Assuming statusID is defined somewhere and you want to update it for this data item
+            data.statusID = 9;
+          }
+          return data; // Always return the data item
+        });
+      });
+      setEvents((event) =>
+        event.map((eventData, index) => {
+          if (eventData.pK_MDID === Number(meetingID)) {
+            eventData.status = 9;
+          }
+          return eventData;
+        })
+      );
+      // dispatch(getMeetingStatusfromSocket(null));
+      dispatch(mqttCurrentMeetingEnded(null));
+    }
+  }, [meetingIdReducer.MeetingStatusEnded]);
+
+  const upcomingEventsHandler = (upComingEvents) => {
     let flag = false;
     let indexforUndeline = null;
-    meetingIdReducer.UpcomingEventsData.map((upcomingEventsData, index) => {
+    upComingEvents.map((upcomingEventsData, index) => {
       if (
         upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
         getCurrentDate
@@ -768,46 +1196,58 @@ const Home = () => {
       }
     });
 
-    return meetingIdReducer.UpcomingEventsData.map(
-      (upcomingEventsData, index) => {
-        let meetingDateTime =
-          upcomingEventsData.meetingEvent.meetingDate +
-          upcomingEventsData.meetingEvent.startTime;
-        const currentDateObj = new Date(
-          currentUTCDateTime.substring(0, 4), // Year
-          parseInt(currentUTCDateTime.substring(4, 6)) - 1, // Month (0-based)
-          currentUTCDateTime.substring(6, 8), // Day
-          currentUTCDateTime.substring(8, 10), // Hours
-          currentUTCDateTime.substring(10, 12), // Minutes
-          currentUTCDateTime.substring(12, 14) // Seconds
-        );
+    return upComingEvents.map((upcomingEventsData, index) => {
+      let meetingDateTime =
+        upcomingEventsData.meetingEvent.meetingDate +
+        upcomingEventsData.meetingEvent.startTime;
+      const currentDateObj = new Date(
+        currentUTCDateTime.substring(0, 4), // Year
+        parseInt(currentUTCDateTime.substring(4, 6)) - 1, // Month (0-based)
+        currentUTCDateTime.substring(6, 8), // Day
+        currentUTCDateTime.substring(8, 10), // Hours
+        currentUTCDateTime.substring(10, 12), // Minutes
+        currentUTCDateTime.substring(12, 14) // Seconds
+      );
 
-        const meetingDateObj = new Date(
-          meetingDateTime.substring(0, 4), // Year
-          parseInt(meetingDateTime.substring(4, 6)) - 1, // Month (0-based)
-          meetingDateTime.substring(6, 8), // Day
-          meetingDateTime.substring(8, 10), // Hours
-          meetingDateTime.substring(10, 12), // Minutes
-          meetingDateTime.substring(12, 14) // Seconds
-        );
+      const meetingDateObj = new Date(
+        meetingDateTime.substring(0, 4), // Year
+        parseInt(meetingDateTime.substring(4, 6)) - 1, // Month (0-based)
+        meetingDateTime.substring(6, 8), // Day
+        meetingDateTime.substring(8, 10), // Hours
+        meetingDateTime.substring(10, 12), // Minutes
+        meetingDateTime.substring(12, 14) // Seconds
+      );
 
-        // Calculate the time difference in milliseconds
-        const timeDifference = meetingDateObj - currentDateObj;
+      // Calculate the time difference in milliseconds
+      const timeDifference = meetingDateObj - currentDateObj;
 
-        // Convert milliseconds to minutes
-        const minutesDifference = Math.floor(timeDifference / (1000 * 60));
-        return (
-          <>
-            {upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
-            getCurrentDate ? (
-              <Row>
-                <Col lg={12} md={12} sm={12}>
+      // Convert milliseconds to minutes
+      const minutesDifference = Math.floor(timeDifference / (1000 * 60));
+      return (
+        <>
+          {upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
+          getCurrentDate ? (
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                <div
+                  className={
+                    (upcomingEventsData.meetingDetails.statusID === 1 &&
+                      minutesDifference < 15) ||
+                    upcomingEventsData.meetingDetails.statusID === 10
+                      ? "event-details upcoming_events todayEvent border-0 d-flex justify-content-center align-items-center"
+                      : "event-details upcoming_events todayEvent border-0"
+                  }
+                  onClick={() =>
+                    viewModalHandler(upcomingEventsData.meetingDetails.pK_MDID)
+                  }
+                >
                   <div
-                    className="event-details upcoming_events todayEvent border-0"
-                    onClick={() =>
-                      viewModalHandler(
-                        upcomingEventsData.meetingDetails.pK_MDID
-                      )
+                    className={
+                      (upcomingEventsData.meetingDetails.statusID === 1 &&
+                        minutesDifference < 15) ||
+                      upcomingEventsData.meetingDetails.statusID === 10
+                        ? "event-details-block"
+                        : ""
                     }
                   >
                     <p className="events-description MontserratSemiBold-600">
@@ -819,93 +1259,104 @@ const Home = () => {
                           upcomingEventsData.meetingEvent.startTime
                       )}
                     </p>
-
-                    {upcomingEventsData.meetingDetails.statusID === 1 &&
-                    upcomingEventsData.meetingDetails.participantRoleID ===
-                      1 ? (
-                      upcomingEventsData.meetingDetails.isQuickMeeting ===
-                        true && minutesDifference < 15 ? (
-                        // &&
-                        // minutesDifference > 0
-                        //   &&
-                        //   minutesDifference <= 99999999 &&
-                        //   minutesDifference > 0
-                        <div className="width-100">
-                          <Button
-                            text={t("Start-meeting")}
-                            className={styles["Start-Meeting"]}
-                            onClick={() =>
-                              meetingDashboardCalendarEvent(upcomingEventsData)
-                            }
-                          />
-                        </div>
-                      ) : upcomingEventsData.meetingDetails.isQuickMeeting ===
-                          false && minutesDifference <= 15 ? (
-                        // &&
-                        // minutesDifference > 0
-                        //   &&
-                        //     minutesDifference <= 99999999 &&
-                        //     minutesDifference > 0
-                        <div className="width-100">
-                          <Button
-                            text={t("Start-meeting")}
-                            className={styles["Start-Meeting"]}
-                            onClick={() =>
-                              meetingDashboardCalendarEvent(upcomingEventsData)
-                            }
-                          />
-                        </div>
-                      ) : null
-                    ) : upcomingEventsData.meetingDetails.statusID === 10 ? (
-                      upcomingEventsData.meetingDetails.participantRoleID ===
-                      2 ? (
-                        <div className="width-100">
-                          <Button
-                            text={t("Join-meeting")}
-                            className={styles["joining-Meeting"]}
-                            onClick={() =>
-                              meetingDashboardCalendarEvent(upcomingEventsData)
-                            }
-                          />
-                        </div>
-                      ) : upcomingEventsData.meetingDetails
-                          .participantRoleID === 4 ? (
-                        <div className="width-100">
-                          <Button
-                            text={t("Join-meeting")}
-                            className={styles["joining-Meeting"]}
-                            onClick={() =>
-                              meetingDashboardCalendarEvent(upcomingEventsData)
-                            }
-                          />
-                        </div>
-                      ) : upcomingEventsData.meetingDetails
-                          .participantRoleID === 1 ? (
-                        <div className="width-100">
-                          <Button
-                            text={t("Join-meeting")}
-                            className={styles["joining-Meeting"]}
-                            onClick={() =>
-                              meetingDashboardCalendarEvent(upcomingEventsData)
-                            }
-                          />
-                        </div>
-                      ) : null
-                    ) : null}
                   </div>
-                </Col>
-              </Row>
-            ) : indexforUndeline !== null && indexforUndeline === index ? (
-              <>
-                <span className="bordertop" />
-                <Row>
-                  <Col lg={12} md={12} sm={12}>
+                  {upcomingEventsData.meetingDetails.statusID === 1 &&
+                  upcomingEventsData.participantRoleID === 1 ? (
+                    upcomingEventsData.meetingDetails.isQuickMeeting === true &&
+                    minutesDifference < 15 ? (
+                      // &&
+                      // minutesDifference > 0
+                      //   &&
+                      //   minutesDifference <= 99999999 &&
+                      //   minutesDifference > 0
+                      <div className="width-100">
+                        <Button
+                          text={t("Start-meeting")}
+                          className="Start-Meeting-Upcoming"
+                          onClick={() =>
+                            meetingDashboardCalendarEvent(upcomingEventsData)
+                          }
+                        />
+                      </div>
+                    ) : upcomingEventsData.meetingDetails.isQuickMeeting ===
+                        false && minutesDifference <= 15 ? (
+                      // &&
+                      // minutesDifference > 0
+                      //   &&
+                      //     minutesDifference <= 99999999 &&
+                      //     minutesDifference > 0
+                      <div className="width-100">
+                        <Button
+                          text={t("Start-meeting")}
+                          className="Start-Meeting-Upcoming"
+                          onClick={() =>
+                            meetingDashboardCalendarEvent(upcomingEventsData)
+                          }
+                        />
+                      </div>
+                    ) : null
+                  ) : upcomingEventsData.meetingDetails.statusID === 10 ? (
+                    upcomingEventsData.participantRoleID === 2 ? (
+                      <div className="width-100">
+                        <Button
+                          text={t("Join-meeting")}
+                          className="joining-Meeting-Upcoming"
+                          onClick={() =>
+                            meetingDashboardCalendarEvent(upcomingEventsData)
+                          }
+                        />
+                      </div>
+                    ) : upcomingEventsData.participantRoleID === 4 ? (
+                      <div className="width-100">
+                        <Button
+                          text={t("Join-meeting")}
+                          className="joining-Meeting-Upcoming"
+                          onClick={() =>
+                            meetingDashboardCalendarEvent(upcomingEventsData)
+                          }
+                        />
+                      </div>
+                    ) : upcomingEventsData.participantRoleID === 1 ? (
+                      <div className="width-100">
+                        <Button
+                          text={t("Join-meeting")}
+                          className="joining-Meeting-Upcoming"
+                          onClick={() =>
+                            meetingDashboardCalendarEvent(upcomingEventsData)
+                          }
+                        />
+                      </div>
+                    ) : null
+                  ) : null}
+                </div>
+              </Col>
+            </Row>
+          ) : indexforUndeline !== null && indexforUndeline === index ? (
+            <>
+              <span className="bordertop" />
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <div
+                    className={
+                      (upcomingEventsData.meetingDetails.statusID === 1 &&
+                        minutesDifference < 15) ||
+                      upcomingEventsData.meetingDetails.statusID === 10
+                        ? "event-details d-flex justify-content-center align-items-center"
+                        : "event-details"
+                    }
+                    onClick={() =>
+                      viewModalHandler(
+                        upcomingEventsData.meetingDetails.pK_MDID
+                      )
+                    }
+                  >
                     <div
-                      className="event-details"
-                      onClick={() =>
-                        viewModalHandler(
-                          upcomingEventsData.meetingDetails.pK_MDID
-                        )
+                      className={
+                        (upcomingEventsData.meetingDetails.statusID === 1 &&
+                          minutesDifference < 15) ||
+                        upcomingEventsData.meetingDetails.statusID === 10
+                          ? "event-details-block"
+                          : ""
                       }
                     >
                       <p className="events-description">
@@ -917,92 +1368,7 @@ const Home = () => {
                             upcomingEventsData.meetingEvent.startTime
                         )}
                       </p>
-                      {upcomingEventsData.meetingDetails.statusID === 1 &&
-                      upcomingEventsData.meetingDetails.participantRoleID ===
-                        1 ? (
-                        upcomingEventsData.meetingDetails.isQuickMeeting ===
-                          true && minutesDifference < 15 ? (
-                          // &&
-                          // minutesDifference > 0
-                          //   &&
-                          //   minutesDifference <= 99999999 &&
-                          //   minutesDifference > 0
-                          <Button
-                            text={t("Start-meeting")}
-                            className={styles["Start-Meeting"]}
-                            onClick={() =>
-                              meetingDashboardCalendarEvent(upcomingEventsData)
-                            }
-                          />
-                        ) : upcomingEventsData.meetingDetails.isQuickMeeting ===
-                            false && minutesDifference < 15 ? (
-                          // &&
-                          // minutesDifference > 0
-                          //   &&
-                          //     minutesDifference <= 99999999 &&
-                          //     minutesDifference > 0
-                          <Button
-                            text={t("Start-meeting")}
-                            className={styles["Start-Meeting"]}
-                            onClick={() =>
-                              meetingDashboardCalendarEvent(upcomingEventsData)
-                            }
-                          />
-                        ) : null
-                      ) : upcomingEventsData.meetingDetails.statusID === 10 ? (
-                        upcomingEventsData.meetingDetails.participantRoleID ===
-                        2 ? (
-                          <Button
-                            text={t("Join-meeting")}
-                            className={styles["joining-Meeting"]}
-                            onClick={() =>
-                              meetingDashboardCalendarEvent(upcomingEventsData)
-                            }
-                          />
-                        ) : upcomingEventsData.meetingDetails
-                            .participantRoleID === 4 ? (
-                          <Button
-                            text={t("Join-meeting")}
-                            className={styles["joining-Meeting"]}
-                            onClick={() =>
-                              meetingDashboardCalendarEvent(upcomingEventsData)
-                            }
-                          />
-                        ) : upcomingEventsData.meetingDetails
-                            .participantRoleID === 1 ? (
-                          <Button
-                            text={t("Join-meeting")}
-                            className={styles["joining-Meeting"]}
-                            onClick={() =>
-                              meetingDashboardCalendarEvent(upcomingEventsData)
-                            }
-                          />
-                        ) : null
-                      ) : null}
                     </div>
-                  </Col>
-                </Row>
-              </>
-            ) : (
-              <Row>
-                <Col lg={12} md={12} sm={12}>
-                  <div
-                    className="event-details"
-                    onClick={() =>
-                      viewModalHandler(
-                        upcomingEventsData.meetingDetails.pK_MDID
-                      )
-                    }
-                  >
-                    <p className="events-description">
-                      {upcomingEventsData.meetingDetails.title}
-                    </p>
-                    <p className="events-dateTime">
-                      {newTimeFormaterAsPerUTCFullDate(
-                        upcomingEventsData.meetingEvent.meetingDate +
-                          upcomingEventsData.meetingEvent.startTime
-                      )}
-                    </p>
                     {upcomingEventsData.meetingDetails.statusID === 1 &&
                     upcomingEventsData.meetingDetails.participantRoleID ===
                       1 ? (
@@ -1015,7 +1381,7 @@ const Home = () => {
                         //   minutesDifference > 0
                         <Button
                           text={t("Start-meeting")}
-                          className={styles["Start-Meeting"]}
+                          className="Start-Meeting-Upcoming"
                           onClick={() =>
                             meetingDashboardCalendarEvent(upcomingEventsData)
                           }
@@ -1029,7 +1395,7 @@ const Home = () => {
                         //     minutesDifference > 0
                         <Button
                           text={t("Start-meeting")}
-                          className={styles["Start-Meeting"]}
+                          className="Start-Meeting-Upcoming"
                           onClick={() =>
                             meetingDashboardCalendarEvent(upcomingEventsData)
                           }
@@ -1040,7 +1406,7 @@ const Home = () => {
                       2 ? (
                         <Button
                           text={t("Join-meeting")}
-                          className={styles["joining-Meeting"]}
+                          className="joining-Meeting-Upcoming"
                           onClick={() =>
                             meetingDashboardCalendarEvent(upcomingEventsData)
                           }
@@ -1049,7 +1415,7 @@ const Home = () => {
                           .participantRoleID === 4 ? (
                         <Button
                           text={t("Join-meeting")}
-                          className={styles["joining-Meeting"]}
+                          className="joining-Meeting-Upcoming"
                           onClick={() =>
                             meetingDashboardCalendarEvent(upcomingEventsData)
                           }
@@ -1058,7 +1424,7 @@ const Home = () => {
                           .participantRoleID === 1 ? (
                         <Button
                           text={t("Join-meeting")}
-                          className={styles["joining-Meeting"]}
+                          className="joining-Meeting-Upcoming"
                           onClick={() =>
                             meetingDashboardCalendarEvent(upcomingEventsData)
                           }
@@ -1068,11 +1434,109 @@ const Home = () => {
                   </div>
                 </Col>
               </Row>
-            )}
-          </>
-        );
-      }
-    );
+            </>
+          ) : (
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                <div
+                  className={
+                    (upcomingEventsData.meetingDetails.statusID === 1 &&
+                      minutesDifference < 15) ||
+                    upcomingEventsData.meetingDetails.statusID === 10
+                      ? "event-details d-flex justify-content-center align-items-center"
+                      : "event-details"
+                  }
+                  onClick={() =>
+                    viewModalHandler(upcomingEventsData.meetingDetails.pK_MDID)
+                  }
+                >
+                  <div
+                    className={
+                      (upcomingEventsData.meetingDetails.statusID === 1 &&
+                        minutesDifference < 15) ||
+                      upcomingEventsData.meetingDetails.statusID === 10
+                        ? "event-details-block"
+                        : ""
+                    }
+                  >
+                    <p className="events-description">
+                      {upcomingEventsData.meetingDetails.title}
+                    </p>
+                    <p className="events-dateTime">
+                      {newTimeFormaterAsPerUTCFullDate(
+                        upcomingEventsData.meetingEvent.meetingDate +
+                          upcomingEventsData.meetingEvent.startTime
+                      )}
+                    </p>
+                  </div>
+                  {upcomingEventsData.meetingDetails.statusID === 1 &&
+                  upcomingEventsData.meetingDetails.participantRoleID === 1 ? (
+                    upcomingEventsData.meetingDetails.isQuickMeeting === true &&
+                    minutesDifference < 15 ? (
+                      // &&
+                      // minutesDifference > 0
+                      //   &&
+                      //   minutesDifference <= 99999999 &&
+                      //   minutesDifference > 0
+                      <Button
+                        text={t("Start-meeting")}
+                        className="Start-Meeting-Upcoming"
+                        onClick={() =>
+                          meetingDashboardCalendarEvent(upcomingEventsData)
+                        }
+                      />
+                    ) : upcomingEventsData.meetingDetails.isQuickMeeting ===
+                        false && minutesDifference < 15 ? (
+                      // &&
+                      // minutesDifference > 0
+                      //   &&
+                      //     minutesDifference <= 99999999 &&
+                      //     minutesDifference > 0
+                      <Button
+                        text={t("Start-meeting")}
+                        className="Start-Meeting-Upcoming"
+                        onClick={() =>
+                          meetingDashboardCalendarEvent(upcomingEventsData)
+                        }
+                      />
+                    ) : null
+                  ) : upcomingEventsData.meetingDetails.statusID === 10 ? (
+                    upcomingEventsData.meetingDetails.participantRoleID ===
+                    2 ? (
+                      <Button
+                        text={t("Join-meeting")}
+                        className="joining-Meeting-Upcoming"
+                        onClick={() =>
+                          meetingDashboardCalendarEvent(upcomingEventsData)
+                        }
+                      />
+                    ) : upcomingEventsData.meetingDetails.participantRoleID ===
+                      4 ? (
+                      <Button
+                        text={t("Join-meeting")}
+                        className="joining-Meeting-Upcoming"
+                        onClick={() =>
+                          meetingDashboardCalendarEvent(upcomingEventsData)
+                        }
+                      />
+                    ) : upcomingEventsData.meetingDetails.participantRoleID ===
+                      1 ? (
+                      <Button
+                        text={t("Join-meeting")}
+                        className="joining-Meeting-Upcoming"
+                        onClick={() =>
+                          meetingDashboardCalendarEvent(upcomingEventsData)
+                        }
+                      />
+                    ) : null
+                  ) : null}
+                </div>
+              </Col>
+            </Row>
+          )}
+        </>
+      );
+    });
   };
 
   const OpenUpdateNotesModal = async (id) => {
@@ -1147,19 +1611,28 @@ const Home = () => {
 
   const handleClickonDate = (dateObject, dateSelect) => {
     let selectDate = dateSelect.toString().split("/").join("");
-    if (
-      calendarReducer.CalenderData.length !== null &&
-      calendarReducer.CalenderData !== undefined &&
-      calendarReducer.CalenderData.length > 0
-    ) {
-      let findData = calendarReducer.CalenderData.filter(
-        (data, index) =>
+    if (calendarEvents.length > 0) {
+      const findData = calendarEvents.filter(
+        (data) =>
           startDateTimeMeetingCalendar(data.eventDate + data.startTime) ===
           selectDate
       );
+
       if (findData.length > 0) {
-        setEvents(findData);
+        setEvents(findData); // Assuming findData is already an array
         setEventsModal(true);
+        // Check if the event's pK_MDID matches with MeetingStatusSocket's pK_MDID
+        findData.forEach((event) => {
+          if (
+            event.pK_MDID ===
+            meetingIdReducer.MeetingStatusSocket?.meeting?.pK_MDID
+          ) {
+            // Update the statusID to 10
+            event.statusID = 10;
+            // Dispatch an action to update the global state if needed
+            // dispatch(updateEventStatus(event)); // Assuming you have a proper action
+          }
+        });
       } else {
         setOpen({
           ...open,
@@ -1169,6 +1642,7 @@ const Home = () => {
       }
     }
   };
+
   return (
     <>
       <Container fluid className="Dashboard-Main-Container">
@@ -1266,8 +1740,7 @@ const Home = () => {
                             </h1>
 
                             <div className="Upcoming-Events-Box">
-                              {meetingIdReducer.UpcomingEventsData.length ===
-                              0 ? (
+                              {upComingEvents.length === 0 ? (
                                 <ResultMessage
                                   icon={
                                     <img
@@ -1285,7 +1758,7 @@ const Home = () => {
                                   className="notification-text"
                                 />
                               ) : (
-                                upcomingEventsHandler(meetingIdReducer)
+                                upcomingEventsHandler(upComingEvents)
                               )}
                             </div>
                           </Col>

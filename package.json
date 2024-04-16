@@ -3,8 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@azure/msal-browser": "^3.6.0",
-    "@azure/msal-react": "^2.0.8",
+    "@chartiful/react-chart-builder": "^0.1.6",
     "@chartiful/react-vertical-bar-graph": "^0.1.6",
     "@emoji-mart/data": "^1.1.1",
     "@emoji-mart/react": "^1.1.1",

@@ -16,8 +16,13 @@ import {
   getMeetingbyGroupApi,
   scheduleMeetingPageFlag,
   searchNewUserMeeting,
+  viewAdvanceMeetingPublishPageFlag,
+  viewAdvanceMeetingUnpublishPageFlag,
+  LeaveCurrentMeeting,
+  JoinCurrentMeeting,
 } from "./NewMeetingActions";
 import { ViewMeeting } from "./Get_List_Of_Assignees";
+import { getCurrentDateTimeUTC } from "../../commen/functions/date_formater";
 
 const getAllCommitteesUsersandGroups_init = () => {
   return {
@@ -269,9 +274,18 @@ const UpdateOrganizersMeeting = (
   setViewFlag,
   setEditFlag,
   setCalendarViewModal,
-  dashboardFlag
+  dashboardFlag,
+  setViewAdvanceMeetingModal
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  let userID = localStorage.getItem("userID");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let currentView = localStorage.getItem("MeetingCurrentView");
+  let leaveMeetingData = {
+    FK_MDID: Data.MeetingID,
+    DateTime: getCurrentDateTimeUTC(),
+  };
   return async (dispatch) => {
     dispatch(updateOrganizerMeetingStatus_init());
     let form = new FormData();
@@ -303,7 +317,8 @@ const UpdateOrganizersMeeting = (
               setViewFlag,
               setEditFlag,
               setCalendarViewModal,
-              dashboardFlag
+              dashboardFlag,
+              setViewAdvanceMeetingModal
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -330,7 +345,9 @@ const UpdateOrganizersMeeting = (
                       : ""
                   )
                 );
-                dispatch(setLoaderFalse(false));
+                if (route !== 4 && Data.StatusID !== 9) {
+                  dispatch(setLoaderFalse(false));
+                }
                 if (route === 3) {
                   let requestDataForMeetingDetails = {
                     MeetingID: Number(Data.MeetingID),
@@ -346,35 +363,97 @@ const UpdateOrganizersMeeting = (
                       setDataroomMapFolderId
                     )
                   );
-                  setSceduleMeeting(false);
-                  // await dispatch(scheduleMeetingPageFlag(false));
-                  // setPublishState(true);
+                  // setSceduleMeeting(false);
                   setEdiorRole({
                     status: "10",
                     role: "Organizer",
+                    isPrimaryOrganizer: false,
                   });
-                } else if (route === 4) {
-                  let requestDataForMeetingDetails = {
-                    MeetingID: Number(Data.MeetingID),
-                  };
-                  await dispatch(
-                    ViewMeeting(
+                  dispatch(
+                    JoinCurrentMeeting(
+                      true,
                       navigate,
-                      requestDataForMeetingDetails,
                       t,
+                      leaveMeetingData,
                       setViewFlag,
                       setEditFlag,
-                      setCalendarViewModal,
-                      1
+                      setSceduleMeeting,
+                      1,
+                      setAdvanceMeetingModalID,
+                      setViewAdvanceMeetingModal
                     )
                   );
-                  setAdvanceMeetingModalID(Data.MeetingID);
-                  setEdiorRole({
-                    status: "10",
-                    role: "Organizer",
-                  });
-                  if (dashboardFlag) {
-                    navigate("/Diskus/Meeting");
+                } else if (route === 4) {
+                  if (Data.StatusID === 9) {
+                    dispatch(
+                      LeaveCurrentMeeting(
+                        navigate,
+                        t,
+                        leaveMeetingData,
+                        false,
+                        setViewFlag,
+                        setEdiorRole,
+                        setAdvanceMeetingModalID,
+                        setViewAdvanceMeetingModal
+                      )
+                    );
+
+                    localStorage.removeItem("folderDataRoomMeeting");
+                    setEdiorRole({ status: null, role: null });
+                    setAdvanceMeetingModalID(null);
+                    setViewAdvanceMeetingModal(false);
+                    dispatch(viewAdvanceMeetingPublishPageFlag(false));
+                    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+                    // let searchData = {
+                    //   Date: "",
+                    //   Title: "",
+                    //   HostName: "",
+                    //   UserID: Number(userID),
+                    //   PageNumber:
+                    //     meetingPageCurrent !== null
+                    //       ? Number(meetingPageCurrent)
+                    //       : 1,
+                    //   Length:
+                    //     meetingpageRow !== null ? Number(meetingpageRow) : 50,
+                    //   PublishedMeetings:
+                    //     currentView && Number(currentView) === 1 ? true : false,
+                    // };
+                    // dispatch(searchNewUserMeeting(navigate, searchData, t));
+                  } else {
+                    let requestDataForMeetingDetails = {
+                      MeetingID: Number(Data.MeetingID),
+                    };
+                    await dispatch(
+                      ViewMeeting(
+                        navigate,
+                        requestDataForMeetingDetails,
+                        t,
+                        setViewFlag,
+                        setEditFlag,
+                        setCalendarViewModal,
+                        1
+                      )
+                    );
+                    setAdvanceMeetingModalID(Data.MeetingID);
+                    setEdiorRole({
+                      status: "10",
+                      role: "Organizer",
+                      isPrimaryOrganizer: false,
+                    });
+                    dispatch(
+                      JoinCurrentMeeting(
+                        true,
+                        navigate,
+                        t,
+                        leaveMeetingData,
+                        setViewFlag,
+                        setEditFlag,
+                        setSceduleMeeting,
+                        1,
+                        setAdvanceMeetingModalID,
+                        setViewAdvanceMeetingModal
+                      )
+                    );
                   }
                 } else if (route === 5) {
                   let currentView = localStorage.getItem("MeetingCurrentView");
@@ -431,7 +510,9 @@ const UpdateOrganizersMeeting = (
                   };
                   dispatch(getMeetingbyGroupApi(navigate, t, searchData));
                 }
-              } catch {}
+              } catch {
+                console.error("error");
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

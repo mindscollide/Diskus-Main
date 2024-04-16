@@ -490,7 +490,11 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
 
   const checkGroupHead = (groupMembers) => {
     let flag1 = groupMembers.findIndex((data, index) => data.FK_GRMRID === 2);
-    return flag1;
+    if (flag1 !== -1) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   const handleUpdateGroup = () => {
@@ -502,15 +506,13 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       if (Object.keys(membersData).length === 0) {
         setOpen({
           flag: true,
-          message: t("Please-add-atleast-one-group-head-and-one-group-member"),
+          message: t("Please-add-atleast-one-group-head"),
         });
       } else {
-        if (!checkGroupMembers(membersData)) {
+        if (!checkGroupHead(membersData)) {
           setOpen({
             flag: true,
-            message: t(
-              "Please-add-atleast-one-group-head-and-one-group-member"
-            ),
+            message: t("Please-add-atleast-one-group-head"),
           });
         } else {
           setErrorBar(false);
@@ -558,10 +560,6 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     if (GroupsReducer.getGroupByGroupIdResponse !== null) {
       let groupDetails = GroupsReducer.getGroupByGroupIdResponse;
 
-      console.log(
-        GroupsReducer.getGroupByGroupIdResponse.isTalk,
-        "groupDetailsgroupDetailsgroupDetails"
-      );
       let newArr = [];
       let newData = [];
       if (groupDetails.groupMembers.length > 0) {
@@ -678,9 +676,6 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   let previousFileList = [];
   //Sliders For Attachments
 
-  console.log(fileForSend, "fileForSendfileForSend");
-  console.log(fileAttachments, "fileForSendfileForSend");
-
   const SlideLeft = () => {
     var Slider = document.getElementById("Slider");
     Slider.scrollLeft = Slider.scrollLeft - 300;
@@ -700,28 +695,6 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     updateFileForSend.splice(index, 1);
     setFileForSend(updateFileForSend);
   };
-
-  // const handleRemoveFile = (data) => {
-  //   setFileForSend((prevFiles) =>
-  //     prevFiles.filter(
-  //       (fileSend) => fileSend.name !== data.DisplayAttachmentName
-  //     )
-  //   );
-
-  //   setPreviousFileIDs((prevFiles) =>
-  //     prevFiles.filter(
-  //       (fileSend) =>
-  //         fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
-  //     )
-  //   );
-
-  //   setFileAttachments((prevFiles) =>
-  //     prevFiles.filter(
-  //       (fileSend) =>
-  //         fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
-  //     )
-  //   );
-  // };
 
   useEffect(() => {
     if (
@@ -760,8 +733,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       });
       // Wait for all promises to resolve
       await Promise.all(uploadPromises);
-      console.log(newfile, "fileObjfileObjfileObjfileObj");
-      console.log(fileObj, "fileObjfileObjfileObjfileObj");
+
       await dispatch(
         saveFilesGroupsApi(navigate, t, fileObj, folderID, newfile)
       );
@@ -773,7 +745,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         return { PK_FileID: Number(data.pK_FileID) };
       }),
     };
-    console.log(Data, "fileObjfileObjfileObjfileObj");
+
     dispatch(
       SaveGroupsDocumentsApiFunc(navigate, Data, t, setUpdateComponentpage)
     );

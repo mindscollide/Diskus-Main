@@ -66,6 +66,9 @@ const PrivateChats = () => {
     } else {
       setPrivateMessageData([]);
     }
+    return () => {
+      setPrivateMessageData([]);
+    };
   }, [talkStateData.AllUserChats.AllUserChatsData]);
 
   const chatClick = (record) => {

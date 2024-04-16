@@ -40,6 +40,7 @@ import {
   getIconSource,
 } from "../../../../DataRoom/SearchFunctionality/option";
 import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
+import { timeFormatFunction } from "../../../../../commen/functions/date_formater";
 
 const ParentAgenda = ({
   data,
@@ -294,11 +295,18 @@ const ParentAgenda = ({
                               Number(data.voteOwner.userid) ===
                                 Number(currentUserID) &&
                               !data.voteOwner?.currentVotingClosed ? (
-                                <Button
-                                  text={t("Start-voting")}
-                                  className={styles["startVotingButton"]}
-                                  onClick={() => startVoting(data)}
-                                />
+                                <>
+                                  <Button
+                                    text={t("Start-voting")}
+                                    className={styles["startVotingButton"]}
+                                    onClick={() => startVoting(data)}
+                                  />
+                                  <Button
+                                    text={t("View-votes")}
+                                    className={styles["ViewVoteButton"]}
+                                    onClick={() => EnableViewVoteModal(data)}
+                                  />
+                                </>
                               ) : Number(data.agendaVotingID) !== 0 &&
                                 Number(editorRole.status) === 10 &&
                                 Number(data.voteOwner.userid) ===
@@ -317,7 +325,8 @@ const ParentAgenda = ({
                                   />
                                 </>
                               ) : editorRole.role === "Organizer" &&
-                                data.voteOwner?.currentVotingClosed ? (
+                                (Number(data.agendaVotingID) !== 0 ||
+                                  data.voteOwner?.currentVotingClosed) ? (
                                 <>
                                   <Button
                                     text={t("View-votes")}
@@ -388,13 +397,12 @@ const ParentAgenda = ({
                                       {data?.presenterName +
                                         " - (" +
                                         moment(
-                                          data?.startDate,
-                                          "HHmmss"
+                                          timeFormatFunction(data.startDate)
                                         ).format("hh:mm a") +
                                         " - " +
-                                        moment(data?.endDate, "HHmmss").format(
-                                          "hh:mm a"
-                                        ) +
+                                        moment(
+                                          timeFormatFunction(data.endDate)
+                                        ).format("hh:mm a") +
                                         ")"}
                                     </p>
                                     {/* <span

@@ -27,6 +27,7 @@ import {
   setTasksByGroupApi,
 } from "./Polls_actions";
 import { updateTodoStatusFunc } from "./GetTodos";
+import { emptyCommentState } from "./Post_AssigneeComments";
 
 const ClearMappingFolderID = () => {
   return {
@@ -470,6 +471,8 @@ const ViewToDoList = (
                 )
             ) {
               await dispatch(ShowNotification(t("Record-found")));
+              dispatch(emptyCommentState());
+
               await dispatch(ViewToDoSuccess(response.data.responseResult));
 
               if (typeof setViewFlagToDo === "function") {
@@ -1777,7 +1780,31 @@ const saveTaskDocumentsApi = (navigate, Data, t, value, setShow) => {
   };
 };
 
+const createTaskGroupMQTT = (response) => {
+  return {
+    type: actions.TODO_CREATE_GROUP,
+    response: response,
+  };
+};
+
+const createTaskCommitteeMQTT = (response) => {
+  return {
+    type: actions.TODO_CREATE_COMMITTEE,
+    response: response,
+  };
+};
+
+const createTaskMeetingMQTT = (response) => {
+  return {
+    type: actions.TODO_CREATE_ADVANCED_MEETING,
+    response: response,
+  };
+};
+
 export {
+  createTaskGroupMQTT,
+  createTaskCommitteeMQTT,
+  createTaskMeetingMQTT,
   saveTaskDocumentsApi,
   saveTaskDocumentsAndAssigneesApi,
   deleteCommitteeTaskApi,

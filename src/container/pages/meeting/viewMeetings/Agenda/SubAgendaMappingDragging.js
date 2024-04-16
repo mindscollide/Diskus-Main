@@ -39,6 +39,7 @@ import {
   getIconSource,
 } from "../../../../DataRoom/SearchFunctionality/option";
 import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
+import { timeFormatFunction } from "../../../../../commen/functions/date_formater";
 
 const SubAgendaMappingDragging = ({
   data,
@@ -461,15 +462,30 @@ const SubAgendaMappingDragging = ({
                                               ) === Number(currentUserID) &&
                                               !subAgendaData.voteOwner
                                                 ?.currentVotingClosed ? (
-                                                <Button
-                                                  text={t("Start-voting")}
-                                                  className={
-                                                    styles["startVotingButton"]
-                                                  }
-                                                  onClick={() =>
-                                                    startVoting(subAgendaData)
-                                                  }
-                                                />
+                                                <>
+                                                  <Button
+                                                    text={t("Start-voting")}
+                                                    className={
+                                                      styles[
+                                                        "startVotingButton"
+                                                      ]
+                                                    }
+                                                    onClick={() =>
+                                                      startVoting(subAgendaData)
+                                                    }
+                                                  />
+                                                  <Button
+                                                    text={t("View-votes")}
+                                                    className={
+                                                      styles["ViewVoteButton"]
+                                                    }
+                                                    onClick={() =>
+                                                      EnableViewVoteModal(
+                                                        subAgendaData
+                                                      )
+                                                    }
+                                                  />
+                                                </>
                                               ) : Number(
                                                   subAgendaData.agendaVotingID
                                                 ) !== 0 &&
@@ -506,8 +522,11 @@ const SubAgendaMappingDragging = ({
                                                 </>
                                               ) : editorRole.role ===
                                                   "Organizer" &&
-                                                subAgendaData.voteOwner
-                                                  ?.currentVotingClosed ? (
+                                                (subAgendaData.voteOwner
+                                                  ?.currentVotingClosed ||
+                                                  Number(
+                                                    subAgendaData.agendaVotingID
+                                                  ) !== 0) ? (
                                                 <>
                                                   <Button
                                                     text={t("View-votes")}
@@ -615,18 +634,30 @@ const SubAgendaMappingDragging = ({
                                                         {/* {
                                                           subAgendaData?.presenterName
                                                         } */}
-                                                        {subAgendaData?.presenterName +
-                                                          " - (" +
-                                                          moment(
-                                                            subAgendaData?.startDate,
-                                                            "HHmmss"
-                                                          ).format("hh:mm a") +
-                                                          " - " +
-                                                          moment(
-                                                            subAgendaData?.endDate,
-                                                            "HHmmss"
-                                                          ).format("hh:mm a") +
-                                                          ")"}
+                                                        {
+                                                          subAgendaData?.presenterName +
+                                                            " - (" +
+                                                            moment(
+                                                              timeFormatFunction(
+                                                                data.startDate
+                                                              )
+                                                            ).format(
+                                                              "hh:mm a"
+                                                            ) +
+                                                            " - " +
+                                                            moment(
+                                                              timeFormatFunction(
+                                                                data.endDate
+                                                              )
+                                                            ).format(
+                                                              "hh:mm a"
+                                                            ) +
+                                                            ")"
+                                                          // moment(
+                                                          //   subAgendaData?.endDate,
+                                                          //   "HHmmss"
+                                                          // ).format("hh:mm a") +
+                                                        }
                                                       </p>
                                                       {/* <span
                                                       className={

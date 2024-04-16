@@ -250,18 +250,6 @@ const ParentAgenda = ({
         "_blank",
         "noopener noreferrer"
       );
-    } else {
-      let data = {
-        FileID: Number(record.originalAttachmentName),
-      };
-      dispatch(
-        DataRoomDownloadFileApiFunc(
-          navigate,
-          data,
-          t,
-          record.displayAttachmentName
-        )
-      );
     }
   };
 
@@ -374,11 +362,22 @@ const ParentAgenda = ({
                                     Number(data.voteOwner.userid) ===
                                       Number(currentUserID) &&
                                     !data.voteOwner?.currentVotingClosed ? (
-                                      <Button
-                                        text={t("Start-voting")}
-                                        className={styles["startVotingButton"]}
-                                        onClick={() => startVoting(data)}
-                                      />
+                                      <>
+                                        <Button
+                                          text={t("Start-voting")}
+                                          className={
+                                            styles["startVotingButton"]
+                                          }
+                                          onClick={() => startVoting(data)}
+                                        />
+                                        <Button
+                                          text={t("View-votes")}
+                                          className={styles["ViewVoteButton"]}
+                                          onClick={() =>
+                                            EnableViewVoteModal(data)
+                                          }
+                                        />
+                                      </>
                                     ) : Number(data.agendaVotingID) !== 0 &&
                                       Number(editorRole.status) === 10 &&
                                       Number(data.voteOwner.userid) ===
@@ -401,7 +400,8 @@ const ParentAgenda = ({
                                         />
                                       </>
                                     ) : editorRole.role === "Organizer" &&
-                                      data.voteOwner?.currentVotingClosed ? (
+                                      (data.voteOwner?.currentVotingClosed ||
+                                        Number(data.agendaVotingID) !== 0) ? (
                                       <>
                                         <Button
                                           text={t("View-votes")}
@@ -497,7 +497,23 @@ const ParentAgenda = ({
                                                   )
                                                 }
                                                 className={
-                                                  styles["fileNameAttachment"]
+                                                  [
+                                                    "pdf",
+                                                    "doc",
+                                                    "docx",
+                                                    "xls",
+                                                    "xlsx",
+                                                  ].includes(
+                                                    getFileExtension(
+                                                      filesData?.displayAttachmentName
+                                                    )
+                                                  )
+                                                    ? styles[
+                                                        "fileNameAttachment"
+                                                      ]
+                                                    : styles[
+                                                        "fileNameAttachmentNotOpened"
+                                                      ]
                                                 }
                                               >
                                                 {
@@ -623,6 +639,9 @@ const ParentAgenda = ({
                                               draggable={false}
                                               src={DownloadIcon}
                                               alt=""
+                                              onClick={() =>
+                                                downloadDocument(filesData)
+                                              }
                                             />
                                           </Col>
                                         </Row>

@@ -44,6 +44,10 @@ import {
   meetingOrganizerAdded,
   meetingOrganizerRemoved,
 } from "../../../../../../store/actions/NewMeetingActions";
+import {
+  GetAllUserChats,
+  activeChat,
+} from "../../../../../../store/actions/Talk_action";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import SceduleProposedmeeting from "./SceduleProposedMeeting/SceduleProposedmeeting";
@@ -80,6 +84,7 @@ const UnpublishedProposedMeeting = ({
   const { t } = useTranslation();
   const navigate = useNavigate();
   let currentUserId = localStorage.getItem("userID");
+  let currentOrganizationId = localStorage.getItem("organizationID");
   let currentView = localStorage.getItem("MeetingCurrentView");
   const [open, setOpen] = useState({
     flag: false,
@@ -235,6 +240,33 @@ const UnpublishedProposedMeeting = ({
               });
               handleOpenViewModal(record);
               dispatch(viewMeetingFlag(true));
+              dispatch(
+                GetAllUserChats(
+                  navigate,
+                  parseInt(currentUserId),
+                  parseInt(currentOrganizationId),
+                  t
+                )
+              );
+              let activeChatData = {
+                id: record.talkGroupID,
+                fullName: record.title,
+                imgURL: "",
+                messageBody: "",
+                messageDate: "",
+                notiCount: 0,
+                messageType: "G",
+                isOnline: false,
+                companyName: "",
+                sentDate: "",
+                receivedDate: "",
+                seenDate: "",
+                attachmentLocation: "",
+                senderID: 0,
+                admin: 0,
+                isBlock: 0,
+              };
+              dispatch(activeChat(activeChatData));
               dispatch(meetingDetailsGlobalFlag(true));
               dispatch(organizersGlobalFlag(false));
               dispatch(agendaContributorsGlobalFlag(false));
@@ -611,7 +643,7 @@ const UnpublishedProposedMeeting = ({
   ];
 
   useEffect(() => {
-    if (Object.keys(allMeetingsSocketData).length > 0) {
+    if (allMeetingsSocketData !== null) {
       let tableRowsData = [...rows];
       var foundIndex = tableRowsData.findIndex(
         (x) => x.pK_MDID === allMeetingsSocketData.pK_MDID

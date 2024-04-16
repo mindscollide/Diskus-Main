@@ -141,8 +141,8 @@ const MeetingDetails = ({
   const [meetingDetails, setMeetingDetails] = useState({
     MeetingTitle: "",
     MeetingType: {
-      PK_MTID: 1,
-      Type: t("Board-meeting"),
+      PK_MTID: 0,
+      Type: "",
     },
     Location: "",
     Description: "",

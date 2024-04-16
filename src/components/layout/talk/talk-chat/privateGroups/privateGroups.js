@@ -62,6 +62,11 @@ const PrivateGroups = () => {
           (data, index) => data.messageType === "G"
         );
       setPrivateGroupsData(privateGroupsMessages);
+    } else {
+      setPrivateGroupsData([])
+    }
+    return () => {
+      setPrivateGroupsData([])
     }
   }, [talkStateData.AllUserChats.AllUserChatsData]);
 
@@ -109,6 +114,9 @@ const PrivateGroups = () => {
       };
       setPrivateGroupsData((prev) => [newGroup, ...prev]);
       dispatch(mqttGroupCreated([]));
+    }
+    return () => {
+      setPrivateGroupsData([])
     }
   }, [talkStateData.talkSocketGroupCreation.groupCreatedData]);
 

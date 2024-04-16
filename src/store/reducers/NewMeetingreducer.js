@@ -139,6 +139,9 @@ const initialState = {
   mqttMeetingAcRemoved: null,
   mqttMeetingOrgAdded: null,
   mqttMeetingOrgRemoved: null,
+  joinMeetingResponse: null,
+  leaveMeetingResponse: null,
+  currentMeetingStatus: 0,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -1925,6 +1928,11 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.MQTT_MEETING_STATUS_PUBLISHED: {
+      console.log(
+        action,
+        "meetingStatusPublishedMqttmeetingStatusPublishedMqtt"
+      );
+
       return {
         ...state,
         meetingStatusPublishedMqttData: action.response,
@@ -2162,6 +2170,72 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: false,
         endMeetingStatus: null,
         ResponseMessage: action.message,
+      };
+    }
+
+    case actions.JOIN_MEETING_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.JOIN_MEETING_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        joinMeetingResponse: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.JOIN_MEETING_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        joinMeetingResponse: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.LEAVE_MEETING_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.LEAVE_MEETING_SUCCESS_QUICK: {
+      return {
+        ...state,
+        Loading: false,
+        leaveMeetingResponse: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.LEAVE_MEETING_SUCCESS_ADVANCED: {
+      return {
+        ...state,
+        // Loading: false,
+        leaveMeetingResponse: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.LEAVE_MEETING_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        leaveMeetingResponse: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.CURRENT_MEETING_STATUS: {
+      return {
+        ...state,
+        currentMeetingStatus: action.response,
       };
     }
 

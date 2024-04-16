@@ -42,6 +42,7 @@ import AfterViewPolls from "./AfterViewPolls/AfterViewPolls";
 import CancelPolls from "./CancelPolls/CancelPolls";
 import { _justShowDateformatBilling } from "../../../../../commen/functions/date_formater";
 import {
+  createPollMeetingMQTT,
   deleteMeetingPollApi,
   getPollByPollIdforMeeting,
   getPollsByPollIdApi,
@@ -65,7 +66,9 @@ const Polls = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer, CommitteeReducer } = useSelector((state) => state);
+  const { NewMeetingreducer, CommitteeReducer, PollsReducer } = useSelector(
+    (state) => state
+  );
   const [votePolls, setvotePolls] = useState(false);
   const [createpoll, setCreatepoll] = useState(false);
   const [editPolls, setEditPolls] = useState(false);
@@ -148,6 +151,21 @@ const Polls = ({
       }
     } catch {}
   }, [NewMeetingreducer.getPollsMeetingID]);
+
+  // MQTT Response of Polls for Meeting
+  useEffect(() => {
+    try {
+      if (PollsReducer.newPollMeeting !== null) {
+        let PollData = PollsReducer.newPollMeeting;
+        if (Number(PollData.meetingID) === Number(currentMeeting)) {
+          setPollsRows([PollData.polls, ...pollsRows]);
+        }
+        dispatch(createPollMeetingMQTT(null));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [PollsReducer.newPollMeeting]);
   const handleClickTitle = (record) => {
     if (
       Number(record.pollStatus.pollStatusId) === 1 ||

@@ -46,6 +46,8 @@ const ViewPollProgress = () => {
       let pollOptions = pollData.pollOptions;
       let pollSelectedAnswers = pollData.selectedAnswers;
 
+      console.log(pollDetails, "pollDetailspollDetails");
+
       let memberpollsprogressView = [];
       let newOption = [];
 
@@ -105,9 +107,12 @@ const ViewPollProgress = () => {
     }
   }, [PollsReducer.Allpolls]);
 
-  const changeDateStartHandler2 = (date) => {
-    let newDate = moment(date).format("DD MMMM YYYY");
+  console.log(viewProgressPollsDetails.Date, "viewProgressPollsDetails");
 
+  const changeDateStartHandler2 = (date) => {
+    console.log(date, "viewProgressPollsDetails");
+    let newDate = moment(date, "YYYYMMDDHHmmss").format("DD MMMM YYYY");
+    console.log(newDate, "viewProgressPollsDetails");
     return newDate;
   };
 
@@ -152,6 +157,7 @@ const ViewPollProgress = () => {
                       src={AlarmClock}
                       width="14.97px"
                       height="14.66px"
+                      alt=""
                     />
                     <span className={styles["ViewPRogressDueDate"]}>
                       {t("Due-date-on")}{" "}

@@ -832,20 +832,33 @@ export const get_CurrentDateTime = () => {
   return { currentTime, current_Date, dateObject: currentDate, current_value };
 };
 
-export const getDifferentisDateisPassed = (curentDate, dataDateValue) => {
+export const getDifferentisDateisPassed = (currentDate, dataDateValue) => {
   if (
-    curentDate instanceof Date &&
-    !isNaN(curentDate) &&
+    currentDate instanceof Date &&
+    !isNaN(currentDate) &&
     dataDateValue instanceof Date &&
     !isNaN(dataDateValue)
   ) {
-    if (curentDate > dataDateValue) {
-      return true;
+    // Create new Date objects with only date parts
+    const currentDateOnlyDate = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate()
+    );
+    const dataDateValueOnlyDate = new Date(
+      dataDateValue.getFullYear(),
+      dataDateValue.getMonth(),
+      dataDateValue.getDate()
+    );
+
+    // Compare the dates
+    if (currentDateOnlyDate > dataDateValueOnlyDate) {
+      return true; // currentDate is after dataDateValue
     } else {
-      return false;
+      return false; // currentDate is not after dataDateValue
     }
   }
-  return false;
+  return false; // Invalid input dates
 };
 
 // this function made by Huj For proposed meeting date
@@ -897,3 +910,18 @@ export function convertAndFormatDateTimeGMT(dateTimeString) {
 
   return `${formattedDate} | ${formattedTime}`;
 }
+
+export function getCurrentDateTimeUTC() {
+  const now = new Date();
+  const year = now.getUTCFullYear();
+  const month = String(now.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(now.getUTCDate()).padStart(2, "0");
+  const hours = String(now.getUTCHours()).padStart(2, "0");
+  const minutes = String(now.getUTCMinutes()).padStart(2, "0");
+  const seconds = String(now.getUTCSeconds()).padStart(2, "0");
+  return `${year}${month}${day}${hours}${minutes}${seconds}`;
+}
+
+export const formattedString = (dateString) => {
+  return dateString.replace("T", "").replace(/:/g, "").replace(/-/g, "");
+};

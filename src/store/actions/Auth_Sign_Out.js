@@ -92,7 +92,6 @@ const signOut = (navigate, message) => {
   //   Helper.socket.disconnect(true);
   // }
   window.location.href = window.location.origin + "/";
-  // navigate("/");
   let RememberEmailLocal = JSON.parse(localStorage.getItem("rememberEmail"));
   let RememberPasswordLocal = JSON.parse(
     localStorage.getItem("remeberPassword")
@@ -140,6 +139,8 @@ const signOut = (navigate, message) => {
     localStorage.setItem("remeberPassword", false);
     localStorage.setItem("rememberPasswordValue", "");
   }
+  // navigate("/");
+
   if (message != "") {
     return {
       type: actions.SIGN_OUT,

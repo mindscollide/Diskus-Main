@@ -42,36 +42,36 @@ const RefreshToken = (navigate, t) => {
       .then(async (response) => {
         //
         if (response.data.responseCode === 200) {
-          await dispatch(
-            refreshtokenSuccess(
-              response.data.responseResult,
-              t("Refresh-token-update-successfully")
-            )
-          );
-          localStorage.setItem(
-            "token",
-            JSON.stringify(response.data.responseResult.token)
-          );
-          localStorage.setItem(
-            "refreshToken",
-            JSON.stringify(response.data.responseResult.refreshToken)
-          );
-        } else if (response.data.responseCode === 205) {
-          let message2 = t("Your-session-has-expired-please-login-again");
-          await dispatch(signOut(navigate, message2));
+          if (response.data.responseResult.responseCode === 205) {
+            console.log(
+              response.data,
+              "authenticationApiauthenticationApiauthenticationApi"
+            );
+            let message2 = t("Your-session-has-expired-please-login-again");
+
+            await dispatch(signOut(navigate, message2));
+            // await dispatch(refreshtokenFail(message2));
+            navigate("/");
+          } else {
+            await dispatch(
+              refreshtokenSuccess(
+                response.data.responseResult,
+                t("Refresh-token-update-successfully")
+              )
+            );
+            localStorage.setItem(
+              "token",
+              JSON.stringify(response.data.responseResult.token)
+            );
+            localStorage.setItem(
+              "refreshToken",
+              JSON.stringify(response.data.responseResult.refreshToken)
+            );
+          }
+        } else {
+          let message2 = t("Something-went-wrong");
           await dispatch(refreshtokenFail(message2));
         }
-        // if (response.data.responseResult.responseCode === 205) {
-        // } else if (response.data.responseResult.responseMessage === null) {
-        // }
-        // if (response.data.responseCode === 200) {
-
-        // } else {
-        //
-        //   let message2 = t("Your-session-has-expired-please-login-again");
-        //   await dispatch(signOut(navigate, message2));
-        //   await dispatch(refreshtokenFail(message2));
-        // }
       })
       .catch((response) => {
         dispatch(refreshtokenFail(t("Something-went-wrong")));

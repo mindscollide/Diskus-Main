@@ -267,18 +267,6 @@ const SubAgendaMappingDragging = ({
         "_blank",
         "noopener noreferrer"
       );
-    } else {
-      let data = {
-        FileID: Number(record.originalAttachmentName),
-      };
-      dispatch(
-        DataRoomDownloadFileApiFunc(
-          navigate,
-          data,
-          t,
-          record.displayAttachmentName
-        )
-      );
     }
   };
 
@@ -498,21 +486,38 @@ const SubAgendaMappingDragging = ({
                                                         Number(currentUserID) &&
                                                       !subAgendaData.voteOwner
                                                         ?.currentVotingClosed ? (
-                                                        <Button
-                                                          text={t(
-                                                            "Start-voting"
-                                                          )}
-                                                          className={
-                                                            styles[
-                                                              "startVotingButton"
-                                                            ]
-                                                          }
-                                                          onClick={() =>
-                                                            startVoting(
-                                                              subAgendaData
-                                                            )
-                                                          }
-                                                        />
+                                                        <>
+                                                          <Button
+                                                            text={t(
+                                                              "Start-voting"
+                                                            )}
+                                                            className={
+                                                              styles[
+                                                                "startVotingButton"
+                                                              ]
+                                                            }
+                                                            onClick={() =>
+                                                              startVoting(
+                                                                subAgendaData
+                                                              )
+                                                            }
+                                                          />
+                                                          <Button
+                                                            text={t(
+                                                              "View-votes"
+                                                            )}
+                                                            className={
+                                                              styles[
+                                                                "ViewVoteButton"
+                                                              ]
+                                                            }
+                                                            onClick={() =>
+                                                              EnableViewVoteModal(
+                                                                subAgendaData
+                                                              )
+                                                            }
+                                                          />
+                                                        </>
                                                       ) : Number(
                                                           subAgendaData.agendaVotingID
                                                         ) !== 0 &&
@@ -562,8 +567,11 @@ const SubAgendaMappingDragging = ({
                                                         </>
                                                       ) : editorRole.role ===
                                                           "Organizer" &&
-                                                        subAgendaData.voteOwner
-                                                          ?.currentVotingClosed ? (
+                                                        (subAgendaData.voteOwner
+                                                          ?.currentVotingClosed ||
+                                                          Number(
+                                                            subAgendaData.agendaVotingID
+                                                          ) !== 0) ? (
                                                         <>
                                                           <Button
                                                             text={t(
@@ -692,9 +700,23 @@ const SubAgendaMappingDragging = ({
                                                                     )
                                                                   }
                                                                   className={
-                                                                    styles[
-                                                                      "fileNameAttachment"
-                                                                    ]
+                                                                    [
+                                                                      "pdf",
+                                                                      "doc",
+                                                                      "docx",
+                                                                      "xls",
+                                                                      "xlsx",
+                                                                    ].includes(
+                                                                      getFileExtension(
+                                                                        filesData?.displayAttachmentName
+                                                                      )
+                                                                    )
+                                                                      ? styles[
+                                                                          "fileNameAttachment"
+                                                                        ]
+                                                                      : styles[
+                                                                          "fileNameAttachmentNotOpened"
+                                                                        ]
                                                                   }
                                                                 >
                                                                   {
