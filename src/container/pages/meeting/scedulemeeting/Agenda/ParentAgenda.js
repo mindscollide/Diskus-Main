@@ -455,8 +455,17 @@ const ParentAgenda = ({
       });
     }
     const updatedAgendaItems = [...rows];
+    if(
+      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData === null &&
+      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData ===
+        undefined &&
+      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.length === 0 && 
+      Object.keys(MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData).length === 0
+    ) {
+      console.log("updated Rows ROWS ROWS")
     updatedAgendaItems[index].presenterID = allSavedPresenters[0]?.value;
     updatedAgendaItems[index].presenterName = allSavedPresenters[0]?.label;
+  }
     setRows(updatedAgendaItems);
   }, [presenters, allPresenters]);
 
