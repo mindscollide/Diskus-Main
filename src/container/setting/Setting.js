@@ -96,7 +96,7 @@ const Organization = () => {
   const [signUpCodeToken, setSignUpCodeToken] = useState("");
 
   useEffect(() => {
-    dispatch(getUserSetting(navigate, t));
+    dispatch(getUserSetting(navigate, t, false));
   }, []);
 
   const handleGoogleLoginSuccess = (response) => {

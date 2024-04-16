@@ -1917,5 +1917,7 @@
   "Manage-users": "Manage Users",
   "Time-should-be-greater-then-system-time": "Time should be greater then the system time",
   "Disable-video-call": "Disable video call",
+  "Error-occurred-while-adding-users": "Error Occurred While Adding Users",
+  "Users-added-successfully": "Users Added Successfully",
   "Folder-share-successfully": "Folder share successfully"
 }

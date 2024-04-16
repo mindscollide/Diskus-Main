@@ -21,7 +21,10 @@ import {
   cleareMessage,
   verificationEmailOTP,
 } from "../../../../store/actions/Auth2_actions";
-import { LoginFlowRoutes } from "../../../../store/actions/UserManagementActions";
+import {
+  LoginFlowRoutes,
+  ResendForgotPasswordCodeApi,
+} from "../../../../store/actions/UserManagementActions";
 const ForgotPasswordVerificationUM = () => {
   const dispatch = useDispatch();
 
@@ -29,7 +32,8 @@ const ForgotPasswordVerificationUM = () => {
 
   const { t } = useTranslation();
 
-  const { auth, Authreducer, LanguageReducer } = useSelector((state) => state);
+  const { auth, Authreducer, LanguageReducer, UserMangementReducer } =
+    useSelector((state) => state);
   const [key, setKey] = useState(1);
   const [open, setOpen] = useState({
     open: false,
@@ -67,7 +71,8 @@ const ForgotPasswordVerificationUM = () => {
     localStorage.removeItem("seconds");
     localStorage.removeItem("minutes");
     setVerifyOTP("");
-    dispatch(ResendOTP(t, data, setSeconds, setMinutes));
+    // dispatch(ResendOTP(t, data, setSeconds, setMinutes));
+    dispatch(ResendForgotPasswordCodeApi(t, data, setSeconds, setMinutes));
   };
 
   // Start the timer when the component mounts
@@ -372,6 +377,8 @@ const ForgotPasswordVerificationUM = () => {
       {auth.Loading || LanguageReducer.Loading ? (
         <Loader />
       ) : Authreducer.Loading || LanguageReducer.Loading ? (
+        <Loader />
+      ) : UserMangementReducer.Loading || LanguageReducer.Loading ? (
         <Loader />
       ) : null}
       <Notification setOpen={setOpen} open={open.open} message={open.message} />

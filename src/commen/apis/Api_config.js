@@ -1485,7 +1485,7 @@ const ExtendOrganizationTrial = {
 };
 
 const AddOrganizationsUser = {
-  RequestMethod: "ServiceManager.AddOrganizationsUser",
+  RequestMethod: "ServiceManager.AddOrganizationsUsers",
 };
 
 const EditOrganizationsUser = {
@@ -1524,6 +1524,11 @@ const GetAllUserTypePackages = {
 const leaveFileSharingRM = {
   RequestMethod: "ServiceManager.DeleteFileSharing",
 };
+
+const ResendForgotPasswordCode = {
+  RequestMethod: "ServiceManager.ResendForgotPasswordCode",
+};
+
 export {
   leaveFileSharingRM,
   UserLoginHistoryRM,
@@ -1931,4 +1936,5 @@ export {
   leaveMeeting,
   getOrganizationSelectedPakages,
   GetAllUserTypePackages,
+  ResendForgotPasswordCode,
 };

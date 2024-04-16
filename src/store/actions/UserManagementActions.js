@@ -7,6 +7,7 @@ import {
   getOrganizationSelectedPakages,
   OrganizationPackageDetailsAndUserStats,
   GetAllUserTypePackages,
+  ResendForgotPasswordCode,
 } from "../../commen/apis/Api_config";
 import {
   authenticationApi,
@@ -16,6 +17,7 @@ import * as actions from "../action_types";
 import axios from "axios";
 import { RefreshToken } from "./Auth_action";
 import { getUserSetting } from "./GetUserSetting";
+import { getAllLanguages } from "./Language_actions";
 
 const signUpFlowRoutes = (response) => {
   return {
@@ -348,7 +350,7 @@ const getAllorganizationSubscriptionExpiryDetailsApi = (navigate, t, data) => {
                   t("Successful")
                 )
               );
-              dispatch(getUserSetting(navigate, t));
+              dispatch(getUserSetting(navigate, t, true));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -547,11 +549,12 @@ const addOrganizationUsersInit = () => {
   };
 };
 
-const addOrganizationUsersSuccess = (response, message) => {
+const addOrganizationUsersSuccess = (response, message, loader) => {
   return {
     type: actions.ADD_ORGANIZATION_USERS_SUCCESS,
     response: response,
     message: message,
+    loader: loader,
   };
 };
 
@@ -562,7 +565,7 @@ const addOrganizationUsersFailed = (message) => {
   };
 };
 
-const AddOrganizationsUserApi = (navigate, t, data) => {
+const AddOrganizationsUserApi = (navigate, t, data, loader) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(addOrganizationUsersInit());
@@ -580,98 +583,44 @@ const AddOrganizationsUserApi = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(AddOrganizationsUserApi(navigate, t, data));
+          dispatch(AddOrganizationsUserApi(navigate, t, data, loader));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_AddOrganizationsUser_01".toLowerCase()
+                  "Admin_AdminServiceManager_AddOrganizationsUsers_01".toLowerCase()
                 )
             ) {
               dispatch(
                 addOrganizationUsersSuccess(
                   response.data.responseResult,
-                  t("User-was-created-successfully")
+                  t("Users-added-successfully"),
+                  loader
                 )
               );
+              dispatch(getAllLanguages(navigate, t, true));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_AddOrganizationsUser_02".toLowerCase()
+                  "Admin_AdminServiceManager_AddOrganizationsUsers_02".toLowerCase()
                 )
             ) {
               dispatch(
                 addOrganizationUsersSuccess(
-                  t("User-created-successfully-and-the-OTP")
+                  t("Error-occurred-while-adding-users")
                 )
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_AddOrganizationsUser_03".toLowerCase()
+                  "Admin_AdminServiceManager_AddOrganizationsUsers_03".toLowerCase()
                 )
             ) {
               dispatch(addOrganizationUsersFailed(t("Invalid-data-provided")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Admin_AdminServiceManager_AddOrganizationsUser_04".toLowerCase()
-                )
-            ) {
-              dispatch(
-                addOrganizationUsersFailed(
-                  t("Failed-to-create-user-Package-not-found")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Admin_AdminServiceManager_AddOrganizationsUser_05".toLowerCase()
-                )
-            ) {
-              dispatch(
-                addOrganizationUsersFailed(
-                  t("Failed-to-create-user-headCount-exceeded")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Admin_AdminServiceManager_AddOrganizationsUser_06".toLowerCase()
-                )
-            ) {
-              dispatch(addOrganizationUsersFailed(t("Email-already-in-use")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Admin_AdminServiceManager_AddOrganizationsUser_09".toLowerCase()
-                )
-            ) {
-              dispatch(addOrganizationUsersFailed(t("Failed-to-create-user")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Admin_AdminServiceManager_AddOrganizationsUser_010".toLowerCase()
-                )
-            ) {
-              dispatch(addOrganizationUsersFailed(t("Failed-to-create-user")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Admin_AdminServiceManager_AddOrganizationsUser_11".toLowerCase()
-                )
-            ) {
-              dispatch(addOrganizationUsersFailed(t("Something-went-wrong")));
             } else {
               dispatch(addOrganizationUsersFailed(t("Something-went-wrong")));
             }
@@ -1419,6 +1368,86 @@ const getAllUserTypePackagesApi = (navigate, t) => {
   };
 };
 
+//Resend Forgot Password Code
+
+const ResendForgotPasswordCodeInit = () => {
+  return {
+    type: actions.GET_ALL_USER_TYPES_PAKAGES_INIT,
+  };
+};
+
+const ResendForgotPasswordCodeSuccess = (response, message) => {
+  return {
+    type: actions.RESEND_FORGOT_PASSWORD_CODE_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const ResendForgotPasswordCodefail = (message) => {
+  return {
+    type: actions.RESEND_FORGOT_PASSWORD_CODE_FAIL,
+    message: message,
+  };
+};
+
+const ResendForgotPasswordCodeApi = (
+  t,
+  verificationData,
+  setSeconds,
+  setMinutes
+) => {
+  return (dispatch) => {
+    dispatch(ResendForgotPasswordCodeInit());
+    let form = new FormData();
+    form.append("RequestMethod", ResendForgotPasswordCode.RequestMethod);
+    form.append("RequestData", JSON.stringify(verificationData));
+    axios({
+      method: "post",
+      url: authenticationApi,
+      data: form,
+    })
+      .then((response) => {
+        if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage ===
+            "ERM_AuthService_SignUpManager_ResendForgotPasswordCode_01"
+          ) {
+            let newMessage = t("Successful");
+            dispatch(
+              ResendForgotPasswordCodeSuccess(
+                response.data.responseResult,
+                newMessage
+              )
+            );
+            return setSeconds(60), setMinutes(4);
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "ERM_AuthService_SignUpManager_ResendForgotPasswordCode_02"
+          ) {
+            let newMessage = t("Unsuccessful");
+            dispatch(ResendForgotPasswordCodefail(newMessage));
+            return setSeconds(0), setMinutes(0);
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "ERM_AuthService_SignUpManager_ResendForgotPasswordCode_03"
+          ) {
+            let newMessage = t("Something-went-wrong");
+            dispatch(ResendForgotPasswordCodefail(newMessage));
+            return setSeconds(0), setMinutes(0);
+          }
+        } else {
+          let newMessage = t("Something-went-wrong");
+          dispatch(ResendForgotPasswordCodefail(newMessage));
+          return setSeconds(0), setMinutes(0);
+        }
+      })
+      .catch((response) => {
+        dispatch(ResendForgotPasswordCodefail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   signUpOrganizationAndPakageSelection,
   getAllorganizationSubscriptionExpiryDetailsApi,
@@ -1433,4 +1462,5 @@ export {
   getOrganizationSelectedPakagesAPI,
   getOrganizationPackageUserStatsAPI,
   getAllUserTypePackagesApi,
+  ResendForgotPasswordCodeApi,
 };

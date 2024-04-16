@@ -188,7 +188,7 @@ const updateUserSettingFunc = (
                   t("User-configurations-updated-successfully")
                 )
               );
-              dispatch(getUserSetting(navigate, t));
+              dispatch(getUserSetting(navigate, t, false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

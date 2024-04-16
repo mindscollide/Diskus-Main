@@ -1,10 +1,7 @@
-import { Col, Row, Container } from "react-bootstrap";
-import userImage from "./../../../assets/images/user.png";
-import newprofile from "../../../assets/images/newprofile.png";
-import thumbsup from "../../../assets/images/thumbsup.svg";
-import styles from "./EmployeeinfoCard.module.css";
+import { Col, Row } from "react-bootstrap";
+import styles from "./AddtionalUsersCard.module.css";
 
-const EmployeeinfoCard = ({
+const AddtionalUserCard = ({
   Employeename,
   Employeeemail,
   Icon,
@@ -13,16 +10,6 @@ const EmployeeinfoCard = ({
   return (
     <>
       <Row>
-        <Col lg={2} md={12} sm={12}>
-          <img
-            src={`data:image/jpeg;base64,${EmployeePic}`}
-            width="50px"
-            height="50px"
-            className="rounded-circle"
-            alt=""
-            draggable="false"
-          />
-        </Col>
         <Col lg={7} md={12} sm={12} className={styles["Lineheight"]}>
           <Row className="mt-1">
             <Col lg={12} md={12} sm={12}>
@@ -50,4 +37,4 @@ const EmployeeinfoCard = ({
     </>
   );
 };
-export default EmployeeinfoCard;
+export default AddtionalUserCard;

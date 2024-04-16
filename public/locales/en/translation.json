@@ -1929,5 +1929,7 @@
   "Maximize-screen": "Maximize screen",
   "Are-you-sure-you-want-to-leave-group": "Are you sure to leave the group?",
   "Delete-messages": "Delete messages",
+  "Error-occurred-while-adding-users": "Error Occurred While Adding Users",
+  "Users-added-successfully": "Users Added Successfully",
   "Folder-share-successfully": "Folder share successfully"
 }
