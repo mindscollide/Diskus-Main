@@ -1,22 +1,22 @@
 {
-  "PK_NotesID": 424,
-  "Title": "Notes Checking updated ",
-  "Description": "<p>Checking updated </p>",
-  "isStarred": false,
-  "FK_UserID": 1093,
-  "FK_OrganizationID": 417,
-  "FK_NotesStatusID": 1,
-  "NotesAttachments": [
-    { "FK_NotesID": 0 },
-    {
-      "DisplayAttachmentName": "AdmitCard_4000534.pdf",
-      "OriginalAttachmentName": "20240308072209_AdmitCard_4000534.pdf",
-      "FK_NotesID": 0
-    },
-    {
-      "DisplayAttachmentName": "SPM Assignmnet.pdf",
-      "OriginalAttachmentName": "20240308072209_SPMAssignmnet.pdf",
-      "FK_NotesID": 0
-    }
-  ]
+  "MeetingDetails": {
+    "MeetingID": 0,
+    "MeetingTitle": "testing the meeting dates ",
+    "MeetingType": { "PK_MTID": 4, "Type": "Board Meeting" },
+    "Location": "",
+    "Description": "hello testing ",
+    "IsVideoChat": true,
+    "IsTalkGroup": false,
+    "OrganizationId": 417,
+    "MeetingDates": [
+      { "MeetingDate": "20240416", "StartTime": "070000", "EndTime": "080000" }
+    ],
+    "MeetingReminders": [4],
+    "Notes": "",
+    "AllowRSVP": true,
+    "NotifyOrganizerOnRSVP": true,
+    "ReucurringMeetingID": 1,
+    "VideoURL": "",
+    "MeetingStatusID": 11
+  }
 }
