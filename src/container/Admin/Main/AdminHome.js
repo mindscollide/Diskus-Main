@@ -32,6 +32,7 @@ const AdminHome = () => {
   const location = useLocation();
   const { GetSubscriptionPackage, settingReducer, UserReportReducer } = state;
   const [currentLanguge, setCurrentLanguage] = useState("en");
+  const [flagForStopRerendring, setFlagForStopRerendring] = useState(false);
   const { t } = useTranslation();
   const [client, setClient] = useState(null);
   let createrID = localStorage.getItem("userID");
@@ -140,17 +141,21 @@ const AdminHome = () => {
 
   useEffect(() => {
     console.log("Connected to MQTT broker onConnectionLost useEffect");
-    if (Helper.socket === null) {
-      let userID = localStorage.getItem("userID");
-      mqttConnection(userID);
+    if(!flagForStopRerendring){
+      if (Helper.socket === null) {
+        let userID = localStorage.getItem("userID");
+        mqttConnection(userID);
+      }
+      if (newClient != null) {
+        // newClient.onConnected = onConnected; // Callback when connected
+        newClient.onConnectionLost = onConnectionLost; // Callback when lost connection
+        // newClient.disconnectedPublishing = true; // Enable disconnected publishing
+        newClient.onMessageArrived = onMessageArrived;
+      }
+      setFlagForStopRerendring(true)
     }
-    if (newClient != null) {
-      // newClient.onConnected = onConnected; // Callback when connected
-      newClient.onConnectionLost = onConnectionLost; // Callback when lost connection
-      // newClient.disconnectedPublishing = true; // Enable disconnected publishing
-      newClient.onMessageArrived = onMessageArrived;
-    }
-  }, []);
+   
+  }, [flagForStopRerendring]);
 
   // useEffect(() => {
   //   mqttConnection();

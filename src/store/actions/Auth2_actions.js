@@ -588,7 +588,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               );
               LocalAdminRoutes = [
                 { name: "Admin", id: 200 },
-                { name: "Diskus/Admin", id: 201 },
+                { name: "Admin", id: 201 },
                 { name: "", id: 202 },
                 { name: "ManageUsers", id: 2 },
                 { name: "OrganizationlevelConfigUM", id: 3 },
@@ -606,7 +606,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               );
               LocalAdminRoutes = [
                 { name: "Admin", id: 200 },
-                { name: "Diskus/Admin", id: 201 },
+                { name: "Admin", id: 201 },
                 { name: "", id: 202 },
                 { name: "ManageUsers", id: 2 },
                 { name: "OrganizationlevelConfigUM", id: 3 },
@@ -770,7 +770,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("The-user-is-an-admin-user")
                   )
                 );
-                navigate("/Diskus/Admin/");
+                navigate("/Admin/");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 2
               ) {
@@ -800,7 +800,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("The-user-is-an-admin-user")
                   )
                 );
-                navigate("/Diskus/Admin/");
+                navigate("/Admin/");
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -971,7 +971,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("The-user-is-an-admin-user")
                   )
                 );
-                navigate("/Diskus/Admin/");
+                navigate("/Admin/");
               } else if (
                 JSON.parse(response.data.responseResult.roleId) === 4
               ) {
@@ -1000,7 +1000,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("The-user-is-an-admin-user")
                   )
                 );
-                navigate("/Diskus/Admin/");
+                navigate("/Admin/");
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -1086,7 +1086,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     )
                   )
                 );
-                navigate("/DisKus/Admin/Payment/PayOutstanding");
+                navigate("/Admin/Payment/PayOutstanding");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 2
               ) {
@@ -1111,7 +1111,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     )
                   )
                 );
-                navigate("/Diskus/Admin/Nonactive/");
+                navigate("/Admin/Nonactive/");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 3
               ) {
@@ -1172,7 +1172,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     )
                   )
                 );
-                navigate("/DisKus/Admin/Payment/PayOutstanding");
+                navigate("/Admin/Payment/PayOutstanding");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 2
               ) {
@@ -1197,7 +1197,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     )
                   )
                 );
-                navigate("/DisKus/Admin/Nonactive/");
+                navigate("/Admin/Nonactive/");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 3
               ) {
@@ -1363,7 +1363,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
             //       response.data.responseResult,
             //       t("The-user-is-a-partial-admin")
             //     );
-            //     navigate("/Diskus/Admin/");
+            //     navigate("/Admin/");
             //   } else if (
             //     JSON.parse(response.data.responseResult.userRoleId) === 3
             //   ) {
@@ -1417,7 +1417,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
             //         "The-user-is-a-partial-admin-user-the-organization-subscription-is-not-active-please-contact-your-admin"
             //       )
             //     );
-            //     navigate("/DisKus/Admin/Nonactive/");
+            //     navigate("/Admin/Nonactive/");
             //   }
             // }
             // else if (
@@ -1457,7 +1457,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
             //       response.data.responseResult,
             //       t("The-user-is-a-partial-admin")
             //     );
-            //     navigate("/Diskus/Admin/");
+            //     navigate("/Admin/");
             //   } else if (
             //     JSON.parse(response.data.responseResult.userRoleId) === 3
             //   ) {
@@ -1748,7 +1748,7 @@ const createPasswordAction = (value, navigate, t) => {
                 );
                 LocalAdminRoutes = [
                   { name: "Admin", id: 200 },
-                  { name: "Diskus/Admin", id: 201 },
+                  { name: "Admin", id: 201 },
                   { name: "", id: 202 },
                   { name: "ManageUsers", id: 2 },
                   { name: "OrganizationlevelConfigUM", id: 3 },
@@ -1766,7 +1766,7 @@ const createPasswordAction = (value, navigate, t) => {
                 );
                 LocalAdminRoutes = [
                   { name: "Admin", id: 200 },
-                  { name: "Diskus/Admin", id: 201 },
+                  { name: "Admin", id: 201 },
                   { name: "", id: 202 },
                   { name: "ManageUsers", id: 2 },
                   { name: "OrganizationlevelConfigUM", id: 3 },
@@ -1972,7 +1972,7 @@ const createPasswordAction = (value, navigate, t) => {
               //         t("Tthe-user-is-a-partial-admin-user")
               //       )
               //     );
-              //     navigate("/Diskus/Admin/");
+              //     navigate("/Admin/");
               //   } else if (
               //     JSON.parse(response.data.responseResult.userRoleId) === 2
               //   ) {
@@ -1982,7 +1982,7 @@ const createPasswordAction = (value, navigate, t) => {
               //         t("Tthe-user-is-a-partial-admin-user")
               //       )
               //     );
-              //     navigate("/Diskus/Admin/");
+              //     navigate("/Admin/");
               //   } else if (
               //     JSON.parse(response.data.responseResult.userRoleId) === 3
               //   ) {
@@ -2257,7 +2257,7 @@ const createPasswordAction = (value, navigate, t) => {
               //         t("User-is-not-a-new-user-the-user-is-a-partial-admin-user")
               //       )
               //     );
-              //     navigate("/Diskus/Admin/");
+              //     navigate("/Admin/");
               //   } else if (
               //     JSON.parse(response.data.responseResult.userRoleId) === 2
               //   ) {
@@ -2267,7 +2267,7 @@ const createPasswordAction = (value, navigate, t) => {
               //         t("User-is-not-a-new-user-the-user-is-a-partial-admin-user")
               //       )
               //     );
-              //     navigate("/Diskus/Admin/");
+              //     navigate("/Admin/");
               //   } else if (
               //     JSON.parse(response.data.responseResult.userRoleId) === 3
               //   ) {
@@ -2604,7 +2604,7 @@ const createPasswordAction = (value, navigate, t) => {
                       )
                     )
                   );
-                  navigate("/Diskus/Admin/PayOutstanding");
+                  navigate("/Admin/PayOutstanding");
                 } else if (
                   JSON.parse(response.data.responseResult.userRoleId) === 2
                 ) {
@@ -2651,7 +2651,7 @@ const createPasswordAction = (value, navigate, t) => {
                       )
                     )
                   );
-                  navigate("/Diskus/Admin/Nonactive");
+                  navigate("/Admin/Nonactive");
                 } else if (
                   JSON.parse(response.data.responseResult.userRoleId) === 3
                 ) {
@@ -2762,7 +2762,7 @@ const createPasswordAction = (value, navigate, t) => {
               //         )
               //       )
               //     );
-              //     navigate("/Diskus/Admin/PayOutstanding");
+              //     navigate("/Admin/PayOutstanding");
               //   } else if (
               //     JSON.parse(response.data.responseResult.userRoleId) === 2
               //   ) {
@@ -2807,7 +2807,7 @@ const createPasswordAction = (value, navigate, t) => {
               //         )
               //       )
               //     );
-              //     navigate("/Diskus/Admin/Nonactive");
+              //     navigate("/Admin/Nonactive");
               //   } else if (
               //     JSON.parse(response.data.responseResult.userRoleId) === 3
               //   ) {
@@ -2918,7 +2918,7 @@ const createPasswordAction = (value, navigate, t) => {
                       )
                     )
                   );
-                  navigate("/Diskus/Admin/PayOutstanding");
+                  navigate("/Admin/PayOutstanding");
                 } else if (
                   JSON.parse(response.data.responseResult.userRoleId) === 2
                 ) {
@@ -2965,7 +2965,7 @@ const createPasswordAction = (value, navigate, t) => {
                       )
                     )
                   );
-                  navigate("/Diskus/Admin/Nonactive");
+                  navigate("/Admin/Nonactive");
                 } else if (
                   JSON.parse(response.data.responseResult.userRoleId) === 3
                 ) {
@@ -3383,7 +3383,7 @@ const organizationPackageReselection = (
                   t("Organization-package-not-selected")
                 )
               );
-              // navigate("/Diskus/Admin/PackageDetail");
+              // navigate("/Admin/PackageDetail");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -3397,7 +3397,7 @@ const organizationPackageReselection = (
                   t("Organization-package-not-save")
                 )
               );
-              navigate("/Diskus/Admin/PackageDetail");
+              navigate("/Admin/PackageDetail");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -3411,7 +3411,7 @@ const organizationPackageReselection = (
                   t("Previous-package-not-deleted")
                 )
               );
-              navigate("/Diskus/Admin/PackageDetail");
+              navigate("/Admin/PackageDetail");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -3425,7 +3425,7 @@ const organizationPackageReselection = (
                   t("Previous-subscription-not-deleted")
                 )
               );
-              navigate("/Diskus/Admin/PackageDetail");
+              navigate("/Admin/PackageDetail");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -3439,7 +3439,7 @@ const organizationPackageReselection = (
                   t("Something-went-wrong")
                 )
               );
-              navigate("/Diskus/Admin/PackageDetail");
+              navigate("/Admin/PackageDetail");
             } else {
               dispatch(
                 organizationPackageReselectionFail(t("Something-went-wrong"))

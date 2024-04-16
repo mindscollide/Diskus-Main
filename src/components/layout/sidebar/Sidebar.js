@@ -290,15 +290,15 @@ const Sidebar = () => {
 
   return (
     <>
-      {location.pathname.includes("/DisKus/Admin") ? (
+      {location.pathname.includes("/Admin") ? (
         ""
       ) : activateBlur ? (
         <Row className="sidebar-row">
           <Col
             sm={2}
             className={
-              location.pathname.includes("/DisKus/Admin/") ||
-              location.pathname.includes("/Diskus/Admin/")
+              location.pathname.includes("/Admin/") ||
+              location.pathname.includes("/Admin/")
                 ? "justify-content-start align-items-start admin-width "
                 : "diskus-sidebar m-0 p-0"
             }
@@ -715,8 +715,8 @@ const Sidebar = () => {
           <Col
             sm={2}
             className={
-              location.pathname.includes("/DisKus/Admin/") ||
-              location.pathname.includes("/Diskus/Admin/")
+              location.pathname.includes("/Admin/") ||
+              location.pathname.includes("/Admin/")
                 ? "justify-content-start align-items-start admin-width"
                 : "diskus-sidebar m-0 p-0"
             }

@@ -191,7 +191,7 @@ const LanguageSelector = () => {
           location.pathname.includes("/Diskus/") ||
           location.pathname.includes("/paymentForm") ||
           location.pathname.includes("/signuporganization") ||
-          location.pathname.includes("/Diskus/Admin")
+          location.pathname.includes("/Admin")
             ? "text-white d-flex gap-2 align-items-center position-relative cursor-pointer"
             : "text-black d-flex gap-2 align-items-center position-relative cursor-pointer"
         }
@@ -202,7 +202,7 @@ const LanguageSelector = () => {
             location.pathname.includes("/Diskus/") ||
             location.pathname.includes("/paymentForm") ||
             location.pathname.includes("/signuporganization") ||
-            location.pathname.includes("/Diskus/Admin")
+            location.pathname.includes("/Admin")
               ? LanguageIcon
               : LanguageBlack
           }
@@ -222,7 +222,7 @@ const LanguageSelector = () => {
               location.pathname.includes("/Diskus/") ||
               location.pathname.includes("/paymentForm") ||
               location.pathname.includes("/signuporganization") ||
-              location.pathname.includes("/Diskus/Admin")
+              location.pathname.includes("/Admin")
                 ? LanguageArrowUp
                 : LanguageArrowUpBlack
             }
@@ -237,7 +237,7 @@ const LanguageSelector = () => {
               location.pathname.includes("/Diskus/") ||
               location.pathname.includes("/paymentForm") ||
               location.pathname.includes("/signuporganization") ||
-              location.pathname.includes("/Diskus/Admin")
+              location.pathname.includes("/Admin")
                 ? LanguageArrowDown
                 : LanguageArrowDownBlack
             }

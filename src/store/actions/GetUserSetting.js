@@ -126,7 +126,7 @@ const getUserSetting = (navigate, t, loader) => {
                   loader
                 )
               );
-              navigate("/Diskus/Admin/ManageUsers");
+              // navigate("/Admin/ManageUsers");
             } else if (
               response.data.responseResult.responseMessage ===
               "Settings_SettingsServiceManager_GetUserSettings_02"

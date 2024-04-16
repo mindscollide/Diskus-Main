@@ -281,7 +281,7 @@ export const router = createHashRouter(
       <Route element={<PrivateAdminRoute />}>
         <Route
           exact
-          path="/Diskus/Admin/"
+          path="/Admin/"
           element={
             <RouteWrapperAdmin name="Admin">
               <AdminHome />
@@ -539,9 +539,9 @@ export const router = createHashRouter(
         </Route>
       </Route>
       <Route element={<PrivateAdminRouteNonActive />}>
-        <Route exact path="/DisKus/Admin/Payment/" element={<AdminHome />}>
+        <Route exact path="/Admin/Payment/" element={<AdminHome />}>
           <Route path="PayOutstanding" element={<PayOutstanding />} />
-          <Route path="/DisKus/Admin/Payment/" element={<PayOutstanding />} />
+          <Route path="/Admin/Payment/" element={<PayOutstanding />} />
         </Route>
       </Route>
       <Route element={<PrivateNonActive />}>
@@ -550,7 +550,7 @@ export const router = createHashRouter(
         </Route>
       </Route>
       <Route element={<PrivateParAdminRouteNonActive />}>
-        <Route exact path="/DisKus/Admin/Nonactive/" element={<AdminHome />}>
+        <Route exact path="/Admin/Nonactive/" element={<AdminHome />}>
           <Route path="" element={<Summary />} />
         </Route>
       </Route>
