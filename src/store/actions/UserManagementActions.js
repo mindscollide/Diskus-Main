@@ -8,6 +8,7 @@ import {
   OrganizationPackageDetailsAndUserStats,
   GetAllUserTypePackages,
   ResendForgotPasswordCode,
+  EditOrganizationsUser,
 } from "../../commen/apis/Api_config";
 import {
   authenticationApi,
@@ -18,6 +19,10 @@ import axios from "axios";
 import { RefreshToken } from "./Auth_action";
 import { getUserSetting } from "./GetUserSetting";
 import { getAllLanguages } from "./Language_actions";
+import {
+  showEditUserModal,
+  showSucessfullyUpdatedModal,
+} from "./UserMangementModalActions";
 
 const signUpFlowRoutes = (response) => {
   return {
@@ -661,12 +666,13 @@ const editOrganizationUsersFail = (message) => {
 
 const EditOrganizationsUserApi = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
-
+  let organizationID = localStorage.getItem("organizationID");
+  let userID = localStorage.getItem("userID");
   return (dispatch) => {
     dispatch(editOrganizationUsersInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
-    form.append("RequestMethod", AddOrganizationsUser.RequestMethod);
+    form.append("RequestMethod", EditOrganizationsUser.RequestMethod);
     axios({
       method: "post",
       url: getAdminURLs,
@@ -694,6 +700,14 @@ const EditOrganizationsUserApi = (navigate, t, data) => {
                   t("The-user-has-been-edited-successfully")
                 )
               );
+              dispatch(showEditUserModal(false));
+              dispatch(showSucessfullyUpdatedModal(true));
+              let data = {
+                OrganizationID: Number(organizationID),
+                RequestingUserID: 1096,
+                // RequestingUserID: Number(userID), will send user ID now for integratino using this UserId
+              };
+              dispatch(AllOrganizationsUsersApi(navigate, t, data));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -716,6 +730,7 @@ const EditOrganizationsUserApi = (navigate, t, data) => {
                   )
                 )
               );
+              dispatch(showEditUserModal(true));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -724,6 +739,7 @@ const EditOrganizationsUserApi = (navigate, t, data) => {
                 )
             ) {
               dispatch(editOrganizationUsersFail(t("Failed-to-update-user")));
+              dispatch(showEditUserModal(true));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -732,11 +748,14 @@ const EditOrganizationsUserApi = (navigate, t, data) => {
                 )
             ) {
               dispatch(editOrganizationUsersFail(t("Something-went-wrong")));
+              dispatch(showEditUserModal(true));
             } else {
               dispatch(editOrganizationUsersFail(t("Something-went-wrong")));
+              dispatch(showEditUserModal(true));
             }
           } else {
             dispatch(editOrganizationUsersFail(t("Something-went-wrong")));
+            dispatch(showEditUserModal(true));
           }
         } else {
           dispatch(editOrganizationUsersFail(t("Something-went-wrong")));
@@ -1201,7 +1220,6 @@ const getOrganizationPackageUserStatsFail = (message) => {
 };
 
 //Api to Show data in graph in userManagment Add user
-
 const getOrganizationPackageUserStatsAPI = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -1369,7 +1387,6 @@ const getAllUserTypePackagesApi = (navigate, t) => {
 };
 
 //Resend Forgot Password Code
-
 const ResendForgotPasswordCodeInit = () => {
   return {
     type: actions.GET_ALL_USER_TYPES_PAKAGES_INIT,

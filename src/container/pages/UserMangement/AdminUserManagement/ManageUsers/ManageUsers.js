@@ -36,9 +36,9 @@ const ManageUsers = () => {
 
   let organizationID = localStorage.getItem("organizationID");
 
-  let isTrial = localStorage.getItem("isTrial");
-
   let userID = localStorage.getItem("userID");
+
+  let isTrial = localStorage.getItem("isTrial");
 
   const { UserMangementReducer, UserManagementModals } = useSelector(
     (state) => state
@@ -72,6 +72,7 @@ const ManageUsers = () => {
         let data = {
           OrganizationID: Number(organizationID),
           RequestingUserID: 1096,
+          // RequestingUserID: Number(userID), will send user ID now for integratino using this UserId
         };
         dispatch(AllOrganizationsUsersApi(navigate, t, data));
       } catch {}
@@ -627,7 +628,9 @@ const ManageUsers = () => {
       {UserManagementModals.editUserModal && (
         <EditUserModal editModalData={editModalData} />
       )}
-      {UserManagementModals.successfullyUpdated && <SuccessfullyUpdateModal />}
+      {UserManagementModals.successfullyUpdated && (
+        <SuccessfullyUpdateModal editModalData={editModalData} />
+      )}
       {UserMangementReducer.Loading ? <Loader /> : null}
     </Container>
   );

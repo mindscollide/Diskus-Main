@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./EditUserModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -15,28 +15,53 @@ import {
   showEditUserModal,
   showSucessfullyUpdatedModal,
 } from "../../../../../store/actions/UserMangementModalActions";
+import { EditOrganizationsUserApi } from "../../../../../store/actions/UserManagementActions";
+import { useNavigate } from "react-router-dom";
 const EditUserModal = ({ editModalData }) => {
   console.log(editModalData, "editModalDataeditModalData");
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
+  const navigate = useNavigate();
+
   const { UserManagementModals } = useSelector((state) => state);
+
+  let userID = localStorage.getItem("userID");
+
+  let organizationID = localStorage.getItem("organizationID");
 
   const [editUserModalValues, setEditUserModalValues] = useState({
     Name: editModalData.userName,
     Desgiantion: editModalData.designation,
     Email: editModalData.email,
-    isAdminUser: editModalData.userRole,
+    isAdminUser: editModalData.userRoleID === 4 ? true : false,
   });
 
-  const [userStatus, setUserStatus] = useState(editModalData.userStatus);
+  //options for the dropdowm
+  const options = [
+    { value: "Enabled", label: "Enabled" },
+    { value: "Disabled", label: "Disabled" },
+    { value: "Dormant", label: "Dormant" },
+    { value: "Locked", label: "Locked" },
+    { value: "Closed", label: "Closed" },
+  ];
 
-  console.log(userStatus, "userStatususerStatus");
+  const findOptionByValue = (value) =>
+    options.find((option) => option.value === value.toLowerCase()) ||
+    options[0];
 
-  const handleSelectChange = (newStatus) => {
-    console.log(newStatus, "userStatususerStatus");
-    setUserStatus(newStatus);
+  const [userStatus, setUserStatus] = useState(
+    findOptionByValue(editModalData.userStatus)
+  );
+
+  useEffect(() => {
+    setUserStatus(findOptionByValue(editModalData.userStatus));
+  }, [editModalData.userStatus]);
+
+  // Handler for when an option is selected.
+  const handleSelectChange = (selectedOption) => {
+    setUserStatus(selectedOption);
   };
 
   const handleUpdateModal = (e) => {
@@ -68,18 +93,20 @@ const EditUserModal = ({ editModalData }) => {
   };
 
   const handleUpdateButton = () => {
-    dispatch(showEditUserModal(false));
-    dispatch(showSucessfullyUpdatedModal(true));
+    let data = {
+      UserID: Number(userID),
+      StatusID: 1,
+      UserName: editUserModalValues.Name,
+      Designation: editUserModalValues.Desgiantion,
+      MobileNumber: "",
+      isAdmin: editUserModalValues.isAdminUser,
+      OrganizationID: Number(organizationID),
+      OrganizationSelectedPackageID: Number(editModalData.userAllotedPackageID),
+      FK_NumberWorldCountryID: Number(editModalData.fK_WorldCountryID),
+    };
+    console.log(data, "handleUpdateButton");
+    dispatch(EditOrganizationsUserApi(navigate, t, data));
   };
-
-  //options for the dropdowm
-  const options = [
-    { value: "Enabled", label: "Enabled" },
-    { value: "Disabled", label: "Disabled" },
-    { value: "Dormant", label: "Dormant" },
-    { value: "Locked", label: "Locked" },
-    { value: "Closed", label: "Closed" },
-  ];
 
   const handleIsAdminCheckbox = (e) => {
     setEditUserModalValues({
