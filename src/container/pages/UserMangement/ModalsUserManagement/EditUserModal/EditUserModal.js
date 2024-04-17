@@ -47,18 +47,37 @@ const EditUserModal = ({ editModalData }) => {
     { value: 3, label: "Locked" },
     { value: 4, label: "Closed" },
     { value: 5, label: "Dormant" },
-    { value: 6, label: "Dormant" },
+    { value: 6, label: "Delete" },
   ];
 
-  const findOptionByValue = (value) =>
-    options.find((option) => option.value === value.toLowerCase()) ||
-    options[0];
+  const findOptionByValue = (value) => {
+    console.log(value, "valuevaluevalue");
+    // Convert the value to a string before processing
+    switch (value.toString()) {
+      case "Enabled":
+        return options[0];
+      case "Disabled":
+        return options[1];
+      case "Locked":
+        return options[2];
+      case "Closed":
+        return options[3];
+      case "Dormant":
+        return options[4];
+      case "Delete":
+        return options[5];
+      default:
+        return options[0];
+    }
+  };
 
-  const [userStatus, setUserStatus] = useState(
+  // Initialize state with default value from editModalData
+  const [userStatus, setUserStatus] = useState(() =>
     findOptionByValue(editModalData.userStatus)
   );
 
   useEffect(() => {
+    // Update state when the editModalData.userStatus changes
     setUserStatus(findOptionByValue(editModalData.userStatus));
   }, [editModalData.userStatus]);
 
@@ -109,7 +128,8 @@ const EditUserModal = ({ editModalData }) => {
       OrganizationSelectedPackageID: Number(editModalData.userAllotedPackageID),
       FK_NumberWorldCountryID: Number(editModalData.fK_WorldCountryID),
     };
-    dispatch(EditOrganizationsUserApi(navigate, t, data));
+    //The True is The Flag for AllOrganization User After Editing the User
+    dispatch(EditOrganizationsUserApi(navigate, t, data, true));
   };
 
   const handleIsAdminCheckbox = (e) => {

@@ -676,7 +676,7 @@ const editOrganizationUsersFail = (message) => {
   };
 };
 
-const EditOrganizationsUserApi = (navigate, t, data) => {
+const EditOrganizationsUserApi = (navigate, t, data, flag) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let organizationID = localStorage.getItem("organizationID");
   let userID = localStorage.getItem("userID");
@@ -714,12 +714,14 @@ const EditOrganizationsUserApi = (navigate, t, data) => {
               );
               dispatch(showEditUserModal(false));
               dispatch(showSucessfullyUpdatedModal(true));
-              let data = {
-                OrganizationID: Number(organizationID),
-                RequestingUserID: 1096,
-                // RequestingUserID: Number(userID), will send user ID now for integratino using this UserId
-              };
-              dispatch(AllOrganizationsUsersApi(navigate, t, data));
+              if (flag) {
+                let data = {
+                  OrganizationID: Number(organizationID),
+                  RequestingUserID: 1096,
+                  // RequestingUserID: Number(userID), will send user ID now for integratino using this UserId
+                };
+                dispatch(AllOrganizationsUsersApi(navigate, t, data));
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
