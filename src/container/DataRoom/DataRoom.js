@@ -50,6 +50,7 @@ import {
   deleteFileDataroom,
   deleteFolder,
   deleteSharedFileDataroom,
+  deleteSharedFolderDataroom,
   FileisExist,
   getDocumentsAndFolderApi,
   getDocumentsAndFolderApiScrollbehaviour,
@@ -689,11 +690,18 @@ const DataRoom = () => {
       };
       dispatch(createWorkflowApi(dataRoomData, navigate, t, pdfDataJson));
     } else if (data.value === 9) {
-      // Remove Shared File
-      let removeShareData = {
-        FileSharingID: record.id,
-      };
-      dispatch(deleteSharedFileDataroom(navigate, removeShareData, t));
+      if (record.isFolder) {
+        let removeSharedFolder = {
+          FolderSharingID: record.sharingID,
+        };
+        dispatch(deleteSharedFolderDataroom(navigate, removeSharedFolder, t));
+      } else {
+        // Remove Shared File
+        let removeShareData = {
+          FileSharingID: Number(record.sharingID),
+        };
+        dispatch(deleteSharedFileDataroom(navigate, removeShareData, t));
+      }
     }
   };
   //

@@ -1425,11 +1425,12 @@ const saveCommitteeDocumentsApi = (navigate, t, data, setCreategrouppage) => {
               )
             );
             dispatch(createUpdateCommitteeDocuments_fail(""));
-
-            await setCreategrouppage(false);
-            await dispatch(
-              getAllCommitteesByUserIdActions(navigate, t, currentPage)
-            );
+            if (typeof setCreategrouppage === "function") {
+              await setCreategrouppage(false);
+              await dispatch(
+                getAllCommitteesByUserIdActions(navigate, t, currentPage)
+              );
+            }
           } else if (
             response.data.responseResult.responseMessage.toLowerCase() ===
             "DataRoom_DataRoomManager_SaveCommitteeDocuments_02".toLowerCase()

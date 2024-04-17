@@ -1769,5 +1769,7 @@
   "Start-video-call": "Start video call",
   "Normalize-screen": "Normalize screen",
   "Maximize-screen": "Maximize screen",
-  "Folder-share-successfully": "Folder share successfully"
+  "Folder-share-successfully": "Folder share successfully",
+  "Remove-shared-file-successfully": "Remove shared file successfully",
+  "Remove-shared-folder-successfully": "Remove shared folder successfully"
 }

@@ -20,14 +20,10 @@ const AttachmentViewer = ({
 }) => {
   let fileExtension = "pdf";
   let currentUser = Number(localStorage.getItem("userID"));
-  // src={getIconSource(
-  //                                               getFileExtension(
-  //                                                 filesData?.displayAttachmentName
-  //                                               )
-  //                                             )}
+
   return (
     <div className={styles["agendaFileAttachedView"]}>
-      <Row className="m-0 text-center h-100 align-items-center">
+      <Row>
         <Col
           lg={id !== 0 ? 8 : 12}
           md={id !== 0 ? 8 : 12}

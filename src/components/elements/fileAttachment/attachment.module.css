@@ -55,14 +55,14 @@ body[dir="rtl"] .borderFileName {
 }
 
 .fileNameTruncateStyle {
-  width: 120px !important;
+  width: 90px !important;
   justify-content: center !important;
   display: flex !important;
 }
 .fileNameTruncateStyle_fullwidth {
-  width: 180px !important;
-  justify-content: center !important;
+  width: 160px !important;
   display: flex !important;
+  gap: 10px;
 }
 .fileNameAttachment {
   font-style: normal;
@@ -71,7 +71,6 @@ body[dir="rtl"] .borderFileName {
   /* text-decoration-line: underline; */
   color: #5a5a5c;
   font-family: "MontserratMedium-500";
-  margin-left: 10px;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -83,7 +82,6 @@ body[dir="rtl"] .borderFileName {
   /* text-decoration-line: underline; */
   color: #5a5a5c;
   font-family: "MontserratMedium-500";
-  margin-left: 10px;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -111,11 +109,14 @@ body[dir="rtl"] .fileNameAttachment {
   background: #f6f9fc;
   border: 1px solid #d4d4d4;
   border-radius: 25px;
-  width: 200px;
+  width: 190px;
   height: 30px;
   position: relative;
   z-index: 1;
   margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 }
 .Cross_Icon {
   position: absolute;
