@@ -1932,5 +1932,7 @@
   "Delete-messages": "Delete messages",
   "Folder-share-successfully": "Folder share successfully",
   "Billing-subscription": "Billing Subscription",
-  "Your-trial-will-expire-in-{{remainingDays}}-days": "Your trial will expire in {{remainingDays}} days"
+  "Your-trial-will-expire-in-{{remainingDays}}-days": "Your trial will expire in {{remainingDays}} days",
+  "Web": "Web",
+  "Tablet": "Tablet"
 }
