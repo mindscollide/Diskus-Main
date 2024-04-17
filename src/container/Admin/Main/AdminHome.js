@@ -165,16 +165,10 @@ const AdminHome = () => {
   //   newClient.onMessageArrived = onMessageArrived;
   // }, []);
   useEffect(() => {
-    if (roleID !== 3) {
-      dispatch(getPackageExpiryDetail(navigate, JSON.parse(OrganizationID), t));
-    }
+    // if (roleID !== 3) {
+    //   dispatch(getPackageExpiryDetail(navigate, JSON.parse(OrganizationID), t));
+    // }
   }, []);
-  useEffect(() => {
-    console.log(
-      "isExpiry color",
-      GetSubscriptionPackage.getPackageExpiryDetailResponse
-    );
-  }, [GetSubscriptionPackage.getPackageExpiryDetailResponse]);
 
   return (
     <>

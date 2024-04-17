@@ -263,7 +263,7 @@ const deleteOrganizationUser = {
 };
 
 const IsPackageExpiryDetail = {
-  RequestMethod: "ServiceManager.GetOrganizationSelectedPackageExpiryDetails",
+  RequestMethod: "ServiceManager.GetOrganizationSubscriptionExpiryDetails",
 };
 const AllMeetingOrganization = {
   RequestMethod: "ServiceManager.SearchOrganizationMeetings",
@@ -1476,10 +1476,6 @@ const SaveOrganizationAndPakageSelection = {
   RequestMethod: "ServiceManager.SaveOrganizationsAndSelectedPackage",
 };
 
-const GetOrganizationSubscriptionExpiryDetails = {
-  RequestMethod: "ServiceManager.GetOrganizationSubscriptionExpiryDetails",
-};
-
 const ExtendOrganizationTrial = {
   RequestMethod: "ServiceManager.ExtendOrganizationTrial",
 };
@@ -1532,6 +1528,10 @@ const deleteOrganizationUserApi = {
 
 const ResendForgotPasswordCode = {
   RequestMethod: "ServiceManager.ResendForgotPasswordCode",
+};
+
+const DeleteOrganizationsUser = {
+  RequestMethod: "ServiceManager.DeleteOrganizationsUser",
 };
 
 export {
@@ -1930,7 +1930,6 @@ export {
   exportAgendaAsPDF,
   printMeetingAgenda,
   SaveOrganizationAndPakageSelection,
-  GetOrganizationSubscriptionExpiryDetails,
   ExtendOrganizationTrial,
   AddOrganizationsUser,
   EditOrganizationsUser,
@@ -1943,4 +1942,5 @@ export {
   GetAllUserTypePackages,
   deleteOrganizationUserApi,
   ResendForgotPasswordCode,
+  DeleteOrganizationsUser,
 };

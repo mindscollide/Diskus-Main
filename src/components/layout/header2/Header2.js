@@ -32,7 +32,6 @@ import {
   getUserSetting,
 } from "../../../store/actions/GetUserSetting";
 import { useLocation } from "react-router-dom";
-import { getPackageExpiryDetail } from "../../../store/actions/GetPackageExpirtyDetails";
 import UserProfile from "../../../container/authentication/User_Profile/UserProfile";
 import LanguageSelector from "../../elements/languageSelector/Language-selector";
 import ModalMeeting from "../../../container/modalmeeting/ModalMeeting";
@@ -74,6 +73,7 @@ const Header2 = () => {
   //for userprofile edit modal
   const [editFlag, setEditFlag] = useState(false);
   let Blur = localStorage.getItem("blur");
+  let isTrial = localStorage.getItem("isTrial");
 
   let currentLanguage = localStorage.getItem("i18nextLng");
 
@@ -105,7 +105,9 @@ const Header2 = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(getUserSetting(navigate, t, false));
+    if (UserProfileData === undefined || UserProfileData === null) {
+      dispatch(getUserSetting(navigate, t, false));
+    }
   }, []);
 
   useEffect(() => {
@@ -314,7 +316,7 @@ const Header2 = () => {
               as={Link}
               to={
                 location.pathname.includes("/Admin")
-                  ? "/Admin/Summary"
+                  ? "/Admin/ManageUsers"
                   : "/DisKus/home"
               }
               // onClick={homePageDashboardClick}
@@ -564,7 +566,7 @@ const Header2 = () => {
               // }
               to={
                 location.pathname.includes("/Admin")
-                  ? "/Admin/Summary"
+                  ? "/Admin/ManageUsers"
                   : (NewMeetingreducer.scheduleMeetingPageFlag === true ||
                       NewMeetingreducer.viewProposeDateMeetingPageFlag ===
                         true ||
@@ -590,32 +592,44 @@ const Header2 = () => {
             </Navbar.Brand>
             <Row>
               <Col lg={12} md={12} sm={12} className="UpgradeButtonsClass">
-                {trailExpiry ? (
+                {localStorage.getItem("isTrial") && (
                   <>
-                    <span className={"trialExpireButton"}>
-                      <span className="InnerText">
-                        {t("Your-trial-will-expire-in-7-days")}
-                      </span>
-                    </span>
-                    <Button
-                      text={t("Upgrade-now")}
-                      className="UpgradeNowbutton"
-                      onClick={handleShowUpgradedNowModal}
-                    />
-                  </>
-                ) : (
-                  <>
-                    {" "}
-                    <Button
-                      text={t("Upgrade-now")}
-                      className="UpgradeNowbutton"
-                      onClick={handleShowUpgradedNowModal}
-                    />
-                    <Button
-                      text={t("Request-an-extention")}
-                      className="UpgradeNowbutton"
-                      onClick={handleRequestExtentionModal}
-                    />
+                    {localStorage.getItem("remainingDays") > 1 && (
+                      <>
+                        {" "}
+                        <span className={"trialExpireButton"}>
+                          <span className="InnerText">
+                            {t(
+                              "Your-trial-will-expire-in",
+                              localStorage.getItem("remainingDays"),
+                              "days"
+                            )}
+                          </span>
+                        </span>
+                        <Button
+                          text={t("Upgrade-now")}
+                          className="UpgradeNowbutton"
+                          onClick={handleShowUpgradedNowModal}
+                        />
+                      </>
+                    )}
+                    {localStorage.getItem("remainingDays") === 1 && (
+                      <>
+                        {" "}
+                        <Button
+                          text={t("Upgrade-now")}
+                          className="UpgradeNowbutton"
+                          onClick={handleShowUpgradedNowModal}
+                        />
+                        {localStorage.getItem("isExtensionAvailable") && (
+                          <Button
+                            text={t("Request-an-extention")}
+                            className="UpgradeNowbutton"
+                            onClick={handleRequestExtentionModal}
+                          />
+                        )}
+                      </>
+                    )}
                   </>
                 )}
               </Col>

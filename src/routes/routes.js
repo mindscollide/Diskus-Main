@@ -293,18 +293,19 @@ export const router = createHashRouter(
             path=""
             element={
               <RouteWrapperAdmin name="Admin">
-                <Summary />
+                <ManageUsers />
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path="AllUserPage"
+            path="PakageDetailsUserManagement"
             element={
-              <RouteWrapperAdmin name="AllUserPage">
-                <AllUserPage />
+              <RouteWrapperAdmin name="PakageDetailsUserManagement">
+                <PakageDetailsUserManagement />
               </RouteWrapperAdmin>
             }
           />
+
           <Route
             path="loginreport"
             element={
@@ -314,18 +315,10 @@ export const router = createHashRouter(
             }
           />
           <Route
-            path="AddUser"
+            path="AddUsers"
             element={
-              <RouteWrapperAdmin name="AddUser">
-                <AddUser />
-              </RouteWrapperAdmin>
-            }
-          />
-          <Route
-            path="EditUser"
-            element={
-              <RouteWrapperAdmin name="EditUser">
-                <EditUser />
+              <RouteWrapperAdmin name="AddUsers">
+                <AddUsers />
               </RouteWrapperAdmin>
             }
           />

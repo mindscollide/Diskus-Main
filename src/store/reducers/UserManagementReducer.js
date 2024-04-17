@@ -18,6 +18,7 @@ const initialState = {
   getAllUserTypePackagesData: [],
   deleteOrganizationUserAdmin: null,
   ResendForgotPasswordCodedData: null,
+  deleteOrganizationUsersData: null,
 };
 
 const UserMangementReducer = (state = initialState, action) => {
@@ -45,28 +46,28 @@ const UserMangementReducer = (state = initialState, action) => {
       };
     }
 
-    case actions.GET_ORGANIZATION_SUBSCRIPTION_EXPIRYDETAILS_INIT: {
-      return {
-        ...state,
-        Loading: true,
-      };
-    }
-    case actions.GET_ORGANIZATION_SUBSCRIPTION_EXPIRYDETAILS_SUCCESS: {
-      return {
-        ...state,
-        Loading: true,
-        getOrganizationSubscriptionExpiryDetailsData: action.response,
-        ResponseMessage: action.message,
-      };
-    }
-    case actions.GET_ORGANIZATION_SUBSCRIPTION_EXPIRYDETAILS_FAILS: {
-      return {
-        ...state,
-        Loading: false,
-        getOrganizationSubscriptionExpiryDetailsData: null,
-        ResponseMessage: action.message,
-      };
-    }
+    // case actions.GET_ORGANIZATION_SUBSCRIPTION_EXPIRYDETAILS_INIT: {
+    //   return {
+    //     ...state,
+    //     Loading: true,
+    //   };
+    // }
+    // case actions.GET_ORGANIZATION_SUBSCRIPTION_EXPIRYDETAILS_SUCCESS: {
+    //   return {
+    //     ...state,
+    //     Loading: true,
+    //     getOrganizationSubscriptionExpiryDetailsData: action.response,
+    //     ResponseMessage: action.message,
+    //   };
+    // }
+    // case actions.GET_ORGANIZATION_SUBSCRIPTION_EXPIRYDETAILS_FAILS: {
+    //   return {
+    //     ...state,
+    //     Loading: false,
+    //     getOrganizationSubscriptionExpiryDetailsData: null,
+    //     ResponseMessage: action.message,
+    //   };
+    // }
 
     case actions.EXTEND_ORGANIZATION_TRIAL_INIT: {
       return {
@@ -334,6 +335,28 @@ const UserMangementReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResendForgotPasswordCodedData: null,
+        ResponseMessage: action.message,
+      };
+
+    case actions.DELETE_ORGANIZATION_USERS_INIT:
+      return {
+        ...state,
+        Loading: true,
+      };
+
+    case actions.DELETE_ORGANIZATION_USERS_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        deleteOrganizationUsersData: action.response,
+        ResponseMessage: action.message,
+      };
+
+    case actions.DELETE_ORGANIZATION_USERS_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        deleteOrganizationUsersData: null,
         ResponseMessage: action.message,
       };
 

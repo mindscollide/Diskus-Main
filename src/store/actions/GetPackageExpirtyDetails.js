@@ -50,109 +50,60 @@ const getPackageExpiryDetail = (navigate, id, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_GetOrganizationSelectedPackageExpiryDetails_01".toLowerCase()
+                  "Admin_AdminServiceManager_GetOrganizationSubscriptionExpiryDetails_01".toLowerCase()
                 )
             ) {
-              dispatch(
-                getExpiryDetailFail(
-                  t("You-are-not-an-admin-Please-contact-support")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Admin_AdminServiceManager_GetOrganizationSelectedPackageExpiryDetails_02".toLowerCase()
-                )
-            ) {
-              await localStorage.setItem(
-                "isAlert",
-                response.data.responseResult.isAlert
-              );
-              await localStorage.setItem(
-                "color",
-                response.data.responseResult.color
-              );
               await localStorage.setItem(
                 "dateOfExpiry",
                 response.data.responseResult.dateOfExpiry
               );
               await localStorage.setItem(
+                "isExtensionAvailable",
+                response.data.responseResult.isExtensionAvailable
+              );
+              await localStorage.setItem(
                 "remainingDays",
                 response.data.responseResult.remainingDays
               );
+              try {
+                await localStorage.setItem(
+                  "isAlert",
+                  response.data.responseResult.isAlert
+                );
+              } catch {}
+
+              dispatch(getExpiryDetailsSuccess(t("successful")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_GetOrganizationSubscriptionExpiryDetails_02".toLowerCase()
+                )
+            ) {
               dispatch(
                 getExpiryDetailsSuccess(
                   response.data.responseResult,
-                  t("Remaining-days-of-subscription")
+                  t("Invalid-data-provided")
                 )
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_GetOrganizationSelectedPackageExpiryDetails_03".toLowerCase()
+                  "Admin_AdminServiceManager_GetOrganizationSubscriptionExpiryDetails_03".toLowerCase()
                 )
             ) {
-              await localStorage.setItem(
-                "isAlert",
-                response.data.responseResult.isAlert
-              );
-              await localStorage.setItem(
-                "color",
-                response.data.responseResult.color
-              );
-              await localStorage.setItem(
-                "dateOfExpiry",
-                response.data.responseResult.dateOfExpiry
-              );
-              await localStorage.setItem(
-                "remainingDays",
-                response.data.responseResult.remainingDays
-              );
-              dispatch(getExpiryDetailFail(t("No-records-found")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Admin_AdminServiceManager_GetOrganizationSelectedPackageExpiryDetails_04".toLowerCase()
-                )
-            ) {
-              await localStorage.setItem(
-                "isAlert",
-                response.data.responseResult.isAlert
-              );
-              await localStorage.setItem(
-                "color",
-                response.data.responseResult.color
-              );
-              await localStorage.setItem(
-                "dateOfExpiry",
-                response.data.responseResult.dateOfExpiry
-              );
-              await localStorage.setItem(
-                "remainingDays",
-                response.data.responseResult.remainingDays
-              );
-              dispatch(
-                getExpiryDetailFail(t("Enter-an-valid-organization-id"))
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Admin_AdminServiceManager_GetOrganizationSelectedPackageExpiryDetails_05".toLowerCase()
-                )
-            ) {
-              dispatch(getExpiryDetailFail(t("User-email-doesnt-exists")));
+              dispatch(getExpiryDetailFail(t("Subscription-not-found")));
+            } else {
+              dispatch(getExpiryDetailFail(t("Something-went-wrong")));
             }
           } else {
-            dispatch(getExpiryDetailFail(t("User-email-doesnt-exists")));
+            dispatch(getExpiryDetailFail(t("Something-went-wrong")));
           }
         }
       })
       .catch((response) => {
-        dispatch(getExpiryDetailFail(t("User-email-doesnt-exists")));
+        dispatch(getExpiryDetailFail(t("Something-went-wrong")));
       });
   };
 };

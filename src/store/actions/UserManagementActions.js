@@ -2,13 +2,15 @@ import {
   AddOrganizationsUser,
   AllOrganizationsUsers,
   GetOrganizationSelectedPackagesByOrganizationID,
-  GetOrganizationSubscriptionExpiryDetails,
+  IsPackageExpiryDetail,
   SaveOrganizationAndPakageSelection,
   getOrganizationSelectedPakages,
   OrganizationPackageDetailsAndUserStats,
   GetAllUserTypePackages,
   deleteOrganizationUserApi,
   ResendForgotPasswordCode,
+  EditOrganizationsUser,
+  DeleteOrganizationsUser,
 } from "../../commen/apis/Api_config";
 import {
   authenticationApi,
@@ -19,6 +21,10 @@ import axios from "axios";
 import { RefreshToken } from "./Auth_action";
 import { getUserSetting } from "./GetUserSetting";
 import { getAllLanguages } from "./Language_actions";
+import {
+  showEditUserModal,
+  showSucessfullyUpdatedModal,
+} from "./UserMangementModalActions";
 
 const signUpFlowRoutes = (response) => {
   return {
@@ -286,140 +292,153 @@ const signUpOrganizationAndPakageSelection = (data, navigate, t) => {
   };
 };
 
-//GET ALL ORGANIZATION SUBSCRIPTION EXPIRY DETAILS
-const getAllorganizationSubscriptionExpiryDetialsInit = () => {
-  return {
-    type: actions.GET_ORGANIZATION_SUBSCRIPTION_EXPIRYDETAILS_INIT,
-  };
-};
+// //GET ALL ORGANIZATION SUBSCRIPTION EXPIRY DETAILS
+// const getAllorganizationSubscriptionExpiryDetialsInit = () => {
+//   return {
+//     type: actions.GET_ORGANIZATION_SUBSCRIPTION_EXPIRYDETAILS_INIT,
+//   };
+// };
 
-const getAllorganizationSubscriptionExpiryDetialsSuccess = (
-  response,
-  message
-) => {
-  return {
-    type: actions.GET_ORGANIZATION_SUBSCRIPTION_EXPIRYDETAILS_SUCCESS,
-    response: response,
-    message: message,
-  };
-};
+// const getAllorganizationSubscriptionExpiryDetialsSuccess = (
+//   response,
+//   message
+// ) => {
+//   return {
+//     type: actions.GET_ORGANIZATION_SUBSCRIPTION_EXPIRYDETAILS_SUCCESS,
+//     response: response,
+//     message: message,
+//   };
+// };
 
-const getAllorganizationSubscriptionExpiryDetialsFailed = (message) => {
-  return {
-    type: actions.GET_ORGANIZATION_SUBSCRIPTION_EXPIRYDETAILS_FAILS,
-    message: message,
-  };
-};
+// const getAllorganizationSubscriptionExpiryDetialsFailed = (message) => {
+//   return {
+//     type: actions.GET_ORGANIZATION_SUBSCRIPTION_EXPIRYDETAILS_FAILS,
+//     message: message,
+//   };
+// };
 
-const getAllorganizationSubscriptionExpiryDetailsApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+// const getAllorganizationSubscriptionExpiryDetailsApi = (navigate, t, data) => {
+//   let token = JSON.parse(localStorage.getItem("token"));
 
-  return (dispatch) => {
-    dispatch(getAllorganizationSubscriptionExpiryDetialsInit());
-    let form = new FormData();
-    form.append("RequestData", JSON.stringify(data));
-    form.append(
-      "RequestMethod",
-      GetOrganizationSubscriptionExpiryDetails.RequestMethod
-    );
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            getAllorganizationSubscriptionExpiryDetailsApi(navigate, t, data)
-          );
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Admin_AdminServiceManager_GetOrganizationSubscriptionExpiryDetails_01".toLowerCase()
-                )
-            ) {
-              dispatch(
-                getAllorganizationSubscriptionExpiryDetialsSuccess(
-                  response.data.responseResult,
-                  t("Successful")
-                )
-              );
+//   return (dispatch) => {
+//     dispatch(getAllorganizationSubscriptionExpiryDetialsInit());
+//     let form = new FormData();
+//     form.append("RequestData", JSON.stringify(data));
+//     form.append(
+//       "RequestMethod",
+//       IsPackageExpiryDetail.RequestMethod
+//     );
+//     axios({
+//       method: "post",
+//       url: getAdminURLs,
+//       data: form,
+//       headers: {
+//         _token: token,
+//       },
+//     })
+//       .then(async (response) => {
+//         if (response.data.responseCode === 417) {
+//           await dispatch(RefreshToken(navigate, t));
+//           dispatch(
+//             getAllorganizationSubscriptionExpiryDetailsApi(navigate, t, data)
+//           );
+//         } else if (response.data.responseCode === 200) {
+//           if (response.data.responseResult.isExecuted === true) {
+//             if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "Admin_AdminServiceManager_GetOrganizationSubscriptionExpiryDetails_01".toLowerCase()
+//                 )
+//             ) {
+//               console.log("dateOfExpiry",response.data.responseResult)
+//               localStorage.setItem(
+//                 "dateOfExpiry",
+//                 response.data.responseResult.dateOfExpiry
+//               );
+//               localStorage.setItem(
+//                 "isExtensionAvailable",
+//                 response.data.responseResult.isExtensionAvailable
+//               );
+//               localStorage.setItem(
+//                 "remainingDays",
+//                 response.data.responseResult.remainingDays
+//               );
+//               dispatch(
+//                 getAllorganizationSubscriptionExpiryDetialsSuccess(
+//                   response.data.responseResult,
+//                   t("Successful")
+//                 )
+//               );
 
-              await dispatch(getUserSetting(navigate, t, true));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Admin_AdminServiceManager_GetOrganizationSubscriptionExpiryDetails_02".toLowerCase()
-                )
-            ) {
-              dispatch(
-                getAllorganizationSubscriptionExpiryDetialsFailed(
-                  t("Invalid-data-provided")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Admin_AdminServiceManager_GetOrganizationSubscriptionExpiryDetails_03".toLowerCase()
-                )
-            ) {
-              dispatch(
-                getAllorganizationSubscriptionExpiryDetialsFailed(
-                  t("Subscription-not-found")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Admin_AdminServiceManager_GetOrganizationSubscriptionExpiryDetails_05".toLowerCase()
-                )
-            ) {
-              dispatch(
-                getAllorganizationSubscriptionExpiryDetialsFailed(
-                  t("Something-went-wrong")
-                )
-              );
-            } else {
-              dispatch(
-                getAllorganizationSubscriptionExpiryDetialsFailed(
-                  t("Something-went-wrong")
-                )
-              );
-            }
-          } else {
-            dispatch(
-              getAllorganizationSubscriptionExpiryDetialsFailed(
-                t("Something-went-wrong")
-              )
-            );
-          }
-        } else {
-          dispatch(
-            getAllorganizationSubscriptionExpiryDetialsFailed(
-              t("Something-went-wrong")
-            )
-          );
-        }
-      })
-      .catch((response) => {
-        dispatch(
-          getAllorganizationSubscriptionExpiryDetialsFailed(
-            t("Something-went-wrong")
-          )
-        );
-      });
-  };
-};
+//               await dispatch(getUserSetting(navigate, t, true));
+//             } else if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "Admin_AdminServiceManager_GetOrganizationSubscriptionExpiryDetails_02".toLowerCase()
+//                 )
+//             ) {
+//               dispatch(
+//                 getAllorganizationSubscriptionExpiryDetialsFailed(
+//                   t("Invalid-data-provided")
+//                 )
+//               );
+//             } else if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "Admin_AdminServiceManager_GetOrganizationSubscriptionExpiryDetails_03".toLowerCase()
+//                 )
+//             ) {
+//               dispatch(
+//                 getAllorganizationSubscriptionExpiryDetialsFailed(
+//                   t("Subscription-not-found")
+//                 )
+//               );
+//             } else if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "Admin_AdminServiceManager_GetOrganizationSubscriptionExpiryDetails_05".toLowerCase()
+//                 )
+//             ) {
+//               dispatch(
+//                 getAllorganizationSubscriptionExpiryDetialsFailed(
+//                   t("Something-went-wrong")
+//                 )
+//               );
+//             } else {
+//               dispatch(
+//                 getAllorganizationSubscriptionExpiryDetialsFailed(
+//                   t("Something-went-wrong")
+//                 )
+//               );
+//             }
+//           } else {
+//             dispatch(
+//               getAllorganizationSubscriptionExpiryDetialsFailed(
+//                 t("Something-went-wrong")
+//               )
+//             );
+//           }
+//         } else {
+//           dispatch(
+//             getAllorganizationSubscriptionExpiryDetialsFailed(
+//               t("Something-went-wrong")
+//             )
+//           );
+//         }
+//       })
+//       .catch((response) => {
+//         dispatch(
+//           getAllorganizationSubscriptionExpiryDetialsFailed(
+//             t("Something-went-wrong")
+//           )
+//         );
+//       });
+//   };
+// };
 
 //ORGANIZATIONAL TRIAL EXTENDED
 
@@ -453,7 +472,7 @@ const ExtendOrganizationTrialApi = (navigate, t, data) => {
     form.append("RequestData", JSON.stringify(data));
     form.append(
       "RequestMethod",
-      GetOrganizationSubscriptionExpiryDetails.RequestMethod
+      IsPackageExpiryDetail.RequestMethod
     );
     axios({
       method: "post",
@@ -662,12 +681,13 @@ const editOrganizationUsersFail = (message) => {
 
 const EditOrganizationsUserApi = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
-
+  let organizationID = localStorage.getItem("organizationID");
+  let userID = localStorage.getItem("userID");
   return (dispatch) => {
     dispatch(editOrganizationUsersInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
-    form.append("RequestMethod", AddOrganizationsUser.RequestMethod);
+    form.append("RequestMethod", EditOrganizationsUser.RequestMethod);
     axios({
       method: "post",
       url: getAdminURLs,
@@ -695,6 +715,14 @@ const EditOrganizationsUserApi = (navigate, t, data) => {
                   t("The-user-has-been-edited-successfully")
                 )
               );
+              dispatch(showEditUserModal(false));
+              dispatch(showSucessfullyUpdatedModal(true));
+              let data = {
+                OrganizationID: Number(organizationID),
+                RequestingUserID: 1096,
+                // RequestingUserID: Number(userID), will send user ID now for integratino using this UserId
+              };
+              dispatch(AllOrganizationsUsersApi(navigate, t, data));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -717,6 +745,7 @@ const EditOrganizationsUserApi = (navigate, t, data) => {
                   )
                 )
               );
+              dispatch(showEditUserModal(true));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -725,6 +754,7 @@ const EditOrganizationsUserApi = (navigate, t, data) => {
                 )
             ) {
               dispatch(editOrganizationUsersFail(t("Failed-to-update-user")));
+              dispatch(showEditUserModal(true));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -733,11 +763,14 @@ const EditOrganizationsUserApi = (navigate, t, data) => {
                 )
             ) {
               dispatch(editOrganizationUsersFail(t("Something-went-wrong")));
+              dispatch(showEditUserModal(true));
             } else {
               dispatch(editOrganizationUsersFail(t("Something-went-wrong")));
+              dispatch(showEditUserModal(true));
             }
           } else {
             dispatch(editOrganizationUsersFail(t("Something-went-wrong")));
+            dispatch(showEditUserModal(true));
           }
         } else {
           dispatch(editOrganizationUsersFail(t("Something-went-wrong")));
@@ -1202,7 +1235,6 @@ const getOrganizationPackageUserStatsFail = (message) => {
 };
 
 //Api to Show data in graph in userManagment Add user
-
 const getOrganizationPackageUserStatsAPI = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -1458,7 +1490,6 @@ const deleteOrganizationUserMainApi = (navigate, t, data) => {
 };
 
 //Resend Forgot Password Code
-
 const ResendForgotPasswordCodeInit = () => {
   return {
     type: actions.GET_ALL_USER_TYPES_PAKAGES_INIT,
@@ -1537,9 +1568,97 @@ const ResendForgotPasswordCodeApi = (
   };
 };
 
+//Delete Orgazanition
+
+const deleteOrganizationUserInit = () => {
+  return {
+    type: actions.DELETE_ORGANIZATION_USERS_INIT,
+  };
+};
+
+const deleteOrganizationUserSuccess = (response, message) => {
+  return {
+    type: actions.DELETE_ORGANIZATION_USERS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const deleteOrganizationUserFail = (message) => {
+  return {
+    type: actions.DELETE_ORGANIZATION_USERS_FAIL,
+    message: message,
+  };
+};
+
+const deleteOrganizationUserAPI = (navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(deleteOrganizationUserInit());
+    let form = new FormData();
+    form.append("RequestMethod", DeleteOrganizationsUser.RequestMethod);
+    axios({
+      method: "post",
+      url: getAdminURLs,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(deleteOrganizationUserAPI(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_DeleteOrganizationsUser_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                deleteOrganizationUserSuccess(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_DeleteOrganizationsUser_02".toLowerCase()
+                )
+            ) {
+              dispatch(deleteOrganizationUserFail(t("No-data-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_DeleteOrganizationsUser_03".toLowerCase()
+                )
+            ) {
+              dispatch(deleteOrganizationUserFail(t("Something-went-wrong")));
+            } else {
+              dispatch(deleteOrganizationUserFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(deleteOrganizationUserFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(deleteOrganizationUserFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(deleteOrganizationUserFail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   signUpOrganizationAndPakageSelection,
-  getAllorganizationSubscriptionExpiryDetailsApi,
+  // getAllorganizationSubscriptionExpiryDetailsApi,
   ExtendOrganizationTrialApi,
   AddOrganizationsUserApi,
   EditOrganizationsUserApi,
@@ -1553,4 +1672,5 @@ export {
   getAllUserTypePackagesApi,
   deleteOrganizationUserMainApi,
   ResendForgotPasswordCodeApi,
+  deleteOrganizationUserAPI,
 };

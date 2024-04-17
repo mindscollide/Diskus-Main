@@ -36,9 +36,9 @@ const ManageUsers = () => {
 
   let organizationID = localStorage.getItem("organizationID");
 
-  let isTrial = localStorage.getItem("isTrial");
-
   let userID = localStorage.getItem("userID");
+
+  let isTrial = localStorage.getItem("isTrial");
 
   const { UserMangementReducer, UserManagementModals } = useSelector(
     (state) => state
@@ -52,6 +52,8 @@ const ManageUsers = () => {
   const [showSearches, setshowSearches] = useState(false);
 
   const [manageUserGrid, setManageUserGrid] = useState();
+
+  const [editModalData, setEditModalData] = useState(null);
 
   const [searchDetails, setsearchDetails] = useState({
     Name: "",
@@ -70,6 +72,7 @@ const ManageUsers = () => {
         let data = {
           OrganizationID: Number(organizationID),
           RequestingUserID: 1096,
+          // RequestingUserID: Number(userID), will send user ID now for integratino using this UserId
         };
         dispatch(AllOrganizationsUsersApi(navigate, t, data));
       } catch {}
@@ -177,7 +180,6 @@ const ManageUsers = () => {
         );
       },
     },
-
     {
       title: "User Status",
       dataIndex: "userStatus",
@@ -232,7 +234,6 @@ const ManageUsers = () => {
         );
       },
     },
-
     {
       title: t(""),
       dataIndex: "Delete",
@@ -262,8 +263,8 @@ const ManageUsers = () => {
 
   //navigating to Add user Page
   const handleAddusers = () => {
-    if (isTrial) {
-      navigate("/Admin/AddUsersUsermanagement");
+    if (localStorage.getItem("isTrial")) {
+      navigate("/Admin/AddUsers");
     } else {
       navigate("/Admin/AddUsersUsermanagement");
     }
@@ -376,6 +377,7 @@ const ManageUsers = () => {
   // handle Edit User Modal
   const handleClickEditIcon = (record) => {
     console.log(record, "handleClickEditIcon");
+    setEditModalData(record);
     dispatch(showEditUserModal(true));
   };
 
@@ -577,7 +579,7 @@ const ManageUsers = () => {
           </span>
         </Col>
       </Row>
-      {userTrialAlert && (
+      {localStorage.getItem("isTrial") && (
         <>
           <Row
             className={`mt-3 ${
@@ -623,9 +625,13 @@ const ManageUsers = () => {
         </Col>
       </Row>
       {UserManagementModals.deleteUsersModal && <DeleteUserModal />}
-      {UserManagementModals.editUserModal && <EditUserModal />}{" "}
-      {UserManagementModals.successfullyUpdated && <SuccessfullyUpdateModal />}{" "}
-      {UserMangementReducer.Loading ? <Loader /> : null}{" "}
+      {UserManagementModals.editUserModal && (
+        <EditUserModal editModalData={editModalData} />
+      )}
+      {UserManagementModals.successfullyUpdated && (
+        <SuccessfullyUpdateModal editModalData={editModalData} />
+      )}
+      {UserMangementReducer.Loading ? <Loader /> : null}
     </Container>
   );
 };

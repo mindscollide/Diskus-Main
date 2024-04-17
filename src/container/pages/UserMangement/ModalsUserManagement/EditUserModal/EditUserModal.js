@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./EditUserModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -15,16 +15,108 @@ import {
   showEditUserModal,
   showSucessfullyUpdatedModal,
 } from "../../../../../store/actions/UserMangementModalActions";
-const EditUserModal = () => {
+import { EditOrganizationsUserApi } from "../../../../../store/actions/UserManagementActions";
+import { useNavigate } from "react-router-dom";
+const EditUserModal = ({ editModalData }) => {
+  console.log(editModalData, "editModalDataeditModalData");
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
+  const navigate = useNavigate();
+
   const { UserManagementModals } = useSelector((state) => state);
 
+  let userID = localStorage.getItem("userID");
+
+  let organizationID = localStorage.getItem("organizationID");
+
+  const [editUserModalValues, setEditUserModalValues] = useState({
+    Name: editModalData.userName,
+    Desgiantion: editModalData.designation,
+    Email: editModalData.email,
+    isAdminUser: editModalData.userRoleID === 4 ? true : false,
+  });
+
+  const [userStatusID, setUserStatusID] = useState(0);
+
+  //options for the dropdowm
+  const options = [
+    { value: 1, label: "Enabled" },
+    { value: 2, label: "Disabled" },
+    { value: 3, label: "Locked" },
+    { value: 4, label: "Closed" },
+    { value: 5, label: "Dormant" },
+    { value: 6, label: "Dormant" },
+  ];
+
+  const findOptionByValue = (value) =>
+    options.find((option) => option.value === value.toLowerCase()) ||
+    options[0];
+
+  const [userStatus, setUserStatus] = useState(
+    findOptionByValue(editModalData.userStatus)
+  );
+
+  useEffect(() => {
+    setUserStatus(findOptionByValue(editModalData.userStatus));
+  }, [editModalData.userStatus]);
+
+  // Handler for when an option is selected.
+  const handleSelectChange = (selectedOption) => {
+    console.log(selectedOption, "selectedOptionselectedOption");
+    setUserStatus(selectedOption);
+    setUserStatusID(selectedOption.value);
+  };
+
+  const handleUpdateModal = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    console.log({ name, value }, "handleChangeSearchBoxValues");
+
+    if (name === "Name") {
+      if (value !== "") {
+        let valueCheck = /^[A-Za-z\s]*$/i.test(value);
+        if (valueCheck) {
+          setEditUserModalValues((prevState) => ({
+            ...prevState,
+            [name]: value.trim(),
+          }));
+        }
+      } else {
+        setEditUserModalValues((prevState) => ({
+          ...prevState,
+          Name: "",
+        }));
+      }
+    } else if (name === "Designation") {
+      setEditUserModalValues((prevState) => ({
+        ...prevState,
+        Desgiantion: value.trim(),
+      }));
+    }
+  };
+
   const handleUpdateButton = () => {
-    dispatch(showEditUserModal(false));
-    dispatch(showSucessfullyUpdatedModal(true));
+    let data = {
+      UserID: Number(userID),
+      StatusID: Number(userStatusID),
+      UserName: editUserModalValues.Name,
+      Designation: editUserModalValues.Desgiantion,
+      MobileNumber: "",
+      isAdmin: editUserModalValues.isAdminUser,
+      OrganizationID: Number(organizationID),
+      OrganizationSelectedPackageID: Number(editModalData.userAllotedPackageID),
+      FK_NumberWorldCountryID: Number(editModalData.fK_WorldCountryID),
+    };
+    dispatch(EditOrganizationsUserApi(navigate, t, data));
+  };
+
+  const handleIsAdminCheckbox = (e) => {
+    setEditUserModalValues({
+      ...editUserModalValues,
+      isAdminUser: e.target.checked,
+    });
   };
   return (
     <section>
@@ -54,6 +146,8 @@ const EditUserModal = () => {
                     <Col lg={12} md={12} sm={12} xs={12}>
                       <TextField
                         placeholder={t("Full-name")}
+                        name={"Name"}
+                        value={editUserModalValues.Name}
                         label={
                           <>
                             <Row>
@@ -66,6 +160,7 @@ const EditUserModal = () => {
                             </Row>
                           </>
                         }
+                        change={handleUpdateModal}
                         applyClass={"updateNotes_titleInput"}
                       />
                     </Col>
@@ -74,6 +169,8 @@ const EditUserModal = () => {
                     <Col lg={12} md={12} sm={12} xs={12}>
                       <TextField
                         placeholder={t("Designation")}
+                        name={"Designation"}
+                        value={editUserModalValues.Desgiantion}
                         label={
                           <>
                             <Row>
@@ -86,6 +183,7 @@ const EditUserModal = () => {
                             </Row>
                           </>
                         }
+                        change={handleUpdateModal}
                         applyClass={"updateNotes_titleInput"}
                       />
                     </Col>
@@ -110,6 +208,8 @@ const EditUserModal = () => {
                         >
                           <Checkbox
                             classNameCheckBoxP="m-0 p-0"
+                            checked={editUserModalValues.isAdminUser}
+                            onChange={handleIsAdminCheckbox}
                             classNameDiv=""
                           />
                           <span className={styles["AdminAlsoClass"]}>
@@ -128,7 +228,11 @@ const EditUserModal = () => {
                   </Row>
                   <Row>
                     <Col lg={12} md={12} sm={12}>
-                      <Select />
+                      <Select
+                        value={userStatus}
+                        onChange={handleSelectChange}
+                        options={options}
+                      />
                     </Col>
                   </Row>
                   <Row className="mt-3">
@@ -142,7 +246,7 @@ const EditUserModal = () => {
                         {t("Organization")}
                       </span>
                       <span className={styles["EmailStyles"]}>
-                        DerrickAdams@gmail.com
+                        {editUserModalValues.Email}
                       </span>
                     </Col>
                   </Row>

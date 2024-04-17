@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../components/elements";
 import { showSucessfullyUpdatedModal } from "../../../../../store/actions/UserMangementModalActions";
 import { Col, Row } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 const SuccessfullyUpdateModal = () => {
   const { t } = useTranslation();
 
