@@ -344,16 +344,14 @@ export const router = createHashRouter(
               </RouteWrapperAdmin>
             }
           />
-
           <Route
-            path="/AddUsersUsermanagement"
+            path="AddUsersUsermanagement"
             element={
               <RouteWrapperAdmin name="AddUsersUsermanagement">
                 <AddUserMain />
               </RouteWrapperAdmin>
             }
           />
-
           <Route
             path="Invoice"
             element={

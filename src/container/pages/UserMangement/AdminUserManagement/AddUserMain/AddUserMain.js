@@ -18,7 +18,7 @@ import {
   GetOrganizationSelectedPackagesByOrganizationIDApi,
 } from "../../../../../store/actions/UserManagementActions";
 
-const AddUserMainFreeTrial = () => {
+const AddUserMain = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -973,4 +973,4 @@ const AddUserMainFreeTrial = () => {
   );
 };
 
-export default AddUserMainFreeTrial;
+export default AddUserMain;
