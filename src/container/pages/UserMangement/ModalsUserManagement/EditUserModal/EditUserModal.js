@@ -38,13 +38,16 @@ const EditUserModal = ({ editModalData }) => {
     isAdminUser: editModalData.userRoleID === 4 ? true : false,
   });
 
+  const [userStatusID, setUserStatusID] = useState(0);
+
   //options for the dropdowm
   const options = [
-    { value: "Enabled", label: "Enabled" },
-    { value: "Disabled", label: "Disabled" },
-    { value: "Dormant", label: "Dormant" },
-    { value: "Locked", label: "Locked" },
-    { value: "Closed", label: "Closed" },
+    { value: 1, label: "Enabled" },
+    { value: 2, label: "Disabled" },
+    { value: 3, label: "Locked" },
+    { value: 4, label: "Closed" },
+    { value: 5, label: "Dormant" },
+    { value: 6, label: "Dormant" },
   ];
 
   const findOptionByValue = (value) =>
@@ -61,7 +64,9 @@ const EditUserModal = ({ editModalData }) => {
 
   // Handler for when an option is selected.
   const handleSelectChange = (selectedOption) => {
+    console.log(selectedOption, "selectedOptionselectedOption");
     setUserStatus(selectedOption);
+    setUserStatusID(selectedOption.value);
   };
 
   const handleUpdateModal = (e) => {
@@ -95,7 +100,7 @@ const EditUserModal = ({ editModalData }) => {
   const handleUpdateButton = () => {
     let data = {
       UserID: Number(userID),
-      StatusID: 1,
+      StatusID: Number(userStatusID),
       UserName: editUserModalValues.Name,
       Designation: editUserModalValues.Desgiantion,
       MobileNumber: "",
