@@ -4,6 +4,7 @@ import { Triangle } from "react-bootstrap-icons";
 import {
   GetAllUsers,
   GetAllUsersGroupsRoomsList,
+  getAllUserChatsSuccess,
 } from "../../../store/actions/Talk_action";
 import {
   recentChatFlag,
@@ -16,6 +17,8 @@ import {
   chatBoxActiveFlag,
   activeChatBoxGS,
   globalChatsSearchFlag,
+  privateGroupChatFlag,
+  privateChatFlag,
 } from "../../../store/actions/Talk_Feature_actions";
 import {
   participantPopup,
@@ -104,9 +107,6 @@ const Talk = () => {
 
   const iconClick = () => {
     if (talkFeatureStates.ActiveChatBoxGS === false) {
-      // dispatch(
-      //   GetAllUserChats(navigate, currentUserId, currentOrganizationId, t),
-      // )
       dispatch(createShoutAllScreen(false));
       dispatch(addNewChatScreen(false));
       dispatch(footerActionStatus(false));
@@ -132,23 +132,18 @@ const Talk = () => {
       dispatch(headerShowHideStatus(true));
       dispatch(footerShowHideStatus(true));
       dispatch(activeChatBoxGS(true));
-      dispatch(globalChatsSearchFlag(false))
-    }
-    // else if (activeVideoIcon === false) {
-    //   dispatch(recentVideoFlag(false))
-    //   dispatch(contactVideoFlag(true))
-    //   dispatch(videoChatPanel(true))
-    //   setActiveVideoIcon(true)
-    //   dispatch(videoChatSearchFlag(false))
-    // }
-    else {
+      dispatch(globalChatsSearchFlag(false));
+    } else {
       dispatch(videoChatPanel(false));
       setActiveVideoIcon(false);
       dispatch(activeChatBoxGS(false));
       dispatch(contactVideoFlag(false));
       dispatch(recentVideoFlag(false));
+      dispatch(privateGroupChatFlag(false));
+      dispatch(privateChatFlag(false));
       dispatch(videoChatSearchFlag(false));
-      dispatch(globalChatsSearchFlag(false))
+      dispatch(globalChatsSearchFlag(false));
+      dispatch(getAllUserChatsSuccess([], ""));
     }
   };
 

@@ -4318,4 +4318,5 @@ export {
   lastMessageDeletion,
   OTOMessageSendSuccess,
   PrintChat,
+  getAllUserChatsSuccess,
 };

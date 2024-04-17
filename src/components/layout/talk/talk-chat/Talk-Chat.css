@@ -2080,3 +2080,18 @@ span.background-close-search {
 .option-d:hover {
   text-decoration: underline;
 }
+
+.border-none.dropdown .dropdown-menu {
+  background: #fff !important;
+  text-align: center;
+  width: 100px !important;
+  border-radius: 5px;
+  border: 1px solid #b6b6b6;
+}
+
+.dropdown-menu-upwards {
+  position: absolute !important;
+  top: -160px !important;
+  transform: none !important;
+  left: -100px !important;
+}

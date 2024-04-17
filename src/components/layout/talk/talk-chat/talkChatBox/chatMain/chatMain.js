@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import moment from "moment";
-import { Row, Col, Container, Form } from "react-bootstrap";
+import { Row, Col, Container, Form, Dropdown } from "react-bootstrap";
 import { Checkbox } from "antd";
 import { Spin } from "antd";
 import {
@@ -178,9 +178,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
   const [emojiActive, setEmojiActive] = useState(false);
   const emojiMenuRef = useRef();
+  const chatMenuRef = useRef(null);
 
   const [chatMenuActive, setChatMenuActive] = useState(false);
-  const chatMenuRef = useRef(null);
 
   const [save, setSave] = useState(false);
   const [print, setPrint] = useState(false);
@@ -207,7 +207,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
   const [isRetryFlag, setIsRetryFlag] = useState(false);
 
-  const [chatFeatureActive, setChatFeatureActive] = useState(0);
+  // const [chatFeatureActive, setChatFeatureActive] = useState(0);
 
   const [replyFeature, setReplyFeature] = useState(false);
 
@@ -315,8 +315,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   };
 
   useEffect(() => {
-    console.log("Re Renders");
-
     if (talkStateData.ActiveChatData.messageType === "G") {
       let Data = {
         GroupID: talkStateData.ActiveChatData.id,
@@ -327,8 +325,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, []);
 
   useEffect(() => {
-    console.log("Re Renders");
-
     try {
       setMessageSendData({
         ...messageSendData,
@@ -338,8 +334,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [talkStateData.ActiveChatData]);
 
   useEffect(() => {
-    console.log("Re Renders");
-
     if (
       talkStateData.AllUserChats.AllUserChatsData !== undefined &&
       talkStateData.AllUserChats.AllUserChatsData !== null &&
@@ -352,8 +346,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [talkStateData?.AllUserChats?.AllUserChatsData?.allMessages]);
 
   useEffect(() => {
-    console.log("Re Renders");
-
     if (
       talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse !==
         undefined &&
@@ -380,8 +372,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   ]);
 
   useEffect(() => {
-    console.log("Re Renders");
-
     if (
       talkStateData?.ActiveUsersByBroadcastID?.ActiveUsersByBroadcastIDData !==
         undefined &&
@@ -416,8 +406,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   };
 
   useEffect(() => {
-    console.log("Re Renders");
-
     if (
       talkStateData.AllUsers.AllUsersData !== undefined &&
       talkStateData.AllUsers.AllUsersData !== null &&
@@ -428,8 +416,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [talkStateData?.AllUsers?.AllUsersData?.allUsers]);
 
   useEffect(() => {
-    console.log("Re Renders");
-
     let privateGroupMembers =
       talkStateData.GetPrivateGroupMembers.GetPrivateGroupMembersResponse
         .groupUsers;
@@ -454,8 +440,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   ]);
 
   useEffect(() => {
-    console.log("Re Renders");
-
     let shoutMembersData =
       talkStateData.ActiveUsersByBroadcastID.ActiveUsersByBroadcastIDData
         .broadcastUsers;
@@ -480,8 +464,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   ]);
 
   useEffect(() => {
-    console.log("Re Renders");
-
     if (
       talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData !==
         undefined &&
@@ -664,7 +646,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setForwardFlag(false);
     setEndDatedisable(false);
     setUploadOptions(false);
-    setChatFeatureActive(0);
+    // setChatFeatureActive(0);
     setReplyFeature(false);
     setShowChatSearch(false);
     setAllMessages([]);
@@ -964,7 +946,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setForwardFlag(false);
     setEndDatedisable(false);
     setUploadOptions(false);
-    setChatFeatureActive(0);
+    // setChatFeatureActive(0);
     setReplyFeature(false);
     setShowChatSearch(false);
     setForwardUsersChecked([]);
@@ -1041,14 +1023,14 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setInputChat(true);
   };
 
-  const chatFeatureSelected = (record, id) => {
-    dispatch(activeMessage(record));
-    if (chatFeatureActive === id) {
-      setChatFeatureActive(0);
-    } else {
-      setChatFeatureActive(id);
-    }
-  };
+  // const chatFeatureSelected = (record, id) => {
+  //   dispatch(activeMessage(record));
+  //   if (chatFeatureActive === id) {
+  //     setChatFeatureActive(0);
+  //   } else {
+  //     setChatFeatureActive(id);
+  //   }
+  // };
 
   const replyFeatureHandler = (record) => {
     // chatMessages.current?.scrollIntoView({ behavior: "auto" });
@@ -1501,8 +1483,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   };
 
   useEffect(() => {
-    console.log("Re Renders");
-
     let allChatMessages = talkStateData.AllMessagesData;
     if (
       allChatMessages !== undefined &&
@@ -1659,8 +1639,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   };
 
   useEffect(() => {
-    console.log("Re Renders");
-
     if (
       talkStateData.talkSocketDataUserBlockUnblock.socketBlockUser !== null &&
       talkStateData.talkSocketDataUserBlockUnblock.socketBlockUser !==
@@ -1693,13 +1671,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
     }
   }, [talkStateData.talkSocketDataUserBlockUnblock.socketBlockUser]);
 
-  useEffect(() => {
-    console.log("Re Renders");
-  }, [talkStateData.ActiveChatData]);
+  useEffect(() => {}, [talkStateData.ActiveChatData]);
 
   useEffect(() => {
-    console.log("Re Renders");
-
     if (
       talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser !== null &&
       talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser !==
@@ -1736,8 +1710,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser]);
 
   useEffect(() => {
-    console.log("Re Renders");
-
     if (
       talkStateData.talkSocketDataStarUnstar.socketStarMessage !== null &&
       talkStateData.talkSocketDataStarUnstar.socketStarMessage !== undefined &&
@@ -1788,8 +1760,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [talkStateData?.talkSocketDataStarUnstar?.socketStarMessage]);
 
   useEffect(() => {
-    console.log("Re Renders");
-
     if (
       talkStateData.talkSocketDataStarUnstar.socketUnstarMessage !== null &&
       talkStateData.talkSocketDataStarUnstar.socketUnstarMessage !==
@@ -1808,8 +1778,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [talkStateData?.talkSocketDataStarUnstar?.socketUnstarMessage]);
 
   useEffect(() => {
-    console.log("Re Renders");
-
     if (
       talkStateData.talkSocketGroupCreation.groupCreatedData !== null &&
       talkStateData.talkSocketGroupCreation.groupCreatedData !== undefined &&
@@ -1820,8 +1788,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [talkStateData?.talkSocketGroupCreation?.groupCreatedData]);
 
   useEffect(() => {
-    console.log("Re Renders");
-
     if (
       talkStateData.talkSocketGroupUpdation.groupUpdatedData !== null &&
       talkStateData.talkSocketGroupUpdation.groupUpdatedData !== undefined &&
@@ -1832,8 +1798,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [talkStateData?.talkSocketGroupUpdation?.groupUpdatedData]);
 
   useEffect(() => {
-    console.log("Re Renders");
-
     if (
       talkStateData.talkSocketUnreadMessageCount.unreadMessageData !== null &&
       talkStateData.talkSocketUnreadMessageCount.unreadMessageData !==
@@ -1848,8 +1812,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   ]);
 
   useEffect(() => {
-    console.log("Re Renders");
-
     if (
       talkStateData?.MessageStatusUpdateData.MessageStatusUpdateResponse !==
         null &&
@@ -1886,7 +1848,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [talkStateData?.MessageStatusUpdateData?.MessageStatusUpdateResponse]);
 
   // useEffect(() => {
-  //   console.log("Re Renders");
+  //
 
   //   if (
   //     talkStateData.MessageSendOTO.ResponseMessage !==
@@ -2237,7 +2199,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     JSON.parse(localStorage.getItem("unsentMessage")) || [];
   let checkunsentMessageObject = [];
   // useEffect(() => {
-  //   console.log("Re Renders");
+  //
 
   //   if (Object.keys(unsentMessageObject).length > 0) {
   //     if (checkunsentMessageObject !== unsentMessageObject) {
@@ -2247,8 +2209,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   // }, [unsentMessageObject]);
 
   useEffect(() => {
-    console.log("Re Renders");
-
     if (
       talkStateData.talkSocketData.socketInsertOTOMessageData !== null &&
       talkStateData.talkSocketData.socketInsertOTOMessageData !== undefined &&
@@ -2412,8 +2372,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [talkStateData.talkSocketData.socketInsertOTOMessageData]);
 
   useEffect(() => {
-    console.log("Re Renders");
-
     if (
       talkStateData.talkSocketData.socketInsertGroupMessageData !== null &&
       talkStateData.talkSocketData.socketInsertGroupMessageData !== undefined &&
@@ -2626,8 +2584,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [talkStateData.talkSocketData.socketInsertGroupMessageData]);
 
   useEffect(() => {
-    console.log("Re Renders");
-
     if (
       talkStateData.talkSocketInsertBroadcastMessage
         .MessageSendBroadcastResponseData !== null &&
@@ -2647,7 +2603,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
   ]);
 
   const handleOutsideClick = (event) => {
-    if (
+        if (
       chatMenuRef.current &&
       !chatMenuRef.current.contains(event.target) &&
       chatMenuActive
@@ -2668,14 +2624,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
     ) {
       setUploadOptions(false);
     }
-    if (!event.target.closest(".chatmessage-box-icons")) {
-      setChatFeatureActive(0);
-    }
   };
 
   useEffect(() => {
-    console.log("Re Renders");
-
     document.addEventListener("click", handleOutsideClick);
     return () => {
       document.removeEventListener("click", handleOutsideClick);
@@ -2683,16 +2634,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [chatMenuActive, emojiActive, uploadOptions]);
 
   useEffect(() => {
-    console.log("Re Renders");
-
     if (inputRef.current) {
       inputRef.current.focus();
     }
   }, [inputChat]);
 
   useEffect(() => {
-    console.log("Re Renders");
-
     if (emojiSelected) {
       inputRef.current.focus();
       setEmojiSelected(false);
@@ -2734,8 +2681,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   };
 
   useEffect(() => {
-    console.log("Re Renders");
-
     if (
       talkStateData.UpdatePrivateGroup.UpdatePrivateGroupResponseMessage ===
       "Group-modified"
@@ -2792,7 +2737,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setForwardFlag(false);
     setEndDatedisable(false);
     setUploadOptions(false);
-    setChatFeatureActive(0);
+    // setChatFeatureActive(0);
     setReplyFeature(false);
     setShowChatSearch(false);
     setAllMessages([]);
@@ -2805,8 +2750,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   };
 
   useEffect(() => {
-    console.log("Re Renders");
-
     if (talkStateData.LeaveGroup.LeaveGroupResponseMessage === "Group-left") {
       setNotification({
         notificationShow: true,
@@ -2818,8 +2761,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [talkStateData.LeaveGroup.LeaveGroupResponseMessage]);
 
   useEffect(() => {
-    console.log("Re Renders");
-
     if (
       talkStateData.CreateShoutAllList.CreateShoutAllListResponseMessage ===
       "Broadcast-list-created"
@@ -2845,8 +2786,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   };
 
   useEffect(() => {
-    console.log("Re Renders");
-
     if (
       talkStateData.DownloadChatData.DownloadChatResponse !== null &&
       talkStateData.DownloadChatData.DownloadChatResponse !== undefined &&
@@ -2861,8 +2800,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [talkStateData?.DownloadChatData?.DownloadChatResponse]);
 
   useEffect(() => {
-    console.log("Re Renders");
-
     if (
       talkStateData.MqttMessageDeleteData !== null &&
       talkStateData.MqttMessageDeleteData !== undefined &&
@@ -2895,9 +2832,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     }
   }, [talkStateData?.MqttMessageDeleteData]);
 
-  useEffect(() => {
-    console.log("Re Renders");
-  }, [activeCall]);
+  useEffect(() => {}, [activeCall]);
 
   const initiateOtoCall = () => {
     let recipientData = {
@@ -2971,7 +2906,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setForwardFlag(false);
     setEndDatedisable(false);
     setUploadOptions(false);
-    setChatFeatureActive(0);
+    // setChatFeatureActive(0);
     setReplyFeature(false);
     setShowChatSearch(false);
     setAllMessages([]);
@@ -3067,7 +3002,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setForwardFlag(false);
     setEndDatedisable(false);
     setUploadOptions(false);
-    setChatFeatureActive(0);
+    // setChatFeatureActive(0);
     setReplyFeature(false);
     setShowChatSearch(false);
     setAllMessages([]);
@@ -3163,8 +3098,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   };
 
   useEffect(() => {
-    console.log("Re Renders");
-
     if (talkFeatureStates.RetryFlagState === true) {
       const storedSingleMessageObject =
         JSON.parse(localStorage.getItem("singleMessageObject")) || [];
@@ -3185,8 +3118,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [talkFeatureStates.RetryFlagState]);
 
   useEffect(() => {
-    console.log("Re Renders");
-
     let singleMessageObject = JSON.parse(
       localStorage.getItem("singleMessageObject")
     );
@@ -3230,8 +3161,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }, [currentConnection, allMessages]);
 
   useEffect(() => {
-    console.log("Re Renders");
-
     // Check if all objects have isRetry: false
     const allObjectsHaveIsRetryFalse = allMessages.every(
       (message) => !message.isRetry
@@ -3267,11 +3196,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
                     <Col lg={1} md={1} sm={12}>
                       <div className="chat-profile-icon">
                         {talkStateData.ActiveChatData.messageType === "O" ? (
-                          <img draggable="false" src={SingleIcon} width={25} />
+                          <img draggable="false" src={SingleIcon} width={25} alt="" />
                         ) : talkStateData.ActiveChatData.messageType === "G" ? (
-                          <img draggable="false" src={GroupIcon} width={30} />
+                          <img draggable="false" src={GroupIcon} width={30} alt="" />
                         ) : talkStateData.ActiveChatData.messageType === "B" ? (
-                          <img draggable="false" src={ShoutIcon} width={20} />
+                          <img draggable="false" src={ShoutIcon} width={20} alt="" />
                         ) : null}
                       </div>
                     </Col>
@@ -3291,6 +3220,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                           draggable="false"
                           onClick={showChatSearchHandler}
                           src={SearchChatIcon}
+                          alt="" 
                         />
                       </div>
                     </Col>
@@ -3298,10 +3228,10 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       {" "}
                       <div
                         className="chat-box-icons cursor-pointer positionRelative"
-                        ref={chatMenuRef}
                         onClick={activateChatMenu}
+                        ref={chatMenuRef}
                       >
-                        <img draggable="false" src={MenuIcon} />
+                        <img draggable="false" src={MenuIcon} alt="" />
                         {chatMenuActive && (
                           <div className="dropdown-menus-chat">
                             {talkStateData.ActiveChatData.messageType ===
@@ -3373,14 +3303,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 <span onClick={deleteMultipleMessages}>
                                   {t("Delete-messages")}
                                 </span>
-                                <span
-                                  onClick={
-                                    () => setLeave(true)
-                                    // leaveGroupHandlerChat(
-                                    //   talkStateData.ActiveChatData
-                                    // )
-                                  }
-                                >
+                                <span onClick={() => setLeave(true)}>
                                   {t("Leave-Group")}
                                 </span>
                                 <span
@@ -3446,6 +3369,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                             }
                             draggable="false"
                             src={VideoCallIcon}
+                            alt="" 
                           />
                         </div>
                       </Col>
@@ -3461,6 +3385,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                           draggable="false"
                           src={CloseChatIcon}
                           className="cursor-pointer"
+                          alt="" 
                         />
                       </div>
                     </Col>
@@ -3483,6 +3408,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                           draggable="false"
                           src={SecurityIconMessasgeBox}
                           style={{ width: "17px" }}
+                          alt="" 
                         />
                       </span>
                     </Col>
@@ -3577,29 +3503,30 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                         <div className="direct-chat-text message-outbox message-box text-start">
                                           <div
                                             className="chatmessage-box-icons"
-                                            onClick={() =>
-                                              chatFeatureSelected(
-                                                messageData,
-                                                messageData.messageID
-                                              )
-                                            }
                                             ref={
                                               chatMessageRefs[
                                                 messageData.messageID
                                               ]
                                             }
                                           >
-                                            <img
-                                              draggable="false"
-                                              className="dropdown-icon"
-                                              src={DropDownIcon}
-                                            />
-                                            {chatFeatureActive != 0 &&
-                                            Number(chatFeatureActive) ===
-                                              Number(messageData.messageID) ? (
-                                              <>
-                                                <div className="dropdown-menus-chatmessage">
-                                                  <span
+                                            <Dropdown className="border-none">
+                                              <Dropdown.Toggle id="dropdown-basic">
+                                                <img
+                                                  draggable="false"
+                                                  className="dropdown-icon"
+                                                  src={DropDownIcon}
+                                                  alt="" 
+                                                />
+                                              </Dropdown.Toggle>
+                                              <Dropdown.Menu
+                                                className={
+                                                  isLastMessage
+                                                    ? "dropdown-menu-upwards"
+                                                    : ""
+                                                }
+                                              >
+                                                <>
+                                                  <Dropdown.Item
                                                     onClick={() =>
                                                       replyFeatureHandler(
                                                         messageData
@@ -3607,15 +3534,15 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     }
                                                   >
                                                     {t("Reply")}
-                                                  </span>
-                                                  <span
+                                                  </Dropdown.Item>
+                                                  <Dropdown.Item
                                                     onClick={
                                                       forwardFeatureHandler
                                                     }
                                                   >
                                                     {t("Forward")}
-                                                  </span>
-                                                  <span
+                                                  </Dropdown.Item>
+                                                  <Dropdown.Item
                                                     onClick={() =>
                                                       deleteFeatureHandler(
                                                         messageData
@@ -3623,8 +3550,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     }
                                                   >
                                                     {t("Delete for me")}
-                                                  </span>
-                                                  <span
+                                                  </Dropdown.Item>
+                                                  <Dropdown.Item
                                                     onClick={() =>
                                                       messageInfoHandler(
                                                         messageData
@@ -3632,8 +3559,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     }
                                                   >
                                                     {t("Message-Info")}
-                                                  </span>
-                                                  <span
+                                                  </Dropdown.Item>
+                                                  <Dropdown.Item
                                                     onClick={() =>
                                                       markUnmarkStarMessageHandler(
                                                         messageData
@@ -3649,10 +3576,10 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     ) : (
                                                       <>{t("Unstar-Message")}</>
                                                     )}
-                                                  </span>
-                                                </div>
-                                              </>
-                                            ) : null}
+                                                  </Dropdown.Item>
+                                                </>
+                                              </Dropdown.Menu>
+                                            </Dropdown>
                                           </div>
                                           {messageData.frMessages ===
                                           "Direct Message" ? (
@@ -3996,77 +3923,81 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                       <div className="direct-chat-text message-inbox message-box text-start">
                                         <div
                                           className="chatmessage-box-icons"
-                                          onClick={() =>
-                                            chatFeatureSelected(
-                                              messageData,
-                                              messageData.messageID
-                                            )
-                                          }
                                           ref={
                                             chatMessageRefs[
                                               messageData.messageID
                                             ]
                                           }
                                         >
-                                          <img
-                                            draggable="false"
-                                            className="dropdown-icon"
-                                            src={DropDownIcon}
-                                          />
-                                          {chatFeatureActive != 0 &&
-                                          Number(chatFeatureActive) ===
-                                            Number(messageData.messageID) ? (
-                                            <div className="dropdown-menus-chatmessage">
-                                              <span
-                                                onClick={() =>
-                                                  replyFeatureHandler(
-                                                    messageData
-                                                  )
-                                                }
-                                              >
-                                                {t("Reply")}
-                                              </span>
-                                              <span
-                                                onClick={forwardFeatureHandler}
-                                              >
-                                                {t("Forward")}
-                                              </span>
-                                              <span
-                                                onClick={() =>
-                                                  deleteFeatureHandler(
-                                                    messageData
-                                                  )
-                                                }
-                                              >
-                                                {t("Delete for me")}
-                                              </span>
-                                              <span
-                                                onClick={() =>
-                                                  messageInfoHandler(
-                                                    messageData
-                                                  )
-                                                }
-                                              >
-                                                {t("Message-Info")}
-                                              </span>
-                                              <span
-                                                onClick={() =>
-                                                  markUnmarkStarMessageHandler(
-                                                    messageData
-                                                  )
-                                                }
-                                                style={{
-                                                  borderBottom: "none",
-                                                }}
-                                              >
-                                                {messageData.isFlag === 0 ? (
-                                                  <>{t("Star-Message")}</>
-                                                ) : (
-                                                  <>{t("Unstar-Message")}</>
-                                                )}
-                                              </span>
-                                            </div>
-                                          ) : null}
+                                          <Dropdown className="border-none">
+                                            <Dropdown.Toggle id="dropdown-basic">
+                                              <img
+                                                draggable="false"
+                                                className="dropdown-icon"
+                                                src={DropDownIcon}
+                                              />
+                                            </Dropdown.Toggle>
+                                            <Dropdown.Menu
+                                              className={
+                                                isLastMessage
+                                                  ? "dropdown-menu-upwards"
+                                                  : ""
+                                              }
+                                            >
+                                              <>
+                                                <Dropdown.Item
+                                                  onClick={() =>
+                                                    replyFeatureHandler(
+                                                      messageData
+                                                    )
+                                                  }
+                                                >
+                                                  {t("Reply")}
+                                                </Dropdown.Item>
+                                                <Dropdown.Item
+                                                  onClick={
+                                                    forwardFeatureHandler
+                                                  }
+                                                >
+                                                  {t("Forward")}
+                                                </Dropdown.Item>
+                                                <Dropdown.Item
+                                                  onClick={() =>
+                                                    deleteFeatureHandler(
+                                                      messageData
+                                                    )
+                                                  }
+                                                >
+                                                  {t("Delete for me")}
+                                                </Dropdown.Item>
+                                                <Dropdown.Item
+                                                  onClick={() =>
+                                                    messageInfoHandler(
+                                                      messageData
+                                                    )
+                                                  }
+                                                >
+                                                  {t("Message-Info")}
+                                                </Dropdown.Item>
+                                                <Dropdown.Item
+                                                  onClick={() =>
+                                                    markUnmarkStarMessageHandler(
+                                                      messageData
+                                                    )
+                                                  }
+                                                  style={{
+                                                    borderBottom: "none",
+                                                  }}
+                                                >
+                                                  {messageData.isFlag === 0 ? (
+                                                    <>{t("Star-Message")}</>
+                                                  ) : (
+                                                    <>{t("Unstar-Message")}</>
+                                                  )}
+                                                </Dropdown.Item>
+                                              </>
+                                            </Dropdown.Menu>
+                                          </Dropdown>
                                         </div>
                                         {messageData.frMessages ===
                                           "Direct Message" ||
@@ -4235,77 +4166,81 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                         </p>
                                         <div
                                           className="chatmessage-box-icons"
-                                          onClick={() =>
-                                            chatFeatureSelected(
-                                              messageData,
-                                              messageData.messageID
-                                            )
-                                          }
                                           ref={
                                             chatMessageRefs[
                                               messageData.messageID
                                             ]
                                           }
                                         >
-                                          <img
-                                            draggable="false"
-                                            className="dropdown-icon"
-                                            src={DropDownIcon}
-                                          />
-                                          {chatFeatureActive != 0 &&
-                                          Number(chatFeatureActive) ===
-                                            Number(messageData.messageID) ? (
-                                            <div className="dropdown-menus-chatmessage">
-                                              <span
-                                                onClick={() =>
-                                                  replyFeatureHandler(
-                                                    messageData
-                                                  )
-                                                }
-                                              >
-                                                {t("Reply")}
-                                              </span>
-                                              <span
-                                                onClick={forwardFeatureHandler}
-                                              >
-                                                {t("Forward")}
-                                              </span>
-                                              <span
-                                                onClick={() =>
-                                                  deleteFeatureHandler(
-                                                    messageData
-                                                  )
-                                                }
-                                              >
-                                                {t("Delete for me")}
-                                              </span>
-                                              <span
-                                                onClick={() =>
-                                                  messageInfoHandler(
-                                                    messageData
-                                                  )
-                                                }
-                                              >
-                                                {t("Message-Info")}
-                                              </span>
-                                              <span
-                                                onClick={() =>
-                                                  markUnmarkStarMessageHandler(
-                                                    messageData
-                                                  )
-                                                }
-                                                style={{
-                                                  borderBottom: "none",
-                                                }}
-                                              >
-                                                {messageData.isFlag === 0 ? (
-                                                  <>{t("Star-Message")}</>
-                                                ) : (
-                                                  <>{t("Unstar-Message")}</>
-                                                )}
-                                              </span>
-                                            </div>
-                                          ) : null}
+                                          <Dropdown className="border-none">
+                                            <Dropdown.Toggle id="dropdown-basic">
+                                              <img
+                                                draggable="false"
+                                                className="dropdown-icon"
+                                                src={DropDownIcon}
+                                              />
+                                            </Dropdown.Toggle>
+                                            <Dropdown.Menu
+                                              className={
+                                                isLastMessage
+                                                  ? "dropdown-menu-upwards"
+                                                  : ""
+                                              }
+                                            >
+                                              <>
+                                                <Dropdown.Item
+                                                  onClick={() =>
+                                                    replyFeatureHandler(
+                                                      messageData
+                                                    )
+                                                  }
+                                                >
+                                                  {t("Reply")}
+                                                </Dropdown.Item>
+                                                <Dropdown.Item
+                                                  onClick={
+                                                    forwardFeatureHandler
+                                                  }
+                                                >
+                                                  {t("Forward")}
+                                                </Dropdown.Item>
+                                                <Dropdown.Item
+                                                  onClick={() =>
+                                                    deleteFeatureHandler(
+                                                      messageData
+                                                    )
+                                                  }
+                                                >
+                                                  {t("Delete for me")}
+                                                </Dropdown.Item>
+                                                <Dropdown.Item
+                                                  onClick={() =>
+                                                    messageInfoHandler(
+                                                      messageData
+                                                    )
+                                                  }
+                                                >
+                                                  {t("Message-Info")}
+                                                </Dropdown.Item>
+                                                <Dropdown.Item
+                                                  onClick={() =>
+                                                    markUnmarkStarMessageHandler(
+                                                      messageData
+                                                    )
+                                                  }
+                                                  style={{
+                                                    borderBottom: "none",
+                                                  }}
+                                                >
+                                                  {messageData.isFlag === 0 ? (
+                                                    <>{t("Star-Message")}</>
+                                                  ) : (
+                                                    <>{t("Unstar-Message")}</>
+                                                  )}
+                                                </Dropdown.Item>
+                                              </>
+                                            </Dropdown.Menu>
+                                          </Dropdown>
                                         </div>
                                         {messageData.frMessages ===
                                           "Direct Message" ||
@@ -4529,77 +4464,81 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                       <div className="direct-chat-text message-inbox message-box text-start">
                                         <div
                                           className="chatmessage-box-icons"
-                                          onClick={() =>
-                                            chatFeatureSelected(
-                                              messageData,
-                                              messageData.messageID
-                                            )
-                                          }
                                           ref={
                                             chatMessageRefs[
                                               messageData.messageID
                                             ]
                                           }
                                         >
-                                          <img
-                                            draggable="false"
-                                            className="dropdown-icon"
-                                            src={DropDownIcon}
-                                          />
-                                          {chatFeatureActive != 0 &&
-                                          Number(chatFeatureActive) ===
-                                            Number(messageData.messageID) ? (
-                                            <div className="dropdown-menus-chatmessage">
-                                              <span
-                                                onClick={() =>
-                                                  replyFeatureHandler(
-                                                    messageData
-                                                  )
-                                                }
-                                              >
-                                                {t("Reply")}
-                                              </span>
-                                              <span
-                                                onClick={forwardFeatureHandler}
-                                              >
-                                                {t("Forward")}
-                                              </span>
-                                              <span
-                                                onClick={() =>
-                                                  deleteFeatureHandler(
-                                                    messageData
-                                                  )
-                                                }
-                                              >
-                                                {t("Delete for me")}
-                                              </span>
-                                              <span
-                                                onClick={() =>
-                                                  messageInfoHandler(
-                                                    messageData
-                                                  )
-                                                }
-                                              >
-                                                {t("Message-Info")}
-                                              </span>
-                                              <span
-                                                onClick={() =>
-                                                  markUnmarkStarMessageHandler(
-                                                    messageData
-                                                  )
-                                                }
-                                                style={{
-                                                  borderBottom: "none",
-                                                }}
-                                              >
-                                                {messageData.isFlag === 0 ? (
-                                                  <>{t("Star-Message")}</>
-                                                ) : (
-                                                  <>{t("Unstar-Message")}</>
-                                                )}
-                                              </span>
-                                            </div>
-                                          ) : null}
+                                          <Dropdown className="border-none">
+                                            <Dropdown.Toggle id="dropdown-basic">
+                                              <img
+                                                draggable="false"
+                                                className="dropdown-icon"
+                                                src={DropDownIcon}
+                                              />
+                                            </Dropdown.Toggle>
+                                            <Dropdown.Menu
+                                              className={
+                                                isLastMessage
+                                                  ? "dropdown-menu-upwards"
+                                                  : ""
+                                              }
+                                            >
+                                              <>
+                                                <Dropdown.Item
+                                                  onClick={() =>
+                                                    replyFeatureHandler(
+                                                      messageData
+                                                    )
+                                                  }
+                                                >
+                                                  {t("Reply")}
+                                                </Dropdown.Item>
+                                                <Dropdown.Item
+                                                  onClick={
+                                                    forwardFeatureHandler
+                                                  }
+                                                >
+                                                  {t("Forward")}
+                                                </Dropdown.Item>
+                                                <Dropdown.Item
+                                                  onClick={() =>
+                                                    deleteFeatureHandler(
+                                                      messageData
+                                                    )
+                                                  }
+                                                >
+                                                  {t("Delete for me")}
+                                                </Dropdown.Item>
+                                                <Dropdown.Item
+                                                  onClick={() =>
+                                                    messageInfoHandler(
+                                                      messageData
+                                                    )
+                                                  }
+                                                >
+                                                  {t("Message-Info")}
+                                                </Dropdown.Item>
+                                                <Dropdown.Item
+                                                  onClick={() =>
+                                                    markUnmarkStarMessageHandler(
+                                                      messageData
+                                                    )
+                                                  }
+                                                  style={{
+                                                    borderBottom: "none",
+                                                  }}
+                                                >
+                                                  {messageData.isFlag === 0 ? (
+                                                    <>{t("Star-Message")}</>
+                                                  ) : (
+                                                    <>{t("Unstar-Message")}</>
+                                                  )}
+                                                </Dropdown.Item>
+                                              </>
+                                            </Dropdown.Menu>
+                                          </Dropdown>
                                         </div>
                                         {messageData.frMessages ===
                                           "Direct Message" ||
@@ -4705,79 +4644,82 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                         <div className="direct-chat-text message-outbox message-box text-start">
                                           <div
                                             className="chatmessage-box-icons"
-                                            onClick={() =>
-                                              chatFeatureSelected(
-                                                messageData,
-                                                messageData.messageID
-                                              )
-                                            }
                                             ref={
                                               chatMessageRefs[
                                                 messageData.messageID
                                               ]
                                             }
                                           >
-                                            <img
-                                              draggable="false"
-                                              className="dropdown-icon"
-                                              src={DropDownIcon}
-                                            />
-                                            {chatFeatureActive != 0 &&
-                                            Number(chatFeatureActive) ===
-                                              Number(messageData.messageID) ? (
-                                              <div className="dropdown-menus-chatmessage">
-                                                <span
-                                                  onClick={() =>
-                                                    replyFeatureHandler(
-                                                      messageData
-                                                    )
-                                                  }
-                                                >
-                                                  {t("Reply")}
-                                                </span>
-                                                <span
-                                                  onClick={
-                                                    forwardFeatureHandler
-                                                  }
-                                                >
-                                                  {t("Forward")}
-                                                </span>
-                                                <span
-                                                  onClick={() =>
-                                                    deleteFeatureHandler(
-                                                      messageData
-                                                    )
-                                                  }
-                                                >
-                                                  {t("Delete for me")}
-                                                </span>
-                                                <span
-                                                  onClick={() =>
-                                                    messageInfoHandler(
-                                                      messageData
-                                                    )
-                                                  }
-                                                >
-                                                  {t("Message-Info")}
-                                                </span>
-                                                <span
-                                                  onClick={() =>
-                                                    markUnmarkStarMessageHandler(
-                                                      messageData
-                                                    )
-                                                  }
-                                                  style={{
-                                                    borderBottom: "none",
-                                                  }}
-                                                >
-                                                  {messageData.isFlag === 0 ? (
-                                                    <>{t("Star-Message")}</>
-                                                  ) : (
-                                                    <>{t("Unstar-Message")}</>
-                                                  )}
-                                                </span>
-                                              </div>
-                                            ) : null}
+                                            <Dropdown className="border-none">
+                                              <Dropdown.Toggle id="dropdown-basic">
+                                                <img
+                                                  draggable="false"
+                                                  className="dropdown-icon"
+                                                  src={DropDownIcon}
+                                                />
+                                              </Dropdown.Toggle>
+                                              <Dropdown.Menu
+                                                className={
+                                                  isLastMessage
+                                                    ? "dropdown-menu-upwards"
+                                                    : ""
+                                                }
+                                              >
+                                                <>
+                                                  <Dropdown.Item
+                                                    onClick={() =>
+                                                      replyFeatureHandler(
+                                                        messageData
+                                                      )
+                                                    }
+                                                  >
+                                                    {t("Reply")}
+                                                  </Dropdown.Item>
+                                                  <Dropdown.Item
+                                                    onClick={
+                                                      forwardFeatureHandler
+                                                    }
+                                                  >
+                                                    {t("Forward")}
+                                                  </Dropdown.Item>
+                                                  <Dropdown.Item
+                                                    onClick={() =>
+                                                      deleteFeatureHandler(
+                                                        messageData
+                                                      )
+                                                    }
+                                                  >
+                                                    {t("Delete for me")}
+                                                  </Dropdown.Item>
+                                                  <Dropdown.Item
+                                                    onClick={() =>
+                                                      messageInfoHandler(
+                                                        messageData
+                                                      )
+                                                    }
+                                                  >
+                                                    {t("Message-Info")}
+                                                  </Dropdown.Item>
+                                                  <Dropdown.Item
+                                                    onClick={() =>
+                                                      markUnmarkStarMessageHandler(
+                                                        messageData
+                                                      )
+                                                    }
+                                                    style={{
+                                                      borderBottom: "none",
+                                                    }}
+                                                  >
+                                                    {messageData.isFlag ===
+                                                    0 ? (
+                                                      <>{t("Star-Message")}</>
+                                                    ) : (
+                                                      <>{t("Unstar-Message")}</>
+                                                    )}
+                                                  </Dropdown.Item>
+                                                </>
+                                              </Dropdown.Menu>
+                                            </Dropdown>
                                           </div>
                                           {messageData.frMessages ===
                                             "Direct Message" ||
