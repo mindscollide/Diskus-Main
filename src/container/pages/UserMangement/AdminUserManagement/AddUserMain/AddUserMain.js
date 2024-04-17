@@ -1,15 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./AddUserMain.module.css";
 import { useSelector, useDispatch } from "react-redux";
-import { FormControl } from "react-bootstrap";
-import {
-  Container,
-  Row,
-  Col,
-  Form,
-  ProgressBar,
-  Spinner,
-} from "react-bootstrap";
+import { Container, Row, Col, Form, ProgressBar } from "react-bootstrap";
 import { Checkbox, Spin } from "antd";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
@@ -17,13 +9,7 @@ import ReactFlagsSelect from "react-flags-select";
 import { useTranslation } from "react-i18next";
 import { Chart } from "react-google-charts";
 import "react-phone-input-2/lib/style.css";
-import {
-  Button,
-  Notification,
-  Modal,
-  Loader,
-  Subscriptionwarninglimit,
-} from "../../../../../components/elements";
+import { Button } from "../../../../../components/elements";
 import { countryNameforPhoneNumber } from "../../../../Admin/AllUsers/AddUser/CountryJson";
 import { validateEmailEnglishAndArabicFormat } from "../../../../../commen/functions/validations";
 import {

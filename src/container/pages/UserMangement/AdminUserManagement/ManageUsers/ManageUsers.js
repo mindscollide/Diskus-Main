@@ -11,6 +11,7 @@ import {
   Checkbox,
   Table,
   TextField,
+  Loader,
 } from "../../../../../components/elements";
 import greenCheck from "../../../../../assets/images/greenCheck.svg";
 import { useTranslation } from "react-i18next";
@@ -35,6 +36,8 @@ const ManageUsers = () => {
 
   let organizationID = localStorage.getItem("organizationID");
 
+  let isTrial = localStorage.getItem("isTrial");
+
   let userID = localStorage.getItem("userID");
 
   const { UserMangementReducer, UserManagementModals } = useSelector(
@@ -48,7 +51,7 @@ const ManageUsers = () => {
 
   const [showSearches, setshowSearches] = useState(false);
 
-  const [manageUserGrid, setManageUserGrid] = useState([]);
+  const [manageUserGrid, setManageUserGrid] = useState();
 
   const [searchDetails, setsearchDetails] = useState({
     Name: "",
@@ -89,16 +92,18 @@ const ManageUsers = () => {
 
   //AllOrganizationsUsers Api Data
   useEffect(() => {
-    try {
-      if (
-        UserMangementReducer.allOrganizationUsersData !== undefined &&
-        UserMangementReducer.allOrganizationUsersData !== null
-      ) {
-        //       setManageUserGrid(
-        //         UserMangementReducer.allOrganizationUsersData.organizationUsers
-        //       );
-      }
-    } catch {}
+    if (
+      UserMangementReducer.allOrganizationUsersData !== undefined &&
+      UserMangementReducer.allOrganizationUsersData !== null
+    ) {
+      console.log(
+        UserMangementReducer.allOrganizationUsersData,
+        "UserMangementReducer"
+      );
+      setManageUserGrid(
+        UserMangementReducer.allOrganizationUsersData.organizationUsers
+      );
+    }
   }, [UserMangementReducer.allOrganizationUsersData]);
 
   //Table Columns All Users
@@ -158,10 +163,11 @@ const ManageUsers = () => {
       sorter: (a, b) =>
         a.OrganizationRole.localeCompare(b.OrganizationRole.toLowerCase),
       render: (text, record) => {
+        console.log(record, "recordrecordrecord");
         return (
           <>
             {(() => {
-              if (record.userRole === "Admin") {
+              if (record.userRole === "AdminUser") {
                 return <img src={greenCheck} alt="" />;
               } else {
                 return;
@@ -179,7 +185,6 @@ const ManageUsers = () => {
       align: "left",
       ellipsis: true,
       render: (text, record) => {
-        console.log(record, "record");
         return (
           <>
             {(() => {
@@ -242,12 +247,12 @@ const ManageUsers = () => {
                   draggable="false"
                   alt=""
                   src={EditIcon2}
-                  onClick={handleClickEditIcon(record)}
+                  onClick={() => handleClickEditIcon(record)}
                 />
               </i>
             </div>
             <i style={{ cursor: "pointer", color: "#000" }}>
-              <Trash size={22} onClick={handleDeleteModal(record)} />
+              <Trash size={22} onClick={() => handleDeleteModal(record)} />
             </i>
           </>
         );
@@ -257,7 +262,11 @@ const ManageUsers = () => {
 
   //navigating to Add user Page
   const handleAddusers = () => {
-    navigate("/Admin/AddUsersUsermanagement");
+    if (isTrial) {
+      navigate("/Admin/AddUsersUsermanagement");
+    } else {
+      navigate("/Admin/AddUsersUsermanagement");
+    }
   };
 
   // opening of the search box
@@ -615,7 +624,8 @@ const ManageUsers = () => {
       </Row>
       {UserManagementModals.deleteUsersModal && <DeleteUserModal />}
       {UserManagementModals.editUserModal && <EditUserModal />}{" "}
-      {UserManagementModals.successfullyUpdated && <SuccessfullyUpdateModal />}
+      {UserManagementModals.successfullyUpdated && <SuccessfullyUpdateModal />}{" "}
+      {UserMangementReducer.Loading ? <Loader /> : null}{" "}
     </Container>
   );
 };
