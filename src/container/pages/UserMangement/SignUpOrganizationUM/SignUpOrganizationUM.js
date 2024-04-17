@@ -416,6 +416,7 @@ const SignUpOrganizationUM = () => {
   };
 
   const handlerSignup = async () => {
+    console.log("handlerSignup",isFreeTrail)
     if (isFreeTrail === true) {
       if (
         signUpDetails.CompanyName.value !== "" &&

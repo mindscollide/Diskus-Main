@@ -49,7 +49,6 @@ const CreateAddtionalUsersModal = () => {
     (state) => state
   );
 
-  console.log(UserMangementReducer, "UserMangementReducer");
   //States
   const [members, setMembers] = useState([]);
   const [createAddionalUsers, setCreateAddionalUsers] = useState({
@@ -144,19 +143,64 @@ const CreateAddtionalUsersModal = () => {
 
   //Adding Addtional Users
   const handleAddMember = () => {
-    const { Name, Email } = createAddionalUsers;
+    const { Name, Email, isAdminCheck, Designation } = createAddionalUsers;
     if (Name.value && Email.value) {
-      // Add member to the members array
-      setMembers((prevMembers) => [
-        ...prevMembers,
-        { name: Name.value, email: Email.value },
-      ]);
+      try {
+        if (validateEmailEnglishAndArabicFormat(Email.value)) {
+          // Add member to the members array
+          setMembers((prevMembers) => [
+            ...prevMembers,
+            {
+              UserName: Name.value,
+              UserEmail: Email.value,
+              OrganizationName: localStorage.getItem("OrganizatioName"),
+              Designation: Designation.value,
+              MobileNumber: "",
+              OrganizationID: Number(localStorage.getItem("OrganizationID")),
+              isAdmin: isAdminCheck,
+              FK_NumberWorldCountryID: 153,
+              OrganizationSelectedPackageID: Number(
+                localStorage.getItem("organizationSelectedUserPackageID")
+              ),
+            },
+          ]);
+          setCreateAddionalUsers({
+            Name: {
+              value: "",
+              errorMessage: "",
+              errorStatus: false,
+            },
+
+            Email: {
+              value: "",
+              errorMessage: "",
+              errorStatus: false,
+            },
+            Designation: {
+              value: "",
+              errorMessage: "",
+              errorStatus: false,
+            },
+
+            isAdminCheck: false,
+          });
+        } else {
+          setCreateAddionalUsers((prevState) => ({
+            ...prevState, // Spread the previous state to keep other values unchanged
+            Email: {
+              value: Email.value,
+              errorMessage: t("Enter-valid-email-address"),
+              errorStatus: true,
+            },
+          }));
+        }
+      } catch {}
     } else {
       // Optionally handle the case where Name or Email is empty
       // e.g., set error messages in createAddionalUsers
     }
   };
-
+  console.log("members", members);
   //handle removing the addional Users
   const handleCrossIcon = (indexToRemove) => {
     setMembers((currentMembers) =>
@@ -176,59 +220,11 @@ const CreateAddtionalUsersModal = () => {
 
   //handle Create button
   const handleCreatebutton = () => {
-    if (
-      createAddionalUsers.Name.value !== "" &&
-      createAddionalUsers.Designation.value !== "" &&
-      createAddionalUsers.Email.value !== ""
-    ) {
-      if (
-        validateEmailEnglishAndArabicFormat(createAddionalUsers.Email.value)
-      ) {
-        let data = {
-          UserDataList: [
-            {
-              UserName: createAddionalUsers.Name.value,
-              OrganizationName: OrganizatioName,
-              Designation: createAddionalUsers.Designation.value,
-              MobileNumber: "",
-              UserEmail: createAddionalUsers.Email.value,
-              OrganizationID: Number(organzataionID),
-              isAdmin: createAddionalUsers.isAdminCheck,
-              FK_NumberWorldCountryID: 1,
-              OrganizationSelectedPackageID: Number(pakageSelectedID),
-            },
-          ],
-        };
-        console.log(data, "AddOrganizationsUserApi");
-        dispatch(AddOrganizationsUserApi(navigate, t, data, false));
-      } else {
-        setCreateAddionalUsers({
-          Email: {
-            value: createAddionalUsers.Email.value,
-            errorMessage: t("Enter-valid-email-address"),
-            errorStatus: createAddionalUsers.Email.errorStatus,
-          },
-        });
-      }
+    if (Object.keys(members).length > 0) {
+      let data = { UserDataList: members };
+      dispatch(AddOrganizationsUserApi(navigate, t, data, false));
     } else {
-      setCreateAddionalUsers({
-        Name: {
-          value: createAddionalUsers.Name.value,
-          errorMessage: "please enter name",
-          errorStatus: createAddionalUsers.Name.errorStatus,
-        },
-
-        Email: {
-          value: createAddionalUsers.Email.value,
-          errorMessage: "please enter Email",
-          errorStatus: createAddionalUsers.Email.errorStatus,
-        },
-        Designation: {
-          value: createAddionalUsers.Designation.value,
-          errorMessage: "please enter Designation",
-          errorStatus: createAddionalUsers.Designation.errorStatus,
-        },
-      });
+      // add notification that ad atleast one user
     }
   };
 
@@ -453,8 +449,8 @@ const CreateAddtionalUsersModal = () => {
                             <Row>
                               <Col lg={12} md={12} sm={12}>
                                 <AddtionalUserCard
-                                  Employeename={data?.name}
-                                  Employeeemail={data?.email}
+                                  Employeename={data?.UserName}
+                                  Employeeemail={data?.UserEmail}
                                   EmployeePic={data?.displayProfilePictureName}
                                   Icon={
                                     <img

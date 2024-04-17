@@ -25,6 +25,7 @@ import Helper from "../../commen/functions/history_logout";
 import { getSubscriptionPaymentDetail } from "./Admin_PackageDetail";
 import { LoginFlowRoutes } from "./UserManagementActions";
 import { showCreateAddtionalUsersModal } from "./UserMangementModalActions";
+import { savePackageFeatureIDs } from "../../commen/functions/utils";
 
 const createOrganizationInit = () => {
   return {
@@ -552,6 +553,12 @@ const enterPasswordvalidation = (value, navigate, t) => {
             } catch {}
             try {
               localStorage.setItem(
+                "organizationSelectedUserPackageID",
+                response.data.responseResult.organizationSelectedUserPackageID
+              );
+            } catch {}
+            try {
+              localStorage.setItem(
                 "hasUserRights",
                 response.data.responseResult.hasUserRights
               );
@@ -562,6 +569,17 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 response.data.responseResult.hasAdminRights
               );
             } catch {}
+            if (response.data.responseResult.hasUserRights) {
+              await savePackageFeatureIDs(
+                response.data.responseResult.userFeatures
+              );
+            }
+            if (response.data.responseResult.hasAdminRights) {
+              await savePackageFeatureIDs(
+                response.data.responseResult.adminFeatures
+              );
+            }
+
             let LocalUserRoutes = [
               { name: "Diskus", id: 100 },
               { name: "home", id: 101 },
@@ -1745,10 +1763,32 @@ const createPasswordAction = (value, navigate, t) => {
               } catch {}
               try {
                 localStorage.setItem(
+                  "isTrial",
+                  response.data.responseResult.isTrial
+                );
+              } catch {}
+              try {
+                localStorage.setItem(
+                  "organizationSelectedUserPackageID",
+                  response.data.responseResult.organizationSelectedUserPackageID
+                );
+              } catch {}
+              try {
+                localStorage.setItem(
                   "hasAdminRights",
                   response.data.responseResult.hasAdminRights
                 );
               } catch {}
+              if (response.data.responseResult.hasUserRights) {
+                await savePackageFeatureIDs(
+                  response.data.responseResult.userFeatures
+                );
+              }
+              if (response.data.responseResult.hasAdminRights) {
+                await savePackageFeatureIDs(
+                  response.data.responseResult.adminFeatures
+                );
+              }
               let LocalUserRoutes = [
                 { name: "Diskus", id: 100 },
                 { name: "home", id: 101 },
