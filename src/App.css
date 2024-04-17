@@ -7254,3 +7254,7 @@ tr.ant-table-row.ant-table-row-level-0.UpgradePakageDetails:last-child:hover {
 .title_tooltip {
   border-radius: 50%;
 }
+
+.border-none.dropdown button {
+  border: none !important;
+}
