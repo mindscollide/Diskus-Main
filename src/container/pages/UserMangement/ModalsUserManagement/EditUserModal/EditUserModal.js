@@ -51,8 +51,6 @@ const EditUserModal = ({ editModalData }) => {
   ];
 
   const findOptionByValue = (value) => {
-    console.log(value, "valuevaluevalue");
-    // Convert the value to a string before processing
     switch (value.toString()) {
       case "Enabled":
         return options[0];

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./AddUserMain.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { Container, Row, Col, Form, ProgressBar } from "react-bootstrap";
@@ -23,10 +23,6 @@ const AddUserMain = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { UserMangementReducer } = useSelector((state) => state);
-  console.log(
-    UserMangementReducer.organizationSelectedPakagesByOrganizationIDData,
-    "getOrganizationUserStatsGraph"
-  );
 
   // organizationName from Local Storage
   const organizationName = localStorage.getItem("OrganizatioName");
