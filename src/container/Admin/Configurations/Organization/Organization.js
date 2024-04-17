@@ -13,7 +13,6 @@ import { useTranslation } from "react-i18next";
 import styles from "./Organzation.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
-import { getUserSetting } from "../../../../store/actions/GetUserSetting";
 import getTimeZone from "../../../../store/actions/GetTimeZone";
 import getCountryCodeFunc from "../../../../store/actions/GetCountryCode";
 

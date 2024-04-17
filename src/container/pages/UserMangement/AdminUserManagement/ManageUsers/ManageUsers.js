@@ -257,7 +257,11 @@ const ManageUsers = () => {
 
   //navigating to Add user Page
   const handleAddusers = () => {
-    navigate("/Admin/AddUsersUsermanagement");
+    if (localStorage.getItem("isTrial")) {
+      navigate("/Admin/AddUsers");
+    } else {
+      navigate("/Admin/AddUsersUsermanagement");
+    }
   };
 
   // opening of the search box
@@ -568,7 +572,7 @@ const ManageUsers = () => {
           </span>
         </Col>
       </Row>
-      {userTrialAlert && (
+      {localStorage.getItem("isTrial") && (
         <>
           <Row
             className={`mt-3 ${

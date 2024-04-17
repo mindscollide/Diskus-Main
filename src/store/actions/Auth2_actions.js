@@ -590,10 +590,13 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 { name: "Admin", id: 200 },
                 { name: "Admin", id: 201 },
                 { name: "", id: 202 },
-                { name: "ManageUsers", id: 2 },
-                { name: "OrganizationlevelConfigUM", id: 3 },
-                { name: "PackageDetailsUserManagement", id: 4 },
-                { name: "Summary", id: 5 },
+                { name: "ManageUsers", id: 203 },
+                { name: "changePassword", id: 204 },
+                { name: "OrganizationlevelConfigUM", id: 205 },
+                { name: "AddUsers", id: 26 },
+                { name: "faq's", id: 104 },
+                { name: "loginreport", id: 35 },
+                { name: "PakageDetailsUserManagement", id: 206 },
               ];
             } else {
               LocalUserRoutes.push(
@@ -602,16 +605,26 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 { name: "notes", id: 6 },
                 { name: "calendar", id: 7 },
                 { name: "dataroom", id: 13 },
-                { name: "todolist", id: 14 },
+                { name: "todolist", id: 14 }
               );
               LocalAdminRoutes = [
                 { name: "Admin", id: 200 },
                 { name: "Admin", id: 201 },
                 { name: "", id: 202 },
-                { name: "ManageUsers", id: 2 },
-                { name: "OrganizationlevelConfigUM", id: 3 },
-                { name: "PackageDetailsUserManagement", id: 4 },
-                { name: "Summary", id: 5 },
+                { name: "ManageUsers", id: 203 },
+                { name: "changePassword", id: 204 },
+                { name: "OrganizationlevelConfigUM", id: 205 },
+                { name: "PakageDetailsUserManagement", id: 206 },
+                { name: "AddUsersUsermanagement", id: 26 },
+                { name: "PackageDetailsUserManagement", id: 28 },
+                { name: "CancelSubscriptionUserManagement", id: 29 },
+                { name: "deleteorganizationUserMangement", id: 30 },
+                { name: "Summary", id: 34 },
+                { name: "PayOutstanding", id: 34 },
+                { name: "PaymentHistory", id: 36 },
+                { name: "PaymentHistoryusermanagement", id: 37 },
+                { name: "loginreport", id: 35 },
+                { name: "faq's", id: 104 },
               ];
             }
 
@@ -770,14 +783,14 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("The-user-is-an-admin-user")
                   )
                 );
-                navigate("/Admin/");
+                navigate("/Admin/ManageUsers");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 2
               ) {
                 await dispatch(
                   getPackageExpiryDetail(
                     navigate,
-                    response.data.responseResult.organizationRoleID,
+                    Number(response.data.responseResult.organizationRoleID),
                     t
                   )
                 );
@@ -800,7 +813,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("The-user-is-an-admin-user")
                   )
                 );
-                navigate("/Admin/");
+                navigate("/Admin/ManageUsers");
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -944,11 +957,16 @@ const enterPasswordvalidation = (value, navigate, t) => {
               } else {
                 localStorage.setItem("revokeCancellation", false);
               }
+              let data = {
+                OrganizationID: Number(
+                  response.data.responseResult.organizationID
+                ),
+              };
               if (JSON.parse(response.data.responseResult.roleId) === 1) {
                 await dispatch(
                   getPackageExpiryDetail(
                     navigate,
-                    response.data.responseResult.organizationID,
+                    Number(response.data.responseResult.organizationID),
                     t
                   )
                 );
@@ -975,10 +993,11 @@ const enterPasswordvalidation = (value, navigate, t) => {
               } else if (
                 JSON.parse(response.data.responseResult.roleId) === 4
               ) {
+                localStorage.removeItem("LoginFlowPageRoute");
                 await dispatch(
                   getPackageExpiryDetail(
                     navigate,
-                    response.data.responseResult.organizationID,
+                    Number(response.data.responseResult.organizationID),
                     t
                   )
                 );
@@ -1750,10 +1769,13 @@ const createPasswordAction = (value, navigate, t) => {
                   { name: "Admin", id: 200 },
                   { name: "Admin", id: 201 },
                   { name: "", id: 202 },
-                  { name: "ManageUsers", id: 2 },
-                  { name: "OrganizationlevelConfigUM", id: 3 },
-                  { name: "PackageDetailsUserManagement", id: 4 },
-                  { name: "Summary", id: 5 },
+                  { name: "ManageUsers", id: 203 },
+                  { name: "changePassword", id: 204 },
+                  { name: "OrganizationlevelConfigUM", id: 205 },
+                  { name: "AddUsers", id: 26 },
+                  { name: "faq's", id: 104 },
+                  { name: "loginreport", id: 35 },
+                  { name: "PakageDetailsUserManagement", id: 206 },
                 ];
               } else {
                 LocalUserRoutes.push(
@@ -1762,16 +1784,25 @@ const createPasswordAction = (value, navigate, t) => {
                   { name: "notes", id: 6 },
                   { name: "calendar", id: 7 },
                   { name: "dataroom", id: 13 },
-                  { name: "todolist", id: 14 },
+                  { name: "todolist", id: 14 }
                 );
                 LocalAdminRoutes = [
                   { name: "Admin", id: 200 },
                   { name: "Admin", id: 201 },
                   { name: "", id: 202 },
-                  { name: "ManageUsers", id: 2 },
-                  { name: "OrganizationlevelConfigUM", id: 3 },
-                  { name: "PackageDetailsUserManagement", id: 4 },
-                  { name: "Summary", id: 5 },
+                  { name: "ManageUsers", id: 203 },
+                  { name: "changePassword", id: 204 },
+                  { name: "OrganizationlevelConfigUM", id: 205 },
+                  { name: "PakageDetailsUserManagement", id: 206 },
+                  { name: "AddUsersUsermanagement", id: 26 },
+                  { name: "PackageDetailsUserManagement", id: 28 },
+                  { name: "CancelSubscriptionUserManagement", id: 29 },
+                  { name: "deleteorganizationUserMangement", id: 30 },
+                  { name: "Summary", id: 34 },
+                  { name: "PayOutstanding", id: 34 },
+                  { name: "loginreport", id: 35 },
+                  { name: "PaymentHistory", id: 36 },
+                  { name: "PaymentHistoryusermanagement", id: 37 },
                 ];
               }
 

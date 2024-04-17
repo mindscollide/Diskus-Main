@@ -263,7 +263,7 @@ const deleteOrganizationUser = {
 };
 
 const IsPackageExpiryDetail = {
-  RequestMethod: "ServiceManager.GetOrganizationSelectedPackageExpiryDetails",
+  RequestMethod: "ServiceManager.GetOrganizationSubscriptionExpiryDetails",
 };
 const AllMeetingOrganization = {
   RequestMethod: "ServiceManager.SearchOrganizationMeetings",
@@ -1476,10 +1476,6 @@ const SaveOrganizationAndPakageSelection = {
   RequestMethod: "ServiceManager.SaveOrganizationsAndSelectedPackage",
 };
 
-const GetOrganizationSubscriptionExpiryDetails = {
-  RequestMethod: "ServiceManager.GetOrganizationSubscriptionExpiryDetails",
-};
-
 const ExtendOrganizationTrial = {
   RequestMethod: "ServiceManager.ExtendOrganizationTrial",
 };
@@ -1925,7 +1921,6 @@ export {
   exportAgendaAsPDF,
   printMeetingAgenda,
   SaveOrganizationAndPakageSelection,
-  GetOrganizationSubscriptionExpiryDetails,
   ExtendOrganizationTrial,
   AddOrganizationsUser,
   EditOrganizationsUser,
