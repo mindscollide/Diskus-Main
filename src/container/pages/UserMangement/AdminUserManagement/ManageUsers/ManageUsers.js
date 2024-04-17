@@ -71,8 +71,7 @@ const ManageUsers = () => {
       try {
         let data = {
           OrganizationID: Number(organizationID),
-          RequestingUserID: 1096,
-          // RequestingUserID: Number(userID), will send user ID now for integratino using this UserId
+          RequestingUserID: Number(userID),
         };
         dispatch(AllOrganizationsUsersApi(navigate, t, data));
       } catch {}
@@ -349,7 +348,7 @@ const ManageUsers = () => {
       setshowSearches(false);
       let data = {
         OrganizationID: Number(organizationID),
-        RequestingUserID: 1096,
+        RequestingUserID: Number(userID),
       };
       dispatch(AllOrganizationsUsersApi(navigate, t, data));
     }

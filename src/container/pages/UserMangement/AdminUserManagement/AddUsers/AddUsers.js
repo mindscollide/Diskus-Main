@@ -34,36 +34,8 @@ const AddUsers = () => {
 
   const { adminReducer } = useSelector((state) => state);
 
-  const handleCancelButton = () => {
-    navigate("/Admin/ManageUsers");
-  };
-
-  useEffect(() => {
-    let data = {
-      OrganizationID: Number(organizationID),
-    };
-    dispatch(
-      GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t, data)
-    );
-  }, []);
-
-  useEffect(() => {
-    if (
-      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData &&
-      Object.keys(
-        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
-      ).length > 0
-    ) {
-      console.log(
-        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData,
-        "UserMangementReducerUserMangementReducer"
-      );
-      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData.organizationSelectedPackages.map(
-        (data, index) => {}
-      );
-    }
-  }, [UserMangementReducer.organizationSelectedPakagesByOrganizationIDData]);
-
+  const [pakageID, setPakageID] = useState(0);
+  const [worldCountryID, setWorldCountryID] = useState(0);
   const [isEmailUnique, setEmailUnique] = useState(false);
   const [companyEmailValidateError, setCompanyEmailValidateError] =
     useState("");
@@ -88,6 +60,63 @@ const AddUsers = () => {
     },
     isAdmin: false,
   });
+
+  //Calling GetOrganizationSelectedPackagesByOrganizationID
+  useEffect(() => {
+    let data = {
+      OrganizationID: Number(organizationID),
+    };
+    dispatch(
+      GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t, data)
+    );
+    return () => {
+      setAddUserFreeTrial({
+        Name: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+
+        Desgination: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+
+        Email: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+        isAdmin: false,
+      });
+    };
+  }, []);
+
+  //Data from  GetOrganizationSelectedPackagesByOrganizationID
+  useEffect(() => {
+    if (
+      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData &&
+      Object.keys(
+        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
+      ).length > 0
+    ) {
+      console.log(
+        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData,
+        "UserMangementReducerUserMangementReducer"
+      );
+      setWorldCountryID(
+        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
+          .organization.fK_NumberWorldCountryID
+      );
+      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData.organizationSelectedPackages.map(
+        (data, index) => {
+          console.log(data, "indexindexindex");
+          setPakageID(data.pK_PackageID);
+        }
+      );
+    }
+  }, [UserMangementReducer.organizationSelectedPakagesByOrganizationIDData]);
 
   //Handle Change For TextFields
   const handleAddUsersFreeTrial = (e) => {
@@ -165,6 +194,7 @@ const AddUsers = () => {
     }
   };
 
+  //Onchange for CheckBox IsAdmin
   const handleIsAdminCheckBox = () => {
     setAddUserFreeTrial({
       ...addUserFreeTrial,
@@ -172,6 +202,7 @@ const AddUsers = () => {
     });
   };
 
+  //Validating the Email
   const handeEmailvlidate = () => {
     if (addUserFreeTrial.Email.value !== "") {
       if (validateEmailEnglishAndArabicFormat(addUserFreeTrial.Email.value)) {
@@ -208,6 +239,12 @@ const AddUsers = () => {
     }
   };
 
+  //Handle Cancel Button
+  const handleCancelButton = () => {
+    navigate("/Admin/ManageUsers");
+  };
+
+  //Validate Email useEffect
   useEffect(() => {
     if (companyEmailValidateError !== " ") {
       setAddUserFreeTrial({
@@ -221,17 +258,22 @@ const AddUsers = () => {
     }
   }, [companyEmailValidate, companyEmailValidateError]);
 
+  //Add User Function
   const handleAddUsers = () => {
     let data = {
-      UserName: addUserFreeTrial.Name.value,
-      // OrganizationName: "test new flow org",
-      Designation: addUserFreeTrial.Designation.value,
-      MobileNumber: "",
-      UserEmail: addUserFreeTrial.Email.value,
-      // OrganizationID: 471,
-      isAdmin: addUserFreeTrial.isAdmin,
-      // FK_NumberWorldCountryID: userAddMain.FK_NumberWorldCountryID,
-      // OrganizationSelectedPackageID: userAddMain.PackageAssigned.value,
+      UserDataList: [
+        {
+          UserName: addUserFreeTrial.Name.value,
+          OrganizationName: "",
+          Designation: addUserFreeTrial.Desgination.value,
+          MobileNumber: "",
+          UserEmail: addUserFreeTrial.Email.value,
+          OrganizationID: Number(organizationID),
+          isAdmin: addUserFreeTrial.isAdmin,
+          FK_NumberWorldCountryID: Number(worldCountryID),
+          OrganizationSelectedPackageID: Number(pakageID),
+        },
+      ],
     };
     dispatch(AddOrganizationsUserApi(navigate, t, data));
   };

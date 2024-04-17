@@ -619,6 +619,7 @@ const AddOrganizationsUserApi = (navigate, t, data, loader) => {
                   loader
                 )
               );
+              navigate("/Admin/ManageUsers");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -718,8 +719,7 @@ const EditOrganizationsUserApi = (navigate, t, data, flag) => {
               if (flag) {
                 let data = {
                   OrganizationID: Number(organizationID),
-                  RequestingUserID: 1096,
-                  // RequestingUserID: Number(userID), will send user ID now for integratino using this UserId
+                  RequestingUserID: Number(userID),
                 };
                 dispatch(AllOrganizationsUsersApi(navigate, t, data));
               }
@@ -1505,6 +1505,8 @@ const deleteOrganizationUserFail = (message) => {
 
 const deleteOrganizationUserAPI = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  let organizationID = localStorage.getItem("organizationID");
+  let userID = localStorage.getItem("userID");
   return (dispatch) => {
     dispatch(deleteOrganizationUserInit());
     let form = new FormData();
@@ -1537,6 +1539,11 @@ const deleteOrganizationUserAPI = (navigate, t, data) => {
                   t("Data-available")
                 )
               );
+              let data = {
+                OrganizationID: Number(organizationID),
+                RequestingUserID: Number(userID),
+              };
+              dispatch(AllOrganizationsUsersApi(navigate, t, data));
               dispatch(showDeleteUsersModal(false));
             } else if (
               response.data.responseResult.responseMessage
