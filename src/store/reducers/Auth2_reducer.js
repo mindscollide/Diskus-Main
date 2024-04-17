@@ -473,7 +473,7 @@ const AuthReducer = (state = initialState, action) => {
     case actions.USER_LOGOUT_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        // Loading: false,
         logoutUser: action.response,
         ResponseMessage: action.message,
       };
