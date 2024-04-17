@@ -102,6 +102,7 @@ import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import { useTranslation } from "react-i18next";
 import { filesUrlTalk } from "../../../../../../commen/apis/Api_ends_points";
 import enUS from "antd/es/date-picker/locale/en_US";
+import { clippingParents } from "@popperjs/core";
 
 const ChatMainBody = ({ chatMessageClass }) => {
   const navigate = useNavigate();
@@ -2603,7 +2604,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
   ]);
 
   const handleOutsideClick = (event) => {
-        if (
+    if (
       chatMenuRef.current &&
       !chatMenuRef.current.contains(event.target) &&
       chatMenuActive
@@ -3174,6 +3175,27 @@ const ChatMainBody = ({ chatMessageClass }) => {
     }
   }, [allMessages.length]);
 
+  const handlePaste = (event) => {
+    const clipboardItems = event.clipboardData && event.clipboardData.items;
+
+    if (clipboardItems) {
+      for (let i = 0; i < clipboardItems.length; i++) {
+        const item = clipboardItems[i];
+        if (item.type.indexOf("image") !== -1) {
+          const blob = item.getAsFile();
+          const fakeFileEvent = {
+            target: {
+              value: "",
+              files: [blob],
+            },
+          };
+          handleFileUpload(fakeFileEvent, "image");
+          break;
+        }
+      }
+    }
+  };
+
   return (
     <>
       <div className="positionRelative">
@@ -3196,11 +3218,26 @@ const ChatMainBody = ({ chatMessageClass }) => {
                     <Col lg={1} md={1} sm={12}>
                       <div className="chat-profile-icon">
                         {talkStateData.ActiveChatData.messageType === "O" ? (
-                          <img draggable="false" src={SingleIcon} width={25} alt="" />
+                          <img
+                            draggable="false"
+                            src={SingleIcon}
+                            width={25}
+                            alt=""
+                          />
                         ) : talkStateData.ActiveChatData.messageType === "G" ? (
-                          <img draggable="false" src={GroupIcon} width={30} alt="" />
+                          <img
+                            draggable="false"
+                            src={GroupIcon}
+                            width={30}
+                            alt=""
+                          />
                         ) : talkStateData.ActiveChatData.messageType === "B" ? (
-                          <img draggable="false" src={ShoutIcon} width={20} alt="" />
+                          <img
+                            draggable="false"
+                            src={ShoutIcon}
+                            width={20}
+                            alt=""
+                          />
                         ) : null}
                       </div>
                     </Col>
@@ -3220,7 +3257,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                           draggable="false"
                           onClick={showChatSearchHandler}
                           src={SearchChatIcon}
-                          alt="" 
+                          alt=""
                         />
                       </div>
                     </Col>
@@ -3369,7 +3406,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                             }
                             draggable="false"
                             src={VideoCallIcon}
-                            alt="" 
+                            alt=""
                           />
                         </div>
                       </Col>
@@ -3385,7 +3422,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                           draggable="false"
                           src={CloseChatIcon}
                           className="cursor-pointer"
-                          alt="" 
+                          alt=""
                         />
                       </div>
                     </Col>
@@ -3408,7 +3445,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                           draggable="false"
                           src={SecurityIconMessasgeBox}
                           style={{ width: "17px" }}
-                          alt="" 
+                          alt=""
                         />
                       </span>
                     </Col>
@@ -3515,7 +3552,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   draggable="false"
                                                   className="dropdown-icon"
                                                   src={DropDownIcon}
-                                                  alt="" 
+                                                  alt=""
                                                 />
                                               </Dropdown.Toggle>
                                               <Dropdown.Menu
@@ -5550,6 +5587,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                           >
                             <Form>
                               <Form.Control
+                                onPaste={handlePaste}
                                 ref={inputRef}
                                 value={messageSendData.Body}
                                 className="chat-message-input"
