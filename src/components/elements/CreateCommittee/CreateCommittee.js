@@ -1673,12 +1673,6 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                           handleRemoveFile(data)
                                         }
                                         name={data.DisplayAttachmentName}
-                                        handleEyeIcon={() =>
-                                          handleClickOpenDoc(data)
-                                        }
-                                        handleClickDownload={() =>
-                                          handleClickDownloadDoc(data)
-                                        }
                                         id={data.pK_FileID}
                                         data={data}
                                       />
