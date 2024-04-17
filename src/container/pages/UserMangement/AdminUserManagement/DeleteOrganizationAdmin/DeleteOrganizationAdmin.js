@@ -6,7 +6,7 @@ import { Button, Loader } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { deleteOrganizationUserMainApi } from "../../../../../store/actions/UserManagementActions";
+// import { deleteOrganizationUserMainApi } from "../../../../../store/actions/UserManagementActions";
 import { useSelector } from "react-redux";
 const DeleteOrganizationAdmin = () => {
   const dispatch = useDispatch();
@@ -18,11 +18,11 @@ const DeleteOrganizationAdmin = () => {
 
   const { UserMangementReducer } = useSelector((state) => state);
 
-  const onClickDelete = () => {
-    let data = { OrganizationID: 464, RequestingUserID: 1096, UserID: 1097 };
+  // const onClickDelete = () => {
+  //   let data = { OrganizationID: 464, RequestingUserID: 1096, UserID: 1097 };
 
-    dispatch(deleteOrganizationUserMainApi(navigate, t, data));
-  };
+  //   dispatch(deleteOrganizationUserMainApi(navigate, t, data));
+  // };
 
   return (
     <Container>
@@ -112,7 +112,7 @@ const DeleteOrganizationAdmin = () => {
                     <Button
                       className={styles["deleteOrganization_btn"]}
                       text={t("Proceed-to-deletion")}
-                      onClick={onClickDelete}
+                      // onClick={onClickDelete}
                     />
                   </Col>
                 </Row>
