@@ -9,7 +9,7 @@ import ReactFlagsSelect from "react-flags-select";
 import { useTranslation } from "react-i18next";
 import { Chart } from "react-google-charts";
 import "react-phone-input-2/lib/style.css";
-import { Button } from "../../../../../components/elements";
+import { Button, Loader } from "../../../../../components/elements";
 import { countryNameforPhoneNumber } from "../../../../Admin/AllUsers/AddUser/CountryJson";
 import { validateEmailEnglishAndArabicFormat } from "../../../../../commen/functions/validations";
 import {
@@ -23,6 +23,11 @@ const AddUserMain = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { UserMangementReducer } = useSelector((state) => state);
+
+  console.log(
+    UserMangementReducer.getOrganizationUserStatsGraph,
+    "getOrganizationUserStatsGraph"
+  );
 
   // organizationName from Local Storage
   const organizationName = localStorage.getItem("OrganizatioName");
@@ -214,11 +219,11 @@ const AddUserMain = () => {
     ) {
       let createData = {
         UserName: userAddMain.Name.value,
-        // OrganizationName: "test new flow org",
+        OrganizationName: organizationName,
         Designation: userAddMain.Designation.value,
         MobileNumber: userAddMain.MobileNumber.value,
         UserEmail: userAddMain.Email.value,
-        // OrganizationID: 471,
+        OrganizationID: Number(organizationID),
         isAdmin: userAddMain.isAdmin.value,
         FK_NumberWorldCountryID: userAddMain.FK_NumberWorldCountryID,
         OrganizationSelectedPackageID: userAddMain.PackageAssigned.value,
@@ -452,6 +457,25 @@ const AddUserMain = () => {
     }
   };
 
+  // this is how I show alloted users and headcount
+  const selectedPackages =
+    UserMangementReducer.getOrganizationUserStatsGraph?.selectedPackages;
+
+  // Calculate total alloted users and headCount
+  let totalAllotedUsers = 0;
+  let totalHeadCount = 0;
+
+  selectedPackages?.forEach((packages) => {
+    totalAllotedUsers += packages.allotedUsers;
+    totalHeadCount += packages.headCount;
+  });
+
+  console.log(
+    totalAllotedUsers,
+    totalHeadCount,
+    "totalAllotedUserstotalAllotedUsers"
+  );
+
   return (
     <>
       <Container className={styles["container-main-class"]}>
@@ -503,14 +527,15 @@ const AddUserMain = () => {
                           xs={12}
                           className="MontserratSemiBold-600 color-5a5a5a font-14 Saved_money_Tagline"
                         >
-                          4 of 9 Users
+                          {Number(totalAllotedUsers)} {t("Of")}{" "}
+                          {Number(totalHeadCount)} {t("Users")}
                         </Col>
                       </Row>
                       <Row className="d-flex justify-content-center">
                         <Col lg={8} md={8} sm={8} xs={12}>
                           <ProgressBar
-                            now={5}
-                            max={10}
+                            now={totalAllotedUsers}
+                            max={totalHeadCount}
                             className={styles["AddProgressBar"]}
                           />
                         </Col>
@@ -964,6 +989,7 @@ const AddUserMain = () => {
             </Container>
           </Col>
         </Row>
+        {UserMangementReducer.Loading ? <Loader /> : null}
       </Container>
     </>
   );

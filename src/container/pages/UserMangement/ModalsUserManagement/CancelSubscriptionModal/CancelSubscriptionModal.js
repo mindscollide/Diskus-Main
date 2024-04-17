@@ -20,6 +20,11 @@ const CancelSubscriptionModal = () => {
     dispatch(showCancelSubscriptionModal(false));
     dispatch(showReasonForLeavingModal(true));
   };
+
+  const handleClose = () => {
+    dispatch(showCancelSubscriptionModal(false));
+  };
+
   return (
     <section>
       <Modal
@@ -71,7 +76,11 @@ const CancelSubscriptionModal = () => {
                 xs={12}
                 className="d-flex justify-content-center gap-2"
               >
-                <Button text={t("No")} className={styles["NoButtonStyles"]} />
+                <Button
+                  text={t("No")}
+                  onClick={handleClose}
+                  className={styles["NoButtonStyles"]}
+                />
                 <Button
                   text={t("Yes")}
                   className={styles["YesButtonStyles"]}

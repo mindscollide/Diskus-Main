@@ -1,29 +1,27 @@
 import React, { useEffect, useState } from "react";
-import styles from "./PakageDetailsUserManagement.module.css";
+import styles from "./PackageDetailsUMUpgrade.module.css";
 import { Col, Container, Row } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import Loader from "../../../../components/elements/loader/Loader";
+import Loader from "../../../../../components/elements/loader/Loader";
 import Card from "react-bootstrap/Card";
-import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
+import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import {
   Button,
+  Notification,
   TableToDo,
   TextField,
-  Notification,
-} from "../../../../components/elements";
+} from "../../../../../components/elements";
 import {
-  LoginFlowRoutes,
   getAllUserTypePackagesApi,
-} from "../../../../store/actions/UserManagementActions";
-import { render } from "@testing-library/react";
-import { regexOnlyNumbers } from "../../../../commen/functions/regex";
-const PakageDetailsUserManagement = () => {
+  LoginFlowRoutes,
+} from "../../../../../store/actions/UserManagementActions";
+const PakageDetailsUMUpgrade = () => {
   const navigate = useNavigate();
-
+  const location = useLocation();
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
@@ -34,14 +32,19 @@ const PakageDetailsUserManagement = () => {
 
   //States
   const [tableData, setTableData] = useState([]);
+  const [packageTableData, setPackageTableData] = useState([]);
   const [lisence, setlisence] = useState({
     TotalLisence: "",
   });
   const [packageDetail, setPackageDetail] = useState([]);
+  console.log(packageDetail, "packageDetailpackageDetail");
   const [open, setOpen] = useState({
     open: false,
     message: "",
   });
+
+  const [organizationPackagePrice, setOrganizationPackagePrice] = useState([]);
+  console.log(organizationPackagePrice, "organizationPackagePrice");
 
   //get All user pakages Api call
   useEffect(() => {
@@ -51,6 +54,23 @@ const PakageDetailsUserManagement = () => {
       console.log(error, "error");
     }
   }, []);
+
+  useEffect(() => {
+    // Check if organizationSelectedPackages are present in the location state
+    if (location.state && location.state.organizationSelectedPackages) {
+      const selectedPackages = location.state.organizationSelectedPackages;
+      const prices = selectedPackages.map((packages) => packages.price); // Extract prices from packages
+      setOrganizationPackagePrice(prices);
+      const newData = selectedPackages.map((packages) => ({
+        name: packages.name,
+        price: packages.price,
+        ...packages,
+      }));
+      setPackageTableData(newData);
+    } else {
+      setPackageTableData([]);
+    }
+  }, [location.state]);
 
   //Fetching the data for pakage selection
   useEffect(() => {
@@ -141,7 +161,7 @@ const PakageDetailsUserManagement = () => {
       dataIndex: "Numberoflicenses",
       key: "Numberoflicenses",
       align: "center",
-      render: (text, row) => {
+      render: (text, row, index) => {
         if (row.shouldDisplayTextField) {
           return;
         } else {
@@ -153,25 +173,28 @@ const PakageDetailsUserManagement = () => {
             );
           } else {
             const handleChange = (newValue) => {
-              if (newValue === "" || /^\d+$/.test(newValue)) {
-                const newData = tableData.map((item) => {
-                  return item.pK_PackageID === row.pK_PackageID
-                    ? { ...item, licenseCount: newValue }
-                    : item;
+              if (/^\d+$/.test(newValue)) {
+                const newData = tableData.map((item, i) => {
+                  if (i === index) {
+                    // Check if the index matches the current row
+                    return { ...item, licenseCount: newValue };
+                  }
+                  return item;
                 });
+                console.log(newData, "newDatanewData");
                 setTableData(newData);
               }
             };
-
+            const priceValue = organizationPackagePrice[index] || "";
+            console.log(priceValue, "priceValueeeee");
             return (
               <Row>
                 <Col className="d-flex justify-content-center">
                   <TextField
                     labelClass="d-none"
-                    applyClass="PakageDetails"
+                    applyClass="PakageDetails_UMUpgrade"
                     name="noofLisence"
-                    maxLength={3}
-                    value={row.licenseCount}
+                    value={Number(priceValue)}
                     change={(e) => handleChange(e.target.value)}
                   />
                 </Col>
@@ -194,10 +217,14 @@ const PakageDetailsUserManagement = () => {
       key: "price",
       width: 100,
       align: "center",
-      render: (text, row) => {
+      render: (text, row, index) => {
         console.log(row, "Monthlycharges");
         const monthlyCharges =
-          row.price && row.licenseCount ? row.price * row.licenseCount : 0;
+          row.price &&
+          !isNaN(row.price) &&
+          !isNaN(organizationPackagePrice[index])
+            ? row.price * Number(organizationPackagePrice[index])
+            : 0;
         console.log(monthlyCharges, "licenseCount");
         if (row.shouldDisplayTextField) {
           return (
@@ -206,7 +233,7 @@ const PakageDetailsUserManagement = () => {
                 <Button
                   text={t("Pay-now")}
                   className={styles["PayNowButtons"]}
-                  onClick={handlePayNowClick}
+                  // onClick={handlePayNowClick}
                 />
               </span>
             </>
@@ -221,7 +248,7 @@ const PakageDetailsUserManagement = () => {
               <>
                 <>
                   <span className={styles["ChargesPerLicesense"]}>
-                    {monthlyCharges}
+                    {Number(monthlyCharges)}
                   </span>
                 </>
               </>
@@ -243,9 +270,13 @@ const PakageDetailsUserManagement = () => {
       key: "Quarterlycharges",
       align: "center",
       width: 100,
-      render: (text, row) => {
+      render: (text, row, index) => {
         const quarterlyCharges =
-          row.price && row.licenseCount ? row.price * row.licenseCount * 3 : 0;
+          row.price &&
+          !isNaN(row.price) &&
+          !isNaN(organizationPackagePrice[index])
+            ? row.price * Number(organizationPackagePrice[index]) * 3
+            : 0;
         if (row.shouldDisplayTextField) {
           return (
             <>
@@ -253,7 +284,7 @@ const PakageDetailsUserManagement = () => {
                 <Button
                   text={t("Pay-now")}
                   className={styles["PayNowButtons"]}
-                  onClick={handlePayNowClick}
+                  // onClick={handlePayNowClick}
                 />
               </span>
             </>
@@ -267,7 +298,7 @@ const PakageDetailsUserManagement = () => {
             return (
               <>
                 <span className={styles["ChargesPerLicesense"]}>
-                  {quarterlyCharges}
+                  {Number(quarterlyCharges)}
                 </span>
               </>
             );
@@ -288,9 +319,13 @@ const PakageDetailsUserManagement = () => {
       key: "YearlychargesTotal",
       align: "center",
       width: 100,
-      render: (text, row) => {
+      render: (text, row, index) => {
         const YearlyCharges =
-          row.price && row.licenseCount ? row.price * row.licenseCount * 12 : 0;
+          row.price &&
+          !isNaN(row.price) &&
+          !isNaN(organizationPackagePrice[index])
+            ? row.price * Number(organizationPackagePrice[index]) * 12
+            : 0;
         if (row.shouldDisplayTextField) {
           return (
             <>
@@ -298,7 +333,7 @@ const PakageDetailsUserManagement = () => {
                 <Button
                   text={t("Pay-now")}
                   className={styles["PayNowButtons"]}
-                  onClick={handlePayNowClick}
+                  // onClick={handlePayNowClick}
                 />
               </span>
             </>
@@ -312,7 +347,7 @@ const PakageDetailsUserManagement = () => {
             return (
               <>
                 <span className={styles["ChargesPerLicesense"]}>
-                  {YearlyCharges}
+                  {Number(YearlyCharges)}
                 </span>
               </>
             );
@@ -335,34 +370,49 @@ const PakageDetailsUserManagement = () => {
 
   //Calculating the totals
   const calculateTotals = (data) => {
-    const totalLicenses = data.reduce(
-      (total, row) => total + (Number(row.licenseCount) || 0),
+    const totalOrganizationPackagePrice = organizationPackagePrice.reduce(
+      (total, value) => total + Number(value || 0),
       0
     );
 
     // Calculate total monthly charges
-    const totalMonthlyCharges = data.reduce((total, row) => {
-      const monthlyCharge = row.price * (Number(row.licenseCount) || 0);
+    const totalMonthlyCharges = data.reduce((total, row, index) => {
+      const monthlyCharge =
+        row.price &&
+        !isNaN(row.price) &&
+        !isNaN(organizationPackagePrice[index])
+          ? row.price * Number(organizationPackagePrice[index])
+          : 0;
       return total + monthlyCharge;
     }, 0);
 
-    const totalQuarterlyCharges = data.reduce((total, row) => {
-      const quarterlyCharge = row.price * (Number(row.licenseCount) || 0) * 3; // Multiply by 3 for quarterly
+    const totalQuarterlyCharges = data.reduce((total, row, index) => {
+      const quarterlyCharge =
+        row.price &&
+        !isNaN(row.price) &&
+        !isNaN(organizationPackagePrice[index])
+          ? row.price * Number(organizationPackagePrice[index]) * 3
+          : 0; // Multiply by 3 for quarterly
       return total + quarterlyCharge;
     }, 0);
 
-    const totalYearlyCharges = data.reduce((total, row) => {
-      const yearlyCharge = row.price * (Number(row.licenseCount) || 0) * 12; // Multiply by 12 for yearly
+    const totalYearlyCharges = data.reduce((total, row, index) => {
+      const yearlyCharge =
+        row.price &&
+        !isNaN(row.price) &&
+        !isNaN(organizationPackagePrice[index])
+          ? row.price * Number(organizationPackagePrice[index]) * 12
+          : 0; // Multiply by 12 for yearly
       return total + yearlyCharge;
     }, 0);
 
     // Return an object with the totals that can be used as a row in your table.
     return {
       name: "Total",
-      Numberoflicenses: totalLicenses,
-      price: totalMonthlyCharges,
-      Quarterlycharges: totalQuarterlyCharges,
-      YearlychargesTotal: totalYearlyCharges,
+      Numberoflicenses: Number(totalOrganizationPackagePrice),
+      price: Number(totalMonthlyCharges),
+      Quarterlycharges: Number(totalQuarterlyCharges),
+      YearlychargesTotal: Number(totalYearlyCharges),
     };
   };
 
@@ -374,10 +424,7 @@ const PakageDetailsUserManagement = () => {
 
   //Handle Goback Function
   const onClickLink = () => {
-    localStorage.removeItem("signupCurrentPage", 1);
-    localStorage.setItem("LoginFlowPageRoute", 1);
-    dispatch(LoginFlowRoutes(1));
-    navigate("/");
+    navigate("/Admin/PackageDetailsUserManagement");
   };
 
   return (
@@ -406,7 +453,7 @@ const PakageDetailsUserManagement = () => {
         </Col>
       </Row>
       <Row className="mt-3 ">
-        {packageDetail.length > 0 ? (
+        {packageDetail && packageDetail?.length > 0 ? (
           packageDetail.map((data, index) => {
             return (
               <Col
@@ -538,4 +585,4 @@ const PakageDetailsUserManagement = () => {
   );
 };
 
-export default PakageDetailsUserManagement;
+export default PakageDetailsUMUpgrade;

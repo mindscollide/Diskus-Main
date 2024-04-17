@@ -7,6 +7,7 @@ import {
   getOrganizationSelectedPakages,
   OrganizationPackageDetailsAndUserStats,
   GetAllUserTypePackages,
+  deleteOrganizationUserApi,
   ResendForgotPasswordCode,
   EditOrganizationsUser,
   DeleteOrganizationsUser,

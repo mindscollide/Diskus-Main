@@ -320,7 +320,14 @@ body[dir="rtl"] .updateNotes_titleInput {
 
 .PakageDetails {
   height: 40px !important;
-  width: 40px !important;
+  width: 60px !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.PakageDetails_UMUpgrade {
+  height: 40px !important;
+  width: 45px !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }

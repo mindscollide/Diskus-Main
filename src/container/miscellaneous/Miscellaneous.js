@@ -69,6 +69,7 @@ const CustomMiscellaneous = () => {
           );
         })}
       </section>
+      {fAQsReducer.Loading ? <Loader /> : null}
     </>
   );
 };

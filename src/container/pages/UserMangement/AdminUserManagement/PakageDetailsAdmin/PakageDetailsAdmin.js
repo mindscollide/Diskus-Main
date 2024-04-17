@@ -2,15 +2,34 @@ import React from "react";
 import styles from "./PakageDetailsAdmin.module.css";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { Button, TableToDo } from "../../../../../components/elements";
+import { Button, Loader, TableToDo } from "../../../../../components/elements";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { GetOrganizationSelectedPackagesByOrganizationIDApi } from "../../../../../store/actions/UserManagementActions";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { _justShowDateformat } from "../../../../../commen/functions/date_formater";
+
 const PakageDetailsAdmin = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { t } = useTranslation();
+  const { UserMangementReducer } = useSelector((state) => state);
+
+  const [packageDetails, setPackageDetails] = useState({
+    PackageSubscriptionDate: "",
+    PackageExpiryDate: "",
+    PackageName: "",
+  });
+
+  // get organizationID from localStorage
+  const organizationID = localStorage.getItem("organizationID");
 
   const ColumnsPakageSelection = [
     {
       title: (
         <span className="pakageselectionSpanUsermanagement">
-          {t("Pakage-details")}
+          {t("Package-details")}
         </span>
       ),
       width: 100,
@@ -52,78 +71,98 @@ const PakageDetailsAdmin = () => {
       width: 100,
     },
   ];
-  const Data = [
-    {
-      Pakagedetails: (
-        <span className={styles["Tableheading"]}>{t("Essential")}</span>
-      ),
-      Chargesperlicense: (
-        <>
-          <span className={styles["ChargesPerLicesense"]}>25</span>
-        </>
-      ),
-      Numberoflicenses: (
-        <>
-          <span className={styles["ChargesPerLicesense"]}>12</span>
-        </>
-      ),
 
-      Yearlycharges: (
-        <>
-          <span className={styles["ChargesPerLicesense"]}>1,024</span>
-        </>
-      ),
-    },
-    {
-      Pakagedetails: (
-        <span className={styles["Tableheading"]}>{t("Professional")}</span>
-      ),
-      Chargesperlicense: (
-        <>
-          <span className={styles["ChargesPerLicesense"]}>35</span>
-        </>
-      ),
-      Numberoflicenses: (
-        <>
-          <span className={styles["ChargesPerLicesense"]}>35</span>
-        </>
-      ),
+  useEffect(() => {
+    let newdata = {
+      // OrganizationID: 569,
+      OrganizationID: Number(organizationID),
+    };
+    dispatch(
+      GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t, newdata)
+    );
+  }, []);
 
-      Yearlycharges: (
-        <>
-          <span className={styles["ChargesPerLicesense"]}>875</span>
-        </>
-      ),
-    },
-    {
+  useEffect(() => {
+    let detailPackages =
+      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData;
+    if (detailPackages !== null && detailPackages !== undefined) {
+      setPackageDetails({
+        PackageSubscriptionDate:
+          detailPackages.organizationSubscription.subscriptionStartDate,
+        PackageExpiryDate:
+          detailPackages.organizationSubscription.subscriptionExpiryDate,
+        PackageName: detailPackages.organizationSelectedPackages.name,
+      });
+    }
+  }, [UserMangementReducer.organizationSelectedPakagesByOrganizationIDData]);
+
+  // table data in which Package details should be shown
+  const organizationSelectedPackages =
+    UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
+      ?.organizationSelectedPackages;
+
+  let Data = [];
+  if (organizationSelectedPackages) {
+    Data = organizationSelectedPackages.map((packages) => ({
       Pakagedetails: (
-        <span className={styles["Tableheading"]}>{t("Premium")}</span>
+        <span className={styles["Tableheading"]}>{packages.name}</span>
       ),
       Chargesperlicense: (
-        <>
-          <span className={styles["ChargesPerLicesense"]}>45</span>
-        </>
+        <span className={styles["ChargesPerLicesense"]}>{packages.price}</span>
       ),
       Numberoflicenses: (
-        <span className={styles["ChargesPerLicesense"]}>45</span>
+        <span className={styles["ChargesPerLicesense"]}>
+          {packages.headCount}
+        </span>
       ),
       Yearlycharges: (
-        <>
-          <span className={styles["ChargesPerLicesense"]}>9,024</span>
-        </>
+        <span className={styles["ChargesPerLicesense"]}>
+          {packages.price * packages.headCount * 12}
+        </span>
       ),
-    },
-  ];
+    }));
+  }
+
+  // counter of Number of license and Yearly Charges
+  let totalLicenses = 0;
+  let totalYearlyCharges = 0;
+
+  UserMangementReducer.organizationSelectedPakagesByOrganizationIDData?.organizationSelectedPackages.map(
+    (packages) => {
+      totalLicenses += packages.headCount;
+      totalYearlyCharges += packages.price * packages.headCount * 12;
+    }
+  );
 
   const defaultRow = {
-    Pakagedetails: <span className={styles["TableheadingTotal"]}>Total</span>,
+    Pakagedetails: (
+      <span className={styles["TableheadingTotal"]}>{t("Total")}</span>
+    ),
     Numberoflicenses: (
-      <span className={styles["ChargesPerLicesensetotal"]}>43</span>
+      <span className={styles["ChargesPerLicesensetotal"]}>
+        {totalLicenses}
+      </span>
     ),
     Yearlycharges: (
-      <span className={styles["ChargesPerLicesensetotal"]}>13,072</span>
+      <span className={styles["ChargesPerLicesensetotal"]}>
+        {totalYearlyCharges}
+      </span>
     ),
   };
+
+  const upgradeOnclickHandler = () => {
+    const organizationSelectedPackages =
+      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
+        ?.organizationSelectedPackages;
+    if (organizationSelectedPackages) {
+      navigate("/PackageDetailUMupgrade", {
+        state: { organizationSelectedPackages },
+      });
+    } else {
+      // Handle if organizationSelectedPackages is empty
+    }
+  };
+
   return (
     <Container className="p-3">
       <Row className="mt-3">
@@ -135,7 +174,7 @@ const PakageDetailsAdmin = () => {
           className="d-flex justify-content-center"
         >
           <span className={styles["PakageDetailsHeading"]}>
-            {t("Pakage-details")}
+            {t("Package-details")}
           </span>
         </Col>
       </Row>
@@ -193,7 +232,9 @@ const PakageDetailsAdmin = () => {
                       {t("Subscription-date")}
                     </p>
                     <p className={styles["subcriptionvalue_1"]}>
-                      22 December 2023
+                      {_justShowDateformat(
+                        packageDetails.PackageSubscriptionDate + "000000"
+                      )}
                     </p>
                   </Col>
                   <Col xs={12} sm={12} md={2} lg={2}></Col>
@@ -211,7 +252,9 @@ const PakageDetailsAdmin = () => {
                       {t("Expiry-date")}
                     </p>
                     <p className={styles["subcriptionvalue_2"]}>
-                      21 December 2024
+                      {_justShowDateformat(
+                        packageDetails.PackageExpiryDate + "000000"
+                      )}
                     </p>
                   </Col>
                   <Col xs={12} sm={12} md={2} lg={2}></Col>
@@ -229,6 +272,7 @@ const PakageDetailsAdmin = () => {
                 <Button
                   text={t("Upgrade")}
                   className={styles["UpdateButtonPakageDetails"]}
+                  onClick={upgradeOnclickHandler}
                 />
               </Col>
             </Row>
@@ -254,6 +298,7 @@ const PakageDetailsAdmin = () => {
           </Card>
         </Col>
       </Row>
+      {UserMangementReducer.Loading ? <Loader /> : null}
     </Container>
   );
 };

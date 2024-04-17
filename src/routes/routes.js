@@ -84,6 +84,7 @@ import PasswordVerification from "../container/pages/UserMangement/PasswordVerif
 import SignupProcessUserManagement from "../container/pages/SignUpProcessUserManagement/SignupProcessUserManagement";
 import RouteWrapperUser from "./RouteWrapperUser";
 import RouteWrapperAdmin from "./RouteWrapperAdmin";
+import PakageDetailsUMUpgrade from "../container/pages/UserMangement/AdminUserManagement/PackageDetailsUMUpgrade/PackageDetailsUMUpgrade";
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
@@ -562,10 +563,31 @@ export const router = createHashRouter(
         element={<PasswordVerification />}
       />
 
+      {/* Routes for testing puprose start */}
+
+      {/* <Route path="/AddUsersUsermanagement" element={<AddUserMain />} />
+
       <Route
         path="/PackageDetailsUserManagement"
         element={<PakageDetailsAdmin />}
       />
+
+      <Route
+        path="/CancelSubscriptionUserManagement"
+        element={<CancelSubscriptionAdmin />}
+      />
+
+      <Route
+        path="/PackageDetailUMupgrade"
+        element={<PakageDetailsUMUpgrade />}
+      />
+
+      <Route
+        path="/deleteorganizationUserMangement"
+        element={<DeleteOrganizationAdmin />}
+      /> */}
+
+      {/* Routes for testing puprose End */}
     </>
   )
 );

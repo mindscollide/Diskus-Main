@@ -1773,7 +1773,6 @@
   "Diskus-pakage-details": "Diskus - Package Details",
   "Per-user-per-month-billed-annually": "(Per user per month billed annually)",
   "Billing-calculator": "Billing Calculator:",
-  "Pakage-details": "Pakage Details",
   "Charges-per": "Charges Per",
   "License-US$": "License US$",
   "of-licenses": "of licenses",
@@ -1886,5 +1885,7 @@
   "Maximize-screen": "Maximize screen",
   "Error-occurred-while-adding-users": "Error Occurred While Adding Users",
   "Users-added-successfully": "Users Added Successfully",
-  "Folder-share-successfully": "Folder share successfully"
+  "Folder-share-successfully": "Folder share successfully",
+  "Billing-subscription": "Billing Subscription",
+  "Your-trial-will-expire-in-{{remainingDays}}-days": "Your trial will expire in {{remainingDays}} days"
 }
