@@ -21,6 +21,7 @@ import { RefreshToken } from "./Auth_action";
 import { getUserSetting } from "./GetUserSetting";
 import { getAllLanguages } from "./Language_actions";
 import {
+  showDeleteUsersModal,
   showEditUserModal,
   showSucessfullyUpdatedModal,
 } from "./UserMangementModalActions";
@@ -469,10 +470,7 @@ const ExtendOrganizationTrialApi = (navigate, t, data) => {
     dispatch(organizationTrialExtendedInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
-    form.append(
-      "RequestMethod",
-      IsPackageExpiryDetail.RequestMethod
-    );
+    form.append("RequestMethod", IsPackageExpiryDetail.RequestMethod);
     axios({
       method: "post",
       url: getAdminURLs,
@@ -1502,12 +1500,13 @@ const deleteOrganizationUserFail = (message) => {
   };
 };
 
-const deleteOrganizationUserAPI = (navigate, t) => {
+const deleteOrganizationUserAPI = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(deleteOrganizationUserInit());
     let form = new FormData();
     form.append("RequestMethod", DeleteOrganizationsUser.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
     axios({
       method: "post",
       url: getAdminURLs,
@@ -1519,7 +1518,7 @@ const deleteOrganizationUserAPI = (navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(deleteOrganizationUserAPI(navigate, t));
+          dispatch(deleteOrganizationUserAPI(navigate, t, data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1535,6 +1534,7 @@ const deleteOrganizationUserAPI = (navigate, t) => {
                   t("Data-available")
                 )
               );
+              dispatch(showDeleteUsersModal(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1543,6 +1543,7 @@ const deleteOrganizationUserAPI = (navigate, t) => {
                 )
             ) {
               dispatch(deleteOrganizationUserFail(t("No-data-found")));
+              dispatch(showDeleteUsersModal(true));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1551,14 +1552,18 @@ const deleteOrganizationUserAPI = (navigate, t) => {
                 )
             ) {
               dispatch(deleteOrganizationUserFail(t("Something-went-wrong")));
+              dispatch(showDeleteUsersModal(true));
             } else {
               dispatch(deleteOrganizationUserFail(t("Something-went-wrong")));
+              dispatch(showDeleteUsersModal(true));
             }
           } else {
             dispatch(deleteOrganizationUserFail(t("Something-went-wrong")));
+            dispatch(showDeleteUsersModal(true));
           }
         } else {
           dispatch(deleteOrganizationUserFail(t("Something-went-wrong")));
+          dispatch(showDeleteUsersModal(true));
         }
       })
       .catch((response) => {
