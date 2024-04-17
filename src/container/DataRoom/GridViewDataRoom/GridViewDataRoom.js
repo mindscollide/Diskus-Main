@@ -11,6 +11,12 @@ import {
   deleteFolder,
   dataBehaviour,
   getFolderDocumentsApiScrollBehaviour,
+  getSharedFileUsersApi,
+  getSharedFolderUsersApi,
+  DataRoomDownloadFolderApiFunc,
+  DataRoomDownloadFileApiFunc,
+  deleteSharedFolderDataroom,
+  deleteSharedFileDataroom,
 } from "../../../store/actions/DataRoom_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -25,7 +31,13 @@ import ModalRenameFile from "../ModalRenameFile/ModalRenameFile";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { getFileExtension, getIconSource } from "../SearchFunctionality/option";
+import {
+  getFileExtension,
+  getIconSource,
+  optionsforFile,
+  optionsforFolder,
+  optionsforPDFandSignatureFlow,
+} from "../SearchFunctionality/option";
 import {
   optionsforFileEditableNonShareable,
   optionsforFileEditor,
@@ -34,14 +46,19 @@ import {
   optionsforFolderViewer,
   optionsforFolderEditor,
 } from "../SearchFunctionality/option";
+import {
+  getDataAnalyticsCountApi,
+  getFilesandFolderDetailsApi,
+} from "../../../store/actions/DataRoom2_actions";
+import { createWorkflowApi } from "../../../store/actions/workflow_actions";
 const GridViewDataRoom = ({
   data,
-  optionsforFolder,
-  optionsforFile,
   sRowsData,
   totalRecords,
   filter_Value,
   setSearchTabOpen,
+  setDetailView,
+  setFileDataforAnalyticsCount,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -56,7 +73,6 @@ const GridViewDataRoom = ({
   const [fileName, setFileName] = useState("");
   const [folderName, setFolderName] = useState("");
   const [isDataforGrid, setDataForGrid] = useState([]);
-  console.log("isDataforGridisDataforGridisDataforGrid", isDataforGrid);
   const [isRenameFolderData, setRenameFolderData] = useState(null);
   const [filterValue, setFilterValue] = useState({
     label: t("Name"),
@@ -81,7 +97,6 @@ const GridViewDataRoom = ({
   ];
 
   const getFolderDocuments = (folderid) => {
-    console.log(folderid, "folderidfolderidfolderidfolderid");
     localStorage.setItem("folderID", folderid);
     dispatch(getFolderDocumentsApi(navigate, folderid, t));
     setSearchTabOpen(false);
@@ -132,19 +147,6 @@ const GridViewDataRoom = ({
     });
   };
 
-  const handleClickforFolder = (dataId, record) => {
-    setFolderId(dataId.value);
-    if (dataId.value === 2) {
-      setShowreanmeFolder(true);
-      setRenameFolderData(record);
-    } else if (dataId.value === 1) {
-      setSharefoldermodal(true);
-      setFolderName(record.name);
-    } else if (dataId.value === 5) {
-      dispatch(deleteFolder(navigate, record.id, t));
-    }
-  };
-
   const handleClickSortDecsending = () => {
     setSortIcon(false);
     dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, 1, true));
@@ -155,18 +157,51 @@ const GridViewDataRoom = ({
     dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, 1, false));
   };
 
-  const handleClickforFile = (dataId, record) => {
-    // let ext = record.name.split(".").pop();
-    // const pdfData = {
-    //   taskId: record.id,
-    //   commingFrom: 4,
-    //   fileName: record.name,
-    //   attachmentID: record.id,
-    // };
-    // const pdfDataJson = JSON.stringify(pdfData);
-    console.log(dataId, record, "dataIddataIddataIddataIddataId");
-    setFolderId(dataId.value);
-    if (dataId.value === 1) {
+  const showShareFileModal = (id, name) => {
+    // getSharedFileUsersApi
+    let Data = { FileID: id };
+
+    dispatch(getSharedFileUsersApi(navigate, Data, t, setShareFileModal));
+    setFolderId(id);
+    setFileName(name);
+    // setShareFileModal(true);
+    // setSharehoverstyle(true);
+    // setDeltehoverstyle(false);
+  };
+
+  const showShareFolderModal = (id, name) => {
+    // getSharedFolderUsersApi;
+    let Data = { FolderID: id };
+    dispatch(getSharedFolderUsersApi(navigate, Data, t, setSharefoldermodal));
+    setFolderId(id);
+    setFolderName(name);
+    // setSharefoldermodal(true);
+    // setSharehoverstyle(true);
+    // setDeltehoverstyle(false);
+  };
+
+  const handleClickFile = (e, record) => {
+    let ext = record.name.split(".").pop();
+    if (ext === "pdf") {
+      const pdfData = {
+        taskId: record.id,
+        commingFrom: 4,
+        fileName: record.name,
+        attachmentID: record.id,
+        isPermission: record.permissionID,
+      };
+      const pdfDataJson = JSON.stringify(pdfData);
+      window.open(
+        `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+        "_blank",
+        "noopener noreferrer"
+      );
+    }
+  };
+
+  const fileOptionsSelect = (data, record, pdfDataJson) => {
+    if (data.value === 1) {
+      // Open on Apryse
       let ext = record.name.split(".").pop();
       if (ext === "pdf") {
         const pdfData = {
@@ -174,6 +209,7 @@ const GridViewDataRoom = ({
           commingFrom: 4,
           fileName: record.name,
           attachmentID: record.id,
+          isPermission: record.permissionID,
         };
         const pdfDataJson = JSON.stringify(pdfData);
         window.open(
@@ -181,42 +217,119 @@ const GridViewDataRoom = ({
           "_blank",
           "noopener noreferrer"
         );
-      } else {
       }
-    } else if (dataId.value === 3) {
-      setShowRenameFile(true);
-      setRenameFolderData(record);
-    } else if (dataId.value === 2) {
-      setFileName(record.name);
-      setShareFileModal(true);
-    } else if (dataId.value === 6) {
-      dispatch(deleteFileDataroom(navigate, record.id, t));
-    }
-    console.log(dataId);
-  };
-
-  const handleClickFile = (e, data) => {
-    e.preventDefault();
-    let ext = data.name.split(".").pop();
-    if (ext === "pdf") {
-      const pdfData = {
-        taskId: data.id,
+    } else if (data.value === 2) {
+      // Share File Modal
+      if (record.isFolder) {
+        showShareFolderModal(record.id, record.name);
+      } else {
+        showShareFileModal(record.id, record.name);
+      }
+    } else if (data.value === 3) {
+      // Rename Folder and File
+      if (record.isFolder) {
+        setShowreanmeFolder(true);
+        setRenameFolderData(record);
+      } else {
+        setShowRenameFile(true);
+        setRenameFolderData(record);
+      }
+    } else if (data.value === 4) {
+      // View Details File and Folder
+      if (record.isFolder) {
+        let Data = {
+          ID: record.id,
+          isFolder: true,
+        };
+        dispatch(getFilesandFolderDetailsApi(navigate, t, Data, setDetailView));
+      } else {
+        let Data = {
+          ID: record.id,
+          isFolder: false,
+        };
+        dispatch(getFilesandFolderDetailsApi(navigate, t, Data, setDetailView));
+      }
+    } else if (data.value === 5) {
+      // Download File and Folder
+      if (record.isFolder === true) {
+        let data = {
+          FolderID: Number(record.id),
+        };
+        dispatch(DataRoomDownloadFolderApiFunc(navigate, data, t, record.name));
+      } else {
+        let data = {
+          FileID: Number(record.id),
+        };
+        dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, record.name));
+      }
+    } else if (data.value === 6) {
+      // Delete File and Folder
+      if (record.isFolder) {
+        dispatch(deleteFolder(navigate, record.id, t));
+      } else {
+        dispatch(deleteFileDataroom(navigate, record.id, t));
+      }
+      // Delete File
+    } else if (data.value === 7) {
+      if (record.isFolder) {
+        let Data = {
+          FileID: Number(record.id),
+        };
+        dispatch(
+          getDataAnalyticsCountApi(
+            navigate,
+            t,
+            Data,
+            record,
+            setFileDataforAnalyticsCount
+          )
+        );
+      } else {
+        // Get Anayltics  for the document
+        let Data = {
+          FileID: Number(record.id),
+        };
+        dispatch(
+          getDataAnalyticsCountApi(
+            navigate,
+            t,
+            Data,
+            record,
+            setFileDataforAnalyticsCount
+          )
+        );
+      }
+    } else if (data.value === 8) {
+      const pdfDataforSignature = {
+        taskId: record.id,
         commingFrom: 4,
-        fileName: data.name,
-        attachmentID: data.id,
+        fileName: record.name,
+        attachmentID: record.id,
+        isPermission: record.permissionID,
+        isNew: true,
       };
-      const pdfDataJson = JSON.stringify(pdfData);
-      handleLinkClick(pdfDataJson);
+      const pdfDataJsonSignature = JSON.stringify(pdfDataforSignature);
+      // Create Signature Flow
+      let dataRoomData = {
+        FileID: Number(record.id),
+      };
+      dispatch(
+        createWorkflowApi(dataRoomData, navigate, t, pdfDataJsonSignature)
+      );
+    } else if (data.value === 9) {
+      if (record.isFolder) {
+        let removeSharedFolder = {
+          FolderSharingID: record.sharingID,
+        };
+        dispatch(deleteSharedFolderDataroom(navigate, removeSharedFolder, t));
+      } else {
+        // Remove Shared File
+        let removeShareData = {
+          FileSharingID: Number(record.sharingID),
+        };
+        dispatch(deleteSharedFileDataroom(navigate, removeShareData, t));
+      }
     }
-  };
-
-  const handleLinkClick = (data) => {
-    // e.preventDefault();
-    window.open(
-      `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(data)}`,
-      "_blank",
-      "noopener noreferrer"
-    );
   };
 
   useEffect(() => {
@@ -383,13 +496,13 @@ const GridViewDataRoom = ({
                                   </Dropdown.Toggle>
                                   <Dropdown.Menu>
                                     {fileData.permissionID === 1
-                                      ? optionsforFolderEditor(t).map(
+                                      ? optionsforFolderViewer(t).map(
                                           (data, index) => {
                                             return (
                                               <Dropdown.Item
                                                 key={index}
                                                 onClick={() =>
-                                                  handleClickforFolder(
+                                                  fileOptionsSelect(
                                                     data,
                                                     fileData
                                                   )
@@ -401,13 +514,13 @@ const GridViewDataRoom = ({
                                           }
                                         )
                                       : fileData.permissionID === 2
-                                      ? optionsforFolderViewer(t).map(
+                                      ? optionsforFolderEditor(t).map(
                                           (data, index) => {
                                             return (
                                               <Dropdown.Item
                                                 key={index}
                                                 onClick={() =>
-                                                  handleClickforFolder(
+                                                  fileOptionsSelect(
                                                     data,
                                                     fileData
                                                   )
@@ -426,7 +539,7 @@ const GridViewDataRoom = ({
                                             <Dropdown.Item
                                               key={index}
                                               onClick={() =>
-                                                handleClickforFolder(
+                                                fileOptionsSelect(
                                                   data,
                                                   fileData
                                                 )
@@ -478,12 +591,12 @@ const GridViewDataRoom = ({
                                     />
                                   </Dropdown.Toggle>
                                   <Dropdown.Menu>
-                                    {optionsforFolder.map((data, index) => {
+                                    {optionsforFolder(t).map((data, index) => {
                                       return (
                                         <Dropdown.Item
                                           key={index}
                                           onClick={() =>
-                                            handleClickforFolder(data, fileData)
+                                            fileOptionsSelect(data, fileData)
                                           }
                                         >
                                           {data.label}
@@ -511,6 +624,7 @@ const GridViewDataRoom = ({
               ? isDataforGrid
                   .filter((data, index) => data.isFolder === false)
                   .map((fileData, index) => {
+                    let getExtension = getFileExtension(fileData.name);
                     if (fileData.isShared) {
                       return (
                         <>
@@ -568,13 +682,13 @@ const GridViewDataRoom = ({
                                         </Dropdown.Toggle>
                                         <Dropdown.Menu>
                                           {fileData.permissionID === 1
-                                            ? optionsforFileEditor(t).map(
+                                            ? optionsforFileViewer(t).map(
                                                 (data, index) => {
                                                   return (
                                                     <Dropdown.Item
                                                       key={index}
                                                       onClick={() =>
-                                                        handleClickforFile(
+                                                        fileOptionsSelect(
                                                           data,
                                                           fileData
                                                         )
@@ -586,13 +700,13 @@ const GridViewDataRoom = ({
                                                 }
                                               )
                                             : fileData.permissionID === 2
-                                            ? optionsforFileViewer(t).map(
+                                            ? optionsforFileEditor(t).map(
                                                 (data, index) => {
                                                   return (
                                                     <Dropdown.Item
                                                       key={index}
                                                       onClick={() =>
-                                                        handleClickforFile(
+                                                        fileOptionsSelect(
                                                           data,
                                                           fileData
                                                         )
@@ -611,7 +725,7 @@ const GridViewDataRoom = ({
                                                   <Dropdown.Item
                                                     key={index}
                                                     onClick={() =>
-                                                      handleClickforFile(
+                                                      fileOptionsSelect(
                                                         data,
                                                         fileData
                                                       )
@@ -689,21 +803,41 @@ const GridViewDataRoom = ({
                                           />
                                         </Dropdown.Toggle>
                                         <Dropdown.Menu>
-                                          {optionsforFile.map((data, index) => {
-                                            return (
-                                              <Dropdown.Item
-                                                key={index}
-                                                onClick={() =>
-                                                  handleClickforFile(
-                                                    data,
-                                                    fileData
-                                                  )
+                                          {getExtension === "pdf"
+                                            ? optionsforPDFandSignatureFlow(
+                                                t
+                                              ).map((data, index) => {
+                                                return (
+                                                  <Dropdown.Item
+                                                    key={index}
+                                                    onClick={() =>
+                                                      fileOptionsSelect(
+                                                        data,
+                                                        fileData
+                                                      )
+                                                    }
+                                                  >
+                                                    {data.label}
+                                                  </Dropdown.Item>
+                                                );
+                                              })
+                                            : optionsforFile(t).map(
+                                                (data, index) => {
+                                                  return (
+                                                    <Dropdown.Item
+                                                      key={index}
+                                                      onClick={() =>
+                                                        fileOptionsSelect(
+                                                          data,
+                                                          fileData
+                                                        )
+                                                      }
+                                                    >
+                                                      {data.label}
+                                                    </Dropdown.Item>
+                                                  );
                                                 }
-                                              >
-                                                {data.label}
-                                              </Dropdown.Item>
-                                            );
-                                          })}
+                                              )}
                                         </Dropdown.Menu>
                                       </Dropdown>
                                       {/* <img src={threedots_dataroom} onClick={() => handleClickforFile(fileData.id)} /> */}

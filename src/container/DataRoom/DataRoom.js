@@ -3595,11 +3595,14 @@ const DataRoom = () => {
                                   >
                                     <GridViewDataRoom
                                       data={getAllData}
-                                      optionsforFolder={optionsforFolder(t)}
-                                      optionsforFile={optionsforFile(t)}
                                       sRowsData={sRowsData}
                                       totalRecords={totalRecords}
                                       filter_Value={filterValue}
+                                      setSearchTabOpen={setSearchTabOpen}
+                                      setDetailView={setDetailView}
+                                      setFileDataforAnalyticsCount={
+                                        setFileDataforAnalyticsCount
+                                      }
                                     />
                                   </InfiniteScroll>
                                 </>
@@ -3713,6 +3716,11 @@ const DataRoom = () => {
                                     sRowsData={sRowsData}
                                     totalRecords={totalRecords}
                                     filter_Value={filterValue}
+                                    setSearchTabOpen={setSearchTabOpen}
+                                    setDetailView={setDetailView}
+                                    setFileDataforAnalyticsCount={
+                                      setFileDataforAnalyticsCount
+                                    }
                                   />
                                 </>
                               ) : listviewactive === true ? (
@@ -3796,11 +3804,14 @@ const DataRoom = () => {
                                   >
                                     <GridViewDataRoom
                                       data={getAllData}
-                                      optionsforFolder={optionsforFolder(t)}
-                                      optionsforFile={optionsforFile(t)}
                                       sRowsData={sRowsData}
                                       totalRecords={totalRecords}
                                       filter_Value={filterValue}
+                                      setSearchTabOpen={setSearchTabOpen}
+                                      setDetailView={setDetailView}
+                                      setFileDataforAnalyticsCount={
+                                        setFileDataforAnalyticsCount
+                                      }
                                     />
                                   </InfiniteScroll>
                                 </>
