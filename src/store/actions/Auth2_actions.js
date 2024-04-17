@@ -572,60 +572,68 @@ const enterPasswordvalidation = (value, navigate, t) => {
             ];
             let LocalAdminRoutes = [];
             if (response.data.responseResult.isTrial) {
-              LocalUserRoutes.push(
-                { name: "Meeting", id: 106 },
-                { name: "Meeting/Useravailabilityformeeting", id: 107 },
-                { name: "notes", id: 6 },
-                { name: "calendar", id: 7 },
-                { name: "dataroom", id: 13 },
-                { name: "todolist", id: 14 },
-                { name: "polling", id: 15 },
-                { name: "groups", id: 16 },
-                { name: "committee", id: 17 },
-                { name: "resolution", id: 18 },
-                { name: "signatureviewer", id: 19 },
-                { name: "documentViewer", id: 20 }
-              );
-              LocalAdminRoutes = [
-                { name: "Admin", id: 200 },
-                { name: "Admin", id: 201 },
-                { name: "", id: 202 },
-                { name: "ManageUsers", id: 203 },
-                { name: "changePassword", id: 204 },
-                { name: "OrganizationlevelConfigUM", id: 205 },
-                { name: "AddUsers", id: 26 },
-                { name: "faq's", id: 104 },
-                { name: "loginreport", id: 35 },
-                { name: "PakageDetailsUserManagement", id: 206 },
-              ];
+              if (response.data.responseResult.hasUserRights) {
+                LocalUserRoutes.push(
+                  { name: "Meeting", id: 106 },
+                  { name: "Meeting/Useravailabilityformeeting", id: 107 },
+                  { name: "notes", id: 6 },
+                  { name: "calendar", id: 7 },
+                  { name: "dataroom", id: 13 },
+                  { name: "todolist", id: 14 },
+                  { name: "polling", id: 15 },
+                  { name: "groups", id: 16 },
+                  { name: "committee", id: 17 },
+                  { name: "resolution", id: 18 },
+                  { name: "signatureviewer", id: 19 },
+                  { name: "documentViewer", id: 20 }
+                );
+              }
+              if (response.data.responseResult.hasAdminRights) {
+                LocalAdminRoutes = [
+                  { name: "Admin", id: 200 },
+                  { name: "Admin", id: 201 },
+                  { name: "", id: 202 },
+                  { name: "ManageUsers", id: 203 },
+                  { name: "changePassword", id: 204 },
+                  { name: "OrganizationlevelConfigUM", id: 205 },
+                  { name: "AddUsers", id: 26 },
+                  { name: "faq's", id: 104 },
+                  { name: "loginreport", id: 35 },
+                  { name: "PakageDetailsUserManagement", id: 206 },
+                ];
+              }
             } else {
-              LocalUserRoutes.push(
-                { name: "Meeting", id: 106 },
-                { name: "Meeting/Useravailabilityformeeting", id: 107 },
-                { name: "notes", id: 6 },
-                { name: "calendar", id: 7 },
-                { name: "dataroom", id: 13 },
-                { name: "todolist", id: 14 }
-              );
-              LocalAdminRoutes = [
-                { name: "Admin", id: 200 },
-                { name: "Admin", id: 201 },
-                { name: "", id: 202 },
-                { name: "ManageUsers", id: 203 },
-                { name: "changePassword", id: 204 },
-                { name: "OrganizationlevelConfigUM", id: 205 },
-                { name: "PakageDetailsUserManagement", id: 206 },
-                { name: "AddUsersUsermanagement", id: 26 },
-                { name: "PackageDetailsUserManagement", id: 28 },
-                { name: "CancelSubscriptionUserManagement", id: 29 },
-                { name: "deleteorganizationUserMangement", id: 30 },
-                { name: "Summary", id: 34 },
-                { name: "PayOutstanding", id: 34 },
-                { name: "PaymentHistory", id: 36 },
-                { name: "PaymentHistoryusermanagement", id: 37 },
-                { name: "loginreport", id: 35 },
-                { name: "faq's", id: 104 },
-              ];
+              if (response.data.responseResult.hasUserRights) {
+                LocalUserRoutes.push(
+                  { name: "Meeting", id: 106 },
+                  { name: "Meeting/Useravailabilityformeeting", id: 107 },
+                  { name: "notes", id: 6 },
+                  { name: "calendar", id: 7 },
+                  { name: "dataroom", id: 13 },
+                  { name: "todolist", id: 14 }
+                );
+              }
+              if (response.data.responseResult.hasAdminRights) {
+                LocalAdminRoutes = [
+                  { name: "Admin", id: 200 },
+                  { name: "Admin", id: 201 },
+                  { name: "", id: 202 },
+                  { name: "ManageUsers", id: 203 },
+                  { name: "changePassword", id: 204 },
+                  { name: "OrganizationlevelConfigUM", id: 205 },
+                  { name: "PakageDetailsUserManagement", id: 206 },
+                  { name: "AddUsersUsermanagement", id: 26 },
+                  { name: "PackageDetailsUserManagement", id: 28 },
+                  { name: "CancelSubscriptionUserManagement", id: 29 },
+                  { name: "deleteorganizationUserMangement", id: 30 },
+                  { name: "Summary", id: 34 },
+                  { name: "PayOutstanding", id: 34 },
+                  { name: "PaymentHistory", id: 36 },
+                  { name: "PaymentHistoryusermanagement", id: 37 },
+                  { name: "loginreport", id: 35 },
+                  { name: "faq's", id: 104 },
+                ];
+              }
             }
 
             localStorage.setItem(
@@ -1751,59 +1759,67 @@ const createPasswordAction = (value, navigate, t) => {
               ];
               let LocalAdminRoutes = [];
               if (response.data.responseResult.isTrial) {
-                LocalUserRoutes.push(
-                  { name: "Meeting", id: 106 },
-                  { name: "Meeting/Useravailabilityformeeting", id: 107 },
-                  { name: "notes", id: 6 },
-                  { name: "calendar", id: 7 },
-                  { name: "dataroom", id: 13 },
-                  { name: "todolist", id: 14 },
-                  { name: "polling", id: 15 },
-                  { name: "groups", id: 16 },
-                  { name: "committee", id: 17 },
-                  { name: "resolution", id: 18 },
-                  { name: "signatureviewer", id: 19 },
-                  { name: "documentViewer", id: 20 }
-                );
-                LocalAdminRoutes = [
-                  { name: "Admin", id: 200 },
-                  { name: "Admin", id: 201 },
-                  { name: "", id: 202 },
-                  { name: "ManageUsers", id: 203 },
-                  { name: "changePassword", id: 204 },
-                  { name: "OrganizationlevelConfigUM", id: 205 },
-                  { name: "AddUsers", id: 26 },
-                  { name: "faq's", id: 104 },
-                  { name: "loginreport", id: 35 },
-                  { name: "PakageDetailsUserManagement", id: 206 },
-                ];
+                if (response.data.responseResult.hasUserRights) {
+                  LocalUserRoutes.push(
+                    { name: "Meeting", id: 106 },
+                    { name: "Meeting/Useravailabilityformeeting", id: 107 },
+                    { name: "notes", id: 6 },
+                    { name: "calendar", id: 7 },
+                    { name: "dataroom", id: 13 },
+                    { name: "todolist", id: 14 },
+                    { name: "polling", id: 15 },
+                    { name: "groups", id: 16 },
+                    { name: "committee", id: 17 },
+                    { name: "resolution", id: 18 },
+                    { name: "signatureviewer", id: 19 },
+                    { name: "documentViewer", id: 20 }
+                  );
+                }
+                if (response.data.responseResult.hasAdminRights) {
+                  LocalAdminRoutes = [
+                    { name: "Admin", id: 200 },
+                    { name: "Admin", id: 201 },
+                    { name: "", id: 202 },
+                    { name: "ManageUsers", id: 203 },
+                    { name: "changePassword", id: 204 },
+                    { name: "OrganizationlevelConfigUM", id: 205 },
+                    { name: "AddUsers", id: 26 },
+                    { name: "faq's", id: 104 },
+                    { name: "loginreport", id: 35 },
+                    { name: "PakageDetailsUserManagement", id: 206 },
+                  ];
+                }
               } else {
-                LocalUserRoutes.push(
-                  { name: "Meeting", id: 106 },
-                  { name: "Meeting/Useravailabilityformeeting", id: 107 },
-                  { name: "notes", id: 6 },
-                  { name: "calendar", id: 7 },
-                  { name: "dataroom", id: 13 },
-                  { name: "todolist", id: 14 }
-                );
-                LocalAdminRoutes = [
-                  { name: "Admin", id: 200 },
-                  { name: "Admin", id: 201 },
-                  { name: "", id: 202 },
-                  { name: "ManageUsers", id: 203 },
-                  { name: "changePassword", id: 204 },
-                  { name: "OrganizationlevelConfigUM", id: 205 },
-                  { name: "PakageDetailsUserManagement", id: 206 },
-                  { name: "AddUsersUsermanagement", id: 26 },
-                  { name: "PackageDetailsUserManagement", id: 28 },
-                  { name: "CancelSubscriptionUserManagement", id: 29 },
-                  { name: "deleteorganizationUserMangement", id: 30 },
-                  { name: "Summary", id: 34 },
-                  { name: "PayOutstanding", id: 34 },
-                  { name: "loginreport", id: 35 },
-                  { name: "PaymentHistory", id: 36 },
-                  { name: "PaymentHistoryusermanagement", id: 37 },
-                ];
+                if (response.data.responseResult.hasUserRights) {
+                  LocalUserRoutes.push(
+                    { name: "Meeting", id: 106 },
+                    { name: "Meeting/Useravailabilityformeeting", id: 107 },
+                    { name: "notes", id: 6 },
+                    { name: "calendar", id: 7 },
+                    { name: "dataroom", id: 13 },
+                    { name: "todolist", id: 14 }
+                  );
+                }
+                if (response.data.responseResult.hasAdminRights) {
+                  LocalAdminRoutes = [
+                    { name: "Admin", id: 200 },
+                    { name: "Admin", id: 201 },
+                    { name: "", id: 202 },
+                    { name: "ManageUsers", id: 203 },
+                    { name: "changePassword", id: 204 },
+                    { name: "OrganizationlevelConfigUM", id: 205 },
+                    { name: "PakageDetailsUserManagement", id: 206 },
+                    { name: "AddUsersUsermanagement", id: 26 },
+                    { name: "PackageDetailsUserManagement", id: 28 },
+                    { name: "CancelSubscriptionUserManagement", id: 29 },
+                    { name: "deleteorganizationUserMangement", id: 30 },
+                    { name: "Summary", id: 34 },
+                    { name: "PayOutstanding", id: 34 },
+                    { name: "loginreport", id: 35 },
+                    { name: "PaymentHistory", id: 36 },
+                    { name: "PaymentHistoryusermanagement", id: 37 },
+                  ];
+                }
               }
 
               localStorage.setItem(
