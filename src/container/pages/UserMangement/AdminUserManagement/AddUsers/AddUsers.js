@@ -7,6 +7,7 @@ import {
   Button,
   Checkbox,
   TextField,
+  Loader,
 } from "../../../../../components/elements";
 import { useNavigate } from "react-router-dom";
 import { regexOnlyCharacters } from "../../../../../commen/functions/regex";
@@ -15,6 +16,11 @@ import { validateEmailEnglishAndArabicFormat } from "../../../../../commen/funct
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { Check2 } from "react-bootstrap-icons";
+import {
+  AddOrganizationsUserApi,
+  GetOrganizationSelectedPackagesByOrganizationIDApi,
+} from "../../../../../store/actions/UserManagementActions";
+import { Numeral } from "numeral";
 const AddUsers = () => {
   const { t } = useTranslation();
 
@@ -22,11 +28,41 @@ const AddUsers = () => {
 
   const dispatch = useDispatch();
 
+  const { UserMangementReducer } = useSelector((state) => state);
+
+  let organizationID = localStorage.getItem("organizationID");
+
   const { adminReducer } = useSelector((state) => state);
 
   const handleCancelButton = () => {
     navigate("/Admin/ManageUsers");
   };
+
+  useEffect(() => {
+    let data = {
+      OrganizationID: Number(organizationID),
+    };
+    dispatch(
+      GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t, data)
+    );
+  }, []);
+
+  useEffect(() => {
+    if (
+      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData &&
+      Object.keys(
+        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
+      ).length > 0
+    ) {
+      console.log(
+        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData,
+        "UserMangementReducerUserMangementReducer"
+      );
+      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData.organizationSelectedPackages.map(
+        (data, index) => {}
+      );
+    }
+  }, [UserMangementReducer.organizationSelectedPakagesByOrganizationIDData]);
 
   const [isEmailUnique, setEmailUnique] = useState(false);
   const [companyEmailValidateError, setCompanyEmailValidateError] =
@@ -184,6 +220,21 @@ const AddUsers = () => {
       });
     }
   }, [companyEmailValidate, companyEmailValidateError]);
+
+  const handleAddUsers = () => {
+    let data = {
+      UserName: addUserFreeTrial.Name.value,
+      // OrganizationName: "test new flow org",
+      Designation: addUserFreeTrial.Designation.value,
+      MobileNumber: "",
+      UserEmail: addUserFreeTrial.Email.value,
+      // OrganizationID: 471,
+      isAdmin: addUserFreeTrial.isAdmin,
+      // FK_NumberWorldCountryID: userAddMain.FK_NumberWorldCountryID,
+      // OrganizationSelectedPackageID: userAddMain.PackageAssigned.value,
+    };
+    dispatch(AddOrganizationsUserApi(navigate, t, data));
+  };
 
   return (
     <Container className={styles["PageAlignment"]}>
@@ -358,9 +409,11 @@ const AddUsers = () => {
           <Button
             text={t("Create")}
             className={styles["AddUserCreateButton"]}
+            onClick={handleAddUsers}
           />
         </Col>
       </Row>
+      {UserMangementReducer.Loading ? <Loader /> : null}
     </Container>
   );
 };
