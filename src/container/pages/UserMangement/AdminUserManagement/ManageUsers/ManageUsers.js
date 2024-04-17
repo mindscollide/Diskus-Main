@@ -163,10 +163,11 @@ const ManageUsers = () => {
       sorter: (a, b) =>
         a.OrganizationRole.localeCompare(b.OrganizationRole.toLowerCase),
       render: (text, record) => {
+        console.log(record, "recordrecordrecord");
         return (
           <>
             {(() => {
-              if (record.userRole === "Admin") {
+              if (record.userRole === "AdminUser") {
                 return <img src={greenCheck} alt="" />;
               } else {
                 return;
