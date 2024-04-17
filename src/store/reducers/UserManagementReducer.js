@@ -17,6 +17,7 @@ const initialState = {
   getOrganizationUserStatsGraph: null,
   getAllUserTypePackagesData: [],
   ResendForgotPasswordCodedData: null,
+  deleteOrganizationUsersData: null,
 };
 
 const UserMangementReducer = (state = initialState, action) => {
@@ -309,6 +310,28 @@ const UserMangementReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResendForgotPasswordCodedData: null,
+        ResponseMessage: action.message,
+      };
+
+    case actions.DELETE_ORGANIZATION_USERS_INIT:
+      return {
+        ...state,
+        Loading: true,
+      };
+
+    case actions.DELETE_ORGANIZATION_USERS_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        deleteOrganizationUsersData: action.response,
+        ResponseMessage: action.message,
+      };
+
+    case actions.DELETE_ORGANIZATION_USERS_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        deleteOrganizationUsersData: null,
         ResponseMessage: action.message,
       };
 

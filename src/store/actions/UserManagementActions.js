@@ -9,6 +9,7 @@ import {
   GetAllUserTypePackages,
   ResendForgotPasswordCode,
   EditOrganizationsUser,
+  DeleteOrganizationsUser,
 } from "../../commen/apis/Api_config";
 import {
   authenticationApi,
@@ -1465,6 +1466,94 @@ const ResendForgotPasswordCodeApi = (
   };
 };
 
+//Delete Orgazanition
+
+const deleteOrganizationUserInit = () => {
+  return {
+    type: actions.DELETE_ORGANIZATION_USERS_INIT,
+  };
+};
+
+const deleteOrganizationUserSuccess = (response, message) => {
+  return {
+    type: actions.DELETE_ORGANIZATION_USERS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const deleteOrganizationUserFail = (message) => {
+  return {
+    type: actions.DELETE_ORGANIZATION_USERS_FAIL,
+    message: message,
+  };
+};
+
+const deleteOrganizationUserAPI = (navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(deleteOrganizationUserInit());
+    let form = new FormData();
+    form.append("RequestMethod", DeleteOrganizationsUser.RequestMethod);
+    axios({
+      method: "post",
+      url: getAdminURLs,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(deleteOrganizationUserAPI(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_DeleteOrganizationsUser_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                deleteOrganizationUserSuccess(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_DeleteOrganizationsUser_02".toLowerCase()
+                )
+            ) {
+              dispatch(deleteOrganizationUserFail(t("No-data-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_DeleteOrganizationsUser_03".toLowerCase()
+                )
+            ) {
+              dispatch(deleteOrganizationUserFail(t("Something-went-wrong")));
+            } else {
+              dispatch(deleteOrganizationUserFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(deleteOrganizationUserFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(deleteOrganizationUserFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(deleteOrganizationUserFail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   signUpOrganizationAndPakageSelection,
   getAllorganizationSubscriptionExpiryDetailsApi,
@@ -1480,4 +1569,5 @@ export {
   getOrganizationPackageUserStatsAPI,
   getAllUserTypePackagesApi,
   ResendForgotPasswordCodeApi,
+  deleteOrganizationUserAPI,
 };

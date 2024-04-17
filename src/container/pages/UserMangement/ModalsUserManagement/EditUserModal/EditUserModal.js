@@ -109,7 +109,6 @@ const EditUserModal = ({ editModalData }) => {
       OrganizationSelectedPackageID: Number(editModalData.userAllotedPackageID),
       FK_NumberWorldCountryID: Number(editModalData.fK_WorldCountryID),
     };
-    console.log(data, "handleUpdateButton");
     dispatch(EditOrganizationsUserApi(navigate, t, data));
   };
 
