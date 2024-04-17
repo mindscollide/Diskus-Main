@@ -8,7 +8,7 @@ import { showDeleteUsersModal } from "../../../../../store/actions/UserMangement
 import { Col, Row } from "react-bootstrap";
 import { deleteOrganizationUserAPI } from "../../../../../store/actions/UserManagementActions";
 import { useNavigate } from "react-router-dom";
-const DeleteUserModal = () => {
+const DeleteUserModal = ({ deleteModalData }) => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
@@ -28,10 +28,9 @@ const DeleteUserModal = () => {
   const handleProceedButton = () => {
     let data = {
       OrganizationID: Number(organizationID),
-      RequestingUserID: 1096,
-      UserID: Number(userID),
+      RequestingUserID: Number(userID),
+      UserID: Number(deleteModalData.userID),
     };
-    console.log(data, "datadatadatadata");
     dispatch(deleteOrganizationUserAPI(navigate, t, data));
   };
 

@@ -55,6 +55,8 @@ const ManageUsers = () => {
 
   const [editModalData, setEditModalData] = useState(null);
 
+  const [deleteModalData, setDeleteModalData] = useState(null);
+
   const [searchDetails, setsearchDetails] = useState({
     Name: "",
     Email: "",
@@ -63,6 +65,7 @@ const ManageUsers = () => {
       label: "",
     },
   });
+
   const [flagForStopRerendring, setFlagForStopRerendring] = useState(false);
 
   //AllOrganizationsUsers Api
@@ -102,6 +105,7 @@ const ManageUsers = () => {
         UserMangementReducer.allOrganizationUsersData,
         "UserMangementReducer"
       );
+
       setManageUserGrid(
         UserMangementReducer.allOrganizationUsersData.organizationUsers
       );
@@ -369,13 +373,12 @@ const ManageUsers = () => {
 
   //Handle Delele user Modal
   const handleDeleteModal = (record) => {
-    console.log(record, "showDeleteUsersModal");
+    setDeleteModalData(record);
     dispatch(showDeleteUsersModal(true));
   };
 
   // handle Edit User Modal
   const handleClickEditIcon = (record) => {
-    console.log(record, "handleClickEditIcon");
     setEditModalData(record);
     dispatch(showEditUserModal(true));
   };
@@ -623,7 +626,9 @@ const ManageUsers = () => {
           />
         </Col>
       </Row>
-      {UserManagementModals.deleteUsersModal && <DeleteUserModal />}
+      {UserManagementModals.deleteUsersModal && (
+        <DeleteUserModal deleteModalData={deleteModalData} />
+      )}
       {UserManagementModals.editUserModal && (
         <EditUserModal editModalData={editModalData} />
       )}
