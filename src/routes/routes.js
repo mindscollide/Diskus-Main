@@ -572,7 +572,7 @@ export const router = createHashRouter(
 
       {/* Routes for testing puprose start */}
 
-      <Route path="/AddUsersUsermanagement" element={<AddUserMain />} />
+      {/* <Route path="/AddUsersUsermanagement" element={<AddUserMain />} />
 
       <Route
         path="/PackageDetailsUserManagement"
@@ -592,7 +592,7 @@ export const router = createHashRouter(
       <Route
         path="/deleteorganizationUserMangement"
         element={<DeleteOrganizationAdmin />}
-      />
+      /> */}
 
       {/* Routes for testing puprose End */}
     </>
