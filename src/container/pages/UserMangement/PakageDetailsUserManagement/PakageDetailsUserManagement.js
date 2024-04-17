@@ -153,12 +153,11 @@ const PakageDetailsUserManagement = () => {
             );
           } else {
             const handleChange = (newValue) => {
-              if (/^\d+$/.test(newValue)) {
+              if (newValue === "" || /^\d+$/.test(newValue)) {
                 const newData = tableData.map((item) => {
-                  if (item.pK_PackageID === row.pK_PackageID) {
-                    return { ...item, licenseCount: newValue };
-                  }
-                  return item;
+                  return item.pK_PackageID === row.pK_PackageID
+                    ? { ...item, licenseCount: newValue }
+                    : item;
                 });
                 setTableData(newData);
               }
@@ -171,7 +170,8 @@ const PakageDetailsUserManagement = () => {
                     labelClass="d-none"
                     applyClass="PakageDetails"
                     name="noofLisence"
-                    value={row.licenseCount || ""}
+                    maxLength={3}
+                    value={row.licenseCount}
                     change={(e) => handleChange(e.target.value)}
                   />
                 </Col>

@@ -220,10 +220,10 @@ const NavbarAdmin = () => {
                             <Nav.Link
                               as={Link}
                               to="PakageDetailsUserManagement"
-                              className="DiskusAdminNavBar"
                               id="collasible-nav-dropdown"
+                              className="DiskusAdminNavBar nav-link"
                             >
-                              {t("Billing-Subscription")}
+                              {t("Billing-subscription")}
                             </Nav.Link>
                             {/* <Nav.Link
                               title={t("Billing-Subscription")}

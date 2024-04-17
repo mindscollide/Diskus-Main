@@ -600,9 +600,11 @@ const Header2 = () => {
                         <span className={"trialExpireButton"}>
                           <span className="InnerText">
                             {t(
-                              "Your-trial-will-expire-in",
-                              localStorage.getItem("remainingDays"),
-                              "days"
+                              "Your-trial-will-expire-in-{{remainingDays}}-days",
+                              {
+                                remainingDays:
+                                  localStorage.getItem("remainingDays"),
+                              }
                             )}
                           </span>
                         </span>

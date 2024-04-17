@@ -135,3 +135,7 @@ body[dir="rtl"] .DiskusAdminNavBar a:nth-child(1) {
 .DiskusAdminNavBar > .dropdown-menu .dropdown-item:last-child {
   border: none !important;
 }
+
+a#collasible-nav-dropdown {
+  color: #5a5a5a !important;
+}
