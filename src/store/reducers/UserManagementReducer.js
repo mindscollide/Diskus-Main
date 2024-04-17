@@ -45,28 +45,28 @@ const UserMangementReducer = (state = initialState, action) => {
       };
     }
 
-    case actions.GET_ORGANIZATION_SUBSCRIPTION_EXPIRYDETAILS_INIT: {
-      return {
-        ...state,
-        Loading: true,
-      };
-    }
-    case actions.GET_ORGANIZATION_SUBSCRIPTION_EXPIRYDETAILS_SUCCESS: {
-      return {
-        ...state,
-        Loading: true,
-        getOrganizationSubscriptionExpiryDetailsData: action.response,
-        ResponseMessage: action.message,
-      };
-    }
-    case actions.GET_ORGANIZATION_SUBSCRIPTION_EXPIRYDETAILS_FAILS: {
-      return {
-        ...state,
-        Loading: false,
-        getOrganizationSubscriptionExpiryDetailsData: null,
-        ResponseMessage: action.message,
-      };
-    }
+    // case actions.GET_ORGANIZATION_SUBSCRIPTION_EXPIRYDETAILS_INIT: {
+    //   return {
+    //     ...state,
+    //     Loading: true,
+    //   };
+    // }
+    // case actions.GET_ORGANIZATION_SUBSCRIPTION_EXPIRYDETAILS_SUCCESS: {
+    //   return {
+    //     ...state,
+    //     Loading: true,
+    //     getOrganizationSubscriptionExpiryDetailsData: action.response,
+    //     ResponseMessage: action.message,
+    //   };
+    // }
+    // case actions.GET_ORGANIZATION_SUBSCRIPTION_EXPIRYDETAILS_FAILS: {
+    //   return {
+    //     ...state,
+    //     Loading: false,
+    //     getOrganizationSubscriptionExpiryDetailsData: null,
+    //     ResponseMessage: action.message,
+    //   };
+    // }
 
     case actions.EXTEND_ORGANIZATION_TRIAL_INIT: {
       return {

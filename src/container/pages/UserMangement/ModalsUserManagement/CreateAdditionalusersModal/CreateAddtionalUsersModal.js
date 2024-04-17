@@ -16,9 +16,10 @@ import {
 } from "../../../../../components/elements";
 import Cookies from "js-cookie";
 import { Col, Row } from "react-bootstrap";
-import { AddOrganizationsUserApi, getAllorganizationSubscriptionExpiryDetailsApi } from "../../../../../store/actions/UserManagementActions";
+import { AddOrganizationsUserApi } from "../../../../../store/actions/UserManagementActions";
 import { useNavigate } from "react-router-dom";
 import { validateEmailEnglishAndArabicFormat } from "../../../../../commen/functions/validations";
+import { getPackageExpiryDetail } from "../../../../../store/actions/GetPackageExpirtyDetails";
 const CreateAddtionalUsersModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -170,9 +171,7 @@ const CreateAddtionalUsersModal = () => {
     };
     await dispatch(showCreateAddtionalUsersModal(false));
 
-    await dispatch(
-      getAllorganizationSubscriptionExpiryDetailsApi(navigate, t, data)
-    );
+    await dispatch(getPackageExpiryDetail(navigate, Number(organzataionID), t));
   };
 
   //handle Create button
