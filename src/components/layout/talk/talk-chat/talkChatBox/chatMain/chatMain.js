@@ -178,6 +178,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
   const [emojiActive, setEmojiActive] = useState(false);
   const emojiMenuRef = useRef();
+  const chatMenuRef = useRef(null);
 
   const [chatMenuActive, setChatMenuActive] = useState(false);
 
@@ -2602,6 +2603,13 @@ const ChatMainBody = ({ chatMessageClass }) => {
   ]);
 
   const handleOutsideClick = (event) => {
+        if (
+      chatMenuRef.current &&
+      !chatMenuRef.current.contains(event.target) &&
+      chatMenuActive
+    ) {
+      setChatMenuActive(false);
+    }
     if (
       emojiMenuRef.current &&
       !emojiMenuRef.current.contains(event.target) &&
@@ -2623,7 +2631,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     return () => {
       document.removeEventListener("click", handleOutsideClick);
     };
-  }, [emojiActive, uploadOptions]);
+  }, [chatMenuActive, emojiActive, uploadOptions]);
 
   useEffect(() => {
     if (inputRef.current) {
@@ -3188,11 +3196,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
                     <Col lg={1} md={1} sm={12}>
                       <div className="chat-profile-icon">
                         {talkStateData.ActiveChatData.messageType === "O" ? (
-                          <img draggable="false" src={SingleIcon} width={25} />
+                          <img draggable="false" src={SingleIcon} width={25} alt="" />
                         ) : talkStateData.ActiveChatData.messageType === "G" ? (
-                          <img draggable="false" src={GroupIcon} width={30} />
+                          <img draggable="false" src={GroupIcon} width={30} alt="" />
                         ) : talkStateData.ActiveChatData.messageType === "B" ? (
-                          <img draggable="false" src={ShoutIcon} width={20} />
+                          <img draggable="false" src={ShoutIcon} width={20} alt="" />
                         ) : null}
                       </div>
                     </Col>
@@ -3212,6 +3220,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                           draggable="false"
                           onClick={showChatSearchHandler}
                           src={SearchChatIcon}
+                          alt="" 
                         />
                       </div>
                     </Col>
@@ -3220,8 +3229,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       <div
                         className="chat-box-icons cursor-pointer positionRelative"
                         onClick={activateChatMenu}
+                        ref={chatMenuRef}
                       >
-                        <img draggable="false" src={MenuIcon} />
+                        <img draggable="false" src={MenuIcon} alt="" />
                         {chatMenuActive && (
                           <div className="dropdown-menus-chat">
                             {talkStateData.ActiveChatData.messageType ===
@@ -3359,6 +3369,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                             }
                             draggable="false"
                             src={VideoCallIcon}
+                            alt="" 
                           />
                         </div>
                       </Col>
@@ -3374,6 +3385,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                           draggable="false"
                           src={CloseChatIcon}
                           className="cursor-pointer"
+                          alt="" 
                         />
                       </div>
                     </Col>
@@ -3396,6 +3408,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                           draggable="false"
                           src={SecurityIconMessasgeBox}
                           style={{ width: "17px" }}
+                          alt="" 
                         />
                       </span>
                     </Col>
@@ -3502,6 +3515,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   draggable="false"
                                                   className="dropdown-icon"
                                                   src={DropDownIcon}
+                                                  alt="" 
                                                 />
                                               </Dropdown.Toggle>
                                               <Dropdown.Menu
