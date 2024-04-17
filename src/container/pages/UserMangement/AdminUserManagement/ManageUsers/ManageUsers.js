@@ -53,6 +53,8 @@ const ManageUsers = () => {
 
   const [manageUserGrid, setManageUserGrid] = useState();
 
+  const [editModalData, setEditModalData] = useState(null);
+
   const [searchDetails, setsearchDetails] = useState({
     Name: "",
     Email: "",
@@ -177,7 +179,6 @@ const ManageUsers = () => {
         );
       },
     },
-
     {
       title: "User Status",
       dataIndex: "userStatus",
@@ -232,7 +233,6 @@ const ManageUsers = () => {
         );
       },
     },
-
     {
       title: t(""),
       dataIndex: "Delete",
@@ -376,6 +376,7 @@ const ManageUsers = () => {
   // handle Edit User Modal
   const handleClickEditIcon = (record) => {
     console.log(record, "handleClickEditIcon");
+    setEditModalData(record);
     dispatch(showEditUserModal(true));
   };
 
@@ -623,9 +624,11 @@ const ManageUsers = () => {
         </Col>
       </Row>
       {UserManagementModals.deleteUsersModal && <DeleteUserModal />}
-      {UserManagementModals.editUserModal && <EditUserModal />}{" "}
-      {UserManagementModals.successfullyUpdated && <SuccessfullyUpdateModal />}{" "}
-      {UserMangementReducer.Loading ? <Loader /> : null}{" "}
+      {UserManagementModals.editUserModal && (
+        <EditUserModal editModalData={editModalData} />
+      )}
+      {UserManagementModals.successfullyUpdated && <SuccessfullyUpdateModal />}
+      {UserMangementReducer.Loading ? <Loader /> : null}
     </Container>
   );
 };
