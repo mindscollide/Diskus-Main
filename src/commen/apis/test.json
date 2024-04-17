@@ -1,22 +1,11 @@
 {
-  "MeetingDetails": {
-    "MeetingID": 0,
-    "MeetingTitle": "stagging test for proposed meeting ",
-    "MeetingType": { "PK_MTID": 4, "Type": "Board Meeting" },
-    "Location": "",
-    "Description": "hello stagging test ",
-    "IsVideoChat": true,
-    "IsTalkGroup": false,
-    "OrganizationId": 417,
-    "MeetingDates": [
-      { "MeetingDate": "20240425", "StartTime": "080000", "EndTime": "090000" }
-    ],
-    "MeetingReminders": [4],
-    "Notes": "",
-    "AllowRSVP": true,
-    "NotifyOrganizerOnRSVP": true,
-    "ReucurringMeetingID": 1,
-    "VideoURL": "",
-    "MeetingStatusID": 11
-  }
+  "UserName": "Mehdi ",
+  "OrganizationName": "",
+  "Designation": "Developer ",
+  "MobileNumber": "",
+  "UserEmail": "mehdi222@yopmail.com",
+  "OrganizationID": 609,
+  "isAdmin": false,
+  "FK_NumberWorldCountryID": 212,
+  "OrganizationSelectedPackageID": 327
 }

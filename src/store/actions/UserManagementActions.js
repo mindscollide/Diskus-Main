@@ -22,6 +22,7 @@ import { RefreshToken } from "./Auth_action";
 import { getUserSetting } from "./GetUserSetting";
 import { getAllLanguages } from "./Language_actions";
 import {
+  showDeleteUsersModal,
   showEditUserModal,
   showSucessfullyUpdatedModal,
 } from "./UserMangementModalActions";
@@ -618,6 +619,7 @@ const AddOrganizationsUserApi = (navigate, t, data, loader) => {
                   loader
                 )
               );
+              navigate("/Admin/ManageUsers");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -676,7 +678,7 @@ const editOrganizationUsersFail = (message) => {
   };
 };
 
-const EditOrganizationsUserApi = (navigate, t, data) => {
+const EditOrganizationsUserApi = (navigate, t, data, flag) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let organizationID = localStorage.getItem("organizationID");
   let userID = localStorage.getItem("userID");
@@ -714,12 +716,13 @@ const EditOrganizationsUserApi = (navigate, t, data) => {
               );
               dispatch(showEditUserModal(false));
               dispatch(showSucessfullyUpdatedModal(true));
-              let data = {
-                OrganizationID: Number(organizationID),
-                RequestingUserID: 1096,
-                // RequestingUserID: Number(userID), will send user ID now for integratino using this UserId
-              };
-              dispatch(AllOrganizationsUsersApi(navigate, t, data));
+              if (flag) {
+                let data = {
+                  OrganizationID: Number(organizationID),
+                  RequestingUserID: Number(userID),
+                };
+                dispatch(AllOrganizationsUsersApi(navigate, t, data));
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1500,12 +1503,15 @@ const deleteOrganizationUserFail = (message) => {
   };
 };
 
-const deleteOrganizationUserAPI = (navigate, t) => {
+const deleteOrganizationUserAPI = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  let organizationID = localStorage.getItem("organizationID");
+  let userID = localStorage.getItem("userID");
   return (dispatch) => {
     dispatch(deleteOrganizationUserInit());
     let form = new FormData();
     form.append("RequestMethod", DeleteOrganizationsUser.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
     axios({
       method: "post",
       url: getAdminURLs,
@@ -1517,7 +1523,7 @@ const deleteOrganizationUserAPI = (navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(deleteOrganizationUserAPI(navigate, t));
+          dispatch(deleteOrganizationUserAPI(navigate, t, data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1533,6 +1539,12 @@ const deleteOrganizationUserAPI = (navigate, t) => {
                   t("Data-available")
                 )
               );
+              let data = {
+                OrganizationID: Number(organizationID),
+                RequestingUserID: Number(userID),
+              };
+              dispatch(AllOrganizationsUsersApi(navigate, t, data));
+              dispatch(showDeleteUsersModal(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1541,6 +1553,7 @@ const deleteOrganizationUserAPI = (navigate, t) => {
                 )
             ) {
               dispatch(deleteOrganizationUserFail(t("No-data-found")));
+              dispatch(showDeleteUsersModal(true));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1549,14 +1562,18 @@ const deleteOrganizationUserAPI = (navigate, t) => {
                 )
             ) {
               dispatch(deleteOrganizationUserFail(t("Something-went-wrong")));
+              dispatch(showDeleteUsersModal(true));
             } else {
               dispatch(deleteOrganizationUserFail(t("Something-went-wrong")));
+              dispatch(showDeleteUsersModal(true));
             }
           } else {
             dispatch(deleteOrganizationUserFail(t("Something-went-wrong")));
+            dispatch(showDeleteUsersModal(true));
           }
         } else {
           dispatch(deleteOrganizationUserFail(t("Something-went-wrong")));
+          dispatch(showDeleteUsersModal(true));
         }
       })
       .catch((response) => {

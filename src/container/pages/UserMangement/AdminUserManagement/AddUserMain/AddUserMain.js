@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./AddUserMain.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { Container, Row, Col, Form, ProgressBar } from "react-bootstrap";
@@ -9,7 +9,7 @@ import ReactFlagsSelect from "react-flags-select";
 import { useTranslation } from "react-i18next";
 import { Chart } from "react-google-charts";
 import "react-phone-input-2/lib/style.css";
-import { Button } from "../../../../../components/elements";
+import { Button, Loader } from "../../../../../components/elements";
 import { countryNameforPhoneNumber } from "../../../../Admin/AllUsers/AddUser/CountryJson";
 import { validateEmailEnglishAndArabicFormat } from "../../../../../commen/functions/validations";
 import {
@@ -23,6 +23,7 @@ const AddUserMain = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { UserMangementReducer } = useSelector((state) => state);
+
   console.log(
     UserMangementReducer.getOrganizationUserStatsGraph,
     "getOrganizationUserStatsGraph"

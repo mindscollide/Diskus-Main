@@ -6,10 +6,18 @@ import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../components/elements";
 import { showDeleteUsersModal } from "../../../../../store/actions/UserMangementModalActions";
 import { Col, Row } from "react-bootstrap";
+import { deleteOrganizationUserAPI } from "../../../../../store/actions/UserManagementActions";
+import { useNavigate } from "react-router-dom";
 const DeleteUserModal = () => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
+  let userID = localStorage.getItem("userID");
+
+  let organizationID = localStorage.getItem("organizationID");
 
   const { UserManagementModals } = useSelector((state) => state);
 
@@ -18,7 +26,13 @@ const DeleteUserModal = () => {
   };
 
   const handleProceedButton = () => {
-    dispatch(showDeleteUsersModal(false));
+    let data = {
+      OrganizationID: Number(organizationID),
+      RequestingUserID: 1096,
+      UserID: Number(userID),
+    };
+    console.log(data, "datadatadatadata");
+    dispatch(deleteOrganizationUserAPI(navigate, t, data));
   };
 
   return (
