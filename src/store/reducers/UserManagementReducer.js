@@ -18,6 +18,7 @@ const initialState = {
   getAllUserTypePackagesData: [],
   ResendForgotPasswordCodedData: null,
   deleteOrganizationUsersData: null,
+  paymentInitiateData: null,
 };
 
 const UserMangementReducer = (state = initialState, action) => {
@@ -332,6 +333,29 @@ const UserMangementReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         deleteOrganizationUsersData: null,
+        ResponseMessage: action.message,
+      };
+
+    //Payment Initiate
+    case actions.PAYMENT_INITIATE_INIT:
+      return {
+        ...state,
+        Loading: true,
+      };
+
+    case actions.PAYMENT_INITIATE_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        paymentInitiateData: action.response,
+        ResponseMessage: action.message,
+      };
+
+    case actions.PAYMENT_INITIATE_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        paymentInitiateData: null,
         ResponseMessage: action.message,
       };
 

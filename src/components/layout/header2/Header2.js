@@ -306,6 +306,12 @@ const Header2 = () => {
   const openAdminTab = () => {
     window.open(window.location.origin + "/#/Admin", "_blank");
   };
+
+  // open new dashboard tab in new window for dashboard user
+  const openUserTab = () => {
+    window.open(window.location.origin + "/#/Diskus/", "_blank");
+  };
+
   return (
     <>
       {activateBlur ? (
@@ -723,6 +729,21 @@ const Header2 = () => {
                 </Dropdown.Toggle>
                 {location.pathname.includes("/Admin") ? (
                   <Dropdown.Menu className="dropdown_menu_admin">
+                    <Dropdown.Item
+                      // className={`${" text-black"} ${currentLanguage}`}
+                      // onClick={() => forgotPasswordCheck()}
+                      className={currentLanguage}
+                      onClick={openUserTab}
+                    >
+                      <Nav.Link
+                        as={Link}
+                        // to="CustomerInformation"
+                        disabled={true}
+                        className="text-black"
+                      >
+                        {t("Organization-admin")}
+                      </Nav.Link>
+                    </Dropdown.Item>
                     <Dropdown.Item
                       className={`${" text-black"} ${currentLanguage}`}
                       onClick={() => forgotPasswordCheck()}
