@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./OrganizationLevelConfig.module.css";
 import { Checkbox } from "antd";
 import SecurityIcon from "../../../../assets/images/SecuritySetting.svg";
@@ -23,6 +23,8 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button, TextField } from "../../../../components/elements";
+import { getOrganizationLevelSetting } from "../../../../store/actions/OrganizationSettings";
+import getTimeZone from "../../../../store/actions/GetTimeZone";
 const OrganizationLevelConfigUM = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -63,23 +65,23 @@ const OrganizationLevelConfigUM = () => {
     EmailWhenAddedToCommittee: false,
     EmailWhenRemovedFromCommittee: false,
     EmailWhenCommitteeIsDissolvedOrArchived: false,
-    // EmailWhenCommitteeIsInactive: false,
-    // EmailWhenCommitteeIsactive: false,
+    EmailWhenCommitteeIsInactive: false,
+    EmailWhenCommitteeIsactive: false,
     PushNotificationWhenAddedToCommittee: false,
     PushNotificationWhenRemovedFromCommittee: false,
     PushNotificationWhenCommitteeIsDissolvedOrArchived: false,
-    // PushNotificationWhenCommitteeIsInActive: false,
-    // PushNotificationWhenCommitteeSetIsInActive: false,
+    PushNotificationWhenCommitteeIsInActive: false,
+    PushNotificationWhenCommitteeSetIsInActive: false,
     EmailWhenAddedToGroup: false,
     EmailWhenRemovedFromGroup: false,
     EmailWhenGroupIsDissolvedOrArchived: false,
-    // EmailWhenGroupisInactive: false,
-    // EmailWhenGroupisactive: false,
+    EmailWhenGroupisInactive: false,
+    EmailWhenGroupisactive: false,
     PushNotificationWhenAddedToGroup: false,
     PushNotificationWhenRemovedFromGroup: false,
     PushNotificationWhenGroupIsDissolvedOrArchived: false,
-    // PushNotificationWhenGroupIsInActive: false,
-    // PushNotificationWhenGroupSetIsInActive: false,
+    PushNotificationWhenGroupIsInActive: false,
+    PushNotificationWhenGroupSetIsInActive: false,
     EmailWhenResolutionIsCirculated: false,
     EmailWhenNewResolutionIsCancelledAfterCirculation: false,
     EmailWhenResolutionIsClosed: false,
@@ -120,10 +122,10 @@ const OrganizationLevelConfigUM = () => {
     EmailWhenNewTODOEdited: false,
   });
 
-  //   useEffect(() => {
-  //     dispatch(getOrganizationLevelSetting(navigate, t));
-  //     dispatch(getTimeZone(navigate, t));
-  //   }, []);
+  useEffect(() => {
+    dispatch(getOrganizationLevelSetting(navigate, t));
+    dispatch(getTimeZone(navigate, t));
+  }, []);
 
   const handleGoogleLoginSuccess = (response) => {
     setSignUpCodeToken(response.code);
@@ -142,167 +144,170 @@ const OrganizationLevelConfigUM = () => {
     });
   };
 
-  // Time Zones set in values
-  //   useEffect(() => {
-  //     let TimeZone = settingReducer.TimeZone;
-  //     if (TimeZone !== undefined && TimeZone !== null) {
-  //       let newData = [];
-  //       TimeZone.map((data, index) => {
-  //         newData.push({
-  //           label: data.gmtOffset
-  //             ? data.countryName +
-  //               " " +
-  //               "(" +
-  //               data.timeZone +
-  //               ")" +
-  //               " " +
-  //               data.gmtOffset
-  //             : null,
-  //           value: data.pK_TZID,
-  //         });
-  //       });
-  //       setTimeZone(newData);
-  //     }
-  //   }, [settingReducer.TimeZone]);
+  useEffect(() => {
+    let TimeZone = settingReducer.TimeZone;
+    if (TimeZone !== undefined && TimeZone !== null) {
+      let newData = [];
+      TimeZone.map((data, index) => {
+        newData.push({
+          label: data.gmtOffset
+            ? data.countryName +
+              " " +
+              "(" +
+              data.timeZone +
+              ")" +
+              " " +
+              data.gmtOffset
+            : null,
+          value: data.pK_TZID,
+        });
+      });
+      setTimeZone(newData);
+    }
+  }, [settingReducer.TimeZone]);
 
-  //   useEffect(() => {
-  //     if (
-  //       settingReducer.GetOrganizationLevelSettingResponse !== null &&
-  //       settingReducer.GetOrganizationLevelSettingResponse !== undefined
-  //     ) {
-  //       if (
-  //         Object.keys(settingReducer.GetOrganizationLevelSettingResponse).length >
-  //         0
-  //       ) {
-  //         let organizationSettings =
-  //           settingReducer.GetOrganizationLevelSettingResponse;
-  //         setOrganizationSetting({
-  //           Is2FAEnabled: organizationSettings.is2FAEnabled,
-  //           EmailOnNewMeeting: organizationSettings.emailOnNewMeeting,
-  //           EmailEditMeeting: organizationSettings.emailOnEditMeeting,
-  //           EmailCancelOrDeleteMeeting:
-  //             organizationSettings.emailOnCancelledDeletedMeeting,
-  //           PushNotificationonNewMeeting:
-  //             organizationSettings.pushNotificationOnNewMeeting,
-  //           PushNotificationEditMeeting:
-  //             organizationSettings.pushNotificationOnEditMeeting,
-  //           PushNotificationCancelledOrDeleteMeeting:
-  //             organizationSettings.pushNotificationonCancelledDeletedMeeting,
-  //           ShowNotificationOnParticipantJoining:
-  //             organizationSettings.showNotificationOnParticipantJoining,
-  //           AllowCalenderSync: organizationSettings.userAllowGoogleCalendarSynch,
-  //           AllowMicrosoftCalenderSync:
-  //             organizationSettings.userAllowMicrosoftCalendarSynch,
-  //           EmailWhenAddedToCommittee:
-  //             organizationSettings.emailWhenAddedToCommittee,
-  //           EmailWhenRemovedFromCommittee:
-  //             organizationSettings.emailWhenRemovedFromCommittee,
-  //           EmailWhenCommitteeIsDissolvedOrArchived:
-  //             organizationSettings.emailWhenCommitteeIsDissolvedArchived,
-  //           // EmailWhenCommitteeIsSetInactive: organizationSettings.emailWhenCommitteeIsInActive,
-  //           PushNotificationWhenAddedToCommittee:
-  //             organizationSettings.pushNotificationwhenAddedtoCommittee,
-  //           PushNotificationWhenRemovedFromCommittee:
-  //             organizationSettings.pushNotificationwhenRemovedfromCommittee,
-  //           PushNotificationWhenCommitteeIsDissolvedOrArchived:
-  //             organizationSettings.pushNotificationwhenCommitteeisDissolvedArchived,
-  //           // PushNotificationWhenCommitteeIsInActive: organizationSettings.pushNotificationwhenCommitteeissetInActive,
-  //           EmailWhenAddedToGroup: organizationSettings.emailWhenAddedToGroup,
-  //           EmailWhenRemovedFromGroup:
-  //             organizationSettings.emailWhenRemovedFromGroup,
-  //           EmailWhenGroupIsDissolvedOrArchived:
-  //             organizationSettings.emailWhenGroupIsClosedArchived,
-  //           // EmailWhenGroupisSetInactive: organizationSettings.emailWhenGroupIsInActive,
-  //           PushNotificationWhenAddedToGroup:
-  //             organizationSettings.pushNotificationwhenAddedtoGroup,
-  //           PushNotificationWhenRemovedFromGroup:
-  //             organizationSettings.pushNotificationwhenRemovedfromGroup,
-  //           PushNotificationWhenGroupIsDissolvedOrArchived:
-  //             organizationSettings.pushNotificationwhenGroupisClosedArchived,
-  //           // PushNotificationWhenGroupIsInActive: organizationSettings.pushNotificationwhenGroupissetInActive,
-  //           EmailWhenResolutionIsCirculated:
-  //             organizationSettings.emailwhenaResolutionisClosed,
-  //           EmailWhenNewResolutionIsCancelledAfterCirculation:
-  //             organizationSettings.emailwhenResolutionisCancelledafterCirculation,
-  //           EmailWhenResolutionIsClosed:
-  //             organizationSettings.emailwhenaResolutionisClosed,
-  //           PushNotificationWhenNewResolutionIsCirculated:
-  //             organizationSettings.pushNotificationwhenNewResolutionisCirculated,
-  //           PushNotificationWhenNewResolutionIsCancelledAfterCirculated:
-  //             organizationSettings.pushNotificationwhenResolutionisCancelledafterCirculation,
-  //           PushNotificationWhenResolutionISClosed:
-  //             organizationSettings.pushNotificationWhenResolutionIsClosed,
-  //           EmailWhenNewPollIsPublished:
-  //             organizationSettings.emailWhenNewPollIsPublished,
-  //           EmailWhenPollDueDateIsPassed:
-  //             organizationSettings.emailWhenPollDueDateIsPassed,
-  //           EmailWhenPublishedPollIsDeleted:
-  //             organizationSettings.emailWhenPublishedPollIsDeleted,
-  //           EmailWhenPublishedPollIsUpdated:
-  //             organizationSettings.emailWhenPublishedPollIsUpdated,
-  //           PushNotificationWhenNewPollIsPublished:
-  //             organizationSettings.pushNotificationWhenNewPollIsPublished,
-  //           PushNotificationWhenPollDueDateIsPassed:
-  //             organizationSettings.pushNotificationWhenPollDueDateIsPassed,
-  //           PushNotificationWhenPublishedPollIsDeleted:
-  //             organizationSettings.pushNotificationWhenPublishedPollIsDeleted,
-  //           PushNotificationWhenPublishedPollIsUpdated:
-  //             organizationSettings.pushNotificationWhenPublishedPollIsUpdated,
-  //           DormatInactiveUsersforDays:
-  //             organizationSettings.dormantInactiveUsersForDays,
-  //           MaximumMeetingDuration: organizationSettings.maximumMeetingDuration,
-  //           CalenderMonthsSpan: organizationSettings.calenderMonthsSpan,
-  //           TimeZoneId: organizationSettings.timeZones?.pK_TZID,
-  //           worldCountryID: organizationSettings.worldCountry.fK_WorldCountryID,
-  //           EmailWhenGroupisActive: organizationSettings.emailWhenGroupIsActive,
-  //           EmailWhenGroupIsSetInActive:
-  //             organizationSettings.emailWhenGroupIsInActive,
-  //           PushNotificationWhenGroupisActive:
-  //             organizationSettings.pushNotificationwhenGroupissetActive,
-  //           PushNotificationWhenGroupisSetInActive:
-  //             organizationSettings.pushNotificationwhenGroupissetInActive,
-  //           EmailWhenCommitteeisActive:
-  //             organizationSettings.emailWhenCommitteeIsActive,
-  //           EmailWhenCommitteeIsSetInActive:
-  //             organizationSettings.emailWhenCommitteeIsInActive,
-  //           PushNotificationWhenCommitteeisActive:
-  //             organizationSettings.pushNotificationwhenCommitteeissetActive,
-  //           PushNotificationWhenCommitteeisSetInActive:
-  //             organizationSettings.pushNotificationwhenCommitteeissetInActive,
-  //           PushNotificationWhenNewTODOAssigned:
-  //             organizationSettings.pushNotificationWhenNewTODOAssigned,
-  //           PushNotificationWhenNewTODODeleted:
-  //             organizationSettings.pushNotificationWhenNewTODODeleted,
-  //           PushNotificationWhenNewTODOEdited:
-  //             organizationSettings.pushNotificationWhenNewTODOEdited,
-  //           PushNotificationWhenNewCommentAdded:
-  //             organizationSettings.pushNotificationWhenNewCommentAdded,
-  //           PushNotificationWhenCommentDeleted:
-  //             organizationSettings.pushNotificationWhenCommentDeleted,
-  //           EmailWhenCommentDeleted: organizationSettings.emailWhenCommentDeleted,
-  //           EmailWhenNewCommentAdded:
-  //             organizationSettings.emailWhenNewCommentAdded,
-  //           EmailWhenNewTODOAssigned:
-  //             organizationSettings.emailWhenNewTODOAssigned,
-  //           EmailWhenNewTODODeleted: organizationSettings.emailWhenNewTODODeleted,
-  //           EmailWhenNewTODOEdited: organizationSettings.emailWhenNewTODOEdited,
-  //         });
-  //         let timeZoneCode = {
-  //           label: organizationSettings.timeZones
-  //             ? organizationSettings.timeZones.countryName +
-  //               " " +
-  //               "(" +
-  //               organizationSettings.timeZones.timeZone +
-  //               ")" +
-  //               " " +
-  //               organizationSettings.timeZones.gmtOffset
-  //             : null,
-  //           value: organizationSettings.timeZones?.pK_TZID,
-  //         };
-  //         setTimeZoneValue(timeZoneCode);
-  //       }
-  //     }
-  //   }, [settingReducer.GetOrganizationLevelSettingResponse]);
+  useEffect(() => {
+    if (
+      settingReducer.GetOrganizationLevelSettingResponse !== null &&
+      settingReducer.GetOrganizationLevelSettingResponse !== undefined
+    ) {
+      if (
+        Object.keys(settingReducer.GetOrganizationLevelSettingResponse).length >
+        0
+      ) {
+        let organizationSettings =
+          settingReducer.GetOrganizationLevelSettingResponse;
+        setOrganizationSetting({
+          Is2FAEnabled: organizationSettings.is2FAEnabled,
+          EmailOnNewMeeting: organizationSettings.emailOnNewMeeting,
+          EmailEditMeeting: organizationSettings.emailOnEditMeeting,
+          EmailCancelOrDeleteMeeting:
+            organizationSettings.emailOnCancelledDeletedMeeting,
+          PushNotificationonNewMeeting:
+            organizationSettings.pushNotificationOnNewMeeting,
+          PushNotificationEditMeeting:
+            organizationSettings.pushNotificationOnEditMeeting,
+          PushNotificationCancelledOrDeleteMeeting:
+            organizationSettings.pushNotificationonCancelledDeletedMeeting,
+          ShowNotificationOnParticipantJoining:
+            organizationSettings.showNotificationOnParticipantJoining,
+          AllowCalenderSync: organizationSettings.userAllowGoogleCalendarSynch,
+          AllowMicrosoftCalenderSync:
+            organizationSettings.userAllowMicrosoftCalendarSynch,
+          EmailWhenAddedToCommittee:
+            organizationSettings.emailWhenAddedToCommittee,
+          EmailWhenRemovedFromCommittee:
+            organizationSettings.emailWhenRemovedFromCommittee,
+          EmailWhenCommitteeIsDissolvedOrArchived:
+            organizationSettings.emailWhenCommitteeIsDissolvedArchived,
+          EmailWhenCommitteeIsSetInactive:
+            organizationSettings.emailWhenCommitteeIsInActive,
+          PushNotificationWhenAddedToCommittee:
+            organizationSettings.pushNotificationwhenAddedtoCommittee,
+          PushNotificationWhenRemovedFromCommittee:
+            organizationSettings.pushNotificationwhenRemovedfromCommittee,
+          PushNotificationWhenCommitteeIsDissolvedOrArchived:
+            organizationSettings.pushNotificationwhenCommitteeisDissolvedArchived,
+          PushNotificationWhenCommitteeIsInActive:
+            organizationSettings.pushNotificationwhenCommitteeissetInActive,
+          EmailWhenAddedToGroup: organizationSettings.emailWhenAddedToGroup,
+          EmailWhenRemovedFromGroup:
+            organizationSettings.emailWhenRemovedFromGroup,
+          EmailWhenGroupIsDissolvedOrArchived:
+            organizationSettings.emailWhenGroupIsClosedArchived,
+          EmailWhenGroupisSetInactive:
+            organizationSettings.emailWhenGroupIsInActive,
+          PushNotificationWhenAddedToGroup:
+            organizationSettings.pushNotificationwhenAddedtoGroup,
+          PushNotificationWhenRemovedFromGroup:
+            organizationSettings.pushNotificationwhenRemovedfromGroup,
+          PushNotificationWhenGroupIsDissolvedOrArchived:
+            organizationSettings.pushNotificationwhenGroupisClosedArchived,
+          PushNotificationWhenGroupIsInActive:
+            organizationSettings.pushNotificationwhenGroupissetInActive,
+          EmailWhenResolutionIsCirculated:
+            organizationSettings.emailwhenaResolutionisClosed,
+          EmailWhenNewResolutionIsCancelledAfterCirculation:
+            organizationSettings.emailwhenResolutionisCancelledafterCirculation,
+          EmailWhenResolutionIsClosed:
+            organizationSettings.emailwhenaResolutionisClosed,
+          PushNotificationWhenNewResolutionIsCirculated:
+            organizationSettings.pushNotificationwhenNewResolutionisCirculated,
+          PushNotificationWhenNewResolutionIsCancelledAfterCirculated:
+            organizationSettings.pushNotificationwhenResolutionisCancelledafterCirculation,
+          PushNotificationWhenResolutionISClosed:
+            organizationSettings.pushNotificationWhenResolutionIsClosed,
+          EmailWhenNewPollIsPublished:
+            organizationSettings.emailWhenNewPollIsPublished,
+          EmailWhenPollDueDateIsPassed:
+            organizationSettings.emailWhenPollDueDateIsPassed,
+          EmailWhenPublishedPollIsDeleted:
+            organizationSettings.emailWhenPublishedPollIsDeleted,
+          EmailWhenPublishedPollIsUpdated:
+            organizationSettings.emailWhenPublishedPollIsUpdated,
+          PushNotificationWhenNewPollIsPublished:
+            organizationSettings.pushNotificationWhenNewPollIsPublished,
+          PushNotificationWhenPollDueDateIsPassed:
+            organizationSettings.pushNotificationWhenPollDueDateIsPassed,
+          PushNotificationWhenPublishedPollIsDeleted:
+            organizationSettings.pushNotificationWhenPublishedPollIsDeleted,
+          PushNotificationWhenPublishedPollIsUpdated:
+            organizationSettings.pushNotificationWhenPublishedPollIsUpdated,
+          DormatInactiveUsersforDays:
+            organizationSettings.dormantInactiveUsersForDays,
+          MaximumMeetingDuration: organizationSettings.maximumMeetingDuration,
+          CalenderMonthsSpan: organizationSettings.calenderMonthsSpan,
+          TimeZoneId: organizationSettings.timeZones?.pK_TZID,
+          worldCountryID: organizationSettings.worldCountry.fK_WorldCountryID,
+          EmailWhenGroupisActive: organizationSettings.emailWhenGroupIsActive,
+          EmailWhenGroupIsSetInActive:
+            organizationSettings.emailWhenGroupIsInActive,
+          PushNotificationWhenGroupisActive:
+            organizationSettings.pushNotificationwhenGroupissetActive,
+          PushNotificationWhenGroupisSetInActive:
+            organizationSettings.pushNotificationwhenGroupissetInActive,
+          EmailWhenCommitteeisActive:
+            organizationSettings.emailWhenCommitteeIsActive,
+          EmailWhenCommitteeIsSetInActive:
+            organizationSettings.emailWhenCommitteeIsInActive,
+          PushNotificationWhenCommitteeisActive:
+            organizationSettings.pushNotificationwhenCommitteeissetActive,
+          PushNotificationWhenCommitteeisSetInActive:
+            organizationSettings.pushNotificationwhenCommitteeissetInActive,
+          PushNotificationWhenNewTODOAssigned:
+            organizationSettings.pushNotificationWhenNewTODOAssigned,
+          PushNotificationWhenNewTODODeleted:
+            organizationSettings.pushNotificationWhenNewTODODeleted,
+          PushNotificationWhenNewTODOEdited:
+            organizationSettings.pushNotificationWhenNewTODOEdited,
+          PushNotificationWhenNewCommentAdded:
+            organizationSettings.pushNotificationWhenNewCommentAdded,
+          PushNotificationWhenCommentDeleted:
+            organizationSettings.pushNotificationWhenCommentDeleted,
+          EmailWhenCommentDeleted: organizationSettings.emailWhenCommentDeleted,
+          EmailWhenNewCommentAdded:
+            organizationSettings.emailWhenNewCommentAdded,
+          EmailWhenNewTODOAssigned:
+            organizationSettings.emailWhenNewTODOAssigned,
+          EmailWhenNewTODODeleted: organizationSettings.emailWhenNewTODODeleted,
+          EmailWhenNewTODOEdited: organizationSettings.emailWhenNewTODOEdited,
+        });
+        let timeZoneCode = {
+          label: organizationSettings.timeZones
+            ? organizationSettings.timeZones.countryName +
+              " " +
+              "(" +
+              organizationSettings.timeZones.timeZone +
+              ")" +
+              " " +
+              organizationSettings.timeZones.gmtOffset
+            : null,
+          value: organizationSettings.timeZones?.pK_TZID,
+        };
+        setTimeZoneValue(timeZoneCode);
+      }
+    }
+  }, [settingReducer.GetOrganizationLevelSettingResponse]);
 
   const openSecurityTab = () => {
     setSecuritystate(true);
@@ -490,13 +495,13 @@ const OrganizationLevelConfigUM = () => {
     });
   };
 
-  // const onChangeEmailWhenCommitteeIsInActive = () => {
-  //   setOrganizationSetting({
-  //     ...userOrganizationSetting,
-  //     EmailWhenCommitteeIsSetInactive:
-  //       !userOrganizationSetting.EmailWhenCommitteeIsSetInactive,
-  //   });
-  // };
+  const onChangeEmailWhenCommitteeIsInActive = () => {
+    setOrganizationSetting({
+      ...userOrganizationSetting,
+      EmailWhenCommitteeIsSetInactive:
+        !userOrganizationSetting.EmailWhenCommitteeIsSetInactive,
+    });
+  };
 
   const onChangePushNotificationWhenAddedToCommittee = () => {
     setOrganizationSetting({
@@ -527,14 +532,6 @@ const OrganizationLevelConfigUM = () => {
       ...userOrganizationSetting,
       PushNotificationWhenCommitteeisActive:
         !userOrganizationSetting.PushNotificationWhenCommitteeisActive,
-    });
-  };
-
-  const onChangeEmailWhenCommitteeIsInActive = () => {
-    setOrganizationSetting({
-      ...userOrganizationSetting,
-      EmailWhenCommitteeIsSetInActive:
-        !userOrganizationSetting.EmailWhenCommitteeIsSetInActive,
     });
   };
 
