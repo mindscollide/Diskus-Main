@@ -1,12 +1,91 @@
 import React from "react";
 import styles from "./attachment.module.css";
 import { Row, Col } from "react-bootstrap";
+import DownloadImg from "../../../assets/images/download.png";
+import EyeIcon from "../../../assets/images/newElements/eyeIcon.svg";
+import CrossIcon from "../../../assets/images/CrossIcon.svg";
 
-const AttachmentViewer = () => {
+import {
+  getFileExtension,
+  getIconSource,
+} from "../../../container/DataRoom/SearchFunctionality/option";
+const AttachmentViewer = ({
+  handleClickDownload,
+  handleEyeIcon,
+  name,
+  handleClickRemove,
+  id = 1,
+  data,
+  fk_UID = 1049,
+}) => {
+  let fileExtension = "pdf";
+  let currentUser = Number(localStorage.getItem("userID"));
+
   return (
-    <Row>
-      <Col sm={12} md={12} lg={12}></Col>
-    </Row>
+    <div className={styles["agendaFileAttachedView"]}>
+      <Row>
+        <Col
+          lg={id !== 0 ? 8 : 12}
+          md={id !== 0 ? 8 : 12}
+          sm={id !== 0 ? 8 : 12}
+        >
+          <div
+            className={
+              id !== 0
+                ? styles["fileNameTruncateStyle"]
+                : styles["fileNameTruncateStyle_fullwidth"]
+            }
+          >
+            <img
+              draggable={false}
+              src={getIconSource(getFileExtension(name))}
+              alt=""
+            />
+            <span
+              className={
+                ["pdf", "doc", "docx", "xls", "xlsx"].includes(fileExtension)
+                  ? styles["fileNameAttachment"]
+                  : styles["fileNameAttachmentNotOpened"]
+              }
+            >
+              {name}
+            </span>
+          </div>
+        </Col>
+        {id !== 0 && (
+          <Col
+            lg={2}
+            md={2}
+            sm={12}
+            className={`${styles["borderFileName"]} p-0`}
+          >
+            <img
+              draggable={false}
+              src={DownloadImg}
+              alt=""
+              onClick={handleClickDownload}
+            />
+          </Col>
+        )}
+        {id !== 0 && (
+          <Col lg={2} md={2} sm={12} className="p-0">
+            <img
+              draggable={false}
+              src={EyeIcon}
+              alt=""
+              onClick={handleEyeIcon}
+            />
+          </Col>
+        )}
+      </Row>
+      {currentUser === fk_UID && (
+        <img
+          src={CrossIcon}
+          className={styles["Cross_Icon"]}
+          onClick={handleClickRemove}
+        />
+      )}
+    </div>
   );
 };
 

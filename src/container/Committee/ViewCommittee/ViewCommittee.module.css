@@ -203,3 +203,8 @@ body[dir="rtl"] .ant-upload-text {
   top: -7px !important;
   right: -4px !important;
 }
+.files_View {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
