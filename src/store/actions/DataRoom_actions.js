@@ -29,6 +29,7 @@ import {
   dataRoomFolderDownloadService,
   validateEncyptedStringUserDataRoom,
   leaveFileSharingRM,
+  leaveFolderSharingRM,
 } from "../../commen/apis/Api_config";
 import {
   DataRoomAllFilesDownloads,
@@ -3784,7 +3785,7 @@ const deleteSharedFileDataroom = (navigate, Data, t) => {
               dispatch(
                 deleteSharedFileDataroom_success(
                   response.data.responseResult,
-                  t("remove-shared-file-successfully")
+                  t("Remove-shared-file-successfully")
                 )
               );
             } else if (
@@ -3824,8 +3825,129 @@ const deleteSharedFileDataroom = (navigate, Data, t) => {
       });
   };
 };
+// Delete file init
+const deleteSharedFolderDataroom_init = () => {
+  return {
+    type: actions.DELETE_SHARED_FOLDER_INIT,
+  };
+};
 
+// Delete file success
+const deleteSharedFolderDataroom_success = (response, message) => {
+  return {
+    type: actions.DELETE_SHARED_FOLDER_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+// Delete file fail
+const deleteSharedFolderDataroom_fail = (message) => {
+  return {
+    type: actions.DELETE_SHARED_FOLDER_FAIL,
+    message: message,
+  };
+};
+
+// Delete file API
+const deleteSharedFolderDataroom = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentView = localStorage.getItem("setTableView");
+  let folderId = localStorage.getItem("folderID");
+  let createrID = localStorage.getItem("userID");
+  let OrganizationID = localStorage.getItem("organizationID");
+
+  return (dispatch) => {
+    dispatch(deleteSharedFolderDataroom_init());
+    let form = new FormData();
+    form.append("RequestMethod", leaveFolderSharingRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+        "Access-Control-Allow-Origi": "*",
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(deleteSharedFolderDataroom(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_DeleteFolderSharing_01".toLowerCase()
+                )
+            ) {
+              if (Number(currentView) === 4) {
+                let Data = {
+                  UserID: Number(createrID),
+                  OrganizationID: Number(OrganizationID),
+                };
+                dispatch(getRecentDocumentsApi(navigate, t, Data));
+              } else {
+                if (folderId !== null) {
+                  dispatch(
+                    getFolderDocumentsApi(navigate, Number(folderId), t)
+                  );
+                } else {
+                  dispatch(
+                    getDocumentsAndFolderApi(navigate, Number(currentView), t)
+                  );
+                }
+              }
+              dispatch(
+                deleteSharedFolderDataroom_success(
+                  response.data.responseResult,
+                  t("Remove-shared-folder-successfully")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_DeleteFolderSharing_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                deleteSharedFolderDataroom_fail(t("Failed-to-delete-any-file"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_DeleteFolderSharing_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                deleteSharedFolderDataroom_fail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                deleteSharedFolderDataroom_fail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              deleteSharedFolderDataroom_fail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(deleteSharedFolderDataroom_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((error) => {
+        dispatch(deleteSharedFolderDataroom_fail(t("Something-went-wrong")));
+      });
+  };
+};
 export {
+  deleteSharedFolderDataroom,
   deleteSharedFileDataroom,
   createFolderLink_fail,
   createFileLink_fail,

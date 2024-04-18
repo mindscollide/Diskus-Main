@@ -45,6 +45,7 @@ const DefaultDragger = ({ index, setRows, rows }) => {
       <Col lg={12} md={12} sm={12}>
         <Dragger
           {...props}
+          fileList={[]}
           className={styles["dragdrop_attachment_create_resolution"]}
         >
           <Row>

@@ -1889,5 +1889,7 @@
   "Billing-subscription": "Billing Subscription",
   "Your-trial-will-expire-in-{{remainingDays}}-days": "Your trial will expire in {{remainingDays}} days",
   "Web": "Web",
-  "Tablet": "Tablet"
+  "Tablet": "Tablet",
+  "Remove-shared-file-successfully": "Remove shared file successfully",
+  "Remove-shared-folder-successfully": "Remove shared folder successfully"
 }

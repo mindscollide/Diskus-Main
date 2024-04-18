@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import styles from "./ViewUpdateCommittee.module.css";
 import { Paper } from "@material-ui/core";
-import { Button } from "./../../../components/elements";
+import { AttachmentViewer, Button } from "./../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -119,6 +119,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
               </div>
             </Col>
           </Row>
+
           {currentView === 1 ? (
             <ViewCommitteeDetails
               setViewGroupPage={setViewGroupPage}

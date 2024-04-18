@@ -449,6 +449,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
                 <Dragger
                   disabled={groupStatus === 3 ? false : true}
                   {...props}
+                  fileList={[]}
                   className={styles["dragdrop_attachment_create_resolution"]}
                 >
                   <p className="ant-upload-drag-icon">

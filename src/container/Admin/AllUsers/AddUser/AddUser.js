@@ -1045,7 +1045,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   }, [dataa]);
 
   useEffect(() => {
-    let OrganizationName = localStorage.getItem("OrganizatioName");
+    let OrganizationName = localStorage.getItem("organizatioName");
     if (
       OrganizationName !== "" &&
       OrganizationName !== null &&
