@@ -51,9 +51,11 @@ const ManageUsers = () => {
 
   const [showSearches, setshowSearches] = useState(false);
 
-  const [manageUserGrid, setManageUserGrid] = useState();
+  const [manageUserGrid, setManageUserGrid] = useState([]);
 
   const [editModalData, setEditModalData] = useState(null);
+
+  const [deleteModalData, setDeleteModalData] = useState(null);
 
   const [searchDetails, setsearchDetails] = useState({
     Name: "",
@@ -63,6 +65,7 @@ const ManageUsers = () => {
       label: "",
     },
   });
+
   const [flagForStopRerendring, setFlagForStopRerendring] = useState(false);
 
   //AllOrganizationsUsers Api
@@ -94,17 +97,17 @@ const ManageUsers = () => {
 
   //AllOrganizationsUsers Api Data
   useEffect(() => {
+    const Users = UserMangementReducer.allOrganizationUsersData;
     if (
-      UserMangementReducer.allOrganizationUsersData !== undefined &&
-      UserMangementReducer.allOrganizationUsersData !== null
+      Users &&
+      Users.organizationUsers &&
+      Users.organizationUsers.length > 0
     ) {
-      console.log(
-        UserMangementReducer.allOrganizationUsersData,
-        "UserMangementReducer"
-      );
       setManageUserGrid(
         UserMangementReducer.allOrganizationUsersData.organizationUsers
       );
+    } else {
+      setManageUserGrid([]);
     }
   }, [UserMangementReducer.allOrganizationUsersData]);
 
@@ -369,13 +372,12 @@ const ManageUsers = () => {
 
   //Handle Delele user Modal
   const handleDeleteModal = (record) => {
-    console.log(record, "showDeleteUsersModal");
+    setDeleteModalData(record);
     dispatch(showDeleteUsersModal(true));
   };
 
   // handle Edit User Modal
   const handleClickEditIcon = (record) => {
-    console.log(record, "handleClickEditIcon");
     setEditModalData(record);
     dispatch(showEditUserModal(true));
   };
@@ -623,7 +625,9 @@ const ManageUsers = () => {
           />
         </Col>
       </Row>
-      {UserManagementModals.deleteUsersModal && <DeleteUserModal />}
+      {UserManagementModals.deleteUsersModal && (
+        <DeleteUserModal deleteModalData={deleteModalData} />
+      )}
       {UserManagementModals.editUserModal && (
         <EditUserModal editModalData={editModalData} />
       )}

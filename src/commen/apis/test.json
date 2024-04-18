@@ -1,11 +1,11 @@
 {
-  "UserName": "Mehdi ",
-  "OrganizationName": "",
-  "Designation": "Developer ",
+  "UserID": 1286,
+  "StatusID": 2,
+  "UserName": "mehdi agha update",
+  "Designation": "software engineer updated",
   "MobileNumber": "",
-  "UserEmail": "mehdi222@yopmail.com",
-  "OrganizationID": 609,
   "isAdmin": false,
-  "FK_NumberWorldCountryID": 212,
-  "OrganizationSelectedPackageID": 327
+  "OrganizationID": 617,
+  "OrganizationSelectedPackageID": 347,
+  "FK_NumberWorldCountryID": 212
 }

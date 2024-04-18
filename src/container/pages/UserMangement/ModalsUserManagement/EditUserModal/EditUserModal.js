@@ -17,6 +17,7 @@ import {
 } from "../../../../../store/actions/UserMangementModalActions";
 import { EditOrganizationsUserApi } from "../../../../../store/actions/UserManagementActions";
 import { useNavigate } from "react-router-dom";
+import { regexOnlyCharacters } from "../../../../../commen/functions/regex";
 const EditUserModal = ({ editModalData }) => {
   console.log(editModalData, "editModalDataeditModalData");
   const { t } = useTranslation();
@@ -27,13 +28,20 @@ const EditUserModal = ({ editModalData }) => {
 
   const { UserManagementModals } = useSelector((state) => state);
 
-  let userID = localStorage.getItem("userID");
-
   let organizationID = localStorage.getItem("organizationID");
 
   const [editUserModalValues, setEditUserModalValues] = useState({
-    Name: editModalData.userName,
-    Desgiantion: editModalData.designation,
+    Name: {
+      value: editModalData.userName,
+      errorMessage: "",
+      errorStatus: false,
+    },
+
+    Desgiantion: {
+      value: editModalData.designation,
+      errorMessage: "",
+      errorStatus: false,
+    },
     Email: editModalData.email,
     isAdminUser: editModalData.userRoleID === 4 ? true : false,
   });
@@ -91,35 +99,59 @@ const EditUserModal = ({ editModalData }) => {
     let value = e.target.value;
     console.log({ name, value }, "handleChangeSearchBoxValues");
 
-    if (name === "Name") {
-      if (value !== "") {
-        let valueCheck = /^[A-Za-z\s]*$/i.test(value);
-        if (valueCheck) {
-          setEditUserModalValues((prevState) => ({
-            ...prevState,
-            [name]: value.trim(),
-          }));
-        }
-      } else {
-        setEditUserModalValues((prevState) => ({
-          ...prevState,
-          Name: "",
-        }));
+    if (name === "Name" && value !== "") {
+      let valueName = regexOnlyCharacters(value);
+      if (valueName !== "") {
+        setEditUserModalValues({
+          ...editUserModalValues,
+          Name: {
+            value: valueName.trimStart(),
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
       }
-    } else if (name === "Designation") {
-      setEditUserModalValues((prevState) => ({
-        ...prevState,
-        Desgiantion: value.trim(),
-      }));
+    } else if (name === "Name" && value === "") {
+      setEditUserModalValues({
+        ...editUserModalValues,
+        Name: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    }
+
+    if (name === "Designation" && value !== "") {
+      let valueName = regexOnlyCharacters(value);
+      if (valueName !== "") {
+        setEditUserModalValues({
+          ...editUserModalValues,
+          Desgiantion: {
+            value: valueName.trimStart(),
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      }
+    } else if (name === "Designation" && value === "") {
+      setEditUserModalValues({
+        ...editUserModalValues,
+        Desgiantion: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
     }
   };
 
   const handleUpdateButton = () => {
     let data = {
-      UserID: Number(userID),
+      UserID: Number(editModalData.userID),
       StatusID: Number(userStatusID),
-      UserName: editUserModalValues.Name,
-      Designation: editUserModalValues.Desgiantion,
+      UserName: editUserModalValues.Name.value,
+      Designation: editUserModalValues.Desgiantion.value,
       MobileNumber: "",
       isAdmin: editUserModalValues.isAdminUser,
       OrganizationID: Number(organizationID),
@@ -165,7 +197,7 @@ const EditUserModal = ({ editModalData }) => {
                       <TextField
                         placeholder={t("Full-name")}
                         name={"Name"}
-                        value={editUserModalValues.Name}
+                        value={editUserModalValues.Name.value}
                         label={
                           <>
                             <Row>
@@ -188,7 +220,7 @@ const EditUserModal = ({ editModalData }) => {
                       <TextField
                         placeholder={t("Designation")}
                         name={"Designation"}
-                        value={editUserModalValues.Desgiantion}
+                        value={editUserModalValues.Desgiantion.value}
                         label={
                           <>
                             <Row>
