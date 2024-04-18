@@ -13,7 +13,7 @@ const DeleteOrganizationAdmin = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const organizationName = localStorage.getItem("OrganizatioName");
+  const organizationName = localStorage.getItem("organizatioName");
   const organizationID = localStorage.getItem("organizationID");
 
   const { UserMangementReducer } = useSelector((state) => state);

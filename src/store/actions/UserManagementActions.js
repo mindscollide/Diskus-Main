@@ -89,7 +89,7 @@ const signUpOrganizationAndPakageSelection = (data, navigate, t) => {
                   )
               ) {
                 localStorage.setItem(
-                  "OrganizatioName",
+                  "organizatioName",
                   data.Organization.OrganizationName
                 );
                 localStorage.setItem(
@@ -101,7 +101,7 @@ const signUpOrganizationAndPakageSelection = (data, navigate, t) => {
                   response.data.responseResult.organizationID
                 );
                 localStorage.setItem(
-                  "UserEmail",
+                  "userEmail",
                   data.Organization.ContactPersonEmail
                 );
                 dispatch(
@@ -131,11 +131,11 @@ const signUpOrganizationAndPakageSelection = (data, navigate, t) => {
                   response.data.responseResult.organizationID
                 );
                 localStorage.setItem(
-                  "UserEmail",
+                  "userEmail",
                   data.Organization.ContactPersonEmail
                 );
                 localStorage.setItem(
-                  "OrganizatioName",
+                  "organizatioName",
                   data.Organization.OrganizationName
                 );
                 dispatch(
@@ -291,156 +291,6 @@ const signUpOrganizationAndPakageSelection = (data, navigate, t) => {
       });
   };
 };
-
-// //GET ALL ORGANIZATION SUBSCRIPTION EXPIRY DETAILS
-// const getAllorganizationSubscriptionExpiryDetialsInit = () => {
-//   return {
-//     type: actions.GET_ORGANIZATION_SUBSCRIPTION_EXPIRYDETAILS_INIT,
-//   };
-// };
-
-// const getAllorganizationSubscriptionExpiryDetialsSuccess = (
-//   response,
-//   message
-// ) => {
-//   return {
-//     type: actions.GET_ORGANIZATION_SUBSCRIPTION_EXPIRYDETAILS_SUCCESS,
-//     response: response,
-//     message: message,
-//   };
-// };
-
-// const getAllorganizationSubscriptionExpiryDetialsFailed = (message) => {
-//   return {
-//     type: actions.GET_ORGANIZATION_SUBSCRIPTION_EXPIRYDETAILS_FAILS,
-//     message: message,
-//   };
-// };
-
-// const getAllorganizationSubscriptionExpiryDetailsApi = (navigate, t, data) => {
-//   let token = JSON.parse(localStorage.getItem("token"));
-
-//   return (dispatch) => {
-//     dispatch(getAllorganizationSubscriptionExpiryDetialsInit());
-//     let form = new FormData();
-//     form.append("RequestData", JSON.stringify(data));
-//     form.append(
-//       "RequestMethod",
-//       IsPackageExpiryDetail.RequestMethod
-//     );
-//     axios({
-//       method: "post",
-//       url: getAdminURLs,
-//       data: form,
-//       headers: {
-//         _token: token,
-//       },
-//     })
-//       .then(async (response) => {
-//         if (response.data.responseCode === 417) {
-//           await dispatch(RefreshToken(navigate, t));
-//           dispatch(
-//             getAllorganizationSubscriptionExpiryDetailsApi(navigate, t, data)
-//           );
-//         } else if (response.data.responseCode === 200) {
-//           if (response.data.responseResult.isExecuted === true) {
-//             if (
-//               response.data.responseResult.responseMessage
-//                 .toLowerCase()
-//                 .includes(
-//                   "Admin_AdminServiceManager_GetOrganizationSubscriptionExpiryDetails_01".toLowerCase()
-//                 )
-//             ) {
-//               console.log("dateOfExpiry",response.data.responseResult)
-//               localStorage.setItem(
-//                 "dateOfExpiry",
-//                 response.data.responseResult.dateOfExpiry
-//               );
-//               localStorage.setItem(
-//                 "isExtensionAvailable",
-//                 response.data.responseResult.isExtensionAvailable
-//               );
-//               localStorage.setItem(
-//                 "remainingDays",
-//                 response.data.responseResult.remainingDays
-//               );
-//               dispatch(
-//                 getAllorganizationSubscriptionExpiryDetialsSuccess(
-//                   response.data.responseResult,
-//                   t("Successful")
-//                 )
-//               );
-
-//               await dispatch(getUserSetting(navigate, t, true));
-//             } else if (
-//               response.data.responseResult.responseMessage
-//                 .toLowerCase()
-//                 .includes(
-//                   "Admin_AdminServiceManager_GetOrganizationSubscriptionExpiryDetails_02".toLowerCase()
-//                 )
-//             ) {
-//               dispatch(
-//                 getAllorganizationSubscriptionExpiryDetialsFailed(
-//                   t("Invalid-data-provided")
-//                 )
-//               );
-//             } else if (
-//               response.data.responseResult.responseMessage
-//                 .toLowerCase()
-//                 .includes(
-//                   "Admin_AdminServiceManager_GetOrganizationSubscriptionExpiryDetails_03".toLowerCase()
-//                 )
-//             ) {
-//               dispatch(
-//                 getAllorganizationSubscriptionExpiryDetialsFailed(
-//                   t("Subscription-not-found")
-//                 )
-//               );
-//             } else if (
-//               response.data.responseResult.responseMessage
-//                 .toLowerCase()
-//                 .includes(
-//                   "Admin_AdminServiceManager_GetOrganizationSubscriptionExpiryDetails_05".toLowerCase()
-//                 )
-//             ) {
-//               dispatch(
-//                 getAllorganizationSubscriptionExpiryDetialsFailed(
-//                   t("Something-went-wrong")
-//                 )
-//               );
-//             } else {
-//               dispatch(
-//                 getAllorganizationSubscriptionExpiryDetialsFailed(
-//                   t("Something-went-wrong")
-//                 )
-//               );
-//             }
-//           } else {
-//             dispatch(
-//               getAllorganizationSubscriptionExpiryDetialsFailed(
-//                 t("Something-went-wrong")
-//               )
-//             );
-//           }
-//         } else {
-//           dispatch(
-//             getAllorganizationSubscriptionExpiryDetialsFailed(
-//               t("Something-went-wrong")
-//             )
-//           );
-//         }
-//       })
-//       .catch((response) => {
-//         dispatch(
-//           getAllorganizationSubscriptionExpiryDetialsFailed(
-//             t("Something-went-wrong")
-//           )
-//         );
-//       });
-//   };
-// };
-
-//ORGANIZATIONAL TRIAL EXTENDED
 
 const organizationTrialExtendedInit = () => {
   return {

@@ -41,7 +41,7 @@ const CreateAddtionalUsersModal = () => {
 
   let organzataionID = localStorage.getItem("organizationID");
 
-  let OrganizatioName = localStorage.getItem("OrganizatioName");
+  let OrganizatioName = localStorage.getItem("organizatioName");
 
   let pakageSelectedID = localStorage.getItem("PakageSelectedID");
 
@@ -153,7 +153,7 @@ const CreateAddtionalUsersModal = () => {
             {
               UserName: Name.value,
               UserEmail: Email.value,
-              OrganizationName: localStorage.getItem("OrganizatioName"),
+              OrganizationName: localStorage.getItem("organizatioName"),
               Designation: Designation.value,
               MobileNumber: "",
               OrganizationID: Number(localStorage.getItem("OrganizationID")),
@@ -216,6 +216,7 @@ const CreateAddtionalUsersModal = () => {
     await dispatch(showCreateAddtionalUsersModal(false));
 
     await dispatch(getPackageExpiryDetail(navigate, Number(organzataionID), t));
+    navigate("/Admin/ManageUsers")
   };
 
   //handle Create button

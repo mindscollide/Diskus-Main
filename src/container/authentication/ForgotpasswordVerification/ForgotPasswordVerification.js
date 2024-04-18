@@ -65,7 +65,7 @@ const ForgotPasswordVerification = () => {
 
   // Resending the OTP CODE
   const sendRequestResend = () => {
-    let email = localStorage.getItem("UserEmail");
+    let email = localStorage.getItem("userEmail");
     let data = {
       Email: email,
     };

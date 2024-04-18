@@ -45,7 +45,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
   const [localVidStatus, setLocalVidStatus] = useState(vidStatus);
 
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
-  let organizationName = localStorage.getItem("OrganizatioName");
+  let organizationName = localStorage.getItem("organizatioName");
   let currentUserName = localStorage.getItem("name");
   let callerName = localStorage.getItem("callerName");
   let initiateVideoCallFlag = JSON.parse(

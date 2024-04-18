@@ -29,7 +29,7 @@ const AddUserMain = () => {
   );
 
   // organizationName from Local Storage
-  const organizationName = localStorage.getItem("OrganizatioName");
+  const organizationName = localStorage.getItem("organizatioName");
   const organizationID = localStorage.getItem("organizationID");
 
   const [packageAssignedOption, setPackageAssignedOption] = useState([]);

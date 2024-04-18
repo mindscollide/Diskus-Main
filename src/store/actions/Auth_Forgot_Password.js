@@ -72,7 +72,7 @@ const changePasswordRequest = (email, t, navigate) => {
               )
           ) {
             localStorage.setItem(
-              "UserEmail",
+              "userEmail",
               response.data.responseResult.email
             );
             localStorage.setItem("userID", response.data.responseResult.userID);
