@@ -68,18 +68,18 @@ const EditPollsMeeting = ({ setEditPolls }) => {
   const [members, setMembers] = useState([]);
 
   const [options, setOptions] = useState([
-    {
-      name: 1,
-      value: "",
-    },
-    {
-      name: 2,
-      value: "",
-    },
-    {
-      name: 3,
-      value: "",
-    },
+    // {
+    //   name: 1,
+    //   value: "",
+    // },
+    // {
+    //   name: 2,
+    //   value: "",
+    // },
+    // {
+    //   name: 3,
+    //   value: "",
+    // },
   ]);
 
   const [open, setOpen] = useState({
@@ -396,22 +396,22 @@ const EditPollsMeeting = ({ setEditPolls }) => {
         setMembers(pollMembers);
       }
       try {
-        if (Object.keys(pollsDetailsData.pollOptions).length > 2) {
-          let Option = [];
-          pollsDetailsData.pollOptions.map((data, index) => {
-            let dataAdd = { name: index + 1, value: data.answer };
-            Option.push(dataAdd);
-          });
-          setOptions(Option);
-        } else if (Object.keys(pollsDetailsData.pollOptions).length <= 2) {
-          const updatedOptions = options.map((option) => {
-            const apiData = pollsDetailsData.pollOptions.find(
-              (apiOption, index) => index + 1 === option.name
-            );
-            return apiData ? { ...option, value: apiData.answer } : option;
-          });
-          setOptions(updatedOptions);
-        }
+        // if (Object.keys(pollsDetailsData.pollOptions).length > 2) {
+        let Option = [];
+        pollsDetailsData.pollOptions.map((data, index) => {
+          let dataAdd = { name: index + 1, value: data.answer };
+          Option.push(dataAdd);
+        });
+        setOptions(Option);
+        // } else if (Object.keys(pollsDetailsData.pollOptions).length <= 2) {
+        //   const updatedOptions = options.map((option) => {
+        //     const apiData = pollsDetailsData.pollOptions.find(
+        //       (apiOption, index) => index + 1 === option.name
+        //     );
+        //     return apiData ? { ...option, value: apiData.answer } : option;
+        //   });
+        //   setOptions(updatedOptions);
+        // }
       } catch {}
     }
   }, [PollsReducer.Allpolls]);

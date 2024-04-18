@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { Col, Row } from "react-bootstrap";
-import { Button, Notification } from "../../../../../components/elements";
+import {
+  AttachmentViewer,
+  Button,
+  Notification,
+} from "../../../../../components/elements";
 import styles from "./Agenda.module.css";
 import profile from "../../../../../assets/images/newprofile.png";
 import pdfIcon from "../../../../../assets/images/pdf_icon.svg";
@@ -795,6 +799,7 @@ const SubAgendaMappingDragging = ({
                                                     <div
                                                       {...provided.droppableProps}
                                                       ref={provided.innerRef}
+                                                      className="d-flex flex-wrap gap-2"
                                                     >
                                                       {subAgendaData.subSelectRadio ===
                                                         1 &&
@@ -802,62 +807,75 @@ const SubAgendaMappingDragging = ({
                                                         subAgendaData.subfiles
                                                       ).length > 0 ? (
                                                         <>
-                                                          <Row>
-                                                            {subAgendaData.subfiles.map(
-                                                              (
-                                                                filesData,
-                                                                fileIndex
-                                                              ) => (
-                                                                <Col
-                                                                  key={
-                                                                    fileIndex
-                                                                  }
-                                                                  lg={3}
-                                                                  md={3}
-                                                                  sm={12}
-                                                                >
-                                                                  <div
-                                                                    className={
-                                                                      styles[
-                                                                        "agendaFileAttachedView"
-                                                                      ]
-                                                                    }
-                                                                  >
-                                                                    <span
-                                                                      className={
-                                                                        styles[
-                                                                          "agendaFileSpan"
-                                                                        ]
-                                                                      }
-                                                                    >
-                                                                      <img
-                                                                        draggable={
-                                                                          false
-                                                                        }
-                                                                        src={getIconSource(
-                                                                          getFileExtension(
-                                                                            filesData.displayAttachmentName
-                                                                          )
-                                                                        )}
-                                                                        alt=""
-                                                                      />{" "}
-                                                                      <span
-                                                                        onClick={() =>
-                                                                          downloadDocument(
-                                                                            filesData
-                                                                          )
-                                                                        }
-                                                                      >
-                                                                        {
-                                                                          filesData?.displayAttachmentName
-                                                                        }
-                                                                      </span>
-                                                                    </span>
-                                                                  </div>
-                                                                </Col>
-                                                              )
-                                                            )}
-                                                          </Row>
+                                                          {/* <Row> */}
+                                                          {subAgendaData.subfiles.map(
+                                                            (
+                                                              filesData,
+                                                              fileIndex
+                                                            ) => (
+                                                              <AttachmentViewer
+                                                                data={filesData}
+                                                                handleClickDownload={() =>
+                                                                  downloadDocument(
+                                                                    filesData
+                                                                  )
+                                                                }
+
+                                                                name={
+                                                                  filesData.displayAttachmentName
+                                                                }
+                                                                key={fileIndex}
+                                                              />
+                                                              // <Col
+                                                              //   key={
+                                                              //     fileIndex
+                                                              //   }
+                                                              //   lg={3}
+                                                              //   md={3}
+                                                              //   sm={12}
+                                                              // >
+                                                              //   <div
+                                                              //     className={
+                                                              //       styles[
+                                                              //         "agendaFileAttachedView"
+                                                              //       ]
+                                                              //     }
+                                                              //   >
+                                                              //     <span
+                                                              //       className={
+                                                              //         styles[
+                                                              //           "agendaFileSpan"
+                                                              //         ]
+                                                              //       }
+                                                              //     >
+                                                              //       <img
+                                                              //         draggable={
+                                                              //           false
+                                                              //         }
+                                                              //         src={getIconSource(
+                                                              //           getFileExtension(
+                                                              //             filesData.displayAttachmentName
+                                                              //           )
+                                                              //         )}
+                                                              //         alt=""
+                                                              //       />{" "}
+                                                              //       <span
+                                                              //         onClick={() =>
+                                                              //           downloadDocument(
+                                                              //             filesData
+                                                              //           )
+                                                              //         }
+                                                              //       >
+                                                              //         {
+                                                              //           filesData?.displayAttachmentName
+                                                              //         }
+                                                              //       </span>
+                                                              //     </span>
+                                                              //   </div>
+                                                              // </Col>
+                                                            )
+                                                          )}
+                                                          {/* </Row> */}
                                                         </>
                                                       ) : subAgendaData.subSelectRadio ===
                                                           1 &&

@@ -66,18 +66,21 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
   const handleSave = async () => {
     let newFolder = [...filesSending];
     let fileObj = [];
-    const uploadPromises = fileForSend.map(async (newData) => {
+    if (fileForSend.length > 0) {
+      const uploadPromises = fileForSend.map(async (newData) => {
+        await dispatch(
+          uploadDocumentsCommitteesApi(navigate, t, newData, folderID, fileObj)
+        );
+      });
+
+      // Wait for all promises to resolve
+      await Promise.all(uploadPromises);
+
       await dispatch(
-        uploadDocumentsCommitteesApi(navigate, t, newData, folderID, fileObj)
+        saveFilesCommitteesApi(navigate, t, fileObj, folderID, newFolder)
       );
-    });
+    }
 
-    // Wait for all promises to resolve
-    await Promise.all(uploadPromises);
-
-    await dispatch(
-      saveFilesCommitteesApi(navigate, t, fileObj, folderID, newFolder)
-    );
     let newData = {
       CommitteeID: Number(committeeData.committeeID),
       UpdateFileList: newFolder.map((fileID) => ({
@@ -295,7 +298,15 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
           });
           setFileAttachments(newArr);
           setFilesSending(fileSend);
+        } else {
+          setFileAttachments([]);
+          setFilesSending([]);
+          setFolderId(0);
         }
+      } else {
+        setFileAttachments([]);
+        setFilesSending([]);
+        setFolderId(0);
       }
     } catch {}
   }, [CommitteeReducer.reteriveCommitteeDocuments]);
