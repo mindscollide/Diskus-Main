@@ -38,8 +38,6 @@ const ManageUsers = () => {
 
   let userID = localStorage.getItem("userID");
 
-  let isTrial = localStorage.getItem("isTrial");
-
   const { UserMangementReducer, UserManagementModals } = useSelector(
     (state) => state
   );
@@ -61,7 +59,7 @@ const ManageUsers = () => {
     Name: "",
     Email: "",
     Status: {
-      value: 0,
+      value: "",
       label: "",
     },
   });
@@ -333,7 +331,15 @@ const ManageUsers = () => {
               .toLowerCase()
               .includes(searchDetails.Email.toLowerCase());
 
-          return matchesName && matchesEmail;
+          const matchesStatus =
+            searchDetails.Status === "" || // Assuming 'Status' holds the selected status from the dropdown
+            user.userStatus === searchDetails.Status.value;
+
+          console.log(matchesStatus, "matchesStatusmatchesStatus");
+          console.log(user.userStatus, "matchesStatusmatchesStatus");
+          console.log(searchDetails.Status.value, "matchesStatusmatchesStatus");
+
+          return matchesName && matchesEmail && matchesStatus;
         }
       );
 
@@ -359,6 +365,11 @@ const ManageUsers = () => {
 
   //Handle Reset Button
   const handleResetButton = () => {
+    let data = {
+      OrganizationID: Number(organizationID),
+      RequestingUserID: Number(userID),
+    };
+    dispatch(AllOrganizationsUsersApi(navigate, t, data));
     setshowSearches(false);
     setsearchDetails({
       Name: "",
@@ -380,6 +391,24 @@ const ManageUsers = () => {
   const handleClickEditIcon = (record) => {
     setEditModalData(record);
     dispatch(showEditUserModal(true));
+  };
+
+  //Options For Search
+
+  const options = [
+    { value: "Enabled", label: "Enabled" },
+    { value: "Disabled", label: "Disabled" },
+    { value: "Locked", label: "Locked" },
+    { value: "Closed", label: "Closed" },
+    { value: "Dormant", label: "Dormant" },
+    { value: "Delete", label: "Delete" },
+  ];
+
+  const handleStatusChange = (selectedOption) => {
+    setsearchDetails((prevDetails) => ({
+      ...prevDetails,
+      Status: selectedOption,
+    }));
   };
 
   return (
@@ -490,7 +519,12 @@ const ManageUsers = () => {
                         />
                       </Col>
                       <Col lg={6} md={6} sm={12} xs={12}>
-                        <Select placeholder={t("Status")} />
+                        <Select
+                          placeholder={t("Status")}
+                          options={options}
+                          value={searchDetails.Status}
+                          onChange={handleStatusChange}
+                        />
                       </Col>
                     </Row>
                     <Row className="mt-4">
