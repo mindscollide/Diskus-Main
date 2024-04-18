@@ -318,7 +318,10 @@ const ManageUsers = () => {
       }));
     }
   };
-
+  console.log(
+    UserMangementReducer.allOrganizationUsersData.organizationUsers,
+    "UserMangementReducerUserMangementReducer"
+  );
   //manual filteration performed on the GRID
   const handleSearch = () => {
     const filteredData =
@@ -329,20 +332,22 @@ const ManageUsers = () => {
             user.userName
               .toLowerCase()
               .includes(searchDetails.Name.toLowerCase());
-
           const matchesEmail =
             searchDetails.Email === "" ||
             user.email
               .toLowerCase()
               .includes(searchDetails.Email.toLowerCase());
 
+          console.log(
+            user.userStatus,
+            searchDetails.Status.label,
+            "searchDetailssearchDetails"
+          );
           const matchesStatus =
-            searchDetails.Status === "" ||
-            user.userStatus === searchDetails.Status.value;
-          console.log(matchesName, "matchesNamematchesName");
-          console.log(matchesStatus, "matchesNamematchesName");
-          console.log(matchesEmail, "matchesNamematchesName");
-          // Only return true if all conditions that are active (non-empty) are matched
+            searchDetails.Status.label === "" ||
+            user.userStatus.toLowerCase() ===
+              searchDetails.Status.label.toLowerCase();
+
           return matchesName && matchesEmail && matchesStatus;
         }
       );
