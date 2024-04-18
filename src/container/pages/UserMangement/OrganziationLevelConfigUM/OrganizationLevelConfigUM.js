@@ -23,7 +23,10 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button, TextField } from "../../../../components/elements";
-import { getOrganizationLevelSetting } from "../../../../store/actions/OrganizationSettings";
+import {
+  getOrganizationLevelSetting,
+  updateOrganizationLevelSetting,
+} from "../../../../store/actions/OrganizationSettings";
 import getTimeZone from "../../../../store/actions/GetTimeZone";
 import { checkFeatureIDAvailability } from "../../../../commen/functions/utils";
 const OrganizationLevelConfigUM = () => {
@@ -816,6 +819,120 @@ const OrganizationLevelConfigUM = () => {
       PushNotificationWhenNewTODOAssigned: value,
     });
   };
+
+  const updateOrganizationLevelSettings = async () => {
+    let OrganizationID = localStorage.getItem("organizationID");
+    let Data = {
+      CalenderMonthsSpan: userOrganizationSetting.CalenderMonthsSpan,
+      DormantInactiveUsersForDays:
+        userOrganizationSetting.DormatInactiveUsersforDays,
+      EmailOnCancelledDeletedMeeting:
+        userOrganizationSetting.EmailCancelOrDeleteMeeting,
+      EmailOnEditMeeting: userOrganizationSetting.EmailEditMeeting,
+      EmailOnNewMeeting: userOrganizationSetting.EmailOnNewMeeting,
+      EmailWhenAddedToCommittee:
+        userOrganizationSetting.EmailWhenAddedToCommittee,
+      EmailWhenAddedToGroup: userOrganizationSetting.EmailWhenAddedToGroup,
+      EmailWhenCommitteeIsActive:
+        userOrganizationSetting.EmailWhenCommitteeisActive,
+      EmailWhenCommitteeIsDissolvedArchived:
+        userOrganizationSetting.EmailWhenCommitteeIsDissolvedOrArchived,
+      EmailWhenCommitteeIsInActive:
+        userOrganizationSetting.EmailWhenCommitteeisActive,
+      EmailWhenGroupIsActive: userOrganizationSetting.EmailWhenGroupisActive,
+      EmailWhenGroupIsClosedArchived:
+        userOrganizationSetting.EmailWhenGroupIsDissolvedOrArchived,
+      EmailWhenGroupIsInActive:
+        userOrganizationSetting.EmailWhenGroupIsSetInActive,
+      EmailWhenNewPollIsPublished:
+        userOrganizationSetting.EmailWhenNewPollIsPublished,
+      EmailWhenPollDueDateIsPassed:
+        userOrganizationSetting.EmailWhenPollDueDateIsPassed,
+      EmailWhenPublishedPollIsDeleted:
+        userOrganizationSetting.EmailWhenPublishedPollIsDeleted,
+      EmailWhenPublishedPollIsUpdated:
+        userOrganizationSetting.EmailWhenPublishedPollIsUpdated,
+      EmailWhenRemovedFromCommittee:
+        userOrganizationSetting.EmailWhenRemovedFromCommittee,
+      EmailWhenRemovedFromGroup:
+        userOrganizationSetting.EmailWhenRemovedFromGroup,
+      EmailwhenNewResolutionisCirculated:
+        userOrganizationSetting.EmailWhenResolutionIsCirculated,
+      EmailwhenResolutionisCancelledafterCirculation:
+        userOrganizationSetting.EmailWhenNewResolutionIsCancelledAfterCirculation,
+      EmailwhenaResolutionisClosed:
+        userOrganizationSetting.EmailWhenResolutionIsClosed,
+      FK_OrganizationID: JSON.parse(OrganizationID),
+      FK_TZID: userOrganizationSetting.TimeZoneId,
+      FK_WorldCountryID: userOrganizationSetting.worldCountryID,
+      Is2FAEnabled: userOrganizationSetting.Is2FAEnabled,
+      MaximumMeetingDuration: userOrganizationSetting.MaximumMeetingDuration,
+      PushNotificationOnEditMeeting:
+        userOrganizationSetting.PushNotificationEditMeeting,
+      PushNotificationOnNewMeeting:
+        userOrganizationSetting.PushNotificationonNewMeeting,
+      PushNotificationWhenNewPollIsPublished:
+        userOrganizationSetting.PushNotificationWhenNewPollIsPublished,
+      PushNotificationWhenPollDueDateIsPassed:
+        userOrganizationSetting.PushNotificationWhenPollDueDateIsPassed,
+      PushNotificationWhenPublishedPollIsDeleted:
+        userOrganizationSetting.PushNotificationWhenPublishedPollIsDeleted,
+      PushNotificationWhenPublishedPollIsUpdated:
+        userOrganizationSetting.PushNotificationWhenPublishedPollIsUpdated,
+      PushNotificationWhenResolutionIsClosed:
+        userOrganizationSetting.PushNotificationWhenResolutionISClosed,
+      PushNotificationonCancelledDeletedMeeting:
+        userOrganizationSetting.PushNotificationCancelledOrDeleteMeeting,
+      PushNotificationwhenAddedtoCommittee:
+        userOrganizationSetting.PushNotificationWhenAddedToCommittee,
+      PushNotificationwhenAddedtoGroup:
+        userOrganizationSetting.PushNotificationWhenAddedToGroup,
+      PushNotificationwhenCommitteeisDissolvedArchived:
+        userOrganizationSetting.PushNotificationWhenCommitteeIsDissolvedOrArchived,
+      PushNotificationwhenCommitteeissetActive:
+        userOrganizationSetting.PushNotificationWhenCommitteeisActive,
+      PushNotificationwhenCommitteeissetInActive:
+        userOrganizationSetting.PushNotificationWhenCommitteeisSetInActive,
+      PushNotificationwhenGroupisClosedArchived:
+        userOrganizationSetting.PushNotificationWhenGroupIsDissolvedOrArchived,
+      PushNotificationwhenGroupissetActive:
+        userOrganizationSetting.PushNotificationWhenGroupisSetInActive,
+      PushNotificationwhenGroupissetInActive:
+        userOrganizationSetting.PushNotificationWhenGroupisActive,
+      PushNotificationwhenNewResolutionisCirculated:
+        userOrganizationSetting.PushNotificationWhenNewResolutionIsCirculated,
+      PushNotificationwhenRemovedfromCommittee:
+        userOrganizationSetting.PushNotificationWhenRemovedFromCommittee,
+      PushNotificationwhenRemovedfromGroup:
+        userOrganizationSetting.PushNotificationWhenRemovedFromGroup,
+      PushNotificationwhenResolutionisCancelledafterCirculation:
+        userOrganizationSetting.PushNotificationWhenNewResolutionIsCancelledAfterCirculated,
+      ShowNotificationOnParticipantJoining:
+        userOrganizationSetting.ShowNotificationOnParticipantJoining,
+      UserAllowGoogleCalendarSynch: userOrganizationSetting.AllowCalenderSync,
+      UserAllowMicrosoftCalendarSynch:
+        userOrganizationSetting.AllowMicrosoftCalenderSync,
+      PushNotificationWhenNewTODOAssigned:
+        userOrganizationSetting.PushNotificationWhenNewTODOAssigned,
+      PushNotificationWhenNewTODODeleted:
+        userOrganizationSetting.PushNotificationWhenNewTODODeleted,
+      PushNotificationWhenNewTODOEdited:
+        userOrganizationSetting.PushNotificationWhenNewTODOEdited,
+      PushNotificationWhenNewCommentAdded:
+        userOrganizationSetting.PushNotificationWhenNewCommentAdded,
+      PushNotificationWhenCommentDeleted:
+        userOrganizationSetting.PushNotificationWhenCommentDeleted,
+      EmailWhenCommentDeleted: userOrganizationSetting.EmailWhenCommentDeleted,
+      EmailWhenNewCommentAdded:
+        userOrganizationSetting.EmailWhenNewCommentAdded,
+      EmailWhenNewTODOAssigned:
+        userOrganizationSetting.EmailWhenNewTODOAssigned,
+      EmailWhenNewTODODeleted: userOrganizationSetting.EmailWhenNewTODODeleted,
+      EmailWhenNewTODOEdited: userOrganizationSetting.EmailWhenNewTODOEdited,
+    };
+    dispatch(updateOrganizationLevelSetting(navigate, Data, t));
+  };
+
   return (
     <section className={styles["UserConfigsContainer"]}>
       <Row className="mt-3">
@@ -2168,7 +2285,7 @@ const OrganizationLevelConfigUM = () => {
           <Button
             text={t("Update")}
             className={styles["New_settings_Update_Button"]}
-            // onClick={updateOrganizationLevelSettings}
+            onClick={updateOrganizationLevelSettings}
           />
         </Col>
       </Row>
