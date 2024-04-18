@@ -5,7 +5,7 @@ const PrivateRoutes = () => {
   const location = useLocation();
   const allowedRoutes = JSON.parse(localStorage.getItem("LocalRoutes") || "[]");
   const currentPath = location.pathname;
-  console.log("allowedRoutes",allowedRoutes)
+  console.log("allowedRoutes", allowedRoutes);
   useEffect(() => {
     if (
       currentUrl.includes("DisKus/Meeting/Useravailabilityformeeting?action=")
@@ -58,7 +58,9 @@ const PrivateRoutes = () => {
   //     : false
   // );
   const [currentUser, setCurrentUser] = useState(
-    RoleID === "4" && (Blur === undefined || Blur === null) ? true : null
+    (RoleID === "3" || RoleID === "4") && (Blur === undefined || Blur === null)
+      ? true
+      : null
   );
 
   return currentUser && token ? (
