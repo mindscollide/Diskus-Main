@@ -186,6 +186,7 @@ export async function handleLoginResponse(response) {
 
 // Features IDs Check Fucntion
 export async function checkFeatureIDAvailability(id) {
+  console.log(id, "ididid");
   let packageID = localStorage.getItem("packageFeatureIDs");
 
   if (packageID) {

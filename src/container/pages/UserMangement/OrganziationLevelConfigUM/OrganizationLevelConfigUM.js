@@ -868,7 +868,7 @@ const OrganizationLevelConfigUM = () => {
               ) : null}
 
               <hr />
-              {checkFeatureIDAvailability(14) ? (
+              {checkFeatureIDAvailability(37) ? (
                 <div onClick={opentodo} className="cursor-pointer">
                   <Row className="mt-3">
                     <Col
@@ -901,8 +901,7 @@ const OrganizationLevelConfigUM = () => {
               ) : null}
 
               <hr />
-              {checkFeatureIDAvailability(12) ||
-              checkFeatureIDAvailability(1) ? (
+              {checkFeatureIDAvailability(38) ? (
                 <div onClick={openMeetingTab} className="cursor-pointer">
                   <Row className="mt-3">
                     <Col
@@ -935,7 +934,7 @@ const OrganizationLevelConfigUM = () => {
               ) : null}
 
               <hr />
-              {checkFeatureIDAvailability(7) ? (
+              {checkFeatureIDAvailability(39) ? (
                 <div className="cursor-pointer" onClick={openCalenderTab}>
                   <Row className="mt-3">
                     <Col
@@ -968,7 +967,7 @@ const OrganizationLevelConfigUM = () => {
               ) : null}
 
               <hr />
-              {checkFeatureIDAvailability(17) ? (
+              {checkFeatureIDAvailability(40) ? (
                 <div onClick={openCommitteTab} className="cursor-pointer">
                   <Row className="mt-3">
                     <Col
@@ -1001,7 +1000,7 @@ const OrganizationLevelConfigUM = () => {
               ) : null}
 
               <hr />
-              {checkFeatureIDAvailability(17) ? (
+              {checkFeatureIDAvailability(41) ? (
                 <div onClick={openGroupTab} className="cursor-pointer">
                   <Row className="mt-3">
                     <Col
@@ -1034,7 +1033,7 @@ const OrganizationLevelConfigUM = () => {
               ) : null}
 
               <hr />
-              {checkFeatureIDAvailability(18) ? (
+              {checkFeatureIDAvailability(42) ? (
                 <div onClick={openResolutionTab} className="cursor-pointer">
                   <Row className="mt-3">
                     <Col
@@ -1067,7 +1066,7 @@ const OrganizationLevelConfigUM = () => {
               ) : null}
 
               <hr />
-              {checkFeatureIDAvailability(15) ? (
+              {checkFeatureIDAvailability(43) ? (
                 <div onClick={openPollsTab} className="cursor-pointer">
                   <Row className="mt-3">
                     <Col
