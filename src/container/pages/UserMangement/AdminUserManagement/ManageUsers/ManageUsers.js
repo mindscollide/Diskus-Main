@@ -330,8 +330,6 @@ const ManageUsers = () => {
               .toLowerCase()
               .includes(searchDetails.Name.toLowerCase());
 
-          console.log(matchesName, "matchesName");
-
           const matchesEmail =
             searchDetails.Email === "" ||
             user.email
@@ -341,14 +339,11 @@ const ManageUsers = () => {
           const matchesStatus =
             searchDetails.Status === "" ||
             user.userStatus === searchDetails.Status.value;
-
-          console.log(matchesStatus, "matchesStatus");
-
-          if (matchesStatus) {
-            return matchesStatus;
-          } else {
-            return matchesName && matchesEmail;
-          }
+          console.log(matchesName, "matchesNamematchesName");
+          console.log(matchesStatus, "matchesNamematchesName");
+          console.log(matchesEmail, "matchesNamematchesName");
+          // Only return true if all conditions that are active (non-empty) are matched
+          return matchesName && matchesEmail && matchesStatus;
         }
       );
 
