@@ -25,6 +25,7 @@ import { useSelector } from "react-redux";
 import { Button, TextField } from "../../../../components/elements";
 import { getOrganizationLevelSetting } from "../../../../store/actions/OrganizationSettings";
 import getTimeZone from "../../../../store/actions/GetTimeZone";
+import { checkFeatureIDAvailability } from "../../../../commen/functions/utils";
 const OrganizationLevelConfigUM = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -834,7 +835,7 @@ const OrganizationLevelConfigUM = () => {
         <Col lg={12} md={12} sm={12} className={styles["Padding_around_class"]}>
           <Row className="mt-3">
             <Col lg={3} md={3} sm={3}>
-              {CheckFeatureIDAvailibility(36) ? (
+              {checkFeatureIDAvailability(36) ? (
                 <div onClick={openSecurityTab} className="cursor-pointer">
                   <Row className="mt-3">
                     <Col
