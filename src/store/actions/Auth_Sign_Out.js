@@ -55,9 +55,9 @@ const userLogOutApiFunc = (navigate, t) => {
                 .toLowerCase()
                 .includes("ERM_AuthService_AuthManager_LogOut_01".toLowerCase())
             ) {
-              dispatch(userlogOutSuccess(t("Successful")));
+             await dispatch(userlogOutSuccess(t("Successful")));
               signOut();
-              navigate("/");
+              // navigate("/");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

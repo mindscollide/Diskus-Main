@@ -91,7 +91,7 @@ const ModalShareFile = ({
   const [taskAssignedName, setTaskAssignedName] = useState("");
   const [isMembers, setMembers] = useState([]);
 
-  let organizationName = localStorage.getItem("OrganizatioName");
+  let organizationName = localStorage.getItem("organizatioName");
   let userID = localStorage.getItem("userID");
   const options = [
     { value: 1, label: t("Viewer") },

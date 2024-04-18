@@ -173,7 +173,7 @@ const PakageDetailsUMUpgrade = () => {
             );
           } else {
             const handleChange = (newValue) => {
-              if (/^\d+$/.test(newValue)) {
+              if (newValue === "" || /^\d+$/.test(newValue)) {
                 const newData = tableData.map((item, i) => {
                   if (i === index) {
                     // Check if the index matches the current row
@@ -194,6 +194,7 @@ const PakageDetailsUMUpgrade = () => {
                     labelClass="d-none"
                     applyClass="PakageDetails_UMUpgrade"
                     name="noofLisence"
+                    maxLength={3}
                     value={Number(priceValue)}
                     change={(e) => handleChange(e.target.value)}
                   />

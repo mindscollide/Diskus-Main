@@ -50,6 +50,7 @@ import {
   deleteFileDataroom,
   deleteFolder,
   deleteSharedFileDataroom,
+  deleteSharedFolderDataroom,
   FileisExist,
   getDocumentsAndFolderApi,
   getDocumentsAndFolderApiScrollbehaviour,
@@ -689,11 +690,18 @@ const DataRoom = () => {
       };
       dispatch(createWorkflowApi(dataRoomData, navigate, t, pdfDataJson));
     } else if (data.value === 9) {
-      // Remove Shared File
-      let removeShareData = {
-        FileSharingID: record.id,
-      };
-      dispatch(deleteSharedFileDataroom(navigate, removeShareData, t));
+      if (record.isFolder) {
+        let removeSharedFolder = {
+          FolderSharingID: record.sharingID,
+        };
+        dispatch(deleteSharedFolderDataroom(navigate, removeSharedFolder, t));
+      } else {
+        // Remove Shared File
+        let removeShareData = {
+          FileSharingID: Number(record.sharingID),
+        };
+        dispatch(deleteSharedFileDataroom(navigate, removeShareData, t));
+      }
     }
   };
   //
@@ -3587,11 +3595,14 @@ const DataRoom = () => {
                                   >
                                     <GridViewDataRoom
                                       data={getAllData}
-                                      optionsforFolder={optionsforFolder(t)}
-                                      optionsforFile={optionsforFile(t)}
                                       sRowsData={sRowsData}
                                       totalRecords={totalRecords}
                                       filter_Value={filterValue}
+                                      setSearchTabOpen={setSearchTabOpen}
+                                      setDetailView={setDetailView}
+                                      setFileDataforAnalyticsCount={
+                                        setFileDataforAnalyticsCount
+                                      }
                                     />
                                   </InfiniteScroll>
                                 </>
@@ -3705,6 +3716,11 @@ const DataRoom = () => {
                                     sRowsData={sRowsData}
                                     totalRecords={totalRecords}
                                     filter_Value={filterValue}
+                                    setSearchTabOpen={setSearchTabOpen}
+                                    setDetailView={setDetailView}
+                                    setFileDataforAnalyticsCount={
+                                      setFileDataforAnalyticsCount
+                                    }
                                   />
                                 </>
                               ) : listviewactive === true ? (
@@ -3788,11 +3804,14 @@ const DataRoom = () => {
                                   >
                                     <GridViewDataRoom
                                       data={getAllData}
-                                      optionsforFolder={optionsforFolder(t)}
-                                      optionsforFile={optionsforFile(t)}
                                       sRowsData={sRowsData}
                                       totalRecords={totalRecords}
                                       filter_Value={filterValue}
+                                      setSearchTabOpen={setSearchTabOpen}
+                                      setDetailView={setDetailView}
+                                      setFileDataforAnalyticsCount={
+                                        setFileDataforAnalyticsCount
+                                      }
                                     />
                                   </InfiniteScroll>
                                 </>

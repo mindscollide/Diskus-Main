@@ -21,7 +21,7 @@ const BillProcessStepThree = () => {
     (state) => state
   );
 
-  const organizationName = localStorage.getItem("OrganizatioName");
+  const organizationName = localStorage.getItem("organizatioName");
   //States
   const [getAllPakagesData, setGetAllPakagesData] = useState([]);
   const [expiryDate, setExpiryDate] = useState(null);

@@ -1522,9 +1522,6 @@ const leaveFileSharingRM = {
 };
 
 // const delete organization User for Admin
-const deleteOrganizationUserApi = {
-  RequestMethod: "ServiceManager.DeleteOrganizationsUser",
-};
 
 const ResendForgotPasswordCode = {
   RequestMethod: "ServiceManager.ResendForgotPasswordCode",
@@ -1534,7 +1531,12 @@ const DeleteOrganizationsUser = {
   RequestMethod: "ServiceManager.DeleteOrganizationsUser",
 };
 
+const leaveFolderSharingRM = {
+  RequestMethod: "ServiceManager.DeleteFolderSharing",
+};
+
 export {
+  leaveFolderSharingRM,
   leaveFileSharingRM,
   UserLoginHistoryRM,
   getDataAnalyticsCountRM,
@@ -1940,7 +1942,6 @@ export {
   leaveMeeting,
   getOrganizationSelectedPakages,
   GetAllUserTypePackages,
-  deleteOrganizationUserApi,
   ResendForgotPasswordCode,
   DeleteOrganizationsUser,
 };

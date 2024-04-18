@@ -456,7 +456,7 @@ export const optionsforPDFandSignatureFlow = (t) => [
   { label: t("Rename"), value: 3 },
   { label: t("View-detail"), value: 4 },
   { label: t("Download"), value: 5 },
-  { label: t("Remove"), value: 6 },
+  { label: t("Delete"), value: 6 },
   { label: t("Analytics"), value: 7 },
   { label: t("Signaure"), value: 8 },
 ];
@@ -555,7 +555,7 @@ export const getIconSource = (extension) => {
 };
 
 export const getFileExtension = (fileName) => {
-  const lowercaseExtension = fileName.toLowerCase().split(".").pop();
+  const lowercaseExtension = fileName?.toLowerCase().split(".").pop();
   return lowercaseExtension;
 };
 

@@ -101,7 +101,7 @@ const VerifyOTPUM = () => {
   }, [currentLangObj, t]);
 
   const sendRequestResend = () => {
-    let nEmail = localStorage.getItem("UserEmail");
+    let nEmail = localStorage.getItem("userEmail");
     let data = {
       Email: nEmail,
     };
