@@ -7,7 +7,6 @@ import {
   getOrganizationSelectedPakages,
   OrganizationPackageDetailsAndUserStats,
   GetAllUserTypePackages,
-  deleteOrganizationUserApi,
   ResendForgotPasswordCode,
   EditOrganizationsUser,
   DeleteOrganizationsUser,
@@ -468,7 +467,7 @@ const AddOrganizationsUserApi = (navigate, t, data, loader) => {
                   loader
                 )
               );
-              navigate("/Admin")
+              navigate("/Admin");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

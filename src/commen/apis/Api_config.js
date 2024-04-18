@@ -1942,7 +1942,6 @@ export {
   leaveMeeting,
   getOrganizationSelectedPakages,
   GetAllUserTypePackages,
-  deleteOrganizationUserApi,
   ResendForgotPasswordCode,
   DeleteOrganizationsUser,
 };
