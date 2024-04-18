@@ -22,9 +22,16 @@ const UserManagementProcess = () => {
 
   // Retrieve currentStep value from localStorage, default to 1 if not found
   const initialStep = Number(localStorage.getItem("LoginFlowPageRoute"));
-  const validInitialStep = !isNaN(initialStep) && initialStep >= 1 && initialStep <= 13 ? initialStep : 1;
+  const validInitialStep =
+    !isNaN(initialStep) && initialStep >= 1 && initialStep <= 13
+      ? initialStep
+      : 1;
   const [currentStep, setCurrentStepValue] = useState(validInitialStep);
-
+  console.log(
+    currentStep,
+    UserMangementReducer,
+    "currentStepcurrentStepcurrentStepcurrentStep"
+  );
   useEffect(() => {
     try {
       localStorage.removeItem("signupCurrentPage");

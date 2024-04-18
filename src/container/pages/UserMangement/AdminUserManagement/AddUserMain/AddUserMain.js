@@ -32,6 +32,7 @@ const AddUserMain = () => {
   // organizationName from Local Storage
   const organizationName = localStorage.getItem("OrganizatioName");
   const organizationID = localStorage.getItem("organizationID");
+  const UserID = localStorage.getItem("userID");
 
   const [packageAssignedOption, setPackageAssignedOption] = useState([]);
   const [packageAssignedValue, setPackageAssignedValue] = useState([]);
@@ -85,13 +86,17 @@ const AddUserMain = () => {
   //For Now I set static data in this getOrganizationPackageUserStatsAPI Api
   useEffect(() => {
     let data = {
-      OrganizationID: 554,
+      OrganizationID: 569,
       RequestingUserID: 1196,
+
+      // OrganizationID: Number(organizationID),
+      // RequestingUserID: Number(UserID),
     };
     dispatch(getOrganizationPackageUserStatsAPI(navigate, t, data));
 
     let newdata = {
       OrganizationID: 569,
+      // OrganizationID: Number(organizationID),
     };
     dispatch(
       GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t, newdata)
@@ -214,19 +219,23 @@ const AddUserMain = () => {
       userAddMain.Name.value !== "" &&
       userAddMain.Designation.value !== "" &&
       userAddMain.MobileNumber.value !== "" &&
-      userAddMain.PackageAssigned.value !== "" &&
+      // userAddMain.PackageAssigned.value !== "" &&
       userAddMain.Email.value !== ""
     ) {
       let createData = {
-        UserName: userAddMain.Name.value,
-        OrganizationName: organizationName,
-        Designation: userAddMain.Designation.value,
-        MobileNumber: userAddMain.MobileNumber.value,
-        UserEmail: userAddMain.Email.value,
-        OrganizationID: Number(organizationID),
-        isAdmin: userAddMain.isAdmin.value,
-        FK_NumberWorldCountryID: userAddMain.FK_NumberWorldCountryID,
-        OrganizationSelectedPackageID: userAddMain.PackageAssigned.value,
+        UserDataList: [
+          {
+            UserName: userAddMain.Name.value,
+            OrganizationName: organizationName,
+            Designation: userAddMain.Designation.value,
+            MobileNumber: userAddMain.MobileNumber.value,
+            UserEmail: userAddMain.Email.value,
+            OrganizationID: Number(organizationID),
+            isAdmin: userAddMain.isAdmin.value,
+            FK_NumberWorldCountryID: userAddMain.FK_NumberWorldCountryID,
+            OrganizationSelectedPackageID: userAddMain.PackageAssigned.value,
+          },
+        ],
       };
       await dispatch(AddOrganizationsUserApi(navigate, t, createData));
     } else {
@@ -801,7 +810,8 @@ const AddUserMain = () => {
                       {t("Organization")}{" "}
                     </label>
                     <span className={styles["associates-text"]}>
-                      {t("Waqas-associates")}
+                      {/* {t("Waqas-associates")} */}
+                      {organizationName}
                     </span>
                   </Col>
 
