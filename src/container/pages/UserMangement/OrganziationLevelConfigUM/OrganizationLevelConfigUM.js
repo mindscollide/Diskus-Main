@@ -834,35 +834,38 @@ const OrganizationLevelConfigUM = () => {
         <Col lg={12} md={12} sm={12} className={styles["Padding_around_class"]}>
           <Row className="mt-3">
             <Col lg={3} md={3} sm={3}>
-              <div onClick={openSecurityTab} className="cursor-pointer">
-                <Row className="mt-3">
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={12}
-                    className="d-flex align-items-center"
-                  >
-                    <img
-                      draggable="false"
-                      src={SecurityIcon}
-                      alt=""
-                      width="25.51px"
-                      height="30.69px"
-                    />
-                  </Col>
-                  <Col lg={10} md={10} sm={12}>
-                    <span
-                      className={
-                        securitystate
-                          ? styles["Options_headings_active"]
-                          : styles["Options_headings"]
-                      }
+              {CheckFeatureIDAvailibility(36) ? (
+                <div onClick={openSecurityTab} className="cursor-pointer">
+                  <Row className="mt-3">
+                    <Col
+                      lg={2}
+                      md={2}
+                      sm={12}
+                      className="d-flex align-items-center"
                     >
-                      {t("Security-settings")}
-                    </span>
-                  </Col>
-                </Row>
-              </div>
+                      <img
+                        draggable="false"
+                        src={SecurityIcon}
+                        alt=""
+                        width="25.51px"
+                        height="30.69px"
+                      />
+                    </Col>
+                    <Col lg={10} md={10} sm={12}>
+                      <span
+                        className={
+                          securitystate
+                            ? styles["Options_headings_active"]
+                            : styles["Options_headings"]
+                        }
+                      >
+                        {t("Security-settings")}
+                      </span>
+                    </Col>
+                  </Row>
+                </div>
+              ) : null}
+
               <hr />
               <div onClick={opentodo} className="cursor-pointer">
                 <Row className="mt-3">
@@ -1044,6 +1047,7 @@ const OrganizationLevelConfigUM = () => {
                 </Row>
               </div>
               <hr />
+
               <div onClick={openPollsTab} className="cursor-pointer">
                 <Row className="mt-3">
                   <Col
