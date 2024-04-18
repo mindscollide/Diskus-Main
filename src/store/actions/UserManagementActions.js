@@ -1539,6 +1539,11 @@ const deleteOrganizationUserAPI = (navigate, t, data) => {
                   t("Data-available")
                 )
               );
+              let data = {
+                OrganizationID: Number(organizationID),
+                RequestingUserID: Number(userID),
+              };
+              dispatch(AllOrganizationsUsersApi(navigate, t, data));
               dispatch(showDeleteUsersModal(false));
             } else if (
               response.data.responseResult.responseMessage

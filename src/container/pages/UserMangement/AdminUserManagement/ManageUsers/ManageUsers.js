@@ -51,7 +51,7 @@ const ManageUsers = () => {
 
   const [showSearches, setshowSearches] = useState(false);
 
-  const [manageUserGrid, setManageUserGrid] = useState();
+  const [manageUserGrid, setManageUserGrid] = useState([]);
 
   const [editModalData, setEditModalData] = useState(null);
 
@@ -97,18 +97,17 @@ const ManageUsers = () => {
 
   //AllOrganizationsUsers Api Data
   useEffect(() => {
+    const Users = UserMangementReducer.allOrganizationUsersData;
     if (
-      UserMangementReducer.allOrganizationUsersData !== undefined &&
-      UserMangementReducer.allOrganizationUsersData !== null
+      Users &&
+      Users.organizationUsers &&
+      Users.organizationUsers.length > 0
     ) {
-      console.log(
-        UserMangementReducer.allOrganizationUsersData,
-        "UserMangementReducer"
-      );
-
       setManageUserGrid(
         UserMangementReducer.allOrganizationUsersData.organizationUsers
       );
+    } else {
+      setManageUserGrid([]);
     }
   }, [UserMangementReducer.allOrganizationUsersData]);
 
