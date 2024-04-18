@@ -44,14 +44,17 @@ export async function handleLoginResponse(response) {
     if (response.organizationID) {
       localStorage.setItem("organizationID", response.organizationID);
     }
+
     if (response.organizationName) {
       localStorage.setItem("organizatioName", response.organizationName);
     }
+
     if (parseInt(response.organizationSubscriptionStatusID) === parseInt(5)) {
       localStorage.setItem("revokeCancellation", true);
     } else {
       localStorage.setItem("revokeCancellation", false);
     }
+
     if (response.authToken) {
       localStorage.setItem("name", response.authToken.name);
       localStorage.setItem("userEmail", response.authToken.userName);
@@ -65,6 +68,7 @@ export async function handleLoginResponse(response) {
         "organizationRoleID",
         response.authToken.organizationRoleID
       );
+
       localStorage.setItem("isFirstLogin", response.authToken.isFirstLogIn);
       localStorage.setItem("activeOtoChatID", 0);
       localStorage.setItem("activeCall", false);
@@ -76,16 +80,22 @@ export async function handleLoginResponse(response) {
       localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
       localStorage.setItem("meetingTitle", "");
     }
+
     localStorage.setItem("isTrial", response.isTrial);
+
     localStorage.setItem(
       "organizationSelectedUserPackageID",
       response.organizationSelectedUserPackageID
     );
+
     localStorage.setItem("hasUserRights", response.hasUserRights);
+
     localStorage.setItem("hasAdminRights", response.hasAdminRights);
+
     if (response.hasUserRights) {
       await savePackageFeatureIDs(response.userFeatures);
     }
+
     if (response.hasAdminRights) {
       await savePackageFeatureIDs(response.adminFeatures);
     }
@@ -124,10 +134,11 @@ export async function handleLoginResponse(response) {
           { name: "ManageUsers", id: 203 },
           { name: "changePassword", id: 204 },
           { name: "OrganizationlevelConfigUM", id: 205 },
-          { name: "AddUsers", id: 26 },
-          { name: "faq's", id: 104 },
-          { name: "loginreport", id: 35 },
           { name: "PakageDetailsUserManagement", id: 206 },
+          { name: "faq's", id: 207 },
+          { name: "CustomerInformation", id: 208 },
+          { name: "AddUsers", id: 26 },
+          { name: "loginreport", id: 35 },
         ];
       }
     } else {
@@ -150,6 +161,9 @@ export async function handleLoginResponse(response) {
           { name: "changePassword", id: 204 },
           { name: "OrganizationlevelConfigUM", id: 205 },
           { name: "PakageDetailsUserManagement", id: 206 },
+          { name: "faq's", id: 207 },
+          { name: "CustomerInformation", id: 208 },
+
           { name: "AddUsersUsermanagement", id: 26 },
           { name: "PackageDetailsUserManagement", id: 28 },
           { name: "CancelSubscriptionUserManagement", id: 29 },
@@ -159,7 +173,6 @@ export async function handleLoginResponse(response) {
           { name: "PaymentHistory", id: 36 },
           { name: "PaymentHistoryusermanagement", id: 37 },
           { name: "loginreport", id: 35 },
-          { name: "faq's", id: 104 },
         ];
       }
     }
