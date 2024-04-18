@@ -46,6 +46,7 @@ const initialState = {
   userAvailabilityDataRoom: null,
   downloadMessage: 0,
   deleteSharedFile: null,
+  deleteSharedFolder: null,
 };
 
 const DataRoomReducer = (state = initialState, action) => {
@@ -775,6 +776,28 @@ const DataRoomReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         deleteSharedFile: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.DELETE_SHARED_FOLDER_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.DELETE_SHARED_FOLDER_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        deleteSharedFolder: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.DELETE_SHARED_FOLDER_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        deleteSharedFolder: null,
         ResponseMessage: action.message,
       };
     }

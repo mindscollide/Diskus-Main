@@ -1929,6 +1929,8 @@
   "Are-you-sure-you-want-to-leave-group": "Are you sure to leave the group?",
   "Error-occurred-while-adding-users": "Error Occurred While Adding Users",
   "Users-added-successfully": "Users Added Successfully",
-  "Delete-messages": "Delete messages",
+  "Remove-shared-file-successfully": "Remove shared file successfully",
+  "Remove-shared-folder-successfully": "Remove shared folder successfully",
+  "Delete-messages": "Delete Messages",
   "Folder-share-successfully": "Folder share successfully"
 }

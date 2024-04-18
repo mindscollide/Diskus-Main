@@ -45,6 +45,7 @@ const SubDedaultDragger = ({ setRows, rows, index, subIndex }) => {
       <Col lg={12} md={12} sm={12}>
         <Dragger
           {...Subprops}
+          fileList={[]}
           className={styles["dragdrop_attachment_create_resolution"]}
         >
           <Row>
