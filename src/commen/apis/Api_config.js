@@ -1535,6 +1535,10 @@ const leaveFolderSharingRM = {
   RequestMethod: "ServiceManager.DeleteFolderSharing",
 };
 
+const PaymentInitiateStepperThree = {
+  RequestMethod: "ServiceManager.PaymentInitiate",
+};
+
 export {
   leaveFolderSharingRM,
   leaveFileSharingRM,
@@ -1944,4 +1948,5 @@ export {
   GetAllUserTypePackages,
   ResendForgotPasswordCode,
   DeleteOrganizationsUser,
+  PaymentInitiateStepperThree,
 };

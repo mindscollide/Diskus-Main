@@ -35,6 +35,7 @@ const BillingMethodUsermanagement = () => {
   const [paymentMethodPage, setPaymentMethodPage] = useState(false);
 
   const [activeStep, setActiveStep] = useState(0);
+  console.log(activeStep, "checkStep");
 
   //Billing Contact States
   const [billingContactDetails, setBillingContactDetails] = useState({

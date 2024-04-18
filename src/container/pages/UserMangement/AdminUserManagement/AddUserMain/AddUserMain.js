@@ -64,7 +64,7 @@ const AddUserMain = () => {
     },
 
     PackageAssigned: {
-      value: "",
+      value: 0,
       errorMessage: "",
       errorStatus: false,
     },
@@ -86,17 +86,17 @@ const AddUserMain = () => {
   //For Now I set static data in this getOrganizationPackageUserStatsAPI Api
   useEffect(() => {
     let data = {
-      OrganizationID: 569,
-      RequestingUserID: 1196,
+      // OrganizationID: 569,
+      // RequestingUserID: 1196,
 
-      // OrganizationID: Number(organizationID),
-      // RequestingUserID: Number(UserID),
+      OrganizationID: Number(organizationID),
+      RequestingUserID: Number(UserID),
     };
     dispatch(getOrganizationPackageUserStatsAPI(navigate, t, data));
 
     let newdata = {
-      OrganizationID: 569,
-      // OrganizationID: Number(organizationID),
+      // OrganizationID: 569,
+      OrganizationID: Number(organizationID),
     };
     dispatch(
       GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t, newdata)
@@ -219,7 +219,7 @@ const AddUserMain = () => {
       userAddMain.Name.value !== "" &&
       userAddMain.Designation.value !== "" &&
       userAddMain.MobileNumber.value !== "" &&
-      // userAddMain.PackageAssigned.value !== "" &&
+      userAddMain.PackageAssigned.value !== "" &&
       userAddMain.Email.value !== ""
     ) {
       let createData = {
@@ -233,7 +233,9 @@ const AddUserMain = () => {
             OrganizationID: Number(organizationID),
             isAdmin: userAddMain.isAdmin.value,
             FK_NumberWorldCountryID: userAddMain.FK_NumberWorldCountryID,
-            OrganizationSelectedPackageID: userAddMain.PackageAssigned.value,
+            OrganizationSelectedPackageID: Number(
+              userAddMain.PackageAssigned.value
+            ),
           },
         ],
       };
@@ -295,7 +297,7 @@ const AddUserMain = () => {
       },
 
       PackageAssigned: {
-        value: "",
+        value: 0,
         errorMessage: "",
         errorStatus: false,
       },
@@ -458,7 +460,7 @@ const AddUserMain = () => {
       setUserAddMain({
         ...userAddMain,
         PackageAssigned: {
-          value: "",
+          value: 0,
           errorMessage: t("Please-select-a-package"),
           errorStatus: true,
         },
@@ -936,7 +938,7 @@ const AddUserMain = () => {
                     <Col>
                       <p
                         className={
-                          userAddMain.PackageAssigned.value === ""
+                          userAddMain.PackageAssigned.value === 0
                             ? ` ${styles["errorMessage"]} `
                             : `${styles["errorMessage_hidden"]}`
                         }

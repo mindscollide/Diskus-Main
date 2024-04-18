@@ -10,6 +10,7 @@ import {
   ResendForgotPasswordCode,
   EditOrganizationsUser,
   DeleteOrganizationsUser,
+  PaymentInitiateStepperThree,
 } from "../../commen/apis/Api_config";
 import {
   authenticationApi,
@@ -1431,6 +1432,85 @@ const deleteOrganizationUserAPI = (navigate, t, data) => {
   };
 };
 
+//Payment Initiate Stepper Three API
+
+const paymentInitiateInitApi = () => {
+  return {
+    type: actions.PAYMENT_INITIATE_INIT,
+  };
+};
+
+const paymentInitiateSuccessApi = (response, message) => {
+  return {
+    type: actions.PAYMENT_INITIATE_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const paymentInitiateFailApi = (message) => {
+  return {
+    type: actions.PAYMENT_INITIATE_FAIL,
+    message: message,
+  };
+};
+
+const paymentInitiateMainApi = (navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(paymentInitiateInitApi());
+    let form = new FormData();
+    form.append("RequestMethod", PaymentInitiateStepperThree.RequestMethod);
+    form.append("RequestData", JSON.stringify());
+    axios({
+      method: "post",
+      url: getAdminURLs,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(paymentInitiateMainApi(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_PaymentInitiate_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                paymentInitiateSuccessApi(
+                  response.data.responseResult,
+                  t("Successful")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_PaymentInitiate_02".toLowerCase()
+                )
+            ) {
+              dispatch(paymentInitiateFailApi(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(paymentInitiateFailApi(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(paymentInitiateFailApi(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(paymentInitiateFailApi(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   signUpOrganizationAndPakageSelection,
   // getAllorganizationSubscriptionExpiryDetailsApi,
@@ -1447,4 +1527,5 @@ export {
   getAllUserTypePackagesApi,
   ResendForgotPasswordCodeApi,
   deleteOrganizationUserAPI,
+  paymentInitiateMainApi,
 };
