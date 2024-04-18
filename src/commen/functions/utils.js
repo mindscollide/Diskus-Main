@@ -55,6 +55,7 @@ export async function handleLoginResponse(response) {
       localStorage.setItem("revokeCancellation", false);
     }
 
+    localStorage.setItem("roleID", response.roleId);
     if (response.authToken) {
       localStorage.setItem("name", response.authToken.name);
       localStorage.setItem("userEmail", response.authToken.userName);
@@ -63,7 +64,6 @@ export async function handleLoginResponse(response) {
         "refreshToken",
         JSON.stringify(response.authToken.refreshToken)
       );
-      localStorage.setItem("roleID", response.authToken.roleID);
       localStorage.setItem(
         "organizationRoleID",
         response.authToken.organizationRoleID

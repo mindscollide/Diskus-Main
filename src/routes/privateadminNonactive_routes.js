@@ -8,7 +8,9 @@ const PrivateAdminRouteNonActive = () => {
   let RoleID = localStorage.getItem("roleID");
   const token = JSON.parse(localStorage.getItem("token"));
   const [currentUser, setCurrentUser] = useState(
-    RoleID === "1" && (Blur != undefined || Blur != null) ? true : null
+    (RoleID === "4" || RoleID === "1") && (Blur != undefined || Blur != null)
+      ? true
+      : null
   );
   let TwoFA = JSON.parse(localStorage.getItem("2fa"));
   let TowApproval = JSON.parse(localStorage.getItem("TowApproval"));

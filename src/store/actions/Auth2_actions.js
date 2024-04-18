@@ -537,7 +537,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_UserPasswordVerification_03".toLowerCase()
                 )
             ) {
-              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+              if (JSON.parse(response.data.responseResult.roleId) === 1) {
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
@@ -556,7 +556,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 );
                 // navigate("/");
               } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 2
+                JSON.parse(response.data.responseResult.roleId) === 2
               ) {
                 dispatch(
                   enterPasswordSuccess(
@@ -576,7 +576,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 mqttConnection(response.data.responseResult.authToken.userID);
                 // navigate("/");
               } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 3
+                JSON.parse(response.data.responseResult.roleId) === 3
               ) {
                 dispatch(
                   enterPasswordSuccess(
@@ -603,10 +603,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_UserPasswordVerification_04".toLowerCase()
                 )
             ) {
-              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+              if (JSON.parse(response.data.responseResult.roleId) === 1) {
                 localStorage.setItem(
                   "roleID",
-                  JSON.parse(response.data.responseResult.userRoleId)
+                  JSON.parse(response.data.responseResult.roleId)
                 );
                 localStorage.setItem(
                   "organizationID",
@@ -626,7 +626,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   navigate("/Admin/ManageUsers");
                 }
               } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 2
+                JSON.parse(response.data.responseResult.roleId) === 2
               ) {
                 await dispatch(
                   getPackageExpiryDetail(
@@ -637,7 +637,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 );
                 localStorage.setItem(
                   "roleID",
-                  JSON.parse(response.data.responseResult.userRoleId)
+                  JSON.parse(response.data.responseResult.roleId)
                 );
                 localStorage.setItem(
                   "organizationID",
@@ -665,10 +665,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_UserPasswordVerification_05".toLowerCase()
                 )
             ) {
-              if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
+              if (JSON.parse(response.data.responseResult.roleId) === 3) {
                 localStorage.setItem(
                   "roleID",
-                  JSON.parse(response.data.responseResult.userRoleId)
+                  JSON.parse(response.data.responseResult.roleId)
                 );
                 localStorage.setItem(
                   "organizationID",
@@ -715,7 +715,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_UserPasswordVerification_07".toLowerCase()
                 )
             ) {
-              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+              if (JSON.parse(response.data.responseResult.roleId) === 1) {
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
@@ -734,7 +734,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 mqttConnection(response.data.responseResult.authToken.userID);
                 // navigate("/");
               } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 2
+                JSON.parse(response.data.responseResult.roleId) === 2
               ) {
                 dispatch(
                   enterPasswordSuccess(
@@ -759,7 +759,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
 
                 // navigate("/");
               } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 3
+                JSON.parse(response.data.responseResult.roleId) === 3
               ) {
                 dispatch(
                   enterPasswordSuccess(
@@ -845,7 +845,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_UserPasswordVerification_09".toLowerCase()
                 )
             ) {
-              if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
+              console.log("enterPasswordSuccess");
+              if (JSON.parse(response.data.responseResult.roleId) === 3) {
                 console.log("enterPasswordSuccess");
                 dispatch(
                   enterPasswordSuccess(
@@ -856,13 +857,16 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 if (
                   response.data.responseResult.authToken.isFirstLogIn === true
                 ) {
+                  console.log("enterPasswordSuccess");
                   navigate("/onboard");
                 } else {
                   let RSVP = localStorage.getItem("RSVP");
                   let dataroomValue = localStorage.getItem("DataRoomEmail");
 
+                  console.log("enterPasswordSuccess");
                   if (RSVP !== undefined && RSVP !== null) {
                     if (response.data.responseResult.hasUserRights) {
+                      console.log("enterPasswordSuccess");
                       navigate("/DisKus/Meeting/Useravailabilityformeeting");
                     }
                   } else if (
@@ -890,7 +894,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_UserPasswordVerification_10".toLowerCase()
                 )
             ) {
-              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+              if (JSON.parse(response.data.responseResult.roleId) === 1) {
                 localStorage.setItem("blur", true);
                 dispatch(
                   enterPasswordSuccess(
@@ -904,7 +908,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   navigate("/Admin/Payment/PayOutstanding");
                 }
               } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 2
+                JSON.parse(response.data.responseResult.roleId) === 2
               ) {
                 localStorage.setItem("blur", true);
                 dispatch(
@@ -919,7 +923,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   navigate("/Admin/Nonactive/");
                 }
               } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 3
+                JSON.parse(response.data.responseResult.roleId) === 3
               ) {
                 localStorage.setItem("blur", true);
                 dispatch(
@@ -939,7 +943,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_UserPasswordVerification_11".toLowerCase()
                 )
             ) {
-              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+              if (JSON.parse(response.data.responseResult.roleId) === 1) {
                 localStorage.setItem("blur", true);
                 dispatch(
                   enterPasswordSuccess(
@@ -953,7 +957,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   navigate("/Admin/Payment/PayOutstanding");
                 }
               } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 2
+                JSON.parse(response.data.responseResult.roleId) === 2
               ) {
                 localStorage.setItem("blur", true);
                 dispatch(
@@ -968,7 +972,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   navigate("/Admin/Nonactive/");
                 }
               } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 3
+                JSON.parse(response.data.responseResult.roleId) === 3
               ) {
                 localStorage.setItem("blur", true);
                 dispatch(
@@ -990,7 +994,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
             ) {
               localStorage.setItem("signupCurrentPage", 5);
               navigate("/Signup");
-              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+              if (JSON.parse(response.data.responseResult.roleId) === 1) {
                 dispatch(
                   enterPasswordFail(
                     t("Your-organization-is-not-activated"),
@@ -999,14 +1003,14 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 );
                 navigate("/selectedpackage");
               } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 2
+                JSON.parse(response.data.responseResult.roleId) === 2
               ) {
                 dispatch(
                   enterPasswordFail(t("Your-organization-is-not-activated"))
                 );
                 navigate("/");
               } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 3
+                JSON.parse(response.data.responseResult.roleId) === 3
               ) {
                 dispatch(
                   enterPasswordFail(t("Your-organization-is-not-activated"))
@@ -1020,7 +1024,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_UserPasswordVerification_13".toLowerCase()
                 )
             ) {
-              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+              if (JSON.parse(response.data.responseResult.roleId) === 1) {
                 dispatch(
                   enterPasswordFail(
                     t("User-is-not-activated-please-contact-your-admin")
@@ -1031,7 +1035,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 dispatch(LoginFlowRoutes(1));
                 // navigate("/");
               } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 2
+                JSON.parse(response.data.responseResult.roleId) === 2
               ) {
                 dispatch(
                   enterPasswordFail(
@@ -1042,7 +1046,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 dispatch(LoginFlowRoutes(1));
                 // navigate("/");
               } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 3
+                JSON.parse(response.data.responseResult.roleId) === 3
               ) {
                 dispatch(
                   enterPasswordFail(
@@ -1080,16 +1084,16 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_UserPasswordVerification_18".toLowerCase()
                 )
             ) {
-              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+              if (JSON.parse(response.data.responseResult.roleId) === 1) {
                 dispatch(enterPasswordFail(t("The-user-is-blocked")));
                 navigate("/");
               } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 2
+                JSON.parse(response.data.responseResult.roleId) === 2
               ) {
                 dispatch(enterPasswordFail(t("The-user-is-blocked")));
                 navigate("/");
               } else if (
-                JSON.parse(response.data.responseResult.userRoleId) === 3
+                JSON.parse(response.data.responseResult.roleId) === 3
               ) {
                 dispatch(enterPasswordFail(t("The-user-is-blocked")));
                 navigate("/");
@@ -1288,7 +1292,7 @@ const createPasswordAction = (value, navigate, t) => {
                     "ERM_AuthService_SignUpManager_UsersPasswordCreation_01".toLowerCase()
                   )
               ) {
-                if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+                if (JSON.parse(response.data.responseResult.roleId) === 1) {
                   dispatch(
                     createPasswordSuccess(
                       response.data.responseResult,
@@ -1298,7 +1302,7 @@ const createPasswordAction = (value, navigate, t) => {
                   localStorage.setItem("signupCurrentPage", 5);
                   navigate("/Signup");
                 } else if (
-                  JSON.parse(response.data.responseResult.userRoleId) === 2
+                  JSON.parse(response.data.responseResult.roleId) === 2
                 ) {
                   dispatch(
                     createPasswordSuccess(
@@ -1309,7 +1313,7 @@ const createPasswordAction = (value, navigate, t) => {
                   localStorage.setItem("signupCurrentPage", 5);
                   navigate("/Signup");
                 } else if (
-                  JSON.parse(response.data.responseResult.userRoleId) === 3
+                  JSON.parse(response.data.responseResult.roleId) === 3
                 ) {
                   dispatch(
                     createPasswordSuccess(
@@ -1326,7 +1330,7 @@ const createPasswordAction = (value, navigate, t) => {
                     "ERM_AuthService_SignUpManager_UsersPasswordCreation_02".toLowerCase()
                   )
               ) {
-                if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+                if (JSON.parse(response.data.responseResult.roleId) === 1) {
                   dispatch(
                     createPasswordSuccess(
                       response.data.responseResult,
@@ -1346,7 +1350,7 @@ const createPasswordAction = (value, navigate, t) => {
                   localStorage.setItem("LoginFlowPageRoute", 13);
                   // navigate("/");
                 } else if (
-                  JSON.parse(response.data.responseResult.userRoleId) === 2
+                  JSON.parse(response.data.responseResult.roleId) === 2
                 ) {
                   dispatch(
                     createPasswordSuccess(
@@ -1367,7 +1371,7 @@ const createPasswordAction = (value, navigate, t) => {
                   localStorage.setItem("LoginFlowPageRoute", 13);
                   // navigate("/");
                 } else if (
-                  JSON.parse(response.data.responseResult.userRoleId) === 3
+                  JSON.parse(response.data.responseResult.roleId) === 3
                 ) {
                   dispatch(
                     createPasswordSuccess(
@@ -1395,7 +1399,7 @@ const createPasswordAction = (value, navigate, t) => {
                     "ERM_AuthService_SignUpManager_UsersPasswordCreation_04".toLowerCase()
                   )
               ) {
-                if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+                if (JSON.parse(response.data.responseResult.roleId) === 1) {
                   dispatch(
                     createPasswordSuccess(
                       response.data.responseResult,
@@ -1406,7 +1410,7 @@ const createPasswordAction = (value, navigate, t) => {
                   dispatch(LoginFlowRoutes(1));
                   navigate("/");
                 } else if (
-                  JSON.parse(response.data.responseResult.userRoleId) === 2
+                  JSON.parse(response.data.responseResult.roleId) === 2
                 ) {
                   dispatch(
                     createPasswordSuccess(
@@ -1418,7 +1422,7 @@ const createPasswordAction = (value, navigate, t) => {
                   dispatch(LoginFlowRoutes(1));
                   navigate("/");
                 } else if (
-                  JSON.parse(response.data.responseResult.userRoleId) === 3
+                  JSON.parse(response.data.responseResult.roleId) === 3
                 ) {
                   dispatch(
                     createPasswordSuccess(
@@ -1465,7 +1469,7 @@ const createPasswordAction = (value, navigate, t) => {
                     "ERM_AuthService_SignUpManager_UsersPasswordCreation_05".toLowerCase()
                   )
               ) {
-                if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+                if (JSON.parse(response.data.responseResult.roleId) === 1) {
                   dispatch(
                     createPasswordSuccess(
                       response.data.responseResult,
@@ -1478,7 +1482,7 @@ const createPasswordAction = (value, navigate, t) => {
                   dispatch(LoginFlowRoutes(1));
                   navigate("/");
                 } else if (
-                  JSON.parse(response.data.responseResult.userRoleId) === 2
+                  JSON.parse(response.data.responseResult.roleId) === 2
                 ) {
                   dispatch(
                     createPasswordSuccess(
@@ -1492,7 +1496,7 @@ const createPasswordAction = (value, navigate, t) => {
                   dispatch(LoginFlowRoutes(1));
                   navigate("/");
                 } else if (
-                  JSON.parse(response.data.responseResult.userRoleId) === 3
+                  JSON.parse(response.data.responseResult.roleId) === 3
                 ) {
                   dispatch(
                     createPasswordSuccess(
@@ -1513,7 +1517,7 @@ const createPasswordAction = (value, navigate, t) => {
                     "ERM_AuthService_SignUpManager_UsersPasswordCreation_06".toLowerCase()
                   )
               ) {
-                if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+                if (JSON.parse(response.data.responseResult.roleId) === 1) {
                   dispatch(
                     createPasswordSuccess(
                       response.data.responseResult,
@@ -1524,7 +1528,7 @@ const createPasswordAction = (value, navigate, t) => {
                   dispatch(LoginFlowRoutes(1));
                   navigate("/");
                 } else if (
-                  JSON.parse(response.data.responseResult.userRoleId) === 2
+                  JSON.parse(response.data.responseResult.roleId) === 2
                 ) {
                   dispatch(
                     createPasswordSuccess(
@@ -1536,7 +1540,7 @@ const createPasswordAction = (value, navigate, t) => {
                   dispatch(LoginFlowRoutes(1));
                   navigate("/");
                 } else if (
-                  JSON.parse(response.data.responseResult.userRoleId) === 3
+                  JSON.parse(response.data.responseResult.roleId) === 3
                 ) {
                   dispatch(
                     createPasswordSuccess(
@@ -1560,8 +1564,8 @@ const createPasswordAction = (value, navigate, t) => {
                     .organizationSelectedUserPackageID;
 
                 localStorage.setItem("PakageSelectedID", findSelectedPackageID);
-
-                dispatch(showCreateAddtionalUsersModal(true));
+                navigate("/Diskus");
+                // dispatch(showCreateAddtionalUsersModal(true));
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1579,7 +1583,7 @@ const createPasswordAction = (value, navigate, t) => {
                 navigate("/Signup");
 
                 localStorage.setItem("blur", true);
-                if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+                if (JSON.parse(response.data.responseResult.roleId) === 1) {
                   dispatch(
                     createPasswordSuccess(
                       response.data.responseResult,
@@ -1590,7 +1594,7 @@ const createPasswordAction = (value, navigate, t) => {
                   );
                   navigate("/selectedpackage");
                 } else if (
-                  JSON.parse(response.data.responseResult.userRoleId) === 2
+                  JSON.parse(response.data.responseResult.roleId) === 2
                 ) {
                   dispatch(
                     createPasswordSuccess(
@@ -1602,7 +1606,7 @@ const createPasswordAction = (value, navigate, t) => {
                   );
                   navigate("/");
                 } else if (
-                  JSON.parse(response.data.responseResult.userRoleId) === 3
+                  JSON.parse(response.data.responseResult.roleId) === 3
                 ) {
                   dispatch(
                     createPasswordSuccess(
@@ -1621,7 +1625,7 @@ const createPasswordAction = (value, navigate, t) => {
                     "ERM_AuthService_SignUpManager_UsersPasswordCreation_10".toLowerCase()
                   )
               ) {
-                if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+                if (JSON.parse(response.data.responseResult.roleId) === 1) {
                   dispatch(
                     createPasswordSuccess(
                       response.data.responseResult,
@@ -1633,7 +1637,7 @@ const createPasswordAction = (value, navigate, t) => {
 
                   navigate("/");
                 } else if (
-                  JSON.parse(response.data.responseResult.userRoleId) === 2
+                  JSON.parse(response.data.responseResult.roleId) === 2
                 ) {
                   dispatch(
                     createPasswordSuccess(
@@ -1645,7 +1649,7 @@ const createPasswordAction = (value, navigate, t) => {
                   );
                   navigate("/");
                 } else if (
-                  JSON.parse(response.data.responseResult.userRoleId) === 3
+                  JSON.parse(response.data.responseResult.roleId) === 3
                 ) {
                   dispatch(
                     createPasswordSuccess(
@@ -1677,7 +1681,7 @@ const createPasswordAction = (value, navigate, t) => {
                     "ERM_AuthService_SignUpManager_UsersPasswordCreation_13".toLowerCase()
                   )
               ) {
-                if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+                if (JSON.parse(response.data.responseResult.roleId) === 1) {
                   localStorage.setItem("blur", true);
                   dispatch(
                     createPasswordSuccess(
@@ -1691,7 +1695,7 @@ const createPasswordAction = (value, navigate, t) => {
                     navigate("/Admin/PayOutstanding");
                   }
                 } else if (
-                  JSON.parse(response.data.responseResult.userRoleId) === 2
+                  JSON.parse(response.data.responseResult.roleId) === 2
                 ) {
                   localStorage.setItem("blur", true);
                   dispatch(
@@ -1706,7 +1710,7 @@ const createPasswordAction = (value, navigate, t) => {
                     navigate("/Admin/Nonactive");
                   }
                 } else if (
-                  JSON.parse(response.data.responseResult.userRoleId) === 3
+                  JSON.parse(response.data.responseResult.roleId) === 3
                 ) {
                   localStorage.setItem("blur", true);
                   dispatch(
@@ -1738,7 +1742,7 @@ const createPasswordAction = (value, navigate, t) => {
                     "ERM_AuthService_SignUpManager_UsersPasswordCreation_15".toLowerCase()
                   )
               ) {
-                if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+                if (JSON.parse(response.data.responseResult.roleId) === 1) {
                   localStorage.setItem("blur", true);
                   dispatch(
                     createPasswordSuccess(
@@ -1752,7 +1756,7 @@ const createPasswordAction = (value, navigate, t) => {
                     navigate("/Admin/PayOutstanding");
                   }
                 } else if (
-                  JSON.parse(response.data.responseResult.userRoleId) === 2
+                  JSON.parse(response.data.responseResult.roleId) === 2
                 ) {
                   localStorage.setItem("blur", true);
                   dispatch(
@@ -1767,7 +1771,7 @@ const createPasswordAction = (value, navigate, t) => {
                     navigate("/Admin/Nonactive");
                   }
                 } else if (
-                  JSON.parse(response.data.responseResult.userRoleId) === 3
+                  JSON.parse(response.data.responseResult.roleId) === 3
                 ) {
                   localStorage.setItem("blur", true);
                   dispatch(
@@ -1799,12 +1803,16 @@ const createPasswordAction = (value, navigate, t) => {
                     "ERM_AuthService_SignUpManager_UsersPasswordCreation_16".toLowerCase()
                   )
               ) {
-                dispatch(
-                  createPasswordSuccess(response.data.responseResult, "")
-                );
-                localStorage.removeItem("LoginFlowPageRoute");
                 if (response.data.responseResult.hasAdminRights) {
+                  localStorage.removeItem("LoginFlowPageRoute");
+                  dispatch(
+                    createPasswordSuccess(response.data.responseResult, "")
+                  );
                   navigate("/Admin");
+                } else {
+                  dispatch(
+                    createPasswordFail(t("The-user-is-not-an-admin-user"))
+                  );
                 }
               } else if (
                 response.data.responseResult.responseMessage
