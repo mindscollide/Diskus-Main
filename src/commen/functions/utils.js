@@ -184,8 +184,8 @@ export async function handleLoginResponse(response) {
   }
 }
 
+// Features IDs Check Fucntion
 export async function checkFeatureIDAvailability(id) {
-  console.log(id, "ididididididid");
   let packageID = localStorage.getItem("packageFeatureIDs");
 
   if (packageID) {
@@ -198,8 +198,7 @@ export async function checkFeatureIDAvailability(id) {
       console.error("Error parsing packageFeatureIDs from localStorage:", e);
       return false;
     }
-    console.log(idsArray, "ididididididid");
-    console.log(idsArray.includes(id), "ididididididid");
+
     return idsArray.includes(id);
   } else {
     return false;
