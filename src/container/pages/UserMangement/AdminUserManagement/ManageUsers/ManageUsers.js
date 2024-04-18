@@ -315,8 +315,37 @@ const ManageUsers = () => {
   };
 
   //manual filteration performed on the GRID
+  // const handleSearch = () => {
+  //   console.log("cliked");
+  //   const filteredData =
+  //     UserMangementReducer.allOrganizationUsersData.organizationUsers.filter(
+  //       (user) => {
+  //         console.log(user, "matchesStatusmatchesStatus");
+  //         const matchesName =
+  //           searchDetails.Name === "" ||
+  //           user.userName
+  //             .toLowerCase()
+  //             .includes(searchDetails.Name.toLowerCase());
+  //         const matchesEmail =
+  //           searchDetails.Email === "" ||
+  //           user.email
+  //             .toLowerCase()
+  //             .includes(searchDetails.Email.toLowerCase());
+
+  //         const matchesStatus =
+  //           searchDetails.Status === "" || // Assuming 'Status' holds the selected status from the dropdown
+  //           user.userStatus === searchDetails.Status.value;
+
+  //         return matchesName && matchesEmail;
+  //       }
+  //     );
+
+  //   setManageUserGrid(filteredData);
+  //   setsearchbox(false);
+  //   setshowSearches(true);
+  // };
+
   const handleSearch = () => {
-    console.log("cliked");
     const filteredData =
       UserMangementReducer.allOrganizationUsersData.organizationUsers.filter(
         (user) => {
@@ -325,6 +354,9 @@ const ManageUsers = () => {
             user.userName
               .toLowerCase()
               .includes(searchDetails.Name.toLowerCase());
+
+          console.log(matchesName, "matchesName");
+
           const matchesEmail =
             searchDetails.Email === "" ||
             user.email
@@ -332,14 +364,16 @@ const ManageUsers = () => {
               .includes(searchDetails.Email.toLowerCase());
 
           const matchesStatus =
-            searchDetails.Status === "" || // Assuming 'Status' holds the selected status from the dropdown
+            searchDetails.Status === "" ||
             user.userStatus === searchDetails.Status.value;
 
-          console.log(matchesStatus, "matchesStatusmatchesStatus");
-          console.log(user.userStatus, "matchesStatusmatchesStatus");
-          console.log(searchDetails.Status.value, "matchesStatusmatchesStatus");
+          console.log(matchesStatus, "matchesStatus");
 
-          return matchesName && matchesEmail && matchesStatus;
+          if (matchesStatus) {
+            return matchesStatus;
+          } else {
+            return matchesName && matchesEmail;
+          }
         }
       );
 
