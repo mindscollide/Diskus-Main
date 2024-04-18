@@ -7,6 +7,7 @@ import "./../../../i18n";
 import { useTranslation } from "react-i18next";
 
 import "./Navbar.css";
+import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 
 const NavbarAdmin = () => {
   const location = useLocation();
@@ -217,14 +218,16 @@ const NavbarAdmin = () => {
                         {localStorage.getItem("isTrial") ? (
                           <>
                             {" "}
-                            <Nav.Link
-                              as={Link}
-                              to="PakageDetailsUserManagement"
-                              id="collasible-nav-dropdown"
-                              className="DiskusAdminNavBar nav-link"
-                            >
-                              {t("Billing-subscription")}
-                            </Nav.Link>
+                            {checkFeatureIDAvailability(28) ? (
+                              <Nav.Link
+                                as={Link}
+                                to="PakageDetailsUserManagement"
+                                id="collasible-nav-dropdown"
+                                className="DiskusAdminNavBar nav-link"
+                              >
+                                {t("Billing-subscription")}
+                              </Nav.Link>
+                            ) : null}
                             {/* <Nav.Link
                               title={t("Billing-Subscription")}
                               id="collasible-nav-dropdown"
@@ -319,14 +322,16 @@ const NavbarAdmin = () => {
                           id="collasible-nav-dropdown"
                           className="DiskusAdminNavBar"
                         >
-                          <NavDropdown.Item
-                            as={Link}
-                            to="loginreport"
-                            eventKey="link-8"
-                            className="text-black border-none "
-                          >
-                            {t("User-login-history")}
-                          </NavDropdown.Item>
+                          {checkFeatureIDAvailability(35) ? (
+                            <NavDropdown.Item
+                              as={Link}
+                              to="loginreport"
+                              eventKey="link-8"
+                              className="text-black border-none "
+                            >
+                              {t("User-login-history")}
+                            </NavDropdown.Item>
+                          ) : null}
                         </NavDropdown>
                       </Nav>
                     </Navbar.Collapse>

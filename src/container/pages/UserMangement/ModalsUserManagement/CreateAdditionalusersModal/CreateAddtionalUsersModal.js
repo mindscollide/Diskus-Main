@@ -216,14 +216,17 @@ const CreateAddtionalUsersModal = () => {
     await dispatch(showCreateAddtionalUsersModal(false));
 
     await dispatch(getPackageExpiryDetail(navigate, Number(organzataionID), t));
-    navigate("/Admin/ManageUsers")
+    navigate("/Admin/ManageUsers");
   };
 
   //handle Create button
-  const handleCreatebutton = () => {
+  const handleCreatebutton = async () => {
     if (Object.keys(members).length > 0) {
       let data = { UserDataList: members };
-      dispatch(AddOrganizationsUserApi(navigate, t, data, false));
+      await dispatch(
+        getPackageExpiryDetail(navigate, Number(organzataionID), t)
+      );
+      await dispatch(AddOrganizationsUserApi(navigate, t, data, false));
     } else {
       // add notification that ad atleast one user
     }

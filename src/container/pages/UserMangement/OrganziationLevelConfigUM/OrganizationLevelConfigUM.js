@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./OrganizationLevelConfig.module.css";
 import { Checkbox } from "antd";
 import SecurityIcon from "../../../../assets/images/SecuritySetting.svg";
@@ -23,6 +23,12 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button, TextField } from "../../../../components/elements";
+import {
+  getOrganizationLevelSetting,
+  updateOrganizationLevelSetting,
+} from "../../../../store/actions/OrganizationSettings";
+import getTimeZone from "../../../../store/actions/GetTimeZone";
+import { checkFeatureIDAvailability } from "../../../../commen/functions/utils";
 const OrganizationLevelConfigUM = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -63,23 +69,23 @@ const OrganizationLevelConfigUM = () => {
     EmailWhenAddedToCommittee: false,
     EmailWhenRemovedFromCommittee: false,
     EmailWhenCommitteeIsDissolvedOrArchived: false,
-    // EmailWhenCommitteeIsInactive: false,
-    // EmailWhenCommitteeIsactive: false,
+    EmailWhenCommitteeIsInactive: false,
+    EmailWhenCommitteeIsactive: false,
     PushNotificationWhenAddedToCommittee: false,
     PushNotificationWhenRemovedFromCommittee: false,
     PushNotificationWhenCommitteeIsDissolvedOrArchived: false,
-    // PushNotificationWhenCommitteeIsInActive: false,
-    // PushNotificationWhenCommitteeSetIsInActive: false,
+    PushNotificationWhenCommitteeIsInActive: false,
+    PushNotificationWhenCommitteeSetIsInActive: false,
     EmailWhenAddedToGroup: false,
     EmailWhenRemovedFromGroup: false,
     EmailWhenGroupIsDissolvedOrArchived: false,
-    // EmailWhenGroupisInactive: false,
-    // EmailWhenGroupisactive: false,
+    EmailWhenGroupisInactive: false,
+    EmailWhenGroupisactive: false,
     PushNotificationWhenAddedToGroup: false,
     PushNotificationWhenRemovedFromGroup: false,
     PushNotificationWhenGroupIsDissolvedOrArchived: false,
-    // PushNotificationWhenGroupIsInActive: false,
-    // PushNotificationWhenGroupSetIsInActive: false,
+    PushNotificationWhenGroupIsInActive: false,
+    PushNotificationWhenGroupSetIsInActive: false,
     EmailWhenResolutionIsCirculated: false,
     EmailWhenNewResolutionIsCancelledAfterCirculation: false,
     EmailWhenResolutionIsClosed: false,
@@ -120,10 +126,10 @@ const OrganizationLevelConfigUM = () => {
     EmailWhenNewTODOEdited: false,
   });
 
-  //   useEffect(() => {
-  //     dispatch(getOrganizationLevelSetting(navigate, t));
-  //     dispatch(getTimeZone(navigate, t));
-  //   }, []);
+  useEffect(() => {
+    dispatch(getOrganizationLevelSetting(navigate, t));
+    dispatch(getTimeZone(navigate, t));
+  }, []);
 
   const handleGoogleLoginSuccess = (response) => {
     setSignUpCodeToken(response.code);
@@ -142,167 +148,170 @@ const OrganizationLevelConfigUM = () => {
     });
   };
 
-  // Time Zones set in values
-  //   useEffect(() => {
-  //     let TimeZone = settingReducer.TimeZone;
-  //     if (TimeZone !== undefined && TimeZone !== null) {
-  //       let newData = [];
-  //       TimeZone.map((data, index) => {
-  //         newData.push({
-  //           label: data.gmtOffset
-  //             ? data.countryName +
-  //               " " +
-  //               "(" +
-  //               data.timeZone +
-  //               ")" +
-  //               " " +
-  //               data.gmtOffset
-  //             : null,
-  //           value: data.pK_TZID,
-  //         });
-  //       });
-  //       setTimeZone(newData);
-  //     }
-  //   }, [settingReducer.TimeZone]);
+  useEffect(() => {
+    let TimeZone = settingReducer.TimeZone;
+    if (TimeZone !== undefined && TimeZone !== null) {
+      let newData = [];
+      TimeZone.map((data, index) => {
+        newData.push({
+          label: data.gmtOffset
+            ? data.countryName +
+              " " +
+              "(" +
+              data.timeZone +
+              ")" +
+              " " +
+              data.gmtOffset
+            : null,
+          value: data.pK_TZID,
+        });
+      });
+      setTimeZone(newData);
+    }
+  }, [settingReducer.TimeZone]);
 
-  //   useEffect(() => {
-  //     if (
-  //       settingReducer.GetOrganizationLevelSettingResponse !== null &&
-  //       settingReducer.GetOrganizationLevelSettingResponse !== undefined
-  //     ) {
-  //       if (
-  //         Object.keys(settingReducer.GetOrganizationLevelSettingResponse).length >
-  //         0
-  //       ) {
-  //         let organizationSettings =
-  //           settingReducer.GetOrganizationLevelSettingResponse;
-  //         setOrganizationSetting({
-  //           Is2FAEnabled: organizationSettings.is2FAEnabled,
-  //           EmailOnNewMeeting: organizationSettings.emailOnNewMeeting,
-  //           EmailEditMeeting: organizationSettings.emailOnEditMeeting,
-  //           EmailCancelOrDeleteMeeting:
-  //             organizationSettings.emailOnCancelledDeletedMeeting,
-  //           PushNotificationonNewMeeting:
-  //             organizationSettings.pushNotificationOnNewMeeting,
-  //           PushNotificationEditMeeting:
-  //             organizationSettings.pushNotificationOnEditMeeting,
-  //           PushNotificationCancelledOrDeleteMeeting:
-  //             organizationSettings.pushNotificationonCancelledDeletedMeeting,
-  //           ShowNotificationOnParticipantJoining:
-  //             organizationSettings.showNotificationOnParticipantJoining,
-  //           AllowCalenderSync: organizationSettings.userAllowGoogleCalendarSynch,
-  //           AllowMicrosoftCalenderSync:
-  //             organizationSettings.userAllowMicrosoftCalendarSynch,
-  //           EmailWhenAddedToCommittee:
-  //             organizationSettings.emailWhenAddedToCommittee,
-  //           EmailWhenRemovedFromCommittee:
-  //             organizationSettings.emailWhenRemovedFromCommittee,
-  //           EmailWhenCommitteeIsDissolvedOrArchived:
-  //             organizationSettings.emailWhenCommitteeIsDissolvedArchived,
-  //           // EmailWhenCommitteeIsSetInactive: organizationSettings.emailWhenCommitteeIsInActive,
-  //           PushNotificationWhenAddedToCommittee:
-  //             organizationSettings.pushNotificationwhenAddedtoCommittee,
-  //           PushNotificationWhenRemovedFromCommittee:
-  //             organizationSettings.pushNotificationwhenRemovedfromCommittee,
-  //           PushNotificationWhenCommitteeIsDissolvedOrArchived:
-  //             organizationSettings.pushNotificationwhenCommitteeisDissolvedArchived,
-  //           // PushNotificationWhenCommitteeIsInActive: organizationSettings.pushNotificationwhenCommitteeissetInActive,
-  //           EmailWhenAddedToGroup: organizationSettings.emailWhenAddedToGroup,
-  //           EmailWhenRemovedFromGroup:
-  //             organizationSettings.emailWhenRemovedFromGroup,
-  //           EmailWhenGroupIsDissolvedOrArchived:
-  //             organizationSettings.emailWhenGroupIsClosedArchived,
-  //           // EmailWhenGroupisSetInactive: organizationSettings.emailWhenGroupIsInActive,
-  //           PushNotificationWhenAddedToGroup:
-  //             organizationSettings.pushNotificationwhenAddedtoGroup,
-  //           PushNotificationWhenRemovedFromGroup:
-  //             organizationSettings.pushNotificationwhenRemovedfromGroup,
-  //           PushNotificationWhenGroupIsDissolvedOrArchived:
-  //             organizationSettings.pushNotificationwhenGroupisClosedArchived,
-  //           // PushNotificationWhenGroupIsInActive: organizationSettings.pushNotificationwhenGroupissetInActive,
-  //           EmailWhenResolutionIsCirculated:
-  //             organizationSettings.emailwhenaResolutionisClosed,
-  //           EmailWhenNewResolutionIsCancelledAfterCirculation:
-  //             organizationSettings.emailwhenResolutionisCancelledafterCirculation,
-  //           EmailWhenResolutionIsClosed:
-  //             organizationSettings.emailwhenaResolutionisClosed,
-  //           PushNotificationWhenNewResolutionIsCirculated:
-  //             organizationSettings.pushNotificationwhenNewResolutionisCirculated,
-  //           PushNotificationWhenNewResolutionIsCancelledAfterCirculated:
-  //             organizationSettings.pushNotificationwhenResolutionisCancelledafterCirculation,
-  //           PushNotificationWhenResolutionISClosed:
-  //             organizationSettings.pushNotificationWhenResolutionIsClosed,
-  //           EmailWhenNewPollIsPublished:
-  //             organizationSettings.emailWhenNewPollIsPublished,
-  //           EmailWhenPollDueDateIsPassed:
-  //             organizationSettings.emailWhenPollDueDateIsPassed,
-  //           EmailWhenPublishedPollIsDeleted:
-  //             organizationSettings.emailWhenPublishedPollIsDeleted,
-  //           EmailWhenPublishedPollIsUpdated:
-  //             organizationSettings.emailWhenPublishedPollIsUpdated,
-  //           PushNotificationWhenNewPollIsPublished:
-  //             organizationSettings.pushNotificationWhenNewPollIsPublished,
-  //           PushNotificationWhenPollDueDateIsPassed:
-  //             organizationSettings.pushNotificationWhenPollDueDateIsPassed,
-  //           PushNotificationWhenPublishedPollIsDeleted:
-  //             organizationSettings.pushNotificationWhenPublishedPollIsDeleted,
-  //           PushNotificationWhenPublishedPollIsUpdated:
-  //             organizationSettings.pushNotificationWhenPublishedPollIsUpdated,
-  //           DormatInactiveUsersforDays:
-  //             organizationSettings.dormantInactiveUsersForDays,
-  //           MaximumMeetingDuration: organizationSettings.maximumMeetingDuration,
-  //           CalenderMonthsSpan: organizationSettings.calenderMonthsSpan,
-  //           TimeZoneId: organizationSettings.timeZones?.pK_TZID,
-  //           worldCountryID: organizationSettings.worldCountry.fK_WorldCountryID,
-  //           EmailWhenGroupisActive: organizationSettings.emailWhenGroupIsActive,
-  //           EmailWhenGroupIsSetInActive:
-  //             organizationSettings.emailWhenGroupIsInActive,
-  //           PushNotificationWhenGroupisActive:
-  //             organizationSettings.pushNotificationwhenGroupissetActive,
-  //           PushNotificationWhenGroupisSetInActive:
-  //             organizationSettings.pushNotificationwhenGroupissetInActive,
-  //           EmailWhenCommitteeisActive:
-  //             organizationSettings.emailWhenCommitteeIsActive,
-  //           EmailWhenCommitteeIsSetInActive:
-  //             organizationSettings.emailWhenCommitteeIsInActive,
-  //           PushNotificationWhenCommitteeisActive:
-  //             organizationSettings.pushNotificationwhenCommitteeissetActive,
-  //           PushNotificationWhenCommitteeisSetInActive:
-  //             organizationSettings.pushNotificationwhenCommitteeissetInActive,
-  //           PushNotificationWhenNewTODOAssigned:
-  //             organizationSettings.pushNotificationWhenNewTODOAssigned,
-  //           PushNotificationWhenNewTODODeleted:
-  //             organizationSettings.pushNotificationWhenNewTODODeleted,
-  //           PushNotificationWhenNewTODOEdited:
-  //             organizationSettings.pushNotificationWhenNewTODOEdited,
-  //           PushNotificationWhenNewCommentAdded:
-  //             organizationSettings.pushNotificationWhenNewCommentAdded,
-  //           PushNotificationWhenCommentDeleted:
-  //             organizationSettings.pushNotificationWhenCommentDeleted,
-  //           EmailWhenCommentDeleted: organizationSettings.emailWhenCommentDeleted,
-  //           EmailWhenNewCommentAdded:
-  //             organizationSettings.emailWhenNewCommentAdded,
-  //           EmailWhenNewTODOAssigned:
-  //             organizationSettings.emailWhenNewTODOAssigned,
-  //           EmailWhenNewTODODeleted: organizationSettings.emailWhenNewTODODeleted,
-  //           EmailWhenNewTODOEdited: organizationSettings.emailWhenNewTODOEdited,
-  //         });
-  //         let timeZoneCode = {
-  //           label: organizationSettings.timeZones
-  //             ? organizationSettings.timeZones.countryName +
-  //               " " +
-  //               "(" +
-  //               organizationSettings.timeZones.timeZone +
-  //               ")" +
-  //               " " +
-  //               organizationSettings.timeZones.gmtOffset
-  //             : null,
-  //           value: organizationSettings.timeZones?.pK_TZID,
-  //         };
-  //         setTimeZoneValue(timeZoneCode);
-  //       }
-  //     }
-  //   }, [settingReducer.GetOrganizationLevelSettingResponse]);
+  useEffect(() => {
+    if (
+      settingReducer.GetOrganizationLevelSettingResponse !== null &&
+      settingReducer.GetOrganizationLevelSettingResponse !== undefined
+    ) {
+      if (
+        Object.keys(settingReducer.GetOrganizationLevelSettingResponse).length >
+        0
+      ) {
+        let organizationSettings =
+          settingReducer.GetOrganizationLevelSettingResponse;
+        setOrganizationSetting({
+          Is2FAEnabled: organizationSettings.is2FAEnabled,
+          EmailOnNewMeeting: organizationSettings.emailOnNewMeeting,
+          EmailEditMeeting: organizationSettings.emailOnEditMeeting,
+          EmailCancelOrDeleteMeeting:
+            organizationSettings.emailOnCancelledDeletedMeeting,
+          PushNotificationonNewMeeting:
+            organizationSettings.pushNotificationOnNewMeeting,
+          PushNotificationEditMeeting:
+            organizationSettings.pushNotificationOnEditMeeting,
+          PushNotificationCancelledOrDeleteMeeting:
+            organizationSettings.pushNotificationonCancelledDeletedMeeting,
+          ShowNotificationOnParticipantJoining:
+            organizationSettings.showNotificationOnParticipantJoining,
+          AllowCalenderSync: organizationSettings.userAllowGoogleCalendarSynch,
+          AllowMicrosoftCalenderSync:
+            organizationSettings.userAllowMicrosoftCalendarSynch,
+          EmailWhenAddedToCommittee:
+            organizationSettings.emailWhenAddedToCommittee,
+          EmailWhenRemovedFromCommittee:
+            organizationSettings.emailWhenRemovedFromCommittee,
+          EmailWhenCommitteeIsDissolvedOrArchived:
+            organizationSettings.emailWhenCommitteeIsDissolvedArchived,
+          EmailWhenCommitteeIsSetInactive:
+            organizationSettings.emailWhenCommitteeIsInActive,
+          PushNotificationWhenAddedToCommittee:
+            organizationSettings.pushNotificationwhenAddedtoCommittee,
+          PushNotificationWhenRemovedFromCommittee:
+            organizationSettings.pushNotificationwhenRemovedfromCommittee,
+          PushNotificationWhenCommitteeIsDissolvedOrArchived:
+            organizationSettings.pushNotificationwhenCommitteeisDissolvedArchived,
+          PushNotificationWhenCommitteeIsInActive:
+            organizationSettings.pushNotificationwhenCommitteeissetInActive,
+          EmailWhenAddedToGroup: organizationSettings.emailWhenAddedToGroup,
+          EmailWhenRemovedFromGroup:
+            organizationSettings.emailWhenRemovedFromGroup,
+          EmailWhenGroupIsDissolvedOrArchived:
+            organizationSettings.emailWhenGroupIsClosedArchived,
+          EmailWhenGroupisSetInactive:
+            organizationSettings.emailWhenGroupIsInActive,
+          PushNotificationWhenAddedToGroup:
+            organizationSettings.pushNotificationwhenAddedtoGroup,
+          PushNotificationWhenRemovedFromGroup:
+            organizationSettings.pushNotificationwhenRemovedfromGroup,
+          PushNotificationWhenGroupIsDissolvedOrArchived:
+            organizationSettings.pushNotificationwhenGroupisClosedArchived,
+          PushNotificationWhenGroupIsInActive:
+            organizationSettings.pushNotificationwhenGroupissetInActive,
+          EmailWhenResolutionIsCirculated:
+            organizationSettings.emailwhenaResolutionisClosed,
+          EmailWhenNewResolutionIsCancelledAfterCirculation:
+            organizationSettings.emailwhenResolutionisCancelledafterCirculation,
+          EmailWhenResolutionIsClosed:
+            organizationSettings.emailwhenaResolutionisClosed,
+          PushNotificationWhenNewResolutionIsCirculated:
+            organizationSettings.pushNotificationwhenNewResolutionisCirculated,
+          PushNotificationWhenNewResolutionIsCancelledAfterCirculated:
+            organizationSettings.pushNotificationwhenResolutionisCancelledafterCirculation,
+          PushNotificationWhenResolutionISClosed:
+            organizationSettings.pushNotificationWhenResolutionIsClosed,
+          EmailWhenNewPollIsPublished:
+            organizationSettings.emailWhenNewPollIsPublished,
+          EmailWhenPollDueDateIsPassed:
+            organizationSettings.emailWhenPollDueDateIsPassed,
+          EmailWhenPublishedPollIsDeleted:
+            organizationSettings.emailWhenPublishedPollIsDeleted,
+          EmailWhenPublishedPollIsUpdated:
+            organizationSettings.emailWhenPublishedPollIsUpdated,
+          PushNotificationWhenNewPollIsPublished:
+            organizationSettings.pushNotificationWhenNewPollIsPublished,
+          PushNotificationWhenPollDueDateIsPassed:
+            organizationSettings.pushNotificationWhenPollDueDateIsPassed,
+          PushNotificationWhenPublishedPollIsDeleted:
+            organizationSettings.pushNotificationWhenPublishedPollIsDeleted,
+          PushNotificationWhenPublishedPollIsUpdated:
+            organizationSettings.pushNotificationWhenPublishedPollIsUpdated,
+          DormatInactiveUsersforDays:
+            organizationSettings.dormantInactiveUsersForDays,
+          MaximumMeetingDuration: organizationSettings.maximumMeetingDuration,
+          CalenderMonthsSpan: organizationSettings.calenderMonthsSpan,
+          TimeZoneId: organizationSettings.timeZones?.pK_TZID,
+          worldCountryID: organizationSettings.worldCountry.fK_WorldCountryID,
+          EmailWhenGroupisActive: organizationSettings.emailWhenGroupIsActive,
+          EmailWhenGroupIsSetInActive:
+            organizationSettings.emailWhenGroupIsInActive,
+          PushNotificationWhenGroupisActive:
+            organizationSettings.pushNotificationwhenGroupissetActive,
+          PushNotificationWhenGroupisSetInActive:
+            organizationSettings.pushNotificationwhenGroupissetInActive,
+          EmailWhenCommitteeisActive:
+            organizationSettings.emailWhenCommitteeIsActive,
+          EmailWhenCommitteeIsSetInActive:
+            organizationSettings.emailWhenCommitteeIsInActive,
+          PushNotificationWhenCommitteeisActive:
+            organizationSettings.pushNotificationwhenCommitteeissetActive,
+          PushNotificationWhenCommitteeisSetInActive:
+            organizationSettings.pushNotificationwhenCommitteeissetInActive,
+          PushNotificationWhenNewTODOAssigned:
+            organizationSettings.pushNotificationWhenNewTODOAssigned,
+          PushNotificationWhenNewTODODeleted:
+            organizationSettings.pushNotificationWhenNewTODODeleted,
+          PushNotificationWhenNewTODOEdited:
+            organizationSettings.pushNotificationWhenNewTODOEdited,
+          PushNotificationWhenNewCommentAdded:
+            organizationSettings.pushNotificationWhenNewCommentAdded,
+          PushNotificationWhenCommentDeleted:
+            organizationSettings.pushNotificationWhenCommentDeleted,
+          EmailWhenCommentDeleted: organizationSettings.emailWhenCommentDeleted,
+          EmailWhenNewCommentAdded:
+            organizationSettings.emailWhenNewCommentAdded,
+          EmailWhenNewTODOAssigned:
+            organizationSettings.emailWhenNewTODOAssigned,
+          EmailWhenNewTODODeleted: organizationSettings.emailWhenNewTODODeleted,
+          EmailWhenNewTODOEdited: organizationSettings.emailWhenNewTODOEdited,
+        });
+        let timeZoneCode = {
+          label: organizationSettings.timeZones
+            ? organizationSettings.timeZones.countryName +
+              " " +
+              "(" +
+              organizationSettings.timeZones.timeZone +
+              ")" +
+              " " +
+              organizationSettings.timeZones.gmtOffset
+            : null,
+          value: organizationSettings.timeZones?.pK_TZID,
+        };
+        setTimeZoneValue(timeZoneCode);
+      }
+    }
+  }, [settingReducer.GetOrganizationLevelSettingResponse]);
 
   const openSecurityTab = () => {
     setSecuritystate(true);
@@ -490,13 +499,13 @@ const OrganizationLevelConfigUM = () => {
     });
   };
 
-  // const onChangeEmailWhenCommitteeIsInActive = () => {
-  //   setOrganizationSetting({
-  //     ...userOrganizationSetting,
-  //     EmailWhenCommitteeIsSetInactive:
-  //       !userOrganizationSetting.EmailWhenCommitteeIsSetInactive,
-  //   });
-  // };
+  const onChangeEmailWhenCommitteeIsInActive = () => {
+    setOrganizationSetting({
+      ...userOrganizationSetting,
+      EmailWhenCommitteeIsSetInactive:
+        !userOrganizationSetting.EmailWhenCommitteeIsSetInactive,
+    });
+  };
 
   const onChangePushNotificationWhenAddedToCommittee = () => {
     setOrganizationSetting({
@@ -527,14 +536,6 @@ const OrganizationLevelConfigUM = () => {
       ...userOrganizationSetting,
       PushNotificationWhenCommitteeisActive:
         !userOrganizationSetting.PushNotificationWhenCommitteeisActive,
-    });
-  };
-
-  const onChangeEmailWhenCommitteeIsInActive = () => {
-    setOrganizationSetting({
-      ...userOrganizationSetting,
-      EmailWhenCommitteeIsSetInActive:
-        !userOrganizationSetting.EmailWhenCommitteeIsSetInActive,
     });
   };
 
@@ -818,6 +819,120 @@ const OrganizationLevelConfigUM = () => {
       PushNotificationWhenNewTODOAssigned: value,
     });
   };
+
+  const updateOrganizationLevelSettings = async () => {
+    let OrganizationID = localStorage.getItem("organizationID");
+    let Data = {
+      CalenderMonthsSpan: userOrganizationSetting.CalenderMonthsSpan,
+      DormantInactiveUsersForDays:
+        userOrganizationSetting.DormatInactiveUsersforDays,
+      EmailOnCancelledDeletedMeeting:
+        userOrganizationSetting.EmailCancelOrDeleteMeeting,
+      EmailOnEditMeeting: userOrganizationSetting.EmailEditMeeting,
+      EmailOnNewMeeting: userOrganizationSetting.EmailOnNewMeeting,
+      EmailWhenAddedToCommittee:
+        userOrganizationSetting.EmailWhenAddedToCommittee,
+      EmailWhenAddedToGroup: userOrganizationSetting.EmailWhenAddedToGroup,
+      EmailWhenCommitteeIsActive:
+        userOrganizationSetting.EmailWhenCommitteeisActive,
+      EmailWhenCommitteeIsDissolvedArchived:
+        userOrganizationSetting.EmailWhenCommitteeIsDissolvedOrArchived,
+      EmailWhenCommitteeIsInActive:
+        userOrganizationSetting.EmailWhenCommitteeisActive,
+      EmailWhenGroupIsActive: userOrganizationSetting.EmailWhenGroupisActive,
+      EmailWhenGroupIsClosedArchived:
+        userOrganizationSetting.EmailWhenGroupIsDissolvedOrArchived,
+      EmailWhenGroupIsInActive:
+        userOrganizationSetting.EmailWhenGroupIsSetInActive,
+      EmailWhenNewPollIsPublished:
+        userOrganizationSetting.EmailWhenNewPollIsPublished,
+      EmailWhenPollDueDateIsPassed:
+        userOrganizationSetting.EmailWhenPollDueDateIsPassed,
+      EmailWhenPublishedPollIsDeleted:
+        userOrganizationSetting.EmailWhenPublishedPollIsDeleted,
+      EmailWhenPublishedPollIsUpdated:
+        userOrganizationSetting.EmailWhenPublishedPollIsUpdated,
+      EmailWhenRemovedFromCommittee:
+        userOrganizationSetting.EmailWhenRemovedFromCommittee,
+      EmailWhenRemovedFromGroup:
+        userOrganizationSetting.EmailWhenRemovedFromGroup,
+      EmailwhenNewResolutionisCirculated:
+        userOrganizationSetting.EmailWhenResolutionIsCirculated,
+      EmailwhenResolutionisCancelledafterCirculation:
+        userOrganizationSetting.EmailWhenNewResolutionIsCancelledAfterCirculation,
+      EmailwhenaResolutionisClosed:
+        userOrganizationSetting.EmailWhenResolutionIsClosed,
+      FK_OrganizationID: JSON.parse(OrganizationID),
+      FK_TZID: userOrganizationSetting.TimeZoneId,
+      FK_WorldCountryID: userOrganizationSetting.worldCountryID,
+      Is2FAEnabled: userOrganizationSetting.Is2FAEnabled,
+      MaximumMeetingDuration: userOrganizationSetting.MaximumMeetingDuration,
+      PushNotificationOnEditMeeting:
+        userOrganizationSetting.PushNotificationEditMeeting,
+      PushNotificationOnNewMeeting:
+        userOrganizationSetting.PushNotificationonNewMeeting,
+      PushNotificationWhenNewPollIsPublished:
+        userOrganizationSetting.PushNotificationWhenNewPollIsPublished,
+      PushNotificationWhenPollDueDateIsPassed:
+        userOrganizationSetting.PushNotificationWhenPollDueDateIsPassed,
+      PushNotificationWhenPublishedPollIsDeleted:
+        userOrganizationSetting.PushNotificationWhenPublishedPollIsDeleted,
+      PushNotificationWhenPublishedPollIsUpdated:
+        userOrganizationSetting.PushNotificationWhenPublishedPollIsUpdated,
+      PushNotificationWhenResolutionIsClosed:
+        userOrganizationSetting.PushNotificationWhenResolutionISClosed,
+      PushNotificationonCancelledDeletedMeeting:
+        userOrganizationSetting.PushNotificationCancelledOrDeleteMeeting,
+      PushNotificationwhenAddedtoCommittee:
+        userOrganizationSetting.PushNotificationWhenAddedToCommittee,
+      PushNotificationwhenAddedtoGroup:
+        userOrganizationSetting.PushNotificationWhenAddedToGroup,
+      PushNotificationwhenCommitteeisDissolvedArchived:
+        userOrganizationSetting.PushNotificationWhenCommitteeIsDissolvedOrArchived,
+      PushNotificationwhenCommitteeissetActive:
+        userOrganizationSetting.PushNotificationWhenCommitteeisActive,
+      PushNotificationwhenCommitteeissetInActive:
+        userOrganizationSetting.PushNotificationWhenCommitteeisSetInActive,
+      PushNotificationwhenGroupisClosedArchived:
+        userOrganizationSetting.PushNotificationWhenGroupIsDissolvedOrArchived,
+      PushNotificationwhenGroupissetActive:
+        userOrganizationSetting.PushNotificationWhenGroupisSetInActive,
+      PushNotificationwhenGroupissetInActive:
+        userOrganizationSetting.PushNotificationWhenGroupisActive,
+      PushNotificationwhenNewResolutionisCirculated:
+        userOrganizationSetting.PushNotificationWhenNewResolutionIsCirculated,
+      PushNotificationwhenRemovedfromCommittee:
+        userOrganizationSetting.PushNotificationWhenRemovedFromCommittee,
+      PushNotificationwhenRemovedfromGroup:
+        userOrganizationSetting.PushNotificationWhenRemovedFromGroup,
+      PushNotificationwhenResolutionisCancelledafterCirculation:
+        userOrganizationSetting.PushNotificationWhenNewResolutionIsCancelledAfterCirculated,
+      ShowNotificationOnParticipantJoining:
+        userOrganizationSetting.ShowNotificationOnParticipantJoining,
+      UserAllowGoogleCalendarSynch: userOrganizationSetting.AllowCalenderSync,
+      UserAllowMicrosoftCalendarSynch:
+        userOrganizationSetting.AllowMicrosoftCalenderSync,
+      PushNotificationWhenNewTODOAssigned:
+        userOrganizationSetting.PushNotificationWhenNewTODOAssigned,
+      PushNotificationWhenNewTODODeleted:
+        userOrganizationSetting.PushNotificationWhenNewTODODeleted,
+      PushNotificationWhenNewTODOEdited:
+        userOrganizationSetting.PushNotificationWhenNewTODOEdited,
+      PushNotificationWhenNewCommentAdded:
+        userOrganizationSetting.PushNotificationWhenNewCommentAdded,
+      PushNotificationWhenCommentDeleted:
+        userOrganizationSetting.PushNotificationWhenCommentDeleted,
+      EmailWhenCommentDeleted: userOrganizationSetting.EmailWhenCommentDeleted,
+      EmailWhenNewCommentAdded:
+        userOrganizationSetting.EmailWhenNewCommentAdded,
+      EmailWhenNewTODOAssigned:
+        userOrganizationSetting.EmailWhenNewTODOAssigned,
+      EmailWhenNewTODODeleted: userOrganizationSetting.EmailWhenNewTODODeleted,
+      EmailWhenNewTODOEdited: userOrganizationSetting.EmailWhenNewTODOEdited,
+    };
+    dispatch(updateOrganizationLevelSetting(navigate, Data, t));
+  };
+
   return (
     <section className={styles["UserConfigsContainer"]}>
       <Row className="mt-3">
@@ -837,245 +952,282 @@ const OrganizationLevelConfigUM = () => {
         <Col lg={12} md={12} sm={12} className={styles["Padding_around_class"]}>
           <Row className="mt-3">
             <Col lg={3} md={3} sm={3}>
-              <div onClick={openSecurityTab} className="cursor-pointer">
-                <Row className="mt-3">
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={12}
-                    className="d-flex align-items-center"
-                  >
-                    <img
-                      draggable="false"
-                      src={SecurityIcon}
-                      alt=""
-                      width="25.51px"
-                      height="30.69px"
-                    />
-                  </Col>
-                  <Col lg={10} md={10} sm={12}>
-                    <span
-                      className={
-                        securitystate
-                          ? styles["Options_headings_active"]
-                          : styles["Options_headings"]
-                      }
+              {checkFeatureIDAvailability(36) ? (
+                <>
+                  <div onClick={openSecurityTab} className="cursor-pointer">
+                    <Row className="mt-3">
+                      <Col
+                        lg={2}
+                        md={2}
+                        sm={12}
+                        className="d-flex align-items-center"
+                      >
+                        <img
+                          draggable="false"
+                          src={SecurityIcon}
+                          alt=""
+                          width="25.51px"
+                          height="30.69px"
+                        />
+                      </Col>
+                      <Col lg={10} md={10} sm={12}>
+                        <span
+                          className={
+                            securitystate
+                              ? styles["Options_headings_active"]
+                              : styles["Options_headings"]
+                          }
+                        >
+                          {t("Security-settings")}
+                        </span>
+                      </Col>
+                    </Row>
+                  </div>
+                  <hr />
+                </>
+              ) : null}
+
+              {checkFeatureIDAvailability(37) ? (
+                <>
+                  <div onClick={opentodo} className="cursor-pointer">
+                    <Row className="mt-3">
+                      <Col
+                        lg={2}
+                        md={2}
+                        sm={12}
+                        className="d-flex align-items-center"
+                      >
+                        <img
+                          draggable="false"
+                          src={TodoIcon}
+                          alt=""
+                          width="30px"
+                          height="30px"
+                        />
+                      </Col>
+                      <Col lg={10} md={10} sm={12}>
+                        <span
+                          className={
+                            todo
+                              ? styles["Options_headings_active"]
+                              : styles["Options_headings"]
+                          }
+                        >
+                          {t("Todo")}
+                        </span>
+                      </Col>
+                    </Row>
+                  </div>
+                  <hr />
+                </>
+              ) : null}
+
+              {checkFeatureIDAvailability(38) ? (
+                <>
+                  <div onClick={openMeetingTab} className="cursor-pointer">
+                    <Row className="mt-3">
+                      <Col
+                        lg={2}
+                        md={2}
+                        sm={12}
+                        className="d-flex align-items-center"
+                      >
+                        <img
+                          draggable="false"
+                          src={MeetingIcon}
+                          alt=""
+                          width="35.79px"
+                          height="27.3px"
+                        />
+                      </Col>
+                      <Col lg={10} md={10} ms={12}>
+                        <span
+                          className={
+                            meetingsState
+                              ? styles["Options_headings_active"]
+                              : styles["Options_headings"]
+                          }
+                        >
+                          {t("Meetings")}
+                        </span>
+                      </Col>
+                    </Row>
+                  </div>
+                  <hr />
+                </>
+              ) : null}
+
+              {checkFeatureIDAvailability(39) ? (
+                <>
+                  <div className="cursor-pointer" onClick={openCalenderTab}>
+                    <Row className="mt-3">
+                      <Col
+                        lg={2}
+                        md={2}
+                        sm={12}
+                        className="d-flex align-items-center"
+                      >
+                        <img
+                          draggable="false"
+                          src={Calender}
+                          alt=""
+                          width="28.47px"
+                          height="28.47px"
+                        />
+                      </Col>
+                      <Col lg={10} md={10} ms={12}>
+                        <span
+                          className={
+                            calender
+                              ? styles["Options_headings_active"]
+                              : styles["Options_headings"]
+                          }
+                        >
+                          {t("Calender")}
+                        </span>
+                      </Col>
+                    </Row>
+                  </div>
+                  <hr />
+                </>
+              ) : null}
+
+              {checkFeatureIDAvailability(40) ? (
+                <>
+                  <div onClick={openCommitteTab} className="cursor-pointer">
+                    <Row className="mt-3">
+                      <Col
+                        lg={2}
+                        md={2}
+                        sm={12}
+                        className="d-flex align-items-center"
+                      >
+                        <img
+                          draggable="false"
+                          src={Committee}
+                          alt=""
+                          width="35.8px"
+                          height="34.63px"
+                        />
+                      </Col>
+                      <Col lg={10} md={10} ms={12}>
+                        <span
+                          className={
+                            committee
+                              ? styles["Options_headings_active"]
+                              : styles["Options_headings"]
+                          }
+                        >
+                          {t("Committees")}
+                        </span>
+                      </Col>
+                    </Row>
+                  </div>
+                  <hr />
+                </>
+              ) : null}
+
+              {checkFeatureIDAvailability(41) ? (
+                <>
+                  <div onClick={openGroupTab} className="cursor-pointer">
+                    <Row className="mt-3">
+                      <Col
+                        lg={2}
+                        md={2}
+                        sm={12}
+                        className="d-flex align-items-center"
+                      >
+                        <img
+                          draggable="false"
+                          src={GroupIcon}
+                          alt=""
+                          width="29px"
+                          height="26.04px"
+                        />
+                      </Col>
+                      <Col lg={10} md={10} ms={12}>
+                        <span
+                          className={
+                            group
+                              ? styles["Options_headings_active"]
+                              : styles["Options_headings"]
+                          }
+                        >
+                          {t("Groups")}
+                        </span>
+                      </Col>
+                    </Row>
+                  </div>
+                  <hr />
+                </>
+              ) : null}
+
+              {checkFeatureIDAvailability(42) ? (
+                <>
+                  <div onClick={openResolutionTab} className="cursor-pointer">
+                    <Row className="mt-3">
+                      <Col
+                        lg={2}
+                        md={2}
+                        sm={12}
+                        className="d-flex align-items-center"
+                      >
+                        <img
+                          draggable="false"
+                          src={ResolutionIcon}
+                          alt=""
+                          width="30px"
+                          height="31.18px"
+                        />
+                      </Col>
+                      <Col lg={10} md={10} ms={12}>
+                        <span
+                          className={
+                            resolution
+                              ? styles["Options_headings_active"]
+                              : styles["Options_headings"]
+                          }
+                        >
+                          {t("Resolutions")}
+                        </span>
+                      </Col>
+                    </Row>
+                  </div>
+                  <hr />
+                </>
+              ) : null}
+
+              {checkFeatureIDAvailability(43) ? (
+                <div onClick={openPollsTab} className="cursor-pointer">
+                  <Row className="mt-3">
+                    <Col
+                      lg={2}
+                      md={2}
+                      sm={12}
+                      className="d-flex align-items-center"
                     >
-                      {t("Security-settings")}
-                    </span>
-                  </Col>
-                </Row>
-              </div>
-              <hr />
-              <div onClick={opentodo} className="cursor-pointer">
-                <Row className="mt-3">
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={12}
-                    className="d-flex align-items-center"
-                  >
-                    <img
-                      draggable="false"
-                      src={TodoIcon}
-                      alt=""
-                      width="30px"
-                      height="30px"
-                    />
-                  </Col>
-                  <Col lg={10} md={10} sm={12}>
-                    <span
-                      className={
-                        todo
-                          ? styles["Options_headings_active"]
-                          : styles["Options_headings"]
-                      }
-                    >
-                      {t("Todo")}
-                    </span>
-                  </Col>
-                </Row>
-              </div>
-              <hr />
-              <div onClick={openMeetingTab} className="cursor-pointer">
-                <Row className="mt-3">
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={12}
-                    className="d-flex align-items-center"
-                  >
-                    <img
-                      draggable="false"
-                      src={MeetingIcon}
-                      alt=""
-                      width="35.79px"
-                      height="27.3px"
-                    />
-                  </Col>
-                  <Col lg={10} md={10} ms={12}>
-                    <span
-                      className={
-                        meetingsState
-                          ? styles["Options_headings_active"]
-                          : styles["Options_headings"]
-                      }
-                    >
-                      {t("Meetings")}
-                    </span>
-                  </Col>
-                </Row>
-              </div>
-              <hr />
-              <div className="cursor-pointer" onClick={openCalenderTab}>
-                <Row className="mt-3">
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={12}
-                    className="d-flex align-items-center"
-                  >
-                    <img
-                      draggable="false"
-                      src={Calender}
-                      alt=""
-                      width="28.47px"
-                      height="28.47px"
-                    />
-                  </Col>
-                  <Col lg={10} md={10} ms={12}>
-                    <span
-                      className={
-                        calender
-                          ? styles["Options_headings_active"]
-                          : styles["Options_headings"]
-                      }
-                    >
-                      {t("Calender")}
-                    </span>
-                  </Col>
-                </Row>
-              </div>
-              <hr />
-              <div onClick={openCommitteTab} className="cursor-pointer">
-                <Row className="mt-3">
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={12}
-                    className="d-flex align-items-center"
-                  >
-                    <img
-                      draggable="false"
-                      src={Committee}
-                      alt=""
-                      width="35.8px"
-                      height="34.63px"
-                    />
-                  </Col>
-                  <Col lg={10} md={10} ms={12}>
-                    <span
-                      className={
-                        committee
-                          ? styles["Options_headings_active"]
-                          : styles["Options_headings"]
-                      }
-                    >
-                      {t("Committees")}
-                    </span>
-                  </Col>
-                </Row>
-              </div>
-              <hr />
-              <div onClick={openGroupTab} className="cursor-pointer">
-                <Row className="mt-3">
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={12}
-                    className="d-flex align-items-center"
-                  >
-                    <img
-                      draggable="false"
-                      src={GroupIcon}
-                      alt=""
-                      width="29px"
-                      height="26.04px"
-                    />
-                  </Col>
-                  <Col lg={10} md={10} ms={12}>
-                    <span
-                      className={
-                        group
-                          ? styles["Options_headings_active"]
-                          : styles["Options_headings"]
-                      }
-                    >
-                      {t("Groups")}
-                    </span>
-                  </Col>
-                </Row>
-              </div>
-              <hr />
-              <div onClick={openResolutionTab} className="cursor-pointer">
-                <Row className="mt-3">
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={12}
-                    className="d-flex align-items-center"
-                  >
-                    <img
-                      draggable="false"
-                      src={ResolutionIcon}
-                      alt=""
-                      width="30px"
-                      height="31.18px"
-                    />
-                  </Col>
-                  <Col lg={10} md={10} ms={12}>
-                    <span
-                      className={
-                        resolution
-                          ? styles["Options_headings_active"]
-                          : styles["Options_headings"]
-                      }
-                    >
-                      {t("Resolutions")}
-                    </span>
-                  </Col>
-                </Row>
-              </div>
-              <hr />
-              <div onClick={openPollsTab} className="cursor-pointer">
-                <Row className="mt-3">
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={12}
-                    className="d-flex align-items-center"
-                  >
-                    <img
-                      draggable="false"
-                      alt=""
-                      src={pollsIcon}
-                      width="33.52px"
-                      height="34.59px"
-                    />
-                  </Col>
-                  <Col lg={10} md={10} ms={12}>
-                    <span
-                      className={
-                        polls
-                          ? styles["Options_headings_active"]
-                          : styles["Options_headings"]
-                      }
-                    >
-                      {t("Polls")}
-                    </span>
-                  </Col>
-                </Row>
-              </div>
+                      <img
+                        draggable="false"
+                        alt=""
+                        src={pollsIcon}
+                        width="33.52px"
+                        height="34.59px"
+                      />
+                    </Col>
+                    <Col lg={10} md={10} ms={12}>
+                      <span
+                        className={
+                          polls
+                            ? styles["Options_headings_active"]
+                            : styles["Options_headings"]
+                        }
+                      >
+                        {t("Polls")}
+                      </span>
+                    </Col>
+                  </Row>
+                </div>
+              ) : null}
             </Col>
             <Col lg={1} md={1} sm={1} className="d-flex justify-content-center">
               <img
@@ -2133,7 +2285,7 @@ const OrganizationLevelConfigUM = () => {
           <Button
             text={t("Update")}
             className={styles["New_settings_Update_Button"]}
-            // onClick={updateOrganizationLevelSettings}
+            onClick={updateOrganizationLevelSettings}
           />
         </Col>
       </Row>

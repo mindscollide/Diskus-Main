@@ -27,6 +27,7 @@ import { useSelector } from "react-redux";
 import EditUserModal from "../../ModalsUserManagement/EditUserModal/EditUserModal";
 import SuccessfullyUpdateModal from "../../ModalsUserManagement/SuccessFullyUpdatedModal/SuccessfullyUpdateModal";
 import { AllOrganizationsUsersApi } from "../../../../../store/actions/UserManagementActions";
+import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
 const ManageUsers = () => {
   const { t } = useTranslation();
 
@@ -37,8 +38,6 @@ const ManageUsers = () => {
   let organizationID = localStorage.getItem("organizationID");
 
   let userID = localStorage.getItem("userID");
-
-  let isTrial = localStorage.getItem("isTrial");
 
   const { UserMangementReducer, UserManagementModals } = useSelector(
     (state) => state
@@ -61,7 +60,7 @@ const ManageUsers = () => {
     Name: "",
     Email: "",
     Status: {
-      value: 0,
+      value: "",
       label: "",
     },
   });
@@ -244,19 +243,23 @@ const ManageUsers = () => {
       render: (text, record) => {
         return (
           <>
-            <div className="edit-icon-edituser icon-edit-list icon-size-one beachGreen">
-              <i>
-                <img
-                  draggable="false"
-                  alt=""
-                  src={EditIcon2}
-                  onClick={() => handleClickEditIcon(record)}
-                />
+            {checkFeatureIDAvailability(27) ? (
+              <div className="edit-icon-edituser icon-edit-list icon-size-one beachGreen">
+                <i>
+                  <img
+                    draggable="false"
+                    alt=""
+                    src={EditIcon2}
+                    onClick={() => handleClickEditIcon(record)}
+                  />
+                </i>
+              </div>
+            ) : null}
+            {checkFeatureIDAvailability(31) ? (
+              <i style={{ cursor: "pointer", color: "#000" }}>
+                <Trash size={22} onClick={() => handleDeleteModal(record)} />
               </i>
-            </div>
-            <i style={{ cursor: "pointer", color: "#000" }}>
-              <Trash size={22} onClick={() => handleDeleteModal(record)} />
-            </i>
+            ) : null}
           </>
         );
       },
@@ -315,10 +318,12 @@ const ManageUsers = () => {
       }));
     }
   };
-
+  console.log(
+    UserMangementReducer.allOrganizationUsersData.organizationUsers,
+    "UserMangementReducerUserMangementReducer"
+  );
   //manual filteration performed on the GRID
   const handleSearch = () => {
-    console.log("cliked");
     const filteredData =
       UserMangementReducer.allOrganizationUsersData.organizationUsers.filter(
         (user) => {
@@ -333,7 +338,17 @@ const ManageUsers = () => {
               .toLowerCase()
               .includes(searchDetails.Email.toLowerCase());
 
-          return matchesName && matchesEmail;
+          console.log(
+            user.userStatus,
+            searchDetails.Status.label,
+            "searchDetailssearchDetails"
+          );
+          const matchesStatus =
+            searchDetails.Status.label === "" ||
+            user.userStatus.toLowerCase() ===
+              searchDetails.Status.label.toLowerCase();
+
+          return matchesName && matchesEmail && matchesStatus;
         }
       );
 
@@ -359,6 +374,11 @@ const ManageUsers = () => {
 
   //Handle Reset Button
   const handleResetButton = () => {
+    let data = {
+      OrganizationID: Number(organizationID),
+      RequestingUserID: Number(userID),
+    };
+    dispatch(AllOrganizationsUsersApi(navigate, t, data));
     setshowSearches(false);
     setsearchDetails({
       Name: "",
@@ -382,6 +402,24 @@ const ManageUsers = () => {
     dispatch(showEditUserModal(true));
   };
 
+  //Options For Search
+
+  const options = [
+    { value: "Enabled", label: "Enabled" },
+    { value: "Disabled", label: "Disabled" },
+    { value: "Locked", label: "Locked" },
+    { value: "Closed", label: "Closed" },
+    { value: "Dormant", label: "Dormant" },
+    { value: "Delete", label: "Delete" },
+  ];
+
+  const handleStatusChange = (selectedOption) => {
+    setsearchDetails((prevDetails) => ({
+      ...prevDetails,
+      Status: selectedOption,
+    }));
+  };
+
   return (
     <Container>
       <Row className={"mt-3 row"}>
@@ -395,12 +433,14 @@ const ManageUsers = () => {
           <label className={styles["Edit-Main-Heading"]}>
             {t("Manage-user")}
           </label>
-          <Button
-            text={t("Add-users")}
-            icon={<Plus width={20} height={20} fontWeight={800} />}
-            className={styles["AddUsersButton"]}
-            onClick={handleAddusers}
-          />
+          {checkFeatureIDAvailability(26) ? (
+            <Button
+              text={t("Add-users")}
+              icon={<Plus width={20} height={20} fontWeight={800} />}
+              className={styles["AddUsersButton"]}
+              onClick={handleAddusers}
+            />
+          ) : null}
         </Col>
         <Col
           lg={6}
@@ -490,7 +530,12 @@ const ManageUsers = () => {
                         />
                       </Col>
                       <Col lg={6} md={6} sm={12} xs={12}>
-                        <Select placeholder={t("Status")} />
+                        <Select
+                          placeholder={t("Status")}
+                          options={options}
+                          value={searchDetails.Status}
+                          onChange={handleStatusChange}
+                        />
                       </Col>
                     </Row>
                     <Row className="mt-4">

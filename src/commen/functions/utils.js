@@ -183,3 +183,26 @@ export async function handleLoginResponse(response) {
     console.error("Error processing login response:", error);
   }
 }
+
+// Features IDs Check Fucntion
+export function checkFeatureIDAvailability(id) {
+  console.log(id, "ididid");
+  let packageID = localStorage.getItem("packageFeatureIDs");
+
+  if (packageID) {
+    packageID = packageID.replace(/,\s*\.\.\.\]$/, "]");
+
+    let idsArray;
+    try {
+      idsArray = JSON.parse(packageID);
+    } catch (e) {
+      console.error("Error parsing packageFeatureIDs from localStorage:", e);
+      return false;
+    }
+    console.log(idsArray.includes(id), "ididid");
+
+    return idsArray.includes(id);
+  } else {
+    return false;
+  }
+}
