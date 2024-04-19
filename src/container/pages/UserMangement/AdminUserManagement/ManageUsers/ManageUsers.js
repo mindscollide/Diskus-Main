@@ -263,7 +263,7 @@ const ManageUsers = () => {
 
   //navigating to Add user Page
   const handleAddusers = () => {
-    if (localStorage.getItem("isTrial")) {
+    if (JSON.parse(localStorage.getItem("isTrial"))) {
       navigate("/Admin/AddUsers");
     } else {
       navigate("/Admin/AddUsersUsermanagement");
@@ -648,7 +648,7 @@ const ManageUsers = () => {
           </span>
         </Col>
       </Row>
-      {localStorage.getItem("isTrial") && (
+      {JSON.parse(localStorage.getItem("isTrial")) && (
         <>
           <Row
             className={`mt-3 ${

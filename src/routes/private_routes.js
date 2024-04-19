@@ -44,19 +44,6 @@ const PrivateRoutes = () => {
     localStorage.getItem("token") !== null
       ? localStorage.getItem("token")
       : "";
-  let TwoFA = JSON.parse(localStorage.getItem("2fa"));
-  let TowApproval = JSON.parse(localStorage.getItem("TowApproval"));
-  // const [twoFaAproval, setTwoFaAproval] = useState(
-  //   TwoFA === true &&
-  //     TowApproval !== undefined &&
-  //     TowApproval !== null &&
-  //     TowApproval === true
-  //     ? true
-  //     : (TwoFA === undefined || TwoFA === null) &&
-  //       (TowApproval === undefined || TowApproval === null)
-  //     ? true
-  //     : false
-  // );
   const [currentUser, setCurrentUser] = useState(
     (RoleID === "3" || RoleID === "4") && (Blur === undefined || Blur === null)
       ? true

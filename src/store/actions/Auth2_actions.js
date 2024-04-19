@@ -537,26 +537,9 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_UserPasswordVerification_03".toLowerCase()
                 )
             ) {
-              if (JSON.parse(response.data.responseResult.roleId) === 1) {
-                dispatch(
-                  enterPasswordSuccess(
-                    response.data.responseResult,
-                    t("2fa-enabled")
-                  )
-                );
-                localStorage.setItem("2fa", true);
-                mqttConnection(response.data.responseResult.authToken.userID);
-                await dispatch(
-                  TwoFaAuthenticate(
-                    t,
-                    response.data.responseResult.organizationID,
-                    data.UserID,
-                    navigate
-                  )
-                );
-                // navigate("/");
-              } else if (
-                JSON.parse(response.data.responseResult.roleId) === 2
+              if (
+                JSON.parse(response.data.responseResult.roleId) ===
+                (3 || 4 || 1)
               ) {
                 dispatch(
                   enterPasswordSuccess(
@@ -565,6 +548,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   )
                 );
                 localStorage.setItem("2fa", true);
+                mqttConnection(response.data.responseResult.authToken.userID);
                 await dispatch(
                   TwoFaAuthenticate(
                     t,
@@ -573,28 +557,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     navigate
                   )
                 );
-                mqttConnection(response.data.responseResult.authToken.userID);
                 // navigate("/");
-              } else if (
-                JSON.parse(response.data.responseResult.roleId) === 3
-              ) {
-                dispatch(
-                  enterPasswordSuccess(
-                    response.data.responseResult,
-                    t("2fa-enabled")
-                  )
-                );
-                localStorage.setItem("2fa", true);
-                // navigate("/");
-                await dispatch(
-                  TwoFaAuthenticate(
-                    t,
-                    response.data.responseResult.organizationID,
-                    data.UserID,
-                    navigate
-                  )
-                );
-                mqttConnection(response.data.responseResult.authToken.userID);
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -603,51 +566,9 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_UserPasswordVerification_04".toLowerCase()
                 )
             ) {
-              if (JSON.parse(response.data.responseResult.roleId) === 1) {
-                localStorage.setItem(
-                  "roleID",
-                  JSON.parse(response.data.responseResult.roleId)
-                );
-                localStorage.setItem(
-                  "organizationID",
-                  response.data.responseResult.organizationID
-                );
-                localStorage.setItem(
-                  "organizationRoleID",
-                  response.data.responseResult.organizationRoleID
-                );
-                dispatch(
-                  enterPasswordSuccess(
-                    response.data.responseResult,
-                    t("The-user-is-an-admin-user")
-                  )
-                );
-                if (response.data.responseResult.hasAdminRights) {
-                  navigate("/Admin/ManageUsers");
-                }
-              } else if (
-                JSON.parse(response.data.responseResult.roleId) === 2
+              if (
+                JSON.parse(response.data.responseResult.roleId) === (4 || 1)
               ) {
-                await dispatch(
-                  getPackageExpiryDetail(
-                    navigate,
-                    Number(response.data.responseResult.organizationRoleID),
-                    t
-                  )
-                );
-                localStorage.setItem(
-                  "roleID",
-                  JSON.parse(response.data.responseResult.roleId)
-                );
-                localStorage.setItem(
-                  "organizationID",
-                  response.data.responseResult.organizationID
-                );
-                localStorage.setItem(
-                  "organizationRoleID",
-                  response.data.responseResult.organizationRoleID
-                );
-
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
@@ -657,6 +578,14 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 if (response.data.responseResult.hasAdminRights) {
                   navigate("/Admin/ManageUsers");
                 }
+              } else {
+                // add tranlations
+                dispatch(
+                  enterPasswordFail(
+                    response.data.responseResult,
+                    t("User-not-verified")
+                  )
+                );
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -666,18 +595,6 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 )
             ) {
               if (JSON.parse(response.data.responseResult.roleId) === 3) {
-                localStorage.setItem(
-                  "roleID",
-                  JSON.parse(response.data.responseResult.roleId)
-                );
-                localStorage.setItem(
-                  "organizationID",
-                  response.data.responseResult.organizationID
-                );
-                localStorage.setItem(
-                  "organizationRoleID",
-                  response.data.responseResult.organizationRoleID
-                );
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
@@ -715,26 +632,9 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_UserPasswordVerification_07".toLowerCase()
                 )
             ) {
-              if (JSON.parse(response.data.responseResult.roleId) === 1) {
-                dispatch(
-                  enterPasswordSuccess(
-                    response.data.responseResult,
-                    t("2fa-enabled")
-                  )
-                );
-                localStorage.setItem("2fa", true);
-                dispatch(
-                  TwoFaAuthenticate(
-                    t,
-                    response.data.responseResult.organizationID,
-                    data.UserID,
-                    navigate
-                  )
-                );
-                mqttConnection(response.data.responseResult.authToken.userID);
-                // navigate("/");
-              } else if (
-                JSON.parse(response.data.responseResult.roleId) === 2
+              if (
+                JSON.parse(response.data.responseResult.roleId) ===
+                (1 || 4 || 3)
               ) {
                 dispatch(
                   enterPasswordSuccess(
@@ -751,33 +651,15 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     navigate
                   )
                 );
-                localStorage.setItem(
-                  "isFirstLogin",
-                  response.data.responseResult.authToken.isFirstLogIn
-                );
                 mqttConnection(response.data.responseResult.authToken.userID);
-
                 // navigate("/");
-              } else if (
-                JSON.parse(response.data.responseResult.roleId) === 3
-              ) {
+              } else {
                 dispatch(
-                  enterPasswordSuccess(
+                  enterPasswordFail(
                     response.data.responseResult,
-                    t("2fa-enabled")
+                    t("User-not-verified")
                   )
                 );
-                localStorage.setItem("2fa", true);
-                dispatch(
-                  TwoFaAuthenticate(
-                    t,
-                    response.data.responseResult.organizationID,
-                    data.UserID,
-                    navigate
-                  )
-                );
-                // navigate("/");
-                mqttConnection(response.data.responseResult.authToken.userID);
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -799,15 +681,6 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t
                   )
                 );
-                localStorage.setItem(
-                  "roleID",
-                  JSON.parse(response.data.responseResult.roleID)
-                );
-                localStorage.setItem(
-                  "organizationID",
-                  response.data.responseResult.organizationID
-                );
-
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
@@ -845,9 +718,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_UserPasswordVerification_09".toLowerCase()
                 )
             ) {
-              console.log("enterPasswordSuccess");
               if (JSON.parse(response.data.responseResult.roleId) === 3) {
-                console.log("enterPasswordSuccess");
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
@@ -857,31 +728,23 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 if (
                   response.data.responseResult.authToken.isFirstLogIn === true
                 ) {
-                  console.log("enterPasswordSuccess");
                   navigate("/onboard");
                 } else {
                   let RSVP = localStorage.getItem("RSVP");
                   let dataroomValue = localStorage.getItem("DataRoomEmail");
-
-                  console.log("enterPasswordSuccess");
                   if (RSVP !== undefined && RSVP !== null) {
                     if (response.data.responseResult.hasUserRights) {
-                      console.log("enterPasswordSuccess");
                       navigate("/DisKus/Meeting/Useravailabilityformeeting");
                     }
                   } else if (
                     dataroomValue !== null &&
                     dataroomValue !== undefined
                   ) {
-                    console.log("enterPasswordSuccess");
                     if (response.data.responseResult.hasUserRights) {
-                      console.log("enterPasswordSuccess");
                       navigate("/Diskus/dataroom");
                     }
                   } else {
-                    console.log("enterPasswordSuccess");
                     if (response.data.responseResult.hasUserRights) {
-                      console.log("enterPasswordSuccess");
                       navigate("/Diskus/");
                     }
                   }
@@ -1024,49 +887,15 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_UserPasswordVerification_13".toLowerCase()
                 )
             ) {
-              if (JSON.parse(response.data.responseResult.roleId) === 1) {
-                dispatch(
-                  enterPasswordFail(
-                    t("User-is-not-activated-please-contact-your-admin")
-                  )
-                );
-
-                localStorage.setItem("LoginFlowPageRoute", 1);
-                dispatch(LoginFlowRoutes(1));
-                // navigate("/");
-              } else if (
-                JSON.parse(response.data.responseResult.roleId) === 2
-              ) {
-                dispatch(
-                  enterPasswordFail(
-                    t("User-is-not-activated-please-contact-your-admin")
-                  )
-                );
-                localStorage.setItem("LoginFlowPageRoute", 1);
-                dispatch(LoginFlowRoutes(1));
-                // navigate("/");
-              } else if (
-                JSON.parse(response.data.responseResult.roleId) === 3
-              ) {
-                dispatch(
-                  enterPasswordFail(
-                    t("User-is-not-activated-please-contact-your-admin")
-                  )
-                );
-                localStorage.setItem("LoginFlowPageRoute", 1);
-                dispatch(LoginFlowRoutes(1));
-                // navigate("/");
-              } else {
-                dispatch(
-                  enterPasswordFail(
-                    t("User-is-not-activated-please-contact-your-admin")
-                  )
-                );
-
-                localStorage.setItem("LoginFlowPageRoute", 1);
-                dispatch(LoginFlowRoutes(1));
-                // navigate("/");
-              }
+              dispatch(
+                enterPasswordFail(
+                  t("User-is-not-activated-please-contact-your-admin")
+                )
+              );
+              // its responece not showing on snack bar please find and fix
+              localStorage.setItem("LoginFlowPageRoute", 1);
+              dispatch(LoginFlowRoutes(1));
+              // navigate("/");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

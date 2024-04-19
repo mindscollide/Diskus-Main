@@ -214,7 +214,7 @@ const NavbarAdmin = () => {
                             {t("Organization-level-configurations")}
                           </NavDropdown.Item>
                         </NavDropdown>
-                        {localStorage.getItem("isTrial") ? (
+                        {JSON.parse(localStorage.getItem("isTrial")) ? (
                           <>
                             {" "}
                             <Nav.Link
