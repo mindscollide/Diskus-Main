@@ -58,7 +58,7 @@ const AddUsers = () => {
       errorMessage: "",
       errorStatus: false,
     },
-    isAdmin: false,
+    isAdmin: 3,
   });
 
   //Calling GetOrganizationSelectedPackagesByOrganizationID
@@ -88,7 +88,7 @@ const AddUsers = () => {
           errorMessage: "",
           errorStatus: false,
         },
-        isAdmin: false,
+        isAdmin: 3,
       });
     };
   }, []);
@@ -196,10 +196,10 @@ const AddUsers = () => {
 
   //Onchange for CheckBox IsAdmin
   const handleIsAdminCheckBox = () => {
-    setAddUserFreeTrial({
-      ...addUserFreeTrial,
-      isAdmin: !addUserFreeTrial.isAdmin,
-    });
+    setAddUserFreeTrial((prevState) => ({
+      ...prevState,
+      isAdmin: prevState.isAdmin === 3 ? 4 : 3,
+    }));
   };
 
   //Validating the Email
@@ -269,7 +269,7 @@ const AddUsers = () => {
           MobileNumber: "",
           UserEmail: addUserFreeTrial.Email.value,
           OrganizationID: Number(organizationID),
-          isAdmin: addUserFreeTrial.isAdmin,
+          RoleID: addUserFreeTrial.isAdmin,
           FK_NumberWorldCountryID: Number(worldCountryID),
           OrganizationSelectedPackageID: Number(pakageID),
         },
@@ -334,7 +334,7 @@ const AddUsers = () => {
                   <Checkbox
                     classNameCheckBoxP="m-0 p-0"
                     classNameDiv=""
-                    checked={addUserFreeTrial.isAdmin}
+                    checked={addUserFreeTrial.isAdmin === 4}
                     onChange={handleIsAdminCheckBox}
                   />
                   <span className={styles["AdminAlsoClass"]}>

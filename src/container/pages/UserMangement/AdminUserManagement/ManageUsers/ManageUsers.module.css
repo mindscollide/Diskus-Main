@@ -227,3 +227,18 @@ body[dir="rtl"] .SearchButtonSearchBox {
 body[dir="rtl"] .Searches {
   font-family: "IBMPlexSansArabic-Bold" !important;
 }
+
+.polling_searchinput {
+  display: inline-block;
+  position: absolute !important;
+  right: 0 !important;
+  width: auto;
+  top: 5px;
+  margin-right: 25px;
+}
+
+body[dir="rtl"] .polling_searchinput {
+  position: absolute !important;
+  right: 88% !important;
+  cursor: pointer !important;
+}
