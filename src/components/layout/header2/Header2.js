@@ -73,7 +73,7 @@ const Header2 = () => {
   //for userprofile edit modal
   const [editFlag, setEditFlag] = useState(false);
   let Blur = localStorage.getItem("blur");
-  let isTrial = localStorage.getItem("isTrial");
+  let isTrial = JSON.parse(localStorage.getItem("isTrial"));
 
   let currentLanguage = localStorage.getItem("i18nextLng");
 
@@ -85,7 +85,6 @@ const Header2 = () => {
 
   const [show, setShow] = useState(false);
   const { t } = useTranslation();
-
   useEffect(() => {
     if (Blur !== null) {
       console.log("Blur", Blur);
@@ -425,11 +424,13 @@ const Header2 = () => {
                   </Dropdown.Menu>
                 ) : (
                   <Dropdown.Menu className="Profile_dropdown_menu">
-                    <Dropdown.Item className={currentLanguage}>
-                      <Nav.Link className="d-flex text-black FontClass">
-                        {t("Organization-admin")}
-                      </Nav.Link>
-                    </Dropdown.Item>
+                    {JSON.parse(localStorage.getItem("hasAdminRights")) && (
+                      <Dropdown.Item className={currentLanguage}>
+                        <Nav.Link className="d-flex text-black FontClass">
+                          {t("Organization-admin")}
+                        </Nav.Link>
+                      </Dropdown.Item>
+                    )}
                     <Dropdown.Item
                       className={currentLanguage}
                       onClick={modalUserProfileHandler}
@@ -598,9 +599,9 @@ const Header2 = () => {
             </Navbar.Brand>
             <Row>
               <Col lg={12} md={12} sm={12} className="UpgradeButtonsClass">
-                {localStorage.getItem("isTrial") && (
+                {JSON.parse(localStorage.getItem("isTrial")) && (
                   <>
-                    {localStorage.getItem("remainingDays") > 1 && (
+                    {JSON.parse(localStorage.getItem("remainingDays")) > 1 && (
                       <>
                         {" "}
                         <span className={"trialExpireButton"}>
@@ -621,7 +622,7 @@ const Header2 = () => {
                         />
                       </>
                     )}
-                    {localStorage.getItem("remainingDays") === 1 && (
+                    {JSON.parse(localStorage.getItem("remainingDays")) === 1 && (
                       <>
                         {" "}
                         <Button
@@ -629,7 +630,7 @@ const Header2 = () => {
                           className="UpgradeNowbutton"
                           onClick={handleShowUpgradedNowModal}
                         />
-                        {localStorage.getItem("isExtensionAvailable") && (
+                        {JSON.parse(localStorage.getItem("isExtensionAvailable")) && (
                           <Button
                             text={t("Request-an-extention")}
                             className="UpgradeNowbutton"
@@ -782,14 +783,16 @@ const Header2 = () => {
                   </Dropdown.Menu>
                 ) : (
                   <Dropdown.Menu className="Profile_dropdown_menu">
-                    <Dropdown.Item
-                      className={currentLanguage}
-                      onClick={openAdminTab}
-                    >
-                      <Nav.Link className="d-flex text-black FontClass">
-                        {t("Organization-admin")}
-                      </Nav.Link>
-                    </Dropdown.Item>
+                    {JSON.parse(localStorage.getItem("hasAdminRights")) && (
+                      <Dropdown.Item
+                        className={currentLanguage}
+                        onClick={openAdminTab}
+                      >
+                        <Nav.Link className="d-flex text-black FontClass">
+                          {t("Organization-admin")}
+                        </Nav.Link>
+                      </Dropdown.Item>
+                    )}
                     <Dropdown.Item
                       className={currentLanguage}
                       onClick={modalUserProfileHandler}
