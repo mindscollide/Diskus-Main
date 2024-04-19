@@ -48,6 +48,7 @@ import UploadTextField from "./Dragger/UploadFile";
 import UploadProgressBar from "./upload_progressbar/Upload_Progressbar";
 import CustomRadio2 from "./radio/Radio2";
 import AttachmentViewer from "./fileAttachment/attachment";
+import ProgressLine from "./progressBarPending/ProgressBarPending";
 
 export {
   AttachmentViewer,
@@ -102,4 +103,5 @@ export {
   CustomRadio2,
   LoaderPanel,
   LoaderPanelVideoScreen,
+  ProgressLine,
 };

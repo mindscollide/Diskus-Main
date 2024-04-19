@@ -7018,3 +7018,8 @@ td.ant-table-cell.minutesParticipant {
 .border-none.dropdown button {
   border: none !important;
 }
+
+a.pendingApprovalsNav.nav-link {
+  padding: 0 !important;
+  color: #505050 !important;
+}

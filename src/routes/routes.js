@@ -65,6 +65,7 @@ import {
   OrganizationLevelSetting,
   EmptyState,
   RSVP,
+  PendingApproval
 } from "../container";
 
 import DocumentViewer from "../components/elements/webviewer/DocumentViewer";
@@ -137,6 +138,7 @@ export const router = createHashRouter(
           <Route path="resolution" element={<Resolution />} />
           <Route path="dataroom" element={<DataRoom />} />
           <Route path="polling" element={<Polling />} />
+          <Route path="PendingApprovals" element={<PendingApproval />} />
         </Route>
       </Route>
       <Route element={<PrivateAdminRoute />}>

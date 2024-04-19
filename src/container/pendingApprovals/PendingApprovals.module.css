@@ -1,0 +1,60 @@
+.pendingApprovalContainer {
+  width: 98% !important;
+  height: 91vh !important;
+  margin: 0 auto !important;
+  overflow: hidden !important;
+}
+
+.pendingApprovalHeading {
+  font-family: "MontserratSemiBold";
+  font-size: 30px;
+  line-height: 37px;
+  color: #6172d6;
+}
+
+.overallGap {
+  display: flex;
+  gap: 10px;
+  padding: 10px 0px;
+}
+
+.activeMinutes,
+.activeMinutes:active,
+.activeMinutes:hover,
+.activeMinutes:focus,
+.activeMinutes:target,
+.activeMinutes:visited,
+.activeMinutes:focus-visible,
+.activeMinutes:focus-within {
+  background: #6172d6 !important;
+  width: 122px;
+  height: 28px;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 15px;
+  border-color: #6172d6 !important;
+  border-radius: 3px;
+}
+
+.inActiveMinutes,
+.inActiveMinutes:active,
+.inActiveMinutes:hover,
+.inActiveMinutes:focus,
+.inActiveMinutes:target,
+.inActiveMinutes:visited,
+.inActiveMinutes:focus-visible,
+.inActiveMinutes:focus-within {
+  background: #fff !important;
+  width: 122px;
+  height: 28px;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 15px;
+  border: 1px solid #d4d4d4 !important;
+  color: #5a5a5a !important;
+  border-radius: 3px;
+}

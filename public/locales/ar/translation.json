@@ -1771,5 +1771,6 @@
   "Maximize-screen": "Maximize screen",
   "Folder-share-successfully": "Folder share successfully",
   "Remove-shared-file-successfully": "Remove shared file successfully",
-  "Remove-shared-folder-successfully": "Remove shared folder successfully"
+  "Remove-shared-folder-successfully": "Remove shared folder successfully",
+  "Pending-approval": "Pending Approval"
 }
