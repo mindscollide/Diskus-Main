@@ -1455,16 +1455,16 @@ const paymentInitiateFailApi = (message) => {
   };
 };
 
-const paymentInitiateMainApi = (navigate, t) => {
+const paymentInitiateMainApi = (navigate, t, newData, setPaymentModal) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(paymentInitiateInitApi());
     let form = new FormData();
     form.append("RequestMethod", PaymentInitiateStepperThree.RequestMethod);
-    form.append("RequestData", JSON.stringify());
+    form.append("RequestData", JSON.stringify(newData));
     axios({
       method: "post",
-      url: getAdminURLs,
+      url: authenticationApi,
       data: form,
       headers: {
         _token: token,
@@ -1473,7 +1473,9 @@ const paymentInitiateMainApi = (navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(paymentInitiateMainApi(navigate, t));
+          dispatch(
+            paymentInitiateMainApi(navigate, t, newData, setPaymentModal)
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1489,6 +1491,7 @@ const paymentInitiateMainApi = (navigate, t) => {
                   t("Successful")
                 )
               );
+              setPaymentModal(true);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

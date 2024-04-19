@@ -41,6 +41,8 @@ const SignUpOrganizationUM = () => {
     UserMangementReducer,
   } = useSelector((state) => state);
 
+  console.log(countryNamesReducer, "countryNamesReducer");
+
   const location = useLocation();
 
   const navigate = useNavigate();
@@ -416,7 +418,7 @@ const SignUpOrganizationUM = () => {
   };
 
   const handlerSignup = async () => {
-    console.log("handlerSignup",isFreeTrail)
+    console.log("handlerSignup", isFreeTrail);
     if (isFreeTrail === true) {
       if (
         signUpDetails.CompanyName.value !== "" &&
