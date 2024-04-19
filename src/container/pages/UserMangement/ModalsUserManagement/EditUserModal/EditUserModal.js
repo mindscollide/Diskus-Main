@@ -43,8 +43,10 @@ const EditUserModal = ({ editModalData }) => {
       errorStatus: false,
     },
     Email: editModalData.email,
-    isAdminUser: editModalData.userRoleID === 4 ? true : false,
+    isAdminUser: editModalData.userRoleID === 4 ? 4 : 3,
   });
+
+  console.log(editModalData.userRoleID, "editModalDataeditModalData");
 
   const [userStatusID, setUserStatusID] = useState(0);
 
@@ -153,7 +155,7 @@ const EditUserModal = ({ editModalData }) => {
       UserName: editUserModalValues.Name.value,
       Designation: editUserModalValues.Desgiantion.value,
       MobileNumber: "",
-      isAdmin: editUserModalValues.isAdminUser,
+      RoleID: editUserModalValues.isAdminUser,
       OrganizationID: Number(organizationID),
       OrganizationSelectedPackageID: Number(editModalData.userAllotedPackageID),
       FK_NumberWorldCountryID: Number(editModalData.fK_WorldCountryID),
@@ -163,11 +165,12 @@ const EditUserModal = ({ editModalData }) => {
   };
 
   const handleIsAdminCheckbox = (e) => {
-    setEditUserModalValues({
-      ...editUserModalValues,
-      isAdminUser: e.target.checked,
-    });
+    setEditUserModalValues((prevState) => ({
+      ...prevState,
+      isAdminUser: e.target.checked ? 4 : 3,
+    }));
   };
+  console.log(editUserModalValues.isAdminUser, "editUserModalValues");
   return (
     <section>
       <Modal
@@ -258,7 +261,7 @@ const EditUserModal = ({ editModalData }) => {
                         >
                           <Checkbox
                             classNameCheckBoxP="m-0 p-0"
-                            checked={editUserModalValues.isAdminUser}
+                            checked={editUserModalValues.isAdminUser === 4}
                             onChange={handleIsAdminCheckbox}
                             classNameDiv=""
                           />
