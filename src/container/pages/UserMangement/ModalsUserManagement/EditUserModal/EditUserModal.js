@@ -48,8 +48,6 @@ const EditUserModal = ({ editModalData }) => {
 
   console.log(editModalData.userRoleID, "editModalDataeditModalData");
 
-  const [userStatusID, setUserStatusID] = useState(0);
-
   //options for the dropdowm
   const options = [
     { value: 1, label: "Enabled" },
@@ -83,6 +81,10 @@ const EditUserModal = ({ editModalData }) => {
   const [userStatus, setUserStatus] = useState(() =>
     findOptionByValue(editModalData.userStatus)
   );
+
+  const [userStatusID, setUserStatusID] = useState(userStatus.value);
+
+  console.log(userStatus, "userStatususerStatususerStatus");
 
   useEffect(() => {
     // Update state when the editModalData.userStatus changes
