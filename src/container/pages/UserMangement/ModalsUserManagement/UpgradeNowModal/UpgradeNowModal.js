@@ -20,6 +20,7 @@ const UpgradeNowModal = () => {
 
   const yesBtnFunctionality = () => {
     dispatch(showUpgradeNowModal(false));
+    navigate("/Admin/PakageDetailsUserManagement");
   };
 
   const handleCrossIcon = () => {

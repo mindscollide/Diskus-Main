@@ -56,6 +56,12 @@ const ManageUsers = () => {
 
   const [deleteModalData, setDeleteModalData] = useState(null);
 
+  const [enterpressed, setEnterpressed] = useState(false);
+
+  const [manangeUserSearch, setManangeUserSearch] = useState({
+    searchValue: "",
+  });
+
   const [searchDetails, setsearchDetails] = useState({
     Name: "",
     Email: "",
@@ -400,7 +406,6 @@ const ManageUsers = () => {
   };
 
   //Options For Search
-
   const options = [
     { value: "Enabled", label: "Enabled" },
     { value: "Disabled", label: "Disabled" },
@@ -410,11 +415,65 @@ const ManageUsers = () => {
     { value: "Delete", label: "Delete" },
   ];
 
+  //Status onChange Search
   const handleStatusChange = (selectedOption) => {
     setsearchDetails((prevDetails) => ({
       ...prevDetails,
       Status: selectedOption,
     }));
+  };
+
+  //Search Field onChnage ManageUsers
+  const handleSeachFieldManageUsers = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === "SearchVal") {
+      if (value !== "") {
+        setManangeUserSearch({
+          ...manangeUserSearch,
+          searchValue: value,
+        });
+      } else {
+        setManangeUserSearch({
+          ...manangeUserSearch,
+          searchValue: "",
+        });
+      }
+    }
+  };
+
+  //OnKeyDown Search ManageUsers
+  const handleKeyDownSearchManageUsers = (e) => {
+    if (e.key === "Enter") {
+      setEnterpressed(true);
+      const filteredData =
+        UserMangementReducer.allOrganizationUsersData.organizationUsers.filter(
+          (user) => {
+            const matchesName =
+              manangeUserSearch.searchValue === "" ||
+              user.userName
+                .toLowerCase()
+                .includes(manangeUserSearch.searchValue.toLowerCase());
+
+            return matchesName;
+          }
+        );
+
+      setManageUserGrid(filteredData);
+    }
+  };
+
+  //OnClick Search Cross Icon
+  const handleResettingPage = () => {
+    setManangeUserSearch({
+      ...manangeUserSearch,
+      searchValue: "",
+    });
+    let data = {
+      OrganizationID: Number(organizationID),
+      RequestingUserID: Number(userID),
+    };
+    dispatch(AllOrganizationsUsersApi(navigate, t, data));
   };
 
   return (
@@ -450,8 +509,12 @@ const ManageUsers = () => {
             <TextField
               width={"502px"}
               placeholder={t("Search")}
+              name={"SearchVal"}
+              value={manangeUserSearch.searchValue}
+              onKeyDown={handleKeyDownSearchManageUsers}
               applyClass={"PollingSearchInput"}
               labelClass="d-none"
+              change={handleSeachFieldManageUsers}
               inputicon={
                 <>
                   <Row>
@@ -461,6 +524,17 @@ const ManageUsers = () => {
                       sm={12}
                       className="d-flex gap-2 align-items-center"
                     >
+                      {manangeUserSearch.searchValue && enterpressed ? (
+                        <>
+                          <img
+                            src={BlackCrossIcon}
+                            className="cursor-pointer"
+                            draggable="false"
+                            alt=""
+                            onClick={handleResettingPage}
+                          />
+                        </>
+                      ) : null}
                       <img
                         src={searchicon}
                         alt=""
