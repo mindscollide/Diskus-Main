@@ -563,6 +563,13 @@ export const router = createHashRouter(
         element={<PasswordVerification />}
       />
 
+      {/* Routes for testing puprose Start */}
+
+      <Route
+        path="CancelSubscriptionUserManagement"
+        element={<CancelSubscriptionAdmin />}
+      />
+
       {/* Routes for testing puprose End */}
     </>
   )

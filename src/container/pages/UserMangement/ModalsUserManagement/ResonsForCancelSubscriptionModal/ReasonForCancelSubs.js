@@ -1,17 +1,107 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./ReasonForCancelSubs.module.css";
-import { Button, Checkbox, Modal } from "../../../../../components/elements";
+import { Button, Modal } from "../../../../../components/elements";
 import { showReasonForLeavingModal } from "../../../../../store/actions/UserMangementModalActions";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { Checkbox } from "antd";
+import { useDispatch, useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import {
+  getCancelSubscriptionReasonApi,
+  cancelOrganizationSubApi,
+} from "../../../../../store/actions/UserManagementActions";
 const ReasonForCancelSubs = () => {
   const { t } = useTranslation();
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { UserManagementModals, UserMangementReducer } = useSelector(
+    (state) => state
+  );
 
-  const { UserManagementModals } = useSelector((state) => state);
+  // get organization ID from Local staorage
+  const organizationID = localStorage.getItem("organizationID");
+
+  // state for cancel Subscription
+  const [cancelSubs, setCancelSubs] = useState([]);
+  console.log(cancelSubs, "cancelSubscancelSubs");
+
+  const [selectedReasonIds, setSelectedReasonIds] = useState([]);
+
+  // state for checkbox
+  const [checkboxCancel, setCheckboxCancel] = useState({
+    isCheckbox: {
+      value: false,
+      errorMessage: "",
+      errorStatus: false,
+    },
+  });
+
+  console.log(
+    checkboxCancel.isCheckbox,
+    "cancelSubReasonDatacancelSubReasonData"
+  );
+
+  useEffect(() => {
+    dispatch(getCancelSubscriptionReasonApi(navigate, t));
+  }, []);
+
+  const handleSubmitData = () => {
+    if (selectedReasonIds.length === 0) {
+      return; // Do not proceed further
+    }
+
+    const selectedReasons = cancelSubs.subscriptionCancellationReasons.filter(
+      (reason) =>
+        selectedReasonIds.includes(reason.pK_SubscriptionCancellationReasonID)
+    );
+
+    const cancellationReasons = selectedReasons.map((reason) => reason.reason);
+
+    const data = {
+      OrganizationID: 480,
+      // mehdi said you send 6 to SubscriptionStatusID cause we only send 6 to cancel
+      SubscriptionStatusID: 6,
+      CancellationReason: cancellationReasons.join("# "),
+    };
+
+    dispatch(cancelOrganizationSubApi(navigate, t, data));
+  };
+
+  useEffect(() => {
+    if (
+      UserMangementReducer.cancelSubReasonData !== null &&
+      UserMangementReducer.cancelSubReasonData !== undefined &&
+      UserMangementReducer.cancelSubReasonData.length !== 0
+    ) {
+      setCancelSubs(UserMangementReducer.cancelSubReasonData);
+    } else {
+      setCancelSubs([]);
+    }
+  }, [UserMangementReducer.cancelSubReasonData]);
+
+  // handle select for checkbox is Admin
+  const handleCancelSubCheckbox = (isChecked, reasonId) => {
+    if (isChecked) {
+      setSelectedReasonIds((prevSelectedIds) => [...prevSelectedIds, reasonId]);
+    } else {
+      setSelectedReasonIds((prevSelectedIds) =>
+        prevSelectedIds.filter((id) => id !== reasonId)
+      );
+    }
+  };
+
+  //handle select for checkbox is Admin
+  // const handleCancelSubCheckbox = (isChecked) => {
+  //   setCheckboxCancel((prevState) => ({
+  //     ...prevState,
+  //     isCheckbox: {
+  //       ...prevState.isCheckbox,
+  //       value: isChecked,
+  //     },
+  //   }));
+  // };
+
   return (
     <section>
       <Modal
@@ -34,6 +124,41 @@ const ReasonForCancelSubs = () => {
                 </Col>
               </Row>
               <Row className="mt-2">
+                <span className={styles["appliedScroller"]}>
+                  {cancelSubs.subscriptionCancellationReasons !== undefined &&
+                  cancelSubs.subscriptionCancellationReasons !== null &&
+                  cancelSubs.subscriptionCancellationReasons.length > 0
+                    ? cancelSubs.subscriptionCancellationReasons.map((data) => (
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          xs={12}
+                          className="d-flex gap-2 mt-3"
+                          key={data.pK_SubscriptionCancellationReasonID}
+                        >
+                          <Checkbox
+                            classNameCheckBoxP="m-0 p-0"
+                            classNameDiv=""
+                            value={checkboxCancel.isCheckbox.value}
+                            onChange={(e) =>
+                              handleCancelSubCheckbox(
+                                e.target.checked,
+                                data.pK_SubscriptionCancellationReasonID
+                              )
+                            }
+                            // Handle checkbox state and actions here
+                          />
+                          <span className={styles["AdminAlsoClass"]}>
+                            {data.reason}
+                          </span>
+                        </Col>
+                      ))
+                    : null}
+                </span>
+              </Row>
+
+              {/* <Row className="mt-2">
                 <Col
                   lg={12}
                   md={12}
@@ -41,6 +166,14 @@ const ReasonForCancelSubs = () => {
                   xs={12}
                   className={styles["appliedScroller"]}
                 >
+                  {cancelSubs.subscriptionCancellationReasons.map(
+                    (data, index) => {
+                      {
+                        console.log(data, "adadadddad");
+                      }
+                    }
+                  )}
+
                   <Row>
                     <Col
                       lg={12}
@@ -290,7 +423,7 @@ const ReasonForCancelSubs = () => {
                     </Col>
                   </Row>
                 </Col>
-              </Row>
+              </Row> */}
             </section>
           </>
         }
@@ -312,6 +445,7 @@ const ReasonForCancelSubs = () => {
                   <Button
                     text={t("Continue-to-cancel")}
                     className={styles["ContinurToCancelButton"]}
+                    onClick={handleSubmitData}
                   />
                 </Col>
               </Row>

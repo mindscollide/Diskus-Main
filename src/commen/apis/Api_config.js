@@ -1539,6 +1539,16 @@ const PaymentInitiateStepperThree = {
   RequestMethod: "ServiceManager.PaymentInitiate",
 };
 
+// for get Cancel Subscription Reasons
+const CancelSubReasons = {
+  RequestMethod: "ServiceManager.GetCancelSubscriptionReasons",
+};
+
+// for cancel subscription
+const CancelOrganizationsSubscriptions = {
+  RequestMethod: "ServiceManager.CancelOrganizationsSubscription",
+};
+
 export {
   leaveFolderSharingRM,
   leaveFileSharingRM,
@@ -1949,4 +1959,6 @@ export {
   ResendForgotPasswordCode,
   DeleteOrganizationsUser,
   PaymentInitiateStepperThree,
+  CancelSubReasons,
+  CancelOrganizationsSubscriptions,
 };

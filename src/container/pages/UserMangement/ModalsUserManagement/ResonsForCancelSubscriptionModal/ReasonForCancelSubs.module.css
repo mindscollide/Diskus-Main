@@ -20,7 +20,7 @@ body[dir="rtl"] .ResonseModalHeading {
 }
 
 .appliedScroller {
-  height: 50vh !important;
+  height: 60vh !important;
   overflow-x: hidden !important;
 }
 

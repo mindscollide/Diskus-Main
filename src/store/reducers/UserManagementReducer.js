@@ -19,6 +19,8 @@ const initialState = {
   ResendForgotPasswordCodedData: null,
   deleteOrganizationUsersData: null,
   paymentInitiateData: null,
+  cancelSubReasonData: [],
+  cancelOrganizationSubsData: null,
 };
 
 const UserMangementReducer = (state = initialState, action) => {
@@ -356,6 +358,52 @@ const UserMangementReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         paymentInitiateData: null,
+        ResponseMessage: action.message,
+      };
+
+    //Cancel Sub Reason Api Data
+    case actions.CANCEL_SUB_REASONS_INIT:
+      return {
+        ...state,
+        Loading: true,
+      };
+
+    case actions.CANCEL_SUB_REASONS_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        cancelSubReasonData: action.response,
+        ResponseMessage: action.message,
+      };
+
+    case actions.CANCEL_SUB_REASONS_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        cancelSubReasonData: [],
+        ResponseMessage: action.message,
+      };
+
+    //Cancel Organization Subscription Reason Api Data
+    case actions.CANCEL_ORGANIZATION_SUB_INIT:
+      return {
+        ...state,
+        Loading: true,
+      };
+
+    case actions.CANCEL_ORGANIZATION_SUB_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        cancelOrganizationSubsData: action.response,
+        ResponseMessage: action.message,
+      };
+
+    case actions.CANCEL_ORGANIZATION_SUB_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        cancelOrganizationSubsData: null,
         ResponseMessage: action.message,
       };
 

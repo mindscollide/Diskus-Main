@@ -622,7 +622,8 @@ const Header2 = () => {
                         />
                       </>
                     )}
-                    {JSON.parse(localStorage.getItem("remainingDays")) === 1 && (
+                    {JSON.parse(localStorage.getItem("remainingDays")) ===
+                      1 && (
                       <>
                         {" "}
                         <Button
@@ -630,7 +631,9 @@ const Header2 = () => {
                           className="UpgradeNowbutton"
                           onClick={handleShowUpgradedNowModal}
                         />
-                        {JSON.parse(localStorage.getItem("isExtensionAvailable")) && (
+                        {JSON.parse(
+                          localStorage.getItem("isExtensionAvailable")
+                        ) && (
                           <Button
                             text={t("Request-an-extention")}
                             className="UpgradeNowbutton"
@@ -742,7 +745,7 @@ const Header2 = () => {
                         disabled={true}
                         className="text-black"
                       >
-                        {t("Organization-admin")}
+                        {t("User-dashboard")}
                       </Nav.Link>
                     </Dropdown.Item>
                     <Dropdown.Item
