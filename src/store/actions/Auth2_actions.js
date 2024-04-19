@@ -26,6 +26,7 @@ import { getSubscriptionPaymentDetail } from "./Admin_PackageDetail";
 import { LoginFlowRoutes } from "./UserManagementActions";
 import { showCreateAddtionalUsersModal } from "./UserMangementModalActions";
 import {
+  checkFeatureIDRoutes,
   handleLoginResponse,
   savePackageFeatureIDs,
 } from "../../commen/functions/utils";
@@ -693,6 +694,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               } else if (
                 JSON.parse(response.data.responseResult.roleId) === 4
               ) {
+                checkFeatureIDRoutes(response.data.responseResult);
                 localStorage.removeItem("LoginFlowPageRoute");
                 await dispatch(
                   getPackageExpiryDetail(
@@ -1121,18 +1123,7 @@ const createPasswordAction = (value, navigate, t) => {
                     "ERM_AuthService_SignUpManager_UsersPasswordCreation_01".toLowerCase()
                   )
               ) {
-                if (JSON.parse(response.data.responseResult.roleId) === 1) {
-                  dispatch(
-                    createPasswordSuccess(
-                      response.data.responseResult,
-                      t("The-user-is-an-admin-user")
-                    )
-                  );
-                  localStorage.setItem("signupCurrentPage", 5);
-                  navigate("/Signup");
-                } else if (
-                  JSON.parse(response.data.responseResult.roleId) === 2
-                ) {
+                if (JSON.parse(response.data.responseResult.roleId) === 4) {
                   dispatch(
                     createPasswordSuccess(
                       response.data.responseResult,
@@ -1150,7 +1141,7 @@ const createPasswordAction = (value, navigate, t) => {
                       t("The-user-is-an-admin-user")
                     )
                   );
-                  navigate("/");
+                  navigate("/Diskus");
                 }
               } else if (
                 response.data.responseResult.responseMessage
