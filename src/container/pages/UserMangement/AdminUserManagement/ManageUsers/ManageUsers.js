@@ -339,14 +339,12 @@ const ManageUsers = () => {
             user.userStatus.toLowerCase() ===
               searchDetails.Status.label.toLowerCase();
 
-          // Only consider a condition if its corresponding search detail is provided
           let conditionsToCheck = [];
           if (searchDetails.Name !== "") conditionsToCheck.push(matchesName);
           if (searchDetails.Email !== "") conditionsToCheck.push(matchesEmail);
           if (searchDetails.Status.label !== "")
             conditionsToCheck.push(matchesStatus);
 
-          // Return true if any of the applicable conditions are met
           return conditionsToCheck.some((condition) => condition);
         }
       );
