@@ -318,10 +318,7 @@ const ManageUsers = () => {
       }));
     }
   };
-  console.log(
-    UserMangementReducer.allOrganizationUsersData.organizationUsers,
-    "UserMangementReducerUserMangementReducer"
-  );
+
   //manual filteration performed on the GRID
   const handleSearch = () => {
     const filteredData =
@@ -348,7 +345,7 @@ const ManageUsers = () => {
             user.userStatus.toLowerCase() ===
               searchDetails.Status.label.toLowerCase();
 
-          return matchesName && matchesEmail && matchesStatus;
+          return matchesName || matchesEmail || matchesStatus;
         }
       );
 
