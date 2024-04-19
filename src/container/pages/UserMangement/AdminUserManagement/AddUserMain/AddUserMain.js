@@ -32,6 +32,10 @@ const AddUserMain = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { UserMangementReducer, adminReducer } = useSelector((state) => state);
+  console.log(
+    UserMangementReducer.organizationSelectedPakagesByOrganizationIDData,
+    "organizationSelectedPakagesByOrganizationIDData"
+  );
 
   // organizationName from Local Storage
   const organizationName = localStorage.getItem("organizatioName");
@@ -85,16 +89,12 @@ const AddUserMain = () => {
   //For Now I set static data in this getOrganizationPackageUserStatsAPI Api
   useEffect(() => {
     let data = {
-      // OrganizationID: 569,
-      // RequestingUserID: 1196,
-
       OrganizationID: Number(organizationID),
       RequestingUserID: Number(UserID),
     };
     dispatch(getOrganizationPackageUserStatsAPI(navigate, t, data));
 
     let newdata = {
-      // OrganizationID: 569,
       OrganizationID: Number(organizationID),
     };
     dispatch(
@@ -493,19 +493,21 @@ const AddUserMain = () => {
     });
   };
 
+  // package assigned option dropdown useEffect it will disable option when packageAllotedUsers greater then headCount
   useEffect(() => {
     if (
       UserMangementReducer.organizationSelectedPakagesByOrganizationIDData &&
-      Object.keys(
-        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
-      ).length > 0
+      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
+        .organizationSelectedPackages.length > 0
     ) {
       let temp = [];
-      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData.organizationSelectedPackages.map(
+      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData.organizationSelectedPackages.forEach(
         (data, index) => {
+          console.log(data, "datadatadata");
           temp.push({
             value: data.pK_PackageID,
             label: data.name,
+            isDisabled: data.packageAllotedUsers > data.headCount,
           });
         }
       );
@@ -620,126 +622,6 @@ const AddUserMain = () => {
                           />
                         </Col>
                       </Row>
-
-                      {/* <Row>
-                        <Col>
-                          {UserMangementReducer.getOrganizationUserStatsGraph &&
-                            UserMangementReducer.getOrganizationUserStatsGraph
-                              .selectedPackages &&
-                            UserMangementReducer.getOrganizationUserStatsGraph.selectedPackages.map(
-                              (packages, index) => (
-                                <>
-                                  <Row key={index}>
-                                    <Col
-                                      lg={8}
-                                      md={8}
-                                      sm={8}
-                                      xs={12}
-                                      className=""
-                                    >
-                                      <label
-                                        className={styles["labelChart-Title"]}
-                                      >
-                                        {packages.name}
-                                      </label>
-                                    </Col>
-                                    <Col lg={4} md={4} sm={4} xs={12}>
-                                      <label
-                                        className={styles["labelChart-Number"]}
-                                      >
-                                        {`${packages.allotedUsers} /${packages.headCount}`}
-                                      </label>
-                                    </Col>
-                                    <div
-                                      className={styles["borderLine-title"]}
-                                    />
-                                  </Row>
-                                  <Row>
-                                    <Col
-                                      lg={8}
-                                      md={8}
-                                      sm={8}
-                                      xs={12}
-                                      className=""
-                                    >
-                                      <label
-                                        className={
-                                          styles["Admin-labelChart-Title"]
-                                        }
-                                      >
-                                        {UserMangementReducer
-                                          .getOrganizationUserStatsGraph
-                                          .selectedPackages[index + 1]?.name ||
-                                          ""}
-                                      </label>
-                                    </Col>
-                                    <Col lg={4} md={4} sm={4} xs={12}>
-                                      <label
-                                        className={
-                                          styles["Admin-labelChart-Number"]
-                                        }
-                                      >
-                                        {`${
-                                          UserMangementReducer
-                                            .getOrganizationUserStatsGraph
-                                            .selectedPackages[index + 1]
-                                            ?.allotedUsers || ""
-                                        } / ${
-                                          UserMangementReducer
-                                            .getOrganizationUserStatsGraph
-                                            .selectedPackages[index + 1]
-                                            ?.headCount || ""
-                                        }`}
-                                      </label>
-                                    </Col>
-                                    <div
-                                      className={styles["borderLine-title"]}
-                                    />
-                                  </Row>
-                                  <Row>
-                                    <Col
-                                      lg={8}
-                                      md={8}
-                                      sm={8}
-                                      xs={12}
-                                      className=""
-                                    >
-                                      <label
-                                        className={
-                                          styles["Admin-labelChart-Title"]
-                                        }
-                                      >
-                                        {UserMangementReducer
-                                          .getOrganizationUserStatsGraph
-                                          .selectedPackages[index + 2]?.name ||
-                                          ""}
-                                      </label>
-                                    </Col>
-                                    <Col lg={4} md={4} sm={4} xs={12}>
-                                      <label
-                                        className={
-                                          styles["Admin-labelChart-Number"]
-                                        }
-                                      >
-                                        {`${
-                                          UserMangementReducer
-                                            .getOrganizationUserStatsGraph
-                                            .selectedPackages[index + 2]
-                                            ?.allotedUsers || ""
-                                        } / ${
-                                          UserMangementReducer
-                                            .getOrganizationUserStatsGraph
-                                            .selectedPackages[index + 2]
-                                            ?.headCount || ""
-                                        }`}
-                                      </label>
-                                    </Col>
-                                  </Row>
-                                </>
-                              )
-                            )}
-                        </Col>
-                      </Row> */}
 
                       <Row>
                         <Col>
