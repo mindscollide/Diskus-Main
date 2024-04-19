@@ -528,3 +528,23 @@ button#rfs-btn {
 .container-main-class {
   padding: 0px 40px !important;
 }
+
+.isEmailUnique {
+  position: relative;
+  left: 250px;
+  top: -37px;
+  width: 30px;
+  height: 30px;
+  bottom: 20px;
+  color: green;
+}
+
+.checkEmailSpinner {
+  position: relative;
+  left: 250px;
+  top: -37px;
+  width: 30px;
+  height: 30px;
+  bottom: 20px;
+  color: green;
+}

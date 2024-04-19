@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
 import styles from "./AddUserMain.module.css";
 import { useSelector, useDispatch } from "react-redux";
-import { Container, Row, Col, Form, ProgressBar } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  ProgressBar,
+  Spinner,
+} from "react-bootstrap";
 import { Checkbox, Spin } from "antd";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
@@ -17,33 +24,29 @@ import {
   AddOrganizationsUserApi,
   GetOrganizationSelectedPackagesByOrganizationIDApi,
 } from "../../../../../store/actions/UserManagementActions";
+import { checkEmailExsist } from "../../../../../store/actions/Admin_Organization";
+import { Check2 } from "react-bootstrap-icons";
 
 const AddUserMain = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { UserMangementReducer } = useSelector((state) => state);
-
-  console.log(
-    UserMangementReducer.getOrganizationUserStatsGraph,
-    "getOrganizationUserStatsGraph"
-  );
+  const { UserMangementReducer, adminReducer } = useSelector((state) => state);
 
   // organizationName from Local Storage
   const organizationName = localStorage.getItem("organizatioName");
   const organizationID = localStorage.getItem("organizationID");
   const UserID = localStorage.getItem("userID");
-
+  const [companyEmailValidateError, setCompanyEmailValidateError] =
+    useState("");
+  const [companyEmailValidate, setCompanyEmailValidate] = useState(false);
   const [packageAssignedOption, setPackageAssignedOption] = useState([]);
   const [packageAssignedValue, setPackageAssignedValue] = useState([]);
-
+  const [isEmailUnique, setEmailUnique] = useState(false);
   const [selected, setSelected] = useState("US");
   const [selectedCountry, setSelectedCountry] = useState({});
   const [graphData, setGraphData] = useState([]);
-  console.log(graphData, "hbdhbabjajkdbhbca");
-
   const [loading, setLoading] = useState(true);
-
   const [userAddMain, setUserAddMain] = useState({
     Name: {
       value: "",
@@ -75,11 +78,7 @@ const AddUserMain = () => {
       errorStatus: false,
     },
 
-    isAdmin: {
-      value: false,
-      errorMessage: "",
-      errorStatus: false,
-    },
+    isAdmin: 3,
     FK_NumberWorldCountryID: 0,
   });
 
@@ -178,40 +177,113 @@ const AddUserMain = () => {
 
     if (name === "Email" && value !== "") {
       if (value !== "") {
-        // Check if email is not empty
-        if (validateEmailEnglishAndArabicFormat(value)) {
-          // Check if email format is valid
-          setUserAddMain({
-            ...userAddMain,
-            Email: {
-              value: value.trimStart(),
-              errorMessage: "", // Clear error message when email is valid
-              errorStatus: false, // Set error status to false when email is valid
-            },
-          });
-        } else {
-          setUserAddMain({
-            ...userAddMain,
-            Email: {
-              value: value.trimStart(),
-              errorMessage: t("Enter-valid-email-address"), // Set error message when email is invalid
-              errorStatus: true, // Set error status to true when email is invalid
-            },
-          });
-        }
-      } else {
-        // Handle case when email is empty
         setUserAddMain({
           ...userAddMain,
           Email: {
-            value: "",
-            errorMessage: "", // Clear error message when email is empty
-            errorStatus: false, // Set error status to false when email is empty
+            value: value.trimStart(),
+            errorMessage: "",
+            errorStatus: false,
           },
         });
       }
+    } else if (name === "Email" && value === "") {
+      setUserAddMain({
+        ...userAddMain,
+        Email: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    }
+
+    // if (name === "Email" && value !== "") {
+    //   if (value !== "") {
+    //     // Check if email is not empty
+    //     if (validateEmailEnglishAndArabicFormat(value)) {
+    //       // Check if email format is valid
+    //       setUserAddMain({
+    //         ...userAddMain,
+    //         Email: {
+    //           value: value.trimStart(),
+    //           errorMessage: "", // Clear error message when email is valid
+    //           errorStatus: false, // Set error status to false when email is valid
+    //         },
+    //       });
+    //     } else {
+    //       setUserAddMain({
+    //         ...userAddMain,
+    //         Email: {
+    //           value: value.trimStart(),
+    //           errorMessage: t("Enter-valid-email-address"), // Set error message when email is invalid
+    //           errorStatus: true, // Set error status to true when email is invalid
+    //         },
+    //       });
+    //     }
+    //   } else {
+    //     // Handle case when email is empty
+    //     setUserAddMain({
+    //       ...userAddMain,
+    //       Email: {
+    //         value: "",
+    //         errorMessage: "", // Clear error message when email is empty
+    //         errorStatus: false, // Set error status to false when email is empty
+    //       },
+    //     });
+    //   }
+    // }
+  };
+
+  //Validating the Email
+  const handeEmailvlidate = () => {
+    if (userAddMain.Email.value !== "") {
+      if (validateEmailEnglishAndArabicFormat(userAddMain.Email.value)) {
+        dispatch(
+          checkEmailExsist(
+            setCompanyEmailValidate,
+            setCompanyEmailValidateError,
+            userAddMain,
+            t,
+            setEmailUnique
+          )
+        );
+      } else {
+        setEmailUnique(false);
+        setUserAddMain({
+          ...userAddMain,
+          Email: {
+            value: userAddMain.Email.value,
+            errorMessage: t("Enter-valid-email-address"),
+            errorStatus: true,
+          },
+        });
+      }
+    } else {
+      setEmailUnique(false);
+      setUserAddMain({
+        ...userAddMain,
+        Email: {
+          value: "",
+          errorMessage: t("Enter-email-address"),
+          errorStatus: true,
+        },
+      });
     }
   };
+
+  //Validate Email useEffect
+  useEffect(() => {
+    if (companyEmailValidateError !== " ") {
+      setUserAddMain({
+        ...userAddMain,
+        Email: {
+          value: userAddMain.Email.value,
+          errorMessage: companyEmailValidateError,
+          errorStatus: companyEmailValidate,
+        },
+      });
+    }
+  }, [companyEmailValidate, companyEmailValidateError]);
 
   // API hit on create button
   const handleCreate = async () => {
@@ -231,7 +303,7 @@ const AddUserMain = () => {
             MobileNumber: userAddMain.MobileNumber.value,
             UserEmail: userAddMain.Email.value,
             OrganizationID: Number(organizationID),
-            isAdmin: userAddMain.isAdmin.value,
+            RoleID: userAddMain.isAdmin,
             FK_NumberWorldCountryID: userAddMain.FK_NumberWorldCountryID,
             OrganizationSelectedPackageID: Number(
               userAddMain.PackageAssigned.value
@@ -400,13 +472,10 @@ const AddUserMain = () => {
   }, [UserMangementReducer.getOrganizationUserStatsGraph]);
 
   //handle select for checkbox is Admin
-  const handleAdminChange = (isChecked) => {
+  const handleAdminChange = () => {
     setUserAddMain((prevState) => ({
       ...prevState,
-      isAdmin: {
-        ...prevState.isAdmin,
-        value: isChecked,
-      },
+      isAdmin: prevState.isAdmin === 3 ? 4 : 3,
     }));
   };
 
@@ -829,8 +898,10 @@ const AddUserMain = () => {
 
                     <span>
                       <Checkbox
-                        value={userAddMain.isAdmin.value}
-                        onChange={(e) => handleAdminChange(e.target.checked)}
+                        checked={userAddMain.isAdmin === 4}
+                        onChange={handleAdminChange}
+                        classNameCheckBoxP="m-0 p-0"
+                        classNameDiv=""
                       />
                       <label className={styles["checkbox-label"]}>
                         {t("is-admin-also")}
@@ -956,6 +1027,9 @@ const AddUserMain = () => {
                     <Form.Control
                       className={styles["formcontrol-name-fieldssss"]}
                       name="Email"
+                      onBlur={() => {
+                        handeEmailvlidate();
+                      }}
                       onChange={addUserHandler}
                       value={userAddMain.Email.value}
                       placeholder={t("Email")}
@@ -974,6 +1048,12 @@ const AddUserMain = () => {
                         {userAddMain.Email.errorMessage}
                       </p>
                     </Col>
+                    {adminReducer.EmailCheckSpinner ? (
+                      <Spinner className={styles["checkEmailSpinner"]} />
+                    ) : null}
+                    {isEmailUnique && (
+                      <Check2 className={styles["isEmailUnique"]} />
+                    )}
                   </Col>
                 </Row>
 
