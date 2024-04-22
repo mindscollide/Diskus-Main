@@ -38,20 +38,119 @@ export function checkFeatureID(id) {
 }
 
 //Export function userFeatures from the Response
-export function checkFeatureIDRoutes(response) {
+export function updateLocalUserRoutes(userFeatures, LocalUserRoutes) {
+  let user = [
+    { id: 19, name: "signatureviewer" },
+    { id: 20, name: "documentViewer" },
+    { id: 21, name: "signatureviewer" },
+    { id: 2, name: "dataroom" },
+    { id: 19, name: "dataroom" },
+    { id: 21, name: "dataroom" },
+    { id: 13, name: "dataroom" },
+
+    { id: 6, name: "notes" },
+    { id: 7, name: "calendar" },
+    { id: 14, name: "todolist" },
+    { id: 15, name: "polling" },
+    { id: 17, name: "groups" },
+    { id: 17, name: "committee" },
+    { id: 18, name: "resolution" },
+    { id: 1, name: "Meeting" },
+    { id: 9, name: "Meeting" },
+    { id: 10, name: "Meeting" },
+    { id: 11, name: "Meeting" },
+    { id: 12, name: "Meeting" },
+    { id: 1, name: "Meeting/Useravailabilityformeeting" },
+    { id: 9, name: "Meeting/Useravailabilityformeeting" },
+    { id: 10, name: "Meeting/Useravailabilityformeeting" },
+    { id: 11, name: "Meeting/Useravailabilityformeeting" },
+    { id: 12, name: "Meeting/Useravailabilityformeeting" },
+  ];
   try {
-    console.log(response, "responseresponse");
-    let data = response.userFeatures.map((feature, index) => {
-      console.log(feature, "featuresfeaturesfeatures");
-      return {
-        name: feature.name,
-        id: feature.packageFeatureID,
-      };
+    // Iterate through each feature from the API response
+    userFeatures.forEach((feature) => {
+      // Find matching route by packageFeatureID
+      const matchingRoute = user.find(
+        (route) => route.id === feature.packageFeatureID
+      );
+      if (matchingRoute) {
+        // Check if LocalUserRoutes already contains an entry with this name
+        if (
+          !LocalUserRoutes.some((route) => route.name === matchingRoute.name)
+        ) {
+          // If not, push the new route into LocalUserRoutes
+          LocalUserRoutes.push({
+            name: matchingRoute.name,
+            id: feature.packageFeatureID, // Using a unique identifier from API
+          });
+        }
+      }
     });
 
-    console.log(data, "datadatadatadata");
+    return LocalUserRoutes;
+  } catch (error) {
+    console.log(error, "errorerror");
+  }
+}
 
-    return data;
+export function updateAdminRoutes(userFeatures, LocalAdminRoutes) {
+  let Admin = [
+    { id: 26, name: "AddUsersUsermanagement" },
+    { id: 26, name: "ManageUsers" },
+    { id: 27, name: "ManageUsers" },
+    { id: 31, name: "ManageUsers" },
+    { id: 32, name: "ManageUsers" },
+
+    { id: 28, name: "PackageDetailsUserManagement" },
+    { id: 28, name: "PakageDetailsUserManagement" },
+    { id: 29, name: "CancelSubscriptionUserManagement" },
+    { id: 30, name: "deleteorganizationUserMangement" },
+
+    { id: 19, name: "CustomerInformation" },
+
+    { id: 33, name: "PayOutstanding" },
+    { id: 34, name: "Summary" },
+    { id: 35, name: "loginreport" },
+
+    { id: 36, name: "OrganizationlevelConfigUM" },
+    { id: 37, name: "OrganizationlevelConfigUM" },
+    { id: 38, name: "OrganizationlevelConfigUM" },
+    { id: 39, name: "OrganizationlevelConfigUM" },
+    { id: 40, name: "OrganizationlevelConfigUM" },
+    { id: 41, name: "OrganizationlevelConfigUM" },
+    { id: 42, name: "OrganizationlevelConfigUM" },
+    { id: 43, name: "OrganizationlevelConfigUM" },
+
+    // not in use
+    // { id: 19, name: "Invoice" },
+    // { id: 19, name: "PaymentHistoryusermanagement" },
+    // { id: 19, name: "UpgradePackage" },
+    // { id: 19, name: "paymentForm" },
+    // { id: 19, name: "UpgradePackageDetail" },
+    // { id: 19, name: "UpgradePackageSelect" },
+  ];
+  try {
+    // Iterate through each feature from the API response
+    userFeatures.forEach((feature) => {
+      // Find matching route by packageFeatureID
+      const matchingRoute = Admin.find(
+        (route) => route.id === feature.packageFeatureID
+      );
+      if (matchingRoute) {
+        // Check if LocalUserRoutes already contains an entry with this name
+        if (
+          !LocalAdminRoutes.some((route) => route.name === matchingRoute.name)
+        ) {
+          // If not, push the new route into LocalUserRoutes
+          LocalAdminRoutes.push({
+            name: matchingRoute.name,
+            id: feature.packageFeatureID, // Using a unique identifier from API
+          });
+        }
+      }
+    });
+
+    return LocalAdminRoutes;
   } catch (error) {
     console.log(error, "errorerror");
   }
@@ -120,15 +219,26 @@ export async function handleLoginResponse(response) {
       await savePackageFeatureIDs(response.adminFeatures);
     }
 
-    let LocalUserRoutes = [
-      { name: "Diskus", id: 100 },
-      { name: "home", id: 101 },
-      { name: "", id: 102 },
-      { name: "changePassword", id: 103 },
-      { name: "faq's", id: 104 },
-      { name: "setting", id: 105 },
-    ];
-    let LocalAdminRoutes = [];
+    let LocalUserRoutes = response.hasUserRights
+      ? [
+          { name: "Diskus", id: 100 },
+          { name: "home", id: 101 },
+          { name: "", id: 102 },
+          { name: "changePassword", id: 103 },
+          { name: "faq's", id: 104 },
+          { name: "setting", id: 105 },
+          { name: "onboard", id: 106 },
+        ]
+      : [];
+    let LocalAdminRoutes = response.hasAdminRights
+      ? [
+          { name: "Admin", id: 200 },
+          { name: "Admin", id: 201 },
+          { name: "faq's", id: 207 },
+          { name: "", id: 202 },
+          { name: "ManageUsers", id: 203 },
+        ]
+      : [];
     if (response.isTrial) {
       if (response.hasUserRights) {
         LocalUserRoutes.push(
@@ -147,57 +257,31 @@ export async function handleLoginResponse(response) {
         );
       }
       if (response.hasAdminRights) {
-        LocalAdminRoutes = [
-          { name: "Admin", id: 200 },
-          { name: "Admin", id: 201 },
-          { name: "", id: 202 },
-          { name: "ManageUsers", id: 203 },
+        LocalAdminRoutes.push(
           { name: "changePassword", id: 204 },
           { name: "OrganizationlevelConfigUM", id: 205 },
           { name: "PakageDetailsUserManagement", id: 206 },
-          { name: "faq's", id: 207 },
           { name: "CustomerInformation", id: 208 },
           { name: "AddUsers", id: 26 },
-          { name: "loginreport", id: 35 },
-        ];
+          { name: "loginreport", id: 35 }
+        );
       }
     } else {
       //yaha pai kam karna hy user ka kam
       if (response.hasUserRights) {
-        const dynamicUserFeatures = await checkFeatureIDRoutes(response); // get dynamic features
-        LocalUserRoutes = [...LocalUserRoutes, ...dynamicUserFeatures];
-        LocalUserRoutes.push(
-          { name: "Meeting", id: 106 },
-          { name: "Meeting/Useravailabilityformeeting", id: 107 },
-          { name: "notes", id: 6 },
-          { name: "calendar", id: 7 },
-          { name: "dataroom", id: 13 },
-          { name: "todolist", id: 14 }
-        );
+        const dynamicUserFeatures = await updateLocalUserRoutes(
+          response.userFeatures,
+          LocalUserRoutes
+        ); // get dynamic features
+        LocalUserRoutes = dynamicUserFeatures;
       }
       //yaha pai kam karna hy Admin ka kam
       if (response.hasAdminRights) {
-        LocalAdminRoutes = [
-          { name: "Admin", id: 200 },
-          { name: "Admin", id: 201 },
-          { name: "", id: 202 },
-          { name: "ManageUsers", id: 203 },
-          { name: "changePassword", id: 204 },
-          { name: "OrganizationlevelConfigUM", id: 205 },
-          { name: "PakageDetailsUserManagement", id: 206 },
-          { name: "faq's", id: 207 },
-          { name: "CustomerInformation", id: 208 },
-
-          { name: "AddUsersUsermanagement", id: 26 },
-          { name: "PackageDetailsUserManagement", id: 28 },
-          { name: "CancelSubscriptionUserManagement", id: 29 },
-          { name: "deleteorganizationUserMangement", id: 30 },
-          { name: "Summary", id: 34 },
-          { name: "PayOutstanding", id: 34 },
-          { name: "PaymentHistory", id: 36 },
-          { name: "PaymentHistoryusermanagement", id: 37 },
-          { name: "loginreport", id: 35 },
-        ];
+        const dynamicUserFeatures = await updateAdminRoutes(
+          response.userFeatures,
+          LocalAdminRoutes
+        ); // get dynamic features
+        LocalAdminRoutes = dynamicUserFeatures;
       }
     }
 

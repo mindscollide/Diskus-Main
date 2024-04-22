@@ -694,7 +694,6 @@ const enterPasswordvalidation = (value, navigate, t) => {
               } else if (
                 JSON.parse(response.data.responseResult.roleId) === 4
               ) {
-                checkFeatureIDRoutes(response.data.responseResult);
                 localStorage.removeItem("LoginFlowPageRoute");
                 await dispatch(
                   getPackageExpiryDetail(
