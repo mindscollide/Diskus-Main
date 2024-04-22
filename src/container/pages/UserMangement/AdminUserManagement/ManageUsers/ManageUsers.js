@@ -65,6 +65,7 @@ const ManageUsers = () => {
   const [searchDetails, setsearchDetails] = useState({
     Name: "",
     Email: "",
+    searchIsAdmin: false,
     Status: {
       value: "",
       label: "",
@@ -493,6 +494,14 @@ const ManageUsers = () => {
     dispatch(AllOrganizationsUsersApi(navigate, t, data));
   };
 
+  //CheckBox IsAdmin Search
+
+  const handleSearchIsAdmin = () => {
+    setsearchDetails({
+      searchIsAdmin: searchDetails.searchIsAdmin,
+    });
+  };
+
   return (
     <Container>
       <Row className={"mt-3 row"}>
@@ -648,6 +657,8 @@ const ManageUsers = () => {
                             <Checkbox
                               classNameCheckBoxP="m-0 p-0"
                               classNameDiv=""
+                              checked={searchDetails.searchIsAdmin}
+                              onChange={handleSearchIsAdmin}
                             />
                             <span className={styles["AdminAlsoClass"]}>
                               {t("Is-admin-also")}
