@@ -153,7 +153,9 @@ const Organizers = ({
             sm={12}
             className="d-flex gap-3 align-items-center"
           >
-            <label className="column-boldness">{t("Primary")}</label>
+            <label className="column-boldness">
+              {text === true ? t("Primary") : t("Non-primary")}
+            </label>
           </Col>
         </Row>
       ),

@@ -829,17 +829,27 @@ const MeetingDetails = ({
     });
   };
 
-  const handleRSPV = () => {
-    setMeetingDetails({
-      ...meetingDetails,
-      AllowRSPV: !meetingDetails.AllowRSPV,
-    });
+  const handleNotifyOrganizers = () => {
+    if (meetingDetails.AllowRSPV === true) {
+      setMeetingDetails({
+        ...meetingDetails,
+        NotifyMeetingOrganizer: !meetingDetails.NotifyMeetingOrganizer,
+      });
+    }
   };
 
-  const handleNotifyOrganizers = () => {
+  const handleRSPV = () => {
+    // Toggle AllowRSPV
+    const newAllowRSPV = !meetingDetails.AllowRSPV;
+
+    // Set AllowRSPV to its new value
     setMeetingDetails({
       ...meetingDetails,
-      NotifyMeetingOrganizer: !meetingDetails.NotifyMeetingOrganizer,
+      AllowRSPV: newAllowRSPV,
+      // If AllowRSPV is set to false, also set NotifyMeetingOrganizer to false
+      NotifyMeetingOrganizer: newAllowRSPV
+        ? meetingDetails.NotifyMeetingOrganizer
+        : false,
     });
   };
 
