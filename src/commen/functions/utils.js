@@ -234,6 +234,8 @@ export async function handleLoginResponse(response) {
           { name: "faq's", id: 207 },
           { name: "", id: 202 },
           { name: "ManageUsers", id: 203 },
+          { name: "PackageDetailUMupgrade", id: 28 },
+          { name: "PaymentHistory", id: 218 },
         ]
       : [];
     if (response.isTrial) {

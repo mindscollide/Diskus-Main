@@ -318,7 +318,6 @@ export const router = createHashRouter(
               </RouteWrapperAdmin>
             }
           />
-
           <Route
             path="loginreport"
             element={
@@ -327,6 +326,15 @@ export const router = createHashRouter(
               </RouteWrapperAdmin>
             }
           />
+          <Route
+            path="PackageDetailUMupgrade"
+            element={
+              <RouteWrapperAdmin name="PackageDetailUMupgrade">
+                <PakageDetailsUMUpgrade />
+              </RouteWrapperAdmin>
+            }
+          />
+
           <Route
             path="AddUsers"
             element={
