@@ -38,20 +38,59 @@ export function checkFeatureID(id) {
 }
 
 //Export function userFeatures from the Response
-export function checkFeatureIDRoutes(response) {
+export function updateLocalUserRoutes(userFeatures, LocalUserRoutes) {
+  let user = [
+    { id: 19, name: "signatureviewer" },
+    { id: 20, name: "documentViewer" },
+    { id: 21, name: "signatureviewer" },
+    { id: 2, name: "dataroom" },
+    { id: 19, name: "dataroom" },
+    { id: 20, name: "dataroom" },
+    { id: 21, name: "dataroom" },
+    { id: 6, name: "notes" },
+    { id: 7, name: "calendar" },
+    { id: 14, name: "todolist" },
+    { id: 15, name: "polling" },
+    { id: 17, name: "groups" },
+    { id: 17, name: "committee" },
+    { id: 18, name: "resolution" },
+    { id: 1, name: "Meeting" },
+    { id: 4, name: "Meeting" },
+    { id: 5, name: "Meeting" },
+    { id: 9, name: "Meeting" },
+    { id: 10, name: "Meeting" },
+    { id: 11, name: "Meeting" },
+    { id: 12, name: "Meeting" },
+    { id: 1, name: "Meeting/Useravailabilityformeeting" },
+    { id: 4, name: "Meeting/Useravailabilityformeeting" },
+    { id: 5, name: "Meeting/Useravailabilityformeeting" },
+    { id: 9, name: "Meeting/Useravailabilityformeeting" },
+    { id: 10, name: "Meeting/Useravailabilityformeeting" },
+    { id: 11, name: "Meeting/Useravailabilityformeeting" },
+    { id: 12, name: "Meeting/Useravailabilityformeeting" },
+  ];
   try {
-    console.log(response, "responseresponse");
-    let data = response.userFeatures.map((feature, index) => {
-      console.log(feature, "featuresfeaturesfeatures");
-      return {
-        name: feature.name,
-        id: feature.packageFeatureID,
-      };
+    // Iterate through each feature from the API response
+    userFeatures.forEach((feature) => {
+      // Find matching route by packageFeatureID
+      const matchingRoute = user.find(
+        (route) => route.id === feature.packageFeatureID
+      );
+      if (matchingRoute) {
+        // Check if LocalUserRoutes already contains an entry with this name
+        if (
+          !LocalUserRoutes.some((route) => route.name === matchingRoute.name)
+        ) {
+          // If not, push the new route into LocalUserRoutes
+          LocalUserRoutes.push({
+            name: matchingRoute.name,
+            id: feature.packageFeatureID, // Using a unique identifier from API
+          });
+        }
+      }
     });
 
-    console.log(data, "datadatadatadata");
-
-    return data;
+    return LocalUserRoutes;
   } catch (error) {
     console.log(error, "errorerror");
   }
@@ -164,16 +203,11 @@ export async function handleLoginResponse(response) {
     } else {
       //yaha pai kam karna hy user ka kam
       if (response.hasUserRights) {
-        const dynamicUserFeatures = await checkFeatureIDRoutes(response); // get dynamic features
-        LocalUserRoutes = [...LocalUserRoutes, ...dynamicUserFeatures];
-        LocalUserRoutes.push(
-          { name: "Meeting", id: 106 },
-          { name: "Meeting/Useravailabilityformeeting", id: 107 },
-          { name: "notes", id: 6 },
-          { name: "calendar", id: 7 },
-          { name: "dataroom", id: 13 },
-          { name: "todolist", id: 14 }
-        );
+        const dynamicUserFeatures = await updateLocalUserRoutes(
+          response.userFeatures,
+          LocalUserRoutes
+        ); // get dynamic features
+        LocalUserRoutes = dynamicUserFeatures;
       }
       //yaha pai kam karna hy Admin ka kam
       if (response.hasAdminRights) {
