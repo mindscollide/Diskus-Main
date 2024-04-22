@@ -42,15 +42,11 @@ export function checkFeatureIDRoutes(response) {
   try {
     console.log(response, "responseresponse");
     let data = response.userFeatures.map((feature, index) => {
-      console.log(feature, "featuresfeaturesfeatures");
       return {
         name: feature.name,
         id: feature.packageFeatureID,
       };
     });
-
-    console.log(data, "datadatadatadata");
-
     return data;
   } catch (error) {
     console.log(error, "errorerror");
@@ -120,15 +116,24 @@ export async function handleLoginResponse(response) {
       await savePackageFeatureIDs(response.adminFeatures);
     }
 
-    let LocalUserRoutes = [
-      { name: "Diskus", id: 100 },
-      { name: "home", id: 101 },
-      { name: "", id: 102 },
-      { name: "changePassword", id: 103 },
-      { name: "faq's", id: 104 },
-      { name: "setting", id: 105 },
-    ];
-    let LocalAdminRoutes = [];
+    let LocalUserRoutes = response.hasUserRights
+      ? [
+          { name: "Diskus", id: 100 },
+          { name: "home", id: 101 },
+          { name: "", id: 102 },
+          { name: "changePassword", id: 103 },
+          { name: "faq's", id: 104 },
+          { name: "setting", id: 105 },
+        ]
+      : [];
+    let LocalAdminRoutes = response.hasAdminRights
+      ? [
+          { name: "Admin", id: 200 },
+          { name: "", id: 202 },
+          { name: "changePassword", id: 204 },
+          { name: "faq's", id: 207 },
+        ]
+      : [];
     if (response.isTrial) {
       if (response.hasUserRights) {
         LocalUserRoutes.push(
@@ -147,47 +152,31 @@ export async function handleLoginResponse(response) {
         );
       }
       if (response.hasAdminRights) {
-        LocalAdminRoutes = [
-          { name: "Admin", id: 200 },
-          { name: "Admin", id: 201 },
-          { name: "", id: 202 },
+        LocalAdminRoutes.push(
           { name: "ManageUsers", id: 203 },
-          { name: "changePassword", id: 204 },
           { name: "OrganizationlevelConfigUM", id: 205 },
           { name: "PakageDetailsUserManagement", id: 206 },
-          { name: "faq's", id: 207 },
           { name: "CustomerInformation", id: 208 },
           { name: "AddUsers", id: 26 },
-          { name: "loginreport", id: 35 },
-        ];
+          { name: "loginreport", id: 35 }
+        );
       }
     } else {
       //yaha pai kam karna hy user ka kam
       if (response.hasUserRights) {
         const dynamicUserFeatures = await checkFeatureIDRoutes(response); // get dynamic features
         LocalUserRoutes = [...LocalUserRoutes, ...dynamicUserFeatures];
-        LocalUserRoutes.push(
-          { name: "Meeting", id: 106 },
-          { name: "Meeting/Useravailabilityformeeting", id: 107 },
-          { name: "notes", id: 6 },
-          { name: "calendar", id: 7 },
-          { name: "dataroom", id: 13 },
-          { name: "todolist", id: 14 }
-        );
       }
       //yaha pai kam karna hy Admin ka kam
       if (response.hasAdminRights) {
-        LocalAdminRoutes = [
+        LocalAdminRoutes.push(
           { name: "Admin", id: 200 },
-          { name: "Admin", id: 201 },
           { name: "", id: 202 },
           { name: "ManageUsers", id: 203 },
           { name: "changePassword", id: 204 },
           { name: "OrganizationlevelConfigUM", id: 205 },
           { name: "PakageDetailsUserManagement", id: 206 },
-          { name: "faq's", id: 207 },
           { name: "CustomerInformation", id: 208 },
-
           { name: "AddUsersUsermanagement", id: 26 },
           { name: "PackageDetailsUserManagement", id: 28 },
           { name: "CancelSubscriptionUserManagement", id: 29 },
@@ -196,8 +185,8 @@ export async function handleLoginResponse(response) {
           { name: "PayOutstanding", id: 34 },
           { name: "PaymentHistory", id: 36 },
           { name: "PaymentHistoryusermanagement", id: 37 },
-          { name: "loginreport", id: 35 },
-        ];
+          { name: "loginreport", id: 35 }
+        );
       }
     }
 
