@@ -155,7 +155,7 @@ const PakageDetailsAdmin = () => {
       UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
         ?.organizationSelectedPackages;
     if (organizationSelectedPackages) {
-      navigate("/PackageDetailUMupgrade", {
+      navigate("/Admin/PackageDetailUMupgrade", {
         state: { organizationSelectedPackages },
       });
     } else {
