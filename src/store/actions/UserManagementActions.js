@@ -24,6 +24,7 @@ import { RefreshToken } from "./Auth_action";
 import { getUserSetting } from "./GetUserSetting";
 import { getAllLanguages } from "./Language_actions";
 import {
+  openPaymentProcessModal,
   showDeleteUsersModal,
   showEditUserModal,
   showReasonForLeavingModal,
@@ -1458,7 +1459,7 @@ const paymentInitiateFailApi = (message) => {
   };
 };
 
-const paymentInitiateMainApi = (navigate, t, newData, setPaymentModal) => {
+const paymentInitiateMainApi = (navigate, t, newData) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(paymentInitiateInitApi());
@@ -1476,9 +1477,7 @@ const paymentInitiateMainApi = (navigate, t, newData, setPaymentModal) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            paymentInitiateMainApi(navigate, t, newData, setPaymentModal)
-          );
+          dispatch(paymentInitiateMainApi(navigate, t, newData));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1494,7 +1493,8 @@ const paymentInitiateMainApi = (navigate, t, newData, setPaymentModal) => {
                   t("Successful")
                 )
               );
-              setPaymentModal(true);
+              // setPaymentModal(true);
+              dispatch(openPaymentProcessModal(true));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

@@ -46,7 +46,6 @@ const BillingMethodUsermanagement = () => {
   const [countryNames, setCountryNames] = useState([]);
 
   // states for open Iframe modal
-  const [openPaymentModal, setPaymentModal] = useState(false);
   const [paymentSourceLink, setPaymentSourceLink] = useState(null);
 
   // update totalYearly from child component step three
@@ -301,7 +300,7 @@ const BillingMethodUsermanagement = () => {
         OrderCurrency: "USD",
         OrderDescription: "An Order On Diskus",
       };
-      dispatch(paymentInitiateMainApi(navigate, t, newData, setPaymentModal));
+      dispatch(paymentInitiateMainApi(navigate, t, newData));
     }
   };
 
@@ -533,11 +532,7 @@ const BillingMethodUsermanagement = () => {
         </Col>
         <Col lg={1} md={1} sm={12} xs={12}></Col>
       </Row>
-      <OpenPaymentForm
-        openPaymentModal={openPaymentModal}
-        setOpenPaymentModal={setPaymentModal}
-        sourceLink={paymentSourceLink}
-      />
+      <OpenPaymentForm sourceLink={paymentSourceLink} />
       {UserManagementModals.thanksForPaymentModal && <ThankForPayment />}
       {UserManagementModals.paymentProceedFailed && <PaymentFailedModal />}
     </Container>

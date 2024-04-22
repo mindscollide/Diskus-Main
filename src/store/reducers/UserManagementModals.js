@@ -13,6 +13,7 @@ const initialState = {
   paymentProceedFailed: false,
   cancelSubscriptionModal: false,
   reasonForleavingModal: false,
+  paymentProcessModal: false,
 };
 
 const UserManagementModals = (state = initialState, action) => {
@@ -84,6 +85,14 @@ const UserManagementModals = (state = initialState, action) => {
       return {
         ...state,
         reasonForleavingModal: action.response,
+      };
+    }
+
+    // to open modal of payment process modal in Iframe
+    case actions.OPEN_PAYMENT_PROCESS_MODAL: {
+      return {
+        ...state,
+        paymentProcessModal: action.response,
       };
     }
 

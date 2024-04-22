@@ -69,6 +69,13 @@ const showReasonForLeavingModal = (response) => {
     response: response,
   };
 };
+
+const openPaymentProcessModal = (response) => {
+  return {
+    type: actions.OPEN_PAYMENT_PROCESS_MODAL,
+    response: response,
+  };
+};
 export {
   showUpgradeNowModal,
   showRequestExtentionModal,
@@ -80,4 +87,5 @@ export {
   showFailedPaymentModal,
   showCancelSubscriptionModal,
   showReasonForLeavingModal,
+  openPaymentProcessModal,
 };
