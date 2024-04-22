@@ -37,6 +37,26 @@ export function checkFeatureID(id) {
   return packageFeatureIDs.includes(id);
 }
 
+//Export function userFeatures from the Response
+export function checkFeatureIDRoutes(response) {
+  try {
+    console.log(response, "responseresponse");
+    let data = response.userFeatures.map((feature, index) => {
+      console.log(feature, "featuresfeaturesfeatures");
+      return {
+        name: feature.name,
+        id: feature.packageFeatureID,
+      };
+    });
+
+    console.log(data, "datadatadatadata");
+
+    return data;
+  } catch (error) {
+    console.log(error, "errorerror");
+  }
+}
+
 // for enter posword state management and routes management
 // Export the handleLoginResponse function
 export async function handleLoginResponse(response) {
@@ -142,7 +162,10 @@ export async function handleLoginResponse(response) {
         ];
       }
     } else {
+      //yaha pai kam karna hy user ka kam
       if (response.hasUserRights) {
+        const dynamicUserFeatures = await checkFeatureIDRoutes(response); // get dynamic features
+        LocalUserRoutes = [...LocalUserRoutes, ...dynamicUserFeatures];
         LocalUserRoutes.push(
           { name: "Meeting", id: 106 },
           { name: "Meeting/Useravailabilityformeeting", id: 107 },
@@ -152,6 +175,7 @@ export async function handleLoginResponse(response) {
           { name: "todolist", id: 14 }
         );
       }
+      //yaha pai kam karna hy Admin ka kam
       if (response.hasAdminRights) {
         LocalAdminRoutes = [
           { name: "Admin", id: 200 },
@@ -185,7 +209,8 @@ export async function handleLoginResponse(response) {
 }
 
 // Features IDs Check Fucntion
-export async function checkFeatureIDAvailability(id) {
+export function checkFeatureIDAvailability(id) {
+  console.log(id, "ididid");
   let packageID = localStorage.getItem("packageFeatureIDs");
 
   if (packageID) {
@@ -198,6 +223,7 @@ export async function checkFeatureIDAvailability(id) {
       console.error("Error parsing packageFeatureIDs from localStorage:", e);
       return false;
     }
+    console.log(idsArray.includes(id), "ididid");
 
     return idsArray.includes(id);
   } else {

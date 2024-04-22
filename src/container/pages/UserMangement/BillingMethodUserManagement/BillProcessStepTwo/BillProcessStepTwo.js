@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./BillProcessStepTwo.module.css";
 import { Col, Container, Row } from "react-bootstrap";
 import { TextField } from "../../../../../components/elements";
@@ -9,12 +9,20 @@ import {
   regexOnlyCharacters,
   regexOnlyNumbers,
 } from "../../../../../commen/functions/regex";
-const BillProcessStepTwo = ({ billingAddress, setBillingAddress }) => {
+import { getCountryNamesAction } from "../../../../../store/actions/GetCountryNames";
+
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+const BillProcessStepTwo = ({
+  billingAddress,
+  setBillingAddress,
+  select,
+  countryOnSelect,
+}) => {
   const { t } = useTranslation();
-
-  const [select, setSelect] = useState("");
-
-  const [countryNames, setCountryNames] = useState([]);
+  const { countryNamesReducer } = useSelector((state) => state);
+  console.log(countryNamesReducer, "countryNamesReducer");
 
   //onChange Method For Text Field
   const billingAddressDetailsHandler = (e) => {
@@ -108,29 +116,6 @@ const BillProcessStepTwo = ({ billingAddress, setBillingAddress }) => {
         },
       });
     }
-  };
-
-  //Flag Selector
-  const countryOnSelect = (code) => {
-    setSelect(code);
-    let a = Object.values(countryNames).find((obj) => {
-      return obj.shortCode === code;
-    });
-    setBillingAddress({
-      ...billingAddress,
-      Country: {
-        ...billingAddress.Country,
-        errorMessage: "", // Empty error message
-      },
-    });
-    // setSignUpDetails({
-    //   ...signUpDetails,
-    //   CountryName: {
-    //     value: a.pK_WorldCountryID,
-    //     errorMessage: "",
-    //     errorStatus: false,
-    //   },
-    // });
   };
 
   return (

@@ -27,6 +27,7 @@ import { useSelector } from "react-redux";
 import EditUserModal from "../../ModalsUserManagement/EditUserModal/EditUserModal";
 import SuccessfullyUpdateModal from "../../ModalsUserManagement/SuccessFullyUpdatedModal/SuccessfullyUpdateModal";
 import { AllOrganizationsUsersApi } from "../../../../../store/actions/UserManagementActions";
+import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
 const ManageUsers = () => {
   const { t } = useTranslation();
 
@@ -54,6 +55,12 @@ const ManageUsers = () => {
   const [editModalData, setEditModalData] = useState(null);
 
   const [deleteModalData, setDeleteModalData] = useState(null);
+
+  const [enterpressed, setEnterpressed] = useState(false);
+
+  const [manangeUserSearch, setManangeUserSearch] = useState({
+    searchValue: "",
+  });
 
   const [searchDetails, setsearchDetails] = useState({
     Name: "",
@@ -242,19 +249,23 @@ const ManageUsers = () => {
       render: (text, record) => {
         return (
           <>
-            <div className="edit-icon-edituser icon-edit-list icon-size-one beachGreen">
-              <i>
-                <img
-                  draggable="false"
-                  alt=""
-                  src={EditIcon2}
-                  onClick={() => handleClickEditIcon(record)}
-                />
+            {checkFeatureIDAvailability(27) ? (
+              <div className="edit-icon-edituser icon-edit-list icon-size-one beachGreen">
+                <i>
+                  <img
+                    draggable="false"
+                    alt=""
+                    src={EditIcon2}
+                    onClick={() => handleClickEditIcon(record)}
+                  />
+                </i>
+              </div>
+            ) : null}
+            {checkFeatureIDAvailability(31) ? (
+              <i style={{ cursor: "pointer", color: "#000" }}>
+                <Trash size={22} onClick={() => handleDeleteModal(record)} />
               </i>
-            </div>
-            <i style={{ cursor: "pointer", color: "#000" }}>
-              <Trash size={22} onClick={() => handleDeleteModal(record)} />
-            </i>
+            ) : null}
           </>
         );
       },
@@ -315,36 +326,6 @@ const ManageUsers = () => {
   };
 
   //manual filteration performed on the GRID
-  // const handleSearch = () => {
-  //   console.log("cliked");
-  //   const filteredData =
-  //     UserMangementReducer.allOrganizationUsersData.organizationUsers.filter(
-  //       (user) => {
-  //         console.log(user, "matchesStatusmatchesStatus");
-  //         const matchesName =
-  //           searchDetails.Name === "" ||
-  //           user.userName
-  //             .toLowerCase()
-  //             .includes(searchDetails.Name.toLowerCase());
-  //         const matchesEmail =
-  //           searchDetails.Email === "" ||
-  //           user.email
-  //             .toLowerCase()
-  //             .includes(searchDetails.Email.toLowerCase());
-
-  //         const matchesStatus =
-  //           searchDetails.Status === "" || // Assuming 'Status' holds the selected status from the dropdown
-  //           user.userStatus === searchDetails.Status.value;
-
-  //         return matchesName && matchesEmail;
-  //       }
-  //     );
-
-  //   setManageUserGrid(filteredData);
-  //   setsearchbox(false);
-  //   setshowSearches(true);
-  // };
-
   const handleSearch = () => {
     const filteredData =
       UserMangementReducer.allOrganizationUsersData.organizationUsers.filter(
@@ -354,26 +335,23 @@ const ManageUsers = () => {
             user.userName
               .toLowerCase()
               .includes(searchDetails.Name.toLowerCase());
-
-          console.log(matchesName, "matchesName");
-
           const matchesEmail =
             searchDetails.Email === "" ||
             user.email
               .toLowerCase()
               .includes(searchDetails.Email.toLowerCase());
-
           const matchesStatus =
-            searchDetails.Status === "" ||
-            user.userStatus === searchDetails.Status.value;
+            searchDetails.Status.label === "" ||
+            user.userStatus.toLowerCase() ===
+              searchDetails.Status.label.toLowerCase();
 
-          console.log(matchesStatus, "matchesStatus");
+          let conditionsToCheck = [];
+          if (searchDetails.Name !== "") conditionsToCheck.push(matchesName);
+          if (searchDetails.Email !== "") conditionsToCheck.push(matchesEmail);
+          if (searchDetails.Status.label !== "")
+            conditionsToCheck.push(matchesStatus);
 
-          if (matchesStatus) {
-            return matchesStatus;
-          } else {
-            return matchesName && matchesEmail;
-          }
+          return conditionsToCheck.some((condition) => condition);
         }
       );
 
@@ -428,7 +406,6 @@ const ManageUsers = () => {
   };
 
   //Options For Search
-
   const options = [
     { value: "Enabled", label: "Enabled" },
     { value: "Disabled", label: "Disabled" },
@@ -438,11 +415,65 @@ const ManageUsers = () => {
     { value: "Delete", label: "Delete" },
   ];
 
+  //Status onChange Search
   const handleStatusChange = (selectedOption) => {
     setsearchDetails((prevDetails) => ({
       ...prevDetails,
       Status: selectedOption,
     }));
+  };
+
+  //Search Field onChnage ManageUsers
+  const handleSeachFieldManageUsers = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === "SearchVal") {
+      if (value !== "") {
+        setManangeUserSearch({
+          ...manangeUserSearch,
+          searchValue: value,
+        });
+      } else {
+        setManangeUserSearch({
+          ...manangeUserSearch,
+          searchValue: "",
+        });
+      }
+    }
+  };
+
+  //OnKeyDown Search ManageUsers
+  const handleKeyDownSearchManageUsers = (e) => {
+    if (e.key === "Enter") {
+      setEnterpressed(true);
+      const filteredData =
+        UserMangementReducer.allOrganizationUsersData.organizationUsers.filter(
+          (user) => {
+            const matchesName =
+              manangeUserSearch.searchValue === "" ||
+              user.userName
+                .toLowerCase()
+                .includes(manangeUserSearch.searchValue.toLowerCase());
+
+            return matchesName;
+          }
+        );
+
+      setManageUserGrid(filteredData);
+    }
+  };
+
+  //OnClick Search Cross Icon
+  const handleResettingPage = () => {
+    setManangeUserSearch({
+      ...manangeUserSearch,
+      searchValue: "",
+    });
+    let data = {
+      OrganizationID: Number(organizationID),
+      RequestingUserID: Number(userID),
+    };
+    dispatch(AllOrganizationsUsersApi(navigate, t, data));
   };
 
   return (
@@ -458,12 +489,14 @@ const ManageUsers = () => {
           <label className={styles["Edit-Main-Heading"]}>
             {t("Manage-user")}
           </label>
-          <Button
-            text={t("Add-users")}
-            icon={<Plus width={20} height={20} fontWeight={800} />}
-            className={styles["AddUsersButton"]}
-            onClick={handleAddusers}
-          />
+          {checkFeatureIDAvailability(26) ? (
+            <Button
+              text={t("Add-users")}
+              icon={<Plus width={20} height={20} fontWeight={800} />}
+              className={styles["AddUsersButton"]}
+              onClick={handleAddusers}
+            />
+          ) : null}
         </Col>
         <Col
           lg={6}
@@ -476,8 +509,12 @@ const ManageUsers = () => {
             <TextField
               width={"502px"}
               placeholder={t("Search")}
+              name={"SearchVal"}
+              value={manangeUserSearch.searchValue}
+              onKeyDown={handleKeyDownSearchManageUsers}
               applyClass={"PollingSearchInput"}
               labelClass="d-none"
+              change={handleSeachFieldManageUsers}
               inputicon={
                 <>
                   <Row>
@@ -487,6 +524,17 @@ const ManageUsers = () => {
                       sm={12}
                       className="d-flex gap-2 align-items-center"
                     >
+                      {manangeUserSearch.searchValue && enterpressed ? (
+                        <>
+                          <img
+                            src={BlackCrossIcon}
+                            className="cursor-pointer"
+                            draggable="false"
+                            alt=""
+                            onClick={handleResettingPage}
+                          />
+                        </>
+                      ) : null}
                       <img
                         src={searchicon}
                         alt=""

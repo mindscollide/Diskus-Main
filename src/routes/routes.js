@@ -562,8 +562,6 @@ export const router = createHashRouter(
         path="/PasswordVerificationUM"
         element={<PasswordVerification />}
       />
-
-      {/* Routes for testing puprose End */}
     </>
   )
 );

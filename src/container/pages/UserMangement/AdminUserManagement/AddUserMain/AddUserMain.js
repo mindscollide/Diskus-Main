@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
 import styles from "./AddUserMain.module.css";
 import { useSelector, useDispatch } from "react-redux";
-import { Container, Row, Col, Form, ProgressBar } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  ProgressBar,
+  Spinner,
+} from "react-bootstrap";
 import { Checkbox, Spin } from "antd";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
@@ -17,33 +24,33 @@ import {
   AddOrganizationsUserApi,
   GetOrganizationSelectedPackagesByOrganizationIDApi,
 } from "../../../../../store/actions/UserManagementActions";
+import { checkEmailExsist } from "../../../../../store/actions/Admin_Organization";
+import { Check2 } from "react-bootstrap-icons";
 
 const AddUserMain = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { UserMangementReducer } = useSelector((state) => state);
-
+  const { UserMangementReducer, adminReducer } = useSelector((state) => state);
   console.log(
-    UserMangementReducer.getOrganizationUserStatsGraph,
-    "getOrganizationUserStatsGraph"
+    UserMangementReducer.organizationSelectedPakagesByOrganizationIDData,
+    "organizationSelectedPakagesByOrganizationIDData"
   );
 
   // organizationName from Local Storage
   const organizationName = localStorage.getItem("organizatioName");
   const organizationID = localStorage.getItem("organizationID");
   const UserID = localStorage.getItem("userID");
-
+  const [companyEmailValidateError, setCompanyEmailValidateError] =
+    useState("");
+  const [companyEmailValidate, setCompanyEmailValidate] = useState(false);
   const [packageAssignedOption, setPackageAssignedOption] = useState([]);
   const [packageAssignedValue, setPackageAssignedValue] = useState([]);
-
+  const [isEmailUnique, setEmailUnique] = useState(false);
   const [selected, setSelected] = useState("US");
   const [selectedCountry, setSelectedCountry] = useState({});
   const [graphData, setGraphData] = useState([]);
-  console.log(graphData, "hbdhbabjajkdbhbca");
-
   const [loading, setLoading] = useState(true);
-
   const [userAddMain, setUserAddMain] = useState({
     Name: {
       value: "",
@@ -64,7 +71,7 @@ const AddUserMain = () => {
     },
 
     PackageAssigned: {
-      value: "",
+      value: 0,
       errorMessage: "",
       errorStatus: false,
     },
@@ -75,28 +82,20 @@ const AddUserMain = () => {
       errorStatus: false,
     },
 
-    isAdmin: {
-      value: false,
-      errorMessage: "",
-      errorStatus: false,
-    },
+    isAdmin: 3,
     FK_NumberWorldCountryID: 0,
   });
 
   //For Now I set static data in this getOrganizationPackageUserStatsAPI Api
   useEffect(() => {
     let data = {
-      OrganizationID: 569,
-      RequestingUserID: 1196,
-
-      // OrganizationID: Number(organizationID),
-      // RequestingUserID: Number(UserID),
+      OrganizationID: Number(organizationID),
+      RequestingUserID: Number(UserID),
     };
     dispatch(getOrganizationPackageUserStatsAPI(navigate, t, data));
 
     let newdata = {
-      OrganizationID: 569,
-      // OrganizationID: Number(organizationID),
+      OrganizationID: Number(organizationID),
     };
     dispatch(
       GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t, newdata)
@@ -178,40 +177,113 @@ const AddUserMain = () => {
 
     if (name === "Email" && value !== "") {
       if (value !== "") {
-        // Check if email is not empty
-        if (validateEmailEnglishAndArabicFormat(value)) {
-          // Check if email format is valid
-          setUserAddMain({
-            ...userAddMain,
-            Email: {
-              value: value.trimStart(),
-              errorMessage: "", // Clear error message when email is valid
-              errorStatus: false, // Set error status to false when email is valid
-            },
-          });
-        } else {
-          setUserAddMain({
-            ...userAddMain,
-            Email: {
-              value: value.trimStart(),
-              errorMessage: t("Enter-valid-email-address"), // Set error message when email is invalid
-              errorStatus: true, // Set error status to true when email is invalid
-            },
-          });
-        }
-      } else {
-        // Handle case when email is empty
         setUserAddMain({
           ...userAddMain,
           Email: {
-            value: "",
-            errorMessage: "", // Clear error message when email is empty
-            errorStatus: false, // Set error status to false when email is empty
+            value: value.trimStart(),
+            errorMessage: "",
+            errorStatus: false,
           },
         });
       }
+    } else if (name === "Email" && value === "") {
+      setUserAddMain({
+        ...userAddMain,
+        Email: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    }
+
+    // if (name === "Email" && value !== "") {
+    //   if (value !== "") {
+    //     // Check if email is not empty
+    //     if (validateEmailEnglishAndArabicFormat(value)) {
+    //       // Check if email format is valid
+    //       setUserAddMain({
+    //         ...userAddMain,
+    //         Email: {
+    //           value: value.trimStart(),
+    //           errorMessage: "", // Clear error message when email is valid
+    //           errorStatus: false, // Set error status to false when email is valid
+    //         },
+    //       });
+    //     } else {
+    //       setUserAddMain({
+    //         ...userAddMain,
+    //         Email: {
+    //           value: value.trimStart(),
+    //           errorMessage: t("Enter-valid-email-address"), // Set error message when email is invalid
+    //           errorStatus: true, // Set error status to true when email is invalid
+    //         },
+    //       });
+    //     }
+    //   } else {
+    //     // Handle case when email is empty
+    //     setUserAddMain({
+    //       ...userAddMain,
+    //       Email: {
+    //         value: "",
+    //         errorMessage: "", // Clear error message when email is empty
+    //         errorStatus: false, // Set error status to false when email is empty
+    //       },
+    //     });
+    //   }
+    // }
+  };
+
+  //Validating the Email
+  const handeEmailvlidate = () => {
+    if (userAddMain.Email.value !== "") {
+      if (validateEmailEnglishAndArabicFormat(userAddMain.Email.value)) {
+        dispatch(
+          checkEmailExsist(
+            setCompanyEmailValidate,
+            setCompanyEmailValidateError,
+            userAddMain,
+            t,
+            setEmailUnique
+          )
+        );
+      } else {
+        setEmailUnique(false);
+        setUserAddMain({
+          ...userAddMain,
+          Email: {
+            value: userAddMain.Email.value,
+            errorMessage: t("Enter-valid-email-address"),
+            errorStatus: true,
+          },
+        });
+      }
+    } else {
+      setEmailUnique(false);
+      setUserAddMain({
+        ...userAddMain,
+        Email: {
+          value: "",
+          errorMessage: t("Enter-email-address"),
+          errorStatus: true,
+        },
+      });
     }
   };
+
+  //Validate Email useEffect
+  useEffect(() => {
+    if (companyEmailValidateError !== " ") {
+      setUserAddMain({
+        ...userAddMain,
+        Email: {
+          value: userAddMain.Email.value,
+          errorMessage: companyEmailValidateError,
+          errorStatus: companyEmailValidate,
+        },
+      });
+    }
+  }, [companyEmailValidate, companyEmailValidateError]);
 
   // API hit on create button
   const handleCreate = async () => {
@@ -219,7 +291,7 @@ const AddUserMain = () => {
       userAddMain.Name.value !== "" &&
       userAddMain.Designation.value !== "" &&
       userAddMain.MobileNumber.value !== "" &&
-      // userAddMain.PackageAssigned.value !== "" &&
+      userAddMain.PackageAssigned.value !== "" &&
       userAddMain.Email.value !== ""
     ) {
       let createData = {
@@ -231,9 +303,11 @@ const AddUserMain = () => {
             MobileNumber: userAddMain.MobileNumber.value,
             UserEmail: userAddMain.Email.value,
             OrganizationID: Number(organizationID),
-            isAdmin: userAddMain.isAdmin.value,
+            RoleID: userAddMain.isAdmin,
             FK_NumberWorldCountryID: userAddMain.FK_NumberWorldCountryID,
-            OrganizationSelectedPackageID: userAddMain.PackageAssigned.value,
+            OrganizationSelectedPackageID: Number(
+              userAddMain.PackageAssigned.value
+            ),
           },
         ],
       };
@@ -295,7 +369,7 @@ const AddUserMain = () => {
       },
 
       PackageAssigned: {
-        value: "",
+        value: 0,
         errorMessage: "",
         errorStatus: false,
       },
@@ -398,13 +472,10 @@ const AddUserMain = () => {
   }, [UserMangementReducer.getOrganizationUserStatsGraph]);
 
   //handle select for checkbox is Admin
-  const handleAdminChange = (isChecked) => {
+  const handleAdminChange = () => {
     setUserAddMain((prevState) => ({
       ...prevState,
-      isAdmin: {
-        ...prevState.isAdmin,
-        value: isChecked,
-      },
+      isAdmin: prevState.isAdmin === 3 ? 4 : 3,
     }));
   };
 
@@ -422,19 +493,21 @@ const AddUserMain = () => {
     });
   };
 
+  // package assigned option dropdown useEffect it will disable option when packageAllotedUsers greater then headCount
   useEffect(() => {
     if (
       UserMangementReducer.organizationSelectedPakagesByOrganizationIDData &&
-      Object.keys(
-        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
-      ).length > 0
+      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
+        .organizationSelectedPackages.length > 0
     ) {
       let temp = [];
-      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData.organizationSelectedPackages.map(
+      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData.organizationSelectedPackages.forEach(
         (data, index) => {
+          console.log(data, "datadatadata");
           temp.push({
             value: data.pK_PackageID,
             label: data.name,
+            isDisabled: data.packageAllotedUsers > data.headCount,
           });
         }
       );
@@ -458,7 +531,7 @@ const AddUserMain = () => {
       setUserAddMain({
         ...userAddMain,
         PackageAssigned: {
-          value: "",
+          value: 0,
           errorMessage: t("Please-select-a-package"),
           errorStatus: true,
         },
@@ -549,126 +622,6 @@ const AddUserMain = () => {
                           />
                         </Col>
                       </Row>
-
-                      {/* <Row>
-                        <Col>
-                          {UserMangementReducer.getOrganizationUserStatsGraph &&
-                            UserMangementReducer.getOrganizationUserStatsGraph
-                              .selectedPackages &&
-                            UserMangementReducer.getOrganizationUserStatsGraph.selectedPackages.map(
-                              (packages, index) => (
-                                <>
-                                  <Row key={index}>
-                                    <Col
-                                      lg={8}
-                                      md={8}
-                                      sm={8}
-                                      xs={12}
-                                      className=""
-                                    >
-                                      <label
-                                        className={styles["labelChart-Title"]}
-                                      >
-                                        {packages.name}
-                                      </label>
-                                    </Col>
-                                    <Col lg={4} md={4} sm={4} xs={12}>
-                                      <label
-                                        className={styles["labelChart-Number"]}
-                                      >
-                                        {`${packages.allotedUsers} /${packages.headCount}`}
-                                      </label>
-                                    </Col>
-                                    <div
-                                      className={styles["borderLine-title"]}
-                                    />
-                                  </Row>
-                                  <Row>
-                                    <Col
-                                      lg={8}
-                                      md={8}
-                                      sm={8}
-                                      xs={12}
-                                      className=""
-                                    >
-                                      <label
-                                        className={
-                                          styles["Admin-labelChart-Title"]
-                                        }
-                                      >
-                                        {UserMangementReducer
-                                          .getOrganizationUserStatsGraph
-                                          .selectedPackages[index + 1]?.name ||
-                                          ""}
-                                      </label>
-                                    </Col>
-                                    <Col lg={4} md={4} sm={4} xs={12}>
-                                      <label
-                                        className={
-                                          styles["Admin-labelChart-Number"]
-                                        }
-                                      >
-                                        {`${
-                                          UserMangementReducer
-                                            .getOrganizationUserStatsGraph
-                                            .selectedPackages[index + 1]
-                                            ?.allotedUsers || ""
-                                        } / ${
-                                          UserMangementReducer
-                                            .getOrganizationUserStatsGraph
-                                            .selectedPackages[index + 1]
-                                            ?.headCount || ""
-                                        }`}
-                                      </label>
-                                    </Col>
-                                    <div
-                                      className={styles["borderLine-title"]}
-                                    />
-                                  </Row>
-                                  <Row>
-                                    <Col
-                                      lg={8}
-                                      md={8}
-                                      sm={8}
-                                      xs={12}
-                                      className=""
-                                    >
-                                      <label
-                                        className={
-                                          styles["Admin-labelChart-Title"]
-                                        }
-                                      >
-                                        {UserMangementReducer
-                                          .getOrganizationUserStatsGraph
-                                          .selectedPackages[index + 2]?.name ||
-                                          ""}
-                                      </label>
-                                    </Col>
-                                    <Col lg={4} md={4} sm={4} xs={12}>
-                                      <label
-                                        className={
-                                          styles["Admin-labelChart-Number"]
-                                        }
-                                      >
-                                        {`${
-                                          UserMangementReducer
-                                            .getOrganizationUserStatsGraph
-                                            .selectedPackages[index + 2]
-                                            ?.allotedUsers || ""
-                                        } / ${
-                                          UserMangementReducer
-                                            .getOrganizationUserStatsGraph
-                                            .selectedPackages[index + 2]
-                                            ?.headCount || ""
-                                        }`}
-                                      </label>
-                                    </Col>
-                                  </Row>
-                                </>
-                              )
-                            )}
-                        </Col>
-                      </Row> */}
 
                       <Row>
                         <Col>
@@ -827,8 +780,10 @@ const AddUserMain = () => {
 
                     <span>
                       <Checkbox
-                        value={userAddMain.isAdmin.value}
-                        onChange={(e) => handleAdminChange(e.target.checked)}
+                        checked={userAddMain.isAdmin === 4}
+                        onChange={handleAdminChange}
+                        classNameCheckBoxP="m-0 p-0"
+                        classNameDiv=""
                       />
                       <label className={styles["checkbox-label"]}>
                         {t("is-admin-also")}
@@ -936,7 +891,7 @@ const AddUserMain = () => {
                     <Col>
                       <p
                         className={
-                          userAddMain.PackageAssigned.value === ""
+                          userAddMain.PackageAssigned.value === 0
                             ? ` ${styles["errorMessage"]} `
                             : `${styles["errorMessage_hidden"]}`
                         }
@@ -954,6 +909,9 @@ const AddUserMain = () => {
                     <Form.Control
                       className={styles["formcontrol-name-fieldssss"]}
                       name="Email"
+                      onBlur={() => {
+                        handeEmailvlidate();
+                      }}
                       onChange={addUserHandler}
                       value={userAddMain.Email.value}
                       placeholder={t("Email")}
@@ -972,6 +930,12 @@ const AddUserMain = () => {
                         {userAddMain.Email.errorMessage}
                       </p>
                     </Col>
+                    {adminReducer.EmailCheckSpinner ? (
+                      <Spinner className={styles["checkEmailSpinner"]} />
+                    ) : null}
+                    {isEmailUnique && (
+                      <Check2 className={styles["isEmailUnique"]} />
+                    )}
                   </Col>
                 </Row>
 

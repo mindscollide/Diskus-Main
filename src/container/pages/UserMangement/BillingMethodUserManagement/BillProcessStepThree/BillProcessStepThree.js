@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getOrganizationSelectedPakagesAPI } from "../../../../../store/actions/UserManagementActions";
 import { useNavigate } from "react-router-dom";
 import { convertUTCDateToLocalDate } from "../../../../../commen/functions/date_formater";
-const BillProcessStepThree = () => {
+const BillProcessStepThree = ({ updateTotalYearlyCharges }) => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
@@ -160,6 +160,8 @@ const BillProcessStepThree = () => {
       (acc, cur) => acc + (Number(cur.price * cur.headCount) * 12 || 0),
       0
     );
+
+    updateTotalYearlyCharges(totalYearlyCharges);
 
     // Return an object with the totals that can be used as a row in your table.
     return {

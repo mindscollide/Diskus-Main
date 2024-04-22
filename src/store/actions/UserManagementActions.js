@@ -10,6 +10,9 @@ import {
   ResendForgotPasswordCode,
   EditOrganizationsUser,
   DeleteOrganizationsUser,
+  PaymentInitiateStepperThree,
+  CancelSubReasons,
+  CancelOrganizationsSubscriptions,
 } from "../../commen/apis/Api_config";
 import {
   authenticationApi,
@@ -23,6 +26,7 @@ import { getAllLanguages } from "./Language_actions";
 import {
   showDeleteUsersModal,
   showEditUserModal,
+  showReasonForLeavingModal,
   showSucessfullyUpdatedModal,
 } from "./UserMangementModalActions";
 
@@ -1431,6 +1435,285 @@ const deleteOrganizationUserAPI = (navigate, t, data) => {
   };
 };
 
+//Payment Initiate Stepper Three API
+
+const paymentInitiateInitApi = () => {
+  return {
+    type: actions.PAYMENT_INITIATE_INIT,
+  };
+};
+
+const paymentInitiateSuccessApi = (response, message) => {
+  return {
+    type: actions.PAYMENT_INITIATE_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const paymentInitiateFailApi = (message) => {
+  return {
+    type: actions.PAYMENT_INITIATE_FAIL,
+    message: message,
+  };
+};
+
+const paymentInitiateMainApi = (navigate, t, newData, setPaymentModal) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(paymentInitiateInitApi());
+    let form = new FormData();
+    form.append("RequestMethod", PaymentInitiateStepperThree.RequestMethod);
+    form.append("RequestData", JSON.stringify(newData));
+    axios({
+      method: "post",
+      url: authenticationApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            paymentInitiateMainApi(navigate, t, newData, setPaymentModal)
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_PaymentInitiate_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                paymentInitiateSuccessApi(
+                  response.data.responseResult,
+                  t("Successful")
+                )
+              );
+              setPaymentModal(true);
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_PaymentInitiate_02".toLowerCase()
+                )
+            ) {
+              dispatch(paymentInitiateFailApi(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(paymentInitiateFailApi(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(paymentInitiateFailApi(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(paymentInitiateFailApi(t("Something-went-wrong")));
+      });
+  };
+};
+
+// For cancel subcription reason
+const cancelSubscriptionReasonInit = () => {
+  return {
+    type: actions.CANCEL_SUB_REASONS_INIT,
+  };
+};
+
+const cancelSubscriptionReasonSuccess = (response, message) => {
+  return {
+    type: actions.CANCEL_SUB_REASONS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const cancelSubscriptionReasonFail = (message) => {
+  return {
+    type: actions.CANCEL_SUB_REASONS_FAIL,
+    message: message,
+  };
+};
+
+const getCancelSubscriptionReasonApi = (navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(cancelSubscriptionReasonInit());
+    let form = new FormData();
+    form.append("RequestMethod", CancelSubReasons.RequestMethod);
+    axios({
+      method: "post",
+      url: getAdminURLs,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getCancelSubscriptionReasonApi(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_GetCancelSubscriptionReasons_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                cancelSubscriptionReasonSuccess(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_GetCancelSubscriptionReasons_02".toLowerCase()
+                )
+            ) {
+              dispatch(cancelSubscriptionReasonFail(t("No-data-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_GetCancelSubscriptionReasons_03".toLowerCase()
+                )
+            ) {
+              dispatch(cancelSubscriptionReasonFail(t("Something-went-wrong")));
+            } else {
+              dispatch(cancelSubscriptionReasonFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(cancelSubscriptionReasonFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(cancelSubscriptionReasonFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(cancelSubscriptionReasonFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// For CancelOrganizationsSubscription Api submit
+const cancelOrganizationSubReasonInit = () => {
+  return {
+    type: actions.CANCEL_ORGANIZATION_SUB_INIT,
+  };
+};
+
+const cancelOrganizationSubReasonSuccess = (response, message) => {
+  return {
+    type: actions.CANCEL_ORGANIZATION_SUB_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const cancelOrganizationSubReasonFail = (message) => {
+  return {
+    type: actions.CANCEL_ORGANIZATION_SUB_FAIL,
+    message: message,
+  };
+};
+
+const cancelOrganizationSubApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(cancelOrganizationSubReasonInit());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      CancelOrganizationsSubscriptions.RequestMethod
+    );
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: getAdminURLs,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(cancelOrganizationSubApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_CancelOrganizationsSubscription_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                cancelOrganizationSubReasonSuccess(
+                  response.data.responseResult,
+                  t("Successful")
+                )
+              );
+              dispatch(showReasonForLeavingModal(false));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_CancelOrganizationsSubscription_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                cancelOrganizationSubReasonFail(
+                  t("organization-subscription-not-cancelled")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_CancelOrganizationsSubscription_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                cancelOrganizationSubReasonFail(
+                  t("invalid-subscription-status-id-provided")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_CancelOrganizationsSubscription_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                cancelOrganizationSubReasonFail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              cancelOrganizationSubReasonFail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(cancelOrganizationSubReasonFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(cancelOrganizationSubReasonFail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   signUpOrganizationAndPakageSelection,
   // getAllorganizationSubscriptionExpiryDetailsApi,
@@ -1447,4 +1730,7 @@ export {
   getAllUserTypePackagesApi,
   ResendForgotPasswordCodeApi,
   deleteOrganizationUserAPI,
+  paymentInitiateMainApi,
+  getCancelSubscriptionReasonApi,
+  cancelOrganizationSubApi,
 };

@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import Cookies from "js-cookie";
 import { Col, Container, Row } from "react-bootstrap";
 import { Step, Stepper } from "react-form-stepper";
-import { Button } from "../../../../components/elements";
+import { Button, Loader } from "../../../../components/elements";
 import BillProcessStepOne from "./BillProcessStepOne/BillProcessStepOne";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 import BillProcessStepTwo from "./BillProcessStepTwo/BillProcessStepTwo";
@@ -19,12 +19,17 @@ import {
 import { useDispatch } from "react-redux";
 import PaymentFailedModal from "../ModalsUserManagement/PaymentFailedModal/PaymentFailedModal";
 import { validateEmailEnglishAndArabicFormat } from "../../../../commen/functions/validations";
+import { paymentInitiateMainApi } from "../../../../store/actions/UserManagementActions";
+import { json, useNavigate } from "react-router-dom";
+import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
+import OpenPaymentForm from "../ModalsUserManagement/OpenPaymentForm/OpenPaymentForm";
 const BillingMethodUsermanagement = () => {
   const { t } = useTranslation();
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { UserManagementModals } = useSelector((state) => state);
+  const { UserManagementModals, UserMangementReducer, countryNamesReducer } =
+    useSelector((state) => state);
 
   const [activeComponent, setActiveComponent] = useState(
     "billingContactDetails"
@@ -35,6 +40,16 @@ const BillingMethodUsermanagement = () => {
   const [paymentMethodPage, setPaymentMethodPage] = useState(false);
 
   const [activeStep, setActiveStep] = useState(0);
+
+  const [select, setSelect] = useState("");
+  const [countryNames, setCountryNames] = useState([]);
+
+  // states for open Iframe modal
+  const [openPaymentModal, setPaymentModal] = useState(false);
+  const [paymentSourceLink, setPaymentSourceLink] = useState(null);
+
+  // update totalYearly from child component step three
+  const [totalYearlyCharges, setTotalYearlyCharges] = useState(0);
 
   //Billing Contact States
   const [billingContactDetails, setBillingContactDetails] = useState({
@@ -65,6 +80,10 @@ const BillingMethodUsermanagement = () => {
       errorStatus: false,
     },
   });
+  console.log(
+    billingContactDetails,
+    "billingContactDetailsbillingContactDetails"
+  );
 
   //Billing Address
   const [billingAddress, setBillingAddress] = useState({
@@ -94,6 +113,7 @@ const BillingMethodUsermanagement = () => {
       errorStatus: false,
     },
   });
+  console.log(billingAddress.Country.value, "billingAddressbillingAddress");
 
   //Payment method
   const [paymentMethods, setPaymentMethods] = useState({
@@ -128,6 +148,11 @@ const BillingMethodUsermanagement = () => {
     },
   });
 
+  // update totalYearly from child component step three
+  const updateTotalYearlyCharges = (charges) => {
+    setTotalYearlyCharges(charges);
+  };
+
   // translate Languages start
   const languages = [
     { name: "English", code: "en" },
@@ -138,6 +163,16 @@ const BillingMethodUsermanagement = () => {
   const currentLocale = Cookies.get("i18next") || "en";
 
   const currentLangObj = languages.find((lang) => lang.code === currentLocale);
+
+  //useEffect for paymentinitiate open iframe modal
+  useEffect(() => {
+    try {
+      if (UserMangementReducer.paymentInitiateData !== null) {
+        let apiResponse = UserMangementReducer.paymentInitiateData;
+        setPaymentSourceLink(apiResponse.paymentRedirectionLink);
+      }
+    } catch {}
+  }, [UserMangementReducer.paymentInitiateData]);
 
   useEffect(() => {
     document.body.dir = currentLangObj.dir || "ltr";
@@ -242,6 +277,23 @@ const BillingMethodUsermanagement = () => {
           dispatch(showThankYouPaymentModal(true));
           return prevActiveStep;
         } else {
+          let newData = {
+            FirstName: billingContactDetails.Name.value,
+            LastName: billingContactDetails.LastName.value,
+            Email: billingContactDetails.Email.value,
+            Phone: billingContactDetails.Contact.value,
+            Address: billingAddress.Address.value,
+            Country: billingAddress.Country.value,
+            City: billingAddress.City.value,
+            Zip: billingAddress.PostalCode.value,
+            OrderAmount: Number(totalYearlyCharges),
+            OrderCurrency: "USD",
+            OrderDescription: "An Order On Diskus",
+          };
+          dispatch(
+            paymentInitiateMainApi(navigate, t, newData, setPaymentModal)
+          );
+          console.log("It's step three next Button hit");
           return prevActiveStep < 3 ? prevActiveStep + 1 : prevActiveStep;
         }
       });
@@ -263,6 +315,8 @@ const BillingMethodUsermanagement = () => {
             dispatch(showThankYouPaymentModal(true));
             return prevActiveStep;
           } else {
+            console.log("It's step three next Button hit");
+
             return prevActiveStep < 3 ? prevActiveStep + 1 : prevActiveStep;
           }
         });
@@ -321,6 +375,40 @@ const BillingMethodUsermanagement = () => {
     }
   };
 
+  // get Country Action Api
+  useEffect(() => {
+    dispatch(getCountryNamesAction(navigate, t));
+  }, []);
+
+  // to get country Names from Billing Step Two
+  useEffect(() => {
+    if (
+      countryNamesReducer.CountryNamesData !== null &&
+      countryNamesReducer.CountryNamesData !== undefined
+    ) {
+      console.log(countryNamesReducer.CountryNamesData, "countryOnSelect");
+      setCountryNames(countryNamesReducer.CountryNamesData);
+    }
+  }, [countryNamesReducer.CountryNamesData]);
+
+  //Flag Selector
+  const countryOnSelect = (code) => {
+    console.log(code, "countryOnSelect");
+    setSelect(code);
+    let a = Object.values(countryNames).find((obj) => {
+      return obj.shortCode === code;
+    });
+    console.log(a, "countryOnSelect");
+    setBillingAddress({
+      ...billingAddress,
+      Country: {
+        value: a.shortCode,
+        errorMessage: "",
+        errorStatus: false, // Empty error message
+      },
+    });
+  };
+
   //React Stepper Numbers manuipulation
   useEffect(() => {
     const firstvaue = document.querySelector(".StepButtonContent-d1-0-3-7");
@@ -350,6 +438,7 @@ const BillingMethodUsermanagement = () => {
       fourthvaue.innerText = "04";
     }
   }, []);
+
   return (
     <Container className={styles["sectionStyling"]}>
       <Row className="position-relative">
@@ -444,11 +533,15 @@ const BillingMethodUsermanagement = () => {
                   <BillProcessStepTwo
                     billingAddress={billingAddress}
                     setBillingAddress={setBillingAddress}
+                    countryOnSelect={countryOnSelect}
+                    select={select}
                   />
                 </>
               ) : activeStep === 2 && activeComponent === "PakageDetails" ? (
                 <>
-                  <BillProcessStepThree />
+                  <BillProcessStepThree
+                    updateTotalYearlyCharges={updateTotalYearlyCharges}
+                  />
                 </>
               ) : // : activeStep === 3 && activeComponent === "PaymentMethods" ? (
               //   <>
@@ -463,6 +556,7 @@ const BillingMethodUsermanagement = () => {
               null}
             </Col>
           </Row>
+
           <Row className="mt-3">
             <Col
               lg={12}
@@ -486,6 +580,11 @@ const BillingMethodUsermanagement = () => {
         </Col>
         <Col lg={1} md={1} sm={12} xs={12}></Col>
       </Row>
+      <OpenPaymentForm
+        openPaymentModal={openPaymentModal}
+        setOpenPaymentModal={setPaymentModal}
+        sourceLink={paymentSourceLink}
+      />
       {UserManagementModals.thanksForPaymentModal && <ThankForPayment />}
       {UserManagementModals.paymentProceedFailed && <PaymentFailedModal />}
     </Container>

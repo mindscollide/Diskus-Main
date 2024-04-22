@@ -1,11 +1,15 @@
 {
-  "UserID": 1298,
-  "StatusID": 1,
-  "UserName": "adding users ",
-  "Designation": "addingusers ",
-  "MobileNumber": "",
-  "isAdmin": true,
-  "OrganizationID": 618,
-  "OrganizationSelectedPackageID": 349,
-  "FK_NumberWorldCountryID": 212
+  "UserDataList": [
+    {
+      "UserName": "User paid ",
+      "OrganizationName": "hello ",
+      "Designation": "developer",
+      "MobileNumber": "3344554444",
+      "UserEmail": "userpaid@yopmail.com",
+      "OrganizationID": 640,
+      "isAdmin": false,
+      "FK_NumberWorldCountryID": 153,
+      "OrganizationSelectedPackageID": 405
+    }
+  ]
 }
