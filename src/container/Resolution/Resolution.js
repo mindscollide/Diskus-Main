@@ -95,6 +95,9 @@ const Resolution = () => {
   let voterRows = localStorage.getItem("voterRows");
   let buttonTab = JSON.parse(localStorage.getItem("ButtonTab"));
   let userID = localStorage.getItem("userID");
+
+  console.log(totalResolution,totalVoterResolution, "totalResolutiontotalResolution")
+
   // call resolution
   useEffect(() => {
     try {
@@ -1577,12 +1580,12 @@ const Resolution = () => {
                           className="d-flex justify-content-center my-3 pagination-groups-table"
                         >
                           <CustomPagination
-                            current={moderatorPage !== null ? moderatorPage : 1}
+                            current={moderatorPage !== null ? Number(moderatorPage) : 1}
                             onChange={handleChangeResolutionPagination}
                             pageSizeOptionsValues={["30", "50", "100", "200"]}
                             showSizer={true}
                             pageSize={
-                              moderatorRows !== null ? moderatorRows : 50
+                              moderatorRows !== null ? Number(moderatorRows) : 50
                             }
                             className={styles["PaginationStyle-Resolution"]}
                             total={totalResolution}
@@ -1682,9 +1685,9 @@ const Resolution = () => {
                           className="d-flex justify-content-center my-3 pagination-groups-table"
                         >
                           <CustomPagination
-                            current={voterPage !== null ? voterPage : 1}
+                            current={voterPage !== null ? Number(voterPage) : 1}
                             total={totalVoterResolution}
-                            pageSize={voterRows !== null ? voterRows : 50}
+                            pageSize={voterRows !== null ? Number(voterRows) : 50}
                             pageSizeOptionsValues={["30", "50", "100", "200"]}
                             className={styles["PaginationStyle-Resolution"]}
                             onChange={handleChangeVoterResolutionPagination}
