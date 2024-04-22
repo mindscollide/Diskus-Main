@@ -164,16 +164,6 @@ const BillingMethodUsermanagement = () => {
 
   const currentLangObj = languages.find((lang) => lang.code === currentLocale);
 
-  //useEffect for paymentinitiate open iframe modal
-  useEffect(() => {
-    try {
-      if (UserMangementReducer.paymentInitiateData !== null) {
-        let apiResponse = UserMangementReducer.paymentInitiateData;
-        setPaymentSourceLink(apiResponse.paymentRedirectionLink);
-      }
-    } catch {}
-  }, [UserMangementReducer.paymentInitiateData]);
-
   useEffect(() => {
     document.body.dir = currentLangObj.dir || "ltr";
   }, [currentLangObj, t]);
@@ -532,7 +522,6 @@ const BillingMethodUsermanagement = () => {
         </Col>
         <Col lg={1} md={1} sm={12} xs={12}></Col>
       </Row>
-      <OpenPaymentForm sourceLink={paymentSourceLink} />
       {UserManagementModals.thanksForPaymentModal && <ThankForPayment />}
       {UserManagementModals.paymentProceedFailed && <PaymentFailedModal />}
     </Container>

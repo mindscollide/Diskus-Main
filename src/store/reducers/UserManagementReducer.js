@@ -21,6 +21,7 @@ const initialState = {
   paymentInitiateData: null,
   cancelSubReasonData: [],
   cancelOrganizationSubsData: null,
+  packageUpgradeDetail: null,
 };
 
 const UserMangementReducer = (state = initialState, action) => {
@@ -406,6 +407,29 @@ const UserMangementReducer = (state = initialState, action) => {
         cancelOrganizationSubsData: null,
         ResponseMessage: action.message,
       };
+
+    // Api for upgrade button on package details which is not ready yet but structure should be ready when Api will implemented ready to go
+    // case actions.PACKAGE_UPGRADE_DETAIL_INIT:
+    //   return {
+    //     ...state,
+    //     Loading: true,
+    //   };
+
+    // case actions.PACKAGE_UPGRADE_DETAIL_SUCCESS:
+    //   return {
+    //     ...state,
+    //     Loading: false,
+    //     packageUpgradeDetail: action.response,
+    //     ResponseMessage: action.message,
+    //   };
+
+    // case actions.PACKAGE_UPGRADE_DETAIL_FAIL:
+    //   return {
+    //     ...state,
+    //     Loading: false,
+    //     packageUpgradeDetail: null,
+    //     ResponseMessage: action.message,
+    //   };
 
     default:
       return { ...state };

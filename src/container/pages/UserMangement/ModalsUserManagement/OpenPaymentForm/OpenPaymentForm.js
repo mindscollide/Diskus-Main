@@ -1,13 +1,27 @@
 import React from "react";
+import { useState } from "react";
+import { useEffect } from "react";
 import { Container } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { Loader, Modal } from "../../../../../components/elements";
+import { Loader, LoaderPanel, Modal } from "../../../../../components/elements";
 import { openPaymentProcessModal } from "../../../../../store/actions/UserMangementModalActions";
 
-const OpenPaymentForm = ({ sourceLink }) => {
+const OpenPaymentForm = () => {
   const dispatch = useDispatch();
-  const { UserManagementModals } = useSelector((state) => state);
+  const [sourceLink, setSourceLink] = useState(null);
+  const { UserManagementModals, UserMangementReducer } = useSelector(
+    (state) => state
+  );
+
+  useEffect(() => {
+    try {
+      if (UserMangementReducer.paymentInitiateData !== null) {
+        let apiResponse = UserMangementReducer.paymentInitiateData;
+        setSourceLink(apiResponse.paymentRedirectionLink);
+      }
+    } catch {}
+  }, [UserMangementReducer.paymentInitiateData]);
 
   const onCloseModal = () => {
     dispatch(openPaymentProcessModal(false));
@@ -30,6 +44,7 @@ const OpenPaymentForm = ({ sourceLink }) => {
           }
         />
       </Container>
+      {UserManagementModals.Loading ? <Loader /> : null}
     </>
   );
 };
