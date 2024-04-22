@@ -589,7 +589,7 @@ const Actions = ({
 
           <Row>
             <Col lg={12} md={12} sm={12}>
-              {actionsRows.length === 0 ? (
+              {actionsRows?.length === 0 ? (
                 <>
                   <Row className="mt-0">
                     <Col
@@ -643,6 +643,7 @@ const Actions = ({
                           pagination={false}
                           className={"ToDo"}
                           rows={actionsRows}
+                          
                         />
                       </Col>
                     </Row>
