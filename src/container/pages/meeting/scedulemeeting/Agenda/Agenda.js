@@ -227,8 +227,10 @@ const Agenda = ({
       MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData ===
         undefined ||
       MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData === null ||
-      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.length === 0 || 
-      Object.keys(MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData).length === 0
+      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.length ===
+        0 ||
+      Object.keys(MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData)
+        .length === 0
     ) {
       console.log("updated Rows ROWS ROWS");
       setRows({
@@ -838,14 +840,18 @@ const Agenda = ({
       MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData === null ||
       MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData ===
         undefined ||
-      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.length === 0 ||
-      Object.keys(MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData).length === 0
+      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.length ===
+        0 ||
+      Object.keys(MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData)
+        .length === 0
     ) {
       let updatedRows = [...rows];
-      updatedRows[0].presenterID = allSavedPresenters[0]?.value;
-      updatedRows[0].presenterName = allSavedPresenters[0]?.label;
-      setRows(updatedRows);
-      console.log("updated Rows ROWS ROWS");
+      if (rows.length === 1) {
+        updatedRows[0].presenterID = allSavedPresenters[0]?.value;
+        updatedRows[0].presenterName = allSavedPresenters[0]?.label;
+        setRows(updatedRows);
+        console.log("updated Rows ROWS ROWS");
+      }
     }
   }, [allSavedPresenters, allUsersRC]);
 

@@ -1939,5 +1939,6 @@
   "Remove-shared-folder-successfully": "Remove shared folder successfully",
   "User-dashboard": "User dashboard",
   "organization-subscription-not-cancelled": "organization subscription not cancelled",
-  "invalid-subscription-status-id-provided": "invalid subscription status id provided"
+  "invalid-subscription-status-id-provided": "invalid subscription status id provided",
+  "Non-primary": "Non-primary"
 }
