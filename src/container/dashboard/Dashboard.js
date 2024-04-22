@@ -125,6 +125,7 @@ import {
   updateGoogletEventMQTT,
   updateMicrosftEventMQTT,
 } from "../../store/actions/GetDataForCalendar";
+import { userLogOutApiFunc } from "../../store/actions/Auth_Sign_Out";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -1918,6 +1919,15 @@ const Dashboard = () => {
         ) {
           dispatch(deleteMicrosftEventMQTT(data.payload));
           // deleteMicrosftEventMQTT;
+        }
+      }
+      if (data.action.toLowerCase() === "LogOut".toLowerCase()) {
+        if (
+          data.payload.message
+            .toLowerCase()
+            .includes("USER_lOGOUT_DUE_TO_INACTIVITY".toLowerCase())
+        ) {
+          dispatch(userLogOutApiFunc(navigate, t));
         }
       }
     } catch (error) {}
