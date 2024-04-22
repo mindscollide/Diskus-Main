@@ -19,9 +19,6 @@ const ReasonForCancelSubs = ({ completionContract }) => {
     (state) => state
   );
 
-  // get organization ID from Local staorage
-  const organizationID = localStorage.getItem("organizationID");
-
   // state for cancel Subscription
   const [cancelSubs, setCancelSubs] = useState([]);
   console.log(cancelSubs, "cancelSubscancelSubs");
@@ -37,15 +34,12 @@ const ReasonForCancelSubs = ({ completionContract }) => {
     },
   });
 
-  console.log(
-    checkboxCancel.isCheckbox,
-    "cancelSubReasonDatacancelSubReasonData"
-  );
-
+  //Get Cancel Subscription API Call
   useEffect(() => {
     dispatch(getCancelSubscriptionReasonApi(navigate, t));
   }, []);
 
+  //Continue to Cancel Button
   const handleSubmitData = () => {
     if (selectedReasonIds.length === 0) {
       return; // Do not proceed further
@@ -69,6 +63,7 @@ const ReasonForCancelSubs = ({ completionContract }) => {
     dispatch(cancelOrganizationSubApi(navigate, t, data));
   };
 
+  //Data for Cancel Reason
   useEffect(() => {
     if (
       UserMangementReducer.cancelSubReasonData !== null &&
@@ -90,6 +85,11 @@ const ReasonForCancelSubs = ({ completionContract }) => {
         prevSelectedIds.filter((id) => id !== reasonId)
       );
     }
+  };
+
+  //Handle Nevermind Button
+  const handleNeverMindButton = () => {
+    dispatch(showReasonForLeavingModal(false));
   };
 
   //handle select for checkbox is Admin
@@ -175,6 +175,7 @@ const ReasonForCancelSubs = ({ completionContract }) => {
                   <Button
                     text={t("Nevermind-take-me-back-to-my-account")}
                     className={styles["NevermindbuttonStyles"]}
+                    onClick={handleNeverMindButton}
                   />
                   <Button
                     text={t("Continue-to-cancel")}
