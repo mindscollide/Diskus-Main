@@ -346,8 +346,8 @@
 .title-className {
   padding: 6px 20px;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
-  /* text-align: center !important; */
+  font-family: 'MontserratMedium-500';
+  font-weight: 600;
   color: #505050 !important;
   border-bottom: 1px solid #e1e1e1 !important;
 }

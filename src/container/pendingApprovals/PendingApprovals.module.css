@@ -12,10 +12,15 @@
   color: #6172d6;
 }
 
+.pendingApprovalPaper {
+  border: 1px solid #e1e1e1;
+}
+
 .overallGap {
   display: flex;
   gap: 10px;
-  padding: 10px 0px;
+  padding-top: 15px;
+  padding-bottom: 5px;
 }
 
 .activeMinutes,
@@ -57,4 +62,106 @@
   border: 1px solid #d4d4d4 !important;
   color: #5a5a5a !important;
   border-radius: 3px;
+}
+
+.progressWrapper {
+  margin-top: 15px;
+  width: 100%;
+  height: 89px;
+  background: #ffffff;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
+  border-radius: 14px;
+  padding: 25px;
+  margin-bottom: 25px;
+}
+
+span.line {
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
+  display: block;
+  height: 70px;
+  width: 3px;
+  margin-top: -15px;
+}
+
+.progress-value-wrapper-purple {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -15px;
+}
+
+.progress-value-wrapper-yellow {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -15px;
+}
+
+.progress-value-wrapper-red {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -15px;
+}
+
+.progress-value-wrapper-purple span {
+  color: #6172d6;
+}
+
+.progress-value-wrapper-yellow span {
+  color: #ffc300;
+}
+
+.progress-value-wrapper-red span {
+  color: #f16b6b;
+}
+
+span.value {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  text-transform: uppercase;
+}
+
+span.numeric-value {
+  font-family: "MontserratSemiBold";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 49px;
+}
+
+p.expiredStatus {
+  margin: 0 !important;
+  font-family: 'MontserratMedium-500';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #f16b6b;
+}
+
+p.reviewedStatus {
+  margin: 0 !important;
+  font-family: 'MontserratMedium-500';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #6172D6;
+}
+
+p.pendingStatus {
+  margin: 0 !important;
+  font-family: 'MontserratMedium-500';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #ffc300;
 }

@@ -1817,5 +1817,9 @@
   "Remove-shared-folder-successfully": "Remove shared folder successfully",
   "Delete-messages": "Delete Messages",
   "Folder-share-successfully": "Folder share successfully",
-  "Pending-approval": "Pending Approval"
+  "Pending-approval": "Pending Approval",
+  "Pending-approvals": "Pending Approvals",
+  "Participant-info": "Participant Info",
+  "Review-requested-by": "Review requested by",
+  "Submission-date-and-time": "Submission date and time"
 }

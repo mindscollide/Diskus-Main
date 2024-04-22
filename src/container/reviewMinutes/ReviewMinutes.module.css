@@ -1,0 +1,13 @@
+.pendingApprovalContainer {
+    width: 98% !important;
+    height: 91vh !important;
+    margin: 0 auto !important;
+    overflow: hidden !important;
+  }
+  
+  .pendingApprovalHeading {
+    font-family: "MontserratSemiBold";
+    font-size: 30px;
+    line-height: 37px;
+    color: #6172d6;
+  }

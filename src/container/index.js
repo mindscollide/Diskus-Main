@@ -69,3 +69,4 @@ export { default as RSVP } from "../container/pages/meeting/RSVP";
 export { default as loginSuccess } from "../container/CalenderSyncLoginOutPages/CalenderLoginSuccess";
 export { default as logoutsuccess } from "../container/CalenderSyncLoginOutPages/CalenderLogout";
 export { default as PendingApproval } from "../container/pendingApprovals/PendingApprovals";
+export { default as ReviewMinutes } from "../container/reviewMinutes/ReviewMinutes";
