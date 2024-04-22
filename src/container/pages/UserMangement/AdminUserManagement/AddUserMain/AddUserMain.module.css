@@ -531,8 +531,8 @@ button#rfs-btn {
 
 .isEmailUnique {
   position: relative;
-  left: 250px;
-  top: -37px;
+  left: 345px;
+  top: -41px;
   width: 30px;
   height: 30px;
   bottom: 20px;
@@ -541,8 +541,8 @@ button#rfs-btn {
 
 .checkEmailSpinner {
   position: relative;
-  left: 250px;
-  top: -37px;
+  left: 345px;
+  top: -41px;
   width: 30px;
   height: 30px;
   bottom: 20px;

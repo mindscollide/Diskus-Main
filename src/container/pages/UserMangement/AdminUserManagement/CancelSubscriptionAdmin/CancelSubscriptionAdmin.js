@@ -24,10 +24,8 @@ const CancelSubscriptionAdmin = () => {
     (state) => state
   );
 
-  console.log(
-    UserMangementReducer.organizationSelectedPakagesByOrganizationIDData,
-    "meezzzajajjj"
-  );
+  // state for passing SubscriptionStatusID
+  const [completionContract, setCompletionContract] = useState(false);
 
   const [cancelSubsDetail, setCancelSubsDetail] = useState({
     cancelPackageName: "",
@@ -38,8 +36,8 @@ const CancelSubscriptionAdmin = () => {
   // useEffect to hit an API
   useEffect(() => {
     let data = {
-      OrganizationID: 634,
-      // OrganizationID: Number(organizationID),
+      // OrganizationID: 634,
+      OrganizationID: Number(organizationID),
     };
     dispatch(
       GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t, data)
@@ -166,10 +164,12 @@ const CancelSubscriptionAdmin = () => {
 
   const handleCancelSubsModal = () => {
     dispatch(showCancelSubscriptionModal(true));
+    setCompletionContract(false);
   };
 
   const handleCompletionofContract = () => {
     dispatch(showCancelSubscriptionModal(true));
+    setCompletionContract(true);
   };
 
   return (
@@ -282,7 +282,9 @@ const CancelSubscriptionAdmin = () => {
       {UserManagementModals.cancelSubscriptionModal && (
         <CancelSubscriptionModal />
       )}
-      {UserManagementModals.reasonForleavingModal && <ReasonForCancelSubs />}
+      {UserManagementModals.reasonForleavingModal && (
+        <ReasonForCancelSubs completionContract={completionContract} />
+      )}
       {UserMangementReducer.Loading ? <Loader /> : null}
     </Container>
   );
