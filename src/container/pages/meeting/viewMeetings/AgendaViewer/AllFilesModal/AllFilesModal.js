@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { Modal, Button } from "../../../../../../components/elements";
+import {
+  Modal,
+  Button,
+  AttachmentViewer,
+} from "../../../../../../components/elements";
 import styles from "./AllFilesModal.module.css";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -67,7 +71,7 @@ const AllFilesModal = ({
       ext === "doc" ||
       ext === "docx" ||
       ext === "xlx" ||
-      ext === "xlxs"
+      ext === "xlsx"
     ) {
       window.open(
         `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
@@ -133,59 +137,71 @@ const AllFilesModal = ({
                 className={styles["FileSectionHeight"]}
               >
                 {fileDataAgenda?.map((filesData, fileIndex) => (
-                  <div
-                    onClick={() => downloadDocument(filesData)}
-                    className={styles["allFileUI"]}
-                  >
-                    <Row className="m-0 text-center align-items-center">
-                      <Col
-                        lg={10}
-                        md={10}
-                        sm={12}
-                        className="d-flex align-items-center justify-content-start p-0"
-                      >
-                        <div className={styles["fileNameTruncateStyle"]}>
-                          <img
-                            draggable={false}
-                            src={getIconSource(
-                              getFileExtension(filesData?.displayAttachmentName)
-                            )}
-                            alt=""
-                            width={25}
-                          />
-                          <span
-                            onClick={() =>
-                              pdfData(
-                                filesData,
-                                getFileExtension(
-                                  filesData?.displayAttachmentName
-                                )
-                              )
-                            }
-                            className={
-                              ["pdf", "doc", "docx", "xls", "xlsx"].includes(
-                                getFileExtension(
-                                  filesData?.displayAttachmentName
-                                )
-                              )
-                                ? styles["fileNameAttachment"]
-                                : styles["fileNameAttachmentNotOpened"]
-                            }
-                          >
-                            {filesData?.displayAttachmentName}
-                          </span>
-                        </div>
-                      </Col>
-                      <Col lg={2} md={2} sm={12} className="p-0">
-                        <img
-                          onClick={() => downloadDocument(filesData)}
-                          draggable={false}
-                          src={DownloadIcon}
-                          alt=""
-                        />
-                      </Col>
-                    </Row>
-                  </div>
+                  <AttachmentViewer
+                    handleClickDownload={() => downloadDocument(filesData)}
+                    data={filesData}
+                    name={filesData?.displayAttachmentName}
+                    id={Number(filesData.originalAttachmentName)}
+                    handleEyeIcon={() =>
+                      pdfData(
+                        filesData,
+                        getFileExtension(filesData?.displayAttachmentName)
+                      )
+                    }
+                  />
+                  // <div
+                  //   onClick={() => downloadDocument(filesData)}
+                  //   className={styles["allFileUI"]}
+                  // >
+                  //   <Row className="m-0 text-center align-items-center">
+                  //     <Col
+                  //       lg={10}
+                  //       md={10}
+                  //       sm={12}
+                  //       className="d-flex align-items-center justify-content-start p-0"
+                  //     >
+                  //       <div className={styles["fileNameTruncateStyle"]}>
+                  //         <img
+                  //           draggable={false}
+                  //           src={getIconSource(
+                  //             getFileExtension(filesData?.displayAttachmentName)
+                  //           )}
+                  //           alt=""
+                  //           width={25}
+                  //         />
+                  //         <span
+                  //           onClick={() =>
+                  //             pdfData(
+                  //               filesData,
+                  //               getFileExtension(
+                  //                 filesData?.displayAttachmentName
+                  //               )
+                  //             )
+                  //           }
+                  //           className={
+                  //             ["pdf", "doc", "docx", "xls", "xlsx"].includes(
+                  //               getFileExtension(
+                  //                 filesData?.displayAttachmentName
+                  //               )
+                  //             )
+                  //               ? styles["fileNameAttachment"]
+                  //               : styles["fileNameAttachmentNotOpened"]
+                  //           }
+                  //         >
+                  //           {filesData?.displayAttachmentName}
+                  //         </span>
+                  //       </div>
+                  //     </Col>
+                  //     <Col lg={2} md={2} sm={12} className="p-0">
+                  //       <img
+                  //         onClick={() => downloadDocument(filesData)}
+                  //         draggable={false}
+                  //         src={DownloadIcon}
+                  //         alt=""
+                  //       />
+                  //     </Col>
+                  //   </Row>
+                  // </div>
                 ))}
               </Col>
               <Col lg={2} md={2} sm={12}></Col>
