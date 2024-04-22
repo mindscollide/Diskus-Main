@@ -124,7 +124,13 @@ const ManageUsers = () => {
       key: "userName",
       align: "left",
       ellipsis: true,
-      sorter: (a, b) => a.Names.localeCompare(b.Names.toLowerCase),
+      sorter: (a, b) => {
+        if (a.userName && b.userName) {
+          return a.userName.localeCompare(b.userName);
+        } else {
+          return 0;
+        }
+      },
       render: (text, record) => {
         return (
           <>
@@ -139,7 +145,13 @@ const ManageUsers = () => {
       key: "designation",
       align: "left",
       ellipsis: true,
-      sorter: (a, b) => a.Designation.localeCompare(b.Designation.toLowerCase),
+      sorter: (a, b) => {
+        if (a.designation && b.designation) {
+          return a.designation.localeCompare(b.designation);
+        } else {
+          return 0;
+        }
+      },
       render: (text, record) => {
         return (
           <>
@@ -170,8 +182,13 @@ const ManageUsers = () => {
       key: "userRole",
       align: "center",
       ellipsis: true,
-      sorter: (a, b) =>
-        a.OrganizationRole.localeCompare(b.OrganizationRole.toLowerCase),
+      sorter: (a, b) => {
+        if (a.userRole && b.userRole) {
+          return a.userRole.localeCompare(b.userRole);
+        } else {
+          return 0;
+        }
+      },
       render: (text, record) => {
         console.log(record, "recordrecordrecord");
         return (
