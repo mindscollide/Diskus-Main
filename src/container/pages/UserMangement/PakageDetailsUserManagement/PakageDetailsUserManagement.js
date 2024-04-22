@@ -19,8 +19,7 @@ import {
   LoginFlowRoutes,
   getAllUserTypePackagesApi,
 } from "../../../../store/actions/UserManagementActions";
-import { render } from "@testing-library/react";
-import { regexOnlyNumbers } from "../../../../commen/functions/regex";
+
 const PakageDetailsUserManagement = () => {
   const navigate = useNavigate();
 
@@ -114,18 +113,21 @@ const PakageDetailsUserManagement = () => {
           </span>
         </span>
       ),
-      dataIndex: "price",
-      key: "price",
+      dataIndex: "ChargesPerLisence",
+      key: "ChargesPerLisence",
       width: 100,
       align: "center",
-      render: (text, response) => {
-        return (
-          <>
-            <span className={styles["ChargesPerLicesense"]}>
-              {response.price}
-            </span>
-          </>
-        );
+      render: (text, row) => {
+        // Check if 'price' is available and greater than zero before rendering it
+        if (row.isTotalRow) {
+          return;
+        } else {
+          return (
+            <>
+              <span className={styles["ChargesPerLicesense"]}>{row.price}</span>
+            </>
+          );
+        }
       },
     },
     {
