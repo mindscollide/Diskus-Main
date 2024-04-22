@@ -8,7 +8,7 @@ const OpenPaymentForm = ({
   setOpenPaymentModal,
   sourceLink,
 }) => {
-  const { UserManagementModals } = useSelector((state) => state);
+  // const { UserManagementModals } = useSelector((state) => state);
 
   const onCloseModal = () => {
     setOpenPaymentModal(false);
@@ -30,7 +30,6 @@ const OpenPaymentForm = ({
             </>
           }
         />
-        {UserManagementModals.Loading ? <Loader /> : null}
       </Container>
     </>
   );

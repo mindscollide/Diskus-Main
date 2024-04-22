@@ -40,6 +40,7 @@ const BillingMethodUsermanagement = () => {
   const [paymentMethodPage, setPaymentMethodPage] = useState(false);
 
   const [activeStep, setActiveStep] = useState(0);
+  console.log(activeStep, "activeStepactiveStep");
 
   const [select, setSelect] = useState("");
   const [countryNames, setCountryNames] = useState([]);
@@ -179,66 +180,84 @@ const BillingMethodUsermanagement = () => {
   }, [currentLangObj, t]);
 
   console.log(billingContactDetails.Email, "billingContactDetails");
-  const handleNext = () => {
-    if (
-      activeComponent === "billingContactDetails" &&
-      billingContactDetails.Email.value !== "" &&
-      validateEmailEnglishAndArabicFormat(billingContactDetails.Email.value)
-    ) {
-      setEmailConditionMet(true);
-      setActiveComponent("billingAddress");
-      // Email condition is satisfied
-      setActiveStep((prevActiveStep) => {
-        if (prevActiveStep >= 3) {
-          dispatch(showThankYouPaymentModal(true));
-          return prevActiveStep;
-        } else {
-          return prevActiveStep < 3 ? prevActiveStep + 1 : prevActiveStep;
-        }
-      });
-    } else if (
-      billingContactDetails.Email.value !== "" &&
-      !validateEmailEnglishAndArabicFormat(billingContactDetails.Email.value)
-    ) {
-      setBillingContactDetails({
-        ...billingContactDetails,
-        Email: {
-          value: billingContactDetails.Email.value,
-          errorMessage: t("Enter-valid-email-address"),
-          errorStatus: billingContactDetails.Email.errorStatus,
-        },
-      });
-    } else {
-      // Email condition is not satisfied
-      setBillingContactDetails({
-        ...billingContactDetails,
-        Email: {
-          value: billingContactDetails.Email.value,
-          errorMessage: t("Email-address-is-required"),
-          errorStatus: billingContactDetails.Email.errorStatus,
-        },
-      });
-    }
 
-    if (emailConditionMet) {
+  const handleNext = () => {
+    if (activeStep === 0 && activeComponent === "billingContactDetails") {
       if (
-        activeComponent === "billingAddress" &&
+        activeComponent === "billingContactDetails" &&
+        billingContactDetails.Email.value !== ""
+      ) {
+        if (
+          validateEmailEnglishAndArabicFormat(billingContactDetails.Email.value)
+        ) {
+          setBillingContactDetails({
+            ...billingContactDetails,
+            Email: {
+              value: billingContactDetails.Email.value,
+              errorMessage: "",
+              errorStatus: billingContactDetails.Email.errorStatus,
+            },
+          });
+          setActiveComponent("billingAddress");
+          setActiveStep(1);
+        } else {
+          setBillingContactDetails({
+            ...billingContactDetails,
+            Email: {
+              value: billingContactDetails.Email.value,
+              errorMessage: t("Enter-valid-email-address"),
+              errorStatus: billingContactDetails.Email.errorStatus,
+            },
+          });
+        }
+      } else {
+        setBillingContactDetails({
+          ...billingContactDetails,
+          Email: {
+            value: billingContactDetails.Email.value,
+            errorMessage: t("Email-address-is-required"),
+            errorStatus: billingContactDetails.Email.errorStatus,
+          },
+        });
+      }
+    } else if (activeStep === 1 && activeComponent === "billingAddress") {
+      if (
         billingAddress.PostalCode.value !== "" &&
         billingAddress.State.value !== "" &&
         billingAddress.City.value !== "" &&
         billingAddress.Address.value !== ""
       ) {
-        setActiveComponent("PakageDetails");
-        setActiveStep((prevActiveStep) => {
-          if (prevActiveStep >= 3) {
-            dispatch(showThankYouPaymentModal(true));
-            return prevActiveStep;
-          } else {
-            return prevActiveStep < 3 ? prevActiveStep + 1 : prevActiveStep;
-          }
+        setBillingAddress({
+          ...billingAddress,
+          Country: {
+            value: billingAddress.Country.value,
+            errorMessage: "",
+            errorStatus: billingAddress.Country.errorStatus,
+          },
+          PostalCode: {
+            value: billingAddress.PostalCode.value,
+            errorMessage: "",
+            errorStatus: billingAddress.PostalCode.errorStatus,
+          },
+          State: {
+            value: billingAddress.State.value,
+            errorMessage: "",
+            errorStatus: billingAddress.State.errorStatus,
+          },
+          City: {
+            value: billingAddress.City.value,
+            errorMessage: "",
+            errorStatus: billingAddress.City.errorStatus,
+          },
+          Address: {
+            value: billingAddress.Address.value,
+            errorMessage: "",
+            errorStatus: billingAddress.Address.errorStatus,
+          },
         });
+        setActiveComponent("PakageDetails");
+        setActiveStep(2);
       } else {
-        // PostalCode condition is not satisfied
         setBillingAddress({
           ...billingAddress,
           Country: {
@@ -268,88 +287,21 @@ const BillingMethodUsermanagement = () => {
           },
         });
       }
-    }
-
-    if (activeComponent === "PakageDetails") {
-      setActiveComponent("PaymentMethods");
-      setActiveStep((prevActiveStep) => {
-        if (prevActiveStep >= 3) {
-          dispatch(showThankYouPaymentModal(true));
-          return prevActiveStep;
-        } else {
-          let newData = {
-            FirstName: billingContactDetails.Name.value,
-            LastName: billingContactDetails.LastName.value,
-            Email: billingContactDetails.Email.value,
-            Phone: billingContactDetails.Contact.value,
-            Address: billingAddress.Address.value,
-            Country: billingAddress.Country.value,
-            City: billingAddress.City.value,
-            Zip: billingAddress.PostalCode.value,
-            OrderAmount: Number(totalYearlyCharges),
-            OrderCurrency: "USD",
-            OrderDescription: "An Order On Diskus",
-          };
-          dispatch(
-            paymentInitiateMainApi(navigate, t, newData, setPaymentModal)
-          );
-          console.log("It's step three next Button hit");
-          return prevActiveStep < 3 ? prevActiveStep + 1 : prevActiveStep;
-        }
-      });
-      setPaymentMethodPage(true);
-    }
-
-    if (paymentMethodPage) {
-      if (
-        activeComponent === "PaymentMethods" &&
-        paymentMethods.Name.value !== "" &&
-        paymentMethods.LastName.value !== "" &&
-        paymentMethods.CreditCardNumber.value !== "" &&
-        paymentMethods.CardExpirationDate.value !== "" &&
-        paymentMethods.CVV.value !== ""
-      ) {
-        setActiveComponent("billingAddress");
-        setActiveStep((prevActiveStep) => {
-          if (prevActiveStep >= 3) {
-            dispatch(showThankYouPaymentModal(true));
-            return prevActiveStep;
-          } else {
-            console.log("It's step three next Button hit");
-
-            return prevActiveStep < 3 ? prevActiveStep + 1 : prevActiveStep;
-          }
-        });
-      } else {
-        setPaymentMethods({
-          ...paymentMethods,
-          Name: {
-            value: paymentMethods.Name.value,
-            errorMessage: t("Name Required"),
-            errorStatus: paymentMethods.Name.errorStatus,
-          },
-          LastName: {
-            value: paymentMethods.LastName.value,
-            errorMessage: t("LastName Required"),
-            errorStatus: paymentMethods.LastName.errorStatus,
-          },
-          CreditCardNumber: {
-            value: paymentMethods.CreditCardNumber.value,
-            errorMessage: t("Credit Card Number Required"),
-            errorStatus: paymentMethods.CreditCardNumber.errorStatus,
-          },
-          CardExpirationDate: {
-            value: paymentMethods.CardExpirationDate.value,
-            errorMessage: t("Card Expiration Date Required"),
-            errorStatus: paymentMethods.CardExpirationDate.errorStatus,
-          },
-          CVV: {
-            value: paymentMethods.CVV.value,
-            errorMessage: t("CVV Required"),
-            errorStatus: paymentMethods.CVV.errorStatus,
-          },
-        });
-      }
+    } else if (activeStep === 2 && activeComponent === "PakageDetails") {
+      let newData = {
+        FirstName: billingContactDetails.Name.value,
+        LastName: billingContactDetails.LastName.value,
+        Email: billingContactDetails.Email.value,
+        Phone: billingContactDetails.Contact.value,
+        Address: billingAddress.Address.value,
+        Country: billingAddress.Country.value,
+        City: billingAddress.City.value,
+        Zip: billingAddress.PostalCode.value,
+        OrderAmount: Number(totalYearlyCharges),
+        OrderCurrency: "USD",
+        OrderDescription: "An Order On Diskus",
+      };
+      dispatch(paymentInitiateMainApi(navigate, t, newData, setPaymentModal));
     }
   };
 
@@ -571,7 +523,8 @@ const BillingMethodUsermanagement = () => {
                 onClick={handleBack}
               />
               <Button
-                text={activeStep === 3 ? t("Confirm-payment") : t("Next")}
+                // text={activeStep === 3 ? t("Confirm-payment") : t("Next")}
+                text={t("Next")}
                 className={styles["NextbuttonBillingMethod"]}
                 onClick={handleNext}
               />
