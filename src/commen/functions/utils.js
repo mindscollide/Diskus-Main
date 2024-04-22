@@ -93,25 +93,21 @@ export function updateLocalUserRoutes(userFeatures, LocalUserRoutes) {
   }
 }
 
-export function updateAdminRoutes(userFeatures, LocalAdminRoutes) {
+export function updateAdminRoutes(adminFeatures, LocalAdminRoutes) {
   let Admin = [
     { id: 26, name: "AddUsersUsermanagement" },
     { id: 26, name: "ManageUsers" },
     { id: 27, name: "ManageUsers" },
     { id: 31, name: "ManageUsers" },
     { id: 32, name: "ManageUsers" },
-
     { id: 28, name: "PackageDetailsUserManagement" },
     { id: 28, name: "PakageDetailsUserManagement" },
     { id: 29, name: "CancelSubscriptionUserManagement" },
     { id: 30, name: "deleteorganizationUserMangement" },
-
     { id: 19, name: "CustomerInformation" },
-
     { id: 33, name: "PayOutstanding" },
     { id: 34, name: "Summary" },
     { id: 35, name: "loginreport" },
-
     { id: 36, name: "OrganizationlevelConfigUM" },
     { id: 37, name: "OrganizationlevelConfigUM" },
     { id: 38, name: "OrganizationlevelConfigUM" },
@@ -131,11 +127,12 @@ export function updateAdminRoutes(userFeatures, LocalAdminRoutes) {
   ];
   try {
     // Iterate through each feature from the API response
-    userFeatures.forEach((feature) => {
+    adminFeatures.forEach((feature) => {
       // Find matching route by packageFeatureID
       const matchingRoute = Admin.find(
         (route) => route.id === feature.packageFeatureID
       );
+      console.log(matchingRoute, "matchingRoutematchingRoute");
       if (matchingRoute) {
         // Check if LocalUserRoutes already contains an entry with this name
         if (
@@ -278,7 +275,7 @@ export async function handleLoginResponse(response) {
       //yaha pai kam karna hy Admin ka kam
       if (response.hasAdminRights) {
         const dynamicUserFeatures = await updateAdminRoutes(
-          response.userFeatures,
+          response.adminFeatures,
           LocalAdminRoutes
         ); // get dynamic features
         LocalAdminRoutes = dynamicUserFeatures;
