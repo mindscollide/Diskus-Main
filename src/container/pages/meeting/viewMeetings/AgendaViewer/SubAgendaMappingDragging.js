@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { Col, Row } from "react-bootstrap";
-import { Button, Notification } from "../../../../../components/elements";
+import { AttachmentViewer, Button, Notification } from "../../../../../components/elements";
 import styles from "./Agenda.module.css";
 import profile from "../../../../../assets/images/newprofile.png";
 import pdfIcon from "../../../../../assets/images/pdf_icon.svg";
@@ -260,7 +260,7 @@ const SubAgendaMappingDragging = ({
       ext === "doc" ||
       ext === "docx" ||
       ext === "xlx" ||
-      ext === "xlxs"
+      ext === "xlsx"
     ) {
       window.open(
         `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
@@ -657,97 +657,24 @@ const SubAgendaMappingDragging = ({
                                                         filesData,
                                                         fileIndex
                                                       ) => (
-                                                        <div
-                                                          key={fileIndex}
-                                                          className={
-                                                            styles[
-                                                              "agendaFileAttachedView"
-                                                            ]
-                                                          }
-                                                        >
-                                                          <Row className="m-0 text-center h-100 align-items-center">
-                                                            <Col
-                                                              lg={10}
-                                                              md={10}
-                                                              sm={12}
-                                                              className={`${styles["borderFileName"]} p-0`}
-                                                            >
-                                                              <div
-                                                                className={
-                                                                  styles[
-                                                                    "fileNameTruncateStyle"
-                                                                  ]
-                                                                }
-                                                              >
-                                                                <img
-                                                                  draggable={
-                                                                    false
-                                                                  }
-                                                                  src={getIconSource(
-                                                                    getFileExtension(
-                                                                      filesData?.displayAttachmentName
-                                                                    )
-                                                                  )}
-                                                                  alt=""
-                                                                />
-                                                                <span
-                                                                  onClick={() =>
-                                                                    pdfData(
-                                                                      filesData,
-                                                                      getFileExtension(
-                                                                        filesData?.displayAttachmentName
-                                                                      )
-                                                                    )
-                                                                  }
-                                                                  className={
-                                                                    [
-                                                                      "pdf",
-                                                                      "doc",
-                                                                      "docx",
-                                                                      "xls",
-                                                                      "xlsx",
-                                                                    ].includes(
-                                                                      getFileExtension(
-                                                                        filesData?.displayAttachmentName
-                                                                      )
-                                                                    )
-                                                                      ? styles[
-                                                                          "fileNameAttachment"
-                                                                        ]
-                                                                      : styles[
-                                                                          "fileNameAttachmentNotOpened"
-                                                                        ]
-                                                                  }
-                                                                >
-                                                                  {
-                                                                    filesData?.displayAttachmentName
-                                                                  }
-                                                                </span>
-                                                              </div>
-                                                            </Col>
-                                                            <Col
-                                                              lg={2}
-                                                              md={2}
-                                                              sm={12}
-                                                              className="p-0"
-                                                            >
-                                                              <img
-                                                                draggable={
-                                                                  false
-                                                                }
-                                                                onClick={() =>
-                                                                  downloadDocument(
-                                                                    filesData
-                                                                  )
-                                                                }
-                                                                src={
-                                                                  DownloadIcon
-                                                                }
-                                                                alt=""
-                                                              />
-                                                            </Col>
-                                                          </Row>
-                                                        </div>
+                                                        <AttachmentViewer
+                                                        handleClickDownload={() =>
+                                                          downloadDocument(filesData)
+                                                        }
+                                                        data={filesData}
+                                                        name={filesData?.displayAttachmentName}
+                                                        id={Number(
+                                                          filesData.originalAttachmentName
+                                                        )}
+                                                        handleEyeIcon={() =>
+                                                          pdfData(
+                                                            filesData,
+                                                            getFileExtension(
+                                                              filesData?.displayAttachmentName
+                                                            )
+                                                          )
+                                                        }
+                                                      />
                                                       )
                                                     )}
                                                   {subAgendaData.subfiles

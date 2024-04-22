@@ -9,13 +9,8 @@
   align-items: center;
   gap: 0 10px;
 }
-.File_Icon_Box {
-  flex: 1;
-}
-.File_Name_Box {
-  flex: 3;
-}
-.File_Name {
+
+/* .File_Name {
   margin: 0;
   padding: 0;
   font-size: 0.7rem;
@@ -25,7 +20,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   width: 90px;
-}
+} */
 .Download_icon_Box {
   flex: 1;
 }
@@ -55,9 +50,11 @@ body[dir="rtl"] .borderFileName {
 }
 
 .fileNameTruncateStyle {
-  width: 90px !important;
-  justify-content: center !important;
+  width: 125px !important;
+  justify-content: flex-start !important;
   display: flex !important;
+  gap: 5px;
+
 }
 .fileNameTruncateStyle_fullwidth {
   width: 160px !important;
@@ -73,6 +70,7 @@ body[dir="rtl"] .borderFileName {
   font-family: "MontserratMedium-500";
   text-overflow: ellipsis;
   overflow: hidden;
+  width: 90px;
   white-space: nowrap;
 }
 .fileNameAttachmentNotOpened {
