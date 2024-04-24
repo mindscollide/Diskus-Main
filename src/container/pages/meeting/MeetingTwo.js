@@ -801,12 +801,12 @@ const NewMeeting = () => {
       title: t("Organizer"),
       dataIndex: "host",
       key: "host",
-      width: "60px",
+      width: "70px",
       sorter: (a, b) => {
         return a?.host.toLowerCase().localeCompare(b?.host.toLowerCase());
       },
       render: (text, record) => {
-        return <span>{text}</span>;
+        return <span className={styles["orgaizer_value"]}>{text}</span>;
       },
     },
     {
@@ -1512,20 +1512,37 @@ const NewMeeting = () => {
       NewMeetingreducer.meetingStatusPublishedMqttData !== null &&
       NewMeetingreducer.meetingStatusPublishedMqttData !== undefined
     ) {
-      let meetingData =
-        NewMeetingreducer.meetingStatusPublishedMqttData.meeting;
+      let meetingData = NewMeetingreducer.meetingStatusPublishedMqttData;
+      console.log(
+        { meetingData, rows },
+        "indexToUpdateindexToUpdateindexToUpdate"
+      );
       try {
         const indexToUpdate = rows.findIndex(
-          (obj) => obj.pK_MDID === meetingData.pK_MDID
+          (obj) => Number(obj.pK_MDID) === Number(meetingData.pK_MDID)
+        );
+        console.log(
+          { indexToUpdate },
+          "indexToUpdateindexToUpdateindexToUpdate"
         );
         if (indexToUpdate !== -1) {
+          console.log(
+            { meetingData, rows },
+            "indexToUpdateindexToUpdateindexToUpdate"
+          );
           let updatedRows = [...rows];
           updatedRows[indexToUpdate] = meetingData;
           setRow(updatedRows);
         } else {
+          console.log(
+            { meetingData, rows },
+            "indexToUpdateindexToUpdateindexToUpdate"
+          );
           setRow([...rows, meetingData]);
         }
-      } catch {}
+      } catch (error) {
+        console.log(error, "Meeting Created and Published");
+      }
     }
   }, [NewMeetingreducer.meetingStatusPublishedMqttData]);
 

@@ -16,9 +16,9 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   console.log(events, "setEventsModalsetEventsModalsetEventsModal");
-  let diskusEventColor = localStorage.getItem("diskusEventColor");
-  let googleEventColor = localStorage.getItem("googleEventColor");
-  let officeEventColor = localStorage.getItem("officeEventColor");
+  let diskusEventColor = localStorage.getItem("diskusEventColor") !== null ? localStorage.getItem("diskusEventColor"): "#000";
+  let googleEventColor = localStorage.getItem("googleEventColor") !== null ? localStorage.getItem("googleEventColor"): "#000";
+  let officeEventColor = localStorage.getItem("officeEventColor") !== null ? localStorage.getItem("officeEventColor"): "#000";
   console.log(diskusEventColor, "diskusEventColor");
   console.log(googleEventColor, "diskusEventColor");
   console.log(officeEventColor, "diskusEventColor");
