@@ -139,13 +139,18 @@ const PakageDetailsUMUpgrade = () => {
       width: 100,
       align: "center",
       render: (text, response) => {
-        return (
-          <>
-            <span className={styles["ChargesPerLicesense"]}>
-              {response.price}
-            </span>
-          </>
-        );
+        // Check if 'price' is available and greater than zero before rendering it
+        if (response.isTotalRow) {
+          return;
+        } else {
+          return (
+            <>
+              <span className={styles["ChargesPerLicesense"]}>
+                {response.price}
+              </span>
+            </>
+          );
+        }
       },
     },
     {

@@ -12,12 +12,16 @@ import "./assets/font-icons/font-icons.css";
 import { Loader } from "./components/elements"; // Assuming you have a Loader component for suspense fallback
 import { router } from "./routes/routes";
 import { manageTabs } from "./commen/functions/validations";
+import OpenPaymentForm from "./container/pages/UserMangement/ModalsUserManagement/OpenPaymentForm/OpenPaymentForm";
 
 const App = () => {
   return (
     <Suspense fallback={<Loader />}>
       {/* Define your routes here */}
       <RouterProvider router={router} />
+
+      {/* Calling a component or modal in which Iframe calling through their SourceLink  */}
+      <OpenPaymentForm />
     </Suspense>
   );
 };

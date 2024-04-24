@@ -2668,3 +2668,12 @@ export const CANCEL_ORGANIZATION_SUB_INIT = "CANCEL_ORGANIZATION_SUB_INIT";
 export const CANCEL_ORGANIZATION_SUB_SUCCESS =
   "CANCEL_ORGANIZATION_SUB_SUCCESS";
 export const CANCEL_ORGANIZATION_SUB_FAIL = "CANCEL_ORGANIZATION_SUB_FAIL";
+
+// global state for payment Process in which IFrame open
+export const OPEN_PAYMENT_PROCESS_MODAL = "OPEN_PAYMENT_PROCESS_MODAL";
+
+// Api for upgrade button on package details which is not ready yet but structure should be ready when Api will implemented ready to go
+
+// export const PACKAGE_UPGRADE_DETAIL_INIT = "PACKAGE_UPGRADE_DETAIL_INIT";
+// export const PACKAGE_UPGRADE_DETAIL_SUCCESS = "PACKAGE_UPGRADE_DETAIL_SUCCESS";
+// export const PACKAGE_UPGRADE_DETAIL_FAIL = "PACKAGE_UPGRADE_DETAIL_FAIL";

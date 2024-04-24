@@ -137,6 +137,16 @@ const Header2 = () => {
     );
   };
 
+  //Customer Information Modal
+
+  const handleModalCustomerInformation = () => {
+    let userID = localStorage.getItem("userID");
+    let OrganizationID = localStorage.getItem("organizationID");
+    dispatch(
+      getUserDetails(navigate, userID, t, OrganizationID, setUserProfileModal)
+    );
+  };
+
   // for modal create  handler
   const modalLogoutHandler = async (e) => {
     await setShow(true);
@@ -748,9 +758,11 @@ const Header2 = () => {
                         {t("User-dashboard")}
                       </Nav.Link>
                     </Dropdown.Item>
+
                     <Dropdown.Item
                       className={`${" text-black"} ${currentLanguage}`}
-                      onClick={() => forgotPasswordCheck()}
+                      onClick={handleModalCustomerInformation}
+                      // onClick={() => forgotPasswordCheck()}
                     >
                       <Nav.Link
                         as={Link}

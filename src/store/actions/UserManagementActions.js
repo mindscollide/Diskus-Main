@@ -24,6 +24,7 @@ import { RefreshToken } from "./Auth_action";
 import { getUserSetting } from "./GetUserSetting";
 import { getAllLanguages } from "./Language_actions";
 import {
+  openPaymentProcessModal,
   showDeleteUsersModal,
   showEditUserModal,
   showReasonForLeavingModal,
@@ -1458,7 +1459,7 @@ const paymentInitiateFailApi = (message) => {
   };
 };
 
-const paymentInitiateMainApi = (navigate, t, newData, setPaymentModal) => {
+const paymentInitiateMainApi = (navigate, t, newData) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(paymentInitiateInitApi());
@@ -1476,9 +1477,7 @@ const paymentInitiateMainApi = (navigate, t, newData, setPaymentModal) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            paymentInitiateMainApi(navigate, t, newData, setPaymentModal)
-          );
+          dispatch(paymentInitiateMainApi(navigate, t, newData));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1494,7 +1493,8 @@ const paymentInitiateMainApi = (navigate, t, newData, setPaymentModal) => {
                   t("Successful")
                 )
               );
-              setPaymentModal(true);
+              // setPaymentModal(true);
+              dispatch(openPaymentProcessModal(true));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1714,6 +1714,55 @@ const cancelOrganizationSubApi = (navigate, t, data) => {
   };
 };
 
+// Api for upgrade button on package details which is not ready yet but structure should be ready when Api will implemented ready to go
+// const paymentUpgradeDetailInit = () => {
+//   return {
+//     type: actions.PACKAGE_UPGRADE_DETAIL_INIT,
+//   };
+// };
+
+// const paymentUpgradeDetailSuccess = (response, message) => {
+//   return {
+//     type: actions.PACKAGE_UPGRADE_DETAIL_SUCCESS,
+//     response: response,
+//     message: message,
+//   };
+// };
+
+// const paymentUpgradeDetailFail = (message) => {
+//   return {
+//     type: actions.PACKAGE_UPGRADE_DETAIL_FAIL,
+//     message: message,
+//   };
+// };
+
+// const paymentUpgradeDetailMainApi = (navigate, t) => {
+//   let token = JSON.parse(localStorage.getItem("token"));
+//   return (dispatch) => {
+//     let form = new FormData();
+//     form.append(
+//       "RequestMethod",
+//       CancelOrganizationsSubscriptions.RequestMethod
+//     );
+//     form.append("RequestData", JSON.stringify());
+//     axios({
+//       method: "post",
+//       url: getAdminURLs,
+//       data: form,
+//       headers: {
+//         _token: token,
+//       },
+//     })
+//       .then(async (response) => {
+//         if (response.data.responseCode === 417) {
+//         } else if (response.data.responseCode === 200) {
+//         } else {
+//         }
+//       })
+//       .catch((response) => {});
+//   };
+// };
+
 export {
   signUpOrganizationAndPakageSelection,
   // getAllorganizationSubscriptionExpiryDetailsApi,
@@ -1733,4 +1782,5 @@ export {
   paymentInitiateMainApi,
   getCancelSubscriptionReasonApi,
   cancelOrganizationSubApi,
+  // paymentUpgradeDetailMainApi
 };

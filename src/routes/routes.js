@@ -85,6 +85,7 @@ import SignupProcessUserManagement from "../container/pages/SignUpProcessUserMan
 import RouteWrapperUser from "./RouteWrapperUser";
 import RouteWrapperAdmin from "./RouteWrapperAdmin";
 import PakageDetailsUMUpgrade from "../container/pages/UserMangement/AdminUserManagement/PackageDetailsUMUpgrade/PackageDetailsUMUpgrade";
+import PaymentProcess from "../container/pages/UserMangement/PaymentProcess/PaymentProcess";
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
@@ -297,6 +298,18 @@ export const router = createHashRouter(
               </RouteWrapperAdmin>
             }
           />
+
+          {/* Route For Payment Processs start */}
+          <Route
+            path="PaymentProcess"
+            element={
+              <RouteWrapperAdmin name="PaymentProcess">
+                <PaymentProcess />
+              </RouteWrapperAdmin>
+            }
+          />
+          {/* Route For Payment Processs end */}
+
           <Route
             path="PakageDetailsUserManagement"
             element={
@@ -305,7 +318,6 @@ export const router = createHashRouter(
               </RouteWrapperAdmin>
             }
           />
-
           <Route
             path="loginreport"
             element={
@@ -314,6 +326,15 @@ export const router = createHashRouter(
               </RouteWrapperAdmin>
             }
           />
+          <Route
+            path="PackageDetailUMupgrade"
+            element={
+              <RouteWrapperAdmin name="PackageDetailUMupgrade">
+                <PakageDetailsUMUpgrade />
+              </RouteWrapperAdmin>
+            }
+          />
+
           <Route
             path="AddUsers"
             element={

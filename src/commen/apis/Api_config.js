@@ -1549,6 +1549,11 @@ const CancelOrganizationsSubscriptions = {
   RequestMethod: "ServiceManager.CancelOrganizationsSubscription",
 };
 
+// Api for upgrade button on package details which is not ready yet but structure should be ready when Api will implemented ready to go
+// const upgradePackageApiCallOnPackageDetailPage = {
+//   RequestMethod: ""
+// };
+
 export {
   leaveFolderSharingRM,
   leaveFileSharingRM,
@@ -1961,4 +1966,5 @@ export {
   PaymentInitiateStepperThree,
   CancelSubReasons,
   CancelOrganizationsSubscriptions,
+  // upgradePackageApiCallOnPackageDetailPage,
 };
