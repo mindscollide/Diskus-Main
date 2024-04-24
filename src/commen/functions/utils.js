@@ -1,16 +1,3 @@
-// export const updateLocalUserRoutes=(userFeatures,LocalUserRoutes)=> {
-//     userFeatures.forEach(feature => {
-//         // Check if the packageFeatureID exists in the routes array
-//         const matchingRoute = routes.find(route => route.id === feature.packageFeatureID);
-//         if (matchingRoute) {
-//             // If a matching route is found, push it to LocalUserRoutes if it's not already included
-//             if (!LocalUserRoutes.some(route => route.id === matchingRoute.id)) {
-//                return LocalUserRoutes.push(matchingRoute);
-//             }
-//         }
-//     });
-// }
-
 // this is function save avalable feature for current user implementation its save all data in local storage
 export function savePackageFeatureIDs(userFeatures) {
   // Fetch existing data from local storage
@@ -47,7 +34,6 @@ export function updateLocalUserRoutes(userFeatures, LocalUserRoutes) {
     { id: 19, name: "dataroom" },
     { id: 21, name: "dataroom" },
     { id: 13, name: "dataroom" },
-
     { id: 6, name: "notes" },
     { id: 7, name: "calendar" },
     { id: 14, name: "todolist" },
@@ -86,10 +72,9 @@ export function updateLocalUserRoutes(userFeatures, LocalUserRoutes) {
         }
       }
     });
-
     return LocalUserRoutes;
   } catch (error) {
-    console.log(error, "errorerror");
+    console.log(error);
   }
 }
 
@@ -132,7 +117,6 @@ export function updateAdminRoutes(adminFeatures, LocalAdminRoutes) {
       const matchingRoute = Admin.find(
         (route) => route.id === feature.packageFeatureID
       );
-      console.log(matchingRoute, "matchingRoutematchingRoute");
       if (matchingRoute) {
         // Check if LocalUserRoutes already contains an entry with this name
         if (
@@ -149,7 +133,7 @@ export function updateAdminRoutes(adminFeatures, LocalAdminRoutes) {
 
     return LocalAdminRoutes;
   } catch (error) {
-    console.log(error, "errorerror");
+    console.log(error);
   }
 }
 
@@ -293,23 +277,26 @@ export async function handleLoginResponse(response) {
 
 // Features IDs Check Fucntion
 export function checkFeatureIDAvailability(id) {
-  console.log(id, "ididid");
   let packageID = localStorage.getItem("packageFeatureIDs");
-
   if (packageID) {
     packageID = packageID.replace(/,\s*\.\.\.\]$/, "]");
-
     let idsArray;
     try {
       idsArray = JSON.parse(packageID);
     } catch (e) {
-      console.error("Error parsing packageFeatureIDs from localStorage:", e);
+      console.error("Error parsing on checkFeatureIDAvailability:", e);
       return false;
     }
-    console.log(idsArray.includes(id), "ididid");
-
     return idsArray.includes(id);
   } else {
     return false;
   }
+}
+
+// this is use for api request data
+export function getFormData(data, RequestMethodData) {
+  let form = new FormData();
+  form.append("RequestData", JSON.stringify(data));
+  form.append("RequestMethod", RequestMethodData.RequestMethod);
+  return form;
 }
