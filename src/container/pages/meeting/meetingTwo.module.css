@@ -398,3 +398,9 @@ body[dir="rtl"] .Calendar_Meeting .dropdown-menu.show .dropdown-item {
   /* margin-left: 33px !important; */
   margin-left: 35px !important;
 }
+.orgaizer_value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+}
