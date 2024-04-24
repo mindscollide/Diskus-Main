@@ -2,9 +2,13 @@ import React, { useState } from "react";
 import { Row, Col, Container } from "react-bootstrap";
 import { useTranslation } from "react-i18next"; // Importing translation hook
 import styles from "./PendingApprovals.module.css"; // Importing CSS module
+import {
+  pendingApprovalPage,
+  reviewMinutesPage,
+} from "../../../store/actions/Minutes_action"; // Importing Page Change State
 import { useDispatch } from "react-redux"; // Importing Redux hook
 import { useNavigate } from "react-router-dom"; // Importing navigation hook
-import { Button, Paper, TableToDo } from "../../components/elements"; // Importing custom components
+import { Button, Paper, TableToDo } from "../../../components/elements"; // Importing custom components
 import { ChevronDown } from "react-bootstrap-icons"; //Bootstrap Icon
 
 // Functional component for pending approvals section
@@ -68,7 +72,17 @@ const PendingApproval = () => {
       width: "200px",
       ellipsis: true,
       render: (text, record) => (
-        <p className={record.status === "Expired" ? "opacity-25 m-0 text-truncate" : "m-0 text-truncate"}>
+        <p
+          onClick={() => {
+            dispatch(reviewMinutesPage(true));
+            dispatch(pendingApprovalPage(false));
+          }}
+          className={
+            record.status === "Expired"
+              ? "cursor-pointer opacity-25 m-0 text-truncate"
+              : "cursor-pointer m-0 text-truncate"
+          }
+        >
           {text}
         </p>
       ),
@@ -191,7 +205,6 @@ const PendingApproval = () => {
           </span>
         </Col>
       </Row>
-      <Row>
         <Paper className={styles["pendingApprovalPaper"]}>
           {/* Paper component for styling */}
           <Container>
@@ -238,16 +251,16 @@ const PendingApproval = () => {
                               percentageValue={"60%"}
                             />
                             <ProgressBar
-                              width={40}
+                              width={30}
                               color="#ffc300"
                               indexValue="1"
-                              percentageValue={"20%"}
+                              percentageValue={"30%"}
                             />
                             <ProgressBar
-                              width={20}
+                              width={10}
                               color="#6172D6"
                               indexValue="2"
-                              percentageValue={"20%"}
+                              percentageValue={"10%"}
                             />
                           </div>
                         </Col>
@@ -300,7 +313,6 @@ const PendingApproval = () => {
             ) : null}
           </Container>
         </Paper>
-      </Row>
     </section>
   );
 };

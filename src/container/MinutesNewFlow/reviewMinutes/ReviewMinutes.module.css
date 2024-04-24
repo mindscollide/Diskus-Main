@@ -1,0 +1,105 @@
+.pendingApprovalContainer {
+  width: 98% !important;
+  height: 91vh !important;
+  margin: 0 auto !important;
+  overflow: hidden !important;
+}
+
+.pendingApprovalHeading {
+  font-family: "MontserratSemiBold";
+  font-size: 30px;
+  line-height: 37px;
+  color: #6172d6;
+}
+
+.Accept-all {
+  width: 123px;
+  height: 39px;
+  background: #6172d6 !important;
+  border: none !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  font-family: "MontserratRegular";
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.Accept-all:is(:active, :hover, :focus, :focus-visible) {
+  width: 123px;
+  height: 39px;
+  background: #6172d6 !important;
+  border: none !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  font-family: "MontserratRegular";
+  font-size: 12px;
+  font-weight: 600;
+}
+
+span.No-of-reviews {
+  width: 292px;
+  height: 40px;
+  background: #fff8e1;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "MontserratRegular";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  color: #ddb227;
+  margin-right: 15px;
+}
+
+.pendingApprovalPaper {
+  border: 1px solid #e1e1e1;
+}
+
+p.Parent-title-heading {
+  font-family: "MontserratSemiBold";
+  font-size: 16px;
+  color: #5f78d6;
+}
+
+p.minutes-text {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  color: #5a5a5a;
+  margin: 0 !important;
+}
+
+span.bar-line {
+  border: 1px solid #e1e1e1;
+  display: block;
+  height: 100%;
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+}
+
+img.Image {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+}
+
+p.agendaCreater {
+  font-family: "MontserratSemiBold";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 15px;
+  margin: 0;
+  color: #5a5a5a;
+}
+
+.uploaded-details {
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 20px;
+}

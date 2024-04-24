@@ -685,7 +685,7 @@ const Header2 = () => {
                                   true) &&
                               NewMeetingreducer.viewMeetingFlag === false
                                 ? "/DisKus/Meeting"
-                                : "/DisKus/PendingApprovals"
+                                : "/DisKus/Minutes"
                             }
                             onClick={handleMeetingPendingApprovals}
                             className="pendingApprovalsNav"

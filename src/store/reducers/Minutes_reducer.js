@@ -2,7 +2,7 @@ import * as actions from "../action_types";
 
 const initialState = {
   Loading: false,
-  showMeetingPage: true,
+  showPendingApprovalsPage: true,
   showReviewMinutesPage: false,
 };
 
@@ -11,7 +11,7 @@ const MinutesReducer = (state = initialState, action) => {
     case actions.PENDING_APPROVAL_PAGE: {
       return {
         ...state,
-        showMeetingPage: action.response,
+        showPendingApprovalsPage: action.response,
       };
     }
 

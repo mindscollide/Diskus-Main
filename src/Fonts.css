@@ -1,20 +1,20 @@
 @font-face {
   font-family: "Montserrat";
-  src: url("./assets/fonts-new/montserrat-regular-webfont.woff"),
-    url("./assets/fonts-new/montserrat-regular-webfont.woff2");
+  src: url("./assets/fonts-new/montserrat-regular-webfont.woff") format('woff'),
+    url("./assets/fonts-new/montserrat-regular-webfont.woff2") format('woff2');
   font-weight: 400;
 }
 
 @font-face {
   font-family: "Montserrat-Italic";
-  src: url("./assets/fonts-new/montserrat-italic-webfont.woff"),
-    url("./assets/fonts-new/montserrat-italic-webfont.woff2");
+  src: url("./assets/fonts-new/montserrat-italic-webfont.woff") format('woff'),
+    url("./assets/fonts-new/montserrat-italic-webfont.woff2") format('woff2');
 }
 
 @font-face {
   font-family: "MontserratThin-100";
-  src: url("./assets/fonts-new/montserrat-100-webfont.woff"),
-    url("./assets/fonts-new/montserrat-100-webfont.woff2");
+  src: url("./assets/fonts-new/montserrat-100-webfont.woff") format('woff'),
+    url("./assets/fonts-new/montserrat-100-webfont.woff2") format('woff2');
   font-weight: 100;
 }
 
@@ -25,8 +25,8 @@
 
 @font-face {
   font-family: "MontserratExtraLight-200";
-  src: url("./assets/fonts-new/montserrat-200-webfont.woff"),
-    url("./assets/fonts-new/montserrat-200-webfont.woff2");
+  src: url("./assets/fonts-new/montserrat-200-webfont.woff") format('woff'),
+    url("./assets/fonts-new/montserrat-200-webfont.woff2") format('woff2');
   font-weight: 200;
 }
 
@@ -37,8 +37,8 @@
 
 @font-face {
   font-family: "MontserratLight-300";
-  src: url("./assets/fonts-new/montserrat-300-webfont.woff"),
-    url("./assets/fonts-new/montserrat-300-webfont.woff2");
+  src: url("./assets/fonts-new/montserrat-300-webfont.woff") format('woff'),
+    url("./assets/fonts-new/montserrat-300-webfont.woff2") format('woff2');
   font-weight: 300;
 }
 
@@ -49,8 +49,8 @@
 
 @font-face {
   font-family: "MontserratMedium-500";
-  src: url("./assets/fonts-new/montserrat-500-webfont.woff"),
-    url("./assets/fonts-new/montserrat-500-webfont.woff2");
+  src: url("./assets/fonts-new/montserrat-500-webfont.woff") format('woff'),
+    url("./assets/fonts-new/montserrat-500-webfont.woff2") format('woff2');
   font-weight: 500;
 }
 
@@ -61,8 +61,8 @@
 
 @font-face {
   font-family: "MontserratSemiBold-600";
-  src: url("./assets/fonts-new/montserrat-600-webfont.woff"),
-    url("./assets/fonts-new/montserrat-600-webfont.woff2");
+  src: url("./assets/fonts-new/montserrat-600-webfont.woff") format('woff'),
+    url("./assets/fonts-new/montserrat-600-webfont.woff2") format('woff2');
   font-weight: 600;
 }
 
@@ -73,8 +73,8 @@
 
 @font-face {
   font-family: "MontserratBold-700";
-  src: url("./assets/fonts-new/montserrat-700-webfont.woff"),
-    url("./assets/fonts-new/montserrat-700-webfont.woff2");
+  src: url("./assets/fonts-new/montserrat-700-webfont.woff") format('woff'),
+    url("./assets/fonts-new/montserrat-700-webfont.woff2") format('woff2');
   font-weight: 700;
 }
 
@@ -85,8 +85,8 @@
 
 @font-face {
   font-family: "MontserratExtraBold-800";
-  src: url("./assets/fonts-new/montserrat-800-webfont.woff"),
-    url("./assets/fonts-new/montserrat-800-webfont.woff2");
+  src: url("./assets/fonts-new/montserrat-800-webfont.woff") format('woff'),
+    url("./assets/fonts-new/montserrat-800-webfont.woff2") format('woff2');
   font-weight: 800;
 }
 
@@ -97,8 +97,8 @@
 
 @font-face {
   font-family: "MontserratBlack-900";
-  src: url("./assets/fonts-new/montserrat-900-webfont.woff"),
-    url("./assets/fonts-new/montserrat-900-webfont.woff2");
+  src: url("./assets/fonts-new/montserrat-900-webfont.woff") format('woff'),
+    url("./assets/fonts-new/montserrat-900-webfont.woff2") format('woff2');
   font-weight: 900;
 }
 
@@ -109,8 +109,8 @@
 
 @font-face {
   font-family: "MontserratRegular";
-  src: url("./assets/fonts-new/montserrat-900-webfont.woff"),
-    url("./assets/fonts-new/montserrat-regular-webfont.woff2");
+  src: url("./assets/fonts-new/montserrat-900-webfont.woff") format('woff'),
+    url("./assets/fonts-new/montserrat-regular-webfont.woff2") format('woff2');
   font-weight: 400;
 }
 

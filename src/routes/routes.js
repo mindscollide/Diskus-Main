@@ -65,7 +65,7 @@ import {
   OrganizationLevelSetting,
   EmptyState,
   RSVP,
-  PendingApproval
+  MinutesFlow,
 } from "../container";
 
 import DocumentViewer from "../components/elements/webviewer/DocumentViewer";
@@ -77,6 +77,7 @@ import PrivateRoutes from "./private_routes";
 import PrivateRouteDataroom from "./private_route_dataroom";
 import Reports from "../container/Admin/Reports/Reports";
 import SignatureViewer from "../components/elements/signaturewebviewer/signatureviewer";
+
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
@@ -138,7 +139,7 @@ export const router = createHashRouter(
           <Route path="resolution" element={<Resolution />} />
           <Route path="dataroom" element={<DataRoom />} />
           <Route path="polling" element={<Polling />} />
-          <Route path="PendingApprovals" element={<PendingApproval />} />
+          <Route path="Minutes" element={<MinutesFlow />} />
         </Route>
       </Route>
       <Route element={<PrivateAdminRoute />}>
