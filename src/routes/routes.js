@@ -543,14 +543,14 @@ export const router = createHashRouter(
               </RouteWrapperAdmin>
             }
           />
-          <Route
+          {/* <Route
             path="setting"
             element={
               <RouteWrapperAdmin name="setting">
                 <UserSettings />
               </RouteWrapperAdmin>
             }
-          />
+          /> */}
         </Route>
       </Route>
       <Route element={<PrivateAdminRouteNonActive />}>
