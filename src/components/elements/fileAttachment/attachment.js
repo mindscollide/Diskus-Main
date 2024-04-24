@@ -40,6 +40,8 @@ const AttachmentViewer = ({
               draggable={false}
               src={getIconSource(getFileExtension(name))}
               alt=""
+              width={20}
+              height={20}
             />
             <span
               className={
@@ -73,6 +75,7 @@ const AttachmentViewer = ({
               draggable={false}
               src={EyeIcon}
               alt=""
+              className="ms-1"
               onClick={handleEyeIcon}
             />
           </Col>

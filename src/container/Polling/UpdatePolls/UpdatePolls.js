@@ -71,18 +71,18 @@ const UpdatePolls = () => {
   const [defineUnsaveModal, setDefineUnsaveModal] = useState(false);
   const [checkForPollStatus, setCheckForPollStatus] = useState(false);
   const [options, setOptions] = useState([
-    {
-      name: 1,
-      value: "",
-    },
-    {
-      name: 2,
-      value: "",
-    },
-    {
-      name: 3,
-      value: "",
-    },
+    // {
+    //   name: 1,
+    //   value: "",
+    // },
+    // {
+    //   name: 2,
+    //   value: "",
+    // },
+    // {
+    //   name: 3,
+    //   value: "",
+    // },
   ]);
 
   const [UpdatePolls, setUpdatePolls] = useState({
@@ -246,24 +246,24 @@ const UpdatePolls = () => {
           pollID: pollsDetails.poll.pollDetails.pollID,
         });
         try {
-          if (Object.keys(PollsReducer.Allpolls.poll.pollOptions).length > 2) {
-            let Option = [];
-            PollsReducer.Allpolls.poll.pollOptions.map((data, index) => {
-              let dataAdd = { name: index + 1, value: data.answer };
-              Option.push(dataAdd);
-            });
-            setOptions(Option);
-          } else if (
-            Object.keys(PollsReducer.Allpolls.poll.pollOptions).length <= 2
-          ) {
-            const updatedOptions = options.map((option) => {
-              const apiData = PollsReducer.Allpolls.poll.pollOptions.find(
-                (apiOption, index) => index + 1 === option.name
-              );
-              return apiData ? { ...option, value: apiData.answer } : option;
-            });
-            setOptions(updatedOptions);
-          }
+          // if (Object.keys(PollsReducer.Allpolls.poll.pollOptions).length > 2) {
+          let Option = [];
+          PollsReducer.Allpolls.poll.pollOptions.map((data, index) => {
+            let dataAdd = { name: index + 1, value: data.answer };
+            Option.push(dataAdd);
+          });
+          setOptions(Option);
+          // } else if (
+          //   Object.keys(PollsReducer.Allpolls.poll.pollOptions).length <= 2
+          // ) {
+          //   const updatedOptions = options.map((option) => {
+          //     const apiData = PollsReducer.Allpolls.poll.pollOptions.find(
+          //       (apiOption, index) => index + 1 === option.name
+          //     );
+          //     return apiData ? { ...option, value: apiData.answer } : option;
+          //   });
+          //   setOptions(updatedOptions);
+          // }
         } catch {}
       }
     }

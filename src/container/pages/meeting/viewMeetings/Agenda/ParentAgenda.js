@@ -9,7 +9,11 @@ import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Notification } from "../../../../../components/elements";
+import {
+  AttachmentViewer,
+  Button,
+  Notification,
+} from "../../../../../components/elements";
 import { convertToGMTTime } from "../../../../../commen/functions/time_formatter";
 import AttachmentIcon from "../../../../../assets/images/Attachment.svg";
 import {
@@ -192,6 +196,29 @@ const ParentAgenda = ({
         record.displayAttachmentName
       )
     );
+  };
+  const pdfData = (record, ext) => {
+    console.log("PDFDATAPDFDATA", record);
+    let Data = {
+      taskId: Number(record.originalAttachmentName),
+      commingFrom: 4,
+      fileName: record.displayAttachmentName,
+      attachmentID: Number(record.originalAttachmentName),
+    };
+    let pdfDataJson = JSON.stringify(Data);
+    if (
+      ext === "pdf" ||
+      ext === "doc" ||
+      ext === "docx" ||
+      ext === "xlx" ||
+      ext === "xlsx"
+    ) {
+      window.open(
+        `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+        "_blank",
+        "noopener noreferrer"
+      );
+    }
   };
 
   useEffect(() => {
@@ -482,56 +509,78 @@ const ParentAgenda = ({
                                   <div
                                     {...provided.droppableProps}
                                     ref={provided.innerRef}
+                                    className="d-flex flex-wrap gap-2 mb-3"
                                   >
                                     {data.selectedRadio === 1 &&
                                     Object.keys(data.files).length > 0 ? (
-                                      <Row>
+                                      <>
                                         {data.files.map(
                                           (filesData, fileIndex) => (
-                                            <Col
+                                            <AttachmentViewer
+                                              data={filesData}
+                                              handleClickDownload={() =>
+                                                downloadDocument(filesData)
+                                              }
+                                              handleEyeIcon={() =>
+                                                pdfData(
+                                                  filesData,
+                                                  getFileExtension(
+                                                    filesData?.displayAttachmentName
+                                                  )
+                                                )
+                                              }
+                                              id={Number(
+                                                filesData.originalAttachmentName
+                                              )}
+                                              name={
+                                                filesData.displayAttachmentName
+                                              }
                                               key={fileIndex}
-                                              lg={3}
-                                              md={3}
-                                              sm={12}
-                                            >
-                                              <div
-                                                className={
-                                                  styles[
-                                                    "agendaFileAttachedView"
-                                                  ]
-                                                }
-                                              >
-                                                <span
-                                                  className={
-                                                    styles["agendaFileSpan"]
-                                                  }
-                                                >
-                                                  <img
-                                                    draggable={false}
-                                                    src={getIconSource(
-                                                      getFileExtension(
-                                                        filesData?.displayAttachmentName
-                                                      )
-                                                    )}
-                                                    alt=""
-                                                  />{" "}
-                                                  <span
-                                                    onClick={() =>
-                                                      downloadDocument(
-                                                        filesData
-                                                      )
-                                                    }
-                                                  >
-                                                    {
-                                                      filesData?.displayAttachmentName
-                                                    }
-                                                  </span>
-                                                </span>
-                                              </div>
-                                            </Col>
+                                            />
+                                            // <Col
+                                            //   key={fileIndex}
+                                            //   lg={3}
+                                            //   md={3}
+                                            //   sm={12}
+                                            // >
+                                            //   <div
+                                            //     className={
+                                            //       styles[
+                                            //         "agendaFileAttachedView"
+                                            //       ]
+                                            //     }
+                                            //   >
+                                            //     <span
+                                            //       className={
+                                            //         styles["agendaFileSpan"]
+                                            //       }
+                                            //     >
+                                            //       <img
+                                            //         draggable={false}
+                                            //         src={getIconSource(
+                                            //           getFileExtension(
+                                            //             filesData?.displayAttachmentName
+                                            //           )
+                                            //         )}
+                                            //         alt=""
+                                            //       />{" "}
+                                            //       <span
+                                            //         onClick={() =>
+                                            //           downloadDocument(
+                                            //             filesData
+                                            //           )
+                                            //         }
+                                            //       >
+                                            //         {
+                                            //           filesData?.displayAttachmentName
+                                            //         }
+                                            //       </span>
+                                            //     </span>
+                                            //   </div>
+                                            // </Col>
                                           )
                                         )}
-                                      </Row>
+                                      </>
                                     ) : data.selectedRadio === 1 &&
                                       Object.keys(data.files).length === 0 ? (
                                       <span
