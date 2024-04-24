@@ -345,37 +345,55 @@ const ManageUsers = () => {
 
   //manual filteration performed on the GRID
   const handleSearch = () => {
+    let adminFound = false;
+
     const filteredData =
       UserMangementReducer.allOrganizationUsersData.organizationUsers.filter(
         (user) => {
+          console.log(user, "useruseruseruseruser");
+          const nameInput = searchDetails.Name || "";
+          const emailInput = searchDetails.Email || "";
+          const statusInput =
+            (searchDetails.Status && searchDetails.Status.label) || "";
+
           const matchesName =
-            searchDetails.Name === "" ||
-            user.userName
-              .toLowerCase()
-              .includes(searchDetails.Name.toLowerCase());
+            nameInput === "" ||
+            user.userName.toLowerCase().includes(nameInput.toLowerCase());
           const matchesEmail =
-            searchDetails.Email === "" ||
-            user.email
-              .toLowerCase()
-              .includes(searchDetails.Email.toLowerCase());
+            emailInput === "" ||
+            user.email.toLowerCase().includes(emailInput.toLowerCase());
           const matchesStatus =
-            searchDetails.Status.label === "" ||
-            user.userStatus.toLowerCase() ===
-              searchDetails.Status.label.toLowerCase();
+            statusInput === "" ||
+            user.userStatus.toLowerCase() === statusInput.toLowerCase();
+
+          const matchesAdmin =
+            !searchDetails.searchIsAdmin || user.userRole === "AdminUser";
+
+          if (matchesAdmin && searchDetails.searchIsAdmin) {
+            adminFound = true;
+          }
 
           let conditionsToCheck = [];
-          if (searchDetails.Name !== "") conditionsToCheck.push(matchesName);
-          if (searchDetails.Email !== "") conditionsToCheck.push(matchesEmail);
-          if (searchDetails.Status.label !== "")
-            conditionsToCheck.push(matchesStatus);
+          if (nameInput !== "") conditionsToCheck.push(matchesName);
+          if (searchDetails.searchIsAdmin) conditionsToCheck.push(matchesAdmin);
+          if (emailInput !== "") conditionsToCheck.push(matchesEmail);
+          if (statusInput !== "") conditionsToCheck.push(matchesStatus);
+
+          if (conditionsToCheck.length === 0) return true;
 
           return conditionsToCheck.some((condition) => condition);
         }
       );
 
+    // Set the showSearches to false if any admin user is found and searchIsAdmin is true
+    if (adminFound) {
+      setshowSearches(false);
+    } else {
+      setshowSearches(true);
+    }
+
     setManageUserGrid(filteredData);
     setsearchbox(false);
-    setshowSearches(true);
   };
 
   //handle removing the searched snippets
@@ -495,10 +513,9 @@ const ManageUsers = () => {
   };
 
   //CheckBox IsAdmin Search
-
   const handleSearchIsAdmin = () => {
     setsearchDetails({
-      searchIsAdmin: searchDetails.searchIsAdmin,
+      searchIsAdmin: !searchDetails.searchIsAdmin,
     });
   };
 
