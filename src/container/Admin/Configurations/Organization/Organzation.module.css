@@ -1,9 +1,3 @@
-@font-face {
-  font-family: "MontserratMedium";
-  src: url("../../../../assets/fonts-new/montserrat-500-webfont.woff"),
-    url("../../../../assets/fonts-new/montserrat-500-webfont.woff2");
-}
-
 .labelHeading-Title {
   color: #076db7 !important;
   font-size: 30px;

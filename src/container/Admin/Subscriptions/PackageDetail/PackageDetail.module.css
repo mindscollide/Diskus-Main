@@ -1,18 +1,3 @@
-@font-face {
-  font-family: "MontserratBold";
-  src: url(../../../../assets/fonts/Montserrat-Bold.ttf);
-}
-
-@font-face {
-  font-family: "MontserratSemiBold";
-  src: url(../../../../assets/fonts/Montserrat-SemiBold.ttf);
-}
-
-@font-face {
-  font-family: "MontserratMedium";
-  src: url(../../../../assets/fonts/Montserrat-Medium.ttf);
-}
-
 .upgrade_planBox {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;

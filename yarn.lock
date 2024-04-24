@@ -1543,6 +1543,16 @@
   "resolved" "https://registry.npmjs.org/@floating-ui/utils/-/utils-0.2.1.tgz"
   "version" "0.2.1"
 
+"@fontsource/ibm-plex-sans-arabic@^5.0.20":
+  "integrity" "sha512-MrBRuh1lTmzaBmVN5/z4HjB51DYFnaUU17zg+slO7TtGuoiOEyxPCtgIwAAbaQFDXooR9sb+tiOiwUBtMPjsHQ=="
+  "resolved" "https://registry.npmjs.org/@fontsource/ibm-plex-sans-arabic/-/ibm-plex-sans-arabic-5.0.20.tgz"
+  "version" "5.0.20"
+
+"@fontsource/montserrat@^5.0.18":
+  "integrity" "sha512-85JBs2rCdFK/VBdSb401e2lXk5gynVo2zi3Rh2Guem4WNtT2q52+V90o3KzjmajY3TPJvCZA/kI7R05ev7148g=="
+  "resolved" "https://registry.npmjs.org/@fontsource/montserrat/-/montserrat-5.0.18.tgz"
+  "version" "5.0.18"
+
 "@humanwhocodes/config-array@^0.11.14":
   "integrity" "sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg=="
   "resolved" "https://registry.npmjs.org/@humanwhocodes/config-array/-/config-array-0.11.14.tgz"
