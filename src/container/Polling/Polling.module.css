@@ -1,9 +1,3 @@
-@font-face {
-  font-family: "MontserratSemiBold";
-  src: url("./../../assets/fonts-new/montserrat-600-webfont.woff"),
-    url("./../../assets/fonts-new/montserrat-600-webfont.woff2");
-}
-
 .Poll_Container {
   width: 98% !important;
   height: 91vh !important;

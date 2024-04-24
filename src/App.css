@@ -11,7 +11,7 @@
 }
 
 ::placeholder {
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   color: #bbbbbb !important;
 }
 
@@ -37,14 +37,9 @@ filter blur background on dropdown click
 */
 
 /*normalize bootstrap and other primary style*/
-@font-face {
-  font-family: "MontserratRegular";
-  src: url("./assets/fonts-new/montserrat-regular-webfont.woff"),
-    url("./assets/fonts-new/montserrat-regular-webfont.woff2");
-}
 
 body {
-  font-family: "MontserratRegular" !important;
+  font-family: "Montserrat" !important;
   font-size: 13px !important;
   color: #000000;
   line-height: 1.5;
@@ -52,22 +47,12 @@ body {
   overflow: hidden auto;
 }
 
-@font-face {
-  font-family: "MontserratMedium";
-  src: url(./assets/fonts/Montserrat-Medium.ttf);
-}
-
-@font-face {
-  font-family: "MontserratSemiBold";
-  src: url(./assets/fonts/Montserrat-SemiBold.ttf);
-}
-
-.MontserratSemiBold {
-  font-family: "MontserratSemiBold" !important;
+body[dir="rtl"] {
+  font-family: "IBM Plex Sans Arabic" !important;
 }
 
 .MuiAutocomplete-paper {
-  font-family: "Montserrat", sans-serif !important;
+  font-family: "Montserrat" !important;
 }
 
 .fw-500 {
@@ -124,7 +109,7 @@ body {
 }
 
 .form-control2::placeholder {
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   color: #bbbbbb;
 }
 
@@ -1046,12 +1031,6 @@ body[dir="rtl"] svg.DatePickerIcon {
 }
 
 @import "~antd/dist/antd.less";
-
-@font-face {
-  font-family: "MON";
-  src: url("./assets/fonts-new/montserrat-600-webfont.woff"),
-    url("./assets/fonts-new/montserrat-600-webfont.woff2");
-}
 
 /* // global css for sidebar ends here */
 .ant-table-thead > tr * {

@@ -1,9 +1,3 @@
-@font-face {
-  font-family: "MontserratMedium";
-  src: url("../../../../assets/fonts-new/montserrat-regular-webfont.woff"),
-    url("../../../../assets/fonts-new/montserrat-regular-webfont.woff2");
-}
-
 .papercolor-adduser {
   margin-top: 30px !important;
   margin-left: 90px;

@@ -1,9 +1,3 @@
-@font-face {
-  font-family: "MontserratSemiBold";
-  src: url("./../../assets/fonts-new/montserrat-600-webfont.woff"),
-    url("./../../assets/fonts-new/montserrat-600-webfont.woff2");
-}
-
 .Groups-heading-size {
   font-size: 30px !important;
   color: #6172d6 !important;

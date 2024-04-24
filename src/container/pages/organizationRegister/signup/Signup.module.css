@@ -1,9 +1,3 @@
-@font-face {
-  font-family: "MontserratSemiBold";
-  src: url("../../../../assets/fonts-new/montserrat-600-webfont.woff2"),
-    url("../../../../assets/fonts-new/montserrat-600-webfont.woff2");
-}
-
 .signup_organization_title {
   color: #6172d6;
   font-weight: 400;

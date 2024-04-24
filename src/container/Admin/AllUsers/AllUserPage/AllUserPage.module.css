@@ -70,12 +70,6 @@ body[dir="rtl"] .Edit-Main-Heading {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
-@font-face {
-  font-family: "MontserratBold-600";
-  src: url("../../../../assets/fonts-new/montserrat-600-webfont.woff"),
-    url("../../../../assets/fonts-new/montserrat-600-webfont.woff2");
-}
-
 .successfull-label {
   font-size: 25px;
   font-weight: 600;
