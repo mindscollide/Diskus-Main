@@ -58,6 +58,8 @@ const ManageUsers = () => {
 
   const [enterpressed, setEnterpressed] = useState(false);
 
+  const [flagForStopRerendring, setFlagForStopRerendring] = useState(false);
+
   const [manangeUserSearch, setManangeUserSearch] = useState({
     searchValue: "",
   });
@@ -71,8 +73,6 @@ const ManageUsers = () => {
       label: "",
     },
   });
-
-  const [flagForStopRerendring, setFlagForStopRerendring] = useState(false);
 
   //AllOrganizationsUsers Api
   useEffect(() => {
@@ -318,7 +318,6 @@ const ManageUsers = () => {
   const handleSearchBox = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-    console.log({ name, value }, "handleChangeSearchBoxValues");
 
     if (name === "Name") {
       if (value !== "") {
