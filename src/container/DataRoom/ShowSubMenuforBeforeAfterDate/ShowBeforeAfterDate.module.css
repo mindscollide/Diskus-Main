@@ -15,7 +15,7 @@ body[dir="rtl"] .Drop_down_Documents {
 .cancell_button_expandDropdown {
     width: 68px !important;
     height: 20px !important;
-    font-family: "MontserratSemiBold";
+    font-weight: 600;
     font-size: 8px !important;
     color: #5a5a5a;
     background: #fff;
@@ -35,7 +35,7 @@ body[dir="rtl"] .Drop_down_Documents {
     height: 20px !important;
     font-size: 8px !important;
     color: #5a5a5a !important;
-    font-family: "MontserratSemiBold" !important;
+    font-weight: 600;
     background: #fff !important;
     border-radius: 4px !important;
     border: 1px solid #e1e1e1 !important;
@@ -59,7 +59,7 @@ body[dir="rtl"] .Drop_down_Documents {
     height: 20px !important;
     font-size: 8px !important;
     background: #6172d6;
-    font-family: "MontserratSemiBold" !important;
+    font-weight: 600;
     color: #fff;
     border: none;
     border-radius: 4px !important;

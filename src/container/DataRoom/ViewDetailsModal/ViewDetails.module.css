@@ -8,7 +8,7 @@
 .Title-file {
   font-size: 20px !important;
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -21,7 +21,7 @@
   color: #5a5a5a !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
 }
 
 .ViewDetials_Buttons:is(:hover, :active, :focus, :focus-visible) {
@@ -30,7 +30,7 @@
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .ViewDetials_Buttons {
@@ -44,7 +44,7 @@ body[dir="rtl"] .ViewDetials_Buttons {
   color: #fff !important;
   border: none !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .ViewDetials_Buttons_active {
@@ -54,7 +54,7 @@ body[dir="rtl"] .ViewDetials_Buttons_active {
 .Access_heading {
   font-size: 16px !important;
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 .Vertical_Seperator {
@@ -71,7 +71,7 @@ body[dir="rtl"] .ViewDetials_Buttons_active {
   color: #fff !important;
   border: none !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .Activity_Buttons_active {
@@ -102,7 +102,7 @@ body[dir="rtl"] .Activity_Buttons_active {
   color: #5a5a5a !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
 }
 
 .Activity_Buttons:is(:hover, :active, :focus, :focus-visible) {
@@ -111,7 +111,7 @@ body[dir="rtl"] .Activity_Buttons_active {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .Activity_Buttons {
@@ -121,7 +121,7 @@ body[dir="rtl"] .Activity_Buttons {
 .owned_heading {
   font-size: 12px !important;
   color: #a2a2a2 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
 }
 
 .Manage_access_button {
@@ -131,7 +131,7 @@ body[dir="rtl"] .Activity_Buttons {
   color: #fff !important;
   border-radius: 4px !important;
   border: none !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
 }
 
 .Manage_access_button:is(:hover, :active, :focus, :focus-visible) {
@@ -141,7 +141,7 @@ body[dir="rtl"] .Activity_Buttons {
   color: #fff !important;
   border-radius: 4px !important;
   border: none !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
 }
 
 .Horizontal_seperator {
@@ -154,17 +154,17 @@ body[dir="rtl"] .Activity_Buttons {
 .File_Detials_Heading {
   font-size: 16px !important;
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 .DetialsHeading {
   font-size: 12px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratBold-700" !important;
+  font-weight: 700;
 }
 
 .DetialsHeading_subHeading {
   color: #a5a5a5 !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   font-size: 12px !important;
 }
 
@@ -188,26 +188,26 @@ body[dir="rtl"] .Activity_Buttons {
 .Today_heading {
   font-size: 16px !important;
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   margin: 10px 0;
 }
 
 .activity_heading {
   font-size: 12px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 .date_heading {
   font-size: 10px !important;
   color: #a2a2a2 !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 .Filename_heading {
   font-size: 12px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -216,7 +216,7 @@ body[dir="rtl"] .Activity_Buttons {
 .Removed_particpant_styles {
   font-size: 12px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   text-decoration: line-through !important;
 }
 .icon_outer_circle {

@@ -1,17 +1,17 @@
 .Request_send_heading {
   font-size: 20px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 .description_request_send {
   font-size: 16px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 .Access_request_modal_heading {
   font-size: 20px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 .Sub_line_access_request_modal {
   font-size: 12px !important;
