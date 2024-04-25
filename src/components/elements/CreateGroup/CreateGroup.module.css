@@ -11,7 +11,7 @@
 }
 
 body[dir="rtl"] .details-class {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .scroll-bar-creategroup {
@@ -37,7 +37,7 @@ body[dir="rtl"] .details-class {
 }
 
 body[dir="rtl"] .Create-group-Head-Heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .group-head-info {
@@ -50,7 +50,7 @@ body[dir="rtl"] .Create-group-Head-Heading {
 }
 
 body[dir="rtl"] .name-create-group {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Designation-create-group {
@@ -59,11 +59,11 @@ body[dir="rtl"] .name-create-group {
 }
 
 body[dir="rtl"] .Designation-create-group {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .no-members-found {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .email-create-group {
@@ -74,7 +74,7 @@ body[dir="rtl"] .no-members-found {
 }
 
 body[dir="rtl"] .email-create-group a {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400;
 }
 
 .email-create-group a {
@@ -88,7 +88,7 @@ body[dir="rtl"] .email-create-group a {
 }
 
 body[dir="rtl"] .members-create-group-page {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Addmembers-class {
@@ -97,7 +97,7 @@ body[dir="rtl"] .members-create-group-page {
 }
 
 body[dir="rtl"] .Addmembers-class {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Create-CreateGroup-btn {
@@ -108,13 +108,13 @@ body[dir="rtl"] .Addmembers-class {
   font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   border-radius: 4px !important;
   border: none !important;
 }
 
 body[dir="rtl"] .Create-CreateGroup-btn {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Create-CreateGroup-btn:has(:hover, :active, :focus, :focus-visible, :visited) {
@@ -125,7 +125,7 @@ body[dir="rtl"] .Create-CreateGroup-btn {
   font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   border-radius: 4px !important;
   border: none !important;
 }
@@ -133,7 +133,7 @@ body[dir="rtl"] .Create-CreateGroup-btn {
 .ADD-Group-btn {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
   height: 39px !important;
@@ -143,7 +143,7 @@ body[dir="rtl"] .Create-CreateGroup-btn {
 
 body[dir="rtl"] .ADD-Group-btn {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .ADD-Group-btn:hover,
@@ -152,7 +152,7 @@ body[dir="rtl"] .ADD-Group-btn {
 .ADD-Group-btn:focus-visible {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   border-radius: 4px !important;
@@ -192,24 +192,24 @@ body[dir="rtl"] .ADD-Group-btn {
   font-size: 12px !important;
   background: #ffffff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   border-radius: 4px !important;
   outline: 1px solid #e1e1e1 !important;
   border: none !important;
 }
 
 body[dir="rtl"] .Cancell-CreateGroup-btn {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Create-Group-Heading {
   font-size: 30px !important;
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 body[dir="rtl"] .Create-Group-Heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Cancell-CreateGroup-btn:hover,
@@ -225,7 +225,7 @@ body[dir="rtl"] .Create-Group-Heading {
   font-size: 12px !important;
   background: #ffffff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   border-radius: 4px !important;
   outline: 1px solid #e1e1e1 !important;
   border: none !important;
@@ -250,7 +250,7 @@ body[dir="rtl"] .Label_Of_CheckBox {
 }
 
 body[dir="rtl"] .errorMessage {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .errorMessage_hidden {
@@ -261,7 +261,7 @@ body[dir="rtl"] .errorMessage {
 }
 
 body[dir="rtl"] .errorMessage_hidden {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .CheckBoxalign {
@@ -284,17 +284,17 @@ body[dir="rtl"] .CheckBoxalign {
 .ant-upload-text {
   font-size: 12px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 body[dir="rtl"] .ant-upload-text {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Choose_file_style {
   font-size: 12px !important;
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   margin-left: 3px !important;
 }
 
@@ -319,7 +319,7 @@ body[dir="rtl"] .Leftpolygon {
 
 .Attachments_Heading {
   font-size: 20px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #6172d6 !important;
 }
 
@@ -355,7 +355,7 @@ body[dir="rtl"] .Leftpolygon {
 .FileName {
   font-size: 10px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratRegular";
+  font-weight: 400;
   display: inline-block !important;
   overflow: hidden !important;
   white-space: nowrap !important;

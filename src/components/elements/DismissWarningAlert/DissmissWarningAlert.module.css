@@ -5,7 +5,7 @@
 
   .AlertHeading{
     font-size: calc(20px - 20%)!important;
-    font-family: "MontserratSemiBold";
+    font-weight: 600;
     color: #fff;
     margin-left: 15px !important;
     padding-bottom: 10px !important;
@@ -18,7 +18,7 @@
   
   .revoke{
     font-size: calc(18px - 20%) !important;
-    font-family: "MontserratMedium";
+    font-weight: 500;
     color: #fff;
     text-decoration: underline;
     margin-left: 18px !important;
@@ -40,7 +40,7 @@
     .revoke{
       font-size: calc(10px - 15%) !important;
       width: 10% !important;
-      font-family: "MontserratMedium";
+      font-weight: 500;
       color: #fff;
       text-decoration: underline;
       margin-left: 4px !important;
@@ -48,7 +48,7 @@
 
     .AlertHeading{
       font-size: calc(15px - 20%)!important;
-      font-family: "MontserratSemiBold";
+      font-weight: 600;
       color: #fff;
       margin-left: 6px !important;
       padding-bottom: 10px !important;
