@@ -58,12 +58,12 @@
   background-color: #fff !important;
   color: #5a5a5a !important;
   margin-bottom: 20px !important;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   font-size: 12px;
 }
 
 body[dir="rtl"] .organization-level-resetBtn {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 .organization-level-resetBtn:hover,
 .organization-level-resetBtn:active,
@@ -78,7 +78,7 @@ body[dir="rtl"] .organization-level-resetBtn {
   background-color: #fff !important;
   color: #5a5a5a !important;
   margin-bottom: 20px !important;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   font-size: 12px;
 }
 
@@ -90,11 +90,11 @@ body[dir="rtl"] .organization-level-resetBtn {
   background-color: #6172d6 !important;
   color: #fff !important;
   margin-bottom: 20px !important;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   font-size: 12px;
 }
 body[dir="rtl"] .organization-level-updateBtn {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .organization-level-updateBtn:hover,
@@ -110,7 +110,7 @@ body[dir="rtl"] .organization-level-updateBtn {
   background-color: #6172d6 !important;
   color: #fff !important;
   margin-bottom: 20px !important;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   font-size: 12px;
 }
 
@@ -119,17 +119,16 @@ body[dir="rtl"] .organization-level-updateBtn {
   height: 35px;
 }
 body[dir="rtl"] .select-timeDuration {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
 }
 .OrganizationLevelTitle {
   font-size: calc(38px - 50%) !important;
   color: #6172d6 !important;
   font-weight: 600 !important;
-  font-family: "MontserratSemiBold-600" !important;
 }
 
 body[dir="rtl"] .OrganizationLevelTitle {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .bottom-line {
@@ -140,18 +139,18 @@ body[dir="rtl"] .OrganizationLevelTitle {
   background-color: #ccc;
 }
 .css-6j8wv5-Input {
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .css-6j8wv5-Input {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 .css-qc6sy-singleValue {
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .css-qc6sy-singleValue {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 .select-timeDuration .css-1s2u09g-control {
   max-height: 10px !important;
