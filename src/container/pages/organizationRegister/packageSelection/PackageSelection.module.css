@@ -2,21 +2,22 @@
   color: #6172d6;
   text-align: center;
   font-size: calc(30px - 20%) !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .packageselection_heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .goBackPackageSelectionBtn {
   color: #000 !important;
   font-size: 1.2rem;
   text-decoration: underline;
-  font-family: "MontserratRegular";
+  font-weight: 400 !important;
 }
 
 body[dir="rtl"] .goBackPackageSelectionBtn {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
 }
 
 .goBackPackageSelectionBtn:hover {
@@ -31,8 +32,7 @@ body[dir="rtl"] .goBackPackageSelectionBtn {
   align-items: center;
   font-size: calc(21px - 20%) !important;
   color: #fff;
-  font-family: "MontserratBold";
-  font-weight: 900;
+  font-weight: 700 !important;
   border-radius: 4px;
   border: 1px solid #e1e1e1;
   text-transform: uppercase;
@@ -41,7 +41,7 @@ body[dir="rtl"] .goBackPackageSelectionBtn {
 
 body[dir="rtl"] .packageselection_bar {
   background: linear-gradient(to right, #4adede 0%, #6172d6 100%);
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 700 !important;
 }
 
 .crossicon {
@@ -113,7 +113,7 @@ body[dir="rtl"] .packagecard_pricebox_Active {
   padding: 0;
   color: #fff;
   font-size: 2.2rem;
-  font-family: "MontserratBold";
+  font-weight: 700 !important;
 }
 
 .packagecard_priceBox_container p {
@@ -189,11 +189,11 @@ body[dir="rtl"] .selectedPackage_priceDetails {
   margin: 0 !important;
   padding: 0 !important;
   font-size: 13px !important;
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
 }
 
 body[dir="rtl"] .packagecard_disoucntprice_para {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .selectedpackagecard_disoucntprice_para {
@@ -210,19 +210,19 @@ body[dir="rtl"] .packagecard_disoucntprice_para {
   text-align: center;
 }
 
-.packagecard_usersallows+p {
+.packagecard_usersallows + p {
   font-size: 12px;
 }
 
 .packagecard_usersallows_heading {
   text-transform: uppercase;
   color: #5a5a5a;
-  font-family: "MontserratBold";
+  font-weight: 700 !important;
   font-size: calc(20px - 20%);
 }
 
 body[dir="rtl"] .packagecard_usersallows_heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 700 !important;
 }
 
 .packagecard_usersallows_members {
@@ -253,13 +253,13 @@ body[dir="rtl"] .packagecard_usersallows_members {
   border-radius: 4px !important;
   visibility: visible;
   border: none !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   text-transform: uppercase;
   font-size: calc(18px - 20%) !important;
 }
 
 body[dir="rtl"] .packagecard_btn {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .packagecard_btn:hover,
@@ -272,7 +272,7 @@ body[dir="rtl"] .packagecard_btn {
   border-radius: 4px !important;
   visibility: visible !important;
   border: none !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .visible {
@@ -294,7 +294,7 @@ body[dir="rtl"] .packagecard_btn {
 }
 
 body[dir="rtl"] .selected-package-text {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .selected-package-texts {
@@ -305,10 +305,11 @@ body[dir="rtl"] .selected-package-text {
   overflow: hidden;
   text-overflow: ellipsis;
   word-wrap: break-word;
+  font-weight: 500 !important;
 }
 
 body[dir="rtl"] .selected-package-texts {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .ExecutiveMembersRange {
@@ -327,7 +328,7 @@ body[dir="rtl"] .selected-package-texts {
 .package_membersHeading {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
   color: #fff;
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
   padding: 5px 0;
   /* border-radius: 3px; */
   font-size: calc(12px - 20%);
@@ -337,7 +338,7 @@ body[dir="rtl"] .selected-package-texts {
 
 body[dir="rtl"] .package_membersHeading {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .package_membersHeading {
@@ -347,7 +348,7 @@ body[dir="rtl"] .package_membersHeading {
 
 .package_membersHeading_values {
   color: #171d2d;
-  font-family: "MontserratBold";
+  font-weight: 700 !important;
   padding: 5px 0;
   border: 1px solid #ccc;
   border-top-left-radius: 0px !important;
@@ -357,7 +358,7 @@ body[dir="rtl"] .package_membersHeading {
 }
 
 body[dir="rtl"] .package_membersHeading_values {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }
 
 .spandefault {
@@ -378,14 +379,14 @@ body[dir="rtl"] .spandefault {
   justify-content: center;
   align-items: center;
   height: 100%;
-  font-family: "MontserratBold";
+  font-weight: 700 !important;
   color: #fff !important;
   font-size: 40px;
   margin-bottom: 0;
 }
 
 body[dir="rtl"] .package_actualPrice {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 700 !important;
 }
 
 .package_actualPrice_active {
@@ -393,7 +394,7 @@ body[dir="rtl"] .package_actualPrice {
   justify-content: center;
   align-items: center;
   height: 100%;
-  font-family: "MontserratBold";
+  font-weight: 700 !important;
   color: #fff !important;
   font-size: 40px;
   margin-bottom: 0;
@@ -402,7 +403,7 @@ body[dir="rtl"] .package_actualPrice {
 }
 
 body[dir="rtl"] .package_actualPrice_active {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 700 !important;
 }
 
 .package_AnuallyAmount {
@@ -410,11 +411,11 @@ body[dir="rtl"] .package_actualPrice_active {
   font-size: 22px !important;
   margin: 0 !important;
   padding: 0 !important;
-  font-family: "MontserratBold";
+  font-weight: 700 !important;
 }
 
 body[dir="rtl"] .package_AnuallyAmount {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }
 
 .fixboxwidth {
@@ -425,18 +426,19 @@ body[dir="rtl"] .package_AnuallyAmount {
 .package_title {
   color: #5a5a5a !important;
   text-align: center;
-  font-family: "MontserratBold";
+  font-weight: 700 !important;
 }
 
 .package_actualPrice_p {
   font-size: 12px !important;
   margin: 19px 0 0 0;
   text-transform: lowercase;
+  font-weight: 500 !important;
 }
 
 body[dir="rtl"] .package_actualPrice_p {
   margin-right: 5px;
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .packageAnuallyMonth {
@@ -445,10 +447,11 @@ body[dir="rtl"] .package_actualPrice_p {
   text-transform: lowercase;
   font-size: 12px;
   color: #6172d6;
+  font-weight: 500 !important;
 }
 
 body[dir="rtl"] .packageAnuallyMonth {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 img.package-icon {
@@ -492,7 +495,7 @@ body[dir="rtl"] img.package-icon {
   height: 2.9em !important;
   border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   border-radius: 4px;
 }
 
@@ -537,7 +540,7 @@ body[dir="rtl"] .languageIcon {
   border-bottom: 1px solid #e1e1e1;
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
   height: 25px;
   margin-top: 3px;
   padding-top: 2px;
@@ -550,7 +553,7 @@ body[dir="rtl"] .span-foranually {
   border-bottom-right-radius: 0px;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .span-formontly {
@@ -564,7 +567,7 @@ body[dir="rtl"] .span-foranually {
   border-left: 1px solid #e1e1e1;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
   height: 25px;
   margin-top: 3px;
   padding-top: 3px;
@@ -577,7 +580,7 @@ body[dir="rtl"] .span-formontly {
   border-top-left-radius: 0px !important;
   border-bottom-left-radius: 0px !important;
   border-left: 0px;
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .spanActive {
@@ -587,13 +590,13 @@ body[dir="rtl"] .span-formontly {
   border-radius: 4px;
   text-align: center;
   cursor: pointer;
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
   height: 30px;
   padding-top: 5px;
 }
 
 body[dir="rtl"] .spanActive {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .languageSelector {
