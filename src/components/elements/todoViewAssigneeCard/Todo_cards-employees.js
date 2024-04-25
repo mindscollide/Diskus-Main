@@ -27,11 +27,11 @@ const TodoAssgineeEmployeeCard = ({
           sm={6}
           className="d-flex justify-content-start"
         >
-          <label className="MontserratSemiBold-600 todo-employee-name-card">
+          <label className=" todo-employee-name-card">
             {employeeName}
           </label>
           <br />
-          <label className="MontserratSemiBold-600 todo-employee-label-card">
+          <label className=" todo-employee-label-card">
             {employeeDesignation}
           </label>
         </Col>

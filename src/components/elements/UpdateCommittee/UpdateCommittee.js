@@ -756,7 +756,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
 
   return (
     <>
-      <section className="MontserratSemiBold-600 color-5a5a5a">
+      <section className=" color-5a5a5a">
         <Row className="mt-3">
           <Col
             lg={12}
@@ -870,7 +870,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                               className="Update-committee-Checkbox Saved_money_Tagline"
                             >
                               <Checkbox
-                                className="SearchCheckbox MontserratSemiBold-600"
+                                className="SearchCheckbox "
                                 name="IsChat"
                                 disabled={
                                   CommitteeReducer?.getCommitteeByCommitteeID

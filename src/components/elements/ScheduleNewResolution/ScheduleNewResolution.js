@@ -1540,7 +1540,7 @@ const ScheduleNewResolution = () => {
                               className="UpdateCheckbox  d-flex justify-content-start FontArabicRegular"
                             >
                               <Checkbox
-                                className="SearchCheckbox MontserratSemiBold-600"
+                                className="SearchCheckbox "
                                 name="IsChat"
                                 checked={
                                   createResolutionData.IsResolutionPublic

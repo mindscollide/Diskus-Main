@@ -1366,7 +1366,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         value={editUserSection.Name}
                       />
                       <span
-                        className="MontserratSemiBold-600 color-5a5a5a"
+                        className=" color-5a5a5a"
                         style={{ fontSize: "0.5rem" }}
                       >
                         ({t("Maximum-characters-200-alphabets-only")})
