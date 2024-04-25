@@ -2,11 +2,11 @@
   font-size: 30px !important;
   white-space: nowrap !important;
   color: #6172d6 !important;
-  font-family: "MontserratBold-700" !important;
+  font-weight: 700 !important;
 }
 
 body[dir="rtl"] .DeleteOrganizationheading {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }
 
 .DeleteOrganizationCardStyles {
@@ -19,18 +19,18 @@ body[dir="rtl"] .DeleteOrganizationheading {
 .DeleteOrgniazationMessege {
   font-size: 16px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .DeleteOrgniazationMessege {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .deleteOrganization_btn {
   padding: 12px 30px !important;
   border-radius: 4px !important;
   border: none !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   background: #f16b6b !important;
   color: #fff !important;
   font-size: 12px !important;
@@ -40,12 +40,12 @@ body[dir="rtl"] .DeleteOrgniazationMessege {
   padding: 12px 30px !important;
   border-radius: 4px !important;
   border: none !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   background: #f16b6b !important;
   color: #fff !important;
   font-size: 12px !important;
 }
 
 body[dir="rtl"] .deleteOrganization_btn {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }

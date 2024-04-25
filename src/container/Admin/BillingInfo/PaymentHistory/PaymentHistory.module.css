@@ -413,11 +413,11 @@ body[dir="rtl"] .paymenthistory_searchbar::placeholder {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .DownloadButton {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .DownloadButton:is(:hover, :focus, :focus-visible, :active) {
@@ -427,5 +427,5 @@ body[dir="rtl"] .DownloadButton {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
