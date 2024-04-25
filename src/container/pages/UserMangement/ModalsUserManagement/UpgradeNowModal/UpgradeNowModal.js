@@ -8,29 +8,49 @@ import { Col, Row } from "react-bootstrap";
 import { Button, Modal } from "../../../../../components/elements";
 import { showUpgradeNowModal } from "../../../../../store/actions/UserMangementModalActions";
 import crossicon from "../../../../../assets/images/BlackCrossIconModals.svg";
+import { getLocalStorageItemNonActiveCheck } from "../../../../../commen/functions/utils";
+import { useEffect } from "react";
+import { userLogOutApiFunc } from "../../../../../store/actions/Auth_Sign_Out";
+import { ExtendOrganizationTrialApi } from "../../../../../store/actions/UserManagementActions";
 const UpgradeNowModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { UserManagementModals } = useSelector((state) => state);
+  const TrialExpireSelectPac = getLocalStorageItemNonActiveCheck(
+    "TrialExpireSelectPac"
+  );
+  const organizationID = localStorage.getItem("organizationID");
+  const isExtensionAvailable = JSON.parse(localStorage.getItem("isExtensionAvailable"));
 
-  const noBtnFunctionality = () => {
-    dispatch(showUpgradeNowModal(false));
-  };
-
-  const yesBtnFunctionality = () => {
-    dispatch(showUpgradeNowModal(false));
-    navigate("/Admin/PakageDetailsUserManagement");
+  const handleForExtenstionRequest = () => {
+    let data = { OrganizationID: Number(organizationID) };
+    dispatch(ExtendOrganizationTrialApi(navigate, t, data));
   };
 
   const handleCrossIcon = () => {
+    localStorage.removeItem("packageFeatureIDs");
+    localStorage.removeItem("LocalUserRoutes");
+    localStorage.removeItem("LocalAdminRoutes");
+    localStorage.removeItem("VERIFICATION");
+    localStorage.removeItem("TrialExpireSelectPac");
     dispatch(showUpgradeNowModal(false));
+    dispatch(userLogOutApiFunc(navigate, t));
   };
 
   const handleClickhere = () => {
     dispatch(showUpgradeNowModal(false));
-    navigate("/PaymentFormUserManagement");
   };
+
+  useEffect(() => {
+    if (TrialExpireSelectPac) {
+      dispatch(showUpgradeNowModal(true));
+    } else {
+      dispatch(showUpgradeNowModal(false));
+      localStorage.removeItem("TrialExpireSelectPac");
+    }
+  }, [TrialExpireSelectPac]);
+
   return (
     <section>
       <Modal
@@ -38,9 +58,9 @@ const UpgradeNowModal = () => {
         setShow={dispatch(showUpgradeNowModal)}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}
-        onHide={() => {
-          dispatch(showUpgradeNowModal(false));
-        }}
+        // onHide={() => {
+        //   dispatch(showUpgradeNowModal(false));
+        // }}
         ModalTitle={
           <>
             <Row>
@@ -99,13 +119,15 @@ const UpgradeNowModal = () => {
                 <Button
                   className={styles["Yes_confirmation"]}
                   text={t("Still-not-sure")}
-                  onClick={noBtnFunctionality}
+                  onClick={handleCrossIcon}
                 />
-                <Button
-                  text={t("Upgrade")}
-                  className={styles["No_confirmation"]}
-                  onClick={yesBtnFunctionality}
-                />
+                {isExtensionAvailable && (
+                  <Button
+                    text={t("Request-an-extenstion")}
+                    className={styles["No_confirmation"]}
+                    onClick={handleForExtenstionRequest}
+                  />
+                )}
               </Col>
             </Row>
           </>

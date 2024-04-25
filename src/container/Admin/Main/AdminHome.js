@@ -9,7 +9,9 @@ import Helper from "../../../commen/functions/history_logout";
 import { getSocketConnection } from "../../../commen/apis/Api_ends_points";
 import IconMetroAttachment from "../../../assets/images/newElements/Icon metro-attachment.svg";
 import {
+  Button,
   Loader,
+  Modal,
   NotificationBar,
   Subscriptionwarningline,
 } from "../../../components/elements";
@@ -22,7 +24,12 @@ import { _justShowDateformat } from "../../../commen/functions/date_formater";
 import { setLoader } from "../../../store/actions/Auth2_actions";
 import { mqttConnection } from "../../../commen/functions/mqttconnection";
 import { ConfigProvider } from "antd";
+import { Col, Row } from "react-bootstrap";
 // import { GetSubscriptionPackages } from "../../../store/reducers";
+import VerificationFailedIcon from "../../../assets/images/failed.png";
+import { userLogOutApiFunc } from "../../../store/actions/Auth_Sign_Out";
+import { getLocalStorageItemNonActiveCheck } from "../../../commen/functions/utils";
+import UpgradeNowModal from "../../pages/UserMangement/ModalsUserManagement/UpgradeNowModal/UpgradeNowModal";
 
 const AdminHome = () => {
   const dispatch = useDispatch();
@@ -50,6 +57,9 @@ const AdminHome = () => {
     message: "",
   });
   let newClient = Helper.socket;
+  const TrialExpireSelectPac = getLocalStorageItemNonActiveCheck(
+    "TrialExpireSelectPac"
+  );
   const closeNotification = () => {
     setNotification({
       notificationShow: false,
@@ -205,6 +215,9 @@ const AdminHome = () => {
           id={notificationID}
         />
         <Outlet />
+        {TrialExpireSelectPac && (
+          <UpgradeNowModal />
+          )}
         {settingReducer.Loading || UserReportReducer.Loading ? (
           <Loader />
         ) : null}

@@ -1,0 +1,46 @@
+export const RESPONSE_MESSAGES_USERPASSWORDVERIFICATION = {
+    VERIFICATION_01:
+      "ERM_AuthService_AuthManager_UserPasswordVerification_01".toLowerCase(),
+    VERIFICATION_02:
+      "ERM_AuthService_AuthManager_UserPasswordVerification_02".toLowerCase(),
+    VERIFICATION_03:
+      "ERM_AuthService_AuthManager_UserPasswordVerification_03".toLowerCase(),
+    VERIFICATION_04:
+      "ERM_AuthService_AuthManager_UserPasswordVerification_04".toLowerCase(),
+    VERIFICATION_05:
+      "ERM_AuthService_AuthManager_UserPasswordVerification_05".toLowerCase(),
+    VERIFICATION_06:
+      "ERM_AuthService_AuthManager_UserPasswordVerification_06".toLowerCase(),
+    VERIFICATION_07:
+      "ERM_AuthService_AuthManager_UserPasswordVerification_07".toLowerCase(),
+    VERIFICATION_08:
+      "ERM_AuthService_AuthManager_UserPasswordVerification_08".toLowerCase(),
+    VERIFICATION_09:
+      "ERM_AuthService_AuthManager_UserPasswordVerification_09".toLowerCase(),
+    VERIFICATION_10:
+      "ERM_AuthService_AuthManager_UserPasswordVerification_10".toLowerCase(),
+    VERIFICATION_11:
+      "ERM_AuthService_AuthManager_UserPasswordVerification_11".toLowerCase(),
+    VERIFICATION_12:
+      "ERM_AuthService_AuthManager_UserPasswordVerification_12".toLowerCase(),
+    VERIFICATION_17:
+      "ERM_AuthService_AuthManager_UserPasswordVerification_17".toLowerCase(),
+    VERIFICATION_18:
+      "ERM_AuthService_AuthManager_UserPasswordVerification_18".toLowerCase(),
+    VERIFICATION_19:
+      "ERM_AuthService_AuthManager_UserPasswordVerification_19".toLowerCase(),
+    VERIFICATION_20:
+      "ERM_AuthService_AuthManager_UserPasswordVerification_20".toLowerCase(),
+    VERIFICATION_21:
+      "ERM_AuthService_AuthManager_UserPasswordVerification_21".toLowerCase(),
+    VERIFICATION_22:
+      "ERM_AuthService_AuthManager_UserPasswordVerification_22".toLowerCase(),
+    VERIFICATION_23:
+      "ERM_AuthService_AuthManager_UserPasswordVerification_23".toLowerCase(),
+    VERIFICATION_24:
+      "ERM_AuthService_AuthManager_UserPasswordVerification_24".toLowerCase(),
+    VERIFICATION_25:
+      "ERM_AuthService_AuthManager_UserPasswordVerification_25".toLowerCase(),
+    // Add more as needed
+  };
+  

@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 const PrivateRoutes = () => {
   const currentUrl = window.location.href;
-  const location = useLocation();
-  const allowedRoutes = JSON.parse(localStorage.getItem("LocalRoutes") || "[]");
-  const currentPath = location.pathname;
-  console.log("allowedRoutes", allowedRoutes);
   useEffect(() => {
     // Action: Meeting RSVP
     if (
@@ -123,8 +119,6 @@ const PrivateRoutes = () => {
       // Add action-specific logic here if needed
     }
   }, [currentUrl]);
-
-  // Retrieving data from local storage
   let Blur = localStorage.getItem("blur");
   let currentUserID = localStorage.getItem("userID");
   let RoleID = localStorage.getItem("roleID");
@@ -139,9 +133,8 @@ const PrivateRoutes = () => {
       : null
   );
 
-  // Rendering logic based on authentication and authorization
   return currentUser && token ? (
-    <Outlet /> // Render nested routes if authenticated and authorized
+    <Outlet />
   ) : (
     <Navigate
       to={
@@ -151,10 +144,9 @@ const PrivateRoutes = () => {
         ) ||
           currentUrl.includes("DisKus/dataroom?action="))
           ? "/"
-          : "*" // Redirect to home page or fallback route if not authenticated or authorized
+          : "*"
       }
     />
   );
 };
-
 export default PrivateRoutes;
