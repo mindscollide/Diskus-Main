@@ -177,7 +177,7 @@
 
 .Messeges_Styles_Panel {
   font-size: 18px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   color: #5a5a5a !important;
   width: 100% !important;
   position: absolute;
