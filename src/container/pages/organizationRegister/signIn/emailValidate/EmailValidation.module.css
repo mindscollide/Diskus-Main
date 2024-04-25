@@ -11,17 +11,17 @@
 }
 
 .signIn_heading {
-  font-size: calc(35px - 20%) !important;
+  font-size: 30px !important;
   user-select: none;
   color: #6172d6;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .signIn_heading {
-  font-size: calc(33px - 20%) !important;
+  font-size: 30px !important;
   user-select: none;
   color: #6172d6;
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .RememberEmail {
@@ -36,13 +36,13 @@ body[dir="rtl"] .signIn_heading {
   background-color: #6172d6 !important;
   color: #fff !important;
   border: none !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   text-transform: uppercase !important;
-  font-size: calc(18px - 20%) !important;
+  font-size: 12px !important;
 }
 
 body[dir="rtl"] .Next_button_EmailVerify {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Next_button_EmailVerify:focus-visible {
@@ -52,23 +52,23 @@ body[dir="rtl"] .Next_button_EmailVerify {
   background-color: #6172d6 !important;
   color: #fff !important;
   border: none !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   text-transform: uppercase;
 }
 
 .subscribNow_button_EmailVerify {
   width: 90%;
   border-radius: 4px;
-  font-size: calc(18px - 20%) !important;
+  font-size: 12px !important;
   background-color: #6172d6 !important;
   color: #fff !important;
   border: none !important;
-  font-family: "MontserratSemiBold";
   text-transform: uppercase;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .subscribNow_button_EmailVerify {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .subscribNow_button_EmailVerify:focus-visible {
@@ -78,7 +78,7 @@ body[dir="rtl"] .subscribNow_button_EmailVerify {
   background-color: #6172d6 !important;
   color: #fff !important;
   border: none !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   text-transform: uppercase;
 }
 
@@ -115,8 +115,8 @@ body[dir="rtl"] .Auth_Icon {
 }
 
 .Login_page_text h1 {
-  font-size: calc(60px - 20%) !important;
-  font-family: "MontserratSemiBold";
+  font-size: 60px !important;
+  font-weight: 600 !important;
   margin: 0 !important;
   width: 100%;
   white-space: nowrap;
@@ -144,7 +144,7 @@ body[dir="rtl"] .loginbox_auth_paper {
 }
 
 body[dir="rtl"] .inputEmailField {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .inputEmailField:focus,
@@ -163,13 +163,13 @@ body[dir="rtl"] .inputEmailField {
 }
 
 body[dir="rtl"] .heading-1 {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
   font-size: 70px !important;
+  font-weight: 600 !important;
   /* letter-spacing: 3xpx; */
 }
 
 body[dir="rtl"] .heading-2 {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
   font-size: 60px !important;
 }
 
@@ -181,7 +181,7 @@ body[dir="rtl"] .heading-2 {
   display: flex;
   justify-content: center;
   text-decoration: underline;
-  font-family: "MontserratRegular";
+  font-weight: 400 !important;
   font-size: calc(16px - 20%) !important;
   margin-bottom: 20px;
 }
@@ -193,14 +193,13 @@ body[dir="rtl"] .heading-2 {
 .signup-text-inloginpage {
   display: flex;
   justify-content: center;
-  font-weight: 600;
+  font-weight: 600 !important;
   color: #000;
-  font-family: "MontserratRegular" !important;
   font-size: calc(16px - 20%) !important;
 }
 
 body[dir="rtl"] .signup-text-inloginpage {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 600 !important;
 }
 
 .errorMessage-inLogin {
@@ -208,11 +207,11 @@ body[dir="rtl"] .signup-text-inloginpage {
   height: 13px;
   color: #f16b6b;
   visibility: visible;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
 }
 
 body[dir="rtl"] .errorMessage-inLogin {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .errorMessage-inLogin_hidden {
@@ -232,7 +231,7 @@ body[dir="rtl"] .errorMessage-inLogin {
   height: 2.9em !important;
   border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   border-radius: 4px;
   width: 181px !important;
   height: 38px !important;
@@ -256,7 +255,7 @@ body[dir="rtl"] .select-language-signin {
   height: 2.9em !important;
   border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 600 !important;
   border-radius: 4px;
   width: 181px !important;
   height: 38px !important;
@@ -282,7 +281,7 @@ body[dir="rtl"] .languageIcon {
 }
 
 .Remember_checkbox_styles {
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   color: #5a5a5a !important;
 }
 
@@ -319,15 +318,14 @@ body[dir="rtl"] .languageSelector {
 }
 .freetrail_heading {
   color: #fff !important;
-  font-family: "MontserratMedium-500";
-
+  font-weight: 500;
   font-size: 16px !important;
 }
 .Free-Trial_btn {
   color: #5a5a5a;
   background-color: #fff;
   padding: 8px 20px;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   border-radius: 4px;
   text-transform: uppercase;
   cursor: pointer;

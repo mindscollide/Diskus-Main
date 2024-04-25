@@ -34,13 +34,13 @@
 
 .packageheading {
   text-transform: uppercase;
-  font-weight: 900;
+  font-weight: 700;
   margin: 40px 0 70px 0;
   text-align: center;
 }
 
 .packageDetails p:nth-child(1) {
-  font-weight: bolder;
+  font-weight: 700;
   text-transform: uppercase;
   font-size: 1rem;
   margin: 0;
@@ -61,12 +61,12 @@
   /* font-weight: 900; */
   text-transform: capitalize;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold";
+  font-weight: 700 !important;
 }
 
 .upgradePackageAmoutnandList p {
   color: #5a5a5a;
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
   font-size: 12px;
   width: 450px;
 }
@@ -76,7 +76,7 @@
   margin: 30px 0 0 0;
   padding: 0;
 
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
 }
 
 .upgradePackageAmoutnandList > ul li::before {
@@ -109,7 +109,7 @@ body[dir="rtl"] .upgradePackageAmoutnandList > ul li::before {
   margin: 0;
   padding: 0;
   color: #fff;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .packagecard_priceBox_container p {
@@ -150,7 +150,7 @@ body[dir="rtl"] .selectedPackage_priceDetails {
 
 .selectedPackage_priceDetails h4 {
   color: #fff;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .packagecard_two {
@@ -162,7 +162,7 @@ body[dir="rtl"] .selectedPackage_priceDetails {
 
 .packagecard_two h4 {
   color: #076db7;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .packagecard_two_visible {
@@ -192,7 +192,7 @@ body[dir="rtl"] .selectedPackage_priceDetails {
   text-transform: lowercase;
   background: #6172d6;
   margin-top: 5px;
-  font-family: "MontserratMedium" !important;
+  font-weight: 500 !important;
   font-size: 12px !important;
   margin-right: 30px;
   margin-top: -10px;
@@ -210,7 +210,7 @@ body[dir="rtl"] .selectedPackage_priceDetails {
   border: transparent;
   text-transform: lowercase;
   background: #6172d6 !important;
-  font-family: "MontserratMedium" !important;
+  font-weight: 500 !important;
   font-size: 12px !important;
   margin-top: -10px;
 }
@@ -234,7 +234,6 @@ body[dir="rtl"] .backgroundcolor_title {
   font-size: calc(38px - 50%) !important;
   color: #6172d6 !important;
   font-weight: 600 !important;
-  font-family: "MontserratSemiBold-600" !important;
 }
 
 /* .packageheading h3 {
@@ -244,7 +243,7 @@ body[dir="rtl"] .backgroundcolor_title {
 } */
 
 .packageheading_amount {
-  font-family: "MontserratBold";
+  font-weight: 700 !important;
   text-align: center;
   font-size: 32px;
   margin: 0;
@@ -252,7 +251,7 @@ body[dir="rtl"] .backgroundcolor_title {
 }
 
 .packageheading_desciprtion {
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
   font-size: 10px;
   margin: 0;
   text-align: center;
@@ -282,18 +281,18 @@ body[dir="rtl"] .packageDetails {
   text-align: center;
   font-size: 40px;
   color: #5a5a5a !important;
-  font-family: "MontserratBold";
+  font-weight: 700 !important;
 }
 
 .packageDetails p:nth-child(1) {
   font-size: 1rem;
   margin: 0;
-  font-family: "MontserratBold";
+  font-weight: 700 !important;
 }
 
 .packageDetails p:nth-child(2) {
   text-transform: uppercase;
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
   margin: 0;
 }
 
@@ -301,14 +300,14 @@ body[dir="rtl"] .packageDetails {
   color: #6172d6;
   text-decoration: underline;
   font-size: 20px;
-  font-family: "MontserratRegular";
+  font-weight: 400 !important;
 }
 
 .goBackLink:hover {
   color: #6172d6;
   text-decoration: underline;
   font-size: 20px;
-  font-family: "MontserratRegular";
+  font-weight: 400 !important;
 }
 
 body[dir="rtl"] .lineBar {

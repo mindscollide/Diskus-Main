@@ -60,14 +60,13 @@
   font-size: calc(38px - 50%) !important;
   color: #6172d6 !important;
   font-weight: 600 !important;
-  font-family: "MontserratSemiBold-600" !important;
   margin-left: -11px !important;
 }
 
 body[dir="rtl"] .Edit-Main-Heading {
   margin-left: auto;
   margin-right: -10px;
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .successfull-label {
@@ -116,12 +115,12 @@ body[dir="rtl"] .Edit-Main-Heading {
   border-radius: 4px;
   background-color: #fff !important;
   color: black !important;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   font-size: 12px;
   margin-bottom: 20px !important;
 }
 body[dir="rtl"] .icon-modal-ResetBtn {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 .icon-modal-ResetBtn:hover,
 .icon-modal-ResetBtn:active,
@@ -132,7 +131,7 @@ body[dir="rtl"] .icon-modal-ResetBtn {
   border-radius: 4px;
   background-color: #fff !important;
   color: black !important;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   font-size: 12px;
   margin-bottom: 20px !important;
 }
@@ -145,12 +144,12 @@ body[dir="rtl"] .icon-modal-ResetBtn {
   background-color: #6172d6 !important;
   color: #fff !important;
   margin-right: 15px;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   font-size: 12px;
 }
 
 body[dir="rtl"] .icon-modal-SearchBtn {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .icon-modal-SearchBtn:hover,
@@ -163,7 +162,7 @@ body[dir="rtl"] .icon-modal-SearchBtn {
   background-color: #6172d6 !important;
   color: #fff !important;
   margin-right: 15px;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   font-size: 12px;
 }
 
@@ -220,7 +219,7 @@ body[dir="rtl"] .icon-modal-SearchBtn:hover {
   border-color: #e1e1e1 !important;
 }
 body[dir="rtl"] .formcontrol-fieldselectfor-filtermodal {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
   color: #5a5a5a !important;
 }
 .formcontrol-Phone-field {
@@ -251,7 +250,7 @@ body[dir="rtl"] .filterModal {
   border-radius: 4px;
   background: linear-gradient(to left, #4adede 0%, #6172d6 100%);
   color: #ffff !important;
-  font-family: "MontserratBold-600";
+  font-weight: 600 !important;
   font-size: 12px;
   margin-top: 5px;
 }
@@ -264,7 +263,7 @@ body[dir="rtl"] .filterModal {
   border-radius: 4px;
   background: linear-gradient(to left, #4adede 0%, #6172d6 100%);
   color: #ffff !important;
-  font-family: "MontserratBold-600";
+  font-weight: 600 !important;
   font-size: 12px;
   margin-top: 5px;
 }
@@ -277,7 +276,7 @@ body[dir="rtl"] .AddUser-btn {
   border: 1px solid #e1e1e1;
   border-radius: 4px;
   color: #ffff !important;
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
   font-size: 12px;
   margin-top: 5px;
   margin-left: -12px;
@@ -290,7 +289,7 @@ body[dir="rtl"] .AddUser-btn:hover {
   border: 1px solid #e1e1e1;
   border-radius: 4px;
   color: #ffff !important;
-  font-family: "MontserratBold-600";
+  font-weight: 600 !important;
   font-size: 12px;
   margin-left: -12px;
 }
@@ -308,7 +307,7 @@ body[dir="rtl"] .AddUser-btn:hover {
   overflow: hidden;
 }
 body[dir="rtl"] .userName {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
 }
 .userEmail {
   width: 120px !important;
@@ -326,7 +325,7 @@ body[dir="rtl"] .userName {
   margin: 0;
 }
 body[dir="rtl"] .userOrganization {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
 }
 .userDesgination {
   width: 120px !important;
@@ -336,7 +335,7 @@ body[dir="rtl"] .userOrganization {
   margin: 0;
 }
 body[dir="rtl"] .userDesgination {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
 }
 .errorMessage-AllUser {
   margin: 2px;
@@ -358,9 +357,9 @@ body[dir="rtl"] .userDesgination {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .User-title-col {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }

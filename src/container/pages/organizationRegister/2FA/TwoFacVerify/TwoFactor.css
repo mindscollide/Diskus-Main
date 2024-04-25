@@ -11,7 +11,7 @@
   background-color: #6172d6 !important;
   color: #fff !important;
   border: none !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -19,7 +19,7 @@
 }
 
 body[dir="rtl"] .Next_button_EmailVerifyForTwoFac button {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Next_button_EmailVerifyForTwoFac button:disabled {
@@ -31,7 +31,7 @@ body[dir="rtl"] .Next_button_EmailVerifyForTwoFac button {
 }
 
 body[dir="rtl"] .Next_button_EmailVerifyForTwoFac button:disabled {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Auth_Icon1_Two_fac {
@@ -126,51 +126,47 @@ body[dir="rtl"] .Auth_Icon {
   /* margin-left: 10px; */
   font-size: 12px;
   margin-top: 0.13rem;
-  font-weight: bold;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .EmailLabeltwofacboth {
-  font-family: "IBMPlexSansArabic-SemiBold";
+  font-weight: 600 !important;
 }
 
 .EmailLabeltwofacboth_active {
   /* margin-left: 10px; */
   font-size: 12px;
   margin-top: 0.13rem;
-  font-weight: bold;
   color: #e1e1e1 !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .EmailLabeltwofacboth_active {
-  font-family: "IBMPlexSansArabic-SemiBold";
+  font-weight: 600 !important;
 }
 
 .sendCodeEmail {
   /* margin-left: 10px; */
   font-size: 12px;
   margin-top: 0.13rem;
-  font-weight: bold;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .sendCodeEmail {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .sendCodeEmail_active {
   /* margin-left: 10px; */
   font-size: 12px;
-  font-weight: bold;
   color: #e1e1e1 !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .sendCodeEmail_active {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .EmailBoxtwofac {
@@ -180,22 +176,22 @@ body[dir="rtl"] .sendCodeEmail_active {
 .SelectLinetwofac {
   margin-top: -0.9rem;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .SelectLinetwofac {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .VerifyHeadingtwofac {
   color: #5a5a5a;
   margin-top: 5rem;
-  font-size: calc(35px - 20%) !important;
-  font-family: "MontserratSemiBold-600";
+  font-size: calc(32px - 20%) !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .VerifyHeadingtwofac {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
   font-size: calc(35px - 10%) !important;
 }
 
@@ -213,7 +209,7 @@ body[dir="rtl"] .VerifyHeadingtwofac {
   height: 2.9em !important;
   border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   border-radius: 4px;
   outline: none !important;
 }
@@ -272,7 +268,7 @@ body[dir="rtl"] .languageIcon_twofac {
 
 body[dir="rtl"] .forogt_email_link a {
   font-size: 16px !important;
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
 }
 
 .languageSelector {
@@ -283,7 +279,6 @@ body[dir="rtl"] .forogt_email_link a {
   margin-right: 0;
   display: flex;
   justify-content: flex-end;
-
 }
 
 body[dir="rtl"] .languageSelector {
