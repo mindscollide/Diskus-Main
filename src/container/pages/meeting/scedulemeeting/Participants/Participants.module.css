@@ -111,7 +111,7 @@
 .Empty_state_Subheading {
   color: #5a5a5a !important;
   font-size: 12px !important;
-  font-family: "Montserrat";
+font-weight: 500;
 }
 .publish_button_participant {
   padding: 12px 30px !important;
