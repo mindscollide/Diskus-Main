@@ -187,7 +187,10 @@ const CalendarPage = () => {
   }, []);
 
   function onChange(value) {
+    console.log(value, "valuevaluevalueonChange");
     let newDAte = moment(value._d).format("YYYY-MM-DD");
+    console.log(newDAte, "valuevaluevalueonChange");
+
     setCalendarView(false);
     if (startDataUpdate > value._d) {
       const date = new Date(value._d);
@@ -519,8 +522,6 @@ const CalendarPage = () => {
 
   //click handler for create events button
   const eventClickHandler = () => {};
-
-  useEffect(() => {}, [defaultValue]);
 
   function handleAddEvent() {
     setOpen(true);

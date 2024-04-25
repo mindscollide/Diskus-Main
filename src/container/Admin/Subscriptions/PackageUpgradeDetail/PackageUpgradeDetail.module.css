@@ -236,12 +236,6 @@ body[dir="rtl"] .backgroundcolor_title {
   font-weight: 600 !important;
 }
 
-/* .packageheading h3 {
-    color: #6172D6 !important;
-    font-family: "MontserratBold";
-    font-size: 32px;
-} */
-
 .packageheading_amount {
   font-weight: 700 !important;
   text-align: center;
