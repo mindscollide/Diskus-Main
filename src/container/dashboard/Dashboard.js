@@ -3,7 +3,13 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Sidebar, Talk } from "../../components/layout";
 import CancelButtonModal from "../pages/meeting/closeMeetingTab/CancelModal";
-import { Loader, LoaderPanel, Notification } from "../../components/elements";
+import {
+  Button,
+  Loader,
+  LoaderPanel,
+  Modal,
+  Notification,
+} from "../../components/elements";
 import Header2 from "../../components/layout/header2/Header2";
 import { ConfigProvider, Layout } from "antd";
 import ar_EG from "antd/es/locale/ar_EG";
@@ -62,6 +68,8 @@ import {
 } from "../../store/actions/VideoMain_actions";
 import Helper from "../../commen/functions/history_logout";
 import IconMetroAttachment from "../../assets/images/newElements/Icon metro-attachment.svg";
+import VerificationFailedIcon from "../../assets/images/failed.png";
+
 // import io from "socket.io-client";
 import {
   createTaskCommitteeMQTT,
@@ -126,9 +134,13 @@ import {
   updateMicrosftEventMQTT,
 } from "../../store/actions/GetDataForCalendar";
 import { userLogOutApiFunc } from "../../store/actions/Auth_Sign_Out";
+import { getLocalStorageItemNonActiveCheck } from "../../commen/functions/utils";
+import { Col, Row } from "react-bootstrap";
 
 const Dashboard = () => {
   const location = useLocation();
+  const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
+
   const {
     talkStateData,
     videoFeatureReducer,
@@ -212,6 +224,14 @@ const Dashboard = () => {
       notificationShow: false,
       message: "",
     });
+  };
+
+  const closeModal = () => {
+    localStorage.removeItem("packageFeatureIDs");
+    localStorage.removeItem("LocalUserRoutes");
+    localStorage.removeItem("VERIFICATION");
+
+    dispatch(userLogOutApiFunc(navigate, t));
   };
   // if (!navigator.onLine) {
   //   setOpen({
@@ -2063,7 +2083,7 @@ const Dashboard = () => {
                 <Outlet />
               </div>
               <div className="talk_features_home">
-                {activateBlur ? null : <Talk />}
+                {activateBlur ? null : roleRoute ? null : <Talk />}
               </div>
             </Content>
           </Layout>
@@ -2146,79 +2166,69 @@ const Dashboard = () => {
             message={open.message}
           />
           {cancelModalMeetingDetails && <CancelButtonModal />}
-        </Layout>
-        {/* <Layout>
-          <Sidebar />
-          {location.pathname === "/DisKus/videochat" ? null : <Header2 />}
-          <Layout className="positionRelative">
-            <NotificationBar
-              iconName={
-                <img src={IconMetroAttachment} alt="" draggable="false" />
+          {roleRoute && (
+            <Modal
+              show={roleRoute}
+              setShow={() => {
+                setActivateBlur();
+              }}
+              ButtonTitle={"Block"}
+              centered
+              size={"md"}
+              modalHeaderClassName="d-none"
+              ModalBody={
+                <>
+                  <>
+                    <Row className="mb-1">
+                      <Col lg={12} md={12} xs={12} sm={12}>
+                        <Row>
+                          <Col className="d-flex justify-content-center">
+                            <img
+                              src={VerificationFailedIcon}
+                              width={60}
+                              className={"allowModalIcon"}
+                              alt=""
+                              draggable="false"
+                            />
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col className="text-center mt-4">
+                            <label className={"allow-limit-modal-p"}>
+                              {t(
+                                "The-organization-subscription-is-not-active-please-contact-your-admin"
+                              )}
+                            </label>
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                  </>
+                </>
               }
-              notificationMessage={notification.message}
-              notificationState={notification.notificationShow}
-              setNotification={setNotification}
-              handleClose={closeNotification}
-              id={notificationID}
+              ModalFooter={
+                <>
+                  <Col sm={12} md={12} lg={12}>
+                    <Row className="mb-3">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex justify-content-center"
+                      >
+                        <Button
+                          className={"Ok-Successfull-btn"}
+                          text={t("Ok")}
+                          onClick={closeModal}
+                        />
+                      </Col>
+                    </Row>
+                  </Col>
+                </>
+              }
             />
-            <Outlet />
-            {videoFeatureReducer.IncomingVideoCallFlag === true ? (
-              <VideoMaxIncoming />
-            ) : null}
-            {videoFeatureReducer.VideoChatMessagesFlag === true ? (
-              <TalkChat2
-                chatParentHead="chat-messenger-head-video"
-                chatMessageClass="chat-messenger-head-video"
-              />
-            ) : null}
-            {videoFeatureReducer.NormalizeVideoFlag === true ||
-            videoFeatureReducer.MinimizeVideoFlag === true ||
-            videoFeatureReducer.MaximizeVideoFlag === true ? (
-              <VideoCallScreen />
-            ) : null}
-            {activateBlur ? null : <Talk />}
-
-            {NewMeetingreducer.Loading ||
-            assignees.Loading ||
-            MeetingOrganizersReducer.LoadingMeetingOrganizer ||
-            MeetingOrganizersReducer.Loading ||
-            PollsReducer.Loading ||
-            CommitteeReducer.Loading ||
-            toDoListReducer.Loading ||
-            todoStatus.Loading ||
-            getTodosStatus.Loading ||
-            MeetingAgendaReducer.Loading ||
-            actionMeetingReducer.Loading ||
-            AgendaWiseAgendaListReducer.loading ||
-            downloadReducer.Loading ||
-            attendanceMeetingReducer.Loading ||
-            webViewer.Loading ||
-            LanguageReducer.Loading ||
-            uploadReducer.Loading ||
-            settingReducer.Loading ||
-            fAQsReducer.Loading ||
-            meetingIdReducer.Loading ||
-            calendarReducer.Loading ||
-            OnBoardModal.Loading ||
-            postAssigneeComments.Loading ||
-            VideoChatReducer.Loading ||
-            minuteofMeetingReducer.Loading ||
-            countryNamesReducer.Loading ||
-            GetSubscriptionPackage.Loading ||
-            Authreducer.Loading ||
-            roleListReducer.Loading ||
-            NotesReducer.Loading ||
-            GroupsReducer.Loading ||
-            GroupsReducer.getAllLoading ||
-            ResolutionReducer.Loading ||
-            RealtimeNotification.Loading ||
-            OrganizationBillingReducer.Loading ||
-            DataRoomReducer.Loading ||
-            DataRoomFileAndFoldersDetailsReducer.Loading ? (
-              <Loader />
-            ) : null}
-          </Layout>
-        </Layout> */}
+          )}
+        </Layout>
       </ConfigProvider>
     </>
   );
