@@ -107,23 +107,6 @@ body[dir="rtl"] .Auth_Icon {
   border-radius: 4px;
   height: 469px !important;
   width: 330px !important;
-  /* height: 686px !important;
-}
-
-.forogt_email_link {
-  display: flex;
-  justify-content: center;
-  text-decoration: underline;
-  user-select: none !important;
-  font-family: "MontserratRegular";
-}
-
-.forogt_email_link a {
-  color: #5a5a5a !important;
-}
-
-.EmailLabeltwofacboth {
-  /* margin-left: 10px; */
   font-size: 12px;
   margin-top: 0.13rem;
   color: #5a5a5a;
