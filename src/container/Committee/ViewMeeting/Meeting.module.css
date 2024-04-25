@@ -1,5 +1,5 @@
 .meetingTitle {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #6172d6;
   font-size: 14px !important;
   cursor: pointer;
@@ -92,12 +92,12 @@
 }
 
 .organizer-value {
-  font-family: "MontserratRegular" !important;
+  font-weight: 400 !important;
   font-weight: 500 !important;
 }
 
 .datetime-value {
-  font-family: "MontserratRegular" !important;
+  font-weight: 400 !important;
   font-weight: 500 !important;
 }
 
@@ -105,7 +105,7 @@
   padding: 12px 30px !important;
   font-size: 12px !important;
   border-radius: 4px !important;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   display: flex;
   align-items: center !important;
   gap: 5px;
@@ -118,7 +118,7 @@
   padding: 12px 30px !important;
   font-size: 12px !important;
   border-radius: 4px !important;
-  font-family: "MontserratMedium-500" !important;
+  font-weight: 600 !important;
   display: flex !important;
   align-items: center !important;
   gap: 5px !important;
@@ -129,5 +129,5 @@
 
 .meeting-start {
   font-size: 14px;
-  font-family: "MontserratRegular" !important;
+  font-weight: 400 !important;
 }
