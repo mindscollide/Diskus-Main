@@ -3,13 +3,13 @@
   font-size: 12px !important;
   background: #6172d6;
   color: #fff;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   border-radius: 4px !important;
   border: none !important;
 }
 
 body[dir="rtl"] .Confirm-activegroup-modal {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Confirm-activegroup-modal:hover,
@@ -20,7 +20,7 @@ body[dir="rtl"] .Confirm-activegroup-modal {
   font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border-radius: 4px !important;
   border: none !important;
 }
@@ -30,13 +30,13 @@ body[dir="rtl"] .Confirm-activegroup-modal {
   font-size: 12px !important;
   background: #fff;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1;
 }
 
 body[dir="rtl"] .Confirm-activegroup-modal-cancel-button {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Confirm-activegroup-modal-cancel-button:hover,
@@ -47,18 +47,18 @@ body[dir="rtl"] .Confirm-activegroup-modal-cancel-button {
   font-size: 12px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
 
 .Heading_For_Active_Sure {
   font-size: 16px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   color: #5a5a5a !important;
   text-align: center;
 }
 
 body[dir="rtl"] .Heading_For_Active_Sure {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
