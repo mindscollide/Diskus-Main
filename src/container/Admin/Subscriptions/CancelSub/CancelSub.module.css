@@ -6,13 +6,13 @@
   border-radius: 4px;
   /* text-transform: capitalize; */
   margin-bottom: 10px;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   box-shadow: none !important;
   padding: 10px 0;
 }
 
 body[dir="rtl"] .CancelNowBtn {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .CancelNowBtn:hover,
@@ -30,13 +30,13 @@ body[dir="rtl"] .CancelNowBtn {
   /* text-transform: capitalize !important; */
   margin-bottom: 10px !important;
   padding: 10px 0;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .CancelNowBtn2 {
   width: 100% !important;
   height: 50px;
-  font-family: "MontserratMedium" !important;
+  font-weight: 500 !important;
   font-size: 12px !important;
   background: #fff;
   border: none;
@@ -50,7 +50,7 @@ body[dir="rtl"] .CancelNowBtn {
 }
 
 body[dir="rtl"] .CancelNowBtn2 {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .CancelNowBtn2:hover,
@@ -61,7 +61,7 @@ body[dir="rtl"] .CancelNowBtn2 {
 .CancelNowBtn2:visited {
   width: 100% !important;
   height: 50px !important;
-  font-family: "MontserratMedium" !important;
+  font-weight: 500 !important;
   font-size: 12px !important;
   background: #fff !important;
   border: none !important;
@@ -82,11 +82,11 @@ body[dir="rtl"] .CancelNowBtn2 {
   background: #6172d6;
   /* text-transform: capitalize; */
   padding: 10px 0;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .CompleteContract {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .CompleteContract:hover,
@@ -103,14 +103,14 @@ body[dir="rtl"] .CompleteContract {
   border-radius: 4px !important;
   /* text-transform: capitalize !important; */
   margin-bottom: 10px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   padding: 10px 0;
 }
 
 .Prorgress_heading {
   color: #5a5a5a;
   text-align: center;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   text-transform: uppercase;
   margin: 5px 0;
 }
@@ -149,7 +149,7 @@ body[dir="rtl"] .CompleteContract {
   border: none;
   background: #6172d6;
   text-transform: capitalize;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   margin-right: 20px;
 }
 
@@ -161,7 +161,7 @@ body[dir="rtl"] .CompleteContract {
   border: none;
   background: #f16b6b !important;
   text-transform: capitalize;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   /* margin-right: 20px; */
   padding: 10px 65px;
 }
@@ -169,7 +169,7 @@ body[dir="rtl"] .CompleteContract {
 .ProceedBtn2[disabled] {
   background: #f16b6b !important;
   opacity: 0.39;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   /* margin-right: 20px; */
   padding: 10px 65px;
   width: 100%;
@@ -194,7 +194,7 @@ body[dir="rtl"] .CompleteContract {
   border: none !important;
   border-radius: 4px !important;
   margin-bottom: 10px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .ProceedBtn2:hover,
@@ -210,7 +210,7 @@ body[dir="rtl"] .CompleteContract {
   border: none;
   background: #6172d6;
   text-transform: capitalize;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   /* margin-right: 20px; */
   padding: 10px 65px;
 }
@@ -222,13 +222,13 @@ body[dir="rtl"] .CompleteContract {
   border-radius: 4px;
   border: none;
   background: #f16b6b;
-  font-family: "MontserratBold";
+  font-weight: 700 !important;
   margin-right: 20px;
   padding: 10px 65px;
 }
 
 body[dir="rtl"] .proceedwithCancelatioBtn {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }
 
 .proceedwithCancelatioBtn[disabled] {
@@ -249,20 +249,20 @@ body[dir="rtl"] .proceedwithCancelatioBtn {
   border-radius: 4px;
   border: none;
   background: #f16b6b;
-  font-family: "MontserratBold";
+  font-weight: 700 !important;
   margin-right: 20px;
   padding: 10px 65px;
 }
 
 .goBackBTN {
   color: #6172d6;
-  font-family: "MontserratRegular";
+  font-weight: 400 !important;
   font-size: 16px;
   text-decoration: underline;
 }
 
 body[dir="rtl"] .goBackBTN {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
 }
 
 .goBackBTN:hover,
@@ -272,7 +272,7 @@ body[dir="rtl"] .goBackBTN {
 .goBackBTN:focus,
 .goBackBTN:visited {
   color: #6172d6;
-  font-family: "MontserratRegular";
+  font-weight: 400 !important;
   font-size: 16px;
   text-decoration: underline;
 }
@@ -284,7 +284,7 @@ body[dir="rtl"] .goBackBTN {
 
 .packageheading {
   text-transform: uppercase;
-  font-family: "MontserratBold";
+  font-weight: 700 !important;
   text-align: center;
   margin-top: 70px;
   color: #5a5a5a;
@@ -292,7 +292,7 @@ body[dir="rtl"] .goBackBTN {
 }
 
 .packageAmountText {
-  font-family: "MontserratBold";
+  font-weight: 700 !important;
   text-align: center;
   color: #6172d6;
   font-size: 32px;
@@ -305,7 +305,7 @@ body[dir="rtl"] .goBackBTN {
 }
 
 body[dir="rtl"] .packageAmountText {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }
 
 .packageAmountText_p {
@@ -315,12 +315,12 @@ body[dir="rtl"] .packageAmountText {
 
 .packageAmountText_p2 {
   text-align: center;
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
   font-size: 11px;
 }
 
 body[dir="rtl"] .packageAmountText_p2 {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .ExecutiveMembersRange {
@@ -429,7 +429,7 @@ body[dir="rtl"] .packagecard_pricebox {
 }
 
 body[dir="rtl"] .selectedPackageAmount {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }
 
 .selectedPackageAmount p:nth-child(1) {
@@ -439,12 +439,12 @@ body[dir="rtl"] .selectedPackageAmount {
 
 .selectedPackage_priceDetails h4 {
   color: #6172d6;
-  font-family: "MontserratBold";
+  font-weight: 700 !important;
   font-size: 32px;
 }
 
 body[dir="rtl"] .selectedPackage_priceDetails h4 {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }
 
 .packagecard_two {
@@ -455,7 +455,7 @@ body[dir="rtl"] .selectedPackage_priceDetails h4 {
 
 .packagecard_two h4 {
   color: #076db7;
-  font-weight: 900;
+  font-weight: 900 !important;
 }
 
 .packagecard_two_visible {
@@ -473,12 +473,12 @@ body[dir="rtl"] .selectedPackage_priceDetails h4 {
   text-align: center;
   margin: 0;
   /* margin  : 4px 0 0 0 !important; */
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
   font-size: 14px;
 }
 
 body[dir="rtl"] .selectedpackagecard_disoucntprice_para {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .packagecard_usersallows {
@@ -488,7 +488,7 @@ body[dir="rtl"] .selectedpackagecard_disoucntprice_para {
   text-align: center;
 }
 
-.packagecard_usersallows+p {
+.packagecard_usersallows + p {
   font-size: 12px;
 }
 
@@ -544,7 +544,7 @@ body[dir="rtl"] .packagecard_usersallows_members {
 }
 
 body[dir="rtl"] .selected-package-text {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 300 !important;
 }
 
 .ExecutiveMembersRange {
@@ -574,9 +574,8 @@ body[dir="rtl"] .selected-package-text {
   display: flex;
   justify-content: center;
   text-align: center;
-  font-weight: 500;
+  font-weight: 500 !important;
   border-top-left-radius: 3px;
-  font-family: "MontserratMedium";
 }
 
 body[dir="rtl"] .subcriptionkey_1 {
@@ -588,10 +587,9 @@ body[dir="rtl"] .subcriptionkey_1 {
   display: flex;
   justify-content: center;
   text-align: center;
-  font-weight: 500;
+  font-weight: 500 !important;
   border-top-left-radius: 0px !important;
   border-top-right-radius: 3px !important;
-  font-family: "IBMPlexSansArabic-Medium" !important;
 }
 
 .subcriptionkey_2 {
@@ -603,9 +601,8 @@ body[dir="rtl"] .subcriptionkey_1 {
   display: flex;
   justify-content: center;
   text-align: center;
-  font-weight: 500;
+  font-weight: 500 !important;
   border-top-right-radius: 3px;
-  font-family: "MontserratMedium";
 }
 
 body[dir="rtl"] .subcriptionkey_2 {
@@ -617,10 +614,9 @@ body[dir="rtl"] .subcriptionkey_2 {
   display: flex;
   justify-content: center;
   text-align: center;
-  font-weight: 500;
+  font-weight: 500 !important;
   border-top-right-radius: 0px !important;
   border-top-left-radius: 3px !important;
-  font-family: "IBMPlexSansArabic-Medium" !important;
 }
 
 .packageCard_title {
@@ -628,12 +624,12 @@ body[dir="rtl"] .subcriptionkey_2 {
   text-transform: uppercase;
   font-size: 32px;
   text-align: center;
-  font-family: "MontserratBold";
+  font-weight: 500 !important;
   margin-bottom: 20px;
 }
 
 body[dir="rtl"] .packageCard_title {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }
 
 .cancel_subscription {
@@ -643,18 +639,18 @@ body[dir="rtl"] .packageCard_title {
   font-size: calc(38px - 50%) !important;
   color: #6172d6 !important;
   font-weight: 600 !important;
-  font-family: "MontserratSemiBold-600" !important;
+
   /* font-weight: 600; */
 }
 
 body[dir="rtl"] .cancel_subscription {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .subcriptionvalue_1 {
   border-bottom-left-radius: 4px;
   border: 1px solid #ccc;
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
   padding: 3px 0;
   /* border-bottom-right-radius: 4px; */
 }
@@ -663,14 +659,14 @@ body[dir="rtl"] .subcriptionvalue_1 {
   border-bottom-left-radius: 0px !important;
   border-bottom-right-radius: 4px !important;
   border: 1px solid #ccc;
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
   padding: 3px 0;
 }
 
 .subcriptionvalue_2 {
   border-bottom-right-radius: 4px;
   border: 1px solid #ccc;
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
   padding: 3px 0;
 }
 
@@ -678,7 +674,7 @@ body[dir="rtl"] .subcriptionvalue_2 {
   border-bottom-right-radius: 0px !important;
   border-bottom-left-radius: 4px !important;
   border: 1px solid #ccc;
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
   padding: 3px 0;
 }
 
@@ -693,7 +689,7 @@ body[dir="rtl"] .subcriptionvalue_2 {
 }
 
 body[dir="rtl"] .UpgradePackageCard_box2 {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .lineBar {
@@ -715,16 +711,16 @@ body[dir="rtl"] .lineBar {
 }
 
 .reason-heading {
-  font-family: "MontserratBold";
+  font-weight: 700 !important;
   color: #5a5a5a;
 }
 
 body[dir="rtl"] .reason-heading {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }
 
 .reason-lines {
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
 }
 
 img.package-icon {

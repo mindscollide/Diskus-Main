@@ -1,112 +1,109 @@
 .UserLevelConfig_Heading {
-    font-size: 30px !important;
-    color: #6172d6 !important;
-    font-family: "MontserratSemiBold" !important;
+  font-size: 30px !important;
+  color: #6172d6 !important;
+  font-weight: 600 !important;
 }
 
 .UserConfigsContainer {
-    width: 90% !important;
-    margin: 0px auto !important;
+  width: 90% !important;
+  margin: 0px auto !important;
 }
 
 .Options_headings {
-    font-size: 20px !important;
-    color: #5a5a5a;
-    font-family: "MontserratMedium-500";
+  font-size: 20px !important;
+  color: #5a5a5a;
+  font-weight: 500 !important;
 }
 
 .Options_headings_active {
-    font-size: 20px !important;
-    color: #5a5a5a;
-    font-family: "MontserratExtraBold-800" !important;
+  font-size: 20px !important;
+  color: #5a5a5a;
+  font-weight: 800 !important;
 }
 
-
 .Class_CheckBox {
-    font-size: 16px !important;
-    color: #5a5a5a;
-    font-family: "MontserratMedium-500" !important;
+  font-size: 16px !important;
+  color: #5a5a5a;
+  font-weight: 500 !important;
 }
 
 .Class_CheckBox2 {
-    font-size: 16px !important;
-    color: #5a5a5a !important;
-    font-family: "MontserratMedium-500" !important;
-    white-space: nowrap !important;
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+  font-weight: 500 !important;
+  white-space: nowrap !important;
 }
 
 .Class_CheckBox3 {
-    font-size: 16px !important;
-    color: #5a5a5a !important;
-    font-family: "MontserratMedium-500" !important;
-    line-height: 20px !important;
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+  font-weight: 500 !important;
+  line-height: 20px !important;
 }
 
 .Diskus_calender {
-    font-size: 16px !important;
-    color: #5a5a5a;
-    font-family: "MontserratMedium-500" !important;
+  font-size: 16px !important;
+  color: #5a5a5a;
+  font-weight: 500 !important;
 }
 
 .Diskus_calender_microsoft {
-    font-size: 16px !important;
-    color: #5a5a5a;
-    font-family: "MontserratMedium-500" !important;
-    width: 120px !important;
+  font-size: 16px !important;
+  color: #5a5a5a;
+  font-weight: 500 !important;
+  width: 120px !important;
 }
 
 .BackGround_Calender_color_box {
-    width: 262px !important;
-    height: 71px !important;
-    border: 1px solid #e1e1e1 !important;
-    border-radius: 4px !important;
-    background: #fff !important;
+  width: 262px !important;
+  height: 71px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: #fff !important;
 }
 
-
-
 .user-setting-row {
-    height: calc(80vh - 65px);
-    width: 2px !important;
+  height: calc(80vh - 65px);
+  width: 2px !important;
 }
 
 .New_settings_Update_Button {
-    width: 160px;
-    padding: 12px 30px !important;
-    background-color: #6172d6;
-    border-radius: 4px;
-    color: #fff;
-    border: none;
-    font-family: "MontserratMedium";
-    font-size: 14px;
-    margin-bottom: 15px !important;
+  width: 160px;
+  padding: 12px 30px !important;
+  background-color: #6172d6;
+  border-radius: 4px;
+  color: #fff;
+  border: none;
+  font-weight: 500 !important;
+  font-size: 14px;
+  margin-bottom: 15px !important;
 }
 
 .New_settings_Update_Button:is(:hover, :active, :focus, :focus-visible) {
-    width: 160px !important;
-    padding: 12px 30px !important;
-    background-color: #6172d6 !important;
-    border-radius: 4px !important;
-    color: #fff !important;
-    border: none !important;
-    font-family: "MontserratMedium" !important;
-    font-size: 14px !important;
-    margin-bottom: 15px !important;
+  width: 160px !important;
+  padding: 12px 30px !important;
+  background-color: #6172d6 !important;
+  border-radius: 4px !important;
+  color: #fff !important;
+  border: none !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  margin-bottom: 15px !important;
 }
 
 .selectDormant {
-    width: 120px !important;
-    margin-top: 5px;
-    max-width: 100% !important;
+  width: 120px !important;
+  margin-top: 5px;
+  max-width: 100% !important;
 }
 
 .select_TimeZone {
-    width: 100% !important;
-    margin-top: 5px;
-    max-width: 100% !important;
+  width: 100% !important;
+  margin-top: 5px;
+  max-width: 100% !important;
 }
 
 .dormant_inactive_heading {
-    white-space: nowrap !important;
-    width: 100% !important;
+  white-space: nowrap !important;
+  width: 100% !important;
 }
