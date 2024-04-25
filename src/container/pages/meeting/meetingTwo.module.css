@@ -274,11 +274,11 @@ body[dir="rtl"] .PaginationStyle-Committee {
 }
 
 .UnpublishedMeetingButton-active {
-  border: none !important;
-  font-weight: 600 !important;
+  font-size: 12px !important;
   font-weight: 600 !important;
   border-radius: 4px !important;
   background: #6172d6 !important;
+  border: none !important;
   color: #fff !important;
 }
 
@@ -388,6 +388,7 @@ body[dir="rtl"] .Calendar_Meeting .dropdown-menu.show .dropdown-item {
 
 .schedule_button {
   font-size: calc(14px - 20%);
+  font-weight: 600 !important;
 }
 
 .DefineTableFixedheight {

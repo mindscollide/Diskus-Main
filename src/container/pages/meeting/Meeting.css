@@ -1,13 +1,12 @@
 .meeting-title {
   cursor: pointer;
   color: #2197d7 !important;
-  font-weight: normal !important;
   font-style: normal !important;
   font-size: calc(17px - 20%);
   overflow: hidden !important;
   white-space: nowrap !important;
   text-overflow: ellipsis !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
 }
 
 .meeting-startbutton-width {
@@ -37,7 +36,7 @@
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border: none !important;
   margin-top: 4px;
 }
@@ -51,7 +50,7 @@ body[dir="rtl"] .meeting-schedulenewmeeting-btn button {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border: none !important;
 }
 
@@ -103,7 +102,7 @@ body[dir="rtl"] .meeting-schedulenewmeeting-btn button:hover {
   border: none !important;
   width: 138px !important;
   font-size: calc(17px - 20%) !important;
-  font-family: "MontserratRegular";
+  font-weight: 400 !important;
   padding: 2px 0 !important;
   border-radius: 4px !important;
 }
@@ -117,7 +116,7 @@ body[dir="rtl"] .End-meeting-btn {
   border: none !important;
   width: 138px !important;
   font-size: calc(17px - 20%) !important;
-  font-family: "MontserratRegular";
+  font-weight: 400 !important;
   padding: 2px 0 !important;
   border-radius: 4px !important;
 }
@@ -127,7 +126,7 @@ body[dir="rtl"] .start-meeting-btn {
   border: none !important;
   width: 138px !important;
   font-size: calc(17px - 20%) !important;
-  font-family: "MontserratRegular";
+  font-weight: 400 !important;
   padding: 2px 0 !important;
 }
 
@@ -148,41 +147,40 @@ body[dir="rtl"] .start-meeting-btn {
 
 .ant-table-wrapper.hello table thead tr th:nth-child(2) {
   padding: 0;
-  font-family: "MontserratRegular";
+  font-weight: 400 !important;
 }
 
 .ant-table-wrapper.hello table thead tr th:nth-child(3) {
   padding: 0;
   text-align: center !important;
-  font-family: "MontserratRegular";
+  font-weight: 400 !important;
 }
 
 .ant-table-wrapper.hello table thead tr th:nth-child(4) {
   padding: 0 0 0 0px;
-  font-family: "MontserratRegular";
+  font-weight: 400 !important;
 }
 
 .ant-table-wrapper.hello table thead tr th:nth-child(5) {
   text-align: center !important;
   padding: 0 0 0 50px;
-  font-family: "MontserratRegular";
+  font-weight: 400 !important;
 }
 
 .ant-table-wrapper.hello table tbody tr td:nth-child(5) {
   text-align: center !important;
-  font-family: "MontserratRegular";
+  font-weight: 400 !important;
 }
 
 .ant-table-wrapper.hello table tbody tr td:nth-child(2) {
   cursor: pointer;
   color: #2197d7 !important;
-  font-weight: normal !important;
   font-style: normal !important;
   font-size: calc(17px - 20%);
   overflow: hidden !important;
   white-space: nowrap !important;
   text-overflow: ellipsis !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
 }
 
 .meeting-table-attachment-icon {
@@ -224,7 +222,6 @@ body[dir="rtl"] .start-meeting-btn {
   font-size: calc(40px - 50%) !important;
   color: #6172d6 !important;
   font-weight: 600 !important;
-  font-family: "MontserratSemiBold-600" !important;
 }
 
 .ScheduleAMeeting {
@@ -295,7 +292,7 @@ body[dir="rtl"] .ScheduleAMeeting:active {
     background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
     color: #fff !important;
     border-radius: 4px !important;
-    font-family: "MontserratSemiBold" !important;
+    font-weight: 600 !important;
     border: none !important;
   }
 
@@ -392,12 +389,12 @@ body[dir="rtl"] .modalmeeting-participant-scroll {
 .react-datepicker__day--keyboard-selected {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border-radius: 50% !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 .react-datepicker__quarter-text--disabled {
   color: #bbbbbb !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 .react-datepicker__day:hover,
@@ -407,7 +404,7 @@ body[dir="rtl"] .modalmeeting-participant-scroll {
   border-radius: 50% !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 .react-datepicker__triangle {
@@ -415,19 +412,18 @@ body[dir="rtl"] .modalmeeting-participant-scroll {
 }
 
 .react-datepicker__day {
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 .react-datepicker__day-name {
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   text-transform: uppercase !important;
 }
 
 .react-datepicker__current-month {
   font-size: 1rem !important;
   color: #000 !important;
-  font-family: "MontserratMedium-500" !important;
   font-weight: 500 !important;
 }
 
