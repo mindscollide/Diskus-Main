@@ -1,6 +1,6 @@
 .Heading_View {
   color: #6172d6;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 30px !important;
   display: inline-block !important;
   width: 97% !important;
@@ -11,19 +11,19 @@
 
 .Details {
   font-size: 16px !important;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   color: #5a5a5a !important;
 }
 
 .Meeting_Styles {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #6172d6;
 }
 
 .Meeting-Details {
   font-size: 16px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #5a5a5a !important;
   display: inline-block !important;
   width: 70% !important;
@@ -34,7 +34,7 @@
 
 .Partipant_name {
   font-size: 20px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #5a5a5a !important;
 }
 

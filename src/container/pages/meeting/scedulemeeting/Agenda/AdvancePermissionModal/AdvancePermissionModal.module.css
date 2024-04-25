@@ -1,12 +1,12 @@
 .Advance_setting_heading {
   font-size: 20px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #5f78d6 !important;
 }
 
 .Show_Heading_Advance_persmission {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #5a5a5a !important;
 }
 
@@ -166,26 +166,26 @@ aside.ant-layout-sider.ant-layout-sider-dark {
 .Agenda_heading_Advance {
   color: #5f78d6 !important;
   font-size: 20px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   margin-right: 20% !important;
 }
 
 .All_Heading_Advance_permission {
   color: #5f78d6 !important;
   font-size: 20px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .All_Heading_Advance_permission_View {
   color: #5a5a5a !important;
   font-size: 20px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .ParticipantName {
   color: #5a5a5a !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Profile {
@@ -195,7 +195,7 @@ aside.ant-layout-sider.ant-layout-sider-dark {
 .Names_advance_permission {
   color: #5a5a5a !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .ant-layout {
@@ -258,28 +258,28 @@ aside.ant-layout-sider.ant-layout-sider-dark {
 .Heading_introductions {
   color: #5a5a5a !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   cursor: pointer !important;
 }
 
 .Heading_introductions_active {
   color: #6172d6 !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   cursor: pointer !important;
 }
 
 .Heading_introductions:is(:hover, :active, :focus, :focus-visible) {
   color: #6172d6 !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   cursor: pointer !important;
 }
 
 .Heading_introductions_Of_SubAgenda {
   color: #5a5a5a !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   display: inline-block !important;
   overflow: hidden;
   width: 280px !important;
@@ -374,7 +374,7 @@ aside.ant-layout-sider.ant-layout-sider-dark {
 .Times_styles {
   color: #5a5a5a !important;
   font-size: 10px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 .minus_sign {
   width: 10px;
