@@ -1,21 +1,3 @@
-@font-face {
-  font-family: "MontserratRegular";
-  src: url("./../../../../../assets/fonts-new/montserrat-regular-webfont.woff"),
-    url("./../../../../../assets/fonts-new/montserrat-regular-webfont.woff2");
-}
-
-@font-face {
-  font-family: "MontserratSemiBold";
-  src: url("./../../../../../assets/fonts-new/montserrat-600-webfont.woff"),
-    url("./../../../../../assets/fonts-new/montserrat-600-webfont.woff2");
-}
-
-@font-face {
-  font-family: "MontserratMedium-500";
-  src: url("./../../../../../assets/fonts-new/montserrat-500-webfont.woff"),
-    url("./../../../../../assets/fonts-new/montserrat-500-webfont.woff2");
-}
-
 .Auth_Icon1SendEmailVerificationCodeThree {
   position: absolute;
   left: 33%;
@@ -34,7 +16,7 @@
 }
 
 .SubHeadingVerificationCodeThree {
-  font-weight: bold;
+  font-weight: 700;
   color: #5a5a5a;
   font-size: 12px;
 }
@@ -45,7 +27,7 @@
   background-color: #6172d6 !important;
   color: #fff !important;
   border: none !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
 }
 
 .Next_button_EmailVerify_For_openyourrealmextra:disabled {
@@ -58,14 +40,14 @@
   background-color: #6172d6 !important;
   color: #fff !important;
   border: none !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
 }
 
 .forogt_email_link_for_openrealmextra {
   display: flex;
   justify-content: center;
   text-decoration: underline;
-  font-family: "MontserratRegular";
+  font-weight: 400 !important;
 }
 
 .forogt_email_link_for_openrealmextra {
@@ -111,7 +93,7 @@
 }
 
 .SubHeadingVerificationCodeThree {
-  font-weight: bold;
+  font-weight: 700;
   color: #5a5a5a;
   margin-top: -1rem;
   font-size: 12px;
@@ -134,10 +116,10 @@
   background-color: #6172d6 !important;
   color: #fff !important;
   border: none !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
 }
 body[dir="rtl"] .Next_button_EmailVerify_For_openyourrealmextra {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 .Next_button_EmailVerify_For_openyourrealmextra:focus-visible {
   width: 280px;
@@ -145,7 +127,7 @@ body[dir="rtl"] .Next_button_EmailVerify_For_openyourrealmextra {
   background-color: #6172d6 !important;
   color: #fff !important;
   border: none !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
 }
 
 .loginbox_auth_paper_for_openyourrealmextra {
@@ -159,10 +141,10 @@ body[dir="rtl"] .Next_button_EmailVerify_For_openyourrealmextra {
 .forogt_email_link_for_openrealmextra {
   display: flex;
   justify-content: center;
-  font-family: "MontserratRegular";
+  font-weight: 400 !important;
 }
 body[dir="rtl"] .forogt_email_link_for_openrealmextra {
-  font-family: "IBMPlexSansArabic-Regular";
+  font-weight: 400 !important;
 }
 .forogt_email_link_for_openrealmextra a {
   color: #5a5a5a;
@@ -186,12 +168,12 @@ body[dir="rtl"] .forogt_email_link_for_openrealmextra {
   transform: rotate(-66deg);
 }
 .device-title {
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
   font-size: 20px;
   color: "#5A5A5A";
 }
 .otp_value {
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
   font-size: 24px;
   color: #6172d6;
 }
@@ -205,7 +187,7 @@ body[dir="rtl"] .forogt_email_link_for_openrealmextra {
   height: 2.9em !important;
   border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   border-radius: 4px;
   outline: none !important;
 }
@@ -270,12 +252,12 @@ body[dir="rtl"] .mobile_image_two {
   font-size: 30px !important;
   color: #5a5a5a;
   width: 100% !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
 }
 
 .MainHeading_InnerHeading {
   color: #5a5a5a;
-  font-family: "MontserratBold";
+  font-weight: 700 !important;
   font-size: 30px !important;
   margin-left: 5px !important;
 }
@@ -289,33 +271,33 @@ body[dir="rtl"] .MainHeading_InnerHeading {
 
 .List_Components-verification {
   font-size: 16px !important;
-  font-family: "MontserratRegular";
+  font-weight: 400 !important;
   color: #5a5a5a;
 }
 
 body[dir="rtl"] .List_Components-verification {
-  font-family: "IBMPlexSansArabic-Regular";
+  font-weight: 400 !important;
 }
 
 .anchor_tag_text {
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   color: #6172d6;
   margin-left: 3px !important;
 }
 
 .anchor_tag_text1 {
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   color: #6172d6;
   margin-left: 3px !important;
 }
 
 body[dir="rtl"] .anchor_tag_text1 {
-  font-family: "IBMPlexSansArabic-SemiBold";
+  font-weight: 600 !important;
   margin-right: 3px !important;
 }
 
 body[dir="rtl"] .anchor_tag_text {
-  font-family: "IBMPlexSansArabic-SemiBold";
+  font-weight: 600 !important;
 }
 .space {
   margin-left: 5px !important;
@@ -331,7 +313,7 @@ body[dir="rtl"] .Un_Ordered_List {
 }
 
 body[dir="rtl"] .OTPCounter_for_openrealmextra {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
 }
 .text-cemter-ur {
   text-align: center;
@@ -340,7 +322,7 @@ body[dir="rtl"] .OTPCounter_for_openrealmextra {
 
 .Heading-Style {
   text-align: center;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   color: #5a5a5a;
   font-size: 24px !important;
   padding: 0;
@@ -348,7 +330,7 @@ body[dir="rtl"] .OTPCounter_for_openrealmextra {
 }
 
 body[dir="rtl"] .Heading-Style {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .roundspinner-image {
@@ -362,13 +344,13 @@ body[dir="rtl"] .roundspinner-image {
   /* -webkit-transform: rotate(120deg); */
 }
 .deviceName {
-  font-family: "MontserratBold";
+  font-weight: 700 !important;
   color: #5a5a5a;
   margin-left: 6px !important;
 }
 
 body[dir="rtl"] .deviceName {
-  font-family: "IBMPlexSansArabic-Bold";
+  font-weight: 700 !important;
   margin-right: 6px !important;
 }
 

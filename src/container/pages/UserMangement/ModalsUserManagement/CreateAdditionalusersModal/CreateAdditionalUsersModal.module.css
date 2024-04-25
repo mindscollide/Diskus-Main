@@ -1,24 +1,23 @@
 .AddtionalUserheading {
   font-size: 20px !important;
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .AddtionalUserheading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .NameCreateAddtional {
-  font-family: "MontserratSemiBold-600" !important;
   font-style: normal;
   color: #6172d6 !important;
-  font-weight: 600;
+  font-weight: 600 !important;
   font-size: 10px;
   line-height: 12px;
 }
 
 body[dir="rtl"] .NameCreateAddtional {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Steric {
@@ -26,28 +25,28 @@ body[dir="rtl"] .NameCreateAddtional {
 }
 
 body[dir="rtl"] .NameCreateAddtional {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .NameClass {
   font-size: 12px !important;
   color: #a2a2a2 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .NameClass {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .AdminAlsoClass {
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
   font-size: 12px !important;
   color: #5a5a5a !important;
   margin-top: 2px !important;
 }
 
 body[dir="rtl"] .AdminAlsoClass {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .Padding_Alignment {
@@ -59,7 +58,7 @@ body[dir="rtl"] .AdminAlsoClass {
   font-size: 12px !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   background: #fff !important;
   color: #5a5a5a !important;
 }
@@ -69,13 +68,13 @@ body[dir="rtl"] .AdminAlsoClass {
   font-size: 12px !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   background: #fff !important;
   color: #5a5a5a !important;
 }
 
 body[dir="rtl"] .SkipandResetButtonClass {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .CreateButtonClass {
@@ -83,7 +82,7 @@ body[dir="rtl"] .SkipandResetButtonClass {
   font-size: 12px !important;
   border-radius: 4px !important;
   border: none !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   background: #6172d6 !important;
   color: #fff !important;
 }
@@ -93,13 +92,13 @@ body[dir="rtl"] .SkipandResetButtonClass {
   font-size: 12px !important;
   border-radius: 4px !important;
   border: none !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   background: #6172d6 !important;
   color: #fff !important;
 }
 
 body[dir="rtl"] .CreateButtonClass {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Scroller_Users {
@@ -135,12 +134,12 @@ body[dir="rtl"] .Card_border2 {
 .Name_cards {
   font-size: 12px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   margin-left: 5px !important;
 }
 
 body[dir="rtl"] .Name_cards {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .RedSrtip {
@@ -151,7 +150,7 @@ body[dir="rtl"] .Name_cards {
 }
 
 .RedStripContent {
-  font-family: "MontserratBold-700" !important;
+  font-weight: 700 !important;
   font-size: 12px !important;
   color: #f16b6b !important;
   display: flex !important;
@@ -159,7 +158,7 @@ body[dir="rtl"] .Name_cards {
 }
 
 body[dir="rtl"] .RedStripContent {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }
 
 .Buttonclass {
@@ -193,5 +192,5 @@ body[dir="rtl"] .RedStripContent {
 }
 
 body[dir="rtl"] .errorMessage {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
 }
