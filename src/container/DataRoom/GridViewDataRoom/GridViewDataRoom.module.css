@@ -26,7 +26,7 @@
 }
 
 .folderName__text {
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
   color: #5a5a5a !important;
   font-size: 12px !important;
   white-space: nowrap;
@@ -35,7 +35,7 @@
 }
 
 .folderFile__text {
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
   color: #5a5a5a !important;
   font-size: 12px !important;
   white-space: nowrap;
@@ -45,7 +45,7 @@
 
 .FolderHeading {
   color: #6172d6;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
   font-size: 16px !important;
   margin-bottom: 10px !important;
   margin-left: 10px;
@@ -82,7 +82,7 @@
 .Name_heading__gridView {
   color: #6172d6 !important;
   font-size: 16px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
   position: relative !important;
   margin-left: 10px;
   display: block;
@@ -125,14 +125,14 @@
   border-bottom: 1px solid #5a5a5a !important;
   padding: 5px 0;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
 }
 
 .NavLink__filter:is(:hover) {
   border-bottom: 1px solid #5a5a5a !important;
   padding: 5px 0;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
 }
 
 .NavLink__filter:last-child {
@@ -143,7 +143,7 @@
   border-bottom: 1px solid #5a5a5a !important;
   padding: 5px 0;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
   display: flex;
 }
 
@@ -151,7 +151,7 @@
   border-bottom: 1px solid #5a5a5a !important;
   padding: 5px 0;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
 }
 
 .NavLink__filter:last-child {
@@ -177,7 +177,7 @@
   border-bottom: 1px solid #5a5a5a !important;
   padding: 5px 0;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
   display: flex;
 }
 
@@ -185,7 +185,7 @@
   border-bottom: 1px solid #5a5a5a !important;
   padding: 5px 0;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
 }
 
 .NavLink__filter_file:last-child {

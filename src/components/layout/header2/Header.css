@@ -411,11 +411,9 @@ body[dir="rtl"] .user-name {
 }
 
 .dropdown-menu.show {
-  width: 231px;
-  position: absolute;
-  left: -181px;
-  top: 22px;
   border-radius: 4px;
+  margin: 0;
+  padding: 0;
 }
 .profilebtn-dropdown .dropdown-toggle .dropdown_menu.dropdown-menu.show {
   left: 0 !important;
@@ -623,7 +621,7 @@ body[dir="rtl"] .header2-container {
 .FontClass {
   color: #505050 !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
 }
 .dropdown_menu_admin {
   left: 0 !important;

@@ -54,7 +54,7 @@ p.video-chat-date {
     text-overflow: ellipsis;
     color: #5a5a5a;
     white-space: nowrap;
-    font-family: 'MontserratMedium-500';
+    font-weight: 500;
     margin-top: -3px !important;
 }
 

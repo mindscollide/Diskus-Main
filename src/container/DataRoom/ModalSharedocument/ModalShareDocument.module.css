@@ -1,13 +1,13 @@
 .Shared_Document_Heading {
     font-size: 20px !important;
     color: #6172D6;
-    font-family: "MontserratSemiBold";
+    font-weight: 600;
 }
 
 .InvitetoEdit_Heading {
     font-size: 16px !important;
     color: #6172D6;
-    font-family: "MontserratSemiBold";
+    font-weight: 600;
 }
 
 .Line-height {
@@ -17,14 +17,14 @@
 .Edit_options {
     font-size: 16px !important;
     color: #6172D6;
-    font-family: "MontserratBold";
+    font-weight: 600;
     margin-left: 3px !important;
 }
 
 .InvitetoEdit_Heading {
     font-size: 16px !important;
     color: #5a5a5a;
-    font-family: "MontserratSemiBold";
+    font-weight: 600;
 }
 
 .Box_for_attachments {
@@ -39,7 +39,7 @@
 .File_name {
     font-size: 12px !important;
     color: #5a5a5a;
-    font-family: "MontserratSemiBold";
+    font-weight: 600;
 }
 
 .Open_button {
