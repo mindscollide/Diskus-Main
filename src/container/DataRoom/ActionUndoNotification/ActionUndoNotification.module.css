@@ -1,17 +1,17 @@
 .background_action_unDone {
-    width: 195px !important;
-    height: 45px !important;
-    background: #5a5a5a;
-    border-top-right-radius: 4px !important;
-    border-top-left-radius: 4px;
-    position: absolute;
-    bottom: 0;
-    left: 5%;
-    z-index: 1;
+  width: 195px !important;
+  height: 45px !important;
+  background: #5a5a5a;
+  border-top-right-radius: 4px !important;
+  border-top-left-radius: 4px;
+  position: absolute;
+  bottom: 0;
+  left: 5%;
+  z-index: 1;
 }
 
 .Action_undone_notification {
-    font-size: 16px !important;
-    font-family: "MontserratSemiBold";
-    color: #f6f6f6;
+  font-size: 16px !important;
+  font-weight: 600;
+  color: #f6f6f6;
 }

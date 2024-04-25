@@ -1,7 +1,7 @@
 .Upload_options_Heading {
   font-size: 30px !important;
   color: #6172d6;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 .paragrapgh {
@@ -9,20 +9,20 @@
   color: #5a5a5a;
   overflow: hidden;
   word-wrap: break-word;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 .paragraph_fileName {
   font-size: 16px !important;
   color: #6172d6;
-  font-family: "MontserratBold";
+  font-weight: 600;
   margin: 0 2px !important;
 }
 
 .Options {
   font-size: 16px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 .Cancel_button_UploadFile {
@@ -31,7 +31,7 @@
   color: #5a5a5a;
   padding: 12px 30px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 .Cancel_button_UploadFile:focus,
@@ -43,7 +43,7 @@
   color: #5a5a5a !important;
   padding: 12px 30px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 .Create_button_UploadFile {
@@ -51,7 +51,7 @@
   color: #fff;
   padding: 12px 30px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   border: none;
 }
 
@@ -62,7 +62,7 @@
   color: #fff !important;
   padding: 12px 30px !important;
   background: #6172d6 !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   font-size: 12px !important;
   border: none !important;
 }

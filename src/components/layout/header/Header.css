@@ -31,7 +31,7 @@
   cursor: pointer;
 }
 
-.dropdown-toggle {
+/* .dropdown-toggle {
   background: #ffffff;
   border: 1px solid #e1e1e1 !important;
   padding: 16px;
@@ -45,8 +45,7 @@
 
 .dropdown-toggle:hover {
   background: #ffffff;
-  border: 1px solid #e1e1e1 !important;
-}
+} */
 
 .user-dropdown .dropdown-toggle .header-icon {
   margin: 0 4px 0 0;

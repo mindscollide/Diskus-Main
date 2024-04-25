@@ -31,14 +31,14 @@
 
 .text_for {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #f16b6b;
 }
 
 .Share_a_folder {
   font-size: 20px !important;
   color: #6172D6;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 
