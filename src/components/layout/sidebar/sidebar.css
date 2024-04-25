@@ -120,22 +120,6 @@ a.iconSidebar {
   height: 45px;
 }
 
-a.iconSidebar:hover {
-  /* background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important; */
-  /* width: 100%; */
-  /* margin: 0 !important; */
-  /* padding: 0 !important; */
-  /* transition: all 0.5s ease-in-out; */
-}
-
-/* body[dir="rtl"] a.iconSidebar:hover {
-  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
-} */
-
-/* a.iconSidebar:hover svg path {
-  fill: #fff !important;
-} */
-
 a.iconSidebar {
   /* background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important; */
   width: 100%;
@@ -236,13 +220,13 @@ a.m-0.p-0.iconSidebar-active-sidebar.nav-link.active rect#Rectangle_831 {
 .Meeting_Side_bar_Tag {
   font-size: 9 px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
 }
 
 .Meeting_Side_bar_Tag_todo {
   font-size: 9px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   white-space: nowrap !important;
 }
 
@@ -253,13 +237,13 @@ body[dir="rtl"] .Meeting_Side_bar_Tag_todo {
 .Meeting_Side_bar_Tag_active {
   font-size: 8px !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
 }
 
 .Meeting_Side_bar_Tag_active_active_todo {
   font-size: 8px !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   white-space: nowrap !important;
 }
 
@@ -313,13 +297,13 @@ a.iconSidebar span {
   color: #505050 !important;
   font-size: 10px !important;
   white-space: nowrap;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"] a.iconSidebar span {
   color: #505050 !important;
   font-size: 8px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"] a.iconSidebar:hover {
