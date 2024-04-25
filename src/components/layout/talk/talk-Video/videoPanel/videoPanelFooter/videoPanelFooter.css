@@ -8,12 +8,8 @@
   border: none;
   border-radius: 4px;
   font-size: 12px;
-  /* font-family: "MontserratRegular"; */
-  /* filter: grayscale(1); */
   padding-left: 0 !important;
   padding-right: 0 !important;
-  /* left: calc(100% - 255px); */
-  /* top: calc(100% - 75px); */
 }
 
 .group-btn-gray {
@@ -26,7 +22,6 @@
   border: none;
   border-radius: 4px;
   font-size: 12px;
-  /* font-family: "MontserratRegular"; */
   filter: grayscale(1);
   padding-left: 0 !important;
   padding-right: 0 !important;
