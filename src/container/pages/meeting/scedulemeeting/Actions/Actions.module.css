@@ -115,7 +115,7 @@
   justify-content: space-between;
 }
 .Action-Date-title_value {
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   color: #6172d6 !important;
   font-size: 12px !important;
   overflow: hidden !important;
@@ -126,7 +126,7 @@
 }
 
 .Action-Date-title {
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   color: #5a5a5a !important;
   font-size: 12px !important;
   overflow: hidden !important;
@@ -156,7 +156,7 @@
 }
 .Action_title {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   display: inline-block !important;
   overflow: hidden !important;
   text-overflow: ellipsis;

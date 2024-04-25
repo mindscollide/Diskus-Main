@@ -1,6 +1,6 @@
 .Poll_details_Heading {
   font-size: 20px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #6172d6;
 }
 
@@ -14,30 +14,29 @@
 .ViewTitleTOShowOnProgress {
   width: 100%;
   font-size: 14px !important;
-  word-wrap: break-word!important;
-  white-space: pre-wrap!important;
+  word-wrap: break-word !important;
+  white-space: pre-wrap !important;
   margin: 4px !important;
 }
 
 .no-Of-Yes {
   font-size: 16px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #5a5a5a;
 }
 
-.No-of-Yes-Answers{
+.No-of-Yes-Answers {
   font-size: 16px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #5a5a5a;
-  word-wrap: break-word!important;
-  white-space: pre-wrap!important;
-  width: 100%  !important;
- 
+  word-wrap: break-word !important;
+  white-space: pre-wrap !important;
+  width: 100% !important;
 }
 
 .no-Of-No {
   font-size: 16px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #5a5a5a;
   margin-left: 30% !important;
 }
@@ -49,7 +48,7 @@
 
 .Participants_polls_Details {
   font-size: 20px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #6172d6;
 }
 
@@ -105,7 +104,7 @@ body[dir="rtl"] .Card_border2 {
 .Name_cards {
   font-size: 12px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   margin-left: 5px !important;
 }
 
@@ -116,9 +115,9 @@ body[dir="rtl"] .Card_border2 {
 .Yes_voters {
   font-size: 16px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold" !important;
-  word-wrap: break-word!important;
-  white-space: pre-wrap!important;
+  font-weight: 600 !important;
+  word-wrap: break-word !important;
+  white-space: pre-wrap !important;
 }
 
 .Class_Close {
@@ -165,7 +164,6 @@ body[dir="rtl"] .Card_border2 {
   min-height: 39px; /* Set the maximum height you desire for the title */
   overflow: hidden;
   overflow-y: auto; /* Enable vertical scrolling when text overflows */
-  
 }
 .scrollable-title::-webkit-scrollbar {
   width: 0.5rem;
@@ -177,6 +175,6 @@ body[dir="rtl"] .Card_border2 {
   background: #ccc;
   margin-left: -15px;
 }
-.scrollable-title2{
-  min-height: 39px!important;
+.scrollable-title2 {
+  min-height: 39px !important;
 }
