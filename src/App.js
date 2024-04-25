@@ -23,6 +23,10 @@ import "@fontsource/ibm-plex-sans-arabic/400.css";
 import "@fontsource/ibm-plex-sans-arabic/500.css";
 import "@fontsource/ibm-plex-sans-arabic/600.css";
 import "@fontsource/ibm-plex-sans-arabic/700.css";
+import OpenPaymentForm from "./container/pages/UserMangement/ModalsUserManagement/OpenPaymentForm/OpenPaymentForm";
+import { Loader } from "./components/elements";
+import { router } from "./routes/routes";
+import { RouterProvider } from "react-router-dom";
 
 const App = () => {
   return (

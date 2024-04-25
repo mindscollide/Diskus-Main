@@ -123,10 +123,9 @@ body[dir="rtl"] .DownloadInvoiceButton {
   transition: all 0.2s !important;
   display: flex !important;
   justify-content: space-between !important;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
   font-size: 12px !important;
   padding: 12px 30px;
-  font-family: "MontserratSemiBold" !important;
   font-size: 12px !important;
 }
 
@@ -168,11 +167,11 @@ body[dir="rtl"] .selected_package_details_p2 {
 .OutStandingHeading {
   font-size: 25px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratBold-700" !important;
+  font-weight: 700 !important;
 }
 
 body[dir="rtl"] .OutStandingHeading {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }
 
 .PayoutStandingCard {
@@ -194,19 +193,19 @@ body[dir="rtl"] .OutStandingHeading {
 .CallAssistantSubHeading {
   font-size: 12px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratBold-700" !important;
+  font-weight: 700 !important;
 }
 
 body[dir="rtl"] .CallAssistantSubHeading {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }
 
 .BussniessmailStyles {
   font-size: 16px !important;
   color: #6172d6 !important;
-  font-family: "MontserratBold-700" !important;
+  font-weight: 700 !important;
 }
 
 body[dir="rtl"] .BussniessmailStyles {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }
