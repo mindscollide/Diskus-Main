@@ -118,7 +118,7 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
       setResolutionTitle(getVoteresult.resolutionTite);
       setVotingMethod(getVoteresult.votingMethod);
       setApproved(getVoteresult.approvedVotes);
-      setAbstain();
+      setAbstain(0);
       setPending(getVoteresult.pendingVoters);
       setNonApproved(getVoteresult.nonApprovedVotes);
       setTotalVoters(getVoteresult.totalVoters);
@@ -279,8 +279,8 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
                           <span className={styles["voting_methong_value"]}>
                             {" "}
                             {isVotingMethod === "Secret Balloting"
-                              ? t("Secret Balloting")
-                              : t("Show of Hands")}
+                              ? t("Secret-balloting")
+                              : t("Show-of-hands")}
                           </span>
                         </Col>
                       </Row>

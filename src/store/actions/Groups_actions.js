@@ -1325,8 +1325,8 @@ const saveFilesGroupsApi = (navigate, t, data, folderID, newFolder) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          dispatch(RefreshToken(navigate, t));
-          dispatch(saveFilesGroupsApi(navigate, t, data, newFolder));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(saveFilesGroupsApi(navigate, t, data, folderID, newFolder));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (

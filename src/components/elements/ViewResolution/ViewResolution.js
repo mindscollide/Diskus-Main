@@ -135,7 +135,7 @@ const ViewResolution = ({ setViewresolution }) => {
                             styles["View_resolution_circulationHeading"]
                           }
                         >
-                          {t("Circulation")}
+                          {t("Circulation-date")}
                         </span>
                       </Col>
                     </Row>
