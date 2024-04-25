@@ -1100,7 +1100,6 @@ body[dir="rtl"] span.securityicon-box {
 }
 
 span.direct-chat-body {
-  /* font-family: "MontserratRegular"; */
   font-size: 14px;
 }
 
@@ -1250,7 +1249,6 @@ p.feature-name {
 }
 
 span.direct-chat-body {
-  /* font-family: "MontserratRegular"; */
   font-size: 14px;
   display: flex;
   word-break: break-word;
