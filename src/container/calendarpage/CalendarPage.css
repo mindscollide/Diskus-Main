@@ -520,7 +520,7 @@ body[dir="rtl"] .Calendar_CreateBtn .dropdown-menu.show .dropdown-item {
 }
 
 body[dir="rtl"] .SceduleMeetingButton button {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .SceduleMeetingButton .dropdown-toggle.btn.btn-primary {
@@ -567,7 +567,7 @@ body[dir="rtl"] .SceduleMeetingButton .dropdown-menu.show {
 }
 
 body[dir="rtl"] .SceduleMeetingButton .dropdown-menu.show .dropdown-item {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .SceduleMeetingButton .dropdown-menu.show .dropdown-item:nth-child(1) {
