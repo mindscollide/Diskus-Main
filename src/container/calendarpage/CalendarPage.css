@@ -88,7 +88,7 @@
   /* display: none  !important; */
   text-align: center !important;
   margin-top: 10px;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
   /* height : 50px !important; */
   /* border : 1px solid #ccc; */
 }
@@ -188,7 +188,7 @@ body[dir="rtl"]
 }
 
 body[dir="rtl"] .rbc-row-segment {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400;
 }
 
 .add-event {
@@ -238,11 +238,11 @@ body[dir="rtl"] .rbc-row-segment {
 .rbc-header span {
   font-size: 16px;
   color: #6172d6;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
 }
 
 body[dir="rtl"] .rbc-header span {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .bg-primary.text-white.add-event.calendar-dropdown.dropdown
@@ -279,7 +279,8 @@ body[dir="rtl"] .rbc-header span {
   padding: 10px 15px !important;
   margin-top: 7px;
   position: relative !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
+
   display: flex;
   justify-content: flex-start;
   /* padding: 0 10px; */
@@ -325,7 +326,6 @@ body[dir="rtl"] .rbc-today {
   font-size: calc(38px - 50%) !important;
   color: #6172d6 !important;
   font-weight: 600 !important;
-  font-family: "MontserratSemiBold-600" !important;
 }
 
 button.btn.calendar-today.btn.btn-primary {
@@ -333,13 +333,14 @@ button.btn.calendar-today.btn.btn-primary {
   font-size: 14px !important;
   padding: 6px 30px !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
+
   border: none !important;
 }
 
 body[dir="rtl"] button.btn.calendar-today.btn.btn-primary {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .rbc-row-segment {
@@ -409,14 +410,15 @@ body[dir="rtl"] button.btn.calendar-today.btn.btn-primary {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
+
   border: none !important;
   display: flex;
   justify-content: space-between;
 }
 
 body[dir="rtl"] .Calendar_CreateBtn button {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Calendar_CreateBtn .dropdown-toggle.btn.btn-primary {
@@ -425,7 +427,8 @@ body[dir="rtl"] .Calendar_CreateBtn button {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
+
   border: none !important;
 }
 
@@ -453,13 +456,14 @@ body[dir="rtl"] .Calendar_CreateBtn .dropdown-menu.show {
 
 .Calendar_CreateBtn .dropdown-menu.show .dropdown-item {
   padding: 10px 10px;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
+
   text-align: center;
   font-size: 11px !important;
 }
 
 body[dir="rtl"] .Calendar_CreateBtn .dropdown-menu.show .dropdown-item {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Calendar_CreateBtn .dropdown-menu.show .dropdown-item:nth-child(1) {
@@ -508,7 +512,8 @@ body[dir="rtl"] .Calendar_CreateBtn .dropdown-menu.show .dropdown-item {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
+
   border: none !important;
   display: flex;
   justify-content: space-between;
@@ -524,7 +529,8 @@ body[dir="rtl"] .SceduleMeetingButton button {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
+
   border: none !important;
   display: flex;
   justify-content: center;
@@ -554,7 +560,8 @@ body[dir="rtl"] .SceduleMeetingButton .dropdown-menu.show {
 
 .SceduleMeetingButton .dropdown-menu.show .dropdown-item {
   padding: 10px 0px;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
+
   text-align: center;
   font-size: 11px !important;
 }
@@ -591,12 +598,13 @@ body[dir="rtl"] .SceduleMeetingButton .dropdown-menu.show .dropdown-item {
 
 .Calender-heading {
   font-size: 40px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
+
   color: #5f78d6 !important;
 }
 
 body[dir="rtl"] .Calender-heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .rbc-row {
@@ -616,7 +624,8 @@ body[dir="rtl"] .Calender-heading {
 
 .rbc-overlay-header {
   font-size: 15px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
+
   color: #5f78d6 !important;
 }
 

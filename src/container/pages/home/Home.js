@@ -931,39 +931,25 @@ const Home = () => {
       render: (text, record) => {
         if (record.status.pK_TSID === 1) {
           return (
-            <span className="MontserratSemiBold-600 InProgress cursor-pointer">
-              {text.status}
-            </span>
+            <span className=" InProgress cursor-pointer">{text.status}</span>
           );
         } else if (record.status.pK_TSID === 2) {
-          return (
-            <span className="MontserratSemiBold-600 Pending cursor-pointer">
-              {text.status}
-            </span>
-          );
+          return <span className=" Pending cursor-pointer">{text.status}</span>;
         } else if (record.status.pK_TSID === 3) {
           return (
-            <span className="MontserratSemiBold-600 Upcoming cursor-pointer">
-              {text.status}
-            </span>
+            <span className=" Upcoming cursor-pointer">{text.status}</span>
           );
         } else if (record.status.pK_TSID === 4) {
           return (
-            <span className="MontserratSemiBold-600 Cancelled cursor-pointer">
-              {text.status}
-            </span>
+            <span className=" Cancelled cursor-pointer">{text.status}</span>
           );
         } else if (record.status.pK_TSID === 5) {
           return (
-            <span className="MontserratSemiBold-600 Completed cursor-pointer">
-              {text.status}
-            </span>
+            <span className=" Completed cursor-pointer">{text.status}</span>
           );
         } else if (record.status.pK_TSID === 6) {
           return (
-            <span className="MontserratSemiBold-600 color-F68732 cursor-pointer">
-              {text.status}
-            </span>
+            <span className=" color-F68732 cursor-pointer">{text.status}</span>
           );
         }
       },
@@ -1279,10 +1265,10 @@ const Home = () => {
                         : ""
                     }
                   >
-                    <p className="events-description MontserratSemiBold-600">
+                    <p className="events-description ">
                       {upcomingEventsData.meetingDetails.title}
                     </p>
-                    <p className="events-dateTime MontserratSemiBold-600">
+                    <p className="events-dateTime ">
                       {newTimeFormaterAsPerUTCFullDate(
                         upcomingEventsData.meetingEvent.meetingDate +
                           upcomingEventsData.meetingEvent.startTime
@@ -1684,7 +1670,7 @@ const Home = () => {
                   md={12}
                   sm={false}
                   xs={false}
-                  className="text-center mt-2 MontserratSemiBold-600 color-5a5a5a  "
+                  className="text-center mt-2  color-5a5a5a  "
                 >
                   <div
                     className={
@@ -1805,7 +1791,7 @@ const Home = () => {
                 lg={12}
                 md={12}
                 sm={false}
-                className="text-center mt-2 color-5a5a5a  MontserratSemiBold-600  "
+                className="text-center mt-2 color-5a5a5a    "
               >
                 <div
                   className={
@@ -1929,7 +1915,7 @@ const Home = () => {
             </Row>
           </Col>
           <Col lg={4} md={4} sm={12} className="m-0 p-0">
-            <h1 className="border recent-activity color-5a5a5a MontserratSemiBold-600">
+            <h1 className="border recent-activity color-5a5a5a ">
               {t("Recent-activity")}
             </h1>
             <div className="whiteBackground Spinner home-recentactivity-scrollbar-container mt-2 border">
@@ -2223,7 +2209,7 @@ const Home = () => {
                 )}
               </div>
             </div>
-            <Row className="MontserratSemiBold-600 color-5a5a5a m-0 ">
+            <Row className=" color-5a5a5a m-0 ">
               <Col className="Notes  whiteBackground-notes  mt-2">
                 <Row className="my-2 ">
                   <Col
@@ -2232,9 +2218,7 @@ const Home = () => {
                     sm={12}
                     className=" d-flex align-items-center gap-3 justify-content-start"
                   >
-                    <h1 className="noteheading color-5a5a5a MontserratSemiBold-600">
-                      {t("Notes")}
-                    </h1>
+                    <h1 className="noteheading color-5a5a5a ">{t("Notes")}</h1>
                     <img
                       src={PlusButton}
                       onClick={handleClickNoteModal}

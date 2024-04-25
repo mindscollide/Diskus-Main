@@ -3971,7 +3971,7 @@ body[dir="rtl"] .Edit-Meetings-Modal.modal-header button.btn-close {
 }
 
 body[dir="rtl"]
-  .MontserratSemiBold-600.text-start.color-949494.font-11.p-0.col-lg-12.col-md-12.col-sm-12 {
+ .text-start.color-949494.font-11.p-0.col-lg-12.col-md-12.col-sm-12 {
   text-align: right !important;
 }
 
@@ -4236,7 +4236,7 @@ body[dir="rtl"] .ant-table-wrapper.ToDo {
   background: none !important;
 }
 
-h1.todo-Heading.color-5a5a5a.MontserratSemiBold-600 {
+h1.todo-Heading.color-5a5a5a {
   font-size: calc(19px - 20%);
   position: relative;
   top: 5px;

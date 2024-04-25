@@ -622,8 +622,8 @@ const MeetingViewModalCalendar = ({
                   <Button
                     className={
                       isDetails
-                        ? "MontserratSemiBold-600 btn btn-primary isDetail-View-top-btn"
-                        : "MontserratSemiBold-600 btn btn-outline-primary isDetail-View-top-btn-Outline"
+                        ? " btn btn-primary isDetail-View-top-btn"
+                        : " btn btn-outline-primary isDetail-View-top-btn-Outline"
                     }
                     variant={"Primary"}
                     text={t("Details")}
@@ -641,8 +641,8 @@ const MeetingViewModalCalendar = ({
                   <Button
                     className={
                       isAgenda
-                        ? "MontserratSemiBold-600 btn btn-primary isAgenda-View-top-btn"
-                        : "MontserratSemiBold-600 btn btn-outline-primary isAgenda-View-top-btn-Outline"
+                        ? " btn btn-primary isAgenda-View-top-btn"
+                        : " btn btn-outline-primary isAgenda-View-top-btn-Outline"
                     }
                     variant={"Primary"}
                     text={t("Agendas")}
@@ -656,7 +656,7 @@ const MeetingViewModalCalendar = ({
                   sm={2}
                   xs={12}
                   className={
-                    "MontserratSemiBold-600 AttendeeShowBtn" +
+                    " AttendeeShowBtn" +
                     " " +
                     currentLanguage
                   }
@@ -665,8 +665,8 @@ const MeetingViewModalCalendar = ({
                   <Button
                     className={
                       isAttendees
-                        ? "MontserratSemiBold-600 btn btn-primary isAttendee-View-top-btn"
-                        : "MontserratSemiBold-600 btn btn-outline-primary isAttendee-View-top-btn-Outline"
+                        ? " btn btn-primary isAttendee-View-top-btn"
+                        : " btn btn-outline-primary isAttendee-View-top-btn-Outline"
                     }
                     variant={"Primary"}
                     text={t("Attendees")}
@@ -681,7 +681,7 @@ const MeetingViewModalCalendar = ({
                     sm={2}
                     xs={12}
                     className={
-                      "MontserratSemiBold-600 minutes-upper-btn" +
+                      " minutes-upper-btn" +
                       " " +
                       currentLanguage
                     }
@@ -689,8 +689,8 @@ const MeetingViewModalCalendar = ({
                     <Button
                       className={
                         isMinutes
-                          ? "MontserratSemiBold-600 btn btn-primary isMinutes-View-top-btn"
-                          : "MontserratSemiBold-600 btn btn-outline-primary isMinutes-View-top-btn-Outline"
+                          ? " btn btn-primary isMinutes-View-top-btn"
+                          : " btn btn-outline-primary isMinutes-View-top-btn-Outline"
                       }
                       variant={"Primary"}
                       text={t("Minutes")}
@@ -706,7 +706,7 @@ const MeetingViewModalCalendar = ({
                   sm={2}
                   xs={12}
                   className={
-                    "MontserratSemiBold-600 DataRoomShowBtn" +
+                    " DataRoomShowBtn" +
                     " " +
                     currentLanguage
                   }
@@ -717,10 +717,10 @@ const MeetingViewModalCalendar = ({
                   <Button
                     className={
                       isAttachments
-                        ? "MontserratSemiBold-600 btn btn-primary isDataRoom-View-top-btn" +
+                        ? " btn btn-primary isDataRoom-View-top-btn" +
                           " " +
                           currentLanguage
-                        : "MontserratSemiBold-600 btn btn-outline-primary isDataRoom-View-top-btn-Outline" +
+                        : " btn btn-outline-primary isDataRoom-View-top-btn-Outline" +
                           " " +
                           currentLanguage
                     }
@@ -753,7 +753,7 @@ const MeetingViewModalCalendar = ({
                       lg={12}
                       md={12}
                       xs={12}
-                      className="MontserratSemiBold-600 MeetingViewTitleTextField p-0"
+                      className=" MeetingViewTitleTextField p-0"
                     >
                       <p className="viewModalTitle">
                         {createMeeting.MeetingTitle.length < 100
@@ -799,7 +799,7 @@ const MeetingViewModalCalendar = ({
                               <>
                                 <Row className="mt-4">
                                   <Col lg={1} md={1} xs={12}>
-                                    <span className="MontserratSemiBold-600 agendaIndex">
+                                    <span className=" agendaIndex">
                                       {index + 1}
                                     </span>
                                   </Col>
@@ -809,7 +809,7 @@ const MeetingViewModalCalendar = ({
                                     xs={12}
                                     className="MeetingAgendaView p-0"
                                   >
-                                    <p className="MontserratSemiBold-600 agendaTitle">
+                                    <p className=" agendaTitle">
                                       {data.ObjMeetingAgenda.Title}
                                     </p>
                                     {/* <TextField
@@ -982,7 +982,7 @@ const MeetingViewModalCalendar = ({
                       lg={12}
                       md={12}
                       xs={12}
-                      className="MontserratSemiBold-600 meeting-view-attendee-organizer-tab"
+                      className=" meeting-view-attendee-organizer-tab"
                     >
                       <label>{t("Organizer")}</label>
                     </Col>
@@ -1025,7 +1025,7 @@ const MeetingViewModalCalendar = ({
                       lg={12}
                       md={12}
                       xs={12}
-                      className="MontserratSemiBold-600 meeting-view-attendee-participant-tab"
+                      className=" meeting-view-attendee-participant-tab"
                     >
                       <label>{t("Participants")}</label>
                     </Col>
@@ -1155,7 +1155,7 @@ const MeetingViewModalCalendar = ({
                         <Button
                           onClick={startMeeting}
                           className={
-                            "MontserratSemiBold-600 btn btn-primary start-meeting-button" +
+                            " btn btn-primary start-meeting-button" +
                             " " +
                             currentLanguage
                           }
@@ -1165,7 +1165,7 @@ const MeetingViewModalCalendar = ({
                         <Button
                           onClick={endMeeting}
                           className={
-                            "MontserratSemiBold-600 btn btn-primary end-meeting-btn" +
+                            " btn btn-primary end-meeting-btn" +
                             " " +
                             currentLanguage
                           }

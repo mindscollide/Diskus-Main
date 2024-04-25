@@ -320,7 +320,7 @@ const CancelSubs = () => {
                         <Col sm={12}>
                           <Row>
                             <Col sm={12} md={12} lg={12}>
-                              <p className="MontserratSemiBold-600 text-uppercase font-16 color-5a5a5a Saved_money_Tagline">
+                              <p className=" text-uppercase font-16 color-5a5a5a Saved_money_Tagline">
                                 {t("Users")}
                               </p>
                             </Col>
@@ -335,7 +335,7 @@ const CancelSubs = () => {
                               sm={12}
                               md={12}
                               lg={12}
-                              className="MontserratSemiBold-600 text-start color-949494 font-11 p-0 Saved_money_Tagline"
+                              className=" text-start color-949494 font-11 p-0 Saved_money_Tagline"
                             >
                               {isPackageDetail.UsersRangeAdmin} {t("of")}{" "}
                               {maxAdminUser} {t("Admin-users")}
@@ -351,7 +351,7 @@ const CancelSubs = () => {
                               sm={12}
                               md={12}
                               lg={12}
-                              className="MontserratSemiBold-600 text-start color-949494 font-11 p-0 Saved_money_Tagline"
+                              className=" text-start color-949494 font-11 p-0 Saved_money_Tagline"
                             >
                               {isPackageDetail.UsersRangeBoardMembers} {t("of")}{" "}
                               {maxBoardMembers} {t("Board-members")}
@@ -367,7 +367,7 @@ const CancelSubs = () => {
                               sm={12}
                               md={12}
                               lg={12}
-                              className="MontserratSemiBold-600 text-start color-949494 font-11 p-0 Saved_money_Tagline"
+                              className=" text-start color-949494 font-11 p-0 Saved_money_Tagline"
                             >
                               {isPackageDetail.OtherUsersRange} {t("of")}{" "}
                               {maxOtherUsers} {t("Other-users")}
@@ -512,7 +512,7 @@ const CancelSubs = () => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className="MontserratSemiBold-600 text-start color-949494 font-11 p-0 Saved_money_Tagline"
+                      className=" text-start color-949494 font-11 p-0 Saved_money_Tagline"
                     >
                       {isPackageDetail.UsersRangeAdmin} {t("Of")} {maxAdminUser}{" "}
                       {t("Admin-users")}
@@ -528,7 +528,7 @@ const CancelSubs = () => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className="MontserratSemiBold-600 text-start color-949494 font-11 p-0 Saved_money_Tagline"
+                      className=" text-start color-949494 font-11 p-0 Saved_money_Tagline"
                     >
                       {isPackageDetail.UsersRangeBoardMembers} {t("of")}{" "}
                       {maxBoardMembers} {t("Board-members")}
@@ -544,7 +544,7 @@ const CancelSubs = () => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className="MontserratSemiBold-600 text-start color-949494 font-11 p-0 Saved_money_Tagline"
+                      className=" text-start color-949494 font-11 p-0 Saved_money_Tagline"
                     >
                       {isPackageDetail.OtherUsersRange} {t("of")}{" "}
                       {maxOtherUsers} {t("Other-users")}
