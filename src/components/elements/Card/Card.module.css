@@ -118,6 +118,7 @@ body[dir="rtl"] .Archived-Status-Committee-Group {
 
 .Status-Committee-Group {
   padding-top: 10px !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .Status-Committee-Group {
