@@ -15,7 +15,7 @@
   width: 100% !important;
   color: #6172d6 !important;
   font-size: 20px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .startVotingButton {
@@ -26,7 +26,7 @@
   border: none !important;
   font-size: 12px !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .startVotingButton:is(:hover, :active, :focus, :focus-visible) {
@@ -37,7 +37,7 @@
   border: none !important;
   font-size: 12px !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .CastYourVoteButton {
@@ -48,7 +48,7 @@
   border: none !important;
   font-size: 12px !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .CastYourVoteButton:is(:hover, :active, :focus, :focus-visible) {
@@ -59,7 +59,7 @@
   border: none !important;
   font-size: 12px !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .EndVotingButton {
@@ -70,7 +70,7 @@
   border: none !important;
   font-size: 12px !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .EndVotingButton:is(:hover, :active, :focus, :focus-visible) {
@@ -81,7 +81,7 @@
   border: none !important;
   font-size: 12px !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .ViewVoteButton {
@@ -92,7 +92,7 @@
   border: 1px solid #e1e1e1 !important;
   font-size: 12px !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .ViewVoteButton:is(:hover, :active, :focus, :focus-visible) {
@@ -101,10 +101,9 @@
   background: #fff !important;
   color: #5a5a5a !important;
   border: 1px solid #e1e1e1 !important;
-
   font-size: 12px !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .ScrollerForVotes {
@@ -131,7 +130,7 @@
   border-radius: 4px !important;
   background: #5f78d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Next_button:is(:hover, :active, :focus, :focus-visible) {
@@ -141,7 +140,7 @@
   border-radius: 4px !important;
   background: #5f78d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Cancel_button {
@@ -151,7 +150,7 @@
   border-radius: 4px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Next_button:is(:hover, :active, :focus, :focus-visible) {
@@ -161,5 +160,5 @@
   border-radius: 4px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }

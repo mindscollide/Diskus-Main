@@ -1,5 +1,5 @@
 .Sure_Messege_Class {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #6172d6 !important;
   font-size: 15px !important;
 }
@@ -11,7 +11,7 @@
   background: #fff !important;
   border-radius: 4px !important;
   border: 1px solid #a2a2a2 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Proceed_Button_Remove_poll_meeting_Table:is(
@@ -26,7 +26,7 @@
   background: #fff !important;
   border-radius: 4px !important;
   border: 1px solid #a2a2a2 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Cancel_Button_Remove_poll_meeting_Table {
@@ -36,7 +36,7 @@
   color: #fff !important;
   border: none !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Cancel_Button_Remove_poll_meeting_Table:is(
@@ -51,5 +51,5 @@
   color: #fff !important;
   border: none !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }

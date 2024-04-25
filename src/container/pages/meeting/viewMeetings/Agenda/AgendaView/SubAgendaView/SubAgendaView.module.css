@@ -50,7 +50,7 @@ body[dir="rtl"] .subagendaArrow {
 .SubagendaTitle {
   color: #5f78d6;
   font-size: 20px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .overAll_padding_subagenda {
@@ -60,14 +60,14 @@ body[dir="rtl"] .subagendaArrow {
 .SubAgenda_Show_more_Class {
   color: #5f78d6;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   cursor: pointer !important;
 }
 
 .ParticipantName {
   color: #5a5a5a !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Profile_Class {
@@ -81,7 +81,7 @@ body[dir="rtl"] .subagendaArrow {
 .Date_Time {
   color: #5a5a5a !important;
   font-size: 12px !important;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
 }
 
 .Date_Time_Section {
@@ -110,7 +110,7 @@ body[dir="rtl"] .subagendaArrow_Expand {
 .Attachments_Heading {
   color: #6172d6 !important;
   font-size: 16px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Files_Structure {
@@ -141,7 +141,7 @@ body[dir="rtl"] .subagendaArrow_Expand {
 .File_Name {
   color: #5a5a5a !important;
   font-size: 16px !important;
-  font-family: "MontserratRegular" !important;
+  font-weight: 400 !important;
   display: inline-block !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
