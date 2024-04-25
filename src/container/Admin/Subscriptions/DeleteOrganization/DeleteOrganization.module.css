@@ -9,16 +9,16 @@
   font-size: 26px !important;
 }
 body[dir="rtl"] .DeleteOrganization_box_heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .DeleteOrganization_content {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 .DeleteOrganization_content {
   color: #5a5a5a !important;
   border: 1px solid #e1e1e1 !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   background: white !important;
   padding: 25px 30px !important;
   /* max-width: 800px !important; */
@@ -56,12 +56,12 @@ body[dir="rtl"] .DeleteOrganization_content {
   border: none;
   background: #f16b6b !important;
   text-transform: capitalize;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   /* margin-right: 20px; */
   padding: 10px 45px;
 }
 body[dir="rtl"] .deleteOrganization_btn {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 .deleteOrganization_btn:hover,
 .deleteOrganization_btn:focus,
@@ -73,14 +73,14 @@ body[dir="rtl"] .deleteOrganization_btn {
   border: none;
   background: #f16b6b !important;
   text-transform: capitalize;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   /* margin-right: 20px; */
   box-shadow: none !important;
   padding: 10px 45px;
 }
 
 .title {
-  font-family: "MontserratExtraBold-800";
+  font-weight: 800 !important;
   margin-left: 5px !important;
 }
 
@@ -89,6 +89,5 @@ body[dir="rtl"] .deleteOrganization_btn {
 }
 
 body[dir="rtl"] .title {
-  font-family: "IBMPlexSansArabic-Bold";
-  font-weight: 800;
+  font-weight: 800 !important;
 }
