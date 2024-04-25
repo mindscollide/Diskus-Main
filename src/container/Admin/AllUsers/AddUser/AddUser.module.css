@@ -644,7 +644,6 @@ body[dir="rtl"] .checkEmailSpinner {
   justify-content: space-between !important;
   align-items: center !important;
   padding: 7px 4px !important;
-  font-family: inherit;
   color: #4d4d4d !important;
   font-size: 9px !important;
   font-weight: 600;
