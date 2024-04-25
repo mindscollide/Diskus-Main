@@ -7056,8 +7056,7 @@ a.pendingApprovalsNav.nav-link {
 }
 
 .PendingApprovalsTable .ant-table-thead > tr * {
-  font-family: "MontserratMedium-500";
-  font-weight: 600 !important;
+  font-weight: 700 !important;
   border-bottom: 1px solid #5a5a5a !important;
   padding-bottom: 5px !important;
   font-size: 16px !important;
@@ -7075,7 +7074,6 @@ a.pendingApprovalsNav.nav-link {
   padding: 7px 16px !important;
   border-bottom: 1px solid #e1e1e1 !important;
   color: #5a5a5a !important;
-  font-family: "MontserratMedium-500";
   font-style: normal;
   font-weight: 700;
   font-size: 12px !important;
@@ -7088,8 +7086,7 @@ a.pendingApprovalsNav.nav-link {
   border-radius: 0 !important;
   border-left: 0 !important;
   border-right: none !important;
-  font-family: "MontserratMedium";
-  font-weight: 600;
+  font-weight: 700;
   font-size: 12px !important;
   line-height: 15px;
   color: #6172d6 !important;
