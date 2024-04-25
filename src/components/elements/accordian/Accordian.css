@@ -41,7 +41,7 @@
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   white-space: nowrap;
-  font-family: "MontserratSemiBold" !important;
+font-weight: 600;
   font-size: 16px !important;
   color: #2197d7;
   cursor: pointer !important;

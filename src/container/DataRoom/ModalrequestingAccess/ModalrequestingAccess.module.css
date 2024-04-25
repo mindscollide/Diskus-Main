@@ -50,19 +50,19 @@
 .Accessrequest {
   font-size: 12px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 .Bold_heading {
   font-size: 12px !important;
   color: #6172D6;
-  font-family: "MontserratBold";
+  font-weight: 700;
 }
 
 .Email {
   font-size: 8px !important;
   color: #6172D6;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 .Line_height {
@@ -72,7 +72,7 @@
 .Allow_Access {
   font-size: 12px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 .Box_Folder {
@@ -92,7 +92,7 @@
 .Folder_name {
   font-size: 12px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 .Open_sharing_button {
@@ -101,7 +101,7 @@
   background: #6172D6 !important;
   border: 1px solid #e1e1e1;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   font-size: 12px !important;
 }
 
@@ -111,7 +111,7 @@
   background: #6172D6 !important;
   border: 1px solid #e1e1e1;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   font-size: 12px !important;
 }
 
