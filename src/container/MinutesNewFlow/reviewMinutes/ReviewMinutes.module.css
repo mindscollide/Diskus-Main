@@ -6,7 +6,7 @@
 }
 
 .pendingApprovalHeading {
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   font-size: 30px;
   line-height: 37px;
   color: #6172d6;
@@ -19,7 +19,6 @@
   border: none !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratRegular";
   font-size: 12px;
   font-weight: 600;
 }
@@ -31,7 +30,6 @@
   border: none !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratRegular";
   font-size: 12px;
   font-weight: 600;
 }
@@ -44,8 +42,6 @@ span.No-of-reviews {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "MontserratRegular";
-  font-style: normal;
   font-weight: 600;
   font-size: 16px;
   line-height: 20px;
@@ -58,7 +54,7 @@ span.No-of-reviews {
 }
 
 p.Parent-title-heading {
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   font-size: 16px;
   color: #5f78d6;
 }
@@ -79,19 +75,19 @@ span.bar-line {
   border-top: none;
   border-right: none;
   border-bottom: none;
+  position: absolute;
 }
 
 img.Image {
-  width: 40px;
-  height: 40px;
+  width: 20px;
+  height: 20px;
   border-radius: 100%;
 }
 
 p.agendaCreater {
-  font-family: "MontserratSemiBold";
   font-style: normal;
-  font-weight: 600;
-  font-size: 18px;
+  font-weight: 500;
+  font-size: 12px;
   line-height: 15px;
   margin: 0;
   color: #5a5a5a;
@@ -102,4 +98,98 @@ p.agendaCreater {
   border-radius: 4px;
   padding: 20px;
   margin-bottom: 20px;
+  min-height: 100px;
+}
+
+p.uploadedbyuser {
+  font-size: 12px;
+  font-weight: 700;
+  color: #5f78d6;
+  margin: 0 !important;
+  margin-left: 20px !important;
+}
+
+.gap-ti {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 20px !important;
+}
+
+.Accept-comment {
+  width: 104px;
+  background: #6172d6 !important;
+  border-color: #6172d6 !important;
+  height: 24px;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  line-height: 5px;
+  margin-bottom: 10px;
+}
+
+.Accept-comment:is(:active, :hover, :focus, :focus-visible) {
+  width: 104px;
+  background: #6172d6 !important;
+  border-color: #6172d6 !important;
+  height: 24px;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  line-height: 5px;
+  margin-bottom: 10px;
+}
+
+.Reject-comment {
+  width: 104px;
+  background: #fff !important;
+  border-color: #e1e1e1 !important;
+  height: 24px;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  color: #5a5a5a !important;
+  border-radius: 4px !important;
+  line-height: 5px;
+}
+
+.Reject-comment:is(:active, :hover, :focus, :focus-visible) {
+  width: 104px;
+  background: #fff !important;
+  border-color: #e1e1e1 !important;
+  height: 24px;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  color: #5a5a5a !important;
+  border-radius: 4px !important;
+  line-height: 5px;
+}
+
+p.time-uploader {
+  margin: 0;
+  position: absolute;
+  bottom: 20px;
+  margin-left: 20px;
+  color: #5f78d6 !important;
+  font-weight: 500;
+  font-size: 12px;
+}
+
+p.date-uploader {
+  margin: 0;
+  position: absolute;
+  bottom: 5px;
+  margin-left: 20px;
+  color: #5f78d6 !important;
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.inherit-height {
+  min-height: inherit !important;
+}
+
+.gap-subcomments {
+  margin-left: 50px;
 }

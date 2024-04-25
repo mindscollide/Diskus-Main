@@ -6,7 +6,7 @@
 }
 
 .pendingApprovalHeading {
-  font-family: "MontserratSemiBold";
+  font-weight: 700;
   font-size: 30px;
   line-height: 37px;
   color: #6172d6;
@@ -32,15 +32,13 @@
 .activeMinutes:focus-visible,
 .activeMinutes:focus-within {
   background: #6172d6 !important;
-  width: 122px;
+  width: 125px;
   height: 28px;
-  font-family: "Montserrat";
-  font-style: normal;
   font-weight: 600;
   font-size: 12px;
-  line-height: 15px;
   border-color: #6172d6 !important;
   border-radius: 3px;
+  line-height: 15px;
 }
 
 .inActiveMinutes,
@@ -52,9 +50,8 @@
 .inActiveMinutes:focus-visible,
 .inActiveMinutes:focus-within {
   background: #fff !important;
-  width: 122px;
+  width: 125px;
   height: 28px;
-  font-family: "Montserrat";
   font-style: normal;
   font-weight: 600;
   font-size: 12px;
@@ -129,7 +126,7 @@ span.value {
 }
 
 span.numeric-value {
-  font-family: "MontserratSemiBold";
+  /* font-family: "MontserratSemiBold"; */
   font-style: normal;
   font-weight: 700;
   font-size: 40px;
@@ -138,7 +135,6 @@ span.numeric-value {
 
 p.expiredStatus {
   margin: 0 !important;
-  font-family: 'MontserratMedium-500';
   font-style: normal;
   font-weight: 700;
   font-size: 12px;
@@ -148,7 +144,6 @@ p.expiredStatus {
 
 p.reviewedStatus {
   margin: 0 !important;
-  font-family: 'MontserratMedium-500';
   font-style: normal;
   font-weight: 700;
   font-size: 12px;
@@ -158,7 +153,6 @@ p.reviewedStatus {
 
 p.pendingStatus {
   margin: 0 !important;
-  font-family: 'MontserratMedium-500';
   font-style: normal;
   font-weight: 700;
   font-size: 12px;
