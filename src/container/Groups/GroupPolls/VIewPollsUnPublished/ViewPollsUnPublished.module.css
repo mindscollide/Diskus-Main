@@ -1,6 +1,6 @@
 .Heading_vewPolls_Published {
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   font-size: 20px !important;
   word-wrap: break-word !important;
 }
@@ -16,7 +16,7 @@
 .Messege_span_Class {
   color: #5a5a5a !important;
   font-size: 12px !important;
-  font-family: "MontserratMedium-500" !important;
+  font-weight: 500;
   padding: 0px 10px !important;
   word-wrap: break-word;
 }
@@ -40,25 +40,25 @@
 
 .Date_Heading {
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   font-size: 12px !important;
 }
 
 .Date_Fetched {
   color: #5a5a5a !important;
   font-size: 20px !important;
-  font-family: "MontserratMedium-500" !important;
+  font-weight:500;
 }
 
 .Multiple_Answers_zstyles {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   color: #5a5a5a !important;
   font-size: 12px !important;
 }
 
 .Participants {
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   font-size: 20px !important;
 }
 
@@ -71,7 +71,7 @@
 }
 
 .Participants_name {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   color: #5a5a5a !important;
   font-size: 12px !important;
 }
@@ -87,7 +87,7 @@
   font-size: 12px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
 }
 
 .Close_button_View:is(:hover, :active, :focus, :focus-visible) {
@@ -97,5 +97,5 @@
   font-size: 12px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
 }
