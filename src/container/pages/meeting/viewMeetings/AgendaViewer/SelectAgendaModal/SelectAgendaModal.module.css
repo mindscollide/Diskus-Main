@@ -43,7 +43,7 @@ body[dir="rtl"] span.fileNameAttachment {
   background: #6172d6 !important;
   border-radius: 4px !important;
   color: #fff !important;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   font-size: 12px !important;
   padding: 8px 16px !important;
   font-weight: 500;
