@@ -4,7 +4,7 @@
   flex-direction: column;
   width: 380px !important;
   height: auto;
-  padding: 30px 22px;
+  padding: 30px 41px !important;
   border: 1px solid #e1e1e1;
   border-radius: 4px;
   margin: 0px 40px;
@@ -31,7 +31,8 @@ body[dir="rtl"] .signIn_heading {
 }
 
 .Next_button_EmailVerify {
-  width: 90%;
+  width: 100%;
+  padding: 10px 30px !important;
   border-radius: 4px;
   background-color: #6172d6 !important;
   color: #fff !important;
@@ -46,9 +47,10 @@ body[dir="rtl"] .Next_button_EmailVerify {
 }
 
 .Next_button_EmailVerify:focus-visible {
-  width: 90%;
+  width: 100%;
   border-radius: 4px;
-  font-size: calc(18px - 20%) !important;
+  padding: 10px 30px !important;
+  font-size: 12px !important;
   background-color: #6172d6 !important;
   color: #fff !important;
   border: none !important;
@@ -57,7 +59,7 @@ body[dir="rtl"] .Next_button_EmailVerify {
 }
 
 .subscribNow_button_EmailVerify {
-  width: 90%;
+  width: 100%;
   border-radius: 4px;
   font-size: 12px !important;
   background-color: #6172d6 !important;
@@ -72,9 +74,11 @@ body[dir="rtl"] .subscribNow_button_EmailVerify {
 }
 
 .subscribNow_button_EmailVerify:focus-visible {
-  width: 90%;
+  width: 100%;
   border-radius: 4px;
-  font-size: calc(18px - 20%) !important;
+  padding: 10px 30px !important;
+  /* font-size: calc(18px - 20%) !important; */
+  font-size: 12px !important;
   background-color: #6172d6 !important;
   color: #fff !important;
   border: none !important;
@@ -217,7 +221,7 @@ body[dir="rtl"] .errorMessage-inLogin {
 .errorMessage-inLogin_hidden {
   visibility: hidden;
   margin: 0;
-  height: 13px;
+  height: 0px;
   color: #f16b6b;
 }
 

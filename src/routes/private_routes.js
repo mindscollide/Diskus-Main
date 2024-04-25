@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Navigate, Outlet } from "react-router-dom";
-
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 const PrivateRoutes = () => {
   const currentUrl = window.location.href;
-
+  const location = useLocation();
+  const allowedRoutes = JSON.parse(localStorage.getItem("LocalRoutes") || "[]");
+  const currentPath = location.pathname;
+  console.log("allowedRoutes", allowedRoutes);
   useEffect(() => {
     // Action: Meeting RSVP
-    if (currentUrl.includes("DisKus/Meeting/Useravailabilityformeeting?action=")) {
+    if (
+      currentUrl.includes("DisKus/Meeting/Useravailabilityformeeting?action=")
+    ) {
       const parts = currentUrl.split("?action=");
       if (parts.length === 2) {
         const remainingString = parts[1];
@@ -32,7 +36,9 @@ const PrivateRoutes = () => {
     }
 
     // Action: Meeting Minute Collaboration
-    if (currentUrl.includes("DisKus/Meeting/Meetingminutecollaborate?action=")) {
+    if (
+      currentUrl.includes("DisKus/Meeting/Meetingminutecollaborate?action=")
+    ) {
       // Add action-specific logic here if needed
     }
 
@@ -102,28 +108,35 @@ const PrivateRoutes = () => {
     }
 
     // Action: Organization Status Enable
-    if (currentUrl.includes("DisKus/Meeting/Organizationstatusenable?action=")) {
+    if (
+      currentUrl.includes("DisKus/Meeting/Organizationstatusenable?action=")
+    ) {
       // Add action-specific logic here if needed
     }
 
     // Action: Organization Subscription Enable
-    if (currentUrl.includes("DisKus/Meeting/Organizationsubscriptionenable?action=")) {
+    if (
+      currentUrl.includes(
+        "DisKus/Meeting/Organizationsubscriptionenable?action="
+      )
+    ) {
       // Add action-specific logic here if needed
     }
-
   }, [currentUrl]);
 
   // Retrieving data from local storage
   let Blur = localStorage.getItem("blur");
   let currentUserID = localStorage.getItem("userID");
   let RoleID = localStorage.getItem("roleID");
-  const token = localStorage.getItem("token") || ""; // Using logical OR to set default value
-  let TwoFA = JSON.parse(localStorage.getItem("2fa"));
-  let TowApproval = JSON.parse(localStorage.getItem("TowApproval"));
-
-  // State for current user
+  const token =
+    localStorage.getItem("token") !== undefined &&
+    localStorage.getItem("token") !== null
+      ? localStorage.getItem("token")
+      : "";
   const [currentUser, setCurrentUser] = useState(
-    RoleID === "3" && (Blur === undefined || Blur === null) ? true : null
+    (RoleID === "3" || RoleID === "4") && (Blur === undefined || Blur === null)
+      ? true
+      : null
   );
 
   // Rendering logic based on authentication and authorization

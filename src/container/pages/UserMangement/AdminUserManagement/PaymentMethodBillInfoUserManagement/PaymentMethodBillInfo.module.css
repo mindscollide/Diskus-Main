@@ -1,0 +1,100 @@
+.PaymentMethodHeading {
+  font-size: 30px !important;
+  color: #6172d6 !important;
+  font-family: "MontserratBold-700" !important;
+}
+
+body[dir="rtl"] .PaymentMethodHeading {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
+
+.PaymentHiistoryCardStyling {
+  background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  padding: 50px 90px !important;
+}
+
+.nameStyles {
+  font-size: 10px !important;
+  color: #6172d6 !important;
+  font-family: "MontserratSemiBold-600" !important;
+}
+
+body[dir="rtl"] span.billing-address {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.BackButtonPaymentMethod {
+  background: #fff !important;
+  color: #5a5a5a !important;
+  padding: 12px 30px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold-600" !important;
+}
+
+body[dir="rtl"] .BackButtonPaymentMethod {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.BackButtonPaymentMethod:is(:hover, :focus, :focus-visible, :active) {
+  background: #fff !important;
+  color: #5a5a5a !important;
+  padding: 12px 30px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold-600" !important;
+}
+
+.ConfirmBillingDetails {
+  background: #6172d6 !important;
+  color: #fff !important;
+  padding: 12px 30px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold-600" !important;
+}
+
+body[dir="rtl"] .ConfirmBillingDetails {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.ConfirmBillingDetails:is(:hover, :focus, :focus-visible, :active) {
+  background: #6172d6 !important;
+  color: #fff !important;
+  padding: 12px 30px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold-600" !important;
+}
+
+.ContainerStylesPaymentHistory {
+  padding: 20px 0px !important;
+}
+
+.errorMessage {
+  margin: 4px;
+  height: 7px;
+  color: #f16b6b;
+  visibility: visible !important;
+}
+
+body[dir="rtl"] .errorMessage {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
+.errorMessage_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 7px;
+  color: #f16b6b !important;
+}
+
+body[dir="rtl"] .errorMessage_hidden {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}

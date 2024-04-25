@@ -1,0 +1,141 @@
+.AddUserheading {
+  font-size: calc(38px - 50%) !important;
+  color: #6172d6 !important;
+  font-weight: 600 !important;
+  font-family: "MontserratSemiBold-600" !important;
+}
+
+body[dir="rtl"] .AddUserheading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.PageAlignment {
+  padding: 10px 40px !important;
+}
+
+.NameCreateAddtional {
+  font-family: "MontserratSemiBold-600" !important;
+  font-style: normal;
+  color: #6172d6 !important;
+  font-weight: 600;
+  font-size: 10px;
+  line-height: 12px;
+}
+
+body[dir="rtl"] .NameCreateAddtional {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.Steric {
+  color: #f16b6b !important;
+}
+
+.NameClass {
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+body[dir="rtl"] .NameClass {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.AdminAlsoClass {
+  font-family: "MontserratMedium";
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  margin-top: 3px !important;
+}
+
+body[dir="rtl"] .AdminAlsoClass {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
+.AddUserCancelButton {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5a5a5a !important;
+}
+
+.AddUserCancelButton:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5a5a5a !important;
+}
+
+body[dir="rtl"] .AddUserCancelButton {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.AddUserCreateButton {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #fff !important;
+}
+
+.AddUserCreateButton:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #fff !important;
+}
+
+body[dir="rtl"] .AddUserCreateButton {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.checkEmailSpinner {
+  position: relative;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  top: 30px !important;
+  bottom: 0px;
+}
+
+.errorMessage {
+  margin: 4px;
+  height: 7px;
+  color: #f16b6b;
+  visibility: visible !important;
+}
+
+body[dir="rtl"] .errorMessage {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
+.errorMessage_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 7px;
+  color: #f16b6b !important;
+}
+
+body[dir="rtl"] .errorMessage_hidden {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
+.isEmailUnique {
+  position: relative;
+  right: 10px;
+  top: 30px;
+  width: 30px;
+  height: 30px;
+  bottom: 0px;
+  color: green;
+}

@@ -117,6 +117,7 @@ import {
   clearResponseMessage,
 } from "../../../store/actions/MeetingOrganizers_action";
 import ProposedNewMeeting from "./scedulemeeting/ProposedNewMeeting/ProposedNewMeeting";
+import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 
 const NewMeeting = () => {
   const { t } = useTranslation();
@@ -1998,21 +1999,25 @@ const NewMeeting = () => {
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu>
-                      <Dropdown.Item
-                        className="dropdown-item"
-                        onClick={CreateQuickMeeting}
-                      >
-                        {t("Quick-meeting")}
-                      </Dropdown.Item>
+                      {checkFeatureIDAvailability(1) ? (
+                        <Dropdown.Item
+                          className="dropdown-item"
+                          onClick={CreateQuickMeeting}
+                        >
+                          {t("Quick-meeting")}
+                        </Dropdown.Item>
+                      ) : null}
 
-                      <Dropdown.Item
-                        className="dropdown-item"
-                        onClick={openSceduleMeetingPage}
-                      >
-                        {t("Advance-meeting")}
-                      </Dropdown.Item>
+                      {checkFeatureIDAvailability(12) ? (
+                        <Dropdown.Item
+                          className="dropdown-item"
+                          onClick={openSceduleMeetingPage}
+                        >
+                          {t("Advance-meeting")}
+                        </Dropdown.Item>
+                      ) : null}
+
                       {/* Proposed New Meeting */}
-
                       <Dropdown.Item
                         className="dropdown-item"
                         onClick={openProposedNewMeetingPage}

@@ -1,22 +1,15 @@
 {
-  "MeetingDetails": {
-    "MeetingID": 0,
-    "MeetingTitle": "testing the meeting dates ",
-    "MeetingType": { "PK_MTID": 4, "Type": "Board Meeting" },
-    "Location": "",
-    "Description": "hello testing ",
-    "IsVideoChat": true,
-    "IsTalkGroup": false,
-    "OrganizationId": 417,
-    "MeetingDates": [
-      { "MeetingDate": "20240416", "StartTime": "070000", "EndTime": "080000" }
-    ],
-    "MeetingReminders": [4],
-    "Notes": "",
-    "AllowRSVP": true,
-    "NotifyOrganizerOnRSVP": true,
-    "ReucurringMeetingID": 1,
-    "VideoURL": "",
-    "MeetingStatusID": 11
-  }
+  "UserDataList": [
+    {
+      "UserName": "User paid ",
+      "OrganizationName": "hello ",
+      "Designation": "developer",
+      "MobileNumber": "3344554444",
+      "UserEmail": "userpaid@yopmail.com",
+      "OrganizationID": 640,
+      "isAdmin": false,
+      "FK_NumberWorldCountryID": 153,
+      "OrganizationSelectedPackageID": 405
+    }
+  ]
 }

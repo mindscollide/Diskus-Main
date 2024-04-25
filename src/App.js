@@ -25,10 +25,15 @@ import "@fontsource/ibm-plex-sans-arabic/600.css";
 import "@fontsource/ibm-plex-sans-arabic/700.css";
 
 const App = () => {
-  useEffect(() => {
-    logoutAllTabs();
-  }, []);
-  moment.tz.setDefault("America/New_York");
+  return (
+    <Suspense fallback={<Loader />}>
+      {/* Define your routes here */}
+      <RouterProvider router={router} />
+
+      {/* Calling a component or modal in which Iframe calling through their SourceLink  */}
+      <OpenPaymentForm />
+    </Suspense>
+  );
 };
 
 export default App;

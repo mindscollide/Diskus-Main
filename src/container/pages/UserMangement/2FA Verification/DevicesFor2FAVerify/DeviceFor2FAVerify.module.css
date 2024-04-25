@@ -1,0 +1,196 @@
+.EmailVerifyBox_sendmailwithdevice {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 270px !important;
+  /* padding: 0 20px; */
+}
+
+.Next_button_EmailVerifySendEmailRealme {
+  width: 100%;
+  border-radius: 4px;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  font-family: "MontserratSemiBold-600";
+}
+
+.Next_button_EmailVerifySendEmailRealme:focus-visible {
+  width: 100%;
+  border-radius: 4px;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  font-family: "MontserratSemiBold";
+}
+.Next_button_EmailVerifySendEmailRealme:disabled {
+  filter: grayscale(0.5);
+  background-color: #6172d6 !important;
+}
+
+body[dir="rtl"] .Next_button_EmailVerifySendEmailRealme {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-size: 14px !important;
+}
+.Send_Email_Realme_sendmailwithdevice {
+  padding: 40px 30px;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  height: 469px !important;
+  width: 330px !important;
+}
+
+.forogt_email_link {
+  display: flex;
+  justify-content: center;
+  text-decoration: underline;
+  font-family: "MontserratRegular";
+}
+
+.forogt_email_link a {
+  color: #5a5a5a !important;
+}
+
+body[dir="rtl"] .forogt_email_link a {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-size: 12px !important;
+}
+
+.EmailBoxSendRealme {
+  margin-left: 1rem;
+  margin-top: 2rem;
+}
+.FAsendEmailRealme {
+  margin-left: 0.1rem;
+}
+
+.SelectLine {
+  /* margin-top: -0.9rem; */
+  color: #5a5a5a;
+  font-weight: bold;
+  font-family: "MontserratSemiBold-600";
+  margin-bottom: 28px;
+}
+
+body[dir="rtl"] .SelectLine {
+  font-family: "IBMPlexSansArabic-SemiBold";
+  font-size: 16px !important;
+}
+
+.VerifyHeading_sendmailwithdevice {
+  font-weight: bold;
+  color: #5a5a5a;
+  margin-top: 3rem;
+  font-family: "MontserratSemiBold-600";
+  font-size: calc(35px - 20%) !important;
+  margin-bottom: 0px !important;
+}
+body[dir="rtl"] .VerifyHeading_sendmailwithdevice {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-size: calc(35px - 10%) !important;
+}
+.Auth_Icon1SendEmailRealme {
+  position: absolute;
+  left: 24%;
+  top: 15%;
+  z-index: 9;
+}
+
+.circle-imageSendEmailRealme {
+  position: absolute;
+  right: -250px;
+  bottom: -220px;
+  transform: rotate(-66deg);
+}
+
+.SendRealmeXtraZoomColor {
+  font-weight: bold;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold-600";
+}
+body[dir="rtl"] .SendRealmeXtraZoomColor {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-size: 14px !important;
+}
+.SendRealmeXtraZoomColor_active {
+  font-weight: bold;
+  color: #e1e1e1 !important;
+  font-family: "MontserratSemiBold-600";
+}
+body[dir="rtl"] .SendRealmeXtraZoomColor_active {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-size: 14px !important;
+}
+.faSendEmailRealmeXtra {
+  accent-color: red;
+}
+
+.Sendemailreal-language {
+  position: absolute;
+  overflow: hidden !important;
+  top: 50px;
+  right: 150px;
+  padding: 8px 40px !important;
+  z-index: 9999;
+  border-color: rgb(64, 64, 64) !important;
+  box-shadow: none !important;
+  z-index: 1;
+}
+
+.Sendemailreal-language,
+.Sendemailreal-language:focus-within,
+.Sendemailreal-language:focus-visible {
+  border-color: rgb(133, 133, 133) !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.select-language-signin_sendmailwithdevice {
+  position: absolute;
+  overflow: hidden !important;
+  top: 30px;
+  right: 150px;
+  padding: 0 50px !important;
+  z-index: 9999;
+  height: 2.9em !important;
+  border: 1px solid #e1e1e1 !important;
+  box-shadow: none !important;
+  font-family: "MontserratSemiBold-600" !important;
+  border-radius: 4px;
+  outline: none !important;
+}
+body[dir="rtl"] .select-language-signin_sendmailwithdevice {
+  right: 80%;
+}
+.language_options {
+  -webkit-appearance: none !important;
+  -mox-appearance: none !important;
+  appearance: none !important;
+  padding: 20px;
+}
+
+.select-language-signin:focus,
+.select-language-signin:focus-within,
+.select-language-signin:focus-visible {
+  border: 1px solid #e1e1e1 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.languageIcon_sendmailwithdevice {
+  z-index: 99999 !important;
+  position: absolute;
+  right: 295px;
+  top: 38px;
+  width: 25px;
+  height: 25px;
+}
+
+body[dir="rtl"] .languageIcon_sendmailwithdevice {
+  z-index: 99999 !important;
+  position: absolute;
+  right: 80.8%;
+  top: 37px;
+  width: 25px;
+  height: 25px;
+}

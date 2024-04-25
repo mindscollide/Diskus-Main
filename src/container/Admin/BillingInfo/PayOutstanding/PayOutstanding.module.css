@@ -1,5 +1,5 @@
 .selected_package_details {
-  margin: 10px 0;
+  margin: 20px 0;
   border-bottom: 1px solid #ccc;
 }
 
@@ -41,7 +41,7 @@ body[dir="rtl"] .PayInvoiceButton {
 .viewInvocieButton {
   background: none;
   border: 1px solid #e1e1e1;
-  color: #000;
+  color: #5a5a5a !important;
   width: 100%;
   border-radius: 4px;
   display: flex;
@@ -66,7 +66,7 @@ body[dir="rtl"] .viewInvocieButton {
 .viewInvocieButton:target {
   background: none !important;
   border: 1px solid #e1e1e1 !important;
-  color: #000 !important;
+  color: #5a5a5a !important;
   width: 100% !important;
   border-radius: 4px !important;
   display: flex !important;
@@ -88,14 +88,13 @@ body[dir="rtl"] .viewInvocieButton {
 .DownloadInvoiceButton {
   background: none;
   border: 1px solid #e1e1e1;
-  color: #000;
+  color: #5a5a5a !important;
   width: 100%;
   border-radius: 4px;
   display: flex;
   justify-content: center;
   align-items: center;
   transition: all 0.2s;
-  padding: 5px 10px;
   font-size: 13px;
   display: flex;
   justify-content: space-between;
@@ -115,17 +114,19 @@ body[dir="rtl"] .DownloadInvoiceButton {
 .DownloadInvoiceButton:target {
   background: none !important;
   border: 1px solid #e1e1e1 !important;
-  color: #000 !important;
+  color: #5a5a5a !important;
   width: 100% !important;
   border-radius: 4px !important;
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
   transition: all 0.2s !important;
-  padding: 5px 10px !important;
   display: flex !important;
   justify-content: space-between !important;
   font-weight: 500 !important;
+  font-size: 12px !important;
+  padding: 12px 30px;
+  font-family: "MontserratSemiBold" !important;
   font-size: 12px !important;
 }
 
@@ -162,4 +163,50 @@ body[dir="rtl"] .selected_package_details_p1 {
 
 body[dir="rtl"] .selected_package_details_p2 {
   font-weight: 400 !important;
+}
+
+.OutStandingHeading {
+  font-size: 25px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratBold-700" !important;
+}
+
+body[dir="rtl"] .OutStandingHeading {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
+
+.PayoutStandingCard {
+  width: 500px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.Assistance {
+  background: #f2f2f2 !important;
+  height: 251.71px !important;
+  width: 100% !important;
+  border-radius: 4px !important;
+  padding: 10px 10px !important;
+  margin-top: 70px !important;
+}
+
+.CallAssistantSubHeading {
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratBold-700" !important;
+}
+
+body[dir="rtl"] .CallAssistantSubHeading {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
+
+.BussniessmailStyles {
+  font-size: 16px !important;
+  color: #6172d6 !important;
+  font-family: "MontserratBold-700" !important;
+}
+
+body[dir="rtl"] .BussniessmailStyles {
+  font-family: "IBMPlexSansArabic-Bold" !important;
 }

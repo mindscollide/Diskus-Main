@@ -1,0 +1,314 @@
+@font-face {
+  font-family: "MontserratSemiBold";
+  src: url("../../../../assets/fonts-new/montserrat-regular-webfont.woff"),
+    url("../../../../assets/fonts-new/montserrat-regular-webfont.woff2");
+}
+
+@font-face {
+  font-family: "MontserratMedium";
+  src: url("../../../../assets/fonts-new/montserrat-500-webfont.woff"),
+    url("../../../../assets/fonts-new/montserrat-500-webfont.woff2");
+}
+
+.EmailVerifyOTPbox {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 380px !important;
+  padding: 40px 45px;
+}
+
+.signIn_heading {
+  font-size: calc(35px - 20%) !important;
+  font-family: "MontserratSemiBold-600" !important;
+  user-select: none;
+  color: #6172d6;
+}
+
+body[dir="rtl"] .signIn_heading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-size: calc(31px - 20%) !important;
+}
+
+.signIn_heading_line {
+  font-family: "MontserratMedium";
+  font-size: calc(16px - 20%) !important;
+}
+
+body[dir="rtl"] .signIn_heading_line {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
+.Next_button_EmailVerify {
+  width: 280px;
+  border-radius: 1px;
+}
+
+.subscribNow_button_EmailVerify {
+  width: 100%;
+  padding: 12px 30px !important;
+  font-family: "Montserrat";
+  text-transform: uppercase;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 12px !important;
+  background-color: #6172d6;
+}
+
+body[dir="rtl"] .subscribNow_button_EmailVerify {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
+.subscribNow_button_EmailVerify:hover,
+.subscribNow_button_EmailVerify:active,
+.subscribNow_button_EmailVerify:focus,
+.subscribNow_button_EmailVerify:focus-visible,
+.subscribNow_button_EmailVerify:hover {
+  width: 100%;
+  padding: 12px 30px !important;
+  font-family: "Montserrat";
+  text-transform: uppercase;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 12px !important;
+  background-color: #6172d6;
+}
+
+.errorMessage-OTP {
+  margin: 0 0 10px 0;
+  height: 13px;
+  color: #f16b6b;
+  visibility: visible;
+}
+
+body[dir="rtl"] .errorMessage-OTP {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
+.errorMessage-OTP_hidden {
+  visibility: hidden;
+  margin: 0 0 10px 0;
+  height: 13px;
+  color: #f16b6b;
+}
+
+body[dir="rtl"] .errorMessage-OTP_hidden {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
+/* Auth Icon and style of heading which we are using in all auth pages */
+/* Start */
+.Auth_Icon {
+  position: absolute;
+  right: -70px;
+  bottom: -152px;
+  transform: rotate(-8deg);
+  z-index: 99999;
+}
+
+body[dir="rtl"] .Auth_Icon {
+  transform: rotate(34deg);
+  right: -190px;
+}
+
+.Login_page_text {
+  display: flex;
+  margin-top: 11%;
+  flex-direction: column;
+  margin-left: 40px;
+}
+
+.Login_page_text h1 {
+  font-size: calc(60px - 20%) !important;
+  font-family: "MontserratSemiBold-600" !important;
+  margin: 0 !important;
+  width: 114%;
+}
+
+.OTP_auth_paper {
+  margin-left: 60px;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px;
+}
+
+body[dir="rtl"] .OTP_auth_paper {
+  margin-right: 60px;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px;
+  margin-left: 0px !important;
+}
+
+.heading-1 {
+  color: #6172d6;
+}
+
+body[dir="rtl"] .heading-1 {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-size: 70px !important;
+}
+
+.heading-2 {
+  color: #4adede;
+  font-size: 60px !important;
+  font-family: "MontserratSemiBold-600" !important;
+}
+
+body[dir="rtl"] .heading-2 {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+/* End */
+.resendCode_btn {
+  margin-right: 5px;
+  background: none !important;
+  color: #000;
+  margin: 0;
+  user-select: none;
+  border: none !important;
+  padding: 0;
+  text-decoration: underline !important;
+  font-size: calc(16px - 20%) !important;
+}
+
+body[dir="rtl"] .resendCode_btn {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
+.resendCode_bt:hover {
+  margin-right: 5px;
+  background: none !important;
+  color: #000;
+  margin: 0;
+  user-select: none;
+  border: none !important;
+  padding: 0;
+  text-decoration: underline !important;
+}
+
+.resendCode_btn:disabled {
+  opacity: 30%;
+  color: #000;
+}
+
+.resendCode_btn span {
+  user-select: none;
+}
+
+.resendCode_btn:hover {
+  color: #000 !important;
+  background: none !important;
+  border: none !important;
+  text-decoration: none;
+}
+
+.OTPCounter {
+  user-select: none !important;
+}
+
+body[dir="rtl"] .OTPCounter {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
+.GoBackBtn {
+  color: #000 !important;
+  text-decoration: underline !important;
+}
+
+.OTPInput {
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold-600" !important;
+  margin: 0;
+  padding: 0;
+}
+
+.select-language-signin {
+  position: absolute;
+  overflow: hidden !important;
+  top: 30px;
+  right: 150px;
+  padding: 0 50px !important;
+  z-index: 9999;
+  height: 2.9em !important;
+  border: 1px solid #e1e1e1 !important;
+  box-shadow: none !important;
+  font-family: "MontserratSemiBold-600" !important;
+  border-radius: 4px;
+}
+
+body[dir="rtl"] .select-language-signin {
+  position: absolute;
+  overflow: hidden !important;
+  top: 30px;
+  right: 80%;
+  padding: 0 50px !important;
+  z-index: 9999;
+  height: 2.9em !important;
+  border: 1px solid #e1e1e1 !important;
+  box-shadow: none !important;
+  font-family: "MontserratSemiBold-600" !important;
+  border-radius: 4px;
+}
+
+.select-language-signin:focus,
+.select-language-signin:focus-within,
+.select-language-signin:focus-visible {
+  border: 1px solid #e1e1e1 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.languageIcon {
+  z-index: 99999 !important;
+  position: absolute;
+  right: 295px;
+  top: 38px;
+  width: 25px;
+  height: 25px;
+}
+
+body[dir="rtl"] .languageIcon {
+  z-index: 99999 !important;
+  position: absolute;
+  right: 80.7%;
+  top: 37px;
+  width: 25px;
+  height: 25px;
+}
+
+.languageSelector {
+  position: absolute;
+  right: 100px;
+  z-index: 99999 !important;
+  margin-top: 50px;
+  margin-right: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+body[dir="rtl"] .languageSelector {
+  position: absolute;
+  right: -100px;
+  z-index: 99999 !important;
+  margin-top: 50px;
+  margin-right: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.Forgot_passwordforogt_verification_email_link {
+  display: flex;
+  justify-content: center;
+  text-decoration: underline;
+  /* font-size: calc(12px - 20%) !important; */
+  margin-top: 4px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratRegular";
+  cursor: pointer !important;
+}
+
+.Forgot_passwordforogt_verification_email_link a {
+  color: #5a5a5a !important;
+  font-family: "MontserratRegular";
+}

@@ -30,6 +30,7 @@ const UserSettings = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { settingReducer, LanguageReducer } = useSelector((state) => state);
+  const { UserProfileData } = settingReducer;
   const [securitystate, setSecuritystate] = useState(true);
   const [todo, setTodo] = useState(false);
   const [meetingsState, setmeetingsState] = useState(false);
@@ -105,7 +106,9 @@ const UserSettings = () => {
   const [authMicrosoftAccessCode, setAuthMicrosoftAccessCode] = useState("");
 
   useEffect(() => {
-    dispatch(getUserSetting(navigate, t));
+    if (UserProfileData === undefined || UserProfileData === null) {
+      dispatch(getUserSetting(navigate, t, false));
+    }
   }, []);
 
   const handleGoogleLoginSuccess = (response) => {

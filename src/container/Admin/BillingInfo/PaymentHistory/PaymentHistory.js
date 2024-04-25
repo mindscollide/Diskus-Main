@@ -508,10 +508,17 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     <>
       <Container>
         <Row className={styles["filterdrow"]}>
-          <Col lg={4} md={4} sm={12} xs={12}>
+          <Col
+            lg={7}
+            md={7}
+            sm={12}
+            xs={12}
+            className="d-flex gap-3 align-items-center"
+          >
             <label className={styles["Edit-Main-Heading"]}>
               {t("Payment-history")}
             </label>
+            <Button text={"Download"} className={styles["DownloadButton"]} />
           </Col>
           <Col
             lg={5}
@@ -540,7 +547,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
               />
             </div>
           </Col>
-          <Col lg={3} md={3} sm={false} xs={12} />
         </Row>
 
         <Row className={styles["tablecolumnrow"]}>

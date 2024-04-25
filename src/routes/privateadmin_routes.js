@@ -7,29 +7,34 @@ const PrivateAdminRoute = () => {
   let RoleID = localStorage.getItem("roleID");
   const token = JSON.parse(localStorage.getItem("token"));
   const [currentUser, setCurrentUser] = useState(
-    (RoleID === "1" || RoleID === "2") && Blur === null ? true : null
+    (RoleID === "4" || RoleID === "1") && Blur === null ? true : null
   );
   let TwoFA = JSON.parse(localStorage.getItem("2fa"));
   let TowApproval = JSON.parse(localStorage.getItem("TowApproval"));
   const [twoFaAproval, setTwoFaAproval] = useState(
-    TwoFA != undefined && TwoFA != null&&
+    TwoFA != undefined &&
+      TwoFA != null &&
       TwoFA === true &&
-      TowApproval != undefined &&TowApproval != null &&
+      TowApproval != undefined &&
+      TowApproval != null &&
       TowApproval === true
       ? true
-      : (TwoFA === undefined || TwoFA === null) && (TowApproval === undefined || TowApproval === null)?true:false
+      : (TwoFA === undefined || TwoFA === null) &&
+        (TowApproval === undefined || TowApproval === null)
+      ? true
+      : false
   );
-  console.log(
-    "PrivateAdmin",
-    twoFaAproval
-  );
-  console.log(
-    "PrivateAdmin",
-    Blur,
-    currentUser,
-    RoleID === "1" || RoleID === "2",
-    Blur === null
-  );
+  // console.log(
+  //   "PrivateAdmin",
+  //   twoFaAproval
+  // );
+  // console.log(
+  //   "PrivateAdmin",
+  //   Blur,
+  //   currentUser,
+  //   RoleID === "1" || RoleID === "2",
+  //   Blur === null
+  // );
   return currentUser && token && twoFaAproval ? (
     <Outlet />
   ) : (

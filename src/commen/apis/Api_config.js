@@ -202,13 +202,14 @@ const userEmailVerification = {
   RequestMethod: "ServiceManager.UserEmailVerification",
 };
 const userPasswordCreation = {
-  RequestMethod: "ServiceManager.UserPasswordCreation",
+  RequestMethod: "ServiceManager.UsersPasswordCreation",
 };
 const userEmailValidation = {
-  RequestMethod: "ServiceManager.LoginWithEmail",
+  RequestMethod: "ServiceManager.LoginWithUserEmail",
 };
 const userPasswordVerify = {
-  RequestMethod: "ServiceManager.PasswordVerification",
+  RequestMethod: "ServiceManager.UserPasswordVerification",
+  // RequestMethod: "ServiceManager.PasswordVerification",
 };
 const getSelectedPacakge_Detail = {
   RequestMethod: "ServiceManager.GetOrganizationSeletedPackage",
@@ -262,7 +263,7 @@ const deleteOrganizationUser = {
 };
 
 const IsPackageExpiryDetail = {
-  RequestMethod: "ServiceManager.GetOrganizationSelectedPackageExpiryDetails",
+  RequestMethod: "ServiceManager.GetOrganizationSubscriptionExpiryDetails",
 };
 const AllMeetingOrganization = {
   RequestMethod: "ServiceManager.SearchOrganizationMeetings",
@@ -1471,6 +1472,35 @@ const printMeetingAgenda = {
   RequestMethod: "ServiceManager.PrintMeetingAgenda",
 };
 
+const SaveOrganizationAndPakageSelection = {
+  RequestMethod: "ServiceManager.SaveOrganizationsAndSelectedPackage",
+};
+
+const ExtendOrganizationTrial = {
+  RequestMethod: "ServiceManager.ExtendOrganizationTrial",
+};
+
+const AddOrganizationsUser = {
+  RequestMethod: "ServiceManager.AddOrganizationsUsers",
+};
+
+const EditOrganizationsUser = {
+  RequestMethod: "ServiceManager.EditOrganizationsUser",
+};
+
+const AllOrganizationsUsers = {
+  RequestMethod: "ServiceManager.AllOrganizationsUsers",
+};
+
+const OrganizationPackageDetailsAndUserStats = {
+  RequestMethod: "ServiceManager.OrganizationPackageDetailsAndUserStats",
+};
+
+const GetOrganizationSelectedPackagesByOrganizationID = {
+  RequestMethod:
+    "ServiceManager.GetOrganizationSelectedPackagesByOrganizationID",
+};
+
 const joinMeeting = {
   RequestMethod: "ServiceManager.JoinMeeting",
 };
@@ -1479,13 +1509,50 @@ const leaveMeeting = {
   RequestMethod: "ServiceManager.LeaveMeeting",
 };
 
+const getOrganizationSelectedPakages = {
+  RequestMethod: "ServiceManager.GetOrganizationSelectedPackages",
+};
+
+const GetAllUserTypePackages = {
+  RequestMethod: "ServiceManager.GetAllUserTypePackages",
+};
+
 const leaveFileSharingRM = {
   RequestMethod: "ServiceManager.DeleteFileSharing",
+};
+
+// const delete organization User for Admin
+
+const ResendForgotPasswordCode = {
+  RequestMethod: "ServiceManager.ResendForgotPasswordCode",
+};
+
+const DeleteOrganizationsUser = {
+  RequestMethod: "ServiceManager.DeleteOrganizationsUser",
 };
 
 const leaveFolderSharingRM = {
   RequestMethod: "ServiceManager.DeleteFolderSharing",
 };
+
+const PaymentInitiateStepperThree = {
+  RequestMethod: "ServiceManager.PaymentInitiate",
+};
+
+// for get Cancel Subscription Reasons
+const CancelSubReasons = {
+  RequestMethod: "ServiceManager.GetCancelSubscriptionReasons",
+};
+
+// for cancel subscription
+const CancelOrganizationsSubscriptions = {
+  RequestMethod: "ServiceManager.CancelOrganizationsSubscription",
+};
+
+// Api for upgrade button on package details which is not ready yet but structure should be ready when Api will implemented ready to go
+// const upgradePackageApiCallOnPackageDetailPage = {
+//   RequestMethod: ""
+// };
 
 export {
   leaveFolderSharingRM,
@@ -1883,6 +1950,21 @@ export {
   sendAgendaPDFAsEmail,
   exportAgendaAsPDF,
   printMeetingAgenda,
+  SaveOrganizationAndPakageSelection,
+  ExtendOrganizationTrial,
+  AddOrganizationsUser,
+  EditOrganizationsUser,
+  AllOrganizationsUsers,
+  OrganizationPackageDetailsAndUserStats,
+  GetOrganizationSelectedPackagesByOrganizationID,
   joinMeeting,
   leaveMeeting,
+  getOrganizationSelectedPakages,
+  GetAllUserTypePackages,
+  ResendForgotPasswordCode,
+  DeleteOrganizationsUser,
+  PaymentInitiateStepperThree,
+  CancelSubReasons,
+  CancelOrganizationsSubscriptions,
+  // upgradePackageApiCallOnPackageDetailPage,
 };

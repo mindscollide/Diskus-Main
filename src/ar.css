@@ -28,6 +28,10 @@ select.language-dropdown.ar {
   margin-left: 10px;
 }
 
+.Billing_TablePakageSelection.ar span.ant-table-column-title {
+  margin-left: 10px;
+}
+
 body[dir="rtl"] li.ant-dropdown-menu-item {
   text-align: right;
   font-family: "IBMPlexSansArabic-Regular" !important;
@@ -188,6 +192,14 @@ body[dir="rtl"]
   top: 15px;
 }
 
+body[dir="rtl"]
+  .ant-table-wrapper.Billing_TablePakageSelection
+  th.ant-table-cell.ant-table-column-has-sorters
+  .ant-table-column-sorters {
+  position: absolute;
+  top: 15px;
+}
+
 body[dir="rtl"] .todolist-title-col {
   text-align: right !important;
 }
@@ -198,6 +210,15 @@ body[dir="rtl"] td.ant-table-cell {
 }
 
 body[dir="rtl"] .ant-table-wrapper.ToDo .ant-table .ant-table-thead > tr > th {
+  text-align: center !important;
+}
+
+body[dir="rtl"]
+  .ant-table-wrapper.Billing_TablePakageSelection
+  .ant-table
+  .ant-table-thead
+  > tr
+  > th {
   text-align: center !important;
 }
 
@@ -373,10 +394,6 @@ body[dir="rtl"] .upgradePackageAmoutnandList .form-check {
   right: 0px;
 }
 
-/* body[dir="rtl"] .ant-table-wrapper.ToDo table tbody tr td:nth-child(5) {
-  text-align: right !important;
-} */
-
 body[dir="rtl"] .ant-table-wrapper.hello table tbody tr td:nth-child(5) {
   text-align: center !important;
 }
@@ -450,6 +467,15 @@ body[dir="rtl"] .eye_icon.valid-feedback {
 }
 
 body[dir="rtl"] .ant-table-wrapper.ToDo table tbody tr td:nth-child(4) {
+  text-align: right !important;
+}
+
+body[dir="rtl"]
+  .ant-table-wrapper.Billing_TablePakageSelection
+  table
+  tbody
+  tr
+  td:nth-child(4) {
   text-align: right !important;
 }
 

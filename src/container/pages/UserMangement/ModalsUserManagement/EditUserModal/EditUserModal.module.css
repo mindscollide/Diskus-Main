@@ -1,0 +1,75 @@
+.EditUsersHeading {
+  font-size: 30px !important;
+  font-family: "MontserratSemiBold-600" !important;
+  color: #6172d6 !important;
+}
+
+body[dir="rtl"] .EditUsersHeading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.ModalAlignmnet {
+  padding: 0px 20px !important;
+}
+
+.NameCreateAddtional {
+  font-family: "MontserratSemiBold-600" !important;
+  font-style: normal;
+  color: #6172d6 !important;
+  font-weight: 600;
+  font-size: 10px;
+  line-height: 12px;
+}
+
+body[dir="rtl"] .NameCreateAddtional {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.Steric {
+  color: #f16b6b !important;
+}
+
+.AdminAlsoClass {
+  font-family: "MontserratMedium";
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  margin-top: 3px !important;
+}
+
+body[dir="rtl"] .AdminAlsoClass {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
+.EmailStyles {
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold-600" !important;
+}
+
+body[dir="rtl"] .EmailStyles {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.EdituserModalUpdateButton {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #fff !important;
+}
+
+.EdituserModalUpdateButton:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #fff !important;
+}
+
+body[dir="rtl"] .EdituserModalUpdateButton {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}

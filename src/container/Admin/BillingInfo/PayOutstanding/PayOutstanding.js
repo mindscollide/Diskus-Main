@@ -8,6 +8,8 @@ import PDFIcon from "../../../../assets/images/newElements/pdf.png";
 import { useTranslation } from "react-i18next";
 import styles from "./PayOutstanding.module.css";
 import { useDispatch, useSelector } from "react-redux";
+import CallingAssistant from "../../../../assets/images/CallingAssistant.svg";
+import crossIcon from "../../../../assets/images/BlackCrossIconModals.svg";
 import { getPayoutStandingInformation } from "../../../../store/actions/OrganizationBillings_actions";
 import {
   _justShowDateformat,
@@ -68,126 +70,183 @@ const PayOutstanding = () => {
   }, []);
   return (
     <>
-      <Fragment>
-        <Row className="my-3 m-0">
-          <Col sm={12} md={4} lg={4} className="mx-auto">
-            <Row>
-              <Col
-                sm={12}
-                md={12}
-                lg={12}
-                className={styles["PayOutstanding_Heading"]}
-              >
-                {t("Pay-outstanding")}
-              </Col>
-            </Row>
-            <SelectedPackageCard
-              PackageHeading={t("Outstanding-invoice-details")}
-              PackageHeadingClass={styles["PackageHeadingClassName"]}
-              RowsData={
-                <>
-                  <Row className={styles["selected_package_details"]}>
-                    <Col sm={5}>
-                      <p className={styles["selected_package_details_p1"]}>
-                        {t("Invoice") + "#"}
-                      </p>
-                    </Col>
-                    <Col sm={7}>
-                      <p className={styles["selected_package_details_p2"]}>
-                        {payOutStanding.Invoice}
-                      </p>
-                    </Col>
-                  </Row>
-                  <Row className={styles["selected_package_details"]}>
-                    <Col sm={5}>
-                      <p className={styles["selected_package_details_p1"]}>
-                        {t("Due-date")}
-                      </p>
-                    </Col>
-                    <Col sm={7}>
-                      <p className={styles["selected_package_details_p2"]}>
-                        {_justShowDateformatBilling(payOutStanding.DueDate)}
-                      </p>
-                    </Col>
-                  </Row>
-                  <Row className={styles["selected_package_details"]}>
-                    <Col sm={5}>
-                      <p className={styles["selected_package_details_p1"]}>
-                        {t("Invoice-amount")}
-                      </p>
-                    </Col>
-                    <Col sm={7}>
-                      <p className={styles["selected_package_details_p2"]}>
-                        {payOutStanding.InvoiceAmount !== 0 ? (
-                          <>$ {payOutStanding.InvoiceAmount}</>
-                        ) : (
-                          <>{payOutStanding.InvoiceAmount}</>
-                        )}
-                      </p>
-                    </Col>
-                  </Row>
-                  <Row className={styles["selected_package_details"]}>
-                    <Col sm={5}>
-                      <p className={styles["selected_package_details_p1"]}>
-                        {t("Late-charges")}
-                      </p>
-                    </Col>
-                    <Col sm={7}>
-                      <p className={styles["selected_package_details_p2"]}>
-                        {payOutStanding.LateCharges !== 0 ? (
-                          <>$ {payOutStanding.LateCharges}</>
-                        ) : (
-                          <>{payOutStanding.LateCharges}</>
-                        )}
-                      </p>
-                    </Col>
-                  </Row>
-                  <Row className={styles["selected_package_details"]}>
-                    <Col sm={5}>
-                      <p className={styles["selected_package_details_p1"]}>
-                        {t("Balance-due")}
-                      </p>
-                    </Col>
-                    <Col sm={7}>
-                      <p className={styles["selected_package_details_p2"]}>
-                        {payOutStanding.BalanceDue !== 0 ? (
-                          <>$ {payOutStanding.BalanceDue}</>
-                        ) : (
-                          <>{payOutStanding.BalanceDue}</>
-                        )}
-                      </p>
-                    </Col>
-                  </Row>
-                </>
-              }
-            />
-            <Row>
-              <Col sm={12} md={12} lg={12} className="mt-3 p-0">
-                <Button
-                  text={t("Pay-invoice-now")}
-                  className={styles["PayInvoiceButton"]}
-                  // onClick={() => navigate("/paymentForm")}
-                />
-              </Col>
-            </Row>
+      <Container>
+        <Row className="my-3 ">
+          <Col sm={12} md={8} lg={8} className="d-flex justify-content-end">
+            <section className={styles["PayoutStandingCard"]}>
+              <Row>
+                <Col
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  className={styles["PayOutstanding_Heading"]}
+                >
+                  {t("Pay-outstanding")}
+                </Col>
+              </Row>
+              <SelectedPackageCard
+                PackageHeading={
+                  <>
+                    <span className={styles["OutStandingHeading"]}>
+                      {t("Outstanding-invoice-details")}
+                    </span>
+                  </>
+                }
+                PackageHeadingClass={styles["PackageHeadingClassName"]}
+                RowsData={
+                  <>
+                    <Row className={styles["selected_package_details"]}>
+                      <Col sm={6}>
+                        <p className={styles["selected_package_details_p1"]}>
+                          {t("Invoice") + "#"}
+                        </p>
+                      </Col>
+                      <Col sm={6}>
+                        <p className={styles["selected_package_details_p2"]}>
+                          {payOutStanding.Invoice}
+                        </p>
+                      </Col>
+                    </Row>
+                    <Row className={styles["selected_package_details"]}>
+                      <Col sm={6}>
+                        <p className={styles["selected_package_details_p1"]}>
+                          {t("Due-date")}
+                        </p>
+                      </Col>
+                      <Col sm={6}>
+                        <p className={styles["selected_package_details_p2"]}>
+                          {_justShowDateformatBilling(payOutStanding.DueDate)}
+                        </p>
+                      </Col>
+                    </Row>
+                    <Row className={styles["selected_package_details"]}>
+                      <Col sm={6}>
+                        <p className={styles["selected_package_details_p1"]}>
+                          {t("Invoice-amount")}
+                        </p>
+                      </Col>
+                      <Col sm={6}>
+                        <p className={styles["selected_package_details_p2"]}>
+                          {payOutStanding.InvoiceAmount !== 0 ? (
+                            <>$ {payOutStanding.InvoiceAmount}</>
+                          ) : (
+                            <>{payOutStanding.InvoiceAmount}</>
+                          )}
+                        </p>
+                      </Col>
+                    </Row>
+                    <Row className={styles["selected_package_details"]}>
+                      <Col sm={6}>
+                        <p className={styles["selected_package_details_p1"]}>
+                          {t("Late-charges")}
+                        </p>
+                      </Col>
+                      <Col sm={6}>
+                        <p className={styles["selected_package_details_p2"]}>
+                          {payOutStanding.LateCharges !== 0 ? (
+                            <>$ {payOutStanding.LateCharges}</>
+                          ) : (
+                            <>{payOutStanding.LateCharges}</>
+                          )}
+                        </p>
+                      </Col>
+                    </Row>
+                    <Row className={styles["selected_package_details"]}>
+                      <Col sm={6}>
+                        <p className={styles["selected_package_details_p1"]}>
+                          {t("Balance-due")}
+                        </p>
+                      </Col>
+                      <Col sm={6}>
+                        <p className={styles["selected_package_details_p2"]}>
+                          {payOutStanding.BalanceDue !== 0 ? (
+                            <>$ {payOutStanding.BalanceDue}</>
+                          ) : (
+                            <>{payOutStanding.BalanceDue}</>
+                          )}
+                        </p>
+                      </Col>
+                    </Row>
+                  </>
+                }
+              />
+              <Row>
+                <Col sm={12} md={12} lg={12} className="mt-3 p-0">
+                  <Button
+                    text={t("Pay-invoice-now")}
+                    className={styles["PayInvoiceButton"]}
+                    // onClick={() => navigate("/paymentForm")}
+                  />
+                </Col>
+              </Row>
 
-            <Row className="p-0 my-2">
-              <Col sm={12} md={6} lg={6} className="mt-2 ps-0">
-                <Button
-                  text={t("View-invoice-detail")}
-                  className={styles["viewInvocieButton"]}
-                />
-              </Col>
-              <Col sm={12} md={6} lg={6} className="mt-2 pe-0">
-                <Button
-                  text={t("Download-invoice")}
-                  className={styles["DownloadInvoiceButton"]}
-                />
-              </Col>
-            </Row>
+              <Row className="p-0 my-2">
+                <Col sm={12} md={6} lg={6} className="mt-2 ps-0">
+                  <Button
+                    text={t("View-invoice-detail")}
+                    className={styles["viewInvocieButton"]}
+                  />
+                </Col>
+                <Col sm={12} md={6} lg={6} className="mt-2 pe-0">
+                  <Button
+                    text={t("Download-invoice")}
+                    className={styles["DownloadInvoiceButton"]}
+                  />
+                </Col>
+              </Row>
+            </section>
+          </Col>
+          <Col sm={12} md={1} lg={1}></Col>
+          <Col sm={12} md={3} lg={3} className="d-flex justify-content-center">
+            <section className={styles["Assistance"]}>
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  xs={12}
+                  className="d-flex justify-content-end"
+                >
+                  <img src={crossIcon} alt="" className="cursor-pointer" />
+                </Col>
+              </Row>
+              <Row className="mt-2">
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  xs={12}
+                  className="d-flex justify-content-center"
+                >
+                  <img src={CallingAssistant} alt="" />
+                </Col>
+              </Row>
+              <Row className="mt-2">
+                <Col
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  className="d-flex flex-column flex-wrap text-center"
+                >
+                  <span className={styles["CallAssistantSubHeading"]}>
+                    {t("If-you-need-any-assistance")}
+                  </span>
+                  <span className={styles["CallAssistantSubHeading"]}>
+                    {t("Please-do-not-hesitate-to-email-us-at")}
+                  </span>
+                </Col>
+              </Row>
+              <Row className="mt-2">
+                <Col lg={12} md={12} sm={12} className="text-center">
+                  <span className={styles["BussniessmailStyles"]}>
+                    {t("account@letsdiskus.com")}
+                  </span>
+                </Col>
+              </Row>
+            </section>
           </Col>
         </Row>
-      </Fragment>
+      </Container>
       {OrganizationBillingReducer.Loading || LanguageReducer.Loading ? (
         <Loader />
       ) : null}

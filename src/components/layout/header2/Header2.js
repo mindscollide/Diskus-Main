@@ -25,14 +25,13 @@ import {
   viewMeetingFlag,
   uploadGlobalFlag,
   LeaveCurrentMeeting,
-  currentMeetingStatus
+  currentMeetingStatus,
 } from "../../../store/actions/NewMeetingActions";
 import {
   getUserDetails,
   getUserSetting,
 } from "../../../store/actions/GetUserSetting";
 import { useLocation } from "react-router-dom";
-import { getPackageExpiryDetail } from "../../../store/actions/GetPackageExpirtyDetails";
 import UserProfile from "../../../container/authentication/User_Profile/UserProfile";
 import LanguageSelector from "../../elements/languageSelector/Language-selector";
 import ModalMeeting from "../../../container/modalmeeting/ModalMeeting";
@@ -41,6 +40,12 @@ import {
   getRecentDocumentsApi,
   uploadDocumentFromDashboard,
 } from "../../../store/actions/DataRoom_actions";
+import UpgradeNowModal from "../../../container/pages/UserMangement/ModalsUserManagement/UpgradeNowModal/UpgradeNowModal.js";
+import {
+  showRequestExtentionModal,
+  showUpgradeNowModal,
+} from "../../../store/actions/UserMangementModalActions.js";
+import RequestExtensionModal from "../../../container/pages/UserMangement/ModalsUserManagement/RequestExtentionModal/RequestExtensionModal.js";
 import { getCurrentDateTimeUTC } from "../../../commen/functions/date_formater.js";
 
 const Header2 = () => {
@@ -49,6 +54,7 @@ const Header2 = () => {
   const state = useSelector((state) => state);
   const { settingReducer, NewMeetingreducer } = state;
   const { UserProfileData } = settingReducer;
+  const { UserManagementModals } = useSelector((state) => state);
   const navigate = useNavigate();
   const [createMeetingModal, setCreateMeetingModal] = useState(false);
   const dispatch = useDispatch();
@@ -58,6 +64,8 @@ const Header2 = () => {
   //for dropdown
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [activateBlur, setActivateBlur] = useState(false);
+  //Trail Expiry States
+  const [trailExpiry, setTrailExpiry] = useState(false);
   let userID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
   // for userProfile
@@ -65,6 +73,7 @@ const Header2 = () => {
   //for userprofile edit modal
   const [editFlag, setEditFlag] = useState(false);
   let Blur = localStorage.getItem("blur");
+  let isTrial = JSON.parse(localStorage.getItem("isTrial"));
 
   let currentLanguage = localStorage.getItem("i18nextLng");
 
@@ -76,7 +85,6 @@ const Header2 = () => {
 
   const [show, setShow] = useState(false);
   const { t } = useTranslation();
-
   useEffect(() => {
     if (Blur !== null) {
       console.log("Blur", Blur);
@@ -96,7 +104,9 @@ const Header2 = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(getUserSetting(navigate, t));
+    if (UserProfileData === undefined || UserProfileData === null) {
+      dispatch(getUserSetting(navigate, t, false));
+    }
   }, []);
 
   useEffect(() => {
@@ -120,6 +130,16 @@ const Header2 = () => {
   // userProfile handler
   const modalUserProfileHandler = (e) => {
     // setUserProfileModal(true);
+    let userID = localStorage.getItem("userID");
+    let OrganizationID = localStorage.getItem("organizationID");
+    dispatch(
+      getUserDetails(navigate, userID, t, OrganizationID, setUserProfileModal)
+    );
+  };
+
+  //Customer Information Modal
+
+  const handleModalCustomerInformation = () => {
     let userID = localStorage.getItem("userID");
     let OrganizationID = localStorage.getItem("organizationID");
     dispatch(
@@ -211,8 +231,8 @@ const Header2 = () => {
         };
         if (CurrentMeetingStatus === 10) {
           dispatch(LeaveCurrentMeeting(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
-      }
+          dispatch(currentMeetingStatus(0));
+        }
       }
     }
   };
@@ -245,8 +265,8 @@ const Header2 = () => {
         };
         if (CurrentMeetingStatus === 10) {
           dispatch(LeaveCurrentMeeting(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
-      }
+          dispatch(currentMeetingStatus(0));
+        }
       }
     }
   };
@@ -279,10 +299,26 @@ const Header2 = () => {
         };
         if (CurrentMeetingStatus === 10) {
           dispatch(LeaveCurrentMeeting(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
-      }
+          dispatch(currentMeetingStatus(0));
+        }
       }
     }
+  };
+
+  const handleShowUpgradedNowModal = () => {
+    dispatch(showUpgradeNowModal(true));
+  };
+
+  const handleRequestExtentionModal = () => {
+    dispatch(showRequestExtentionModal(true));
+  };
+  const openAdminTab = () => {
+    window.open(window.location.origin + "/#/Admin", "_blank");
+  };
+
+  // open new dashboard tab in new window for dashboard user
+  const openUserTab = () => {
+    window.open(window.location.origin + "/#/Diskus/", "_blank");
   };
 
   return (
@@ -295,7 +331,7 @@ const Header2 = () => {
               as={Link}
               to={
                 location.pathname.includes("/Admin")
-                  ? "/Diskus/Admin/Summary"
+                  ? "/Admin/ManageUsers"
                   : "/DisKus/home"
               }
               // onClick={homePageDashboardClick}
@@ -398,11 +434,18 @@ const Header2 = () => {
                   </Dropdown.Menu>
                 ) : (
                   <Dropdown.Menu className="Profile_dropdown_menu">
+                    {JSON.parse(localStorage.getItem("hasAdminRights")) && (
+                      <Dropdown.Item className={currentLanguage}>
+                        <Nav.Link className="d-flex text-black FontClass">
+                          {t("Organization-admin")}
+                        </Nav.Link>
+                      </Dropdown.Item>
+                    )}
                     <Dropdown.Item
                       className={currentLanguage}
                       onClick={modalUserProfileHandler}
                     >
-                      <Nav.Link className="d-flex text-black border-none FontClass">
+                      <Nav.Link className="d-flex text-black FontClass">
                         {t("My-profile")}
                       </Nav.Link>
                     </Dropdown.Item>
@@ -476,7 +519,6 @@ const Header2 = () => {
                         {t("Change-password")}
                       </Nav.Link>
                     </Dropdown.Item>
-
                     <Dropdown.Item
                       className={currentLanguage}
                       onClick={modalLogoutHandler}
@@ -494,7 +536,7 @@ const Header2 = () => {
                 disabled={true}
                 to={
                   location.pathname.includes("/Admin")
-                    ? "/Diskus/Admin/faq's"
+                    ? "/Admin/faq's"
                     : (NewMeetingreducer.scheduleMeetingPageFlag === true ||
                         NewMeetingreducer.viewProposeDateMeetingPageFlag ===
                           true ||
@@ -536,12 +578,12 @@ const Header2 = () => {
               as={Link}
               // to={
               //   location.pathname.includes("/Admin")
-              //     ? "/Diskus/Admin/Summary"
+              //     ? "/Admin/Summary"
               //     : "/DisKus/home"
               // }
               to={
                 location.pathname.includes("/Admin")
-                  ? "/Diskus/Admin/Summary"
+                  ? "/Admin/ManageUsers"
                   : (NewMeetingreducer.scheduleMeetingPageFlag === true ||
                       NewMeetingreducer.viewProposeDateMeetingPageFlag ===
                         true ||
@@ -565,13 +607,63 @@ const Header2 = () => {
                 draggable="false"
               />
             </Navbar.Brand>
+            <Row>
+              <Col lg={12} md={12} sm={12} className="UpgradeButtonsClass">
+                {JSON.parse(localStorage.getItem("isTrial")) && (
+                  <>
+                    {JSON.parse(localStorage.getItem("remainingDays")) > 1 && (
+                      <>
+                        {" "}
+                        <span className={"trialExpireButton"}>
+                          <span className="InnerText">
+                            {t(
+                              "Your-trial-will-expire-in-{{remainingDays}}-days",
+                              {
+                                remainingDays:
+                                  localStorage.getItem("remainingDays"),
+                              }
+                            )}
+                          </span>
+                        </span>
+                        <Button
+                          text={t("Upgrade-now")}
+                          className="UpgradeNowbutton"
+                          onClick={handleShowUpgradedNowModal}
+                        />
+                      </>
+                    )}
+                    {JSON.parse(localStorage.getItem("remainingDays")) ===
+                      1 && (
+                      <>
+                        {" "}
+                        <Button
+                          text={t("Upgrade-now")}
+                          className="UpgradeNowbutton"
+                          onClick={handleShowUpgradedNowModal}
+                        />
+                        {JSON.parse(
+                          localStorage.getItem("isExtensionAvailable")
+                        ) && (
+                          <Button
+                            text={t("Request-an-extention")}
+                            className="UpgradeNowbutton"
+                            onClick={handleRequestExtentionModal}
+                          />
+                        )}
+                      </>
+                    )}
+                  </>
+                )}
+              </Col>
+            </Row>
             <Nav className="ml-auto align-items-center">
               <LanguageSelector />
+
               <Nav.Link className="me-2">
                 <Tooltip placement="topRight" title={t("Shortcuts")}>
                   <div className="dropdown-btn_dotted">
-                    {location.pathname.includes("/Diskus/Admin") ||
-                    location.pathname.includes("/DisKus/Admin") ? null : (
+                    {location.pathname.includes("/Admin") ||
+                    location.pathname.includes("/Admin") ? null : (
                       <DropdownButton
                         id="dropdown-btn_dotted"
                         className="dropdown-btn_dotted"
@@ -652,8 +744,25 @@ const Header2 = () => {
                 {location.pathname.includes("/Admin") ? (
                   <Dropdown.Menu className="dropdown_menu_admin">
                     <Dropdown.Item
+                      // className={`${" text-black"} ${currentLanguage}`}
+                      // onClick={() => forgotPasswordCheck()}
+                      className={currentLanguage}
+                      onClick={openUserTab}
+                    >
+                      <Nav.Link
+                        as={Link}
+                        // to="CustomerInformation"
+                        disabled={true}
+                        className="text-black"
+                      >
+                        {t("User-dashboard")}
+                      </Nav.Link>
+                    </Dropdown.Item>
+
+                    <Dropdown.Item
                       className={`${" text-black"} ${currentLanguage}`}
-                      onClick={() => forgotPasswordCheck()}
+                      onClick={handleModalCustomerInformation}
+                      // onClick={() => forgotPasswordCheck()}
                     >
                       <Nav.Link
                         as={Link}
@@ -689,11 +798,21 @@ const Header2 = () => {
                   </Dropdown.Menu>
                 ) : (
                   <Dropdown.Menu className="Profile_dropdown_menu">
+                    {JSON.parse(localStorage.getItem("hasAdminRights")) && (
+                      <Dropdown.Item
+                        className={currentLanguage}
+                        onClick={openAdminTab}
+                      >
+                        <Nav.Link className="d-flex text-black FontClass">
+                          {t("Organization-admin")}
+                        </Nav.Link>
+                      </Dropdown.Item>
+                    )}
                     <Dropdown.Item
                       className={currentLanguage}
                       onClick={modalUserProfileHandler}
                     >
-                      <Nav.Link className="d-flex text-black border-none FontClass">
+                      <Nav.Link className="d-flex text-black FontClass">
                         {t("My-profile")}
                       </Nav.Link>
                     </Dropdown.Item>
@@ -767,7 +886,6 @@ const Header2 = () => {
                         {t("Change-password")}
                       </Nav.Link>
                     </Dropdown.Item>
-
                     <Dropdown.Item
                       className={currentLanguage}
                       onClick={modalLogoutHandler}
@@ -785,7 +903,7 @@ const Header2 = () => {
                 as={Link}
                 to={
                   location.pathname.includes("/Admin")
-                    ? "/Diskus/Admin/faq's"
+                    ? "/Admin/faq's"
                     : (NewMeetingreducer.scheduleMeetingPageFlag === true ||
                         NewMeetingreducer.viewProposeDateMeetingPageFlag ===
                           true ||
@@ -896,6 +1014,10 @@ const Header2 = () => {
           // this is check from where its called 1 is from header
           checkFlag={1}
         />
+      )}
+      {UserManagementModals.UpgradeNowModal && <UpgradeNowModal />}
+      {UserManagementModals.requestExtentionModal && (
+        <RequestExtensionModal setTrailExpiry={setTrailExpiry} />
       )}
     </>
   );

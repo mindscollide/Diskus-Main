@@ -1,0 +1,60 @@
+.Advance_permission_Confirmation {
+  font-size: 20px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
+  text-align: center !important;
+}
+
+body[dir="rtl"] .Advance_permission_Confirmation {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.No_confirmation {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  border: none !important;
+}
+
+body[dir="rtl"] .No_confirmation {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.No_confirmation:hover,
+.No_confirmation:active,
+.No_confirmation:focus,
+.No_confirmation:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  border: none !important;
+}
+
+.Yes_confirmation {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+body[dir="rtl"] .Yes_confirmation {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.Yes_confirmation:hover,
+.Yes_confirmation:active,
+.Yes_confirmation:focus,
+.Yes_confirmation:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+}

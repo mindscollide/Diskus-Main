@@ -1,0 +1,122 @@
+.outerBoxForBilling {
+  width: 100% !important;
+  min-height: 40vh !important;
+  padding: 30px 40px !important;
+  height: auto !important;
+  background: #fff !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.ChargesPerLicesense {
+  font-size: 20px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratBold-700" !important;
+}
+
+body[dir="rtl"] .ChargesPerLicesense {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.TableheadingTotal {
+  font-size: 20px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold-600" !important;
+}
+
+body[dir="rtl"] .TableheadingTotal {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.Tableheading {
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold-600" !important;
+}
+
+body[dir="rtl"] .Tableheading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.OuterBoxExpiryNotification {
+  background: #f6f9fc !important;
+  height: auto;
+  padding: 20px 15px !important;
+  width: 100% !important;
+  min-height: 20vh !important;
+  margin-top: 99px !important;
+}
+
+.dateStyles {
+  font-size: 20px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratBold-700" !important;
+}
+
+body[dir="rtl"] .dateStyles {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
+
+.AlertHeading {
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold-600" !important;
+}
+
+body[dir="rtl"] .AlertHeading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.ChangePakageDetailsButton {
+  padding: 12px 30px !important;
+  width: 100% !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold-600" !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+}
+
+.ChangePakageDetailsButton:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  width: 100% !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold-600" !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+}
+
+body[dir="rtl"] .ChangePakageDetailsButton {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.errorMessage {
+  margin: 4px;
+  height: 7px;
+  color: #f16b6b;
+  visibility: visible !important;
+}
+
+body[dir="rtl"] .errorMessage {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
+.errorMessage_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 7px;
+  color: #f16b6b !important;
+}
+
+body[dir="rtl"] .errorMessage_hidden {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}

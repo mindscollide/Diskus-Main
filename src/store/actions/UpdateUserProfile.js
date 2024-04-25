@@ -76,7 +76,9 @@ const updateUserProfile = (navigate, userProfileData, t) => {
                 response.data.responseResult
               )
             );
-            await dispatch(getUserSetting(navigate, JSON.parse(currentUserID)));
+            await dispatch(
+              getUserSetting(navigate, JSON.parse(currentUserID), false)
+            );
           } else {
             dispatch(updateuserprofilefail());
           }
@@ -155,7 +157,7 @@ const updateUserProfilePicture = (navigate, t, fileName, base64) => {
               dispatch(
                 getUserDetails(navigate, currentUserID, t, OrganizationID)
               );
-              dispatch(getUserSetting(navigate, t));
+              dispatch(getUserSetting(navigate, t, false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

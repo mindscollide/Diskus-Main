@@ -1,0 +1,562 @@
+@font-face {
+  font-family: "MontserratSemiBold";
+  src: url("../../../../assets/fonts-new/montserrat-600-webfont.woff2"),
+    url("../../../../assets/fonts-new/montserrat-600-webfont.woff2");
+}
+
+.signup_organization_title {
+  color: #6172d6;
+  font-weight: 400;
+  margin: 0 0 25px 0;
+  font-family: "MontserratSemiBold";
+  font-size: calc(32px - 20%);
+}
+
+body[dir="rtl"] .signup_organization_title {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.signup_admin_title {
+  color: #6172d6;
+  font-weight: 400;
+  margin: 40px 0 25px 0;
+  font-family: "MontserratSemiBold";
+  font-size: calc(32px - 20%);
+}
+
+body[dir="rtl"] .signup_admin_title {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.signUp_Container {
+  background-color: #fff !important;
+}
+
+.SignUp_form {
+  margin: 0 auto;
+  padding: 20px 30px;
+  max-width: 800px;
+  background-color: #f6f9fc;
+  border: 1px solid #000;
+}
+
+.signup_select {
+  border-radius: 1px;
+  border: 1px solid #ccc;
+  height: 34px;
+}
+
+.signUp_NextBtn {
+  padding: 12px 30px !important;
+  background-color: #fff !important;
+  border-radius: 4px;
+  border: none;
+  color: #5a5a5a !important;
+  text-transform: uppercase;
+  font-family: "MontserratSemiBold";
+  font-size: 12px !important;
+}
+
+body[dir="rtl"] .signUp_NextBtn {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.signUp_NextBtn:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  background-color: #fff !important;
+  border-radius: 4px !important;
+  border: none !important;
+  color: #5a5a5a !important;
+  text-transform: uppercase !important;
+  font-family: "MontserratSemiBold" !important;
+  font-size: 12px !important;
+}
+
+.signUp_goBack {
+  color: #000;
+  margin: 21px 0 0 0 !important;
+  text-decoration: underline;
+  cursor: pointer !important;
+  font-family: "Montserrat";
+}
+
+body[dir="rtl"] .signUp_goBack {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
+.signUp_NextBtn:hover {
+  background-color: #076db7;
+}
+
+/* left section */
+.signUp_LeftSection {
+  background-color: #fff;
+  position: relative;
+  z-index: 1;
+}
+
+.signUpform_bg {
+  padding: 30px 30px;
+  /* background-color: #f6f9fc; */
+  background-color: #ffffff !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+}
+
+.sigup_form_leftSection {
+  position: absolute;
+  top: 40px;
+  right: -100px;
+  z-index: 9999999;
+}
+
+body[dir="rtl"] .sigup_form_leftSection {
+  position: absolute;
+  left: 40px;
+  right: 120px;
+  z-index: 9999999;
+}
+
+/* right section  */
+
+.signUp_rightSection {
+  background: linear-gradient(to top, #49dbdb 0%, #6172d6 100%);
+  min-height: 100vmin !important;
+  overflow: hidden !important;
+  position: fixed;
+  right: 0;
+}
+
+body[dir="rtl"] .signUp_rightSection {
+  background: linear-gradient(to top, #49dbdb 0%, #6172d6 100%);
+  min-height: 100vmin !important;
+  overflow: hidden !important;
+  position: fixed;
+  left: 0;
+  right: auto;
+}
+
+.rightsection_roundLogo {
+  position: absolute;
+  top: 0px;
+  right: -20px;
+}
+
+body[dir="rtl"] .rightsection_roundLogo {
+  position: absolute;
+  top: -120px;
+  right: 130px;
+  left: 0px;
+  transform: rotate(-475deg);
+}
+
+.errorMessage {
+  margin: 4px;
+  height: 7px;
+  color: #f16b6b;
+  visibility: visible !important;
+}
+
+body[dir="rtl"] .errorMessage {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
+.errorMessage_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 7px;
+  color: #f16b6b !important;
+}
+
+body[dir="rtl"] .errorMessage_hidden {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
+.emailCheckbox span,
+.companynamecheckbox span {
+  width: 35px;
+  border-radius: 5px;
+  height: 35px;
+}
+
+.companynamecheckbox span {
+  border: none !important;
+}
+
+.emailCheckbox .ant-checkbox-inner {
+  background-color: #707070;
+}
+
+.emailCheckbox span {
+  margin: 8px 0 0 0;
+}
+
+.emailCheckbox .ant-checkbox-wrapper {
+  margin-top: 8px !important;
+}
+
+.emailCheckbox .ant-checkbox-wrapper.checked {
+  background-color: #49dbdb;
+}
+
+.emailCheckbox span:focus {
+  border: none !important;
+}
+
+.dropdown-countrylist {
+  max-height: 18vh !important;
+}
+
+.react-tel-input .country-list {
+  background: #ffffff !important;
+}
+
+.checkOrganization {
+  position: relative;
+}
+
+.checkEmail {
+  position: relative;
+}
+
+.checkEmail::placeholder {
+  font-family: "MontserratMedium-500" !important;
+  color: rgba(23, 29, 45, 0.5);
+}
+
+.checkOrganiationSpinner {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  /* margin: 4px; */
+}
+
+.isCompanyNameUnique {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  top: 15px;
+  color: green;
+}
+
+.isEmailUnique {
+  position: relative;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  bottom: 0px;
+  top: 10px;
+  color: green;
+}
+
+.checkEmailSpinner {
+  position: relative;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  bottom: 0px;
+}
+
+.react-flag-Signup {
+  height: 30px !important;
+  padding: auto !important;
+  margin-top: 0px !important;
+}
+
+.react-flag-Signup button {
+  height: 30px !important;
+}
+
+.react-flag-Signup button {
+  height: 39px !important;
+  cursor: pointer !important;
+  width: 100% !important;
+  /* display        : flex !important; */
+  /* margin-left    : 12px; */
+  /* justify-content: space-between !important; */
+  /* align-items    : center !important; */
+  padding: 2px 5px !important;
+  font-family: inherit !important;
+  font-size: 11px !important;
+  color: #4d4d4d !important;
+  border: thin solid rgba(77, 77, 77, 0.3);
+  border-radius: 4px !important;
+  background: transparent;
+}
+
+.react-flag-Signup input {
+  cursor: pointer !important;
+  padding: 5px 8px !important;
+  margin: 4px 5px !important;
+  font-size: 10px !important;
+  white-space: nowrap !important;
+}
+
+.react-flag-Signup button:after {
+  border-top: 3px solid #4d4d4d;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-bottom: 0;
+  margin-left: -3px;
+}
+
+.react-flag-Signup button[aria-expanded="true"]:after {
+  border-top: 0;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-bottom: 3px solid #4d4d4d;
+  margin-left: -3px;
+}
+
+.react-flag-Signup ul {
+  max-height: 120px !important;
+  margin: 0;
+}
+
+.Form-PhoneInput-field {
+  width: 100% !important;
+  border-radius: 4px !important;
+  height: 31px;
+  font-size: 13px !important;
+}
+
+.Form-PhoneInput-field:focus {
+  border: 1px solid #ced4da;
+  box-shadow: none !important;
+}
+
+.select-language-signin {
+  position: absolute;
+  overflow: hidden !important;
+  top: 40px;
+  right: 150px;
+  padding: 0 50px !important;
+  z-index: 9999;
+  height: 2.9em !important;
+  border: 1px solid #e1e1e1 !important;
+  box-shadow: none !important;
+  font-family: "MontserratSemiBold-600" !important;
+  border-radius: 4px;
+}
+
+body[dir="rtl"] .select-language-signin {
+  position: absolute;
+  overflow: hidden !important;
+  top: 40px;
+  right: 80%;
+  padding: 0 50px !important;
+  z-index: 9999;
+  height: 2.9em !important;
+  border: 1px solid #e1e1e1 !important;
+  box-shadow: none !important;
+}
+
+.language_options {
+  -webkit-appearance: none !important;
+  -mox-appearance: none !important;
+  appearance: none !important;
+  padding: 20px;
+}
+
+.select-language-signin:focus,
+.select-language-signin:focus-within,
+.select-language-signin:focus-visible {
+  border: 1px solid #e1e1e1 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.languageIcon {
+  z-index: 99999 !important;
+  position: absolute;
+  right: 295px;
+  top: 50px;
+  width: 25px;
+  height: 25px;
+}
+
+body[dir="rtl"] .languageIcon {
+  z-index: 99999 !important;
+  position: absolute;
+  right: 80.5%;
+  top: 46px;
+  width: 25px;
+  height: 25px;
+}
+
+.countrydropdown .form-select {
+  /* font-size: 13px !important; */
+  height: 30px !important;
+  color: rgba(23, 29, 45, 0.7) !important;
+  font-family: "MontserratMedium-500" !important;
+}
+
+.countrydropdown .form-select::placeholder {
+  color: rgba(23, 29, 45, 0.5) !important;
+  border-color: #e1e1e1 !important;
+}
+
+.countrydropdown .form-select:focus,
+.countrydropdown .form-select:focus-visible {
+  box-shadow: none !important;
+  border: 1px solid #e1e1e1 !important;
+  border-color: #e1e1e1 !important;
+}
+
+.SignUp_inputField::placeholder {
+  color: rgba(23, 29, 45, 0.5);
+}
+
+.SignUp_inputField:focus,
+.SignUp_inputField:visited,
+.SignUp_inputField:focus-visible {
+  box-shadow: none !important;
+  border: none !important;
+  border-color: white !important;
+}
+
+.countrySelector:focus,
+.countrySelector:focus-visible {
+  box-shadow: none !important;
+}
+
+.body[dir="rtl"] .react-flag-Info-Signup button {
+  cursor: pointer !important;
+  max-width: 100% !important;
+  max-height: 120px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 2px 12px !important;
+  font-family: inherit !important;
+  font-size: 12px !important;
+  color: #4d4d4d !important;
+  border: thin solid #e1e1e1;
+  border-radius: 4px !important;
+  background: white !important;
+}
+
+.body[dir="rtl"] .react-flag-Info-Signup button:focus {
+  cursor: pointer !important;
+  max-width: 100% !important;
+  max-height: 120px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 2px 12px !important;
+  font-family: inherit !important;
+  font-size: 12px !important;
+  color: #000000 !important;
+  border: thin solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: white !important;
+}
+
+.react-flag-Info-Signup {
+  height: 39px !important;
+  padding: auto !important;
+  margin-top: -1px !important;
+  font-family: "MontserratMedium" !important;
+  font-size: 13px !important;
+}
+
+.react-flag-Info-Signup button {
+  cursor: pointer !important;
+  max-width: 100% !important;
+  /* max-height: 120px !important; */
+  min-height: 39px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 2px 12px !important;
+  font-family: "MontserratMedium" !important;
+  font-size: 13px !important;
+  color: #4d4d4d !important;
+  border: thin solid #e1e1e1;
+  border-radius: 4px !important;
+  background: white !important;
+}
+
+.react-flag-Info-Signup input {
+  cursor: pointer !important;
+  padding: 5px 8px !important;
+  margin: 4px 5px !important;
+  font-size: 13px !important;
+  font-family: "MontserratMedium" !important;
+  white-space: nowrap !important;
+}
+
+.react-flag-Info-Signup button:after {
+  border-top: 3px solid #4d4d4d;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-bottom: 0;
+  margin-left: -3px;
+}
+
+.react-flag-Info-Signup button[aria-expanded="true"]:after {
+  border-top: 0;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-bottom: 3px solid #4d4d4d;
+  margin-left: -3px;
+}
+
+.react-flag-Info-Signup button:focus {
+  cursor: pointer !important;
+  max-width: 100% !important;
+  max-height: 120px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 2px 12px !important;
+  font-size: 13px !important;
+  font-family: "MontserratMedium" !important;
+  color: #000000 !important;
+  border: thin solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: white !important;
+}
+
+.sign-up-textfield-input {
+  height: 30px !important;
+  font-size: 13px !important;
+  font-family: "MontserratMedium" !important;
+}
+
+.languageSelector {
+  position: absolute;
+  right: 100px;
+  z-index: 99999 !important;
+  margin-top: 40px;
+  margin-right: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+body[dir="rtl"] .languageSelector {
+  position: absolute;
+  right: -100px;
+  z-index: 99999 !important;
+  margin-top: 40px;
+  margin-right: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.Heading {
+  font-family: "MontserratSemiBold-600" !important;
+  font-style: normal;
+  color: #6172d6 !important;
+  font-weight: 600;
+  font-size: 10px;
+  line-height: 12px;
+}
+
+body[dir="rtl"] .Heading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.RedSteric {
+  color: #f16b6b !important;
+}
