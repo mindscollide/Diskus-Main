@@ -30,7 +30,7 @@ select.language-dropdown.ar {
 
 body[dir="rtl"] li.ant-dropdown-menu-item {
   text-align: right;
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400;
 }
 
 body[dir="rtl"] label.ant-radio-wrapper {
@@ -71,7 +71,7 @@ body[dir="rtl"] .rmdp-left i {
 }
 
 body[dir="rtl"] .rmdp-week-day {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .rmdp-day.rmdp-today span {
@@ -194,7 +194,7 @@ body[dir="rtl"] .todolist-title-col {
 
 body[dir="rtl"] td.ant-table-cell {
   text-align: right !important;
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400;
 }
 
 body[dir="rtl"] .ant-table-wrapper.ToDo .ant-table .ant-table-thead > tr > th {
@@ -242,7 +242,7 @@ body[dir="rtl"] h1.upcoming-events {
 body[dir="rtl"] p.desc-item-text.home-recentactivity-notification-description {
   margin-left: 0 !important;
   margin-right: 15px !important;
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500;
 }
 
 body[dir="rtl"] .Recent-Activity-Box {
@@ -255,7 +255,7 @@ body[dir="rtl"] h1.recent-activity {
 }
 
 body[dir="rtl"] h1.recent-activity {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"]
@@ -420,7 +420,7 @@ body[dir="rtl"]
   .ant-table-column-sorters {
   text-align: right !important;
   float: right !important;
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"] i.edit-icon-adminmeeting {
