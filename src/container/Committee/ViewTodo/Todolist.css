@@ -7,7 +7,7 @@
   width: 200px !important;
   overflow: hidden;
   font-size: 14px;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
   color: #2197d7 !important;
 }
 
@@ -18,27 +18,27 @@ body[dir="rtl"] .todolist-title-col {
 
 .blue {
   color: #6172d6;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
 }
 
 .orange {
   color: #d8a709;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
 }
 
 .yellow {
   color: yellow;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
 }
 
 .gray {
   color: gray;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
 }
 
 .green {
   color: green;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
 }
 
 .todolist-create-btn {
@@ -212,7 +212,6 @@ body[dir="rtl"]
   font-size: calc(38px - 50%) !important;
   color: #6172d6 !important;
   font-weight: 600 !important;
-  font-family: "MontserratSemiBold-600" !important;
   position: relative;
   top: 3px;
 }

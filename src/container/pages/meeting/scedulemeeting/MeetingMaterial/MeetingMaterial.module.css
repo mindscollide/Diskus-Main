@@ -1,7 +1,7 @@
 .MeetinMaterial_Heading {
   color: #5f78d6 !important;
   font-size: 16px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Bottom_Line {
@@ -63,7 +63,7 @@
   border-radius: 4px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Cancel_Classname:is(:hover, :active, :focus, :focus-visible) {
@@ -73,7 +73,7 @@
   border-radius: 4px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Save_Classname {
@@ -82,7 +82,7 @@
   border-radius: 4px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Save_Classname:is(:hover, :active, :focus, :focus-visible) {
@@ -91,11 +91,11 @@
   border-radius: 4px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .agenda-name-title {
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   color: #6172d6 !important;
   font-size: 12px !important;
   white-space: nowrap;
@@ -105,7 +105,7 @@
 }
 
 .docx-name-title {
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   color: #5a5a5a !important;
   font-size: 12px !important;
   overflow: hidden !important;
@@ -117,7 +117,7 @@
 }
 
 .No-meeting-material-title {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #b6b3b3 !important;
   font-size: 18px !important;
   cursor: pointer !important;
@@ -129,7 +129,7 @@
   background: #6172d6 !important;
   border: none !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-weight: normal !important;
 }
 .downloadButton:disabled {

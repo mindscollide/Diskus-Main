@@ -80,13 +80,13 @@ body[dir="rtl"] .SubajendaBox {
 
 .Agenda_Heading {
   font-size: 16px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #5f78d6;
 }
 
 .Radio_Button_options {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #5a5a5a;
 }
 
@@ -95,13 +95,13 @@ body[dir="rtl"] .SubajendaBox {
   font-size: 22px !important;
   margin: 0;
   padding: 0;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Choose_file_style-Meeting {
   color: #bbbbbb !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Agenda_Buttons {
@@ -111,7 +111,7 @@ body[dir="rtl"] .SubajendaBox {
   font-size: 12px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Agenda_Buttons:hover,
@@ -124,7 +124,7 @@ body[dir="rtl"] .SubajendaBox {
   font-size: 12px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Save_Agenda_btn {
@@ -133,7 +133,7 @@ body[dir="rtl"] .SubajendaBox {
   border-radius: 4px !important;
   font-size: 12px !important;
   background: #5f78d6 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Save_Agenda_btn:hover,
@@ -145,7 +145,7 @@ body[dir="rtl"] .SubajendaBox {
   border-radius: 4px !important;
   font-size: 12px !important;
   background: #5f78d6 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Image_class_Agenda {
@@ -156,7 +156,7 @@ body[dir="rtl"] .SubajendaBox {
 .Name_Class {
   font-size: 12px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .ClassImage {
@@ -185,7 +185,7 @@ body[dir="rtl"] .SubajendaBox {
 .Add_Agen_Heading {
   font-size: 16px !important;
   color: #5f78d6 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Scroller_Agenda {
@@ -419,7 +419,7 @@ body[dir="rtl"] .subAgendaArrowExpand {
 .Meeting_title_heading {
   color: #5f78d6 !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .blueLine {
@@ -468,13 +468,13 @@ body[dir="rtl"] .backGorund {
 .Meeting_subAgenda {
   color: #5f78d6 !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Show_More_Styles {
   color: #5f78d6 !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   cursor: pointer !important;
 }
 
@@ -491,7 +491,7 @@ body[dir="rtl"] .SubAgendaSection {
 .Show_Details_Tag {
   color: #5f78d6 !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   cursor: pointer !important;
 }
 
@@ -500,7 +500,7 @@ body[dir="rtl"] .SubAgendaSection {
 } */
 
 .AgendaTitle_Heading {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 18px !important;
   color: #5a5a5a !important;
   overflow: hidden;
@@ -511,13 +511,13 @@ body[dir="rtl"] .SubAgendaSection {
 }
 
 .URLTitle_Heading {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 16px !important;
   color: #5a5a5a;
 }
 
 .ContributorTitle_Heading {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 20px !important;
   color: #6172d6 !important;
   margin-top: 15px;
@@ -525,7 +525,7 @@ body[dir="rtl"] .SubAgendaSection {
 }
 
 .ContributorDescription {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 16px !important;
   color: #5a5a5a;
 }
@@ -544,7 +544,7 @@ body[dir="rtl"] .SubAgendaSection {
 }
 
 .folderName__text {
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   color: #5a5a5a !important;
   font-size: 12px !important;
   white-space: nowrap;
@@ -585,7 +585,7 @@ img.Image {
 }
 
 p.agendaCreater {
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   font-style: normal;
   font-weight: 600;
   font-size: 18px;
@@ -617,7 +617,7 @@ p.agendaCreaterTime {
   border: 1px solid#E1E1E1 !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Cancel_Button_Organizers_view:is(:active, :hover, :focus, :focus-visible) {
@@ -627,7 +627,7 @@ p.agendaCreaterTime {
   border: 1px solid#E1E1E1 !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Next_Button_Organizers_view {
@@ -637,7 +637,7 @@ p.agendaCreaterTime {
   border: none !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Next_Button_Organizers_view:is(:active, :hover, :focus, :focus-visible) {
@@ -647,12 +647,12 @@ p.agendaCreaterTime {
   border: none !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .ParaGraph_SavedMeeting {
   color: #5a5a5a !important;
-  font-family: "MontserratRegular" !important;
+  font-weight: 400 !important;
   font-size: 16px !important;
   white-space: pre-wrap !important;
   margin: 10px 0px;
@@ -667,7 +667,7 @@ p.agendaCreaterTime {
   border: none !important;
   font-size: 12px !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   margin-right: 10px;
 }
 
@@ -679,7 +679,7 @@ p.agendaCreaterTime {
   border: none !important;
   font-size: 12px !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   margin-right: 10px;
 }
 
@@ -691,7 +691,7 @@ p.agendaCreaterTime {
   border: none !important;
   font-size: 12px !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   margin-right: 10px;
 }
 
@@ -703,7 +703,7 @@ p.agendaCreaterTime {
   border: none !important;
   font-size: 12px !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   margin-right: 10px;
 }
 
@@ -715,7 +715,7 @@ p.agendaCreaterTime {
   border: none !important;
   font-size: 12px !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .EndVotingButton:is(:hover, :active, :focus, :focus-visible) {
@@ -726,7 +726,7 @@ p.agendaCreaterTime {
   border: none !important;
   font-size: 12px !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .ViewVoteButton {
@@ -737,7 +737,7 @@ p.agendaCreaterTime {
   border: 1px solid #e1e1e1 !important;
   font-size: 12px !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .ViewVoteButton:is(:hover, :active, :focus, :focus-visible) {
@@ -748,7 +748,7 @@ p.agendaCreaterTime {
   border: 1px solid #e1e1e1 !important;
   font-size: 12px !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Cancel_Meeting_Details {
@@ -758,13 +758,13 @@ p.agendaCreaterTime {
   border: 1px solid#E1E1E1 !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Empty_state_heading {
   color: #505050 !important;
   font-size: 30px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Empty_state_Subheading {
@@ -779,7 +779,7 @@ img.Image-Add-Agenda {
 
 span.NoFiles_Heading {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #000;
 }
 
@@ -800,7 +800,7 @@ body[dir="rtl"] img.AttachmentIconImage {
   border-radius: 4px !important;
   background: #5f78d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Save_Classname:is(:hover, :active, :focus, :focus-visible) {
@@ -810,7 +810,7 @@ body[dir="rtl"] img.AttachmentIconImage {
   border-radius: 4px !important;
   background: #5f78d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .box-agendas {
@@ -843,7 +843,7 @@ body[dir="rtl"] .box-agendas {
   left: 30px;
   top: 0;
 }
- 
+
 .box-agendas-camera {
   border: 1px solid #81db86;
   background-color: #81db86;
@@ -914,7 +914,7 @@ body[dir="rtl"] .popup-agenda-menu {
   text-align: left;
   display: block;
   font-size: 18px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   border-bottom: 3px solid #d8d8d8;
   padding: 8px;
   margin-left: 15px;
@@ -927,7 +927,7 @@ body[dir="rtl"] .popup-agenda-menu span {
   text-align: right;
   display: block;
   font-size: 18px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   border-bottom: 3px solid #d8d8d8;
   padding: 8px;
   margin-left: 15px;
@@ -964,11 +964,10 @@ span.dashMinute {
 
 .fileNameAttachment {
   font-style: normal;
-  font-weight: 600;
   font-size: 12px;
   text-decoration-line: underline;
   color: #5a5a5c;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   margin-left: 10px;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -977,11 +976,10 @@ span.dashMinute {
 
 body[dir="rtl"] .fileNameAttachment {
   font-style: normal;
-  font-weight: 600;
   font-size: 12px;
   text-decoration-line: underline;
   color: #5a5a5c;
-  font-family: "MontserratMedium-500";
+  font-weight: 600 !important;
   margin-left: 0;
   margin-right: 10px;
   text-overflow: ellipsis;
@@ -1011,7 +1009,7 @@ body[dir="rtl"] .borderFileName {
 }
 
 .SubAgendaTitle_Heading {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 18px !important;
   color: #6172d6 !important;
   overflow: hidden;
@@ -1024,7 +1022,7 @@ body[dir="rtl"] .borderFileName {
 
 span.SubAgenda_Description {
   color: #5a5a5a !important;
-  font-family: "MontserratRegular" !important;
+  font-weight: 400 !important;
   font-size: 16px !important;
   white-space: pre-wrap !important;
   margin: 10px 0px;
@@ -1039,11 +1037,10 @@ span.SubAgenda_Description {
   border: 1px solid #e1e1e1 !important;
   border-radius: 13px !important;
   font-style: normal !important;
-  font-weight: 600 !important;
   font-size: 12px !important;
   text-decoration-line: underline !important;
   color: #5a5a5c !important;
-  font-family: "MontserratMedium-500" !important;
+  font-weight: 500 !important;
   text-transform: uppercase !important;
   height: 30px !important;
   width: 85px !important;
@@ -1051,8 +1048,7 @@ span.SubAgenda_Description {
 
 p.FileModalTitle {
   margin: 0;
-  font-family: "MontserratMedium-500";
-  font-weight: 600;
+  font-weight: 500 !important;
   font-size: 27px;
   color: #6172d6;
 }

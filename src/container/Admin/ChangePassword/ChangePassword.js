@@ -228,7 +228,7 @@ const ChangePassword = () => {
                   clickIcon={showNewPassowrd}
                 />
                 <span
-                  className="MontserratSemiBold-600 color-5a5a5a"
+                  className=" color-5a5a5a"
                   style={{ fontSize: "0.5rem" }}
                 >
                   ({t("Maximum-password-length-is-25-characters")})

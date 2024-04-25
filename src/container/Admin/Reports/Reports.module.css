@@ -1,6 +1,6 @@
 .user-login-history-heading {
   color: #6172d6;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
   margin: 0;
   padding: 0;
 }
@@ -17,7 +17,7 @@
   border: 1px solid #e1e1e1;
   font-size: 0.8em;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -50,7 +50,7 @@ body[dir="rtl"] .searchbox_icon_userhistoryLogin {
 }
 .ResetBtn {
   padding: 12px 30px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
   border-radius: 4px !important;
   background-color: #fff !important;
   border: 1px solid #e1e1e1 !important;
@@ -59,7 +59,7 @@ body[dir="rtl"] .searchbox_icon_userhistoryLogin {
 .SearchBtn {
   padding: 12px 30px !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
   background-color: #6172d6 !important;
   border: none !important;
   color: #fff !important;

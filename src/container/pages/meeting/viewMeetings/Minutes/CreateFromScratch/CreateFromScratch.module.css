@@ -10,19 +10,19 @@
 }
 
 .Title_File {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 20px !important;
   color: #5a5a5a !important;
 }
 
 .Date_Minutes_And_time {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 12px !important;
   color: #5f78d6 !important;
 }
 
 .Uploaded_heading {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 16px !important;
   color: #5f78d6 !important;
 }
@@ -35,7 +35,7 @@
 }
 
 .Show_more_Styles {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 16px !important;
   color: #5f78d6 !important;
   text-decoration: underline;
@@ -43,7 +43,7 @@
 }
 
 .Name {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 16px !important;
   color: #5a5a5a !important;
 }
@@ -93,7 +93,7 @@
   background: #fff !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .CancelButtonOnSaveAgendaImport:is(:hover, :focus, :focus-visible, :active) {
@@ -103,7 +103,7 @@
   background: #fff !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .SaveButtonOnSaveAgendaImport {
@@ -113,7 +113,7 @@
   color: #fff !important;
   border: none !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .SaveButtonOnSaveAgendaImport:is(:hover, :focus, :focus-visible, :active) {
@@ -123,13 +123,13 @@
   color: #fff !important;
   border: none !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .CreateAnotherScratchBtn {
   color: #5f78d6 !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   width: 100% !important;
   height: 39px !important;
   border: 1px dashed #e1e1e1 !important;
@@ -142,7 +142,7 @@
 .CreateAnotherScratchBtn:is(:hover, :active, :focus, :focus-visible) {
   color: #5f78d6 !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   width: 100% !important;
   height: 39px !important;
   border: 1px dashed #e1e1e1 !important;

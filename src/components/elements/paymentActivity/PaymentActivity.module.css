@@ -1,44 +1,43 @@
 .MontserratExtraBold {
-  font-family: "MontserratExtraBold";
+  font-weight: 700 !important;
 }
 
 body[dir="rtl"] .MontserratExtraBold {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }
 
 .MontserratMedium {
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
 }
 body[dir="rtl"] .MontserratMedium {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 body[dir="rtl"] .paymentActivityTitle {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 .paymentActivityTitle {
   font-size: calc(33px - 50%) !important;
   color: #6172d6 !important;
   font-weight: 600 !important;
-  font-family: "MontserratSemiBold-600" !important;
   padding: 0;
 
   margin-right: 10px;
 }
 
 .PaymentActivitySubtitle {
-  font-family: "MontserratBold";
+  font-weight: 700 !important;
   color: #5a5a5a;
   font-size: 16px;
 }
 body[dir="rtl"] .PaymentActivitySubtitle {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }
 .number-color {
   color: #5a5a5a;
-  font-family: "MontserratBold";
+  font-weight: 700 !important;
   margin-left: 10px;
 }
 
 body[dir="rtl"] .number-color {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }

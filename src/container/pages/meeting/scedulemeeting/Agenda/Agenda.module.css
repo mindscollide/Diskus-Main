@@ -59,13 +59,13 @@
 
 .Agenda_Heading {
   font-size: 16px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #5f78d6;
 }
 
 .Radio_Button_options {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #5a5a5a;
 }
 
@@ -74,13 +74,13 @@
   font-size: 22px !important;
   margin: 0;
   padding: 0;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Choose_file_style-Meeting {
   color: #bbbbbb !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Agenda_Buttons {
@@ -90,7 +90,7 @@
   font-size: 12px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Agenda_Buttons:hover,
@@ -103,7 +103,7 @@
   font-size: 12px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Save_Agenda_btn {
@@ -112,7 +112,7 @@
   border-radius: 4px !important;
   font-size: 12px !important;
   background: #5f78d6 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Save_Agenda_btn:hover,
@@ -124,7 +124,7 @@
   border-radius: 4px !important;
   font-size: 12px !important;
   background: #5f78d6 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Image_class_Agenda {
@@ -135,7 +135,7 @@
 .Name_Class {
   font-size: 12px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .ClassImage {
@@ -164,7 +164,7 @@
 .Add_Agen_Heading {
   font-size: 16px !important;
   color: #5f78d6 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Scroller_Agenda {
@@ -372,7 +372,7 @@ body[dir="rtl"] .subAgendaArrowExpand {
 .Meeting_title_heading {
   color: #5f78d6 !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .blueLine {
@@ -418,13 +418,13 @@ body[dir="rtl"] .backGorund {
 .Meeting_subAgenda {
   color: #5f78d6 !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Show_More_Styles {
   color: #5f78d6 !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   cursor: pointer !important;
 }
 
@@ -441,7 +441,7 @@ body[dir="rtl"] .SubAgendaSection {
 .Show_Details_Tag {
   color: #5f78d6 !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   cursor: pointer !important;
 }
 
@@ -456,7 +456,7 @@ body[dir="rtl"] .SubAgendaSection {
 .Empty_state_heading {
   color: #505050 !important;
   font-size: 30px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Empty_state_Subheading {
@@ -493,7 +493,7 @@ body[dir="rtl"] img.AttachmentIconImage {
   font-size: 12px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   margin: 10px 0px !important;
 }
 
@@ -507,7 +507,7 @@ body[dir="rtl"] img.AttachmentIconImage {
   font-size: 12px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   margin: 10px 0px !important;
 }
 
@@ -518,7 +518,7 @@ body[dir="rtl"] img.AttachmentIconImage {
   font-size: 12px !important;
   border: 3px solid #5f78d6 !important;
   background: #5f78d6 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .show-attachments-button-show:active,
@@ -531,7 +531,7 @@ body[dir="rtl"] img.AttachmentIconImage {
   font-size: 12px !important;
   border: 3px solid #5f78d6 !important;
   background: #5f78d6 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .show-attachments-button-hide {
@@ -543,7 +543,7 @@ body[dir="rtl"] img.AttachmentIconImage {
   color: #5f78d6 !important;
   font-size: 12px !important;
   background: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .show-attachments-button-hide:active,
@@ -558,9 +558,8 @@ body[dir="rtl"] img.AttachmentIconImage {
   /* border-color: #5f78d6 !important; */
   font-size: 12px !important;
   background: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
-
 
 .show-attachments-button-show-subagenda {
   padding: 10px 14px !important;
@@ -569,7 +568,7 @@ body[dir="rtl"] img.AttachmentIconImage {
   font-size: 12px !important;
   border: 3px solid #4adede !important;
   background: #4adede !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #fff !important;
 }
 
@@ -583,7 +582,7 @@ body[dir="rtl"] img.AttachmentIconImage {
   font-size: 12px !important;
   border: 3px solid #4adede !important;
   background: #4adede !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #fff !important;
 }
 
@@ -596,7 +595,7 @@ body[dir="rtl"] img.AttachmentIconImage {
   color: #4adede !important;
   font-size: 12px !important;
   background: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .show-attachments-button-hide-subagenda:active,
@@ -611,5 +610,5 @@ body[dir="rtl"] img.AttachmentIconImage {
   /* border-color: #5f78d6 !important; */
   font-size: 12px !important;
   background: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }

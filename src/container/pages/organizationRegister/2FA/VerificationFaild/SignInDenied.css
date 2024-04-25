@@ -29,7 +29,7 @@
   background-color: #6172d6 !important;
   color: #fff !important;
   border: none !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
 }
 .Next_button_EmailVerify_For_SignInDenied:disabled {
   filter: grayscale(0.5);
@@ -41,14 +41,14 @@
   background-color: #6172d6 !important;
   color: #fff !important;
   border: none !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
 }
 
 .forogt_email_link_for_openrealmextra {
   display: flex;
   justify-content: center;
   text-decoration: underline;
-  font-family: "MontserratRegular";
+  font-weight: 400 !important;
 }
 
 .forogt_email_link_for_openrealmextra {
@@ -115,7 +115,7 @@
   background-color: #6172d6 !important;
   color: #fff !important;
   border: none !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
 }
 
 .Next_button_EmailVerify_For_SignInDenied:focus-visible {
@@ -124,7 +124,7 @@
   background-color: #6172d6 !important;
   color: #fff !important;
   border: none !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
 }
 
 .loginbox_auth_paper_for_SignInDenied {
@@ -138,10 +138,11 @@
 .forogt_email_link_for_openrealmextra {
   display: flex;
   justify-content: center;
-  font-family: "MontserratRegular";
 }
 .forogt_email_link_for_openrealmextra a {
   color: #5a5a5a;
+  font-size: 16px;
+  font-weight: 400 !important;
 }
 
 .EmailBoxverifcationCodeThree {
@@ -162,12 +163,12 @@
   transform: rotate(-66deg);
 }
 .device-title {
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
   font-size: 20px;
   color: "#5A5A5A";
 }
 .otp_value {
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
   font-size: 24px;
   color: #6172d6;
 }
@@ -181,7 +182,8 @@
   height: 2.9em !important;
   border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
+
   border-radius: 4px;
   outline: none !important;
 }
@@ -233,7 +235,7 @@ body[dir="rtl"] .mobile_image {
 .MainHeading_For_SigninDenied {
   font-size: 20px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
 }
 .Image_logo_singin_denied {
   margin-top: 25px !important;
@@ -246,11 +248,11 @@ body[dir="rtl"] .mobile_image {
 
 .List_Components {
   font-size: 17px !important;
-  font-family: "MontserratRegular";
+  font-weight: 400 !important;
   color: #5a5a5a;
 }
 .anchor_tag_text {
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   color: #6172d6;
 }
 

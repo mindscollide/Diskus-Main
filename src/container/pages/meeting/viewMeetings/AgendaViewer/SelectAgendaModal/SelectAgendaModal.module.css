@@ -1,6 +1,6 @@
 p.FileModalTitle {
   margin: 0;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   font-weight: 600;
   font-size: 17px;
   color: #6172d6;
@@ -16,7 +16,7 @@ p.FileModalTitle {
 
 span.fileNameAttachment {
   margin-left: 20px;
-  font-family: "MontserratRegular";
+  font-weight: 400 !important;
   font-style: normal;
   font-weight: 600;
   font-size: 13px;
@@ -28,7 +28,7 @@ span.fileNameAttachment {
 body[dir="rtl"] span.fileNameAttachment {
   margin-left: 0px;
   margin-right: 20px;
-  font-family: "MontserratRegular";
+  font-weight: 400 !important;
   font-style: normal;
   font-weight: 600;
   font-size: 13px;
@@ -43,7 +43,7 @@ body[dir="rtl"] span.fileNameAttachment {
   background: #6172d6 !important;
   border-radius: 4px !important;
   color: #fff !important;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   font-size: 12px !important;
   padding: 8px 16px !important;
   font-weight: 500;

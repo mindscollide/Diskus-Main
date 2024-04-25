@@ -39,7 +39,7 @@
 
 .Clear_All_btn {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #5a5a5a;
   cursor: pointer;
   position: relative;
@@ -50,13 +50,13 @@
   padding: 12px 30px !important;
   border: none !important;
   font-size: 12px;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #fff;
 }
 
 .custom_date_range_heading {
   font-size: 18px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #5a5a5a;
 }
 

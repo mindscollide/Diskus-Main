@@ -26,7 +26,7 @@ const UpdateCommittee = () => {
       {viewUpdateCommittee ? (
         <>
           {" "}
-          <Container className="MontserratSemiBold-600 color-5a5a5a">
+          <Container className=" color-5a5a5a">
             <Row className="mt-3">
               <Col
                 lg={12}
@@ -100,7 +100,7 @@ const UpdateCommittee = () => {
                               className="UpdateCheckbox  d-flex justify-content-start"
                             >
                               <Checkbox
-                                className="SearchCheckbox MontserratSemiBold-600"
+                                className="SearchCheckbox "
                                 name="IsChat"
                                 label={t("Create-Talk-Group")}
                                 // checked={createMeeting.IsChat}

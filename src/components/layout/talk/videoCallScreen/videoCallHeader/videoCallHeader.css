@@ -5,7 +5,7 @@
     font-size: 22px !important;
     color: #6172d6 !important;
     margin: auto;
-    font-family: "MontserratSemiBold";
+    font-weight: 600;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -176,7 +176,7 @@ body[dir="rtl"] .minimize-leave-meeting-options {
     white-space: nowrap;
     width: 75%;
     font-size: 12px;
-    font-family: "MontserratMedium-500";
+    font-weight: 500;
     text-align: center !important;
 }
 
@@ -262,7 +262,7 @@ p.Notification-text {
     margin: 0 !important;
     font-size: 12px;
     color: #fff;
-    font-family: "MontserratMedium";
+    font-weight: 500;
 }
 
 .participants-list {
@@ -309,7 +309,7 @@ p.Notification-text {
     white-space: nowrap;
     width: 75%;
     font-size: 11px;
-    font-family: "MontserratMedium-500";
+    font-weight: 500;
     background: #6172d6 !important;
     border: none;
     color: #fff;
@@ -328,7 +328,7 @@ span.text-positioning {
 
 p.participant-name {
     font-size: 14px;
-    font-family: "MontserratSemiBold-600";
+    font-weight: 600;
     color: #5a5a5a;
     width: 90px;
     overflow: hidden;
@@ -339,7 +339,7 @@ p.participant-name {
 
 p.participant-state {
     font-size: 12px;
-    font-family: "MontserratMedium";
+    font-weight: 500;
     color: #5a5a5a;
     overflow: hidden;
     text-overflow: ellipsis;

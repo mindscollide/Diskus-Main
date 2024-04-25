@@ -40,7 +40,7 @@ body[dir="rtl"] .label-Edit-user-mobile {
   font-size: 12px !important;
   background-color: #ffffff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   width: 119px !important;
   height: 46px !important;
   border-radius: 4px !important;
@@ -83,7 +83,7 @@ body[dir="rtl"] .save-User-btn {
   margin-top: 5px;
   font-size: 16px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratMedium-500";
+  font-weight:500;
 }
 
 .Designation-label-User {
@@ -91,14 +91,14 @@ body[dir="rtl"] .save-User-btn {
   margin-top: 10px;
   font-size: 16px;
   color: #5a5a5a !important;
-  font-family: "MontserratMedium-500";
+  font-weight: 500;
 }
 
 .Mobile-label-User {
   text-align: start !important;
   font-size: 16px;
   color: #5a5a5a !important;
-  font-family: "MontserratMedium-500";
+  font-weight: 500;
 }
 
 .text-fields-name {
@@ -122,8 +122,7 @@ body[dir="rtl"] .save-User-btn {
   background-color: transparent !important;
   border: none !important;
   background-image: none !important;
-  /* margin-top: -16px !important;   */
-  font-family: "MontserratRegular";
+  font-weight: 400;
   color: #5a5a5a !important;
 }
 
@@ -158,7 +157,7 @@ body[dir="rtl"] .save-User-btn {
   height: 39px !important;
   background-color: transparent !important;
   border: none !important;
-  font-family: "MontserratRegular";
+  font-weight:400;
   color: #5a5a5a !important;
   background-image: none !important;
 }
@@ -197,7 +196,7 @@ body[dir="rtl"] .save-User-btn {
 .text-fields-Mobile-disabled {
   background-color: transparent !important;
   border: none !important;
-  font-family: "MontserratRegular";
+  font-weight:400;
   color: #5a5a5a !important;
   background-image: none !important;
 }
@@ -238,7 +237,6 @@ body[dir="rtl"] .save-User-btn {
   justify-content: space-between !important;
   align-items: center !important;
   padding: 0px 3px !important;
-  font-family: inherit !important;
   font-size: 9px !important;
   color: #4d4d4d !important;
   border: thin solid rgba(77, 77, 77, 0.3);
@@ -277,7 +275,6 @@ body[dir="rtl"] .save-User-btn {
   justify-content: space-between !important;
   align-items: center !important;
   padding: 6px 3px !important;
-  font-family: inherit !important;
   font-size: 9px !important;
   color: #000000 !important;
   border: thin solid #e1e1e1 !important;
@@ -290,7 +287,7 @@ body[dir="rtl"] .save-User-btn {
   margin-left: 158px;
   color: #5a5a5a !important;
   margin-top: -13px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 body[dir="rtl"] .ErrorMessege {
@@ -298,7 +295,7 @@ body[dir="rtl"] .ErrorMessege {
   margin-right: 150px !important;
   color: #5a5a5a !important;
   margin-top: -13px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 .Modalsize {

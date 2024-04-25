@@ -1,11 +1,11 @@
 .Result_Heading_resolution {
   font-size: 30px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #6172d6;
 }
 
 body[dir="rtl"] .Result_Heading_resolution {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Result_page_paper {
@@ -17,7 +17,7 @@ body[dir="rtl"] .Result_Heading_resolution {
 
 .results_paper_heading {
   font-size: 20px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #6172d6 !important;
   word-wrap: break-word;
   max-height: 120px;
@@ -44,17 +44,17 @@ body[dir="rtl"] .Result_Heading_resolution {
 }
 
 body[dir="rtl"] .results_paper_heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Total_voters {
   font-size: 16pt !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #5a5a5a !important;
 }
 
 body[dir="rtl"] .Total_voters {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .No_of_Votes {
@@ -63,7 +63,7 @@ body[dir="rtl"] .Total_voters {
 }
 
 body[dir="rtl"] .No_of_Votes {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .yellow_border_box {
@@ -76,27 +76,27 @@ body[dir="rtl"] .No_of_Votes {
 
 .status_vote_resolution {
   font-size: 30px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #ddb227 !important;
 }
 
 body[dir="rtl"] .status_vote_resolution {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .voters_heading_result {
   font-size: 16pt !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #6172d6 !important;
 }
 
 body[dir="rtl"] .voters_heading_result {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .name_participant {
   font-size: 12pt !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #5a5a5a !important;
   /* margin-top: 15px !important; */
 }
@@ -104,7 +104,7 @@ body[dir="rtl"] .voters_heading_result {
 .email_participant {
   font-size: 10pt !important;
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   width: 100% !important;
   text-decoration: underline;
   display: block;
@@ -140,13 +140,13 @@ body[dir="rtl"] .voters_heading_result {
   font-size: 12px !important;
   background: #6172d6;
   color: #fff;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   border-radius: 4px !important;
   border: none !important;
 }
 
 body[dir="rtl"] .Close_resolution_Btn_Resultresolution {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Close_resolution_Btn_Resultresolution:hover,
@@ -157,7 +157,7 @@ body[dir="rtl"] .Close_resolution_Btn_Resultresolution {
   font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   border-radius: 4px !important;
   border: none !important;
 }
@@ -167,7 +167,7 @@ body[dir="rtl"] .Close_resolution_Btn_Resultresolution {
   font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   border-radius: 4px !important;
   border: none !important;
   opacity: 50%;
@@ -178,13 +178,13 @@ body[dir="rtl"] .Close_resolution_Btn_Resultresolution {
   font-size: 12px !important;
   background: #fff;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
 
 body[dir="rtl"] .Close_Btn_Resultresolution {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Close_Btn_Resultresolution:hover,
@@ -195,7 +195,7 @@ body[dir="rtl"] .Close_Btn_Resultresolution {
   font-size: 12px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
@@ -208,13 +208,13 @@ body[dir="rtl"] .Close_Btn_Resultresolution {
 
 .voting_method_heading {
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   font-size: 16px !important;
 }
 
 .voting_methong_value {
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   font-size: 16px !important;
   margin-left: 3px !important;
 }

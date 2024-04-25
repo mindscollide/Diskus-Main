@@ -1,13 +1,13 @@
 .Agenda_items_removed_heading {
   font-size: 15px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #5f78d6 !important;
 }
 
 .Discard_Btn_Agendaremovel {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border: none;
   border-radius: 4px !important;
   color: #fff;
@@ -19,7 +19,7 @@
 .Discard_Btn_Agendaremovel:focus-visible {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border: none !important;
   border-radius: 4px !important;
   color: #fff !important;
@@ -29,7 +29,7 @@
 .Proceed_Btn_Agendaremovel {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   color: #5a5a5a !important;
@@ -42,7 +42,7 @@
 .Proceed_Btn_Agendaremovel:focus-visible {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   color: #5a5a5a !important;

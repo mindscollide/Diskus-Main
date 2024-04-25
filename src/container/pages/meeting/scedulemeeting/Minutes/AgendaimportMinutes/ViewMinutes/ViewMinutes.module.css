@@ -20,13 +20,13 @@
 }
 
 .Title_File {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 20px !important;
   color: #5a5a5a !important;
 }
 
 .Show_more_Styles {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 16px !important;
   color: #5f78d6 !important;
   text-decoration: underline;
@@ -34,7 +34,7 @@
 }
 
 .Date_Minutes_And_time {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 12px !important;
   color: #5f78d6 !important;
 }
@@ -44,19 +44,19 @@
 }
 
 .Uploaded_heading {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 16px !important;
   color: #5f78d6 !important;
 }
 
 .Name {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 16px !important;
   color: #5a5a5a !important;
 }
 
 .Heading_View_Minutes {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 16px !important;
   color: #5f78d6 !important;
 }
@@ -66,7 +66,7 @@
 }
 
 .SubAgendaSubTitleHeaeding {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 16px !important;
   color: #5f78d6 !important;
 }

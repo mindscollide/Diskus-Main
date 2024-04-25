@@ -1,10 +1,10 @@
 .selectedpackagepage_heading {
   color: #6172d6;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .selectedpackagepage_heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .selected_package_details {
@@ -13,13 +13,13 @@ body[dir="rtl"] .selectedpackagepage_heading {
 }
 
 .selectPackage_title {
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   font-size: 30px;
   color: #5a5a5a !important;
 }
 
 body[dir="rtl"] .selectPackage_title {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .selected_package_Container {
@@ -40,7 +40,7 @@ body[dir="rtl"] .selectPackage_title {
 }
 
 body[dir="rtl"] .goBack_SelectedPackage {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
 }
 
 .goBack_SelectedPackage:hover,
@@ -59,13 +59,13 @@ body[dir="rtl"] .goBack_SelectedPackage {
   border-radius: 4px;
   background-color: #6172d6;
   border-color: #6172d6;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   text-transform: uppercase;
   font-size: calc(17px - 20%);
 }
 
 body[dir="rtl"] .ProcessToPayment_SelectedPackage {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .ProcessToPayment_SelectedPackage:hover,
@@ -100,7 +100,7 @@ body[dir="rtl"] .ProcessToPayment_SelectedPackage {
   align-items: center;
   font-size: 1.2rem;
   color: #fff;
-  font-weight: 900;
+  font-weight: 700;
   text-transform: uppercase;
   background: linear-gradient(to left, #4adede 0%, #6172d6 100%);
 }
@@ -162,7 +162,7 @@ body[dir="rtl"] .ProcessToPayment_SelectedPackage {
 
 .packagecard h4 {
   color: #076db7;
-  font-weight: bold;
+  font-weight: 700;
   text-transform: uppercase;
   font-size: calc(38px - 20%);
 }
@@ -184,7 +184,7 @@ body[dir="rtl"] .ProcessToPayment_SelectedPackage {
   margin: 0;
   padding: 0;
   color: #fff;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 /* .packagecard_priceBox_container p {
@@ -227,13 +227,12 @@ body[dir="rtl"] .selectedPackage_priceDetails {
 
 .packagecard_disoucntprice h4 {
   color: #fff;
-  font-weight: 900;
-  font-family: "MontserratBold";
+  font-weight: 700 !important;
   text-transform: capitalize;
 }
 
 body[dir="rtl"] .packagecard_disoucntprice h4 {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .packagecard_two {
@@ -245,7 +244,7 @@ body[dir="rtl"] .packagecard_disoucntprice h4 {
 
 .packagecard_two h4 {
   color: #076db7;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .packagecard_two_visible {
@@ -267,11 +266,11 @@ body[dir="rtl"] .packagecard_disoucntprice h4 {
   text-align: center;
   font-size: 0.8rem;
   text-transform: capitalize;
-  font-family: "MontserratMedium" !important;
+  font-weight: 500 !important;
 }
 
 body[dir="rtl"] .selectedpackagecard_disoucntprice_para {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .packagecard_usersallows {
@@ -281,23 +280,22 @@ body[dir="rtl"] .selectedpackagecard_disoucntprice_para {
   text-align: center;
 }
 
-.packagecard_usersallows+p {
+.packagecard_usersallows + p {
   font-size: 12px;
 }
 
-body[dir="rtl"] .packagecard_usersallows+p {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+body[dir="rtl"] .packagecard_usersallows + p {
+  font-weight: 700 !important;
 }
 
 .packagecard_usersallows_heading {
   text-transform: uppercase;
   color: #5a5a5a;
   font-size: calc(20px - 20%);
-  /* font-family   : "MontserratBold"; */
 }
 
 body[dir="rtl"] .packagecard_usersallows_heading {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }
 
 .packagecard_usersallows_members {
@@ -344,7 +342,7 @@ body[dir="rtl"] .packagecard_usersallows_heading {
 }
 
 body[dir="rtl"] .selected-package-text {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .ExecutiveMembersRange {
@@ -363,18 +361,17 @@ body[dir="rtl"] .selected-package-text {
 .package_membersHeading {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
   color: #fff;
-  font-weight: 500;
   padding: 5px 0;
   border-radius: 0px;
   font-size: calc(12px - 20%);
   text-transform: uppercase;
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
   /* border     : 1px solid #ccc; */
 }
 
 body[dir="rtl"] .package_membersHeading {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 /* .package_membersHeading {
@@ -388,7 +385,7 @@ body[dir="rtl"] .package_membersHeading {
 .package_membersHeading_values {
   font-size: calc(20px - 20%);
   color: #000;
-  font-weight: 900;
+  font-weight: 700;
   padding: 5px 0;
   border: 1px solid #ccc;
   border-top-left-radius: 0px !important;
@@ -397,7 +394,7 @@ body[dir="rtl"] .package_membersHeading {
 }
 
 body[dir="rtl"] .package_membersHeading_values {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }
 
 .span {
@@ -447,7 +444,7 @@ body[dir="rtl"] .package_membersHeading_values {
   height: 2.9em !important;
   border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   border-radius: 4px;
 }
 
@@ -496,7 +493,6 @@ body[dir="rtl"] .languageIcon {
   margin-right: 0 !important;
   display: flex;
   justify-content: flex-end;
-
 }
 
 body[dir="rtl"] .languageSelector {
