@@ -273,7 +273,6 @@ body[dir="rtl"] .errorMessage_hidden {
   /* justify-content: space-between !important; */
   /* align-items    : center !important; */
   padding: 2px 5px !important;
-  font-family: inherit !important;
   font-size: 11px !important;
   color: #4d4d4d !important;
   border: thin solid rgba(77, 77, 77, 0.3);
@@ -426,7 +425,6 @@ body[dir="rtl"] .languageIcon {
   justify-content: space-between !important;
   align-items: center !important;
   padding: 2px 12px !important;
-  font-family: inherit !important;
   font-size: 12px !important;
   color: #4d4d4d !important;
   border: thin solid #e1e1e1;
@@ -442,7 +440,6 @@ body[dir="rtl"] .languageIcon {
   justify-content: space-between !important;
   align-items: center !important;
   padding: 2px 12px !important;
-  font-family: inherit !important;
   font-size: 12px !important;
   color: #000000 !important;
   border: thin solid #e1e1e1 !important;
