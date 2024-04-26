@@ -11,8 +11,9 @@
 }
 
 ::placeholder {
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   color: #bbbbbb !important;
+  font-family: "Montserrat" !important;
 }
 
 /*
@@ -37,14 +38,9 @@ filter blur background on dropdown click
 */
 
 /*normalize bootstrap and other primary style*/
-@font-face {
-  font-family: "MontserratRegular";
-  src: url("./assets/fonts-new/montserrat-regular-webfont.woff"),
-    url("./assets/fonts-new/montserrat-regular-webfont.woff2");
-}
 
 body {
-  font-family: "MontserratRegular" !important;
+  font-family: "Montserrat" !important;
   font-size: 13px !important;
   color: #000000;
   line-height: 1.5;
@@ -52,22 +48,12 @@ body {
   overflow: hidden auto;
 }
 
-@font-face {
-  font-family: "MontserratMedium";
-  src: url(./assets/fonts/Montserrat-Medium.ttf);
-}
-
-@font-face {
-  font-family: "MontserratSemiBold";
-  src: url(./assets/fonts/Montserrat-SemiBold.ttf);
-}
-
-.MontserratSemiBold {
-  font-family: "MontserratSemiBold" !important;
+body[dir="rtl"] {
+  font-family: "IBM Plex Sans Arabic" !important;
 }
 
 .MuiAutocomplete-paper {
-  font-family: "Montserrat", sans-serif !important;
+  font-family: "Montserrat" !important;
 }
 
 .fw-500 {
@@ -124,7 +110,7 @@ body {
 }
 
 .form-control2::placeholder {
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   color: #bbbbbb;
 }
 
@@ -1047,17 +1033,11 @@ body[dir="rtl"] svg.DatePickerIcon {
 
 @import "~antd/dist/antd.less";
 
-@font-face {
-  font-family: "MON";
-  src: url("./assets/fonts-new/montserrat-600-webfont.woff"),
-    url("./assets/fonts-new/montserrat-600-webfont.woff2");
-}
-
 /* // global css for sidebar ends here */
 .ant-table-thead > tr * {
   color: #6172d6 !important;
   /* font-weight     : 16px !important; */
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
   font-size: 14px !important;
   /* width           : 158px !important;
   height             : 21px !important; */
@@ -1067,13 +1047,13 @@ body[dir="rtl"] svg.DatePickerIcon {
 
 .ParticipantAV .ant-table-thead > tr * {
   color: #6172d6 !important;
-  font-family: "MontserratMedium-500";
+
   font-size: 14px !important;
-  font-weight: 600 !important;
+  font-weight: 500 !important;
 }
 
 body[dir="rtl"] .ant-table-thead > tr * {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 /* .ant-table-row {
@@ -1133,7 +1113,7 @@ th.ant-table-cell.ant-table-selection-column {
 
 .ant-pagination-next,
 .ant-pagination-prev {
-  font-family: Arial, Helvetica, sans-serif !important;
+  font-weight: 600;
   outline: 0 !important;
 }
 
@@ -1145,7 +1125,7 @@ th.ant-table-cell.ant-table-selection-column {
   min-width: 32px !important;
   height: 32px !important;
   color: rgba(0, 0, 0, 0.85) !important;
-  font-family: "Open Sans", sans-serif !important;
+  font-weight: 600;
   line-height: 32px !important;
   text-align: center !important;
   vertical-align: middle !important;
@@ -1192,7 +1172,7 @@ th.ant-table-cell.ant-table-selection-column {
 
 .ant-pagination-item {
   min-width: 32px !important;
-  font-family: "Open Sans", sans-serif !important;
+  font-weight: 600;
   text-align: center !important;
   list-style: none !important;
   background-color: #fff !important;
@@ -1240,7 +1220,6 @@ li.ant-pagination-item.ant-pagination-item-1.ant-pagination-item-active {
 }
 
 h4.labelTitle {
-  font-family: "MontserratSemiBold-600";
   color: #6172d6 !important;
   font-size: calc(22px - 28%) !important;
   font-weight: 600 !important;
@@ -1271,7 +1250,7 @@ h4.labelTitle {
   border-bottom: 1px solid #dee2e6 !important;
   font-size: calc(17px - 20%) !important;
   font-weight: normal !important;
-  font-family: "MontserratRegular";
+  font-weight: 400;
 }
 
 .ant-table-wrapper.onBoardTable td.ant-table-cell {
@@ -1854,8 +1833,8 @@ input#Participant {
 
 .ant-table-wrapper.hello .ant-table-thead > tr * {
   color: #6172d6 !important;
-  font-size: calc(17px - 20%) !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-size: 17px;
+  font-weight: 600;
 }
 
 .ant-table-wrapper.onBoardTable .ant-table-thead > tr * {
@@ -1906,7 +1885,6 @@ tr.ant-table-row.ant-table-row-level-0:has(
   /* background-color: #2097d6 !important; */
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
   width: 550px !important;
-  /* font-family     : "Roboto"; */
 }
 
 body[dir="rtl"] .finalwelcomescreen {
@@ -2160,21 +2138,22 @@ button.btn.btn-primary.meeting.end {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   height: 30px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
+
   color: #a2a2a2 !important;
 }
 
 .CreateMeetingReminder
   .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDens::placeholder {
   color: #a2a2a2 !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
 }
 
 body[dir="rtl"]
   .CreateMeetingReminder
   .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDens::placeholder {
   color: #a2a2a2 !important;
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .CreateMeetingReminder input::placeholder {
@@ -2188,7 +2167,8 @@ body[dir="rtl"]
 
 .MuiAutocomplete-option {
   color: #a2a2a2 !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
+
   font-size: 14px !important;
   padding: 0;
   overflow: hidden;
@@ -2235,11 +2215,11 @@ body[dir="rtl"]
 .CreateMeetingInput input {
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
 }
 
 .CreateMeetingInput input::placeholder {
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
   color: #e1e1e1 !important;
   font-size: 12px;
 }
@@ -2296,11 +2276,12 @@ button.btn.btn-primary.meeting.next {
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
 }
 
 .CreateMeetingAgenda input::placeholder {
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
+
   font-size: 12px;
   color: #bbbbbb;
 }
@@ -2327,7 +2308,7 @@ button.btn.btn-primary.addAgenda {
 }
 
 .inputSearchFilter.CreateMeetingParticipant input::placeholder {
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
 }
 
 .inputSearchFilter.CreateMeetingParticipant input:focus {
@@ -2425,7 +2406,7 @@ body[dir="rtl"] button.cameraButton.Enable.btn.btn-primary:focus {
   margin-top: 10px !important;
   margin-right: 10px !important;
   color: #a2a2a2 !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
 }
 
 .UpdateCheckbox .checkboxParentClass {
@@ -2482,7 +2463,7 @@ body[dir="rtl"] button.cameraButton.Enable.btn.btn-primary:focus {
   margin-top: 10px !important;
   margin-right: 10px !important;
   color: #a2a2a2 !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
 }
 
 .Update-committee-Checkbox .checkboxParentClass {
@@ -2543,14 +2524,14 @@ body[dir="rtl"] button.cameraButton.Enable.btn.btn-primary:focus {
   margin-top: 10px !important;
   margin-right: 10px !important;
   color: #a2a2a2 !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
 }
 
 body[dir="rtl"] .Update-committee-Checkbox p:nth-child(1) {
   margin-top: 10px !important;
   margin-right: -10px !important;
   color: #a2a2a2 !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
 }
 
 .UpdateCheckbox .checkboxParentClass {
@@ -2581,11 +2562,11 @@ body[dir="rtl"] .Update-committee-Checkbox p:nth-child(1) {
 }
 
 .CreateMeetingTime .ant-picker::placeholder {
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .CreateMeetingTime .ant-picker::placeholder {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 button.cameraButton.Enable.btn.btn-primary svg {
@@ -2617,7 +2598,7 @@ p.publishMessageModal {
   font-size: 19px;
   font-weight: 400;
   max-width: 350px;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
 }
 
 /* svg.search-Icon.toExpandSearch {
@@ -2793,7 +2774,7 @@ input#Participant {
 }
 
 input#Participant::placeholder {
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
   color: #e1e1e1 !important;
 }
 
@@ -3115,7 +3096,9 @@ a.icon.nav-link.active i.icon-calendar:before {
 a.ant-picker-now-btn:hover {
   color: #6172d6 !important;
 }
-
+/* a.dropdown-item.dropdown-item {
+  line-height: 36px ;
+} */
 a.dropdown-item.dropdown-item:hover {
   background: #f9f9f9;
 }
@@ -3422,7 +3405,7 @@ li.valid {
 }
 
 body[dir="rtl"] .invalid span {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500;
 }
 
 .valid span {
@@ -3432,7 +3415,7 @@ body[dir="rtl"] .invalid span {
 }
 
 body[dir="rtl"] .valid span {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500;
 }
 
 span.userstatus-signal-enabled {
@@ -3583,7 +3566,7 @@ p.card-text {
 }
 
 .MuiTypography-caption {
-  font-family: "MontserratRegular" !important;
+  font-weight: 400;
 }
 
 span.RememberEmail {
@@ -3595,7 +3578,7 @@ span.RememberEmail {
 }
 
 body[dir="rtl"] .Enter-Code-Label label {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500;
 }
 
 h4.selected-amount {
@@ -3607,7 +3590,7 @@ p.details-labels {
 }
 
 body[dir="rtl"] .details-labels {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 p.details-user-signup {
@@ -3615,7 +3598,7 @@ p.details-user-signup {
 }
 
 body[dir="rtl"] .details-user-signup {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400;
 }
 
 h6.Satisfaction-Guaranteed {
@@ -3623,7 +3606,7 @@ h6.Satisfaction-Guaranteed {
 }
 
 body[dir="rtl"] .Satisfaction-Guaranteed {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 600;
 }
 
 p.Satisfaction-Message {
@@ -3631,7 +3614,7 @@ p.Satisfaction-Message {
 }
 
 body[dir="rtl"] .Satisfaction-Message {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Subtotal-Text {
@@ -3639,7 +3622,7 @@ body[dir="rtl"] .Satisfaction-Message {
 }
 
 body[dir="rtl"] .Subtotal-Text {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400;
 }
 
 .Subtotal-Value {
@@ -3647,7 +3630,7 @@ body[dir="rtl"] .Subtotal-Text {
 }
 
 body[dir="rtl"] .Subtotal-Value {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .label-changepassword {
@@ -3658,7 +3641,7 @@ body[dir="rtl"] .Subtotal-Value {
 }
 
 .modal-button-style {
-  font-family: "MontserratMedium" !important;
+  font-weight: 500;
   font-size: 12px !important;
 }
 
@@ -3745,24 +3728,24 @@ p.Disabled-Close {
 
 input[type="text"] {
   font-size: 12px !important;
-  font-family: "MontserratMedium";
+  font-weight: 500;
   box-shadow: none !important;
 }
 
 input::placeholder {
   font-size: 12px !important;
-  font-family: "MontserratMedium";
+  font-weight: 500;
   box-shadow: none !important;
   color: #e1e1e1 !important;
 }
 
 body[dir="rtl"] input::placeholder {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500;
 }
 
 select[placeholder] {
   font-size: 12px !important;
-  font-family: "MontserratMedium" !important;
+  font-weight: 500;
 }
 
 .css-119dahi-control {
@@ -3771,7 +3754,7 @@ select[placeholder] {
 
 .css-14el2xx-placeholder {
   font-size: 12px !important;
-  font-family: "MONTSERRATMEDIUM-500" !important;
+  font-weight: 500;
 }
 
 /* button#rfs-btn {
@@ -3807,7 +3790,7 @@ input:focus {
 
 input#react-select-4-input {
   font-size: 12px !important;
-  font-family: "MONTSERRATMEDIUM-500" !important;
+  font-weight: 500;
 }
 
 .EditUserModalBody button#rfs-btn {
@@ -3843,7 +3826,7 @@ label.organization-labels {
 }
 
 body[dir="rtl"] label.organization-labels {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+ font-weight: 400;
 }
 
 .css-1s2u09g-control {
@@ -3989,7 +3972,7 @@ body[dir="rtl"] .Edit-Meetings-Modal.modal-header button.btn-close {
 }
 
 body[dir="rtl"]
-  .MontserratSemiBold-600.text-start.color-949494.font-11.p-0.col-lg-12.col-md-12.col-sm-12 {
+ .text-start.color-949494.font-11.p-0.col-lg-12.col-md-12.col-sm-12 {
   text-align: right !important;
 }
 
@@ -4024,7 +4007,8 @@ body[dir="rtl"] .radio-cancelsub-modal label.form-check-label {
 }
 
 body[dir="rtl"] .font-sizepaymentmethodcaption {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500;
+
 }
 
 .border-radius-4 {
@@ -4253,12 +4237,13 @@ body[dir="rtl"] .ant-table-wrapper.ToDo {
   background: none !important;
 }
 
-h1.todo-Heading.color-5a5a5a.MontserratSemiBold-600 {
+h1.todo-Heading.color-5a5a5a {
   font-size: calc(19px - 20%);
   position: relative;
   top: 5px;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
+
 }
 
 body[dir="rtl"] .iconForDatePicker.margin-right-20 {
@@ -4614,12 +4599,6 @@ body[dir="rtl"] .mt-2.pe-0.col-lg-6.col-md-6.col-sm-12 {
   padding-left: 0 !important;
 }
 
-/* .react-datepicker__day.react-datepicker__day--003.react-datepicker__day--selected {
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-  border-radius: 50% !important;
-  font-family: "MontserratSemiBold-600" !important;
-} */
-
 .color-black {
   color: #000 !important;
 }
@@ -4898,17 +4877,20 @@ span.css-1u9des2-indicatorSeparator {
 .ql-editor.ql-blank::before {
   font-size: 12px !important;
   font-style: normal !important;
-  font-family: "MontserratMedium" !important;
+  font-weight: 500;
+
   box-shadow: none !important;
 }
 
 body[dir="rtl"] .ql-editor.ql-blank::before {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
+
   text-align: right;
 }
 
 body[dir="rtl"] .ql-editor.ql-blank {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
+
   text-align: right;
 }
 
@@ -5072,7 +5054,8 @@ body[dir="rtl"] .ql-editor.ql-blank {
 .createmeeting-schedule-reminder
   .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
+
   color: #a2a2a2 !important;
   padding: 0px !important;
   margin-top: 2px;
@@ -5082,7 +5065,8 @@ body[dir="rtl"] .ql-editor.ql-blank {
 .Atteendees-organizer-participant
   .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
+
   color: #a2a2a2 !important;
   height: 39px !important;
   margin-top: 5px;
@@ -5091,7 +5075,8 @@ body[dir="rtl"] .ql-editor.ql-blank {
 .group-type-select-field
   .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
+
   color: #a2a2a2 !important;
   margin-left: 10px !important;
   height: 39px !important;
@@ -5101,7 +5086,8 @@ body[dir="rtl"] .ql-editor.ql-blank {
 .searchBox-dropdowns-resolution
   .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
+
   color: #a2a2a2 !important;
   margin-left: 0px !important;
   height: 39px !important;
@@ -5111,19 +5097,22 @@ body[dir="rtl"] .ql-editor.ql-blank {
 .select-dropdowns-height .css-13cymwt-control {
   height: 39px !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
+
   color: #a2a2a2 !important;
 }
 
 body[dir="rtl"] .select-dropdowns-height .css-13cymwt-control {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
+
 }
 
 .searchResult_Document__control {
   height: 39px !important;
   width: 100%;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
+
   box-shadow: none !important;
 }
 
@@ -5135,7 +5124,8 @@ body[dir="rtl"]
   .group-type-select-field
   .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
+
   color: #a2a2a2 !important;
   margin-right: 28px !important;
   height: 39px !important;
@@ -5146,7 +5136,8 @@ body[dir="rtl"]
   .searchBox-dropdowns-resolution
   .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
   border-radius: 4px !important;
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
+
   color: #a2a2a2 !important;
   margin-right: 0px !important;
   height: 39px !important;
@@ -5156,7 +5147,8 @@ body[dir="rtl"]
 .commmittee-type-select-field
   .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
+
   color: #a2a2a2 !important;
   margin-left: 10px !important;
   height: 39px !important;
@@ -5167,7 +5159,8 @@ body[dir="rtl"]
   .commmittee-type-select-field
   .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
+
   color: #a2a2a2 !important;
   margin-right: 29px !important;
   height: 39px !important;
@@ -5177,7 +5170,8 @@ body[dir="rtl"]
 .group-select-field
   .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
+
   color: #a2a2a2 !important;
   height: 39px !important;
   margin-top: 2px;
@@ -5186,7 +5180,8 @@ body[dir="rtl"]
 .committee-update-type-select-fields
   .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
+
   color: #a2a2a2 !important;
   margin-left: 10px !important;
   height: 39px !important;
@@ -5197,7 +5192,8 @@ body[dir="rtl"]
   .committee-update-type-select-fields
   .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
+
   color: #a2a2a2 !important;
   margin-right: 10px !important;
   height: 39px !important;
@@ -5207,7 +5203,8 @@ body[dir="rtl"]
 .committee-select-fields
   .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
+
   color: #a2a2a2 !important;
   height: 39px !important;
   margin-top: 2px;
@@ -5217,7 +5214,8 @@ body[dir="rtl"]
   .committee-select-fields
   .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
   border-radius: 4px !important;
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
+
   color: #a2a2a2 !important;
   height: 39px !important;
   margin-top: 2px;
@@ -5354,7 +5352,7 @@ body[dir="rtl"]
 .DataRoom_DropDown button {
   width: 160px;
   height: 31px;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
   color: #fff !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   display: flex;
@@ -5390,7 +5388,8 @@ body[dir="rtl"] .DataRoom_DropDown .dropdown-menu.show {
 
 .DataRoom_DropDown .dropdown-menu.show .dropdown-item {
   padding: 10px 10px;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
+
   text-align: center;
   font-size: 12px !important;
   border-bottom: 2px solid #a2a2a2 !important;
@@ -5491,48 +5490,59 @@ span.package-icon-style {
 
 body[dir="rtl"] .SignupOrganization input.form-control {
   font-size: 13px !important;
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500;
+
 }
 
 body[dir="rtl"] .Arabicstyles {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700;
+
 }
 
 body[dir="rtl"] .Arabicstyles_Subtotal_Not_include_taxes {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight:500;
+
 }
 
 body[dir="rtl"] .Saved_money_Tagline {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 400;
+
 }
 
 body[dir="rtl"] .FontArabicRegular {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400;
+
 }
 
 body[dir="rtl"] .ant-picker-now-btn {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400;
+
 }
 
 body[dir="rtl"] .ant-btn-sm {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400;
+
 }
 
 body[dir="rtl"] .ant-btn-link {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400;
+
 }
 
 /* Calender */
 body[dir="rtl"] .rbc-button-link {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
+
 }
 
 body[dir="rtl"] .ant-btn-primary {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400;
+
 }
 
 body[dir="rtl"] .modaltodolist-attachment-text {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight:400;
+
 }
 
 .ant-table-body::-webkit-scrollbar {
@@ -5549,51 +5559,61 @@ body[dir="rtl"] .modaltodolist-attachment-text {
 }
 
 body[dir="rtl"] .FontArabicMedium {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500;
+
 }
 
 body[dir="rtl"] .create-committee-fields input.form-control {
   height: 39px !important;
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
+
   border-radius: 4px !important;
 }
 
 body[dir="rtl"] .Group_input_field input.form-control {
   height: 39px !important;
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
+
   border-radius: 4px !important;
 }
 
 body[dir="rtl"] .Group_input_field input.form-control {
   height: 39px !important;
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
+
   border-radius: 4px !important;
 }
 
 body[dir="rtl"] .group-fields input.form-control {
   height: 39px !important;
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
+
   border-radius: 4px !important;
 }
 
 body[dir="rtl"] .modalNote-fields input.form-control {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
+
 }
 
 .ql-container {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
+
 }
 
 body[dir="rtl"] .ql-container {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
+
 }
 
 body[dir="rtl"] .todolist-modal-fields input.form-control {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500;
+
 }
 
 body[dir="rtl"] .ant-result-subtitle {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400;
+
 }
 
 /* Dragger Uploder  */
@@ -5754,7 +5774,8 @@ body[dir="rtl"] .ant-result-subtitle {
 .dataroom_options .dropdown-menu.show .dropdown-item {
   border-bottom: 1px solid #5a5a5a;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
+
   padding: 4px 0px;
 }
 
@@ -5862,7 +5883,8 @@ abbr[title] {
   height: 18px;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
+
   padding: 10px !important;
 }
 
@@ -5877,7 +5899,8 @@ abbr[title] {
   height: 12px !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
+
   padding: 0px !important;
 }
 
@@ -5946,7 +5969,8 @@ abbr[title] {
   height: 18px;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
+
   padding: 10px !important;
 }
 
@@ -5961,7 +5985,8 @@ abbr[title] {
   height: 12px !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
+
   padding: 0px !important;
 }
 
@@ -6011,7 +6036,8 @@ input::-webkit-calendar-picker-indicator {
 }
 
 .ReactFlagsSelect-module_label {
-  font-family: "MontserratMedium" !important;
+  font-weight: 500;
+
   font-size: 13px !important;
 }
 
@@ -6191,7 +6217,8 @@ input[type="time"]::-webkit-clear-button {
 
 .rmdp-header-values {
   color: #5a5a5a;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
+
   font-size: calc(19px - 20%);
 }
 
@@ -6210,7 +6237,8 @@ input[type="time"]::-webkit-clear-button {
 
 .VoteModalAgenda .ant-progress-text {
   font-size: 20px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
+
   color: #6172d6 !important;
   margin-top: -25px !important;
 }
@@ -6232,14 +6260,16 @@ input[type="time"]::-webkit-clear-button {
 
 .AbstainProgressViewModal .ant-progress-text {
   font-size: 20px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
+
   color: #6172d6 !important;
   margin-top: -25px !important;
 }
 
 .NOProgressViewModal .ant-progress-text {
   font-size: 20px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
+
   color: #6172d6 !important;
   margin-top: -25px !important;
 }
@@ -6405,7 +6435,8 @@ label.ant-checkbox-wrapper.ant-checkbox-wrapper-checked.ant-checkbox-wrapper-dis
 
 .proposedMeetindatesDatePicker {
   border: 1px solid #e1e1e1 !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
+
   width: 300px !important;
 }
 
@@ -6444,13 +6475,13 @@ label.ant-checkbox-wrapper.ant-checkbox-wrapper-checked.ant-checkbox-wrapper-dis
 }
 
 .meeting-status-value {
-  font-family: "MontserratRegular" !important;
-  font-weight: 500 !important;
+  font-weight: 400 !important;
 }
 
 textarea {
   font-size: 12px !important;
-  font-family: "MontserratMedium";
+  font-weight: 500;
+
   box-shadow: none !important;
   resize: none !important;
 }
@@ -6574,7 +6605,8 @@ th.ant-table-cell.notification-class-table {
 
 .textAreaDivVieww.vv input {
   color: #505050 !important;
-  font-family: "MontserratRegular" !important;
+  font-weight: 400;
+
   font-size: 16px !important;
   overflow: hidden;
   display: block;
@@ -6753,9 +6785,8 @@ body[dir="rtl"] span.separatorSubAgendaHeight {
 .ant-radio-group.ant-radio-group-outline.AgendaSelectGroup
   label.ant-radio-wrapper
   span {
-  font-family: "MontserratMedium" !important;
   font-style: normal !important;
-  font-weight: 600 !important;
+  font-weight: 500 !important;
   font-size: 13px !important;
   color: #a2a2a2 !important;
 }
@@ -6763,9 +6794,9 @@ body[dir="rtl"] span.separatorSubAgendaHeight {
 .ant-radio-group.ant-radio-group-outline.AgendaSelectGroup
   label.ant-radio-wrapper.ant-radio-wrapper-checked
   span {
-  font-family: "MontserratMedium" !important;
+
   font-style: normal !important;
-  font-weight: 600 !important;
+  font-weight: 500 !important;
   font-size: 13px !important;
   color: #5a5a5a !important;
 }
@@ -6859,7 +6890,8 @@ body[dir="rtl"] span.separatorSubAgendaHeight {
   /* border-top: 1px solid #e1e1e1 !important; */
   border-bottom: 1px solid #e1e1e1 !important;
   color: #5a5a5a !important;
-  font-family: "MontserratRegular";
+  font-weight: 400;
+
   font-size: 14px !important;
 }
 
@@ -6870,9 +6902,8 @@ body[dir="rtl"] span.separatorSubAgendaHeight {
   border-radius: 0 !important;
   border-left: 0 !important;
   border-right: none !important;
-  font-family: "MontserratMedium-500";
   font-style: normal;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 12px;
   color: #5a5a5a !important;
 }
@@ -6932,18 +6963,18 @@ td.ant-table-cell.minutesParticipant {
 .ant-radio-group.ant-radio-group-outline.AnotherRadioSelect
   label.ant-radio-wrapper
   span {
-  font-family: "MontserratMedium" !important;
   font-style: normal !important;
-  font-weight: 600 !important;
+  font-weight: 500 !important;
   color: #a2a2a2 !important;
 }
 
 .ant-radio-group.ant-radio-group-outline.AnotherRadioSelect
   label.ant-radio-wrapper.ant-radio-wrapper-checked
   span {
-  font-family: "MontserratMedium" !important;
+    font-weight: 500;
+
   font-style: normal !important;
-  font-weight: 600 !important;
+  /* font-weight: 600 !important; */
   color: #5a5a5a !important;
 }
 
@@ -7017,4 +7048,7 @@ td.ant-table-cell.minutesParticipant {
 
 .border-none.dropdown button {
   border: none !important;
+}
+.ant-table-thead > tr > th {
+  font-weight: 600 !important;
 }

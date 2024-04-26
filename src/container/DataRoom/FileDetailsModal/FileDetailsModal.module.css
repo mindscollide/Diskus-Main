@@ -1,13 +1,13 @@
 .File_name {
   font-size: 20px !important;
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 .Row_Details_styles {
   font-size: 12px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 .sharedUserTitle {
   display: flex;

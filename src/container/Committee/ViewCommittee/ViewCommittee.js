@@ -313,7 +313,7 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
 
   return (
     <>
-      <section className="MontserratSemiBold-600 color-5a5a5a">
+      <section className=" color-5a5a5a">
         {/* <Paper className={styles["View-Committee-paper"]}> */}
         <Row>
           <Col lg={6} md={6} sm={6}>

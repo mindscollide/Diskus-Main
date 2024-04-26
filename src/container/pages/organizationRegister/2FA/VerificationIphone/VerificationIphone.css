@@ -11,11 +11,11 @@
   background-color: #6172d6 !important;
   color: #fff !important;
   border: none !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .Next_button_EmailVerifyVerificationIphone {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Next_button_EmailVerifyVerificationIphone:focus-visible {
@@ -24,7 +24,7 @@ body[dir="rtl"] .Next_button_EmailVerifyVerificationIphone {
   background-color: #6172d6 !important;
   color: #fff !important;
   border: none !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
 }
 .Next_button_EmailVerifyVerificationIphone:disabled {
   filter: grayscale(0.5);
@@ -44,11 +44,11 @@ body[dir="rtl"] .Next_button_EmailVerifyVerificationIphone {
   display: flex;
   justify-content: center;
   text-decoration: underline;
-  font-family: "MontserratRegular";
+  font-weight: 400 !important;
 }
 
 body[dir="rtl"] .forogt_email_link {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
 }
 
 .forogt_email_link a {
@@ -58,22 +58,20 @@ body[dir="rtl"] .forogt_email_link {
 .SelectLineIphone {
   margin-top: -0.9rem;
   color: #5a5a5a;
-  font-weight: bold;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
 }
 body[dir="rtl"] .SelectLineIphone {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .VerifyHeadingIphone {
-  font-weight: bold;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
   font-size: calc(35px - 20%) !important;
 }
 
 body[dir="rtl"] .VerifyHeadingIphone {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 .Auth_Icon1SendEmailVerificationIphone {
   position: absolute;
@@ -90,23 +88,21 @@ body[dir="rtl"] .VerifyHeadingIphone {
 }
 
 .verificationIphoneLabels {
-  font-weight: bold;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .verificationIphoneLabels {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .verificationIphoneLabels_active {
-  font-weight: bold;
   color: #e1e1e1 !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .verificationIphoneLabels_active {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Verification-Iphone-language {
@@ -138,7 +134,7 @@ body[dir="rtl"] .verificationIphoneLabels_active {
   height: 2.9em !important;
   border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   border-radius: 4px;
   outline: none !important;
 }

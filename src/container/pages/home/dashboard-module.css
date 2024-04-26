@@ -45,13 +45,13 @@
 
 .home-meetingcount-text {
   font-size: calc(17px - 20%) !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   line-height: 1.3 !important;
 }
 
 .home-todocount-text {
   font-size: calc(17px - 20%) !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   line-height: 1.3 !important;
 }
 
@@ -93,7 +93,7 @@
   margin-left: 25px;
   margin-top: 12px !important;
   color: #949494;
-  font-family: "MontserratMedium-500";
+  font-weight: 500;
   font-size: calc(15px - 20%) !important;
 }
 
@@ -105,7 +105,7 @@
 }
 
 body[dir="rtl"] .desc-item-time {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500;
 }
 
 h1.recent-activity {
@@ -119,7 +119,7 @@ h1.recent-activity {
   border-bottom: none !important;
   border-top-left-radius: 5px !important;
   border-top-right-radius: 5px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
 }
 
 .Recent-Activity-Box-Empty {
@@ -147,11 +147,11 @@ h1.recent-activity {
   position: relative;
   top: 5px;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
 }
 
 body[dir="rtl"] .DashboardTodoTable span.ant-typography.labelTitle {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .DashboardTodoTable .ant-table-body {
@@ -205,7 +205,7 @@ button.react-calendar__navigation__arrow.react-calendar__navigation__next2-butto
 
 .react-calendar__tile {
   padding: 6px 8px !important;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 span.react-calendar__navigation__label__labelText.react-calendar__navigation__label__labelText--from {
@@ -261,12 +261,12 @@ h1.upcoming-events {
   padding-left: 20px;
   padding-bottom: 5px;
   margin: 0;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
   color: #5a5a5a;
 }
 
 body[dir="rtl"] h1.upcoming-events {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Upcoming-Events-Box {
@@ -331,13 +331,13 @@ body[dir="rtl"] .event-details:hover {
   overflow: hidden;
   white-space: nowrap;
   color: #6172d6;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
 }
 
 .event-details p.events-dateTime {
   font-size: calc(16px - 24%) !important;
   color: #000;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
 }
 
 .rmdp-shadow {
@@ -369,7 +369,7 @@ body[dir="rtl"] .event-details:hover {
 
 .rmdp-week {
   margin-top: -5px;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
   text-transform: uppercase;
 }
 
@@ -379,11 +379,11 @@ body[dir="rtl"] .event-details:hover {
 
 .Dashboard-Calendar .rmdp-header-values {
   font-size: calc(26px - 20%) !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
 }
 
 body[dir="rtl"] .Dashboard-Calendar .rmdp-header-values {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 span.rmdp-arrow-container.rmdp-left {
@@ -473,13 +473,13 @@ body[dir="rtl"] .desc-notification-user {
   left: 5px !important;
   position: absolute !important;
   right: 5px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   top: 5px !important;
   /* color: #232323; */
 }
 
 body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .rmdp-arrow {
@@ -566,7 +566,7 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
 .ant-table-wrapper.dashboard-todo .ant-table .ant-table-thead > tr > th {
   background: none !important;
   border-bottom: none !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
   color: #6172d6 !important;
   font-size: calc(17px - 25%) !important;
 }
@@ -620,7 +620,7 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
   border-bottom-left-radius: 5px !important;
   font-size: calc(17px - 25%) !important;
   color: #6172d6;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
   text-transform: capitalize;
 }
 
@@ -630,7 +630,7 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
   border-top: 1px solid #e1e1e1 !important;
   border-bottom: 1px solid #e1e1e1 !important;
   font-size: calc(16px - 20%) !important;
-  font-family: "MontserratRegular";
+  font-weight: 400;
   color: #505050;
 }
 
@@ -660,7 +660,7 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
   border-top-right-radius: 5px !important;
   border-bottom-right-radius: 5px !important;
   font-size: calc(16px - 20%) !important;
-  font-family: "MontserratRegular";
+  font-weight: 400;
   color: "#505050";
 }
 
@@ -955,7 +955,7 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
 }
 
 body[dir="rtl"] .Ok-Successfull-btn {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .allowModalIcon {
@@ -968,7 +968,7 @@ body[dir="rtl"] .Ok-Successfull-btn {
 .allow-limit-modal-p {
   text-align: center !important;
   font-size: 14px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
   margin-top: 10px;
 }
 
@@ -1159,7 +1159,7 @@ img.recent-activity-icon {
   font-size: 12px !important;
   text-overflow: ellipsis;
   max-width: 100%;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   cursor: pointer;
   margin: 5px 5px !important;
   color: #6172d6 !important;
@@ -1169,7 +1169,7 @@ img.recent-activity-icon {
 }
 
 body[dir="rtl"] .notescontent {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .staricon {
@@ -1195,24 +1195,24 @@ body[dir="rtl"] .paperclipicon {
   font-size: 8px !important;
   width: auto !important;
   text-align: end;
-  font-family: "MontserratRegular";
+  font-weight: 400;
 }
 
 body[dir="rtl"] .DataTimeDay {
   font-size: 8px !important;
   width: auto !important;
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400;
 }
 
 h1.noteheading {
   font-size: 20px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
   margin: 0 !important;
   text-align: left !important;
 }
 
 body[dir="rtl"] h1.noteheading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .plus-icon {
@@ -1233,7 +1233,7 @@ body[dir="rtl"] h1.noteheading {
 .emptystateNotesDashboard {
   margin-top: 10px !important;
   color: #e1e1e1 !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
   font-size: 16px !important;
   overflow-wrap: break-word;
   width: 150px !important;
@@ -1281,12 +1281,12 @@ body[dir="rtl"] h1.noteheading {
 .ViewMoreLink_notes {
   cursor: pointer;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
 }
 
 .task-title {
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
   font-size: 20px !important;
 }
 
@@ -1340,7 +1340,7 @@ body[dir="rtl"] h1.noteheading {
 
 .MainTitleClass {
   color: #49598c !important;
-  font-weight: bold !important;
+  font-weight: 700 !important;
 }
 
 .SubtitleTodoMessege {
@@ -1394,8 +1394,7 @@ body[dir="rtl"] svg.DatePickerIcon {
   border: none;
   border-radius: 2px !important;
   color: #6172d6 !important;
-  font-weight: 600;
-  font-family: "MontserratMedium";
+  font-weight: 500;
 }
 
 .joining-Meeting-Upcoming,
@@ -1407,6 +1406,5 @@ body[dir="rtl"] svg.DatePickerIcon {
   border: none;
   border-radius: 2px !important;
   color: #81db86 !important;
-  font-weight: 600;
-  font-family: "MontserratMedium";
+  font-weight:500;
 }

@@ -3,7 +3,7 @@
 }
 
 body[dir="rtl"] .heading-modal-active-contfirmation {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Confirm-activegroup-modal {
@@ -29,7 +29,7 @@ body[dir="rtl"] .heading-modal-active-contfirmation {
 }
 
 body[dir="rtl"] .Confirm-activegroup-modal {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Cancell-activegroup-modal {
@@ -54,5 +54,5 @@ body[dir="rtl"] .Confirm-activegroup-modal {
 }
 
 body[dir="rtl"] .Cancell-activegroup-modal {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }

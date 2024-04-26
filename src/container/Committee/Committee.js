@@ -476,7 +476,7 @@ const Committee = () => {
                 // className={styles["Committee-Main_Scrollbar"]}
               >
                 <Row
-                  className={`${"d-flex text-center committees_box  MontserratSemiBold-600 color-5a5a5a m-0 p-0  mt-1"} ${
+                  className={`${"d-flex text-center committees_box   color-5a5a5a m-0 p-0  mt-1"} ${
                     styles["committess_box"]
                   }`}
                 >

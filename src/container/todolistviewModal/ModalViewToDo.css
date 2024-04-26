@@ -206,7 +206,8 @@ p.AssignedToDoView {
 }
 
 body[dir="rtl"] p.AssignedToDoView {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
+
 }
 
 .DateTimeViewTodo p {
@@ -218,7 +219,8 @@ body[dir="rtl"] p.AssignedToDoView {
 }
 
 body[dir="rtl"] .DateTimeViewTodo p {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400;
+
 }
 
 .comment-Height .form-control:disabled {
@@ -271,7 +273,8 @@ label.MontserratSemiBold-600.todo-employee-name-card {
 }
 
 body[dir="rtl"] label.MontserratSemiBold-600.todo-employee-name-card {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
+
 }
 
 .Modal-todo-view1 {

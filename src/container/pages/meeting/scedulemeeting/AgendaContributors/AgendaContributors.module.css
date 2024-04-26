@@ -2,7 +2,7 @@
   padding: 12px 30px !important;
   font-size: 12px !important;
   border-radius: 4px !important;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   display: flex;
   align-items: center !important;
   gap: 5px;
@@ -20,7 +20,7 @@
   display: flex !important;
   gap: 5px !important;
   border-radius: 4px !important;
-  font-family: "MontserratMedium-500" !important;
+  font-weight: 500 !important;
   border: none !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
@@ -33,7 +33,7 @@
   border-radius: 4px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Cancel_Organization:is(:hover, :active, :focus, :focus-visible) {
@@ -43,7 +43,7 @@
   border-radius: 4px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Next_Organization {
@@ -53,7 +53,7 @@
   border-radius: 4px !important;
   background: #6172d6;
   color: #fff;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 .Next_Organization:hover,
 .Next_Organization:active,
@@ -65,31 +65,31 @@
   border-radius: 4px !important;
   background: #5f78d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Options_classs_contributors {
   color: #505050 !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Empty_state_heading {
   color: #505050 !important;
   font-size: 30px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Empty_state_Subheading {
   color: #5a5a5a !important;
   font-size: 12px !important;
-  font-family: "Montserrat";
+  font-weight: 500;
 }
 
 .label_Styles {
   color: #5a5a5a !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   cursor: pointer;
 }
 
@@ -126,7 +126,7 @@
   padding: 12px 30px !important;
   font-size: 12px !important;
   border-radius: 4px !important;
-  font-family: "MontserratMedium-500" !important;
+  font-weight: 500 !important;
   border: none !important;
   background: #6172d6 !important;
   color: #fff !important;
@@ -138,7 +138,7 @@
   border-radius: 4px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 .Edit_button {
   padding: 12px 30px !important;
@@ -147,7 +147,7 @@
   border-radius: 4px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   display: flex !important;
   gap: 5px !important;
 }
@@ -163,7 +163,7 @@
   border-radius: 4px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .publish_button_AgendaContributor:hover,
@@ -175,7 +175,7 @@
   border-radius: 4px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 .height2 {
   min-height: 60vh !important;

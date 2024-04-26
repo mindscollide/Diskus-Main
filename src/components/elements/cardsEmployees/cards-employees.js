@@ -34,7 +34,7 @@ const EmployeeCard = ({
           <Col lg={8} md={8} xs={12}>
             <label
               className={
-                "MontserratSemiBold-600 card-employee-name" +
+                " card-employee-name" +
                 " " +
                 currentLanguage
               }

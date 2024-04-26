@@ -46,7 +46,7 @@ const UpdateGroupModal = ({ ModalTitle, updateGroup, setUpadategroup }) => {
           size={updatemGroup === true ? "md" : "md"}
           ModalBody={
             <>
-              <Container className="MontserratSemiBold-600 color-5a5a5a">
+              <Container className=" color-5a5a5a">
                 <Row>
                   <Col
                     lg={12}

@@ -1,13 +1,13 @@
 .Cancel_download_options_Heading {
   font-size: 20px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 .paragrapgh_Cancel_download {
   font-size: 16px !important;
   color: #5a5a5a;
-  font-family: "MontserratRegular";
+ font-weight: 400;
 }
 
 .Continue_Download_button_UploadFile {

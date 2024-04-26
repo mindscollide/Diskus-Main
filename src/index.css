@@ -1,17 +1,1 @@
-@font-face {
-  font-family: "MontserratRegular";
-  src: url("./assets/fonts-new/montserrat-regular-webfont.woff"),
-    url("./assets/fonts-new/montserrat-regular-webfont.woff2");
-}
 
-body {
-  margin: 0;
-  font-family: "MontserratRegular" !important;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
-}

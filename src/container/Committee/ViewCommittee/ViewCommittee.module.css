@@ -4,7 +4,7 @@
 }
 
 body[dir="rtl"] .View-Committee-heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .View-Committee-Subheading {
@@ -13,7 +13,7 @@ body[dir="rtl"] .View-Committee-heading {
 }
 
 body[dir="rtl"] .View-Committee-Subheading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Management-Heading-View-Committee {
@@ -23,7 +23,7 @@ body[dir="rtl"] .View-Committee-Subheading {
 }
 
 body[dir="rtl"] .Management-Heading-View-Committee {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .View-Committee-Head-Heading {
@@ -33,7 +33,7 @@ body[dir="rtl"] .Management-Heading-View-Committee {
 }
 
 body[dir="rtl"] .View-Committee-Head-Heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .ViewCommittee-head-info {
@@ -46,7 +46,7 @@ body[dir="rtl"] .View-Committee-Head-Heading {
 }
 
 body[dir="rtl"] .name-ViewCommittee-group {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .paragraph-content-View-Committee {
@@ -56,7 +56,7 @@ body[dir="rtl"] .name-ViewCommittee-group {
 }
 
 body[dir="rtl"] .paragraph-content-View-Committee {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Designation-ViewCommittee-group {
@@ -65,7 +65,7 @@ body[dir="rtl"] .paragraph-content-View-Committee {
 }
 
 body[dir="rtl"] .Designation-ViewCommittee-group {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .email-ViewCommittee-group {
@@ -76,7 +76,7 @@ body[dir="rtl"] .Designation-ViewCommittee-group {
 }
 
 body[dir="rtl"] .email-ViewCommittee-group {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400;
 }
 
 .members-ViewCommittee-group-page {
@@ -85,7 +85,7 @@ body[dir="rtl"] .email-ViewCommittee-group {
 }
 
 body[dir="rtl"] .members-ViewCommittee-group-page {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .scroll-bar-ViewGroup {
@@ -117,7 +117,7 @@ body[dir="rtl"] .members-ViewCommittee-group-page {
   font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   border-radius: 4px !important;
   border: none !important;
   display: flex;
@@ -126,7 +126,7 @@ body[dir="rtl"] .members-ViewCommittee-group-page {
 }
 
 body[dir="rtl"] .Close-ViewCommittee-btn {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Close-ViewCommittee-btn:hover,
@@ -137,7 +137,7 @@ body[dir="rtl"] .Close-ViewCommittee-btn {
   font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   border-radius: 4px !important;
   border: none !important;
   display: flex !important;
@@ -148,24 +148,24 @@ body[dir="rtl"] .Close-ViewCommittee-btn {
 .ant-upload-text {
   font-size: 12px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 body[dir="rtl"] .ant-upload-text {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Choose_file_style {
   font-size: 12px !important;
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   margin-left: 3px !important;
 }
 
 .FileName {
   font-size: 10px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratRegular";
+  font-weight: 400;
   display: inline-block !important;
   overflow: hidden !important;
   white-space: nowrap !important;

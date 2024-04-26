@@ -115,7 +115,7 @@
 
 .modalAddNoteTitleInput::placeholder {
   color: #bbbbbb !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
   font-size: 12px !important;
 }
 
@@ -189,7 +189,7 @@
   border: 1px solid #e1e1e1 !important;
   position: relative;
   font-size: 12px !important;
-  font-family: "MontserratMedium";
+  font-weight: 400;
   color: #5a5a5a !important;
 }
 
@@ -202,7 +202,7 @@
 
 .pollingCreateTitle {
   font-size: 12px !important;
-  font-family: "MontserratMedium";
+  font-weight:500;
   color: #5a5a5a !important;
   height: 39px !important;
 }
@@ -259,7 +259,7 @@
 
 .text-area-create-group {
   font-size: 12px !important;
-  font-family: "MontserratMedium";
+  font-weight: 500;
   color: #5a5a5a !important;
 }
 
@@ -303,7 +303,7 @@
 .signatureflow_input {
   width: 100%;
   height: 39px;
-  font-family: "MontserratMedium";
+  font-weight: 500;
   color: #5a5a5a;
 }
 .signatureflow_input::placeholder {

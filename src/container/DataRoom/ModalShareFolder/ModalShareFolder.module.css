@@ -1,7 +1,7 @@
 .Share_folder_modal_Heading {
   font-size: 20px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 /* .profile_image_shareFolder_modal {
@@ -27,14 +27,14 @@
 .Notify_people_styles {
   font-size: 12px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   margin-top: 3px !important;
 }
 
 .Copy_Link_btn {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   color: #5a5a5a !important;
   background: #fff !important;
   border: 1px solid #e1e1e1 !important;
@@ -43,7 +43,7 @@
 .Copy_Link_btn:is(:active, :hover, :focus, :focus-visible, :target, :visited) {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   color: #5a5a5a !important;
   background: #fff !important;
   border: 1px solid #e1e1e1 !important;
@@ -51,7 +51,7 @@
 .send_btn {
   padding: 12px 30px !important;
   font-size: 12px;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #fff;
   background: #6172d6;
   border: none;
@@ -60,7 +60,7 @@
 .send_btn:is(:active, :hover, :focus, :focus-visible, :target, :visited) {
   padding: 12px 30px !important;
   font-size: 12px;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #fff;
   background: #6172d6;
   border: none;
@@ -78,25 +78,25 @@
 .Access_request_modal_heading {
   font-size: 20px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 .Sub_line_access_request_modal {
   font-size: 12px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 .Request_send_heading {
   font-size: 20px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 .description_request_send {
   font-size: 16px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 .Editor_btn {
@@ -159,13 +159,13 @@
 .Access_updated {
   font-size: 10px !important;
   color: #f6f6f6;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 .Link_copied {
   font-size: 12px !important;
   color: #f6f6f6;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 .Expiration_header_background {
@@ -197,7 +197,7 @@
 .Text_for_header_expiration {
   color: #6172d6 !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 .margin {
@@ -207,19 +207,19 @@
 .Shared_Document_Heading {
   font-size: 20px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 .InvitetoEdit_Heading {
   font-size: 16px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 .Edit_options {
   font-size: 16px !important;
   color: #5a5a5a;
-  font-family: "MontserratBold";
+  font-weight: 600;
   margin-left: 3px !important;
 }
 
@@ -247,13 +247,13 @@
 .File_name {
   font-size: 12px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 .Edit_notification {
   font-size: 10px !important;
   color: #f6f6f6;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 .shareFolderAddMemberBtn {

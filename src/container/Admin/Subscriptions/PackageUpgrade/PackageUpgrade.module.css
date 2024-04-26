@@ -1,18 +1,3 @@
-@font-face {
-  font-family: "MontserratSemiBold";
-  src: url(../../../../assets/fonts/Montserrat-SemiBold.ttf);
-}
-
-@font-face {
-  font-family: "MontserratBold";
-  src: url(../../../../assets/fonts/Montserrat-Bold.ttf);
-}
-
-@font-face {
-  font-family: "MontserratMedium";
-  src: url(../../../../assets/fonts/Montserrat-Medium.ttf);
-}
-
 .UpgradePackageCard {
   background-color: #fff;
   border-radius: 4px;
@@ -36,7 +21,6 @@
   margin-bottom: 10px;
   font-size: calc(38px - 50%) !important;
   font-weight: 600 !important;
-  font-family: "MontserratSemiBold-600" !important;
 }
 
 .packageDetails {
@@ -60,25 +44,23 @@ body[dir="rtl"] .packageDetails {
 
 .packageheading {
   text-transform: uppercase;
-  font-weight: 900;
+  font-weight: 700 !important;
   margin: 20px 0 0 0;
   text-align: center;
   font-size: 40px;
   color: #5a5a5a !important;
-  font-family: "MontserratBold";
 }
 
 .packageDetails p:nth-child(1) {
-  font-weight: bolder;
   text-transform: uppercase;
   font-size: 1rem;
   margin: 0;
-  font-family: "MontserratBold";
+  font-weight: 700 !important;
 }
 
 .packageDetails p:nth-child(2) {
   text-transform: uppercase;
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
   margin: 0;
 }
 
@@ -88,7 +70,7 @@ body[dir="rtl"] .packageDetails {
 
 .upgradePackageAmoutnandList h2 {
   margin: 10px 0 0 0;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .upgradePackageAmoutnandList ul {
@@ -126,7 +108,7 @@ body[dir="rtl"] .upgradePackageAmoutnandList > ul li::before {
   margin: 0;
   padding: 0;
   color: #fff;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .packagecard_priceBox_container p {
@@ -166,7 +148,7 @@ body[dir="rtl"] .selectedPackage_priceDetails {
 
 .selectedPackage_priceDetails h4 {
   color: #fff;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .packagecard_two {
@@ -178,7 +160,7 @@ body[dir="rtl"] .selectedPackage_priceDetails {
 
 .packagecard_two h4 {
   color: #076db7;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .packagecard_two_visible {
@@ -207,7 +189,7 @@ body[dir="rtl"] .selectedPackage_priceDetails {
   margin: 0 auto;
   border: transparent;
   background: #6172d6;
-  font-family: "MontserratMedium" !important;
+  font-weight: 500 !important;
   font-size: 12px !important;
 }
 
@@ -222,18 +204,18 @@ body[dir="rtl"] .selectedPackage_priceDetails {
   margin: 0 auto;
   border: transparent;
   background: #6172d6 !important;
-  font-family: "MontserratMedium" !important;
+  font-weight: 500 !important;
   font-size: 12px !important;
 }
 
 .crossicon {
   color: #5a5a5a;
-  font-family: "MontserratBold";
+  font-weight: 700 !important;
 }
 
 .crossicon1 {
   color: #ababab;
-  font-family: "MontserratBold";
+  font-weight: 700 !important;
 }
 
 .span-foranually {
@@ -247,7 +229,7 @@ body[dir="rtl"] .selectedPackage_priceDetails {
   border-bottom: 1px solid #e1e1e1;
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
   height: 25px;
   margin-top: 3px;
   padding-top: 2px;
@@ -265,7 +247,7 @@ body[dir="rtl"] .span-foranually {
   border-top-left-radius: 4px;
   border-top-right-radius: 0;
   border-bottom-left-radius: 4px;
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
   border-bottom-right-radius: 0;
 }
 
@@ -280,7 +262,7 @@ body[dir="rtl"] .span-foranually {
   border-left: 1px solid #e1e1e1;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
   height: 25px;
   margin-top: 3px;
   padding-top: 3px;
@@ -300,7 +282,7 @@ body[dir="rtl"] .span-formontly {
   border-bottom-right-radius: 4px;
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
 }
 
 .spanActive {
@@ -310,7 +292,7 @@ body[dir="rtl"] .span-formontly {
   border-radius: 4px;
   text-align: center;
   cursor: pointer;
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
   height: 30px;
   padding-top: 6px;
 }
@@ -329,7 +311,7 @@ body[dir="rtl"] .span-formontly {
 
 .packagecard_two h4 {
   color: #076db7;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .packagecard_two_visible {
@@ -351,12 +333,12 @@ body[dir="rtl"] .span-formontly {
   align-items: center;
   text-align: center;
   color: #6172d6;
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
   padding: 10px 5px;
 }
 
 .packagecard_disoucntprice_amount {
-  font-family: "MontserratBold" !important;
+  font-weight: 700 !important;
   color: #6172d6;
   font-size: 20px;
 }

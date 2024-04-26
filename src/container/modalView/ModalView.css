@@ -498,7 +498,7 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
 
 .viewModalTitle {
   font-size: 16px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   color: #5f78d6 !important;
   word-wrap: break-word !important;
   text-overflow: ellipsis !important;
@@ -519,7 +519,7 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
   color: #505050;
   font-size: 16px !important;
   border: none !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
 }
 
 .CopyLinkButton {
@@ -530,7 +530,7 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
   border: 1px solid#6172d6 !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   margin-right: 10px;
 }
 
@@ -542,7 +542,7 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
   border: 1px solid#6172d6 !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .JoinMeetingButton {
@@ -553,7 +553,7 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
   border: 1px solid#6172d6 !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .JoinMeetingButton:is(:active, :hover, :focus, :focus-visible) {
@@ -564,5 +564,5 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
   border: 1px solid#6172d6 !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
