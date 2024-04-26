@@ -50,15 +50,6 @@
   border-radius: 4px !important;
 }
 
-.Date_Year_Styles {
-  font-family: "Montserrat";
-  font-size: 12px !important;
-  color: #5a5a5a !important;
-  display: flex !important;
-  align-items: center !important;
-  margin-top: 10px !important;
-}
-
 .Add_Dates_Btn_Class {
   border: 1px dotted #ccc !important;
   background: #fff !important;
@@ -172,7 +163,6 @@
   color: #f16b6b;
   visibility: visible;
   font-weight: 600 !important;
-
 }
 
 body[dir="rtl"] .errorMessage-inLogin {
