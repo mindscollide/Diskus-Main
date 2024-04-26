@@ -952,6 +952,7 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
   color: #fff !important;
   border: none;
   margin-bottom: 20px !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .Ok-Successfull-btn {
