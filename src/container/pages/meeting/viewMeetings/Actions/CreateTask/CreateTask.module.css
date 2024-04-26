@@ -127,7 +127,7 @@
 .FileName {
   font-size: 16px !important;
   color: #5a5a5a !important;
-  font-family: "Montserrat";
+  font-weight: 400 !important;
   display: inline-block !important;
   width: 150px !important;
   overflow: hidden !important;
@@ -142,12 +142,10 @@
   color: #f16b6b;
   visibility: visible;
   font-weight: 600 !important;
-
 }
 
 body[dir="rtl"] .errorMessage-inLogin {
   font-weight: 600 !important;
-
 }
 
 .errorMessage-inLogin_hidden {
