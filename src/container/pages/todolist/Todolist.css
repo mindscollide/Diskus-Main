@@ -444,3 +444,6 @@ td.ant-table-column-sort {
   flex-direction: column;
   justify-content: space-between;
 }
+.custom-class {
+  font-weight: 600;
+}

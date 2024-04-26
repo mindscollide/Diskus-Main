@@ -64,8 +64,10 @@ const initialState = {
   saveMeetingParticipants: [],
   getAllAgendaContributors: [],
   getAllAgendaContributorsIsPublished: false,
+  getAllAgendaContributorsAllowRSVP: false,
   getAllSavedparticipants: [],
   getAllSavedparticipantsIsPublished: false,
+  getAllSavedparticipantsAllowrsvp: false,
   sendNotificationOrganizerModal: false,
   getAllMeetingDetails: null,
   getPollsMeetingID: null,
@@ -721,6 +723,14 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
 
+    case actions.GET_ALL_SAVED_PARTICIPATNS_ALLOWRSVP: {
+      return {
+        ...state,
+        Loading: false,
+        getAllSavedparticipantsAllowrsvp: action.response,
+      };
+    }
+
     case actions.GET_ALL_SAVED_PARTICIPATNS_FAILED: {
       return {
         ...state,
@@ -753,6 +763,16 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: false,
         Loader2: false,
         getAllAgendaContributorsIsPublished: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALL_AGENDACONTRIBUTOR_ALLOWRSVP: {
+      return {
+        ...state,
+        Loading: false,
+        Loader2: false,
+        getAllAgendaContributorsAllowRSVP: action.response,
         ResponseMessage: action.message,
       };
     }

@@ -241,6 +241,8 @@ body[dir="rtl"] .Checkbox {
   height: 7px;
   color: #f16b6b;
   visibility: visible !important;
+  font-weight: 600 !important;
+
 }
 
 body[dir="rtl"] .errorMessage {

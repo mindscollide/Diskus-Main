@@ -647,7 +647,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
               </Row>
               {/* File Attachments */}
               <Row className="my-3">
-                <Col sm={12} md={12} lg={12} className=" Saved_money_Tagline">
+                <Col sm={12} md={12} lg={12} className=" fw-600 Saved_money_Tagline">
                   {/* Attachments */}
                   {t("Attachement")}
                 </Col>

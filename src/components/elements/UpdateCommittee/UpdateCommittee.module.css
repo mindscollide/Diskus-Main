@@ -8,6 +8,7 @@
 .details-class-Update-Committee {
   font-size: 20px !important;
   color: #6172d6 !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .details-class-Update-Committee {
@@ -34,6 +35,7 @@ body[dir="rtl"] .details-class-Update-Committee {
 .Update-Committee-Head-Heading {
   font-size: 20px !important;
   color: #6172d6 !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .Update-Committee-Head-Heading {
@@ -47,6 +49,7 @@ body[dir="rtl"] .Update-Committee-Head-Heading {
 .name-Update-Committee {
   color: #5a5a5a;
   font-size: 12px !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .name-Update-Committee {
@@ -56,6 +59,7 @@ body[dir="rtl"] .name-Update-Committee {
 .Designation-Update-Committee {
   color: #5a5a5a;
   font-size: 10px !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .no-member {
@@ -71,6 +75,7 @@ body[dir="rtl"] .Designation-Update-Committee {
   color: #6172d6;
   text-decoration: underline !important;
   font-size: 10px !important;
+  font-weight: 400 !important;
 }
 
 body[dir="rtl"] .email-Update-Committee {
@@ -80,6 +85,7 @@ body[dir="rtl"] .email-Update-Committee {
 .members-Upadate-Committee-page {
   font-size: 18px !important;
   color: #6172d6 !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .members-Upadate-Committee-page {
@@ -89,6 +95,7 @@ body[dir="rtl"] .members-Upadate-Committee-page {
 .Addmembers-class-Update-Committee {
   font-size: 20px !important;
   color: #6172d6 !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .Addmembers-class-Update-Committee {
@@ -209,6 +216,7 @@ body[dir="rtl"] .Cancell-updatecommittee-btn {
 .Update-Committee-Heading {
   font-size: 30px !important;
   color: #6172d6 !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .Update-Committee-Heading {
@@ -245,6 +253,7 @@ body[dir="rtl"] .Label_Of_CheckBox {
   height: 7px;
   color: #f16b6b;
   visibility: visible !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .errorMessage {

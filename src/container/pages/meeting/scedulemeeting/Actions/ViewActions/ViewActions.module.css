@@ -50,7 +50,7 @@
 .FileName {
   font-size: 16px !important;
   color: #5a5a5a !important;
-  font-family: "Montserrat";
+  font-weight: 400 !important;
   display: inline-block !important;
   width: 150px !important;
   overflow: hidden !important;
