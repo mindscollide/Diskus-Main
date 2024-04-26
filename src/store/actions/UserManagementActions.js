@@ -29,7 +29,9 @@ import {
   showEditUserModal,
   showReasonForLeavingModal,
   showSucessfullyUpdatedModal,
+  showUpgradeNowModal,
 } from "./UserMangementModalActions";
+import { userLogOutApiFunc } from "./Auth_Sign_Out";
 
 const signUpFlowRoutes = (response) => {
   return {
@@ -353,6 +355,13 @@ const ExtendOrganizationTrialApi = (navigate, t, data) => {
                   t("Successful")
                 )
               );
+              dispatch(showUpgradeNowModal(false));
+              localStorage.removeItem("packageFeatureIDs");
+              localStorage.removeItem("LocalUserRoutes");
+              localStorage.removeItem("LocalAdminRoutes");
+              localStorage.removeItem("VERIFICATION");
+              localStorage.removeItem("TrialExpireSelectPac");
+              dispatch(userLogOutApiFunc(navigate, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

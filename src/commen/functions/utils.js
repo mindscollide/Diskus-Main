@@ -300,3 +300,9 @@ export function getFormData(data, RequestMethodData) {
   form.append("RequestMethod", RequestMethodData.RequestMethod);
   return form;
 }
+
+// this is for non active organisation check only
+export function getLocalStorageItemNonActiveCheck(key) {
+  const item = localStorage.getItem(key);
+  return item !== null ? item : false;
+}

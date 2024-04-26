@@ -86,6 +86,9 @@ import RouteWrapperUser from "./RouteWrapperUser";
 import RouteWrapperAdmin from "./RouteWrapperAdmin";
 import PakageDetailsUMUpgrade from "../container/pages/UserMangement/AdminUserManagement/PackageDetailsUMUpgrade/PackageDetailsUMUpgrade";
 import PaymentProcess from "../container/pages/UserMangement/PaymentProcess/PaymentProcess";
+import { getLocalStorageItemNonActiveCheck } from "../commen/functions/utils";
+const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
+
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
@@ -294,7 +297,7 @@ export const router = createHashRouter(
             path=""
             element={
               <RouteWrapperAdmin name="Admin">
-                <ManageUsers />
+                {roleRoute ? <PayOutstanding /> : <ManageUsers />}
               </RouteWrapperAdmin>
             }
           />

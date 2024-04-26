@@ -24,13 +24,18 @@ import { mqttConnection } from "../../commen/functions/mqttconnection";
 import Helper from "../../commen/functions/history_logout";
 import { getSubscriptionPaymentDetail } from "./Admin_PackageDetail";
 import { LoginFlowRoutes } from "./UserManagementActions";
-import { showCreateAddtionalUsersModal } from "./UserMangementModalActions";
 import {
+  showCreateAddtionalUsersModal,
+  showUpgradeNowModal,
+} from "./UserMangementModalActions";
+import {
+  checkFeatureIDAvailability,
   checkFeatureIDRoutes,
   getFormData,
   handleLoginResponse,
   savePackageFeatureIDs,
 } from "../../commen/functions/utils";
+import { RESPONSE_MESSAGES_USERPASSWORDVERIFICATION } from "../../commen/functions/responce_message";
 
 const createOrganizationInit = () => {
   return {
@@ -941,51 +946,6 @@ const enterPasswordFail = (message, response) => {
 //       });
 //   };
 // };
-const RESPONSE_MESSAGES = {
-  VERIFICATION_01:
-    "ERM_AuthService_AuthManager_UserPasswordVerification_01".toLowerCase(),
-  VERIFICATION_02:
-    "ERM_AuthService_AuthManager_UserPasswordVerification_02".toLowerCase(),
-  VERIFICATION_03:
-    "ERM_AuthService_AuthManager_UserPasswordVerification_03".toLowerCase(),
-  VERIFICATION_04:
-    "ERM_AuthService_AuthManager_UserPasswordVerification_04".toLowerCase(),
-  VERIFICATION_05:
-    "ERM_AuthService_AuthManager_UserPasswordVerification_05".toLowerCase(),
-  VERIFICATION_06:
-    "ERM_AuthService_AuthManager_UserPasswordVerification_06".toLowerCase(),
-  VERIFICATION_07:
-    "ERM_AuthService_AuthManager_UserPasswordVerification_07".toLowerCase(),
-  VERIFICATION_08:
-    "ERM_AuthService_AuthManager_UserPasswordVerification_08".toLowerCase(),
-  VERIFICATION_09:
-    "ERM_AuthService_AuthManager_UserPasswordVerification_09".toLowerCase(),
-  VERIFICATION_10:
-    "ERM_AuthService_AuthManager_UserPasswordVerification_10".toLowerCase(),
-  VERIFICATION_11:
-    "ERM_AuthService_AuthManager_UserPasswordVerification_11".toLowerCase(),
-  VERIFICATION_12:
-    "ERM_AuthService_AuthManager_UserPasswordVerification_12".toLowerCase(),
-  VERIFICATION_17:
-    "ERM_AuthService_AuthManager_UserPasswordVerification_17".toLowerCase(),
-  VERIFICATION_18:
-    "ERM_AuthService_AuthManager_UserPasswordVerification_18".toLowerCase(),
-  VERIFICATION_19:
-    "ERM_AuthService_AuthManager_UserPasswordVerification_19".toLowerCase(),
-  VERIFICATION_20:
-    "ERM_AuthService_AuthManager_UserPasswordVerification_20".toLowerCase(),
-  VERIFICATION_21:
-    "ERM_AuthService_AuthManager_UserPasswordVerification_21".toLowerCase(),
-  VERIFICATION_22:
-    "ERM_AuthService_AuthManager_UserPasswordVerification_22".toLowerCase(),
-  VERIFICATION_23:
-    "ERM_AuthService_AuthManager_UserPasswordVerification_23".toLowerCase(),
-  VERIFICATION_24:
-    "ERM_AuthService_AuthManager_UserPasswordVerification_24".toLowerCase(),
-  VERIFICATION_25:
-    "ERM_AuthService_AuthManager_UserPasswordVerification_25".toLowerCase(),
-  // Add more as needed
-};
 
 const enterPasswordvalidation = (value, navigate, t) => {
   const userID = localStorage.getItem("userID");
@@ -1003,55 +963,84 @@ const enterPasswordvalidation = (value, navigate, t) => {
     try {
       const response = await axios.post(authenticationApi, formData);
       if (response.data.responseCode !== 200) {
+        localStorage.removeItem("signupCurrentPage");
+        localStorage.removeItem("LoginFlowPageRoute");
         dispatch(enterPasswordFail("Something-went-wrong"));
         return;
       }
 
       const { responseMessage, isExecuted } = response.data.responseResult;
       if (!isExecuted) {
+        localStorage.removeItem("signupCurrentPage");
+        localStorage.removeItem("LoginFlowPageRoute");
         dispatch(enterPasswordFail("Something-went-wrong"));
         return;
       }
       await handleLoginResponse(response.data.responseResult);
+      await dispatch(
+        getPackageExpiryDetail(
+          navigate,
+          response.data.responseResult.organizationID,
+          t
+        )
+      );
       switch (responseMessage.toLowerCase()) {
-        case RESPONSE_MESSAGES.VERIFICATION_01:
+        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_01:
           dispatch(enterPasswordFail(t("Device-does-not-exists")));
+          localStorage.removeItem("signupCurrentPage");
+          localStorage.removeItem("LoginFlowPageRoute");
+
           // no action
           break;
-        case RESPONSE_MESSAGES.VERIFICATION_02:
+        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_02:
+          localStorage.removeItem("signupCurrentPage");
+          localStorage.removeItem("LoginFlowPageRoute");
           dispatch(enterPasswordFail(t("Device-id-does-not-exists")));
           // no action
           break;
-        case RESPONSE_MESSAGES.VERIFICATION_03:
+        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_03:
+          localStorage.removeItem("signupCurrentPage");
+          localStorage.removeItem("LoginFlowPageRoute");
           dispatch(enterPasswordFail(t("User-does-not-exist")));
           // no action
           break;
-        case RESPONSE_MESSAGES.VERIFICATION_04:
+        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_04:
+          localStorage.removeItem("signupCurrentPage");
+          localStorage.removeItem("LoginFlowPageRoute");
           dispatch(enterPasswordFail(t("Account-is-blocked")));
           // no action
           break;
-        case RESPONSE_MESSAGES.VERIFICATION_05:
+        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_05:
           dispatch(enterPasswordFail(t("Wrong-password")));
           // no action
           break;
-        case RESPONSE_MESSAGES.VERIFICATION_06:
+        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_06:
           dispatch(enterPasswordFail(t("User-is-inactive")));
+          localStorage.removeItem("signupCurrentPage");
+          localStorage.removeItem("LoginFlowPageRoute");
           // no action
           break;
-        case RESPONSE_MESSAGES.VERIFICATION_07:
+        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_07:
           dispatch(
             enterPasswordFail(t("Organization-subscription-packages-not-found"))
           );
+          localStorage.removeItem("signupCurrentPage");
+          localStorage.removeItem("LoginFlowPageRoute");
           // no action
           break;
-        case RESPONSE_MESSAGES.VERIFICATION_08:
-          dispatch(enterPasswordFail(t("Organization-is-inactive")));
-          // yaha check kerna hy k yeah creator hy ya nai
-          localStorage.setItem("signupCurrentPage", 5);
-          navigate("/Signup");
+        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_08:
+          if (response.data.responseResult.isOrganizationCreator) {
+            dispatch(enterPasswordFail(t("Organization-is-inactive")));
+            localStorage.removeItem("LoginFlowPageRoute");
+            localStorage.setItem("signupCurrentPage", 5);
+            navigate("/Signup");
+          } else {
+            dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
+          }
+
           // packege detail ki bhi api hit honi hy
           break;
-        case RESPONSE_MESSAGES.VERIFICATION_09:
+        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_09:
           if (
             JSON.parse(response.data.responseResult.roleId) === (3 || 4 || 1)
           ) {
@@ -1072,14 +1061,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
               )
             );
           }
-          // this is comment huzeifa
-          // dispatch(
-          //   enterPasswordFail(
-          //     t("Password-verified-and-user-is-new-and-2FA-is-enabled")
-          //   )
-          // );
           break;
-        case RESPONSE_MESSAGES.VERIFICATION_10:
+        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_10:
+          localStorage.removeItem("signupCurrentPage");
+          localStorage.removeItem("LoginFlowPageRoute");
           if (response.data.responseResult.hasAdminRights) {
             if (response.data.responseResult.authToken.isFirstLogIn) {
               navigate("/Admin/ManageUsers");
@@ -1100,7 +1085,9 @@ const enterPasswordvalidation = (value, navigate, t) => {
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
           }
           break;
-        case RESPONSE_MESSAGES.VERIFICATION_11:
+        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_11:
+          localStorage.removeItem("signupCurrentPage");
+          localStorage.removeItem("LoginFlowPageRoute");
           if (response.data.responseResult.hasAdminRights) {
             if (response.data.responseResult.authToken.isFirstLogIn) {
               navigate("/Admin/ManageUsers");
@@ -1117,7 +1104,9 @@ const enterPasswordvalidation = (value, navigate, t) => {
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
           }
           break;
-        case RESPONSE_MESSAGES.VERIFICATION_12:
+        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_12:
+          localStorage.removeItem("signupCurrentPage");
+          localStorage.removeItem("LoginFlowPageRoute");
           if (response.data.responseResult.hasUserRights) {
             if (response.data.responseResult.authToken.isFirstLogIn) {
               navigate("/onboard");
@@ -1135,85 +1124,287 @@ const enterPasswordvalidation = (value, navigate, t) => {
           }
           // route to onboard
           break;
-        case RESPONSE_MESSAGES.VERIFICATION_17:
+        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_17:
+          localStorage.removeItem("signupCurrentPage");
+          localStorage.removeItem("LoginFlowPageRoute");
+          localStorage.removeItem("LocalUserRoutes");
+          localStorage.setItem("VERIFICATION", true);
+          let packageFeatureIDs = [33];
+          localStorage.setItem(
+            "packageFeatureIDs",
+            JSON.stringify(packageFeatureIDs)
+          );
+          localStorage.setItem(
+            "LocalAdminRoutes",
+            JSON.stringify([
+              { id: 33, name: "PayOutstanding" },
+              { id: 200, name: "Admin" },
+            ])
+          );
+
           //yeah pay outstanding per lai jai ga
-          dispatch(
-            enterPasswordSuccess(
-              t(
-                "Password-verified-and-subscription-not-active-and-this-is-organization-creator"
+          if (response.data.responseResult.hasAdminRights) {
+            navigate("/Admin/PayOutstanding");
+            dispatch(
+              enterPasswordSuccess(
+                t(
+                  "Password-verified-and-subscription-not-active-and-this-is-organization-creator"
+                )
               )
-            )
-          );
+            );
+          } else {
+            dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
+          }
+
           break;
-        case RESPONSE_MESSAGES.VERIFICATION_18:
+        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_18:
           //yeah pay outstanding per lai jai or
           // pahly check kergay ga k ussy pay outstanding k rights hy ya nai
-          dispatch(
-            enterPasswordSuccess(
-              t(
-                "Password-verified-and-subscription-not-active-and-this-is-an-admin-user"
+          localStorage.removeItem("signupCurrentPage");
+          localStorage.removeItem("LoginFlowPageRoute");
+          localStorage.setItem("VERIFICATION", false);
+          if (response.data.responseResult.hasAdminRights) {
+            if (checkFeatureIDAvailability(33)) {
+              let packageFeatureIDs = [33];
+              localStorage.setItem(
+                "packageFeatureIDs",
+                JSON.stringify(packageFeatureIDs)
+              );
+              localStorage.setItem(
+                "LocalAdminRoutes",
+                JSON.stringify([
+                  { id: 33, name: "PayOutstanding" },
+                  { id: 200, name: "Admin" },
+                ])
+              );
+              navigate("/Admin/PayOutstanding");
+              dispatch(
+                enterPasswordSuccess(
+                  t(
+                    "Password-verified-and-subscription-not-active-and-this-is-organization-creator"
+                  )
+                )
+              );
+            } else if (response.data.responseResult.hasUserRights) {
+              //yeah pay outstanding per lai jai ga
+              navigate("/Diskus");
+              dispatch(
+                enterPasswordSuccess(
+                  t(
+                    "Password-verified-and-subscription-not-active-and-this-is-an-admin-user"
+                  )
+                )
+              );
+            } else {
+              dispatch(
+                enterPasswordFail(t("User-not-authorised-contact-admin"))
+              );
+            }
+          } else if (response.data.responseResult.hasUserRights) {
+            //yeah pay outstanding per lai jai ga
+            navigate("/Diskus");
+            dispatch(
+              enterPasswordSuccess(
+                t(
+                  "Password-verified-and-subscription-not-active-and-this-is-an-admin-user"
+                )
               )
-            )
-          );
+            );
+          } else {
+            dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
+          }
           break;
-        case RESPONSE_MESSAGES.VERIFICATION_19:
+        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_19:
           //yeah pay outstanding per lai jai or
           // pahly check kergay ga k ussy pay outstanding k rights hy ya nai
-          dispatch(
-            enterPasswordSuccess(
-              t(
-                "Password-verified-and-subscription-not-active-and-this-is-an-admin-user"
-              )
-            )
-          );
+          // yaha backend say sirf allowed route aingay
+          localStorage.removeItem("signupCurrentPage");
+          localStorage.removeItem("LoginFlowPageRoute");
+          localStorage.setItem("VERIFICATION", false);
+          if (response.data.responseResult.hasAdminRights) {
+            if (checkFeatureIDAvailability(33)) {
+              let packageFeatureIDs = [33];
+              localStorage.setItem(
+                "packageFeatureIDs",
+                JSON.stringify(packageFeatureIDs)
+              );
+              localStorage.setItem(
+                "LocalAdminRoutes",
+                JSON.stringify([
+                  { id: 33, name: "PayOutstanding" },
+                  { id: 200, name: "Admin" },
+                ])
+              );
+              navigate("/Admin/PayOutstanding");
+              dispatch(
+                enterPasswordSuccess(
+                  t(
+                    "Password-verified-and-subscription-not-active-and-this-is-an-admin"
+                  )
+                )
+              );
+            } else {
+              dispatch(
+                enterPasswordFail(t("User-not-authorised-contact-admin"))
+              );
+            }
+          } else {
+            dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
+          }
           break;
-        case RESPONSE_MESSAGES.VERIFICATION_20:
+        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_20:
           //yeah user dash board non active per jai ga
-          dispatch(
-            enterPasswordSuccess(
-              t(
-                "Password-verified-and-subscription-not-active-and-this-is-an-admin-user"
-              )
-            )
+          localStorage.removeItem("signupCurrentPage");
+          localStorage.removeItem("LoginFlowPageRoute");
+          localStorage.removeItem("LocalAdminRoutes");
+          localStorage.setItem("VERIFICATION", true);
+          let packageFeatureId = [100, 101, 102];
+          localStorage.setItem(
+            "packageFeatureIDs",
+            JSON.stringify(packageFeatureId)
           );
-          break;
-        case RESPONSE_MESSAGES.VERIFICATION_21:
-          dispatch(
-            enterPasswordFail(
-              t(
-                "Password-verified-and-subscription-not-active-and-this-is-an-admin-user"
-              )
-            )
+          localStorage.setItem(
+            "LocalUserRoutes",
+            JSON.stringify([
+              { name: "Diskus", id: 100 },
+              { name: "home", id: 101 },
+              { name: "", id: 102 },
+            ])
           );
-          break;
-        case RESPONSE_MESSAGES.VERIFICATION_22:
-          dispatch(
-            enterPasswordFail(
-              t(
-                "Password-verified-and-subscription-not-active-and-this-is-an-admin-user"
+
+          //yeah pay outstanding per lai jai ga
+          if (response.data.responseResult.hasUserRights) {
+            navigate("/Diskus");
+            dispatch(
+              enterPasswordSuccess(
+                t(
+                  "Password-verified-and-subscription-not-active-and-this-is-an-admin-user"
+                )
               )
-            )
-          );
+            );
+          } else {
+            dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
+          }
           break;
-        case RESPONSE_MESSAGES.VERIFICATION_23:
-          dispatch(
-            enterPasswordFail(
-              t(
-                "Password-verified-and-subscription-not-active-and-this-is-an-admin-user"
-              )
-            )
+        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_21:
+          // The Organization Trial has expired and This is the Organization Creator. Direct To Billing Flow
+          localStorage.removeItem("signupCurrentPage");
+          localStorage.removeItem("LoginFlowPageRoute");
+          localStorage.removeItem("LocalAdminRoutes");
+          localStorage.removeItem("LocalUserRoutes");
+          localStorage.setItem("TrialExpireSelectPac", JSON.stringify(true));
+          dispatch(showUpgradeNowModal(true));
+          let packageFeatureids = [28];
+          localStorage.setItem(
+            "packageFeatureIDs",
+            JSON.stringify(packageFeatureids)
           );
-          break;
-        case RESPONSE_MESSAGES.VERIFICATION_24:
-          dispatch(
-            enterPasswordFail(
-              t(
-                "Password-verified-and-subscription-not-active-and-this-is-an-admin-user"
-              )
-            )
+          localStorage.setItem(
+            "LocalAdminRoutes",
+            JSON.stringify([
+              { id: 28, name: "PakageDetailsUserManagement" },
+              { id: 200, name: "Admin" },
+            ])
           );
+
+          //yeah pay outstanding per lai jai ga
+          if (response.data.responseResult.hasAdminRights) {
+            navigate("/Admin/PakageDetailsUserManagement");
+            dispatch(
+              enterPasswordSuccess(t("The-organization-trial-has-expired"))
+            );
+          } else {
+            dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
+          }
           break;
-        case RESPONSE_MESSAGES.VERIFICATION_25:
+        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_22:
+          localStorage.removeItem("signupCurrentPage");
+          localStorage.removeItem("LoginFlowPageRoute");
+          localStorage.removeItem("LocalAdminRoutes");
+          localStorage.removeItem("LocalUserRoutes");
+          localStorage.setItem("TrialExpireSelectPac", JSON.stringify(true));
+          dispatch(showUpgradeNowModal(true));
+          let packageFeatureid = [28];
+          localStorage.setItem(
+            "packageFeatureIDs",
+            JSON.stringify(packageFeatureid)
+          );
+          localStorage.setItem(
+            "LocalAdminRoutes",
+            JSON.stringify([
+              { id: 28, name: "PakageDetailsUserManagement" },
+              { id: 200, name: "Admin" },
+            ])
+          );
+
+          //yeah pay outstanding per lai jai ga
+          if (response.data.responseResult.hasAdminRights) {
+            navigate("/Admin/PakageDetailsUserManagement");
+            dispatch(
+              enterPasswordSuccess(t("The-organization-trial-has-expired"))
+            );
+          } else {
+            dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
+          }
+          break;
+        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_23:
+          localStorage.removeItem("signupCurrentPage");
+          localStorage.removeItem("LoginFlowPageRoute");
+          localStorage.removeItem("LocalAdminRoutes");
+          localStorage.removeItem("LocalUserRoutes");
+          localStorage.setItem("TrialExpireSelectPac", JSON.stringify(true));
+          dispatch(showUpgradeNowModal(true));
+          let packageFeatureidS = [28];
+          localStorage.setItem(
+            "packageFeatureIDs",
+            JSON.stringify(packageFeatureidS)
+          );
+          localStorage.setItem(
+            "LocalAdminRoutes",
+            JSON.stringify([
+              { id: 28, name: "PakageDetailsUserManagement" },
+              { id: 200, name: "Admin" },
+            ])
+          );
+
+          //yeah pay outstanding per lai jai ga
+          if (response.data.responseResult.hasAdminRights) {
+            navigate("/Admin/PakageDetailsUserManagement");
+            dispatch(
+              enterPasswordSuccess(t("The-organization-trial-has-expired"))
+            );
+          } else {
+            dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
+          }
+          break;
+        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_24:
+          localStorage.removeItem("signupCurrentPage");
+          localStorage.removeItem("LoginFlowPageRoute");
+          localStorage.removeItem("LocalAdminRoutes");
+          localStorage.setItem("VERIFICATION", true);
+          let packageFeatureID = [100, 101, 102];
+          localStorage.setItem(
+            "packageFeatureIDs",
+            JSON.stringify(packageFeatureID)
+          );
+          localStorage.setItem(
+            "LocalUserRoutes",
+            JSON.stringify([
+              { name: "Diskus", id: 100 },
+              { name: "home", id: 101 },
+              { name: "", id: 102 },
+            ])
+          );
+
+          //yeah pay outstanding per lai jai ga
+          if (response.data.responseResult.hasUserRights) {
+            navigate("/Diskus");
+            dispatch(enterPasswordSuccess(t("Organization-trial-has-expired")));
+          } else {
+            dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
+          }
+          break;
+        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_25:
           dispatch(enterPasswordFail("Something-went-wrong"));
           break;
         default:
