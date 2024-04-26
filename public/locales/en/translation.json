@@ -1940,5 +1940,9 @@
   "User-dashboard": "User dashboard",
   "organization-subscription-not-cancelled": "organization subscription not cancelled",
   "invalid-subscription-status-id-provided": "invalid subscription status id provided",
-  "Non-primary": "Non-primary"
+  "Non-primary": "Non-primary",
+  "Invalid-request-data": "Invalid Request Data (Billing Info not provided)",
+  "Invoice-details-does-not-exist": "Invoice Details does not exist",
+  "Failed-to-save-billing-information": "Failed to Save Billing Information",
+  "Payment-gateway-api-response-failed": "Payment Gateway Api Response Failed"
 }
