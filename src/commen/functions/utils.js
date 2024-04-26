@@ -306,3 +306,13 @@ export function getLocalStorageItemNonActiveCheck(key) {
   const item = localStorage.getItem(key);
   return item !== null ? item : false;
 }
+
+// this is for non active organisation check only
+export function clearLocalStorageAtloginresponce(value) {
+  localStorage.removeItem("signupCurrentPage");
+  if (value === 1) {
+    localStorage.removeItem("LoginFlowPageRoute");
+  } else {
+    localStorage.setItem("LoginFlowPageRoute", 1);
+  }
+}
