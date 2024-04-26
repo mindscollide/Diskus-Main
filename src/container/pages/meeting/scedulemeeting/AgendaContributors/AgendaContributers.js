@@ -147,271 +147,424 @@ const AgendaContributers = ({
       setIsEditClicked(true);
     }
   };
-  const AgendaColoumns = [
-    {
-      title: t("Name"),
-      dataIndex: "userName",
-      key: "userName",
-      align: "left",
-      width: "80px",
-    },
-    {
-      title: t("Email"),
-      dataIndex: "email",
-      key: "email",
-      align: "left",
-      width: "80px",
-    },
-    {
-      title: t("contributor-title"),
-      dataIndex: "Title",
-      key: "Title",
-      align: "left",
-      width: "80px",
-      render: (text, record) => {
-        if (
-          (Number(editorRole.status) === 9 ||
-            Number(editorRole.status) === 8 ||
-            Number(editorRole.status) === 10) &&
-          editorRole.role === "Organizer" &&
-          isEditMeeting === true
-        ) {
-          return <p>{record.Title}</p>;
-        } else if (
-          editorRole.role === "Agenda Contributor" &&
-          isEditMeeting === true
-        ) {
-          return <p>{record.Title}</p>;
-        } else {
-          return (
-            <Row>
-              <Col lg={12} md={12} sm={12}>
-                <TextField
-                  disable={record.isEdit ? true : false}
-                  placeholder={t("Contributor-title")}
-                  labelClass={"d-none"}
-                  width={"100%"}
-                  maxLength={140}
-                  applyClass={"Organizer_table"}
-                  value={record.Title !== "" ? record.Title : ""} // Use the controlled value
-                  change={(e) =>
-                    handleInputChange(record.userID, e.target.value)
-                  } // Update the inputValues when the user types
-                />
-              </Col>
-            </Row>
-          );
-        }
-      },
-    },
-    {
-      title: t("Notification"),
-      dataIndex: "isContributorNotified",
-      key: "isContributorNotified",
-      align: "center",
-      width: "80px",
-      className: "notification-class-table",
-      render: (text, record) => {
-        if (
-          ((Number(editorRole.status) === 9 ||
-            Number(editorRole.status) === 8 ||
-            Number(editorRole.status) === 10) &&
-            editorRole.role === "Organizer" &&
-            isEditMeeting === true) ||
-          (editorRole.role === "Agenda Contributor" && isEditMeeting === true)
-        ) {
-          return (
-            <Row>
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex justify-content-center"
-              >
-                <img
-                  draggable={false}
-                  src={record.isContributorNotified ? greenMailIcon : redMailIcon}
-                  className={
-                    record.isEdit === true ? "cursor-pointer" : "pe-none"
-                  }
-                  height="30px"
-                  width="30px"
-                  alt=""
-                />
-              </Col>
-            </Row>
-          );
-        } else if (record.isContributorNotified) {
-          return (
-            <Row>
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex justify-content-center"
-              >
-                <img
-                  draggable={false}
-                  src={record.isContributorNotified ? greenMailIcon : redMailIcon}
-                  className={
-                    record.isEdit === true ? "cursor-pointer" : "pe-none"
-                  }
-                  height="30px"
-                  width="30px"
-                  alt=""
-                  onClick={() => shownotifyAgendaContrubutors(record.userID)}
-                />
-              </Col>
-            </Row>
-          );
-        } else {
-          return (
-            <Row>
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex justify-content-center"
-              >
-                <img
-                  draggable={false}
-                  src={record.isContributorNotified ? greenMailIcon : redMailIcon}
-                  className={
-                    record.isEdit === true ? "cursor-pointer" : "pe-none"
-                  }
-                  height="30px"
-                  alt=""
-                  width="30px"
-                  onClick={() => shownotifyAgendaContrubutors(record.userID)}
-                />
-              </Col>
-            </Row>
-          );
-        }
-      },
-    },
-    {
-      title: "RSVP",
-      dataIndex: "attendeeAvailability",
-      key: "attendeeAvailability",
-      width: "80px",
-      render: (text, record) => {
-        if (record.attendeeAvailability === 1) {
-          return (
-            <img
-              draggable={false}
-              src={AwaitingResponse}
-              height="30px"
-              width="30px"
-              alt=""
-            />
-          );
-        } else if (record.attendeeAvailability === 2) {
-          return (
-            <img
-              draggable={false}
-              src={thumbsup}
-              height="30px"
-              width="30px"
-              alt=""
-            />
-          );
-        } else if (record.attendeeAvailability === 3) {
-          return (
-            <img
-              draggable={false}
-              src={thumbsdown}
-              height="30px"
-              width="30px"
-              alt=""
-            />
-          );
-        } else if (record.attendeeAvailability === 4) {
-          return (
-            <img
-              draggable={false}
-              src={TentativelyAccepted}
-              height="30px"
-              width="30px"
-              alt=""
-            />
-          );
-        }
-      },
-      // render: (text, record) => {
-      //   return (
-      //     <>
-      //       <Row>
-      //         <Col lg={12} md={12} sm={12}>
-      //           {((Number(editorRole.status) === 9 ||
-      //             Number(editorRole.status) === 8 ||
-      //             Number(editorRole.status) === 10) &&
-      //             editorRole.role === "Organizer" &&
-      //             isEditMeeting === true) ||
-      //           (editorRole.role === "Agenda Contributor" &&
-      //             isEditMeeting === true) ? (
-      //             <img
-      //               draggable={false}
-      //               src={thumbsup}
-      //               className={
-      //                 record.isEdit === true ? "cursor-default" : "pe-none"
-      //               }
-      //               height="30px"
-      //               width="30px"
-      //               alt=""
-      //             />
-      //           ) : (
-      //             <img
-      //               draggable={false}
-      //               src={thumbsup}
-      //               className={
-      //                 record.isEdit === true ? "cursor-default" : "pe-none"
-      //               }
-      //               height="30px"
-      //               width="30px"
-      //               alt=""
-      //             />
-      //           )}
 
-      //           {/* <img draggable = {false} src={RspcAbstainIcon} height="30px" width="30px" /> */}
-      //         </Col>
-      //       </Row>
-      //     </>
-      //   );
-      // },
-    },
-    {
-      dataIndex: "Close",
-      key: "Close",
-      width: "80px",
-      render: (text, record) => {
-        return (
-          <>
-            <Row>
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex justify-content-center"
-              >
-                {!record.isEdit && (
+  let allowRSVPValue =
+    NewMeetingreducer?.getAllMeetingDetails?.advanceMeetingDetails?.allowRSVP;
+
+  if (allowRSVPValue === true) {
+    var AgendaColoumns = [
+      {
+        title: t("Name"),
+        dataIndex: "userName",
+        key: "userName",
+        align: "left",
+        width: "80px",
+      },
+      {
+        title: t("Email"),
+        dataIndex: "email",
+        key: "email",
+        align: "left",
+        width: "80px",
+      },
+      {
+        title: t("contributor-title"),
+        dataIndex: "Title",
+        key: "Title",
+        align: "left",
+        width: "80px",
+        render: (text, record) => {
+          if (
+            (Number(editorRole.status) === 9 ||
+              Number(editorRole.status) === 8 ||
+              Number(editorRole.status) === 10) &&
+            editorRole.role === "Organizer" &&
+            isEditMeeting === true
+          ) {
+            return <p>{record.Title}</p>;
+          } else if (
+            editorRole.role === "Agenda Contributor" &&
+            isEditMeeting === true
+          ) {
+            return <p>{record.Title}</p>;
+          } else {
+            return (
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <TextField
+                    disable={record.isEdit ? true : false}
+                    placeholder={t("Contributor-title")}
+                    labelClass={"d-none"}
+                    width={"100%"}
+                    maxLength={140}
+                    applyClass={"Organizer_table"}
+                    value={record.Title !== "" ? record.Title : ""} // Use the controlled value
+                    change={(e) =>
+                      handleInputChange(record.userID, e.target.value)
+                    } // Update the inputValues when the user types
+                  />
+                </Col>
+              </Row>
+            );
+          }
+        },
+      },
+      {
+        title: t("Notification"),
+        dataIndex: "isContributorNotified",
+        key: "isContributorNotified",
+        align: "center",
+        width: "80px",
+        className: "notification-class-table",
+        render: (text, record) => {
+          if (
+            ((Number(editorRole.status) === 9 ||
+              Number(editorRole.status) === 8 ||
+              Number(editorRole.status) === 10) &&
+              editorRole.role === "Organizer" &&
+              isEditMeeting === true) ||
+            (editorRole.role === "Agenda Contributor" && isEditMeeting === true)
+          ) {
+            return (
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex justify-content-center"
+                >
                   <img
                     draggable={false}
-                    src={redcrossIcon}
-                    width="21.79px"
+                    src={
+                      record.isContributorNotified ? greenMailIcon : redMailIcon
+                    }
+                    className={
+                      record.isEdit === true ? "cursor-pointer" : "pe-none"
+                    }
+                    height="30px"
+                    width="30px"
                     alt=""
-                    className="cursor-pointer"
-                    height="21.79px"
-                    onClick={() => handleRemoveContributor(record)}
                   />
-                )}
-              </Col>
-            </Row>
-          </>
-        );
+                </Col>
+              </Row>
+            );
+          } else if (record.isContributorNotified) {
+            return (
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex justify-content-center"
+                >
+                  <img
+                    draggable={false}
+                    src={
+                      record.isContributorNotified ? greenMailIcon : redMailIcon
+                    }
+                    className={
+                      record.isEdit === true ? "cursor-pointer" : "pe-none"
+                    }
+                    height="30px"
+                    width="30px"
+                    alt=""
+                    onClick={() => shownotifyAgendaContrubutors(record.userID)}
+                  />
+                </Col>
+              </Row>
+            );
+          } else {
+            return (
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex justify-content-center"
+                >
+                  <img
+                    draggable={false}
+                    src={
+                      record.isContributorNotified ? greenMailIcon : redMailIcon
+                    }
+                    className={
+                      record.isEdit === true ? "cursor-pointer" : "pe-none"
+                    }
+                    height="30px"
+                    alt=""
+                    width="30px"
+                    onClick={() => shownotifyAgendaContrubutors(record.userID)}
+                  />
+                </Col>
+              </Row>
+            );
+          }
+        },
       },
-    },
-  ];
+      {
+        title: "RSVP",
+        dataIndex: "attendeeAvailability",
+        key: "attendeeAvailability",
+        width: "80px",
+        render: (text, record) => {
+          if (record.attendeeAvailability === 1) {
+            return (
+              <img
+                draggable={false}
+                src={AwaitingResponse}
+                height="30px"
+                width="30px"
+                alt=""
+              />
+            );
+          } else if (record.attendeeAvailability === 2) {
+            return (
+              <img
+                draggable={false}
+                src={thumbsup}
+                height="30px"
+                width="30px"
+                alt=""
+              />
+            );
+          } else if (record.attendeeAvailability === 3) {
+            return (
+              <img
+                draggable={false}
+                src={thumbsdown}
+                height="30px"
+                width="30px"
+                alt=""
+              />
+            );
+          } else if (record.attendeeAvailability === 4) {
+            return (
+              <img
+                draggable={false}
+                src={TentativelyAccepted}
+                height="30px"
+                width="30px"
+                alt=""
+              />
+            );
+          }
+        },
+      },
+      {
+        dataIndex: "Close",
+        key: "Close",
+        width: "80px",
+        render: (text, record) => {
+          return (
+            <>
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex justify-content-center"
+                >
+                  {!record.isEdit && (
+                    <img
+                      draggable={false}
+                      src={redcrossIcon}
+                      width="21.79px"
+                      alt=""
+                      className="cursor-pointer"
+                      height="21.79px"
+                      onClick={() => handleRemoveContributor(record)}
+                    />
+                  )}
+                </Col>
+              </Row>
+            </>
+          );
+        },
+      },
+    ];
+  } else {
+    var AgendaColoumns = [
+      {
+        title: t("Name"),
+        dataIndex: "userName",
+        key: "userName",
+        align: "left",
+        width: "80px",
+      },
+      {
+        title: t("Email"),
+        dataIndex: "email",
+        key: "email",
+        align: "left",
+        width: "80px",
+      },
+      {
+        title: t("contributor-title"),
+        dataIndex: "Title",
+        key: "Title",
+        align: "left",
+        width: "80px",
+        render: (text, record) => {
+          if (
+            (Number(editorRole.status) === 9 ||
+              Number(editorRole.status) === 8 ||
+              Number(editorRole.status) === 10) &&
+            editorRole.role === "Organizer" &&
+            isEditMeeting === true
+          ) {
+            return <p>{record.Title}</p>;
+          } else if (
+            editorRole.role === "Agenda Contributor" &&
+            isEditMeeting === true
+          ) {
+            return <p>{record.Title}</p>;
+          } else {
+            return (
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <TextField
+                    disable={record.isEdit ? true : false}
+                    placeholder={t("Contributor-title")}
+                    labelClass={"d-none"}
+                    width={"100%"}
+                    maxLength={140}
+                    applyClass={"Organizer_table"}
+                    value={record.Title !== "" ? record.Title : ""} // Use the controlled value
+                    change={(e) =>
+                      handleInputChange(record.userID, e.target.value)
+                    } // Update the inputValues when the user types
+                  />
+                </Col>
+              </Row>
+            );
+          }
+        },
+      },
+      {
+        title: t("Notification"),
+        dataIndex: "isContributorNotified",
+        key: "isContributorNotified",
+        align: "center",
+        width: "80px",
+        className: "notification-class-table",
+        render: (text, record) => {
+          if (
+            ((Number(editorRole.status) === 9 ||
+              Number(editorRole.status) === 8 ||
+              Number(editorRole.status) === 10) &&
+              editorRole.role === "Organizer" &&
+              isEditMeeting === true) ||
+            (editorRole.role === "Agenda Contributor" && isEditMeeting === true)
+          ) {
+            return (
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex justify-content-center"
+                >
+                  <img
+                    draggable={false}
+                    src={
+                      record.isContributorNotified ? greenMailIcon : redMailIcon
+                    }
+                    className={
+                      record.isEdit === true ? "cursor-pointer" : "pe-none"
+                    }
+                    height="30px"
+                    width="30px"
+                    alt=""
+                  />
+                </Col>
+              </Row>
+            );
+          } else if (record.isContributorNotified) {
+            return (
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex justify-content-center"
+                >
+                  <img
+                    draggable={false}
+                    src={
+                      record.isContributorNotified ? greenMailIcon : redMailIcon
+                    }
+                    className={
+                      record.isEdit === true ? "cursor-pointer" : "pe-none"
+                    }
+                    height="30px"
+                    width="30px"
+                    alt=""
+                    onClick={() => shownotifyAgendaContrubutors(record.userID)}
+                  />
+                </Col>
+              </Row>
+            );
+          } else {
+            return (
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex justify-content-center"
+                >
+                  <img
+                    draggable={false}
+                    src={
+                      record.isContributorNotified ? greenMailIcon : redMailIcon
+                    }
+                    className={
+                      record.isEdit === true ? "cursor-pointer" : "pe-none"
+                    }
+                    height="30px"
+                    alt=""
+                    width="30px"
+                    onClick={() => shownotifyAgendaContrubutors(record.userID)}
+                  />
+                </Col>
+              </Row>
+            );
+          }
+        },
+      },
+      {
+        dataIndex: "Close",
+        key: "Close",
+        width: "80px",
+        render: (text, record) => {
+          return (
+            <>
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex justify-content-center"
+                >
+                  {!record.isEdit && (
+                    <img
+                      draggable={false}
+                      src={redcrossIcon}
+                      width="21.79px"
+                      alt=""
+                      className="cursor-pointer"
+                      height="21.79px"
+                      onClick={() => handleRemoveContributor(record)}
+                    />
+                  )}
+                </Col>
+              </Row>
+            </>
+          );
+        },
+      },
+    ];
+  }
 
   // Filter columns based on the RSVP Condition
   // const finalColumns =
@@ -510,8 +663,11 @@ const AgendaContributers = ({
   //Initiate the Add Flow with Empty stae
 
   const handleInitiatewithEmptyState = () => {
-    setIsEditFlag(0);
-    dispatch(showAddAgendaContributor(true));
+    if (Number(editorRole.status) === 1) {
+    } else {
+      setIsEditFlag(0);
+      dispatch(showAddAgendaContributor(true));
+    }
   };
 
   const nextTabOrganizer = () => {
@@ -680,7 +836,7 @@ const AgendaContributers = ({
   //   dispatch(getAllVotingResultDisplay_success([], ""));
   // }, []);
 
-  console.log("rowsDatarowsData", rowsData)
+  console.log("rowsDatarowsData", rowsData);
 
   return (
     <>
@@ -781,7 +937,11 @@ const AgendaContributers = ({
                           <img
                             draggable={false}
                             src={emptyContributorState}
-                            className="cursor-pointer"
+                            className={
+                              Number(editorRole.status) === 1
+                                ? ""
+                                : "cursor-pointer"
+                            }
                             width="274.05px"
                             alt=""
                             height="230.96px"
