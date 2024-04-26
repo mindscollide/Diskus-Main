@@ -44,11 +44,11 @@
   font-size: 20px !important;
   white-space: nowrap !important;
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .FaqsQuestionsStyles {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .accordion-button::after {
