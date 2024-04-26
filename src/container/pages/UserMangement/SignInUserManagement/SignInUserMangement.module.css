@@ -30,6 +30,24 @@ body[dir="rtl"] .signIn_heading {
   /* margin-top: 5px; */
 }
 
+.Remember-Email-text {
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+  font-weight: 400 !important;
+}
+
+body[dir="rtl"] .Remember-Email-text {
+  font-weight: 400 !important;
+}
+
+.havent-subscribed-text {
+  display: flex;
+  justify-content: center;
+  font-size: calc(16px - 20%) !important;
+  color: #5a5a5a !important;
+  font-weight: 500 !important;
+}
+
 .Next_button_EmailVerify {
   width: 100%;
   padding: 10px 30px !important;

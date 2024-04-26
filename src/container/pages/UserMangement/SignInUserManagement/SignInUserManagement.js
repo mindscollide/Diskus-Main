@@ -433,7 +433,7 @@ const SignInUserManagement = () => {
                         onChange={rememberChangeEmail}
                         className={styles["RememberEmail"]}
                       />
-                      <span className="Remember_checkbox_styles Arabicstyles_Subtotal_Not_include_taxes">
+                      <span className={styles["Remember-Email-text"]}>
                         {t("Remeber-email")}
                       </span>
                     </Col>
@@ -456,7 +456,7 @@ const SignInUserManagement = () => {
                 <Row className="mt-3">
                   <Col sm={12} md={12} lg={12}>
                     {" "}
-                    <span className={styles["signup-text-inloginpage"]}>
+                    <span className={styles["havent-subscribed-text"]}>
                       {t("Havent-subscribed-yet")}
                     </span>
                   </Col>
