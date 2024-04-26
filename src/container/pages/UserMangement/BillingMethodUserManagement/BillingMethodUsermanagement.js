@@ -368,19 +368,7 @@ const BillingMethodUsermanagement = () => {
             errorStatus: false,
           },
         });
-        // let newData = {
-        //   FirstName: ,
-        //   LastName: ,
-        //   Email: ,
-        //   Phone: ,
-        //   Address: ,
-        //   Country: billingAddress.Country.value,
-        //   City: ,
-        //   Zip:,
-        //   OrderAmount: Number(totalYearlyCharges),
-        //   OrderCurrency: "USD",
-        //   OrderDescription: "An Order On Diskus",
-        // };
+
         let newData = {
           OrganizationSubscriptionID: Number(OrganizationSubscriptionID),
           OrderDescription: "A Diskus License Order",
@@ -652,7 +640,6 @@ const BillingMethodUsermanagement = () => {
       </Row>
       {UserManagementModals.thanksForPaymentModal && <ThankForPayment />}
       {UserManagementModals.paymentProceedFailed && <PaymentFailedModal />}
-      {UserManagementModals.Loading ? <Loader /> : null}
     </Container>
   );
 };
