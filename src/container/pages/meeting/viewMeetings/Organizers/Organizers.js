@@ -106,7 +106,7 @@ const Organizers = ({
   }, []);
 
   let allowRSVPValue =
-    NewMeetingreducer?.getAllMeetingDetails?.advanceMeetingDetails?.allowRSVP;
+    MeetingOrganizersReducer?.AllMeetingOrganizersData?.allowRSVP;
 
   if (allowRSVPValue === true) {
     var MeetingColoumns = [

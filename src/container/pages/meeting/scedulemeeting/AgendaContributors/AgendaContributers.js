@@ -69,6 +69,7 @@ const AgendaContributers = ({
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
     (state) => state
   );
+  console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
   const [isEdit, setIsEdit] = useState(false);
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [isPublishedState, setIsPublishedState] = useState(false);
@@ -148,8 +149,7 @@ const AgendaContributers = ({
     }
   };
 
-  let allowRSVPValue =
-    NewMeetingreducer?.getAllMeetingDetails?.advanceMeetingDetails?.allowRSVP;
+  let allowRSVPValue = NewMeetingreducer?.getAllAgendaContributorsAllowRSVP;
 
   if (allowRSVPValue === true) {
     var AgendaColoumns = [

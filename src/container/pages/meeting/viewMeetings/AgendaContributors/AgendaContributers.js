@@ -129,8 +129,7 @@ const AgendaContributers = ({
     // setMeetingDetails(false);
   };
 
-  let allowRSVPValue =
-    NewMeetingreducer?.getAllMeetingDetails?.advanceMeetingDetails?.allowRSVP;
+  let allowRSVPValue = NewMeetingreducer?.getAllAgendaContributorsAllowRSVP;
 
   if (allowRSVPValue === true) {
     var AgendaContributorViewColoumns = [
