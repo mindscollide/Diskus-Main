@@ -1817,5 +1817,6 @@
   "Remove-shared-folder-successfully": "Remove shared folder successfully",
   "Delete-messages": "Delete Messages",
   "Folder-share-successfully": "Folder share successfully",
-  "Non-primary": "Non-primary"
+  "Non-primary": "Non-primary",
+  "Information-saved": "Information saved"
 }

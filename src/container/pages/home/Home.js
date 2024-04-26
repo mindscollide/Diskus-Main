@@ -1172,7 +1172,13 @@ const Home = () => {
     dispatch(dashboardCalendarEvent(dashboardData));
     navigate("/DisKus/Meeting");
   };
-
+  console.log(
+    meetingIdReducer,
+    upComingEvents,
+    calendarEvents,
+    events,
+    "meetingIdReducermeetingIdReducermeetingIdReducer"
+  );
   // Meeting Status End Updated
   useEffect(() => {
     try {
