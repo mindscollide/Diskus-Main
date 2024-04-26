@@ -1,39 +1,122 @@
 import React, { useEffect, useState } from "react";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 const PrivateRoutes = () => {
   const currentUrl = window.location.href;
-  const location = useLocation();
-  const allowedRoutes = JSON.parse(localStorage.getItem("LocalRoutes") || "[]");
-  const currentPath = location.pathname;
-  console.log("allowedRoutes", allowedRoutes);
   useEffect(() => {
+    // Action: Meeting RSVP
     if (
       currentUrl.includes("DisKus/Meeting/Useravailabilityformeeting?action=")
     ) {
       const parts = currentUrl.split("?action=");
-      // Save something in local storage if the condition is true
       if (parts.length === 2) {
         const remainingString = parts[1];
-
-        // Save it to state or local storage as needed
+        // Save RSVP data to local storage
         localStorage.setItem("RSVP", remainingString);
       } else {
-        localStorage.clear("RSVP");
+        // Clear RSVP data from local storage if condition not met
+        localStorage.removeItem("RSVP");
       }
     }
-    if (currentUrl.includes("DisKus/dataroom?action=")) {
-      // localStorage.setItem("DataRoomEmail", currentUrl);
 
+    // Action: Data Room
+    if (currentUrl.includes("DisKus/dataroom?action=")) {
       const parts = currentUrl.split("?action=");
-      // Save something in local storage if the condition is true
       if (parts.length === 2) {
         const remainingString = parts[1];
-
-        // Save it to state or local storage as needed
-        localStorage.setItem("DataRoomEmail", currentUrl);
+        // Save Data Room email data to local storage
+        localStorage.setItem("DataRoomEmail", remainingString);
       } else {
-        localStorage.clear("DataRoomEmail");
+        // Clear Data Room email data from local storage if condition not met
+        localStorage.removeItem("DataRoomEmail");
       }
+    }
+
+    // Action: Meeting Minute Collaboration
+    if (
+      currentUrl.includes("DisKus/Meeting/Meetingminutecollaborate?action=")
+    ) {
+      // Add action-specific logic here if needed
+    }
+
+    // Action: Meeting Proposed
+    if (currentUrl.includes("DisKus/Meeting/Meetingproposed?action=")) {
+      // Add action-specific logic here if needed
+    }
+
+    // Action: Add Agenda Contributor
+    if (currentUrl.includes("DisKus/Meeting/Addagendacontributor?action=")) {
+      // Add action-specific logic here if needed
+    }
+
+    // Action: Update Agenda Contributor
+    if (currentUrl.includes("DisKus/Meeting/Updateagendacontributor?action=")) {
+      // Add action-specific logic here if needed
+    }
+
+    // Action: Add Organizer
+    if (currentUrl.includes("DisKus/Meeting/Addorganizer?action=")) {
+      // Add action-specific logic here if needed
+    }
+
+    // Action: Update Organizer
+    if (currentUrl.includes("DisKus/Meeting/Updateorganizer?action=")) {
+      // Add action-specific logic here if needed
+    }
+
+    // Action: Cancel Meeting
+    if (currentUrl.includes("DisKus/Meeting/Cancelmeeting?action=")) {
+      // Add action-specific logic here if needed
+    }
+
+    // Action: Delete Meeting
+    if (currentUrl.includes("DisKus/Meeting/Deletemeeting?action=")) {
+      // Add action-specific logic here if needed
+    }
+
+    // Action: Update Meeting
+    if (currentUrl.includes("DisKus/Meeting/Updatemeeting?action=")) {
+      // Add action-specific logic here if needed
+    }
+
+    // Action: Start Meeting
+    if (currentUrl.includes("DisKus/Meeting/Startmeeting?action=")) {
+      // Add action-specific logic here if needed
+    }
+
+    // Action: Poll Expire
+    if (currentUrl.includes("DisKus/Meeting/Pollexpire?action=")) {
+      // Add action-specific logic here if needed
+    }
+
+    // Action: Poll Published
+    if (currentUrl.includes("DisKus/Meeting/Pollpublished?action=")) {
+      // Add action-specific logic here if needed
+    }
+
+    // Action: Poll Update
+    if (currentUrl.includes("DisKus/Meeting/Pollupdate?action=")) {
+      // Add action-specific logic here if needed
+    }
+
+    // Action: Resolution Reminder
+    if (currentUrl.includes("DisKus/Meeting/Resolutionreminder?action=")) {
+      // Add action-specific logic here if needed
+    }
+
+    // Action: Organization Status Enable
+    if (
+      currentUrl.includes("DisKus/Meeting/Organizationstatusenable?action=")
+    ) {
+      // Add action-specific logic here if needed
+    }
+
+    // Action: Organization Subscription Enable
+    if (
+      currentUrl.includes(
+        "DisKus/Meeting/Organizationsubscriptionenable?action="
+      )
+    ) {
+      // Add action-specific logic here if needed
     }
   }, [currentUrl]);
   let Blur = localStorage.getItem("blur");

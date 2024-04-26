@@ -3608,7 +3608,7 @@ const GetAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
-        await dispatch(
+        dispatch(
           GetAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting)
         );
       } else if (response.data.responseCode === 200) {

@@ -772,6 +772,35 @@ const Home = () => {
               return newData.pK_TID !== payloadData.todoid;
             });
           });
+        } else {
+          setRowToDo((rowsData) => {
+            return rowsData.map((newData, index) => {
+              if (newData.pK_TID === payloadData.todoid) {
+                const newObj = {
+                  ...newData,
+                  status: {
+                    pK_TSID: payloadData.todoStatusID,
+                    status:
+                      payloadData.todoStatusID === 1
+                        ? "In Progress"
+                        : payloadData.todoStatusID === 2
+                        ? "Pending"
+                        : payloadData.todoStatusID === 3
+                        ? "Upcoming"
+                        : payloadData.todoStatusID === 4
+                        ? "Cancelled"
+                        : payloadData.todoStatusID === 5
+                        ? "Completed"
+                        : payloadData.todoStatusID === 6
+                        ? "Deleted"
+                        : payloadData.todoStatusID === 7,
+                  },
+                };
+                return newObj;
+              }
+              return newData;
+            });
+          });
         }
       }
     } catch {}

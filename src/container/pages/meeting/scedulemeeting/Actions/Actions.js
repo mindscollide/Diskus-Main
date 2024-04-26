@@ -488,8 +488,24 @@ const Actions = ({
     try {
       if (toDoListReducer.createTaskMeeting !== null) {
         let taskData = toDoListReducer.createTaskMeeting;
+        let taskInfo = toDoListReducer.createTaskMeeting.todoList;
         if (Number(taskData.meetingID) === Number(currentMeeting)) {
-          setActionsRows([...actionsRows, taskData.todoList]);
+          let findisAlreadExist = actionsRows.findIndex(
+            (data, index) => data.pK_TID === taskData.todoList.pK_TID
+          );
+          if (findisAlreadExist !== -1) {
+            // setActionsRows((actionRows) => {
+            //   actionRows.map((newData, index) => {
+            //     if (newData.pK_TID === taskData.todoList.pK_TID) {
+            //       return taskInfo;
+            //     } else {
+            //       return newData;
+            //     }
+            //   });
+            // });
+          } else {
+            setActionsRows([...actionsRows, taskInfo]);
+          }
         }
         dispatch(createTaskMeetingMQTT(null));
       }

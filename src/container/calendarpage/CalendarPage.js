@@ -78,7 +78,10 @@ const CalendarPage = () => {
   });
   const [startDataUpdate, setStartDataUpdate] = useState("");
   const [endDataUpdate, setEndDataUpdate] = useState("");
-  let CalenderMonthsSpan = localStorage.getItem("calenderMonthsSpan");
+  let CalenderMonthsSpan =
+    localStorage.getItem("calenderMonthsSpan") !== null
+      ? localStorage.getItem("calenderMonthsSpan")
+      : 1;
   let OrganizationID = localStorage.getItem("organizationID");
   const userID = localStorage.getItem("userID");
   var currentDate = new Date(); // Get the current date
@@ -86,20 +89,14 @@ const CalendarPage = () => {
   // Calculate the start date
   let startDate = new Date(
     currentDate.getFullYear(),
-    currentDate.getMonth() -
-      parseInt(
-        parseInt(CalenderMonthsSpan) === 0 ? 1 : parseInt(CalenderMonthsSpan)
-      ),
+    currentDate.getMonth() - Number(CalenderMonthsSpan),
     currentDate.getDate()
   );
 
   // Calculate the end date
   let endDate = new Date(
     currentDate.getFullYear(),
-    currentDate.getMonth() +
-      parseInt(
-        parseInt(CalenderMonthsSpan) === 0 ? 1 : parseInt(CalenderMonthsSpan)
-      ),
+    currentDate.getMonth() + Number(CalenderMonthsSpan),
     currentDate.getDate()
   );
 
@@ -196,12 +193,7 @@ const CalendarPage = () => {
       const date = new Date(value._d);
       let updateStartDate = new Date(
         date.getFullYear(),
-        date.getMonth() -
-          parseInt(
-            parseInt(CalenderMonthsSpan) === 0
-              ? 1
-              : parseInt(CalenderMonthsSpan)
-          ),
+        date.getMonth() - Number(CalenderMonthsSpan),
         1
       );
       let calendarData = {
@@ -216,13 +208,7 @@ const CalendarPage = () => {
       const date = new Date(value._d);
       let updateEndDate = new Date(
         date.getFullYear(),
-        date.getMonth() +
-          parseInt(
-            parseInt(CalenderMonthsSpan) === 0
-              ? 1
-              : parseInt(CalenderMonthsSpan)
-          ),
-        0
+        date.getMonth() + Number(CalenderMonthsSpan)
       );
       let calendarData = {
         UserID: parseInt(userID),
