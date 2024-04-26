@@ -12,6 +12,11 @@
   color: #6172d6;
 }
 
+.main-wrapper {
+  padding-right: 50px;
+  padding-left: 50px;
+}
+
 .Accept-all {
   width: 123px;
   height: 39px;
@@ -49,8 +54,27 @@ span.No-of-reviews {
   margin-right: 15px;
 }
 
+body[dir="rtl"] span.No-of-reviews {
+  width: 292px;
+  height: 40px;
+  background: #fff8e1;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  color: #ddb227;
+  margin-right: auto !important;
+  margin-left: 15px !important;
+}
+
 .pendingApprovalPaper {
   border: 1px solid #e1e1e1;
+  height: auto !important;
+  min-height: 78vh !important;
+  width: 100% !important;
 }
 
 p.Parent-title-heading {
@@ -109,11 +133,28 @@ p.uploadedbyuser {
   margin-left: 20px !important;
 }
 
+body[dir="rtl"] p.uploadedbyuser {
+  font-size: 12px;
+  font-weight: 700;
+  color: #5f78d6;
+  margin: 0 !important;
+  margin-left: auto !important;
+  margin-right: 20px !important;
+}
+
 .gap-ti {
   display: flex;
   align-items: center;
   gap: 10px;
   margin-left: 20px !important;
+}
+
+body[dir="rtl"] .gap-ti {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto !important;
+  margin-right: 20px !important;
 }
 
 .Accept-comment {
@@ -176,11 +217,33 @@ p.time-uploader {
   font-size: 12px;
 }
 
+body[dir="rtl"] p.time-uploader {
+  margin: 0;
+  position: absolute;
+  bottom: 20px;
+  margin-left: auto !important;
+  margin-right: 20px !important;
+  color: #5f78d6 !important;
+  font-weight: 500;
+  font-size: 12px;
+}
+
 p.date-uploader {
   margin: 0;
   position: absolute;
   bottom: 5px;
   margin-left: 20px;
+  color: #5f78d6 !important;
+  font-weight: 500;
+  font-size: 12px;
+}
+
+body[dir="rtl"] p.date-uploader {
+  margin: 0;
+  position: absolute;
+  bottom: 5px;
+  margin-left: auto !important;
+  margin-right: 20px !important;
   color: #5f78d6 !important;
   font-weight: 500;
   font-size: 12px;
@@ -192,4 +255,131 @@ p.date-uploader {
 
 .gap-subcomments {
   margin-left: 50px;
+}
+
+body[dir="rtl"] .gap-subcomments {
+  margin-left: auto !important;
+  margin-right: 50px !important;
+}
+
+.review-minutes-wrapper-scroll {
+  height: 57vh;
+  overflow: hidden auto;
+  padding-right: 15px;
+  margin-bottom: 15px;
+}
+
+body[dir="rtl"] .review-minutes-wrapper-scroll {
+  height: 57vh;
+  overflow: hidden auto;
+  padding-right: 0 !important;
+  padding-left: 15px !important;
+  margin-bottom: 15px;
+}
+
+.review-minutes-wrapper-scroll::-webkit-scrollbar {
+  width: 5px !important;
+  border-radius: 20px !important;
+  background-color: #f2f2f2 !important;
+}
+.review-minutes-wrapper-scroll::-webkit-scrollbar-thumb {
+  border-radius: 20px !important;
+  background: #a2a2a2 !important;
+  margin-left: -15px !important;
+}
+
+.review-minutes-wrapper {
+  height: 57vh;
+  overflow: hidden auto;
+  /* padding-right: 15px; */
+  margin-bottom: 15px;
+}
+
+.review-minutes-wrapper::-webkit-scrollbar {
+  width: 5px !important;
+  border-radius: 20px !important;
+  background-color: #f2f2f2 !important;
+}
+.review-minutes-wrapper::-webkit-scrollbar-thumb {
+  border-radius: 20px !important;
+  background: #a2a2a2 !important;
+  margin-left: -15px !important;
+}
+
+.Cancel {
+  width: 103px;
+  height: 39px;
+  background: #fff !important;
+  border-color: #e1e1e1 !important;
+  color: #5a5a5a !important;
+  border-radius: 4px !important;
+  font-size: 12px;
+  font-weight: 600;
+  margin-right: 15px;
+  margin-bottom: 15px;
+}
+
+.Cancel:is(:active, :hover, :focus, :focus-visible) {
+  width: 103px;
+  height: 39px;
+  background: #fff !important;
+  border-color: #e1e1e1 !important;
+  color: #5a5a5a !important;
+  border-radius: 4px !important;
+  font-size: 12px;
+  font-weight: 600;
+  margin-right: 15px;
+  margin-bottom: 15px;
+}
+
+body[dir="rtl"] .Cancel {
+  width: 103px;
+  height: 39px;
+  background: #fff !important;
+  border-color: #e1e1e1 !important;
+  color: #5a5a5a !important;
+  border-radius: 4px !important;
+  font-size: 12px;
+  font-weight: 600;
+  margin-right: auto !important;
+  margin-left: 15px !important;
+  margin-bottom: 15px;
+}
+
+body[dir="rtl"] .Cancel:is(:active, :hover, :focus, :focus-visible) {
+  width: 103px;
+  height: 39px;
+  background: #fff !important;
+  border-color: #e1e1e1 !important;
+  color: #5a5a5a !important;
+  border-radius: 4px !important;
+  font-size: 12px;
+  font-weight: 600;
+  margin-right: auto !important;
+  margin-left: 15px !important;
+  margin-bottom: 15px;
+}
+
+.Submit-review {
+  width: 154px;
+  height: 39px;
+  background: #5f78d6 !important;
+  border: none !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.Submit-review:is(:active, :hover, :focus, :focus-visible) {
+  width: 154px;
+  height: 39px;
+  background: #5f78d6 !important;
+  border: none !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  font-size: 12px;
+  margin-bottom: 15px;
+  font-weight: 600;
 }
