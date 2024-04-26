@@ -39,24 +39,43 @@ const BillProcessStepThree = ({ updateTotalYearlyCharges }) => {
 
   //excreting the data for  Get All Organziation Selected Pakages
 
+  // useEffect(() => {
+  //   try {
+  //     if (
+  //       UserMangementReducer.getAllSelectedPakagesData !== null &&
+  //       UserMangementReducer.getAllSelectedPakagesData !== undefined
+  //     ) {
+  //       setGetAllPakagesData(
+  //         UserMangementReducer.getAllSelectedPakagesData
+  //           .organizationSelectedPackages
+  //       );
+
+  //       setExpiryDate(
+  //         UserMangementReducer.getAllSelectedPakagesData
+  //           .organizationSubscription.subscriptionExpiryDate
+  //       );
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }, [UserMangementReducer.getAllSelectedPakagesData]);
+
   useEffect(() => {
     try {
-      if (
-        UserMangementReducer.getAllSelectedPakagesData !== null &&
-        UserMangementReducer.getAllSelectedPakagesData !== undefined
-      ) {
-        setGetAllPakagesData(
-          UserMangementReducer.getAllSelectedPakagesData
-            .organizationSelectedPackages
-        );
-
-        setExpiryDate(
-          UserMangementReducer.getAllSelectedPakagesData
-            .organizationSubscription.subscriptionExpiryDate
+      const selectedPackages =
+        UserMangementReducer.getAllSelectedPakagesData
+          ?.organizationSelectedPackages;
+      if (Array.isArray(selectedPackages)) {
+        setGetAllPakagesData(selectedPackages);
+      } else {
+        setGetAllPakagesData([]);
+        console.error(
+          "Expected an array for selected packages, but received:",
+          selectedPackages
         );
       }
     } catch (error) {
-      console.log(error);
+      console.error("Failed to set packages data:", error);
     }
   }, [UserMangementReducer.getAllSelectedPakagesData]);
 
@@ -151,24 +170,28 @@ const BillProcessStepThree = ({ updateTotalYearlyCharges }) => {
   ];
 
   const calculateTotals = (data) => {
-    const totalLicenses = data.reduce(
-      (acc, cur) => acc + (Number(cur.headCount) || 0),
-      0
-    );
+    try {
+      const totalLicenses = data.reduce(
+        (acc, cur) => acc + (Number(cur.headCount) || 0),
+        0
+      );
 
-    const totalYearlyCharges = data.reduce(
-      (acc, cur) => acc + (Number(cur.price * cur.headCount) * 12 || 0),
-      0
-    );
+      const totalYearlyCharges = data.reduce(
+        (acc, cur) => acc + (Number(cur.price * cur.headCount) * 12 || 0),
+        0
+      );
 
-    updateTotalYearlyCharges(totalYearlyCharges);
+      updateTotalYearlyCharges(totalYearlyCharges);
 
-    // Return an object with the totals that can be used as a row in your table.
-    return {
-      name: "Total",
-      headCount: totalLicenses,
-      Yearlycharges: totalYearlyCharges, // Format to string with thousand separators.
-    };
+      // Return an object with the totals that can be used as a row in your table.
+      return {
+        name: "Total",
+        headCount: totalLicenses,
+        Yearlycharges: totalYearlyCharges, // Format to string with thousand separators.
+      };
+    } catch (error) {
+      console.log(error, "errorerrorerror");
+    }
   };
 
   const totalRow = calculateTotals(getAllPakagesData);
