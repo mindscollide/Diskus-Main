@@ -131,10 +131,7 @@ const Organizers = ({
   const handleCancelOrganizer = () => {
     dispatch(showCancelModalOrganizers(true));
   };
-  console.log(
-    currentMeeting,
-    "currentMeetingcurrentMeetingcurrentMeetingcurrentMeeting"
-  );
+  console.log(NewMeetingreducer, "NewMeetingreducerNewMeetingreducer");
   const [inputValues, setInputValues] = useState({});
 
   const currentOrganizerData = {
@@ -208,263 +205,529 @@ const Organizers = ({
     setRowsData(updatedRowsData);
   };
 
-  const MeetingColoumns = [
-    {
-      title: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span>{t("Name")}</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      dataIndex: "userName",
-      key: "userName",
-      width: "200px",
-      align: "left",
-      render: (text) => <label className={styles["Title_desc"]}>{text}</label>,
-    },
+  let allowRSVPValue =
+    NewMeetingreducer?.getAllMeetingDetails?.advanceMeetingDetails?.allowRSVP;
 
-    {
-      title: t("Email"),
-      dataIndex: "email",
-      key: "email",
-      align: "left",
-      width: "250px",
-      render: (text) => <label className="column-boldness">{text}</label>,
-    },
-    {
-      title: t("Organizer-title"),
-      dataIndex: "organizerTitle",
-      key: "organizerTitle",
-      width: "250px",
-      align: "left",
-      render: (text, record) => {
-        if (
-          (Number(editorRole.status) === 9 ||
-            Number(editorRole.status) === 8 ||
-            Number(editorRole.status) === 10) &&
-          editorRole.role === "Organizer" &&
-          isEditMeeting === true
-        ) {
-          return text;
-        } else if (
-          editorRole.role === "Agenda Contributor" &&
-          isEditMeeting === true
-        ) {
-          return text;
-        } else {
-          return (
+  if(allowRSVPValue === true) {
+    var MeetingColoumns = [
+      {
+        title: (
+          <>
             <Row>
               <Col lg={12} md={12} sm={12}>
-                <TextField
-                  placeholder={t("Organizer-title")}
-                  labelClass={"d-none"}
-                  applyClass={"Organizer_table"}
-                  maxLength={140}
-                  value={text} // Use the controlled value
-                  change={(e) =>
-                    handleInputChange(record.userID, e.target.value)
-                  } // Update the inputValues when the user types
-                  disable={
-                    (Number(editorRole.status) === 9 ||
-                      Number(editorRole.status) === 8 ||
-                      Number(editorRole.status) === 10) &&
-                    editorRole.role === "Organizer" &&
-                    isEditMeeting === true
-                      ? true
-                      : editorRole.role === "Agenda Contributor" &&
-                        isEditMeeting === true
-                      ? true
-                      : record.disabledTitle === true
-                      ? true
-                      : false
-                  }
-                />
+                <span>{t("Name")}</span>
               </Col>
             </Row>
-          );
-        }
+          </>
+        ),
+        dataIndex: "userName",
+        key: "userName",
+        width: "200px",
+        align: "left",
+        render: (text) => <label className={styles["Title_desc"]}>{text}</label>,
       },
-    },
-
-    {
-      dataIndex: "isPrimaryOrganizer",
-      key: "isPrimaryOrganizer",
-      align: "left",
-      width: "200px",
-      render: (text, record, rowIndex) => (
-        <Row>
-          <Col
-            lg={12}
-            md={12}
-            sm={12}
-            className="d-flex gap-3 align-items-center"
-          >
-            <Switch
-              checkedValue={text}
-              onChange={(checked) => handleSwitchChange(checked, rowIndex)}
-              disabled={record.disabledSwitch === true ? true : false}
-            />
-            <label className="column-boldness">{t("Primary")}</label>
-          </Col>
-        </Row>
-      ),
-    },
-    {
-      title: "RSVP",
-      dataIndex: "attendeeAvailability",
-      key: "attendeeAvailability",
-      width: "120px",
-      align: "left",
-
-      render: (text, record) => {
-        if (record.attendeeAvailability === 1) {
-          return (
-            <img
-              draggable={false}
-              src={AwaitingResponse}
-              height="30px"
-              width="30px"
-              alt=""
-            />
-          );
-        } else if (record.attendeeAvailability === 2) {
-          return (
-            <img
-              draggable={false}
-              src={thumbsup}
-              height="30px"
-              width="30px"
-              alt=""
-            />
-          );
-        } else if (record.attendeeAvailability === 3) {
-          return (
-            <img
-              draggable={false}
-              src={thumbsdown}
-              height="30px"
-              width="30px"
-              alt=""
-            />
-          );
-        } else if (record.attendeeAvailability === 4) {
-          return (
-            <img
-              draggable={false}
-              src={TentativelyAccepted}
-              height="30px"
-              width="30px"
-              alt=""
-            />
-          );
-        }
+  
+      {
+        title: t("Email"),
+        dataIndex: "email",
+        key: "email",
+        align: "left",
+        width: "250px",
+        render: (text) => <label className="column-boldness">{text}</label>,
       },
-    },
-
-    {
-      title: t("Notification"),
-      dataIndex: "isOrganizerNotified",
-      key: "isOrganizerNotified",
-      width: "180px",
-      align: "left",
-      render: (text, record) => {
-        if (record.isOrganizerNotified === true) {
-          return (
+      {
+        title: t("Organizer-title"),
+        dataIndex: "organizerTitle",
+        key: "organizerTitle",
+        width: "250px",
+        align: "left",
+        render: (text, record) => {
+          if (
+            (Number(editorRole.status) === 9 ||
+              Number(editorRole.status) === 8 ||
+              Number(editorRole.status) === 10) &&
+            editorRole.role === "Organizer" &&
+            isEditMeeting === true
+          ) {
+            return text;
+          } else if (
+            editorRole.role === "Agenda Contributor" &&
+            isEditMeeting === true
+          ) {
+            return text;
+          } else {
+            return (
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <TextField
+                    placeholder={t("Organizer-title")}
+                    labelClass={"d-none"}
+                    applyClass={"Organizer_table"}
+                    maxLength={140}
+                    value={text} // Use the controlled value
+                    change={(e) =>
+                      handleInputChange(record.userID, e.target.value)
+                    } // Update the inputValues when the user types
+                    disable={
+                      (Number(editorRole.status) === 9 ||
+                        Number(editorRole.status) === 8 ||
+                        Number(editorRole.status) === 10) &&
+                      editorRole.role === "Organizer" &&
+                      isEditMeeting === true
+                        ? true
+                        : editorRole.role === "Agenda Contributor" &&
+                          isEditMeeting === true
+                        ? true
+                        : record.disabledTitle === true
+                        ? true
+                        : false
+                    }
+                  />
+                </Col>
+              </Row>
+            );
+          }
+        },
+      },
+  
+      {
+        dataIndex: "isPrimaryOrganizer",
+        key: "isPrimaryOrganizer",
+        align: "left",
+        width: "200px",
+        render: (text, record, rowIndex) => (
+          <Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex gap-3 align-items-center"
+            >
+              <Switch
+                checkedValue={text}
+                onChange={(checked) => handleSwitchChange(checked, rowIndex)}
+                disabled={record.disabledSwitch === true ? true : false}
+              />
+              <label className="column-boldness">{t("Primary")}</label>
+            </Col>
+          </Row>
+        ),
+      },
+  
+      {
+        title: "RSVP",
+        dataIndex: "attendeeAvailability",
+        key: "attendeeAvailability",
+        width: "120px",
+        align: "left",
+  
+        render: (text, record) => {
+          if (record.attendeeAvailability === 1) {
+            return (
+              <img
+                draggable={false}
+                src={AwaitingResponse}
+                height="30px"
+                width="30px"
+                alt=""
+              />
+            );
+          } else if (record.attendeeAvailability === 2) {
+            return (
+              <img
+                draggable={false}
+                src={thumbsup}
+                height="30px"
+                width="30px"
+                alt=""
+              />
+            );
+          } else if (record.attendeeAvailability === 3) {
+            return (
+              <img
+                draggable={false}
+                src={thumbsdown}
+                height="30px"
+                width="30px"
+                alt=""
+              />
+            );
+          } else if (record.attendeeAvailability === 4) {
+            return (
+              <img
+                draggable={false}
+                src={TentativelyAccepted}
+                height="30px"
+                width="30px"
+                alt=""
+              />
+            );
+          }
+        },
+      },
+  
+      {
+        title: t("Notification"),
+        dataIndex: "isOrganizerNotified",
+        key: "isOrganizerNotified",
+        width: "180px",
+        align: "left",
+        render: (text, record) => {
+          if (record.isOrganizerNotified === true) {
+            return (
+              <Row>
+                <Col
+                  lg={7}
+                  md={7}
+                  sm={7}
+                  className="d-flex justify-content-center"
+                >
+                  {record.disabledNotification === true ? (
+                    <img
+                      draggable={false}
+                      src={greenMailIcon}
+                      height="30px"
+                      width="30px"
+                      // onClick={() => sendRecentNotification(record)}
+                      alt=""
+                      // className="cursor-pointer"
+                    />
+                  ) : (
+                    <img
+                      draggable={false}
+                      src={greenMailIcon}
+                      height="30px"
+                      width="30px"
+                      onClick={() => sendRecentNotification(record)}
+                      className="cursor-pointer"
+                      alt=""
+                    />
+                  )}
+                </Col>
+              </Row>
+            );
+          } else if (record.isOrganizerNotified === false) {
+            return (
+              <Row>
+                <Col
+                  lg={7}
+                  md={7}
+                  sm={7}
+                  className="d-flex justify-content-center"
+                >
+                  {record.disabledNotification === true ? (
+                    <img
+                      draggable={false}
+                      src={redMailIcon}
+                      height="30px"
+                      width="30px"
+                      // className="cursor-pointer"
+                      alt=""
+                    />
+                  ) : (
+                    <img
+                      draggable={false}
+                      src={redMailIcon}
+                      height="30px"
+                      width="30px"
+                      onClick={() => sendRecentNotification(record)}
+                      className="cursor-pointer"
+                      alt=""
+                    />
+                  )}
+                </Col>
+              </Row>
+            );
+          }
+        },
+      },
+      {
+        // title: t('RSVP'),
+        dataIndex: "isDeletable",
+        key: "isDeletable",
+        width: "120px",
+        align: "left",
+  
+        render: (text, record) => {
+          if (record.isDeletable === true) {
+            return (
+              <img
+                draggable={false}
+                src={CrossResolution}
+                height="30px"
+                alt=""
+                width="30px"
+                className="cursor-pointer"
+                onClick={() => deleteRow(record)}
+              />
+            );
+          } else {
+            return null;
+          }
+        },
+      },
+    ];
+  } else {
+    var MeetingColoumns = [
+      {
+        title: (
+          <>
             <Row>
-              <Col
-                lg={7}
-                md={7}
-                sm={7}
-                className="d-flex justify-content-center"
-              >
-                {record.disabledNotification === true ? (
-                  <img
-                    draggable={false}
-                    src={greenMailIcon}
-                    height="30px"
-                    width="30px"
-                    // onClick={() => sendRecentNotification(record)}
-                    alt=""
-                    // className="cursor-pointer"
-                  />
-                ) : (
-                  <img
-                    draggable={false}
-                    src={greenMailIcon}
-                    height="30px"
-                    width="30px"
-                    onClick={() => sendRecentNotification(record)}
-                    className="cursor-pointer"
-                    alt=""
-                  />
-                )}
+              <Col lg={12} md={12} sm={12}>
+                <span>{t("Name")}</span>
               </Col>
             </Row>
-          );
-        } else if (record.isOrganizerNotified === false) {
-          return (
-            <Row>
-              <Col
-                lg={7}
-                md={7}
-                sm={7}
-                className="d-flex justify-content-center"
-              >
-                {record.disabledNotification === true ? (
-                  <img
-                    draggable={false}
-                    src={redMailIcon}
-                    height="30px"
-                    width="30px"
-                    // className="cursor-pointer"
-                    alt=""
-                  />
-                ) : (
-                  <img
-                    draggable={false}
-                    src={redMailIcon}
-                    height="30px"
-                    width="30px"
-                    onClick={() => sendRecentNotification(record)}
-                    className="cursor-pointer"
-                    alt=""
-                  />
-                )}
-              </Col>
-            </Row>
-          );
-        }
+          </>
+        ),
+        dataIndex: "userName",
+        key: "userName",
+        width: "200px",
+        align: "left",
+        render: (text) => <label className={styles["Title_desc"]}>{text}</label>,
       },
-    },
-    {
-      // title: t('RSVP'),
-      dataIndex: "isDeletable",
-      key: "isDeletable",
-      width: "120px",
-      align: "left",
+  
+      {
+        title: t("Email"),
+        dataIndex: "email",
+        key: "email",
+        align: "left",
+        width: "250px",
+        render: (text) => <label className="column-boldness">{text}</label>,
+      },
+      {
+        title: t("Organizer-title"),
+        dataIndex: "organizerTitle",
+        key: "organizerTitle",
+        width: "250px",
+        align: "left",
+        render: (text, record) => {
+          if (
+            (Number(editorRole.status) === 9 ||
+              Number(editorRole.status) === 8 ||
+              Number(editorRole.status) === 10) &&
+            editorRole.role === "Organizer" &&
+            isEditMeeting === true
+          ) {
+            return text;
+          } else if (
+            editorRole.role === "Agenda Contributor" &&
+            isEditMeeting === true
+          ) {
+            return text;
+          } else {
+            return (
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <TextField
+                    placeholder={t("Organizer-title")}
+                    labelClass={"d-none"}
+                    applyClass={"Organizer_table"}
+                    maxLength={140}
+                    value={text} // Use the controlled value
+                    change={(e) =>
+                      handleInputChange(record.userID, e.target.value)
+                    } // Update the inputValues when the user types
+                    disable={
+                      (Number(editorRole.status) === 9 ||
+                        Number(editorRole.status) === 8 ||
+                        Number(editorRole.status) === 10) &&
+                      editorRole.role === "Organizer" &&
+                      isEditMeeting === true
+                        ? true
+                        : editorRole.role === "Agenda Contributor" &&
+                          isEditMeeting === true
+                        ? true
+                        : record.disabledTitle === true
+                        ? true
+                        : false
+                    }
+                  />
+                </Col>
+              </Row>
+            );
+          }
+        },
+      },
+  
+      {
+        dataIndex: "isPrimaryOrganizer",
+        key: "isPrimaryOrganizer",
+        align: "left",
+        width: "200px",
+        render: (text, record, rowIndex) => (
+          <Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex gap-3 align-items-center"
+            >
+              <Switch
+                checkedValue={text}
+                onChange={(checked) => handleSwitchChange(checked, rowIndex)}
+                disabled={record.disabledSwitch === true ? true : false}
+              />
+              <label className="column-boldness">{t("Primary")}</label>
+            </Col>
+          </Row>
+        ),
+      },
+  
+      // {
+      //   title: "RSVP",
+      //   dataIndex: "attendeeAvailability",
+      //   key: "attendeeAvailability",
+      //   width: "120px",
+      //   align: "left",
+  
+      //   render: (text, record) => {
+      //     if (record.attendeeAvailability === 1) {
+      //       return (
+      //         <img
+      //           draggable={false}
+      //           src={AwaitingResponse}
+      //           height="30px"
+      //           width="30px"
+      //           alt=""
+      //         />
+      //       );
+      //     } else if (record.attendeeAvailability === 2) {
+      //       return (
+      //         <img
+      //           draggable={false}
+      //           src={thumbsup}
+      //           height="30px"
+      //           width="30px"
+      //           alt=""
+      //         />
+      //       );
+      //     } else if (record.attendeeAvailability === 3) {
+      //       return (
+      //         <img
+      //           draggable={false}
+      //           src={thumbsdown}
+      //           height="30px"
+      //           width="30px"
+      //           alt=""
+      //         />
+      //       );
+      //     } else if (record.attendeeAvailability === 4) {
+      //       return (
+      //         <img
+      //           draggable={false}
+      //           src={TentativelyAccepted}
+      //           height="30px"
+      //           width="30px"
+      //           alt=""
+      //         />
+      //       );
+      //     }
+      //   },
+      // },
+  
+      {
+        title: t("Notification"),
+        dataIndex: "isOrganizerNotified",
+        key: "isOrganizerNotified",
+        width: "180px",
+        align: "left",
+        render: (text, record) => {
+          if (record.isOrganizerNotified === true) {
+            return (
+              <Row>
+                <Col
+                  lg={7}
+                  md={7}
+                  sm={7}
+                  className="d-flex justify-content-center"
+                >
+                  {record.disabledNotification === true ? (
+                    <img
+                      draggable={false}
+                      src={greenMailIcon}
+                      height="30px"
+                      width="30px"
+                      // onClick={() => sendRecentNotification(record)}
+                      alt=""
+                      // className="cursor-pointer"
+                    />
+                  ) : (
+                    <img
+                      draggable={false}
+                      src={greenMailIcon}
+                      height="30px"
+                      width="30px"
+                      onClick={() => sendRecentNotification(record)}
+                      className="cursor-pointer"
+                      alt=""
+                    />
+                  )}
+                </Col>
+              </Row>
+            );
+          } else if (record.isOrganizerNotified === false) {
+            return (
+              <Row>
+                <Col
+                  lg={7}
+                  md={7}
+                  sm={7}
+                  className="d-flex justify-content-center"
+                >
+                  {record.disabledNotification === true ? (
+                    <img
+                      draggable={false}
+                      src={redMailIcon}
+                      height="30px"
+                      width="30px"
+                      // className="cursor-pointer"
+                      alt=""
+                    />
+                  ) : (
+                    <img
+                      draggable={false}
+                      src={redMailIcon}
+                      height="30px"
+                      width="30px"
+                      onClick={() => sendRecentNotification(record)}
+                      className="cursor-pointer"
+                      alt=""
+                    />
+                  )}
+                </Col>
+              </Row>
+            );
+          }
+        },
+      },
+      {
+        // title: t('RSVP'),
+        dataIndex: "isDeletable",
+        key: "isDeletable",
+        width: "120px",
+        align: "left",
+  
+        render: (text, record) => {
+          if (record.isDeletable === true) {
+            return (
+              <img
+                draggable={false}
+                src={CrossResolution}
+                height="30px"
+                alt=""
+                width="30px"
+                className="cursor-pointer"
+                onClick={() => deleteRow(record)}
+              />
+            );
+          } else {
+            return null;
+          }
+        },
+      },
+    ];
+  }
 
-      render: (text, record) => {
-        if (record.isDeletable === true) {
-          return (
-            <img
-              draggable={false}
-              src={CrossResolution}
-              height="30px"
-              alt=""
-              width="30px"
-              className="cursor-pointer"
-              onClick={() => deleteRow(record)}
-            />
-          );
-        } else {
-          return null;
-        }
-      },
-    },
-  ];
 
   // Filter columns based on the RSVP Condition
   // const finalColumns =
