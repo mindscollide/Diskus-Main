@@ -41,7 +41,7 @@ import { cleareMessage as cleareMessagetodo } from "../../store/actions/GetTodos
 import { HideNotificationMeetings } from "../../store/actions/GetMeetingUserId";
 import { clearResponce } from "../../store/actions/ToDoList_action";
 import { useNavigate } from "react-router-dom";
-import MeetingViewModalCalendar from "../MeetingViewModalCalendar/MeetingViewModalCalendar";
+import MeetingViewModalCalendar from "../modalView/ModalView";
 
 const CalendarPage = () => {
   //For Localization

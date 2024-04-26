@@ -6349,6 +6349,7 @@ input[type="time"]::-webkit-clear-button {
 /* status Slector TodoList Css */
 .custom-class span.ant-select-selection-item {
   margin-left: 12px !important;
+  font-weight: 600;
 }
 
 .td.ant-table-column-sort {

@@ -69,6 +69,7 @@ button.dataRoom {
   margin-top: 10px !important;
   font-size: 20px !important;
   margin-bottom: 10px !important;
+  font-weight: 600;
 }
 
 .meeting-view-attendee-organizer-list {
@@ -88,6 +89,7 @@ button.dataRoom {
   margin-top: 5px !important;
   font-size: 20px !important;
   margin-bottom: 10px !important;
+  font-weight: 600;
 }
 
 .meeting-view-attendee-participant-list {
@@ -212,6 +214,7 @@ button.AttendeeUpper {
   padding: 3px 20px !important;
   font-size: 14px !important;
   height: 33px !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .isDetail-View-top-btn {
@@ -226,6 +229,8 @@ body[dir="rtl"] .isDetail-View-top-btn {
   background: #fff !important;
   font-size: 14px !important;
   height: 33px !important;
+  font-weight: 600;
+
 }
 
 .isAgenda-View-top-btn {
@@ -236,6 +241,8 @@ body[dir="rtl"] .isDetail-View-top-btn {
   font-size: 14px !important;
   margin-left: -15px;
   height: 33px !important;
+  font-weight: 600;
+
 }
 
 body[dir="rtl"] .isAgenda-View-top-btn {
@@ -251,6 +258,8 @@ body[dir="rtl"] .isAgenda-View-top-btn {
   font-size: 14px !important;
   margin-left: -15px;
   height: 33px !important;
+  font-weight: 600;
+
 }
 
 .isAttendee-View-top-btn {
@@ -261,6 +270,8 @@ body[dir="rtl"] .isAgenda-View-top-btn {
   font-size: 14px !important;
   margin-left: -15px;
   height: 33px !important;
+  font-weight: 600;
+
 }
 
 body[dir="rtl"] .isAttendee-View-top-btn {
@@ -275,6 +286,8 @@ body[dir="rtl"] .isAttendee-View-top-btn {
   background: #fff !important;
   font-size: 14px !important;
   margin-left: -15px;
+  font-weight: 600;
+
   height: 33px !important;
 }
 
@@ -285,6 +298,7 @@ body[dir="rtl"] .isAttendee-View-top-btn {
   padding: 3px 20px !important;
   font-size: 14px !important;
   margin-left: -10px;
+  font-weight: 600;
   height: 33px !important;
 }
 
@@ -299,6 +313,7 @@ body[dir="rtl"] .isMinutes-View-top-btn {
   border-radius: 4px !important;
   background: #fff !important;
   font-size: 14px !important;
+  font-weight: 600;
   margin-left: -5px;
   height: 33px !important;
 }
@@ -310,6 +325,7 @@ body[dir="rtl"] .isMinutes-View-top-btn {
   padding: 3px 6px 4px 7px !important;
   font-size: 14px !important;
   margin-left: -10px;
+  font-weight: 600;
   height: 33px !important;
 }
 
@@ -326,6 +342,7 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
   font-size: 14px !important;
   margin-left: -10px;
   height: 33px !important;
+  font-weight: 600;
 }
 
 @media screen and (max-width: 1000px) {

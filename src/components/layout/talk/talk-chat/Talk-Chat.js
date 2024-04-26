@@ -6026,7 +6026,7 @@ const TalkChat = () => {
                                   className="text-center"
                                 >
                                   <Button
-                                    className="MontserratSemiBold Ok-btn"
+                                    className=" Ok-btn"
                                     text="Okay"
                                     onClick={downloadChat}
                                   />
@@ -6127,7 +6127,7 @@ const TalkChat = () => {
                                   className="text-center"
                                 >
                                   <Button
-                                    className="MontserratSemiBold Ok-btn"
+                                    className=" Ok-btn"
                                     text="Okay"
                                     onClick={printChat}
                                   />
@@ -6228,7 +6228,7 @@ const TalkChat = () => {
                                   className="text-center"
                                 >
                                   <Button
-                                    className="MontserratSemiBold Ok-btn"
+                                    className=" Ok-btn"
                                     text="Okay"
                                     onClick={handleCancel}
                                   />
@@ -6250,7 +6250,7 @@ const TalkChat = () => {
                                 <Col lg={2} md={2} sm={12}></Col>
                                 <Col lg={4} md={4} sm={12}>
                                   <Button
-                                    className="MontserratSemiBold Ok-btn"
+                                    className=" Ok-btn"
                                     text="Delete"
                                     onClick={() =>
                                       deleteSingleMessage(deleteMessageData)
@@ -6259,7 +6259,7 @@ const TalkChat = () => {
                                 </Col>
                                 <Col lg={4} md={4} sm={12}>
                                   <Button
-                                    className="MontserratSemiBold White-btn"
+                                    className=" White-btn"
                                     text="Cancel"
                                     onClick={handleCancel}
                                   />
@@ -6270,7 +6270,7 @@ const TalkChat = () => {
                                 <Col lg={4} md={4} sm={12}></Col>
                                 <Col lg={4} md={4} sm={12}>
                                   <Button
-                                    className="MontserratSemiBold White-btn"
+                                    className=" White-btn"
                                     text="Cancel"
                                     onClick={handleCancel}
                                   />
@@ -6532,7 +6532,7 @@ const TalkChat = () => {
                           </>
                         ) : (
                           <Button
-                            className="MontserratSemiBold Ok-btn"
+                            className=" Ok-btn"
                             text="Forward"
                             onClick={() => setForwardMessageUsersSection(true)}
                             disableBtn={
@@ -6739,7 +6739,7 @@ const TalkChat = () => {
                   <Row>
                     <Col className="text-center">
                       <Button
-                        className="MontserratSemiBold Ok-btn forward-user"
+                        className=" Ok-btn forward-user"
                         text="Forward"
                         onClick={submitForwardMessages}
                         disableBtn={
@@ -7007,7 +7007,7 @@ const TalkChat = () => {
                     <Col>
                       <div className="edit-group-button">
                         <Button
-                          className="MontserratSemiBold Ok-btn forward-user"
+                          className=" Ok-btn forward-user"
                           text="Edit Group"
                           onClick={editGroup}
                         />
@@ -7163,7 +7163,7 @@ const TalkChat = () => {
                     <Col>
                       <div className="edit-group-button">
                         <Button
-                          className="MontserratSemiBold Ok-btn forward-user"
+                          className=" Ok-btn forward-user"
                           text="Edit Shout"
                           onClick={editShoutAll}
                         />

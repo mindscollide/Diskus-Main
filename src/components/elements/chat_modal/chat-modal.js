@@ -173,7 +173,7 @@ const ChatModal = ({ setShow, show, save, print, email }) => {
                 <Row>
                   <Col lg={12} md={12} sm={12} className="text-center">
                     <Button
-                      className="MontserratSemiBold Ok-btn"
+                      className=" Ok-btn"
                       text="Okay"
                       onClick={handleCancel}
                     />

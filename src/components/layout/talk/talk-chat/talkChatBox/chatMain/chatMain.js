@@ -5117,7 +5117,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 className="text-center"
                               >
                                 <Button
-                                  className="MontserratSemiBold Ok-btn"
+                                  className=" Ok-btn"
                                   text={t("Okay")}
                                   onClick={downloadChat}
                                 />
@@ -5218,7 +5218,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 className="text-center"
                               >
                                 <Button
-                                  className="MontserratSemiBold Ok-btn"
+                                  className=" Ok-btn"
                                   text={t("Okay")}
                                   onClick={printChat}
                                 />
@@ -5319,7 +5319,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 className="text-center"
                               >
                                 <Button
-                                  className="MontserratSemiBold Ok-btn"
+                                  className=" Ok-btn"
                                   text="Okay"
                                   onClick={emailChat}
                                 />
@@ -5341,7 +5341,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                               <Col lg={2} md={2} sm={12}></Col>
                               <Col lg={4} md={4} sm={12}>
                                 <Button
-                                  className="MontserratSemiBold Ok-btn"
+                                  className=" Ok-btn"
                                   text="Delete"
                                   onClick={() =>
                                     deleteSingleMessage(deleteMessageData)
@@ -5350,7 +5350,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                               </Col>
                               <Col lg={4} md={4} sm={12}>
                                 <Button
-                                  className="MontserratSemiBold White-btn"
+                                  className=" White-btn"
                                   text="Cancel"
                                   onClick={handleCancel}
                                 />
@@ -5380,7 +5380,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 className="text-center"
                               >
                                 <Button
-                                  className="MontserratSemiBold Ok-btn mx-2"
+                                  className=" Ok-btn mx-2"
                                   text={t("Yes")}
                                   onClick={() =>
                                     leaveGroupHandlerChat(
@@ -5389,7 +5389,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                   }
                                 />
                                 <Button
-                                  className="MontserratSemiBold White-btn"
+                                  className=" White-btn"
                                   text={t("Cancel")}
                                   onClick={() => setLeave(false)}
                                 />
@@ -5627,12 +5627,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       ) : forwardFlag === true ? (
                         <>
                           <Button
-                            className="MontserratSemiBold White-btn"
+                            className=" White-btn"
                             text="Cancel"
                             onClick={cancelMessagesCheck}
                           />
                           <Button
-                            className="MontserratSemiBold Ok-btn"
+                            className=" Ok-btn"
                             text="Forward"
                             onClick={
                               forwardMessageUsersSection === true
@@ -5647,12 +5647,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       ) : deleteFlag === true ? (
                         <>
                           <Button
-                            className="MontserratSemiBold White-btn"
+                            className=" White-btn"
                             text="Cancel"
                             onClick={cancelMessagesCheck}
                           />
                           <Button
-                            className="MontserratSemiBold Ok-btn"
+                            className=" Ok-btn"
                             text="Delete"
                             onClick={deleteMultipleMessagesButton}
                             disableBtn={
@@ -5844,7 +5844,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                 <Row>
                   <Col className="text-center">
                     <Button
-                      className="MontserratSemiBold Ok-btn forward-user"
+                      className=" Ok-btn forward-user"
                       text="Forward"
                       onClick={submitForwardMessages}
                       disableBtn={forwardUsersChecked.length > 0 ? false : true}
@@ -6097,7 +6097,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                   <Col>
                     <div className="edit-group-button">
                       <Button
-                        className="MontserratSemiBold Ok-btn forward-user"
+                        className=" Ok-btn forward-user"
                         text="Edit Group"
                         onClick={editGroup}
                       />
@@ -6247,7 +6247,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                   <Col>
                     <div className="edit-group-button">
                       <Button
-                        className="MontserratSemiBold Ok-btn forward-user"
+                        className=" Ok-btn forward-user"
                         text="Edit Shout"
                         onClick={editShoutAll}
                       />

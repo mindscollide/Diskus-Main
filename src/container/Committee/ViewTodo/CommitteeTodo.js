@@ -382,15 +382,15 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
                 dropdownClassName="Status-Todo"
                 className={
                   text.pK_TSID === 1
-                    ? "InProgress MontserratSemiBold custom-class "
+                    ? "InProgress  custom-class "
                     : text.pK_TSID === 2
-                    ? "Pending MontserratSemiBold custom-class "
+                    ? "Pending  custom-class "
                     : text.pK_TSID === 3
-                    ? "Upcoming MontserratSemiBold custom-class "
+                    ? "Upcoming  custom-class "
                     : text.pK_TSID === 4
-                    ? "Cancelled MontserratSemiBold custom-class "
+                    ? "Cancelled  custom-class "
                     : text.pK_TSID === 5
-                    ? "Completed MontserratSemiBold custom-class "
+                    ? "Completed  custom-class "
                     : null
                 }
                 onChange={(e) => statusChangeHandler(e, record.pK_TID)}
@@ -410,15 +410,15 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
             <p
               className={
                 text.pK_TSID === 1
-                  ? "InProgress  MontserratSemiBold color-5a5a5a text-center  my-1"
+                  ? "InProgress   color-5a5a5a text-center  my-1"
                   : text.pK_TSID === 2
-                  ? "Pending  MontserratSemiBold color-5a5a5a text-center my-1"
+                  ? "Pending   color-5a5a5a text-center my-1"
                   : text.pK_TSID === 3
-                  ? "Upcoming MontserratSemiBold color-5a5a5a text-center  my-1"
+                  ? "Upcoming  color-5a5a5a text-center  my-1"
                   : text.pK_TSID === 4
-                  ? "Cancelled  MontserratSemiBold color-5a5a5a text-center my-1"
+                  ? "Cancelled   color-5a5a5a text-center my-1"
                   : text.pK_TSID === 5
-                  ? "Completed  MontserratSemiBold color-5a5a5a  text-center my-1"
+                  ? "Completed   color-5a5a5a  text-center my-1"
                   : null
               }
             >

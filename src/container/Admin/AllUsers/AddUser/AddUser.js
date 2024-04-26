@@ -1412,7 +1412,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                             md={8}
                             sm={8}
                             xs={12}
-                            className="MontserratSemiBold-600 color-5a5a5a font-14 Saved_money_Tagline"
+                            className="color-5a5a5a font-14 Saved_money_Tagline"
                           >
                             {totalActiveBarCount} {t("Of")} {totalBarCount}{" "}
                             {t("Users")}
@@ -1549,7 +1549,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           value={addUserSection.Name.value}
                         />
                         <span
-                          className="MontserratSemiBold-600 color-5a5a5a Saved_money_Tagline"
+                          className=" color-5a5a5a Saved_money_Tagline"
                           style={{ fontSize: "0.5rem" }}
                         >
                           ({t("Maximum-characters-200-alphabets-only")})

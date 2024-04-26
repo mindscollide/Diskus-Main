@@ -268,11 +268,11 @@ form.relative-position-form {
   cursor: pointer;
 }
 
-label.MontserratSemiBold-600.todo-employee-name-card {
+label.todo-employee-name-card {
   color: #6172d6 !important;
 }
 
-body[dir="rtl"] label.MontserratSemiBold-600.todo-employee-name-card {
+body[dir="rtl"] label.todo-employee-name-card {
   font-weight: 600;
 
 }
