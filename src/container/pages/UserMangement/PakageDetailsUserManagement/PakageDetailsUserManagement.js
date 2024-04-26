@@ -55,6 +55,7 @@ const PakageDetailsUserManagement = () => {
   useEffect(() => {
     try {
       const pakageDetails = UserMangementReducer.getAllUserTypePackagesData;
+      console.log(pakageDetails, "datadatadatadata");
       if (
         pakageDetails &&
         pakageDetails.packages &&
@@ -337,6 +338,7 @@ const PakageDetailsUserManagement = () => {
 
   //Calculating the totals
   const calculateTotals = (data) => {
+    console.log(data, "datadatadatadata");
     const totalLicenses = data.reduce(
       (total, row) => total + (Number(row.licenseCount) || 0),
       0
