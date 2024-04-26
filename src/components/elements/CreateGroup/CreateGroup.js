@@ -1128,7 +1128,12 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                 }
                               })
                             ) : (
-                              <Col sm={12} md={12} lg={12}>
+                              <Col
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                className={styles["no-members-found"]}
+                              >
                                 {t("No-group-memebers-found")}
                               </Col>
                             )}

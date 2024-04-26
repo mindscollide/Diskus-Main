@@ -152,6 +152,8 @@ body[dir="rtl"] .rightsection_roundLogo {
   height: 7px;
   color: #f16b6b;
   visibility: visible !important;
+  font-weight: 600 !important;
+
 }
 
 body[dir="rtl"] .errorMessage {

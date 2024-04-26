@@ -2771,6 +2771,8 @@ a.icon.nav-link.active i {
 input#Participant {
   padding: 0px 8px !important;
   height: 15px;
+  font-weight: 500;
+    font-family: 'Montserrat';
 }
 
 input#Participant::placeholder {

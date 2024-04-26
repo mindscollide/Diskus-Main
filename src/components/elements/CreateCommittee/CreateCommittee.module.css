@@ -8,6 +8,7 @@
 .details-class-Create-Committee {
   font-size: 20px !important;
   color: #6172d6 !important;
+  
 }
 
 body[dir="rtl"] .details-class-Create-Committee {
@@ -242,6 +243,8 @@ body[dir="rtl"] .Label_Of_CheckBox {
   height: 7px;
   color: #f16b6b;
   visibility: visible !important;
+  font-weight: 600 !important;
+
 }
 
 body[dir="rtl"] .errorMessage {
