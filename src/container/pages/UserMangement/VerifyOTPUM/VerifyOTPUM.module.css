@@ -35,7 +35,6 @@ body[dir="rtl"] .signIn_heading_line {
 .subscribNow_button_EmailVerify {
   width: 100%;
   padding: 12px 30px !important;
-  font-weight: 400 !important;
   text-transform: uppercase;
   border: none;
   border-radius: 4px;
