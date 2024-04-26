@@ -20,18 +20,18 @@
 .Signers_heading {
   color: #6172d6;
   font-size: 1.25rem;
-  font-family: "MontserratSemiBold";
+font-weight: 600;
 }
 .Signers_tagLine {
   font-size: 1rem;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #5a5a5a !important;
 }
 
 .inputlabel_style {
   color: #6172d6 !important;
   font-size: 0.625rem !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 .addOther_field {
   color: #5a5a5a !important;
@@ -39,7 +39,7 @@
   display: flex !important;
   width: 100% !important;
   background: #fff !important;
-  font-family: "MontserratMedium";
+  font-weight: 500;
 
   justify-content: center !important;
   align-items: center !important;
@@ -61,7 +61,7 @@
   padding: 8px 30px !important;
   border-radius: 4px !important;
   font-size: 0.75rem;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 .Add {
   background: #6172d6 !important;
@@ -70,7 +70,7 @@
   font-size: 0.75rem;
 
   padding: 8px 30px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 /* .CancelSignature_Btn {
   color: #5a5a5a !important;

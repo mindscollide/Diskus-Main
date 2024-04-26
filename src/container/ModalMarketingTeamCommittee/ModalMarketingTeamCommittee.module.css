@@ -9,7 +9,7 @@
 }
 
 body[dir="rtl"] .CloseModal {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .CloseModal:has(:hover, :active, :focus, :focus-visible, :visited) {
@@ -32,11 +32,13 @@ body[dir="rtl"] .CloseModal {
   border-radius: 4px !important;
 }
 
-.Confirm-activegroup-modal:has( :hover,
-  :active,
-  :focus,
-  :focus-visible,
-  :visited) {
+.Confirm-activegroup-modal:has(
+    :hover,
+    :active,
+    :focus,
+    :focus-visible,
+    :visited
+  ) {
   padding: 12px 30px !important;
   font-size: calc(14px - 20%) !important;
   background: #6172d6 !important;
@@ -51,7 +53,7 @@ body[dir="rtl"] .CloseModal {
 .Marketing-Modal-Heading {
   font-size: 20px !important;
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
 }
 
 .ADD-MarketingModal-btn {
@@ -65,7 +67,7 @@ body[dir="rtl"] .CloseModal {
 }
 
 body[dir="rtl"] .ADD-MarketingModal-btn {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
   background: linear-gradient(to right #49dbdb 0%, #6172d6 100%) !important;
 }
 
@@ -130,7 +132,6 @@ body[dir="rtl"] .group_Icon_Box {
   background: #ccc;
   margin-left: -15px;
 }
-
 
 .marketingDataCol {
   height: auto !important;

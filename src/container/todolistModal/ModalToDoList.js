@@ -804,12 +804,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     </Col>
                   </Row>
                   <Row className="mt-4">
-                    <Col
-                      lg={12}
-                      md={12}
-                      xs={12}
-                      className="MontserratSemiBold-600 attachmentCon "
-                    >
+                    <Col lg={12} md={12} xs={12} className=" attachmentCon ">
                       <label className="ArabicFontSemiBold">
                         {t("Attachement")}
                       </label>

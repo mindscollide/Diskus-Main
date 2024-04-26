@@ -1,7 +1,7 @@
 .MainHeading_Create_Action {
   color: #6172d6 !important;
   font-size: 30px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   display: inline-block !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
@@ -11,7 +11,7 @@
 
 .SubHeading {
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   font-size: 12px !important;
 }
 
@@ -26,7 +26,7 @@
   border: none;
   color: #fff;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Save_Button_Polls_meeting:is(:hover, :active, :focus, :focus-visible) {
@@ -36,7 +36,7 @@
   border: none;
   color: #fff;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Cancel_Button_Polls_meeting {
@@ -46,7 +46,7 @@
   border: 1px solid#E1E1E1;
   color: #5a5a5a;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Cancel_Button_Polls_meeting:is(:hover, :active, :focus, :focus-visible) {
@@ -56,7 +56,7 @@
   border: 1px solid#E1E1E1 !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .ClassImage {
@@ -66,7 +66,7 @@
 .Choose_file_style-Meeting {
   color: #bbbbbb !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .ant-upload-text-Meetings {
@@ -74,12 +74,12 @@
   font-size: 22px !important;
   margin: 0;
   padding: 0;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Namepartipants {
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 12px !important;
 }
 
@@ -99,7 +99,7 @@
 .label_Styles {
   color: #5a5a5a !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   cursor: pointer;
 }
 
@@ -141,11 +141,11 @@
   height: 13px;
   color: #f16b6b;
   visibility: visible;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
 }
 
 body[dir="rtl"] .errorMessage-inLogin {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .errorMessage-inLogin_hidden {

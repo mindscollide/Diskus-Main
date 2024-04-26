@@ -9,7 +9,7 @@
 }
 
 body[dir="rtl"] .timepicker_width {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400;
   cursor: pointer !important;
 }
 

@@ -1,7 +1,7 @@
 .Confirmationmodal_body_text {
     padding: 0 20px !important;
     text-align: center;
-    font-family: "MontserratSemiBold";
+    font-weight: 600;
     color: #5a5a5a;
     font-size: 16px;
 }
@@ -16,7 +16,7 @@
     align-items: center;
     color: #ffffff !important;
     font-size: 12pt;
-    font-family: "MontserratSemiBold-600";
+    font-weight: 600;
 }
 
 .cancel-Add-notes-Modal {
@@ -29,7 +29,7 @@
     color: #5a5a5a !important;
     border: 1px solid #e1e1e1 !important;
     font-size: 12pt;
-    font-family: "MontserratSemiBold-600";
+    font-weight: 600;
     outline: none;
     box-shadow: none;
 }
@@ -44,7 +44,7 @@
     color: #5a5a5a !important;
     border: 1px solid #e1e1e1 !important;
     font-size: 12pt;
-    font-family: "MontserratSemiBold-600";
+    font-weight: 600;
     outline: none;
     box-shadow: none;
 }

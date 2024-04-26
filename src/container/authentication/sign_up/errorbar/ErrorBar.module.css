@@ -1,10 +1,10 @@
 .error {
   /* background-color: #ce0000 !important; */
-  text-align      : left !important;
-  margin-top      : 5px !important;
-  color           : #F16B6B !important;
-  width           : 100% !important;
-  font-family     : 'MontserratRegular' !important;
+  text-align: left !important;
+  margin-top: 5px !important;
+  color: #f16b6b !important;
+  width: 100% !important;
+  font-weight: 400;
 }
 
 body[dir="rtl"] .error {

@@ -29,13 +29,13 @@
 
 .Due_Date_viewPoll {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #5a5a5a;
 }
 
 .View_poll_heading {
   font-size: 20px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #6172d6;
 }
 
@@ -47,13 +47,13 @@
 }
 
 .Multiple_viewModal {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 12px !important;
   color: #5a5a5a !important;
 }
 
 .Participants_Heading {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 20px !important;
   color: #5a5a5a !important;
 }
@@ -97,7 +97,7 @@ body[dir="rtl"] .Card_border2 {
 .Name_cards {
   font-size: 12px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   margin-left: 5px !important;
 }
 

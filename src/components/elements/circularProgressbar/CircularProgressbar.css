@@ -20,7 +20,7 @@
 } */
 
 body[dir="rtl"] .dashboard_progress_bar {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 /* @media screen and (min-width: 1600px) and (min-height: 900px) {
   .circular_progressbar_div {

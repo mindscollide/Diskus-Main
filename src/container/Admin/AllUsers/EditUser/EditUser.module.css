@@ -451,7 +451,6 @@ body[dir="rtl"] .errorMessage-Edit_hidden {
   justify-content: space-between !important;
   align-items: center !important;
   padding: 8px 1px !important;
-  font-family: inherit !important;
   font-size: 8px !important;
   color: #4d4d4d !important;
   border: thin solid rgba(77, 77, 77, 0.3);

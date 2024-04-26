@@ -500,7 +500,7 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
 .viewModalTitle {
   border: none;
   font-size: 16px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
   color: #5f78d6 !important;
   overflow: hidden !important;
   word-wrap: break-word !important;

@@ -7,38 +7,38 @@
   width: 200px !important;
   overflow: hidden;
   font-size: 14px;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
   color: #2197d7 !important;
 }
 
 body[dir="rtl"] .todolist-title-col {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
   color: #2197d7 !important;
 }
 
 .blue {
   color: #6172d6;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
 }
 
 .orange {
   color: #d8a709;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
 }
 
 .yellow {
   color: yellow;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
 }
 
 .gray {
   color: gray;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
 }
 
 .green {
   color: green;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
 }
 
 .todolist-create-btn {
@@ -56,13 +56,13 @@ body[dir="rtl"] .todolist-create-btn {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border: none !important;
   position: relative;
 }
 
 body[dir="rtl"] .todolist-create-btn button {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
 }
 
 .todolist-create-btn button:focus-visible {
@@ -269,13 +269,12 @@ body[dir="rtl"]
   font-size: calc(38px - 50%) !important;
   color: #6172d6 !important;
   font-weight: 600 !important;
-  font-family: "MontserratSemiBold-600" !important;
   position: relative;
   top: 3px;
 }
 
 body[dir="rtl"] .todolist-heading-size {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 /* for todolist table */
@@ -308,7 +307,7 @@ body[dir="rtl"] .todolist-heading-size {
     background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
     color: #fff !important;
     border-radius: 4px !important;
-    font-family: "MontserratSemiBold" !important;
+    font-weight: 600 !important;
     border: none !important;
   }
 }
@@ -362,7 +361,7 @@ body[dir="rtl"]
 }
 
 body[dir="rtl"] .ArabicStatus {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 /* 
@@ -400,7 +399,7 @@ body[dir="rtl"] .ArabicStatus {
 }
 
 body[dir="rtl"] .InProgress {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Pending {
@@ -408,7 +407,7 @@ body[dir="rtl"] .InProgress {
 }
 
 body[dir="rtl"] .Pending {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Upcoming {
@@ -416,7 +415,7 @@ body[dir="rtl"] .Pending {
 }
 
 body[dir="rtl"] .Upcoming {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Cancelled {
@@ -424,7 +423,7 @@ body[dir="rtl"] .Upcoming {
 }
 
 body[dir="rtl"] .Cancelled {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Completed {
@@ -432,7 +431,7 @@ body[dir="rtl"] .Cancelled {
 }
 
 body[dir="rtl"] .Completed {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 /* .Status-Todo .rc-virtual-list-holder-inner {

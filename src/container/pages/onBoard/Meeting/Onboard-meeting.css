@@ -17,7 +17,7 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
 }
 
 .filter-chevron-icon-onBoard {

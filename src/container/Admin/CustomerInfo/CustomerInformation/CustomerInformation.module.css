@@ -442,7 +442,6 @@ select:disabled {
   justify-content: space-between !important;
   align-items: center !important;
   padding: 3px 2px !important;
-  font-family: inherit !important;
   font-size: 9px !important;
   color: #4d4d4d !important;
   border: thin solid rgba(77, 77, 77, 0.3);
@@ -482,7 +481,6 @@ select:disabled {
   justify-content: space-between !important;
   align-items: center !important;
   padding: 3px 2px !important;
-  font-family: inherit !important;
   font-size: 9px !important;
   color: #000000 !important;
   border: thin solid #000000 !important;
@@ -518,7 +516,6 @@ select:disabled {
   align-items: center !important;
   min-height: 39px !important;
   padding: 0px 12px !important;
-  font-family: inherit !important;
   font-size: 12px !important;
   color: #4d4d4d !important;
   border: thin solid #e1e1e1 !important ;
@@ -558,7 +555,6 @@ select:disabled {
   justify-content: space-between !important;
   align-items: center !important;
   padding: 1px 12px !important;
-  font-family: inherit !important;
   font-size: 12px !important;
   color: #000000 !important;
   border: thin solid #e1e1e1 !important;

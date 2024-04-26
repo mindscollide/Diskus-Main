@@ -1,11 +1,11 @@
 .Groups-heading-size {
   font-size: 30px !important;
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .Groups-heading-size {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .create-Group-btn {
@@ -15,12 +15,12 @@ body[dir="rtl"] .Groups-heading-size {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border: none !important;
 }
 
 body[dir="rtl"] .create-Group-btn {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .create-Group-btn {
@@ -37,7 +37,7 @@ body[dir="rtl"] .create-Group-btn {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border: none !important;
 }
 
@@ -46,7 +46,7 @@ body[dir="rtl"] .create-Group-btn {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border: none !important;
   width: 219px !important;
   height: 31px !important;
@@ -57,7 +57,7 @@ body[dir="rtl"] .create-Group-btn {
 }
 
 body[dir="rtl"] .Archived-Group-btn {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .Archived-Group-btn {
@@ -72,7 +72,7 @@ body[dir="rtl"] .Archived-Group-btn {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border: none !important;
   width: 219px !important;
   height: 31px !important;
@@ -92,7 +92,7 @@ body[dir="rtl"] .Archived-Group-btn {
   font-size: 12px !important;
   background: #6172d6;
   color: #fff;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
@@ -106,7 +106,7 @@ body[dir="rtl"] .Archived-Group-btn {
   font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
@@ -252,27 +252,26 @@ body[dir="rtl"] .PaginationStyle-Committee {
 
 .heading-modal-active-contfirmation {
   font-size: 20px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   color: #5a5a5a;
 }
 
 body[dir="rtl"] .heading-modal-active-contfirmation {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Confirm-activegroup-modal {
   font-size: 12px;
   background: #6172d6;
   color: #fff;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border-radius: 4px !important;
   padding: 12px 30px 12px 30px !important;
-  font-family: "MontserratSemiBold";
   border: none !important;
 }
 
 body[dir="rtl"] .Confirm-activegroup-modal {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Confirm-activegroup-modal:is(
@@ -285,10 +284,9 @@ body[dir="rtl"] .Confirm-activegroup-modal {
   font-size: 12px;
   background: #6172d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border-radius: 4px !important;
   padding: 12px 30px 12px 30px !important;
-  font-family: "MontserratSemiBold" !important;
   border: none !important;
 }
 
@@ -297,13 +295,13 @@ body[dir="rtl"] .Confirm-activegroup-modal {
   font-size: 12px;
   background: #fff;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
 }
 
 body[dir="rtl"] .Cancel-activegroup-modal {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Cancel-activegroup-modal:is(
@@ -317,7 +315,7 @@ body[dir="rtl"] .Cancel-activegroup-modal {
   font-size: 12px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
 }
@@ -330,7 +328,7 @@ body[dir="rtl"] .Cancel-activegroup-modal {
 }
 
 .NoGroupsDataFoundText {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #bbbbbb !important;
   font-size: 20px !important;
 }

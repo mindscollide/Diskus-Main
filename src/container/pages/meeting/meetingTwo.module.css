@@ -84,6 +84,7 @@ body[dir="rtl"] .polling_searchinput {
   border-radius: 4px !important;
   font-size: 12px !important;
   background: #fff;
+  font-weight: 600 !important;
   border: 1px solid #e1e1e1;
   color: #5a5a5a;
 }
@@ -95,6 +96,7 @@ body[dir="rtl"] .polling_searchinput {
   padding: 12px 30px !important;
   border-radius: 4px !important;
   font-size: 12px !important;
+  font-weight: 600 !important;
   background: #fff !important;
   border: 1px solid #e1e1e1 !important;
   color: #5a5a5a !important;
@@ -106,6 +108,7 @@ body[dir="rtl"] .polling_searchinput {
   font-size: 12px !important;
   background: #6172d6 !important;
   border: none !important;
+  font-weight: 600 !important;
   color: #fff !important;
 }
 
@@ -117,6 +120,7 @@ body[dir="rtl"] .polling_searchinput {
   border-radius: 4px !important;
   font-size: 12px !important;
   background: #6172d6 !important;
+  font-weight: 600 !important;
   border: none !important;
   color: #fff !important;
 }

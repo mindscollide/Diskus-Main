@@ -292,7 +292,6 @@ body[dir="rtl"] .packagecard_usersallows + p {
   text-transform: uppercase;
   color: #5a5a5a;
   font-size: calc(20px - 20%);
-  /* font-family   : "MontserratBold"; */
 }
 
 body[dir="rtl"] .packagecard_usersallows_heading {

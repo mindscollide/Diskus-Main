@@ -50,7 +50,7 @@ const NavbarAdmin = () => {
                   <Container className="containerAd">
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
-                      <Nav className="MontserratSemiBold-600 me-auto d-flex justify-content-evenly w-100 py-1">
+                      <Nav className=" me-auto d-flex justify-content-evenly w-100 py-1">
                         <NavDropdown
                           disabled={true}
                           title={t("Manage-users")}
