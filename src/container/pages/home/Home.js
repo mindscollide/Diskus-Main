@@ -931,25 +931,37 @@ const Home = () => {
       render: (text, record) => {
         if (record.status.pK_TSID === 1) {
           return (
-            <span className=" InProgress cursor-pointer">{text.status}</span>
+            <span className=" InProgress status_value cursor-pointer">
+              {text.status}
+            </span>
           );
         } else if (record.status.pK_TSID === 2) {
-          return <span className=" Pending cursor-pointer">{text.status}</span>;
+          return (
+            <span className=" Pending  status_value cursor-pointer">
+              {text.status}
+            </span>
+          );
         } else if (record.status.pK_TSID === 3) {
           return (
             <span className=" Upcoming cursor-pointer">{text.status}</span>
           );
         } else if (record.status.pK_TSID === 4) {
           return (
-            <span className=" Cancelled cursor-pointer">{text.status}</span>
+            <span className=" Cancelled status_value cursor-pointer">
+              {text.status}
+            </span>
           );
         } else if (record.status.pK_TSID === 5) {
           return (
-            <span className=" Completed cursor-pointer">{text.status}</span>
+            <span className=" Completed status_value cursor-pointer">
+              {text.status}
+            </span>
           );
         } else if (record.status.pK_TSID === 6) {
           return (
-            <span className=" color-F68732 cursor-pointer">{text.status}</span>
+            <span className=" color-F68732 status_value cursor-pointer">
+              {text.status}
+            </span>
           );
         }
       },

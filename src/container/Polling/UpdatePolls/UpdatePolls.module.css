@@ -367,7 +367,7 @@ body[dir="rtl"] .Card_border2 {
   height: 13px;
   color: #f16b6b;
   visibility: visible;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .errorMessage-inLogin {

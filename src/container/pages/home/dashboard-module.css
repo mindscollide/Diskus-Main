@@ -1406,5 +1406,8 @@ body[dir="rtl"] svg.DatePickerIcon {
   border: none;
   border-radius: 2px !important;
   color: #81db86 !important;
-  font-weight:500;
+  font-weight: 500;
+}
+.status_value {
+  font-weight: 600;
 }
