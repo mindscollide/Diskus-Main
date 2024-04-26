@@ -462,7 +462,7 @@ body[dir="rtl"] .SubAgendaSection {
 .Empty_state_Subheading {
   color: #5a5a5a !important;
   font-size: 12px !important;
-  font-family: "Montserrat";
+  font-weight: 500;
 }
 
 img.Image-Add-Agenda {
