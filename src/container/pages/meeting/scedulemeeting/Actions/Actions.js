@@ -394,15 +394,15 @@ const Actions = ({
             <p
               className={
                 text.pK_TSID === 1
-                  ? "InProgress   color-5a5a5a text-center  my-1"
+                  ? "InProgress custom-class  color-5a5a5a text-center  my-1"
                   : text.pK_TSID === 2
-                  ? "Pending   color-5a5a5a text-center my-1"
+                  ? "Pending custom-class  color-5a5a5a text-center my-1"
                   : text.pK_TSID === 3
-                  ? "Upcoming  color-5a5a5a text-center  my-1"
+                  ? "Upcoming custom-class color-5a5a5a text-center  my-1"
                   : text.pK_TSID === 4
-                  ? "Cancelled   color-5a5a5a text-center my-1"
+                  ? "Cancelled  custom-class color-5a5a5a text-center my-1"
                   : text.pK_TSID === 5
-                  ? "Completed   color-5a5a5a  text-center my-1"
+                  ? "Completed  custom-class color-5a5a5a  text-center my-1"
                   : null
               }
             >

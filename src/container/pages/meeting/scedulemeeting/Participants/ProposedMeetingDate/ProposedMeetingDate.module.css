@@ -128,12 +128,7 @@
   border-radius: 4px !important;
 }
 
-.Time_Class {
-  color: #5a5a5a;
-  font-family: "Montserrat";
-  font-size: 12px !important;
-  display: flex !important;
-}
+
 
 .CheckBox_Class {
   display: flex !important;
@@ -145,11 +140,6 @@
   margin-top: 10px !important;
 }
 
-.Date {
-  color: #5a5a5a;
-  font-family: "Montserrat";
-  font-size: 12px !important;
-}
 
 .OR_Heading {
   font-size: 30px !important;
