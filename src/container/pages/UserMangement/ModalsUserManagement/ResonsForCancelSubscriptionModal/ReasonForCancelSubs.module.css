@@ -2,21 +2,21 @@
   font-size: 16px !important;
   margin-top: 0;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .AdminAlsoClass {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .ResonseModalHeading {
   font-size: 20px !important;
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .ResonseModalHeading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .appliedScroller {
@@ -47,7 +47,7 @@ body[dir="rtl"] .ResonseModalHeading {
   border-radius: 4px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 .NevermindbuttonStyles:is(:hover, :active, :focus, :focus-visible) {
@@ -57,11 +57,11 @@ body[dir="rtl"] .ResonseModalHeading {
   border-radius: 4px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .NevermindbuttonStyles {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .ContinurToCancelButton {
@@ -71,7 +71,7 @@ body[dir="rtl"] .NevermindbuttonStyles {
   border-radius: 4px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 .ContinurToCancelButton:is(:hover, :active, :focus, :focus-visible) {
@@ -81,9 +81,9 @@ body[dir="rtl"] .NevermindbuttonStyles {
   border-radius: 4px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .ContinurToCancelButton {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }

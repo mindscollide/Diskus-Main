@@ -138,12 +138,11 @@ const AddNewChat = () => {
     <>
       <Container>
         <Row className="margin-top-10">
-          <Col lg={6} md={6} sm={12}>
+          <Col lg={11} md={11} sm={12}>
             <div className="new-chat">
               <p className="fw-bold m-0">{t("New Conversation")}</p>
             </div>
           </Col>
-          <Col lg={5} md={5} sm={12}></Col>
 
           <Col lg={1} md={1} sm={12} className="p-0">
             <div className="close-addChat-filter" onClick={closeAddChat}>

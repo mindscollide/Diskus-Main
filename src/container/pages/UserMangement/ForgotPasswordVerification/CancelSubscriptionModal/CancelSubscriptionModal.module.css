@@ -2,22 +2,22 @@
   font-size: 30px !important;
   white-space: nowrap !important;
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .CancelMessegeHeading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .messegeStyles {
   font-size: 20px !important;
   white-space: nowrap !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .messegeStyles {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .NoButtonStyles {
@@ -27,7 +27,7 @@ body[dir="rtl"] .messegeStyles {
   border-radius: 4px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 .NoButtonStyles:is(:hover, :active, :focus, :focus-visible) {
@@ -37,11 +37,11 @@ body[dir="rtl"] .messegeStyles {
   border-radius: 4px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .NoButtonStyles {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .YesButtonStyles {
@@ -51,7 +51,7 @@ body[dir="rtl"] .NoButtonStyles {
   border-radius: 4px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 .YesButtonStyles:is(:hover, :active, :focus, :focus-visible) {
@@ -61,9 +61,9 @@ body[dir="rtl"] .NoButtonStyles {
   border-radius: 4px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .YesButtonStyles {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }

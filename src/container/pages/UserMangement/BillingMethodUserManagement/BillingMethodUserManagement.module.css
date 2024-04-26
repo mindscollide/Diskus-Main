@@ -1,11 +1,11 @@
 .BillingDetailsHeading {
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   color: #6172d6 !important;
   font-size: 30px !important;
 }
 
 body[dir="rtl"] .BillingDetailsHeading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .NextbuttonBillingMethod {
@@ -15,11 +15,11 @@ body[dir="rtl"] .BillingDetailsHeading {
   border: none !important;
   border-radius: 4px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .NextbuttonBillingMethod {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .NextbuttonBillingMethod:is(:hover, :focus, :focus-visible, :active) {
@@ -29,7 +29,7 @@ body[dir="rtl"] .NextbuttonBillingMethod {
   border: none !important;
   border-radius: 4px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 .BackbuttonBillingMethod {
@@ -39,11 +39,11 @@ body[dir="rtl"] .NextbuttonBillingMethod {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .BackbuttonBillingMethod {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .BackbuttonBillingMethod:is(:hover, :focus, :focus-visible, :active) {
@@ -53,7 +53,7 @@ body[dir="rtl"] .BackbuttonBillingMethod {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 .sectionStyling {

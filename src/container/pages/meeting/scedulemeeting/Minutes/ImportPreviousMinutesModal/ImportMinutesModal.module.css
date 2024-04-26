@@ -1,7 +1,7 @@
 .Import-previous-minutes {
   color: #5f78d6 !important;
   font-size: 20px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Search_Btn_Minutes_Import {
@@ -11,7 +11,7 @@
   border-radius: 4px !important;
   background: #5f78d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Search_Btn_Minutes_Import:is(:hover, :focus, :focus-visible, :active) {
@@ -21,7 +21,7 @@
   border-radius: 4px !important;
   background: #5f78d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Cancel_button_Minutes_Import {
@@ -31,7 +31,7 @@
   border-radius: 4px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Cancel_button_Minutes_Import :is(:hover, :focus, :focus-visible, :active) {
@@ -41,7 +41,7 @@
   border-radius: 4px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Import_Button_Minutes_Previous {
@@ -51,7 +51,7 @@
   border-radius: 4px !important;
   background: #5f78d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Cancel_button_Minutes_Import :is(:hover, :focus, :focus-visible, :active) {
@@ -61,7 +61,7 @@
   border-radius: 4px !important;
   background: #5f78d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .OverAll_Padding {

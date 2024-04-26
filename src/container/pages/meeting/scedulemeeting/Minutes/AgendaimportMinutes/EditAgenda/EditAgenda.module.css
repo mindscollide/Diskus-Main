@@ -18,13 +18,13 @@
 }
 
 .Title_File {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 20px !important;
   color: #5a5a5a !important;
 }
 
 .Show_more_Styles {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 16px !important;
   color: #5f78d6 !important;
   text-decoration: underline;
@@ -32,7 +32,7 @@
 }
 
 .Date_Minutes_And_time {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 12px !important;
   color: #5f78d6 !important;
 }
@@ -42,19 +42,19 @@
 }
 
 .Uploaded_heading {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 16px !important;
   color: #5f78d6 !important;
 }
 
 .Name {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 16px !important;
   color: #5a5a5a !important;
 }
 
 .Heading_View_Minutes {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 16px !important;
   color: #5f78d6 !important;
 }
@@ -64,7 +64,7 @@
 }
 
 .SubAgendaSubTitleHeaeding {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 16px !important;
   color: #5f78d6 !important;
 }
@@ -112,7 +112,7 @@
   background: #fff !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Cancel_button_Edit_Agenda_Minutes:is(:hover, :active, :focus, :focus-visible) {
@@ -122,7 +122,7 @@
   background: #fff !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Save_button_Edit_Agenda_Minutes {
@@ -132,7 +132,7 @@
   background: #5f78d6 !important;
   border: none !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Save_button_Edit_Agenda_Minutes:is(:hover, :active, :focus, :focus-visible) {
@@ -142,7 +142,7 @@
   background: #5f78d6 !important;
   border: none !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Scroller_Edit_Ageda_Main {

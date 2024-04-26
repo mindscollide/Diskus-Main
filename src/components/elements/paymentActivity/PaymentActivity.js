@@ -18,7 +18,7 @@ const PaymentActivity = ({
         sm={12}
         md={12}
         lg={12}
-        className={`${"MontserratSemiBold-600 fs-4 mt-3 mb-2"} ${
+        className={`${" fs-4 mt-3 mb-2"} ${
           styles["paymentActivityTitle"]
         }`}
       >

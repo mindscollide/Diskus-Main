@@ -1,7 +1,7 @@
 .Add_organization {
   font-size: 20px !important;
   color: #5f78d6 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Cross_Icon_Styling {
@@ -17,7 +17,7 @@
   border: none;
   border-radius: 4px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   background: #5f78d6;
   color: #fff !important;
 }
@@ -30,7 +30,7 @@
   border: none !important;
   border-radius: 4px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   background: #5f78d6 !important;
   color: #fff !important;
 }
@@ -41,7 +41,7 @@
   border: 1px solid #f16b6b;
   border-radius: 4px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   background: #fff;
   color: #f16b6b !important;
 }
@@ -55,7 +55,7 @@
   border: 1px solid #f16b6b;
   border-radius: 4px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   background: #fff;
   color: #f16b6b !important;
 }
@@ -65,7 +65,7 @@
   border: none;
   border-radius: 4px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   background: #5f78d6;
   color: #fff !important;
 }
@@ -78,7 +78,7 @@
   border: none !important;
   border-radius: 4px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   background: #5f78d6 !important;
   color: #fff !important;
 }
@@ -100,7 +100,7 @@
 .Name_cards {
   font-size: 12px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   margin-left: 5px !important;
 }
 

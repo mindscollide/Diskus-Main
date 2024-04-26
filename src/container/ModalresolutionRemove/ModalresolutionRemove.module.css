@@ -3,13 +3,13 @@
   font-size: 12px !important;
   background: #6172d6;
   color: #fff;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   border-radius: 4px !important;
   border: none !important;
 }
 
 body[dir="rtl"] .Proceed_btn_removeParticipant_modal {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Proceed_btn_removeParticipant_modal:hover,
@@ -20,7 +20,7 @@ body[dir="rtl"] .Proceed_btn_removeParticipant_modal {
   font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border-radius: 4px !important;
   border: none !important;
 }
@@ -30,7 +30,7 @@ body[dir="rtl"] .Proceed_btn_removeParticipant_modal {
   font-size: 12px !important;
   background: #fff;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
@@ -42,22 +42,22 @@ body[dir="rtl"] .Proceed_btn_removeParticipant_modal {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
 
 body[dir="rtl"] .Discard_btn_removeParticipant_modal {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Heading_For_Remove_participant {
   font-size: 16px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   color: #5a5a5a !important;
 }
 
 body[dir="rtl"] .Heading_For_Remove_participant {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }

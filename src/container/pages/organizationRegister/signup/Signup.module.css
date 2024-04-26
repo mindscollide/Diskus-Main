@@ -1,31 +1,24 @@
-@font-face {
-  font-family: "MontserratSemiBold";
-  src: url("../../../../assets/fonts-new/montserrat-600-webfont.woff2"),
-    url("../../../../assets/fonts-new/montserrat-600-webfont.woff2");
-}
-
 .signup_organization_title {
   color: #6172d6;
-  font-weight: 400;
   margin: 0 0 25px 0;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   font-size: calc(32px - 20%);
 }
 
 body[dir="rtl"] .signup_organization_title {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .signup_admin_title {
   color: #6172d6;
   font-weight: 400;
   margin: 40px 0 25px 0;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   font-size: calc(32px - 20%);
 }
 
 body[dir="rtl"] .signup_admin_title {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .signUp_Container {
@@ -55,12 +48,12 @@ body[dir="rtl"] .signup_admin_title {
   border: none;
   margin-top: 20px;
   text-transform: uppercase;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   font-size: calc(17px - 20%);
 }
 
 body[dir="rtl"] .signUp_NextBtn {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .signUp_NextBtn:hover {
@@ -77,14 +70,15 @@ body[dir="rtl"] .signUp_NextBtn {
   color: #000;
 }
 
-body[dir="rtl"] .signUp_goBack+a {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+body[dir="rtl"] .signUp_goBack + a {
+  font-weight: 500 !important;
 }
 
-.signUp_goBack+a {
+.signUp_goBack + a {
   color: #000;
   margin: 21px 0 0 0 !important;
   text-decoration: underline;
+  font-weight: 500 !important;
 }
 
 .signUp_NextBtn:hover {
@@ -161,7 +155,7 @@ body[dir="rtl"] .rightsection_roundLogo {
 }
 
 body[dir="rtl"] .errorMessage {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 600 !important;
 }
 
 .errorMessage_hidden {
@@ -172,7 +166,7 @@ body[dir="rtl"] .errorMessage {
 }
 
 body[dir="rtl"] .errorMessage_hidden {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
 }
 
 .emailCheckbox span,
@@ -223,7 +217,7 @@ body[dir="rtl"] .errorMessage_hidden {
 }
 
 .checkEmail::placeholder {
-  font-family: "MontserratMedium-500" !important;
+  font-weight: 500 !important;
   color: rgba(23, 29, 45, 0.5);
 }
 
@@ -279,7 +273,6 @@ body[dir="rtl"] .errorMessage_hidden {
   /* justify-content: space-between !important; */
   /* align-items    : center !important; */
   padding: 2px 5px !important;
-  font-family: inherit !important;
   font-size: 11px !important;
   color: #4d4d4d !important;
   border: thin solid rgba(77, 77, 77, 0.3);
@@ -338,7 +331,7 @@ body[dir="rtl"] .errorMessage_hidden {
   height: 2.9em !important;
   border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   border-radius: 4px;
 }
 
@@ -348,6 +341,7 @@ body[dir="rtl"] .select-language-signin {
   top: 40px;
   right: 80%;
   padding: 0 50px !important;
+  font-weight: 600 !important;
   z-index: 9999;
   height: 2.9em !important;
   border: 1px solid #e1e1e1 !important;
@@ -391,7 +385,7 @@ body[dir="rtl"] .languageIcon {
   /* font-size: 13px !important; */
   height: 30px !important;
   color: rgba(23, 29, 45, 0.7) !important;
-  font-family: "MontserratMedium-500" !important;
+  font-weight: 500 !important;
 }
 
 .countrydropdown .form-select::placeholder {
@@ -431,7 +425,6 @@ body[dir="rtl"] .languageIcon {
   justify-content: space-between !important;
   align-items: center !important;
   padding: 2px 12px !important;
-  font-family: inherit !important;
   font-size: 12px !important;
   color: #4d4d4d !important;
   border: thin solid #e1e1e1;
@@ -447,7 +440,6 @@ body[dir="rtl"] .languageIcon {
   justify-content: space-between !important;
   align-items: center !important;
   padding: 2px 12px !important;
-  font-family: inherit !important;
   font-size: 12px !important;
   color: #000000 !important;
   border: thin solid #e1e1e1 !important;
@@ -459,7 +451,7 @@ body[dir="rtl"] .languageIcon {
   height: 39px !important;
   padding: auto !important;
   margin-top: -1px !important;
-  font-family: "MontserratMedium" !important;
+  font-weight: 500 !important;
   font-size: 13px !important;
 }
 
@@ -472,7 +464,7 @@ body[dir="rtl"] .languageIcon {
   justify-content: space-between !important;
   align-items: center !important;
   padding: 2px 12px !important;
-  font-family: "MontserratMedium" !important;
+  font-weight: 500 !important;
   font-size: 13px !important;
   color: #4d4d4d !important;
   border: thin solid #e1e1e1;
@@ -485,7 +477,7 @@ body[dir="rtl"] .languageIcon {
   padding: 5px 8px !important;
   margin: 4px 5px !important;
   font-size: 13px !important;
-  font-family: "MontserratMedium" !important;
+  font-weight: 500 !important;
   white-space: nowrap !important;
 }
 
@@ -514,7 +506,8 @@ body[dir="rtl"] .languageIcon {
   align-items: center !important;
   padding: 2px 12px !important;
   font-size: 13px !important;
-  font-family: "MontserratMedium" !important;
+  font-weight: 500 !important;
+
   color: #000000 !important;
   border: thin solid #e1e1e1 !important;
   border-radius: 4px !important;
@@ -524,7 +517,7 @@ body[dir="rtl"] .languageIcon {
 .sign-up-textfield-input {
   height: 30px !important;
   font-size: 13px !important;
-  font-family: "MontserratMedium" !important;
+  font-weight: 500 !important;
 }
 
 .languageSelector {
@@ -535,7 +528,6 @@ body[dir="rtl"] .languageIcon {
   margin-right: 0;
   display: flex;
   justify-content: flex-end;
-
 }
 
 body[dir="rtl"] .languageSelector {

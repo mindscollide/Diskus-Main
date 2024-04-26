@@ -2,11 +2,10 @@
   font-size: calc(38px - 50%) !important;
   color: #6172d6 !important;
   font-weight: 600 !important;
-  font-family: "MontserratSemiBold-600" !important;
 }
 
 body[dir="rtl"] .AddUserheading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .PageAlignment {
@@ -14,7 +13,6 @@ body[dir="rtl"] .AddUserheading {
 }
 
 .NameCreateAddtional {
-  font-family: "MontserratSemiBold-600" !important;
   font-style: normal;
   color: #6172d6 !important;
   font-weight: 600;
@@ -23,7 +21,7 @@ body[dir="rtl"] .AddUserheading {
 }
 
 body[dir="rtl"] .NameCreateAddtional {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Steric {
@@ -33,22 +31,22 @@ body[dir="rtl"] .NameCreateAddtional {
 .NameClass {
   font-size: 16px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .NameClass {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .AdminAlsoClass {
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
   font-size: 12px !important;
   color: #5a5a5a !important;
   margin-top: 3px !important;
 }
 
 body[dir="rtl"] .AdminAlsoClass {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .AddUserCancelButton {
@@ -57,7 +55,7 @@ body[dir="rtl"] .AdminAlsoClass {
   background: #fff !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #5a5a5a !important;
 }
 
@@ -67,12 +65,12 @@ body[dir="rtl"] .AdminAlsoClass {
   background: #fff !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #5a5a5a !important;
 }
 
 body[dir="rtl"] .AddUserCancelButton {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .AddUserCreateButton {
@@ -81,7 +79,7 @@ body[dir="rtl"] .AddUserCancelButton {
   background: #6172d6 !important;
   border: none !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #fff !important;
 }
 
@@ -91,12 +89,12 @@ body[dir="rtl"] .AddUserCancelButton {
   background: #6172d6 !important;
   border: none !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #fff !important;
 }
 
 body[dir="rtl"] .AddUserCreateButton {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .checkEmailSpinner {
@@ -116,7 +114,7 @@ body[dir="rtl"] .AddUserCreateButton {
 }
 
 body[dir="rtl"] .errorMessage {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
 }
 
 .errorMessage_hidden {
@@ -127,7 +125,7 @@ body[dir="rtl"] .errorMessage {
 }
 
 body[dir="rtl"] .errorMessage_hidden {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
 }
 
 .isEmailUnique {

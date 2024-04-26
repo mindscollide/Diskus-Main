@@ -8,11 +8,10 @@
   font-size: calc(38px - 50%) !important;
   color: #6172d6 !important;
   font-weight: 600 !important;
-  font-family: "MontserratSemiBold-600" !important;
 }
 
 body[dir="rtl"] .Edit-Main-Heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .tablecolumnrow {
@@ -30,7 +29,7 @@ body[dir="rtl"] .Edit-Main-Heading {
   font-size: 12px !important;
   border: none !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
 }
@@ -40,13 +39,13 @@ body[dir="rtl"] .Edit-Main-Heading {
   font-size: 12px !important;
   border: none !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
 }
 
 body[dir="rtl"] .AddUsersButton {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
@@ -78,7 +77,7 @@ body[dir="rtl"] .SearchIconClass {
 }
 
 .RedStripContent {
-  font-family: "MontserratBold-700" !important;
+  font-weight: 700 !important;
   font-size: 12px !important;
   color: #f16b6b !important;
   display: flex !important;
@@ -86,27 +85,27 @@ body[dir="rtl"] .SearchIconClass {
 }
 
 body[dir="rtl"] .RedStripContent {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }
 
 .NameStylesTable {
-  font-family: "MontserratBold-700" !important;
+  font-weight: 700 !important;
   font-size: 12px !important;
   color: #505050 !important;
 }
 
 body[dir="rtl"] .NameStylesTable {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }
 
 .DesignationStyles {
-  font-family: "MontserratRegular" !important;
+  font-weight: 400 !important;
   font-size: 12px !important;
   color: #505050 !important;
 }
 
 body[dir="rtl"] .DesignationStyles {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
 }
 
 .SearchBoxManageUsers {
@@ -122,27 +121,26 @@ body[dir="rtl"] .DesignationStyles {
 }
 
 .NameCreateAddtional {
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   font-style: normal;
   color: #6172d6 !important;
-  font-weight: 600;
   font-size: 10px;
   line-height: 12px;
 }
 
 body[dir="rtl"] .NameCreateAddtional {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .AdminAlsoClass {
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
   font-size: 12px !important;
   color: #5a5a5a !important;
   margin-top: 3px !important;
 }
 
 body[dir="rtl"] .AdminAlsoClass {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .ResetButtonSearchBox {
@@ -150,7 +148,7 @@ body[dir="rtl"] .AdminAlsoClass {
   font-size: 12px !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   background: #fff !important;
   color: #5a5a5a !important;
 }
@@ -160,13 +158,13 @@ body[dir="rtl"] .AdminAlsoClass {
   font-size: 12px !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   background: #fff !important;
   color: #5a5a5a !important;
 }
 
 body[dir="rtl"] .ResetButtonSearchBox {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .SearchButtonSearchBox {
@@ -174,7 +172,7 @@ body[dir="rtl"] .ResetButtonSearchBox {
   font-size: 12px !important;
   border: none !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   background: #6172d6 !important;
   color: #fff !important;
 }
@@ -184,13 +182,13 @@ body[dir="rtl"] .ResetButtonSearchBox {
   font-size: 12px !important;
   border: none !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   background: #6172d6 !important;
   color: #fff !important;
 }
 
 body[dir="rtl"] .SearchButtonSearchBox {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .fadeIn {
@@ -221,11 +219,11 @@ body[dir="rtl"] .SearchButtonSearchBox {
 .Searches {
   font-size: 12px !important;
   color: #fff !important;
-  font-family: "MontserratBold-700" !important;
+  font-weight: 700 !important;
 }
 
 body[dir="rtl"] .Searches {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }
 
 .polling_searchinput {

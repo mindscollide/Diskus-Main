@@ -1,7 +1,7 @@
 .MeetinMaterial_Heading {
   color: #5f78d6 !important;
   font-size: 16px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Bottom_Line {
@@ -63,7 +63,7 @@
   border-radius: 4px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Cancel_Classname:is(:hover, :active, :focus, :focus-visible) {
@@ -73,7 +73,7 @@
   border-radius: 4px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Save_Classname {
@@ -83,7 +83,7 @@
   border-radius: 4px !important;
   background: #5f78d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Save_Classname:is(:hover, :active, :focus, :focus-visible) {
@@ -93,11 +93,11 @@
   border-radius: 4px !important;
   background: #5f78d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .agenda-name-title {
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   color: #6172d6 !important;
   font-size: 12px !important;
   white-space: nowrap;
@@ -107,7 +107,7 @@
 }
 
 .docx-name-title {
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   color: #5a5a5a !important;
   font-size: 12px !important;
   overflow: hidden !important;
@@ -125,14 +125,14 @@
   border: 1px solid#E1E1E1 !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 .downloadButton {
   padding: 12px 30px !important;
   background: #6172d6 !important;
   border: none !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 .downloadButton:disabled {
   background: #ccc !important;

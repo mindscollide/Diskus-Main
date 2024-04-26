@@ -673,7 +673,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
 
   return (
     <>
-      <section className="MontserratSemiBold-600 color-5a5a5a">
+      <section className=" color-5a5a5a">
         <Row className="mt-3">
           <Col
             lg={12}
@@ -788,7 +788,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               className="UpdateCheckbox Saved_money_Tagline"
                             >
                               <Checkbox
-                                className="SearchCheckbox MontserratSemiBold-600"
+                                className="SearchCheckbox "
                                 name="IsChat"
                                 label2Class={styles["Label_Of_CheckBox"]}
                                 label2={t("Create-talk-group")}

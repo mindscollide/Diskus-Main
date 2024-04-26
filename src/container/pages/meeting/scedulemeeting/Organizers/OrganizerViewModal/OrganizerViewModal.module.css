@@ -1,5 +1,5 @@
 .Prposed_Meeting_heading {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 30px !important;
   color: #5f78d6 !important;
 }
@@ -12,37 +12,27 @@
 
 .PersonName {
   font-size: 16px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #545454;
 }
 
 .Designation {
   color: #6172d6 !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Cancel_Button_ProposeOrganizer {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  color: #5a5a5a  !important;
+  color: #5a5a5a !important;
   /* color: #ffffff !important; */
   /* background: #5f78d6 !important; */
   background: #ffffff !important;
   border: 1px solid #e1e1e1 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border-radius: 4px !important;
 }
-
-/* .Cancel_Button_ProposeOrganizer:is(:hover, :focus, :focus-visible, :active) {
-  padding: 12px 30px !important;
-  font-size: 12px !important;
-  color: #000000 !important;
-  background: transparent !important;
-  border: 1px solid #e1e1e1 !important;
-  font-family: "MontserratSemiBold" !important;
-  border-radius: 4px !important;
-} */
 
 .view-poll-organizer-btn {
   padding: 14px 35px !important;
@@ -50,17 +40,6 @@
   color: #ffffff !important;
   background: #5f78d6 !important;
   border: none !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border-radius: 4px !important;
-
 }
-
-/* .view-poll-organizer-btn:is(:hover, :focus, :focus-visible, :active) {
-  padding: 14px 35px !important;
-  font-size: 12px !important;
-  color: #000000 !important;
-  background: transparent !important;
-  border: 1px solid #e1e1e1;
-  font-family: "MontserratSemiBold" !important;
-  border-radius: 4px !important;
-} */

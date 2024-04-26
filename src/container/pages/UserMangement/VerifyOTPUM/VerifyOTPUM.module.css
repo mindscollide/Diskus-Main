@@ -1,15 +1,3 @@
-@font-face {
-  font-family: "MontserratSemiBold";
-  src: url("../../../../assets/fonts-new/montserrat-regular-webfont.woff"),
-    url("../../../../assets/fonts-new/montserrat-regular-webfont.woff2");
-}
-
-@font-face {
-  font-family: "MontserratMedium";
-  src: url("../../../../assets/fonts-new/montserrat-500-webfont.woff"),
-    url("../../../../assets/fonts-new/montserrat-500-webfont.woff2");
-}
-
 .EmailVerifyOTPbox {
   display: flex;
   justify-content: center;
@@ -20,23 +8,23 @@
 
 .signIn_heading {
   font-size: calc(35px - 20%) !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   user-select: none;
   color: #6172d6;
 }
 
 body[dir="rtl"] .signIn_heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
   font-size: calc(31px - 20%) !important;
 }
 
 .signIn_heading_line {
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
   font-size: calc(16px - 20%) !important;
 }
 
 body[dir="rtl"] .signIn_heading_line {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .Next_button_EmailVerify {
@@ -47,7 +35,7 @@ body[dir="rtl"] .signIn_heading_line {
 .subscribNow_button_EmailVerify {
   width: 100%;
   padding: 12px 30px !important;
-  font-family: "Montserrat";
+  font-weight: 400 !important;
   text-transform: uppercase;
   border: none;
   border-radius: 4px;
@@ -57,7 +45,7 @@ body[dir="rtl"] .signIn_heading_line {
 }
 
 body[dir="rtl"] .subscribNow_button_EmailVerify {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
 }
 
 .subscribNow_button_EmailVerify:hover,
@@ -67,11 +55,10 @@ body[dir="rtl"] .subscribNow_button_EmailVerify {
 .subscribNow_button_EmailVerify:hover {
   width: 100%;
   padding: 12px 30px !important;
-  font-family: "Montserrat";
+  font-weight: 400 !important;
   text-transform: uppercase;
   border: none;
   border-radius: 4px;
-  font-weight: 600;
   font-size: 12px !important;
   background-color: #6172d6;
 }
@@ -84,7 +71,7 @@ body[dir="rtl"] .subscribNow_button_EmailVerify {
 }
 
 body[dir="rtl"] .errorMessage-OTP {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .errorMessage-OTP_hidden {
@@ -95,7 +82,7 @@ body[dir="rtl"] .errorMessage-OTP {
 }
 
 body[dir="rtl"] .errorMessage-OTP_hidden {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 /* Auth Icon and style of heading which we are using in all auth pages */
@@ -122,7 +109,7 @@ body[dir="rtl"] .Auth_Icon {
 
 .Login_page_text h1 {
   font-size: calc(60px - 20%) !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   margin: 0 !important;
   width: 114%;
 }
@@ -145,18 +132,18 @@ body[dir="rtl"] .OTP_auth_paper {
 }
 
 body[dir="rtl"] .heading-1 {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
   font-size: 70px !important;
 }
 
 .heading-2 {
   color: #4adede;
   font-size: 60px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .heading-2 {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 /* End */
@@ -173,7 +160,7 @@ body[dir="rtl"] .heading-2 {
 }
 
 body[dir="rtl"] .resendCode_btn {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
 }
 
 .resendCode_bt:hover {
@@ -208,7 +195,7 @@ body[dir="rtl"] .resendCode_btn {
 }
 
 body[dir="rtl"] .OTPCounter {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
 }
 
 .GoBackBtn {
@@ -218,7 +205,7 @@ body[dir="rtl"] .OTPCounter {
 
 .OTPInput {
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   margin: 0;
   padding: 0;
 }
@@ -233,7 +220,7 @@ body[dir="rtl"] .OTPCounter {
   height: 2.9em !important;
   border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   border-radius: 4px;
 }
 
@@ -247,7 +234,7 @@ body[dir="rtl"] .select-language-signin {
   height: 2.9em !important;
   border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   border-radius: 4px;
 }
 
@@ -304,11 +291,11 @@ body[dir="rtl"] .languageSelector {
   /* font-size: calc(12px - 20%) !important; */
   margin-top: 4px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratRegular";
+  font-weight: 400 !important;
   cursor: pointer !important;
 }
 
 .Forgot_passwordforogt_verification_email_link a {
   color: #5a5a5a !important;
-  font-family: "MontserratRegular";
+  font-weight: 400 !important;
 }

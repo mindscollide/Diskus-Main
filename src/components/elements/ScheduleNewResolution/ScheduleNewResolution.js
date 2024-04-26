@@ -11,7 +11,6 @@ import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 // import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import { useTranslation } from "react-i18next";
-import "react-horizontal-scrolling-menu/dist/styles.css";
 import Select from "react-select";
 import styles from "./ScheduleNewResolution.module.css";
 import Leftploygon from "../../../assets/images/Polygon 3.svg";
@@ -1541,7 +1540,7 @@ const ScheduleNewResolution = () => {
                               className="UpdateCheckbox  d-flex justify-content-start FontArabicRegular"
                             >
                               <Checkbox
-                                className="SearchCheckbox MontserratSemiBold-600"
+                                className="SearchCheckbox "
                                 name="IsChat"
                                 checked={
                                   createResolutionData.IsResolutionPublic

@@ -1,15 +1,15 @@
 .thankyouheading {
   font-size: 20px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .thankyouheading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .GotoportalButton {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #6172d6 !important;
@@ -19,7 +19,7 @@ body[dir="rtl"] .thankyouheading {
 }
 
 .GotoportalButton:is(:active, :focus, :focus-visible, :active) {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #6172d6 !important;
@@ -29,5 +29,5 @@ body[dir="rtl"] .thankyouheading {
 }
 
 body[dir="rtl"] .GotoportalButton {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }

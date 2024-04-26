@@ -1,11 +1,3 @@
-/* .headtag{
-    margin-left: 90px  !important;
-    padding: auto !important;
-} */
-@font-face {
-  font-family: "MontserratSemiBold";
-  src: url(../../../../assets/fonts/Montserrat-SemiBold.ttf);
-}
 .filterdrow {
   /* margin-top: 50px !important;
   margin-left: 90px !important; */
@@ -31,14 +23,14 @@
 
 .Edit-label-heading {
   /* margin-top: -15px; */
-  font-weight: 600;
+  font-weight: 600 !important;
   font-size: 35px !important;
 }
 
 .Edit-Name-label {
   margin-top: 25px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 600 !important;
 }
 
 .Edit-Update-Btn {
@@ -62,17 +54,16 @@
   font-size: calc(38px - 50%) !important;
   color: #6172d6 !important;
   font-weight: 600 !important;
-  font-family: "MontserratSemiBold-600" !important;
 }
 
 body[dir="rtl"] .Edit-Main-Heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .successfull-label {
   text-align: center !important;
   font-size: 14px;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
   display: grid;
 }
 
@@ -179,7 +170,7 @@ body[dir="rtl"] .filterModal {
 
 .deleteModal-message {
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 600 !important;
   text-align: center !important;
 }
 
@@ -229,12 +220,12 @@ body[dir="rtl"] .filterModal {
   background-color: #fff !important;
   color: black !important;
   margin-bottom: 20px !important;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   font-size: 12px;
 }
 
 body[dir="rtl"] .icon-PaymentHistory-ResetBtn {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .icon-PaymentHistory-ResetBtn:hover {
@@ -245,7 +236,7 @@ body[dir="rtl"] .icon-PaymentHistory-ResetBtn {
   background-color: #fff !important;
   color: black !important;
   margin-bottom: 20px !important;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   font-size: 12px;
 }
 
@@ -257,12 +248,12 @@ body[dir="rtl"] .icon-PaymentHistory-ResetBtn {
   background-color: #6172d6 !important;
   color: #fff !important;
   margin-right: 30px;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   font-size: 12px;
 }
 
 body[dir="rtl"] .icon-PaymentHistory-SearchBtn {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .icon-PaymentHistory-SearchBtn:hover,
@@ -276,7 +267,7 @@ body[dir="rtl"] .icon-PaymentHistory-SearchBtn {
   background-color: #6172d6 !important;
   color: #fff !important;
   margin-right: 30px !important;
-  font-family: "MontserratMedium-500" !important;
+  font-weight: 500 !important;
   font-size: 12px !important;
 }
 
@@ -288,7 +279,7 @@ body[dir="rtl"] .icon-PaymentHistory-SearchBtn {
   background-color: #6172d6 !important;
   color: #fff !important;
   margin-right: 0 !important;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   font-size: 12px;
   margin-left: 30px !important;
 }
@@ -301,7 +292,7 @@ body[dir="rtl"] .icon-PaymentHistory-SearchBtn:hover {
   background-color: #6172d6 !important;
   color: #fff !important;
   margin-right: 0 !important;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   font-size: 12px;
   margin-left: 30px !important;
 }
@@ -316,7 +307,7 @@ body[dir="rtl"] .icon-PaymentHistory-SearchBtn:hover {
 }
 
 body[dir="rtl"] .surcharge {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
 }
 
 .icon-PaymentHistory-DeleteBtn {
@@ -327,7 +318,7 @@ body[dir="rtl"] .surcharge {
   color: #fff !important;
   border: none !important;
   margin-bottom: 20px !important;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   font-size: 12px;
 }
 
@@ -339,7 +330,7 @@ body[dir="rtl"] .surcharge {
   color: #fff !important;
   border: none !important;
   margin-bottom: 20px !important;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   font-size: 12px;
 }
 
@@ -354,7 +345,7 @@ body[dir="rtl"] .surcharge {
   font-size: 25px;
   text-align: center !important;
   color: #5a5a5a;
-  font-weight: 600;
+  font-weight: 600 !important;
 }
 
 .allowModalIcon {
@@ -402,13 +393,13 @@ body[dir="rtl"] .surcharge {
   border-radius: 4px !important;
 }
 .paymenthistory_searchbar::placeholder {
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   color: #000000;
   opacity: 32%;
 }
 
 body[dir="rtl"] .paymenthistory_searchbar::placeholder {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 .paymenthistory_searchbar:hover,
 .paymenthistory_searchbar:focus {
@@ -422,11 +413,11 @@ body[dir="rtl"] .paymenthistory_searchbar::placeholder {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .DownloadButton {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .DownloadButton:is(:hover, :focus, :focus-visible, :active) {
@@ -436,5 +427,5 @@ body[dir="rtl"] .DownloadButton {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }

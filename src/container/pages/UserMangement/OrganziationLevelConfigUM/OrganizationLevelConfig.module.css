@@ -1,11 +1,11 @@
 .UserLevelConfig_Heading {
   font-size: 30px !important;
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .UserLevelConfig_Heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .UserConfigsContainer {
@@ -16,74 +16,74 @@ body[dir="rtl"] .UserLevelConfig_Heading {
 .Options_headings {
   font-size: 20px !important;
   color: #5a5a5a;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
 }
 
 body[dir="rtl"] .Options_headings {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .Options_headings_active {
   font-size: 20px !important;
   color: #5a5a5a;
-  font-family: "MontserratExtraBold-800" !important;
+  font-weight: 800 !important;
 }
 
 body[dir="rtl"] .Options_headings_active {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 800 !important;
 }
 
 .Class_CheckBox {
   font-size: 16px !important;
   color: #5a5a5a;
-  font-family: "MontserratMedium-500" !important;
+  font-weight: 500 !important;
 }
 
 body[dir="rtl"] .Class_CheckBox {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .Class_CheckBox2 {
   font-size: 16px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratMedium-500" !important;
+  font-weight: 500 !important;
   white-space: nowrap !important;
 }
 
 body[dir="rtl"] .Class_CheckBox2 {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .Class_CheckBox3 {
   font-size: 16px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratMedium-500" !important;
+  font-weight: 500 !important;
   line-height: 20px !important;
 }
 
 body[dir="rtl"] .Class_CheckBox3 {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .Diskus_calender {
   font-size: 16px !important;
   color: #5a5a5a;
-  font-family: "MontserratMedium-500" !important;
+  font-weight: 500 !important;
 }
 
 body[dir="rtl"] .Diskus_calender {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .Diskus_calender_microsoft {
   font-size: 16px !important;
   color: #5a5a5a;
-  font-family: "MontserratMedium-500" !important;
+  font-weight: 500 !important;
   width: 120px !important;
 }
 
 body[dir="rtl"] .Diskus_calender_microsoft {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .BackGround_Calender_color_box {
@@ -106,13 +106,13 @@ body[dir="rtl"] .Diskus_calender_microsoft {
   border-radius: 4px;
   color: #fff;
   border: none;
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
   font-size: 14px;
   margin-bottom: 15px !important;
 }
 
 body[dir="rtl"] .New_settings_Update_Button {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .New_settings_Update_Button:is(:hover, :active, :focus, :focus-visible) {
@@ -122,7 +122,7 @@ body[dir="rtl"] .New_settings_Update_Button {
   border-radius: 4px !important;
   color: #fff !important;
   border: none !important;
-  font-family: "MontserratMedium" !important;
+  font-weight: 500 !important;
   font-size: 14px !important;
   margin-bottom: 15px !important;
 }

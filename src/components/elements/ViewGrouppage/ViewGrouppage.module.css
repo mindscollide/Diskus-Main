@@ -1,11 +1,11 @@
 .View-Committee-heading {
   font-size: 30px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #6172d6 !important;
 }
 
 body[dir="rtl"] .View-Committee-heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .View-group-paper {
@@ -22,7 +22,7 @@ body[dir="rtl"] .View-Committee-heading {
   border: 1px solid #5f78d6 !important;
   border-radius: 4px !important;
   background: #5f78d6 !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
   color: #fff !important;
 }
 
@@ -31,7 +31,7 @@ body[dir="rtl"] .View-Committee-heading {
   font-size: 16px !important;
   border: 1px solid #808080;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
   background: #fff !important;
   color: #545454;
 }
@@ -44,7 +44,7 @@ body[dir="rtl"] .View-Committee-heading {
   border: 1px solid #5f78d6 !important;
   border-radius: 4px !important;
   background: #5f78d6 !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
   color: #fff !important;
 }
 
@@ -53,7 +53,7 @@ body[dir="rtl"] .View-Committee-heading {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   padding: 12px 30px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
   background: #fff !important;
   color: #5a5a5a !important;
 }
@@ -63,7 +63,7 @@ body[dir="rtl"] .View-Committee-heading {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   padding: 12px 30px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
   background: #fff !important;
   color: #5a5a5a !important;
 }

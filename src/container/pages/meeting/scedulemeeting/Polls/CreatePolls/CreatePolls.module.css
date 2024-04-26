@@ -1,6 +1,6 @@
 .Title_heading {
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 12px !important;
 }
 
@@ -40,7 +40,7 @@
   font-size: 12px !important;
   border: 1px solid #808080;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   background: #fff !important;
   color: #545454;
 }
@@ -50,7 +50,7 @@
   font-size: 12px !important;
   border: 1px solid #808080;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   background: #fff !important;
   color: #545454;
 }
@@ -61,7 +61,7 @@
   border: 1px solid #5f78d6 !important;
   border-radius: 4px !important;
   background: #5f78d6 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #fff !important;
 }
 
@@ -71,13 +71,13 @@
   border: 1px solid #5f78d6 !important;
   border-radius: 4px !important;
   background: #5f78d6 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #fff !important;
 }
 
 .Add_Button_Heading {
   color: #6172d6 !important;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   font-size: 12px !important;
 }
 
@@ -154,7 +154,7 @@ body[dir="rtl"] .polling_Options_backGround {
   margin: 0;
   padding: 0;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .ADD_Btn_CreatePool_Modal {
@@ -197,7 +197,7 @@ body[dir="rtl"] .polling_Options_backGround {
 .Name_Members {
   font-size: 12px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Image_class_Agenda {

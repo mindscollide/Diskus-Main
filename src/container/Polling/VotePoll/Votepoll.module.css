@@ -1,19 +1,22 @@
 .Vote_poll_Heading {
   font-size: 20px !important;
   color: #6172d6;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
+
 }
 
 .Multiple_vote_poll {
   font-size: 12px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
+
 }
 
 .Yes_Vote_poll {
   font-size: 16px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
+
   word-wrap: break-word !important;
   white-space: pre-wrap !important;
   width: 100% !important;

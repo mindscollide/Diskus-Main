@@ -1,51 +1,51 @@
 .View-Group-heading {
   font-size: 30px !important;
-  font-family: "MontserratSemiBold";
+font-weight: 600;
   color: #6172d6 !important;
 }
 
 body[dir="rtl"] .View-Group-heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .View-group-Subheading {
   font-size: 30px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #6172d6 !important;
 }
 
 body[dir="rtl"] .View-group-Subheading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Management-Heading-View-Group {
   font-size: 30px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #5a5a5a;
   word-wrap: break-word;
 }
 
 body[dir="rtl"] .Management-Heading-View-Group {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 .paragraph-content-View-Group {
   font-size: 16px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #5a5a5a;
   word-wrap: break-word;
 }
 
 body[dir="rtl"] .paragraph-content-View-Group {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 .Create-group-Head-Heading {
   font-size: 20px !important;
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 body[dir="rtl"] .Create-group-Head-Heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 .group-head-info {
   line-height: 15px !important;
@@ -54,42 +54,42 @@ body[dir="rtl"] .Create-group-Head-Heading {
 .name-create-group {
   color: #5a5a5a;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 body[dir="rtl"] .name-create-group {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Designation-create-group {
   color: #5a5a5a;
   font-size: 10px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 body[dir="rtl"] .Designation-create-group {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .email-create-group {
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #6172d6;
   text-decoration: underline !important;
   font-size: 10px !important;
 }
 
 body[dir="rtl"] .email-create-group {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 600;
 }
 
 .members-create-group-page {
   font-size: 20px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #6172d6 !important;
 }
 
 body[dir="rtl"] .members-create-group-page {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .scroll-bar-creategroup {
@@ -120,12 +120,12 @@ body[dir="rtl"] .members-create-group-page {
   font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;;
   border-radius: 4px !important;
   border: none !important;
 }
 body[dir="rtl"] .Close-ViewGroup-btn {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Close-ViewGroup-btn:is(:hover, :active, :visited, :focus, :focus-visible) {
@@ -133,7 +133,7 @@ body[dir="rtl"] .Close-ViewGroup-btn {
   font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   border-radius: 4px !important;
   border: none !important;
 }
@@ -141,24 +141,24 @@ body[dir="rtl"] .Close-ViewGroup-btn {
 .ant-upload-text {
   font-size: 12px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 body[dir="rtl"] .ant-upload-text {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Choose_file_style {
   font-size: 12px !important;
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   margin-left: 3px !important;
 }
 
 .FileName {
   font-size: 10px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratRegular";
+  font-weight: 400;
   display: inline-block !important;
   overflow: hidden !important;
   white-space: nowrap !important;
