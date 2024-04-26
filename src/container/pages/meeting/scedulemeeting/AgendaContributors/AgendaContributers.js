@@ -148,11 +148,10 @@ const AgendaContributers = ({
     }
   };
 
-
   let allowRSVPValue =
     NewMeetingreducer?.getAllMeetingDetails?.advanceMeetingDetails?.allowRSVP;
 
-  if(allowRSVPValue === true) {
+  if (allowRSVPValue === true) {
     var AgendaColoumns = [
       {
         title: t("Name"),
@@ -236,7 +235,9 @@ const AgendaContributers = ({
                 >
                   <img
                     draggable={false}
-                    src={record.isContributorNotified ? greenMailIcon : redMailIcon}
+                    src={
+                      record.isContributorNotified ? greenMailIcon : redMailIcon
+                    }
                     className={
                       record.isEdit === true ? "cursor-pointer" : "pe-none"
                     }
@@ -258,7 +259,9 @@ const AgendaContributers = ({
                 >
                   <img
                     draggable={false}
-                    src={record.isContributorNotified ? greenMailIcon : redMailIcon}
+                    src={
+                      record.isContributorNotified ? greenMailIcon : redMailIcon
+                    }
                     className={
                       record.isEdit === true ? "cursor-pointer" : "pe-none"
                     }
@@ -281,7 +284,9 @@ const AgendaContributers = ({
                 >
                   <img
                     draggable={false}
-                    src={record.isContributorNotified ? greenMailIcon : redMailIcon}
+                    src={
+                      record.isContributorNotified ? greenMailIcon : redMailIcon
+                    }
                     className={
                       record.isEdit === true ? "cursor-pointer" : "pe-none"
                     }
@@ -461,7 +466,9 @@ const AgendaContributers = ({
                 >
                   <img
                     draggable={false}
-                    src={record.isContributorNotified ? greenMailIcon : redMailIcon}
+                    src={
+                      record.isContributorNotified ? greenMailIcon : redMailIcon
+                    }
                     className={
                       record.isEdit === true ? "cursor-pointer" : "pe-none"
                     }
@@ -483,7 +490,9 @@ const AgendaContributers = ({
                 >
                   <img
                     draggable={false}
-                    src={record.isContributorNotified ? greenMailIcon : redMailIcon}
+                    src={
+                      record.isContributorNotified ? greenMailIcon : redMailIcon
+                    }
                     className={
                       record.isEdit === true ? "cursor-pointer" : "pe-none"
                     }
@@ -506,7 +515,9 @@ const AgendaContributers = ({
                 >
                   <img
                     draggable={false}
-                    src={record.isContributorNotified ? greenMailIcon : redMailIcon}
+                    src={
+                      record.isContributorNotified ? greenMailIcon : redMailIcon
+                    }
                     className={
                       record.isEdit === true ? "cursor-pointer" : "pe-none"
                     }
@@ -652,8 +663,11 @@ const AgendaContributers = ({
   //Initiate the Add Flow with Empty stae
 
   const handleInitiatewithEmptyState = () => {
-    setIsEditFlag(0);
-    dispatch(showAddAgendaContributor(true));
+    if (Number(editorRole.status) === 1) {
+    } else {
+      setIsEditFlag(0);
+      dispatch(showAddAgendaContributor(true));
+    }
   };
 
   const nextTabOrganizer = () => {
@@ -822,7 +836,7 @@ const AgendaContributers = ({
   //   dispatch(getAllVotingResultDisplay_success([], ""));
   // }, []);
 
-  console.log("rowsDatarowsData", rowsData)
+  console.log("rowsDatarowsData", rowsData);
 
   return (
     <>
@@ -923,7 +937,11 @@ const AgendaContributers = ({
                           <img
                             draggable={false}
                             src={emptyContributorState}
-                            className="cursor-pointer"
+                            className={
+                              Number(editorRole.status) === 1
+                                ? ""
+                                : "cursor-pointer"
+                            }
                             width="274.05px"
                             alt=""
                             height="230.96px"
