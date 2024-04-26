@@ -31,11 +31,15 @@ import {
 import {
   checkFeatureIDAvailability,
   checkFeatureIDRoutes,
+  clearLocalStorageAtloginresponce,
   getFormData,
   handleLoginResponse,
   savePackageFeatureIDs,
 } from "../../commen/functions/utils";
-import { RESPONSE_MESSAGES_USERPASSWORDVERIFICATION } from "../../commen/functions/responce_message";
+import {
+  USERPASSWORDVERIFICATION,
+  USERSPASSWORDCREATION,
+} from "../../commen/functions/responce_message";
 
 const createOrganizationInit = () => {
   return {
@@ -495,7 +499,6 @@ const enterPasswordFail = (message, response) => {
     message: message,
   };
 };
-
 // const enterPasswordvalidation = (value, navigate, t) => {
 //   let userID = localStorage.getItem("userID");
 //   let data = {
@@ -963,16 +966,15 @@ const enterPasswordvalidation = (value, navigate, t) => {
     try {
       const response = await axios.post(authenticationApi, formData);
       if (response.data.responseCode !== 200) {
-        localStorage.removeItem("signupCurrentPage");
-        localStorage.removeItem("LoginFlowPageRoute");
+        clearLocalStorageAtloginresponce(1);
         dispatch(enterPasswordFail("Something-went-wrong"));
         return;
       }
 
       const { responseMessage, isExecuted } = response.data.responseResult;
       if (!isExecuted) {
-        localStorage.removeItem("signupCurrentPage");
-        localStorage.removeItem("LoginFlowPageRoute");
+        clearLocalStorageAtloginresponce(1);
+
         dispatch(enterPasswordFail("Something-went-wrong"));
         return;
       }
@@ -985,62 +987,65 @@ const enterPasswordvalidation = (value, navigate, t) => {
         )
       );
       switch (responseMessage.toLowerCase()) {
-        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_01:
+        case USERPASSWORDVERIFICATION.VERIFICATION_01:
           dispatch(enterPasswordFail(t("Device-does-not-exists")));
-          localStorage.removeItem("signupCurrentPage");
-          localStorage.removeItem("LoginFlowPageRoute");
+          clearLocalStorageAtloginresponce(2);
 
           // no action
           break;
-        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_02:
-          localStorage.removeItem("signupCurrentPage");
-          localStorage.removeItem("LoginFlowPageRoute");
+        case USERPASSWORDVERIFICATION.VERIFICATION_02:
+          clearLocalStorageAtloginresponce(2);
+
           dispatch(enterPasswordFail(t("Device-id-does-not-exists")));
           // no action
           break;
-        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_03:
-          localStorage.removeItem("signupCurrentPage");
-          localStorage.removeItem("LoginFlowPageRoute");
+        case USERPASSWORDVERIFICATION.VERIFICATION_03:
+          clearLocalStorageAtloginresponce(2);
+
           dispatch(enterPasswordFail(t("User-does-not-exist")));
           // no action
           break;
-        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_04:
-          localStorage.removeItem("signupCurrentPage");
-          localStorage.removeItem("LoginFlowPageRoute");
+        case USERPASSWORDVERIFICATION.VERIFICATION_04:
+          clearLocalStorageAtloginresponce(2);
+
           dispatch(enterPasswordFail(t("Account-is-blocked")));
           // no action
           break;
-        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_05:
+        case USERPASSWORDVERIFICATION.VERIFICATION_05:
           dispatch(enterPasswordFail(t("Wrong-password")));
+          clearLocalStorageAtloginresponce(2);
+
           // no action
           break;
-        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_06:
+        case USERPASSWORDVERIFICATION.VERIFICATION_06:
           dispatch(enterPasswordFail(t("User-is-inactive")));
-          localStorage.removeItem("signupCurrentPage");
-          localStorage.removeItem("LoginFlowPageRoute");
+          clearLocalStorageAtloginresponce(2);
+
           // no action
           break;
-        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_07:
+        case USERPASSWORDVERIFICATION.VERIFICATION_07:
           dispatch(
             enterPasswordFail(t("Organization-subscription-packages-not-found"))
           );
-          localStorage.removeItem("signupCurrentPage");
-          localStorage.removeItem("LoginFlowPageRoute");
+          clearLocalStorageAtloginresponce(2);
+
           // no action
           break;
-        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_08:
+        case USERPASSWORDVERIFICATION.VERIFICATION_08:
           if (response.data.responseResult.isOrganizationCreator) {
             dispatch(enterPasswordFail(t("Organization-is-inactive")));
             localStorage.removeItem("LoginFlowPageRoute");
             localStorage.setItem("signupCurrentPage", 5);
             navigate("/Signup");
           } else {
+            clearLocalStorageAtloginresponce(2);
+
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
           }
 
           // packege detail ki bhi api hit honi hy
           break;
-        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_09:
+        case USERPASSWORDVERIFICATION.VERIFICATION_09:
           if (
             JSON.parse(response.data.responseResult.roleId) === (3 || 4 || 1)
           ) {
@@ -1060,11 +1065,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 navigate
               )
             );
+            clearLocalStorageAtloginresponce(1);
           }
           break;
-        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_10:
-          localStorage.removeItem("signupCurrentPage");
-          localStorage.removeItem("LoginFlowPageRoute");
+        case USERPASSWORDVERIFICATION.VERIFICATION_10:
           if (response.data.responseResult.hasAdminRights) {
             if (response.data.responseResult.authToken.isFirstLogIn) {
               navigate("/Admin/ManageUsers");
@@ -1081,13 +1085,13 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 t("Password-verified-and-user-is-new-and-this-is-an-admin-user")
               )
             );
+            clearLocalStorageAtloginresponce(1);
           } else {
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
+            clearLocalStorageAtloginresponce(2);
           }
           break;
-        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_11:
-          localStorage.removeItem("signupCurrentPage");
-          localStorage.removeItem("LoginFlowPageRoute");
+        case USERPASSWORDVERIFICATION.VERIFICATION_11:
           if (response.data.responseResult.hasAdminRights) {
             if (response.data.responseResult.authToken.isFirstLogIn) {
               navigate("/Admin/ManageUsers");
@@ -1100,19 +1104,21 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 t("Password-verified-and-user-is-new-and-this-is-an-admin")
               )
             );
+            clearLocalStorageAtloginresponce(1);
           } else {
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
+            clearLocalStorageAtloginresponce(2);
           }
           break;
-        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_12:
-          localStorage.removeItem("signupCurrentPage");
-          localStorage.removeItem("LoginFlowPageRoute");
+        case USERPASSWORDVERIFICATION.VERIFICATION_12:
           if (response.data.responseResult.hasUserRights) {
             if (response.data.responseResult.authToken.isFirstLogIn) {
               navigate("/onboard");
             } else {
               navigate("/Diskus");
             }
+            clearLocalStorageAtloginresponce(1);
+
             dispatch(
               enterPasswordSuccess(
                 response.data.responseResult,
@@ -1120,30 +1126,29 @@ const enterPasswordvalidation = (value, navigate, t) => {
               )
             );
           } else {
+            clearLocalStorageAtloginresponce(2);
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
           }
           // route to onboard
           break;
-        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_17:
-          localStorage.removeItem("signupCurrentPage");
-          localStorage.removeItem("LoginFlowPageRoute");
-          localStorage.removeItem("LocalUserRoutes");
-          localStorage.setItem("VERIFICATION", true);
-          let packageFeatureIDs = [33];
-          localStorage.setItem(
-            "packageFeatureIDs",
-            JSON.stringify(packageFeatureIDs)
-          );
-          localStorage.setItem(
-            "LocalAdminRoutes",
-            JSON.stringify([
-              { id: 33, name: "PayOutstanding" },
-              { id: 200, name: "Admin" },
-            ])
-          );
-
+        case USERPASSWORDVERIFICATION.VERIFICATION_17:
           //yeah pay outstanding per lai jai ga
           if (response.data.responseResult.hasAdminRights) {
+            clearLocalStorageAtloginresponce(1);
+            localStorage.removeItem("LocalUserRoutes");
+            localStorage.setItem("VERIFICATION", true);
+            let packageFeatureIDs = [33];
+            localStorage.setItem(
+              "packageFeatureIDs",
+              JSON.stringify(packageFeatureIDs)
+            );
+            localStorage.setItem(
+              "LocalAdminRoutes",
+              JSON.stringify([
+                { id: 33, name: "PayOutstanding" },
+                { id: 200, name: "Admin" },
+              ])
+            );
             navigate("/Admin/PayOutstanding");
             dispatch(
               enterPasswordSuccess(
@@ -1153,15 +1158,19 @@ const enterPasswordvalidation = (value, navigate, t) => {
               )
             );
           } else {
+            clearLocalStorageAtloginresponce(2);
+
+            localStorage.removeItem("LocalUserRoutes");
+            localStorage.setItem("VERIFICATION", false);
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
           }
 
           break;
-        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_18:
+        case USERPASSWORDVERIFICATION.VERIFICATION_18:
           //yeah pay outstanding per lai jai or
           // pahly check kergay ga k ussy pay outstanding k rights hy ya nai
-          localStorage.removeItem("signupCurrentPage");
-          localStorage.removeItem("LoginFlowPageRoute");
+          clearLocalStorageAtloginresponce(1);
+
           localStorage.setItem("VERIFICATION", false);
           if (response.data.responseResult.hasAdminRights) {
             if (checkFeatureIDAvailability(33)) {
@@ -1211,15 +1220,17 @@ const enterPasswordvalidation = (value, navigate, t) => {
               )
             );
           } else {
+            clearLocalStorageAtloginresponce(2);
+
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
           }
           break;
-        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_19:
+        case USERPASSWORDVERIFICATION.VERIFICATION_19:
           //yeah pay outstanding per lai jai or
           // pahly check kergay ga k ussy pay outstanding k rights hy ya nai
           // yaha backend say sirf allowed route aingay
-          localStorage.removeItem("signupCurrentPage");
-          localStorage.removeItem("LoginFlowPageRoute");
+          clearLocalStorageAtloginresponce(1);
+
           localStorage.setItem("VERIFICATION", false);
           if (response.data.responseResult.hasAdminRights) {
             if (checkFeatureIDAvailability(33)) {
@@ -1249,13 +1260,15 @@ const enterPasswordvalidation = (value, navigate, t) => {
               );
             }
           } else {
+            clearLocalStorageAtloginresponce(2);
+
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
           }
           break;
-        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_20:
+        case USERPASSWORDVERIFICATION.VERIFICATION_20:
           //yeah user dash board non active per jai ga
-          localStorage.removeItem("signupCurrentPage");
-          localStorage.removeItem("LoginFlowPageRoute");
+          clearLocalStorageAtloginresponce(1);
+
           localStorage.removeItem("LocalAdminRoutes");
           localStorage.setItem("VERIFICATION", true);
           let packageFeatureId = [100, 101, 102];
@@ -1283,13 +1296,15 @@ const enterPasswordvalidation = (value, navigate, t) => {
               )
             );
           } else {
+            clearLocalStorageAtloginresponce(2);
+
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
           }
           break;
-        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_21:
+        case USERPASSWORDVERIFICATION.VERIFICATION_21:
           // The Organization Trial has expired and This is the Organization Creator. Direct To Billing Flow
-          localStorage.removeItem("signupCurrentPage");
-          localStorage.removeItem("LoginFlowPageRoute");
+          clearLocalStorageAtloginresponce(1);
+
           localStorage.removeItem("LocalAdminRoutes");
           localStorage.removeItem("LocalUserRoutes");
           localStorage.setItem("TrialExpireSelectPac", JSON.stringify(true));
@@ -1314,12 +1329,14 @@ const enterPasswordvalidation = (value, navigate, t) => {
               enterPasswordSuccess(t("The-organization-trial-has-expired"))
             );
           } else {
+            clearLocalStorageAtloginresponce(2);
+
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
           }
           break;
-        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_22:
-          localStorage.removeItem("signupCurrentPage");
-          localStorage.removeItem("LoginFlowPageRoute");
+        case USERPASSWORDVERIFICATION.VERIFICATION_22:
+          clearLocalStorageAtloginresponce(1);
+
           localStorage.removeItem("LocalAdminRoutes");
           localStorage.removeItem("LocalUserRoutes");
           localStorage.setItem("TrialExpireSelectPac", JSON.stringify(true));
@@ -1344,12 +1361,14 @@ const enterPasswordvalidation = (value, navigate, t) => {
               enterPasswordSuccess(t("The-organization-trial-has-expired"))
             );
           } else {
+            clearLocalStorageAtloginresponce(2);
+
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
           }
           break;
-        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_23:
-          localStorage.removeItem("signupCurrentPage");
-          localStorage.removeItem("LoginFlowPageRoute");
+        case USERPASSWORDVERIFICATION.VERIFICATION_23:
+          clearLocalStorageAtloginresponce(1);
+
           localStorage.removeItem("LocalAdminRoutes");
           localStorage.removeItem("LocalUserRoutes");
           localStorage.setItem("TrialExpireSelectPac", JSON.stringify(true));
@@ -1374,12 +1393,14 @@ const enterPasswordvalidation = (value, navigate, t) => {
               enterPasswordSuccess(t("The-organization-trial-has-expired"))
             );
           } else {
+            clearLocalStorageAtloginresponce(2);
+
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
           }
           break;
-        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_24:
-          localStorage.removeItem("signupCurrentPage");
-          localStorage.removeItem("LoginFlowPageRoute");
+        case USERPASSWORDVERIFICATION.VERIFICATION_24:
+          clearLocalStorageAtloginresponce(1);
+
           localStorage.removeItem("LocalAdminRoutes");
           localStorage.setItem("VERIFICATION", true);
           let packageFeatureID = [100, 101, 102];
@@ -1401,17 +1422,33 @@ const enterPasswordvalidation = (value, navigate, t) => {
             navigate("/Diskus");
             dispatch(enterPasswordSuccess(t("Organization-trial-has-expired")));
           } else {
+            clearLocalStorageAtloginresponce(2);
+
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
           }
           break;
-        case RESPONSE_MESSAGES_USERPASSWORDVERIFICATION.VERIFICATION_25:
+        case USERPASSWORDVERIFICATION.VERIFICATION_25:
+          clearLocalStorageAtloginresponce(2);
+
           dispatch(enterPasswordFail("Something-went-wrong"));
+          break;
+        case USERPASSWORDVERIFICATION.VERIFICATION_26:
+          clearLocalStorageAtloginresponce(2);
+
+          dispatch(enterPasswordFail("Organization-is-locked-by-global-admin"));
+          break;
+        case USERPASSWORDVERIFICATION.VERIFICATION_27:
+          clearLocalStorageAtloginresponce(2);
+
+          dispatch(enterPasswordFail("User-has-not-been-assigned-any-license"));
           break;
         default:
           dispatch(enterPasswordFail("Something-went-wrong"));
       }
     } catch (error) {
       console.error("Network or other error:", error);
+      clearLocalStorageAtloginresponce(2);
+
       dispatch(enterPasswordFail("Something-went-wrong"));
     }
   };
@@ -1570,582 +1607,1076 @@ const createPasswordFail = (message) => {
   };
 };
 
+// const createPasswordAction = (value, navigate, t) => {
+//   let userID = localStorage.getItem("userID");
+//   let data = { UserID: JSON.parse(userID), Password: value };
+//   return (dispatch) => {
+//     dispatch(createPasswordInit());
+//     let form = new FormData();
+//     form.append("RequestData", JSON.stringify(data));
+//     form.append("RequestMethod", userPasswordCreation.RequestMethod);
+//     try {
+//       axios({
+//         method: "post",
+//         url: authenticationApi,
+//         data: form,
+//       })
+//         .then(async (response) => {
+//           if (response.data.responseCode === 200) {
+//             if (response.data.responseResult.isExecuted === true) {
+//               handleLoginResponse(response.data.responseResult);
+//               if (
+//                 response.data.responseResult.responseMessage
+//                   .toLowerCase()
+//                   .includes(
+//                     "ERM_AuthService_SignUpManager_UsersPasswordCreation_01".toLowerCase()
+//                   )
+//               ) {
+//                 if (JSON.parse(response.data.responseResult.roleId) === 4) {
+//                   dispatch(
+//                     createPasswordSuccess(
+//                       response.data.responseResult,
+//                       t("The-user-is-an-admin-user")
+//                     )
+//                   );
+//                   localStorage.setItem("signupCurrentPage", 5);
+//                   navigate("/Signup");
+//                 } else if (
+//                   JSON.parse(response.data.responseResult.roleId) === 3
+//                 ) {
+//                   dispatch(
+//                     createPasswordSuccess(
+//                       response.data.responseResult,
+//                       t("The-user-is-an-admin-user")
+//                     )
+//                   );
+//                   navigate("/Diskus");
+//                 }
+//               } else if (
+//                 response.data.responseResult.responseMessage
+//                   .toLowerCase()
+//                   .includes(
+//                     "ERM_AuthService_SignUpManager_UsersPasswordCreation_02".toLowerCase()
+//                   )
+//               ) {
+//                 if (JSON.parse(response.data.responseResult.roleId) === 1) {
+//                   dispatch(
+//                     createPasswordSuccess(
+//                       response.data.responseResult,
+//                       t("2fa-enabled")
+//                     )
+//                   );
+//                   localStorage.setItem("2fa", true);
+//                   dispatch(
+//                     TwoFaAuthenticate(
+//                       t,
+//                       response.data.responseResult.organizationID,
+//                       data.UserID,
+//                       navigate
+//                     )
+//                   );
+//                   mqttConnection(response.data.responseResult.authToken.userID);
+//                   localStorage.setItem("LoginFlowPageRoute", 13);
+//                   // navigate("/");
+//                 } else if (
+//                   JSON.parse(response.data.responseResult.roleId) === 2
+//                 ) {
+//                   dispatch(
+//                     createPasswordSuccess(
+//                       response.data.responseResult,
+//                       t("2fa-enabled")
+//                     )
+//                   );
+//                   localStorage.setItem("2fa", true);
+//                   dispatch(
+//                     TwoFaAuthenticate(
+//                       t,
+//                       response.data.responseResult.organizationID,
+//                       data.UserID,
+//                       navigate
+//                     )
+//                   );
+//                   mqttConnection(response.data.responseResult.authToken.userID);
+//                   localStorage.setItem("LoginFlowPageRoute", 13);
+//                   // navigate("/");
+//                 } else if (
+//                   JSON.parse(response.data.responseResult.roleId) === 3
+//                 ) {
+//                   dispatch(
+//                     createPasswordSuccess(
+//                       response.data.responseResult,
+//                       t("2fa-enabled")
+//                     )
+//                   );
+//                   localStorage.setItem("2fa", true);
+//                   dispatch(
+//                     TwoFaAuthenticate(
+//                       t,
+//                       response.data.responseResult.organizationID,
+//                       data.UserID,
+//                       navigate
+//                     )
+//                   );
+//                   mqttConnection(response.data.responseResult.authToken.userID);
+//                   localStorage.setItem("LoginFlowPageRoute", 13);
+//                   // navigate("/");
+//                 }
+//               } else if (
+//                 response.data.responseResult.responseMessage
+//                   .toLowerCase()
+//                   .includes(
+//                     "ERM_AuthService_SignUpManager_UsersPasswordCreation_04".toLowerCase()
+//                   )
+//               ) {
+//                 if (JSON.parse(response.data.responseResult.roleId) === 1) {
+//                   dispatch(
+//                     createPasswordSuccess(
+//                       response.data.responseResult,
+//                       t("The-user-is-not-an-admin-user")
+//                     )
+//                   );
+//                   localStorage.setItem("LoginFlowPageRoute", 1);
+//                   dispatch(LoginFlowRoutes(1));
+//                   navigate("/");
+//                 } else if (
+//                   JSON.parse(response.data.responseResult.roleId) === 2
+//                 ) {
+//                   dispatch(
+//                     createPasswordSuccess(
+//                       response.data.responseResult,
+//                       t("The-user-is-not-an-admin-user")
+//                     )
+//                   );
+//                   localStorage.setItem("LoginFlowPageRoute", 1);
+//                   dispatch(LoginFlowRoutes(1));
+//                   navigate("/");
+//                 } else if (
+//                   JSON.parse(response.data.responseResult.roleId) === 3
+//                 ) {
+//                   dispatch(
+//                     createPasswordSuccess(
+//                       response.data.responseResult,
+//                       t("The-user-is-not-an-admin-user")
+//                     )
+//                   );
+//                   if (
+//                     response.data.responseResult.authToken.isFirstLogIn === true
+//                   ) {
+//                     localStorage.removeItem("LoginFlowPageRoute");
+//                     dispatch(LoginFlowRoutes(null));
+//                     navigate("/onboard");
+//                   } else {
+//                     let RSVP = localStorage.getItem("RSVP");
+//                     let dataroomValue = localStorage.getItem("DataRoomEmail");
+
+//                     if (RSVP !== undefined && RSVP !== null) {
+//                       localStorage.removeItem("LoginFlowPageRoute");
+//                       dispatch(LoginFlowRoutes(null));
+//                       navigate("/DisKus/Meeting/Useravailabilityformeeting");
+//                     } else if (
+//                       dataroomValue !== null &&
+//                       dataroomValue !== undefined
+//                     ) {
+//                       localStorage.removeItem("LoginFlowPageRoute");
+//                       dispatch(LoginFlowRoutes(null));
+//                       if (response.data.responseResult.hasUserRights) {
+//                         navigate("/Diskus/dataroom");
+//                       }
+//                     } else {
+//                       localStorage.removeItem("LoginFlowPageRoute");
+//                       dispatch(LoginFlowRoutes(null));
+//                       if (response.data.responseResult.hasUserRights) {
+//                         navigate("/Diskus/");
+//                       }
+//                     }
+//                   }
+//                 }
+//               } else if (
+//                 response.data.responseResult.responseMessage
+//                   .toLowerCase()
+//                   .includes(
+//                     "ERM_AuthService_SignUpManager_UsersPasswordCreation_05".toLowerCase()
+//                   )
+//               ) {
+//                 if (JSON.parse(response.data.responseResult.roleId) === 1) {
+//                   dispatch(
+//                     createPasswordSuccess(
+//                       response.data.responseResult,
+//                       t(
+//                         "The-user-has-been-created-but-in-a-close-state-Please-contact-your-admin"
+//                       )
+//                     )
+//                   );
+//                   localStorage.setItem("LoginFlowPageRoute", 1);
+//                   dispatch(LoginFlowRoutes(1));
+//                   navigate("/");
+//                 } else if (
+//                   JSON.parse(response.data.responseResult.roleId) === 2
+//                 ) {
+//                   dispatch(
+//                     createPasswordSuccess(
+//                       response.data.responseResult,
+//                       t(
+//                         "The-user-has-been-created-but-in-a-close-state-Please-contact-your-admin"
+//                       )
+//                     )
+//                   );
+//                   localStorage.setItem("LoginFlowPageRoute", 1);
+//                   dispatch(LoginFlowRoutes(1));
+//                   navigate("/");
+//                 } else if (
+//                   JSON.parse(response.data.responseResult.roleId) === 3
+//                 ) {
+//                   dispatch(
+//                     createPasswordSuccess(
+//                       response.data.responseResult,
+//                       t(
+//                         "The-user-has-been-created-but-in-a-close-state-Please-contact-your-admin"
+//                       )
+//                     )
+//                   );
+//                   localStorage.setItem("LoginFlowPageRoute", 1);
+//                   dispatch(LoginFlowRoutes(1));
+//                   navigate("/");
+//                 }
+//               } else if (
+//                 response.data.responseResult.responseMessage
+//                   .toLowerCase()
+//                   .includes(
+//                     "ERM_AuthService_SignUpManager_UsersPasswordCreation_06".toLowerCase()
+//                   )
+//               ) {
+//                 if (JSON.parse(response.data.responseResult.roleId) === 1) {
+//                   dispatch(
+//                     createPasswordSuccess(
+//                       response.data.responseResult,
+//                       t("User-is-not-a-new-user-2fa-enabled")
+//                     )
+//                   );
+//                   localStorage.setItem("LoginFlowPageRoute", 1);
+//                   dispatch(LoginFlowRoutes(1));
+//                   navigate("/");
+//                 } else if (
+//                   JSON.parse(response.data.responseResult.roleId) === 2
+//                 ) {
+//                   dispatch(
+//                     createPasswordSuccess(
+//                       response.data.responseResult,
+//                       t("User-is-not-a-new-user-2fa-enabled")
+//                     )
+//                   );
+//                   localStorage.setItem("LoginFlowPageRoute", 1);
+//                   dispatch(LoginFlowRoutes(1));
+//                   navigate("/");
+//                 } else if (
+//                   JSON.parse(response.data.responseResult.roleId) === 3
+//                 ) {
+//                   dispatch(
+//                     createPasswordSuccess(
+//                       response.data.responseResult,
+//                       t("User-is-not-a-new-user-2fa-enabled")
+//                     )
+//                   );
+//                   localStorage.setItem("LoginFlowPageRoute", 1);
+//                   dispatch(LoginFlowRoutes(1));
+//                   navigate("/");
+//                 }
+//               } else if (
+//                 response.data.responseResult.responseMessage
+//                   .toLowerCase()
+//                   .includes(
+//                     "ERM_AuthService_SignUpManager_UsersPasswordCreation_08".toLowerCase()
+//                   )
+//               ) {
+//                 let findSelectedPackageID =
+//                   response.data.responseResult
+//                     .organizationSelectedUserPackageID;
+
+//                 localStorage.setItem("PakageSelectedID", findSelectedPackageID);
+//                 navigate("/Diskus");
+//                 // dispatch(showCreateAddtionalUsersModal(true));
+//                 dispatch(
+//                   createPasswordSuccess(
+//                     response.data.responseResult,
+//                     t("User-is-not-a-new-user-the-user-is-not-an-admin-user")
+//                   )
+//                 );
+//               } else if (
+//                 response.data.responseResult.responseMessage
+//                   .toLowerCase()
+//                   .includes(
+//                     "ERM_AuthService_SignUpManager_UsersPasswordCreation_09".toLowerCase()
+//                   )
+//               ) {
+//                 localStorage.setItem("signupCurrentPage", 5);
+//                 navigate("/Signup");
+
+//                 localStorage.setItem("blur", true);
+//                 if (JSON.parse(response.data.responseResult.roleId) === 1) {
+//                   dispatch(
+//                     createPasswordSuccess(
+//                       response.data.responseResult,
+//                       t(
+//                         "The-organization-is-inactive-and-the-user-is-an-admin-user"
+//                       )
+//                     )
+//                   );
+//                   navigate("/selectedpackage");
+//                 } else if (
+//                   JSON.parse(response.data.responseResult.roleId) === 2
+//                 ) {
+//                   dispatch(
+//                     createPasswordSuccess(
+//                       response.data.responseResult,
+//                       t(
+//                         "The-organization-is-inactive-and-the-user-is-an-admin-user"
+//                       )
+//                     )
+//                   );
+//                   navigate("/");
+//                 } else if (
+//                   JSON.parse(response.data.responseResult.roleId) === 3
+//                 ) {
+//                   dispatch(
+//                     createPasswordSuccess(
+//                       response.data.responseResult,
+//                       t(
+//                         "The-organization-is-inactive-and-the-user-is-an-admin-user"
+//                       )
+//                     )
+//                   );
+//                   navigate("/");
+//                 }
+//               } else if (
+//                 response.data.responseResult.responseMessage
+//                   .toLowerCase()
+//                   .includes(
+//                     "ERM_AuthService_SignUpManager_UsersPasswordCreation_10".toLowerCase()
+//                   )
+//               ) {
+//                 if (JSON.parse(response.data.responseResult.roleId) === 1) {
+//                   dispatch(
+//                     createPasswordSuccess(
+//                       response.data.responseResult,
+//                       t(
+//                         "The-organization-is-inactive-please-contact-your-admin"
+//                       )
+//                     )
+//                   );
+
+//                   navigate("/");
+//                 } else if (
+//                   JSON.parse(response.data.responseResult.roleId) === 2
+//                 ) {
+//                   dispatch(
+//                     createPasswordSuccess(
+//                       response.data.responseResult,
+//                       t(
+//                         "The-organization-is-inactive-please-contact-your-admin"
+//                       )
+//                     )
+//                   );
+//                   navigate("/");
+//                 } else if (
+//                   JSON.parse(response.data.responseResult.roleId) === 3
+//                 ) {
+//                   dispatch(
+//                     createPasswordSuccess(
+//                       response.data.responseResult,
+//                       t(
+//                         "The-organization-is-inactive-please-contact-your-admin"
+//                       )
+//                     )
+//                   );
+//                   navigate("/");
+//                 }
+//               } else if (
+//                 response.data.responseResult.responseMessage
+//                   .toLowerCase()
+//                   .includes(
+//                     "ERM_AuthService_SignUpManager_UsersPasswordCreation_11".toLowerCase()
+//                   )
+//               ) {
+//                 dispatch(
+//                   createPasswordSuccess(
+//                     response.data.responseResult,
+//                     t("Something-went-wrong")
+//                   )
+//                 );
+//               } else if (
+//                 response.data.responseResult.responseMessage
+//                   .toLowerCase()
+//                   .includes(
+//                     "ERM_AuthService_SignUpManager_UsersPasswordCreation_13".toLowerCase()
+//                   )
+//               ) {
+//                 if (JSON.parse(response.data.responseResult.roleId) === 1) {
+//                   localStorage.setItem("blur", true);
+//                   dispatch(
+//                     createPasswordSuccess(
+//                       response.data.responseResult,
+//                       t(
+//                         "Organization-subscription-is-in-active-and-this-is-an-admin-user"
+//                       )
+//                     )
+//                   );
+//                   if (response.data.responseResult.hasAdminRights) {
+//                     navigate("/Admin/PayOutstanding");
+//                   }
+//                 } else if (
+//                   JSON.parse(response.data.responseResult.roleId) === 2
+//                 ) {
+//                   localStorage.setItem("blur", true);
+//                   dispatch(
+//                     createPasswordSuccess(
+//                       response.data.responseResult,
+//                       t(
+//                         "Organization-subscription-is-in-active-and-this-is-an-admin-user"
+//                       )
+//                     )
+//                   );
+//                   if (response.data.responseResult.hasAdminRights) {
+//                     navigate("/Admin/Nonactive");
+//                   }
+//                 } else if (
+//                   JSON.parse(response.data.responseResult.roleId) === 3
+//                 ) {
+//                   localStorage.setItem("blur", true);
+//                   dispatch(
+//                     createPasswordSuccess(
+//                       response.data.responseResult,
+//                       t(
+//                         "Organization-subscription-is-in-active-and-this-is-an-admin-user"
+//                       )
+//                     )
+//                   );
+//                   let RSVP = localStorage.getItem("RSVP");
+//                   let dataroomValue = localStorage.getItem("DataRoomEmail");
+
+//                   if (RSVP !== undefined && RSVP !== null) {
+//                     navigate("/DisKus/Meeting/Useravailabilityformeeting");
+//                   } else if (
+//                     dataroomValue !== null &&
+//                     dataroomValue !== undefined
+//                   ) {
+//                     navigate("/Diskus/dataroom");
+//                   } else {
+//                     navigate("/Diskus/");
+//                   }
+//                 }
+//               } else if (
+//                 response.data.responseResult.responseMessage
+//                   .toLowerCase()
+//                   .includes(
+//                     "ERM_AuthService_SignUpManager_UsersPasswordCreation_15".toLowerCase()
+//                   )
+//               ) {
+//                 if (JSON.parse(response.data.responseResult.roleId) === 1) {
+//                   localStorage.setItem("blur", true);
+//                   dispatch(
+//                     createPasswordSuccess(
+//                       response.data.responseResult,
+//                       t(
+//                         "Organization-subscription-is-in-active-and-this-is-not-an-admin-user"
+//                       )
+//                     )
+//                   );
+//                   if (response.data.responseResult.hasAdminRights) {
+//                     navigate("/Admin/PayOutstanding");
+//                   }
+//                 } else if (
+//                   JSON.parse(response.data.responseResult.roleId) === 2
+//                 ) {
+//                   localStorage.setItem("blur", true);
+//                   dispatch(
+//                     createPasswordSuccess(
+//                       response.data.responseResult,
+//                       t(
+//                         "Organization-subscription-is-in-active-and-this-is-not-an-admin-user"
+//                       )
+//                     )
+//                   );
+//                   if (response.data.responseResult.hasAdminRights) {
+//                     navigate("/Admin/Nonactive");
+//                   }
+//                 } else if (
+//                   JSON.parse(response.data.responseResult.roleId) === 3
+//                 ) {
+//                   localStorage.setItem("blur", true);
+//                   dispatch(
+//                     createPasswordSuccess(
+//                       response.data.responseResult,
+//                       t(
+//                         "Organization-subscription-is-in-active-and-this-is-not-an-admin-user"
+//                       )
+//                     )
+//                   );
+//                   let RSVP = localStorage.getItem("RSVP");
+//                   let dataroomValue = localStorage.getItem("DataRoomEmail");
+
+//                   if (RSVP !== undefined && RSVP !== null) {
+//                     navigate("/DisKus/Meeting/Useravailabilityformeeting");
+//                   } else if (
+//                     dataroomValue !== null &&
+//                     dataroomValue !== undefined
+//                   ) {
+//                     navigate("/Diskus/dataroom");
+//                   } else {
+//                     navigate("/Diskus/");
+//                   }
+//                 }
+//               } else if (
+//                 response.data.responseResult.responseMessage
+//                   .toLowerCase()
+//                   .includes(
+//                     "ERM_AuthService_SignUpManager_UsersPasswordCreation_16".toLowerCase()
+//                   )
+//               ) {
+//                 if (response.data.responseResult.hasAdminRights) {
+//                   localStorage.removeItem("LoginFlowPageRoute");
+//                   dispatch(
+//                     createPasswordSuccess(response.data.responseResult, "")
+//                   );
+//                   navigate("/Admin");
+//                 } else {
+//                   dispatch(
+//                     createPasswordFail(t("The-user-is-not-an-admin-user"))
+//                   );
+//                 }
+//               } else if (
+//                 response.data.responseResult.responseMessage
+//                   .toLowerCase()
+//                   .includes(
+//                     "ERM_AuthService_SignUpManager_UsersPasswordCreation_17".toLowerCase()
+//                   )
+//               ) {
+//                 dispatch(createPasswordFail(response.data.responseResult, ""));
+//                 // navigate("/");
+//               } else if (
+//                 response.data.responseResult.responseMessage
+//                   .toLowerCase()
+//                   .includes(
+//                     "ERM_AuthService_SignUpManager_UsersPasswordCreation_18".toLowerCase()
+//                   )
+//               ) {
+//                 dispatch(showCreateAddtionalUsersModal(true));
+//                 dispatch(
+//                   createPasswordSuccess(response.data.responseResult, "")
+//                 );
+//                 // navigate("/");
+//               } else {
+//                 dispatch(createPasswordFail(t("Something-went-wrong")));
+//               }
+//             } else {
+//               dispatch(createPasswordFail(t("Something-went-wrong")));
+//             }
+//           } else {
+//             dispatch(createPasswordFail(t("Something-went-wrong")));
+//           }
+//         })
+//         .catch((response) => {
+//           dispatch(createPasswordFail(t("Something-went-wrong")));
+//         });
+//     } catch (error) {
+//       console.error(error, "");
+//     }
+//   };
+// };
 const createPasswordAction = (value, navigate, t) => {
   let userID = localStorage.getItem("userID");
   let data = { UserID: JSON.parse(userID), Password: value };
-  return (dispatch) => {
+
+  return async (dispatch) => {
     dispatch(createPasswordInit());
-    let form = new FormData();
-    form.append("RequestData", JSON.stringify(data));
-    form.append("RequestMethod", userPasswordCreation.RequestMethod);
+    const formData = getFormData(data, userPasswordCreation);
+
     try {
-      axios({
-        method: "post",
-        url: authenticationApi,
-        data: form,
-      })
-        .then(async (response) => {
-          if (response.data.responseCode === 200) {
-            if (response.data.responseResult.isExecuted === true) {
-              handleLoginResponse(response.data.responseResult);
-              if (
-                response.data.responseResult.responseMessage
-                  .toLowerCase()
-                  .includes(
-                    "ERM_AuthService_SignUpManager_UsersPasswordCreation_01".toLowerCase()
-                  )
-              ) {
-                if (JSON.parse(response.data.responseResult.roleId) === 4) {
-                  dispatch(
-                    createPasswordSuccess(
-                      response.data.responseResult,
-                      t("The-user-is-an-admin-user")
-                    )
-                  );
-                  localStorage.setItem("signupCurrentPage", 5);
-                  navigate("/Signup");
-                } else if (
-                  JSON.parse(response.data.responseResult.roleId) === 3
-                ) {
-                  dispatch(
-                    createPasswordSuccess(
-                      response.data.responseResult,
-                      t("The-user-is-an-admin-user")
-                    )
-                  );
-                  navigate("/Diskus");
-                }
-              } else if (
-                response.data.responseResult.responseMessage
-                  .toLowerCase()
-                  .includes(
-                    "ERM_AuthService_SignUpManager_UsersPasswordCreation_02".toLowerCase()
-                  )
-              ) {
-                if (JSON.parse(response.data.responseResult.roleId) === 1) {
-                  dispatch(
-                    createPasswordSuccess(
-                      response.data.responseResult,
-                      t("2fa-enabled")
-                    )
-                  );
-                  localStorage.setItem("2fa", true);
-                  dispatch(
-                    TwoFaAuthenticate(
-                      t,
-                      response.data.responseResult.organizationID,
-                      data.UserID,
-                      navigate
-                    )
-                  );
-                  mqttConnection(response.data.responseResult.authToken.userID);
-                  localStorage.setItem("LoginFlowPageRoute", 13);
-                  // navigate("/");
-                } else if (
-                  JSON.parse(response.data.responseResult.roleId) === 2
-                ) {
-                  dispatch(
-                    createPasswordSuccess(
-                      response.data.responseResult,
-                      t("2fa-enabled")
-                    )
-                  );
-                  localStorage.setItem("2fa", true);
-                  dispatch(
-                    TwoFaAuthenticate(
-                      t,
-                      response.data.responseResult.organizationID,
-                      data.UserID,
-                      navigate
-                    )
-                  );
-                  mqttConnection(response.data.responseResult.authToken.userID);
-                  localStorage.setItem("LoginFlowPageRoute", 13);
-                  // navigate("/");
-                } else if (
-                  JSON.parse(response.data.responseResult.roleId) === 3
-                ) {
-                  dispatch(
-                    createPasswordSuccess(
-                      response.data.responseResult,
-                      t("2fa-enabled")
-                    )
-                  );
-                  localStorage.setItem("2fa", true);
-                  dispatch(
-                    TwoFaAuthenticate(
-                      t,
-                      response.data.responseResult.organizationID,
-                      data.UserID,
-                      navigate
-                    )
-                  );
-                  mqttConnection(response.data.responseResult.authToken.userID);
-                  localStorage.setItem("LoginFlowPageRoute", 13);
-                  // navigate("/");
-                }
-              } else if (
-                response.data.responseResult.responseMessage
-                  .toLowerCase()
-                  .includes(
-                    "ERM_AuthService_SignUpManager_UsersPasswordCreation_04".toLowerCase()
-                  )
-              ) {
-                if (JSON.parse(response.data.responseResult.roleId) === 1) {
-                  dispatch(
-                    createPasswordSuccess(
-                      response.data.responseResult,
-                      t("The-user-is-not-an-admin-user")
-                    )
-                  );
-                  localStorage.setItem("LoginFlowPageRoute", 1);
-                  dispatch(LoginFlowRoutes(1));
-                  navigate("/");
-                } else if (
-                  JSON.parse(response.data.responseResult.roleId) === 2
-                ) {
-                  dispatch(
-                    createPasswordSuccess(
-                      response.data.responseResult,
-                      t("The-user-is-not-an-admin-user")
-                    )
-                  );
-                  localStorage.setItem("LoginFlowPageRoute", 1);
-                  dispatch(LoginFlowRoutes(1));
-                  navigate("/");
-                } else if (
-                  JSON.parse(response.data.responseResult.roleId) === 3
-                ) {
-                  dispatch(
-                    createPasswordSuccess(
-                      response.data.responseResult,
-                      t("The-user-is-not-an-admin-user")
-                    )
-                  );
-                  if (
-                    response.data.responseResult.authToken.isFirstLogIn === true
-                  ) {
-                    localStorage.removeItem("LoginFlowPageRoute");
-                    dispatch(LoginFlowRoutes(null));
-                    navigate("/onboard");
-                  } else {
-                    let RSVP = localStorage.getItem("RSVP");
-                    let dataroomValue = localStorage.getItem("DataRoomEmail");
+      const response = await axios.post(authenticationApi, formData);
+      if (response.data.responseCode !== 200) {
+        dispatch(createPasswordFail("Something-went-wrong"));
+        return;
+      }
 
-                    if (RSVP !== undefined && RSVP !== null) {
-                      localStorage.removeItem("LoginFlowPageRoute");
-                      dispatch(LoginFlowRoutes(null));
-                      navigate("/DisKus/Meeting/Useravailabilityformeeting");
-                    } else if (
-                      dataroomValue !== null &&
-                      dataroomValue !== undefined
-                    ) {
-                      localStorage.removeItem("LoginFlowPageRoute");
-                      dispatch(LoginFlowRoutes(null));
-                      if (response.data.responseResult.hasUserRights) {
-                        navigate("/Diskus/dataroom");
-                      }
-                    } else {
-                      localStorage.removeItem("LoginFlowPageRoute");
-                      dispatch(LoginFlowRoutes(null));
-                      if (response.data.responseResult.hasUserRights) {
-                        navigate("/Diskus/");
-                      }
-                    }
-                  }
-                }
-              } else if (
-                response.data.responseResult.responseMessage
-                  .toLowerCase()
-                  .includes(
-                    "ERM_AuthService_SignUpManager_UsersPasswordCreation_05".toLowerCase()
-                  )
-              ) {
-                if (JSON.parse(response.data.responseResult.roleId) === 1) {
-                  dispatch(
-                    createPasswordSuccess(
-                      response.data.responseResult,
-                      t(
-                        "The-user-has-been-created-but-in-a-close-state-Please-contact-your-admin"
-                      )
-                    )
-                  );
-                  localStorage.setItem("LoginFlowPageRoute", 1);
-                  dispatch(LoginFlowRoutes(1));
-                  navigate("/");
-                } else if (
-                  JSON.parse(response.data.responseResult.roleId) === 2
-                ) {
-                  dispatch(
-                    createPasswordSuccess(
-                      response.data.responseResult,
-                      t(
-                        "The-user-has-been-created-but-in-a-close-state-Please-contact-your-admin"
-                      )
-                    )
-                  );
-                  localStorage.setItem("LoginFlowPageRoute", 1);
-                  dispatch(LoginFlowRoutes(1));
-                  navigate("/");
-                } else if (
-                  JSON.parse(response.data.responseResult.roleId) === 3
-                ) {
-                  dispatch(
-                    createPasswordSuccess(
-                      response.data.responseResult,
-                      t(
-                        "The-user-has-been-created-but-in-a-close-state-Please-contact-your-admin"
-                      )
-                    )
-                  );
-                  localStorage.setItem("LoginFlowPageRoute", 1);
-                  dispatch(LoginFlowRoutes(1));
-                  navigate("/");
-                }
-              } else if (
-                response.data.responseResult.responseMessage
-                  .toLowerCase()
-                  .includes(
-                    "ERM_AuthService_SignUpManager_UsersPasswordCreation_06".toLowerCase()
-                  )
-              ) {
-                if (JSON.parse(response.data.responseResult.roleId) === 1) {
-                  dispatch(
-                    createPasswordSuccess(
-                      response.data.responseResult,
-                      t("User-is-not-a-new-user-2fa-enabled")
-                    )
-                  );
-                  localStorage.setItem("LoginFlowPageRoute", 1);
-                  dispatch(LoginFlowRoutes(1));
-                  navigate("/");
-                } else if (
-                  JSON.parse(response.data.responseResult.roleId) === 2
-                ) {
-                  dispatch(
-                    createPasswordSuccess(
-                      response.data.responseResult,
-                      t("User-is-not-a-new-user-2fa-enabled")
-                    )
-                  );
-                  localStorage.setItem("LoginFlowPageRoute", 1);
-                  dispatch(LoginFlowRoutes(1));
-                  navigate("/");
-                } else if (
-                  JSON.parse(response.data.responseResult.roleId) === 3
-                ) {
-                  dispatch(
-                    createPasswordSuccess(
-                      response.data.responseResult,
-                      t("User-is-not-a-new-user-2fa-enabled")
-                    )
-                  );
-                  localStorage.setItem("LoginFlowPageRoute", 1);
-                  dispatch(LoginFlowRoutes(1));
-                  navigate("/");
-                }
-              } else if (
-                response.data.responseResult.responseMessage
-                  .toLowerCase()
-                  .includes(
-                    "ERM_AuthService_SignUpManager_UsersPasswordCreation_08".toLowerCase()
-                  )
-              ) {
-                let findSelectedPackageID =
-                  response.data.responseResult
-                    .organizationSelectedUserPackageID;
+      const { responseMessage, isExecuted } = response.data.responseResult;
+      if (!isExecuted) {
+        dispatch(createPasswordFail("Something-went-wrong"));
+        return;
+      }
+      await handleLoginResponse(response.data.responseResult);
+      await dispatch(
+        getPackageExpiryDetail(
+          navigate,
+          response.data.responseResult.organizationID,
+          t
+        )
+      );
+      switch (responseMessage.toLowerCase()) {
+        case USERSPASSWORDCREATION.VERIFICATION_01:
+          dispatch(createPasswordFail(t("Device-does-not-exists")));
+          clearLocalStorageAtloginresponce(2);
 
-                localStorage.setItem("PakageSelectedID", findSelectedPackageID);
-                navigate("/Diskus");
-                // dispatch(showCreateAddtionalUsersModal(true));
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t("User-is-not-a-new-user-the-user-is-not-an-admin-user")
-                  )
-                );
-              } else if (
-                response.data.responseResult.responseMessage
-                  .toLowerCase()
-                  .includes(
-                    "ERM_AuthService_SignUpManager_UsersPasswordCreation_09".toLowerCase()
-                  )
-              ) {
-                localStorage.setItem("signupCurrentPage", 5);
-                navigate("/Signup");
+          // no action
+          break;
+        case USERSPASSWORDCREATION.VERIFICATION_02:
+          clearLocalStorageAtloginresponce(2);
 
-                localStorage.setItem("blur", true);
-                if (JSON.parse(response.data.responseResult.roleId) === 1) {
-                  dispatch(
-                    createPasswordSuccess(
-                      response.data.responseResult,
-                      t(
-                        "The-organization-is-inactive-and-the-user-is-an-admin-user"
-                      )
-                    )
-                  );
-                  navigate("/selectedpackage");
-                } else if (
-                  JSON.parse(response.data.responseResult.roleId) === 2
-                ) {
-                  dispatch(
-                    createPasswordSuccess(
-                      response.data.responseResult,
-                      t(
-                        "The-organization-is-inactive-and-the-user-is-an-admin-user"
-                      )
-                    )
-                  );
-                  navigate("/");
-                } else if (
-                  JSON.parse(response.data.responseResult.roleId) === 3
-                ) {
-                  dispatch(
-                    createPasswordSuccess(
-                      response.data.responseResult,
-                      t(
-                        "The-organization-is-inactive-and-the-user-is-an-admin-user"
-                      )
-                    )
-                  );
-                  navigate("/");
-                }
-              } else if (
-                response.data.responseResult.responseMessage
-                  .toLowerCase()
-                  .includes(
-                    "ERM_AuthService_SignUpManager_UsersPasswordCreation_10".toLowerCase()
-                  )
-              ) {
-                if (JSON.parse(response.data.responseResult.roleId) === 1) {
-                  dispatch(
-                    createPasswordSuccess(
-                      response.data.responseResult,
-                      t(
-                        "The-organization-is-inactive-please-contact-your-admin"
-                      )
-                    )
-                  );
+          dispatch(createPasswordFail(t("Device-id-does-not-exists")));
+          // no action
+          break;
+        case USERSPASSWORDCREATION.VERIFICATION_03:
+          clearLocalStorageAtloginresponce(2);
 
-                  navigate("/");
-                } else if (
-                  JSON.parse(response.data.responseResult.roleId) === 2
-                ) {
-                  dispatch(
-                    createPasswordSuccess(
-                      response.data.responseResult,
-                      t(
-                        "The-organization-is-inactive-please-contact-your-admin"
-                      )
-                    )
-                  );
-                  navigate("/");
-                } else if (
-                  JSON.parse(response.data.responseResult.roleId) === 3
-                ) {
-                  dispatch(
-                    createPasswordSuccess(
-                      response.data.responseResult,
-                      t(
-                        "The-organization-is-inactive-please-contact-your-admin"
-                      )
-                    )
-                  );
-                  navigate("/");
-                }
-              } else if (
-                response.data.responseResult.responseMessage
-                  .toLowerCase()
-                  .includes(
-                    "ERM_AuthService_SignUpManager_UsersPasswordCreation_11".toLowerCase()
-                  )
-              ) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t("Something-went-wrong")
-                  )
-                );
-              } else if (
-                response.data.responseResult.responseMessage
-                  .toLowerCase()
-                  .includes(
-                    "ERM_AuthService_SignUpManager_UsersPasswordCreation_13".toLowerCase()
-                  )
-              ) {
-                if (JSON.parse(response.data.responseResult.roleId) === 1) {
-                  localStorage.setItem("blur", true);
-                  dispatch(
-                    createPasswordSuccess(
-                      response.data.responseResult,
-                      t(
-                        "Organization-subscription-is-in-active-and-this-is-an-admin-user"
-                      )
-                    )
-                  );
-                  if (response.data.responseResult.hasAdminRights) {
-                    navigate("/Admin/PayOutstanding");
-                  }
-                } else if (
-                  JSON.parse(response.data.responseResult.roleId) === 2
-                ) {
-                  localStorage.setItem("blur", true);
-                  dispatch(
-                    createPasswordSuccess(
-                      response.data.responseResult,
-                      t(
-                        "Organization-subscription-is-in-active-and-this-is-an-admin-user"
-                      )
-                    )
-                  );
-                  if (response.data.responseResult.hasAdminRights) {
-                    navigate("/Admin/Nonactive");
-                  }
-                } else if (
-                  JSON.parse(response.data.responseResult.roleId) === 3
-                ) {
-                  localStorage.setItem("blur", true);
-                  dispatch(
-                    createPasswordSuccess(
-                      response.data.responseResult,
-                      t(
-                        "Organization-subscription-is-in-active-and-this-is-an-admin-user"
-                      )
-                    )
-                  );
-                  let RSVP = localStorage.getItem("RSVP");
-                  let dataroomValue = localStorage.getItem("DataRoomEmail");
+          dispatch(createPasswordFail(t("User-does-not-exist")));
+          // no action
+          break;
+        case USERSPASSWORDCREATION.VERIFICATION_04:
+          clearLocalStorageAtloginresponce(2);
 
-                  if (RSVP !== undefined && RSVP !== null) {
-                    navigate("/DisKus/Meeting/Useravailabilityformeeting");
-                  } else if (
-                    dataroomValue !== null &&
-                    dataroomValue !== undefined
-                  ) {
-                    navigate("/Diskus/dataroom");
-                  } else {
-                    navigate("/Diskus/");
-                  }
-                }
-              } else if (
-                response.data.responseResult.responseMessage
-                  .toLowerCase()
-                  .includes(
-                    "ERM_AuthService_SignUpManager_UsersPasswordCreation_15".toLowerCase()
-                  )
-              ) {
-                if (JSON.parse(response.data.responseResult.roleId) === 1) {
-                  localStorage.setItem("blur", true);
-                  dispatch(
-                    createPasswordSuccess(
-                      response.data.responseResult,
-                      t(
-                        "Organization-subscription-is-in-active-and-this-is-not-an-admin-user"
-                      )
-                    )
-                  );
-                  if (response.data.responseResult.hasAdminRights) {
-                    navigate("/Admin/PayOutstanding");
-                  }
-                } else if (
-                  JSON.parse(response.data.responseResult.roleId) === 2
-                ) {
-                  localStorage.setItem("blur", true);
-                  dispatch(
-                    createPasswordSuccess(
-                      response.data.responseResult,
-                      t(
-                        "Organization-subscription-is-in-active-and-this-is-not-an-admin-user"
-                      )
-                    )
-                  );
-                  if (response.data.responseResult.hasAdminRights) {
-                    navigate("/Admin/Nonactive");
-                  }
-                } else if (
-                  JSON.parse(response.data.responseResult.roleId) === 3
-                ) {
-                  localStorage.setItem("blur", true);
-                  dispatch(
-                    createPasswordSuccess(
-                      response.data.responseResult,
-                      t(
-                        "Organization-subscription-is-in-active-and-this-is-not-an-admin-user"
-                      )
-                    )
-                  );
-                  let RSVP = localStorage.getItem("RSVP");
-                  let dataroomValue = localStorage.getItem("DataRoomEmail");
+          dispatch(createPasswordFail(t("Account-is-blocked")));
+          // no action
+          break;
+        case USERSPASSWORDCREATION.VERIFICATION_05:
+          dispatch(createPasswordFail(t("Wrong-password")));
+          clearLocalStorageAtloginresponce(2);
 
-                  if (RSVP !== undefined && RSVP !== null) {
-                    navigate("/DisKus/Meeting/Useravailabilityformeeting");
-                  } else if (
-                    dataroomValue !== null &&
-                    dataroomValue !== undefined
-                  ) {
-                    navigate("/Diskus/dataroom");
-                  } else {
-                    navigate("/Diskus/");
-                  }
-                }
-              } else if (
-                response.data.responseResult.responseMessage
-                  .toLowerCase()
-                  .includes(
-                    "ERM_AuthService_SignUpManager_UsersPasswordCreation_16".toLowerCase()
-                  )
-              ) {
-                if (response.data.responseResult.hasAdminRights) {
-                  localStorage.removeItem("LoginFlowPageRoute");
-                  dispatch(
-                    createPasswordSuccess(response.data.responseResult, "")
-                  );
-                  navigate("/Admin");
-                } else {
-                  dispatch(
-                    createPasswordFail(t("The-user-is-not-an-admin-user"))
-                  );
-                }
-              } else if (
-                response.data.responseResult.responseMessage
-                  .toLowerCase()
-                  .includes(
-                    "ERM_AuthService_SignUpManager_UsersPasswordCreation_17".toLowerCase()
-                  )
-              ) {
-                dispatch(createPasswordFail(response.data.responseResult, ""));
-                // navigate("/");
-              } else if (
-                response.data.responseResult.responseMessage
-                  .toLowerCase()
-                  .includes(
-                    "ERM_AuthService_SignUpManager_UsersPasswordCreation_18".toLowerCase()
-                  )
-              ) {
-                dispatch(showCreateAddtionalUsersModal(true));
-                dispatch(
-                  createPasswordSuccess(response.data.responseResult, "")
-                );
-                // navigate("/");
-              } else {
-                dispatch(createPasswordFail(t("Something-went-wrong")));
-              }
+          // no action
+          break;
+        case USERSPASSWORDCREATION.VERIFICATION_06:
+          dispatch(createPasswordFail(t("User-is-inactive")));
+          clearLocalStorageAtloginresponce(2);
+
+          // no action
+          break;
+        case USERSPASSWORDCREATION.VERIFICATION_07:
+          dispatch(
+            createPasswordFail(t("Organization-subscription-packages-not-found"))
+          );
+          clearLocalStorageAtloginresponce(2);
+
+          // no action
+          break;
+        case USERSPASSWORDCREATION.VERIFICATION_08:
+          if (response.data.responseResult.isOrganizationCreator) {
+            dispatch(createPasswordFail(t("Organization-is-inactive")));
+            localStorage.removeItem("LoginFlowPageRoute");
+            localStorage.setItem("signupCurrentPage", 5);
+            navigate("/Signup");
+          } else {
+            clearLocalStorageAtloginresponce(2);
+
+            dispatch(createPasswordFail(t("User-not-authorised-contact-admin")));
+          }
+
+          // packege detail ki bhi api hit honi hy
+          break;
+        case USERSPASSWORDCREATION.VERIFICATION_09:
+          if (
+            JSON.parse(response.data.responseResult.roleId) === (3 || 4 || 1)
+          ) {
+            dispatch(
+              enterPasswordSuccess(
+                response.data.responseResult,
+                t("2fa-enabled")
+              )
+            );
+            localStorage.setItem("2fa", true);
+            mqttConnection(response.data.responseResult.authToken.userID);
+            await dispatch(
+              TwoFaAuthenticate(
+                t,
+                response.data.responseResult.organizationID,
+                data.UserID,
+                navigate
+              )
+            );
+            clearLocalStorageAtloginresponce(1);
+          }
+          break;
+        case USERSPASSWORDCREATION.VERIFICATION_10:
+          if (response.data.responseResult.hasAdminRights) {
+            if (response.data.responseResult.authToken.isFirstLogIn) {
+              navigate("/Admin/ManageUsers");
             } else {
-              dispatch(createPasswordFail(t("Something-went-wrong")));
+              if (response.data.responseResult.hasUserRights) {
+                navigate("/DisKus/");
+              } else {
+                navigate("/Admin/ManageUsers");
+              }
+            }
+            dispatch(
+              enterPasswordSuccess(
+                response.data.responseResult,
+                t("Password-verified-and-user-is-new-and-this-is-an-admin-user")
+              )
+            );
+            clearLocalStorageAtloginresponce(1);
+          } else {
+            dispatch(createPasswordFail(t("User-not-authorised-contact-admin")));
+            clearLocalStorageAtloginresponce(2);
+          }
+          break;
+        case USERSPASSWORDCREATION.VERIFICATION_11:
+          if (response.data.responseResult.hasAdminRights) {
+            if (response.data.responseResult.authToken.isFirstLogIn) {
+              navigate("/Admin/ManageUsers");
+            } else {
+              navigate("/Admin/ManageUsers");
+            }
+            dispatch(
+              enterPasswordSuccess(
+                response.data.responseResult,
+                t("Password-verified-and-user-is-new-and-this-is-an-admin")
+              )
+            );
+            clearLocalStorageAtloginresponce(1);
+          } else {
+            dispatch(createPasswordFail(t("User-not-authorised-contact-admin")));
+            clearLocalStorageAtloginresponce(2);
+          }
+          break;
+        case USERSPASSWORDCREATION.VERIFICATION_12:
+          if (response.data.responseResult.hasUserRights) {
+            if (response.data.responseResult.authToken.isFirstLogIn) {
+              navigate("/onboard");
+            } else {
+              navigate("/Diskus");
+            }
+            clearLocalStorageAtloginresponce(1);
+
+            dispatch(
+              enterPasswordSuccess(
+                response.data.responseResult,
+                t("Password-verified-and-user-is-new-and-this-is-an-admin")
+              )
+            );
+          } else {
+            clearLocalStorageAtloginresponce(2);
+            dispatch(createPasswordFail(t("User-not-authorised-contact-admin")));
+          }
+          // route to onboard
+          break;
+        case USERSPASSWORDCREATION.VERIFICATION_14:
+          //yeah pay outstanding per lai jai ga
+          if (response.data.responseResult.hasAdminRights) {
+            clearLocalStorageAtloginresponce(1);
+            localStorage.removeItem("LocalUserRoutes");
+            localStorage.setItem("VERIFICATION", true);
+            let packageFeatureIDs = [33];
+            localStorage.setItem(
+              "packageFeatureIDs",
+              JSON.stringify(packageFeatureIDs)
+            );
+            localStorage.setItem(
+              "LocalAdminRoutes",
+              JSON.stringify([
+                { id: 33, name: "PayOutstanding" },
+                { id: 200, name: "Admin" },
+              ])
+            );
+            navigate("/Admin/PayOutstanding");
+            dispatch(
+              enterPasswordSuccess(
+                t(
+                  "Password-verified-and-subscription-not-active-and-this-is-organization-creator"
+                )
+              )
+            );
+          } else {
+            clearLocalStorageAtloginresponce(2);
+
+            localStorage.removeItem("LocalUserRoutes");
+            localStorage.setItem("VERIFICATION", false);
+            dispatch(createPasswordFail(t("User-not-authorised-contact-admin")));
+          }
+
+          break;
+        case USERSPASSWORDCREATION.VERIFICATION_15:
+          //yeah pay outstanding per lai jai or
+          // pahly check kergay ga k ussy pay outstanding k rights hy ya nai
+          clearLocalStorageAtloginresponce(1);
+
+          localStorage.setItem("VERIFICATION", false);
+          if (response.data.responseResult.hasAdminRights) {
+            if (checkFeatureIDAvailability(33)) {
+              let packageFeatureIDs = [33];
+              localStorage.setItem(
+                "packageFeatureIDs",
+                JSON.stringify(packageFeatureIDs)
+              );
+              localStorage.setItem(
+                "LocalAdminRoutes",
+                JSON.stringify([
+                  { id: 33, name: "PayOutstanding" },
+                  { id: 200, name: "Admin" },
+                ])
+              );
+              navigate("/Admin/PayOutstanding");
+              dispatch(
+                enterPasswordSuccess(
+                  t(
+                    "Password-verified-and-subscription-not-active-and-this-is-organization-creator"
+                  )
+                )
+              );
+            } else if (response.data.responseResult.hasUserRights) {
+              //yeah pay outstanding per lai jai ga
+              navigate("/Diskus");
+              dispatch(
+                enterPasswordSuccess(
+                  t(
+                    "Password-verified-and-subscription-not-active-and-this-is-an-admin-user"
+                  )
+                )
+              );
+            } else {
+              dispatch(
+                createPasswordFail(t("User-not-authorised-contact-admin"))
+              );
+            }
+          } else if (response.data.responseResult.hasUserRights) {
+            //yeah pay outstanding per lai jai ga
+            navigate("/Diskus");
+            dispatch(
+              enterPasswordSuccess(
+                t(
+                  "Password-verified-and-subscription-not-active-and-this-is-an-admin-user"
+                )
+              )
+            );
+          } else {
+            clearLocalStorageAtloginresponce(2);
+
+            dispatch(createPasswordFail(t("User-not-authorised-contact-admin")));
+          }
+          break;
+        case USERSPASSWORDCREATION.VERIFICATION_16:
+          //yeah pay outstanding per lai jai or
+          // pahly check kergay ga k ussy pay outstanding k rights hy ya nai
+          // yaha backend say sirf allowed route aingay
+          clearLocalStorageAtloginresponce(1);
+
+          localStorage.setItem("VERIFICATION", false);
+          if (response.data.responseResult.hasAdminRights) {
+            if (checkFeatureIDAvailability(33)) {
+              let packageFeatureIDs = [33];
+              localStorage.setItem(
+                "packageFeatureIDs",
+                JSON.stringify(packageFeatureIDs)
+              );
+              localStorage.setItem(
+                "LocalAdminRoutes",
+                JSON.stringify([
+                  { id: 33, name: "PayOutstanding" },
+                  { id: 200, name: "Admin" },
+                ])
+              );
+              navigate("/Admin/PayOutstanding");
+              dispatch(
+                enterPasswordSuccess(
+                  t(
+                    "Password-verified-and-subscription-not-active-and-this-is-an-admin"
+                  )
+                )
+              );
+            } else {
+              dispatch(
+                createPasswordFail(t("User-not-authorised-contact-admin"))
+              );
             }
           } else {
-            dispatch(createPasswordFail(t("Something-went-wrong")));
+            clearLocalStorageAtloginresponce(2);
+
+            dispatch(createPasswordFail(t("User-not-authorised-contact-admin")));
           }
-        })
-        .catch((response) => {
-          dispatch(createPasswordFail(t("Something-went-wrong")));
-        });
+          break;
+        case USERSPASSWORDCREATION.VERIFICATION_17:
+          //yeah user dash board non active per jai ga
+          clearLocalStorageAtloginresponce(1);
+
+          localStorage.removeItem("LocalAdminRoutes");
+          localStorage.setItem("VERIFICATION", true);
+          let packageFeatureId = [100, 101, 102];
+          localStorage.setItem(
+            "packageFeatureIDs",
+            JSON.stringify(packageFeatureId)
+          );
+          localStorage.setItem(
+            "LocalUserRoutes",
+            JSON.stringify([
+              { name: "Diskus", id: 100 },
+              { name: "home", id: 101 },
+              { name: "", id: 102 },
+            ])
+          );
+
+          //yeah pay outstanding per lai jai ga
+          if (response.data.responseResult.hasUserRights) {
+            navigate("/Diskus");
+            dispatch(
+              enterPasswordSuccess(
+                t(
+                  "Password-verified-and-subscription-not-active-and-this-is-an-admin-user"
+                )
+              )
+            );
+          } else {
+            clearLocalStorageAtloginresponce(2);
+
+            dispatch(createPasswordFail(t("User-not-authorised-contact-admin")));
+          }
+          break;
+        // case USERPASSWORDVERIFICATION.VERIFICATION_21:
+        //   // The Organization Trial has expired and This is the Organization Creator. Direct To Billing Flow
+        //   clearLocalStorageAtloginresponce(1);
+
+        //   localStorage.removeItem("LocalAdminRoutes");
+        //   localStorage.removeItem("LocalUserRoutes");
+        //   localStorage.setItem("TrialExpireSelectPac", JSON.stringify(true));
+        //   dispatch(showUpgradeNowModal(true));
+        //   let packageFeatureids = [28];
+        //   localStorage.setItem(
+        //     "packageFeatureIDs",
+        //     JSON.stringify(packageFeatureids)
+        //   );
+        //   localStorage.setItem(
+        //     "LocalAdminRoutes",
+        //     JSON.stringify([
+        //       { id: 28, name: "PakageDetailsUserManagement" },
+        //       { id: 200, name: "Admin" },
+        //     ])
+        //   );
+
+        //   //yeah pay outstanding per lai jai ga
+        //   if (response.data.responseResult.hasAdminRights) {
+        //     navigate("/Admin/PakageDetailsUserManagement");
+        //     dispatch(
+        //       enterPasswordSuccess(t("The-organization-trial-has-expired"))
+        //     );
+        //   } else {
+        //     clearLocalStorageAtloginresponce(2);
+
+        //     dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
+        //   }
+        //   break;
+        // case USERPASSWORDVERIFICATION.VERIFICATION_22:
+        //   clearLocalStorageAtloginresponce(1);
+
+        //   localStorage.removeItem("LocalAdminRoutes");
+        //   localStorage.removeItem("LocalUserRoutes");
+        //   localStorage.setItem("TrialExpireSelectPac", JSON.stringify(true));
+        //   dispatch(showUpgradeNowModal(true));
+        //   let packageFeatureid = [28];
+        //   localStorage.setItem(
+        //     "packageFeatureIDs",
+        //     JSON.stringify(packageFeatureid)
+        //   );
+        //   localStorage.setItem(
+        //     "LocalAdminRoutes",
+        //     JSON.stringify([
+        //       { id: 28, name: "PakageDetailsUserManagement" },
+        //       { id: 200, name: "Admin" },
+        //     ])
+        //   );
+
+        //   //yeah pay outstanding per lai jai ga
+        //   if (response.data.responseResult.hasAdminRights) {
+        //     navigate("/Admin/PakageDetailsUserManagement");
+        //     dispatch(
+        //       enterPasswordSuccess(t("The-organization-trial-has-expired"))
+        //     );
+        //   } else {
+        //     clearLocalStorageAtloginresponce(2);
+
+        //     dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
+        //   }
+        //   break;
+        // case USERPASSWORDVERIFICATION.VERIFICATION_23:
+        //   clearLocalStorageAtloginresponce(1);
+
+        //   localStorage.removeItem("LocalAdminRoutes");
+        //   localStorage.removeItem("LocalUserRoutes");
+        //   localStorage.setItem("TrialExpireSelectPac", JSON.stringify(true));
+        //   dispatch(showUpgradeNowModal(true));
+        //   let packageFeatureidS = [28];
+        //   localStorage.setItem(
+        //     "packageFeatureIDs",
+        //     JSON.stringify(packageFeatureidS)
+        //   );
+        //   localStorage.setItem(
+        //     "LocalAdminRoutes",
+        //     JSON.stringify([
+        //       { id: 28, name: "PakageDetailsUserManagement" },
+        //       { id: 200, name: "Admin" },
+        //     ])
+        //   );
+
+        //   //yeah pay outstanding per lai jai ga
+        //   if (response.data.responseResult.hasAdminRights) {
+        //     navigate("/Admin/PakageDetailsUserManagement");
+        //     dispatch(
+        //       enterPasswordSuccess(t("The-organization-trial-has-expired"))
+        //     );
+        //   } else {
+        //     clearLocalStorageAtloginresponce(2);
+
+        //     dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
+        //   }
+        //   break;
+        // case USERPASSWORDVERIFICATION.VERIFICATION_24:
+        //   clearLocalStorageAtloginresponce(1);
+
+        //   localStorage.removeItem("LocalAdminRoutes");
+        //   localStorage.setItem("VERIFICATION", true);
+        //   let packageFeatureID = [100, 101, 102];
+        //   localStorage.setItem(
+        //     "packageFeatureIDs",
+        //     JSON.stringify(packageFeatureID)
+        //   );
+        //   localStorage.setItem(
+        //     "LocalUserRoutes",
+        //     JSON.stringify([
+        //       { name: "Diskus", id: 100 },
+        //       { name: "home", id: 101 },
+        //       { name: "", id: 102 },
+        //     ])
+        //   );
+
+        //   //yeah pay outstanding per lai jai ga
+        //   if (response.data.responseResult.hasUserRights) {
+        //     navigate("/Diskus");
+        //     dispatch(enterPasswordSuccess(t("Organization-trial-has-expired")));
+        //   } else {
+        //     clearLocalStorageAtloginresponce(2);
+
+        //     dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
+        //   }
+        //   break;
+        // case USERPASSWORDVERIFICATION.VERIFICATION_25:
+        //   clearLocalStorageAtloginresponce(2);
+
+        //   dispatch(enterPasswordFail("Something-went-wrong"));
+        //   break;
+        // case USERPASSWORDVERIFICATION.VERIFICATION_26:
+        //   clearLocalStorageAtloginresponce(2);
+
+        //   dispatch(enterPasswordFail("Organization-is-locked-by-global-admin"));
+        //   break;
+        // case USERPASSWORDVERIFICATION.VERIFICATION_27:
+        // clearLocalStorageAtloginresponce(2);
+
+        // dispatch(enterPasswordFail("User-has-not-been-assigned-any-license"));
+        // break;
+        default:
+          dispatch(enterPasswordFail("Something-went-wrong"));
+      }
     } catch (error) {
-      console.error(error, "");
+      console.error("Network or other error:", error);
+      clearLocalStorageAtloginresponce(2);
+
+      dispatch(enterPasswordFail("Something-went-wrong"));
     }
   };
 };
-
 const getSelectedPackageandDetailsInit = () => {
   return {
     type: actions.GETSELECTEDPACAKGEANDORGANIZATIONDETAILS_INIT,

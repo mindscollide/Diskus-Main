@@ -21,6 +21,7 @@ const PayOutstanding = () => {
   const { OrganizationBillingReducer, LanguageReducer } = useSelector(
     (state) => state
   );
+
   // for translation
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -32,6 +33,7 @@ const PayOutstanding = () => {
     LateCharges: 0,
     BalanceDue: 0,
   });
+
   useEffect(() => {
     if (OrganizationBillingReducer.getPayoutStanding !== null) {
       let payOutStandingData = OrganizationBillingReducer.getPayoutStanding;
@@ -65,9 +67,28 @@ const PayOutstanding = () => {
       });
     }
   }, [OrganizationBillingReducer.getPayoutStanding]);
+
   useEffect(() => {
     dispatch(getPayoutStandingInformation(navigate, t));
   }, []);
+
+  const hadlePayInvoiceButton = () => {
+    // let newData = {
+    //   FirstName: billingContactDetails.Name.value,
+    //   LastName: billingContactDetails.LastName.value,
+    //   Email: billingContactDetails.Email.value,
+    //   Phone: billingContactDetails.Contact.value,
+    //   Address: billingAddress.Address.value,
+    //   Country: billingAddress.Country.value,
+    //   City: billingAddress.City.value,
+    //   Zip: billingAddress.PostalCode.value,
+    //   OrderAmount: Number(totalYearlyCharges),
+    //   OrderCurrency: "USD",
+    //   OrderDescription: "An Order On Diskus",
+    // };
+    // dispatch(paymentInitiateMainApi(navigate, t, newData));
+  };
+
   return (
     <>
       <Container>
@@ -175,7 +196,7 @@ const PayOutstanding = () => {
                   <Button
                     text={t("Pay-invoice-now")}
                     className={styles["PayInvoiceButton"]}
-                    // onClick={() => navigate("/paymentForm")}
+                    onClick={hadlePayInvoiceButton}
                   />
                 </Col>
               </Row>

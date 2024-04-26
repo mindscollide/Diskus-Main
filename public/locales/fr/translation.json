@@ -1919,5 +1919,9 @@
   "Disable-video-call": "Disable video call",
   "Error-occurred-while-adding-users": "Error Occurred While Adding Users",
   "Users-added-successfully": "Users Added Successfully",
-  "Folder-share-successfully": "Folder share successfully"
+  "Folder-share-successfully": "Folder share successfully",
+  "Invalid-request-data": "Invalid Request Data (Billing Info not provided)",
+  "Invoice-details-does-not-exist": "Invoice Details does not exist",
+  "Failed-to-save-billing-information": "Failed to Save Billing Information",
+  "Payment-gateway-api-response-failed": "Payment Gateway Api Response Failed"
 }
