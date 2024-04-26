@@ -43,20 +43,20 @@ body[dir="rtl"] .ResonseModalHeading {
 .NevermindbuttonStyles {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  border: none !important;
+  border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  background: #6172d6 !important;
-  color: #fff !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
   font-weight: 600 !important;
 }
 
 .NevermindbuttonStyles:is(:hover, :active, :focus, :focus-visible) {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  border: none !important;
+  border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  background: #6172d6 !important;
-  color: #fff !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
   font-weight: 600 !important;
 }
 
@@ -69,8 +69,8 @@ body[dir="rtl"] .NevermindbuttonStyles {
   font-size: 12px !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  background: #fff !important;
-  color: #5a5a5a !important;
+  background: #6172d6 !important;
+  color: #fff !important;
   font-weight: 600 !important;
 }
 
@@ -79,8 +79,8 @@ body[dir="rtl"] .NevermindbuttonStyles {
   font-size: 12px !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  background: #fff !important;
-  color: #5a5a5a !important;
+  background: #6172d6 !important;
+  color: #fff !important;
   font-weight: 600 !important;
 }
 

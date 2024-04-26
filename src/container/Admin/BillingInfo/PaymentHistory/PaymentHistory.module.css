@@ -53,7 +53,7 @@
 .Edit-Main-Heading {
   font-size: calc(38px - 50%) !important;
   color: #6172d6 !important;
-  font-weight: 600 !important;
+  font-weight: 700 !important;
 }
 
 body[dir="rtl"] .Edit-Main-Heading {

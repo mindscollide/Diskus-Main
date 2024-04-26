@@ -13,20 +13,20 @@ body[dir="rtl"] .Lineheight {
 }
 
 .name_participant {
-  font-size: 12pt !important;
-  font-family: "MontserratSemiBold";
+  font-size: 12px !important;
+  font-weight: 600 !important;
   color: #5a5a5a !important;
   /* margin-top: 15px !important; */
 }
 
 body[dir="rtl"] .name_participant {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .email_participant {
   font-size: 10pt !important;
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   text-decoration: underline;
   width: 100%;
   display: block;
@@ -36,5 +36,5 @@ body[dir="rtl"] .name_participant {
 }
 
 body[dir="rtl"] .email_participant {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }

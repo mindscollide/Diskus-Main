@@ -66,11 +66,12 @@ body[dir="rtl"] .signUp_NextBtn {
 }
 
 .signUp_goBack {
-  color: #000;
+  color: #5a5a5a;
   margin: 21px 0 0 0 !important;
   text-decoration: underline;
   cursor: pointer !important;
   font-weight: 400 !important;
+  font-size: 12px !important;
 }
 
 body[dir="rtl"] .signUp_goBack {

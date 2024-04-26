@@ -150,14 +150,15 @@ body[dir="rtl"] .PackageHeadingClassName {
 }
 .selected_package_details_p1 {
   font-weight: 500 !important;
-  font-size: 13px;
+  font-size: 20px;
+  color: #5a5a5a !important;
 }
 body[dir="rtl"] .selected_package_details_p1 {
   font-weight: 500 !important;
 }
 .selected_package_details_p2 {
   font-weight: 400 !important;
-  font-size: 12px;
+  font-size: 15px !important;
 }
 
 body[dir="rtl"] .selected_package_details_p2 {

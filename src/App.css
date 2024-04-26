@@ -3991,7 +3991,7 @@ body[dir="rtl"] .Edit-Meetings-Modal.modal-header button.btn-close {
 }
 
 body[dir="rtl"]
- .text-start.color-949494.font-11.p-0.col-lg-12.col-md-12.col-sm-12 {
+  .text-start.color-949494.font-11.p-0.col-lg-12.col-md-12.col-sm-12 {
   text-align: right !important;
 }
 
@@ -6650,7 +6650,7 @@ th.ant-table-cell.notification-class-table {
 .pakageselectionSpanUsermanagement {
   line-height: 15px !important;
   font-size: 16px !important;
-  font-weight: 800 !important;
+  font-weight: 700 !important;
 }
 
 body[dir="rtl"] .Tableheading {
