@@ -425,7 +425,7 @@ body[dir="rtl"] img.package-icon {
   text-align: left;
   margin-bottom: 5px;
   color: #949494;
-  font-family: "MontserratMedium-500";
+  font-weight: 500;
 }
 
 body[dir="rtl"] .progressbar-text {
