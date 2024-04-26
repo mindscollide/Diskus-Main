@@ -344,7 +344,7 @@ const VideoPanelBodyContact = () => {
                   searchChat(e.target.value);
                 }}
                 value={searchChatValue}
-                placeholder="Search-Chat"
+                placeholder={t("Search-Chat")}
                 labelClass={"d-none"}
               />
             </Col>

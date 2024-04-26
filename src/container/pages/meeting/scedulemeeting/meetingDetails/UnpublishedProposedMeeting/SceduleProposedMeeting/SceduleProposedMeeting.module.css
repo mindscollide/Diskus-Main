@@ -1,13 +1,13 @@
 .Scedule_Proposed_meeting_heading {
   font-size: 20px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #6172d6;
 }
 
 .DateButtonSceduleProposedMeeting {
   font-size: 12px !important;
   background: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #5a5a5a !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
@@ -15,7 +15,7 @@
 .DateButtonSceduleProposedMeeting:is(:hover, :active, :focus, :focus-visible) {
   font-size: 12px !important;
   background: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #5a5a5a !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
@@ -23,7 +23,7 @@
 
 .ParticipantName {
   font-size: 16px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #505050;
   white-space: nowrap;
   width: 160px !important;
@@ -39,13 +39,13 @@
 
 .Designation {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #6172d6;
 }
 
 .TotalVotes {
   font-size: 16px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #6172d6;
 }
 
@@ -56,7 +56,7 @@
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   font-size: 16px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #5a5a5a !important;
   padding: 3px 15px !important;
   cursor: pointer !important;
@@ -69,7 +69,7 @@
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   font-size: 16px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #e1e1e1 !important;
   background-color: #6172d6 !important;
   padding: 3px 15px !important;
@@ -81,7 +81,7 @@
   font-size: 16px !important;
   border: 3px solid #f1f1f1;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   background: #fff !important;
   color: #545454;
   cursor: pointer !important;
@@ -96,7 +96,7 @@
   font-weight: 600 !important;
   border: 3px solid #6172d6;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   cursor: pointer !important;
   user-select: none;
 }
@@ -117,7 +117,7 @@
   /* display: flex !important;
   justify-content: center !important; */
   color: #6172d6;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   margin-left: 35px !important;
 }
 
@@ -167,7 +167,7 @@
 }
 
 .TotalCount_HEading {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 16px !important;
   color: #6172d6;
 
@@ -189,7 +189,7 @@
   border: none !important;
   border-radius: 4px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .SceduleButton:is(:hover, :active:focus, :focus-visible) {
@@ -199,7 +199,7 @@
   border: none !important;
   border-radius: 4px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .border-column {
@@ -242,7 +242,7 @@
   background-color: #5f78d6 !important;
   border: none !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 /* .schedule-footer-class {

@@ -5,7 +5,7 @@
   border: 1px solid#E1E1E1 !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .LeaveMeetinButton:is(:active, :hover, :focus, :focus-visible) {
@@ -15,7 +15,7 @@
   border: 1px solid#E1E1E1 !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .ScrollerMeeting_Active {
@@ -37,24 +37,24 @@
 
 .Heading_Gray_meeting {
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 16px !important;
 }
 
 .MeetingTitle_Heading {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 28px !important;
   color: #6172d6 !important;
 }
 
 .ParaGraph_SavedMeeting {
   color: #505050 !important;
-  font-family: "MontserratRegular" !important;
+  font-weight: 400 !important;
   font-size: 16px !important;
 }
 
 .NOtes_heading {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 12px !important;
   color: #6172d6 !important;
 }
@@ -66,7 +66,7 @@
 }
 
 .RspvClassDetails {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 16px !important;
   color: #5a5a5a !important;
 }
@@ -78,7 +78,7 @@
   border: 1px solid#E1E1E1 !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Cancel_Meeting_SaveMeeting:is(:active, :hover, :focus, :focus-visible) {
@@ -88,7 +88,7 @@
   border: 1px solid#E1E1E1 !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Next_Meeting_SaveMeeting {
@@ -98,7 +98,7 @@
   border: none !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Next_Meeting_SaveMeeting:is(:active, :hover, :focus, :focus-visible) {
@@ -108,5 +108,5 @@
   border: none !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }

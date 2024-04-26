@@ -171,19 +171,19 @@ fieldset:disabled .btn {
   range: none !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
   font-size: 12px !important;
   /* border: 1px solid #666666 !important; */
 }
 
 .textAreaDiv textarea::placeholder {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
   color: #a2a2a2 !important;
 }
 
 input#MeetingReminderID::placeholder {
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
 }
 
 .agenda_container {
@@ -321,7 +321,7 @@ textarea.form-control-meeting {
   border-radius: 4px !important;
   font-size: 12px !important;
   margin-top: 11px;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
 }
 
 .addattendees-btn:disabled {
@@ -341,7 +341,7 @@ body[dir="rtl"] .addattendees-btn {
   font-size: calc(16px - 15%);
   color: #fff !important;
   height: 33px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .isDetail-Schedule-top-btn {
@@ -359,7 +359,7 @@ body[dir="rtl"] .isDetail-Schedule-top-btn {
   background: #fff !important;
   font-size: calc(16px - 15%);
   height: 33px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
 }
 
 .isAgenda-Schedule-top-btn {
@@ -369,7 +369,7 @@ body[dir="rtl"] .isDetail-Schedule-top-btn {
   padding: 3px 20px !important;
   font-size: calc(16px - 15%);
   height: 33px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .isAgenda-Schedule-top-btn {
@@ -387,7 +387,7 @@ body[dir="rtl"] .isAgenda-Schedule-top-btn {
   background: #fff !important;
   font-size: calc(16px - 15%);
   height: 33px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
 }
 
 .isAttendee-Schedule-top-btn {
@@ -397,7 +397,7 @@ body[dir="rtl"] .isAgenda-Schedule-top-btn {
   padding: 3px 20px !important;
   font-size: calc(16px - 15%);
   height: 33px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .isAttendee-Schedule-top-btn {
@@ -412,7 +412,7 @@ body[dir="rtl"] .isAttendee-Schedule-top-btn {
   background: #fff !important;
   font-size: calc(16px - 15%);
   height: 33px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
 }
 
 .addattendee-textfield-width {
@@ -429,7 +429,7 @@ body[dir="rtl"] .isAttendee-Schedule-top-btn {
   border-radius: 4px !important;
   font-size: 14px !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
 }
 
 .Publish-btn {
@@ -451,7 +451,7 @@ body[dir="rtl"] .isAttendee-Schedule-top-btn {
   height: 46px !important;
   font-size: 14px !important;
   border: 1px solid #e1e1e1 !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
 }
 
 .schedule-modal-meeting {
@@ -463,7 +463,7 @@ body[dir="rtl"] .isAttendee-Schedule-top-btn {
   font-size: 14px !important;
   font-weight: 500 !important;
   color: #ffffff !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
 }
 
 .select-participant-box {
@@ -624,7 +624,7 @@ body[dir="rtl"] .isAttendee-Schedule-top-btn {
 }
 
 .MuiInputBase-input::placeholder {
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   color: #a2a2a2 !important;
 }
 
@@ -635,7 +635,7 @@ body[dir="rtl"] .isAttendee-Schedule-top-btn {
   height: 46px !important;
   border-radius: 4px !important;
   font-size: 14px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
   margin-left: 4px;
 }
 
@@ -646,7 +646,7 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn {
   height: 46px !important;
   border-radius: 4px !important;
   font-size: 14px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
   margin-right: 5px;
 }
 
@@ -657,7 +657,7 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn {
   height: 46px !important;
   border-radius: 4px !important;
   font-size: 14px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
   margin-right: 5px;
 }
 
@@ -668,7 +668,7 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn_Next {
   height: 46px !important;
   border-radius: 4px !important;
   font-size: 14px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
   margin-left: 4px;
 }
 
@@ -679,7 +679,7 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn_Next {
   height: 46px !important;
   border-radius: 4px !important;
   font-size: 14px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
   margin-right: 7px;
 }
 
@@ -691,7 +691,7 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn_Next {
   border-radius: 4px !important;
   color: #fff !important;
   font-size: 14px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
 }
 
 .deleteAgendaGridBtn {
@@ -702,7 +702,7 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn_Next {
   height: 32px !important;
   border-radius: 4px !important;
   font-size: 14px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
 }
 
 .ant-btn-primary[disabled],

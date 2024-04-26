@@ -1,59 +1,35 @@
-@font-face {
-  font-family: "MontserratBold";
-  src: url("../../../../assets/fonts-new/montserrat-700-webfont.woff"),
-    url("../../../../assets/fonts-new/montserrat-700-webfont.woff2");
-}
-
-@font-face {
-  font-family: "MontserratMedium";
-  src: url("../../../../assets/fonts-new/montserrat-500-webfont.woff"),
-    url("../../../../assets/fonts-new/montserrat-500-webfont.woff2");
-}
-
-@font-face {
-  font-family: "MontserratRegular";
-  src: url("../../../../assets/fonts-new/montserrat-regular-webfont.woff"),
-    url("../../../../assets/fonts-new/montserrat-regular-webfont.woff2");
-}
-
-@font-face {
-  font-family: "MontserratSemiBold";
-  src: url("../../../../assets/fonts-new/montserrat-600-webfont.woff"),
-    url("../../../../assets/fonts-new/montserrat-600-webfont.woff2");
-}
-
 .packageselection_heading {
   color: #5a5a5a !important;
   text-align: center;
-  font-family: "MontserratBold-700" !important;
+  font-weight: 700 !important;
   font-size: 30px !important;
 }
 
 body[dir="rtl"] .packageselection_heading {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }
 
 .PerUserheading {
   color: #6172d6 !important;
   text-align: center;
-  font-family: "MontserratBold-700" !important;
+  font-weight: 700 !important;
   font-size: 20px !important;
   margin-top: -10px !important;
 }
 
 body[dir="rtl"] .PerUserheading {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }
 
 .goBackPackageSelectionBtn {
   color: #000 !important;
   font-size: 1.2rem;
   text-decoration: underline;
-  font-family: "MontserratRegular";
+  font-weight: 400 !important;
 }
 
 body[dir="rtl"] .goBackPackageSelectionBtn {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
 }
 
 .goBackPackageSelectionBtn:hover {
@@ -127,7 +103,7 @@ body[dir="rtl"] .packagecard_pricebox_Active {
   padding: 0;
   color: #fff;
   font-size: 2.2rem;
-  font-family: "MontserratBold";
+  font-weight: 700 !important;
 }
 
 .packagecard_priceBox_container p {
@@ -204,13 +180,13 @@ body[dir="rtl"] .packagecard_usersallows_members {
   border-radius: 4px !important;
   visibility: visible;
   border: none !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   text-transform: uppercase;
   font-size: calc(18px - 20%) !important;
 }
 
 body[dir="rtl"] .packagecard_btn {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .packagecard_btn:hover,
@@ -223,7 +199,7 @@ body[dir="rtl"] .packagecard_btn {
   border-radius: 4px !important;
   visibility: visible !important;
   border: none !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .visible {
@@ -265,7 +241,7 @@ body[dir="rtl"] .spandefault {
   justify-content: center;
   align-items: center;
   height: 100%;
-  font-family: "MontserratBold";
+  font-weight: 700 !important;
   color: #fff !important;
   font-size: 60px;
   margin-bottom: 0;
@@ -277,7 +253,7 @@ body[dir="rtl"] .spandefault {
     justify-content: center;
     align-items: center;
     height: 100%;
-    font-family: "MontserratBold";
+    font-weight: 700 !important;
     color: #fff !important;
     font-size: 40px !important;
     margin-bottom: 0;
@@ -285,7 +261,7 @@ body[dir="rtl"] .spandefault {
 }
 
 body[dir="rtl"] .package_actualPrice {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .fixboxwidth {
@@ -299,11 +275,11 @@ body[dir="rtl"] .package_actualPrice {
   font-size: 30px !important;
   display: flex !important;
   justify-content: center !important;
-  font-family: "MontserratBold";
+  font-weight: 700 !important;
 }
 
 body[dir="rtl"] .package_title {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }
 
 .package_actualPrice_p {
@@ -314,7 +290,7 @@ body[dir="rtl"] .package_title {
 
 body[dir="rtl"] .package_actualPrice_p {
   margin-right: 5px;
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 img.package-icon {
@@ -358,7 +334,7 @@ body[dir="rtl"] img.package-icon {
   height: 2.9em !important;
   border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   border-radius: 4px;
 }
 
@@ -403,7 +379,7 @@ body[dir="rtl"] .languageIcon {
   border-bottom: 1px solid #e1e1e1;
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
   height: 25px;
   margin-top: 3px;
   padding-top: 2px;
@@ -416,7 +392,7 @@ body[dir="rtl"] .span-foranually {
   border-bottom-right-radius: 0px;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .languageSelector {
@@ -442,41 +418,41 @@ body[dir="rtl"] .languageSelector {
 .MeetingHeading {
   font-size: 20px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratBold-700" !important;
+  font-weight: 700 !important;
 }
 
 body[dir="rtl"] .MeetingHeading {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }
 
 .keypoints {
   font-size: 16px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratMedium" !important;
+  font-weight: 500 !important;
 }
 
 body[dir="rtl"] .keypoints {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .BillingHeading {
   font-size: 30px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratBold-700" !important;
+  font-weight: 700 !important;
 }
 
 body[dir="rtl"] .BillingHeading {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }
 
 .Tableheading {
   font-size: 16px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .Tableheading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
   display: flex !important;
   justify-content: center !important;
 }
@@ -484,11 +460,11 @@ body[dir="rtl"] .Tableheading {
 .ChargesPerLicesense {
   font-size: 30px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratBold-700" !important;
+  font-weight: 700 !important;
 }
 
 body[dir="rtl"] .ChargesPerLicesense {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
   display: flex !important;
   justify-content: center !important;
 }
@@ -496,11 +472,11 @@ body[dir="rtl"] .ChargesPerLicesense {
 .TableheadingTotal {
   font-size: 30px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratBold-700" !important;
+  font-weight: 700 !important;
 }
 
 body[dir="rtl"] .TableheadingTotal {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
   display: flex !important;
   justify-content: center !important;
 }
@@ -510,13 +486,13 @@ body[dir="rtl"] .TableheadingTotal {
   font-size: 12px !important;
   border: none !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   background: #6172d6 !important;
   color: #fff !important;
 }
 
 body[dir="rtl"] .PayNowButtons {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .ButtonsArabicStylesSpan {
@@ -529,7 +505,7 @@ body[dir="rtl"] .ButtonsArabicStylesSpan {
   font-size: 12px !important;
   border: none !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   background: #6172d6 !important;
   color: #fff !important;
 }
@@ -539,11 +515,11 @@ body[dir="rtl"] .ButtonsArabicStylesSpan {
   margin: 21px 0 0 0 !important;
   text-decoration: underline;
   cursor: pointer !important;
-  font-family: "Montserrat";
+  font-weight: 400 !important;
 }
 
 body[dir="rtl"] .signUp_goBack {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
 }
 
 .Scroller_PakagesSelectionCard {

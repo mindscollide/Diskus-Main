@@ -1,6 +1,6 @@
 .Grant_Access_Styles {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #5a5a5a !important;
 }
 
@@ -11,7 +11,7 @@
   border: 1px solid#E1E1E1 !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Cancel_Button_Organizers_view:is(:active, :hover, :focus, :focus-visible) {
@@ -21,7 +21,7 @@
   border: 1px solid#E1E1E1 !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Next_Button_Organizers_view {
@@ -31,7 +31,7 @@
   border: none !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Next_Button_Organizers_view:is(:active, :hover, :focus, :focus-visible) {
@@ -41,7 +41,7 @@
   border: none !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .FixedHeight {
@@ -55,17 +55,17 @@
   border: 1px solid#E1E1E1 !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Empty_state_heading {
   color: #505050 !important;
   font-size: 30px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Empty_state_Subheading {
   color: #5a5a5a !important;
   font-size: 12px !important;
-  font-family: "Montserrat";
+font-weight: 500;
 }

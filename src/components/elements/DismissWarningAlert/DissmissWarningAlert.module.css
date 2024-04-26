@@ -1,38 +1,11 @@
-@font-face {
-    font-family: "MontserratBold";
-    src: url("./../../../assets/fonts-new/montserrat-700-webfont.woff"),
-      url("./../../../assets/fonts-new/montserrat-700-webfont.woff2");
-  }
-  
-  @font-face {
-    font-family: "MontserratMedium";
-    src: url("./../../../assets/fonts-new/montserrat-500-webfont.woff"),
-      url("./../../../assets/fonts-new/montserrat-500-webfont.woff2");
-  }
-  
-  @font-face {
-    font-family: "MontserratSemiBold";
-    src: url("./../../../assets/fonts-new/montserrat-600-webfont.woff"),
-      url("./../../../assets/fonts-new/montserrat-600-webfont.woff2");
-  }
-  
-  @font-face {
-    font-family: "MontserratRegular";
-    src: url("./../../../assets/fonts-new/montserrat-regular-webfont.woff"),
-      url("./../../../assets/fonts-new/montserrat-regular-webfont.woff2");
-  }
-  
   .Alert{
     background-color: #F16B6B !important;
     height: 10px;
   }
 
-
-
-
   .AlertHeading{
     font-size: calc(20px - 20%)!important;
-    font-family: "MontserratSemiBold";
+    font-weight: 600;
     color: #fff;
     margin-left: 15px !important;
     padding-bottom: 10px !important;
@@ -45,7 +18,7 @@
   
   .revoke{
     font-size: calc(18px - 20%) !important;
-    font-family: "MontserratMedium";
+    font-weight: 500;
     color: #fff;
     text-decoration: underline;
     margin-left: 18px !important;
@@ -67,7 +40,7 @@
     .revoke{
       font-size: calc(10px - 15%) !important;
       width: 10% !important;
-      font-family: "MontserratMedium";
+      font-weight: 500;
       color: #fff;
       text-decoration: underline;
       margin-left: 4px !important;
@@ -75,7 +48,7 @@
 
     .AlertHeading{
       font-size: calc(15px - 20%)!important;
-      font-family: "MontserratSemiBold";
+      font-weight: 600;
       color: #fff;
       margin-left: 6px !important;
       padding-bottom: 10px !important;

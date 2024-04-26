@@ -48,11 +48,11 @@
   color: #6172d6;
   font-size: 24px;
   text-transform: uppercase;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600;
 }
 
 body[dir="rtl"] .calendar-add-event-label {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .rbc-row-segment {
@@ -70,7 +70,7 @@ body[dir="rtl"] .calendar-add-event-label {
   border-radius: 50%;
 }
 .cirleheading {
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 .calendarsowMore {
   font-size: 8px !important;

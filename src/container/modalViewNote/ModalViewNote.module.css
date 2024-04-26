@@ -1,13 +1,13 @@
 .Viewnote-heading {
   color: #6172d6 !important;
   font-size: 20pt !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
   margin: 0 !important;
   padding: 0 !important;
 }
 
 body[dir="rtl"] .Viewnote-heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .date-updatenote {
@@ -16,7 +16,7 @@ body[dir="rtl"] .Viewnote-heading {
 }
 
 body[dir="rtl"] .date-updatenote {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
 }
 
 .close-note-modal-btn {
@@ -27,11 +27,11 @@ body[dir="rtl"] .date-updatenote {
   font-size: 14px !important;
   color: #5a5a5a !important;
   cursor: pointer !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .close-note-modal-btn {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .modal-row {
@@ -41,17 +41,17 @@ body[dir="rtl"] .close-note-modal-btn {
 
 .modal-update-attachment-heading {
   font-size: 10pt !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .modal-update-attachment-heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .modal-View-title {
   font-size: 20px;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
   overflow: hidden !important;
   word-wrap: break-word !important;
   text-overflow: ellipsis !important;
@@ -59,7 +59,7 @@ body[dir="rtl"] .modal-update-attachment-heading {
 }
 
 body[dir="rtl"] .modal-View-title {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .modal-View-title::-webkit-scrollbar {
@@ -77,13 +77,13 @@ body[dir="rtl"] .modal-View-title {
 .modal-view-discription {
   font-size: 12px;
   color: #5a5a5a;
-  font-family: "MontserratRegular" !important;
+  font-weight: 400 !important;
   max-height: 125px !important;
   overflow-y: auto;
 }
 
 body[dir="rtl"] .modal-view-discription {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
 }
 
 .modal-view-discription p {

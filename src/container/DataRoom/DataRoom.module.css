@@ -1,9 +1,3 @@
-@font-face {
-  font-family: "MontserratSemiBold";
-  src: url("./../../assets/fonts-new/montserrat-600-webfont.woff"),
-    url("./../../assets/fonts-new/montserrat-600-webfont.woff2");
-}
-
 .DataRoom_container {
   max-width: 98%;
   /* width: 90%; */
@@ -15,7 +9,7 @@
 
 .Data_room_heading {
   font-size: 30px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #6172d6;
   white-space: nowrap;
 }
@@ -48,7 +42,7 @@
   font-size: 12px !important;
   background: #fff;
   border: none !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   border: 1px solid #e1e1e1 !important;
   color: #5a5a5a;
 }
@@ -56,7 +50,8 @@
 .allDocuments_btn_active {
   padding: 6px 12px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
+
   color: #fff;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: none !important;
@@ -70,7 +65,7 @@
   font-size: 12px !important;
   background: #fff !important;
   border: none !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   border: 1px solid #e1e1e1 !important;
   color: #5a5a5a !important;
 }
@@ -78,7 +73,7 @@
 .myDocument_btn_active {
   padding: 6px 12px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #fff;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: none !important;
@@ -89,7 +84,7 @@
   font-size: 12px !important;
   background: #fff;
   border: none !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   border: 1px solid #e1e1e1 !important;
   color: #5a5a5a;
 }
@@ -102,7 +97,7 @@
   font-size: 12px !important;
   background: #fff !important;
   border: none !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   border: 1px solid #e1e1e1 !important;
   color: #5a5a5a !important;
 }
@@ -111,7 +106,7 @@
   padding: 6px 12px !important;
   font-size: 12px !important;
   color: #fff;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: none !important;
 }
@@ -119,7 +114,7 @@
 .Shared_with_me_btn {
   padding: 6px 12px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   background: #fff;
   border: none !important;
   border: 1px solid #e1e1e1 !important;
@@ -133,7 +128,7 @@
   padding: 6px 12px !important;
   font-size: 12px !important;
   background: #fff !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   border: none !important;
   border: 1px solid #e1e1e1 !important;
   color: #5a5a5a !important;
@@ -145,25 +140,25 @@
 
 .Name_particiapnt {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #a2a2a2;
 }
 
 .Lastmodified_date {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #a2a2a2;
 }
 
 .File_size_Style {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #a2a2a2;
 }
 
 .name_of_life {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #a2a2a2;
 }
 
@@ -181,13 +176,13 @@
 
 .New_folder {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #5a5a5a;
 }
 
 .Folder_Upload {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #5a5a5a;
   margin-top: 2px !important;
   margin-left: 4px !important;
@@ -195,19 +190,19 @@
 
 .Messege_nofiles {
   font-size: 30px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #5a5a5a;
 }
 
 .Tag_line_nofiles {
   font-size: 20px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #5a5a5a;
 }
 
 .Messege_nofiles_shared {
   font-size: 20px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #bbbbbb;
 }
 
@@ -271,33 +266,33 @@
 
 .DropDown_name {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #5a5a5a;
 }
 
 .Show_more_options {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #5a5a5a;
   /* border-top: 1px solid #e1e1e1; */
 }
 
 .Search_option_text_span {
   font-size: 12px;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #6172d6;
   cursor: pointer;
 }
 
 .Search_result_Heading {
   font-size: 16px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #6172d6;
 }
 
 .Clear_All_btn {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #5a5a5a;
   cursor: pointer;
   position: relative;
@@ -343,7 +338,7 @@ body[dir="rtl"] .CrossButton {
   border: 1px solid #e1e1e1;
   padding: 12px 30px !important;
   font-size: 12px;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #5a5a5a;
 }
 
@@ -355,7 +350,7 @@ body[dir="rtl"] .CrossButton {
   border: 1px solid #e1e1e1 !important;
   padding: 12px 30px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   color: #5a5a5a !important;
 }
 
@@ -364,7 +359,7 @@ body[dir="rtl"] .CrossButton {
   border: none;
   padding: 12px 30px !important;
   font-size: 12px;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #fff;
   cursor: pointer;
 }
@@ -377,7 +372,7 @@ body[dir="rtl"] .CrossButton {
   border: none !important;
   padding: 12px 30px !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   color: #fff !important;
   cursor: pointer;
 }
@@ -467,13 +462,13 @@ body[dir="rtl"] .Search_Icon {
 .new_folder {
   font-size: 10px !important;
   margin-left: 3px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #5a5a5a;
 }
 
 .Folder_style {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #5a5a5a;
 }
 
@@ -594,7 +589,7 @@ body[dir="rtl"] .Back_ground_For_uploader_active {
 .name_of_life_in_Bar {
   font-size: 12px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 .Progress_bar {
   color: #fff !important;
@@ -644,7 +639,7 @@ body[dir="rtl"] .Back_ground_For_uploader_active {
 .Uploading {
   font-size: 12px !important;
   color: #fff;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 .Drop_Down_container {
@@ -672,7 +667,7 @@ body[dir="rtl"] .Back_ground_For_uploader_active {
 .Options_name_threedotdropdown {
   font-size: 12px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   margin-left: 7px !important;
 }
 
@@ -690,7 +685,7 @@ body[dir="rtl"] .Back_ground_For_uploader_active {
 
 .Option_Document_button {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #5a5a5a !important;
 }
 
@@ -713,7 +708,7 @@ body[dir="rtl"] .Back_ground_For_uploader_active {
   height: 20px !important;
   font-size: 8px !important;
   border: 1px solid #e1e1e1;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   border-radius: 4px !important;
   background: #fff;
   color: #5a5a5a;
@@ -727,7 +722,7 @@ body[dir="rtl"] .Back_ground_For_uploader_active {
   height: 20px !important;
   font-size: 8px !important;
   border: 1px solid #e1e1e1 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   border-radius: 4px !important;
   background: #fff !important;
   color: #5a5a5a !important;
@@ -738,9 +733,7 @@ body[dir="rtl"] .Back_ground_For_uploader_active {
   border: none !important;
 }
 
-.dropdown_menu_dataroom {
-  width: 100% !important;
-}
+
 
 .dataFolderRow {
   display: flex;
@@ -759,8 +752,10 @@ body[dir="rtl"] .Back_ground_For_uploader_active {
 }
 
 .Data_room_btn {
-  margin-left: 29px !important;
+  display: flex;
+  justify-content: center;
   align-items: center !important;
+  width: 100%;
 }
 
 body[dir="rtl"] .Data_room_btn {
@@ -768,7 +763,8 @@ body[dir="rtl"] .Data_room_btn {
 }
 
 .font_size {
-  font-size: calc(14px - 20%) !important;
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .dataroom_searchinput {
@@ -935,7 +931,7 @@ body[dir="rtl"] .dataroom_searchinput2 {
 }
 
 .dataroom_table_heading {
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
   color: #5a5a5a !important;
   font-size: 12px !important;
   overflow: hidden !important;
@@ -965,7 +961,7 @@ body[dir="rtl"] .dataroom_searchinput2 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
   color: #5a5a5a !important;
   font-size: 12px !important;
 }
@@ -974,7 +970,7 @@ body[dir="rtl"] .dataroom_searchinput2 {
   border-bottom: 1px solid #5a5a5a !important;
   padding: 5px 0;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
   display: flex;
 }
 
@@ -982,7 +978,7 @@ body[dir="rtl"] .dataroom_searchinput2 {
   border-bottom: 1px solid #5a5a5a !important;
   padding: 5px 0;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
 }
 
 .NavLink__filter_Folder:last-child {
@@ -993,7 +989,7 @@ body[dir="rtl"] .dataroom_searchinput2 {
   border-bottom: 1px solid #5a5a5a !important;
   padding: 5px 0;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
   display: flex;
 }
 
@@ -1001,7 +997,7 @@ body[dir="rtl"] .dataroom_searchinput2 {
   border-bottom: 1px solid #5a5a5a !important;
   padding: 5px 0;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
 }
 
 .NavLink__filter__file:last-child {
@@ -1025,7 +1021,7 @@ body[dir="rtl"] .dataroom_searchinput2 {
 
 .Option_Document_button_selected {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #fff !important;
 }
 
@@ -1080,7 +1076,7 @@ body[dir="rtl"] .dataroom_searchinput2 {
 }
 
 .ownerName {
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
   color: #5a5a5a !important;
   font-size: 12px !important;
   white-space: nowrap;
@@ -1176,4 +1172,104 @@ body[dir="rtl"] .dataroom_searchinput2 {
 }
 .datePicker_Container {
   width: 100% !important;
+}
+.DataRoom_DropDown .dropdown-tggle::before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+  transform: rotate(45deg);
+  left: 4px;
+  top: 2px;
+  background-color: #fff !important;
+}
+.DataRoom_DropDown .dropdown-tggle:hover {
+  border: none !important;
+}
+
+
+
+.DataRoom_DropDown button {
+  width: 137px;
+  height: 39px;
+  font-weight: 600;
+  color: #fff !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  display: flex;
+  justify-content: center;
+  border: none !important;
+}
+
+/* .DataRoom_DropDown .dropdown-toggle.btn.btn-primary {
+  border: none !important;
+} */
+.dropdown_menu_dataroom .dropdown-menu a.dropdown-item.dropdown-item {
+  line-height: 36px;
+}
+.DataRoom_DropDown .dropdown-menu.show {
+  padding: 0 !important;
+  min-width: 100%;
+  padding: 0 10px !important;
+  margin: 0 !important;
+  transform: translate(0px, 45px);
+  border-width: 0px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+}
+
+body[dir="rtl"] .DataRoom_DropDown .dropdown-menu.show {
+  padding: 0 !important;
+  width: 137px;
+  padding: 0 10px !important;
+  margin: 0 !important;
+  transform: translateY(0px, 20px) !important;
+  border-width: 0px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+}
+
+.DataRoom_DropDown .dropdown-menu.show .dropdown-item {
+  padding: 10px 10px;
+  font-weight: 600;
+  text-align: center;
+  font-size: 12px !important;
+  border-bottom: 2px solid #a2a2a2 !important;
+
+}
+
+.DataRoom_DropDown .dropdown-menu.show .dropdown-item_folder {
+  border-bottom: none !important;
+}
+
+.DataRoom_DropDown .dropdown-menu.show .dropdown-item:nth-child(1) {
+  border-bottom: 1px solid #e1e1e1;
+}
+
+.DataRoom_DropDown .dropdown-menu.show .dropdown-item:hover {
+  background: none !important;
+}
+
+/* .DataRoom_DropDown button::before {
+  position: absolute;
+  font-size: 22px;
+  top: 7px;
+  left: 20px;
+  color: #fff;
+} */
+
+.DataRoom_DropDown .dropdown-toggle::after {
+  display: inline-block;
+  margin-left: 5.255em;
+  vertical-align: 0.255em;
+  content: "";
+  border-top: 0.3em solid;
+  border-right: 0.3em solid transparent;
+  border-bottom: 0;
+  border-left: 0.3em solid transparent;
+}
+.dataroom_dropdown_item {
+  line-height: 30px ;
 }

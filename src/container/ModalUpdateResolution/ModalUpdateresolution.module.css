@@ -3,13 +3,13 @@
   font-size: 12px !important;
   background: #6172d6;
   color: #fff;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   border-radius: 4px !important;
   border: none !important;
 }
 
 body[dir="rtl"] .Confirm-updateResolution-modal {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Confirm-updateResolution-modal:hover,
@@ -20,7 +20,7 @@ body[dir="rtl"] .Confirm-updateResolution-modal {
   font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border-radius: 4px !important;
   border: none !important;
 }
@@ -30,13 +30,13 @@ body[dir="rtl"] .Confirm-updateResolution-modal {
   font-size: 12px !important;
   background: #fff;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
 
 body[dir="rtl"] .Discard_button_updateResolution_modal {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Discard_button_updateResolution_modal:hover,
@@ -47,17 +47,17 @@ body[dir="rtl"] .Discard_button_updateResolution_modal {
   font-size: 12px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
 
 .Heading_For_Update_resolution_Ask {
   font-size: 16px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   color: #5a5a5a !important;
 }
 
 body[dir="rtl"] .Heading_For_Update_resolution_Ask {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }

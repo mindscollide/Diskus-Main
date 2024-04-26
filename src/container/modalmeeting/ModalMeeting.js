@@ -1998,7 +1998,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                       className="UpdateCheckbox mt-2 "
                     >
                       <Checkbox
-                        className="SearchCheckbox MontserratSemiBold-600"
+                        className="SearchCheckbox "
                         name="IsChat"
                         label={t("Group-chat")}
                         checked={createMeeting.IsChat}
@@ -2531,7 +2531,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         xs={12}
                         className="participant-heading-creatingmeeting"
                       >
-                        <label className="MontserratSemiBold-600">
+                        <label className="">
                           {t("Organizer")}
                         </label>
                       </Col>
@@ -2585,7 +2585,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         xs={12}
                         className="participant-heading-creatingmeeting"
                       >
-                        <label className="MontserratSemiBold-600">
+                        <label className="">
                           {t("Participants")}
                         </label>
                       </Col>

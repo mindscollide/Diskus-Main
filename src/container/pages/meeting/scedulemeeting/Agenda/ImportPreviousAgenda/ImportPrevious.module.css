@@ -1,7 +1,7 @@
 .Import_previous_agenda_heading {
   font-size: 20px !important;
   color: #5f78d6 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Search_Btn_Import {
@@ -11,7 +11,7 @@
   border-radius: 4px !important;
   background: #5f78d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Search_Btn_Import :is(:hover, :focus, :active, :focus-visible) {
@@ -21,7 +21,7 @@
   border-radius: 4px !important;
   background: #5f78d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Title_desc {
@@ -39,7 +39,7 @@
   border-radius: 4px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Cancel_button_IMportAgenda:hover,
@@ -52,7 +52,7 @@
   border-radius: 4px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Import_button_IMportAgenda {
@@ -62,7 +62,7 @@
   border-radius: 4px !important;
   background: #5f78d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Import_button_IMportAgenda:hover,
@@ -75,7 +75,7 @@
   border-radius: 4px !important;
   background: #5f78d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .OverAll_Padding {

@@ -1,12 +1,12 @@
 .IntroHeading {
   font-size: 16px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #5a5a5a !important;
 }
 
 .MainHeading {
   font-size: 30px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #6172d6 !important;
 }
 
@@ -20,7 +20,7 @@
 
 .AnswerStyles {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #5a5a5a !important;
 }
 
@@ -31,18 +31,8 @@
   font-size: 12px !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
-
-/* .Cast_vote_CancelButton :is(:hover, :active, :focus, :focus-visible) {
-  padding: 12px 30px !important;
-  background: #fff !important;
-  color: #5a5a5a !important;
-  font-size: 12px !important;
-  border: 1px solid #e1e1e1 !important;
-  border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
-} */
 
 .Cast_vote_SaveButton {
   padding: 12px 30px !important;
@@ -51,15 +41,5 @@
   font-size: 12px !important;
   border: none !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
-
-/* .Cast_vote_SaveButton :is(:hover, :active, :focus, :focus-visible) {
-  padding: 12px 30px !important;
-  background: #6172d6 !important;
-  color: #fff !important;
-  font-size: 12px !important;
-  border: none !important;
-  border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
-} */

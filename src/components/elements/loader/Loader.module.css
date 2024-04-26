@@ -131,34 +131,13 @@
   }
 }
 
-/* .line {
-  height: 3px;
-  width: 80px;
-  background-color: black;
-  animation: loadingline .5s infinite;
-}
-@keyframes loadingline {
-  0% {
-    transform: translateX(-120px);
-  } 100% {
-    transform: translateX(120px);
-  }
-} */
-/* .overlay-content p {
-  margin-top: 10px;
-  color: blue;
-  font-size: 1.2rem;
-  letter-spacing: 0.1rem;
-  font-weight: 800;
-  font-family: "Roboto";
-} */
 .deleteOrganizationContent {
   font-weight: bold !important;
 }
 
 .Messeges_Styles {
   font-size: 20px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   color: #5a5a5a !important;
   width: 100% !important;
 
@@ -177,7 +156,7 @@
 
 .Messeges_Styles_Panel {
   font-size: 18px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   color: #5a5a5a !important;
   width: 100% !important;
   position: absolute;

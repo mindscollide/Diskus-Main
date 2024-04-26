@@ -54,7 +54,7 @@ body[dir="rtl"] .Expand_Class_ViewAgenda {
 .Heading_View_Agenda {
   color: #5f78d6;
   font-size: 20px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .OverAll_Padding_View_agenda_Screen {
@@ -64,14 +64,14 @@ body[dir="rtl"] .Expand_Class_ViewAgenda {
 .Show_more_Class {
   color: #5f78d6;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   cursor: pointer !important;
 }
 
 .ParticipantName {
   color: #5a5a5a !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Profile_Class {
@@ -81,7 +81,7 @@ body[dir="rtl"] .Expand_Class_ViewAgenda {
 .Date_Time {
   color: #5a5a5a !important;
   font-size: 12px !important;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
 }
 
 .Date_Time_Section {
@@ -102,7 +102,7 @@ body[dir="rtl"] .Expand_Class_ViewAgenda {
 .Attachments_Heading {
   color: #6172d6 !important;
   font-size: 16px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Border_Attachments {
@@ -116,7 +116,7 @@ body[dir="rtl"] .Expand_Class_ViewAgenda {
 .File_Name {
   color: #5a5a5a !important;
   font-size: 16px !important;
-  font-family: "MontserratRegular" !important;
+  font-weight: 400 !important;
   display: inline-block !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
@@ -167,7 +167,7 @@ body[dir="rtl"] .Expand_Class_ViewAgenda {
   border-radius: 4px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Cancel_Classname:is(:hover, :active, :focus, :focus-visible) {
@@ -177,7 +177,7 @@ body[dir="rtl"] .Expand_Class_ViewAgenda {
   border-radius: 4px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Save_Classname {
@@ -187,7 +187,7 @@ body[dir="rtl"] .Expand_Class_ViewAgenda {
   border-radius: 4px !important;
   background: #5f78d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Save_Classname:is(:hover, :active, :focus, :focus-visible) {
@@ -197,5 +197,5 @@ body[dir="rtl"] .Expand_Class_ViewAgenda {
   border-radius: 4px !important;
   background: #5f78d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }

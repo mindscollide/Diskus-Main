@@ -1,6 +1,6 @@
 .HeadingViewVoteModal {
   font-size: 30px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #6172d6 !important;
 }
 
@@ -10,7 +10,7 @@
   color: #5a5a5a !important;
   font-size: 12px !important;
   border: 1px solid #e1e1e1 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .BargraphButtonActive {
@@ -19,7 +19,7 @@
   color: #fff !important;
   font-size: 12px !important;
   border: 1px solid #6172d6 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .BargraphButton:is(
@@ -36,12 +36,12 @@
   color: #fff !important;
   font-size: 12px !important;
   border: 1px solid #6172d6 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .YesPercentage {
   font-size: 20px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #6172d6 !important;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -51,7 +51,7 @@
 
 .NoOfVotes {
   font-size: 20px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #6172d6 !important;
 }
 
@@ -61,6 +61,6 @@
 
 .Title {
   font-size: 20px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #6172d6 !important;
 }

@@ -11,11 +11,11 @@
 .nameStyles {
   font-size: 10px !important;
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] span.billing-address {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .stericClass {
@@ -30,7 +30,7 @@ body[dir="rtl"] span.billing-address {
 }
 
 body[dir="rtl"] .errorMessage {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
 }
 
 .errorMessage_hidden {
@@ -41,5 +41,5 @@ body[dir="rtl"] .errorMessage {
 }
 
 body[dir="rtl"] .errorMessage_hidden {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
 }

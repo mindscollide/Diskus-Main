@@ -1,6 +1,6 @@
 .Notify_organisors {
   font-size: 16px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #5f78d6 !important;
 }
 
@@ -8,7 +8,7 @@
   margin: 0;
   padding: 0;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Scroller_notify {
@@ -44,7 +44,7 @@
   font-size: 12px !important;
   border: 1px solid #e1e1e1;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   background: #fff;
   color: #5a5a5a;
 }
@@ -57,7 +57,7 @@
   font-size: 12px !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   background: #fff !important;
   color: #5a5a5a !important;
 }
@@ -66,7 +66,7 @@
   padding: 12px 30px !important;
   font-size: 12px !important;
   border: 1px solid #e1e1e1;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border-radius: 4px !important;
   background: #5f78d6;
   color: #fff;
@@ -80,7 +80,7 @@
   font-size: 12px !important;
   border: 1px solid #e1e1e1;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   background: #5f78d6 !important;
   color: #fff !important;
 }
@@ -93,11 +93,11 @@
   height: 13px;
   color: #f16b6b;
   visibility: visible;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
 }
 
 body[dir="rtl"] .errorMessage-inLogin {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .errorMessage-inLogin_hidden {

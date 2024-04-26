@@ -1,7 +1,7 @@
 .Meeting_Side_bar_Tag {
   font-size: 10px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
 }
 
 .Meeting_Side_bar_Tag:hover {
@@ -11,7 +11,7 @@
 .Meeting_Side_bar_Tag_active {
   font-size: 9px !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
 }
 .icon-width {
   width: 50%;

@@ -1,27 +1,3 @@
-@font-face {
-  font-family: "MontserratSemiBold";
-  src: url("../../../../assets/fonts-new/montserrat-600-webfont.woff"),
-    url("../../../../assets/fonts-new/montserrat-600-webfont.woff2");
-}
-
-@font-face {
-  font-family: "MontserratBold";
-  src: url("../../../../assets/fonts-new/montserrat-700-webfont.woff"),
-    url("../../../../assets/fonts-new/montserrat-700-webfont.woff2");
-}
-
-@font-face {
-  font-family: "MontserratMedium";
-  src: url("../../../../assets/fonts-new/montserrat-500-webfont.woff"),
-    url("../../../../assets/fonts-new/montserrat-500-webfont.woff2");
-}
-
-@font-face {
-  font-family: "MontserratRegular";
-  src: url("../../../../assets/fonts-new/montserrat-regular-webfont.woff"),
-    url("../../../../assets/fonts-new/montserrat-regular-webfont.woff2");
-}
-
 .selected_package_details {
   margin: 20px 0;
   border-bottom: 1px solid #ccc;
@@ -39,13 +15,12 @@
   padding: 0 auto;
   background: #6172d6;
   border: none;
-  font-family: "MontserratSemiBold";
-  padding: 8px 30px !important;
+  font-weight: 500 !important;
   font-size: 12px !important;
 }
 
 body[dir="rtl"] .PayInvoiceButton {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 500 !important;
 }
 .PayInvoiceButton:hover,
 .PayInvoiceButton:active,
@@ -59,8 +34,8 @@ body[dir="rtl"] .PayInvoiceButton {
   padding: 0 auto !important;
   background: #6172d6 !important;
   border: none !important;
-  font-family: "MontserratSemiBold" !important;
-  padding: 8px 30px !important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
 }
 
 .viewInvocieButton {
@@ -75,13 +50,13 @@ body[dir="rtl"] .PayInvoiceButton {
   transition: all 0.5s;
   display: flex;
   justify-content: space-between;
-  padding: 12px 30px;
-  font-family: "MontserratSemiBold" !important;
+  padding: 5px 10px;
+  font-weight: 500 !important;
   font-size: 12px !important;
 }
 
 body[dir="rtl"] .viewInvocieButton {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 500 !important;
 }
 .viewInvocieButton:hover,
 .viewInvocieButton:active,
@@ -100,8 +75,8 @@ body[dir="rtl"] .viewInvocieButton {
   transition: all 0.5s !important;
   display: flex !important;
   justify-content: space-between !important;
-  padding: 12px 30px;
-  font-family: "MontserratSemiBold" !important;
+  padding: 5px 10px !important;
+  font-weight: 500 !important;
   font-size: 12px !important;
 }
 
@@ -123,13 +98,12 @@ body[dir="rtl"] .viewInvocieButton {
   font-size: 13px;
   display: flex;
   justify-content: space-between;
-  padding: 12px 30px;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 500 !important;
   font-size: 12px !important;
 }
 
 body[dir="rtl"] .DownloadInvoiceButton {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 500 !important;
 }
 
 .DownloadInvoiceButton:hover,
@@ -149,10 +123,9 @@ body[dir="rtl"] .DownloadInvoiceButton {
   transition: all 0.2s !important;
   display: flex !important;
   justify-content: space-between !important;
-  font-family: "MontserratMedium" !important;
+  font-weight: 600 !important;
   font-size: 12px !important;
   padding: 12px 30px;
-  font-family: "MontserratSemiBold" !important;
   font-size: 12px !important;
 }
 
@@ -163,45 +136,42 @@ body[dir="rtl"] .DownloadInvoiceButton {
   font-size: calc(38px - 50%) !important;
   color: #6172d6 !important;
   font-weight: 600 !important;
-  font-family: "MontserratBold-700" !important;
 }
 body[dir="rtl"] .PayOutstanding_Heading {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 600 !important;
 }
 .PackageHeadingClassName {
-  font-family: "MontserratBold";
+  font-weight: 700 !important;
   margin: 10px 0 30px 0;
   font-size: 16px;
 }
 body[dir="rtl"] .PackageHeadingClassName {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }
 .selected_package_details_p1 {
-  font-family: "MontserratMedium";
-  color: #5a5a5a !important;
-  font-size: 20px;
+  font-weight: 500 !important;
+  font-size: 13px;
 }
 body[dir="rtl"] .selected_package_details_p1 {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 .selected_package_details_p2 {
-  font-family: "MontserratRegular" !important;
-  color: #5a5a5a !important;
-  font-size: 15px;
+  font-weight: 400 !important;
+  font-size: 12px;
 }
 
 body[dir="rtl"] .selected_package_details_p2 {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
 }
 
 .OutStandingHeading {
   font-size: 25px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratBold-700" !important;
+  font-weight: 700 !important;
 }
 
 body[dir="rtl"] .OutStandingHeading {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }
 
 .PayoutStandingCard {
@@ -223,19 +193,19 @@ body[dir="rtl"] .OutStandingHeading {
 .CallAssistantSubHeading {
   font-size: 12px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratBold-700" !important;
+  font-weight: 700 !important;
 }
 
 body[dir="rtl"] .CallAssistantSubHeading {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }
 
 .BussniessmailStyles {
   font-size: 16px !important;
   color: #6172d6 !important;
-  font-family: "MontserratBold-700" !important;
+  font-weight: 700 !important;
 }
 
 body[dir="rtl"] .BussniessmailStyles {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }

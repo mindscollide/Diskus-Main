@@ -1,11 +1,11 @@
 .EditUsersHeading {
   font-size: 30px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   color: #6172d6 !important;
 }
 
 body[dir="rtl"] .EditUsersHeading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .ModalAlignmnet {
@@ -13,7 +13,7 @@ body[dir="rtl"] .EditUsersHeading {
 }
 
 .NameCreateAddtional {
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   font-style: normal;
   color: #6172d6 !important;
   font-weight: 600;
@@ -22,7 +22,7 @@ body[dir="rtl"] .EditUsersHeading {
 }
 
 body[dir="rtl"] .NameCreateAddtional {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Steric {
@@ -30,24 +30,24 @@ body[dir="rtl"] .NameCreateAddtional {
 }
 
 .AdminAlsoClass {
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
   font-size: 12px !important;
   color: #5a5a5a !important;
   margin-top: 3px !important;
 }
 
 body[dir="rtl"] .AdminAlsoClass {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .EmailStyles {
   font-size: 12px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .EmailStyles {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .EdituserModalUpdateButton {
@@ -56,7 +56,7 @@ body[dir="rtl"] .EmailStyles {
   background: #6172d6 !important;
   border: none !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #fff !important;
 }
 
@@ -66,10 +66,10 @@ body[dir="rtl"] .EmailStyles {
   background: #6172d6 !important;
   border: none !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #fff !important;
 }
 
 body[dir="rtl"] .EdituserModalUpdateButton {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }

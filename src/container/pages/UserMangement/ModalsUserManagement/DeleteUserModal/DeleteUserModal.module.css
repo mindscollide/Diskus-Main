@@ -1,11 +1,11 @@
 .ConfirmationHeading {
   font-size: 20px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .ConfirmationHeading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .CancelButton {
@@ -15,7 +15,7 @@ body[dir="rtl"] .ConfirmationHeading {
   border-radius: 4px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 .CancelButton:is(:hover, :active, :focus, :focus-visible) {
@@ -25,11 +25,11 @@ body[dir="rtl"] .ConfirmationHeading {
   border-radius: 4px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .CancelButton {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .ProceedButtonStyles {
@@ -39,7 +39,7 @@ body[dir="rtl"] .CancelButton {
   border-radius: 4px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 .ProceedButtonStyles:is(:hover, :active, :focus, :focus-visible) {
@@ -49,9 +49,9 @@ body[dir="rtl"] .CancelButton {
   border-radius: 4px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .ProceedButtonStyles {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }

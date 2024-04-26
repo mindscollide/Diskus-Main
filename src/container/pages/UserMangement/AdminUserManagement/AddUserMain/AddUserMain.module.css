@@ -1,44 +1,34 @@
-@font-face {
-  font-family: "MontserratMedium";
-  src: url("../../../../../assets/fonts-new/montserrat-regular-webfont.woff"),
-    url("../../../../../assets/fonts-new/montserrat-regular-webfont.woff2");
-}
-
-body[dir="rtl"] .Addchart {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
-}
-
 /* select by default class */
 
 .verification-email-modal-title {
   font-size: calc(35px - 20%) !important;
   color: #6172d6;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
 }
 body[dir="rtl"] .verification-email-modal-title {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 .allow-limit-modal-title {
   margin: 20px 0;
   font-size: 18px !important;
   display: flex;
   justify-content: center;
-  font-family: "MONTSERRATSEMIBOLD";
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .allow-limit-modal-title {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .verification-email-modal-paragraph {
   margin-top: -20px !important;
   margin-bottom: 40px;
   font-size: 14px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .verification-email-modal-paragraph {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 .Ok-modal-btn {
   width: 119px !important;
@@ -48,12 +38,12 @@ body[dir="rtl"] .verification-email-modal-paragraph {
   color: #fff !important;
   border: none;
   margin-bottom: 20px !important;
-  font-family: "MontserratMedium" !important;
+  font-weight: 500 !important;
   font-size: 12px !important;
 }
 
 body[dir="rtl"] .Ok-modal-btn {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .Ok-modal-btn:hover {
@@ -64,7 +54,7 @@ body[dir="rtl"] .Ok-modal-btn {
   background-color: #6172d6 !important;
   color: #fff !important;
   margin-bottom: 20px !important;
-  font-family: "MontserratMedium" !important;
+  font-weight: 500 !important;
   font-size: 12px !important;
 }
 
@@ -87,7 +77,7 @@ body[dir="rtl"] .Ok-modal-btn {
   border-color: #e1e1e1 !important;
 }
 body[dir="rtl"] .formcontrol-name-fieldssss {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 .formcontrol-name-fieldssss:focus {
   border: 1px solid #e1e1e1 !important;
@@ -97,10 +87,10 @@ body[dir="rtl"] .formcontrol-name-fieldssss {
 
 .formcontrol-name-fieldssss[placeholder] {
   font-size: 12px !important;
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
 }
 body[dir="rtl"] .formcontrol-name-fieldssss[placeholder] {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 .formcontrol-Phone-Input-Textfield {
   margin-top: 9px;
@@ -119,15 +109,15 @@ body[dir="rtl"] .formcontrol-name-fieldssss[placeholder] {
 
 .formcontrol-Phone-Input-Textfield[placeholder] {
   font-size: 12px !important;
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
 }
 body[dir="rtl"] .formcontrol-Phone-Input-Textfield[placeholder] {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 div#react-select-2-placeholder {
   font-size: 12px !important;
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
 }
 
 .formcontrol-Phone-field {
@@ -164,14 +154,14 @@ body[dir="rtl"] .AddProgressBar {
 
 .labelChart-Title {
   font-size: 14px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   color: #5a5a5a;
   margin-left: 77px;
 }
 
 body[dir="rtl"] .labelChart-Title {
   font-size: 14px !important;
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
   color: #5a5a5a;
   margin-left: 0 !important;
   margin-right: 77px !important;
@@ -179,20 +169,20 @@ body[dir="rtl"] .labelChart-Title {
 
 .Total-labelChart-Title {
   font-size: 14px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   color: #5a5a5a;
 }
 
 .Admin-labelChart-Title {
   font-size: 14px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   color: #5a5a5a;
   margin-left: 77px;
 }
 
 body[dir="rtl"] .Admin-labelChart-Title {
   font-size: 14px !important;
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
   color: #5a5a5a;
   margin-left: 0 !important;
   margin-right: 77px !important;
@@ -200,41 +190,41 @@ body[dir="rtl"] .Admin-labelChart-Title {
 
 .Executive-labelChart-Title {
   font-size: 14px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   color: #5a5a5a;
 }
 
 .labelChart-Number {
   font-size: 14px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   color: #5a5a5a;
 }
 body[dir="rtl"] .labelChart-Number {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 .Executive-labelChart-Number {
   font-size: 14px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   color: #5a5a5a;
 }
 
 .Admin-labelChart-Number {
   font-size: 14px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   color: #5a5a5a;
 }
 body[dir="rtl"] .Admin-labelChart-Number {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 .labelChart-Remain-Title {
   font-size: 14px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   color: red !important;
 }
 
 .labelChart-RemainNum {
   font-size: 14px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   margin-bottom: 25px;
   color: red !important;
 }
@@ -260,10 +250,9 @@ body[dir="rtl"] .borderLine-title {
   font-size: calc(38px - 50%) !important;
   color: #6172d6 !important;
   font-weight: 600 !important;
-  font-family: "MontserratSemiBold-600" !important;
 }
 body[dir="rtl"] .addUser-Heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 .errorMessage {
   margin: 0;
@@ -273,7 +262,7 @@ body[dir="rtl"] .addUser-Heading {
 }
 
 body[dir="rtl"] .errorMessage {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .errorMessage_hidden {
@@ -284,7 +273,7 @@ body[dir="rtl"] .errorMessage {
 }
 
 body[dir="rtl"] .errorMessage_hidden {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .add-User-Reset-btn {
@@ -293,13 +282,13 @@ body[dir="rtl"] .errorMessage_hidden {
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
   background-color: #fff !important;
-  font-family: "MontserratMedium" !important;
+  font-weight: 500 !important;
   font-size: 12px !important;
   color: #5a5a5a !important;
 }
 
 body[dir="rtl"] .add-User-Reset-btn {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .add-User-Reset-btn:hover {
@@ -315,12 +304,12 @@ body[dir="rtl"] .add-User-Reset-btn {
   border: 1px solid #6172d6 !important;
   background-color: #6172d6 !important;
   color: #fff !important;
-  font-family: "MontserratMedium" !important;
+  font-weight: 500 !important;
   font-size: 12px !important;
 }
 
 body[dir="rtl"] .Add-User-Create {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .Add-User-Create[disabled] {
@@ -328,7 +317,7 @@ body[dir="rtl"] .Add-User-Create {
 }
 
 body[dir="rtl"] .Add-User-Create[disabled] {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .Add-User-Create:hover {
@@ -505,13 +494,11 @@ button#rfs-btn {
 
 .label-styling {
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold" !important;
   font-weight: 600 !important;
   font-size: 10px !important;
 }
 
 .associates-text {
-  font-family: "MontserratRegular";
   font-weight: 600;
   font-size: 16px;
   line-height: 20px;

@@ -52,10 +52,10 @@
   border: 1px solid #e1e1e1 !important;
   color: #000;
   font-size: 14px;
-  font-family: "MontserratMedium";
+  font-weight: 500;
 }
 body[dir="rtl"] .organization-level-resetBtn {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500;
 }
 .organization-level-resetBtn:hover {
   background: #fff !important;
@@ -69,12 +69,13 @@ body[dir="rtl"] .organization-level-resetBtn {
   border-radius: 4px;
   color: #fff;
   border: none;
-  font-family: "MontserratMedium";
+  font-weight: 500;
+
   font-size: 14px;
 }
 
 body[dir="rtl"] .organization-level-updateBtn {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500;
 }
 
 .organization-level-updateBtn:hover,
@@ -94,15 +95,15 @@ body[dir="rtl"] .organization-level-updateBtn {
   color: #6172d6;
   font-size: calc(34px - 20%);
   margin: 20px 0 0px 0px;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 body[dir="rtl"] .settingPage_title {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .setting-row {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400;
 }
 
 .bottom-line {
