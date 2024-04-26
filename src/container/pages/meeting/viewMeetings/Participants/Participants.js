@@ -137,120 +137,160 @@ const Participants = ({
     dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
   };
 
-  const ParticipantsViewColoumn = [
-    {
-      title: t("Name"),
-      dataIndex: "userName",
-      key: "userName",
-      align: "left",
-      width: "260px",
-    },
-
-    {
-      title: t("Email"),
-      dataIndex: "email",
-      key: "email",
-      align: "left",
-      width: "280px",
-    },
-    {
-      title: t("Participant-title"),
-      dataIndex: "Title",
-      key: "Title",
-      align: "center",
-      width: "300px",
-    },
-
-    {
-      title: t("Role"),
-      dataIndex: "participantRole",
-      key: "participantRole",
-      align: "left",
-      width: "249px",
-      render: (text) => (
-        <label className="column-boldness">{text.participantRole}</label>
-      ),
-    },
-    {
-      title: t("RSVP"),
-      dataIndex: "attendeeAvailability",
-      key: "attendeeAvailability",
-      align: "left",
-      width: "120px",
-      render: (text, record) => {
-        if (record.attendeeAvailability === 1) {
-          return (
-            <Tooltip placement="bottomLeft" title={t("Response-awaited")}>
-              <img
-                draggable={false}
-                src={AwaitingResponse}
-                height="30px"
-                width="30px"
-                alt=""
-              />
-            </Tooltip>
-          );
-        } else if (record.attendeeAvailability === 2) {
-          return (
-            <Tooltip placement="bottomLeft" title={t("Accepted")}>
-              <img
-                draggable={false}
-                src={thumbsup}
-                height="30px"
-                width="30px"
-                alt=""
-              />
-            </Tooltip>
-          );
-        } else if (record.attendeeAvailability === 3) {
-          return (
-            <Tooltip placement="bottomLeft" title={t("Rejected")}>
-              <img
-                draggable={false}
-                src={thumbsdown}
-                height="30px"
-                width="30px"
-                alt=""
-              />
-            </Tooltip>
-          );
-        } else if (record.attendeeAvailability === 4) {
-          return (
-            <img
-              draggable={false}
-              src={TentativelyAccepted}
-              height="30px"
-              width="30px"
-              alt=""
-            />
-          );
-        }
+  let allowRSVPValue =
+    NewMeetingreducer?.getAllMeetingDetails?.advanceMeetingDetails?.allowRSVP;
+  if (allowRSVPValue === true) {
+    var ParticipantsViewColoumn = [
+      {
+        title: t("Name"),
+        dataIndex: "userName",
+        key: "userName",
+        align: "left",
+        width: "260px",
       },
-      // render: (text, record) => {
-      //   if (record.isRSVP === true) {
-      //     return (
-      //       <img
-      //         draggable={false}
-      //         src={thumbsup}
-      //         height="30px"
-      //         width="30px"
-      //         alt=""
-      //       />
-      //     );
-      //   } else {
-      //     return (
-      //       <img
-      //         draggable={false}
-      //         src={thumbsdown}
-      //         height="30px"
-      //         width="30px"
-      //         alt=""
-      //       />
-      //     );
-      //   }
-      // },
-    },
-  ];
+
+      {
+        title: t("Email"),
+        dataIndex: "email",
+        key: "email",
+        align: "left",
+        width: "280px",
+      },
+      {
+        title: t("Participant-title"),
+        dataIndex: "Title",
+        key: "Title",
+        align: "center",
+        width: "300px",
+      },
+
+      {
+        title: t("Role"),
+        dataIndex: "participantRole",
+        key: "participantRole",
+        align: "left",
+        width: "249px",
+        render: (text) => (
+          <label className="column-boldness">{text.participantRole}</label>
+        ),
+      },
+      {
+        title: t("RSVP"),
+        dataIndex: "attendeeAvailability",
+        key: "attendeeAvailability",
+        align: "left",
+        width: "120px",
+        render: (text, record) => {
+          if (record.attendeeAvailability === 1) {
+            return (
+              <Tooltip placement="bottomLeft" title={t("Response-awaited")}>
+                <img
+                  draggable={false}
+                  src={AwaitingResponse}
+                  height="30px"
+                  width="30px"
+                  alt=""
+                />
+              </Tooltip>
+            );
+          } else if (record.attendeeAvailability === 2) {
+            return (
+              <Tooltip placement="bottomLeft" title={t("Accepted")}>
+                <img
+                  draggable={false}
+                  src={thumbsup}
+                  height="30px"
+                  width="30px"
+                  alt=""
+                />
+              </Tooltip>
+            );
+          } else if (record.attendeeAvailability === 3) {
+            return (
+              <Tooltip placement="bottomLeft" title={t("Rejected")}>
+                <img
+                  draggable={false}
+                  src={thumbsdown}
+                  height="30px"
+                  width="30px"
+                  alt=""
+                />
+              </Tooltip>
+            );
+          } else if (record.attendeeAvailability === 4) {
+            return (
+              <img
+                draggable={false}
+                src={TentativelyAccepted}
+                height="30px"
+                width="30px"
+                alt=""
+              />
+            );
+          }
+        },
+        // render: (text, record) => {
+        //   if (record.isRSVP === true) {
+        //     return (
+        //       <img
+        //         draggable={false}
+        //         src={thumbsup}
+        //         height="30px"
+        //         width="30px"
+        //         alt=""
+        //       />
+        //     );
+        //   } else {
+        //     return (
+        //       <img
+        //         draggable={false}
+        //         src={thumbsdown}
+        //         height="30px"
+        //         width="30px"
+        //         alt=""
+        //       />
+        //     );
+        //   }
+        // },
+      },
+    ];
+  } else {
+    var ParticipantsViewColoumn = [
+      {
+        title: t("Name"),
+        dataIndex: "userName",
+        key: "userName",
+        align: "left",
+        width: "260px",
+      },
+
+      {
+        title: t("Email"),
+        dataIndex: "email",
+        key: "email",
+        align: "left",
+        width: "280px",
+      },
+      {
+        title: t("Participant-title"),
+        dataIndex: "Title",
+        key: "Title",
+        align: "center",
+        width: "300px",
+      },
+
+      {
+        title: t("Role"),
+        dataIndex: "participantRole",
+        key: "participantRole",
+        align: "left",
+        width: "249px",
+        render: (text) => (
+          <label className="column-boldness">{text.participantRole}</label>
+        ),
+      },
+    ];
+  }
 
   useEffect(() => {
     if (

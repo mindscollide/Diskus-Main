@@ -129,152 +129,229 @@ const AgendaContributers = ({
     // setMeetingDetails(false);
   };
 
-  const AgendaContributorViewColoumns = [
-    {
-      title: t("Name"),
-      dataIndex: "userName",
-      key: "userName",
-      align: "left",
-      width: "300px",
-    },
+  let allowRSVPValue =
+    NewMeetingreducer?.getAllMeetingDetails?.advanceMeetingDetails?.allowRSVP;
 
-    {
-      title: t("Email"),
-      dataIndex: "email",
-      key: "email",
-      align: "left",
-      width: "400px",
-    },
-    {
-      title: t("Contributor-title"),
-      dataIndex: "Title",
-      key: "Title",
-      align: "left",
-      width: "300px",
-    },
-
-    {
-      title: "RSVP",
-      dataIndex: "attendeeAvailability",
-      key: "attendeeAvailability",
-      align: "left",
-      width: "120px",
-      render: (text, record) => {
-        if (record.attendeeAvailability === 1) {
-          return (
-            <img
-              draggable={false}
-              src={AwaitingResponse}
-              height="30px"
-              width="30px"
-              alt=""
-            />
-          );
-        } else if (record.attendeeAvailability === 2) {
-          return (
-            <img
-              draggable={false}
-              src={thumbsup}
-              height="30px"
-              width="30px"
-              alt=""
-            />
-          );
-        } else if (record.attendeeAvailability === 3) {
-          return (
-            <img
-              draggable={false}
-              src={thumbsdown}
-              height="30px"
-              width="30px"
-              alt=""
-            />
-          );
-        } else if (record.attendeeAvailability === 4) {
-          return (
-            <img
-              draggable={false}
-              src={TentativelyAccepted}
-              height="30px"
-              width="30px"
-              alt=""
-            />
-          );
-        }
+  if (allowRSVPValue === true) {
+    var AgendaContributorViewColoumns = [
+      {
+        title: t("Name"),
+        dataIndex: "userName",
+        key: "userName",
+        align: "left",
+        width: "300px",
       },
-      // render: (text, record) => {
-      //   if (record.isRSVP === true) {
-      //     return (
-      //       <img
-      //         draggable={false}
-      //         src={thumbsup}
-      //         height="30px"
-      //         width="30px"
-      //         alt=""
-      //       />
-      //     );
-      //   } else {
-      //     return (
-      //       <img
-      //         draggable={false}
-      //         src={thumbsdown}
-      //         height="30px"
-      //         width="30px"
-      //         alt=""
-      //       />
-      //     );
-      //   }
-      // },
-    },
 
-    {
-      title: t("Notification"),
-      dataIndex: "isContributedNotified",
-      key: "isContributedNotified",
-      width: "180px",
-      render: (text, record) => {
-        if (record.isContributedNotified === true) {
-          return (
-            <Row>
-              <Col
-                lg={7}
-                md={7}
-                sm={7}
-                className="d-flex justify-content-center"
-              >
-                <img
-                  draggable={false}
-                  src={greenMailIcon}
-                  height="30px"
-                  width="30px"
-                  alt=""
-                />
-              </Col>
-            </Row>
-          );
-        } else if (record.isContributedNotified === false) {
-          return (
-            <Row>
-              <Col
-                lg={7}
-                md={7}
-                sm={7}
-                className="d-flex justify-content-center"
-              >
-                <img
-                  draggable={false}
-                  src={redMailIcon}
-                  height="30px"
-                  width="30px"
-                  alt=""
-                />
-              </Col>
-            </Row>
-          );
-        }
+      {
+        title: t("Email"),
+        dataIndex: "email",
+        key: "email",
+        align: "left",
+        width: "400px",
       },
-    },
-  ];
+      {
+        title: t("Contributor-title"),
+        dataIndex: "Title",
+        key: "Title",
+        align: "left",
+        width: "300px",
+      },
+
+      {
+        title: "RSVP",
+        dataIndex: "attendeeAvailability",
+        key: "attendeeAvailability",
+        align: "left",
+        width: "120px",
+        render: (text, record) => {
+          if (record.attendeeAvailability === 1) {
+            return (
+              <img
+                draggable={false}
+                src={AwaitingResponse}
+                height="30px"
+                width="30px"
+                alt=""
+              />
+            );
+          } else if (record.attendeeAvailability === 2) {
+            return (
+              <img
+                draggable={false}
+                src={thumbsup}
+                height="30px"
+                width="30px"
+                alt=""
+              />
+            );
+          } else if (record.attendeeAvailability === 3) {
+            return (
+              <img
+                draggable={false}
+                src={thumbsdown}
+                height="30px"
+                width="30px"
+                alt=""
+              />
+            );
+          } else if (record.attendeeAvailability === 4) {
+            return (
+              <img
+                draggable={false}
+                src={TentativelyAccepted}
+                height="30px"
+                width="30px"
+                alt=""
+              />
+            );
+          }
+        },
+        // render: (text, record) => {
+        //   if (record.isRSVP === true) {
+        //     return (
+        //       <img
+        //         draggable={false}
+        //         src={thumbsup}
+        //         height="30px"
+        //         width="30px"
+        //         alt=""
+        //       />
+        //     );
+        //   } else {
+        //     return (
+        //       <img
+        //         draggable={false}
+        //         src={thumbsdown}
+        //         height="30px"
+        //         width="30px"
+        //         alt=""
+        //       />
+        //     );
+        //   }
+        // },
+      },
+
+      {
+        title: t("Notification"),
+        dataIndex: "isContributedNotified",
+        key: "isContributedNotified",
+        width: "180px",
+        render: (text, record) => {
+          if (record.isContributedNotified === true) {
+            return (
+              <Row>
+                <Col
+                  lg={7}
+                  md={7}
+                  sm={7}
+                  className="d-flex justify-content-center"
+                >
+                  <img
+                    draggable={false}
+                    src={greenMailIcon}
+                    height="30px"
+                    width="30px"
+                    alt=""
+                  />
+                </Col>
+              </Row>
+            );
+          } else if (record.isContributedNotified === false) {
+            return (
+              <Row>
+                <Col
+                  lg={7}
+                  md={7}
+                  sm={7}
+                  className="d-flex justify-content-center"
+                >
+                  <img
+                    draggable={false}
+                    src={redMailIcon}
+                    height="30px"
+                    width="30px"
+                    alt=""
+                  />
+                </Col>
+              </Row>
+            );
+          }
+        },
+      },
+    ];
+  } else {
+    var AgendaContributorViewColoumns = [
+      {
+        title: t("Name"),
+        dataIndex: "userName",
+        key: "userName",
+        align: "left",
+        width: "300px",
+      },
+
+      {
+        title: t("Email"),
+        dataIndex: "email",
+        key: "email",
+        align: "left",
+        width: "400px",
+      },
+      {
+        title: t("Contributor-title"),
+        dataIndex: "Title",
+        key: "Title",
+        align: "left",
+        width: "300px",
+      },
+      {
+        title: t("Notification"),
+        dataIndex: "isContributedNotified",
+        key: "isContributedNotified",
+        width: "180px",
+        render: (text, record) => {
+          if (record.isContributedNotified === true) {
+            return (
+              <Row>
+                <Col
+                  lg={7}
+                  md={7}
+                  sm={7}
+                  className="d-flex justify-content-center"
+                >
+                  <img
+                    draggable={false}
+                    src={greenMailIcon}
+                    height="30px"
+                    width="30px"
+                    alt=""
+                  />
+                </Col>
+              </Row>
+            );
+          } else if (record.isContributedNotified === false) {
+            return (
+              <Row>
+                <Col
+                  lg={7}
+                  md={7}
+                  sm={7}
+                  className="d-flex justify-content-center"
+                >
+                  <img
+                    draggable={false}
+                    src={redMailIcon}
+                    height="30px"
+                    width="30px"
+                    alt=""
+                  />
+                </Col>
+              </Row>
+            );
+          }
+        },
+      },
+    ];
+  }
 
   useEffect(() => {
     if (
