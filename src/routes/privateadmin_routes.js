@@ -24,17 +24,14 @@ const PrivateAdminRoute = () => {
       ? true
       : false
   );
-  // console.log(
-  //   "PrivateAdmin",
-  //   twoFaAproval
-  // );
-  // console.log(
-  //   "PrivateAdmin",
-  //   Blur,
-  //   currentUser,
-  //   RoleID === "1" || RoleID === "2",
-  //   Blur === null
-  // );
+console.log("twoFaAproval",TwoFA)
+console.log("twoFaAproval",typeof TwoFA)
+console.log("twoFaAproval",TowApproval)
+console.log("twoFaAproval",typeof TowApproval)
+console.log("twoFaAproval",twoFaAproval)
+console.log("twoFaAproval",typeof twoFaAproval)
+console.log("twoFaAproval",currentUser)
+console.log("twoFaAproval",typeof currentUser)
   return currentUser && token && twoFaAproval ? (
     <Outlet />
   ) : (

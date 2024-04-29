@@ -2261,7 +2261,7 @@ const UserSettings = () => {
           </Col>
         </Row>
         <Row>
-          <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
+          <Col lg={12} md={12} sm={12} className="d-flex justify-content-end mb-2">
             <Button
               text={t("Update")}
               className={styles["New_settings_Update_Button"]}

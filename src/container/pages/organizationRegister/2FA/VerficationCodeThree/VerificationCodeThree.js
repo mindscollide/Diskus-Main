@@ -130,6 +130,7 @@ const VerificationCodeThree = () => {
       }
     } else {
       localStorage.setItem("TowApproval", false);
+      console.log("TowApproval");
       navigate("/SigninDenied/");
     }
   };

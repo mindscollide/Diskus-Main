@@ -2784,7 +2784,7 @@ input#Participant {
   padding: 0px 8px !important;
   height: 15px;
   font-weight: 500;
-    font-family: 'Montserrat';
+  font-family: "Montserrat";
 }
 
 input#Participant::placeholder {
@@ -3117,6 +3117,7 @@ a.icon.nav-link.active i.icon-calendar:before {
 a.ant-picker-now-btn:hover {
   color: #6172d6 !important;
 }
+
 /* a.dropdown-item.dropdown-item {
   line-height: 36px ;
 } */
@@ -7447,6 +7448,7 @@ tr.ant-table-row.ant-table-row-level-0.UpgradePakageDetails:last-child:hover {
 .border-none.dropdown button {
   border: none !important;
 }
+
 .ant-table-thead > tr > th {
   font-weight: 600 !important;
 }

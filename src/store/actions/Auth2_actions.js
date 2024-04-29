@@ -1006,7 +1006,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
           // no action
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_04:
-          clearLocalStorageAtloginresponce(2);
+          clearLocalStorageAtloginresponce(2, navigate);
 
           dispatch(enterPasswordFail(t("Account-is-blocked")));
           // no action
@@ -1050,27 +1050,23 @@ const enterPasswordvalidation = (value, navigate, t) => {
           // packege detail ki bhi api hit honi hy
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_09:
-          if (
-            JSON.parse(response.data.responseResult.roleId) === (3 || 4 || 1)
-          ) {
-            dispatch(
-              enterPasswordSuccess(
-                response.data.responseResult,
-                t("Password-verified-and-user-is-new-and-2FA-is-enabled")
-              )
-            );
-            localStorage.setItem("2fa", true);
-            mqttConnection(response.data.responseResult.authToken.userID);
-            await dispatch(
-              TwoFaAuthenticate(
-                t,
-                response.data.responseResult.organizationID,
-                data.UserID,
-                navigate
-              )
-            );
-            clearLocalStorageAtloginresponce(1);
-          }
+          dispatch(
+            enterPasswordSuccess(
+              response.data.responseResult,
+              t("Password-verified-and-user-is-new-and-2FA-is-enabled")
+            )
+          );
+          localStorage.setItem("2fa", true);
+          mqttConnection(response.data.responseResult.authToken.userID);
+          await dispatch(
+            TwoFaAuthenticate(
+              t,
+              response.data.responseResult.organizationID,
+              data.UserID,
+              navigate
+            )
+          );
+          clearLocalStorageAtloginresponce(3);
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_10:
           if (response.data.responseResult.hasAdminRights) {
@@ -2270,27 +2266,27 @@ const createPasswordAction = (value, navigate, t) => {
           break;
         case USERSPASSWORDCREATION.VERIFICATION_04:
           //2FA is enabled.
-          if (
-            JSON.parse(response.data.responseResult.roleId) === (3 || 4 || 1)
-          ) {
-            dispatch(
-              createPasswordSuccess(
-                response.data.responseResult,
-                t("Password-created-and-2FA-is-enabled")
-              )
-            );
-            localStorage.setItem("2fa", true);
-            mqttConnection(response.data.responseResult.authToken.userID);
-            await dispatch(
-              TwoFaAuthenticate(
-                t,
-                response.data.responseResult.organizationID,
-                data.UserID,
-                navigate
-              )
-            );
-            clearLocalStorageAtloginresponce(1);
-          }
+          // if (
+          //   JSON.parse(response.data.responseResult.roleId) === (3 || 4 || 1)
+          // ) {
+          dispatch(
+            createPasswordSuccess(
+              response.data.responseResult,
+              t("Password-created-and-2FA-is-enabled")
+            )
+          );
+          localStorage.setItem("2fa", true);
+          mqttConnection(response.data.responseResult.authToken.userID);
+          await dispatch(
+            TwoFaAuthenticate(
+              t,
+              response.data.responseResult.organizationID,
+              data.UserID,
+              navigate
+            )
+          );
+          clearLocalStorageAtloginresponce(1);
+          // }
           // no action
           break;
         case USERSPASSWORDCREATION.VERIFICATION_05:

@@ -655,6 +655,7 @@ body[dir="rtl"] .heading_button {
 /* Change text color of .rbc-show-more when .rbc-day-bg is hovered */
 .rbc-show-more {
   color: #5a5a5a !important; /* Use !important to ensure the style is applied */
+  font-weight: 600;
 }
 .rbc-button-link {
   color: #5a5a5a !important; /* Use !important to ensure the style is applied */
