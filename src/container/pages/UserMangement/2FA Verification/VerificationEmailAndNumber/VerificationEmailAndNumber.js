@@ -25,6 +25,7 @@ import {
   verificationTwoFacOtp,
 } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
 import { cleareMessage } from "../../../../../store/actions/Auth2_actions";
+import { LoginFlowRoutes } from "../../../../../store/actions/UserManagementActions";
 const VerificationEmailAndNumber = () => {
   const { t, i18n } = useTranslation();
 
@@ -224,6 +225,11 @@ const VerificationEmailAndNumber = () => {
     }
   }, [Helper.socket]);
 
+  const handleGoBackButton = () => {
+    localStorage.setItem("LoginFlowPageRoute", 4);
+    dispatch(LoginFlowRoutes(4));
+  };
+
   return (
     <div>
       <Container fluid className={styles["VerifyCodeOneOverflow"]}>
@@ -343,7 +349,7 @@ const VerificationEmailAndNumber = () => {
                     lg={12}
                     className={styles["Go_back_link_VerifyCodeOne"]}
                   >
-                    <Link
+                    {/* <Link
                       to={
                         parseInt(GobackSelection) === 1
                           ? "/twofac"
@@ -355,7 +361,14 @@ const VerificationEmailAndNumber = () => {
                       }
                     >
                       {t("Go-back")}
-                    </Link>
+                    </Link> */}
+                    <span
+                      className="d-flex justify-content-center cursor-pointer"
+                      onClick={handleGoBackButton}
+                    >
+                      {" "}
+                      {t("Go-back")}
+                    </span>
                   </Col>
                 </Row>
               </Col>

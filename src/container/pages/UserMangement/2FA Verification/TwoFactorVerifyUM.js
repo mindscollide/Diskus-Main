@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { sendTwoFacAction } from "../../../../store/actions/TwoFactorsAuthenticate_actions";
 import Helper from "../../../../commen/functions/history_logout";
 import { mqttConnection } from "../../../../commen/functions/mqttconnection";
+import { LoginFlowRoutes } from "../../../../store/actions/UserManagementActions";
 const TwoFactorVerifyUM = () => {
   const navigate = useNavigate();
 
@@ -89,6 +90,13 @@ const TwoFactorVerifyUM = () => {
       mqttConnection(userID);
     }
   }, [Helper.socket]);
+
+  //handle Go Back Button
+
+  const handleGoBackButton = () => {
+    localStorage.setItem("LoginFlowPageRoute", 2);
+    dispatch(LoginFlowRoutes(2));
+  };
 
   return (
     <>
@@ -251,7 +259,9 @@ const TwoFactorVerifyUM = () => {
                   lg={12}
                   className={styles["forogt_email_link"]}
                 >
-                  <Link to="/">{t("Go-back")}</Link>
+                  <span className="cursor-pointer" onClick={handleGoBackButton}>
+                    {t("Go-back")}
+                  </span>
                 </Col>
               </Row>
             </Paper>

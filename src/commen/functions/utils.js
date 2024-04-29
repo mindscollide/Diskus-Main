@@ -220,6 +220,7 @@ export async function handleLoginResponse(response) {
           { name: "ManageUsers", id: 203 },
           { name: "PackageDetailUMupgrade", id: 28 },
           { name: "PaymentHistory", id: 218 },
+          { name: "changePassword", id: 220 },
         ]
       : [];
     if (response.isTrial) {
