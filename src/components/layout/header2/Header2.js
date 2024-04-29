@@ -902,7 +902,7 @@ const Header2 = () => {
                 sm={12}
                 className="d-flex justify-content-center"
               >
-                <label className="MontserratSemiBold logout-confirmation-label">
+                <label className=" logout-confirmation-label">
                   {t("Are-you-sure-you-want-to-logout")}
                 </label>
               </Col>
@@ -921,7 +921,7 @@ const Header2 = () => {
                   className={"text-center" + " " + currentLanguage}
                 >
                   <Button
-                    className="MontserratSemiBold Cancel-btn"
+                    className=" Cancel-btn"
                     text={t("Cancel")}
                     onClick={handleCancel}
                   />
@@ -933,7 +933,7 @@ const Header2 = () => {
                   className={"text-center" + " " + currentLanguage}
                 >
                   <Button
-                    className="MontserratSemiBold Ok-Successfull-btn"
+                    className=" Ok-Successfull-btn"
                     text={t("Logout")}
                     onClick={logoutFunction}
                   />

@@ -150,7 +150,7 @@ const updateFileandFolderDetailsApi = (navigate, t, Data) => {
             dispatch(
               updateFileandFolderDetails_Success(
                 response.data.responseResult,
-                t("Data-updated")
+                t("Information-saved")
               )
             );
           } else if (

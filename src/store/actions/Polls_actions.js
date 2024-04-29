@@ -849,7 +849,10 @@ const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
                 t("Record-found")
               )
             );
-            setEditPolls(true);
+            if (typeof setEditPolls === "function") {
+              setEditPolls(true);
+            }
+
             dispatch(showunsavedEditPollsMeetings(false));
           } else if (
             response.data.responseResult.responseMessage

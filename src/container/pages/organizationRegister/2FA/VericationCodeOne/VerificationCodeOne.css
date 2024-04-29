@@ -79,6 +79,8 @@ body[dir="rtl"] .subscribNow_button_EmailVerify {
   height: 13px;
   color: #f16b6b;
   visibility: visible;
+  font-weight: 600 !important;
+
 }
 
 .errorMessage-OTP_hidden {

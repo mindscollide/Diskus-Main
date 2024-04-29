@@ -437,7 +437,7 @@ const EmailValidation = () => {
                             onChange={rememberChangeEmail}
                             className={styles["RememberEmail"]}
                           />
-                          <span className="Remember_checkbox_styles Arabicstyles_Subtotal_Not_include_taxes">
+                          <span className="Remember_checkbox_styles fw-500 Arabicstyles_Subtotal_Not_include_taxes">
                             {t("Remeber-email")}
                           </span>
                         </Col>

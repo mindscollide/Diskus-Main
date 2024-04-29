@@ -952,6 +952,7 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
   color: #fff !important;
   border: none;
   margin-bottom: 20px !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .Ok-Successfull-btn {
@@ -1406,5 +1407,8 @@ body[dir="rtl"] svg.DatePickerIcon {
   border: none;
   border-radius: 2px !important;
   color: #81db86 !important;
-  font-weight:500;
+  font-weight: 500;
+}
+.status_value {
+  font-weight: 600;
 }

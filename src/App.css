@@ -2771,6 +2771,8 @@ a.icon.nav-link.active i {
 input#Participant {
   padding: 0px 8px !important;
   height: 15px;
+  font-weight: 500;
+  font-family: "Montserrat";
 }
 
 input#Participant::placeholder {
@@ -3826,7 +3828,7 @@ label.organization-labels {
 }
 
 body[dir="rtl"] label.organization-labels {
- font-weight: 400;
+  font-weight: 400;
 }
 
 .css-1s2u09g-control {
@@ -3972,7 +3974,7 @@ body[dir="rtl"] .Edit-Meetings-Modal.modal-header button.btn-close {
 }
 
 body[dir="rtl"]
- .text-start.color-949494.font-11.p-0.col-lg-12.col-md-12.col-sm-12 {
+  .text-start.color-949494.font-11.p-0.col-lg-12.col-md-12.col-sm-12 {
   text-align: right !important;
 }
 
@@ -4008,7 +4010,6 @@ body[dir="rtl"] .radio-cancelsub-modal label.form-check-label {
 
 body[dir="rtl"] .font-sizepaymentmethodcaption {
   font-weight: 500;
-
 }
 
 .border-radius-4 {
@@ -4243,7 +4244,6 @@ h1.todo-Heading.color-5a5a5a {
   top: 5px;
   color: #5a5a5a;
   font-weight: 600;
-
 }
 
 body[dir="rtl"] .iconForDatePicker.margin-right-20 {
@@ -5104,7 +5104,6 @@ body[dir="rtl"] .ql-editor.ql-blank {
 
 body[dir="rtl"] .select-dropdowns-height .css-13cymwt-control {
   font-weight: 600;
-
 }
 
 .searchResult_Document__control {
@@ -5491,58 +5490,47 @@ span.package-icon-style {
 body[dir="rtl"] .SignupOrganization input.form-control {
   font-size: 13px !important;
   font-weight: 500;
-
 }
 
 body[dir="rtl"] .Arabicstyles {
   font-weight: 700;
-
 }
 
 body[dir="rtl"] .Arabicstyles_Subtotal_Not_include_taxes {
-  font-weight:500;
-
+  font-weight: 500;
 }
 
 body[dir="rtl"] .Saved_money_Tagline {
   font-weight: 400;
-
 }
 
 body[dir="rtl"] .FontArabicRegular {
   font-weight: 400;
-
 }
 
 body[dir="rtl"] .ant-picker-now-btn {
   font-weight: 400;
-
 }
 
 body[dir="rtl"] .ant-btn-sm {
   font-weight: 400;
-
 }
 
 body[dir="rtl"] .ant-btn-link {
   font-weight: 400;
-
 }
 
 /* Calender */
 body[dir="rtl"] .rbc-button-link {
   font-weight: 600;
-
 }
 
 body[dir="rtl"] .ant-btn-primary {
   font-weight: 400;
-
 }
 
 body[dir="rtl"] .modaltodolist-attachment-text {
-  font-weight:400;
-
+  font-weight: 400;
 }
 
 .ant-table-body::-webkit-scrollbar {
@@ -5560,7 +5548,6 @@ body[dir="rtl"] .modaltodolist-attachment-text {
 
 body[dir="rtl"] .FontArabicMedium {
   font-weight: 500;
-
 }
 
 body[dir="rtl"] .create-committee-fields input.form-control {
@@ -5593,27 +5580,23 @@ body[dir="rtl"] .group-fields input.form-control {
 
 body[dir="rtl"] .modalNote-fields input.form-control {
   font-weight: 600;
-
 }
 
 .ql-container {
   font-weight: 600;
-
+  font-family: "Montserrat" !important;
 }
 
 body[dir="rtl"] .ql-container {
   font-weight: 600;
-
 }
 
 body[dir="rtl"] .todolist-modal-fields input.form-control {
   font-weight: 500;
-
 }
 
 body[dir="rtl"] .ant-result-subtitle {
   font-weight: 400;
-
 }
 
 /* Dragger Uploder  */
@@ -6347,6 +6330,7 @@ input[type="time"]::-webkit-clear-button {
 /* status Slector TodoList Css */
 .custom-class span.ant-select-selection-item {
   margin-left: 12px !important;
+  font-weight: 600;
 }
 
 .td.ant-table-column-sort {
@@ -6794,7 +6778,6 @@ body[dir="rtl"] span.separatorSubAgendaHeight {
 .ant-radio-group.ant-radio-group-outline.AgendaSelectGroup
   label.ant-radio-wrapper.ant-radio-wrapper-checked
   span {
-
   font-style: normal !important;
   font-weight: 500 !important;
   font-size: 13px !important;
@@ -6971,7 +6954,7 @@ td.ant-table-cell.minutesParticipant {
 .ant-radio-group.ant-radio-group-outline.AnotherRadioSelect
   label.ant-radio-wrapper.ant-radio-wrapper-checked
   span {
-    font-weight: 500;
+  font-weight: 500;
 
   font-style: normal !important;
   /* font-weight: 600 !important; */

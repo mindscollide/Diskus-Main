@@ -282,29 +282,6 @@ body[dir="rtl"] .RedCross_Icon_class_Main_agenda {
   height: 42px !important;
 }
 
-.TitleFile {
-  overflow: hidden !important;
-  white-space: nowrap !important;
-  text-overflow: ellipsis !important;
-  font-size: 16px !important;
-  color: #5a5a5a !important;
-  display: inline-block !important;
-  width: 180px !important;
-  font-family: "Montserrat" !important;
-  cursor: pointer;
-}
-
-.SubagendaFilesName {
-  overflow: hidden !important;
-  white-space: nowrap !important;
-  text-overflow: ellipsis !important;
-  font-size: 16px !important;
-  color: #5a5a5a !important;
-  display: inline-block !important;
-  width: 180px !important;
-  font-family: "Montserrat" !important;
-}
-
 /* card */
 
 .card {

@@ -131,7 +131,7 @@ const Organizers = ({
   const handleCancelOrganizer = () => {
     dispatch(showCancelModalOrganizers(true));
   };
-  console.log(NewMeetingreducer, "NewMeetingreducerNewMeetingreducer");
+
   const [inputValues, setInputValues] = useState({});
 
   const currentOrganizerData = {
@@ -206,9 +206,9 @@ const Organizers = ({
   };
 
   let allowRSVPValue =
-    NewMeetingreducer?.getAllMeetingDetails?.advanceMeetingDetails?.allowRSVP;
+    MeetingOrganizersReducer?.AllMeetingOrganizersData?.allowRSVP;
 
-  if(allowRSVPValue === true) {
+  if (allowRSVPValue === true) {
     var MeetingColoumns = [
       {
         title: (
@@ -224,9 +224,11 @@ const Organizers = ({
         key: "userName",
         width: "200px",
         align: "left",
-        render: (text) => <label className={styles["Title_desc"]}>{text}</label>,
+        render: (text) => (
+          <label className={styles["Title_desc"]}>{text}</label>
+        ),
       },
-  
+
       {
         title: t("Email"),
         dataIndex: "email",
@@ -289,7 +291,7 @@ const Organizers = ({
           }
         },
       },
-  
+
       {
         dataIndex: "isPrimaryOrganizer",
         key: "isPrimaryOrganizer",
@@ -313,14 +315,14 @@ const Organizers = ({
           </Row>
         ),
       },
-  
+
       {
         title: "RSVP",
         dataIndex: "attendeeAvailability",
         key: "attendeeAvailability",
         width: "120px",
         align: "left",
-  
+
         render: (text, record) => {
           if (record.attendeeAvailability === 1) {
             return (
@@ -365,7 +367,7 @@ const Organizers = ({
           }
         },
       },
-  
+
       {
         title: t("Notification"),
         dataIndex: "isOrganizerNotified",
@@ -447,7 +449,7 @@ const Organizers = ({
         key: "isDeletable",
         width: "120px",
         align: "left",
-  
+
         render: (text, record) => {
           if (record.isDeletable === true) {
             return (
@@ -483,9 +485,11 @@ const Organizers = ({
         key: "userName",
         width: "200px",
         align: "left",
-        render: (text) => <label className={styles["Title_desc"]}>{text}</label>,
+        render: (text) => (
+          <label className={styles["Title_desc"]}>{text}</label>
+        ),
       },
-  
+
       {
         title: t("Email"),
         dataIndex: "email",
@@ -548,7 +552,7 @@ const Organizers = ({
           }
         },
       },
-  
+
       {
         dataIndex: "isPrimaryOrganizer",
         key: "isPrimaryOrganizer",
@@ -572,14 +576,14 @@ const Organizers = ({
           </Row>
         ),
       },
-  
+
       // {
       //   title: "RSVP",
       //   dataIndex: "attendeeAvailability",
       //   key: "attendeeAvailability",
       //   width: "120px",
       //   align: "left",
-  
+
       //   render: (text, record) => {
       //     if (record.attendeeAvailability === 1) {
       //       return (
@@ -624,7 +628,7 @@ const Organizers = ({
       //     }
       //   },
       // },
-  
+
       {
         title: t("Notification"),
         dataIndex: "isOrganizerNotified",
@@ -706,7 +710,7 @@ const Organizers = ({
         key: "isDeletable",
         width: "120px",
         align: "left",
-  
+
         render: (text, record) => {
           if (record.isDeletable === true) {
             return (
@@ -727,7 +731,6 @@ const Organizers = ({
       },
     ];
   }
-
 
   // Filter columns based on the RSVP Condition
   // const finalColumns =

@@ -320,6 +320,8 @@ body[dir="rtl"] .ErrorMessege {
   margin-left: 34px;
   color: #f16b6b;
   visibility: visible !important;
+  font-weight: 600 !important;
+
 }
 
 .errorMessage_hidden {
