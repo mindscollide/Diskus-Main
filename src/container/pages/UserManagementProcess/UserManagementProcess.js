@@ -27,11 +27,6 @@ const UserManagementProcess = () => {
       ? initialStep
       : 1;
   const [currentStep, setCurrentStepValue] = useState(validInitialStep);
-  console.log(
-    currentStep,
-    UserMangementReducer,
-    "currentStepcurrentStepcurrentStepcurrentStep"
-  );
   useEffect(() => {
     try {
       localStorage.removeItem("signupCurrentPage");

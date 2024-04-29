@@ -8,7 +8,7 @@ import {
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import { LoginFlowRoutes } from "./UserManagementActions";
-
+import { clearLocalStorageAtloginresponce } from "../../commen/functions/utils";
 const TwoFaAuthenticateInit = () => {
   return {
     type: actions.CHECKINGAUTHENTICATEAFA_INIT,
@@ -634,24 +634,44 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
                   "ERM_AuthService_AuthManager_Verify2FAOTP_01".toLowerCase()
                 )
             ) {
+              let RSVP = localStorage.getItem("RSVP");
+              let dataroomValue = localStorage.getItem("DataRoomEmail");
               dispatch(
                 verifyOtpFacSuccess(
                   response.data.responseResult,
                   t("Otp-has-been-verified-successfully")
                 )
               );
+              clearLocalStorageAtloginresponce(1);
               localStorage.setItem("TowApproval", true);
-              if (JSON.parse(localStorage.getItem("roleID")) === 1) {
-                navigate("/Admin/");
-              } else if (JSON.parse(localStorage.getItem("roleID")) === 2) {
-                navigate("/Admin/");
-              } else if (JSON.parse(localStorage.getItem("roleID")) === 3) {
-                if (JSON.parse(localStorage.getItem("isFirstLogin"))) {
-                  navigate("/onboard");
+              console.log("TowApproval");
+              if (localStorage.getItem("hasAdminRights")) {
+                if (localStorage.getItem("isFirstLogIn")) {
+                  navigate("/Admin/ManageUsers");
                 } else {
-                  let RSVP = localStorage.getItem("RSVP");
-                  let dataroomValue = localStorage.getItem("DataRoomEmail");
-
+                  if (localStorage.getItem("hasUserRights")) {
+                    if (localStorage.getItem("isFirstLogIn")) {
+                      navigate("/onboard/");
+                    } else {
+                      if (RSVP !== undefined && RSVP !== null) {
+                        navigate("/DisKus/Meeting/Useravailabilityformeeting");
+                      } else if (
+                        dataroomValue !== null &&
+                        dataroomValue !== undefined
+                      ) {
+                        navigate("/Diskus/dataroom");
+                      } else {
+                        navigate("/Diskus/");
+                      }
+                    }
+                  } else {
+                    navigate("/Admin/ManageUsers");
+                  }
+                }
+              } else if (localStorage.getItem("hasUserRights")) {
+                if (localStorage.getItem("isFirstLogIn")) {
+                  navigate("/onboard/");
+                } else {
                   if (RSVP !== undefined && RSVP !== null) {
                     navigate("/DisKus/Meeting/Useravailabilityformeeting");
                   } else if (
@@ -663,7 +683,36 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
                     navigate("/Diskus/");
                   }
                 }
+              } else {
+                dispatch(
+                  verifyOtpFacFail(t("User-not-authorised-contact-admin"))
+                );
+                clearLocalStorageAtloginresponce(2);
+                console.log("TowApproval");
               }
+              // if (JSON.parse(localStorage.getItem("roleID")) === 1) {
+              //   navigate("/Admin/");
+              // } else if (JSON.parse(localStorage.getItem("roleID")) === 2) {
+              //   navigate("/Admin/");
+              // } else if (JSON.parse(localStorage.getItem("roleID")) === 3) {
+              //   if (JSON.parse(localStorage.getItem("isFirstLogin"))) {
+              //     navigate("/onboard");
+              //   } else {
+              //     let RSVP = localStorage.getItem("RSVP");
+              //     let dataroomValue = localStorage.getItem("DataRoomEmail");
+
+              //     if (RSVP !== undefined && RSVP !== null) {
+              //       navigate("/DisKus/Meeting/Useravailabilityformeeting");
+              //     } else if (
+              //       dataroomValue !== null &&
+              //       dataroomValue !== undefined
+              //     ) {
+              //       navigate("/Diskus/dataroom");
+              //     } else {
+              //       navigate("/Diskus/");
+              //     }
+              //   }
+              // }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -720,6 +769,7 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
       .catch((response) => {
         dispatch(verifyOtpFacFail(t("Something-went-wrong")));
         localStorage.setItem("TowApproval", false);
+        console.log("TowApproval");
       });
   };
 };

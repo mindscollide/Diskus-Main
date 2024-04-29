@@ -308,11 +308,13 @@ export function getLocalStorageItemNonActiveCheck(key) {
 }
 
 // this is for non active organisation check only
-export function clearLocalStorageAtloginresponce(value) {
-  localStorage.removeItem("signupCurrentPage");
+export function clearLocalStorageAtloginresponce(value, navigate) {
   if (value === 1) {
+    localStorage.removeItem("signupCurrentPage");
     localStorage.removeItem("LoginFlowPageRoute");
-  } else {
+  } else if (value === 2) {
+    localStorage.removeItem("signupCurrentPage");
     localStorage.setItem("LoginFlowPageRoute", 1);
+    navigate("/");
   }
 }
