@@ -148,26 +148,6 @@ const PasswordVerification = () => {
 
       dispatch(cleareMessage());
     } else if (
-      Authreducer.EnterPasswordResponseMessage != "" &&
-      Authreducer.EnterPasswordResponseMessage != t("2fa-enabled") &&
-      Authreducer.EnterPasswordResponseMessage != undefined &&
-      Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-not-an-admin-user")
-    ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.EnterPasswordResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-      dispatch(cleareMessage());
-    } else if (
       Authreducer.OrganizationCreateResponseMessage !== "" &&
       Authreducer.OrganizationCreateResponseMessage != t("2fa-enabled") &&
       Authreducer.OrganizationCreateResponseMessage != undefined
@@ -230,7 +210,6 @@ const PasswordVerification = () => {
       dispatch(cleareMessage());
     }
   }, [
-    Authreducer.EnterPasswordResponseMessage,
     Authreducer.VerifyOTPEmailResponseMessage,
     Authreducer.OrganizationCreateResponseMessage,
     Authreducer.CreatePasswordResponseMessage,
