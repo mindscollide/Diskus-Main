@@ -86,26 +86,26 @@ const ForgotPasswordUM = () => {
   };
 
   //For Response messeges
-  useEffect(() => {
-    if (auth.ResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: auth.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+  // useEffect(() => {
+  //   if (auth.ResponseMessage !== "") {
+  //     setOpen({
+  //       ...open,
+  //       open: true,
+  //       message: auth.ResponseMessage,
+  //     });
+  //     setTimeout(() => {
+  //       setOpen({
+  //         ...open,
+  //         open: false,
+  //         message: "",
+  //       });
+  //     }, 3000);
 
-      dispatch(cleareChangePasswordMessage());
-    } else {
-      dispatch(cleareChangePasswordMessage());
-    }
-  }, [auth.ResponseMessage]);
+  //     dispatch(cleareChangePasswordMessage());
+  //   } else {
+  //     dispatch(cleareChangePasswordMessage());
+  //   }
+  // }, [auth.ResponseMessage]);
 
   return (
     <>

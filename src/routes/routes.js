@@ -87,6 +87,7 @@ import RouteWrapperAdmin from "./RouteWrapperAdmin";
 import PakageDetailsUMUpgrade from "../container/pages/UserMangement/AdminUserManagement/PackageDetailsUMUpgrade/PackageDetailsUMUpgrade";
 import PaymentProcess from "../container/pages/UserMangement/PaymentProcess/PaymentProcess";
 import { getLocalStorageItemNonActiveCheck } from "../commen/functions/utils";
+import TwoFactorVerifyUM from "../container/pages/UserMangement/2FA Verification/TwoFactorVerifyUM";
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
 export const router = createHashRouter(
@@ -586,6 +587,8 @@ export const router = createHashRouter(
         path="/PasswordVerificationUM"
         element={<PasswordVerification />}
       />
+
+      <Route path="/TwoFactorVerifyUM" element={<TwoFactorVerifyUM />} />
     </>
   )
 );
