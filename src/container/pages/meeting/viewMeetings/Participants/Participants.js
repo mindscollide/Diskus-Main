@@ -137,7 +137,7 @@ const Participants = ({
     dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
   };
 
-  let allowRSVPValue = NewMeetingreducer?.getAllSavedparticipantsIsPublished;
+  let allowRSVPValue = NewMeetingreducer?.getAllSavedparticipantsAllowrsvp;
 
   if (allowRSVPValue === true) {
     var ParticipantsViewColoumn = [
