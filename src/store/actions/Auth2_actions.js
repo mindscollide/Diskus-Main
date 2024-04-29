@@ -1056,7 +1056,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
             dispatch(
               enterPasswordSuccess(
                 response.data.responseResult,
-                t("2fa-enabled")
+                t("Password-verified-and-user-is-new-and-2FA-is-enabled")
               )
             );
             localStorage.setItem("2fa", true);
@@ -1086,7 +1086,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
             dispatch(
               enterPasswordSuccess(
                 response.data.responseResult,
-                t("Password-verified")
+                t("Password-verified-admin-user")
               )
             );
             clearLocalStorageAtloginresponce(1);
@@ -1105,7 +1105,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
             dispatch(
               enterPasswordSuccess(
                 response.data.responseResult,
-                t("Password-verified")
+                t("Password-verified-admin")
               )
             );
             clearLocalStorageAtloginresponce(1);
@@ -1126,7 +1126,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
             dispatch(
               enterPasswordSuccess(
                 response.data.responseResult,
-                t("Password-verified")
+                t("Password-verified-user")
               )
             );
           } else {
@@ -1190,7 +1190,9 @@ const enterPasswordvalidation = (value, navigate, t) => {
               dispatch(
                 enterPasswordSuccess(
                   response.data.responseResult,
-                  t("Password-verified-and-subscription-not-active")
+                  t(
+                    "Password-verified-and-subscription-not-active-and-this-is-an-admin-user"
+                  )
                 )
               );
             } else {
@@ -1270,7 +1272,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               enterPasswordSuccess(
                 response.data.responseResult,
                 t(
-                  "Password-verified-and-subscription-not-active-and-this-is-an-admin-user"
+                  "Password-verified-and-subscription-not-active-and-this-is-an-user"
                 )
               )
             );
@@ -1344,7 +1346,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               dispatch(
                 enterPasswordSuccess(
                   response.data.responseResult,
-                  t("The-organization-trial-has-expired")
+                  t("Organization-trial-has-expired-and-this-is-admin-user")
                 )
               );
             } else {
@@ -1387,7 +1389,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               dispatch(
                 enterPasswordSuccess(
                   response.data.responseResult,
-                  t("The-organization-trial-has-expired")
+                  t("Organization-trial-has-expired-and-this-is-admin")
                 )
               );
             } else {
@@ -1423,7 +1425,11 @@ const enterPasswordvalidation = (value, navigate, t) => {
           //yeah pay outstanding per lai jai ga
           if (response.data.responseResult.hasUserRights) {
             navigate("/Diskus");
-            dispatch(enterPasswordSuccess(t("Organization-trial-has-expired")));
+            dispatch(
+              enterPasswordSuccess(
+                t("Organization-trial-has-expired-and-this-is-user")
+              )
+            );
           } else {
             clearLocalStorageAtloginresponce(2);
 
@@ -2253,7 +2259,7 @@ const createPasswordAction = (value, navigate, t) => {
             dispatch(
               createPasswordSuccess(
                 response.data.responseResult,
-                t("The-organization-trial-has-expired")
+                t("User-is-the-organization-creator-trial-has-expired")
               )
             );
           } else {
@@ -2270,7 +2276,7 @@ const createPasswordAction = (value, navigate, t) => {
             dispatch(
               createPasswordSuccess(
                 response.data.responseResult,
-                t("2fa-enabled")
+                t("Password-created-and-2FA-is-enabled")
               )
             );
             localStorage.setItem("2fa", true);
@@ -2302,7 +2308,7 @@ const createPasswordAction = (value, navigate, t) => {
             dispatch(
               createPasswordSuccess(
                 response.data.responseResult,
-                t("Password-created")
+                t("Password-created-and-this-is-an-admin-user")
               )
             );
             clearLocalStorageAtloginresponce(1);
@@ -2325,7 +2331,7 @@ const createPasswordAction = (value, navigate, t) => {
             dispatch(
               createPasswordSuccess(
                 response.data.responseResult,
-                t("Password-created")
+                t("Password-created-and-this-is-a-admin")
               )
             );
             clearLocalStorageAtloginresponce(1);
@@ -2350,7 +2356,7 @@ const createPasswordAction = (value, navigate, t) => {
             dispatch(
               createPasswordSuccess(
                 response.data.responseResult,
-                t("Password-created")
+                t("Password-created-and-this-is-a-user")
               )
             );
           } else {
@@ -2384,7 +2390,9 @@ const createPasswordAction = (value, navigate, t) => {
             dispatch(
               createPasswordSuccess(
                 response.data.responseResult,
-                t("Password-verified-and-subscription-not-active")
+                t(
+                  "User-is-the-organization-creator-org-sub-not-active-and-this-is-organization-creator"
+                )
               )
             );
           } else {
@@ -2418,7 +2426,7 @@ const createPasswordAction = (value, navigate, t) => {
               dispatch(
                 createPasswordSuccess(
                   response.data.responseResult,
-                  t("Password-verified-and-subscription-not-active")
+                  t("Org-sub-not-active-and-this-is-an-admin-user")
                 )
               );
             } else {
@@ -2457,9 +2465,7 @@ const createPasswordAction = (value, navigate, t) => {
               dispatch(
                 createPasswordSuccess(
                   response.data.responseResult,
-                  t(
-                    "Password-verified-and-subscription-not-active-and-this-is-an-admin"
-                  )
+                  t("Org-sub-not-active-and-this-is-a-admin")
                 )
               );
             } else {
@@ -2501,9 +2507,7 @@ const createPasswordAction = (value, navigate, t) => {
             dispatch(
               createPasswordSuccess(
                 response.data.responseResult,
-                t(
-                  "Password-verified-and-subscription-not-active-and-this-is-an-admin-user"
-                )
+                t("Org-sub-not-active-and-this-is-a-user")
               )
             );
           } else {
@@ -2533,7 +2537,9 @@ const createPasswordAction = (value, navigate, t) => {
           } else {
             clearLocalStorageAtloginresponce(2);
             dispatch(
-              createPasswordFail(t("User-not-authorised-contact-admin"))
+              createPasswordFail(
+                t("Organization-is-inactive-and-the-user-is-an-admin-user")
+              )
             );
           }
           // route to onboard
@@ -2553,7 +2559,9 @@ const createPasswordAction = (value, navigate, t) => {
           } else {
             clearLocalStorageAtloginresponce(2);
             dispatch(
-              createPasswordFail(t("User-not-authorised-contact-admin"))
+              createPasswordFail(
+                t("Organization-is-inactive-and-this-is-an-admin")
+              )
             );
           }
 
@@ -2573,7 +2581,9 @@ const createPasswordAction = (value, navigate, t) => {
           } else {
             clearLocalStorageAtloginresponce(2);
             dispatch(
-              createPasswordFail(t("User-not-authorised-contact-admin"))
+              createPasswordFail(
+                t("Organization-is-inactive-and-this-is-an-user")
+              )
             );
           }
 
