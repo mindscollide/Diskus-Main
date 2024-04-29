@@ -8,6 +8,7 @@
 .details-class {
   font-size: 20px !important;
   color: #6172d6 !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .details-class {
@@ -34,6 +35,7 @@ body[dir="rtl"] .details-class {
 .Create-group-Head-Heading {
   font-size: 20px !important;
   color: #6172d6 !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .Create-group-Head-Heading {
@@ -47,6 +49,11 @@ body[dir="rtl"] .Create-group-Head-Heading {
 .name-create-group {
   color: #5a5a5a;
   font-size: 12px !important;
+  font-weight: 600;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 body[dir="rtl"] .name-create-group {
@@ -56,21 +63,24 @@ body[dir="rtl"] .name-create-group {
 .Designation-create-group {
   color: #5a5a5a;
   font-size: 10px !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .Designation-create-group {
   font-weight: 600;
 }
-
+.no-members-found {
+  font-weight: 500;
+}
 body[dir="rtl"] .no-members-found {
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .email-create-group {
-  color: #5a5a5a;
   color: #6172d6;
   text-decoration: underline !important;
   font-size: 10px !important;
+  font-weight: 400;
 }
 
 body[dir="rtl"] .email-create-group a {
@@ -80,11 +90,13 @@ body[dir="rtl"] .email-create-group a {
 .email-create-group a {
   width: 10px !important;
   text-overflow: ellipsis !important;
+  display: block;
 }
 
 .members-create-group-page {
   font-size: 20px !important;
   color: #6172d6 !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .members-create-group-page {
@@ -94,6 +106,7 @@ body[dir="rtl"] .members-create-group-page {
 .Addmembers-class {
   font-size: 20px !important;
   color: #6172d6 !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .Addmembers-class {
@@ -236,6 +249,7 @@ body[dir="rtl"] .Create-Group-Heading {
   color: #5a5a5a;
   margin-top: 13px !important;
   margin-left: 4px !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .Label_Of_CheckBox {
@@ -247,6 +261,7 @@ body[dir="rtl"] .Label_Of_CheckBox {
   height: 7px;
   color: #f16b6b;
   visibility: visible !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .errorMessage {

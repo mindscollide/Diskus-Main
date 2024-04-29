@@ -251,6 +251,7 @@ body[dir="rtl"] .PaginationStyle-polling {
   color: #2197d7 !important;
   width: 100%;
   display: inline-block;
+  font-weight: 600 !important;
 }
 
 .PaginationStyle-Meeting {

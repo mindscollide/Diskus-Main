@@ -781,7 +781,7 @@ const OtoMessages = () => {
                         <Row>
                           <Col lg={12} md={12} sm={12} className="text-center">
                             <Button
-                              className="MontserratSemiBold Ok-btn"
+                              className=" Ok-btn"
                               text={t("Okay")}
                               onClick={downloadChat}
                             />
@@ -877,7 +877,7 @@ const OtoMessages = () => {
                         <Row>
                           <Col lg={12} md={12} sm={12} className="text-center">
                             <Button
-                              className="MontserratSemiBold Ok-btn"
+                              className=" Ok-btn"
                               text={t("Okay")}
                               onClick={printChat}
                             />
@@ -973,7 +973,7 @@ const OtoMessages = () => {
                         <Row>
                           <Col lg={12} md={12} sm={12} className="text-center">
                             <Button
-                              className="MontserratSemiBold Ok-btn"
+                              className=" Ok-btn"
                               text={t("Okay")}
                               onClick={handleCancel}
                             />
@@ -996,14 +996,14 @@ const OtoMessages = () => {
                   <Col lg={2} md={2} sm={12}></Col>
                   <Col lg={4} md={4} sm={12}>
                     <Button
-                      className="MontserratSemiBold Ok-btn"
+                      className=" Ok-btn"
                       text="Delete"
                       onClick={() => deleteSingleMessage(deleteMessageData)}
                     />
                   </Col>
                   <Col lg={4} md={4} sm={12}>
                     <Button
-                      className="MontserratSemiBold White-btn"
+                      className=" White-btn"
                       text="Cancel"
                       onClick={handleCancel}
                     />

@@ -1944,8 +1944,7 @@ const Dashboard = () => {
       }
       if (data.action.toLowerCase() === "LogOut".toLowerCase()) {
         if (
-          data.payload.message
-            .toLowerCase()
+          data.payload.toLowerCase()
             .includes("USER_lOGOUT_DUE_TO_INACTIVITY".toLowerCase())
         ) {
           dispatch(userLogOutApiFunc(navigate, t));

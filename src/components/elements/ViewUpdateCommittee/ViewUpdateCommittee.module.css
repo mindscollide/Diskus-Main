@@ -1,6 +1,7 @@
 .View-Committee-heading {
   font-size: 30px !important;
   color: #6172d6 !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .View-Committee-heading {

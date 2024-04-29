@@ -254,7 +254,7 @@ const CreateNewGroup = () => {
               </p>
             ) : null}
             <Button
-              className="MontserratSemiBold Ok-btn forward-user"
+              className=" Ok-btn forward-user"
               text={t('Create-Group')}
               onClick={createPrivateGroup}
             />

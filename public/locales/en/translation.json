@@ -1944,5 +1944,6 @@
   "Invalid-request-data": "Invalid Request Data (Billing Info not provided)",
   "Invoice-details-does-not-exist": "Invoice Details does not exist",
   "Failed-to-save-billing-information": "Failed to Save Billing Information",
-  "Payment-gateway-api-response-failed": "Payment Gateway Api Response Failed"
+  "Payment-gateway-api-response-failed": "Payment Gateway Api Response Failed",
+  "Information-saved": "Information saved"
 }

@@ -262,7 +262,7 @@ body[dir="rtl"] .RedCross_Icon_class_Main_agenda {
   color: #5a5a5a !important;
   display: inline-block !important;
   width: 180px !important;
-  font-family: "Montserrat" !important;
+  font-weight: 400 !important;
   cursor: pointer;
 }
 
@@ -274,7 +274,7 @@ body[dir="rtl"] .RedCross_Icon_class_Main_agenda {
   color: #5a5a5a !important;
   display: inline-block !important;
   width: 180px !important;
-  font-family: "Montserrat" !important;
+  font-weight: 400 !important;
 }
 
 /* card */
@@ -720,7 +720,7 @@ p.agendaCreater {
 .Empty_state_Subheading {
   color: #5a5a5a !important;
   font-size: 12px !important;
-font-weight: 500;
+  font-weight: 500;
 }
 
 img.Image-Add-Agenda {
