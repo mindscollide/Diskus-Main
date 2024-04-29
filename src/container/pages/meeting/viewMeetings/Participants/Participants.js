@@ -138,15 +138,16 @@ const Participants = ({
   };
 
   let allowRSVPValue = NewMeetingreducer?.getAllSavedparticipantsIsPublished;
-
+  let ParticipantsViewColoumn = [];
   if (allowRSVPValue === true) {
-    var ParticipantsViewColoumn = [
+    ParticipantsViewColoumn = [
       {
         title: t("Name"),
         dataIndex: "userName",
         key: "userName",
         align: "left",
-        width: "260px",
+        // width: "260px",
+        ellipsis: true,
       },
 
       {
@@ -154,14 +155,16 @@ const Participants = ({
         dataIndex: "email",
         key: "email",
         align: "left",
-        width: "280px",
+        // width: "280px",
+        ellipsis: true,
       },
       {
         title: t("Participant-title"),
         dataIndex: "Title",
         key: "Title",
         align: "center",
-        width: "300px",
+        // width: "300px",
+        ellipsis: true,
       },
 
       {
@@ -255,13 +258,14 @@ const Participants = ({
       },
     ];
   } else {
-    var ParticipantsViewColoumn = [
+    ParticipantsViewColoumn = [
       {
         title: t("Name"),
         dataIndex: "userName",
         key: "userName",
         align: "left",
-        width: "260px",
+        // width: "260px",
+        ellipsis: true,
       },
 
       {
@@ -269,14 +273,16 @@ const Participants = ({
         dataIndex: "email",
         key: "email",
         align: "left",
-        width: "280px",
+        // width: "280px",
+        ellipsis: true,
       },
       {
         title: t("Participant-title"),
         dataIndex: "Title",
         key: "Title",
         align: "center",
-        width: "300px",
+        // width: "300px",
+        ellipsis: true,
       },
 
       {

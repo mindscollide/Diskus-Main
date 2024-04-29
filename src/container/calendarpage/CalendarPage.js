@@ -104,11 +104,32 @@ const CalendarPage = () => {
   const viewModalHandler = async (value) => {
     console.log(value, "valuevaluevaluevalues");
     if (value.calendarTypeId === 2) {
-      let Data = {
-        CalendarEventId: value.id,
-        CalendarEventTypeId: value.calendarTypeId,
-      };
-      dispatch(getEventsDetails(navigate, Data, t, setCalendarViewModal));
+      if (value.isQuickMeeting === false) {
+        let advancemeetingData = {
+          id: value.id,
+          isQuickMeeting: value.isQuickMeeting,
+          statusID: value.statusID,
+          participantRoleID: value.participantRoleID,
+          attendeeRoleID: value.attendeeRoleID,
+          isPrimaryOrganizer: value.isPrimaryOrganizer,
+          meetingID: value.meetingID,
+        };
+        navigate("/DisKus/meeting", {
+          state: { advancemeetingData, CalendaradvanceMeeting: true },
+        });
+        // Advanced Meeting Modal
+        // let Data = {
+        //   CalendarEventId: value.id,
+        //   CalendarEventTypeId: value.calendarTypeId,
+        // };
+        // dispatch(getEventsDetails(navigate, Data, t, setCalendarViewModal));
+      } else {
+        let Data = {
+          CalendarEventId: value.id,
+          CalendarEventTypeId: value.calendarTypeId,
+        };
+        dispatch(getEventsDetails(navigate, Data, t, setCalendarViewModal));
+      }
     }
   };
   const callApi = async () => {
@@ -230,9 +251,18 @@ const CalendarPage = () => {
   // set Data for Calendar
   useEffect(() => {
     let Data = calendarReducer.CalenderData;
-    let officeEventColor = localStorage.getItem("officeEventColor") !== null? localStorage.getItem("officeEventColor"): "#000";
-    let googleEventColor = localStorage.getItem("googleEventColor") !== null? localStorage.getItem("googleEventColor"): "#000";;
-    let diskusEventColor = localStorage.getItem("diskusEventColor") !== null? localStorage.getItem("diskusEventColor"): "#000";;
+    let officeEventColor =
+      localStorage.getItem("officeEventColor") !== null
+        ? localStorage.getItem("officeEventColor")
+        : "#000";
+    let googleEventColor =
+      localStorage.getItem("googleEventColor") !== null
+        ? localStorage.getItem("googleEventColor")
+        : "#000";
+    let diskusEventColor =
+      localStorage.getItem("diskusEventColor") !== null
+        ? localStorage.getItem("diskusEventColor")
+        : "#000";
     console.log(Data, "DataDataDataData");
     let newList;
     if (Object.keys(calenderData).length > 0) {
@@ -265,6 +295,11 @@ const CalendarPage = () => {
             backgroundColor: googleEventColor,
             calendarTypeId: Number(cData.fK_CETID),
             isQuickMeeting: cData.isQuickMeeting,
+            statusID: cData.statusID,
+            participantRoleID: cData.participantRoleID,
+            attendeeRoleID: cData.attendeeRoleID,
+            isPrimaryOrganizer: cData.isPrimaryOrganizer,
+            meetingID: cData.pK_MDID,
           });
         } else if (cData.fK_CESID === 2 || cData.fK_CESID === 4) {
           newList.push({
@@ -279,6 +314,11 @@ const CalendarPage = () => {
             backgroundColor: officeEventColor,
             calendarTypeId: Number(cData.fK_CETID),
             isQuickMeeting: cData.isQuickMeeting,
+            statusID: cData.statusID,
+            participantRoleID: cData.participantRoleID,
+            attendeeRoleID: cData.attendeeRoleID,
+            isPrimaryOrganizer: cData.isPrimaryOrganizer,
+            meetingID: cData.pK_MDID,
           });
         } else if (cData.fK_CESID === 3) {
           newList.push({
@@ -293,6 +333,11 @@ const CalendarPage = () => {
             backgroundColor: diskusEventColor,
             calendarTypeId: Number(cData.fK_CETID),
             isQuickMeeting: cData.isQuickMeeting,
+            statusID: cData.statusID,
+            participantRoleID: cData.participantRoleID,
+            attendeeRoleID: cData.attendeeRoleID,
+            isPrimaryOrganizer: cData.isPrimaryOrganizer,
+            meetingID: cData.pK_MDID,
           });
         }
       });
@@ -329,6 +374,11 @@ const CalendarPage = () => {
           backgroundColor: googleEventColor,
           calendarTypeId: Number(calendarData.calendarEventTypeID),
           isQuickMeeting: true,
+          statusID: 1,
+          participantRoleID: 0,
+          attendeeRoleID: 0,
+          isPrimaryOrganizer: false,
+          meetingID: 0,
         };
         setCalenderDatae([...calenderData, newData]);
       }
@@ -366,6 +416,11 @@ const CalendarPage = () => {
           backgroundColor: googleEventColor,
           calendarTypeId: Number(calendarData.calendarEventTypeID),
           isQuickMeeting: true,
+          statusID: 1,
+          participantRoleID: 0,
+          attendeeRoleID: 0,
+          isPrimaryOrganizer: false,
+          meetingID: 0,
         };
         setCalenderDatae((calendarData2) =>
           calendarData2.map((data2, index) => {
@@ -428,6 +483,11 @@ const CalendarPage = () => {
           backgroundColor: officeEventColor,
           calendarTypeId: Number(calendarData.calendarEventTypeID),
           isQuickMeeting: true,
+          statusID: 1,
+          participantRoleID: 0,
+          attendeeRoleID: 0,
+          isPrimaryOrganizer: false,
+          meetingID: 0,
         };
         setCalenderDatae([...calenderData, newData]);
       }
@@ -464,6 +524,11 @@ const CalendarPage = () => {
           backgroundColor: officeEventColor,
           calendarTypeId: Number(calendarData.calendarEventTypeID),
           isQuickMeeting: true,
+          statusID: 1,
+          participantRoleID: 0,
+          attendeeRoleID: 0,
+          isPrimaryOrganizer: false,
+          meetingID: 0,
         };
         setCalenderDatae((calendarData2) =>
           calendarData2.map((data2, index) => {

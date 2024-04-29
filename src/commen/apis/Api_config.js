@@ -1487,7 +1487,12 @@ const leaveFolderSharingRM = {
   RequestMethod: "ServiceManager.DeleteFolderSharing",
 };
 
+const revokeMicrosoftToken = {
+  RequestMethod: "ServiceManager.RevokeMicrosoftToken",
+};
+
 export {
+  revokeMicrosoftToken,
   leaveFolderSharingRM,
   leaveFileSharingRM,
   UserLoginHistoryRM,
