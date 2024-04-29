@@ -1397,7 +1397,7 @@ const deleteOrganizationUserAPI = (navigate, t, data) => {
               dispatch(
                 deleteOrganizationUserSuccess(
                   response.data.responseResult,
-                  t("Data-available")
+                  t("User-deleted-successfully")
                 )
               );
               let data = {
@@ -1413,7 +1413,7 @@ const deleteOrganizationUserAPI = (navigate, t, data) => {
                   "Admin_AdminServiceManager_DeleteOrganizationsUser_02".toLowerCase()
                 )
             ) {
-              dispatch(deleteOrganizationUserFail(t("No-data-found")));
+              dispatch(deleteOrganizationUserFail(t("Error-while-deleting")));
               dispatch(showDeleteUsersModal(true));
             } else if (
               response.data.responseResult.responseMessage
