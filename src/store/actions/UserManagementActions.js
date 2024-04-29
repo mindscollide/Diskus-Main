@@ -33,6 +33,12 @@ import {
 } from "./UserMangementModalActions";
 import { userLogOutApiFunc } from "./Auth_Sign_Out";
 
+const clearMessegesUserManagement = (response) => {
+  return {
+    type: actions.CLEAR_MESSEGES_USER_MANAGEMENT,
+  };
+};
+
 const signUpFlowRoutes = (response) => {
   return {
     type: actions.ROUTES_FOR_SIGNUP_FLOW_UM,
@@ -1829,5 +1835,6 @@ export {
   paymentInitiateMainApi,
   getCancelSubscriptionReasonApi,
   cancelOrganizationSubApi,
+  clearMessegesUserManagement,
   // paymentUpgradeDetailMainApi
 };

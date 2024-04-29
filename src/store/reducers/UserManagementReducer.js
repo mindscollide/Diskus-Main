@@ -431,6 +431,12 @@ const UserMangementReducer = (state = initialState, action) => {
     //     ResponseMessage: action.message,
     //   };
 
+    case actions.CLEAR_MESSEGES_USER_MANAGEMENT:
+      return {
+        ...state,
+        ResponseMessage: "",
+      };
+
     default:
       return { ...state };
   }
