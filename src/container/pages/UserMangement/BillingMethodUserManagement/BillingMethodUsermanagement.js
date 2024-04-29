@@ -640,6 +640,7 @@ const BillingMethodUsermanagement = () => {
       </Row>
       {UserManagementModals.thanksForPaymentModal && <ThankForPayment />}
       {UserManagementModals.paymentProceedFailed && <PaymentFailedModal />}
+      {UserManagementModals.paymentProceedFailed && <PaymentFailedModal />}
     </Container>
   );
 };
