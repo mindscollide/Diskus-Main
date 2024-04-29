@@ -294,7 +294,7 @@ const PackageDetails = () => {
               md={12}
               lg={12}
             >
-              <h4 className="fw-900 mt-4 text-color MontserratSemiBold Saved_money_Tagline ">
+              <h4 className="fw-900 mt-4 text-color  Saved_money_Tagline ">
                 {t("Upgrade-your-plan")}
               </h4>
               <p className={styles["upgradeplandetail_line"]}>

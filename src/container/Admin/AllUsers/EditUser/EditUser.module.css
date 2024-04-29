@@ -421,6 +421,8 @@ body[dir="rtl"] .userDesgination {
   height: 13px;
   color: #f16b6b;
   visibility: visible;
+  font-weight: 600 !important;
+
 }
 
 body[dir="rtl"] .errorMessage-Edit {

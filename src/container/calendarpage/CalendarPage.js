@@ -41,7 +41,7 @@ import { cleareMessage as cleareMessagetodo } from "../../store/actions/GetTodos
 import { HideNotificationMeetings } from "../../store/actions/GetMeetingUserId";
 import { clearResponce } from "../../store/actions/ToDoList_action";
 import { useNavigate } from "react-router-dom";
-import MeetingViewModalCalendar from "../MeetingViewModalCalendar/MeetingViewModalCalendar";
+import MeetingViewModalCalendar from "../modalView/ModalView";
 
 const CalendarPage = () => {
   //For Localization
@@ -230,9 +230,9 @@ const CalendarPage = () => {
   // set Data for Calendar
   useEffect(() => {
     let Data = calendarReducer.CalenderData;
-    let officeEventColor = localStorage.getItem("officeEventColor");
-    let googleEventColor = localStorage.getItem("googleEventColor");
-    let diskusEventColor = localStorage.getItem("diskusEventColor");
+    let officeEventColor = localStorage.getItem("officeEventColor") !== null? localStorage.getItem("officeEventColor"): "#000";
+    let googleEventColor = localStorage.getItem("googleEventColor") !== null? localStorage.getItem("googleEventColor"): "#000";;
+    let diskusEventColor = localStorage.getItem("diskusEventColor") !== null? localStorage.getItem("diskusEventColor"): "#000";;
     console.log(Data, "DataDataDataData");
     let newList;
     if (Object.keys(calenderData).length > 0) {

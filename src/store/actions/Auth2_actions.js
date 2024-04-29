@@ -2522,6 +2522,11 @@ const createPasswordAction = (value, navigate, t) => {
                 t("Organization-is-inactive")
               )
             );
+            // setting organization subscription ID
+            localStorage.setItem(
+              "organizationSubscriptionID",
+              response.data.responseResult.organizationSubscriptionID
+            );
             localStorage.removeItem("LoginFlowPageRoute");
             localStorage.setItem("signupCurrentPage", 5);
             navigate("/Signup");

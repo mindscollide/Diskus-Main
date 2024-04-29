@@ -1604,22 +1604,8 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                               </span>
                             </Col>
                           </Row>
-                          <Row>
-                            <Col
-                              md={12}
-                              lg={12}
-                              sm={12}
-                              className="create-committee-fields Update_committee_input_searchfield"
-                            >
-                              {/* <InputSearchFilter
-                                placeholder={t("Search-member-here")}
-                                value={taskAssignedToInput}
-                                filteredDataHandler={searchFilterHandler(
-                                  taskAssignedToInput
-                                )}
-                                change={onChangeSearch}
-                                onclickFlag={onclickFlag}
-                              /> */}
+                          <Row className="mt-3">
+                            <Col md={12} lg={12} sm={12}>
                               <Select
                                 options={allPresenters}
                                 maxMenuHeight={140}

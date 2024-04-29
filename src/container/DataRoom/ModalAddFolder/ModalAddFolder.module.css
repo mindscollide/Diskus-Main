@@ -61,6 +61,8 @@
   height: 7px;
   color: #f16b6b;
   visibility: visible !important;
+  font-weight: 600 !important;
+
 }
 
 .errorMessage_hidden {

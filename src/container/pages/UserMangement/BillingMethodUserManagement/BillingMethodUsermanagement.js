@@ -28,8 +28,13 @@ const BillingMethodUsermanagement = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { UserManagementModals, UserMangementReducer, countryNamesReducer } =
-    useSelector((state) => state);
+  const { UserManagementModals, countryNamesReducer } = useSelector(
+    (state) => state
+  );
+
+  let OrganizationSubscriptionID = localStorage.getItem(
+    "organizationSubscriptionID"
+  );
 
   const [activeComponent, setActiveComponent] = useState("PakageDetails");
   const [activeStep, setActiveStep] = useState(0);
@@ -288,20 +293,6 @@ const BillingMethodUsermanagement = () => {
 
   const handleNext = () => {
     if (activeStep === 0 && activeComponent === "PakageDetails") {
-      // let newData = {
-      //   FirstName: billingContactDetails.Name.value,
-      //   LastName: billingContactDetails.LastName.value,
-      //   Email: billingContactDetails.Email.value,
-      //   Phone: billingContactDetails.Contact.value,
-      //   Address: billingAddress.Address.value,
-      //   Country: billingAddress.Country.value,
-      //   City: billingAddress.City.value,
-      //   Zip: billingAddress.PostalCode.value,
-      //   OrderAmount: Number(totalYearlyCharges),
-      //   OrderCurrency: "USD",
-      //   OrderDescription: "An Order On Diskus",
-      // };
-      // dispatch(paymentInitiateMainApi(navigate, t, newData));
       setActiveComponent("billingContactDetails");
       setActiveStep(1);
     } else if (
@@ -377,6 +368,22 @@ const BillingMethodUsermanagement = () => {
             errorStatus: false,
           },
         });
+
+        let newData = {
+          OrganizationSubscriptionID: Number(OrganizationSubscriptionID),
+          OrderDescription: "A Diskus License Order",
+          OrganizationBillingInformation: {
+            FirstName: billingContactDetails.Name.value,
+            LastName: billingContactDetails.LastName.value,
+            Email: billingContactDetails.Email.value,
+            Phone: billingContactDetails.Contact.value,
+            Address: billingAddress.Address.value,
+            FK_WorldCountryID: 1,
+            City: billingAddress.City.value,
+            Zip: billingAddress.PostalCode.value,
+          },
+        };
+        dispatch(paymentInitiateMainApi(navigate, t, newData));
       } else {
         setBillingAddress({
           ...billingAddress,
