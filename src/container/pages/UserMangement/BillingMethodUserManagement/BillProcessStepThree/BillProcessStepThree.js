@@ -30,7 +30,10 @@ const BillProcessStepThree = ({ updateTotalYearlyCharges }) => {
 
   useEffect(() => {
     try {
-      let data = { OrganizationName: organizationName };
+      let data = {
+        OrganizationName: organizationName,
+        OrganizationSubscriptionID: 30,
+      };
       dispatch(getOrganizationSelectedPakagesAPI(navigate, t, data));
     } catch (error) {
       console.log(error);
