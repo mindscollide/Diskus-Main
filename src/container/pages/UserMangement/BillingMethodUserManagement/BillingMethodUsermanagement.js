@@ -9,28 +9,26 @@ import BillProcessStepOne from "./BillProcessStepOne/BillProcessStepOne";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 import BillProcessStepTwo from "./BillProcessStepTwo/BillProcessStepTwo";
 import BillProcessStepThree from "./BillProcessStepThree/BillProcessStepThree";
-import BillProcessStepFour from "./BillProcessStepFour/BillProcessStepFour";
 import { useSelector } from "react-redux";
 import ThankForPayment from "../ModalsUserManagement/ThankForPaymentModal/ThankForPayment";
-import {
-  showFailedPaymentModal,
-  showThankYouPaymentModal,
-} from "../../../../store/actions/UserMangementModalActions";
+import { showFailedPaymentModal } from "../../../../store/actions/UserMangementModalActions";
 import { useDispatch } from "react-redux";
 import PaymentFailedModal from "../ModalsUserManagement/PaymentFailedModal/PaymentFailedModal";
 import { validateEmailEnglishAndArabicFormat } from "../../../../commen/functions/validations";
 import { paymentInitiateMainApi } from "../../../../store/actions/UserManagementActions";
-import { json, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
-import OpenPaymentForm from "../ModalsUserManagement/OpenPaymentForm/OpenPaymentForm";
 const BillingMethodUsermanagement = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { UserManagementModals, countryNamesReducer } = useSelector(
-    (state) => state
-  );
+  const {
+    UserManagementModals,
+    countryNamesReducer,
+    UserMangementReducer,
+    LanguageReducer,
+  } = useSelector((state) => state);
 
   let OrganizationSubscriptionID = localStorage.getItem(
     "organizationSubscriptionID"
@@ -640,6 +638,9 @@ const BillingMethodUsermanagement = () => {
       </Row>
       {UserManagementModals.thanksForPaymentModal && <ThankForPayment />}
       {UserManagementModals.paymentProceedFailed && <PaymentFailedModal />}
+      {UserMangementReducer.Loading || LanguageReducer.Loading ? (
+        <Loader />
+      ) : null}
     </Container>
   );
 };

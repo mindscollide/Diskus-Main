@@ -1020,7 +1020,7 @@ const getOrganizationSelectedPakagesAPI = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_GetOrganizationSelectedPackages_01".toLowerCase()
+                  "ERM_AuthService_SignUpManager_GetOrganizationSelectedPackages_01".toLowerCase()
                 )
             ) {
               dispatch(
@@ -1033,7 +1033,7 @@ const getOrganizationSelectedPakagesAPI = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_GetOrganizationSelectedPackages_02".toLowerCase()
+                  "ERM_AuthService_SignUpManager_GetOrganizationSelectedPackages_02".toLowerCase()
                 )
             ) {
               dispatch(
@@ -1043,7 +1043,7 @@ const getOrganizationSelectedPakagesAPI = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_GetOrganizationSelectedPackages_03".toLowerCase()
+                  "ERM_AuthService_SignUpManager_GetOrganizationSelectedPackages_03".toLowerCase()
                 )
             ) {
               dispatch(

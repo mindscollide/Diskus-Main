@@ -22,6 +22,9 @@ const BillProcessStepThree = ({ updateTotalYearlyCharges }) => {
   );
 
   const organizationName = localStorage.getItem("organizatioName");
+  const organizationSubscriptionID = localStorage.getItem(
+    "organizationSubscriptionID"
+  );
   //States
   const [getAllPakagesData, setGetAllPakagesData] = useState([]);
   const [expiryDate, setExpiryDate] = useState(null);
@@ -32,7 +35,7 @@ const BillProcessStepThree = ({ updateTotalYearlyCharges }) => {
     try {
       let data = {
         OrganizationName: organizationName,
-        OrganizationSubscriptionID: 30,
+        OrganizationSubscriptionID: Number(organizationSubscriptionID),
       };
       dispatch(getOrganizationSelectedPakagesAPI(navigate, t, data));
     } catch (error) {
@@ -41,44 +44,24 @@ const BillProcessStepThree = ({ updateTotalYearlyCharges }) => {
   }, []);
 
   //excreting the data for  Get All Organziation Selected Pakages
-
-  // useEffect(() => {
-  //   try {
-  //     if (
-  //       UserMangementReducer.getAllSelectedPakagesData !== null &&
-  //       UserMangementReducer.getAllSelectedPakagesData !== undefined
-  //     ) {
-  //       setGetAllPakagesData(
-  //         UserMangementReducer.getAllSelectedPakagesData
-  //           .organizationSelectedPackages
-  //       );
-
-  //       setExpiryDate(
-  //         UserMangementReducer.getAllSelectedPakagesData
-  //           .organizationSubscription.subscriptionExpiryDate
-  //       );
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }, [UserMangementReducer.getAllSelectedPakagesData]);
-
   useEffect(() => {
     try {
-      const selectedPackages =
-        UserMangementReducer.getAllSelectedPakagesData
-          ?.organizationSelectedPackages;
-      if (Array.isArray(selectedPackages)) {
-        setGetAllPakagesData(selectedPackages);
-      } else {
-        setGetAllPakagesData([]);
-        console.error(
-          "Expected an array for selected packages, but received:",
-          selectedPackages
+      if (
+        UserMangementReducer.getAllSelectedPakagesData !== null &&
+        UserMangementReducer.getAllSelectedPakagesData !== undefined
+      ) {
+        setGetAllPakagesData(
+          UserMangementReducer.getAllSelectedPakagesData
+            .organizationSubscription.organizationSelectedPackages
+        );
+
+        setExpiryDate(
+          UserMangementReducer.getAllSelectedPakagesData
+            .organizationSubscription.subscriptionExpiryDate
         );
       }
     } catch (error) {
-      console.error("Failed to set packages data:", error);
+      console.log(error);
     }
   }, [UserMangementReducer.getAllSelectedPakagesData]);
 

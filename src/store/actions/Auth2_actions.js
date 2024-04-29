@@ -2515,6 +2515,11 @@ const createPasswordAction = (value, navigate, t) => {
           }
           break;
         case USERSPASSWORDCREATION.VERIFICATION_12:
+          // setting organization subscription ID
+          localStorage.setItem(
+            "organizationSubscriptionID",
+            response.data.responseResult.organizationSubscriptionID
+          );
           if (response.data.responseResult.isOrganizationCreator) {
             dispatch(
               createPasswordSuccess(
@@ -2522,11 +2527,7 @@ const createPasswordAction = (value, navigate, t) => {
                 t("Organization-is-inactive")
               )
             );
-            // setting organization subscription ID
-            localStorage.setItem(
-              "organizationSubscriptionID",
-              response.data.responseResult.organizationSubscriptionID
-            );
+
             localStorage.removeItem("LoginFlowPageRoute");
             localStorage.setItem("signupCurrentPage", 5);
             navigate("/Signup");
