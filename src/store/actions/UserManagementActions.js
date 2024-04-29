@@ -876,17 +876,13 @@ const organizationSelectedPakagebyOrganzationidFail = (message) => {
   };
 };
 
-const GetOrganizationSelectedPackagesByOrganizationIDApi = (
-  navigate,
-  t,
-  data
-) => {
+const GetOrganizationSelectedPackagesByOrganizationIDApi = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
     dispatch(organizationSelectedPakagebyOrganzationidInit());
     let form = new FormData();
-    form.append("RequestData", JSON.stringify(data));
+    // form.append("RequestData", JSON.stringify(data));
     form.append(
       "RequestMethod",
       GetOrganizationSelectedPackagesByOrganizationID.RequestMethod
@@ -903,11 +899,7 @@ const GetOrganizationSelectedPackagesByOrganizationIDApi = (
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            GetOrganizationSelectedPackagesByOrganizationIDApi(
-              navigate,
-              t,
-              data
-            )
+            GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t)
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
