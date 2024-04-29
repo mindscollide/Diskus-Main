@@ -12,10 +12,10 @@
   color: #6172d6;
 }
 
-.main-wrapper {
+/* .main-wrapper {
   padding-right: 50px;
   padding-left: 50px;
-}
+} */
 
 .Accept-all {
   width: 123px;
@@ -123,6 +123,89 @@ p.agendaCreater {
   padding: 20px;
   margin-bottom: 20px;
   min-height: 100px;
+  margin-left: 50px;
+  margin-right: 50px;
+  margin-left: 63px;
+}
+
+.uploaded-details-rejected {
+  border: 1px solid #f16b6b;
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 20px;
+  min-height: 100px;
+  margin-left: 50px;
+  margin-right: 50px;
+  position: relative; /* Added position relative for positioning the ::after element */
+  margin-left: 63px;
+}
+
+.version-control-wrapper-with-more {
+  width: 35px;
+  height: 100%;
+  background: #fff;
+  border-radius: 9px;
+  display: block;
+  position: absolute;
+  top: 60px;
+  left: 21px;
+  border: none !important;
+}
+
+.version-control-wrapper-with-more span.with-text {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 10px;
+  color: #6172d6;
+  height: 18px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 9px !important;
+}
+
+.version-control-wrapper-with-more::after {
+  content: "";
+  position: absolute;
+  width: 1px;
+  background: #e1e1e1;
+  left: 50%;
+  top: 16px;
+  height: 100%;
+}
+
+.version-control-wrapper {
+  width: 18px;
+  height: 18px;
+  background: #e1e1e1;
+  border-radius: 9px;
+  display: block;
+  position: absolute;
+  top: 60px;
+  left: 30px;
+}
+
+.version-control-wrapper-last {
+  width: 18px;
+  height: 18px;
+  background: #e1e1e1;
+  border-radius: 9px;
+  display: block;
+  position: absolute;
+  top: 60px;
+  left: 30px;
+}
+
+.version-control-wrapper::after {
+  content: "";
+  position: absolute;
+  width: 1px;
+  background: #e1e1e1;
+  left: 50%;
+  top: 10px;
+  height: 184px;
 }
 
 p.uploadedbyuser {
@@ -192,7 +275,9 @@ body[dir="rtl"] .gap-ti {
   font-weight: 600 !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
+  margin-bottom: 10px;
   line-height: 5px;
+  padding: 0;
 }
 
 .Reject-comment:is(:active, :hover, :focus, :focus-visible) {
@@ -204,7 +289,37 @@ body[dir="rtl"] .gap-ti {
   font-weight: 600 !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
+  margin-bottom: 10px;
   line-height: 5px;
+  padding: 0;
+}
+
+.Rejected-comment {
+  width: 104px;
+  background: #f16b6b !important;
+  border-color: #f16b6b !important;
+  height: 24px;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  margin-bottom: 10px;
+  line-height: 5px;
+  padding: 0;
+}
+
+.Rejected-comment:is(:active, :hover, :focus, :focus-visible) {
+  width: 104px;
+  background: #f16b6b !important;
+  border-color: #f16b6b !important;
+  height: 24px;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  margin-bottom: 10px;
+  line-height: 5px;
+  padding: 0;
 }
 
 p.time-uploader {

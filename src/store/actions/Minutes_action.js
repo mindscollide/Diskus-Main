@@ -10,13 +10,17 @@ const pendingApprovalPage = (response) => {
 };
 
 const reviewMinutesPage = (response) => {
-    return {
-      type: actions.REVIEW_MINUTES_PAGE,
-      response: response,
-    };
+  return {
+    type: actions.REVIEW_MINUTES_PAGE,
+    response: response,
   };
-
-export {
-    pendingApprovalPage,
-    reviewMinutesPage,
 };
+
+const rejectCommentModal = (response) => {
+  return {
+    type: actions.REJECT_COMMENT_MODAL,
+    response: response,
+  };
+};
+
+export { pendingApprovalPage, reviewMinutesPage, rejectCommentModal };

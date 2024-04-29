@@ -4,6 +4,7 @@ const initialState = {
   Loading: false,
   showPendingApprovalsPage: true,
   showReviewMinutesPage: false,
+  rejectCommentModal: false,
 };
 
 const MinutesReducer = (state = initialState, action) => {
@@ -19,6 +20,13 @@ const MinutesReducer = (state = initialState, action) => {
       return {
         ...state,
         showReviewMinutesPage: action.response,
+      };
+    }
+
+    case actions.REJECT_COMMENT_MODAL: {
+      return {
+        ...state,
+        rejectCommentModal: action.response,
       };
     }
 

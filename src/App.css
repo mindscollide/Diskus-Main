@@ -7125,3 +7125,16 @@ th.ant-table-cell.statusParticipant
 .ant-table-thead > tr > th {
   font-weight: 600 !important;
 }
+
+.mx-50 {
+  margin-left: 50px !important;
+  margin-right: 50px !important;
+}
+
+.mxl-50 {
+  margin-left: 50px !important;
+}
+
+.mxr-50 {
+  margin-right: 50px !important;
+}
