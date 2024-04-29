@@ -1931,5 +1931,8 @@
   "Org-sub-not-active-and-this-is-a-user": "Org sub not active. and this is a user",
   "Organization-is-inactive-and-the-user-is-an-admin-user": "Organization is inactive and the user is an admin user.",
   "Organization-is-inactive-and-this-is-an-admin": "Organization is inactive and this is an admin",
-  "Organization-is-inactive-and-this-is-an-user": "Organization is inactive and this is an user"
+  "Organization-is-inactive-and-this-is-an-user": "Organization is inactive and this is an user",
+  "No-data-found": "No Data Found",
+  "User-deleted-successfully": "User Deleted Successfully",
+  "Error-while-deleting": "Error While Deleting"
 }
