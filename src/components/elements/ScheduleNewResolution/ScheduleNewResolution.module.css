@@ -388,6 +388,8 @@ body[dir="rtl"] .Schedule_resolution_checkboxalign {
   color: #f16b6b;
   white-space: nowrap;
   visibility: visible !important;
+  font-weight: 600 !important;
+
 }
 
 body[dir="rtl"] .errorMessage {

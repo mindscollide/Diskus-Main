@@ -931,25 +931,37 @@ const Home = () => {
       render: (text, record) => {
         if (record.status.pK_TSID === 1) {
           return (
-            <span className=" InProgress cursor-pointer">{text.status}</span>
+            <span className=" InProgress status_value cursor-pointer">
+              {text.status}
+            </span>
           );
         } else if (record.status.pK_TSID === 2) {
-          return <span className=" Pending cursor-pointer">{text.status}</span>;
+          return (
+            <span className=" Pending  status_value cursor-pointer">
+              {text.status}
+            </span>
+          );
         } else if (record.status.pK_TSID === 3) {
           return (
             <span className=" Upcoming cursor-pointer">{text.status}</span>
           );
         } else if (record.status.pK_TSID === 4) {
           return (
-            <span className=" Cancelled cursor-pointer">{text.status}</span>
+            <span className=" Cancelled status_value cursor-pointer">
+              {text.status}
+            </span>
           );
         } else if (record.status.pK_TSID === 5) {
           return (
-            <span className=" Completed cursor-pointer">{text.status}</span>
+            <span className=" Completed status_value cursor-pointer">
+              {text.status}
+            </span>
           );
         } else if (record.status.pK_TSID === 6) {
           return (
-            <span className=" color-F68732 cursor-pointer">{text.status}</span>
+            <span className=" color-F68732 status_value cursor-pointer">
+              {text.status}
+            </span>
           );
         }
       },
@@ -1160,37 +1172,48 @@ const Home = () => {
     dispatch(dashboardCalendarEvent(dashboardData));
     navigate("/DisKus/Meeting");
   };
-
+  console.log(
+    meetingIdReducer,
+    upComingEvents,
+    calendarEvents,
+    events,
+    "meetingIdReducermeetingIdReducermeetingIdReducer"
+  );
   // Meeting Status End Updated
   useEffect(() => {
-    if (meetingIdReducer.MeetingStatusEnded !== null) {
-      let meetingID = meetingIdReducer.MeetingStatusEnded?.meeting?.pK_MDID;
-      setUpComingEvents((upcomingeventData) => {
-        return upcomingeventData.filter((meetingData) => {
-          return (
-            Number(meetingData.meetingDetails.pK_MDID) !== Number(meetingID)
-          );
+    try {
+      if (meetingIdReducer.MeetingStatusEnded !== null) {
+        let meetingID = meetingIdReducer.MeetingStatusEnded?.meeting?.pK_MDID;
+        console.log(meetingID, "meetingIDmeetingIDmeetingID");
+        setUpComingEvents((upcomingeventData) => {
+          return upcomingeventData.filter((meetingData) => {
+            return (
+              Number(meetingData.meetingDetails.pK_MDID) !== Number(meetingID)
+            );
+          });
         });
-      });
-      setCalendarEvents((calendarEventData) => {
-        return calendarEventData.map((data) => {
-          if (Number(data.pK_MDID) === Number(meetingID)) {
-            // Assuming statusID is defined somewhere and you want to update it for this data item
-            data.statusID = 9;
-          }
-          return data; // Always return the data item
+        setCalendarEvents((calendarEventData) => {
+          return calendarEventData.map((data) => {
+            if (Number(data.pK_MDID) === Number(meetingID)) {
+              // Assuming statusID is defined somewhere and you want to update it for this data item
+              data.statusID = 9;
+            }
+            return data; // Always return the data item
+          });
         });
-      });
-      setEvents((event) =>
-        event.map((eventData, index) => {
-          if (eventData.pK_MDID === Number(meetingID)) {
-            eventData.status = 9;
-          }
-          return eventData;
-        })
-      );
-      // dispatch(getMeetingStatusfromSocket(null));
-      dispatch(mqttCurrentMeetingEnded(null));
+        setEvents((event) =>
+          event.map((eventData, index) => {
+            if (eventData.pK_MDID === Number(meetingID)) {
+              eventData.status = 9;
+            }
+            return eventData;
+          })
+        );
+        // dispatch(getMeetingStatusfromSocket(null));
+        dispatch(mqttCurrentMeetingEnded(null));
+      }
+    } catch (error) {
+      console.log(error);
     }
   }, [meetingIdReducer.MeetingStatusEnded]);
 

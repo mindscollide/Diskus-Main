@@ -222,253 +222,424 @@ const Participants = ({
     }
   };
 
-  // Table coloumn
-  const ParticipantsColoumn = [
-    {
-      title: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span>{t("Name")}</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      dataIndex: "userName",
-      key: "userName",
-      align: "left",
-      width: "80px",
-    },
+  let allowRSVPValue = NewMeetingreducer?.getAllSavedparticipantsAllowrsvp;
 
-    {
-      title: t("Email"),
-      dataIndex: "email",
-      key: "email",
-      align: "left",
-      width: "120px",
-    },
-    {
-      title: t("Participant-title"),
-      dataIndex: "participantTitle",
-      key: "participantTitle",
-      width: "120px",
-      align: "left",
-      render: (text, record) => {
-        if (
-          ((Number(editorRole.status) === 9 ||
-            Number(editorRole.status) === 8 ||
-            Number(editorRole.status) === 10) &&
-            editorRole.role === "Organizer" &&
-            isEditMeeting === true) ||
-          (editorRole.role === "Agenda Contributor" && isEditMeeting === true)
-        ) {
-          return <p>{record.Title}</p>;
-        } else {
-          return (
+  console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer)
+
+  if (allowRSVPValue === true) {
+    var ParticipantsColoumn = [
+      {
+        title: (
+          <>
             <Row>
               <Col lg={12} md={12} sm={12}>
-                <>
-                  <TextField
-                    disable={record.isComingApi === true ? true : false}
-                    placeholder={t("Participant-title")}
-                    labelClass={"d-none"}
-                    applyClass={"Organizer_table"}
-                    maxLength={140}
-                    value={
-                      record.isComingApi === true
-                        ? record.Title
-                        : record.Title || ""
-                    }
-                    change={(e) =>
-                      handleInputChange(record.userID, e.target.value)
-                    } // Update the inputValues when the user types
-                  />
-                </>
+                <span>{t("Name")}</span>
               </Col>
             </Row>
-          );
-        }
+          </>
+        ),
+        dataIndex: "userName",
+        key: "userName",
+        align: "left",
+        width: "80px",
       },
-    },
 
-    {
-      title: t("Role"),
-      dataIndex: "participantRole",
-      key: "participantRole",
-      align: "left",
-      width: "120px",
-
-      render: (text, record) => {
-        if (
-          ((Number(editorRole.status) === 9 ||
-            Number(editorRole.status) === 8 ||
-            Number(editorRole.status) === 10) &&
-            editorRole.role === "Organizer" &&
-            isEditMeeting === true) ||
-          (editorRole.role === "Agenda Contributor" && isEditMeeting === true)
-        ) {
-          return <p>{record?.participantRole?.participantRole}</p>;
-        } else {
-          return (
-            <Row>
-              <Col lg={12} md={12} sm={12}>
-                <>
-                  <Select
-                    isDisabled={record.isComingApi === true ? true : false}
-                    options={particpantsRole}
-                    menuPortalTarget={document.body}
-                    styles={customStyles}
-                    classNamePrefix={"ParticipantRole"}
-                    value={
-                      record.isComingApi === true
-                        ? {
-                            value: record?.participantRole?.participantRoleID,
-                            label: record?.participantRole?.participantRole,
-                          }
-                        : {
-                            value: record?.participantRole?.participantRoleID,
-                            label: record?.participantRole?.participantRole,
-                          }
-                    }
-                    onChange={(selectedOption) =>
-                      handleSelectChange(record.userID, selectedOption)
-                    }
-                    isSearchable={false}
-                  />
-                </>
-              </Col>
-            </Row>
-          );
-        }
+      {
+        title: t("Email"),
+        dataIndex: "email",
+        key: "email",
+        align: "left",
+        width: "120px",
       },
-    },
-
-    {
-      title: t("RSVP"),
-      dataIndex: "attendeeAvailability",
-      key: "attendeeAvailability",
-      align: "left",
-      width: "120px",
-      render: (text, record) => {
-        if (record.attendeeAvailability === 1) {
-          return (
-            <Tooltip placement="bottomLeft" title={t("Response-awaited")}>
-              <img
-                draggable={false}
-                src={AwaitingResponse}
-                height="30px"
-                width="30px"
-                alt=""
-              />
-            </Tooltip>
-          );
-        } else if (record.attendeeAvailability === 2) {
-          return (
-            <Tooltip placement="bottomLeft" title={t("Accepted")}>
-              <img
-                draggable={false}
-                src={thumbsup}
-                height="30px"
-                width="30px"
-                alt=""
-              />
-            </Tooltip>
-          );
-        } else if (record.attendeeAvailability === 3) {
-          return (
-            <Tooltip placement="bottomLeft" title={t("Rejected")}>
-              <img
-                draggable={false}
-                src={thumbsdown}
-                height="30px"
-                width="30px"
-                alt=""
-              />
-            </Tooltip>
-          );
-        } else if (record.attendeeAvailability === 4) {
-          return (
-            <img
-              draggable={false}
-              src={TentativelyAccepted}
-              height="30px"
-              width="30px"
-              alt=""
-            />
-          );
-        }
-      },
-      // render: (text, record) => {
-      //   if (record.isRSVP === true) {
-      //     return (
-      //       <img
-      //         draggable={false}
-      //         src={thumbsup}
-      //         height="30px"
-      //         width="30px"
-      //         alt=""
-      //       />
-      //     );
-      //   } else {
-      //     return (
-      //       <img
-      //         draggable={false}
-      //         src={thumbsdown}
-      //         height="30px"
-      //         width="30px"
-      //         alt=""
-      //       />
-      //     );
-      //   }
-      // },
-    },
-
-    {
-      dataIndex: "Close",
-      key: "Close",
-      width: "80px",
-
-      render: (text, record) => {
-        if (
-          ((Number(editorRole.status) === 9 ||
-            Number(editorRole.status) === 8 ||
-            Number(editorRole.status) === 10) &&
-            editorRole.role === "Organizer" &&
-            isEditMeeting === true) ||
-          (editorRole.role === "Agenda Contributor" && isEditMeeting === true)
-        ) {
-        } else {
-          return (
-            <>
+      {
+        title: t("Participant-title"),
+        dataIndex: "participantTitle",
+        key: "participantTitle",
+        width: "120px",
+        align: "left",
+        render: (text, record) => {
+          if (
+            ((Number(editorRole.status) === 9 ||
+              Number(editorRole.status) === 8 ||
+              Number(editorRole.status) === 10) &&
+              editorRole.role === "Organizer" &&
+              isEditMeeting === true) ||
+            (editorRole.role === "Agenda Contributor" && isEditMeeting === true)
+          ) {
+            return <p>{record.Title}</p>;
+          } else {
+            return (
               <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex justify-content-center"
-                >
-                  {record.isComingApi === true ? (
-                    ""
-                  ) : (
-                    <>
-                      <img
-                        src={redcrossIcon}
-                        className="cursor-pointer "
-                        height="21px"
-                        width="21px"
-                        onClick={() => handleCancelingRow(record)}
-                        alt=""
-                      />
-                    </>
-                  )}
+                <Col lg={12} md={12} sm={12}>
+                  <>
+                    <TextField
+                      disable={record.isComingApi === true ? true : false}
+                      placeholder={t("Participant-title")}
+                      labelClass={"d-none"}
+                      applyClass={"Organizer_table"}
+                      maxLength={140}
+                      value={
+                        record.isComingApi === true
+                          ? record.Title
+                          : record.Title || ""
+                      }
+                      change={(e) =>
+                        handleInputChange(record.userID, e.target.value)
+                      } // Update the inputValues when the user types
+                    />
+                  </>
                 </Col>
               </Row>
-            </>
-          );
-        }
+            );
+          }
+        },
       },
-    },
-  ];
+
+      {
+        title: t("Role"),
+        dataIndex: "participantRole",
+        key: "participantRole",
+        align: "left",
+        width: "120px",
+
+        render: (text, record) => {
+          if (
+            ((Number(editorRole.status) === 9 ||
+              Number(editorRole.status) === 8 ||
+              Number(editorRole.status) === 10) &&
+              editorRole.role === "Organizer" &&
+              isEditMeeting === true) ||
+            (editorRole.role === "Agenda Contributor" && isEditMeeting === true)
+          ) {
+            return <p>{record?.participantRole?.participantRole}</p>;
+          } else {
+            return (
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <>
+                    <Select
+                      isDisabled={record.isComingApi === true ? true : false}
+                      options={particpantsRole}
+                      menuPortalTarget={document.body}
+                      styles={customStyles}
+                      classNamePrefix={"ParticipantRole"}
+                      value={
+                        record.isComingApi === true
+                          ? {
+                              value: record?.participantRole?.participantRoleID,
+                              label: record?.participantRole?.participantRole,
+                            }
+                          : {
+                              value: record?.participantRole?.participantRoleID,
+                              label: record?.participantRole?.participantRole,
+                            }
+                      }
+                      onChange={(selectedOption) =>
+                        handleSelectChange(record.userID, selectedOption)
+                      }
+                      isSearchable={false}
+                    />
+                  </>
+                </Col>
+              </Row>
+            );
+          }
+        },
+      },
+
+      {
+        title: t("RSVP"),
+        dataIndex: "attendeeAvailability",
+        key: "attendeeAvailability",
+        align: "left",
+        width: "120px",
+        render: (text, record) => {
+          if (record.attendeeAvailability === 1) {
+            return (
+              <Tooltip placement="bottomLeft" title={t("Response-awaited")}>
+                <img
+                  draggable={false}
+                  src={AwaitingResponse}
+                  height="30px"
+                  width="30px"
+                  alt=""
+                />
+              </Tooltip>
+            );
+          } else if (record.attendeeAvailability === 2) {
+            return (
+              <Tooltip placement="bottomLeft" title={t("Accepted")}>
+                <img
+                  draggable={false}
+                  src={thumbsup}
+                  height="30px"
+                  width="30px"
+                  alt=""
+                />
+              </Tooltip>
+            );
+          } else if (record.attendeeAvailability === 3) {
+            return (
+              <Tooltip placement="bottomLeft" title={t("Rejected")}>
+                <img
+                  draggable={false}
+                  src={thumbsdown}
+                  height="30px"
+                  width="30px"
+                  alt=""
+                />
+              </Tooltip>
+            );
+          } else if (record.attendeeAvailability === 4) {
+            return (
+              <img
+                draggable={false}
+                src={TentativelyAccepted}
+                height="30px"
+                width="30px"
+                alt=""
+              />
+            );
+          }
+        },
+        // render: (text, record) => {
+        //   if (record.isRSVP === true) {
+        //     return (
+        //       <img
+        //         draggable={false}
+        //         src={thumbsup}
+        //         height="30px"
+        //         width="30px"
+        //         alt=""
+        //       />
+        //     );
+        //   } else {
+        //     return (
+        //       <img
+        //         draggable={false}
+        //         src={thumbsdown}
+        //         height="30px"
+        //         width="30px"
+        //         alt=""
+        //       />
+        //     );
+        //   }
+        // },
+      },
+
+      {
+        dataIndex: "Close",
+        key: "Close",
+        width: "80px",
+
+        render: (text, record) => {
+          if (
+            ((Number(editorRole.status) === 9 ||
+              Number(editorRole.status) === 8 ||
+              Number(editorRole.status) === 10) &&
+              editorRole.role === "Organizer" &&
+              isEditMeeting === true) ||
+            (editorRole.role === "Agenda Contributor" && isEditMeeting === true)
+          ) {
+          } else {
+            return (
+              <>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-center"
+                  >
+                    {record.isComingApi === true ? (
+                      ""
+                    ) : (
+                      <>
+                        <img
+                          src={redcrossIcon}
+                          className="cursor-pointer "
+                          height="21px"
+                          width="21px"
+                          onClick={() => handleCancelingRow(record)}
+                          alt=""
+                        />
+                      </>
+                    )}
+                  </Col>
+                </Row>
+              </>
+            );
+          }
+        },
+      },
+    ];
+  } else {
+    var ParticipantsColoumn = [
+      {
+        title: (
+          <>
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                <span>{t("Name")}</span>
+              </Col>
+            </Row>
+          </>
+        ),
+        dataIndex: "userName",
+        key: "userName",
+        align: "left",
+        width: "80px",
+      },
+
+      {
+        title: t("Email"),
+        dataIndex: "email",
+        key: "email",
+        align: "left",
+        width: "120px",
+      },
+      {
+        title: t("Participant-title"),
+        dataIndex: "participantTitle",
+        key: "participantTitle",
+        width: "120px",
+        align: "left",
+        render: (text, record) => {
+          if (
+            ((Number(editorRole.status) === 9 ||
+              Number(editorRole.status) === 8 ||
+              Number(editorRole.status) === 10) &&
+              editorRole.role === "Organizer" &&
+              isEditMeeting === true) ||
+            (editorRole.role === "Agenda Contributor" && isEditMeeting === true)
+          ) {
+            return <p>{record.Title}</p>;
+          } else {
+            return (
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <>
+                    <TextField
+                      disable={record.isComingApi === true ? true : false}
+                      placeholder={t("Participant-title")}
+                      labelClass={"d-none"}
+                      applyClass={"Organizer_table"}
+                      maxLength={140}
+                      value={
+                        record.isComingApi === true
+                          ? record.Title
+                          : record.Title || ""
+                      }
+                      change={(e) =>
+                        handleInputChange(record.userID, e.target.value)
+                      } // Update the inputValues when the user types
+                    />
+                  </>
+                </Col>
+              </Row>
+            );
+          }
+        },
+      },
+
+      {
+        title: t("Role"),
+        dataIndex: "participantRole",
+        key: "participantRole",
+        align: "left",
+        width: "120px",
+
+        render: (text, record) => {
+          if (
+            ((Number(editorRole.status) === 9 ||
+              Number(editorRole.status) === 8 ||
+              Number(editorRole.status) === 10) &&
+              editorRole.role === "Organizer" &&
+              isEditMeeting === true) ||
+            (editorRole.role === "Agenda Contributor" && isEditMeeting === true)
+          ) {
+            return <p>{record?.participantRole?.participantRole}</p>;
+          } else {
+            return (
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <>
+                    <Select
+                      isDisabled={record.isComingApi === true ? true : false}
+                      options={particpantsRole}
+                      menuPortalTarget={document.body}
+                      styles={customStyles}
+                      classNamePrefix={"ParticipantRole"}
+                      value={
+                        record.isComingApi === true
+                          ? {
+                              value: record?.participantRole?.participantRoleID,
+                              label: record?.participantRole?.participantRole,
+                            }
+                          : {
+                              value: record?.participantRole?.participantRoleID,
+                              label: record?.participantRole?.participantRole,
+                            }
+                      }
+                      onChange={(selectedOption) =>
+                        handleSelectChange(record.userID, selectedOption)
+                      }
+                      isSearchable={false}
+                    />
+                  </>
+                </Col>
+              </Row>
+            );
+          }
+        },
+      },
+      {
+        dataIndex: "Close",
+        key: "Close",
+        width: "80px",
+
+        render: (text, record) => {
+          if (
+            ((Number(editorRole.status) === 9 ||
+              Number(editorRole.status) === 8 ||
+              Number(editorRole.status) === 10) &&
+              editorRole.role === "Organizer" &&
+              isEditMeeting === true) ||
+            (editorRole.role === "Agenda Contributor" && isEditMeeting === true)
+          ) {
+          } else {
+            return (
+              <>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-center"
+                  >
+                    {record.isComingApi === true ? (
+                      ""
+                    ) : (
+                      <>
+                        <img
+                          src={redcrossIcon}
+                          className="cursor-pointer "
+                          height="21px"
+                          width="21px"
+                          onClick={() => handleCancelingRow(record)}
+                          alt=""
+                        />
+                      </>
+                    )}
+                  </Col>
+                </Row>
+              </>
+            );
+          }
+        },
+      },
+    ];
+  }
 
   // Filter columns based on the RSVP Condition
   // const finalColumns =

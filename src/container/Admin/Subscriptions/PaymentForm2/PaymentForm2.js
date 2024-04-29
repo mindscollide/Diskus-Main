@@ -107,7 +107,7 @@ const PaymentForm2 = () => {
             className="mx-auto  mt-3 mb-4 col-lg-12 col-md-12 col-sm-12 "
           >
             <h3
-              className={`${"Payment-Method-Heading MontserratSemiBold-600"} ${
+              className={`${"Payment-Method-Heading "} ${
                 styles["paymentform_heading"]
               }`}
             >
@@ -169,7 +169,7 @@ const PaymentForm2 = () => {
                     {t("Satisfaction-guaranteed")}
                   </h6>
                   <p
-                    className="Satisfaction-Message MontserratSemiBold-600 m-0 p-0"
+                    className="Satisfaction-Message  m-0 p-0"
                     style={{ color: "#5A5A5A" }}
                   >
                     {t(
@@ -211,7 +211,7 @@ const PaymentForm2 = () => {
                       sm={12}
                       md={6}
                       lg={6}
-                      className="Subtotal-Value d-flex justify-content-end MontserratSemiBold-600 text-white"
+                      className="Subtotal-Value d-flex justify-content-end  text-white"
                     >
                       ${totalAmount}
                     </Col>
@@ -299,7 +299,7 @@ const PaymentForm2 = () => {
                   </Row>
                 </Col> */}
                 {/* <Col
-                  className="MontserratSemiBold-600 text-center mt-2 Saved_money_Tagline"
+                  className=" text-center mt-2 Saved_money_Tagline"
                   style={{ color: "5a5a5a" }}
                   md={12}
                   sm={12}

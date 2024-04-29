@@ -71,38 +71,6 @@
   font-size: 18px !important;
 }
 
-.submenu-sidebar-icons {
-  font-family: "Montserrat", sans-serif !important;
-  margin-left: -10px;
-  width: 100% !important;
-  padding: 6px 0px !important;
-  border-radius: 0px !important;
-  border-bottom: 1px solid #e2e6e9 !important;
-}
-
-.submenu-sidebar-icons:active,
-.submenu-sidebar-icons::selection {
-  color: #004990 !important;
-}
-
-.menu-items-sidebar {
-  font-size: 14px !important;
-  font-family: "Montserrat", sans-serif !important;
-  font-weight: 500 !important;
-  color: #45494d;
-  border-radius: 0px !important;
-}
-
-.menu-items-sidebar:hover,
-.menu-items-sidebar:active,
-.menu-items-sidebar:focus,
-.menu-items-sidebar:focus-visible,
-.menu-items-sidebar:focus-within {
-  background-color: #e6e8ff !important;
-  color: #004990 !important;
-  border-radius: 0px !important;
-}
-
 :where(.css-dev-only-do-not-override-1e3x2xa).ant-menu-light
   .ant-menu-item-selected,
 :where(.css-dev-only-do-not-override-1e3x2xa).ant-menu-light
@@ -365,16 +333,6 @@ aside.ant-layout-sider.ant-layout-sider-dark {
   width: 10px;
   height: 1px;
   background: #5a5a5a;
-  display: inline-block !important;
-}
-.attachment_line {
-  width: 100% !important;
-  font-size: 8px !important;
-  font-family: "Montserrat";
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis !important;
-  color: #5a5a5a;
   display: inline-block !important;
 }
 

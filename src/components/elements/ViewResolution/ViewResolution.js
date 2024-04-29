@@ -213,7 +213,7 @@ const ViewResolution = ({ setViewresolution }) => {
                         className="UpdateCheckbox view-resolution d-flex justify-content-start mt-5 FontArabicRegular"
                       >
                         <Checkbox
-                          className={`"MontserratSemiBold viewResolution_checkbox`}
+                          className={`" viewResolution_checkbox`}
                           // prefixCls={"checkbox_viewResolution"}
                           name="IsChat"
                           // disabled={true}

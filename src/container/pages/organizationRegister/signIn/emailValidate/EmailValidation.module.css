@@ -211,7 +211,7 @@ body[dir="rtl"] .signup-text-inloginpage {
   height: 13px;
   color: #f16b6b;
   visibility: visible;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .errorMessage-inLogin {

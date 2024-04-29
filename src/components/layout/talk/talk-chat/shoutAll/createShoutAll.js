@@ -262,7 +262,7 @@ const CreateNewShoutAll = () => {
               </p>
             ) : null}
             <Button
-              className="MontserratSemiBold Ok-btn forward-user"
+              className=" Ok-btn forward-user"
               text={t("Create-Shout")}
               onClick={createShoutAllList}
             />

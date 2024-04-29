@@ -331,11 +331,7 @@ const PackageSelection = () => {
         </Row>
         <Row>
           <Col sm={12} className="mt-4">
-            <h2
-              className={`${"MontserratSemiBold"} ${
-                styles["packageselection_heading"]
-              }`}
-            >
+            <h2 className={styles["packageselection_heading"]}>
               {t("Select-package")}
             </h2>
           </Col>

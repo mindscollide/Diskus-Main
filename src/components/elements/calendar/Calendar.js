@@ -109,7 +109,10 @@ function CustomCalendar({
     (newDate) => setDefaultValue(newDate),
     [setDefaultValue]
   );
-  let CalenderMonthsSpan = localStorage.getItem("calenderMonthsSpan");
+  let CalenderMonthsSpan =
+    localStorage.getItem("calenderMonthsSpan") !== null
+      ? localStorage.getItem("calenderMonthsSpan")
+      : 1;
   let OrganizationID = localStorage.getItem("organizationID");
   const userID = localStorage.getItem("userID");
   const dispatch = useDispatch();
@@ -281,6 +284,10 @@ function CustomCalendar({
                 : parseInt(CalenderMonthsSpan)
             ),
           nextDate.getDate()
+        );
+        console.log(
+          { nextDate, updateEndDate },
+          "updateEndDateupdateEndDateupdateEndDate"
         );
         let calendarData = {
           UserID: parseInt(userID),

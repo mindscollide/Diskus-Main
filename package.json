@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.16.5",
     "@chartiful/react-chart-builder": "^0.1.6",
     "@chartiful/react-vertical-bar-graph": "^0.1.6",
     "@emoji-mart/data": "^1.1.1",
