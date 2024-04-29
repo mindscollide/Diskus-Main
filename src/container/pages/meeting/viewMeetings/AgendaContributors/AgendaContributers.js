@@ -400,10 +400,7 @@ const AgendaContributers = ({
               <Col lg={12} md={12} sm={12}>
                 <Table
                   column={AgendaContributorViewColoumns}
-                  scroll={{
-                    y: rowsData.length === 0 ? "55vh" : "36vh",
-                    x: "hidden",
-                  }}
+                  scroll={{ y: "36vh" }}
                   pagination={false}
                   locale={{
                     emptyText: (
