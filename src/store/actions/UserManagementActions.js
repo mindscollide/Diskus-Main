@@ -1096,12 +1096,11 @@ const getOrganizationPackageUserStatsFail = (message) => {
 };
 
 //Api to Show data in graph in userManagment Add user
-const getOrganizationPackageUserStatsAPI = (navigate, t, data) => {
+const getOrganizationPackageUserStatsAPI = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getOrganizationPackageUserStatsInit());
     let form = new FormData();
-    form.append("RequestData", JSON.stringify(data));
     form.append(
       "RequestMethod",
       OrganizationPackageDetailsAndUserStats.RequestMethod
@@ -1117,7 +1116,7 @@ const getOrganizationPackageUserStatsAPI = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getOrganizationPackageUserStatsAPI(navigate, t, data));
+          dispatch(getOrganizationPackageUserStatsAPI(navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (

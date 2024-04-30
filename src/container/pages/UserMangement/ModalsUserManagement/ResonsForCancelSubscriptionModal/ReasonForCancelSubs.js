@@ -23,6 +23,11 @@ const ReasonForCancelSubs = ({ completionContract }) => {
   const [cancelSubs, setCancelSubs] = useState([]);
   console.log(cancelSubs, "cancelSubscancelSubs");
 
+  //getting organizationSubscriptionID from localStorage
+  let OrganizationSubscriptionID = localStorage.getItem(
+    "organizationSubscriptionID"
+  );
+
   const [selectedReasonIds, setSelectedReasonIds] = useState([]);
 
   // state for checkbox
@@ -54,7 +59,7 @@ const ReasonForCancelSubs = ({ completionContract }) => {
 
     const subscriptionStatusID = completionContract ? 5 : 6;
     const data = {
-      OrganizationID: 480,
+      OrganizationSubscriptionID: Number(OrganizationSubscriptionID),
       // mehdi said you send 6 to SubscriptionStatusID cause we only send 6 to cancel
       SubscriptionStatusID: subscriptionStatusID,
       CancellationReason: cancellationReasons.join("# "),

@@ -435,7 +435,7 @@ const SignUpOrganizationUM = () => {
               TenureOfSubscriptionID: JSON.parse(tenureOfSuscriptionID),
               Organization: {
                 OrganizationName: signUpDetails.CompanyName.value,
-                FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
+                FK_WorldCountryID: signUpDetails.CountryName.value,
                 ContactPersonName: signUpDetails.FullName.value,
                 ContactPersonEmail: signUpDetails.Email.value,
                 ContactPersonNumber: signUpDetails.PhoneNumber.value,
