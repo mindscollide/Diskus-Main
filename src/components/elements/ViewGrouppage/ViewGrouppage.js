@@ -49,7 +49,7 @@ const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
   }, [GroupsReducer.getGroupByGroupIdResponse]);
   return (
     <>
-      <section className="MontserratSemiBold-600 color-5a5a5a">
+      <section className=" color-5a5a5a">
         <Row className="mt-3">
           <Col lg={12} md={12} sm={12}>
             <span className={styles["View-Committee-heading"]}>

@@ -9,34 +9,34 @@
 
 .TwoFa_heading {
   color: #5a5a5a;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
   font-size: calc(35px - 20%) !important;
 }
 
 body[dir="rtl"] .TwoFa_heading {
-  font-family: "IBMPlexSansArabic-SemiBold";
+  font-weight: 600 !important;
   font-size: calc(35px - 10%) !important;
 }
 
 .verify_heading_line1 {
-  font-family: "MontserratBold-700" !important;
+  font-weight: 700 !important;
   margin: 0;
   color: #5a5a5a;
   font-size: calc(16px - 20%);
 }
 body[dir="rtl"] .verify_heading_line1 {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
   font-size: calc(16px - 20%);
 }
 .verify_heading_line2 {
-  font-family: "MontserratBold-700" !important;
+  font-weight: 700 !important;
   margin: 0;
   color: #5a5a5a;
   font-size: calc(16px - 20%);
 }
 
 body[dir="rtl"] .verify_heading_line2 {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
   font-size: calc(16px - 20%);
 }
 
@@ -57,7 +57,7 @@ body[dir="rtl"] .verify_heading_line2 {
 }
 
 body[dir="rtl"] .subscribNow_button_EmailVerify {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
   font-size: 20px !important;
 }
 
@@ -79,6 +79,8 @@ body[dir="rtl"] .subscribNow_button_EmailVerify {
   height: 13px;
   color: #f16b6b;
   visibility: visible;
+  font-weight: 600 !important;
+
 }
 
 .errorMessage-OTP_hidden {
@@ -105,7 +107,7 @@ body[dir="rtl"] .subscribNow_button_EmailVerify {
   margin: 0;
   user-select: none;
   border: none !important;
-  font-family: "MontserratRegular" !important;
+  font-weight: 400 !important;
   padding: 0;
   text-decoration: underline !important;
   font-size: 14px;
@@ -123,7 +125,7 @@ body[dir="rtl"] .subscribNow_button_EmailVerify {
 }
 
 body[dir="rtl"] .resendCode_btn {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
   font-size: 16px !important;
 }
 
@@ -148,7 +150,7 @@ body[dir="rtl"] .resendCode_btn {
 }
 
 body[dir="rtl"] .OTPCounter {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
   font-size: 16px !important;
 }
 .GoBackBtn {
@@ -164,11 +166,11 @@ body[dir="rtl"] .OTPCounter {
   display: flex;
   justify-content: center;
   text-decoration: underline;
-  font-family: "MontserratRegular";
+  font-weight: 400 !important;
   color: #5a5a5a !important;
 }
 body[dir="rtl"] .Go_back_link_VerifyCodeOne a {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
   font-size: 16px !important;
 }
 
@@ -199,7 +201,7 @@ body[dir="rtl"] .Go_back_link_VerifyCodeOne a {
   height: 2.9em !important;
   border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   border-radius: 4px;
   outline: none !important;
 }

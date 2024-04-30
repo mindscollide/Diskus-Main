@@ -8,10 +8,11 @@
 .details-class-Create-Committee {
   font-size: 20px !important;
   color: #6172d6 !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .details-class-Create-Committee {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .scroll-bar-createCommittee {
@@ -35,10 +36,11 @@ body[dir="rtl"] .details-class-Create-Committee {
 .Create-Committee-Head-Heading {
   font-size: 20px !important;
   color: #6172d6 !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .Create-Committee-Head-Heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .group-head-info-Create-Committee {
@@ -48,19 +50,21 @@ body[dir="rtl"] .Create-Committee-Head-Heading {
 .name-create-Committee {
   color: #5a5a5a;
   font-size: 12px !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .name-create-Committee {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Designation-create-Committee {
   color: #5a5a5a;
   font-size: 10px !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .Designation-create-Committee {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .email-create-Committee {
@@ -68,38 +72,41 @@ body[dir="rtl"] .Designation-create-Committee {
   color: #6172d6;
   text-decoration: underline !important;
   font-size: 10px !important;
+  font-weight: 400 !important;
 }
 
 body[dir="rtl"] .email-create-Committee {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400;
 }
 
 body[dir="rtl"] .No-member {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .members-create-Committee-page {
   font-size: 20px !important;
   color: #6172d6 !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .members-create-Committee-page {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Addmembers-class-Create-Committee {
   font-size: 20px !important;
   color: #6172d6 !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .Addmembers-class-Create-Committee {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Create-CreateCommittee-btn {
   font-size: 12px !important;
   padding: 12px 30px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   background: #6172d6 !important;
   color: #fff !important;
   border-radius: 4px !important;
@@ -107,7 +114,7 @@ body[dir="rtl"] .Addmembers-class-Create-Committee {
 }
 
 body[dir="rtl"] .Create-CreateCommittee-btn {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Create-CreateCommittee-btn:hover,
@@ -117,7 +124,7 @@ body[dir="rtl"] .Create-CreateCommittee-btn {
 .Create-CreateCommittee-btn:visited {
   font-size: 12px !important;
   padding: 12px 30px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   background: #6172d6 !important;
   color: #fff !important;
   border-radius: 4px !important;
@@ -130,7 +137,7 @@ body[dir="rtl"] .Create-CreateCommittee-btn {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
   height: 39px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   border-radius: 4px !important;
   margin-top: 2px !important;
   border: 1px solid #e1e1e1 !important;
@@ -138,7 +145,7 @@ body[dir="rtl"] .Create-CreateCommittee-btn {
 
 body[dir="rtl"] .ADD-Committee-btn {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .ADD-Committee-btn:hover,
@@ -151,7 +158,7 @@ body[dir="rtl"] .ADD-Committee-btn {
   height: 39px !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
@@ -186,13 +193,13 @@ body[dir="rtl"] .ADD-Committee-btn {
   background: #ffffff;
   padding: 12px 30px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
 
 body[dir="rtl"] .Cancell-CreateCommittee-btn {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Cancell-CreateCommittee-btn:hover,
@@ -204,19 +211,19 @@ body[dir="rtl"] .Cancell-CreateCommittee-btn {
   background: #ffffff !important;
   padding: 12px 30px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
 
 .Create-Committee-Heading {
   font-size: 30px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #6172d6 !important;
 }
 
 body[dir="rtl"] .Create-Committee-Heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Cancell-CreateGroup-btn:hover {
@@ -242,10 +249,11 @@ body[dir="rtl"] .Label_Of_CheckBox {
   height: 7px;
   color: #f16b6b;
   visibility: visible !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .errorMessage {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .errorMessage_hidden {
@@ -256,7 +264,7 @@ body[dir="rtl"] .errorMessage {
 }
 
 body[dir="rtl"] .errorMessage_hidden {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .CheckAlignment {
@@ -285,25 +293,25 @@ body[dir="rtl"] .Committee_error_coloumn {
 
 .Attachments_Heading {
   font-size: 20px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #6172d6 !important;
 }
 
 .Choose_file_style {
   font-size: 12px !important;
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   margin-left: 3px !important;
 }
 
 .ant-upload-text {
   font-size: 12px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 body[dir="rtl"] .ant-upload-text {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .dragdrop_attachment_create_resolution {
@@ -353,7 +361,7 @@ body[dir="rtl"] .Leftpolygon {
 .FileName {
   font-size: 10px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratRegular";
+  font-weight: 400;
   display: inline-block !important;
   overflow: hidden !important;
   white-space: nowrap !important;
@@ -386,4 +394,9 @@ body[dir="rtl"] .Leftpolygon {
   position: absolute !important;
   top: -7px !important;
   right: -4px !important;
+}
+.files_View {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }

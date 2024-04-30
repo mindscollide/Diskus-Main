@@ -1,5 +1,5 @@
 .Prposed_Meeting_heading {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 30px !important;
   color: #5f78d6 !important;
 }
@@ -11,7 +11,7 @@
 }
 
 .Heading_prposed_meeting {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 30px !important;
   color: #5f78d6 !important;
   display: inline-block !important;
@@ -22,19 +22,19 @@
 }
 
 .Staff_meeting_Heading {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 20px !important;
   color: #5a5a5a !important;
 }
 
 .Paragraph_Styles {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 12px !important;
   color: #5a5a5a !important;
 }
 
 .Prposed_On_Heading {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 12px !important;
   color: #5f78d6 !important;
 }
@@ -50,15 +50,6 @@
   border-radius: 4px !important;
 }
 
-.Date_Year_Styles {
-  font-family: "Montserrat";
-  font-size: 12px !important;
-  color: #5a5a5a !important;
-  display: flex !important;
-  align-items: center !important;
-  margin-top: 10px !important;
-}
-
 .Add_Dates_Btn_Class {
   border: 1px dotted #ccc !important;
   background: #fff !important;
@@ -70,7 +61,7 @@
 .Add_dates_label {
   font-size: 12px !important;
   color: #5f78d6 !important;
-  font-family: "MontserratMedium-500" !important;
+  font-weight: 500 !important;
 }
 
 .Scroller_meeting {
@@ -96,7 +87,7 @@
   color: #5a5a5a !important;
   background: #fff;
   border: 1px solid #e1e1e1;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border-radius: 4px !important;
 }
 
@@ -106,7 +97,7 @@
   color: #5a5a5a !important;
   background: #fff !important;
   border: 1px solid #e1e1e1 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border-radius: 4px !important;
 }
 
@@ -116,7 +107,7 @@
   color: #fff !important;
   background: #5f78d6;
   border: none;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border-radius: 4px !important;
 }
 
@@ -126,7 +117,7 @@
   color: #fff !important;
   background: #5f78d6 !important;
   border: none !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border-radius: 4px !important;
 }
 
@@ -137,12 +128,7 @@
   border-radius: 4px !important;
 }
 
-.Time_Class {
-  color: #5a5a5a;
-  font-family: "Montserrat";
-  font-size: 12px !important;
-  display: flex !important;
-}
+
 
 .CheckBox_Class {
   display: flex !important;
@@ -154,15 +140,10 @@
   margin-top: 10px !important;
 }
 
-.Date {
-  color: #5a5a5a;
-  font-family: "Montserrat";
-  font-size: 12px !important;
-}
 
 .OR_Heading {
   font-size: 30px !important;
-  font-family: "MontserratExtraBold-800";
+  font-weight: 800 !important;
   color: #a2a2a2;
 }
 
@@ -171,11 +152,11 @@
   height: 13px;
   color: #f16b6b;
   visibility: visible;
-  font-family: "MontserratMedium-500";
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .errorMessage-inLogin {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .errorMessage-inLogin_hidden {

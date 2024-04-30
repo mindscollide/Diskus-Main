@@ -1,13 +1,13 @@
 .nameparticipant {
   font-size: 12px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 .participant_designation {
   font-size: 10px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 .Space_limit {

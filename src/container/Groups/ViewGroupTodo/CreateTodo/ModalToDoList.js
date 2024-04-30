@@ -832,7 +832,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className="MontserratSemiBold-600 attachmentCon "
+                      className=" attachmentCon "
                     >
                       <label className="ArabicFontSemiBold">
                         {t("Attachement")}

@@ -518,7 +518,7 @@ const PackageSelected = () => {
                     <>
                       <Row className={styles["selected_package_details"]}>
                         <Col sm={4}>
-                          <p className="details-labels MontserratSemiBold-600">
+                          <p className="details-labels ">
                             {t("Company")}
                           </p>
                         </Col>
@@ -530,7 +530,7 @@ const PackageSelected = () => {
                       </Row>
                       <Row className={styles["selected_package_details"]}>
                         <Col sm={4}>
-                          <p className="details-labels MontserratSemiBold-600">
+                          <p className="details-labels ">
                             {t("Country")}
                           </p>
                         </Col>
@@ -542,7 +542,7 @@ const PackageSelected = () => {
                       </Row>
                       <Row className={styles["selected_package_details"]}>
                         <Col sm={4}>
-                          <p className="details-labels MontserratSemiBold-600">
+                          <p className="details-labels ">
                             {t("Address1")}
                           </p>
                         </Col>
@@ -554,7 +554,7 @@ const PackageSelected = () => {
                       </Row>
                       <Row className={styles["selected_package_details"]}>
                         <Col sm={4}>
-                          <p className="details-labels MontserratSemiBold-600">
+                          <p className="details-labels ">
                             {t("Address2")}
                           </p>
                         </Col>
@@ -566,7 +566,7 @@ const PackageSelected = () => {
                       </Row>
                       <Row className={styles["selected_package_details"]}>
                         <Col sm={4}>
-                          <p className="details-labels MontserratSemiBold-600">
+                          <p className="details-labels ">
                             {t("Email")}
                           </p>
                         </Col>
@@ -578,7 +578,7 @@ const PackageSelected = () => {
                       </Row>
                       <Row className={styles["selected_package_details"]}>
                         <Col sm={4}>
-                          <p className="details-labels MontserratSemiBold-600">
+                          <p className="details-labels ">
                             {t("State")}
                           </p>
                         </Col>
@@ -590,7 +590,7 @@ const PackageSelected = () => {
                       </Row>
                       <Row className={styles["selected_package_details"]}>
                         <Col sm={4}>
-                          <p className="details-labels MontserratSemiBold-600">
+                          <p className="details-labels ">
                             {t("City")}
                           </p>
                         </Col>
@@ -602,7 +602,7 @@ const PackageSelected = () => {
                       </Row>
                       <Row className={styles["selected_package_details"]}>
                         <Col sm={4}>
-                          <p className="details-labels MontserratSemiBold-600">
+                          <p className="details-labels ">
                             {t("Postal-zipcode")}
                           </p>
                         </Col>

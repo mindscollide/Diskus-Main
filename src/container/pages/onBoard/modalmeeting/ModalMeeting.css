@@ -176,10 +176,8 @@ body[dir="rtl"] .onboard_detail_camera {
   margin-top: 8px !important;
   margin-right: 10px !important;
   color: #a2a2a2 !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
 }
-
-
 
 /* button.onboard_detail_camera{
   margin-top: 13px !important;

@@ -366,15 +366,15 @@ const Actions = ({
                 dropdownClassName="Status-Todo"
                 className={
                   text.pK_TSID === 1
-                    ? "InProgress MontserratSemiBold custom-class "
+                    ? "InProgress  custom-class "
                     : text.pK_TSID === 2
-                    ? "Pending MontserratSemiBold custom-class "
+                    ? "Pending  custom-class "
                     : text.pK_TSID === 3
-                    ? "Upcoming MontserratSemiBold custom-class "
+                    ? "Upcoming  custom-class "
                     : text.pK_TSID === 4
-                    ? "Cancelled MontserratSemiBold custom-class "
+                    ? "Cancelled  custom-class "
                     : text.pK_TSID === 5
-                    ? "Completed MontserratSemiBold custom-class "
+                    ? "Completed  custom-class "
                     : null
                 }
                 onChange={(e) => statusChangeHandler(e, record.pK_TID)}
@@ -394,15 +394,15 @@ const Actions = ({
             <p
               className={
                 text.pK_TSID === 1
-                  ? "InProgress  MontserratSemiBold color-5a5a5a text-center  my-1"
+                  ? "InProgress custom-class  color-5a5a5a text-center  my-1"
                   : text.pK_TSID === 2
-                  ? "Pending  MontserratSemiBold color-5a5a5a text-center my-1"
+                  ? "Pending custom-class  color-5a5a5a text-center my-1"
                   : text.pK_TSID === 3
-                  ? "Upcoming MontserratSemiBold color-5a5a5a text-center  my-1"
+                  ? "Upcoming custom-class color-5a5a5a text-center  my-1"
                   : text.pK_TSID === 4
-                  ? "Cancelled  MontserratSemiBold color-5a5a5a text-center my-1"
+                  ? "Cancelled  custom-class color-5a5a5a text-center my-1"
                   : text.pK_TSID === 5
-                  ? "Completed  MontserratSemiBold color-5a5a5a  text-center my-1"
+                  ? "Completed  custom-class color-5a5a5a  text-center my-1"
                   : null
               }
             >
@@ -488,8 +488,24 @@ const Actions = ({
     try {
       if (toDoListReducer.createTaskMeeting !== null) {
         let taskData = toDoListReducer.createTaskMeeting;
+        let taskInfo = toDoListReducer.createTaskMeeting.todoList;
         if (Number(taskData.meetingID) === Number(currentMeeting)) {
-          setActionsRows([...actionsRows, taskData.todoList]);
+          let findisAlreadExist = actionsRows.findIndex(
+            (data, index) => data.pK_TID === taskData.todoList.pK_TID
+          );
+          if (findisAlreadExist !== -1) {
+            // setActionsRows((actionRows) => {
+            //   actionRows.map((newData, index) => {
+            //     if (newData.pK_TID === taskData.todoList.pK_TID) {
+            //       return taskInfo;
+            //     } else {
+            //       return newData;
+            //     }
+            //   });
+            // });
+          } else {
+            setActionsRows([...actionsRows, taskInfo]);
+          }
         }
         dispatch(createTaskMeetingMQTT(null));
       }

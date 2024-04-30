@@ -5,7 +5,7 @@
   color: #5a5a5a !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Previous_Button:is(:active, :focus, :focus-visible, :active) {
@@ -15,7 +15,7 @@
   color: #5a5a5a !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .RedCrossClass {
@@ -26,13 +26,13 @@
 }
 
 .Name {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 16px !important;
   color: #5a5a5a !important;
 }
 
 .Uploaded_heading {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 16px !important;
   color: #5f78d6 !important;
 }
@@ -47,7 +47,7 @@
 }
 
 .Date_Minutes_And_time {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 12px !important;
   color: #5f78d6 !important;
 }
@@ -83,7 +83,7 @@
 }
 
 .Title_File {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 20px !important;
   color: #5a5a5a !important;
   display: flex !important;
@@ -102,7 +102,7 @@
 }
 
 body[dir="rtl"] .modal-Note-Title-Input {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .quill-height-addNote {
@@ -119,18 +119,18 @@ body[dir="rtl"] .modal-Note-Title-Input {
 .ant-upload-text {
   font-size: 12px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
 }
 
 .Choose_file_style {
   font-size: 12px !important;
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   margin-left: 3px !important;
 }
 
 body[dir="rtl"] .ant-upload-text {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Button_General {
@@ -140,7 +140,7 @@ body[dir="rtl"] .ant-upload-text {
   color: #fff !important;
   border: none !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Button_General:is(:hover, :active, :focus, :focus-visible) {
@@ -150,7 +150,7 @@ body[dir="rtl"] .ant-upload-text {
   color: #fff !important;
   border: none !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Previous_Button {
@@ -160,7 +160,7 @@ body[dir="rtl"] .ant-upload-text {
   color: #5a5a5a !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Previous_Button:is(:active, :focus, :focus-visible, :active) {
@@ -170,7 +170,7 @@ body[dir="rtl"] .ant-upload-text {
   color: #5a5a5a !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Outer_Box {
@@ -205,7 +205,7 @@ body[dir="rtl"] .ant-upload-text {
 .FileName {
   font-size: 10px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratRegular";
+  font-weight: 400 !important;
   display: inline-block !important;
   overflow: hidden !important;
   white-space: nowrap !important;
@@ -249,18 +249,18 @@ body[dir="rtl"] .Leftpolygon {
 .Show_more {
   color: #5f78d6 !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   cursor: pointer !important;
 }
 
 .AgendaTitleClass {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 16px !important;
   color: #6172d6 !important;
 }
 
 .Show_more_Styles {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 10px !important;
 }
 
@@ -271,7 +271,7 @@ body[dir="rtl"] .Leftpolygon {
 }
 
 body[dir="rtl"] .errorNotesMessage {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .errorNotesMessage_hidden {
@@ -282,7 +282,7 @@ body[dir="rtl"] .errorNotesMessage {
 }
 
 body[dir="rtl"] .errorNotesMessage_hidden {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .errorNotesMessage_description {
@@ -293,7 +293,7 @@ body[dir="rtl"] .errorNotesMessage_hidden {
 }
 
 body[dir="rtl"] .errorNotesMessage_description {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .errorNotesMessage_hidden_description {
@@ -304,11 +304,11 @@ body[dir="rtl"] .errorNotesMessage_description {
 }
 
 body[dir="rtl"] .errorNotesMessage_hidden_description {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .header-of-collapse-material {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 16px !important;
   width: 100% !important;
   color: #2197d7;
@@ -319,7 +319,7 @@ body[dir="rtl"] .errorNotesMessage_hidden_description {
 }
 
 body[dir="rtl"] .header-of-collapse-material {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .PlusIcon {

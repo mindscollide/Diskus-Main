@@ -1,11 +1,11 @@
 .Create_Poll_Heading {
   font-size: 20px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #6172d6 !important;
 }
 
 body[dir="rtl"] .Create_Poll_Heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Cross_Icon_Styling_Create_Poll_Modal {
@@ -49,11 +49,11 @@ body[dir="rtl"] .Create_Poll_Heading {
 
 .Due_Date_heading {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .Due_Date_heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Add_Another_field {
@@ -100,12 +100,12 @@ body[dir="rtl"] .Due_Date_heading {
 
 .Add_another_field {
   font-size: 12px !important;
-  font-family: "MontserratMedium-500" !important;
+  font-weight: 500 !important;
   color: #bbbbbb;
 }
 
 body[dir="rtl"] .Add_another_field {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .polling_Options_backGround {
@@ -161,7 +161,7 @@ body[dir="rtl"] .polling_Options_backGround {
   margin: 0;
   padding: 0;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .ADD_Btn_CreatePool_Modal {
@@ -201,7 +201,7 @@ body[dir="rtl"] .Card_border2 {
 .Name_cards {
   font-size: 12px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   margin-left: 5px !important;
 }
 
@@ -274,7 +274,7 @@ body[dir="rtl"] .Card_border2 {
 }
 
 .Unsaved_heading {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 16px !important;
   color: #5a5a5a;
 }
@@ -373,7 +373,7 @@ body[dir="rtl"] .Card_border2 {
 
 .NameDropDown {
   font-size: 12px;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .errorMessage-inLogin {
@@ -381,14 +381,14 @@ body[dir="rtl"] .Card_border2 {
   height: 13px;
   color: #f16b6b;
   visibility: visible;
-  font-family: "MontserratMedium-500";
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .errorMessage-inLogin {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight:600 !important;
 }
 body[dir="rtl"] .errorMessage-inLogin_1 {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 600 !important;
 }
 
 .errorMessage-inLogin_hidden {
@@ -403,7 +403,7 @@ body[dir="rtl"] .errorMessage-inLogin_1 {
   font-size: 12px;
   color: #f16b6b;
   visibility: visible;
-  font-family: "MontserratMedium-500";
+  font-weight: 600 !important;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -421,7 +421,7 @@ body[dir="rtl"] .errorMessage-inLogin_1 {
 .Participant_heading {
   font-size: 20px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 500 !important;
   margin-top: 10px;
 }
 

@@ -1,21 +1,3 @@
-@font-face {
-  font-family: "MontserratSemiBold";
-  src: url("../../../../assets/fonts-new/montserrat-600-webfont.woff"),
-    url("../../../../assets/fonts-new/montserrat-600-webfont.woff2");
-}
-
-@font-face {
-  font-family: "MontserratRegular";
-  src: url("../../../../assets/fonts-new/montserrat-regular-webfont.woff"),
-    url("../../../../assets/fonts-new/montserrat-regular-webfont.woff2");
-}
-
-@font-face {
-  font-family: "MontserratMedium";
-  src: url("../../../../assets/fonts-new/montserrat-500-webfont.woff"),
-    url("../../../../assets/fonts-new/montserrat-500-webfont.woff2");
-}
-
 .allMeeting-cloumn-row {
   position: relative !important;
   /* transition: opacity 0.3s; */
@@ -76,11 +58,11 @@ body[dir="rtl"] .MeetingfilterModal {
   /* margin-top: -5px; */
   color: #6172d6;
   font-size: 30px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .Meeting-Main-Heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Meeting-modal-container {
@@ -88,18 +70,17 @@ body[dir="rtl"] .Meeting-Main-Heading {
 }
 
 .Meeting-label-heading {
-  font-weight: 600;
+  font-weight: 600 !important;
   font-size: 35px !important;
   color: #6172d6 !important;
   margin-top: -25px;
-  font-family: "MontserratSemiBold";
   margin-left: 15px;
 }
 
 .Meeting-Name-label {
   margin-top: 25px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 600 !important;
   color: #5a5a5a;
   opacity: 0.5;
 }
@@ -112,7 +93,7 @@ body[dir="rtl"] .Meeting-Main-Heading {
   font-size: 14px !important;
   background: none !important;
   border: none !important;
-  font-family: "MontserratRegular";
+  font-weight: 400 !important;
   color: #000 !important;
   opacity: 0.5 !important;
 }
@@ -132,7 +113,7 @@ body[dir="rtl"] .Meeting-Main-Heading {
   border-color: #6172d6 !important;
   border-radius: 4px;
   margin-right: 22px !important;
-  font-family: "MontserratMedium" !important;
+  font-weight: 500 !important;
   font-size: 12px !important;
 }
 
@@ -148,7 +129,7 @@ body[dir="rtl"] .Meeting-Main-Heading {
   border-color: #6172d6 !important;
   border-radius: 4px;
   margin-right: 22px !important;
-  font-family: "MontserratMedium" !important;
+  font-weight: 500 !important;
   font-size: 12px !important;
 }
 
@@ -160,7 +141,7 @@ body[dir="rtl"] .Meeting-Main-Heading {
 }
 
 body[dir="rtl"] .formcontrol-fieldfor-filtermodalmeeting {
-  font-family: "IBMPlexSansArabic-Medium";
+  font-weight: 500 !important;
 }
 
 .formcontrol-fieldfor-filtermodalmeeting:focus {
@@ -181,7 +162,7 @@ body[dir="rtl"] .formcontrol-fieldfor-filtermodalmeeting {
 }
 
 body[dir="rtl"] .formcontrol-fieldselectfor-filtermodalmeeting {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
 }
 
 .icon-modalmeeting-ResetBtn {
@@ -192,12 +173,12 @@ body[dir="rtl"] .formcontrol-fieldselectfor-filtermodalmeeting {
   background-color: #fff !important;
   color: #5a5a5a !important;
   margin-bottom: 20px !important;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   font-size: 12px;
 }
 
 body[dir="rtl"] .icon-modalmeeting-ResetBtn {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .icon-modalmeeting-ResetBtn:hover,
@@ -210,7 +191,7 @@ body[dir="rtl"] .icon-modalmeeting-ResetBtn {
   background-color: #fff !important;
   color: #5a5a5a !important;
   margin-bottom: 20px !important;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   font-size: 12px;
 }
 
@@ -222,7 +203,7 @@ body[dir="rtl"] .icon-modalmeeting-ResetBtn {
   background-color: #6172d6 !important;
   color: #fff !important;
   margin-bottom: 20px !important;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   font-size: 12px;
 }
 
@@ -236,7 +217,7 @@ body[dir="rtl"] .icon-modalmeeting-ResetBtn {
   background-color: #6172d6 !important;
   color: #fff !important;
   margin-bottom: 20px !important;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   font-size: 12px;
 }
 
@@ -248,12 +229,12 @@ body[dir="rtl"] .icon-modalmeeting-ResetBtn {
   background-color: #6172d6 !important;
   color: #fff !important;
   margin-right: 0 !important;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   font-size: 12px;
 }
 
 body[dir="rtl"] .icon-modalmeeting-SearchBtn {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .icon-modalmeeting-SearchBtn:hover,
@@ -267,7 +248,7 @@ body[dir="rtl"] .icon-modalmeeting-SearchBtn {
   background-color: #6172d6 !important;
   color: #fff !important;
   margin-right: 15px;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   font-size: 12px;
 }
 
@@ -284,12 +265,12 @@ body[dir="rtl"] .icon-modalmeeting-SearchBtn {
   white-space: nowrap !important;
   overflow: hidden;
   margin: 0;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   color: #505050;
 }
 
 body[dir="rtl"] .meeting-title {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .agenda-title {
@@ -301,13 +282,13 @@ body[dir="rtl"] .meeting-title {
 }
 
 body[dir="rtl"] .agenda-title {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
 }
 
 p.Status-Name-label {
   margin-top: 25px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 600 !important;
   color: #5a5a5a;
 }
 

@@ -2,7 +2,7 @@
   padding: 12px 30px !important;
   font-size: 12px !important;
   border-radius: 4px !important;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   display: flex;
   align-items: center !important;
   gap: 5px;
@@ -20,7 +20,7 @@
   display: flex;
   gap: 5px;
   border-radius: 4px !important;
-  font-family: "MontserratMedium-500" !important;
+  font-weight: 500 !important;
   border: none !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
@@ -33,7 +33,7 @@
   border-radius: 4px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Cancel_Organization:hover,
@@ -46,7 +46,7 @@
   border-radius: 4px !important;
   background: #fff;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Next_Organization {
@@ -56,7 +56,7 @@
   border-radius: 4px !important;
   background: #5f78d6;
   color: #fff;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 .Next_Organization:hover,
 .Next_Organization:active,
@@ -68,13 +68,13 @@
   border-radius: 4px !important;
   background: #5f78d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Edit_Button_Organizers {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1;
   background: #fff;
@@ -94,7 +94,7 @@
   gap: 5px;
   border: 1px solid #e1e1e1 !important;
   background: #fff !important;
-  font-family: "MontserratMedium-500" !important;
+  font-weight: 500 !important;
   color: #707070 !important;
 }
 
@@ -108,7 +108,7 @@
   border: 1px solid#E1E1E1 !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Cancel_Button_Organizers_view:is(:active, :hover, :focus, :focus-visible) {
@@ -118,7 +118,7 @@
   border: 1px solid#E1E1E1 !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 .Next_Button_Organizers_view {
   padding: 12px 30px !important;
@@ -127,7 +127,7 @@
   border: none !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Next_Button_Organizers_view:is(:active, :hover, :focus, :focus-visible) {
@@ -137,7 +137,7 @@
   border: none !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Cancel_Meeting_Details {
@@ -147,19 +147,19 @@
   border: 1px solid#E1E1E1 !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Empty_state_heading {
   color: #505050 !important;
   font-size: 30px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Empty_state_Subheading {
   color: #5a5a5a !important;
   font-size: 12px !important;
-  font-family: "Montserrat";
+  font-weight: 500;
 }
 .height2 {
   min-height: 60vh !important;

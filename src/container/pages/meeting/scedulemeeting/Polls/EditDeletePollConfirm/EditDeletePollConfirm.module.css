@@ -1,7 +1,7 @@
 .UnsaveheadingFileUpload {
   font-size: 15px !important;
   color: #5f78d6 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .No_unsave_File_Upload {
@@ -11,7 +11,7 @@
   background: #fff !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .No_unsave_File_Upload:is(:hover, :focus, :focus-visible, :active) {
@@ -21,7 +21,7 @@
   background: #fff !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Yes_unsave_File_Upload {
@@ -31,7 +31,7 @@
   color: #fff !important;
   border: none !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Yes_unsave_File_Upload:is(:hover, :focus, :focus-visible, :active) {
@@ -41,5 +41,5 @@
   color: #fff !important;
   border: none !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }

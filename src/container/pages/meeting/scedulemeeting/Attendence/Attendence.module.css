@@ -1,18 +1,18 @@
 .PersonName {
   font-size: 16px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #545454;
 }
 
 .Designation {
   color: #6172d6 !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Email {
   color: #505050 !important;
-  font-family: "MontserratMedium-500" !important;
+  font-weight: 500 !important;
   font-size: 12px !important;
 }
 
@@ -22,7 +22,7 @@
   border-radius: 4px !important;
   background: #81db86 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   display: flex;
   gap: 8px !important;
   align-items: center !important;
@@ -34,7 +34,7 @@
   border-radius: 4px !important;
   background: #f16b6b !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   display: flex;
   gap: 8px !important;
   align-items: center !important;
@@ -46,7 +46,7 @@
   border-radius: 4px !important;
   background: #d8a709 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   display: flex;
   gap: 8px !important;
   align-items: center !important;
@@ -58,7 +58,7 @@
   border-radius: 4px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 12px !important;
 }
 
@@ -69,7 +69,7 @@
   background: #fff !important;
   font-size: 12px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .fixedHeight {

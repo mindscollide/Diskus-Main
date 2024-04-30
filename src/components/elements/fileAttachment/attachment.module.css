@@ -1,0 +1,109 @@
+.attachedfile_Box {
+  border: 1px solid #ccc;
+  background: #f6fafd;
+  width: 100%;
+  height: 30px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0 10px;
+}
+
+.Download_icon_Box {
+  flex: 1;
+}
+.Download_icon {
+  border-right: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  padding: 0 8px;
+}
+.View_icon_Box {
+  flex: 1;
+}
+
+.borderFileName {
+  border-right: 1px solid #e1e1e1;
+  border-left: 1px solid #e1e1e1;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+body[dir="rtl"] .borderFileName {
+  border-right: 1px solid #e1e1e1;
+  border-left: 1px solid #e1e1e1;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.fileNameTruncateStyle {
+  width: 125px !important;
+  justify-content: flex-start !important;
+  display: flex !important;
+  gap: 5px;
+
+}
+.fileNameTruncateStyle_fullwidth {
+  width: 160px !important;
+  display: flex !important;
+  gap: 10px;
+}
+.fileNameAttachment {
+
+  font-size: 12px;
+  /* text-decoration-line: underline; */
+  color: #5a5a5c;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 90px;
+  white-space: nowrap;
+}
+.fileNameAttachmentNotOpened {
+  font-size: 12px;
+  color: #5a5a5c;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  cursor: default !important;
+}
+
+body[dir="rtl"] .fileNameAttachment {
+  font-style: normal;
+  font-size: 12px;
+  text-decoration-line: underline;
+  color: #5a5a5c;
+  font-weight: 500;
+  margin-left: 0;
+  margin-right: 10px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.agendaFileAttachedView {
+  cursor: pointer;
+  user-select: none !important;
+  box-sizing: border-box;
+  background: #f6f9fc;
+  border: 1px solid #d4d4d4;
+  border-radius: 25px;
+  width: 190px;
+  height: 30px;
+  position: relative;
+  z-index: 1;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.Cross_Icon {
+  position: absolute;
+  top: -8px;
+  right: -5px;
+  z-index: -1;
+  width: 14px;
+}

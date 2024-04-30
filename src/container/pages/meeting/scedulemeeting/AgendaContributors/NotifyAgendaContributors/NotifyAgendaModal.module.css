@@ -1,6 +1,6 @@
 .Notify_organisors {
   font-size: 16px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #6172d6 !important;
 }
 
@@ -8,7 +8,7 @@
   margin: 0;
   padding: 0;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Scroller_notify {
@@ -84,13 +84,13 @@
 .Hide_names {
   font-size: 12px !important;
   color: #6172d6;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
 }
 
 .Participants_Name {
   color: #5a5a5a !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
 }
 .Cross_Icon_Styling {
   cursor: pointer;
@@ -100,11 +100,13 @@
   height: 13px;
   color: #f16b6b;
   visibility: visible;
-  font-family: "MontserratMedium-500";
+  font-weight: 600 !important;
+
 }
 
 body[dir="rtl"] .errorMessage-inLogin {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 600 !important;
+
 }
 
 .errorMessage-inLogin_hidden {

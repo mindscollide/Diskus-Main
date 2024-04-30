@@ -105,181 +105,296 @@ const Organizers = ({
     };
   }, []);
 
-  const MeetingColoumns = [
-    {
-      title: (
-        <>
+  let allowRSVPValue =
+    MeetingOrganizersReducer?.AllMeetingOrganizersData?.allowRSVP;
+
+  if (allowRSVPValue === true) {
+    var MeetingColoumns = [
+      {
+        title: (
+          <>
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                <span>{t("Name")}</span>
+              </Col>
+            </Row>
+          </>
+        ),
+        dataIndex: "userName",
+        key: "userName",
+        width: "200px",
+        align: "left",
+        render: (text) => (
+          <label className={styles["Title_desc"]}>{text}</label>
+        ),
+      },
+
+      {
+        title: t("Email"),
+        dataIndex: "email",
+        key: "email",
+        width: "250px",
+        align: "left",
+        render: (text) => <label className="column-boldness">{text}</label>,
+      },
+      {
+        title: t("Organizer-title"),
+        dataIndex: "organizerTitle",
+        key: "organizerTitle",
+        align: "center",
+        width: "250px",
+        render: (text) => <label className="column-boldness">{text}</label>,
+      },
+
+      {
+        dataIndex: "isPrimaryOrganizer",
+        key: "isPrimaryOrganizer",
+        align: "left",
+        width: "200px",
+        render: (text, record, rowIndex) => (
           <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span>{t("Name")}</span>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex gap-3 align-items-center"
+            >
+              <label className="column-boldness">
+                {text === true ? t("Primary") : t("Non-primary")}
+              </label>
             </Col>
           </Row>
-        </>
-      ),
-      dataIndex: "userName",
-      key: "userName",
-      width: "200px",
-      align: "left",
-      render: (text) => <label className={styles["Title_desc"]}>{text}</label>,
-    },
-
-    {
-      title: t("Email"),
-      dataIndex: "email",
-      key: "email",
-      width: "250px",
-      align: "left",
-      render: (text) => <label className="column-boldness">{text}</label>,
-    },
-    {
-      title: t("Organizer-title"),
-      dataIndex: "organizerTitle",
-      key: "organizerTitle",
-      align: "center",
-      width: "250px",
-      render: (text) => <label className="column-boldness">{text}</label>,
-    },
-
-    {
-      dataIndex: "isPrimaryOrganizer",
-      key: "isPrimaryOrganizer",
-      align: "left",
-      width: "200px",
-      render: (text, record, rowIndex) => (
-        <Row>
-          <Col
-            lg={12}
-            md={12}
-            sm={12}
-            className="d-flex gap-3 align-items-center"
-          >
-            <label className="column-boldness">{t("Primary")}</label>
-          </Col>
-        </Row>
-      ),
-    },
-    {
-      title: "RSVP",
-      dataIndex: "attendeeAvailability",
-      key: "attendeeAvailability",
-      align: "left",
-      width: "120px",
-      render: (text, record) => {
-        if (record.attendeeAvailability === 1) {
-          return (
-            <img
-              draggable={false}
-              src={AwaitingResponse}
-              height="30px"
-              width="30px"
-              alt=""
-            />
-          );
-        } else if (record.attendeeAvailability === 2) {
-          return (
-            <img
-              draggable={false}
-              src={thumbsup}
-              height="30px"
-              width="30px"
-              alt=""
-            />
-          );
-        } else if (record.attendeeAvailability === 3) {
-          return (
-            <img
-              draggable={false}
-              src={thumbsdown}
-              height="30px"
-              width="30px"
-              alt=""
-            />
-          );
-        } else if (record.attendeeAvailability === 4) {
-          return (
-            <img
-              draggable={false}
-              src={TentativelyAccepted}
-              height="30px"
-              width="30px"
-              alt=""
-            />
-          );
-        }
+        ),
       },
-      // render: (text, record) => {
-      //   if (record.isRSVP === true) {
-      //     return (
-      //       <img
-      //         draggable={false}
-      //         src={thumbsup}
-      //         height="30px"
-      //         width="30px"
-      //         alt=""
-      //       />
-      //     );
-      //   } else {
-      //     return (
-      //       <img
-      //         draggable={false}
-      //         src={thumbsdown}
-      //         height="30px"
-      //         width="30px"
-      //         alt=""
-      //       />
-      //     );
-      //   }
-      // },
-    },
+      {
+        title: "RSVP",
+        dataIndex: "attendeeAvailability",
+        key: "attendeeAvailability",
+        align: "left",
+        width: "120px",
+        render: (text, record) => {
+          if (record.attendeeAvailability === 1) {
+            return (
+              <img
+                draggable={false}
+                src={AwaitingResponse}
+                height="30px"
+                width="30px"
+                alt=""
+              />
+            );
+          } else if (record.attendeeAvailability === 2) {
+            return (
+              <img
+                draggable={false}
+                src={thumbsup}
+                height="30px"
+                width="30px"
+                alt=""
+              />
+            );
+          } else if (record.attendeeAvailability === 3) {
+            return (
+              <img
+                draggable={false}
+                src={thumbsdown}
+                height="30px"
+                width="30px"
+                alt=""
+              />
+            );
+          } else if (record.attendeeAvailability === 4) {
+            return (
+              <img
+                draggable={false}
+                src={TentativelyAccepted}
+                height="30px"
+                width="30px"
+                alt=""
+              />
+            );
+          }
+        },
+        // render: (text, record) => {
+        //   if (record.isRSVP === true) {
+        //     return (
+        //       <img
+        //         draggable={false}
+        //         src={thumbsup}
+        //         height="30px"
+        //         width="30px"
+        //         alt=""
+        //       />
+        //     );
+        //   } else {
+        //     return (
+        //       <img
+        //         draggable={false}
+        //         src={thumbsdown}
+        //         height="30px"
+        //         width="30px"
+        //         alt=""
+        //       />
+        //     );
+        //   }
+        // },
+      },
 
-    {
-      title: t("Notification"),
-      dataIndex: "isOrganizerNotified",
-      key: "isOrganizerNotified",
-      width: "180px",
-      render: (text, record) => {
-        if (record.isOrganizerNotified === true) {
-          return (
+      {
+        title: t("Notification"),
+        dataIndex: "isOrganizerNotified",
+        key: "isOrganizerNotified",
+        width: "180px",
+        render: (text, record) => {
+          if (record.isOrganizerNotified === true) {
+            return (
+              <Row>
+                <Col
+                  lg={7}
+                  md={7}
+                  sm={7}
+                  className="d-flex justify-content-center"
+                >
+                  <img
+                    draggable={false}
+                    src={greenMailIcon}
+                    height="30px"
+                    width="30px"
+                    alt=""
+                  />
+                </Col>
+              </Row>
+            );
+          } else if (record.isOrganizerNotified === false) {
+            return (
+              <Row>
+                <Col
+                  lg={7}
+                  md={7}
+                  sm={7}
+                  className="d-flex justify-content-center"
+                >
+                  <img
+                    draggable={false}
+                    src={redMailIcon}
+                    height="30px"
+                    width="30px"
+                    alt=""
+                  />
+                </Col>
+              </Row>
+            );
+          }
+        },
+      },
+    ];
+  } else {
+    var MeetingColoumns = [
+      {
+        title: (
+          <>
             <Row>
-              <Col
-                lg={7}
-                md={7}
-                sm={7}
-                className="d-flex justify-content-center"
-              >
-                <img
-                  draggable={false}
-                  src={greenMailIcon}
-                  height="30px"
-                  width="30px"
-                  alt=""
-                />
+              <Col lg={12} md={12} sm={12}>
+                <span>{t("Name")}</span>
               </Col>
             </Row>
-          );
-        } else if (record.isOrganizerNotified === false) {
-          return (
-            <Row>
-              <Col
-                lg={7}
-                md={7}
-                sm={7}
-                className="d-flex justify-content-center"
-              >
-                <img
-                  draggable={false}
-                  src={redMailIcon}
-                  height="30px"
-                  width="30px"
-                  alt=""
-                />
-              </Col>
-            </Row>
-          );
-        }
+          </>
+        ),
+        dataIndex: "userName",
+        key: "userName",
+        width: "200px",
+        align: "left",
+        render: (text) => (
+          <label className={styles["Title_desc"]}>{text}</label>
+        ),
       },
-    },
-  ];
+
+      {
+        title: t("Email"),
+        dataIndex: "email",
+        key: "email",
+        width: "250px",
+        align: "left",
+        render: (text) => <label className="column-boldness">{text}</label>,
+      },
+      {
+        title: t("Organizer-title"),
+        dataIndex: "organizerTitle",
+        key: "organizerTitle",
+        align: "center",
+        width: "250px",
+        render: (text) => <label className="column-boldness">{text}</label>,
+      },
+
+      {
+        dataIndex: "isPrimaryOrganizer",
+        key: "isPrimaryOrganizer",
+        align: "left",
+        width: "200px",
+        render: (text, record, rowIndex) => (
+          <Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex gap-3 align-items-center"
+            >
+              <label className="column-boldness">
+                {text === true ? t("Primary") : t("Non-primary")}
+              </label>
+            </Col>
+          </Row>
+        ),
+      },
+      {
+        title: t("Notification"),
+        dataIndex: "isOrganizerNotified",
+        key: "isOrganizerNotified",
+        width: "180px",
+        render: (text, record) => {
+          if (record.isOrganizerNotified === true) {
+            return (
+              <Row>
+                <Col
+                  lg={7}
+                  md={7}
+                  sm={7}
+                  className="d-flex justify-content-center"
+                >
+                  <img
+                    draggable={false}
+                    src={greenMailIcon}
+                    height="30px"
+                    width="30px"
+                    alt=""
+                  />
+                </Col>
+              </Row>
+            );
+          } else if (record.isOrganizerNotified === false) {
+            return (
+              <Row>
+                <Col
+                  lg={7}
+                  md={7}
+                  sm={7}
+                  className="d-flex justify-content-center"
+                >
+                  <img
+                    draggable={false}
+                    src={redMailIcon}
+                    height="30px"
+                    width="30px"
+                    alt=""
+                  />
+                </Col>
+              </Row>
+            );
+          }
+        },
+      },
+    ];
+  }
 
   const previousTabOrganizer = () => {
     setAgendaContributors(false);

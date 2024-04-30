@@ -1,21 +1,21 @@
 .Heading_For_Updated_successfully {
   font-size: 20pt;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   color: #5a5a5a;
 }
 
 body[dir="rtl"] .Heading_For_Updated_successfully {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Heading_Success_updateResolution {
   font-size: 20pt;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   color: #5a5a5a;
 }
 
 body[dir="rtl"] .Heading_Success_updateResolution {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Tik_arrow {

@@ -41,7 +41,7 @@ import { cleareMessage as cleareMessagetodo } from "../../store/actions/GetTodos
 import { HideNotificationMeetings } from "../../store/actions/GetMeetingUserId";
 import { clearResponce } from "../../store/actions/ToDoList_action";
 import { useNavigate } from "react-router-dom";
-import MeetingViewModalCalendar from "../MeetingViewModalCalendar/MeetingViewModalCalendar";
+import MeetingViewModalCalendar from "../modalView/ModalView";
 
 const CalendarPage = () => {
   //For Localization
@@ -78,7 +78,10 @@ const CalendarPage = () => {
   });
   const [startDataUpdate, setStartDataUpdate] = useState("");
   const [endDataUpdate, setEndDataUpdate] = useState("");
-  let CalenderMonthsSpan = localStorage.getItem("calenderMonthsSpan");
+  let CalenderMonthsSpan =
+    localStorage.getItem("calenderMonthsSpan") !== null
+      ? localStorage.getItem("calenderMonthsSpan")
+      : 1;
   let OrganizationID = localStorage.getItem("organizationID");
   const userID = localStorage.getItem("userID");
   var currentDate = new Date(); // Get the current date
@@ -86,20 +89,14 @@ const CalendarPage = () => {
   // Calculate the start date
   let startDate = new Date(
     currentDate.getFullYear(),
-    currentDate.getMonth() -
-      parseInt(
-        parseInt(CalenderMonthsSpan) === 0 ? 1 : parseInt(CalenderMonthsSpan)
-      ),
+    currentDate.getMonth() - Number(CalenderMonthsSpan),
     currentDate.getDate()
   );
 
   // Calculate the end date
   let endDate = new Date(
     currentDate.getFullYear(),
-    currentDate.getMonth() +
-      parseInt(
-        parseInt(CalenderMonthsSpan) === 0 ? 1 : parseInt(CalenderMonthsSpan)
-      ),
+    currentDate.getMonth() + Number(CalenderMonthsSpan),
     currentDate.getDate()
   );
 
@@ -190,18 +187,16 @@ const CalendarPage = () => {
   }, []);
 
   function onChange(value) {
+    console.log(value, "valuevaluevalueonChange");
     let newDAte = moment(value._d).format("YYYY-MM-DD");
+    console.log(newDAte, "valuevaluevalueonChange");
+
     setCalendarView(false);
     if (startDataUpdate > value._d) {
       const date = new Date(value._d);
       let updateStartDate = new Date(
         date.getFullYear(),
-        date.getMonth() -
-          parseInt(
-            parseInt(CalenderMonthsSpan) === 0
-              ? 1
-              : parseInt(CalenderMonthsSpan)
-          ),
+        date.getMonth() - Number(CalenderMonthsSpan),
         1
       );
       let calendarData = {
@@ -216,13 +211,7 @@ const CalendarPage = () => {
       const date = new Date(value._d);
       let updateEndDate = new Date(
         date.getFullYear(),
-        date.getMonth() +
-          parseInt(
-            parseInt(CalenderMonthsSpan) === 0
-              ? 1
-              : parseInt(CalenderMonthsSpan)
-          ),
-        0
+        date.getMonth() + Number(CalenderMonthsSpan)
       );
       let calendarData = {
         UserID: parseInt(userID),
@@ -241,9 +230,9 @@ const CalendarPage = () => {
   // set Data for Calendar
   useEffect(() => {
     let Data = calendarReducer.CalenderData;
-    let officeEventColor = localStorage.getItem("officeEventColor");
-    let googleEventColor = localStorage.getItem("googleEventColor");
-    let diskusEventColor = localStorage.getItem("diskusEventColor");
+    let officeEventColor = localStorage.getItem("officeEventColor") !== null? localStorage.getItem("officeEventColor"): "#000";
+    let googleEventColor = localStorage.getItem("googleEventColor") !== null? localStorage.getItem("googleEventColor"): "#000";;
+    let diskusEventColor = localStorage.getItem("diskusEventColor") !== null? localStorage.getItem("diskusEventColor"): "#000";;
     console.log(Data, "DataDataDataData");
     let newList;
     if (Object.keys(calenderData).length > 0) {
@@ -533,8 +522,6 @@ const CalendarPage = () => {
 
   //click handler for create events button
   const eventClickHandler = () => {};
-
-  useEffect(() => {}, [defaultValue]);
 
   function handleAddEvent() {
     setOpen(true);

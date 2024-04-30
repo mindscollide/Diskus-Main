@@ -1,10 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import {
-  Checkbox,
-  Modal,
-  MultiDatePickers,
-  Notification,
-} from "../../../components/elements";
+import { Checkbox, Modal, Notification } from "../../../components/elements";
 import styles from "./UpdatePolls.module.css";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import WhiteCrossIcon from "../../../assets/images/PollCrossIcon.svg";
@@ -16,12 +11,9 @@ import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import plusFaddes from "../../../assets/images/PlusFadded.svg";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
-import profile from "../../../assets/images/profile_polls.svg";
-
 import EditIcon from "../../../assets/images/Edit-Icon.png";
 import GroupIcon from "../../../assets/images/groupdropdown.svg";
 import committeeicon from "../../../assets/images/committeedropdown.svg";
-import profilepic from "../../../assets/images/profiledropdown.svg";
 import { useState } from "react";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
@@ -34,15 +26,10 @@ import {
 } from "../../../store/actions/Polls_actions";
 import { useNavigate } from "react-router-dom";
 import {
-  convertintoGMTCalender,
   multiDatePickerDateChangIntoUTC,
-  newDateFormaterAsPerUTC,
   utcConvertintoGMT,
 } from "../../../commen/functions/date_formater";
-import {
-  regexOnlyForNumberNCharacters,
-  validateInput,
-} from "../../../commen/functions/regex";
+import { validateInput } from "../../../commen/functions/regex";
 import DatePicker from "react-multi-date-picker";
 
 const UpdatePolls = () => {
@@ -70,20 +57,7 @@ const UpdatePolls = () => {
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [defineUnsaveModal, setDefineUnsaveModal] = useState(false);
   const [checkForPollStatus, setCheckForPollStatus] = useState(false);
-  const [options, setOptions] = useState([
-    {
-      name: 1,
-      value: "",
-    },
-    {
-      name: 2,
-      value: "",
-    },
-    {
-      name: 3,
-      value: "",
-    },
-  ]);
+  const [options, setOptions] = useState([]);
 
   const [UpdatePolls, setUpdatePolls] = useState({
     TypingTitle: "",
@@ -246,24 +220,24 @@ const UpdatePolls = () => {
           pollID: pollsDetails.poll.pollDetails.pollID,
         });
         try {
-          if (Object.keys(PollsReducer.Allpolls.poll.pollOptions).length > 2) {
-            let Option = [];
-            PollsReducer.Allpolls.poll.pollOptions.map((data, index) => {
-              let dataAdd = { name: index + 1, value: data.answer };
-              Option.push(dataAdd);
-            });
-            setOptions(Option);
-          } else if (
-            Object.keys(PollsReducer.Allpolls.poll.pollOptions).length <= 2
-          ) {
-            const updatedOptions = options.map((option) => {
-              const apiData = PollsReducer.Allpolls.poll.pollOptions.find(
-                (apiOption, index) => index + 1 === option.name
-              );
-              return apiData ? { ...option, value: apiData.answer } : option;
-            });
-            setOptions(updatedOptions);
-          }
+          // if (Object.keys(PollsReducer.Allpolls.poll.pollOptions).length > 2) {
+          let Option = [];
+          PollsReducer.Allpolls.poll.pollOptions.map((data, index) => {
+            let dataAdd = { name: index + 1, value: data.answer };
+            Option.push(dataAdd);
+          });
+          setOptions(Option);
+          // } else if (
+          //   Object.keys(PollsReducer.Allpolls.poll.pollOptions).length <= 2
+          // ) {
+          //   const updatedOptions = options.map((option) => {
+          //     const apiData = PollsReducer.Allpolls.poll.pollOptions.find(
+          //       (apiOption, index) => index + 1 === option.name
+          //     );
+          //     return apiData ? { ...option, value: apiData.answer } : option;
+          //   });
+          //   setOptions(updatedOptions);
+          // }
         } catch {}
       }
     }

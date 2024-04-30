@@ -1,7 +1,7 @@
 .UserLevelConfig_Heading {
   font-size: 30px !important;
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .UserConfigsContainer {
@@ -12,13 +12,13 @@
 .Options_headings {
   font-size: 20px !important;
   color: #5a5a5a;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
 }
 
 .Options_headings_active {
   font-size: 20px !important;
   color: #5a5a5a;
-  font-family: "MontserratExtraBold-800" !important;
+  font-weight: 800 !important;
 }
 .Padding_around_class {
   padding: 0px 45px !important;
@@ -27,18 +27,18 @@
 .Class_CheckBox {
   font-size: 16px !important;
   color: #5a5a5a;
-  font-family: "MontserratMedium-500" !important;
+  font-weight: 500 !important;
 }
 
 .Diskus_calender {
   font-size: 16px !important;
   color: #5a5a5a;
-  font-family: "MontserratMedium-500" !important;
+  font-weight: 500 !important;
 }
 .Diskus_calender_microsoft {
   font-size: 16px !important;
   color: #5a5a5a;
-  font-family: "MontserratMedium-500" !important;
+  font-weight: 500 !important;
   width: 120px !important;
 }
 
@@ -63,7 +63,7 @@
   border-radius: 4px;
   color: #fff;
   border: none;
-  font-family: "MontserratMedium";
+  font-weight: 500 !important;
   font-size: 14px;
 }
 
@@ -76,6 +76,6 @@
   border-radius: 4px !important;
   color: #fff !important;
   border: none !important;
-  font-family: "MontserratMedium" !important;
+  font-weight: 500 !important;
   font-size: 14px !important;
 }

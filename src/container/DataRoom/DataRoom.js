@@ -50,6 +50,7 @@ import {
   deleteFileDataroom,
   deleteFolder,
   deleteSharedFileDataroom,
+  deleteSharedFolderDataroom,
   FileisExist,
   getDocumentsAndFolderApi,
   getDocumentsAndFolderApiScrollbehaviour,
@@ -689,11 +690,18 @@ const DataRoom = () => {
       };
       dispatch(createWorkflowApi(dataRoomData, navigate, t, pdfDataJson));
     } else if (data.value === 9) {
-      // Remove Shared File
-      let removeShareData = {
-        FileSharingID: record.id,
-      };
-      dispatch(deleteSharedFileDataroom(navigate, removeShareData, t));
+      if (record.isFolder) {
+        let removeSharedFolder = {
+          FolderSharingID: record.sharingID,
+        };
+        dispatch(deleteSharedFolderDataroom(navigate, removeSharedFolder, t));
+      } else {
+        // Remove Shared File
+        let removeShareData = {
+          FileSharingID: Number(record.sharingID),
+        };
+        dispatch(deleteSharedFileDataroom(navigate, removeShareData, t));
+      }
     }
   };
   //
@@ -3310,21 +3318,19 @@ const DataRoom = () => {
         <Row className="mt-3">
           <Col sm={12} md={12} lg={12}>
             <Row>
-              <Col lg={2} md={2} sm={2}>
+              <Col
+                lg={4}
+                md={4}
+                sm={12}
+                className="d-flex gap-3 align-items-center"
+              >
                 <span className={styles["Data_room_heading"]}>
                   {t("Data-room")}
                 </span>
-              </Col>
-              <Col
-                lg={3}
-                md={3}
-                sm={12}
-                className="d-flex justify-content-start"
-              >
                 <Dropdown
-                  className="DataRoom_DropDown"
+                  className={styles["DataRoom_DropDown"]}
+
                   // onClick={eventClickHandler}
-                  align={"start"}
                 >
                   <Dropdown.Toggle title={t("New")}>
                     <Row>
@@ -3342,10 +3348,10 @@ const DataRoom = () => {
 
                   <Dropdown.Menu className={styles["dropdown_menu_dataroom"]}>
                     <Dropdown.Item
-                      className="dropdown-item"
+                      className={styles["dataroom_dropdown_item"]}
                       onClick={openFolderModal}
                     >
-                      <Row className="mt-2">
+                      <Row>
                         <Col
                           lg={12}
                           md={12}
@@ -3365,11 +3371,8 @@ const DataRoom = () => {
                         </Col>
                       </Row>
                     </Dropdown.Item>
-                    <Dropdown.Item
-                      className="dropdown-item"
-                      // onClick={handleCreateTodo}
-                    >
-                      <Row className="mt-1">
+                    <Dropdown.Item className={styles["dataroom_dropdown_item"]}>
+                      <Row>
                         <Col
                           lg={12}
                           md={12}
@@ -3391,8 +3394,8 @@ const DataRoom = () => {
                         </Col>
                       </Row>
                     </Dropdown.Item>
-                    <Dropdown.Item className="dropdown-item_folder">
-                      <Row className="mt-1">
+                    <Dropdown.Item className={styles["dataroom_dropdown_item"]}>
+                      <Row>
                         <Col
                           lg={12}
                           md={12}
@@ -3418,6 +3421,8 @@ const DataRoom = () => {
                   </Dropdown.Menu>
                 </Dropdown>
               </Col>
+
+              <Col sm={1} md={1} lg={1}></Col>
               <Col
                 lg={6}
                 md={6}
@@ -3587,11 +3592,14 @@ const DataRoom = () => {
                                   >
                                     <GridViewDataRoom
                                       data={getAllData}
-                                      optionsforFolder={optionsforFolder(t)}
-                                      optionsforFile={optionsforFile(t)}
                                       sRowsData={sRowsData}
                                       totalRecords={totalRecords}
                                       filter_Value={filterValue}
+                                      setSearchTabOpen={setSearchTabOpen}
+                                      setDetailView={setDetailView}
+                                      setFileDataforAnalyticsCount={
+                                        setFileDataforAnalyticsCount
+                                      }
                                     />
                                   </InfiniteScroll>
                                 </>
@@ -3705,6 +3713,11 @@ const DataRoom = () => {
                                     sRowsData={sRowsData}
                                     totalRecords={totalRecords}
                                     filter_Value={filterValue}
+                                    setSearchTabOpen={setSearchTabOpen}
+                                    setDetailView={setDetailView}
+                                    setFileDataforAnalyticsCount={
+                                      setFileDataforAnalyticsCount
+                                    }
                                   />
                                 </>
                               ) : listviewactive === true ? (
@@ -3788,11 +3801,14 @@ const DataRoom = () => {
                                   >
                                     <GridViewDataRoom
                                       data={getAllData}
-                                      optionsforFolder={optionsforFolder(t)}
-                                      optionsforFile={optionsforFile(t)}
                                       sRowsData={sRowsData}
                                       totalRecords={totalRecords}
                                       filter_Value={filterValue}
+                                      setSearchTabOpen={setSearchTabOpen}
+                                      setDetailView={setDetailView}
+                                      setFileDataforAnalyticsCount={
+                                        setFileDataforAnalyticsCount
+                                      }
                                     />
                                   </InfiniteScroll>
                                 </>

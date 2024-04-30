@@ -216,7 +216,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                                 "Approved".toLowerCase()
                                   ? Clock
                                   : decision.toLowerCase() ===
-                                    "Not Approved".toLowerCase()
+                                    "NotApproved".toLowerCase()
                                   ? thumbsdown
                                   : decision.toLowerCase() ===
                                     "Pending".toLowerCase()

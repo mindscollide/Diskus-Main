@@ -84,7 +84,7 @@ const DeleteOrganization = () => {
                 sm={12}
                 md={12}
                 lg={12}
-                className={`${"MontserratSemiBold-600 fs-4 mt-4 mb-2"} ${
+                className={`${" fs-4 mt-4 mb-2"} ${
                   styles["DeleteOrganization_box_heading"]
                 }`}
               >

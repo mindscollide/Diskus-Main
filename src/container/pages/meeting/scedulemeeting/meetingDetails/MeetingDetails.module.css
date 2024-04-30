@@ -1,7 +1,7 @@
 .Meeting_type_heading {
   color: #6172d6;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Button_not_active {
@@ -65,12 +65,12 @@ body[rtl] .Camera_icon_Active {
 .Create_group_chat_heading {
   font-size: 12px !important;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Scedule_heading {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #5f78d6;
 }
 
@@ -110,7 +110,7 @@ body[rtl] .Camera_icon_Active {
 .Add_dates_label {
   font-size: 12px !important;
   color: #6172d6 !important;
-  font-family: "MontserratMedium-500" !important;
+  font-weight: 500 !important;
 }
 
 .Plus_Button_class {
@@ -135,7 +135,7 @@ body[rtl] .Camera_icon_Active {
 .Frequency_heading {
   font-size: 12px !important;
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Plus_Button_class {
@@ -145,13 +145,13 @@ body[rtl] .Camera_icon_Active {
 .Notify_heading {
   color: #5a5a5a !important;
   color: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .reccurring_heading {
   font-size: 12px !important;
   color: #5f78d6 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Published,
@@ -162,7 +162,7 @@ body[rtl] .Camera_icon_Active {
   border: 1px solid#E1E1E1;
   color: #5a5a5a;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Published:hover,
@@ -175,7 +175,7 @@ body[rtl] .Camera_icon_Active {
   border: 1px solid#E1E1E1 !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Update_Next {
@@ -184,7 +184,7 @@ body[rtl] .Camera_icon_Active {
   background: #6172d6;
   border: none;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Update_Next:hover,
@@ -196,7 +196,7 @@ body[rtl] .Camera_icon_Active {
   background: #6172d6 !important;
   border: none !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .errorMessage-inLogin {
@@ -204,11 +204,13 @@ body[rtl] .Camera_icon_Active {
   height: 13px;
   color: #f16b6b;
   visibility: visible;
-  font-family: "MontserratMedium-500";
+  font-weight: 600 !important;
+
 }
 
 body[dir="rtl"] .errorMessage-inLogin {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 600 !important;
+
 }
 
 .errorMessage-inLogin_hidden {
@@ -251,7 +253,7 @@ body[dir="rtl"] .White_Icon_class {
 
 .UnpublishedMeetingButton {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #5a5a5a !important;
   border: 1px solid #e1e1e1 !important;
 }

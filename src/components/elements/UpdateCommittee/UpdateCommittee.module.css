@@ -8,10 +8,11 @@
 .details-class-Update-Committee {
   font-size: 20px !important;
   color: #6172d6 !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .details-class-Update-Committee {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .scroll-bar-Update-Committee {
@@ -34,10 +35,11 @@ body[dir="rtl"] .details-class-Update-Committee {
 .Update-Committee-Head-Heading {
   font-size: 20px !important;
   color: #6172d6 !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .Update-Committee-Head-Heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Executive-Member-info {
@@ -47,23 +49,25 @@ body[dir="rtl"] .Update-Committee-Head-Heading {
 .name-Update-Committee {
   color: #5a5a5a;
   font-size: 12px !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .name-Update-Committee {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Designation-Update-Committee {
   color: #5a5a5a;
   font-size: 10px !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .no-member {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .Designation-Update-Committee {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .email-Update-Committee {
@@ -71,28 +75,31 @@ body[dir="rtl"] .Designation-Update-Committee {
   color: #6172d6;
   text-decoration: underline !important;
   font-size: 10px !important;
+  font-weight: 400 !important;
 }
 
 body[dir="rtl"] .email-Update-Committee {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400;
 }
 
 .members-Upadate-Committee-page {
   font-size: 18px !important;
   color: #6172d6 !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .members-Upadate-Committee-page {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Addmembers-class-Update-Committee {
   font-size: 20px !important;
   color: #6172d6 !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .Addmembers-class-Update-Committee {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Create-updatecommittee-btn {
@@ -100,13 +107,13 @@ body[dir="rtl"] .Addmembers-class-Update-Committee {
   font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   border-radius: 4px !important;
   border: none !important;
 }
 
 body[dir="rtl"] .Create-updatecommittee-btn {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Create-updatecommittee-btn:hover,
@@ -118,7 +125,7 @@ body[dir="rtl"] .Create-updatecommittee-btn {
   font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   border-radius: 4px !important;
   border: none !important;
 }
@@ -129,14 +136,14 @@ body[dir="rtl"] .Create-updatecommittee-btn {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
   height: 39px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   border-radius: 4px !important;
   border: none !important;
 }
 
 body[dir="rtl"] .ADD-Update-Committee-btn {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .ADD-Update-Committee-btn:hover,
@@ -148,7 +155,7 @@ body[dir="rtl"] .ADD-Update-Committee-btn {
   font-size: 12px !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   border-radius: 4px !important;
   border: none !important;
 }
@@ -183,13 +190,13 @@ body[dir="rtl"] .ADD-Update-Committee-btn {
   font-size: 12px !important;
   background: #ffffff;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
 
 body[dir="rtl"] .Cancell-updatecommittee-btn {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Cancell-updatecommittee-btn:hover,
@@ -201,7 +208,7 @@ body[dir="rtl"] .Cancell-updatecommittee-btn {
   font-size: 12px !important;
   background: #ffffff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
@@ -209,10 +216,11 @@ body[dir="rtl"] .Cancell-updatecommittee-btn {
 .Update-Committee-Heading {
   font-size: 30px !important;
   color: #6172d6 !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .Update-Committee-Heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 /* .Column-Update-Group-Style {
@@ -245,10 +253,11 @@ body[dir="rtl"] .Label_Of_CheckBox {
   height: 7px;
   color: #f16b6b;
   visibility: visible !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .errorMessage {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .errorMessage_hidden {
@@ -259,7 +268,7 @@ body[dir="rtl"] .errorMessage {
 }
 
 body[dir="rtl"] .errorMessage_hidden {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .ADD-Committee-btn {
@@ -268,7 +277,7 @@ body[dir="rtl"] .errorMessage_hidden {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
   height: 39px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   border-radius: 4px !important;
   margin-top: 2px !important;
   border: 1px solid #e1e1e1 !important;
@@ -277,17 +286,17 @@ body[dir="rtl"] .errorMessage_hidden {
 .ant-upload-text {
   font-size: 12px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 body[dir="rtl"] .ant-upload-text {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Choose_file_style {
   font-size: 12px !important;
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   margin-left: 3px !important;
 }
 
@@ -312,7 +321,7 @@ body[dir="rtl"] .Leftpolygon {
 
 .Attachments_Heading {
   font-size: 20px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #6172d6 !important;
 }
 
@@ -348,7 +357,7 @@ body[dir="rtl"] .Leftpolygon {
 .FileName {
   font-size: 10px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratRegular";
+  font-weight: 400;
   display: inline-block !important;
   overflow: hidden !important;
   white-space: nowrap !important;

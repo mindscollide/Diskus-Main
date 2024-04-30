@@ -1482,7 +1482,13 @@ const leaveMeeting = {
 const leaveFileSharingRM = {
   RequestMethod: "ServiceManager.DeleteFileSharing",
 };
+
+const leaveFolderSharingRM = {
+  RequestMethod: "ServiceManager.DeleteFolderSharing",
+};
+
 export {
+  leaveFolderSharingRM,
   leaveFileSharingRM,
   UserLoginHistoryRM,
   getDataAnalyticsCountRM,

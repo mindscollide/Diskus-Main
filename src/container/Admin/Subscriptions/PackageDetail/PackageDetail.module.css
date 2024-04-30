@@ -1,18 +1,3 @@
-@font-face {
-  font-family: "MontserratBold";
-  src: url(../../../../assets/fonts/Montserrat-Bold.ttf);
-}
-
-@font-face {
-  font-family: "MontserratSemiBold";
-  src: url(../../../../assets/fonts/Montserrat-SemiBold.ttf);
-}
-
-@font-face {
-  font-family: "MontserratMedium";
-  src: url(../../../../assets/fonts/Montserrat-Medium.ttf);
-}
-
 .upgrade_planBox {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
@@ -46,11 +31,11 @@ body[dir="rtl"] .upgrade_planBox ul li::before {
 .upgrade_planBox ul li {
   margin: 15px 0;
   font-size: 15px;
-  font-family: "MontserratMedium" !important;
+  font-weight: 500 !important;
 }
 
 body[dir="rtl"] .upgrade_planBox ul li {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .upgrade_button {
@@ -64,13 +49,13 @@ body[dir="rtl"] .upgrade_planBox ul li {
   border-radius: 4px;
   background: #6172d6;
   border: transparent;
-  font-family: "MontserratMedium" !important;
+  font-weight: 500 !important;
   font-size: 12px !important;
   height: 40px;
 }
 
 body[dir="rtl"] .upgrade_button {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .upgrade_button:hover,
@@ -88,7 +73,7 @@ body[dir="rtl"] .upgrade_button {
   border-radius: 4px;
   background: #6172d6 !important;
   border: transparent;
-  font-family: "MontserratMedium" !important;
+  font-weight: 500 !important;
   font-size: 12px !important;
   height: 40px;
 }
@@ -118,11 +103,11 @@ body[dir="rtl"] .upgrade_button:focus {
   text-align: center;
   margin: 28px 0;
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .Package_title h2 {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .packagecard h4 {
@@ -152,7 +137,7 @@ body[dir="rtl"] .packagecard_pricebox {
   margin: 0;
   padding: 0;
   color: #fff;
-  font-weight: 900;
+  font-weight: 700 !important;
 }
 
 .packagecard_priceBox_container p {
@@ -180,19 +165,18 @@ body[dir="rtl"] .packagecard_pricebox {
 .selectedPackage_priceDetails {
   padding: 10px 0;
   color: #5a5a5a;
-  font-weight: bold;
+  font-weight: 700 !important;
   margin-bottom: 20px;
 }
 
 .selectedPackage_priceDetails h4 {
   color: #5a5a5a;
   font-size: 2.3rem;
-  font-weight: 900;
-  font-family: "MontserratBold";
+  font-weight: 700 !important;
 }
 
 body[dir="rtl"] .selectedPackage_priceDetails h4 {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }
 
 .packagecard_two {
@@ -203,7 +187,7 @@ body[dir="rtl"] .selectedPackage_priceDetails h4 {
 
 .packagecard_two h3 {
   color: #076db7;
-  font-weight: 900;
+  font-weight: 700 !important;
 }
 
 .packagecard_two_visible {
@@ -220,12 +204,12 @@ body[dir="rtl"] .selectedPackage_priceDetails h4 {
 .selectedpackagecard_disoucntprice_para {
   text-align: center;
   margin: 0 !important;
-  font-weight: 400;
+  font-weight: 400 !important;
   font-size: 0.8rem !important;
 }
 
 body[dir="rtl"] .selectedpackagecard_disoucntprice_para {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
 }
 
 .packagecard_usersallows {
@@ -235,16 +219,16 @@ body[dir="rtl"] .selectedpackagecard_disoucntprice_para {
   text-align: center;
 }
 
-.packagecard_usersallows+p {
+.packagecard_usersallows + p {
   font-size: 12px;
 }
 
 body[dir="rtl"] .packagecard_usersallows {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400 !important;
 }
 
 .packagecard_usersallows_heading {
-  font-weight: 900;
+  font-weight: 700 !important;
   text-transform: uppercase;
   color: #000;
 }
@@ -280,7 +264,7 @@ body[dir="rtl"] .subcriptionkey_1 {
   background: linear-gradient(to right, #6172d6 5%, #6172d6 95%);
   border-top-left-radius: 0px;
   border-top-right-radius: 4px;
-  font-family: "IBMPlexSansArabic-Regular";
+  font-weight: 400 !important;
 }
 
 .subcriptionkey_2 {
@@ -300,7 +284,7 @@ body[dir="rtl"] .subcriptionkey_2 {
   background: linear-gradient(to left, #6172d6 1%, #49dbdb 99%);
   border-top-right-radius: 0px !important;
   border-top-left-radius: 4px !important;
-  font-family: "IBMPlexSansArabic-Regular";
+  font-weight: 400 !important;
 }
 
 .subcriptionkey p {
@@ -340,7 +324,7 @@ body[dir="rtl"] .subcriptionkey_2 {
 }
 
 body[dir="rtl"] .selected-package-text {
-  font-family: "IBMPlexSansArabic-Regular";
+  font-weight: 400 !important;
 }
 
 .ExecutiveMembersRange {
@@ -363,39 +347,34 @@ body[dir="rtl"] .selected-package-text {
 
 .packageCard_title {
   text-transform: uppercase;
-  font-weight: bold;
   color: #000;
   font-size: 2.5rem;
   text-align: center;
   color: #5a5a5a;
-  font-family: "MontserratBold";
+  font-weight: 700 !important;
   margin: 40px 0 0 0 !important;
 }
 
 body[dir="rtl"] .packageCard_title {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }
 
 .text-color {
   color: #5a5a5a !important;
 }
 
-.MontserratMedium {
-  font-family: "MontserratMedium" !important;
-}
-
 .MontserratSemiBold {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .upgradeplandetail_line {
-  font-family: "MontserratMedium" !important;
+  font-weight: 500 !important;
   color: #5a5a5a;
   font-size: 15px;
 }
 
 body[dir="rtl"] .upgradeplandetail_line {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }
 
 .subcriptionvalue_1 {
@@ -408,7 +387,7 @@ body[dir="rtl"] .upgradeplandetail_line {
 body[dir="rtl"] .subcriptionvalue_1 {
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 4px;
-  font-family: "IBMPlexSansArabic-Regular";
+  font-weight: 400 !important;
 }
 
 .subcriptionvalue_2 {
@@ -420,7 +399,7 @@ body[dir="rtl"] .subcriptionvalue_1 {
 body[dir="rtl"] .subcriptionvalue_2 {
   border-bottom-right-radius: 0px;
   border-bottom-left-radius: 4px;
-  font-family: "IBMPlexSansArabic-Regular";
+  font-weight: 400 !important;
 }
 
 img.package-icon {
@@ -442,9 +421,9 @@ body[dir="rtl"] img.package-icon {
   text-align: left;
   margin-bottom: 5px;
   color: #949494;
-  font-family: "MontserratMedium-500";
+  font-weight: 500;
 }
 
 body[dir="rtl"] .progressbar-text {
-  font-family: "IBMPlexSansArabic-Medium" !important;
+  font-weight: 500 !important;
 }

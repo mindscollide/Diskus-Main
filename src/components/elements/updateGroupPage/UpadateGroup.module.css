@@ -11,7 +11,7 @@
 }
 
 body[dir="rtl"] .details-class {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .scroll-bar-creategroup {
@@ -37,7 +37,7 @@ body[dir="rtl"] .details-class {
 }
 
 body[dir="rtl"] .Create-group-Head-Heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .group-head-info {
@@ -50,7 +50,7 @@ body[dir="rtl"] .Create-group-Head-Heading {
 }
 
 body[dir="rtl"] .name-create-group {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Designation-create-group {
@@ -59,7 +59,7 @@ body[dir="rtl"] .name-create-group {
 }
 
 body[dir="rtl"] .Designation-create-group {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .email-create-group {
@@ -70,11 +70,11 @@ body[dir="rtl"] .Designation-create-group {
 }
 
 body[dir="rtl"] .email-create-group {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400;
 }
 
 body[dir="rtl"] .no-member {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .members-create-group-page {
@@ -83,7 +83,7 @@ body[dir="rtl"] .no-member {
 }
 
 body[dir="rtl"] .members-create-group-page {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Addmembers-class {
@@ -92,7 +92,7 @@ body[dir="rtl"] .members-create-group-page {
 }
 
 body[dir="rtl"] .Addmembers-class {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Create-UpgradeGroup-btn {
@@ -100,13 +100,13 @@ body[dir="rtl"] .Addmembers-class {
   font-size: 12px !important;
   background: #6172d6;
   color: #fff;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   border-radius: 4px !important;
   border: none !important;
 }
 
 body[dir="rtl"] .Create-UpgradeGroup-btn {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Create-UpgradeGroup-btn:is(:hover, :active, :focus, :focus-visible, :visited) {
@@ -114,7 +114,7 @@ body[dir="rtl"] .Create-UpgradeGroup-btn {
   font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   border-radius: 4px !important;
   border: none !important;
 }
@@ -123,7 +123,7 @@ body[dir="rtl"] .Create-UpgradeGroup-btn {
   font-size: 12px !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
   padding: 12px 30px !important;
@@ -132,7 +132,7 @@ body[dir="rtl"] .Create-UpgradeGroup-btn {
 
 body[dir="rtl"] .ADD-Group-btn {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .ADD-Group-btn:hover,
@@ -142,7 +142,7 @@ body[dir="rtl"] .ADD-Group-btn {
   font-size: 12px !important;
   background: linear-gradient(to left #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
   padding: 12px 30px !important;
@@ -179,13 +179,13 @@ body[dir="rtl"] .ADD-Group-btn {
   font-size: 12px !important;
   background: #ffffff;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
 
 body[dir="rtl"] .Cancell-UpgradeGroup-btn {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Cancell-UpgradeGroup-btn:hover,
@@ -197,7 +197,7 @@ body[dir="rtl"] .Cancell-UpgradeGroup-btn {
   font-size: 12px !important;
   background: #ffffff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
@@ -208,7 +208,7 @@ body[dir="rtl"] .Cancell-UpgradeGroup-btn {
 }
 
 body[dir="rtl"] .Create-Group-Heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 /* .Column-Update-Group-Style {
@@ -241,10 +241,12 @@ body[dir="rtl"] .Checkbox {
   height: 7px;
   color: #f16b6b;
   visibility: visible !important;
+  font-weight: 600 !important;
+
 }
 
 body[dir="rtl"] .errorMessage {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .errorMessage_hidden {
@@ -255,23 +257,23 @@ body[dir="rtl"] .errorMessage {
 }
 
 body[dir="rtl"] .errorMessage_hidden {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .ant-upload-text {
   font-size: 12px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 body[dir="rtl"] .ant-upload-text {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Choose_file_style {
   font-size: 12px !important;
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   margin-left: 3px !important;
 }
 
@@ -296,7 +298,7 @@ body[dir="rtl"] .Leftpolygon {
 
 .Attachments_Heading {
   font-size: 20px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #6172d6 !important;
 }
 
@@ -332,7 +334,7 @@ body[dir="rtl"] .Leftpolygon {
 .FileName {
   font-size: 10px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratRegular";
+  font-weight: 400;
   display: inline-block !important;
   overflow: hidden !important;
   white-space: nowrap !important;

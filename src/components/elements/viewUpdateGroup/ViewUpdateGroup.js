@@ -195,29 +195,39 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
   };
 
   useEffect(() => {
-    if (
-      GroupsReducer.groupDocuments !== null &&
-      GroupsReducer.groupDocuments !== undefined
-    ) {
-      if (GroupsReducer.groupDocuments.data.length > 0) {
-        setFolderID(GroupsReducer.groupDocuments.folderID);
-        let retirveArray = [];
-        let PrevIds = [];
-        GroupsReducer.groupDocuments.data.map((docsData, docsDataindex) => {
-          retirveArray.push({
-            pK_FileID: docsData.pK_FileID,
-            DisplayAttachmentName: docsData.displayFileName,
-            fk_UserID: docsData.fK_UserID,
+    try {
+      if (
+        GroupsReducer.groupDocuments !== null &&
+        GroupsReducer.groupDocuments !== undefined
+      ) {
+        if (GroupsReducer.groupDocuments.data.length > 0) {
+          setFolderID(GroupsReducer.groupDocuments.folderID);
+          let retirveArray = [];
+          let PrevIds = [];
+          GroupsReducer.groupDocuments.data.map((docsData, docsDataindex) => {
+            retirveArray.push({
+              pK_FileID: docsData.pK_FileID,
+              DisplayAttachmentName: docsData.displayFileName,
+              fk_UserID: docsData.fK_UserID,
+            });
+            PrevIds.push({
+              pK_FileID: docsData.pK_FileID,
+              DisplayAttachmentName: docsData.displayFileName,
+            });
           });
-          PrevIds.push({
-            pK_FileID: docsData.pK_FileID,
-            DisplayAttachmentName: docsData.displayFileName,
-          });
-        });
-        setPreviousFileIDs(PrevIds);
-        setFileAttachments(retirveArray);
+          setPreviousFileIDs(PrevIds);
+          setFileAttachments(retirveArray);
+        } else {
+          setPreviousFileIDs([]);
+          setFileAttachments([]);
+          setFolderID(0);
+        }
+      } else {
+        setPreviousFileIDs([]);
+        setFileAttachments([]);
+        setFolderID(0);
       }
-    }
+    } catch {}
   }, [GroupsReducer.groupDocuments]);
 
   const handleRemoveFile = (data) => {
@@ -245,17 +255,21 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
   const handleViewSave = async () => {
     let newfile = [...previousFileIDs];
     let fileObj = [];
-
-    const uploadPromises = fileForSend.map(async (newData) => {
+    if (fileForSend.length > 0) {
+      const uploadPromises = fileForSend.map(async (newData) => {
+        await dispatch(
+          uploadDocumentsGroupsApi(navigate, t, newData, folderID, fileObj)
+        );
+      });
+      // Wait for all promises to resolve
+      await Promise.all(uploadPromises);
+      console.log(newfile, "fileObjfileObjfileObjfileObj");
+      console.log(fileObj, "fileObjfileObjfileObjfileObj");
       await dispatch(
-        uploadDocumentsGroupsApi(navigate, t, newData, folderID, fileObj)
+        saveFilesGroupsApi(navigate, t, fileObj, folderID, newfile)
       );
-    });
-    // Wait for all promises to resolve
-    await Promise.all(uploadPromises);
-    console.log(newfile, "fileObjfileObjfileObjfileObj");
-    console.log(fileObj, "fileObjfileObjfileObjfileObj");
-    await dispatch(saveFilesGroupsApi(navigate, t, fileObj, folderID, newfile));
+    }
+
     let Data = {
       GroupID: Number(viewGroupDetails.GroupID),
       UpdateFileList: newfile.map((data, index) => {
@@ -270,7 +284,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
   };
   return (
     <>
-      <section className="MontserratSemiBold-600 color-5a5a5a">
+      <section className=" color-5a5a5a">
         {/* <Row className="mt-3">
         <Col lg={12} md={12} sm={12}>
           <span className={styles["View-Group-heading"]}>
@@ -449,6 +463,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
                 <Dragger
                   disabled={groupStatus === 3 ? false : true}
                   {...props}
+                  fileList={[]}
                   className={styles["dragdrop_attachment_create_resolution"]}
                 >
                   <p className="ant-upload-drag-icon">

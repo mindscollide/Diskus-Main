@@ -5,7 +5,6 @@ import {
   Button,
   Table,
   TextField,
-  Loader,
   Notification,
   Paper,
 } from "../../components/elements";

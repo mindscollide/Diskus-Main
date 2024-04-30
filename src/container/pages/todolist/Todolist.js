@@ -66,11 +66,13 @@ const TodoList = () => {
   const navigate = useNavigate();
   const [isExpand, setExpand] = useState(false);
   const [rowsToDo, setRowToDo] = useState([]);
+  console.log(rowsToDo, "rowsToDorowsToDorowsToDo");
   const [totalRecords, setTotalRecords] = useState(0);
   const [show, setShow] = useState(false);
   const [updateFlagToDo, setUpdateFlagToDo] = useState(false);
   const [viewFlagToDo, setViewFlagToDo] = useState(false);
-
+  const [statusValues, setStatusValues] = useState([]);
+  console.log(statusValues, "statusValuesstatusValuesstatusValues");
   const [todoViewModal, setTodoViewModal] = useState(false);
   const [modalsflag, setModalsflag] = useState(false);
   const [removeTodo, setRemoveTodo] = useState(0);
@@ -171,10 +173,31 @@ const TodoList = () => {
     try {
       if (toDoListReducer.socketTodoStatusData !== null) {
         let payloadData = toDoListReducer.socketTodoStatusData;
-        if (payloadData.todoStatusID === 6) {
+        if (Number(payloadData.todoStatusID) === 6) {
           setRowToDo((rowsData) => {
             return rowsData.filter((newData, index) => {
               return newData.pK_TID !== payloadData.todoid;
+            });
+          });
+        } else {
+          setRowToDo((rowsData) => {
+            return rowsData.map((newData, index) => {
+              if (newData.pK_TID === payloadData.todoid) {
+                console.log(
+                  payloadData.todoStatusID,
+                  statusValues[payloadData.todoStatusID],
+                  "statusValuesstatusValues"
+                );
+                const newObj = {
+                  ...newData,
+                  status: {
+                    pK_TSID: payloadData.todoStatusID,
+                    status: statusValues[payloadData.todoStatusID],
+                  },
+                };
+                return newObj;
+              }
+              return newData;
             });
           });
         }
@@ -185,18 +208,21 @@ const TodoList = () => {
   useEffect(() => {
     let optionsArr = [];
     let newOptionsFilter = [];
+    let newArrStatus = [""];
     if (todoStatus.Response !== null && todoStatus.Response !== "") {
       todoStatus.Response.map((data, index) => {
         optionsArr.push({
           id: data.pK_TSID,
           status: data.status,
         });
+        newArrStatus.push(data.status);
         newOptionsFilter.push({
           key: data.pK_TSID,
           label: data.status,
         });
       });
     }
+    setStatusValues(newArrStatus);
     setStatusOptions(optionsArr);
     setTableFilterOptions(newOptionsFilter);
   }, [todoStatus]);
@@ -412,15 +438,15 @@ const TodoList = () => {
                 dropdownClassName="Status-Todo"
                 className={
                   text.pK_TSID === 1
-                    ? "InProgress MontserratSemiBold custom-class "
+                    ? "InProgress  custom-class "
                     : text.pK_TSID === 2
-                    ? "Pending MontserratSemiBold custom-class "
+                    ? "Pending  custom-class "
                     : text.pK_TSID === 3
-                    ? "Upcoming MontserratSemiBold custom-class "
+                    ? "Upcoming  custom-class "
                     : text.pK_TSID === 4
-                    ? "Cancelled MontserratSemiBold custom-class "
+                    ? "Cancelled  custom-class "
                     : text.pK_TSID === 5
-                    ? "Completed MontserratSemiBold custom-class "
+                    ? "Completed  custom-class "
                     : null
                 }
                 onChange={(e) => statusChangeHandler(e, record.pK_TID)}
@@ -440,15 +466,15 @@ const TodoList = () => {
             <p
               className={
                 text.pK_TSID === 1
-                  ? "InProgress  MontserratSemiBold color-5a5a5a text-center  my-1"
+                  ? "InProgress custom-class  color-5a5a5a text-center  my-1"
                   : text.pK_TSID === 2
-                  ? "Pending  MontserratSemiBold color-5a5a5a text-center my-1"
+                  ? "Pending  custom-class color-5a5a5a text-center my-1"
                   : text.pK_TSID === 3
-                  ? "Upcoming MontserratSemiBold color-5a5a5a text-center  my-1"
+                  ? "Upcoming  custom-class color-5a5a5a text-center  my-1"
                   : text.pK_TSID === 4
-                  ? "Cancelled  MontserratSemiBold color-5a5a5a text-center my-1"
+                  ? "Cancelled   custom-class color-5a5a5a text-center my-1"
                   : text.pK_TSID === 5
-                  ? "Completed  MontserratSemiBold color-5a5a5a  text-center my-1"
+                  ? "Completed   custom-class color-5a5a5a  text-center my-1"
                   : null
               }
             >

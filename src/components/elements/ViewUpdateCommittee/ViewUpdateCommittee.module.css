@@ -1,10 +1,11 @@
 .View-Committee-heading {
   font-size: 30px !important;
   color: #6172d6 !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .View-Committee-heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .scroll-bar-ViewGroup {
@@ -37,7 +38,7 @@ body[dir="rtl"] .View-Committee-heading {
   font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   border-radius: 4px !important;
   border: none !important;
   display: flex;
@@ -46,7 +47,7 @@ body[dir="rtl"] .View-Committee-heading {
 }
 
 body[dir="rtl"] .Close-ViewCommittee-btn {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Close-ViewCommittee-btn:hover,
@@ -57,7 +58,7 @@ body[dir="rtl"] .Close-ViewCommittee-btn {
   font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   border-radius: 4px !important;
   border: none !important;
   display: flex !important;
@@ -69,7 +70,7 @@ body[dir="rtl"] .Close-ViewCommittee-btn {
   font-size: 16px !important;
   border: 1px solid #808080;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
   background: #fff !important;
   color: #545454;
 }
@@ -80,7 +81,7 @@ body[dir="rtl"] .Close-ViewCommittee-btn {
   border: 1px solid #5f78d6 !important;
   border-radius: 4px !important;
   background: #5f78d6 !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
   color: #fff !important;
 }
 
@@ -92,7 +93,7 @@ body[dir="rtl"] .Close-ViewCommittee-btn {
   border: 1px solid #5f78d6 !important;
   border-radius: 4px !important;
   background: #5f78d6 !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
   color: #fff !important;
 }
 
@@ -101,7 +102,7 @@ body[dir="rtl"] .Close-ViewCommittee-btn {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   padding: 12px 30px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
   background: #fff !important;
   color: #5a5a5a !important;
 }
@@ -111,7 +112,7 @@ body[dir="rtl"] .Close-ViewCommittee-btn {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   padding: 12px 30px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
   background: #fff !important;
   color: #5a5a5a !important;
 }

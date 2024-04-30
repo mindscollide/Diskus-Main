@@ -1,14 +1,8 @@
-@font-face {
-  font-family: "MontserratSemiBold";
-  src: url("./../../assets/fonts-new/montserrat-600-webfont.woff"),
-    url("./../../assets/fonts-new/montserrat-600-webfont.woff2");
-}
-
 .Groups-heading-size {
   font-size: calc(34px - 50%) !important;
   color: #6172d6 !important;
   font-weight: 600 !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600;
 }
 
 .update-Group-btn-Archived-Group {
@@ -167,14 +161,14 @@ body[dir="rtl"] .Two-Icons-style-Archived-group {
 .Archived-heading {
   color: #5a5a5a !important;
   font-size: 23px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #6172d6 !important;
   margin-left: 10px !important;
 }
 
 body[dir="rtl"] .Archived-heading {
   margin-right: 10px !important;
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .PaginationStyle-Committee-Archived_modal {

@@ -19,6 +19,7 @@ import {
   SelectBox,
   InputSearchFilter,
   Notification,
+  AttachmentViewer,
 } from "./../../../components/elements";
 import styles from "./CreateCommittee.module.css";
 import Committee from "../../../container/Committee/Committee";
@@ -615,6 +616,8 @@ const CreateCommittee = ({ setCreategrouppage }) => {
             DisplayAttachmentName: fileData.name,
             OriginalAttachmentName: fileData.name,
             fileSize: fileData.originFileObj.size,
+            pK_FileID: 0,
+            fk_UserID: Number(creatorID),
           };
           setFileAttachments((prevAttachments) => [...prevAttachments, file]);
           fileSizeArr += fileData.originFileObj.size;
@@ -670,7 +673,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
 
   return (
     <>
-      <section className="MontserratSemiBold-600 color-5a5a5a">
+      <section className=" color-5a5a5a">
         <Row className="mt-3">
           <Col
             lg={12}
@@ -785,7 +788,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               className="UpdateCheckbox Saved_money_Tagline"
                             >
                               <Checkbox
-                                className="SearchCheckbox MontserratSemiBold-600"
+                                className="SearchCheckbox "
                                 name="IsChat"
                                 label2Class={styles["Label_Of_CheckBox"]}
                                 label2={t("Create-talk-group")}
@@ -1651,7 +1654,35 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                         </Col>
                       </Row>
                       <Row className="mt-1">
-                        <Col lg={1} md={1} sm={1} className="mt-4">
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          style={{
+                            height: "175px",
+                            overflow: "hidden auto",
+                          }}
+                        >
+                          <section className={styles["files_View"]}>
+                            {fileAttachments.length > 0
+                              ? fileAttachments.map((data, index) => {
+                                  return (
+                                    <>
+                                      <AttachmentViewer
+                                        handleClickRemove={() =>
+                                          handleRemoveFile(data)
+                                        }
+                                        name={data.DisplayAttachmentName}
+                                        id={data.pK_FileID}
+                                        data={data}
+                                      />
+                                    </>
+                                  );
+                                })
+                              : null}
+                          </section>
+                        </Col>
+                        {/* <Col lg={1} md={1} sm={1} className="mt-4">
                           {fileAttachments.length > 2 ? (
                             <>
                               <Button
@@ -1782,7 +1813,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               />
                             </>
                           ) : null}
-                        </Col>
+                        </Col> */}
                       </Row>
                       <Row className="mt-2">
                         <Col lg={12} md={12} sm={12}>

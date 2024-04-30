@@ -1,6 +1,6 @@
 .NewFolder_Heading {
   font-size: 20px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #6172d6;
 }
 
@@ -10,6 +10,7 @@
   background: #fff;
   border: 1px solid #e1e1e1;
   color: #5a5a5a;
+  font-weight: 600;
 }
 
 .Cancel_button_AddFolder:hover,
@@ -21,6 +22,7 @@
   background: #fff !important;
   border: 1px solid #e1e1e1 !important;
   color: #5a5a5a !important;
+  font-weight: 600;
 }
 
 .Create_button_AddFolder {
@@ -29,6 +31,7 @@
   color: #fff;
   background: #6172d6;
   border: none !important;
+  font-weight: 600;
 }
 
 .Create_button_AddFolder:disabled {
@@ -38,6 +41,7 @@
   color: #fff !important;
   background: #6172d6 !important;
   border: none !important;
+  font-weight: 600;
 }
 
 .Create_button_AddFolder:hover,
@@ -49,6 +53,7 @@
   color: #fff !important;
   background: #6172d6 !important;
   border: none !important;
+  font-weight: 600;
 }
 
 .errorMessage {
@@ -56,6 +61,8 @@
   height: 7px;
   color: #f16b6b;
   visibility: visible !important;
+  font-weight: 600 !important;
+
 }
 
 .errorMessage_hidden {

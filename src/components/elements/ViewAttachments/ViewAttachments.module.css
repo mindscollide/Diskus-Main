@@ -1,11 +1,11 @@
 .View_attachment_heading {
   font-size: 20pt !important;
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 body[dir="rtl"] .View_attachment_heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .ViewAttachment_paper {
@@ -39,7 +39,7 @@ body[dir="rtl"] .View_attachment_heading {
 }
 
 body[dir="rtl"] .notes-attachment-text {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400;
 }
 
 .viewAttachmentCloseBtn {
@@ -50,7 +50,7 @@ body[dir="rtl"] .notes-attachment-text {
 }
 
 body[dir="rtl"] .viewAttachmentCloseBtn {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400;
 }
 
 .viewAttachmentCloseBtn:hover,

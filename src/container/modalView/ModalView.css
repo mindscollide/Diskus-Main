@@ -69,6 +69,7 @@ button.dataRoom {
   margin-top: 10px !important;
   font-size: 20px !important;
   margin-bottom: 10px !important;
+  font-weight: 600;
 }
 
 .meeting-view-attendee-organizer-list {
@@ -88,6 +89,7 @@ button.dataRoom {
   margin-top: 5px !important;
   font-size: 20px !important;
   margin-bottom: 10px !important;
+  font-weight: 600;
 }
 
 .meeting-view-attendee-participant-list {
@@ -212,6 +214,7 @@ button.AttendeeUpper {
   padding: 3px 20px !important;
   font-size: 14px !important;
   height: 33px !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .isDetail-View-top-btn {
@@ -226,6 +229,8 @@ body[dir="rtl"] .isDetail-View-top-btn {
   background: #fff !important;
   font-size: 14px !important;
   height: 33px !important;
+  font-weight: 600;
+
 }
 
 .isAgenda-View-top-btn {
@@ -236,6 +241,8 @@ body[dir="rtl"] .isDetail-View-top-btn {
   font-size: 14px !important;
   margin-left: -15px;
   height: 33px !important;
+  font-weight: 600;
+
 }
 
 body[dir="rtl"] .isAgenda-View-top-btn {
@@ -251,6 +258,8 @@ body[dir="rtl"] .isAgenda-View-top-btn {
   font-size: 14px !important;
   margin-left: -15px;
   height: 33px !important;
+  font-weight: 600;
+
 }
 
 .isAttendee-View-top-btn {
@@ -261,6 +270,8 @@ body[dir="rtl"] .isAgenda-View-top-btn {
   font-size: 14px !important;
   margin-left: -15px;
   height: 33px !important;
+  font-weight: 600;
+
 }
 
 body[dir="rtl"] .isAttendee-View-top-btn {
@@ -275,6 +286,8 @@ body[dir="rtl"] .isAttendee-View-top-btn {
   background: #fff !important;
   font-size: 14px !important;
   margin-left: -15px;
+  font-weight: 600;
+
   height: 33px !important;
 }
 
@@ -285,6 +298,7 @@ body[dir="rtl"] .isAttendee-View-top-btn {
   padding: 3px 20px !important;
   font-size: 14px !important;
   margin-left: -10px;
+  font-weight: 600;
   height: 33px !important;
 }
 
@@ -299,6 +313,7 @@ body[dir="rtl"] .isMinutes-View-top-btn {
   border-radius: 4px !important;
   background: #fff !important;
   font-size: 14px !important;
+  font-weight: 600;
   margin-left: -5px;
   height: 33px !important;
 }
@@ -310,6 +325,7 @@ body[dir="rtl"] .isMinutes-View-top-btn {
   padding: 3px 6px 4px 7px !important;
   font-size: 14px !important;
   margin-left: -10px;
+  font-weight: 600;
   height: 33px !important;
 }
 
@@ -326,6 +342,7 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
   font-size: 14px !important;
   margin-left: -10px;
   height: 33px !important;
+  font-weight: 600;
 }
 
 @media screen and (max-width: 1000px) {
@@ -498,7 +515,7 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
 
 .viewModalTitle {
   font-size: 16px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   color: #5f78d6 !important;
   word-wrap: break-word !important;
   text-overflow: ellipsis !important;
@@ -511,7 +528,7 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
 }
 
 .MeetingViewDateTimeTextField {
-  font-family: "Montserrat" !important;
+  font-weight: 400 !important;
   font-size: 14px !important;
 }
 
@@ -519,7 +536,7 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
   color: #505050;
   font-size: 16px !important;
   border: none !important;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
 }
 
 .CopyLinkButton {
@@ -530,7 +547,7 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
   border: 1px solid#6172d6 !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   margin-right: 10px;
 }
 
@@ -542,7 +559,7 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
   border: 1px solid#6172d6 !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .JoinMeetingButton {
@@ -553,7 +570,7 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
   border: 1px solid#6172d6 !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .JoinMeetingButton:is(:active, :hover, :focus, :focus-visible) {
@@ -564,5 +581,5 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
   border: 1px solid#6172d6 !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }

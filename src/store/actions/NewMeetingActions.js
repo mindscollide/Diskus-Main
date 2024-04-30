@@ -1724,6 +1724,13 @@ const getAllAgendaContributor_isPublished_success = (response, message) => {
   };
 };
 
+const getAllAgendaContributor_allowRSVP = (response, message) => {
+  return {
+    type: actions.GET_ALL_AGENDACONTRIBUTOR_ALLOWRSVP,
+    response,
+  };
+};
+
 const getAllAgendaContributor_fail = (message) => {
   return {
     type: actions.GET_ALL_AGENDACONTRIBUTOR_FAIL,
@@ -1770,6 +1777,11 @@ const getAllAgendaContributorApi = (navigate, t, data) => {
                   response.data.responseResult.isPublished
                 )
               );
+              dispatch(
+                getAllAgendaContributor_allowRSVP(
+                  response.data.responseResult.allowRSVP
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1781,6 +1793,11 @@ const getAllAgendaContributorApi = (navigate, t, data) => {
               dispatch(
                 getAllAgendaContributor_isPublished_success(
                   response.data.responseResult.isPublished
+                )
+              );
+              dispatch(
+                getAllAgendaContributor_allowRSVP(
+                  response.data.responseResult.allowRSVP
                 )
               );
             } else if (
@@ -1935,6 +1952,13 @@ const showAllMeetingParticipantsIsPublishedSuccess = (response, message) => {
   };
 };
 
+const showAllMeetingParticipantsAllowrsvp = (response, message) => {
+  return {
+    type: actions.GET_ALL_SAVED_PARTICIPATNS_ALLOWRSVP,
+    response: response,
+  };
+};
+
 const showAllMeetingParticipantsFailed = (message) => {
   return {
     type: actions.GET_ALL_SAVED_PARTICIPATNS_FAILED,
@@ -1983,6 +2007,11 @@ const GetAllSavedparticipantsAPI = (Data, navigate, t) => {
                   response.data.responseResult.isPublished
                 )
               );
+              dispatch(
+                showAllMeetingParticipantsAllowrsvp(
+                  response.data.responseResult.allowRSVP
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1994,6 +2023,11 @@ const GetAllSavedparticipantsAPI = (Data, navigate, t) => {
               dispatch(
                 showAllMeetingParticipantsIsPublishedSuccess(
                   response.data.responseResult.isPublished
+                )
+              );
+              dispatch(
+                showAllMeetingParticipantsAllowrsvp(
+                  response.data.responseResult.allowRSVP
                 )
               );
             } else if (
@@ -3608,7 +3642,7 @@ const GetAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
-        await dispatch(
+        dispatch(
           GetAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting)
         );
       } else if (response.data.responseCode === 200) {

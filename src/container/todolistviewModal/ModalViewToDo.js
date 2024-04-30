@@ -437,9 +437,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                 <Col sm={12} md={12} lg={12}>
                   <Row className="mb-2">
                     <Col sm={12} md={12} lg={12}>
-                      <p className="MontserratSemiBold-600 AssignedToDoView">
-                        {t("Assigned-to")}
-                      </p>
+                      <p className=" AssignedToDoView">{t("Assigned-to")}</p>
                     </Col>
                   </Row>
                   <Row className="view_todo_assignees">
@@ -495,7 +493,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                   sm={12}
                   md={12}
                   lg={12}
-                  className="MontserratSemiBold-600 todo-modal-title Saved_money_Tagline"
+                  className=" todo-modal-title Saved_money_Tagline"
                 >
                   <p className="Modal-todo-view1">{task.Title}</p>
                 </Col>
@@ -530,7 +528,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                                   commentData.DateTime
                                 )}
                                 label={commentData.taskCommentUserName}
-                                labelClassName="MontserratSemiBold-600 d-flex justify-content-start  fw-bold "
+                                labelClassName=" d-flex justify-content-start  fw-bold "
                                 disable="false"
                                 className="comment-view sender text-white  "
                                 value={commentData.Comment}
@@ -584,7 +582,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                                 disable="false"
                                 className="comment-view"
                                 value={commentData.Comment}
-                                labelClassName="MontserratSemiBold-600 d-flex justify-content-start mx-2 "
+                                labelClassName=" d-flex justify-content-start mx-2 "
                                 timeValue={newTimeFormaterAsPerUTCFullDate(
                                   commentData.DateTime
                                 )}
@@ -649,12 +647,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
               </Row>
               {/* File Attachments */}
               <Row className="my-3">
-                <Col
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  className="MontserratSemiBold-600 Saved_money_Tagline"
-                >
+                <Col sm={12} md={12} lg={12} className=" fw-600 Saved_money_Tagline">
                   {/* Attachments */}
                   {t("Attachement")}
                 </Col>

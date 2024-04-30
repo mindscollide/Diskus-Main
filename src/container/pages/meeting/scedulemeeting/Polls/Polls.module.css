@@ -2,7 +2,7 @@
   padding: 12px 30px !important;
   font-size: 12px !important;
   border-radius: 4px !important;
-  font-family: "MontserratMedium-500";
+  font-weight: 500 !important;
   display: flex;
   align-items: center !important;
   gap: 5px;
@@ -15,7 +15,7 @@
   padding: 12px 30px !important;
   font-size: 12px !important;
   border-radius: 4px !important;
-  font-family: "MontserratMedium-500" !important;
+  font-weight: 500 !important;
   display: flex !important;
   align-items: center !important;
   gap: 5px !important;
@@ -32,7 +32,7 @@
   font-size: 8px !important;
   color: #6172d6 !important;
   background: #ecefff !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -46,7 +46,7 @@
   font-size: 8px !important;
   color: #6172d6 !important;
   background: #ecefff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Not_Vote_Button_Polls {
@@ -57,7 +57,7 @@
   font-size: 8px !important;
   color: #fff !important;
   background: #81db86 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Not_Vote_Button_Polls:is(:hover, :active, :focus, :focus-visible) {
@@ -68,12 +68,12 @@
   font-size: 8px !important;
   color: #fff !important;
   background: #81db86 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .DateClass {
   color: #2197d7 !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600 !important;
   font-size: 12px !important;
   display: inline-block !important;
   width: 80% !important;
@@ -85,13 +85,13 @@
 
 .EmptyState_heading {
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 30px !important;
 }
 
 .EmptyState_subHeading {
   color: #5a5a5a !important;
-  font-family: "Montserrat";
+ font-weight: 500;
   font-size: 16px !important;
 }
 
@@ -102,7 +102,7 @@
   border: 1px solid#E1E1E1;
   color: #5a5a5a;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Cancel_Button_Polls_meeting:is(:hover, :active, :focus, :focus-visible) {
@@ -112,7 +112,7 @@
   border: 1px solid#E1E1E1 !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Save_Button_Polls_meeting {
@@ -121,7 +121,7 @@
   background: #6172d6 !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Save_Button_Polls_meeting:is(:hover, :active, :focus, :focus-visible) {
@@ -131,7 +131,7 @@
   border: none !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Save_Button_Polls_meeting {
@@ -141,7 +141,7 @@
   border: none;
   color: #fff;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Save_Button_Polls_meeting:is(:hover, :active, :focus, :focus-visible) {
@@ -151,7 +151,7 @@
   border: none;
   color: #fff;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Save_Button_Polls_meeting {
@@ -161,7 +161,7 @@
   border: none;
   color: #fff;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Save_Button_Polls_meeting:is(:hover, :active, :focus, :focus-visible) {
@@ -171,7 +171,7 @@
   border: none;
   color: #fff;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .MaintainingHeight {
@@ -205,7 +205,7 @@ body[dir="rtl"] .PaginationStyle-Resolution {
   color: #5a5a5a !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Cancel_button_Polls:is(:active, :focus, :focus-visible, :active) {
@@ -215,7 +215,7 @@ body[dir="rtl"] .PaginationStyle-Resolution {
   color: #5a5a5a !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 .Background-nonvoted-Button {
   max-width: 109px !important;
@@ -241,7 +241,7 @@ body[dir="rtl"] .PaginationStyle-Resolution {
   align-content: center;
   flex-wrap: wrap;
   height: 20px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 .votedBtn:is(:hover, :active, :focus, :focus-visible, :visited) {
   background-color: #ecefff !important;
@@ -255,5 +255,5 @@ body[dir="rtl"] .PaginationStyle-Resolution {
   align-content: center;
   flex-wrap: wrap;
   height: 20px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }

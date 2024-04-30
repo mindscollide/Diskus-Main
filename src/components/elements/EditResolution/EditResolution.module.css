@@ -1,21 +1,21 @@
 .Resolution_create_heading {
   font-size: 30px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #6172d6;
 }
 
 body[dir="rtl"] .Resolution_create_heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+font-weight: 600;
 }
 
 .Details_New_resolution {
   font-size: 20px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #6172d6;
 }
 
 body[dir="rtl"] .Details_New_resolution {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Create_new_resolution_paper {
@@ -28,56 +28,56 @@ body[dir="rtl"] .Details_New_resolution {
 
 .Circulation_heading {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #6172d6;
 }
 
 body[dir="rtl"] .Circulation_heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Voting_deadline_Create_resolution {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #6172d6;
 }
 
 body[dir="rtl"] .Voting_deadline_Create_resolution {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .decision_annoucement_Createresoulution {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #6172d6;
 }
 
 body[dir="rtl"] .decision_annoucement_Createresoulution {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Reminder {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #6172d6;
 }
 
 body[dir="rtl"] .Reminder {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Voters_Btn_Createresolution {
   padding: 6px 12px !important;
   font-size: 12px !important;
   background: #fff !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #5a5a5a !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
 
 body[dir="rtl"] .Voters_Btn_Createresolution {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Voters_Btn_Createresolution:focus,
@@ -87,7 +87,7 @@ body[dir="rtl"] .Voters_Btn_Createresolution {
   padding: 6px 12px !important;
   font-size: 12px !important;
   background: #fff !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #5a5a5a !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
@@ -98,14 +98,14 @@ body[dir="rtl"] .Voters_Btn_Createresolution {
   font-size: 12px !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   border-radius: 4px !important;
   border: none !important;
 }
 
 body[dir="rtl"] .Voters_Btn_Createresolution_Active {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Non_Voters_Btn_Createresolution_Active {
@@ -113,14 +113,14 @@ body[dir="rtl"] .Voters_Btn_Createresolution_Active {
   font-size: 12px !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   border-radius: 4px !important;
   border: none !important;
 }
 
 body[dir="rtl"] .Non_Voters_Btn_Createresolution_Active {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Non_Voters_Btn_Createresolution {
@@ -128,13 +128,13 @@ body[dir="rtl"] .Non_Voters_Btn_Createresolution_Active {
   font-size: 12px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
 
 body[dir="rtl"] .Non_Voters_Btn_Createresolution {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .ADD_Button_Createresolution {
@@ -152,7 +152,7 @@ body[dir="rtl"] .Non_Voters_Btn_Createresolution {
 }
 
 body[dir="rtl"] .ADD_Button_Createresolution {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400;
 }
 
 .ADD_Button_Createresolution:focus,
@@ -176,19 +176,19 @@ body[dir="rtl"] .ADD_Button_Createresolution {
   font-size: 12px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
 
 .Attachments_resolution {
   font-size: 20px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #6172d6;
 }
 
 body[dir="rtl"] .Attachments_resolution {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Leftpolygon {
@@ -206,19 +206,19 @@ body[dir="rtl"] .Attachments_resolution {
 
 .Name_participant_resolution {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 .Email_participant_createresolution {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #6166ff !important;
   text-decoration: underline !important;
 }
 
 .Designation_Participant_createresolution {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #5a5a5a !important;
 }
 
@@ -248,28 +248,27 @@ body[dir="rtl"] .Attachments_resolution {
   font-size: 12px !important;
   background: #fff;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold";
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
 }
 
 body[dir="rtl"] .Save_button_Createresolution {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Discard_button_Createresolution {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #fb9494;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #fff;
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
 }
 
 body[dir="rtl"] .Discard_button_Createresolution {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Discard_button_Createresolution:hover,
@@ -280,7 +279,7 @@ body[dir="rtl"] .Discard_button_Createresolution {
   font-size: 12px !important;
   background: #fb9494 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
 }
@@ -289,15 +288,14 @@ body[dir="rtl"] .Discard_button_Createresolution {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #6172d6;
-  font-family: "MontserratSemiBold";
   color: #fff;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
 }
 
 body[dir="rtl"] .Update_button_Createresolution {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Update_button_Createresolution:hover,
@@ -307,7 +305,7 @@ body[dir="rtl"] .Update_button_Createresolution {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #6172d6 !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600;
   color: #fff !important;
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
@@ -321,8 +319,7 @@ body[dir="rtl"] .Update_button_Createresolution {
   font-size: 12px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold" !important;
-
+  font-weight: 600;
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
 }
@@ -333,12 +330,12 @@ body[dir="rtl"] .Update_button_Createresolution {
   background: #6172d6 !important;
   color: #fff;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   border: 1px solid #e1e1e1 !important;
 }
 
 body[dir="rtl"] .circulate_button_Createresolution {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .circulate_button_Createresolution:hover,
@@ -348,7 +345,7 @@ body[dir="rtl"] .circulate_button_Createresolution {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #6172d6 !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #fff !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
@@ -405,17 +402,17 @@ body[dir="rtl"] .Leftpolygon {
 }
 
 body[dir="rtl"] .Circulated_box_Edit {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Edit_draft_Tag {
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   color: #fff;
 }
 
 body[dir="rtl"] .Edit_draft_Tag {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .CheckBoxalign {
@@ -433,10 +430,12 @@ body[dir="rtl"] .CheckBoxalign {
   color: #f16b6b;
   visibility: visible !important;
   white-space: nowrap;
+  font-weight: 600 !important;
+
 }
 
 body[dir="rtl"] .errorMessage {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400;
 }
 
 .errorMessage_hidden {
@@ -446,7 +445,7 @@ body[dir="rtl"] .errorMessage {
 }
 
 body[dir="rtl"] .errorMessage_hidden {
-  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-weight: 400;
 }
 
 .edit_resolution_attachments {
@@ -480,33 +479,33 @@ body[dir="rtl"] .errorMessage_hidden {
 .ant-upload-text {
   font-size: 12px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
 }
 
 body[dir="rtl"] .ant-upload-text {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Choose_file_style {
   font-size: 12px !important;
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   margin-left: 3px !important;
 }
 
 body[dir="rtl"] .Choose_file_style {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .here_text {
   font-size: 12px !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   margin-left: 4px !important;
 }
 
 body[dir="rtl"] .here_text {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Cancel_button_Createresolution {
@@ -515,8 +514,7 @@ body[dir="rtl"] .here_text {
   font-size: 12px !important;
   background: #fff;
   color: #5a5a5a;
-  font-family: "MontserratSemiBold";
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
 }
@@ -533,14 +531,13 @@ body[dir="rtl"] .here_text {
   font-size: 12px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-family: "MontserratSemiBold";
-  font-family: "MontserratSemiBold";
+  font-weight: 600;
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
 }
 
 body[dir="rtl"] .Cancel_button_Createresolution {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600;
 }
 
 .Resolution_datePicker {

@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Button, Notification } from "../../../components/elements";
+import {
+  AttachmentViewer,
+  Button,
+  Notification,
+} from "../../../components/elements";
 import { Paper } from "@material-ui/core";
 
 import styles from "./ViewCommittee.module.css";
@@ -50,6 +54,10 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
     committeeMembers: [],
   });
 
+  console.log(
+    { fileAttachments, filesSending, fileForSend },
+    "fileAttachmentsfileAttachments"
+  );
   const closebtn = async () => {
     setViewGroupPage(false);
     localStorage.removeItem("ViewCommitteeID");
@@ -58,19 +66,21 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
   const handleSave = async () => {
     let newFolder = [...filesSending];
     let fileObj = [];
-    const uploadPromises = fileForSend.map(async (newData) => {
-      await dispatch(
-        uploadDocumentsCommitteesApi(navigate, t, newData, folderID, fileObj)
-      );
-    });
+    if (fileForSend.length > 0) {
+      const uploadPromises = fileForSend.map(async (newData) => {
+        await dispatch(
+          uploadDocumentsCommitteesApi(navigate, t, newData, folderID, fileObj)
+        );
+      });
 
-    // Wait for all promises to resolve
-    await Promise.all(uploadPromises);
-    console.log(fileObj, "newFoldernewFoldernewFolder");
-    // console.log(newfile, "newFoldernewFoldernewFolder");
-    await dispatch(
-      saveFilesCommitteesApi(navigate, t, fileObj, folderID, newFolder)
-    );
+      // Wait for all promises to resolve
+      await Promise.all(uploadPromises);
+
+      await dispatch(
+        saveFilesCommitteesApi(navigate, t, fileObj, folderID, newFolder)
+      );
+    }
+
     let newData = {
       CommitteeID: Number(committeeData.committeeID),
       UpdateFileList: newFolder.map((fileID) => ({
@@ -80,27 +90,59 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
     await dispatch(saveCommitteeDocumentsApi(navigate, t, newData));
   };
   const handleRemoveFile = (data) => {
-    setFileForSend((prevFiles) =>
-      prevFiles.filter(
-        (fileSend) => fileSend.name !== data.DisplayAttachmentName
-      )
-    );
+    try {
+      setFileForSend((prevFiles) =>
+        prevFiles.filter(
+          (fileSend) => fileSend.name !== data.DisplayAttachmentName
+        )
+      );
 
-    setFilesSending((prevFiles) =>
-      prevFiles.filter(
-        (fileSend) =>
-          fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
-      )
-    );
+      setFilesSending((prevFiles) =>
+        prevFiles.filter(
+          (fileSend) =>
+            fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
+        )
+      );
 
-    setFileAttachments((prevFiles) =>
-      prevFiles.filter(
-        (fileSend) =>
-          fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
+      setFileAttachments((prevFiles) =>
+        prevFiles.filter(
+          (fileSend) =>
+            fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
+        )
+      );
+    } catch (error) {}
+  };
+
+  const handleClickDownloadDoc = (data) => {
+    let data2 = {
+      FileID: Number(data.pK_FileID),
+    };
+    dispatch(
+      DataRoomDownloadFileApiFunc(
+        navigate,
+        data2,
+        t,
+        data.DisplayAttachmentName
       )
     );
   };
-
+  const handleClickOpenDoc = (data) => {
+    let ext = data.DisplayAttachmentName.split(".")[1];
+    let pdfData = {
+      taskId: data.pK_FileID,
+      commingFrom: 4,
+      fileName: data.DisplayAttachmentName,
+      attachmentID: data.pK_FileID,
+    };
+    const pdfDataJson = JSON.stringify(pdfData);
+    if (ext === "pdf") {
+      window.open(
+        `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+        "_blank",
+        "noopener noreferrer"
+      );
+    }
+  };
   const handleDoubleCLickFile = (data) => {
     let ext = data.DisplayAttachmentName.split(".")[1];
     let pdfData = {
@@ -210,6 +252,8 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
             DisplayAttachmentName: fileData.name,
             OriginalAttachmentName: fileData.name,
             fileSize: fileData.originFileObj.size,
+            pK_FileID: 0,
+            fk_UserID: Number(currentUserID),
           };
           setFileAttachments((prevAttachments) => [...prevAttachments, file]);
           fileSizeArr += fileData.originFileObj.size;
@@ -254,14 +298,22 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
           });
           setFileAttachments(newArr);
           setFilesSending(fileSend);
+        } else {
+          setFileAttachments([]);
+          setFilesSending([]);
+          setFolderId(0);
         }
+      } else {
+        setFileAttachments([]);
+        setFilesSending([]);
+        setFolderId(0);
       }
     } catch {}
   }, [CommitteeReducer.reteriveCommitteeDocuments]);
 
   return (
     <>
-      <section className="MontserratSemiBold-600 color-5a5a5a">
+      <section className=" color-5a5a5a">
         {/* <Paper className={styles["View-Committee-paper"]}> */}
         <Row>
           <Col lg={6} md={6} sm={6}>
@@ -713,6 +765,7 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
                 <Dragger
                   disabled={committeeStatus === 3 ? false : true}
                   {...props}
+                  fileList={[]}
                   className={styles["dragdrop_attachment_create_resolution"]}
                 >
                   <p className="ant-upload-drag-icon">
@@ -740,19 +793,29 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex flex-wrap"
                 style={{
-                  height: "275px",
+                  height: "375px",
                   overflow: "hidden auto",
                 }}
               >
-                {fileAttachments.length > 0
-                  ? fileAttachments.map((data, index) => {
-                      let fileExt = data.DisplayAttachmentName.split(".")[1];
+                <section className={styles["files_View"]}>
+                  {fileAttachments.length > 0
+                    ? fileAttachments.map((data, index) => {
+                        let fileExt = data.DisplayAttachmentName.split(".")[1];
 
-                      return (
-                        <>
-                          <Col lg={4} md={4} sm={4}>
+                        return (
+                          <>
+                            <AttachmentViewer
+                              handleClickRemove={() => handleRemoveFile(data)}
+                              name={data.DisplayAttachmentName}
+                              handleEyeIcon={() => handleClickOpenDoc(data)}
+                              handleClickDownload={() =>
+                                handleClickDownloadDoc(data)
+                              }
+                              id={data.pK_FileID}
+                              data={data}
+                            />
+                            {/* <Col lg={4} md={4} sm={4}>
                             <section
                               className={styles["Outer_Box"]}
                               onClick={() => handleDoubleCLickFile(data)}
@@ -812,11 +875,12 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
                                 </Row>
                               </section>
                             </section>
-                          </Col>
-                        </>
-                      );
-                    })
-                  : null}
+                          </Col> */}
+                          </>
+                        );
+                      })
+                    : null}
+                </section>
               </Col>
             </Row>
           </Col>

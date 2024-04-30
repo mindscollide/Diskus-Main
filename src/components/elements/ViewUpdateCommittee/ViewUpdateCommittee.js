@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import styles from "./ViewUpdateCommittee.module.css";
 import { Paper } from "@material-ui/core";
-import { Button } from "./../../../components/elements";
+import { AttachmentViewer, Button } from "./../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -60,7 +60,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
   }, [CommitteeReducer.getCommitteeByCommitteeID]);
   return (
     <>
-      <section className="MontserratSemiBold-600 color-5a5a5a">
+      <section className=" color-5a5a5a">
         <Row className="mt-3">
           <Col lg={12} md={12} sm={12}>
             <span className={styles["View-Committee-heading"]}>
@@ -119,6 +119,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
               </div>
             </Col>
           </Row>
+
           {currentView === 1 ? (
             <ViewCommitteeDetails
               setViewGroupPage={setViewGroupPage}

@@ -7,7 +7,7 @@
 .NewMeetinHeading {
   color: #6172d6 !important;
   font-size: 30px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Newmeeting_Scehedule_meet {
@@ -84,6 +84,7 @@ body[dir="rtl"] .polling_searchinput {
   border-radius: 4px !important;
   font-size: 12px !important;
   background: #fff;
+  font-weight: 600 !important;
   border: 1px solid #e1e1e1;
   color: #5a5a5a;
 }
@@ -95,6 +96,7 @@ body[dir="rtl"] .polling_searchinput {
   padding: 12px 30px !important;
   border-radius: 4px !important;
   font-size: 12px !important;
+  font-weight: 600 !important;
   background: #fff !important;
   border: 1px solid #e1e1e1 !important;
   color: #5a5a5a !important;
@@ -106,6 +108,7 @@ body[dir="rtl"] .polling_searchinput {
   font-size: 12px !important;
   background: #6172d6 !important;
   border: none !important;
+  font-weight: 600 !important;
   color: #fff !important;
 }
 
@@ -117,6 +120,7 @@ body[dir="rtl"] .polling_searchinput {
   border-radius: 4px !important;
   font-size: 12px !important;
   background: #6172d6 !important;
+  font-weight: 600 !important;
   border: none !important;
   color: #fff !important;
 }
@@ -248,7 +252,7 @@ body[dir="rtl"] .PaginationStyle-Committee {
 .UnpublishedMeetingButton {
   border: 1px solid #e1e1e1 !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border-radius: 4px !important;
   background: #fff !important;
   color: #5a5a5a !important;
@@ -257,7 +261,7 @@ body[dir="rtl"] .PaginationStyle-Committee {
 .publishedMeetingButton {
   border: 1px solid #e1e1e1 !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border-radius: 4px !important;
   background: #fff !important;
   color: #5a5a5a !important;
@@ -266,7 +270,7 @@ body[dir="rtl"] .PaginationStyle-Committee {
 .publishedMeetingButton-active {
   /* border: 1px solid #e1e1e1 !important; */
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border-radius: 4px !important;
   background: #6172d6 !important;
   border: none !important;
@@ -274,25 +278,25 @@ body[dir="rtl"] .PaginationStyle-Committee {
 }
 
 .UnpublishedMeetingButton-active {
-  border: none !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border-radius: 4px !important;
   background: #6172d6 !important;
+  border: none !important;
   color: #fff !important;
 }
 
 .UnpublishedMeetingButton:is(:hover, :active, :focus, :focus-visible) {
   border: 1px solid #e1e1e1 !important;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border-radius: 4px !important;
   background: #fff !important;
   color: #5a5a5a !important;
 }
 
 .meetingTitle {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #6172d6;
   font-size: 14px !important;
   cursor: pointer;
@@ -314,14 +318,14 @@ body[dir="rtl"] .PaginationStyle-Committee {
   background: #6172d6 !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border: none !important;
   display: flex;
   justify-content: space-between;
 }
 
 body[dir="rtl"] .Calendar_Meeting button {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Calendar_Meeting .dropdown-toggle.btn.btn-primary {
@@ -330,7 +334,7 @@ body[dir="rtl"] .Calendar_Meeting button {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   border: none !important;
 }
 
@@ -358,13 +362,13 @@ body[dir="rtl"] .Calendar_Meeting .dropdown-menu.show {
 
 .Calendar_Meeting .dropdown-menu.show .dropdown-item {
   padding: 10px 10px;
-  font-family: "MontserratSemiBold-600" !important;
+  font-weight: 600 !important;
   text-align: center;
   font-size: 11px !important;
 }
 
 body[dir="rtl"] .Calendar_Meeting .dropdown-menu.show .dropdown-item {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .Calendar_Meeting .dropdown-menu.show .dropdown-item:nth-child(1) {
@@ -388,6 +392,7 @@ body[dir="rtl"] .Calendar_Meeting .dropdown-menu.show .dropdown-item {
 
 .schedule_button {
   font-size: calc(14px - 20%);
+  font-weight: 600 !important;
 }
 
 .DefineTableFixedheight {
@@ -397,4 +402,10 @@ body[dir="rtl"] .Calendar_Meeting .dropdown-menu.show .dropdown-item {
 .meeting-expanded-row {
   /* margin-left: 33px !important; */
   margin-left: 35px !important;
+}
+.orgaizer_value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
 }

@@ -1,8 +1,3 @@
-@font-face {
-  font-family: "MontserratBold";
-  src: url(../../../../assets/fonts/Montserrat-Bold.ttf);
-}
-
 .Ok-Successfull-btn {
   width: 119px !important;
   height: 46px !important;
@@ -17,14 +12,14 @@
 .deleteModal-message {
   text-align: center !important;
   font-size: 14px;
-  font-family: "MontserratSemiBold-600";
+  font-weight: 600 !important;
   display: block;
   padding: 10px 0px;
   margin-top: 10px !important;
 }
 
 body[dir="rtl"] .deleteModal-message {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .allowModalIcon {
@@ -35,11 +30,11 @@ body[dir="rtl"] .deleteModal-message {
 }
 
 .PaymentActivitySubtitle {
-  font-family: "MontserratBold";
+  font-weight: 700 !important;
   color: #5a5a5a;
   font-size: 16px;
 }
 
 body[dir="rtl"] .PaymentActivitySubtitle {
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-weight: 700 !important;
 }
