@@ -15,10 +15,12 @@ import { showSceduleProposedMeeting } from "../../../../../../../store/actions/N
 import BlueTick from "../../../../../../../assets/images/BlueTick.svg";
 import moment from "moment";
 import { scheduleMeetingMainApi } from "../../../../../../../store/actions/NewMeetingActions";
+import { newTimeFormaterAsPerUTCFullDate } from "../../../../../../../commen/functions/date_formater";
 const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
   let viewProposeDatePollMeetingID = Number(
     localStorage.getItem("viewProposeDatePollMeetingID")
   );
+  console.log(proposedDates, "proposedDatesproposedDates");
 
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -56,7 +58,7 @@ const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
     designation: "",
     userEmail: "",
     title: "",
-    selectedProposedDates: Array(proposedDates.length).fill({
+    selectedProposedDates: Array(proposedDates?.length).fill({
       proposedDateID: 0,
       proposedDate: "",
       startTime: "",
@@ -90,10 +92,14 @@ const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
   };
   const dateFormat = "YYYYMMDD";
   const formattedDates = proposedDates.map((date) => {
-    const formattedDate = moment(date.proposedDate, dateFormat).format(
-      "DD MMM, YY"
-    );
-    return formattedDate;
+    try {
+      let datetimeVal = `${date?.proposedDate}${date?.startTime}`;
+      const formatetDateTime = newTimeFormaterAsPerUTCFullDate(datetimeVal);
+
+      return formatetDateTime;
+    } catch (error) {
+      console.log(error);
+    }
   });
 
   // Api hit for schedule Meeting
