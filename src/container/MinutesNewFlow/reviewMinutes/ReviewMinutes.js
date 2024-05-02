@@ -10,9 +10,13 @@ import {
   reviewMinutesPage,
   pendingApprovalPage,
   rejectCommentModal,
+  editCommentModal,
+  deleteCommentModal,
 } from "../../../store/actions/Minutes_action";
 import DefaultAvatar from "./../Images/avatar.png";
 import RejectCommentModal from "./rejectCommentModal/RejectCommentModal";
+import EditCommentModal from "./editCommentModal/EditCommentModal";
+import DeleteCommentModal from "./deleteCommentModal/DeleteCommentModal";
 
 // Functional component for pending approvals section
 const ReviewMinutes = () => {
@@ -92,6 +96,79 @@ const ReviewMinutes = () => {
                 <div className={styles["version-control-wrapper-with-more"]}>
                   <span className={styles["with-text"]}>V1.0</span>
                 </div>
+                <div className={styles["uploaded-details-accepted"]}>
+                  <Row className={styles["inherit-height"]}>
+                    <Col lg={8} md={8} sm={12}>
+                      <p className={styles["minutes-text"]}>
+                        Task updates: Design phase completed, moving to
+                        development, discussed resource reallocation to address
+                        delays and decided unknown unknown printer took a galley
+                        of type a printer took a galley of type a to hold daily
+                        check-ins for quicker progress Design phase completed,
+                        moving to development, discussed resource reallocation
+                        to address delays and decided unknown unknown printer
+                        took a galley of type a printer took a galley of type a
+                        to hold daily check-ins for quicker progress Design
+                        phase completed, moving to development, discussed
+                        resource reallocation to address delays and decided
+                        unknown unknown printer took a galley of type a printer
+                        took a galley of type a to update.
+                      </p>
+                    </Col>
+                    <Col lg={4} md={4} sm={12} className="position-relative">
+                      <Row className="m-0">
+                        <Col lg={6} md={6} sm={12} className="p-0">
+                          <span className={styles["bar-line"]}></span>
+                          <p className={styles["uploadedbyuser"]}>
+                            Uploaded By
+                          </p>
+                          <div className={styles["gap-ti"]}>
+                            <img
+                              src={DefaultAvatar}
+                              className={styles["Image"]}
+                              alt=""
+                              draggable={false}
+                            />
+                            <p className={styles["agendaCreater"]}>
+                              Alex Rodriguez
+                            </p>
+                          </div>
+                        </Col>
+                        <Col
+                          lg={6}
+                          md={6}
+                          sm={12}
+                          className="d-grid justify-content-end p-0"
+                        >
+                          <Button
+                            text={t("Accepted")}
+                            className={styles["Accepted-comment"]}
+                          />
+                          <Button
+                            text={t("Reject")}
+                            className={styles["Reject-comment"]}
+                            onClick={() => dispatch(rejectCommentModal(true))}
+                          />
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col lg={12} md={12} sm={12}>
+                          <p className={styles["time-uploader"]}>4:00pm,</p>
+                          <p className={styles["date-uploader"]}>
+                            18th May, 2024
+                          </p>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                </div>
+              </Col>
+            </Row>
+            <Row>
+              <Col lg={12} md={12} sm={12} className="position-relative">
+                <div className={styles["version-control-wrapper"]}>
+                  <span></span>
+                </div>
                 <div className={styles["uploaded-details-rejected"]}>
                   <Row className={styles["inherit-height"]}>
                     <Col lg={8} md={8} sm={12}>
@@ -134,11 +211,7 @@ const ReviewMinutes = () => {
                           lg={6}
                           md={6}
                           sm={12}
-                          className={
-                            currentLanguage === "ar"
-                              ? "text-start p-0"
-                              : "text-end p-0"
-                          }
+                          className="d-grid justify-content-end p-0"
                         >
                           <Button
                             text={t("Accepted")}
@@ -206,17 +279,15 @@ const ReviewMinutes = () => {
                           lg={6}
                           md={6}
                           sm={12}
-                          className={
-                            currentLanguage === "ar"
-                              ? "text-start p-0"
-                              : "text-end p-0"
-                          }
+                          className="d-grid justify-content-end p-0"
                         >
                           <Button
+                            onClick={() => dispatch(editCommentModal(true))}
                             text={t("Edit")}
                             className={styles["Reject-comment"]}
                           />
                           <Button
+                            onClick={() => dispatch(deleteCommentModal(true))}
                             text={t("Delete")}
                             className={styles["Reject-comment"]}
                           />
@@ -283,11 +354,7 @@ const ReviewMinutes = () => {
                           lg={6}
                           md={6}
                           sm={12}
-                          className={
-                            currentLanguage === "ar"
-                              ? "text-start p-0"
-                              : "text-end p-0"
-                          }
+                          className="d-grid justify-content-end p-0"
                         >
                           <Button
                             text={t("Accepted")}
@@ -355,11 +422,7 @@ const ReviewMinutes = () => {
                           lg={6}
                           md={6}
                           sm={12}
-                          className={
-                            currentLanguage === "ar"
-                              ? "text-start p-0"
-                              : "text-end p-0"
-                          }
+                          className="d-grid justify-content-end p-0"
                         >
                           <Button
                             text={t("Edit")}
@@ -452,11 +515,7 @@ const ReviewMinutes = () => {
                                 lg={6}
                                 md={6}
                                 sm={12}
-                                className={
-                                  currentLanguage === "ar"
-                                    ? "text-start p-0"
-                                    : "text-end p-0"
-                                }
+                                className="d-grid justify-content-end p-0"
                               >
                                 <Button
                                   text={t("Accepted")}
@@ -549,11 +608,7 @@ const ReviewMinutes = () => {
                                 lg={6}
                                 md={6}
                                 sm={12}
-                                className={
-                                  currentLanguage === "ar"
-                                    ? "text-start p-0"
-                                    : "text-end p-0"
-                                }
+                                className="d-grid justify-content-end p-0"
                               >
                                 <Button
                                   text={t("Accepted")}
@@ -624,11 +679,7 @@ const ReviewMinutes = () => {
                                 lg={6}
                                 md={6}
                                 sm={12}
-                                className={
-                                  currentLanguage === "ar"
-                                    ? "text-start p-0"
-                                    : "text-end p-0"
-                                }
+                                className="d-grid justify-content-end p-0"
                               >
                                 <Button
                                   text={t("Edit")}
@@ -712,11 +763,7 @@ const ReviewMinutes = () => {
                                 lg={6}
                                 md={6}
                                 sm={12}
-                                className={
-                                  currentLanguage === "ar"
-                                    ? "text-start p-0"
-                                    : "text-end p-0"
-                                }
+                                className="d-grid justify-content-end p-0"
                               >
                                 <Button
                                   text={t("Accepted")}
@@ -795,11 +842,7 @@ const ReviewMinutes = () => {
                                 lg={6}
                                 md={6}
                                 sm={12}
-                                className={
-                                  currentLanguage === "ar"
-                                    ? "text-start p-0"
-                                    : "text-end p-0"
-                                }
+                                className="d-grid justify-content-end p-0"
                               >
                                 <Button
                                   text={t("Edit")}
@@ -872,11 +915,7 @@ const ReviewMinutes = () => {
                                 lg={6}
                                 md={6}
                                 sm={12}
-                                className={
-                                  currentLanguage === "ar"
-                                    ? "text-start p-0"
-                                    : "text-end p-0"
-                                }
+                                className="d-grid justify-content-end p-0"
                               >
                                 <Button
                                   text={t("Edit")}
@@ -961,11 +1000,7 @@ const ReviewMinutes = () => {
                                 lg={6}
                                 md={6}
                                 sm={12}
-                                className={
-                                  currentLanguage === "ar"
-                                    ? "text-start p-0"
-                                    : "text-end p-0"
-                                }
+                                className="d-grid justify-content-end p-0"
                               >
                                 <Button
                                   text={t("Accept")}
@@ -1020,6 +1055,8 @@ const ReviewMinutes = () => {
         </div>
       </Paper>
       {MinutesReducer.rejectCommentModal ? <RejectCommentModal /> : null}
+      {MinutesReducer.editCommentModal ? <EditCommentModal /> : null}
+      {MinutesReducer.deleteCommentModal ? <DeleteCommentModal /> : null}
     </section>
   );
 };

@@ -7138,3 +7138,11 @@ th.ant-table-cell.statusParticipant
 .mxr-50 {
   margin-right: 50px !important;
 }
+
+.fade.DeleteCommentModal.modal.show
+  .modal-dialog.modal-md.modal-dialog-centered {
+  width: 405px !important;
+  justify-content: center !important;
+  max-width: 405px !important;
+  min-width: 405px !important;
+}

@@ -23,4 +23,24 @@ const rejectCommentModal = (response) => {
   };
 };
 
-export { pendingApprovalPage, reviewMinutesPage, rejectCommentModal };
+const editCommentModal = (response) => {
+  return {
+    type: actions.EDIT_COMMENT_MODAL,
+    response: response,
+  };
+};
+
+const deleteCommentModal = (response) => {
+  return {
+    type: actions.DELETE_COMMENT_MODAL,
+    response: response,
+  };
+};
+
+export {
+  pendingApprovalPage,
+  reviewMinutesPage,
+  rejectCommentModal,
+  editCommentModal,
+  deleteCommentModal,
+};

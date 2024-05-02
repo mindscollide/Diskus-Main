@@ -1827,5 +1827,9 @@
   "Information-saved": "Information saved",
   "Leave-a-comment": "Leave a comment",
   "Write-a-reason": "Write a reason",
-  "Hide-comment": "Hide Comment"
+  "Hide-comment": "Hide Comment",
+  "Edit-comment": "Edit Comment",
+  "Save-changes": "Save Changes",
+  "Write-a-comment": "Write a comment",
+  "Are-you-sure-you-want-to-delete-your-comment": "Are you sure you want to delete your comment?"
 }

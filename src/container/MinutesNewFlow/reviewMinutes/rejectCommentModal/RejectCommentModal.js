@@ -4,66 +4,70 @@ import {
   Button,
   TextArea,
   SelectComment,
-} from "../../../../components/elements";
-import styles from "./RejectCommentModal.module.css";
-import { rejectCommentModal } from "../../../../store/actions/Minutes_action";
-import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Col, Row } from "react-bootstrap";
-import CrossIcon from "./../../Images/Cross_Icon.png";
+} from "../../../../components/elements"; // Importing necessary components
+import styles from "./RejectCommentModal.module.css"; // Importing CSS module for styling
+import { rejectCommentModal } from "../../../../store/actions/Minutes_action"; // Importing action creator
+import { useTranslation } from "react-i18next"; // Importing translation hook
+import { useDispatch, useSelector } from "react-redux"; // Importing Redux hooks
+import { Col, Row } from "react-bootstrap"; // Importing Bootstrap components
+import CrossIcon from "./../../Images/Cross_Icon.png"; // Importing cross icon image
 
+// RejectCommentModal component definition
 const RejectCommentModal = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(); // Initializing translation function
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); // Initializing dispatch function from Redux
 
-  const [commentText, setCommentText] = useState("");
+  const [commentText, setCommentText] = useState(""); // State for comment text
 
+  // Function to handle selection of predefined comments
   const handleCommentSelect = (selectedText) => {
     setCommentText((prevText) => prevText + selectedText + " ");
   };
 
   return (
     <section>
+      {/* Modal component */}
       <Modal
-        show={true}
-        setShow={dispatch(rejectCommentModal)}
-        modalFooterClassName={"d-block"}
-        modalHeaderClassName={"d-block"}
-        className="SelectAgendaModal"
+        show={true} // Hardcoded to always show modal
+        setShow={dispatch(rejectCommentModal)} // Dispatching action to set modal state
+        modalFooterClassName={"d-block"} // Custom CSS class for modal footer
+        modalHeaderClassName={"d-block"} // Custom CSS class for modal header
+        className="SelectAgendaModal" // Additional CSS classes for modal
         onHide={() => {
-          dispatch(rejectCommentModal(false));
+          dispatch(rejectCommentModal(false)); // Dispatching action to hide modal
         }}
-        size={"md"}
-        ModalTitle={
+        size={"md"} // Size of the modal
+        ModalTitle={ // JSX for modal title
           <>
             <Row>
               <Col lg={12} md={12} sm={12} className="position-relative">
                 <p className={styles["RejectCommentTitle"]}>
-                  {t("Leave-a-comment")}
+                  {t("Leave-a-comment")} {/* Translation for title */}
                 </p>
                 <img
                   onClick={() => dispatch(rejectCommentModal(false))}
-                  className={styles["image-close"]}
-                  src={CrossIcon}
+                  className={styles["image-close"]} // Styling for close icon
+                  src={CrossIcon} // Image for close icon
                   alt=""
                 />
               </Col>
             </Row>
           </>
         }
-        ModalBody={
+        ModalBody={ // JSX for modal body
           <>
             <TextArea
               name="textField-RejectComment"
-              className={styles["textField-RejectComment"]}
+              className={styles["textField-RejectComment"]} // Styling for text area
               type="text"
-              placeholder={t("Write-a-reason")}
+              placeholder={t("Write-a-reason")} // Translation for placeholder
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)} // Update text area value if typed directly
-              labelClassName={"d-none"}
-              timeClass={"d-none"}
+              labelClassName={"d-none"} // Custom CSS class for label (hidden)
+              timeClass={"d-none"} // Custom CSS class for time (hidden)
             />
+            {/* Predefined comment options */}
             <SelectComment
               text="Incomplete information"
               onClick={() => handleCommentSelect("Incomplete information")}
@@ -84,7 +88,7 @@ const RejectCommentModal = () => {
             />
           </>
         }
-        ModalFooter={
+        ModalFooter={ // JSX for modal footer
           <>
             <Row className="mt-4">
               <Col
@@ -95,8 +99,8 @@ const RejectCommentModal = () => {
               >
                 <Button
                   onClick={() => dispatch(rejectCommentModal(false))}
-                  text={t("Reject")}
-                  className={styles["Reject_Comment_Modal"]}
+                  text={t("Reject")} // Translation for button text
+                  className={styles["Reject_Comment_Modal"]} // Styling for reject button
                 />
               </Col>
             </Row>
@@ -107,4 +111,4 @@ const RejectCommentModal = () => {
   );
 };
 
-export default RejectCommentModal;
+export default RejectCommentModal; // Exporting RejectCommentModal component
