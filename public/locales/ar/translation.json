@@ -1934,5 +1934,17 @@
   "Organization-is-inactive-and-this-is-an-user": "Organization is inactive and this is an user",
   "No-data-found": "No Data Found",
   "User-deleted-successfully": "User Deleted Successfully",
-  "Error-while-deleting": "Error While Deleting"
+  "Error-while-deleting": "Error While Deleting",
+  "Password-verified-and-subscription-is-closed-and-this-is-organization-creator": "Password Verified and Subscription is Closed and This is Organization Creator",
+  "Password-verified-and-subscription-is-closed-and-this-is-an-admin-user": "Password Verified and Subscription is Closed and This is an Admin user",
+  "Password-verified-and-subscription-is-closed-and-this-is-an-admin": "Password Verified and Subscription is Closed and This is an Admin",
+  "Password-verified-and-subscription-is-closed-and-this-is-an-user": "Password Verified and Subscription is Closed and This is an user",
+  "Password-verified-and-subscription-is-cancel-and-this-is-organization-creator": "Password Verified and Subscription is Cancel and This is Organization Creator",
+  "Password-verified-and-subscription-is-cancel-and-this-is-an-admin-user": "Password Verified and Subscription is Cancel and This is an Admin user.",
+  "Password-verified-and-subscription-is-cancel-and-this-is-an-admin": "Password Verified and Subscription is Cancel and This is an Admin.",
+  "Password-verified-and-subscription-is-cancel-and-this-is-an-user": "Password Verified and Subscription is Cancel and This is an user.",
+  "Password-verified-and-subscription-is-suspended-and-this-is-organization-creator": "Password Verified and Subscription is Suspended and This is Organization Creator",
+  "Password-verified-and-subscription-is-suspended-and-this-is-an-admin-user": "Password Verified and Subscription is Suspended and This is an Admin user.",
+  "Password-verified-and-subscription-is-suspended-and-this-is-an-admin": "Password Verified and Subscription is Suspended and This is an Admin.",
+  "Password-verified-and-subscription-is-suspended-and-this-is-an-user": "Password Verified and Subscription is Suspended and This is an user."
 }

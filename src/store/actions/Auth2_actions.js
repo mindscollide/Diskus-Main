@@ -1477,84 +1477,132 @@ const enterPasswordvalidation = (value, navigate, t) => {
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
 
-          dispatch(enterPasswordFail("User-has-not-been-assigned-any-license"));
+          dispatch(
+            enterPasswordFail(
+              "Password-verified-and-subscription-is-closed-and-this-is-organization-creator"
+            )
+          );
           break;
 
         case USERPASSWORDVERIFICATION.VERIFICATION_29:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
 
-          dispatch(enterPasswordFail("User-has-not-been-assigned-any-license"));
+          dispatch(
+            enterPasswordFail(
+              "Password-verified-and-subscription-is-closed-and-this-is-an-admin-user"
+            )
+          );
           break;
 
         case USERPASSWORDVERIFICATION.VERIFICATION_30:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
 
-          dispatch(enterPasswordFail("User-has-not-been-assigned-any-license"));
+          dispatch(
+            enterPasswordFail(
+              "Password-verified-and-subscription-is-closed-and-this-is-an-admin"
+            )
+          );
           break;
 
         case USERPASSWORDVERIFICATION.VERIFICATION_31:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
 
-          dispatch(enterPasswordFail("User-has-not-been-assigned-any-license"));
+          dispatch(
+            enterPasswordFail(
+              "Password-verified-and-subscription-is-closed-and-this-is-an-user"
+            )
+          );
           break;
 
         case USERPASSWORDVERIFICATION.VERIFICATION_32:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
 
-          dispatch(enterPasswordFail("User-has-not-been-assigned-any-license"));
+          dispatch(
+            enterPasswordFail(
+              "Password-verified-and-subscription-is-cancel-and-this-is-organization-creator"
+            )
+          );
           break;
 
         case USERPASSWORDVERIFICATION.VERIFICATION_33:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
 
-          dispatch(enterPasswordFail("User-has-not-been-assigned-any-license"));
+          dispatch(
+            enterPasswordFail(
+              "Password-verified-and-subscription-is-cancel-and-this-is-an-admin-user"
+            )
+          );
           break;
 
         case USERPASSWORDVERIFICATION.VERIFICATION_34:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
 
-          dispatch(enterPasswordFail("User-has-not-been-assigned-any-license"));
+          dispatch(
+            enterPasswordFail(
+              "Password-verified-and-subscription-is-cancel-and-this-is-an-admin"
+            )
+          );
           break;
 
         case USERPASSWORDVERIFICATION.VERIFICATION_35:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
 
-          dispatch(enterPasswordFail("User-has-not-been-assigned-any-license"));
+          dispatch(
+            enterPasswordFail(
+              "Password-verified-and-subscription-is-cancel-and-this-is-an-user"
+            )
+          );
           break;
 
         case USERPASSWORDVERIFICATION.VERIFICATION_36:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
 
-          dispatch(enterPasswordFail("User-has-not-been-assigned-any-license"));
+          dispatch(
+            enterPasswordFail(
+              "Password-verified-and-subscription-is-suspended-and-this-is-organization-creator"
+            )
+          );
           break;
 
         case USERPASSWORDVERIFICATION.VERIFICATION_37:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
 
-          dispatch(enterPasswordFail("User-has-not-been-assigned-any-license"));
+          dispatch(
+            enterPasswordFail(
+              "Password-verified-and-subscription-is-suspended-and-this-is-an-admin-user"
+            )
+          );
           break;
 
         case USERPASSWORDVERIFICATION.VERIFICATION_38:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
 
-          dispatch(enterPasswordFail("User-has-not-been-assigned-any-license"));
+          dispatch(
+            enterPasswordFail(
+              "Password-verified-and-subscription-is-suspended-and-this-is-an-admin"
+            )
+          );
           break;
 
         case USERPASSWORDVERIFICATION.VERIFICATION_39:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
 
-          dispatch(enterPasswordFail("User-has-not-been-assigned-any-license"));
+          dispatch(
+            enterPasswordFail(
+              "Password-verified-and-subscription-is-suspended-and-this-is-an-user"
+            )
+          );
           break;
 
         default:
