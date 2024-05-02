@@ -2712,6 +2712,66 @@ const createPasswordAction = (value, navigate, t) => {
             createPasswordFail("User-has-not-been-assigned-any-license")
           );
           break;
+
+        case USERSPASSWORDCREATION.VERIFICATION_18:
+          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.VERIFICATION_19:
+          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.VERIFICATION_20:
+          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.VERIFICATION_21:
+          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.VERIFICATION_22:
+          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.VERIFICATION_23:
+          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.VERIFICATION_24:
+          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.VERIFICATION_25:
+          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.VERIFICATION_26:
+          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.VERIFICATION_27:
+          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.VERIFICATION_28:
+          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.VERIFICATION_29:
+          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          // no action
+          break;
         default:
           dispatch(enterPasswordFail("Something-went-wrong"));
       }

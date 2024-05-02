@@ -107,5 +107,29 @@ export const USERSPASSWORDCREATION = {
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_16".toLowerCase(),
   VERIFICATION_17:
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_17".toLowerCase(),
+  VERIFICATION_18:
+    "ERM_AuthService_SignUpManager_UsersPasswordCreation_18".toLowerCase(),
+  VERIFICATION_19:
+    "ERM_AuthService_SignUpManager_UsersPasswordCreation_19".toLowerCase(),
+  VERIFICATION_20:
+    "ERM_AuthService_SignUpManager_UsersPasswordCreation_20".toLowerCase(),
+  VERIFICATION_21:
+    "ERM_AuthService_SignUpManager_UsersPasswordCreation_21".toLowerCase(),
+  VERIFICATION_22:
+    "ERM_AuthService_SignUpManager_UsersPasswordCreation_22".toLowerCase(),
+  VERIFICATION_23:
+    "ERM_AuthService_SignUpManager_UsersPasswordCreation_23".toLowerCase(),
+  VERIFICATION_24:
+    "ERM_AuthService_SignUpManager_UsersPasswordCreation_24".toLowerCase(),
+  VERIFICATION_25:
+    "ERM_AuthService_SignUpManager_UsersPasswordCreation_25".toLowerCase(),
+  VERIFICATION_26:
+    "ERM_AuthService_SignUpManager_UsersPasswordCreation_26".toLowerCase(),
+  VERIFICATION_27:
+    "ERM_AuthService_SignUpManager_UsersPasswordCreation_27".toLowerCase(),
+  VERIFICATION_28:
+    "ERM_AuthService_SignUpManager_UsersPasswordCreation_28".toLowerCase(),
+  VERIFICATION_29:
+    "ERM_AuthService_SignUpManager_UsersPasswordCreation_29".toLowerCase(),
   // Add more as needed
 };
