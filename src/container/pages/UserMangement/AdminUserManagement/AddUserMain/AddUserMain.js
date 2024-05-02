@@ -88,11 +88,7 @@ const AddUserMain = () => {
 
   //For Now I set static data in this getOrganizationPackageUserStatsAPI Api
   useEffect(() => {
-    let data = {
-      OrganizationID: Number(organizationID),
-      RequestingUserID: Number(UserID),
-    };
-    dispatch(getOrganizationPackageUserStatsAPI(navigate, t, data));
+    dispatch(getOrganizationPackageUserStatsAPI(navigate, t));
 
     let newdata = {
       OrganizationID: Number(organizationID),
@@ -497,17 +493,19 @@ const AddUserMain = () => {
   useEffect(() => {
     if (
       UserMangementReducer.organizationSelectedPakagesByOrganizationIDData &&
-      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
-        .organizationSelectedPackages.length > 0
+      Object.keys(
+        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
+      ).length > 0
     ) {
       let temp = [];
-      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData.organizationSelectedPackages.forEach(
+      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData.organizationSubscriptions?.map(
         (data, index) => {
-          console.log(data, "datadatadata");
-          temp.push({
-            value: data.pK_PackageID,
-            label: data.name,
-            isDisabled: data.packageAllotedUsers > data.headCount,
+          data.organizationSelectedPackages?.map((packageData) => {
+            temp.push({
+              value: packageData.pK_OrganizationsSelectedPackageID,
+              label: packageData.name,
+              isDisabled: packageData.allotedUsers > packageData.headCount,
+            });
           });
         }
       );

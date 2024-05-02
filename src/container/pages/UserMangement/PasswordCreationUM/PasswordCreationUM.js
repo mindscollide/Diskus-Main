@@ -2,12 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "./PasswordCreationUM.module.css";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 import { Col, Container, Form, Row } from "react-bootstrap";
-import {
-  Button,
-  Paper,
-  Notification,
-  Loader,
-} from "../../../../components/elements";
+import { Button, Paper, Loader } from "../../../../components/elements";
 import { Checkbox } from "antd";
 import { useTranslation } from "react-i18next";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
@@ -189,161 +184,6 @@ const PasswordCreationUM = ({ isFreetrail }) => {
       localStorage.setItem("rememberPasswordValue", "");
     }
   };
-
-  //Response Messeges
-  useEffect(() => {
-    if (
-      Authreducer.VerifyOTPEmailResponseMessage !== "" &&
-      Authreducer.VerifyOTPEmailResponseMessage !== undefined &&
-      Authreducer.VerifyOTPEmailResponseMessage !== t("2fa-verification") &&
-      Authreducer.VerifyOTPEmailResponseMessage !== t("2fa-enabled")
-    ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.VerifyOTPEmailResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
-      dispatch(cleareMessage());
-    } else if (
-      Authreducer.EnterPasswordResponseMessage !== "" &&
-      Authreducer.EnterPasswordResponseMessage !== undefined &&
-      Authreducer.EnterPasswordResponseMessage !== t("2fa-verification") &&
-      Authreducer.EnterPasswordResponseMessage !== t("2fa-enabled")
-    ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.EnterPasswordResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
-      dispatch(cleareMessage());
-    } else if (
-      Authreducer.OrganizationCreateResponseMessage !== "" &&
-      Authreducer.OrganizationCreateResponseMessage !== undefined &&
-      Authreducer.OrganizationCreateResponseMessage !== t("2fa-verification") &&
-      Authreducer.OrganizationCreateResponseMessage !== t("2fa-enabled")
-    ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.OrganizationCreateResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
-      dispatch(cleareMessage());
-    } else if (
-      Authreducer.CreatePasswordResponseMessage !== "" &&
-      Authreducer.CreatePasswordResponseMessage !== undefined &&
-      Authreducer.CreatePasswordResponseMessage !== t("2fa-verification") &&
-      Authreducer.CreatePasswordResponseMessage !== t("2fa-enabled")
-    ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.CreatePasswordResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
-      dispatch(cleareMessage());
-    } else if (
-      Authreducer.GetSelectedPackageResponseMessage !== "" &&
-      Authreducer.GetSelectedPackageResponseMessage !== undefined &&
-      Authreducer.GetSelectedPackageResponseMessage !== t("2fa-verification") &&
-      Authreducer.GetSelectedPackageResponseMessage !== t("2fa-enabled")
-    ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.GetSelectedPackageResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
-      dispatch(cleareMessage());
-    } else if (
-      Authreducer.EmailValidationResponseMessage !== "" &&
-      Authreducer.EmailValidationResponseMessage !== undefined &&
-      Authreducer.EmailValidationResponseMessage !== t("2fa-verification") &&
-      Authreducer.EmailValidationResponseMessage !== t("2fa-enabled")
-    ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.EmailValidationResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
-      dispatch(cleareMessage());
-    } else if (
-      Authreducer.passwordUpdateOnForgotPasswordMessege !== "" &&
-      Authreducer.passwordUpdateOnForgotPasswordMessege !== undefined &&
-      Authreducer.passwordUpdateOnForgotPasswordMessege !==
-        t("2fa-verification") &&
-      Authreducer.passwordUpdateOnForgotPasswordMessege !== t("2fa-enabled")
-    ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.passwordUpdateOnForgotPasswordMessege,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
-      dispatch(cleareMessage());
-    } else {
-    }
-  }, [
-    Authreducer.EnterPasswordResponseMessage,
-    Authreducer.VerifyOTPEmailResponseMessage,
-    Authreducer.OrganizationCreateResponseMessage,
-    Authreducer.CreatePasswordResponseMessage,
-    Authreducer.EmailValidationResponseMessage,
-    Authreducer.GetSelectedPackageResponseMessage,
-    Authreducer.passwordUpdateOnForgotPasswordMessege,
-  ]);
 
   //Remember Password
   useEffect(() => {
@@ -608,7 +448,7 @@ const PasswordCreationUM = ({ isFreetrail }) => {
           </Col>
         </Row>
       </Container>
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+
       {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
       {UserManagementModals.createAdditionalModals && (
         <CreateAddtionalUsersModal />

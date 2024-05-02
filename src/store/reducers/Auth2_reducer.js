@@ -139,6 +139,10 @@ const AuthReducer = (state = initialState, action) => {
     }
     case actions.EMAILVALIDATION_SUCCESS: {
       localStorage.setItem("userID", action.response.userID);
+      console.log(
+        "userIDuserID",
+        action.response.EmailValidationResponseMessage
+      );
       return {
         ...state,
         Loading: false,

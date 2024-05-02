@@ -12,6 +12,7 @@ import {
   Table,
   TextField,
   Loader,
+  Notification,
 } from "../../../../../components/elements";
 import greenCheck from "../../../../../assets/images/greenCheck.svg";
 import { useTranslation } from "react-i18next";
@@ -26,7 +27,10 @@ import DeleteUserModal from "../../ModalsUserManagement/DeleteUserModal/DeleteUs
 import { useSelector } from "react-redux";
 import EditUserModal from "../../ModalsUserManagement/EditUserModal/EditUserModal";
 import SuccessfullyUpdateModal from "../../ModalsUserManagement/SuccessFullyUpdatedModal/SuccessfullyUpdateModal";
-import { AllOrganizationsUsersApi } from "../../../../../store/actions/UserManagementActions";
+import {
+  AllOrganizationsUsersApi,
+  clearMessegesUserManagement,
+} from "../../../../../store/actions/UserManagementActions";
 import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
 const ManageUsers = () => {
   const { t } = useTranslation();
@@ -72,6 +76,11 @@ const ManageUsers = () => {
       value: "",
       label: "",
     },
+  });
+
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
   });
 
   //AllOrganizationsUsers Api
@@ -518,6 +527,28 @@ const ManageUsers = () => {
     });
   };
 
+  //Response Messege
+
+  useEffect(() => {
+    if (
+      UserMangementReducer.ResponseMessage !== "" &&
+      UserMangementReducer.ResponseMessage !== t("Data-available") &&
+      UserMangementReducer.ResponseMessage !== t("No-data-found")
+    ) {
+      setOpen({
+        open: true,
+        message: UserMangementReducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          open: false,
+          message: "",
+        });
+      }, 4000);
+      dispatch(clearMessegesUserManagement());
+    }
+  }, [UserMangementReducer.ResponseMessage]);
+
   return (
     <Container>
       <Row className={"mt-3 row"}>
@@ -795,6 +826,7 @@ const ManageUsers = () => {
         <SuccessfullyUpdateModal editModalData={editModalData} />
       )}
       {UserMangementReducer.Loading ? <Loader /> : null}
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
     </Container>
   );
 };

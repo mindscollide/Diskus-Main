@@ -27,6 +27,8 @@ const PakageDetailsUserManagement = () => {
 
   const { t } = useTranslation();
 
+  const SignupPage = localStorage.getItem("signupCurrentPage", 1);
+
   const { UserMangementReducer, LanguageReducer } = useSelector(
     (state) => state
   );
@@ -55,6 +57,7 @@ const PakageDetailsUserManagement = () => {
   useEffect(() => {
     try {
       const pakageDetails = UserMangementReducer.getAllUserTypePackagesData;
+      console.log(pakageDetails, "datadatadatadata");
       if (
         pakageDetails &&
         pakageDetails.packages &&
@@ -89,7 +92,7 @@ const PakageDetailsUserManagement = () => {
     {
       title: (
         <span className="pakageselectionSpanUsermanagement">
-          {t("Pakage-details")}
+          {t("Package-details")}
         </span>
       ),
       width: 100,
@@ -337,6 +340,7 @@ const PakageDetailsUserManagement = () => {
 
   //Calculating the totals
   const calculateTotals = (data) => {
+    console.log(data, "datadatadatadata");
     const totalLicenses = data.reduce(
       (total, row) => total + (Number(row.licenseCount) || 0),
       0
@@ -525,13 +529,23 @@ const PakageDetailsUserManagement = () => {
           />
         </Col>
       </Row>
-      <Row className="mt-3">
-        <Col lg={12} md={12} sm={12} className="d-flex justify-content-center">
-          <span onClick={onClickLink} className={styles["signUp_goBack"]}>
-            {t("Go-back")}
-          </span>
-        </Col>
-      </Row>
+      {SignupPage ? (
+        <>
+          <Row className="mt-3">
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex justify-content-center"
+            >
+              <span onClick={onClickLink} className={styles["signUp_goBack"]}>
+                {t("Go-back")}
+              </span>
+            </Col>
+          </Row>
+        </>
+      ) : null}
+
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
       {UserMangementReducer.Loading || LanguageReducer.Loading ? (
         <Loader />

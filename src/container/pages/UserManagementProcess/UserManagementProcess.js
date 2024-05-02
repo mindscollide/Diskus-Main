@@ -14,11 +14,26 @@ import PasswordCreationUM from "../UserMangement/PasswordCreationUM/PasswordCrea
 import ForgotPasswordVerificationUM from "../UserMangement/ForgotPasswordVerification/ForgotPasswordVerificationUM";
 import TwoFactorMultipleDevices from "../UserMangement/2FA Verification/TwoFactorMultipleDevices/TwoFactorMultipleDevices";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { cleareMessage } from "../../../store/actions/Auth2_actions";
+import { Notification } from "../../../components/elements";
+import { useTranslation } from "react-i18next";
+import { cleareChangePasswordMessage } from "../../../store/actions/Auth_Forgot_Password";
 
 const UserManagementProcess = () => {
   // Define setCurrentStep function
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
 
-  const { UserMangementReducer } = useSelector((state) => state);
+  const { UserMangementReducer, Authreducer, auth } = useSelector(
+    (state) => state
+  );
+
+  //state to show snackbar
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+  });
 
   // Retrieve currentStep value from localStorage, default to 1 if not found
   const initialStep = Number(localStorage.getItem("LoginFlowPageRoute"));
@@ -35,6 +50,94 @@ const UserManagementProcess = () => {
       }
     } catch {}
   }, [UserMangementReducer.defaultRoutingValue]);
+
+  useEffect(() => {
+    if (Authreducer.EmailValidationResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.EmailValidationResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (
+      Authreducer.EnterPasswordResponseMessage != "" &&
+      Authreducer.EnterPasswordResponseMessage != t("2fa-enabled") &&
+      Authreducer.EnterPasswordResponseMessage != undefined &&
+      Authreducer.EnterPasswordResponseMessage !==
+        t("The-user-is-not-an-admin-user")
+    ) {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.EnterPasswordResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+      dispatch(cleareMessage());
+    } else {
+      dispatch(cleareMessage());
+    }
+  }, [
+    Authreducer.EmailValidationResponseMessage,
+    Authreducer.EnterPasswordResponseMessage,
+  ]);
+
+  //USer Password Verification After forget password
+  useEffect(() => {
+    if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.VerifyOTPEmailResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else {
+      dispatch(cleareMessage());
+    }
+  }, [Authreducer.VerifyOTPEmailResponseMessage]);
+
+  //For Response messeges
+  useEffect(() => {
+    if (auth.ResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: auth.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareChangePasswordMessage());
+    } else {
+      dispatch(cleareChangePasswordMessage());
+    }
+  }, [auth.ResponseMessage]);
 
   let componentToRender;
 
@@ -69,7 +172,12 @@ const UserManagementProcess = () => {
     console.log("Errorr in route");
   }
 
-  return componentToRender;
+  return (
+    <>
+      {componentToRender}
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+    </>
+  );
 };
 
 export default UserManagementProcess;

@@ -8,12 +8,7 @@ import Cookies from "js-cookie";
 import { Spinner, Container, Row, Col, Form } from "react-bootstrap";
 import SignInComponent from "../../UserMangement/SignInUserManagement/SignInUserManagement";
 import DiskusnewRoundIconSignUp from "../../../../assets/images/newElements/DiskusWhiteGroupIcon.svg";
-import {
-  Button,
-  TextField,
-  Loader,
-  Notification,
-} from "../../../../components/elements";
+import { Button, TextField, Loader } from "../../../../components/elements";
 import { validateEmailEnglishAndArabicFormat } from "../../../../commen/functions/validations";
 import { countryNameforPhoneNumber } from "../../../Admin/AllUsers/AddUser/CountryJson";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
@@ -440,7 +435,7 @@ const SignUpOrganizationUM = () => {
               TenureOfSubscriptionID: JSON.parse(tenureOfSuscriptionID),
               Organization: {
                 OrganizationName: signUpDetails.CompanyName.value,
-                FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
+                FK_WorldCountryID: signUpDetails.CountryName.value,
                 ContactPersonName: signUpDetails.FullName.value,
                 ContactPersonEmail: signUpDetails.Email.value,
                 ContactPersonNumber: signUpDetails.PhoneNumber.value,
@@ -807,22 +802,6 @@ const SignUpOrganizationUM = () => {
       setCountryNames(countryNamesReducer.CountryNamesData);
     }
   }, [countryNamesReducer.CountryNamesData]);
-
-  useEffect(() => {
-    if (Authreducer.OrganizationCreateResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.OrganizationCreateResponseMessage,
-      });
-    } else {
-      setOpen({
-        ...open,
-        open: false,
-        message: "",
-      });
-    }
-  }, [Authreducer.OrganizationCreateResponseMessage]);
 
   const onClickLink = () => {
     if (isFreeTrail === true) {
@@ -1246,11 +1225,6 @@ const SignUpOrganizationUM = () => {
         {UserMangementReducer.Loading || LanguageReducer.Loading ? (
           <Loader />
         ) : null}{" "}
-        <Notification
-          setOpen={setOpen}
-          open={open.open}
-          message={open.message}
-        />
       </Container>
     </>
   );

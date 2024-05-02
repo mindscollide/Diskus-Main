@@ -252,109 +252,6 @@ const SignInUserManagement = () => {
     }
   }, [adminReducer.DeleteOrganizationResponseMessage]);
 
-  useEffect(() => {
-    if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.VerifyOTPEmailResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
-      dispatch(cleareMessage());
-    } else if (Authreducer.EnterPasswordResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.EnterPasswordResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
-      dispatch(cleareMessage());
-    } else if (Authreducer.OrganizationCreateResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.OrganizationCreateResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
-      dispatch(cleareMessage());
-    } else if (Authreducer.CreatePasswordResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.CreatePasswordResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
-      dispatch(cleareMessage());
-    } else if (Authreducer.GetSelectedPackageResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.GetSelectedPackageResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
-      dispatch(cleareMessage());
-    } else if (Authreducer.EmailValidationResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.EmailValidationResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
-      dispatch(cleareMessage());
-    } else {
-      dispatch(cleareMessage());
-    }
-  }, [
-    Authreducer.EnterPasswordResponseMessage,
-    Authreducer.VerifyOTPEmailResponseMessage,
-    Authreducer.OrganizationCreateResponseMessage,
-    Authreducer.CreatePasswordResponseMessage,
-    Authreducer.EmailValidationResponseMessage,
-    Authreducer.GetSelectedPackageResponseMessage,
-  ]);
-
   return (
     <>
       <Container fluid className={styles["auth_container"]}>
@@ -433,7 +330,7 @@ const SignInUserManagement = () => {
                         onChange={rememberChangeEmail}
                         className={styles["RememberEmail"]}
                       />
-                      <span className="Remember_checkbox_styles Arabicstyles_Subtotal_Not_include_taxes">
+                      <span className={styles["Remember-Email-text"]}>
                         {t("Remeber-email")}
                       </span>
                     </Col>
@@ -456,7 +353,7 @@ const SignInUserManagement = () => {
                 <Row className="mt-3">
                   <Col sm={12} md={12} lg={12}>
                     {" "}
-                    <span className={styles["signup-text-inloginpage"]}>
+                    <span className={styles["havent-subscribed-text"]}>
                       {t("Havent-subscribed-yet")}
                     </span>
                   </Col>

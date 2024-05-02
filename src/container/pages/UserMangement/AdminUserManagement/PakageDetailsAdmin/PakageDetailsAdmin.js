@@ -75,7 +75,7 @@ const PakageDetailsAdmin = () => {
   useEffect(() => {
     let newdata = {
       // OrganizationID: 569,
-      OrganizationID: Number(organizationID),
+      // OrganizationID: Number(organizationID),
     };
     dispatch(
       GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t, newdata)

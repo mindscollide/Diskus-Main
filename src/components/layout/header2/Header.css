@@ -519,7 +519,7 @@ body[dir="rtl"] .Cancel-btn {
 }
 
 label.logout-confirmation-label {
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   font-size: 20px !important;
   color: #5a5a5a !important;
 }
@@ -643,7 +643,7 @@ body[dir="rtl"] .header2-container {
   border-radius: 4px !important;
   border: none !important;
   background: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #5a5a5a !important;
 }
 
@@ -653,12 +653,12 @@ body[dir="rtl"] .header2-container {
   border-radius: 4px !important;
   border: none !important;
   background: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
   color: #5a5a5a !important;
 }
 
 body[dir="rtl"] .UpgradeNowbutton {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-weight: 600 !important;
 }
 
 body[dir="rtl"] .UpgradeButtonsClass {
@@ -671,7 +671,7 @@ body[dir="rtl"] .UpgradeButtonsClass {
   border-radius: 4px !important;
   border: 1px solid #f16b6b !important;
   background: #ffdcdc !important;
-  font-family: "MontserratSemiBold" !important;
+  font-weight: 600 !important;
 }
 
 .InnerText {

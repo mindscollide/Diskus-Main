@@ -61,14 +61,10 @@ const AddUsers = () => {
     isAdmin: 3,
   });
 
+  // before my changes there's an request data going init this API
   //Calling GetOrganizationSelectedPackagesByOrganizationID
   useEffect(() => {
-    let data = {
-      OrganizationID: Number(organizationID),
-    };
-    dispatch(
-      GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t, data)
-    );
+    dispatch(GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t));
     return () => {
       setAddUserFreeTrial({
         Name: {
@@ -109,10 +105,15 @@ const AddUsers = () => {
         UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
           .organization.fK_NumberWorldCountryID
       );
-      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData.organizationSelectedPackages.map(
+      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData.organizationSubscriptions?.map(
         (data, index) => {
-          console.log(data, "indexindexindex");
-          setPakageID(data.pK_PackageID);
+          data.organizationSelectedPackages?.map((packageData) => {
+            console.log(
+              packageData.pK_OrganizationsSelectedPackageID,
+              "indexindexindex"
+            );
+            setPakageID(packageData.pK_OrganizationsSelectedPackageID);
+          });
         }
       );
     }

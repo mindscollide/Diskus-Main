@@ -22,6 +22,9 @@ const BillProcessStepThree = ({ updateTotalYearlyCharges }) => {
   );
 
   const organizationName = localStorage.getItem("organizatioName");
+  const organizationSubscriptionID = localStorage.getItem(
+    "organizationSubscriptionID"
+  );
   //States
   const [getAllPakagesData, setGetAllPakagesData] = useState([]);
   const [expiryDate, setExpiryDate] = useState(null);
@@ -30,7 +33,10 @@ const BillProcessStepThree = ({ updateTotalYearlyCharges }) => {
 
   useEffect(() => {
     try {
-      let data = { OrganizationName: organizationName };
+      let data = {
+        OrganizationName: organizationName,
+        OrganizationSubscriptionID: Number(organizationSubscriptionID),
+      };
       dispatch(getOrganizationSelectedPakagesAPI(navigate, t, data));
     } catch (error) {
       console.log(error);
@@ -38,7 +44,6 @@ const BillProcessStepThree = ({ updateTotalYearlyCharges }) => {
   }, []);
 
   //excreting the data for  Get All Organziation Selected Pakages
-
   useEffect(() => {
     try {
       if (
@@ -47,7 +52,7 @@ const BillProcessStepThree = ({ updateTotalYearlyCharges }) => {
       ) {
         setGetAllPakagesData(
           UserMangementReducer.getAllSelectedPakagesData
-            .organizationSelectedPackages
+            .organizationSubscription.organizationSelectedPackages
         );
 
         setExpiryDate(
@@ -64,7 +69,7 @@ const BillProcessStepThree = ({ updateTotalYearlyCharges }) => {
     {
       title: (
         <span className="pakageselectionSpanUsermanagement">
-          {t("Pakage-details")}
+          {t("Package-details")}
         </span>
       ),
       width: 100,
@@ -151,24 +156,28 @@ const BillProcessStepThree = ({ updateTotalYearlyCharges }) => {
   ];
 
   const calculateTotals = (data) => {
-    const totalLicenses = data.reduce(
-      (acc, cur) => acc + (Number(cur.headCount) || 0),
-      0
-    );
+    try {
+      const totalLicenses = data.reduce(
+        (acc, cur) => acc + (Number(cur.headCount) || 0),
+        0
+      );
 
-    const totalYearlyCharges = data.reduce(
-      (acc, cur) => acc + (Number(cur.price * cur.headCount) * 12 || 0),
-      0
-    );
+      const totalYearlyCharges = data.reduce(
+        (acc, cur) => acc + (Number(cur.price * cur.headCount) * 12 || 0),
+        0
+      );
 
-    updateTotalYearlyCharges(totalYearlyCharges);
+      updateTotalYearlyCharges(totalYearlyCharges);
 
-    // Return an object with the totals that can be used as a row in your table.
-    return {
-      name: "Total",
-      headCount: totalLicenses,
-      Yearlycharges: totalYearlyCharges, // Format to string with thousand separators.
-    };
+      // Return an object with the totals that can be used as a row in your table.
+      return {
+        name: "Total",
+        headCount: totalLicenses,
+        Yearlycharges: totalYearlyCharges, // Format to string with thousand separators.
+      };
+    } catch (error) {
+      console.log(error, "errorerrorerror");
+    }
   };
 
   const totalRow = calculateTotals(getAllPakagesData);

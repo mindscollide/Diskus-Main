@@ -9,38 +9,33 @@ import BillProcessStepOne from "./BillProcessStepOne/BillProcessStepOne";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 import BillProcessStepTwo from "./BillProcessStepTwo/BillProcessStepTwo";
 import BillProcessStepThree from "./BillProcessStepThree/BillProcessStepThree";
-import BillProcessStepFour from "./BillProcessStepFour/BillProcessStepFour";
 import { useSelector } from "react-redux";
 import ThankForPayment from "../ModalsUserManagement/ThankForPaymentModal/ThankForPayment";
-import {
-  showFailedPaymentModal,
-  showThankYouPaymentModal,
-} from "../../../../store/actions/UserMangementModalActions";
+import { showFailedPaymentModal } from "../../../../store/actions/UserMangementModalActions";
 import { useDispatch } from "react-redux";
 import PaymentFailedModal from "../ModalsUserManagement/PaymentFailedModal/PaymentFailedModal";
 import { validateEmailEnglishAndArabicFormat } from "../../../../commen/functions/validations";
 import { paymentInitiateMainApi } from "../../../../store/actions/UserManagementActions";
-import { json, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
-import OpenPaymentForm from "../ModalsUserManagement/OpenPaymentForm/OpenPaymentForm";
 const BillingMethodUsermanagement = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { UserManagementModals, UserMangementReducer, countryNamesReducer } =
-    useSelector((state) => state);
+  const {
+    UserManagementModals,
+    countryNamesReducer,
+    UserMangementReducer,
+    LanguageReducer,
+  } = useSelector((state) => state);
 
-  const [activeComponent, setActiveComponent] = useState(
-    "billingContactDetails"
+  let OrganizationSubscriptionID = localStorage.getItem(
+    "organizationSubscriptionID"
   );
 
-  const [emailConditionMet, setEmailConditionMet] = useState(false);
-
-  const [paymentMethodPage, setPaymentMethodPage] = useState(false);
-
+  const [activeComponent, setActiveComponent] = useState("PakageDetails");
   const [activeStep, setActiveStep] = useState(0);
-  console.log(activeStep, "activeStepactiveStep");
 
   const [select, setSelect] = useState("");
   const [countryNames, setCountryNames] = useState([]);
@@ -80,10 +75,6 @@ const BillingMethodUsermanagement = () => {
       errorStatus: false,
     },
   });
-  console.log(
-    billingContactDetails,
-    "billingContactDetailsbillingContactDetails"
-  );
 
   //Billing Address
   const [billingAddress, setBillingAddress] = useState({
@@ -113,7 +104,6 @@ const BillingMethodUsermanagement = () => {
       errorStatus: false,
     },
   });
-  console.log(billingAddress.Country.value, "billingAddressbillingAddress");
 
   //Payment method
   const [paymentMethods, setPaymentMethods] = useState({
@@ -168,14 +158,146 @@ const BillingMethodUsermanagement = () => {
     document.body.dir = currentLangObj.dir || "ltr";
   }, [currentLangObj, t]);
 
-  console.log(billingContactDetails.Email, "billingContactDetails");
+  console.log(activeComponent, "activeComponentactiveComponent");
+  console.log(activeStep, "activeComponentactiveComponent");
+
+  // const handleNext = () => {
+  //   if (activeStep === 0 && activeComponent === "PakageDetails") {
+  //     let newData = {
+  //       FirstName: billingContactDetails.Name.value,
+  //       LastName: billingContactDetails.LastName.value,
+  //       Email: billingContactDetails.Email.value,
+  //       Phone: billingContactDetails.Contact.value,
+  //       Address: billingAddress.Address.value,
+  //       Country: billingAddress.Country.value,
+  //       City: billingAddress.City.value,
+  //       Zip: billingAddress.PostalCode.value,
+  //       OrderAmount: Number(totalYearlyCharges),
+  //       OrderCurrency: "USD",
+  //       OrderDescription: "An Order On Diskus",
+  //     };
+  //     dispatch(paymentInitiateMainApi(navigate, t, newData));
+  //     setActiveComponent("billingContactDetails");
+  //     setActiveStep(1);
+  //   } else if (
+  //     activeStep === 1 &&
+  //     activeComponent === "billingContactDetails "
+  //   ) {
+  //     if (
+  //       activeComponent === "billingContactDetails" &&
+  //       billingContactDetails.Email.value !== ""
+  //     ) {
+  //       if (
+  //         validateEmailEnglishAndArabicFormat(billingContactDetails.Email.value)
+  //       ) {
+  //         setBillingContactDetails({
+  //           ...billingContactDetails,
+  //           Email: {
+  //             value: billingContactDetails.Email.value,
+  //             errorMessage: "",
+  //             errorStatus: billingContactDetails.Email.errorStatus,
+  //           },
+  //         });
+  //         setActiveComponent("billingAddress");
+  //         setActiveStep(2);
+  //       } else {
+  //         setBillingContactDetails({
+  //           ...billingContactDetails,
+  //           Email: {
+  //             value: billingContactDetails.Email.value,
+  //             errorMessage: t("Enter-valid-email-address"),
+  //             errorStatus: billingContactDetails.Email.errorStatus,
+  //           },
+  //         });
+  //       }
+  //     } else {
+  //       setBillingContactDetails({
+  //         ...billingContactDetails,
+  //         Email: {
+  //           value: billingContactDetails.Email.value,
+  //           errorMessage: t("Email-address-is-required"),
+  //           errorStatus: billingContactDetails.Email.errorStatus,
+  //         },
+  //       });
+  //     }
+  //     ///////
+  //   } else if (activeStep === 2 && activeComponent === "billingAddress") {
+  //     if (
+  //       billingAddress.PostalCode.value !== "" &&
+  //       billingAddress.State.value !== "" &&
+  //       billingAddress.City.value !== "" &&
+  //       billingAddress.Address.value !== ""
+  //     ) {
+  //       setBillingAddress({
+  //         ...billingAddress,
+  //         Country: {
+  //           value: billingAddress.Country.value,
+  //           errorMessage: "",
+  //           errorStatus: billingAddress.Country.errorStatus,
+  //         },
+  //         PostalCode: {
+  //           value: billingAddress.PostalCode.value,
+  //           errorMessage: "",
+  //           errorStatus: billingAddress.PostalCode.errorStatus,
+  //         },
+  //         State: {
+  //           value: billingAddress.State.value,
+  //           errorMessage: "",
+  //           errorStatus: billingAddress.State.errorStatus,
+  //         },
+  //         City: {
+  //           value: billingAddress.City.value,
+  //           errorMessage: "",
+  //           errorStatus: billingAddress.City.errorStatus,
+  //         },
+  //         Address: {
+  //           value: billingAddress.Address.value,
+  //           errorMessage: "",
+  //           errorStatus: billingAddress.Address.errorStatus,
+  //         },
+  //       });
+  //     } else {
+  //       setBillingAddress({
+  //         ...billingAddress,
+  //         Country: {
+  //           value: billingAddress.Country.value,
+  //           errorMessage: t("Please-select-country"),
+  //           errorStatus: billingAddress.Country.errorStatus,
+  //         },
+  //         PostalCode: {
+  //           value: billingAddress.PostalCode.value,
+  //           errorMessage: t("Please add Postal/Zip code"),
+  //           errorStatus: billingAddress.PostalCode.errorStatus,
+  //         },
+  //         State: {
+  //           value: billingAddress.State.value,
+  //           errorMessage: t("Please enter state/province"),
+  //           errorStatus: billingAddress.State.errorStatus,
+  //         },
+  //         City: {
+  //           value: billingAddress.City.value,
+  //           errorMessage: t("Please enter city"),
+  //           errorStatus: billingAddress.City.errorStatus,
+  //         },
+  //         Address: {
+  //           value: billingAddress.Address.value,
+  //           errorMessage: t("Please enter address"),
+  //           errorStatus: billingAddress.Address.errorStatus,
+  //         },
+  //       });
+  //     }
+  //   }
+  // };
 
   const handleNext = () => {
-    if (activeStep === 0 && activeComponent === "billingContactDetails") {
-      if (
-        activeComponent === "billingContactDetails" &&
-        billingContactDetails.Email.value !== ""
-      ) {
+    if (activeStep === 0 && activeComponent === "PakageDetails") {
+      setActiveComponent("billingContactDetails");
+      setActiveStep(1);
+    } else if (
+      activeStep === 1 &&
+      activeComponent === "billingContactDetails"
+    ) {
+      if (billingContactDetails.Email.value !== "") {
         if (
           validateEmailEnglishAndArabicFormat(billingContactDetails.Email.value)
         ) {
@@ -188,7 +310,7 @@ const BillingMethodUsermanagement = () => {
             },
           });
           setActiveComponent("billingAddress");
-          setActiveStep(1);
+          setActiveStep(2);
         } else {
           setBillingContactDetails({
             ...billingContactDetails,
@@ -203,94 +325,93 @@ const BillingMethodUsermanagement = () => {
         setBillingContactDetails({
           ...billingContactDetails,
           Email: {
-            value: billingContactDetails.Email.value,
+            value: "",
             errorMessage: t("Email-address-is-required"),
-            errorStatus: billingContactDetails.Email.errorStatus,
+            errorStatus: true,
           },
         });
       }
-    } else if (activeStep === 1 && activeComponent === "billingAddress") {
+    } else if (activeStep === 2 && activeComponent === "billingAddress") {
       if (
-        billingAddress.PostalCode.value !== "" &&
-        billingAddress.State.value !== "" &&
-        billingAddress.City.value !== "" &&
-        billingAddress.Address.value !== ""
+        billingAddress.PostalCode.value &&
+        billingAddress.State.value &&
+        billingAddress.City.value &&
+        billingAddress.Address.value
       ) {
         setBillingAddress({
           ...billingAddress,
           Country: {
             value: billingAddress.Country.value,
             errorMessage: "",
-            errorStatus: billingAddress.Country.errorStatus,
+            errorStatus: false,
           },
           PostalCode: {
             value: billingAddress.PostalCode.value,
             errorMessage: "",
-            errorStatus: billingAddress.PostalCode.errorStatus,
+            errorStatus: false,
           },
           State: {
             value: billingAddress.State.value,
             errorMessage: "",
-            errorStatus: billingAddress.State.errorStatus,
+            errorStatus: false,
           },
           City: {
             value: billingAddress.City.value,
             errorMessage: "",
-            errorStatus: billingAddress.City.errorStatus,
+            errorStatus: false,
           },
           Address: {
             value: billingAddress.Address.value,
             errorMessage: "",
-            errorStatus: billingAddress.Address.errorStatus,
+            errorStatus: false,
           },
         });
-        setActiveComponent("PakageDetails");
-        setActiveStep(2);
+
+        let newData = {
+          OrganizationSubscriptionID: Number(OrganizationSubscriptionID),
+          OrderDescription: "A Diskus License Order",
+          OrganizationBillingInformation: {
+            FirstName: billingContactDetails.Name.value,
+            LastName: billingContactDetails.LastName.value,
+            Email: billingContactDetails.Email.value,
+            Phone: billingContactDetails.Contact.value,
+            Address: billingAddress.Address.value,
+            FK_WorldCountryID: 1,
+            City: billingAddress.City.value,
+            Zip: billingAddress.PostalCode.value,
+          },
+        };
+        dispatch(paymentInitiateMainApi(navigate, t, newData));
       } else {
         setBillingAddress({
           ...billingAddress,
           Country: {
             value: billingAddress.Country.value,
             errorMessage: t("Please-select-country"),
-            errorStatus: billingAddress.Country.errorStatus,
+            errorStatus: true,
           },
           PostalCode: {
             value: billingAddress.PostalCode.value,
             errorMessage: t("Please add Postal/Zip code"),
-            errorStatus: billingAddress.PostalCode.errorStatus,
+            errorStatus: true,
           },
           State: {
             value: billingAddress.State.value,
             errorMessage: t("Please enter state/province"),
-            errorStatus: billingAddress.State.errorStatus,
+            errorStatus: true,
           },
           City: {
             value: billingAddress.City.value,
             errorMessage: t("Please enter city"),
-            errorStatus: billingAddress.City.errorStatus,
+            errorStatus: true,
           },
           Address: {
             value: billingAddress.Address.value,
             errorMessage: t("Please enter address"),
-            errorStatus: billingAddress.Address.errorStatus,
+            errorStatus: true,
           },
         });
       }
-    } else if (activeStep === 2 && activeComponent === "PakageDetails") {
-      let newData = {
-        FirstName: billingContactDetails.Name.value,
-        LastName: billingContactDetails.LastName.value,
-        Email: billingContactDetails.Email.value,
-        Phone: billingContactDetails.Contact.value,
-        Address: billingAddress.Address.value,
-        Country: billingAddress.Country.value,
-        City: billingAddress.City.value,
-        Zip: billingAddress.PostalCode.value,
-        OrderAmount: Number(totalYearlyCharges),
-        OrderCurrency: "USD",
-        OrderDescription: "An Order On Diskus",
-      };
-      dispatch(paymentInitiateMainApi(navigate, t, newData));
     }
   };
 
@@ -358,13 +479,6 @@ const BillingMethodUsermanagement = () => {
 
     const fourthvaue = document.querySelector(".StepButtonContent-d7-0-3-27");
 
-    console.log(
-      firstvaue,
-      secondvaue,
-      thirdvaue,
-      fourthvaue,
-      "firstvauefirstvaue"
-    );
     if (firstvaue) {
       // Set the new value
       firstvaue.innerText = "01";
@@ -415,7 +529,7 @@ const BillingMethodUsermanagement = () => {
                           : "billing-contact"
                       }
                     >
-                      {t("Billing-contact")}
+                      {t("Package-details")}
                     </span>
                   }
                 />
@@ -428,7 +542,7 @@ const BillingMethodUsermanagement = () => {
                           : "billing-address"
                       }
                     >
-                      {t("Billing-address")}
+                      {t("Billing-contact")}
                     </span>
                   }
                 />
@@ -441,7 +555,7 @@ const BillingMethodUsermanagement = () => {
                           : "package-details"
                       }
                     >
-                      {t("Package-details")}
+                      {t("Billing-address")}
                     </span>
                   }
                 />
@@ -463,25 +577,25 @@ const BillingMethodUsermanagement = () => {
           </Row>
           <Row>
             <Col lg={12} md={12} sm={12} xs={12}>
-              {activeStep === 0 &&
-              activeComponent === "billingContactDetails" ? (
-                <BillProcessStepOne
-                  billingContactDetails={billingContactDetails}
-                  setBillingContactDetails={setBillingContactDetails}
+              {activeStep === 0 && activeComponent === "PakageDetails" ? (
+                <BillProcessStepThree
+                  updateTotalYearlyCharges={updateTotalYearlyCharges}
                 />
-              ) : activeStep === 1 && activeComponent === "billingAddress" ? (
+              ) : activeStep === 1 &&
+                activeComponent === "billingContactDetails" ? (
+                <>
+                  <BillProcessStepOne
+                    billingContactDetails={billingContactDetails}
+                    setBillingContactDetails={setBillingContactDetails}
+                  />
+                </>
+              ) : activeStep === 2 && activeComponent === "billingAddress" ? (
                 <>
                   <BillProcessStepTwo
                     billingAddress={billingAddress}
                     setBillingAddress={setBillingAddress}
                     countryOnSelect={countryOnSelect}
                     select={select}
-                  />
-                </>
-              ) : activeStep === 2 && activeComponent === "PakageDetails" ? (
-                <>
-                  <BillProcessStepThree
-                    updateTotalYearlyCharges={updateTotalYearlyCharges}
                   />
                 </>
               ) : // : activeStep === 3 && activeComponent === "PaymentMethods" ? (
@@ -524,6 +638,9 @@ const BillingMethodUsermanagement = () => {
       </Row>
       {UserManagementModals.thanksForPaymentModal && <ThankForPayment />}
       {UserManagementModals.paymentProceedFailed && <PaymentFailedModal />}
+      {UserMangementReducer.Loading || LanguageReducer.Loading ? (
+        <Loader />
+      ) : null}
     </Container>
   );
 };

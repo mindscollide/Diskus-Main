@@ -778,7 +778,7 @@ const Header2 = () => {
                             as={Link}
                             // to="CustomerInformation"
                             disabled={true}
-                            className="text-black"
+                            className="text-black FontClass"
                           >
                             {t("User-dashboard")}
                           </Nav.Link>
@@ -791,7 +791,7 @@ const Header2 = () => {
                           <Nav.Link
                             as={Link}
                             to="CustomerInformation"
-                            className="text-black"
+                            className="text-black FontClass"
                           >
                             {/* Change Password */}
                             {t("Customer-information")}
@@ -804,7 +804,7 @@ const Header2 = () => {
                           <Nav.Link
                             as={Link}
                             to="changePassword"
-                            className="SignOutOptionMenu text-black"
+                            className="SignOutOptionMenu text-black FontClass"
                           >
                             {/* Change Password */}
                             {t("Change-password")}
@@ -815,7 +815,7 @@ const Header2 = () => {
                           onClick={modalLogoutHandler}
                         >
                           {/* Sign Out */}
-                          <Nav.Link className="SignOutOptionMenu text-black border-none">
+                          <Nav.Link className="SignOutOptionMenu text-black border-none FontClass">
                             {t("Sign-out")}
                           </Nav.Link>
                         </Dropdown.Item>

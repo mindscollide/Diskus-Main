@@ -33,6 +33,12 @@ import {
 } from "./UserMangementModalActions";
 import { userLogOutApiFunc } from "./Auth_Sign_Out";
 
+const clearMessegesUserManagement = (response) => {
+  return {
+    type: actions.CLEAR_MESSEGES_USER_MANAGEMENT,
+  };
+};
+
 const signUpFlowRoutes = (response) => {
   return {
     type: actions.ROUTES_FOR_SIGNUP_FLOW_UM,
@@ -320,13 +326,13 @@ const organizationTrialExtendedFail = (message) => {
   };
 };
 
-const ExtendOrganizationTrialApi = (navigate, t, data) => {
+const ExtendOrganizationTrialApi = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
     dispatch(organizationTrialExtendedInit());
     let form = new FormData();
-    form.append("RequestData", JSON.stringify(data));
+    // form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", IsPackageExpiryDetail.RequestMethod);
     axios({
       method: "post",
@@ -339,14 +345,14 @@ const ExtendOrganizationTrialApi = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(ExtendOrganizationTrialApi(navigate, t, data));
+          dispatch(ExtendOrganizationTrialApi(navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_ExtendOrganizationTrial_01".toLowerCase()
+                  "Admin_AdminServiceManager_GetOrganizationSubscriptionExpiryDetails_01".toLowerCase()
                 )
             ) {
               dispatch(
@@ -366,41 +372,27 @@ const ExtendOrganizationTrialApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_ExtendOrganizationTrial_02".toLowerCase()
+                  "Admin_AdminServiceManager_GetOrganizationSubscriptionExpiryDetails_02".toLowerCase()
                 )
             ) {
               dispatch(
-                organizationTrialExtendedFail(t("Extension-request-not-found"))
+                organizationTrialExtendedFail(t("Invalid-data-provided"))
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_ExtendOrganizationTrial_03".toLowerCase()
+                  "Admin_AdminServiceManager_GetOrganizationSubscriptionExpiryDetails_03".toLowerCase()
                 )
             ) {
               dispatch(
-                organizationTrialExtendedFail(
-                  t("Trial-status-not-added-successfully")
-                )
+                organizationTrialExtendedFail(t("Subscription-not-found"))
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_ExtendOrganizationTrial_04".toLowerCase()
-                )
-            ) {
-              dispatch(
-                organizationTrialExtendedFail(
-                  t("Trial-status-added-but-not-not-extended")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Admin_AdminServiceManager_ExtendOrganizationTrial_05".toLowerCase()
+                  "Admin_AdminServiceManager_GetOrganizationSubscriptionExpiryDetails_04".toLowerCase()
                 )
             ) {
               dispatch(
@@ -870,17 +862,13 @@ const organizationSelectedPakagebyOrganzationidFail = (message) => {
   };
 };
 
-const GetOrganizationSelectedPackagesByOrganizationIDApi = (
-  navigate,
-  t,
-  data
-) => {
+const GetOrganizationSelectedPackagesByOrganizationIDApi = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
     dispatch(organizationSelectedPakagebyOrganzationidInit());
     let form = new FormData();
-    form.append("RequestData", JSON.stringify(data));
+    // form.append("RequestData", JSON.stringify(data));
     form.append(
       "RequestMethod",
       GetOrganizationSelectedPackagesByOrganizationID.RequestMethod
@@ -897,11 +885,7 @@ const GetOrganizationSelectedPackagesByOrganizationIDApi = (
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            GetOrganizationSelectedPackagesByOrganizationIDApi(
-              navigate,
-              t,
-              data
-            )
+            GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t)
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -1022,7 +1006,7 @@ const getOrganizationSelectedPakagesAPI = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_GetOrganizationSelectedPackages_01".toLowerCase()
+                  "ERM_AuthService_SignUpManager_GetOrganizationSelectedPackages_01".toLowerCase()
                 )
             ) {
               dispatch(
@@ -1035,7 +1019,7 @@ const getOrganizationSelectedPakagesAPI = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_GetOrganizationSelectedPackages_02".toLowerCase()
+                  "ERM_AuthService_SignUpManager_GetOrganizationSelectedPackages_02".toLowerCase()
                 )
             ) {
               dispatch(
@@ -1045,7 +1029,7 @@ const getOrganizationSelectedPakagesAPI = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_GetOrganizationSelectedPackages_03".toLowerCase()
+                  "ERM_AuthService_SignUpManager_GetOrganizationSelectedPackages_03".toLowerCase()
                 )
             ) {
               dispatch(
@@ -1098,12 +1082,11 @@ const getOrganizationPackageUserStatsFail = (message) => {
 };
 
 //Api to Show data in graph in userManagment Add user
-const getOrganizationPackageUserStatsAPI = (navigate, t, data) => {
+const getOrganizationPackageUserStatsAPI = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getOrganizationPackageUserStatsInit());
     let form = new FormData();
-    form.append("RequestData", JSON.stringify(data));
     form.append(
       "RequestMethod",
       OrganizationPackageDetailsAndUserStats.RequestMethod
@@ -1119,7 +1102,7 @@ const getOrganizationPackageUserStatsAPI = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getOrganizationPackageUserStatsAPI(navigate, t, data));
+          dispatch(getOrganizationPackageUserStatsAPI(navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1399,7 +1382,7 @@ const deleteOrganizationUserAPI = (navigate, t, data) => {
               dispatch(
                 deleteOrganizationUserSuccess(
                   response.data.responseResult,
-                  t("Data-available")
+                  t("User-deleted-successfully")
                 )
               );
               let data = {
@@ -1415,7 +1398,7 @@ const deleteOrganizationUserAPI = (navigate, t, data) => {
                   "Admin_AdminServiceManager_DeleteOrganizationsUser_02".toLowerCase()
                 )
             ) {
-              dispatch(deleteOrganizationUserFail(t("No-data-found")));
+              dispatch(deleteOrganizationUserFail(t("Error-while-deleting")));
               dispatch(showDeleteUsersModal(true));
             } else if (
               response.data.responseResult.responseMessage
@@ -1511,8 +1494,46 @@ const paymentInitiateMainApi = (navigate, t, newData) => {
                   "ERM_AuthService_SignUpManager_PaymentInitiate_02".toLowerCase()
                 )
             ) {
-              dispatch(paymentInitiateFailApi(t("Something-went-wrong")));
+              dispatch(paymentInitiateFailApi(t("Invalid-request-data")));
             }
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "ERM_AuthService_SignUpManager_PaymentInitiate_03".toLowerCase()
+              )
+          ) {
+            dispatch(
+              paymentInitiateFailApi(t("Invoice-details-does-not-exist"))
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "ERM_AuthService_SignUpManager_PaymentInitiate_04".toLowerCase()
+              )
+          ) {
+            dispatch(
+              paymentInitiateFailApi(t("Failed-to-save-billing-information"))
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "ERM_AuthService_SignUpManager_PaymentInitiate_05".toLowerCase()
+              )
+          ) {
+            dispatch(paymentInitiateFailApi(t("Something-went-wrong")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "ERM_AuthService_SignUpManager_PaymentInitiate_06".toLowerCase()
+              )
+          ) {
+            dispatch(
+              paymentInitiateFailApi(t("Payment-gateway-api-response-failed"))
+            );
           } else {
             dispatch(paymentInitiateFailApi(t("Something-went-wrong")));
           }
@@ -1791,5 +1812,6 @@ export {
   paymentInitiateMainApi,
   getCancelSubscriptionReasonApi,
   cancelOrganizationSubApi,
+  clearMessegesUserManagement,
   // paymentUpgradeDetailMainApi
 };

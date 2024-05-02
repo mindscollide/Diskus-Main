@@ -117,48 +117,48 @@ const ForgotPasswordVerificationUM = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (auth.ResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: auth.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+  // useEffect(() => {
+  //   if (auth.ResponseMessage !== "") {
+  //     setOpen({
+  //       ...open,
+  //       open: true,
+  //       message: auth.ResponseMessage,
+  //     });
+  //     setTimeout(() => {
+  //       setOpen({
+  //         ...open,
+  //         open: false,
+  //         message: "",
+  //       });
+  //     }, 3000);
 
-      dispatch(cleareChangePasswordMessage());
-    } else {
-      dispatch(cleareChangePasswordMessage());
-    }
-  }, [auth.ResponseMessage]);
+  //     dispatch(cleareChangePasswordMessage());
+  //   } else {
+  //     dispatch(cleareChangePasswordMessage());
+  //   }
+  // }, [auth.ResponseMessage]);
 
   //for showing the responses in the snackbar
-  useEffect(() => {
-    if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.VerifyOTPEmailResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+  // useEffect(() => {
+  //   if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
+  //     setOpen({
+  //       ...open,
+  //       open: true,
+  //       message: Authreducer.VerifyOTPEmailResponseMessage,
+  //     });
+  //     setTimeout(() => {
+  //       setOpen({
+  //         ...open,
+  //         open: false,
+  //         message: "",
+  //       });
+  //     }, 3000);
 
-      dispatch(cleareMessage());
-    } else {
-      dispatch(cleareMessage());
-    }
-  }, [Authreducer.VerifyOTPEmailResponseMessage]);
+  //     dispatch(cleareMessage());
+  //   } else {
+  //     dispatch(cleareMessage());
+  //   }
+  // }, [Authreducer.VerifyOTPEmailResponseMessage]);
 
   useEffect(() => {
     // if value was cleared, set key to re-render the element
