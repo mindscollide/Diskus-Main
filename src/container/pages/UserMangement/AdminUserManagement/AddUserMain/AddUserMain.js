@@ -86,9 +86,11 @@ const AddUserMain = () => {
     FK_NumberWorldCountryID: 0,
   });
 
-  console.log(
-    UserMangementReducer.getOrganizationUserStatsGraph,
-    "datatatataF"
+  const myStats = UserMangementReducer.getOrganizationUserStatsGraph?.userStats;
+  console.log(myStats, "datatatataF");
+
+  const userStats = useSelector(
+    (state) => state.UserMangementReducer.getOrganizationUserStatsGraph
   );
 
   //For Now I set static data in this getOrganizationPackageUserStatsAPI Api
@@ -505,7 +507,7 @@ const AddUserMain = () => {
       );
       setPackageAssignedOption(temp);
     }
-  }, [UserMangementReducer.organizationSelectedPakagesByOrganizationIDData]);
+  }, [UserMangementReducer.getOrganizationUserStatsGraph]);
 
   // handler of package Assigned
   const handlePackageAssigned = async (selectedOption) => {
@@ -533,14 +535,13 @@ const AddUserMain = () => {
 
   // this is how I show alloted users and headcount
   const selectedPackages =
-    UserMangementReducer.getOrganizationUserStatsGraph?.selectedPackages;
-
+    UserMangementReducer.getOrganizationUserStatsGraph?.selectedPackageDetails;
   // Calculate total alloted users and headCount
   let totalAllotedUsers = 0;
   let totalHeadCount = 0;
 
   selectedPackages?.forEach((packages) => {
-    totalAllotedUsers += packages.allotedUsers;
+    totalAllotedUsers += packages.packageAllotedUsers;
     totalHeadCount += packages.headCount;
   });
 
@@ -617,43 +618,81 @@ const AddUserMain = () => {
 
                       <Row>
                         <Col>
-                          {UserMangementReducer.getOrganizationUserStatsGraph?.selectedPackages?.map(
-                            (packages, index) => {
-                              if (
-                                packages.name !== "Professional" &&
-                                packages.name !== "Premium"
-                              ) {
-                                return (
-                                  <Row key={index}>
-                                    <Col
-                                      lg={8}
-                                      md={8}
-                                      sm={8}
-                                      xs={12}
-                                      className=""
-                                    >
-                                      <label
-                                        className={styles["labelChart-Title"]}
-                                      >
-                                        {packages.name}
-                                      </label>
-                                    </Col>
-                                    <Col lg={4} md={4} sm={4} xs={12}>
-                                      <label
-                                        className={styles["labelChart-Number"]}
-                                      >
-                                        {`${packages.allotedUsers} / ${packages.headCount}`}
-                                      </label>
-                                    </Col>
-                                    <div
-                                      className={styles["borderLine-title"]}
-                                    />
-                                  </Row>
-                                );
-                              }
-                              return null;
-                            }
-                          )}
+                          <Row>
+                            <Row>
+                              <Col lg={8} md={8} sm={8} xs={12} className="">
+                                <label className={styles["labelChart-Title"]}>
+                                  {t("Enabled-users")}
+                                </label>
+                              </Col>
+                              <Col lg={4} md={4} sm={4} xs={12}>
+                                <label className={styles["labelChart-Number"]}>
+                                  {`${
+                                    myStats &&
+                                    myStats !== null &&
+                                    myStats?.enabledUsers
+                                  } / ${totalHeadCount}`}
+                                </label>
+                              </Col>
+                              <div className={styles["borderLine-title"]} />
+                            </Row>
+                            <Row>
+                              <Col lg={8} md={8} sm={8} xs={12} className="">
+                                <label className={styles["labelChart-Title"]}>
+                                  {t("Disabled-users")}
+                                </label>
+                              </Col>
+                              <Col lg={4} md={4} sm={4} xs={12}>
+                                <label className={styles["labelChart-Number"]}>
+                                  {`${
+                                    myStats &&
+                                    myStats !== null &&
+                                    myStats?.disabledUsers
+                                  } / ${totalHeadCount}`}
+                                </label>
+                              </Col>
+                              <div className={styles["borderLine-title"]} />
+                            </Row>
+                            <Row>
+                              <Col lg={8} md={8} sm={8} xs={12} className="">
+                                <label className={styles["labelChart-Title"]}>
+                                  {t("Locked-users")}
+                                </label>
+                              </Col>
+                              <Col lg={4} md={4} sm={4} xs={12}>
+                                <label className={styles["labelChart-Number"]}>
+                                  {`${
+                                    myStats &&
+                                    myStats !== null &&
+                                    myStats?.lockedUsers
+                                  } / ${totalHeadCount}`}
+                                </label>
+                              </Col>
+                              <div className={styles["borderLine-title"]} />
+                            </Row>
+                            <Row>
+                              <Col lg={8} md={8} sm={8} xs={12} className="">
+                                <label className={styles["labelChart-Title"]}>
+                                  {t("Dorment-users")}
+                                </label>
+                              </Col>
+                              <Col lg={4} md={4} sm={4} xs={12}>
+                                <label className={styles["labelChart-Number"]}>
+                                  {`${
+                                    myStats &&
+                                    myStats !== null &&
+                                    myStats?.dormantUsers
+                                  } / ${totalHeadCount}`}
+                                </label>
+                              </Col>
+                              <div className={styles["borderLine-title"]} />
+                            </Row>
+                            {/* <Col lg={4} md={4} sm={4} xs={12}>
+                              <label className={styles["labelChart-Number"]}>
+                                {`${packages.allotedUsers} / ${packages.headCount}`}
+                              </label>
+                            </Col> */}
+                          </Row>
 
                           {["Professional", "Premium"].map((packageName) => {
                             const packageData =
