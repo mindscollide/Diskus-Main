@@ -326,13 +326,13 @@ const organizationTrialExtendedFail = (message) => {
   };
 };
 
-const ExtendOrganizationTrialApi = (navigate, t, data) => {
+const ExtendOrganizationTrialApi = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
     dispatch(organizationTrialExtendedInit());
     let form = new FormData();
-    form.append("RequestData", JSON.stringify(data));
+    // form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", IsPackageExpiryDetail.RequestMethod);
     axios({
       method: "post",
@@ -345,14 +345,14 @@ const ExtendOrganizationTrialApi = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(ExtendOrganizationTrialApi(navigate, t, data));
+          dispatch(ExtendOrganizationTrialApi(navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_ExtendOrganizationTrial_01".toLowerCase()
+                  "Admin_AdminServiceManager_GetOrganizationSubscriptionExpiryDetails_01".toLowerCase()
                 )
             ) {
               dispatch(
@@ -372,41 +372,27 @@ const ExtendOrganizationTrialApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_ExtendOrganizationTrial_02".toLowerCase()
+                  "Admin_AdminServiceManager_GetOrganizationSubscriptionExpiryDetails_02".toLowerCase()
                 )
             ) {
               dispatch(
-                organizationTrialExtendedFail(t("Extension-request-not-found"))
+                organizationTrialExtendedFail(t("Invalid-data-provided"))
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_ExtendOrganizationTrial_03".toLowerCase()
+                  "Admin_AdminServiceManager_GetOrganizationSubscriptionExpiryDetails_03".toLowerCase()
                 )
             ) {
               dispatch(
-                organizationTrialExtendedFail(
-                  t("Trial-status-not-added-successfully")
-                )
+                organizationTrialExtendedFail(t("Subscription-not-found"))
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_ExtendOrganizationTrial_04".toLowerCase()
-                )
-            ) {
-              dispatch(
-                organizationTrialExtendedFail(
-                  t("Trial-status-added-but-not-not-extended")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Admin_AdminServiceManager_ExtendOrganizationTrial_05".toLowerCase()
+                  "Admin_AdminServiceManager_GetOrganizationSubscriptionExpiryDetails_04".toLowerCase()
                 )
             ) {
               dispatch(

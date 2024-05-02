@@ -26,8 +26,8 @@ const UpgradeNowModal = () => {
   );
 
   const handleForExtenstionRequest = () => {
-    let data = { OrganizationID: Number(organizationID) };
-    dispatch(ExtendOrganizationTrialApi(navigate, t, data));
+    // let data = { OrganizationID: Number(organizationID) };
+    dispatch(ExtendOrganizationTrialApi(navigate, t));
   };
 
   const handleCrossIcon = () => {
