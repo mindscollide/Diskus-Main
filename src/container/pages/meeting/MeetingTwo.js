@@ -338,7 +338,12 @@ const NewMeeting = () => {
             setAdvanceMeetingModalID(meetingID);
             setViewAdvanceMeetingModal(true);
             dispatch(viewAdvanceMeetingPublishPageFlag(true));
+            dispatch(viewMeetingFlag(true));
             dispatch(scheduleMeetingPageFlag(false));
+            dispatch(viewProposeDateMeetingPageFlag(false));
+            dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+            dispatch(viewProposeOrganizerMeetingPageFlag(false));
+            dispatch(proposeNewMeetingPageFlag(false));
             localStorage.setItem("currentMeetingID", meetingID);
             dispatch(
               GetAllUserChats(
@@ -1970,7 +1975,7 @@ const NewMeeting = () => {
     dispatch(meetingNotConductedMQTT(null));
   }, [NewMeetingreducer.meetingStatusNotConductedMqttData, rows]);
 
-  console.log("talkStateDatatalkStateData", talkStateData);
+  console.log("NewMeetingReducerNewMeetingReducer", NewMeetingreducer);
 
   return (
     <section className={styles["NewMeeting_container"]}>

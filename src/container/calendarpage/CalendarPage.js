@@ -114,15 +114,9 @@ const CalendarPage = () => {
           isPrimaryOrganizer: value.isPrimaryOrganizer,
           meetingID: value.meetingID,
         };
-        navigate("/DisKus/meeting", {
+        navigate("/DisKus/Meeting", {
           state: { advancemeetingData, CalendaradvanceMeeting: true },
         });
-        // Advanced Meeting Modal
-        // let Data = {
-        //   CalendarEventId: value.id,
-        //   CalendarEventTypeId: value.calendarTypeId,
-        // };
-        // dispatch(getEventsDetails(navigate, Data, t, setCalendarViewModal));
       } else {
         let Data = {
           CalendarEventId: value.id,
