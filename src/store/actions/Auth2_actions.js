@@ -2375,11 +2375,11 @@ const createPasswordAction = (value, navigate, t) => {
         )
       );
       switch (responseMessage.toLowerCase()) {
-        case USERSPASSWORDCREATION.VERIFICATION_01:
+        case USERSPASSWORDCREATION.CREATION_01:
           dispatch(createPasswordFail(t("Password-could-not-be-created")));
           // no action
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_02:
+        case USERSPASSWORDCREATION.CREATION_02:
           dispatch(
             createPasswordFail(
               t("Organization-subscription-packages-not-found")
@@ -2387,7 +2387,7 @@ const createPasswordAction = (value, navigate, t) => {
           );
           // no action
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_03:
+        case USERSPASSWORDCREATION.CREATION_03:
           //(Direct to Package Selection).
           clearLocalStorageAtloginresponce(1, navigate);
 
@@ -2424,7 +2424,7 @@ const createPasswordAction = (value, navigate, t) => {
           }
           // no action
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_04:
+        case USERSPASSWORDCREATION.CREATION_04:
           //2FA is enabled.
           // if (
           //   JSON.parse(response.data.responseResult.roleId) === (3 || 4 || 1)
@@ -2449,7 +2449,7 @@ const createPasswordAction = (value, navigate, t) => {
           // }
           // no action
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_05:
+        case USERSPASSWORDCREATION.CREATION_05:
           //Password Created and this is an admin user
           if (response.data.responseResult.hasAdminRights) {
             if (response.data.responseResult.authToken.isFirstLogIn) {
@@ -2477,7 +2477,7 @@ const createPasswordAction = (value, navigate, t) => {
           }
           // no action
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_06:
+        case USERSPASSWORDCREATION.CREATION_06:
           // Password Created and this is a admin
           if (response.data.responseResult.hasAdminRights) {
             if (response.data.responseResult.authToken.isFirstLogIn) {
@@ -2501,7 +2501,7 @@ const createPasswordAction = (value, navigate, t) => {
           }
           // no action
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_07:
+        case USERSPASSWORDCREATION.CREATION_07:
           // Password Created and this is a user
           if (response.data.responseResult.hasUserRights) {
             if (response.data.responseResult.authToken.isFirstLogIn) {
@@ -2526,7 +2526,7 @@ const createPasswordAction = (value, navigate, t) => {
           }
           // no action
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_08:
+        case USERSPASSWORDCREATION.CREATION_08:
           //pay out standing
           // User is the Organization Creator. Org sub not active. and this is organization creator (Direct to Billing Page)
           if (response.data.responseResult.hasAdminRights) {
@@ -2564,7 +2564,7 @@ const createPasswordAction = (value, navigate, t) => {
             );
           }
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_09:
+        case USERSPASSWORDCREATION.CREATION_09:
           // Org sub not active. and this is an admin user
           clearLocalStorageAtloginresponce(1, navigate);
           localStorage.setItem("VERIFICATION", true);
@@ -2606,7 +2606,7 @@ const createPasswordAction = (value, navigate, t) => {
           }
 
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_10:
+        case USERSPASSWORDCREATION.CREATION_10:
           clearLocalStorageAtloginresponce(1, navigate);
           localStorage.setItem("VERIFICATION", true);
           if (response.data.responseResult.hasAdminRights) {
@@ -2646,7 +2646,7 @@ const createPasswordAction = (value, navigate, t) => {
             );
           }
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_11:
+        case USERSPASSWORDCREATION.CREATION_11:
           clearLocalStorageAtloginresponce(1, navigate);
 
           localStorage.removeItem("LocalAdminRoutes");
@@ -2683,7 +2683,7 @@ const createPasswordAction = (value, navigate, t) => {
             );
           }
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_12:
+        case USERSPASSWORDCREATION.CREATION_12:
           // setting organization subscription ID
           localStorage.setItem(
             "organizationSubscriptionID",
@@ -2711,7 +2711,7 @@ const createPasswordAction = (value, navigate, t) => {
           }
           // route to onboard
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_13:
+        case USERSPASSWORDCREATION.CREATION_13:
           //yeah pay outstanding per lai jai ga
           if (response.data.responseResult.isOrganizationCreator) {
             dispatch(
@@ -2734,7 +2734,7 @@ const createPasswordAction = (value, navigate, t) => {
           }
 
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_14:
+        case USERSPASSWORDCREATION.CREATION_14:
           //yeah pay outstanding per lai jai ga
           if (response.data.responseResult.isOrganizationCreator) {
             dispatch(
@@ -2757,13 +2757,13 @@ const createPasswordAction = (value, navigate, t) => {
           }
 
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_15:
+        case USERSPASSWORDCREATION.CREATION_15:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
 
           dispatch(createPasswordFail("Something-went-wrong"));
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_16:
+        case USERSPASSWORDCREATION.CREATION_16:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
 
@@ -2771,13 +2771,73 @@ const createPasswordAction = (value, navigate, t) => {
             createPasswordFail("Organization-is-locked-by-global-admin")
           );
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_17:
+        case USERSPASSWORDCREATION.CREATION_17:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
 
           dispatch(
             createPasswordFail("User-has-not-been-assigned-any-license")
           );
+          break;
+
+        case USERSPASSWORDCREATION.CREATION_18:
+          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.CREATION_19:
+          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.CREATION_20:
+          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.CREATION_21:
+          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.CREATION_22:
+          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.CREATION_23:
+          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.CREATION_24:
+          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.CREATION_25:
+          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.CREATION_26:
+          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.CREATION_27:
+          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.CREATION_28:
+          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.CREATION_29:
+          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          // no action
           break;
         default:
           dispatch(enterPasswordFail("Something-went-wrong"));
