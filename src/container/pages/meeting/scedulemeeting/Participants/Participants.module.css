@@ -136,7 +136,7 @@ font-weight: 500;
   font-weight: 600 !important;
 }
 .height2 {
-  max-height: 65vh !important;
+  min-height: 65vh !important;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

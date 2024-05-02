@@ -1299,15 +1299,15 @@ const Home = () => {
                     </p>
                   </div>
                   {upcomingEventsData.meetingDetails.statusID === 1 &&
-                  upcomingEventsData.participantRoleID === 1 ? (
-                    upcomingEventsData.meetingDetails.isQuickMeeting === true &&
-                    minutesDifference < 15 ? (
-                      // &&
-                      // minutesDifference > 0
-                      //   &&
-                      //   minutesDifference <= 99999999 &&
-                      //   minutesDifference > 0
-                      <div className="width-100">
+                    upcomingEventsData.meetingDetails.participantRoleID ===
+                      1 ? (
+                      upcomingEventsData.meetingDetails.isQuickMeeting ===
+                        true && minutesDifference < 15 ? (
+                        // &&
+                        // minutesDifference > 0
+                        //   &&
+                        //   minutesDifference <= 99999999 &&
+                        //   minutesDifference > 0
                         <Button
                           text={t("Start-meeting")}
                           className="Start-Meeting-Upcoming"
@@ -1315,15 +1315,13 @@ const Home = () => {
                             meetingDashboardCalendarEvent(upcomingEventsData)
                           }
                         />
-                      </div>
-                    ) : upcomingEventsData.meetingDetails.isQuickMeeting ===
-                        false && minutesDifference <= 15 ? (
-                      // &&
-                      // minutesDifference > 0
-                      //   &&
-                      //     minutesDifference <= 99999999 &&
-                      //     minutesDifference > 0
-                      <div className="width-100">
+                      ) : upcomingEventsData.meetingDetails.isQuickMeeting ===
+                          false && minutesDifference < 15 ? (
+                        // &&
+                        // minutesDifference > 0
+                        //   &&
+                        //     minutesDifference <= 99999999 &&
+                        //     minutesDifference > 0
                         <Button
                           text={t("Start-meeting")}
                           className="Start-Meeting-Upcoming"
@@ -1331,11 +1329,10 @@ const Home = () => {
                             meetingDashboardCalendarEvent(upcomingEventsData)
                           }
                         />
-                      </div>
-                    ) : null
-                  ) : upcomingEventsData.meetingDetails.statusID === 10 ? (
-                    upcomingEventsData.participantRoleID === 2 ? (
-                      <div className="width-100">
+                      ) : null
+                    ) : upcomingEventsData.meetingDetails.statusID === 10 ? (
+                      upcomingEventsData.meetingDetails.participantRoleID ===
+                      2 ? (
                         <Button
                           text={t("Join-meeting")}
                           className="joining-Meeting-Upcoming"
@@ -1343,9 +1340,8 @@ const Home = () => {
                             meetingDashboardCalendarEvent(upcomingEventsData)
                           }
                         />
-                      </div>
-                    ) : upcomingEventsData.participantRoleID === 4 ? (
-                      <div className="width-100">
+                      ) : upcomingEventsData.meetingDetails
+                          .participantRoleID === 4 ? (
                         <Button
                           text={t("Join-meeting")}
                           className="joining-Meeting-Upcoming"
@@ -1353,9 +1349,8 @@ const Home = () => {
                             meetingDashboardCalendarEvent(upcomingEventsData)
                           }
                         />
-                      </div>
-                    ) : upcomingEventsData.participantRoleID === 1 ? (
-                      <div className="width-100">
+                      ) : upcomingEventsData.meetingDetails
+                          .participantRoleID === 1 ? (
                         <Button
                           text={t("Join-meeting")}
                           className="joining-Meeting-Upcoming"
@@ -1363,9 +1358,8 @@ const Home = () => {
                             meetingDashboardCalendarEvent(upcomingEventsData)
                           }
                         />
-                      </div>
-                    ) : null
-                  ) : null}
+                      ) : null
+                    ) : null}
                 </div>
               </Col>
             </Row>

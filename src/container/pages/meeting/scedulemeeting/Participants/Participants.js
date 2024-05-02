@@ -222,7 +222,7 @@ const Participants = ({
     }
   };
 
-  let allowRSVPValue = NewMeetingreducer?.getAllSavedparticipantsIsPublished;
+  let allowRSVPValue = NewMeetingreducer?.getAllSavedparticipantsAllowrsvp;
   let ParticipantsColoumn = [];
   if (allowRSVPValue === true) {
     ParticipantsColoumn = [

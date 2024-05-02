@@ -1376,6 +1376,7 @@ body[dir="rtl"] svg.DatePickerIcon {
 
 .UpcomingEvent {
   color: #2299ea !important;
+  font-weight: 600;
 }
 
 .event-details-block {

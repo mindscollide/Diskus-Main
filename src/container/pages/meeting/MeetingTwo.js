@@ -279,6 +279,8 @@ const NewMeeting = () => {
       location.state?.CalendaradvanceMeeting === true
     ) {
       try {
+        console.log("isWorking", location.state);
+
         const {
           statusID,
           id,
@@ -286,7 +288,7 @@ const NewMeeting = () => {
           participantRoleID,
           attendeeRoleID,
           isPrimaryOrganizer,
-          meetingID
+          meetingID,
         } = location.state?.advancemeetingData;
 
         const fetchData = async () => {
