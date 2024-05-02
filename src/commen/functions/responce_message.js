@@ -45,6 +45,30 @@ export const USERPASSWORDVERIFICATION = {
     "ERM_AuthService_AuthManager_UserPasswordVerification_26".toLowerCase(),
   VERIFICATION_27:
     "ERM_AuthService_AuthManager_UserPasswordVerification_27".toLowerCase(),
+  VERIFICATION_28:
+    "ERM_AuthService_AuthManager_UserPasswordVerification_28".toLowerCase(),
+  VERIFICATION_29:
+    "ERM_AuthService_AuthManager_UserPasswordVerification_29".toLowerCase(),
+  VERIFICATION_30:
+    "ERM_AuthService_AuthManager_UserPasswordVerification_30".toLowerCase(),
+  VERIFICATION_31:
+    "ERM_AuthService_AuthManager_UserPasswordVerification_31".toLowerCase(),
+  VERIFICATION_32:
+    "ERM_AuthService_AuthManager_UserPasswordVerification_32".toLowerCase(),
+  VERIFICATION_33:
+    "ERM_AuthService_AuthManager_UserPasswordVerification_33".toLowerCase(),
+  VERIFICATION_34:
+    "ERM_AuthService_AuthManager_UserPasswordVerification_34".toLowerCase(),
+  VERIFICATION_35:
+    "ERM_AuthService_AuthManager_UserPasswordVerification_35".toLowerCase(),
+  VERIFICATION_36:
+    "ERM_AuthService_AuthManager_UserPasswordVerification_36".toLowerCase(),
+  VERIFICATION_37:
+    "ERM_AuthService_AuthManager_UserPasswordVerification_37".toLowerCase(),
+  VERIFICATION_38:
+    "ERM_AuthService_AuthManager_UserPasswordVerification_38".toLowerCase(),
+  VERIFICATION_39:
+    "ERM_AuthService_AuthManager_UserPasswordVerification_39".toLowerCase(),
   // Add more as needed
 };
 
