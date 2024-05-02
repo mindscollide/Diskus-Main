@@ -21,7 +21,9 @@ const UpgradeNowModal = () => {
     "TrialExpireSelectPac"
   );
   const organizationID = localStorage.getItem("organizationID");
-  const isExtensionAvailable = JSON.parse(localStorage.getItem("isExtensionAvailable"));
+  const isExtensionAvailable = JSON.parse(
+    localStorage.getItem("isExtensionAvailable")
+  );
 
   const handleForExtenstionRequest = () => {
     let data = { OrganizationID: Number(organizationID) };
@@ -123,7 +125,7 @@ const UpgradeNowModal = () => {
                 />
                 {isExtensionAvailable && (
                   <Button
-                    text={t("Request-an-extenstion")}
+                    text={t("Request-an-extention")}
                     className={styles["No_confirmation"]}
                     onClick={handleForExtenstionRequest}
                   />
