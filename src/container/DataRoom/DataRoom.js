@@ -117,7 +117,7 @@ import {
 import FileDetailsModal from "./FileDetailsModal/FileDetailsModal";
 import copyToClipboard from "../../hooks/useClipBoard";
 import { createWorkflowApi } from "../../store/actions/workflow_actions";
-
+import ApprovalSend from "./SignatureApproval/ApprovalSend/ApprovalSend";
 const DataRoom = () => {
   const currentUrl = window.location.href;
   let DataRoomString = localStorage.getItem("DataRoomEmail");
@@ -326,6 +326,7 @@ const DataRoom = () => {
           OrganizationID: Number(organizationID),
         };
         dispatch(getRecentDocumentsApi(navigate, t, Data));
+      } else if (currentView === 5) {
       } else {
         dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 1));
         localStorage.removeItem("folderID");
@@ -522,7 +523,18 @@ const DataRoom = () => {
     setListviewactive(true);
     setGridbtnactive(false);
   };
+  const SendForApprovalButton = async () => {
+    setSRowsData(0);
 
+    localStorage.setItem("setTableView", 5);
+    //  localStorage.set
+    setGetAllData([]);
+    setSharedwithmebtn(true);
+    localStorage.removeItem("folderID");
+    if (searchoptions) {
+      setSearchoptions(false);
+    }
+  };
   const SharewithmeButonShow = async () => {
     setSRowsData(0);
 
@@ -3543,6 +3555,17 @@ const DataRoom = () => {
                             onClick={SharewithmeButonShow}
                           />
                           <Button
+                            text={t("Send-for-approval")}
+                            className={
+                              currentView === 5
+                                ? `${styles["Send_for_approval_btn_active"]}`
+                                : `${styles["Send_for_approval_btn"]}`
+                            }
+                            // onClick={showCancellUploadModal}
+                            onClick={SendForApprovalButton}
+                          />
+                          {/* ApprovalSend */}
+                          <Button
                             text={t("Recently-added")}
                             className={
                               currentView === 4
@@ -3762,6 +3785,8 @@ const DataRoom = () => {
                             </Col>
                           </Row>
                         </>
+                      ) : currentView === 5 ? (
+                        <ApprovalSend />
                       ) : (
                         <>
                           <Row className="mt-3">

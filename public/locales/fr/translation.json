@@ -1268,5 +1268,6 @@
   "You-can-select-multiple-options": "You can select multiple options",
   "Time-should-be-greater-then-system-time": "Time should be greater then the system time",
   "Disable-video-call": "Disable video call",
-  "Folder-share-successfully": "Folder share successfully"
+  "Folder-share-successfully": "Folder share successfully",
+  "Send-for-approval": "Send for approval"
 }
