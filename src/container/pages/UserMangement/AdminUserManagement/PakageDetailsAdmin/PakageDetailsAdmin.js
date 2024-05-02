@@ -15,7 +15,11 @@ const PakageDetailsAdmin = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { UserMangementReducer } = useSelector((state) => state);
-
+  console.log(
+    UserMangementReducer.organizationSelectedPakagesByOrganizationIDData,
+    "organizationSelectedPakagesByOrganizationIDData"
+  );
+  // organizationSubscriptions
   const [packageDetails, setPackageDetails] = useState({
     PackageSubscriptionDate: "",
     PackageExpiryDate: "",
@@ -86,51 +90,65 @@ const PakageDetailsAdmin = () => {
     let detailPackages =
       UserMangementReducer.organizationSelectedPakagesByOrganizationIDData;
     if (detailPackages !== null && detailPackages !== undefined) {
-      setPackageDetails({
-        PackageSubscriptionDate:
-          detailPackages.organizationSubscription.subscriptionStartDate,
-        PackageExpiryDate:
-          detailPackages.organizationSubscription.subscriptionExpiryDate,
-        PackageName: detailPackages.organizationSelectedPackages.name,
+      detailPackages.organizationSubscriptions?.map((subscription) => {
+        console.log(subscription, "subscriptionsubscription");
+        setPackageDetails((prevState) => ({
+          ...prevState,
+          PackageSubscriptionDate: subscription.subscriptionStartDate,
+          PackageExpiryDate: subscription.subscriptionExpiryDate,
+          PackageName: subscription.organizationSelectedPackages
+            .map((pkg) => pkg.name)
+            .join(", "),
+        }));
       });
     }
   }, [UserMangementReducer.organizationSelectedPakagesByOrganizationIDData]);
 
   // table data in which Package details should be shown
-  const organizationSelectedPackages =
+  const organizationPackages =
     UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
-      ?.organizationSelectedPackages;
+      ?.organizationSubscriptions;
+  console.log(organizationPackages, "organizationSelectedPackages");
 
   let Data = [];
-  if (organizationSelectedPackages) {
-    Data = organizationSelectedPackages.map((packages) => ({
-      Pakagedetails: (
-        <span className={styles["Tableheading"]}>{packages.name}</span>
-      ),
-      Chargesperlicense: (
-        <span className={styles["ChargesPerLicesense"]}>{packages.price}</span>
-      ),
-      Numberoflicenses: (
-        <span className={styles["ChargesPerLicesense"]}>
-          {packages.headCount}
-        </span>
-      ),
-      Yearlycharges: (
-        <span className={styles["ChargesPerLicesense"]}>
-          {packages.price * packages.headCount * 12}
-        </span>
-      ),
-    }));
+
+  if (organizationPackages) {
+    organizationPackages.map((subscription) => {
+      Data = subscription.organizationSelectedPackages.map((packages) => ({
+        Pakagedetails: (
+          <span className={styles["Tableheading"]}>{packages.name}</span>
+        ),
+        Chargesperlicense: (
+          <span className={styles["ChargesPerLicesense"]}>
+            {packages.price}
+          </span>
+        ),
+        Numberoflicenses: (
+          <span className={styles["ChargesPerLicesense"]}>
+            {packages.headCount}
+          </span>
+        ),
+        Yearlycharges: (
+          <span className={styles["ChargesPerLicesense"]}>
+            {packages.price * packages.headCount * 12}
+          </span>
+        ),
+      }));
+    });
   }
 
   // counter of Number of license and Yearly Charges
   let totalLicenses = 0;
   let totalYearlyCharges = 0;
 
-  UserMangementReducer.organizationSelectedPakagesByOrganizationIDData?.organizationSelectedPackages.map(
-    (packages) => {
-      totalLicenses += packages.headCount;
-      totalYearlyCharges += packages.price * packages.headCount * 12;
+  UserMangementReducer.organizationSelectedPakagesByOrganizationIDData?.organizationSubscriptions.map(
+    (packageses) => {
+      packageses.organizationSelectedPackages.map((totals) => {
+        let totalofLicences = totals.headCount;
+        let totalOfYearlyPrices = totals.price * totals.headCount * 12;
+        totalLicenses += totalofLicences;
+        totalYearlyCharges += totalOfYearlyPrices;
+      });
     }
   );
 

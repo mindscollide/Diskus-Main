@@ -11,7 +11,7 @@ import {
   getCancelSubscriptionReasonApi,
   cancelOrganizationSubApi,
 } from "../../../../../store/actions/UserManagementActions";
-const ReasonForCancelSubs = ({ completionContract }) => {
+const ReasonForCancelSubs = ({ completionContract, subscriptionID }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -59,7 +59,7 @@ const ReasonForCancelSubs = ({ completionContract }) => {
 
     const subscriptionStatusID = completionContract ? 5 : 6;
     const data = {
-      OrganizationSubscriptionID: Number(OrganizationSubscriptionID),
+      OrganizationSubscriptionID: Number(subscriptionID),
       // mehdi said you send 6 to SubscriptionStatusID cause we only send 6 to cancel
       SubscriptionStatusID: subscriptionStatusID,
       CancellationReason: cancellationReasons.join("# "),
