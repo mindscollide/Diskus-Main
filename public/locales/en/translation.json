@@ -1993,5 +1993,19 @@
   "Password-verified-and-subscription-is-suspended-and-this-is-organization-creator": "Password Verified and Subscription is Suspended and This is Organization Creator",
   "Password-verified-and-subscription-is-suspended-and-this-is-an-admin-user": "Password Verified and Subscription is Suspended and This is an Admin user.",
   "Password-verified-and-subscription-is-suspended-and-this-is-an-admin": "Password Verified and Subscription is Suspended and This is an Admin.",
-  "Password-verified-and-subscription-is-suspended-and-this-is-an-user": "Password Verified and Subscription is Suspended and This is an user."
+  "Password-verified-and-subscription-is-suspended-and-this-is-an-user": "Password Verified and Subscription is Suspended and This is an user.",
+  "User-is-the-organization-creator-org-sub-is-suspended-and-this-is-organization-creator": "User is the Organization Creator. Org sub is Suspended. and this is organization creator",
+  "Org-sub-is-suspended-and-this-is-an-admin-user": "Org sub is Suspended. and this is an admin user",
+  "Org-sub-is-suspended-and-this-is-a-admin": "Org sub is Suspended. and this is a admin",
+  "Org-sub-is-suspended-and-this-is-a-user": "Org sub is Suspended. and this is a user",
+  "User-is-the-organization-creator-org-sub-is-closed-and-this-is-organization-creator": "User is the Organization Creator. Org sub is Closed. and this is organization creator",
+  "Org-sub-is-closed-and-this-is-an-admin-user": "Org sub is Closed. and this is an admin user",
+  "Org-sub-is-closed-and-this-is-a-admin": "Org sub is Closed. and this is a admin",
+  "Org-sub-is-closed-and-this-is-a-user": "Org sub is Closed. and this is a user",
+  "User-is-the-Organization-Creator-Org-sub-is-cancel-and-this-is-organization-creator": "User is the Organization Creator. Org sub is Cancel. and this is organization creator",
+  "Org-sub-is-cancel-and-this-is-an-admin-user": "Org sub is Cancel. and this is an admin user",
+  "Org-sub-is-cancel-and-this-is-an-admin": "Org sub is Cancel. and this is a admin",
+  "Org-sub-is-cancel-and-this-is-an-user": "Org sub is Cancel. and this is a user",
+  "Organization-is-currently-locked-please-contact-the-global-Admin-for-further-assistance": "Organization is currently locked. Please contact the Global Admin for further assistance.",
+  "You-have-not-been-assigned-any-license-please-contact-the-admin-for-further-assistance": "You have not been assigned any license. Please contact the admin for further assistance."
 }

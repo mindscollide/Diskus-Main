@@ -1466,12 +1466,20 @@ const enterPasswordvalidation = (value, navigate, t) => {
         case USERPASSWORDVERIFICATION.VERIFICATION_26:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
-          dispatch(enterPasswordFail("Organization-is-locked-by-global-admin"));
+          dispatch(
+            enterPasswordFail(
+              "Organization-is-currently-locked-please-contact-the-global-Admin-for-further-assistance"
+            )
+          );
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_27:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
-          dispatch(enterPasswordFail("User-has-not-been-assigned-any-license"));
+          dispatch(
+            enterPasswordFail(
+              "You-have-not-been-assigned-any-license-please-contact-the-admin-for-further-assistance"
+            )
+          );
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_28:
           clearLocalStorageAtloginresponce(2, navigate);
@@ -2768,7 +2776,9 @@ const createPasswordAction = (value, navigate, t) => {
           dispatch(LoginFlowRoutes(1));
 
           dispatch(
-            createPasswordFail("Organization-is-locked-by-global-admin")
+            createPasswordFail(
+              "Organization-is-currently-locked-please-contact-the-global-Admin-for-further-assistance"
+            )
           );
           break;
         case USERSPASSWORDCREATION.CREATION_17:
@@ -2776,67 +2786,107 @@ const createPasswordAction = (value, navigate, t) => {
           dispatch(LoginFlowRoutes(1));
 
           dispatch(
-            createPasswordFail("User-has-not-been-assigned-any-license")
+            createPasswordFail(
+              "You-have-not-been-assigned-any-license-please-contact-the-admin-for-further-assistance"
+            )
           );
           break;
 
         case USERSPASSWORDCREATION.CREATION_18:
-          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          dispatch(
+            createPasswordFail(
+              t(
+                "User-is-the-organization-creator-org-sub-is-suspended-and-this-is-organization-creator"
+              )
+            )
+          );
           // no action
           break;
 
         case USERSPASSWORDCREATION.CREATION_19:
-          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          dispatch(
+            createPasswordFail(
+              t("Org-sub-is-suspended-and-this-is-an-admin-user")
+            )
+          );
           // no action
           break;
 
         case USERSPASSWORDCREATION.CREATION_20:
-          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          dispatch(
+            createPasswordFail(t("Org-sub-is-suspended-and-this-is-a-admin"))
+          );
           // no action
           break;
 
         case USERSPASSWORDCREATION.CREATION_21:
-          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          dispatch(
+            createPasswordFail(t("Org-sub-is-suspended-and-this-is-a-user"))
+          );
           // no action
           break;
 
         case USERSPASSWORDCREATION.CREATION_22:
-          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          dispatch(
+            createPasswordFail(
+              t(
+                "User-is-the-organization-creator-org-sub-is-closed-and-this-is-organization-creator"
+              )
+            )
+          );
           // no action
           break;
 
         case USERSPASSWORDCREATION.CREATION_23:
-          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          dispatch(
+            createPasswordFail(t("Org-sub-is-closed-and-this-is-an-admin-user"))
+          );
           // no action
           break;
 
         case USERSPASSWORDCREATION.CREATION_24:
-          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          dispatch(
+            createPasswordFail(t("Org-sub-is-closed-and-this-is-a-admin"))
+          );
           // no action
           break;
 
         case USERSPASSWORDCREATION.CREATION_25:
-          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          dispatch(
+            createPasswordFail(t("Org-sub-is-closed-and-this-is-a-user"))
+          );
           // no action
           break;
 
         case USERSPASSWORDCREATION.CREATION_26:
-          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          dispatch(
+            createPasswordFail(
+              t(
+                "User-is-the-Organization-Creator-Org-sub-is-cancel-and-this-is-organization-creator"
+              )
+            )
+          );
           // no action
           break;
 
         case USERSPASSWORDCREATION.CREATION_27:
-          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          dispatch(
+            createPasswordFail(t("Org-sub-is-cancel-and-this-is-an-admin-user"))
+          );
           // no action
           break;
 
         case USERSPASSWORDCREATION.CREATION_28:
-          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          dispatch(
+            createPasswordFail(t("Org-sub-is-cancel-and-this-is-an-admin"))
+          );
           // no action
           break;
 
         case USERSPASSWORDCREATION.CREATION_29:
-          dispatch(createPasswordFail(t("Password-could-not-be-created")));
+          dispatch(
+            createPasswordFail(t("Org-sub-is-cancel-and-this-is-an-user"))
+          );
           // no action
           break;
         default:
