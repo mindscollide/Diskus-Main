@@ -27,6 +27,8 @@ const PakageDetailsUserManagement = () => {
 
   const { t } = useTranslation();
 
+  const SignupPage = localStorage.getItem("signupCurrentPage", 1);
+
   const { UserMangementReducer, LanguageReducer } = useSelector(
     (state) => state
   );
@@ -527,13 +529,23 @@ const PakageDetailsUserManagement = () => {
           />
         </Col>
       </Row>
-      <Row className="mt-3">
-        <Col lg={12} md={12} sm={12} className="d-flex justify-content-center">
-          <span onClick={onClickLink} className={styles["signUp_goBack"]}>
-            {t("Go-back")}
-          </span>
-        </Col>
-      </Row>
+      {SignupPage ? (
+        <>
+          <Row className="mt-3">
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex justify-content-center"
+            >
+              <span onClick={onClickLink} className={styles["signUp_goBack"]}>
+                {t("Go-back")}
+              </span>
+            </Col>
+          </Row>
+        </>
+      ) : null}
+
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
       {UserMangementReducer.Loading || LanguageReducer.Loading ? (
         <Loader />
