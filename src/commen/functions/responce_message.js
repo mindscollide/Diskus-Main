@@ -73,63 +73,63 @@ export const USERPASSWORDVERIFICATION = {
 };
 
 export const USERSPASSWORDCREATION = {
-  VERIFICATION_01:
+  CREATION_01:
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_01".toLowerCase(),
-  VERIFICATION_02:
+  CREATION_02:
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_02".toLowerCase(),
-  VERIFICATION_03:
+  CREATION_03:
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_03".toLowerCase(),
-  VERIFICATION_04:
+  CREATION_04:
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_04".toLowerCase(),
-  VERIFICATION_05:
+  CREATION_05:
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_05".toLowerCase(),
-  VERIFICATION_06:
+  CREATION_06:
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_06".toLowerCase(),
-  VERIFICATION_07:
+  CREATION_07:
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_07".toLowerCase(),
-  VERIFICATION_08:
+  CREATION_08:
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_08".toLowerCase(),
-  VERIFICATION_09:
+  CREATION_09:
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_09".toLowerCase(),
-  VERIFICATION_10:
+  CREATION_10:
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_10".toLowerCase(),
-  VERIFICATION_11:
+  CREATION_11:
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_11".toLowerCase(),
-  VERIFICATION_12:
+  CREATION_12:
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_12".toLowerCase(),
-  VERIFICATION_13:
+  CREATION_13:
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_13".toLowerCase(),
-  VERIFICATION_14:
+  CREATION_14:
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_14".toLowerCase(),
-  VERIFICATION_15:
+  CREATION_15:
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_15".toLowerCase(),
-  VERIFICATION_16:
+  CREATION_16:
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_16".toLowerCase(),
-  VERIFICATION_17:
+  CREATION_17:
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_17".toLowerCase(),
-  VERIFICATION_18:
+  CREATION_18:
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_18".toLowerCase(),
-  VERIFICATION_19:
+  CREATION_19:
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_19".toLowerCase(),
-  VERIFICATION_20:
+  CREATION_20:
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_20".toLowerCase(),
-  VERIFICATION_21:
+  CREATION_21:
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_21".toLowerCase(),
-  VERIFICATION_22:
+  CREATION_22:
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_22".toLowerCase(),
-  VERIFICATION_23:
+  CREATION_23:
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_23".toLowerCase(),
-  VERIFICATION_24:
+  CREATION_24:
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_24".toLowerCase(),
-  VERIFICATION_25:
+  CREATION_25:
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_25".toLowerCase(),
-  VERIFICATION_26:
+  CREATION_26:
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_26".toLowerCase(),
-  VERIFICATION_27:
+  CREATION_27:
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_27".toLowerCase(),
-  VERIFICATION_28:
+  CREATION_28:
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_28".toLowerCase(),
-  VERIFICATION_29:
+  CREATION_29:
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_29".toLowerCase(),
   // Add more as needed
 };
