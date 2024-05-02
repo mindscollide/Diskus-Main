@@ -86,16 +86,14 @@ const AddUserMain = () => {
     FK_NumberWorldCountryID: 0,
   });
 
+  console.log(
+    UserMangementReducer.getOrganizationUserStatsGraph,
+    "datatatataF"
+  );
+
   //For Now I set static data in this getOrganizationPackageUserStatsAPI Api
   useEffect(() => {
     dispatch(getOrganizationPackageUserStatsAPI(navigate, t));
-
-    let newdata = {
-      OrganizationID: Number(organizationID),
-    };
-    dispatch(
-      GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t, newdata)
-    );
   }, []);
 
   const addUserHandler = (e) => {
@@ -301,9 +299,7 @@ const AddUserMain = () => {
             OrganizationID: Number(organizationID),
             RoleID: userAddMain.isAdmin,
             FK_NumberWorldCountryID: userAddMain.FK_NumberWorldCountryID,
-            OrganizationSelectedPackageID: Number(
-              userAddMain.PackageAssigned.value
-            ),
+            PackageID: Number(userAddMain.PackageAssigned.value),
           },
         ],
       };
@@ -477,6 +473,7 @@ const AddUserMain = () => {
 
   // handle select for country Flag
   const handleSelect = (country) => {
+    console.log(country, "countrycountrycountry");
     setSelected(country);
     setSelectedCountry(country);
     let a = Object.values(countryNameforPhoneNumber).find((obj) => {
@@ -492,20 +489,17 @@ const AddUserMain = () => {
   // package assigned option dropdown useEffect it will disable option when packageAllotedUsers greater then headCount
   useEffect(() => {
     if (
-      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData &&
-      Object.keys(
-        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
-      ).length > 0
+      UserMangementReducer.getOrganizationUserStatsGraph &&
+      Object.keys(UserMangementReducer.getOrganizationUserStatsGraph).length > 0
     ) {
       let temp = [];
-      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData.organizationSubscriptions?.map(
+      UserMangementReducer.getOrganizationUserStatsGraph.selectedPackageDetails.map(
         (data, index) => {
-          data.organizationSelectedPackages?.map((packageData) => {
-            temp.push({
-              value: packageData.pK_OrganizationsSelectedPackageID,
-              label: packageData.name,
-              isDisabled: packageData.allotedUsers > packageData.headCount,
-            });
+          console.log(data, "packageDatapackageData");
+          temp.push({
+            value: data.pK_PackageID,
+            label: data.name,
+            isDisabled: data.packageAllotedUsers > data.headCount,
           });
         }
       );
