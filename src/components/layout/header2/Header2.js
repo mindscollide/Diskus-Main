@@ -79,6 +79,7 @@ const Header2 = () => {
   const TrialExpireSelectPac = getLocalStorageItemNonActiveCheck(
     "TrialExpireSelectPac"
   );
+  const cancelSub = getLocalStorageItemNonActiveCheck("cancelSub");
 
   let currentLanguage = localStorage.getItem("i18nextLng");
 
@@ -340,6 +341,8 @@ const Header2 = () => {
                     ? "Admin/PayOutstanding"
                     : TrialExpireSelectPac
                     ? "/Admin/PakageDetailsUserManagement"
+                    : cancelSub
+                    ? "/Admin/ManageUsers"
                     : "/Admin/ManageUsers"
                   : "/DisKus/home"
               }
@@ -591,6 +594,8 @@ const Header2 = () => {
                     ? "/Admin/PayOutstanding"
                     : TrialExpireSelectPac
                     ? "/Admin/PakageDetailsUserManagement"
+                    : cancelSub
+                    ? "/Admin/ManageUsers"
                     : "/Admin/ManageUsers"
                   : (NewMeetingreducer.scheduleMeetingPageFlag === true ||
                       NewMeetingreducer.viewProposeDateMeetingPageFlag ===
@@ -755,7 +760,7 @@ const Header2 = () => {
                 </Dropdown.Toggle>
                 {location.pathname.includes("/Admin") ? (
                   <Dropdown.Menu className="dropdown_menu_admin">
-                    {roleRoute || TrialExpireSelectPac ? (
+                    {roleRoute || TrialExpireSelectPac || cancelSub ? (
                       <Dropdown.Item
                         // className={currentLanguage}
                         onClick={modalLogoutHandler}
@@ -824,7 +829,7 @@ const Header2 = () => {
                   </Dropdown.Menu>
                 ) : (
                   <Dropdown.Menu className="Profile_dropdown_menu">
-                    {roleRoute || TrialExpireSelectPac ? (
+                    {roleRoute || TrialExpireSelectPac || cancelSub ? (
                       <Dropdown.Item
                         className={currentLanguage}
                         onClick={modalLogoutHandler}
@@ -940,7 +945,7 @@ const Header2 = () => {
                   </Dropdown.Menu>
                 )}
               </Dropdown>
-              {roleRoute || TrialExpireSelectPac ? null : (
+              {roleRoute || TrialExpireSelectPac || cancelSub ? null : (
                 <Nav.Link
                   as={Link}
                   to={
