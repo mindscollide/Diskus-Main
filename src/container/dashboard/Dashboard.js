@@ -948,6 +948,15 @@ const Dashboard = () => {
             };
             dispatch(setRecentActivityDataNotification(data2));
           }
+        } else if (
+          data.payload.message.toLowerCase.includes(
+            "USER_DELETED".toLowerCase()
+          )
+        ) {
+          if (data.payload.isLoggedOut === true) {
+            //Apply Logour API here
+            dispatch(userLogOutApiFunc(navigate, t));
+          }
         }
       }
       if (data.action.toLowerCase() === "Committee".toLowerCase()) {
@@ -1944,7 +1953,8 @@ const Dashboard = () => {
       }
       if (data.action.toLowerCase() === "LogOut".toLowerCase()) {
         if (
-          data.payload.toLowerCase()
+          data.payload
+            .toLowerCase()
             .includes("USER_lOGOUT_DUE_TO_INACTIVITY".toLowerCase())
         ) {
           dispatch(userLogOutApiFunc(navigate, t));
