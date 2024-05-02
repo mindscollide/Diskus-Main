@@ -949,12 +949,11 @@ const Dashboard = () => {
             dispatch(setRecentActivityDataNotification(data2));
           }
         } else if (
-          data.payload.message.toLowerCase.includes(
-            "USER_DELETED".toLowerCase()
-          )
+          data.payload.message.toLowerCase() === "USER_DELETED".toLowerCase()
         ) {
-          if (data.payload.isLoggedOut === true) {
-            //Apply Logour API here
+          console.log("Inside USER_DELETED Check");
+          if (data.payload.isLoggedOut === false) {
+            //Apply Logout API here
             dispatch(userLogOutApiFunc(navigate, t));
           }
         }
