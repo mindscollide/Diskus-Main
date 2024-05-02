@@ -477,6 +477,7 @@ const AddUserMain = () => {
 
   // handle select for country Flag
   const handleSelect = (country) => {
+    console.log(country, "countrycountrycountry");
     setSelected(country);
     setSelectedCountry(country);
     let a = Object.values(countryNameforPhoneNumber).find((obj) => {
