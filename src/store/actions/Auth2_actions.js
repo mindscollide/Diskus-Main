@@ -1466,95 +1466,151 @@ const enterPasswordvalidation = (value, navigate, t) => {
         case USERPASSWORDVERIFICATION.VERIFICATION_26:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
-          dispatch(enterPasswordFail("Organization-is-locked-by-global-admin"));
+          dispatch(
+            enterPasswordFail(
+              "Organization-is-currently-locked-please-contact-the-global-Admin-for-further-assistance"
+            )
+          );
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_27:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
-          dispatch(enterPasswordFail("User-has-not-been-assigned-any-license"));
+          dispatch(
+            enterPasswordFail(
+              "You-have-not-been-assigned-any-license-please-contact-the-admin-for-further-assistance"
+            )
+          );
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_28:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
 
-          dispatch(enterPasswordFail("User-has-not-been-assigned-any-license"));
+          dispatch(
+            enterPasswordFail(
+              "Password-verified-and-subscription-is-closed-and-this-is-organization-creator"
+            )
+          );
           break;
 
         case USERPASSWORDVERIFICATION.VERIFICATION_29:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
 
-          dispatch(enterPasswordFail("User-has-not-been-assigned-any-license"));
+          dispatch(
+            enterPasswordFail(
+              "Password-verified-and-subscription-is-closed-and-this-is-an-admin-user"
+            )
+          );
           break;
 
         case USERPASSWORDVERIFICATION.VERIFICATION_30:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
 
-          dispatch(enterPasswordFail("User-has-not-been-assigned-any-license"));
+          dispatch(
+            enterPasswordFail(
+              "Password-verified-and-subscription-is-closed-and-this-is-an-admin"
+            )
+          );
           break;
 
         case USERPASSWORDVERIFICATION.VERIFICATION_31:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
 
-          dispatch(enterPasswordFail("User-has-not-been-assigned-any-license"));
+          dispatch(
+            enterPasswordFail(
+              "Password-verified-and-subscription-is-closed-and-this-is-an-user"
+            )
+          );
           break;
 
         case USERPASSWORDVERIFICATION.VERIFICATION_32:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
 
-          dispatch(enterPasswordFail("User-has-not-been-assigned-any-license"));
+          dispatch(
+            enterPasswordFail(
+              "Password-verified-and-subscription-is-cancel-and-this-is-organization-creator"
+            )
+          );
           break;
 
         case USERPASSWORDVERIFICATION.VERIFICATION_33:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
 
-          dispatch(enterPasswordFail("User-has-not-been-assigned-any-license"));
+          dispatch(
+            enterPasswordFail(
+              "Password-verified-and-subscription-is-cancel-and-this-is-an-admin-user"
+            )
+          );
           break;
 
         case USERPASSWORDVERIFICATION.VERIFICATION_34:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
 
-          dispatch(enterPasswordFail("User-has-not-been-assigned-any-license"));
+          dispatch(
+            enterPasswordFail(
+              "Password-verified-and-subscription-is-cancel-and-this-is-an-admin"
+            )
+          );
           break;
 
         case USERPASSWORDVERIFICATION.VERIFICATION_35:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
 
-          dispatch(enterPasswordFail("User-has-not-been-assigned-any-license"));
+          dispatch(
+            enterPasswordFail(
+              "Password-verified-and-subscription-is-cancel-and-this-is-an-user"
+            )
+          );
           break;
 
         case USERPASSWORDVERIFICATION.VERIFICATION_36:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
 
-          dispatch(enterPasswordFail("User-has-not-been-assigned-any-license"));
+          dispatch(
+            enterPasswordFail(
+              "Password-verified-and-subscription-is-suspended-and-this-is-organization-creator"
+            )
+          );
           break;
 
         case USERPASSWORDVERIFICATION.VERIFICATION_37:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
 
-          dispatch(enterPasswordFail("User-has-not-been-assigned-any-license"));
+          dispatch(
+            enterPasswordFail(
+              "Password-verified-and-subscription-is-suspended-and-this-is-an-admin-user"
+            )
+          );
           break;
 
         case USERPASSWORDVERIFICATION.VERIFICATION_38:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
 
-          dispatch(enterPasswordFail("User-has-not-been-assigned-any-license"));
+          dispatch(
+            enterPasswordFail(
+              "Password-verified-and-subscription-is-suspended-and-this-is-an-admin"
+            )
+          );
           break;
 
         case USERPASSWORDVERIFICATION.VERIFICATION_39:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
 
-          dispatch(enterPasswordFail("User-has-not-been-assigned-any-license"));
+          dispatch(
+            enterPasswordFail(
+              "Password-verified-and-subscription-is-suspended-and-this-is-an-user"
+            )
+          );
           break;
 
         default:
@@ -2327,11 +2383,11 @@ const createPasswordAction = (value, navigate, t) => {
         )
       );
       switch (responseMessage.toLowerCase()) {
-        case USERSPASSWORDCREATION.VERIFICATION_01:
+        case USERSPASSWORDCREATION.CREATION_01:
           dispatch(createPasswordFail(t("Password-could-not-be-created")));
           // no action
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_02:
+        case USERSPASSWORDCREATION.CREATION_02:
           dispatch(
             createPasswordFail(
               t("Organization-subscription-packages-not-found")
@@ -2339,7 +2395,7 @@ const createPasswordAction = (value, navigate, t) => {
           );
           // no action
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_03:
+        case USERSPASSWORDCREATION.CREATION_03:
           //(Direct to Package Selection).
           clearLocalStorageAtloginresponce(1, navigate);
 
@@ -2376,7 +2432,7 @@ const createPasswordAction = (value, navigate, t) => {
           }
           // no action
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_04:
+        case USERSPASSWORDCREATION.CREATION_04:
           //2FA is enabled.
           // if (
           //   JSON.parse(response.data.responseResult.roleId) === (3 || 4 || 1)
@@ -2401,7 +2457,7 @@ const createPasswordAction = (value, navigate, t) => {
           // }
           // no action
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_05:
+        case USERSPASSWORDCREATION.CREATION_05:
           //Password Created and this is an admin user
           if (response.data.responseResult.hasAdminRights) {
             if (response.data.responseResult.authToken.isFirstLogIn) {
@@ -2429,7 +2485,7 @@ const createPasswordAction = (value, navigate, t) => {
           }
           // no action
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_06:
+        case USERSPASSWORDCREATION.CREATION_06:
           // Password Created and this is a admin
           if (response.data.responseResult.hasAdminRights) {
             if (response.data.responseResult.authToken.isFirstLogIn) {
@@ -2453,7 +2509,7 @@ const createPasswordAction = (value, navigate, t) => {
           }
           // no action
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_07:
+        case USERSPASSWORDCREATION.CREATION_07:
           // Password Created and this is a user
           if (response.data.responseResult.hasUserRights) {
             if (response.data.responseResult.authToken.isFirstLogIn) {
@@ -2478,7 +2534,7 @@ const createPasswordAction = (value, navigate, t) => {
           }
           // no action
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_08:
+        case USERSPASSWORDCREATION.CREATION_08:
           //pay out standing
           // User is the Organization Creator. Org sub not active. and this is organization creator (Direct to Billing Page)
           if (response.data.responseResult.hasAdminRights) {
@@ -2516,7 +2572,7 @@ const createPasswordAction = (value, navigate, t) => {
             );
           }
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_09:
+        case USERSPASSWORDCREATION.CREATION_09:
           // Org sub not active. and this is an admin user
           clearLocalStorageAtloginresponce(1, navigate);
           localStorage.setItem("VERIFICATION", true);
@@ -2558,7 +2614,7 @@ const createPasswordAction = (value, navigate, t) => {
           }
 
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_10:
+        case USERSPASSWORDCREATION.CREATION_10:
           clearLocalStorageAtloginresponce(1, navigate);
           localStorage.setItem("VERIFICATION", true);
           if (response.data.responseResult.hasAdminRights) {
@@ -2598,7 +2654,7 @@ const createPasswordAction = (value, navigate, t) => {
             );
           }
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_11:
+        case USERSPASSWORDCREATION.CREATION_11:
           clearLocalStorageAtloginresponce(1, navigate);
 
           localStorage.removeItem("LocalAdminRoutes");
@@ -2635,7 +2691,7 @@ const createPasswordAction = (value, navigate, t) => {
             );
           }
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_12:
+        case USERSPASSWORDCREATION.CREATION_12:
           // setting organization subscription ID
           localStorage.setItem(
             "organizationSubscriptionID",
@@ -2663,7 +2719,7 @@ const createPasswordAction = (value, navigate, t) => {
           }
           // route to onboard
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_13:
+        case USERSPASSWORDCREATION.CREATION_13:
           //yeah pay outstanding per lai jai ga
           if (response.data.responseResult.isOrganizationCreator) {
             dispatch(
@@ -2686,7 +2742,7 @@ const createPasswordAction = (value, navigate, t) => {
           }
 
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_14:
+        case USERSPASSWORDCREATION.CREATION_14:
           //yeah pay outstanding per lai jai ga
           if (response.data.responseResult.isOrganizationCreator) {
             dispatch(
@@ -2709,27 +2765,129 @@ const createPasswordAction = (value, navigate, t) => {
           }
 
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_15:
+        case USERSPASSWORDCREATION.CREATION_15:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
 
           dispatch(createPasswordFail("Something-went-wrong"));
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_16:
+        case USERSPASSWORDCREATION.CREATION_16:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
 
           dispatch(
-            createPasswordFail("Organization-is-locked-by-global-admin")
+            createPasswordFail(
+              "Organization-is-currently-locked-please-contact-the-global-Admin-for-further-assistance"
+            )
           );
           break;
-        case USERSPASSWORDCREATION.VERIFICATION_17:
+        case USERSPASSWORDCREATION.CREATION_17:
           clearLocalStorageAtloginresponce(2, navigate);
           dispatch(LoginFlowRoutes(1));
 
           dispatch(
-            createPasswordFail("User-has-not-been-assigned-any-license")
+            createPasswordFail(
+              "You-have-not-been-assigned-any-license-please-contact-the-admin-for-further-assistance"
+            )
           );
+          break;
+
+        case USERSPASSWORDCREATION.CREATION_18:
+          dispatch(
+            createPasswordFail(
+              t(
+                "User-is-the-organization-creator-org-sub-is-suspended-and-this-is-organization-creator"
+              )
+            )
+          );
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.CREATION_19:
+          dispatch(
+            createPasswordFail(
+              t("Org-sub-is-suspended-and-this-is-an-admin-user")
+            )
+          );
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.CREATION_20:
+          dispatch(
+            createPasswordFail(t("Org-sub-is-suspended-and-this-is-a-admin"))
+          );
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.CREATION_21:
+          dispatch(
+            createPasswordFail(t("Org-sub-is-suspended-and-this-is-a-user"))
+          );
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.CREATION_22:
+          dispatch(
+            createPasswordFail(
+              t(
+                "User-is-the-organization-creator-org-sub-is-closed-and-this-is-organization-creator"
+              )
+            )
+          );
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.CREATION_23:
+          dispatch(
+            createPasswordFail(t("Org-sub-is-closed-and-this-is-an-admin-user"))
+          );
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.CREATION_24:
+          dispatch(
+            createPasswordFail(t("Org-sub-is-closed-and-this-is-a-admin"))
+          );
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.CREATION_25:
+          dispatch(
+            createPasswordFail(t("Org-sub-is-closed-and-this-is-a-user"))
+          );
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.CREATION_26:
+          dispatch(
+            createPasswordFail(
+              t(
+                "User-is-the-Organization-Creator-Org-sub-is-cancel-and-this-is-organization-creator"
+              )
+            )
+          );
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.CREATION_27:
+          dispatch(
+            createPasswordFail(t("Org-sub-is-cancel-and-this-is-an-admin-user"))
+          );
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.CREATION_28:
+          dispatch(
+            createPasswordFail(t("Org-sub-is-cancel-and-this-is-an-admin"))
+          );
+          // no action
+          break;
+
+        case USERSPASSWORDCREATION.CREATION_29:
+          dispatch(
+            createPasswordFail(t("Org-sub-is-cancel-and-this-is-an-user"))
+          );
+          // no action
           break;
         default:
           dispatch(enterPasswordFail("Something-went-wrong"));

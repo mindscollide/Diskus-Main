@@ -272,7 +272,7 @@ const AddUsers = () => {
           OrganizationID: Number(organizationID),
           RoleID: addUserFreeTrial.isAdmin,
           FK_NumberWorldCountryID: Number(worldCountryID),
-          OrganizationSelectedPackageID: Number(pakageID),
+          PackageID: 4,
         },
       ],
     };
