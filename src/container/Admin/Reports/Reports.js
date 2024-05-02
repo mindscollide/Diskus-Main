@@ -725,7 +725,7 @@ const Reports = () => {
                             // value={decisionDateTime.dateValue}
                             calendar={calendarValue}
                             locale={localValue}
-                            onChange={handleChangeFromDate}
+                            onFocusedDateChange={handleChangeFromDate}
                           />
                         </Col>
                         <Col sm={12} md={6} lg={6}>
@@ -751,7 +751,7 @@ const Reports = () => {
                             // value={decisionDateTime.dateValue}
                             calendar={calendarValue}
                             locale={localValue}
-                            onChange={handleChangeToDate}
+                            onFocusedDateChange={handleChangeToDate}
                           />
                         </Col>
                       </Row>

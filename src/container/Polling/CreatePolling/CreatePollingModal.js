@@ -599,7 +599,7 @@ const CreatePolling = () => {
                               locale={localValue}
                               ref={datePickerRef}
                               onClick={handleIconClick}
-                              onChange={(value) =>
+                              onFocusedDateChange={(value) =>
                                 changeDateStartHandler(value)
                               }
                             />

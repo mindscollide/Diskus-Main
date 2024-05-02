@@ -86,7 +86,7 @@ const ParentAgenda = ({
   // const [expandSubIndex, setExpandSubIndex] = useState(-1);
   const [expandIndex, setExpandIndex] = useState(-1);
   // const [subexpandIndex, setsubexpandIndex] = useState(-1);
-  const [expand, setExpand] = useState(true);
+  const [expand, setExpand] = useState(false);
   const [subExpand, setSubExpand] = useState([]);
   //Timepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);

@@ -1923,10 +1923,28 @@ const Dashboard = () => {
       }
       if (data.action.toLowerCase() === "LogOut".toLowerCase()) {
         if (
-          data.payload.toLowerCase()
+          data.payload
+            .toLowerCase()
             .includes("USER_lOGOUT_DUE_TO_INACTIVITY".toLowerCase())
         ) {
           dispatch(userLogOutApiFunc(navigate, t));
+        }
+      }
+      if (data.action.toLowerCase() === "Login".toLowerCase()) {
+        if (
+          data.message.toLowerCase() === "USER_LOGIN_ACTIVITY".toLowerCase()
+        ) {
+          let getToken =
+            localStorage.getItem("token") !== null &&
+            localStorage.getItem("token");
+          console.log(
+            getToken,
+            data.payload.authToken.token,
+            "USER_LOGIN_ACTIVITYUSER_LOGIN_ACTIVITY"
+          );
+          if (getToken !== data?.payload?.authToken?.token) {
+            dispatch(userLogOutApiFunc(navigate, t));
+          }
         }
       }
     } catch (error) {}

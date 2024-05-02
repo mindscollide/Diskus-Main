@@ -932,12 +932,15 @@ const CalendarPage = () => {
         setViewFlag={setCalendarViewModal}
         data={meetingData}
       />
-      <ModalMeeting
-        // this is check from where its called 2 is from Calendar
-        checkFlag={2}
-        show={meetingModalShow}
-        setShow={setMeetingModalShow}
-      />
+      {meetingModalShow && (
+        <ModalMeeting
+          // this is check from where its called 2 is from Calendar
+          checkFlag={2}
+          show={meetingModalShow}
+          setShow={setMeetingModalShow}
+        />
+      )}
+
       <TodoListModal show={todolistModalShow} setShow={setTodolistModalShow} />
       <Notification
         setOpen={setOpenNotification}

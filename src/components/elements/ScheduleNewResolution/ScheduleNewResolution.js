@@ -1160,7 +1160,7 @@ const ScheduleNewResolution = () => {
                               value={circulationDateTime.dateValue}
                               calendar={calendarValue}
                               locale={localValue}
-                              onChange={circulationDateChangeHandler}
+                              onFocusedDateChange={circulationDateChangeHandler}
                             />
                           </div>
                           {/* <TextFieldDateTime
@@ -1283,7 +1283,7 @@ const ScheduleNewResolution = () => {
                               value={votingDateTime.dateValue}
                               calendar={calendarValue}
                               locale={localValue}
-                              onChange={votingDateChangeHandler}
+                              onFocusedDateChange={votingDateChangeHandler}
                             />
                           </div>
                           <Row>
@@ -1405,7 +1405,7 @@ const ScheduleNewResolution = () => {
                               value={decisionDateTime.dateValue}
                               calendar={calendarValue}
                               locale={localValue}
-                              onChange={decisionChangeHandler}
+                              onFocusedDateChange={decisionChangeHandler}
                             />
                           </div>
                           <Row>

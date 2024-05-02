@@ -2232,7 +2232,7 @@ const NewMeeting = () => {
                               calendar={calendarValue}
                               locale={localValue}
                               ref={calendRef}
-                              onChange={meetingDateChangeHandler}
+                              onFocusedDateChange={meetingDateChangeHandler}
                             />
                           </Col>
                           <Col lg={6} md={6} sm={12}>

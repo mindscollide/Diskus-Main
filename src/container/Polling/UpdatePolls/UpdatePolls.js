@@ -596,7 +596,7 @@ const UpdatePolls = () => {
                               onOpenPickNewDate={true}
                               ref={datePickerRef}
                               render={<CustomIcon />}
-                              onChange={(value) =>
+                              onFocusedDateChange={(value) =>
                                 changeDateStartHandler(
                                   value?.toDate?.().toString()
                                 )
