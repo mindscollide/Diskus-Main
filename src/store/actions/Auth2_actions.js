@@ -536,6 +536,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
           t
         )
       );
+      let packageFeatureIDs = [];
       switch (responseMessage.toLowerCase()) {
         case USERPASSWORDVERIFICATION.VERIFICATION_01:
           dispatch(enterPasswordFail(t("Device-does-not-exists")));
@@ -696,27 +697,92 @@ const enterPasswordvalidation = (value, navigate, t) => {
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_17:
           //yeah pay outstanding per lai jai ga
+          // if (response.data.responseResult.hasAdminRights) {
+          //   clearLocalStorageAtloginresponce(1, navigate);
+          //   localStorage.removeItem("LocalUserRoutes");
+          //   localStorage.setItem("VERIFICATION", true);
+          //   packageFeatureIDs = [33];
+          //   localStorage.setItem(
+          //     "packageFeatureIDs",
+          //     JSON.stringify(packageFeatureIDs)
+          //   );
+          //   localStorage.setItem(
+          //     "LocalAdminRoutes",
+          //     JSON.stringify([
+          //       { id: 33, name: "PayOutstanding" },
+          //       { id: 200, name: "Admin" },
+          //     ])
+          //   );
+          //   navigate("/Admin/PayOutstanding");
+          //   dispatch(
+          //     enterPasswordSuccess(
+          //       response.data.responseResult,
+          //       t("Password-verified-and-subscription-not-active")
+          //     )
+          //   );
+          // } else {
+          //   clearLocalStorageAtloginresponce(2, navigate);
+          //   dispatch(LoginFlowRoutes(1));
+          //   localStorage.removeItem("LocalUserRoutes");
+          //   localStorage.setItem("VERIFICATION", false);
+          //   dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
+          // }
           if (response.data.responseResult.hasAdminRights) {
-            clearLocalStorageAtloginresponce(1, navigate);
-            localStorage.removeItem("LocalUserRoutes");
-            localStorage.setItem("VERIFICATION", true);
-            let packageFeatureIDs = [33];
-            localStorage.setItem(
-              "packageFeatureIDs",
-              JSON.stringify(packageFeatureIDs)
-            );
-            localStorage.setItem(
-              "LocalAdminRoutes",
-              JSON.stringify([
-                { id: 33, name: "PayOutstanding" },
-                { id: 200, name: "Admin" },
-              ])
-            );
-            navigate("/Admin/PayOutstanding");
+            if (checkFeatureIDAvailability(33)) {
+              packageFeatureIDs = [203, 28, 29, 30, 34, 218];
+            } else {
+              packageFeatureIDs = [33, 203, 28, 29, 30, 34, 218];
+            }
+            localStorage.setItem("cancelSub", JSON.stringify(true));
+            if (checkFeatureIDAvailability(33)) {
+              localStorage.removeItem("LocalUserRoutes");
+              localStorage.removeItem("LocalAdminRoutes");
+              localStorage.setItem(
+                "packageFeatureIDs",
+                JSON.stringify(packageFeatureIDs)
+              );
+              localStorage.setItem(
+                "LocalAdminRoutes",
+                JSON.stringify([
+                  { id: 203, name: "ManageUsers" },
+                  { id: 28, name: "PackageDetailsUserManagement" },
+                  { id: 29, name: "CancelSubscriptionUserManagement" },
+                  { id: 30, name: "deleteorganizationUserMangement" },
+                  { name: "PakageDetailsUserManagement", id: 206 },
+                  { id: 33, name: "PayOutstanding" },
+                  { id: 34, name: "Summary" },
+                  { id: 200, name: "Admin" },
+                  { name: "PaymentHistory", id: 218 },
+                ])
+              );
+              navigate("/Admin/PayOutstanding");
+            } else {
+              localStorage.removeItem("LocalUserRoutes");
+              localStorage.removeItem("LocalAdminRoutes");
+              localStorage.setItem(
+                "packageFeatureIDs",
+                JSON.stringify(packageFeatureIDs)
+              );
+              localStorage.setItem(
+                "LocalAdminRoutes",
+                JSON.stringify([
+                  { id: 203, name: "ManageUsers" },
+                  { id: 28, name: "PackageDetailsUserManagement" },
+                  { id: 29, name: "CancelSubscriptionUserManagement" },
+                  { id: 30, name: "deleteorganizationUserMangement" },
+                  { id: 34, name: "Summary" },
+                  { id: 200, name: "Admin" },
+                  { name: "PaymentHistory", id: 218 },
+                ])
+              );
+              navigate("/Admin/ManageUsers");
+            }
             dispatch(
               enterPasswordSuccess(
                 response.data.responseResult,
-                t("Password-verified-and-subscription-not-active")
+                t(
+                  "Password-verified-and-subscription-is-suspended-and-this-is-an-admin"
+                )
               )
             );
           } else {
@@ -726,15 +792,19 @@ const enterPasswordvalidation = (value, navigate, t) => {
             localStorage.setItem("VERIFICATION", false);
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
           }
-
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_18:
           // pahly check kergay ga k ussy pay outstanding k rights hy ya nai
-          clearLocalStorageAtloginresponce(1, navigate);
-          localStorage.setItem("VERIFICATION", true);
           if (response.data.responseResult.hasAdminRights) {
             if (checkFeatureIDAvailability(33)) {
-              let packageFeatureIDs = [33];
+              packageFeatureIDs = [203, 28, 29, 30, 34, 218];
+            } else {
+              packageFeatureIDs = [33, 203, 28, 29, 30, 34, 218];
+            }
+            localStorage.setItem("cancelSub", JSON.stringify(true));
+            if (checkFeatureIDAvailability(33)) {
+              localStorage.removeItem("LocalUserRoutes");
+              localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
                 JSON.stringify(packageFeatureIDs)
@@ -742,39 +812,66 @@ const enterPasswordvalidation = (value, navigate, t) => {
               localStorage.setItem(
                 "LocalAdminRoutes",
                 JSON.stringify([
+                  { id: 203, name: "ManageUsers" },
+                  { id: 28, name: "PackageDetailsUserManagement" },
+                  { id: 29, name: "CancelSubscriptionUserManagement" },
+                  { id: 30, name: "deleteorganizationUserMangement" },
+                  { name: "PakageDetailsUserManagement", id: 206 },
                   { id: 33, name: "PayOutstanding" },
+                  { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
+                  { name: "PaymentHistory", id: 218 },
                 ])
               );
               navigate("/Admin/PayOutstanding");
-              dispatch(
-                enterPasswordSuccess(
-                  response.data.responseResult,
-                  t(
-                    "Password-verified-and-subscription-not-active-and-this-is-an-admin-user"
-                  )
-                )
-              );
             } else {
-              //yeah pay outstanding per lai jai ga
-              clearLocalStorageAtloginresponce(2, navigate);
-              dispatch(LoginFlowRoutes(1));
-              dispatch(
-                enterPasswordFail(t("User-not-authorised-contact-admin"))
+              localStorage.removeItem("LocalUserRoutes");
+              localStorage.removeItem("LocalAdminRoutes");
+              localStorage.setItem(
+                "packageFeatureIDs",
+                JSON.stringify(packageFeatureIDs)
               );
+              localStorage.setItem(
+                "LocalAdminRoutes",
+                JSON.stringify([
+                  { id: 203, name: "ManageUsers" },
+                  { id: 28, name: "PackageDetailsUserManagement" },
+                  { id: 29, name: "CancelSubscriptionUserManagement" },
+                  { id: 30, name: "deleteorganizationUserMangement" },
+                  { id: 34, name: "Summary" },
+                  { id: 200, name: "Admin" },
+                  { name: "PaymentHistory", id: 218 },
+                ])
+              );
+              navigate("/Admin/ManageUsers");
             }
+            dispatch(
+              enterPasswordSuccess(
+                response.data.responseResult,
+                t(
+                  "Password-verified-and-subscription-not-active-and-this-is-an-admin-user"
+                )
+              )
+            );
           } else {
             clearLocalStorageAtloginresponce(2, navigate);
             dispatch(LoginFlowRoutes(1));
+            localStorage.removeItem("LocalUserRoutes");
+            localStorage.setItem("VERIFICATION", false);
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
           }
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_19:
-          clearLocalStorageAtloginresponce(1, navigate);
-          localStorage.setItem("VERIFICATION", true);
           if (response.data.responseResult.hasAdminRights) {
             if (checkFeatureIDAvailability(33)) {
-              let packageFeatureIDs = [33];
+              packageFeatureIDs = [203, 28, 29, 30, 34, 218];
+            } else {
+              packageFeatureIDs = [33, 203, 28, 29, 30, 34, 218];
+            }
+            localStorage.setItem("cancelSub", JSON.stringify(true));
+            if (checkFeatureIDAvailability(33)) {
+              localStorage.removeItem("LocalUserRoutes");
+              localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
                 JSON.stringify(packageFeatureIDs)
@@ -782,30 +879,52 @@ const enterPasswordvalidation = (value, navigate, t) => {
               localStorage.setItem(
                 "LocalAdminRoutes",
                 JSON.stringify([
+                  { id: 203, name: "ManageUsers" },
+                  { id: 28, name: "PackageDetailsUserManagement" },
+                  { id: 29, name: "CancelSubscriptionUserManagement" },
+                  { id: 30, name: "deleteorganizationUserMangement" },
+                  { name: "PakageDetailsUserManagement", id: 206 },
                   { id: 33, name: "PayOutstanding" },
+                  { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
+                  { name: "PaymentHistory", id: 218 },
                 ])
               );
               navigate("/Admin/PayOutstanding");
-              dispatch(
-                enterPasswordSuccess(
-                  response.data.responseResult,
-                  t(
-                    "Password-verified-and-subscription-not-active-and-this-is-an-admin"
-                  )
-                )
-              );
             } else {
-              //yeah pay outstanding per lai jai ga
-              clearLocalStorageAtloginresponce(2, navigate);
-              dispatch(LoginFlowRoutes(1));
-              dispatch(
-                enterPasswordFail(t("User-not-authorised-contact-admin"))
+              localStorage.removeItem("LocalUserRoutes");
+              localStorage.removeItem("LocalAdminRoutes");
+              localStorage.setItem(
+                "packageFeatureIDs",
+                JSON.stringify(packageFeatureIDs)
               );
+              localStorage.setItem(
+                "LocalAdminRoutes",
+                JSON.stringify([
+                  { id: 203, name: "ManageUsers" },
+                  { id: 28, name: "PackageDetailsUserManagement" },
+                  { id: 29, name: "CancelSubscriptionUserManagement" },
+                  { id: 30, name: "deleteorganizationUserMangement" },
+                  { id: 34, name: "Summary" },
+                  { id: 200, name: "Admin" },
+                  { name: "PaymentHistory", id: 218 },
+                ])
+              );
+              navigate("/Admin/ManageUsers");
             }
+            dispatch(
+              enterPasswordSuccess(
+                response.data.responseResult,
+                t(
+                  "Password-verified-and-subscription-not-active-and-this-is-an-admin"
+                )
+              )
+            );
           } else {
             clearLocalStorageAtloginresponce(2, navigate);
             dispatch(LoginFlowRoutes(1));
+            localStorage.removeItem("LocalUserRoutes");
+            localStorage.setItem("VERIFICATION", false);
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
           }
           break;
@@ -815,10 +934,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
 
           localStorage.removeItem("LocalAdminRoutes");
           localStorage.setItem("VERIFICATION", true);
-          let packageFeatureId = [100, 101, 102];
+          packageFeatureIDs = [100, 101, 102];
           localStorage.setItem(
             "packageFeatureIDs",
-            JSON.stringify(packageFeatureId)
+            JSON.stringify(packageFeatureIDs)
           );
           localStorage.setItem(
             "LocalUserRoutes",
@@ -855,10 +974,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
           localStorage.removeItem("LocalUserRoutes");
           localStorage.setItem("TrialExpireSelectPac", JSON.stringify(true));
           dispatch(showUpgradeNowModal(true));
-          let packageFeatureids = [28];
+          packageFeatureIDs = [28];
           localStorage.setItem(
             "packageFeatureIDs",
-            JSON.stringify(packageFeatureids)
+            JSON.stringify(packageFeatureIDs)
           );
           localStorage.setItem(
             "LocalAdminRoutes",
@@ -896,10 +1015,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 JSON.stringify(true)
               );
               dispatch(showUpgradeNowModal(true));
-              let packageFeatureid = [28];
+              packageFeatureIDs = [28];
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureid)
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -941,10 +1060,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 JSON.stringify(true)
               );
               dispatch(showUpgradeNowModal(true));
-              let packageFeatureid = [28];
+              packageFeatureIDs = [28];
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureid)
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -978,10 +1097,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
 
           localStorage.removeItem("LocalAdminRoutes");
           localStorage.setItem("VERIFICATION", true);
-          let packageFeatureID = [100, 101, 102];
+          packageFeatureIDs = [100, 101, 102];
           localStorage.setItem(
             "packageFeatureIDs",
-            JSON.stringify(packageFeatureID)
+            JSON.stringify(packageFeatureIDs)
           );
           localStorage.setItem(
             "LocalUserRoutes",
@@ -1074,7 +1193,6 @@ const enterPasswordvalidation = (value, navigate, t) => {
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_32:
           if (response.data.responseResult.hasAdminRights) {
-            let packageFeatureIDs;
             if (checkFeatureIDAvailability(33)) {
               packageFeatureIDs = [203, 28, 29, 30, 34, 218];
             } else {
@@ -1143,7 +1261,6 @@ const enterPasswordvalidation = (value, navigate, t) => {
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_33:
           if (response.data.responseResult.hasAdminRights) {
-            let packageFeatureIDs;
             if (checkFeatureIDAvailability(33)) {
               packageFeatureIDs = [203, 28, 29, 30, 34, 218];
             } else {
@@ -1211,7 +1328,6 @@ const enterPasswordvalidation = (value, navigate, t) => {
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_34:
           if (response.data.responseResult.hasAdminRights) {
-            let packageFeatureIDs;
             if (checkFeatureIDAvailability(33)) {
               packageFeatureIDs = [203, 28, 29, 30, 34, 218];
             } else {
@@ -1281,10 +1397,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
           clearLocalStorageAtloginresponce(1, navigate);
           localStorage.removeItem("LocalAdminRoutes");
           localStorage.setItem("VERIFICATION", true);
-          let packageFeatureIds = [100, 101, 102];
+          packageFeatureIDs = [100, 101, 102];
           localStorage.setItem(
             "packageFeatureIDs",
-            JSON.stringify(packageFeatureIds)
+            JSON.stringify(packageFeatureIDs)
           );
           localStorage.setItem(
             "LocalUserRoutes",
@@ -1325,7 +1441,6 @@ const enterPasswordvalidation = (value, navigate, t) => {
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_37:
           if (response.data.responseResult.hasAdminRights) {
-            let packageFeatureIDs;
             if (checkFeatureIDAvailability(33)) {
               packageFeatureIDs = [203, 28, 29, 30, 34, 218];
             } else {
@@ -1393,7 +1508,6 @@ const enterPasswordvalidation = (value, navigate, t) => {
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_38:
           if (response.data.responseResult.hasAdminRights) {
-            let packageFeatureIDs;
             if (checkFeatureIDAvailability(33)) {
               packageFeatureIDs = [203, 28, 29, 30, 34, 218];
             } else {
@@ -1463,10 +1577,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
           clearLocalStorageAtloginresponce(1, navigate);
           localStorage.removeItem("LocalAdminRoutes");
           localStorage.setItem("VERIFICATION", true);
-          let packageFeatureI = [100, 101, 102];
+          packageFeatureIDs = [100, 101, 102];
           localStorage.setItem(
             "packageFeatureIDs",
-            JSON.stringify(packageFeatureI)
+            JSON.stringify(packageFeatureIDs)
           );
           localStorage.setItem(
             "LocalUserRoutes",
@@ -1689,6 +1803,7 @@ const createPasswordAction = (value, navigate, t) => {
           t
         )
       );
+      let packageFeatureIDs = [];
       switch (responseMessage.toLowerCase()) {
         case USERSPASSWORDCREATION.CREATION_01:
           dispatch(createPasswordFail(t("Password-could-not-be-created")));
@@ -1710,10 +1825,10 @@ const createPasswordAction = (value, navigate, t) => {
           localStorage.removeItem("LocalUserRoutes");
           localStorage.setItem("TrialExpireSelectPac", JSON.stringify(true));
           dispatch(showUpgradeNowModal(true));
-          let packageFeatureids = [28];
+          packageFeatureIDs = [28];
           localStorage.setItem(
             "packageFeatureIDs",
-            JSON.stringify(packageFeatureids)
+            JSON.stringify(packageFeatureIDs)
           );
           localStorage.setItem(
             "LocalAdminRoutes",
@@ -1845,22 +1960,55 @@ const createPasswordAction = (value, navigate, t) => {
           //pay out standing
           // User is the Organization Creator. Org sub not active. and this is organization creator (Direct to Billing Page)
           if (response.data.responseResult.hasAdminRights) {
-            clearLocalStorageAtloginresponce(1, navigate);
-            localStorage.removeItem("LocalUserRoutes");
-            localStorage.setItem("VERIFICATION", true);
-            let packageFeatureIDs = [33];
-            localStorage.setItem(
-              "packageFeatureIDs",
-              JSON.stringify(packageFeatureIDs)
-            );
-            localStorage.setItem(
-              "LocalAdminRoutes",
-              JSON.stringify([
-                { id: 33, name: "PayOutstanding" },
-                { id: 200, name: "Admin" },
-              ])
-            );
-            navigate("/Admin/PayOutstanding");
+            if (checkFeatureIDAvailability(33)) {
+              packageFeatureIDs = [203, 28, 29, 30, 34, 218];
+            } else {
+              packageFeatureIDs = [33, 203, 28, 29, 30, 34, 218];
+            }
+            localStorage.setItem("cancelSub", JSON.stringify(true));
+            if (checkFeatureIDAvailability(33)) {
+              localStorage.removeItem("LocalUserRoutes");
+              localStorage.removeItem("LocalAdminRoutes");
+              localStorage.setItem(
+                "packageFeatureIDs",
+                JSON.stringify(packageFeatureIDs)
+              );
+              localStorage.setItem(
+                "LocalAdminRoutes",
+                JSON.stringify([
+                  { id: 203, name: "ManageUsers" },
+                  { id: 28, name: "PackageDetailsUserManagement" },
+                  { id: 29, name: "CancelSubscriptionUserManagement" },
+                  { id: 30, name: "deleteorganizationUserMangement" },
+                  { name: "PakageDetailsUserManagement", id: 206 },
+                  { id: 33, name: "PayOutstanding" },
+                  { id: 34, name: "Summary" },
+                  { id: 200, name: "Admin" },
+                  { name: "PaymentHistory", id: 218 },
+                ])
+              );
+              navigate("/Admin/PayOutstanding");
+            } else {
+              localStorage.removeItem("LocalUserRoutes");
+              localStorage.removeItem("LocalAdminRoutes");
+              localStorage.setItem(
+                "packageFeatureIDs",
+                JSON.stringify(packageFeatureIDs)
+              );
+              localStorage.setItem(
+                "LocalAdminRoutes",
+                JSON.stringify([
+                  { id: 203, name: "ManageUsers" },
+                  { id: 28, name: "PackageDetailsUserManagement" },
+                  { id: 29, name: "CancelSubscriptionUserManagement" },
+                  { id: 30, name: "deleteorganizationUserMangement" },
+                  { id: 34, name: "Summary" },
+                  { id: 200, name: "Admin" },
+                  { name: "PaymentHistory", id: 218 },
+                ])
+              );
+              navigate("/Admin/ManageUsers");
+            }
             dispatch(
               createPasswordSuccess(
                 response.data.responseResult,
@@ -1881,11 +2029,16 @@ const createPasswordAction = (value, navigate, t) => {
           break;
         case USERSPASSWORDCREATION.CREATION_09:
           // Org sub not active. and this is an admin user
-          clearLocalStorageAtloginresponce(1, navigate);
-          localStorage.setItem("VERIFICATION", true);
           if (response.data.responseResult.hasAdminRights) {
             if (checkFeatureIDAvailability(33)) {
-              let packageFeatureIDs = [33];
+              packageFeatureIDs = [203, 28, 29, 30, 34, 218];
+            } else {
+              packageFeatureIDs = [33, 203, 28, 29, 30, 34, 218];
+            }
+            localStorage.setItem("cancelSub", JSON.stringify(true));
+            if (checkFeatureIDAvailability(33)) {
+              localStorage.removeItem("LocalUserRoutes");
+              localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
                 JSON.stringify(packageFeatureIDs)
@@ -1893,28 +2046,50 @@ const createPasswordAction = (value, navigate, t) => {
               localStorage.setItem(
                 "LocalAdminRoutes",
                 JSON.stringify([
+                  { id: 203, name: "ManageUsers" },
+                  { id: 28, name: "PackageDetailsUserManagement" },
+                  { id: 29, name: "CancelSubscriptionUserManagement" },
+                  { id: 30, name: "deleteorganizationUserMangement" },
+                  { name: "PakageDetailsUserManagement", id: 206 },
                   { id: 33, name: "PayOutstanding" },
+                  { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
+                  { name: "PaymentHistory", id: 218 },
                 ])
               );
               navigate("/Admin/PayOutstanding");
-              dispatch(
-                createPasswordSuccess(
-                  response.data.responseResult,
-                  t("Org-sub-not-active-and-this-is-an-admin-user")
-                )
-              );
             } else {
-              //yeah pay outstanding per lai jai ga
-              clearLocalStorageAtloginresponce(2, navigate);
-              dispatch(LoginFlowRoutes(1));
-              dispatch(
-                createPasswordFail(t("User-not-authorised-contact-admin"))
+              localStorage.removeItem("LocalUserRoutes");
+              localStorage.removeItem("LocalAdminRoutes");
+              localStorage.setItem(
+                "packageFeatureIDs",
+                JSON.stringify(packageFeatureIDs)
               );
+              localStorage.setItem(
+                "LocalAdminRoutes",
+                JSON.stringify([
+                  { id: 203, name: "ManageUsers" },
+                  { id: 28, name: "PackageDetailsUserManagement" },
+                  { id: 29, name: "CancelSubscriptionUserManagement" },
+                  { id: 30, name: "deleteorganizationUserMangement" },
+                  { id: 34, name: "Summary" },
+                  { id: 200, name: "Admin" },
+                  { name: "PaymentHistory", id: 218 },
+                ])
+              );
+              navigate("/Admin/ManageUsers");
             }
+            dispatch(
+              createPasswordSuccess(
+                response.data.responseResult,
+                t("Org-sub-not-active-and-this-is-an-admin-user")
+              )
+            );
           } else {
             clearLocalStorageAtloginresponce(2, navigate);
             dispatch(LoginFlowRoutes(1));
+            localStorage.removeItem("LocalUserRoutes");
+            localStorage.setItem("VERIFICATION", false);
             dispatch(
               createPasswordFail(t("User-not-authorised-contact-admin"))
             );
@@ -1922,11 +2097,16 @@ const createPasswordAction = (value, navigate, t) => {
 
           break;
         case USERSPASSWORDCREATION.CREATION_10:
-          clearLocalStorageAtloginresponce(1, navigate);
-          localStorage.setItem("VERIFICATION", true);
           if (response.data.responseResult.hasAdminRights) {
             if (checkFeatureIDAvailability(33)) {
-              let packageFeatureIDs = [33];
+              packageFeatureIDs = [203, 28, 29, 30, 34, 218];
+            } else {
+              packageFeatureIDs = [33, 203, 28, 29, 30, 34, 218];
+            }
+            localStorage.setItem("cancelSub", JSON.stringify(true));
+            if (checkFeatureIDAvailability(33)) {
+              localStorage.removeItem("LocalUserRoutes");
+              localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
                 JSON.stringify(packageFeatureIDs)
@@ -1934,28 +2114,50 @@ const createPasswordAction = (value, navigate, t) => {
               localStorage.setItem(
                 "LocalAdminRoutes",
                 JSON.stringify([
+                  { id: 203, name: "ManageUsers" },
+                  { id: 28, name: "PackageDetailsUserManagement" },
+                  { id: 29, name: "CancelSubscriptionUserManagement" },
+                  { id: 30, name: "deleteorganizationUserMangement" },
+                  { name: "PakageDetailsUserManagement", id: 206 },
                   { id: 33, name: "PayOutstanding" },
+                  { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
+                  { name: "PaymentHistory", id: 218 },
                 ])
               );
               navigate("/Admin/PayOutstanding");
-              dispatch(
-                createPasswordSuccess(
-                  response.data.responseResult,
-                  t("Org-sub-not-active-and-this-is-a-admin")
-                )
-              );
             } else {
-              //yeah pay outstanding per lai jai ga
-              clearLocalStorageAtloginresponce(2, navigate);
-              dispatch(LoginFlowRoutes(1));
-              dispatch(
-                createPasswordFail(t("User-not-authorised-contact-admin"))
+              localStorage.removeItem("LocalUserRoutes");
+              localStorage.removeItem("LocalAdminRoutes");
+              localStorage.setItem(
+                "packageFeatureIDs",
+                JSON.stringify(packageFeatureIDs)
               );
+              localStorage.setItem(
+                "LocalAdminRoutes",
+                JSON.stringify([
+                  { id: 203, name: "ManageUsers" },
+                  { id: 28, name: "PackageDetailsUserManagement" },
+                  { id: 29, name: "CancelSubscriptionUserManagement" },
+                  { id: 30, name: "deleteorganizationUserMangement" },
+                  { id: 34, name: "Summary" },
+                  { id: 200, name: "Admin" },
+                  { name: "PaymentHistory", id: 218 },
+                ])
+              );
+              navigate("/Admin/ManageUsers");
             }
+            dispatch(
+              createPasswordSuccess(
+                response.data.responseResult,
+                t("Org-sub-not-active-and-this-is-a-admin")
+              )
+            );
           } else {
             clearLocalStorageAtloginresponce(2, navigate);
             dispatch(LoginFlowRoutes(1));
+            localStorage.removeItem("LocalUserRoutes");
+            localStorage.setItem("VERIFICATION", false);
             dispatch(
               createPasswordFail(t("User-not-authorised-contact-admin"))
             );
@@ -1963,13 +2165,12 @@ const createPasswordAction = (value, navigate, t) => {
           break;
         case USERSPASSWORDCREATION.CREATION_11:
           clearLocalStorageAtloginresponce(1, navigate);
-
           localStorage.removeItem("LocalAdminRoutes");
           localStorage.setItem("VERIFICATION", true);
-          let packageFeatureIds = [100, 101, 102];
+          packageFeatureIDs = [100, 101, 102];
           localStorage.setItem(
             "packageFeatureIDs",
-            JSON.stringify(packageFeatureIds)
+            JSON.stringify(packageFeatureIDs)
           );
           localStorage.setItem(
             "LocalUserRoutes",
@@ -2098,42 +2299,252 @@ const createPasswordAction = (value, navigate, t) => {
             )
           );
           break;
-
         case USERSPASSWORDCREATION.CREATION_18:
-          dispatch(
-            createPasswordFail(
-              t(
-                "User-is-the-organization-creator-org-sub-is-suspended-and-this-is-organization-creator"
+          if (response.data.responseResult.hasAdminRights) {
+            if (checkFeatureIDAvailability(33)) {
+              packageFeatureIDs = [203, 28, 29, 30, 34, 218];
+            } else {
+              packageFeatureIDs = [33, 203, 28, 29, 30, 34, 218];
+            }
+            localStorage.setItem("cancelSub", JSON.stringify(true));
+            if (checkFeatureIDAvailability(33)) {
+              localStorage.removeItem("LocalUserRoutes");
+              localStorage.removeItem("LocalAdminRoutes");
+              localStorage.setItem(
+                "packageFeatureIDs",
+                JSON.stringify(packageFeatureIDs)
+              );
+              localStorage.setItem(
+                "LocalAdminRoutes",
+                JSON.stringify([
+                  { id: 203, name: "ManageUsers" },
+                  { id: 28, name: "PackageDetailsUserManagement" },
+                  { id: 29, name: "CancelSubscriptionUserManagement" },
+                  { id: 30, name: "deleteorganizationUserMangement" },
+                  { name: "PakageDetailsUserManagement", id: 206 },
+                  { id: 33, name: "PayOutstanding" },
+                  { id: 34, name: "Summary" },
+                  { id: 200, name: "Admin" },
+                  { name: "PaymentHistory", id: 218 },
+                ])
+              );
+              navigate("/Admin/PayOutstanding");
+            } else {
+              localStorage.removeItem("LocalUserRoutes");
+              localStorage.removeItem("LocalAdminRoutes");
+              localStorage.setItem(
+                "packageFeatureIDs",
+                JSON.stringify(packageFeatureIDs)
+              );
+              localStorage.setItem(
+                "LocalAdminRoutes",
+                JSON.stringify([
+                  { id: 203, name: "ManageUsers" },
+                  { id: 28, name: "PackageDetailsUserManagement" },
+                  { id: 29, name: "CancelSubscriptionUserManagement" },
+                  { id: 30, name: "deleteorganizationUserMangement" },
+                  { id: 34, name: "Summary" },
+                  { id: 200, name: "Admin" },
+                  { name: "PaymentHistory", id: 218 },
+                ])
+              );
+              navigate("/Admin/ManageUsers");
+            }
+            dispatch(
+              createPasswordSuccess(
+                response.data.responseResult,
+                t(
+                  "User-is-the-organization-creator-org-sub-is-suspended-and-this-is-organization-creator"
+                )
               )
-            )
-          );
+            );
+          } else {
+            clearLocalStorageAtloginresponce(2, navigate);
+            dispatch(LoginFlowRoutes(1));
+            localStorage.removeItem("LocalUserRoutes");
+            localStorage.setItem("VERIFICATION", false);
+            dispatch(
+              createPasswordFail(t("User-not-authorised-contact-admin"))
+            );
+          }
           // no action
           break;
-
         case USERSPASSWORDCREATION.CREATION_19:
-          dispatch(
-            createPasswordFail(
-              t("Org-sub-is-suspended-and-this-is-an-admin-user")
-            )
-          );
+          if (response.data.responseResult.hasAdminRights) {
+            if (checkFeatureIDAvailability(33)) {
+              packageFeatureIDs = [203, 28, 29, 30, 34, 218];
+            } else {
+              packageFeatureIDs = [33, 203, 28, 29, 30, 34, 218];
+            }
+            localStorage.setItem("cancelSub", JSON.stringify(true));
+            if (checkFeatureIDAvailability(33)) {
+              localStorage.removeItem("LocalUserRoutes");
+              localStorage.removeItem("LocalAdminRoutes");
+              localStorage.setItem(
+                "packageFeatureIDs",
+                JSON.stringify(packageFeatureIDs)
+              );
+              localStorage.setItem(
+                "LocalAdminRoutes",
+                JSON.stringify([
+                  { id: 203, name: "ManageUsers" },
+                  { id: 28, name: "PackageDetailsUserManagement" },
+                  { id: 29, name: "CancelSubscriptionUserManagement" },
+                  { id: 30, name: "deleteorganizationUserMangement" },
+                  { name: "PakageDetailsUserManagement", id: 206 },
+                  { id: 33, name: "PayOutstanding" },
+                  { id: 34, name: "Summary" },
+                  { id: 200, name: "Admin" },
+                  { name: "PaymentHistory", id: 218 },
+                ])
+              );
+              navigate("/Admin/PayOutstanding");
+            } else {
+              localStorage.removeItem("LocalUserRoutes");
+              localStorage.removeItem("LocalAdminRoutes");
+              localStorage.setItem(
+                "packageFeatureIDs",
+                JSON.stringify(packageFeatureIDs)
+              );
+              localStorage.setItem(
+                "LocalAdminRoutes",
+                JSON.stringify([
+                  { id: 203, name: "ManageUsers" },
+                  { id: 28, name: "PackageDetailsUserManagement" },
+                  { id: 29, name: "CancelSubscriptionUserManagement" },
+                  { id: 30, name: "deleteorganizationUserMangement" },
+                  { id: 34, name: "Summary" },
+                  { id: 200, name: "Admin" },
+                  { name: "PaymentHistory", id: 218 },
+                ])
+              );
+              navigate("/Admin/ManageUsers");
+            }
+            dispatch(
+              createPasswordSuccess(
+                response.data.responseResult,
+                t("Org-sub-is-suspended-and-this-is-an-admin-user")
+              )
+            );
+          } else {
+            clearLocalStorageAtloginresponce(2, navigate);
+            dispatch(LoginFlowRoutes(1));
+            localStorage.removeItem("LocalUserRoutes");
+            localStorage.setItem("VERIFICATION", false);
+            dispatch(
+              createPasswordFail(t("User-not-authorised-contact-admin"))
+            );
+          }
           // no action
           break;
-
         case USERSPASSWORDCREATION.CREATION_20:
-          dispatch(
-            createPasswordFail(t("Org-sub-is-suspended-and-this-is-a-admin"))
-          );
+          if (response.data.responseResult.hasAdminRights) {
+            if (checkFeatureIDAvailability(33)) {
+              packageFeatureIDs = [203, 28, 29, 30, 34, 218];
+            } else {
+              packageFeatureIDs = [33, 203, 28, 29, 30, 34, 218];
+            }
+            localStorage.setItem("cancelSub", JSON.stringify(true));
+            if (checkFeatureIDAvailability(33)) {
+              localStorage.removeItem("LocalUserRoutes");
+              localStorage.removeItem("LocalAdminRoutes");
+              localStorage.setItem(
+                "packageFeatureIDs",
+                JSON.stringify(packageFeatureIDs)
+              );
+              localStorage.setItem(
+                "LocalAdminRoutes",
+                JSON.stringify([
+                  { id: 203, name: "ManageUsers" },
+                  { id: 28, name: "PackageDetailsUserManagement" },
+                  { id: 29, name: "CancelSubscriptionUserManagement" },
+                  { id: 30, name: "deleteorganizationUserMangement" },
+                  { name: "PakageDetailsUserManagement", id: 206 },
+                  { id: 33, name: "PayOutstanding" },
+                  { id: 34, name: "Summary" },
+                  { id: 200, name: "Admin" },
+                  { name: "PaymentHistory", id: 218 },
+                ])
+              );
+              navigate("/Admin/PayOutstanding");
+            } else {
+              localStorage.removeItem("LocalUserRoutes");
+              localStorage.removeItem("LocalAdminRoutes");
+              localStorage.setItem(
+                "packageFeatureIDs",
+                JSON.stringify(packageFeatureIDs)
+              );
+              localStorage.setItem(
+                "LocalAdminRoutes",
+                JSON.stringify([
+                  { id: 203, name: "ManageUsers" },
+                  { id: 28, name: "PackageDetailsUserManagement" },
+                  { id: 29, name: "CancelSubscriptionUserManagement" },
+                  { id: 30, name: "deleteorganizationUserMangement" },
+                  { id: 34, name: "Summary" },
+                  { id: 200, name: "Admin" },
+                  { name: "PaymentHistory", id: 218 },
+                ])
+              );
+              navigate("/Admin/ManageUsers");
+            }
+            dispatch(
+              createPasswordSuccess(
+                response.data.responseResult,
+                t("Org-sub-is-suspended-and-this-is-a-admin")
+              )
+            );
+          } else {
+            clearLocalStorageAtloginresponce(2, navigate);
+            dispatch(LoginFlowRoutes(1));
+            localStorage.removeItem("LocalUserRoutes");
+            localStorage.setItem("VERIFICATION", false);
+            dispatch(
+              createPasswordFail(t("User-not-authorised-contact-admin"))
+            );
+          }
           // no action
           break;
-
         case USERSPASSWORDCREATION.CREATION_21:
-          dispatch(
-            createPasswordFail(t("Org-sub-is-suspended-and-this-is-a-user"))
+          clearLocalStorageAtloginresponce(1, navigate);
+          localStorage.removeItem("LocalAdminRoutes");
+          localStorage.setItem("VERIFICATION", true);
+          packageFeatureIDs = [100, 101, 102];
+          localStorage.setItem(
+            "packageFeatureIDs",
+            JSON.stringify(packageFeatureIDs)
           );
+          localStorage.setItem(
+            "LocalUserRoutes",
+            JSON.stringify([
+              { name: "Diskus", id: 100 },
+              { name: "home", id: 101 },
+              { name: "", id: 102 },
+            ])
+          );
+
+          //yeah pay outstanding per lai jai ga
+          if (response.data.responseResult.hasUserRights) {
+            navigate("/Diskus");
+            dispatch(
+              createPasswordSuccess(
+                response.data.responseResult,
+                t("Org-sub-is-suspended-and-this-is-a-user")
+              )
+            );
+          } else {
+            clearLocalStorageAtloginresponce(2, navigate);
+            dispatch(LoginFlowRoutes(1));
+
+            dispatch(
+              createPasswordFail(t("User-not-authorised-contact-admin"))
+            );
+          }
           // no action
           break;
-
         case USERSPASSWORDCREATION.CREATION_22:
+          clearLocalStorageAtloginresponce(2, navigate);
+          dispatch(LoginFlowRoutes(1));
           dispatch(
             createPasswordFail(
               t(
@@ -2143,57 +2554,271 @@ const createPasswordAction = (value, navigate, t) => {
           );
           // no action
           break;
-
         case USERSPASSWORDCREATION.CREATION_23:
+          clearLocalStorageAtloginresponce(2, navigate);
+          dispatch(LoginFlowRoutes(1));
           dispatch(
             createPasswordFail(t("Org-sub-is-closed-and-this-is-an-admin-user"))
           );
           // no action
           break;
-
         case USERSPASSWORDCREATION.CREATION_24:
+          clearLocalStorageAtloginresponce(2, navigate);
+          dispatch(LoginFlowRoutes(1));
           dispatch(
             createPasswordFail(t("Org-sub-is-closed-and-this-is-a-admin"))
           );
           // no action
           break;
-
         case USERSPASSWORDCREATION.CREATION_25:
+          clearLocalStorageAtloginresponce(2, navigate);
+          dispatch(LoginFlowRoutes(1));
           dispatch(
             createPasswordFail(t("Org-sub-is-closed-and-this-is-a-user"))
           );
           // no action
           break;
-
         case USERSPASSWORDCREATION.CREATION_26:
-          dispatch(
-            createPasswordFail(
-              t(
-                "User-is-the-Organization-Creator-Org-sub-is-cancel-and-this-is-organization-creator"
+          if (response.data.responseResult.hasAdminRights) {
+            if (checkFeatureIDAvailability(33)) {
+              packageFeatureIDs = [203, 28, 29, 30, 34, 218];
+            } else {
+              packageFeatureIDs = [33, 203, 28, 29, 30, 34, 218];
+            }
+            localStorage.setItem("cancelSub", JSON.stringify(true));
+            if (checkFeatureIDAvailability(33)) {
+              localStorage.removeItem("LocalUserRoutes");
+              localStorage.removeItem("LocalAdminRoutes");
+              localStorage.setItem(
+                "packageFeatureIDs",
+                JSON.stringify(packageFeatureIDs)
+              );
+              localStorage.setItem(
+                "LocalAdminRoutes",
+                JSON.stringify([
+                  { id: 203, name: "ManageUsers" },
+                  { id: 28, name: "PackageDetailsUserManagement" },
+                  { id: 29, name: "CancelSubscriptionUserManagement" },
+                  { id: 30, name: "deleteorganizationUserMangement" },
+                  { name: "PakageDetailsUserManagement", id: 206 },
+                  { id: 33, name: "PayOutstanding" },
+                  { id: 34, name: "Summary" },
+                  { id: 200, name: "Admin" },
+                  { name: "PaymentHistory", id: 218 },
+                ])
+              );
+              navigate("/Admin/PayOutstanding");
+            } else {
+              localStorage.removeItem("LocalUserRoutes");
+              localStorage.removeItem("LocalAdminRoutes");
+              localStorage.setItem(
+                "packageFeatureIDs",
+                JSON.stringify(packageFeatureIDs)
+              );
+              localStorage.setItem(
+                "LocalAdminRoutes",
+                JSON.stringify([
+                  { id: 203, name: "ManageUsers" },
+                  { id: 28, name: "PackageDetailsUserManagement" },
+                  { id: 29, name: "CancelSubscriptionUserManagement" },
+                  { id: 30, name: "deleteorganizationUserMangement" },
+                  { id: 34, name: "Summary" },
+                  { id: 200, name: "Admin" },
+                  { name: "PaymentHistory", id: 218 },
+                ])
+              );
+              navigate("/Admin/ManageUsers");
+            }
+            dispatch(
+              createPasswordSuccess(
+                response.data.responseResult,
+                t(
+                  "User-is-the-Organization-Creator-Org-sub-is-cancel-and-this-is-organization-creator"
+                )
               )
-            )
-          );
+            );
+          } else {
+            clearLocalStorageAtloginresponce(2, navigate);
+            dispatch(LoginFlowRoutes(1));
+            localStorage.removeItem("LocalUserRoutes");
+            localStorage.setItem("VERIFICATION", false);
+            dispatch(
+              createPasswordFail(t("User-not-authorised-contact-admin"))
+            );
+          }
           // no action
           break;
-
         case USERSPASSWORDCREATION.CREATION_27:
-          dispatch(
-            createPasswordFail(t("Org-sub-is-cancel-and-this-is-an-admin-user"))
-          );
+          if (response.data.responseResult.hasAdminRights) {
+            if (checkFeatureIDAvailability(33)) {
+              packageFeatureIDs = [203, 28, 29, 30, 34, 218];
+            } else {
+              packageFeatureIDs = [33, 203, 28, 29, 30, 34, 218];
+            }
+            localStorage.setItem("cancelSub", JSON.stringify(true));
+            if (checkFeatureIDAvailability(33)) {
+              localStorage.removeItem("LocalUserRoutes");
+              localStorage.removeItem("LocalAdminRoutes");
+              localStorage.setItem(
+                "packageFeatureIDs",
+                JSON.stringify(packageFeatureIDs)
+              );
+              localStorage.setItem(
+                "LocalAdminRoutes",
+                JSON.stringify([
+                  { id: 203, name: "ManageUsers" },
+                  { id: 28, name: "PackageDetailsUserManagement" },
+                  { id: 29, name: "CancelSubscriptionUserManagement" },
+                  { id: 30, name: "deleteorganizationUserMangement" },
+                  { name: "PakageDetailsUserManagement", id: 206 },
+                  { id: 33, name: "PayOutstanding" },
+                  { id: 34, name: "Summary" },
+                  { id: 200, name: "Admin" },
+                  { name: "PaymentHistory", id: 218 },
+                ])
+              );
+              navigate("/Admin/PayOutstanding");
+            } else {
+              localStorage.removeItem("LocalUserRoutes");
+              localStorage.removeItem("LocalAdminRoutes");
+              localStorage.setItem(
+                "packageFeatureIDs",
+                JSON.stringify(packageFeatureIDs)
+              );
+              localStorage.setItem(
+                "LocalAdminRoutes",
+                JSON.stringify([
+                  { id: 203, name: "ManageUsers" },
+                  { id: 28, name: "PackageDetailsUserManagement" },
+                  { id: 29, name: "CancelSubscriptionUserManagement" },
+                  { id: 30, name: "deleteorganizationUserMangement" },
+                  { id: 34, name: "Summary" },
+                  { id: 200, name: "Admin" },
+                  { name: "PaymentHistory", id: 218 },
+                ])
+              );
+              navigate("/Admin/ManageUsers");
+            }
+            dispatch(
+              createPasswordSuccess(
+                response.data.responseResult,
+                t("Org-sub-is-cancel-and-this-is-an-admin-user")
+              )
+            );
+          } else {
+            clearLocalStorageAtloginresponce(2, navigate);
+            dispatch(LoginFlowRoutes(1));
+            localStorage.removeItem("LocalUserRoutes");
+            localStorage.setItem("VERIFICATION", false);
+            dispatch(
+              createPasswordFail(t("User-not-authorised-contact-admin"))
+            );
+          }
           // no action
           break;
-
         case USERSPASSWORDCREATION.CREATION_28:
-          dispatch(
-            createPasswordFail(t("Org-sub-is-cancel-and-this-is-an-admin"))
-          );
+          if (response.data.responseResult.hasAdminRights) {
+            if (checkFeatureIDAvailability(33)) {
+              packageFeatureIDs = [203, 28, 29, 30, 34, 218];
+            } else {
+              packageFeatureIDs = [33, 203, 28, 29, 30, 34, 218];
+            }
+            localStorage.setItem("cancelSub", JSON.stringify(true));
+            if (checkFeatureIDAvailability(33)) {
+              localStorage.removeItem("LocalUserRoutes");
+              localStorage.removeItem("LocalAdminRoutes");
+              localStorage.setItem(
+                "packageFeatureIDs",
+                JSON.stringify(packageFeatureIDs)
+              );
+              localStorage.setItem(
+                "LocalAdminRoutes",
+                JSON.stringify([
+                  { id: 203, name: "ManageUsers" },
+                  { id: 28, name: "PackageDetailsUserManagement" },
+                  { id: 29, name: "CancelSubscriptionUserManagement" },
+                  { id: 30, name: "deleteorganizationUserMangement" },
+                  { name: "PakageDetailsUserManagement", id: 206 },
+                  { id: 33, name: "PayOutstanding" },
+                  { id: 34, name: "Summary" },
+                  { id: 200, name: "Admin" },
+                  { name: "PaymentHistory", id: 218 },
+                ])
+              );
+              navigate("/Admin/PayOutstanding");
+            } else {
+              localStorage.removeItem("LocalUserRoutes");
+              localStorage.removeItem("LocalAdminRoutes");
+              localStorage.setItem(
+                "packageFeatureIDs",
+                JSON.stringify(packageFeatureIDs)
+              );
+              localStorage.setItem(
+                "LocalAdminRoutes",
+                JSON.stringify([
+                  { id: 203, name: "ManageUsers" },
+                  { id: 28, name: "PackageDetailsUserManagement" },
+                  { id: 29, name: "CancelSubscriptionUserManagement" },
+                  { id: 30, name: "deleteorganizationUserMangement" },
+                  { id: 34, name: "Summary" },
+                  { id: 200, name: "Admin" },
+                  { name: "PaymentHistory", id: 218 },
+                ])
+              );
+              navigate("/Admin/ManageUsers");
+            }
+            dispatch(
+              createPasswordSuccess(
+                response.data.responseResult,
+                t("Org-sub-is-cancel-and-this-is-an-admin")
+              )
+            );
+          } else {
+            clearLocalStorageAtloginresponce(2, navigate);
+            dispatch(LoginFlowRoutes(1));
+            localStorage.removeItem("LocalUserRoutes");
+            localStorage.setItem("VERIFICATION", false);
+            dispatch(
+              createPasswordFail(t("User-not-authorised-contact-admin"))
+            );
+          }
           // no action
           break;
-
         case USERSPASSWORDCREATION.CREATION_29:
-          dispatch(
-            createPasswordFail(t("Org-sub-is-cancel-and-this-is-an-user"))
+          clearLocalStorageAtloginresponce(1, navigate);
+          localStorage.removeItem("LocalAdminRoutes");
+          localStorage.setItem("VERIFICATION", true);
+          packageFeatureIDs = [100, 101, 102];
+          localStorage.setItem(
+            "packageFeatureIDs",
+            JSON.stringify(packageFeatureIDs)
           );
+          localStorage.setItem(
+            "LocalUserRoutes",
+            JSON.stringify([
+              { name: "Diskus", id: 100 },
+              { name: "home", id: 101 },
+              { name: "", id: 102 },
+            ])
+          );
+
+          //yeah pay outstanding per lai jai ga
+          if (response.data.responseResult.hasUserRights) {
+            navigate("/Diskus");
+            dispatch(
+              createPasswordSuccess(
+                response.data.responseResult,
+                t("Org-sub-is-cancel-and-this-is-an-user")
+              )
+            );
+          } else {
+            clearLocalStorageAtloginresponce(2, navigate);
+            dispatch(LoginFlowRoutes(1));
+
+            dispatch(
+              createPasswordFail(t("User-not-authorised-contact-admin"))
+            );
+          }
           // no action
           break;
         default:
