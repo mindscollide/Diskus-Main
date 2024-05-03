@@ -223,11 +223,9 @@ const Participants = ({
   };
 
   let allowRSVPValue = NewMeetingreducer?.getAllSavedparticipantsAllowrsvp;
-
-  console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer)
-
+  let ParticipantsColoumn = [];
   if (allowRSVPValue === true) {
-    var ParticipantsColoumn = [
+    ParticipantsColoumn = [
       {
         title: (
           <>
@@ -241,7 +239,7 @@ const Participants = ({
         dataIndex: "userName",
         key: "userName",
         align: "left",
-        width: "80px",
+        ellipsis: true,
       },
 
       {
@@ -249,13 +247,14 @@ const Participants = ({
         dataIndex: "email",
         key: "email",
         align: "left",
-        width: "120px",
+        ellipsis: true,
       },
       {
         title: t("Participant-title"),
         dataIndex: "participantTitle",
         key: "participantTitle",
-        width: "120px",
+        ellipsis: true,
+
         align: "left",
         render: (text, record) => {
           if (
@@ -300,7 +299,7 @@ const Participants = ({
         dataIndex: "participantRole",
         key: "participantRole",
         align: "left",
-        width: "120px",
+        ellipsis: true,
 
         render: (text, record) => {
           if (
@@ -352,7 +351,8 @@ const Participants = ({
         dataIndex: "attendeeAvailability",
         key: "attendeeAvailability",
         align: "left",
-        width: "120px",
+        ellipsis: true,
+
         render: (text, record) => {
           if (record.attendeeAvailability === 1) {
             return (
@@ -430,7 +430,7 @@ const Participants = ({
       {
         dataIndex: "Close",
         key: "Close",
-        width: "80px",
+        ellipsis: true,
 
         render: (text, record) => {
           if (
@@ -474,7 +474,7 @@ const Participants = ({
       },
     ];
   } else {
-    var ParticipantsColoumn = [
+    ParticipantsColoumn = [
       {
         title: (
           <>
@@ -488,7 +488,7 @@ const Participants = ({
         dataIndex: "userName",
         key: "userName",
         align: "left",
-        width: "80px",
+        ellipsis: true,
       },
 
       {
@@ -496,13 +496,14 @@ const Participants = ({
         dataIndex: "email",
         key: "email",
         align: "left",
-        width: "120px",
+        ellipsis: true,
       },
       {
         title: t("Participant-title"),
         dataIndex: "participantTitle",
         key: "participantTitle",
-        width: "120px",
+        ellipsis: true,
+
         align: "left",
         render: (text, record) => {
           if (
@@ -547,7 +548,7 @@ const Participants = ({
         dataIndex: "participantRole",
         key: "participantRole",
         align: "left",
-        width: "120px",
+        ellipsis: true,
 
         render: (text, record) => {
           if (
@@ -596,7 +597,7 @@ const Participants = ({
       {
         dataIndex: "Close",
         key: "Close",
-        width: "80px",
+        ellipsis: true,
 
         render: (text, record) => {
           if (
@@ -857,7 +858,7 @@ const Participants = ({
               <Col lg={12} md={12} sm={12}>
                 <Table
                   column={ParticipantsColoumn}
-                  scroll={{ y: "42vh" }}
+                  scroll={{ y: rspvRows.length === 0 ? "55vh" :  "42vh" }}
                   pagination={false}
                   locale={{
                     emptyText: (

@@ -5,6 +5,7 @@ import {
   googleValidToken,
   revoketoken,
   validateMicrosoftToken,
+  revokeMicrosoftToken,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "../actions/Auth_action";
 import axios from "axios";
@@ -915,10 +916,116 @@ const getMicrosoftValidToken = (
     }
   };
 };
+
+const revokeMicrosoftToken_Init = () => {
+  return {
+    type: actions.REVOKE_TOKEN_MICROSOFT_INIT,
+  };
+};
+
+const revokeMicrosoftToken_success = (response, message) => {
+  return {
+    type: actions.REVOKE_TOKEN_MICROSOFT_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const revokeMicrosoftToken_fail = (message) => {
+  return {
+    type: actions.REVOKE_TOKEN_MICROSOFT_FAIL,
+    message: message,
+  };
+};
+
+const revokeMicrosoftTokenApi = (
+  navigate,
+  data,
+  t,
+  flag,
+  AllowMicrosoftCalenderSyncCall
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    dispatch(revokeMicrosoftToken_Init());
+    let form = new FormData();
+    form.append("RequestMethod", revokeMicrosoftToken.RequestMethod);
+    await axios({
+      method: "post",
+      url: getCalender,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            revokeMicrosoftTokenApi(
+              navigate,
+              data,
+              t,
+              flag,
+              AllowMicrosoftCalenderSyncCall
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Calender_CalenderServiceManager_RevokeMicrosoftToken_01".toLowerCase()
+                )
+            ) {
+              dispatch(revokeMicrosoftToken_success(""));
+              updateUserSettingFunc(
+                navigate,
+                data,
+                t,
+                flag,
+                AllowMicrosoftCalenderSyncCall
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Calender_CalenderServiceManager_RevokeMicrosoftToken_01".toLowerCase()
+                )
+            ) {
+              dispatch(revokeMicrosoftToken_fail(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Calender_CalenderServiceManager_RevokeMicrosoftToken_01".toLowerCase()
+                )
+            ) {
+              dispatch(revokeMicrosoftToken_fail(""));
+            } else {
+              dispatch(revokeMicrosoftToken_fail(""));
+            }
+          } else {
+            dispatch(revokeMicrosoftToken_fail(""));
+          }
+        } else {
+          dispatch(revokeMicrosoftToken_fail(""));
+        }
+      })
+      .catch(() => {
+        dispatch(revokeMicrosoftToken_fail(""));
+      })
+      .finally(() => {
+        dispatch(revokeMicrosoftToken_fail(""));
+      });
+  };
+};
 export {
   updateUserSettingFunc,
   updateUserMessageCleare,
   getGoogleValidToken,
   revokeToken,
   getMicrosoftValidToken,
+  revokeMicrosoftTokenApi,
 };

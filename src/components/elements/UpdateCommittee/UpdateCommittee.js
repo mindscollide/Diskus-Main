@@ -1871,6 +1871,9 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                                     className={
                                                       styles["FileName"]
                                                     }
+                                                    title={
+                                                      data.DisplayAttachmentName
+                                                    }
                                                   >
                                                     {data.DisplayAttachmentName}
                                                   </span>
