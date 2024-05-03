@@ -114,12 +114,12 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
               );
               if (response.data.responseResult.userDevices.length === 1) {
                 // navigate("/sendmailwithdevice");
-                localStorage.setItem("LoginFlowPageRoute", 8);
-                dispatch(LoginFlowRoutes(8));
+                //localStorage.setItem("LoginFlowPageRoute", 8);
+               dispatch(LoginFlowRoutes(8));
               } else {
                 // navigate("/twofacmultidevice");
-                localStorage.setItem("LoginFlowPageRoute", 13);
-                dispatch(LoginFlowRoutes(13));
+                //localStorage.setItem("LoginFlowPageRoute", 13);
+               dispatch(LoginFlowRoutes(13));
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -134,8 +134,8 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
                   t("User-doesnt-have-saved-devices")
                 )
               );
-              localStorage.setItem("LoginFlowPageRoute", 4);
-              dispatch(LoginFlowRoutes(4));
+              //localStorage.setItem("LoginFlowPageRoute", 4);
+             dispatch(LoginFlowRoutes(4));
               // navigate("/twofac");
             } else if (
               response.data.responseResult.responseMessage
@@ -245,8 +245,8 @@ const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
                   t("Otp-code-sent-via-email-sms-and-devices")
                 )
               );
-              localStorage.setItem("LoginFlowPageRoute", 6);
-              dispatch(LoginFlowRoutes(6));
+              //localStorage.setItem("LoginFlowPageRoute", 6);
+             dispatch(LoginFlowRoutes(6));
               // navigate("/2FAverificationotp");
               localStorage.setItem("seconds", 60);
               localStorage.setItem("minutes", 4);
@@ -264,8 +264,8 @@ const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
                 )
               );
 
-              localStorage.setItem("LoginFlowPageRoute", 6);
-              dispatch(LoginFlowRoutes(6));
+              //localStorage.setItem("LoginFlowPageRoute", 6);
+             dispatch(LoginFlowRoutes(6));
               // navigate("/2FAverificationotp");
               localStorage.setItem("seconds", 60);
               localStorage.setItem("minutes", 4);
@@ -282,8 +282,8 @@ const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
                   t("Otp-code-sent-via-email-and-devices")
                 )
               );
-              localStorage.setItem("LoginFlowPageRoute", 6);
-              dispatch(LoginFlowRoutes(6));
+              //localStorage.setItem("LoginFlowPageRoute", 6);
+             dispatch(LoginFlowRoutes(6));
               // navigate("/2FAverificationotp");
               localStorage.setItem("seconds", 60);
               localStorage.setItem("minutes", 4);
@@ -302,8 +302,8 @@ const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
                   t("Otp-code-sent-via-email-and-sms")
                 )
               );
-              localStorage.setItem("LoginFlowPageRoute", 6);
-              dispatch(LoginFlowRoutes(6));
+              //localStorage.setItem("LoginFlowPageRoute", 6);
+             dispatch(LoginFlowRoutes(6));
               // navigate("/2FAverificationotp");
               localStorage.setItem("seconds", 60);
               localStorage.setItem("minutes", 4);
@@ -342,8 +342,8 @@ const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
                 )
               );
 
-              localStorage.setItem("LoginFlowPageRoute", 6);
-              dispatch(LoginFlowRoutes(6));
+              //localStorage.setItem("LoginFlowPageRoute", 6);
+             dispatch(LoginFlowRoutes(6));
               // navigate("/2FAverificationotp");
               localStorage.setItem("seconds", 60);
               localStorage.setItem("minutes", 4);
@@ -362,8 +362,8 @@ const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
                 )
               );
 
-              localStorage.setItem("LoginFlowPageRoute", 6);
-              dispatch(LoginFlowRoutes(6));
+              //localStorage.setItem("LoginFlowPageRoute", 6);
+             dispatch(LoginFlowRoutes(6));
               // navigate("/2FAverificationotp");
               localStorage.setItem("seconds", 60);
               localStorage.setItem("minutes", 4);
@@ -454,8 +454,8 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
                   t("Otp-code-sent-via-email-sms-and-devices")
                 )
               );
-              localStorage.setItem("LoginFlowPageRoute", 6);
-              dispatch(LoginFlowRoutes(6));
+              //localStorage.setItem("LoginFlowPageRoute", 6);
+             dispatch(LoginFlowRoutes(6));
               // navigate("/2FAverificationotp");
               return setSeconds(60), setMinutes(4);
             } else if (
@@ -471,8 +471,8 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
                   t("Otp-code-sent-via-sms-and-devices")
                 )
               );
-              localStorage.setItem("LoginFlowPageRoute", 6);
-              dispatch(LoginFlowRoutes(6));
+              //localStorage.setItem("LoginFlowPageRoute", 6);
+             dispatch(LoginFlowRoutes(6));
               // navigate("/2FAverificationotp");
               return setSeconds(60), setMinutes(4);
             } else if (
@@ -488,8 +488,8 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
                   t("Otp-code-sent-via-email-and-devices")
                 )
               );
-              localStorage.setItem("LoginFlowPageRoute", 6);
-              dispatch(LoginFlowRoutes(6));
+              //localStorage.setItem("LoginFlowPageRoute", 6);
+             dispatch(LoginFlowRoutes(6));
               // navigate("/2FAverificationotp");
               return setSeconds(60), setMinutes(4);
             } else if (
@@ -507,8 +507,8 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
                   t("Otp-code-sent-via-email-and-sms")
                 )
               );
-              localStorage.setItem("LoginFlowPageRoute", 6);
-              dispatch(LoginFlowRoutes(6));
+              //localStorage.setItem("LoginFlowPageRoute", 6);
+             dispatch(LoginFlowRoutes(6));
               // navigate("/2FAverificationotp", { state: { value: 2 } });
               return setSeconds(60), setMinutes(4);
             } else if (
@@ -543,8 +543,8 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
                   t("Otp-code-sent-via-sms")
                 )
               );
-              localStorage.setItem("LoginFlowPageRoute", 6);
-              dispatch(LoginFlowRoutes(6));
+              //localStorage.setItem("LoginFlowPageRoute", 6);
+             dispatch(LoginFlowRoutes(6));
               // navigate("/2FAverificationotp", { state: { value: 0 } });
               return setSeconds(60), setMinutes(4);
             } else if (
@@ -560,8 +560,8 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
                   t("Otp-code-sent-via-email")
                 )
               );
-              localStorage.setItem("LoginFlowPageRoute", 6);
-              dispatch(LoginFlowRoutes(6));
+              //localStorage.setItem("LoginFlowPageRoute", 6);
+             dispatch(LoginFlowRoutes(6));
               // navigate("/2FAverificationotp", { state: { value: 1 } });
               return setSeconds(60), setMinutes(4);
             } else if (

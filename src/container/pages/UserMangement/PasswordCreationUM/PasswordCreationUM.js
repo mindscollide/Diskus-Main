@@ -216,7 +216,7 @@ const PasswordCreationUM = ({ isFreetrail }) => {
   const goBackButton = () => {
     localStorage.removeItem("signupCurrentPage");
     localStorage.setItem("LoginFlowPageRoute", 1);
-    dispatch(LoginFlowRoutes(1));
+   dispatch(LoginFlowRoutes(1));
     navigate("/");
   };
 

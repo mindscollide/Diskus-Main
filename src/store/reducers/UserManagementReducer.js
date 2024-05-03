@@ -11,7 +11,7 @@ const initialState = {
   allOrganizationUsersData: null,
   organizationPakageDetailsUserStatsData: null,
   organizationSelectedPakagesByOrganizationIDData: null,
-  defaultRoutingValue: null,
+  defaultRoutingValue: 1,
   defaulSignUpRoute: 1,
   getAllSelectedPakagesData: null,
   getOrganizationUserStatsGraph: null,

@@ -22,7 +22,10 @@ import {
 } from "../../../../store/actions/Auth2_actions";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { signUpFlowRoutes } from "../../../../store/actions/UserManagementActions";
+import {
+  LoginFlowRoutes,
+  signUpFlowRoutes,
+} from "../../../../store/actions/UserManagementActions";
 
 const SignInUserManagement = () => {
   const navigate = useNavigate();
@@ -143,7 +146,8 @@ const SignInUserManagement = () => {
       localStorage.clear();
       try {
         if (Number(LoginFlowPageRoute) !== 1) {
-          localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
+          //localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
+          dispatch(LoginFlowRoutes(LoginFlowPageRoute));
         }
       } catch {}
       if (reLang != undefined && reLang != null) {
@@ -168,7 +172,8 @@ const SignInUserManagement = () => {
       localStorage.clear();
       try {
         if (Number(LoginFlowPageRoute) !== 1) {
-          localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
+          //localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
+          dispatch(LoginFlowRoutes(LoginFlowPageRoute));
         }
       } catch {}
       if (reLang != undefined && reLang != null) {
@@ -193,7 +198,8 @@ const SignInUserManagement = () => {
       localStorage.clear();
       try {
         if (Number(LoginFlowPageRoute) !== 1) {
-          localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
+          //localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
+          dispatch(LoginFlowRoutes(LoginFlowPageRoute));
         }
       } catch {}
 
@@ -214,7 +220,8 @@ const SignInUserManagement = () => {
       localStorage.clear();
       try {
         if (Number(LoginFlowPageRoute) !== 1) {
-          localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
+          //localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
+          dispatch(LoginFlowRoutes(LoginFlowPageRoute));
         }
       } catch {}
 

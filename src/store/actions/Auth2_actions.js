@@ -332,7 +332,7 @@ const validationEmailAction = (email, navigate, t) => {
                   t("Users-password-is-created")
                 )
               );
-              localStorage.setItem("LoginFlowPageRoute", 2);
+              //localStorage.setItem("LoginFlowPageRoute", 2);
               dispatch(LoginFlowRoutes(2));
               // navigate("/enterPassword");
             } else if (
@@ -361,7 +361,7 @@ const validationEmailAction = (email, navigate, t) => {
                   t("User-password-is-not-created-please-create-your-password")
                 )
               );
-              localStorage.setItem("LoginFlowPageRoute", 11);
+              //localStorage.setItem("LoginFlowPageRoute", 11);
               dispatch(LoginFlowRoutes(11));
               // navigate("/createpasswordorganization");
             } else if (
@@ -374,7 +374,7 @@ const validationEmailAction = (email, navigate, t) => {
               localStorage.setItem("seconds", 0);
               localStorage.setItem("minutes", 0);
               localStorage.setItem("userEmail", email);
-              localStorage.setItem("LoginFlowPageRoute", 3);
+              //localStorage.setItem("LoginFlowPageRoute", 3);
               dispatch(LoginFlowRoutes(3));
               // navigate("/verifyEmailOTP");
               dispatch(
@@ -722,7 +722,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
           //   );
           // } else {
           //   clearLocalStorageAtloginresponce(2, navigate);
-          //   dispatch(LoginFlowRoutes(1));
+          //  dispatch(LoginFlowRoutes(1));
           //   localStorage.removeItem("LocalUserRoutes");
           //   localStorage.setItem("VERIFICATION", false);
           //   dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
@@ -1699,7 +1699,7 @@ const verificationEmailOTP = (
                 console.log("LoginFlowPageRoute");
                 localStorage.removeItem("seconds");
                 localStorage.removeItem("minutes");
-                localStorage.getItem("LoginFlowPageRoute", 11);
+                localStorage.setItem("LoginFlowPageRoute", 11);
                 console.log("LoginFlowPageRoute");
                 dispatch(LoginFlowRoutes(11));
                 console.log("LoginFlowPageRoute");

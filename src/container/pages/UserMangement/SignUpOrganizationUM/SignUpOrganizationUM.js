@@ -805,7 +805,7 @@ const SignUpOrganizationUM = () => {
 
   const onClickLink = () => {
     if (isFreeTrail === true) {
-      localStorage.removeItem("signupCurrentPage", 2);
+      localStorage.removeItem("signupCurrentPage");
       localStorage.setItem("LoginFlowPageRoute", 1);
       dispatch(LoginFlowRoutes(1));
       navigate("/");

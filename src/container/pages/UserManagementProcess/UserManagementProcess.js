@@ -19,6 +19,7 @@ import { cleareMessage } from "../../../store/actions/Auth2_actions";
 import { Notification } from "../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { cleareChangePasswordMessage } from "../../../store/actions/Auth_Forgot_Password";
+import { LoginFlowRoutes } from "../../../store/actions/UserManagementActions";
 
 const UserManagementProcess = () => {
   // Define setCurrentStep function
@@ -36,19 +37,29 @@ const UserManagementProcess = () => {
   });
 
   // Retrieve currentStep value from localStorage, default to 1 if not found
-  const initialStep = Number(localStorage.getItem("LoginFlowPageRoute"));
-  const validInitialStep =
-    !isNaN(initialStep) && initialStep >= 1 && initialStep <= 13
-      ? initialStep
-      : 1;
-  const [currentStep, setCurrentStepValue] = useState(validInitialStep);
+  const storedStep = Number(localStorage.getItem("LoginFlowPageRoute"));
   useEffect(() => {
-    try {
-      localStorage.removeItem("signupCurrentPage");
-      if (UserMangementReducer.defaultRoutingValue) {
-        setCurrentStepValue(UserMangementReducer.defaultRoutingValue);
+    // Retrieve current step from local storage
+    if (performance.navigation.type === PerformanceNavigation.TYPE_RELOAD) {
+      console.log("LoginFlowPageRoute", storedStep);
+      if (storedStep) {
+        dispatch(LoginFlowRoutes(storedStep));
       }
-    } catch {}
+    } else {
+      console.log("LoginFlowPageRoute");
+      localStorage.setItem("LoginFlowPageRoute", 1);
+      dispatch(LoginFlowRoutes(1));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (UserMangementReducer.defaultRoutingValue) {
+      // Update local storage with the current step
+      localStorage.setItem(
+        "LoginFlowPageRoute",
+        UserMangementReducer.defaultRoutingValue
+      );
+    }
   }, [UserMangementReducer.defaultRoutingValue]);
 
   useEffect(() => {
@@ -141,31 +152,35 @@ const UserManagementProcess = () => {
 
   let componentToRender;
 
-  if (currentStep === 1) {
+  if (
+    UserMangementReducer.defaultRoutingValue === 1 ||
+    UserMangementReducer.defaultRoutingValue === null ||
+    UserMangementReducer.defaultRoutingValue === undefined
+  ) {
     componentToRender = <SignInComponent />;
-  } else if (currentStep === 2) {
+  } else if (UserMangementReducer.defaultRoutingValue === 2) {
     componentToRender = <PasswordVerification />;
-  } else if (currentStep === 3) {
+  } else if (UserMangementReducer.defaultRoutingValue === 3) {
     componentToRender = <VerifyOTPUM />;
-  } else if (currentStep === 4) {
+  } else if (UserMangementReducer.defaultRoutingValue === 4) {
     componentToRender = <TwoFactorVerifyUM />;
-  } else if (currentStep === 5) {
+  } else if (UserMangementReducer.defaultRoutingValue === 5) {
     componentToRender = <TapOptions />;
-  } else if (currentStep === 6) {
+  } else if (UserMangementReducer.defaultRoutingValue === 6) {
     componentToRender = <VerificationEmailAndNumber />;
-  } else if (currentStep === 7) {
+  } else if (UserMangementReducer.defaultRoutingValue === 7) {
     componentToRender = <VerifyDeniedUM />;
-  } else if (currentStep === 8) {
+  } else if (UserMangementReducer.defaultRoutingValue === 8) {
     componentToRender = <DeviceFor2FAVerify />;
-  } else if (currentStep === 9) {
+  } else if (UserMangementReducer.defaultRoutingValue === 9) {
     componentToRender = <SignUpOrganizationUM />;
-  } else if (currentStep === 10) {
+  } else if (UserMangementReducer.defaultRoutingValue === 10) {
     componentToRender = <ForgotPasswordUM />;
-  } else if (currentStep === 11) {
+  } else if (UserMangementReducer.defaultRoutingValue === 11) {
     componentToRender = <PasswordCreationUM />;
-  } else if (currentStep === 12) {
+  } else if (UserMangementReducer.defaultRoutingValue === 12) {
     componentToRender = <ForgotPasswordVerificationUM />;
-  } else if (currentStep === 13) {
+  } else if (UserMangementReducer.defaultRoutingValue === 13) {
     componentToRender = <TwoFactorMultipleDevices />;
   } else {
     componentToRender = null;

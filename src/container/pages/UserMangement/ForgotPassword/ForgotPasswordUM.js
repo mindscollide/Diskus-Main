@@ -70,7 +70,7 @@ const ForgotPasswordUM = () => {
 
   const handleGoBackFunction = () => {
     localStorage.setItem("LoginFlowPageRoute", 1);
-    dispatch(LoginFlowRoutes(1));
+   dispatch(LoginFlowRoutes(1));
   };
 
   //onChange for the Field
