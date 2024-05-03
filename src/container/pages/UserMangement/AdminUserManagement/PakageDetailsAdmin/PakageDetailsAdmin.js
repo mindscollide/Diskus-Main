@@ -168,23 +168,6 @@ const PakageDetailsAdmin = () => {
     ),
   };
 
-  // let organizationSelectedVariable = null;
-
-  // if (UserMangementReducer.organizationSelectedPakagesByOrganizationIDData) {
-  //   organizationSelectedVariable =
-  //     UserMangementReducer.organizationSelectedPakagesByOrganizationIDData.organizationSubscriptions?.map(
-  //       (subscription) => {
-  //         const selectedPackages = subscription.organizationSelectedPackages;
-  //         return selectedPackages;
-  //       }
-  //     );
-  // }
-
-  // console.log(
-  //   organizationSelectedVariable,
-  //   "organizationSelectedVariableorganization"
-  // );
-
   const upgradeOnclickHandler = () => {
     if (UserMangementReducer.organizationSelectedPakagesByOrganizationIDData) {
       const organizationSelectedVariable =

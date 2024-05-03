@@ -53,6 +53,13 @@ const LoginFlowRoutes = (response) => {
   };
 };
 
+const signupFlowRoutes = (response) => {
+  return {
+    type: actions.ROUTING_ON_SIGNUP_USERMANAGEMENT,
+    response: response,
+  };
+};
+
 //Organization SignUp And Pakage Selection
 
 const createOrganizationAndPakageSelectionInit = () => {
@@ -1833,5 +1840,6 @@ export {
   getCancelSubscriptionReasonApi,
   cancelOrganizationSubApi,
   clearMessegesUserManagement,
+  signupFlowRoutes,
   // paymentUpgradeDetailMainApi
 };

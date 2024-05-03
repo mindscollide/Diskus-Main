@@ -116,7 +116,7 @@ const PakageDetailsUMUpgrade = () => {
     {
       title: (
         <span className="pakageselectionSpanUsermanagement">
-          {t("Pakage-details")}
+          {t("Package-details")}
         </span>
       ),
       width: 100,
