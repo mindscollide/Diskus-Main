@@ -125,7 +125,7 @@ body[dir="rtl"] .DownloadInvoiceButton {
   justify-content: space-between !important;
   font-weight: 600 !important;
   font-size: 12px !important;
-  padding: 12px 30px;
+  /* padding: 12px 30px; */
   font-size: 12px !important;
 }
 

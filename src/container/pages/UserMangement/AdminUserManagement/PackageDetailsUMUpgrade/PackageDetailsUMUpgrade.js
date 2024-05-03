@@ -56,10 +56,11 @@ const PakageDetailsUMUpgrade = () => {
   }, []);
 
   useEffect(() => {
-    // Check if organizationSelectedPackages are present in the location state
     if (location.state && location.state.organizationSelectedPackages) {
-      const selectedPackages = location.state.organizationSelectedPackages;
+      const selectedPackages = location.state.organizationSelectedPackages[0];
+      console.log(selectedPackages);
       const prices = selectedPackages.map((packages) => packages.price); // Extract prices from packages
+      console.log(prices, "selectedPackagesselectedPackages");
       setOrganizationPackagePrice(prices);
       const newData = selectedPackages.map((packages) => ({
         name: packages.name,
@@ -71,6 +72,11 @@ const PakageDetailsUMUpgrade = () => {
       setPackageTableData([]);
     }
   }, [location.state]);
+
+  console.log(
+    location.state.organizationSelectedPackages,
+    "organizationSelectedPackages"
+  );
 
   //Fetching the data for pakage selection
   useEffect(() => {
