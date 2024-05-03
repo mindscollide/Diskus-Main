@@ -419,7 +419,8 @@ const SignUpOrganizationUM = () => {
         signUpDetails.CompanyName.value !== "" &&
         signUpDetails.FullName.value !== "" &&
         signUpDetails.Email.value !== "" &&
-        signUpDetails.FullName.value !== ""
+        signUpDetails.FullName.value !== "" &&
+        signUpDetails.CountryName.value !== ""
       ) {
         if (validateEmailEnglishAndArabicFormat(signUpDetails.Email.value)) {
           if (
@@ -577,7 +578,8 @@ const SignUpOrganizationUM = () => {
         signUpDetails.CompanyName.value !== "" &&
         signUpDetails.FullName.value !== "" &&
         signUpDetails.Email.value !== "" &&
-        signUpDetails.FullName.value !== ""
+        signUpDetails.FullName.value !== "" &&
+        signUpDetails.CountryName.value !== ""
       ) {
         if (validateEmailEnglishAndArabicFormat(signUpDetails.Email.value)) {
           if (
@@ -925,6 +927,20 @@ const SignUpOrganizationUM = () => {
                         onSelect={countryOnSelect}
                         searchable={true}
                       />
+                      <Row>
+                        <Col>
+                          <p
+                            className={
+                              signUpDetails.CountryName.errorStatus &&
+                              signUpDetails.CountryName.value === ""
+                                ? ` ${styles["errorMessage"]} `
+                                : `${styles["errorMessage_hidden"]}`
+                            }
+                          >
+                            {signUpDetails.CountryName.errorMessage}
+                          </p>
+                        </Col>
+                      </Row>
                     </Col>
                   </Row>
                   <Row className="mb-3">
