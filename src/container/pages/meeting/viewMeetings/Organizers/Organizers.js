@@ -107,9 +107,9 @@ const Organizers = ({
 
   let allowRSVPValue =
     MeetingOrganizersReducer?.AllMeetingOrganizersData?.allowRSVP;
-
+  let MeetingColoumns = [];
   if (allowRSVPValue === true) {
-    var MeetingColoumns = [
+    MeetingColoumns = [
       {
         title: (
           <>
@@ -122,35 +122,39 @@ const Organizers = ({
         ),
         dataIndex: "userName",
         key: "userName",
-        width: "200px",
+        // width: "200px",
         align: "left",
-        render: (text) => (
-          <label className={styles["Title_desc"]}>{text}</label>
-        ),
+        ellipsis: true,
+        // render: (text) => (
+        //   <label className={styles["Title_desc"]}>{text}</label>
+        // ),
       },
 
       {
         title: t("Email"),
         dataIndex: "email",
         key: "email",
-        width: "250px",
+        // width: "250px",
         align: "left",
-        render: (text) => <label className="column-boldness">{text}</label>,
+        ellipsis: true,
+        // render: (text) => <label className="column-boldness">{text}</label>,
       },
       {
         title: t("Organizer-title"),
         dataIndex: "organizerTitle",
         key: "organizerTitle",
         align: "center",
-        width: "250px",
-        render: (text) => <label className="column-boldness">{text}</label>,
+        // width: "250px",
+        ellipsis: true,
+        // render: (text) => <label className="column-boldness">{text}</label>,
       },
 
       {
         dataIndex: "isPrimaryOrganizer",
         key: "isPrimaryOrganizer",
         align: "left",
-        width: "200px",
+        // width: "200px",
+        ellipsis: true,
         render: (text, record, rowIndex) => (
           <Row>
             <Col
@@ -171,7 +175,8 @@ const Organizers = ({
         dataIndex: "attendeeAvailability",
         key: "attendeeAvailability",
         align: "left",
-        width: "120px",
+        // width: "120px",
+        ellipsis: true,
         render: (text, record) => {
           if (record.attendeeAvailability === 1) {
             return (
@@ -244,7 +249,8 @@ const Organizers = ({
         title: t("Notification"),
         dataIndex: "isOrganizerNotified",
         key: "isOrganizerNotified",
-        width: "180px",
+        // width: "180px",
+        ellipsis: true,
         render: (text, record) => {
           if (record.isOrganizerNotified === true) {
             return (
@@ -289,7 +295,7 @@ const Organizers = ({
       },
     ];
   } else {
-    var MeetingColoumns = [
+    MeetingColoumns = [
       {
         title: (
           <>
@@ -302,35 +308,39 @@ const Organizers = ({
         ),
         dataIndex: "userName",
         key: "userName",
-        width: "200px",
+        // width: "200px",
+        ellipsis: true,
         align: "left",
-        render: (text) => (
-          <label className={styles["Title_desc"]}>{text}</label>
-        ),
+        // render: (text) => (
+        //   <label className={`${styles["Title_desc"]} ${"w-100"}`}>{text}</label>
+        // ),
       },
 
       {
         title: t("Email"),
         dataIndex: "email",
         key: "email",
-        width: "250px",
+        // width: "250px",
+        ellipsis: true,
         align: "left",
-        render: (text) => <label className="column-boldness">{text}</label>,
+        // render: (text) => <label className="column-boldness w-100">{text}</label>,
       },
       {
         title: t("Organizer-title"),
         dataIndex: "organizerTitle",
         key: "organizerTitle",
         align: "center",
-        width: "250px",
-        render: (text) => <label className="column-boldness">{text}</label>,
+        // width: "250px",
+        ellipsis: true,
+        // render: (text) => <label className="column-boldness w-100">{text}</label>,
       },
 
       {
         dataIndex: "isPrimaryOrganizer",
         key: "isPrimaryOrganizer",
         align: "left",
-        width: "200px",
+        // width: "200px",
+        ellipsis: true,
         render: (text, record, rowIndex) => (
           <Row>
             <Col
@@ -339,7 +349,7 @@ const Organizers = ({
               sm={12}
               className="d-flex gap-3 align-items-center"
             >
-              <label className="column-boldness">
+              <label className="column-boldness w-100">
                 {text === true ? t("Primary") : t("Non-primary")}
               </label>
             </Col>
@@ -350,7 +360,8 @@ const Organizers = ({
         title: t("Notification"),
         dataIndex: "isOrganizerNotified",
         key: "isOrganizerNotified",
-        width: "180px",
+        // width: "180px",
+        ellipsis: true,
         render: (text, record) => {
           if (record.isOrganizerNotified === true) {
             return (
@@ -572,7 +583,10 @@ const Organizers = ({
           <Col lg={12} md={12} sm={12}>
             <Table
               column={MeetingColoumns}
-              scroll={{ y: "62vh" }}
+              scroll={{
+                y: rowsData.length === 0 ? "55vh" : "36vh",
+                x: "hidden",
+              }}
               pagination={false}
               className="Polling_table"
               rows={rowsData}

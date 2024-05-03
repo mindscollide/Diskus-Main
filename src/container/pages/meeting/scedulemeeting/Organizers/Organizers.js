@@ -207,9 +207,9 @@ const Organizers = ({
 
   let allowRSVPValue =
     MeetingOrganizersReducer?.AllMeetingOrganizersData?.allowRSVP;
-
+  let MeetingColoumns = [];
   if (allowRSVPValue === true) {
-    var MeetingColoumns = [
+    MeetingColoumns = [
       {
         title: (
           <>
@@ -222,11 +222,11 @@ const Organizers = ({
         ),
         dataIndex: "userName",
         key: "userName",
-        width: "200px",
+        ellipsis: true,
         align: "left",
-        render: (text) => (
-          <label className={styles["Title_desc"]}>{text}</label>
-        ),
+        // render: (text) => (
+        //   <label className={styles["Title_desc"]}>{text}</label>
+        // ),
       },
 
       {
@@ -234,14 +234,14 @@ const Organizers = ({
         dataIndex: "email",
         key: "email",
         align: "left",
-        width: "250px",
-        render: (text) => <label className="column-boldness">{text}</label>,
+        ellipsis: true,
+        // render: (text) => <label className="column-boldness">{text}</label>,
       },
       {
         title: t("Organizer-title"),
         dataIndex: "organizerTitle",
         key: "organizerTitle",
-        width: "250px",
+        ellipsis: true,
         align: "left",
         render: (text, record) => {
           if (
@@ -295,8 +295,8 @@ const Organizers = ({
       {
         dataIndex: "isPrimaryOrganizer",
         key: "isPrimaryOrganizer",
-        align: "left",
-        width: "200px",
+        align: "center",
+        ellipsis: "120px",
         render: (text, record, rowIndex) => (
           <Row>
             <Col
@@ -310,7 +310,7 @@ const Organizers = ({
                 onChange={(checked) => handleSwitchChange(checked, rowIndex)}
                 disabled={record.disabledSwitch === true ? true : false}
               />
-              <label className="column-boldness">{t("Primary")}</label>
+              <label className="column-boldness w-100">{t("Primary")}</label>
             </Col>
           </Row>
         ),
@@ -320,7 +320,7 @@ const Organizers = ({
         title: "RSVP",
         dataIndex: "attendeeAvailability",
         key: "attendeeAvailability",
-        width: "120px",
+        ellipsis: true,
         align: "left",
 
         render: (text, record) => {
@@ -372,7 +372,7 @@ const Organizers = ({
         title: t("Notification"),
         dataIndex: "isOrganizerNotified",
         key: "isOrganizerNotified",
-        width: "180px",
+        ellipsis: true,
         align: "left",
         render: (text, record) => {
           if (record.isOrganizerNotified === true) {
@@ -447,7 +447,7 @@ const Organizers = ({
         // title: t('RSVP'),
         dataIndex: "isDeletable",
         key: "isDeletable",
-        width: "120px",
+        ellipsis: true,
         align: "left",
 
         render: (text, record) => {
@@ -470,7 +470,7 @@ const Organizers = ({
       },
     ];
   } else {
-    var MeetingColoumns = [
+    MeetingColoumns = [
       {
         title: (
           <>
@@ -483,11 +483,11 @@ const Organizers = ({
         ),
         dataIndex: "userName",
         key: "userName",
-        width: "200px",
+        ellipsis: true,
         align: "left",
-        render: (text) => (
-          <label className={styles["Title_desc"]}>{text}</label>
-        ),
+        // render: (text) => (
+        //   <label className={styles["Title_desc"]}>{text}</label>
+        // ),
       },
 
       {
@@ -495,14 +495,14 @@ const Organizers = ({
         dataIndex: "email",
         key: "email",
         align: "left",
-        width: "250px",
-        render: (text) => <label className="column-boldness">{text}</label>,
+        ellipsis: true,
+        // render: (text) => <label className="column-boldness">{text}</label>,
       },
       {
         title: t("Organizer-title"),
         dataIndex: "organizerTitle",
         key: "organizerTitle",
-        width: "250px",
+        ellipsis: true,
         align: "left",
         render: (text, record) => {
           if (
@@ -557,7 +557,7 @@ const Organizers = ({
         dataIndex: "isPrimaryOrganizer",
         key: "isPrimaryOrganizer",
         align: "left",
-        width: "200px",
+        ellipsis: "190px",
         render: (text, record, rowIndex) => (
           <Row>
             <Col
@@ -571,7 +571,7 @@ const Organizers = ({
                 onChange={(checked) => handleSwitchChange(checked, rowIndex)}
                 disabled={record.disabledSwitch === true ? true : false}
               />
-              <label className="column-boldness">{t("Primary")}</label>
+              <label className="column-boldness w-100">{t("Primary")}</label>
             </Col>
           </Row>
         ),
@@ -633,7 +633,7 @@ const Organizers = ({
         title: t("Notification"),
         dataIndex: "isOrganizerNotified",
         key: "isOrganizerNotified",
-        width: "180px",
+        ellipsis: true,
         align: "left",
         render: (text, record) => {
           if (record.isOrganizerNotified === true) {
@@ -708,9 +708,8 @@ const Organizers = ({
         // title: t('RSVP'),
         dataIndex: "isDeletable",
         key: "isDeletable",
-        width: "120px",
+        ellipsis: true,
         align: "left",
-
         render: (text, record) => {
           if (record.isDeletable === true) {
             return (
@@ -779,7 +778,6 @@ const Organizers = ({
 
   const openAddUserModal = () => {
     setEditValue(1);
-
     dispatch(showAddUserModal(true));
     dispatch(saveMeetingFlag(true));
   };

@@ -2479,7 +2479,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         value={meetingDate}
                         calendar={calendarValue}
                         locale={localValue}
-                        onChange={meetingDateHandler}
+                        onFocusedDateChange={meetingDateHandler}
 
                         // ref={calendRef}
                       />

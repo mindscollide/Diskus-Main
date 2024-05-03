@@ -684,7 +684,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       />
 
                       <DatePicker
-                        onChange={toDoDateHandler}
+                        onFocusedDateChange={toDoDateHandler}
                         // inputClass="datepicker_input"
                         format={"DD/MM/YYYY"}
                         value={toDoDate}

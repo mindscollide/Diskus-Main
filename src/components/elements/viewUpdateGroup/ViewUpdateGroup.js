@@ -550,7 +550,10 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
                                       alt=""
                                       draggable="false"
                                     />
-                                    <span className={styles["FileName"]}>
+                                    <span
+                                      className={styles["FileName"]}
+                                      title={data.DisplayAttachmentName}
+                                    >
                                       {data.DisplayAttachmentName}
                                     </span>
                                   </Col>

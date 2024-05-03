@@ -205,6 +205,7 @@ const TalkHeader = () => {
             />
           </Col>
           <Col lg={6} md={6} sm={12}></Col>
+          <Col lg={1} md={1} sm={12} className="p-0"></Col>
           <Col lg={1} md={1} sm={12} className="p-0">
             <div className="chat-icons">
               <span style={{ cursor: "pointer" }} onClick={securityDialogue}>
@@ -221,7 +222,7 @@ const TalkHeader = () => {
               <img draggable="false" src={SearchIcon} className="img-cover" />
             </div>
           </Col>
-          <Col lg={1} md={1} sm={12} className="p-0">
+          {/* <Col lg={1} md={1} sm={12} className="p-0">
             <div className="chat-icons">
               <img
                 draggable="false"
@@ -229,7 +230,7 @@ const TalkHeader = () => {
                 className="img-cover"
               />
             </div>
-          </Col>
+          </Col> */}
         </Row>
         {talkFeatureStates.SecurityEncryption === true ? (
           <SecurityEncryption />

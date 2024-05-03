@@ -499,11 +499,26 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     }
   };
 
-  const meetingDateHandler = (date, format = "YYYYMMDD") => {
+  const meetingDateHandler = (date) => {
+    console.log(date, "getformattedDateTImegetformattedDateTIme");
     if (createMeeting.MeetingStartTime !== "") {
       let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+      console.log(
+        meetingDateValueFormat,
+        "getformattedDateTImegetformattedDateTIme"
+      );
+
       let meetingDateSaveFormat = new DateObject(date).format("YYYYMMDD");
+      console.log(
+        meetingDateSaveFormat,
+        "getformattedDateTImegetformattedDateTIme"
+      );
+
       const getformattedDateTIme = getCurrentDateTime(new Date());
+      console.log(
+        getformattedDateTIme,
+        "getformattedDateTImegetformattedDateTIme"
+      );
       const dateTimeFormat = convertDateTimeObject(
         `${meetingDateSaveFormat}${createMeeting.MeetingStartTime}`
       );
@@ -1874,7 +1889,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                       <div className="datepicker align-items-center ">
                         <DatePicker
                           format={"DD/MM/YYYY"}
-                          minDate={moment().toDate()}
+                          minDate={new Date()}
                           placeholder="DD/MM/YYYY"
                           render={
                             <InputIcon
@@ -1889,7 +1904,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                           value={meetingDate}
                           calendar={calendarValue}
                           locale={localValue}
-                          onChange={meetingDateHandler}
+                          onFocusedDateChange={meetingDateHandler}
                         />
                         {/* <MultiDatePicker
                           onChange={meetingDateHandler}
@@ -2531,9 +2546,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         xs={12}
                         className="participant-heading-creatingmeeting"
                       >
-                        <label className="">
-                          {t("Organizer")}
-                        </label>
+                        <label className="">{t("Organizer")}</label>
                       </Col>
                     </Row>
                     <Row>
@@ -2585,9 +2598,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         xs={12}
                         className="participant-heading-creatingmeeting"
                       >
-                        <label className="">
-                          {t("Participants")}
-                        </label>
+                        <label className="">{t("Participants")}</label>
                       </Col>
                     </Row>
                     <Row>

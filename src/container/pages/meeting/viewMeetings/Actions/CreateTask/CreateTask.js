@@ -707,7 +707,7 @@ const CreateTask = ({
                           calendar={calendarValue}
                           locale={localValue}
                           ref={calendRef}
-                          onChange={changeDateActionCreate}
+                          onFocusedDateChange={changeDateActionCreate}
                         />
                         <Row>
                           <Col>

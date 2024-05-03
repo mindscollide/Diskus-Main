@@ -1778,6 +1778,9 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                                     className={
                                                       styles["FileName"]
                                                     }
+                                                    title={
+                                                      data.DisplayAttachmentName
+                                                    }
                                                   >
                                                     {data.DisplayAttachmentName}
                                                   </span>
