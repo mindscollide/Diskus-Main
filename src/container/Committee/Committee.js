@@ -19,6 +19,7 @@ import {
   realtimeCommitteeStatusResponse,
   createCommitteePageFlag,
   viewCommitteePageFlag,
+  realtimeCommitteeResponse,
 } from "../../store/actions/Committee_actions";
 import { getAllCommitteesByUserIdActions } from "../../store/actions/Committee_actions";
 import {
@@ -174,9 +175,24 @@ const Committee = () => {
       };
 
       setGetCommitteeData([newCommitteeData, ...getcommitteedata]);
+
+      dispatch(realtimeCommitteeResponse(null));
     }
   }, [CommitteeReducer.realtimeCommitteeCreateResponse]);
-
+  console.log(CommitteeReducer, "CommitteeReducerCommitteeReducer");
+  useEffect(() => {
+    try {
+      if (CommitteeReducer.removeCommitteeMember !== null) {
+        console.log(
+          CommitteeReducer.removeCommitteeMember,
+          "CommitteeReducerCommitteeReducer"
+        );
+        console.log(getcommitteedata, "CommitteeReducerCommitteeReducer");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [CommitteeReducer.removeCommitteeMember]);
   const archivedmodaluser = async (e) => {
     setShowModal(true);
   };

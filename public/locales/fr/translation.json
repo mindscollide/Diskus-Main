@@ -419,7 +419,7 @@
   "Successfully": "Successfully",
   "Remove": "Remove",
   "Cancel-this-resolution": "Cancel this Resolution?",
-  "Are-you-sure-you-want-to-update": "Are you sure You want to Update",
+  "Are-you-sure-you-want-to-update": "Are you sure you want to Update",
   "the-resolution": "the Resolution?",
   "Are-you-sure-you-want-to-discard": "Are you sure You want to Discard",
   "File-size-should-not-be-greater-then-zero": "File size should not be greater then 100 MB",
@@ -1268,5 +1268,7 @@
   "You-can-select-multiple-options": "You can select multiple options",
   "Time-should-be-greater-then-system-time": "Time should be greater then the system time",
   "Disable-video-call": "Disable video call",
-  "Folder-share-successfully": "Folder share successfully"
+  "Folder-share-successfully": "Folder share successfully",
+  "Notify-when-group-becomes-in-active": "Notify When Group becomes In Active",
+  "Notify-when-group-becomes-active": "Notify When Group becomes Active"
 }

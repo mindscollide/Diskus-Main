@@ -791,7 +791,7 @@
   "Successfully": "Successfully",
   "Remove": "Remove",
   "Cancel-this-resolution": "Cancel this Resolution?",
-  "Are-you-sure-you-want-to-update": "Are you sure You want to Update",
+  "Are-you-sure-you-want-to-update": "Are you sure you want to Update",
   "the-resolution": "the Resolution?",
   "Are-you-sure-you-want-to-discard": "Are you sure you want to Discard",
   "Committee-type-is-required": "Committee type is required",
@@ -1818,5 +1818,7 @@
   "Delete-messages": "Delete Messages",
   "Folder-share-successfully": "Folder share successfully",
   "Non-primary": "Non-primary",
-  "Information-saved": "Information saved"
+  "Information-saved": "Information saved",
+  "Notify-when-group-becomes-in-active": "Notify When Group becomes In Active",
+  "Notify-when-group-becomes-active": "Notify When Group becomes Active"
 }

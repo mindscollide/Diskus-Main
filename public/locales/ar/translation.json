@@ -1773,5 +1773,7 @@
   "Remove-shared-file-successfully": "Remove shared file successfully",
   "Remove-shared-folder-successfully": "Remove shared folder successfully",
   "Non-primary": "Non-primary",
-  "Information-saved": "Information saved"
+  "Information-saved": "Information saved",
+  "Notify-when-group-becomes-in-active": "Notify When Group becomes In Active",
+  "Notify-when-group-becomes-active": "Notify When Group becomes Active"
 }
