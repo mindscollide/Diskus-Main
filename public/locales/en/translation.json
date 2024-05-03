@@ -2007,7 +2007,8 @@
   "Org-sub-is-cancel-and-this-is-an-admin": "Org sub is Cancel. and this is a admin",
   "Org-sub-is-cancel-and-this-is-an-user": "Org sub is Cancel. and this is a user",
   "Organization-is-currently-locked-please-contact-the-global-Admin-for-further-assistance": "Organization is currently locked. Please contact the Global Admin for further assistance.",
-  "You-have-not-been-assigned-any-license-please-contact-the-admin-for-further-assistance": "You have not been assigned any license. Please contact the admin for further assistance.",
   "User-deleted-succesfully": "User Deleted Succesfully",
-  "User-deletion-failed": "User Deletion Failed"
+  "User-deletion-failed": "User Deletion Failed",
+  "You-have-not-been-assigned-any-license-please-contact-the-admin-for-further-assistance": "You have not been assigned any license. Please contact the admin for further assistance.",
+  "Country-selection-is-required": "Country selection is required"
 }
