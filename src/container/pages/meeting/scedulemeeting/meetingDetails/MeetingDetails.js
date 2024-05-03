@@ -1439,7 +1439,7 @@ const MeetingDetails = ({
                                       calendar={calendarValue}
                                       locale={localValue}
                                       ref={calendRef}
-                                      onChange={(value) =>
+                                      onFocusedDateChange={(value) =>
                                         changeDateStartHandler(value, index)
                                       }
                                       disabled={

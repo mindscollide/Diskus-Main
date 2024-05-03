@@ -130,15 +130,16 @@ const AgendaContributers = ({
   };
 
   let allowRSVPValue = NewMeetingreducer?.getAllAgendaContributorsAllowRSVP;
-
+  let AgendaContributorViewColoumns = [];
   if (allowRSVPValue === true) {
-    var AgendaContributorViewColoumns = [
+    AgendaContributorViewColoumns = [
       {
         title: t("Name"),
         dataIndex: "userName",
         key: "userName",
         align: "left",
-        width: "300px",
+        ellipsis: true,
+        // width: "300px",
       },
 
       {
@@ -146,14 +147,16 @@ const AgendaContributers = ({
         dataIndex: "email",
         key: "email",
         align: "left",
-        width: "400px",
+        ellipsis: true,
+        // width: "400px",
       },
       {
         title: t("Contributor-title"),
         dataIndex: "Title",
         key: "Title",
         align: "left",
-        width: "300px",
+        ellipsis: true,
+        // width: "300px",
       },
 
       {
@@ -161,7 +164,8 @@ const AgendaContributers = ({
         dataIndex: "attendeeAvailability",
         key: "attendeeAvailability",
         align: "left",
-        width: "120px",
+        ellipsis: true,
+        // width: "120px",
         render: (text, record) => {
           if (record.attendeeAvailability === 1) {
             return (
@@ -234,7 +238,8 @@ const AgendaContributers = ({
         title: t("Notification"),
         dataIndex: "isContributedNotified",
         key: "isContributedNotified",
-        width: "180px",
+        // width: "180px",
+        ellipsis: true,
         render: (text, record) => {
           if (record.isContributedNotified === true) {
             return (
@@ -279,13 +284,15 @@ const AgendaContributers = ({
       },
     ];
   } else {
-    var AgendaContributorViewColoumns = [
+    AgendaContributorViewColoumns = [
       {
         title: t("Name"),
         dataIndex: "userName",
         key: "userName",
         align: "left",
-        width: "300px",
+        ellipsis: true,
+        // width: "300px",
+        
       },
 
       {
@@ -293,20 +300,23 @@ const AgendaContributers = ({
         dataIndex: "email",
         key: "email",
         align: "left",
-        width: "400px",
+        ellipsis: true,
+        // width: "400px",
       },
       {
         title: t("Contributor-title"),
         dataIndex: "Title",
         key: "Title",
         align: "left",
-        width: "300px",
+        ellipsis: true,
+        // width: "300px",
       },
       {
         title: t("Notification"),
         dataIndex: "isContributedNotified",
         key: "isContributedNotified",
-        width: "180px",
+        ellipsis: true,
+        // width: "180px",
         render: (text, record) => {
           if (record.isContributedNotified === true) {
             return (
@@ -390,7 +400,7 @@ const AgendaContributers = ({
               <Col lg={12} md={12} sm={12}>
                 <Table
                   column={AgendaContributorViewColoumns}
-                  scroll={{ y: "36vh" }}
+                  scroll={{ y: rowsData.length === 0? "52vh": "36vh" }}
                   pagination={false}
                   locale={{
                     emptyText: (

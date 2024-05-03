@@ -408,6 +408,7 @@ const Polling = () => {
       dataIndex: "vote",
       key: "vote",
       width: "69px",
+      align: "center",
       render: (text, record) => {
         if (record.pollStatus.pollStatusId === 2) {
           if (record.isVoter) {

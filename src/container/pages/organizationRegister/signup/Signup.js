@@ -147,6 +147,12 @@ const Signup = () => {
     });
   };
 
+  console.log(signUpDetails.CountryName, "CountryNameCountryNameCountryName");
+  console.log(
+    signUpDetails.CountryName.value,
+    "CountryNameCountryNameCountryName"
+  );
+
   const handleSelect = (country) => {
     setSelected(country);
     let a = Object.values(countryNameforPhoneNumber).find((obj) => {
@@ -409,7 +415,8 @@ const Signup = () => {
         signUpDetails.CountryName.value !== "" &&
         signUpDetails.Email.value !== "" &&
         signUpDetails.PhoneNumber.value !== "" &&
-        signUpDetails.FullName.value !== ""
+        signUpDetails.FullName.value !== "" &&
+        signUpDetails.CountryName.value !== ""
       ) {
         if (validateEmailEnglishAndArabicFormat(signUpDetails.Email.value)) {
           if (
@@ -933,6 +940,20 @@ const Signup = () => {
                         onSelect={countryOnSelect}
                         searchable={true}
                       />
+                      <Row>
+                        <Col>
+                          <span
+                            className={
+                              signUpDetails.CountryName.errorStatus &&
+                              signUpDetails.CountryName.value === ""
+                                ? ` ${styles["errorMessage"]} `
+                                : `${styles["errorMessage_hidden"]}`
+                            }
+                          >
+                            {signUpDetails.CountryName.errorMessage}
+                          </span>
+                        </Col>
+                      </Row>
                     </Col>
                   </Row>
                   <Row className="mb-3">

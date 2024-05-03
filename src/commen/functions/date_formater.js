@@ -108,6 +108,7 @@ export const newTimeFormaterAsPerUTC = (dateTime) => {
 };
 
 export const newTimeFormaterAsPerUTCFullDate = (dateTime) => {
+  console.log(dateTime, "formatetDateTimeformatetDateTime");
   let fullDateyear =
     dateTime?.slice(0, 4) +
     "-" +

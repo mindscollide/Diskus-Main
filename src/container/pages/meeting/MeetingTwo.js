@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./meetingTwo.module.css";
 import searchicon from "../../../assets/images/searchicon.svg";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
+
 import ClipIcon from "../../../assets/images/ClipIcon.png";
 import VideoIcon from "../../../assets/images/Video-Icon.png";
 import {
@@ -93,7 +94,7 @@ import {
   ViewMeeting,
   allAssignessList,
 } from "../../../store/actions/Get_List_Of_Assignees";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   newTimeFormaterAsPerUTCFullDate,
   utcConvertintoGMT,
@@ -121,6 +122,7 @@ import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 
 const NewMeeting = () => {
   const { t } = useTranslation();
+  const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const calendRef = useRef();
@@ -272,20 +274,118 @@ const NewMeeting = () => {
     } catch (error) {}
   };
 
+  useEffect(() => {
+    if (
+      location.state !== null &&
+      location.state?.CalendaradvanceMeeting === true
+    ) {
+      try {
+        console.log("isWorking", location.state);
+
+        const {
+          statusID,
+          id,
+          isQuickMeeting,
+          participantRoleID,
+          attendeeRoleID,
+          isPrimaryOrganizer,
+          meetingID,
+        } = location.state?.advancemeetingData;
+
+        const fetchData = async () => {
+          setEdiorRole({
+            status: statusID,
+            role:
+              attendeeRoleID === 2
+                ? "Participant"
+                : attendeeRoleID === 4
+                ? "Agenda Contributor"
+                : "Organizer",
+            isPrimaryOrganizer: isPrimaryOrganizer,
+          });
+          if (statusID === "10" || statusID === 10) {
+            console.log("isWorking");
+
+            let joinMeetingData = {
+              FK_MDID: meetingID,
+              DateTime: getCurrentDateTimeUTC(),
+            };
+
+            await dispatch(
+              JoinCurrentMeeting(
+                isQuickMeeting,
+                navigate,
+                t,
+                joinMeetingData,
+                setViewFlag,
+                setEditFlag,
+                setSceduleMeeting, // Fixed typo here, assuming it should be setScheduleMeeting instead of setSceduleMeeting
+                1,
+                setAdvanceMeetingModalID,
+                setViewAdvanceMeetingModal
+              )
+            );
+
+            dispatch(
+              GetAllUserChats(
+                navigate,
+                parseInt(currentUserId),
+                parseInt(currentOrganizationId),
+                t
+              )
+            );
+          } else {
+            console.log("isWorking");
+            setAdvanceMeetingModalID(meetingID);
+            setViewAdvanceMeetingModal(true);
+            dispatch(viewAdvanceMeetingPublishPageFlag(true));
+            dispatch(viewMeetingFlag(true));
+            dispatch(scheduleMeetingPageFlag(false));
+            dispatch(viewProposeDateMeetingPageFlag(false));
+            dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+            dispatch(viewProposeOrganizerMeetingPageFlag(false));
+            dispatch(proposeNewMeetingPageFlag(false));
+            localStorage.setItem("currentMeetingID", meetingID);
+            dispatch(
+              GetAllUserChats(
+                navigate,
+                parseInt(currentUserId),
+                parseInt(currentOrganizationId),
+                t
+              )
+            );
+          }
+        };
+        fetchData();
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      setEditFlag(false);
+      setViewFlag(false);
+      dispatch(scheduleMeetingPageFlag(false));
+      dispatch(viewProposeDateMeetingPageFlag(false));
+      dispatch(viewAdvanceMeetingPublishPageFlag(false));
+      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+      dispatch(viewProposeOrganizerMeetingPageFlag(false));
+      dispatch(proposeNewMeetingPageFlag(false));
+    }
+  }, [location.state]);
+
   //  Call all search meetings api
   useEffect(() => {
     callApi();
-    setEditFlag(false);
-    setViewFlag(false);
-    dispatch(scheduleMeetingPageFlag(false));
-    dispatch(viewProposeDateMeetingPageFlag(false));
-    dispatch(viewAdvanceMeetingPublishPageFlag(false));
-    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-    dispatch(viewProposeOrganizerMeetingPageFlag(false));
-    dispatch(proposeNewMeetingPageFlag(false));
     return () => {
       setResponseByDate("");
       setDashboardEventData(null);
+      setEditFlag(false);
+      setViewFlag(false);
+      dispatch(scheduleMeetingPageFlag(false));
+      dispatch(viewProposeDateMeetingPageFlag(false));
+      dispatch(viewAdvanceMeetingPublishPageFlag(false));
+      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+      dispatch(viewProposeOrganizerMeetingPageFlag(false));
+      dispatch(proposeNewMeetingPageFlag(false));
       // setRow([]);
       // setEdiorRole({
       //   status: null,
@@ -1876,7 +1976,7 @@ const NewMeeting = () => {
     dispatch(meetingNotConductedMQTT(null));
   }, [NewMeetingreducer.meetingStatusNotConductedMqttData, rows]);
 
-  console.log("talkStateDatatalkStateData", talkStateData);
+  console.log("NewMeetingReducerNewMeetingReducer", NewMeetingreducer);
 
   return (
     <section className={styles["NewMeeting_container"]}>
@@ -2137,7 +2237,7 @@ const NewMeeting = () => {
                               calendar={calendarValue}
                               locale={localValue}
                               ref={calendRef}
-                              onChange={meetingDateChangeHandler}
+                              onFocusedDateChange={meetingDateChangeHandler}
                             />
                           </Col>
                           <Col lg={6} md={6} sm={12}>

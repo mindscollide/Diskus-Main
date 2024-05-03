@@ -52,6 +52,7 @@ const AvatarEditorComponent = ({ pictureObj }) => {
   return (
     <>
       <ImgCrop
+      
         rotationSlider
         modalCancel={t("Cancel")}
         modalOk={t("Ok")}

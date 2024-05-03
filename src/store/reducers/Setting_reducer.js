@@ -28,6 +28,7 @@ const initialState = {
   UpdateUserProfileResponseMessege: "",
   recentActivityDataFromMQTT: [],
   microsoftToken: null,
+  microsftRevokeToken: null,
 };
 
 const settingReducer = (state = initialState, action) => {
@@ -415,7 +416,28 @@ const settingReducer = (state = initialState, action) => {
         message: action.message,
       };
     }
-
+    case actions.REVOKE_TOKEN_MICROSOFT_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.REVOKE_TOKEN_MICROSOFT_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        microsftRevokeToken: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.REVOKE_TOKEN_MICROSOFT_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        microsftRevokeToken: action.response,
+        ResponseMessage: action.message,
+      };
+    }
     default:
       return {
         ...state,

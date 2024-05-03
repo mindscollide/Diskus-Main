@@ -1554,7 +1554,12 @@ const CancelOrganizationsSubscriptions = {
 //   RequestMethod: ""
 // };
 
+const revokeMicrosoftToken = {
+  RequestMethod: "ServiceManager.RevokeMicrosoftToken",
+};
+
 export {
+  revokeMicrosoftToken,
   leaveFolderSharingRM,
   leaveFileSharingRM,
   UserLoginHistoryRM,

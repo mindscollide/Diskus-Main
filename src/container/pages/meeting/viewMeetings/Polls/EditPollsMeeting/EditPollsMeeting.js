@@ -604,7 +604,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
                 calendar={calendarValue}
                 locale={localValue}
                 ref={calendRef}
-                onChange={(value) => changeDateStartHandlerUpdatePolls(value)}
+                onFocusedDateChange={(value) => changeDateStartHandlerUpdatePolls(value)}
               />
             </Col>
             <Col lg={6} md={6} sm={6} className="d-flex justify-content-end">

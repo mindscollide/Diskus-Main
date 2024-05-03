@@ -140,7 +140,10 @@ const AgendaViewer = ({
 
   useEffect(() => {
     let Data = {
-      MeetingID: Number(advanceMeetingModalID),
+      MeetingID:
+        advanceMeetingModalID === "0" || advanceMeetingModalID === 0
+          ? currentMeeting
+          : Number(advanceMeetingModalID),
     };
     dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
     return () => {
@@ -468,7 +471,10 @@ const AgendaViewer = ({
         MeetingAgendaReducer.MeetingAgendaUpdatedMqtt.meetingID
       ) {
         let Data = {
-          MeetingID: Number(advanceMeetingModalID),
+          MeetingID:
+            advanceMeetingModalID === "0" || advanceMeetingModalID === 0
+              ? currentMeeting
+              : Number(advanceMeetingModalID),
         };
         dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
       }

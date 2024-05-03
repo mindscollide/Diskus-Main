@@ -1003,7 +1003,7 @@ const ProposedNewMeeting = ({
                                         calendar={calendarValue}
                                         locale={localValue}
                                         ref={calendRef}
-                                        onChange={(value) =>
+                                        onFocusedDateChange={(value) =>
                                           changeDateStartHandler(value, index)
                                         }
                                         disabled={
@@ -1311,7 +1311,7 @@ const ProposedNewMeeting = ({
                           calendar={calendarValue}
                           locale={localValue}
                           ref={calendRef}
-                          onChange={(value) => SendResponseHndler(value)}
+                          onFocusedDateChange={(value) => SendResponseHndler(value)}
                         />
                       </Col>
                     </Row>
