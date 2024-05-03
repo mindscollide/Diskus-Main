@@ -1003,24 +1003,19 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "MEMBER_REMOVED_FROM_COMMITTEE".toLowerCase()
         ) {
-          console.log(
-            data,
-            "removeCommitteeMemberMQTTremoveCommitteeMemberMQTT"
-          );
-
+          dispatch(removeCommitteeMemberMQTT(data.payload));
+          setNotificationID(id);
           if (data.viewable) {
             setNotification({
               notificationShow: true,
               message: changeMQTTJSONOne(
                 t("COMMITTTEE_STATUS_EDITED_IN_ACTIVE"),
                 "[Committee Title]",
-                data.payload.committees.committeeTitle.substring(0, 100)
+                data.payload.committees.committeesTitle.substring(0, 100)
               ),
               // message: `Committee ${data.payload.committeeTitle} in which you are a member has been set as In-Active`,
             });
           }
-          dispatch(removeCommitteeMemberMQTT(data.payload));
-          setNotificationID(id);
         }
       }
       if (data.action.toLowerCase() === "Group".toLowerCase()) {

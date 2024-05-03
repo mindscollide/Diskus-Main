@@ -179,15 +179,16 @@ const Committee = () => {
       dispatch(realtimeCommitteeResponse(null));
     }
   }, [CommitteeReducer.realtimeCommitteeCreateResponse]);
-  console.log(CommitteeReducer, "CommitteeReducerCommitteeReducer");
+  
   useEffect(() => {
     try {
       if (CommitteeReducer.removeCommitteeMember !== null) {
-        console.log(
-          CommitteeReducer.removeCommitteeMember,
-          "CommitteeReducerCommitteeReducer"
-        );
-        console.log(getcommitteedata, "CommitteeReducerCommitteeReducer");
+        let committeeDataR = CommitteeReducer.removeCommitteeMember.committees;
+        setGetCommitteeData((committeeremover) => {
+          return committeeremover.filter((commiteeData, index) => {
+            return commiteeData.committeeID !== committeeDataR.committeeID;
+          });
+        });
       }
     } catch (error) {
       console.log(error);
