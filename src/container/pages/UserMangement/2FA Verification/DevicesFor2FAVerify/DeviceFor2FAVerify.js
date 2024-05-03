@@ -124,7 +124,7 @@ const DeviceFor2FAVerify = () => {
 
   const handleGoBack = () => {
     localStorage.setItem("LoginFlowPageRoute", 1);
-    dispatch(LoginFlowRoutes(1));
+   dispatch(LoginFlowRoutes(1));
   };
 
   useEffect(() => {

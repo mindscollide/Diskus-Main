@@ -82,8 +82,8 @@ const changePasswordRequest = (email, t, navigate) => {
                 t("OTP-has-been-sent-to-your-email")
               )
             );
-            localStorage.setItem("LoginFlowPageRoute", 12);
-            dispatch(LoginFlowRoutes(12));
+            //localStorage.setItem("LoginFlowPageRoute", 12);
+           dispatch(LoginFlowRoutes(12));
             // navigate("/forgotpasswordVerification");
           } else if (
             response.data.responseResult.responseMessage

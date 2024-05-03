@@ -547,30 +547,6 @@ export const router = createHashRouter(
               </RouteWrapperAdmin>
             }
           />
-          {/* <Route
-            path="setting"
-            element={
-              <RouteWrapperAdmin name="setting">
-                <UserSettings />
-              </RouteWrapperAdmin>
-            }
-          /> */}
-        </Route>
-      </Route>
-      <Route element={<PrivateAdminRouteNonActive />}>
-        <Route exact path="/Admin/Payment/" element={<AdminHome />}>
-          <Route path="PayOutstanding" element={<PayOutstanding />} />
-          <Route path="/Admin/Payment/" element={<PayOutstanding />} />
-        </Route>
-      </Route>
-      <Route element={<PrivateNonActive />}>
-        <Route exact path="/DisKus/Nonactive/" element={<Dashboard />}>
-          <Route path="" element={<Home />} />
-        </Route>
-      </Route>
-      <Route element={<PrivateParAdminRouteNonActive />}>
-        <Route exact path="/Admin/Nonactive/" element={<AdminHome />}>
-          <Route path="" element={<Summary />} />
         </Route>
       </Route>
       <Route Route element={<PrivateRoutes />}>

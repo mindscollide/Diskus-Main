@@ -48,7 +48,7 @@ const SignupProcessUserManagement = () => {
   //Updating the state of the local storage routes pages
   useEffect(() => {
     localStorage.removeItem("LoginFlowPageRoute");
-    dispatch(LoginFlowRoutes(null));
+   dispatch(LoginFlowRoutes(1));
     try {
       if (UserMangementReducer.defaultRoutingValue) {
         setCurrentPage(UserMangementReducer.defaultRoutingValue);

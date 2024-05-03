@@ -380,8 +380,8 @@ const PakageDetailsUserManagement = () => {
 
   //Handle Goback Function
   const onClickLink = () => {
-    localStorage.removeItem("signupCurrentPage", 1);
-    localStorage.setItem("LoginFlowPageRoute", 1);
+    localStorage.removeItem("signupCurrentPage");
+    //localStorage.setItem("LoginFlowPageRoute", 1);
     dispatch(LoginFlowRoutes(1));
     navigate("/");
   };
