@@ -30,13 +30,10 @@ const SignUpOrganizationUM = () => {
 
   const {
     countryNamesReducer,
-    Authreducer,
     adminReducer,
     LanguageReducer,
     UserMangementReducer,
   } = useSelector((state) => state);
-
-  console.log(countryNamesReducer, "countryNamesReducer");
 
   const location = useLocation();
 
@@ -800,7 +797,6 @@ const SignUpOrganizationUM = () => {
       countryNamesReducer.CountryNamesData !== null &&
       countryNamesReducer.CountryNamesData !== undefined
     ) {
-      console.log(countryNamesReducer.CountryNamesData, "countryOnSelect");
       setCountryNames(countryNamesReducer.CountryNamesData);
     }
   }, [countryNamesReducer.CountryNamesData]);
