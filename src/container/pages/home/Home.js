@@ -1299,67 +1299,65 @@ const Home = () => {
                     </p>
                   </div>
                   {upcomingEventsData.meetingDetails.statusID === 1 &&
-                    upcomingEventsData.meetingDetails.participantRoleID ===
-                      1 ? (
-                      upcomingEventsData.meetingDetails.isQuickMeeting ===
-                        true && minutesDifference < 15 ? (
-                        // &&
-                        // minutesDifference > 0
-                        //   &&
-                        //   minutesDifference <= 99999999 &&
-                        //   minutesDifference > 0
-                        <Button
-                          text={t("Start-meeting")}
-                          className="Start-Meeting-Upcoming"
-                          onClick={() =>
-                            meetingDashboardCalendarEvent(upcomingEventsData)
-                          }
-                        />
-                      ) : upcomingEventsData.meetingDetails.isQuickMeeting ===
-                          false && minutesDifference < 15 ? (
-                        // &&
-                        // minutesDifference > 0
-                        //   &&
-                        //     minutesDifference <= 99999999 &&
-                        //     minutesDifference > 0
-                        <Button
-                          text={t("Start-meeting")}
-                          className="Start-Meeting-Upcoming"
-                          onClick={() =>
-                            meetingDashboardCalendarEvent(upcomingEventsData)
-                          }
-                        />
-                      ) : null
-                    ) : upcomingEventsData.meetingDetails.statusID === 10 ? (
-                      upcomingEventsData.meetingDetails.participantRoleID ===
-                      2 ? (
-                        <Button
-                          text={t("Join-meeting")}
-                          className="joining-Meeting-Upcoming"
-                          onClick={() =>
-                            meetingDashboardCalendarEvent(upcomingEventsData)
-                          }
-                        />
-                      ) : upcomingEventsData.meetingDetails
-                          .participantRoleID === 4 ? (
-                        <Button
-                          text={t("Join-meeting")}
-                          className="joining-Meeting-Upcoming"
-                          onClick={() =>
-                            meetingDashboardCalendarEvent(upcomingEventsData)
-                          }
-                        />
-                      ) : upcomingEventsData.meetingDetails
-                          .participantRoleID === 1 ? (
-                        <Button
-                          text={t("Join-meeting")}
-                          className="joining-Meeting-Upcoming"
-                          onClick={() =>
-                            meetingDashboardCalendarEvent(upcomingEventsData)
-                          }
-                        />
-                      ) : null
-                    ) : null}
+                  upcomingEventsData.participantRoleID === 1 ? (
+                    upcomingEventsData.meetingDetails.isQuickMeeting === true &&
+                    minutesDifference < 15 ? (
+                      // &&
+                      // minutesDifference > 0
+                      //   &&
+                      //   minutesDifference <= 99999999 &&
+                      //   minutesDifference > 0
+                      <Button
+                        text={t("Start-meeting")}
+                        className="Start-Meeting-Upcoming"
+                        onClick={() =>
+                          meetingDashboardCalendarEvent(upcomingEventsData)
+                        }
+                      />
+                    ) : upcomingEventsData.meetingDetails.isQuickMeeting ===
+                        false &&
+                      upcomingEventsData.participantRoleID === 1 &&
+                      minutesDifference < 15 ? (
+                      // &&
+                      // minutesDifference > 0
+                      //   &&
+                      //     minutesDifference <= 99999999 &&
+                      //     minutesDifference > 0
+                      <Button
+                        text={t("Start-meeting")}
+                        className="Start-Meeting-Upcoming"
+                        onClick={() =>
+                          meetingDashboardCalendarEvent(upcomingEventsData)
+                        }
+                      />
+                    ) : null
+                  ) : upcomingEventsData.meetingDetails.statusID === 10 ? (
+                    upcomingEventsData.participantRoleID === 2 ? (
+                      <Button
+                        text={t("Join-meeting")}
+                        className="joining-Meeting-Upcoming"
+                        onClick={() =>
+                          meetingDashboardCalendarEvent(upcomingEventsData)
+                        }
+                      />
+                    ) : upcomingEventsData.participantRoleID === 4 ? (
+                      <Button
+                        text={t("Join-meeting")}
+                        className="joining-Meeting-Upcoming"
+                        onClick={() =>
+                          meetingDashboardCalendarEvent(upcomingEventsData)
+                        }
+                      />
+                    ) : upcomingEventsData.participantRoleID === 1 ? (
+                      <Button
+                        text={t("Join-meeting")}
+                        className="joining-Meeting-Upcoming"
+                        onClick={() =>
+                          meetingDashboardCalendarEvent(upcomingEventsData)
+                        }
+                      />
+                    ) : null
+                  ) : null}
                 </div>
               </Col>
             </Row>
@@ -1402,8 +1400,7 @@ const Home = () => {
                       </p>
                     </div>
                     {upcomingEventsData.meetingDetails.statusID === 1 &&
-                    upcomingEventsData.meetingDetails.participantRoleID ===
-                      1 ? (
+                    upcomingEventsData.participantRoleID === 1 ? (
                       upcomingEventsData.meetingDetails.isQuickMeeting ===
                         true && minutesDifference < 15 ? (
                         // &&
@@ -1434,8 +1431,7 @@ const Home = () => {
                         />
                       ) : null
                     ) : upcomingEventsData.meetingDetails.statusID === 10 ? (
-                      upcomingEventsData.meetingDetails.participantRoleID ===
-                      2 ? (
+                      upcomingEventsData.participantRoleID === 2 ? (
                         <Button
                           text={t("Join-meeting")}
                           className="joining-Meeting-Upcoming"
@@ -1443,8 +1439,7 @@ const Home = () => {
                             meetingDashboardCalendarEvent(upcomingEventsData)
                           }
                         />
-                      ) : upcomingEventsData.meetingDetails
-                          .participantRoleID === 4 ? (
+                      ) : upcomingEventsData.participantRoleID === 4 ? (
                         <Button
                           text={t("Join-meeting")}
                           className="joining-Meeting-Upcoming"
@@ -1452,8 +1447,7 @@ const Home = () => {
                             meetingDashboardCalendarEvent(upcomingEventsData)
                           }
                         />
-                      ) : upcomingEventsData.meetingDetails
-                          .participantRoleID === 1 ? (
+                      ) : upcomingEventsData.participantRoleID === 1 ? (
                         <Button
                           text={t("Join-meeting")}
                           className="joining-Meeting-Upcoming"
@@ -1502,7 +1496,7 @@ const Home = () => {
                     </p>
                   </div>
                   {upcomingEventsData.meetingDetails.statusID === 1 &&
-                  upcomingEventsData.meetingDetails.participantRoleID === 1 ? (
+                  upcomingEventsData.participantRoleID === 1 ? (
                     upcomingEventsData.meetingDetails.isQuickMeeting === true &&
                     minutesDifference < 15 ? (
                       // &&
@@ -1533,8 +1527,7 @@ const Home = () => {
                       />
                     ) : null
                   ) : upcomingEventsData.meetingDetails.statusID === 10 ? (
-                    upcomingEventsData.meetingDetails.participantRoleID ===
-                    2 ? (
+                    upcomingEventsData.participantRoleID === 2 ? (
                       <Button
                         text={t("Join-meeting")}
                         className="joining-Meeting-Upcoming"
@@ -1542,8 +1535,7 @@ const Home = () => {
                           meetingDashboardCalendarEvent(upcomingEventsData)
                         }
                       />
-                    ) : upcomingEventsData.meetingDetails.participantRoleID ===
-                      4 ? (
+                    ) : upcomingEventsData.participantRoleID === 4 ? (
                       <Button
                         text={t("Join-meeting")}
                         className="joining-Meeting-Upcoming"
@@ -1551,8 +1543,7 @@ const Home = () => {
                           meetingDashboardCalendarEvent(upcomingEventsData)
                         }
                       />
-                    ) : upcomingEventsData.meetingDetails.participantRoleID ===
-                      1 ? (
+                    ) : upcomingEventsData.participantRoleID === 1 ? (
                       <Button
                         text={t("Join-meeting")}
                         className="joining-Meeting-Upcoming"
@@ -2497,7 +2488,7 @@ const Home = () => {
       ) : null}
 
       {/* {(NotesReducer.Loading && getNoteID !== 0) ||
-      (toDoListReducer.Loading && getTodoID !== 0) ? (
+      (toDoListReducer.Loading && getTodoID !== 0) ? (  
         <Loader />
       ) : null} */}
     </>
