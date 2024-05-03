@@ -102,12 +102,12 @@ const ParentAgenda = ({
     });
 
     const allIDs = [...agendaIDs, ...subAgendaIDs];
-    setExpandedArray(allIDs)
+    setExpandedArray(allIDs);
     console.log("IDSIDSIDS", allIDs);
   }, [rows]);
   function findIDInArray(id) {
     return expandedArray.includes(id);
-}
+  }
 
   console.log("rowsrows", rows);
   //Timepicker
@@ -115,20 +115,35 @@ const ParentAgenda = ({
   const [localValue, setLocalValue] = useState(gregorian_en);
 
   // Function For Expanding Main Agenda See More Options
-  const handleExpandedBtn = (index) => {
-    setExpandIndex((prevIndex) => {
-      // Check if the index already exists in the expandIndex array
-      const indexExists = prevIndex.includes(index);
-      if (indexExists) {
-        // If the index exists, remove it from the array
-        return prevIndex.filter((item) => item !== index);
-      } else {
-        // If the index doesn't exist, add it to the array
-        return [...prevIndex, index];
-      }
-    });
-  };
+  // const handleExpandedBtn = (index) => {
+  //   setExpandIndex((prevIndex) => {
+  //     // Check if the index already exists in the expandIndex array
+  //     const indexExists = prevIndex.includes(index);
+  //     if (indexExists) {
+  //       // If the index exists, remove it from the array
+  //       return prevIndex.filter((item) => item !== index);
+  //     } else {
+  //       // If the index doesn't exist, add it to the array
+  //       return [...prevIndex, index];
+  //     }
+  //   });
+  // };
 
+  function handleExpandedBtn(id) {
+    const index = expandedArray.indexOf(id);
+    if (index !== -1) {
+      // If ID exists, remove it from the array
+      expandedArray.splice(index, 1);
+    } else {
+      // If ID doesn't exist, add it to the array
+      expandedArray.push(id);
+    }
+    // Update state with the modified array
+    setExpandedArray([...expandedArray]);
+  }
+
+  console.log("handleExpandedBtn",expandedArray)
+  
   const printFlag = useSelector(
     (state) => state.MeetingAgendaReducer.PrintAgendaFlag
   );
@@ -289,8 +304,6 @@ const ParentAgenda = ({
     }
   };
 
-  console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
-
   return (
     <>
       <div
@@ -331,18 +344,7 @@ const ParentAgenda = ({
                       <span className={styles["AgendaTitle_Heading"]}>
                         {index + 1 + ". " + data.title}
                       </span>
-                      {(expandIndex[0] === index && expand) ||
-                      (expandIndex[1] === index && expand) ||
-                      (expandIndex[2] === index && expand) ||
-                      (expandIndex[3] === index && expand) ||
-                      (expandIndex[4] === index && expand) ||
-                      (expandIndex[5] === index && expand) ||
-                      (expandIndex[6] === index && expand) ||
-                      (expandIndex[7] === index && expand) ||
-                      (expandIndex[8] === index && expand) ||
-                      (expandIndex[9] === index && expand) ||
-                      (expandIndex[10] === index && expand) ||
-                      (expandIndex[11] === index && expand) ? (
+                      {findIDInArray(data.id) ? (
                         <span className={styles["ParaGraph_SavedMeeting"]}>
                           {data.description}
                         </span>
@@ -470,39 +472,17 @@ const ParentAgenda = ({
                         src={CollapseIcon}
                         alt=""
                         className={
-                          (expandIndex[0] === index && expand) ||
-                          (expandIndex[1] === index && expand) ||
-                          (expandIndex[2] === index && expand) ||
-                          (expandIndex[3] === index && expand) ||
-                          (expandIndex[4] === index && expand) ||
-                          (expandIndex[5] === index && expand) ||
-                          (expandIndex[6] === index && expand) ||
-                          (expandIndex[7] === index && expand) ||
-                          (expandIndex[8] === index && expand) ||
-                          (expandIndex[9] === index && expand) ||
-                          (expandIndex[10] === index && expand) ||
-                          (expandIndex[11] === index && expand)
+                          findIDInArray(data.id)
                             ? styles["Arrow_Expanded"]
                             : styles["Arrow"]
                         }
                         onClick={() => {
-                          handleExpandedBtn(index);
+                          handleExpandedBtn(data.id);
                         }}
                       />
                     </Col>
                   </Row>
-                  {(expandIndex[0] !== index && expand) ||
-                  (expandIndex[1] !== index && expand) ||
-                  (expandIndex[2] !== index && expand) ||
-                  (expandIndex[3] !== index && expand) ||
-                  (expandIndex[4] !== index && expand) ||
-                  (expandIndex[5] !== index && expand) ||
-                  (expandIndex[6] !== index && expand) ||
-                  (expandIndex[7] !== index && expand) ||
-                  (expandIndex[8] !== index && expand) ||
-                  (expandIndex[9] !== index && expand) ||
-                  (expandIndex[10] !== index && expand) ||
-                  (expandIndex[11] !== index && expand) ? (
+                  {findIDInArray(data.id) ? (
                     <>
                       {
                         data.selectedRadio === 1 &&
@@ -562,18 +542,7 @@ const ParentAgenda = ({
                     </>
                   ) : null}
                   {/* </Droppable> */}
-                  {(expandIndex[0] !== index && expand) ||
-                  (expandIndex[1] !== index && expand) ||
-                  (expandIndex[2] !== index && expand) ||
-                  (expandIndex[3] !== index && expand) ||
-                  (expandIndex[4] !== index && expand) ||
-                  (expandIndex[5] !== index && expand) ||
-                  (expandIndex[6] !== index && expand) ||
-                  (expandIndex[7] !== index && expand) ||
-                  (expandIndex[8] !== index && expand) ||
-                  (expandIndex[9] !== index && expand) ||
-                  (expandIndex[10] !== index && expand) ||
-                  (expandIndex[11] !== index && expand) ? (
+                  {findIDInArray(data.id) ? (
                     <>
                       {
                         data.selectedRadio === 1 &&
@@ -630,18 +599,7 @@ const ParentAgenda = ({
                           rows={rows}
                         />
                       )}
-                      {(expandIndex[0] === index && expand) ||
-                      (expandIndex[1] === index && expand) ||
-                      (expandIndex[2] === index && expand) ||
-                      (expandIndex[3] === index && expand) ||
-                      (expandIndex[4] === index && expand) ||
-                      (expandIndex[5] === index && expand) ||
-                      (expandIndex[6] === index && expand) ||
-                      (expandIndex[7] === index && expand) ||
-                      (expandIndex[8] === index && expand) ||
-                      (expandIndex[9] === index && expand) ||
-                      (expandIndex[10] === index && expand) ||
-                      (expandIndex[11] === index && expand) ? (
+                      {findIDInArray(data.id) ? (
                         <div className={styles["borderDesigningSubAgenda"]}>
                           <SubAgendaMappingDragging
                             data={data}
