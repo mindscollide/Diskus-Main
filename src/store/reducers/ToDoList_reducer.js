@@ -32,6 +32,13 @@ const initialState = {
 
 const toDoListReducer = (state = initialState, action) => {
   switch (action.type) {
+
+    case actions.TODOLIST_LOADER : {
+      return {
+        ...state,
+        Loading: action.loader
+      }
+    }
     case actions.TASK_FOLDER_MAPPING_ID: {
       return {
         ...state,
