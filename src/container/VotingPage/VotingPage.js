@@ -310,12 +310,18 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
                                 alt=""
                                 draggable="false"
                               />
-                              <span className={styles["voting_method_heading"]}>
-                                {t("Voting-method") + " : "}{" "}
-                              </span>{" "}
-                              <span className={styles["voting_methong_value"]}>
-                                {t("Secret-balloting")}
-                              </span>
+                              <div className="d-flex">
+                                <span
+                                  className={styles["voting_method_heading"]}
+                                >
+                                  {t("Voting-method") + " : "}{" "}
+                                </span>{" "}
+                                <span
+                                  className={styles["voting_methong_value"]}
+                                >
+                                  {t("Secret-balloting")}
+                                </span>
+                              </div>
                             </Col>
                           </Row>
                         </>

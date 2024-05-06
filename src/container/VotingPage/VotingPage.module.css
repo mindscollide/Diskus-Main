@@ -370,7 +370,7 @@ body[dir="rtl"] .Your_vote_voteresolution {
   font-weight: 600;
 
   font-size: 16px !important;
-  color: #6172d6 !important;
+  /* color: #6172d6 !important; */
 }
 
 .line_voteResolution {
