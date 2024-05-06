@@ -66,18 +66,43 @@ body[dir="rtl"] .No_of_Votes {
   font-weight: 600;
 }
 
-.yellow_border_box {
+.pending_state {
   width: 282px !important;
   height: 125px !important;
   background-color: #fff !important;
-  border: 1px solid #ddb227;
+  border: 1px solid #DDB227;
+  color: #DDB227 !important;
   border-radius: 4px !important;
+}
+.approved_state {
+  width: 282px !important;
+  height: 125px !important;
+  background-color: #fff !important;
+  border: 1px solid #6DE595;
+  border-radius: 4px !important;
+  color: #6DE595 !important;
+}
+.notApproved_state {
+  width: 282px !important;
+  height: 125px !important;
+  background-color: #fff !important;
+  border: 1px solid #F16B6B !important;
+  color: #F16B6B !important;
+  border-radius: 4px !important;
+}
+.Tie_state {
+  width: 282px !important;
+  height: 125px !important;
+  background-color: #fff !important;
+  border: 1px solid #5A5A5A;
+  border-radius: 4px !important;
+  color: #5A5A5A !important;
 }
 
 .status_vote_resolution {
   font-size: 30px !important;
   font-weight: 600;
-  color: #ddb227 !important;
+  /* color: #ddb227 !important; */
 }
 
 body[dir="rtl"] .status_vote_resolution {
