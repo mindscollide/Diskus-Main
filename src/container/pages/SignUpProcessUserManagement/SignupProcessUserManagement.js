@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import {
   LoginFlowRoutes,
   clearMessegesUserManagement,
+  signUpFlowRoutes,
 } from "../../../store/actions/UserManagementActions";
 import { cleareMessage } from "../../../store/actions/Auth2_actions";
 import { useTranslation } from "react-i18next";
@@ -30,31 +31,69 @@ const SignupProcessUserManagement = () => {
     message: "",
   });
 
-  useEffect(() => {
-    if (location.state !== null) {
-      if (location.state?.freeTrail) {
-        setFreetrail(true);
-      }
-    }
-  }, [location.state]);
+  // useEffect(() => {
+  //   if (location.state !== null) {
+  //     if (location.state?.freeTrail) {
+  //       setFreetrail(true);
+  //     }
+  //   }
+  // }, [location.state]);
 
-  useEffect(() => {
-    if (currentStage !== null) {
-      setCurrentPage(currentStage);
-      localStorage.setItem("signupCurrentPage", currentStage);
-    }
-  }, [currentStage]);
+  // useEffect(() => {
+  //   if (currentStage !== null) {
+  //     setCurrentPage(currentStage);
+  //     localStorage.setItem("signupCurrentPage", currentStage);
+  //   }
+  // }, [currentStage]);
 
-  //Updating the state of the local storage routes pages
+  // //Updating the state of the local storage routes pages
+  // useEffect(() => {
+  //   localStorage.removeItem("LoginFlowPageRoute");
+  //   dispatch(LoginFlowRoutes(1));
+  //   try {
+  //     if (UserMangementReducer.defaultRoutingValue) {
+  //       setCurrentPage(UserMangementReducer.defaultRoutingValue);
+  //     }
+  //   } catch {}
+  // }, [UserMangementReducer.defaultRoutingValue]);
+
+  // const storedStep = Number(localStorage.getItem("SignupFlowPageRoute"));
+  // useEffect(() => {
+  //   // Retrieve current step from local storage
+  //   if (performance.navigation.type === PerformanceNavigation.TYPE_RELOAD) {
+  //     console.log("SignupFlowPageRoute", storedStep);
+  //     if (storedStep) {
+  //       dispatch(signUpFlowRoutes(storedStep));
+  //     }
+  //   } else {
+  //     console.log("SignupFlowPageRoute");
+  //     localStorage.setItem("SignupFlowPageRoute", 1);
+  //     dispatch(signUpFlowRoutes(1));
+  //   }
+  // }, []);
+
+  // Retrieve currentStep value from localStorage, default to 1 if not found
+  const storedStep = Number(localStorage.getItem("SignupFlowPageRoute"));
   useEffect(() => {
-    localStorage.removeItem("LoginFlowPageRoute");
-   dispatch(LoginFlowRoutes(1));
-    try {
-      if (UserMangementReducer.defaultRoutingValue) {
-        setCurrentPage(UserMangementReducer.defaultRoutingValue);
+    // Retrieve current step from local storage
+    if (performance.navigation.type === PerformanceNavigation.TYPE_RELOAD) {
+      if (storedStep) {
+        dispatch(signUpFlowRoutes(storedStep));
       }
-    } catch {}
-  }, [UserMangementReducer.defaultRoutingValue]);
+    } else {
+      localStorage.setItem("SignupFlowPageRoute", 1);
+      dispatch(signUpFlowRoutes(1));
+    }
+  }, []);
+  useEffect(() => {
+    if (UserMangementReducer.defaulSignUpRoute) {
+      // Update local storage with the current step
+      localStorage.setItem(
+        "SignupFlowPageRoute",
+        UserMangementReducer.defaulSignUpRoute
+      );
+    }
+  }, [UserMangementReducer.defaulSignUpRoute]);
 
   //For SnakBar Messeges
 
@@ -354,15 +393,19 @@ const SignupProcessUserManagement = () => {
   }, [UserMangementReducer.ResponseMessage]);
 
   let SignupComponent;
-  if (currentStage === 1) {
+  if (
+    UserMangementReducer.defaulSignUpRoute === 1 ||
+    UserMangementReducer.defaulSignUpRoute === null ||
+    UserMangementReducer.defaulSignUpRoute === undefined
+  ) {
     SignupComponent = <PakageDetailsUserManagement />;
-  } else if (currentStage === 2) {
+  } else if (UserMangementReducer.defaulSignUpRoute === 2) {
     SignupComponent = <SignUpOrganizationUM />;
-  } else if (currentStage === 3) {
+  } else if (UserMangementReducer.defaulSignUpRoute === 3) {
     SignupComponent = <VerifyOTPUM />;
-  } else if (currentStage === 4) {
+  } else if (UserMangementReducer.defaulSignUpRoute === 4) {
     SignupComponent = <PasswordCreationUM isFreetrail={isFreetrail} />;
-  } else if (currentStage === 5) {
+  } else if (UserMangementReducer.defaulSignUpRoute === 5) {
     SignupComponent = <BillingMethodUsermanagement />;
   } else {
     SignupComponent = null;

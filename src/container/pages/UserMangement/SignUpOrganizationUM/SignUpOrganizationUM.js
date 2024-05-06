@@ -16,6 +16,7 @@ import ReactFlagsSelect from "react-flags-select";
 import { Check2 } from "react-bootstrap-icons";
 import {
   LoginFlowRoutes,
+  signUpFlowRoutes,
   signUpOrganizationAndPakageSelection,
 } from "../../../../store/actions/UserManagementActions";
 import {
@@ -808,9 +809,10 @@ const SignUpOrganizationUM = () => {
       dispatch(LoginFlowRoutes(1));
       navigate("/");
     } else {
+      localStorage.removeItem("SignupFlowPageRoute", 2);
+      localStorage.setItem("SignupFlowPageRoute", 1);
+      dispatch(signUpFlowRoutes(1));
       navigate("/Signup");
-
-      localStorage.setItem("signupCurrentPage", 1);
     }
   };
 

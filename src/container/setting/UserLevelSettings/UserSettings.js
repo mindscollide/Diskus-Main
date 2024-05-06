@@ -1878,7 +1878,7 @@ const UserSettings = () => {
                               }
                             >
                               <span className={styles["Class_CheckBox"]}>
-                                {t("Push-notification-when-group-is-inActive")}
+                                {t("Notify-when-group-becomes-in-active")}
                               </span>
                             </Checkbox>
                           </Col>
@@ -1909,7 +1909,7 @@ const UserSettings = () => {
                             >
                               <span className={styles["Class_CheckBox"]}>
                                 {t(
-                                  "Push-notification-when-group-is-set-active"
+                                  "Notify-when-group-becomes-active"
                                 )}
                               </span>
                             </Checkbox>

@@ -53,13 +53,6 @@ const LoginFlowRoutes = (response) => {
   };
 };
 
-const signupFlowRoutes = (response) => {
-  return {
-    type: actions.ROUTING_ON_SIGNUP_USERMANAGEMENT,
-    response: response,
-  };
-};
-
 //Organization SignUp And Pakage Selection
 
 const createOrganizationAndPakageSelectionInit = () => {
@@ -105,7 +98,7 @@ const signUpOrganizationAndPakageSelection = (data, navigate, t) => {
                 response.data.responseResult.responseMessage
                   .toLowerCase()
                   .includes(
-                    "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_01".toLowerCase()
+                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_01".toLowerCase()
                   )
               ) {
                 localStorage.setItem(
@@ -133,7 +126,9 @@ const signUpOrganizationAndPakageSelection = (data, navigate, t) => {
                 localStorage.removeItem("PackageID");
                 localStorage.setItem("minutes", 4);
                 localStorage.setItem("seconds", 60);
-                localStorage.setItem("signupCurrentPage", 3);
+                localStorage.removeItem("SignupFlowPageRoute", 2);
+                localStorage.setItem("SignupFlowPageRoute", 3);
+                dispatch(signUpFlowRoutes(3));
                 navigate("/Signup");
               } else if (
                 response.data.responseResult.responseMessage
@@ -169,7 +164,9 @@ const signUpOrganizationAndPakageSelection = (data, navigate, t) => {
                 localStorage.setItem("minutes", 0);
                 localStorage.setItem("seconds", 0);
                 localStorage.removeItem("PackageID");
-                localStorage.setItem("signupCurrentPage", 3);
+                localStorage.removeItem("SignupFlowPageRoute", 2);
+                localStorage.setItem("SignupFlowPageRoute", 3);
+                dispatch(signUpFlowRoutes(3));
                 navigate("/Signup");
               } else if (
                 response.data.responseResult.responseMessage
@@ -1840,6 +1837,6 @@ export {
   getCancelSubscriptionReasonApi,
   cancelOrganizationSubApi,
   clearMessegesUserManagement,
-  signupFlowRoutes,
+  // signupFlowRoutes,
   // paymentUpgradeDetailMainApi
 };

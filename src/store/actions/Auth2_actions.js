@@ -23,7 +23,7 @@ import { TwoFaAuthenticate } from "./TwoFactorsAuthenticate_actions";
 import { mqttConnection } from "../../commen/functions/mqttconnection";
 import Helper from "../../commen/functions/history_logout";
 import { getSubscriptionPaymentDetail } from "./Admin_PackageDetail";
-import { LoginFlowRoutes } from "./UserManagementActions";
+import { LoginFlowRoutes, signUpFlowRoutes } from "./UserManagementActions";
 import {
   showCreateAddtionalUsersModal,
   showUpgradeNowModal,
@@ -1687,12 +1687,15 @@ const verificationEmailOTP = (
               } else {
                 localStorage.setItem("updatePasswordCheck", false);
               }
-              let signUp = localStorage.getItem("signupCurrentPage");
+              let signUp = localStorage.getItem("SignupFlowPageRoute");
               if (signUp) {
                 console.log("LoginFlowPageRoute");
                 localStorage.removeItem("seconds");
                 localStorage.removeItem("minutes");
-                localStorage.setItem("signupCurrentPage", 4);
+                localStorage.removeItem("SignupFlowPageRoute", 3);
+                localStorage.setItem("SignupFlowPageRoute", 4);
+                dispatch(signUpFlowRoutes(4));
+                navigate("/Signup");
                 console.log("LoginFlowPageRoute");
               } else {
                 //  this is used on when we ccaome from verify emaol otp of qrganaisation creation
@@ -2213,8 +2216,13 @@ const createPasswordAction = (value, navigate, t) => {
               )
             );
 
-            localStorage.removeItem("LoginFlowPageRoute");
-            localStorage.setItem("signupCurrentPage", 5);
+            // localStorage.removeItem("LoginFlowPageRoute");
+            // localStorage.setItem("signupCurrentPage", 5);
+            // navigate("/Signup");
+
+            localStorage.removeItem("SignupFlowPageRoute", 4);
+            localStorage.setItem("SignupFlowPageRoute", 5);
+            dispatch(signUpFlowRoutes(5));
             navigate("/Signup");
           } else {
             clearLocalStorageAtloginresponce(2, navigate);

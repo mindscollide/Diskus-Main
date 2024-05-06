@@ -790,7 +790,7 @@
   "Successfully": "Successfully",
   "Remove": "Remove",
   "Cancel-this-resolution": "Cancel this Resolution?",
-  "Are-you-sure-you-want-to-update": "Are you sure You want to Update",
+  "Are-you-sure-you-want-to-update": "Are you sure you want to Update",
   "the-resolution": "the Resolution?",
   "Are-you-sure-you-want-to-discard": "Are you sure You want to Discard",
   "Committee-type-is-required": "Committee type is required",
@@ -1919,7 +1919,6 @@
   "Disable-video-call": "Disable video call",
   "Error-occurred-while-adding-users": "Error Occurred While Adding Users",
   "Users-added-successfully": "Users Added Successfully",
-  "Folder-share-successfully": "Folder share successfully",
   "Invalid-request-data": "Invalid Request Data (Billing Info not provided)",
   "Invoice-details-does-not-exist": "Invoice Details does not exist",
   "Failed-to-save-billing-information": "Failed to Save Billing Information",
@@ -1986,5 +1985,8 @@
   "Org-sub-is-cancel-and-this-is-an-user": "Org sub is Cancel. and this is a user",
   "Organization-is-currently-locked-please-contact-the-global-Admin-for-further-assistance": "Organization is currently locked. Please contact the Global Admin for further assistance.",
   "You-have-not-been-assigned-any-license-please-contact-the-admin-for-further-assistance": "You have not been assigned any license. Please contact the admin for further assistance.",
+  "Folder-share-successfully": "Folder share successfully",
+  "Notify-when-group-becomes-in-active": "Notify When Group becomes In Active",
+  "Notify-when-group-becomes-active": "Notify When Group becomes Active",
   "Country-selection-is-required": "Country selection is required"
 }

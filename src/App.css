@@ -2131,6 +2131,7 @@ button.btn.btn-primary.meeting.end {
 
 .CreateMeetingTime input {
   color: #666666;
+  font-weight: 500;
 }
 
 .CreateMeetingDate svg.DatePickerIcon {

@@ -409,13 +409,6 @@ const UserMangementReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
 
-    case actions.ROUTING_ON_SIGNUP_USERMANAGEMENT: {
-      return {
-        ...state,
-        defaultRoutes: action.response,
-      };
-    }
-
     // Api for upgrade button on package details which is not ready yet but structure should be ready when Api will implemented ready to go
     // case actions.PACKAGE_UPGRADE_DETAIL_INIT:
     //   return {

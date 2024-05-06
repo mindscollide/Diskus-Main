@@ -103,8 +103,8 @@ const SignInUserManagement = () => {
 
   //Subscribe now
   const handleSubscribeNowButton = () => {
-    localStorage.setItem("signupCurrentPage", 1);
-    // dispatch(signUpFlowRoutes(1));
+    localStorage.setItem("SignupFlowPageRoute", 1);
+    dispatch(signUpFlowRoutes(1));
     navigate("/Signup");
   };
 
@@ -112,7 +112,8 @@ const SignInUserManagement = () => {
   const handleClickFreeTrail = () => {
     localStorage.setItem("PackageID", 4);
     localStorage.setItem("TenureOfSuscriptionID", 2);
-    localStorage.setItem("signupCurrentPage", 2);
+    localStorage.setItem("SignupFlowPageRoute", 2);
+    dispatch(signUpFlowRoutes(2));
 
     // setCurrentStep(9);
     navigate("/Signup", {

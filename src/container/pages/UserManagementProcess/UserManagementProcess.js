@@ -41,12 +41,10 @@ const UserManagementProcess = () => {
   useEffect(() => {
     // Retrieve current step from local storage
     if (performance.navigation.type === PerformanceNavigation.TYPE_RELOAD) {
-      console.log("LoginFlowPageRoute", storedStep);
       if (storedStep) {
         dispatch(LoginFlowRoutes(storedStep));
       }
     } else {
-      console.log("LoginFlowPageRoute");
       localStorage.setItem("LoginFlowPageRoute", 1);
       dispatch(LoginFlowRoutes(1));
     }

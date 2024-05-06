@@ -8,6 +8,7 @@
 .details-class {
   font-size: 20px !important;
   color: #6172d6 !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .details-class {
@@ -34,6 +35,8 @@ body[dir="rtl"] .details-class {
 .Create-group-Head-Heading {
   font-size: 18px !important;
   color: #6172d6 !important;
+  font-weight: 600;
+
 }
 
 body[dir="rtl"] .Create-group-Head-Heading {
@@ -80,6 +83,7 @@ body[dir="rtl"] .no-member {
 .members-create-group-page {
   font-size: 18px !important;
   color: #6172d6 !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .members-create-group-page {
@@ -89,6 +93,7 @@ body[dir="rtl"] .members-create-group-page {
 .Addmembers-class {
   font-size: 18px !important;
   color: #6172d6 !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .Addmembers-class {
@@ -205,6 +210,7 @@ body[dir="rtl"] .Cancell-UpgradeGroup-btn {
 .Create-Group-Heading {
   font-size: 30px !important;
   color: #6172d6 !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .Create-Group-Heading {
@@ -253,6 +259,7 @@ body[dir="rtl"] .errorMessage {
   visibility: hidden;
   margin: 0;
   height: 7px;
+  font-weight: 600;
   color: #f16b6b !important;
 }
 
