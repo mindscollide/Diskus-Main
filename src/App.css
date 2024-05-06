@@ -7452,3 +7452,7 @@ tr.ant-table-row.ant-table-row-level-0.UpgradePakageDetails:last-child:hover {
 .ant-table-thead > tr > th {
   font-weight: 600 !important;
 }
+
+.d-block.loader-zindex .videoCallScreen {
+  z-index: 99999999999 !important;
+}
