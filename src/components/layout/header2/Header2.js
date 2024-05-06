@@ -10,10 +10,7 @@ import DiskusNotificationIcon from "../../../assets/images/newElements/Diskus-no
 import "./Header.css";
 import "../../../i18n.js";
 import { useTranslation } from "react-i18next";
-import {
-  signOut,
-  userLogOutApiFunc,
-} from "../../../store/actions/Auth_Sign_Out";
+import { userLogOutApiFunc } from "../../../store/actions/Auth_Sign_Out";
 import {
   showCancelModalmeetingDeitals,
   scheduleMeetingPageFlag,
@@ -35,7 +32,7 @@ import { useLocation } from "react-router-dom";
 import UserProfile from "../../../container/authentication/User_Profile/UserProfile";
 import LanguageSelector from "../../elements/languageSelector/Language-selector";
 import ModalMeeting from "../../../container/modalmeeting/ModalMeeting";
-import { Button, Modal, UploadTextField } from "../../elements";
+import { Button, Modal, UploadTextField, Loader } from "../../elements";
 import {
   getRecentDocumentsApi,
   uploadDocumentFromDashboard,
@@ -55,7 +52,7 @@ const Header2 = () => {
   const state = useSelector((state) => state);
   const { settingReducer, NewMeetingreducer } = state;
   const { UserProfileData } = settingReducer;
-  const { UserManagementModals } = useSelector((state) => state);
+  const { UserManagementModals, Authreducer } = useSelector((state) => state);
   const navigate = useNavigate();
   const [createMeetingModal, setCreateMeetingModal] = useState(false);
   const dispatch = useDispatch();
@@ -312,6 +309,7 @@ const Header2 = () => {
   };
 
   const handleShowUpgradedNowModal = () => {
+    console.log("Clicked");
     dispatch(showUpgradeNowModal(true));
   };
 
@@ -1059,6 +1057,7 @@ const Header2 = () => {
         />
       )}
       {UserManagementModals.UpgradeNowModal && <UpgradeNowModal />}
+      {Authreducer.Loading ? <Loader /> : null}
       {UserManagementModals.requestExtentionModal && (
         <RequestExtensionModal setTrailExpiry={setTrailExpiry} />
       )}
