@@ -11,7 +11,7 @@ const initialState = {
   allOrganizationUsersData: null,
   organizationPakageDetailsUserStatsData: null,
   organizationSelectedPakagesByOrganizationIDData: null,
-  defaultRoutingValue: null,
+  defaultRoutingValue: 1,
   defaulSignUpRoute: 1,
   getAllSelectedPakagesData: null,
   getOrganizationUserStatsGraph: null,
@@ -22,6 +22,7 @@ const initialState = {
   cancelSubReasonData: [],
   cancelOrganizationSubsData: null,
   packageUpgradeDetail: null,
+  defaultRoutes: null,
 };
 
 const UserMangementReducer = (state = initialState, action) => {
@@ -407,6 +408,13 @@ const UserMangementReducer = (state = initialState, action) => {
         cancelOrganizationSubsData: null,
         ResponseMessage: action.message,
       };
+
+    case actions.ROUTING_ON_SIGNUP_USERMANAGEMENT: {
+      return {
+        ...state,
+        defaultRoutes: action.response,
+      };
+    }
 
     // Api for upgrade button on package details which is not ready yet but structure should be ready when Api will implemented ready to go
     // case actions.PACKAGE_UPGRADE_DETAIL_INIT:

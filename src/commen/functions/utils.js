@@ -315,7 +315,7 @@ export function clearLocalStorageAtloginresponce(value, navigate) {
     localStorage.removeItem("LoginFlowPageRoute");
   } else if (value === 2) {
     localStorage.removeItem("signupCurrentPage");
-    localStorage.setItem("LoginFlowPageRoute", 1);
+    //localStorage.setItem("LoginFlowPageRoute", 1);
     navigate("/");
   }
 }

@@ -169,15 +169,21 @@ const PakageDetailsAdmin = () => {
   };
 
   const upgradeOnclickHandler = () => {
-    const organizationSelectedPackages =
-      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
-        ?.organizationSelectedPackages;
-    if (organizationSelectedPackages) {
-      navigate("/Admin/PackageDetailUMupgrade", {
-        state: { organizationSelectedPackages },
-      });
-    } else {
-      // Handle if organizationSelectedPackages is empty
+    if (UserMangementReducer.organizationSelectedPakagesByOrganizationIDData) {
+      const organizationSelectedVariable =
+        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData.organizationSubscriptions?.map(
+          (subscription) => subscription.organizationSelectedPackages
+        );
+      console.log(organizationSelectedVariable, "organizationSelectedVariable");
+      if (organizationSelectedVariable) {
+        navigate("/Admin/PackageDetailUMupgrade", {
+          state: {
+            organizationSelectedPackages: organizationSelectedVariable,
+          },
+        });
+      } else {
+        // Handle if organizationSelectedPackages is empty
+      }
     }
   };
 

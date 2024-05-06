@@ -53,6 +53,13 @@ const LoginFlowRoutes = (response) => {
   };
 };
 
+const signupFlowRoutes = (response) => {
+  return {
+    type: actions.ROUTING_ON_SIGNUP_USERMANAGEMENT,
+    response: response,
+  };
+};
+
 //Organization SignUp And Pakage Selection
 
 const createOrganizationAndPakageSelectionInit = () => {
@@ -618,6 +625,26 @@ const EditOrganizationsUserApi = (navigate, t, data, flag) => {
                 )
             ) {
               dispatch(editOrganizationUsersFail(t("Something-went-wrong")));
+              dispatch(showEditUserModal(true));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_EditOrganizationsUser_06".toLowerCase()
+                )
+            ) {
+              dispatch(editOrganizationUsersFail(t("User-deletion-failed")));
+              dispatch(showEditUserModal(true));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_EditOrganizationsUser_07".toLowerCase()
+                )
+            ) {
+              dispatch(
+                editOrganizationUsersFail(t("User-deleted-succesfully"))
+              );
               dispatch(showEditUserModal(true));
             } else {
               dispatch(editOrganizationUsersFail(t("Something-went-wrong")));
@@ -1813,5 +1840,6 @@ export {
   getCancelSubscriptionReasonApi,
   cancelOrganizationSubApi,
   clearMessegesUserManagement,
+  signupFlowRoutes,
   // paymentUpgradeDetailMainApi
 };

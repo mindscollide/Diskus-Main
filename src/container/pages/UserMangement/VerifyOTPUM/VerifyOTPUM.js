@@ -157,9 +157,9 @@ const VerifyOTPUM = () => {
   }, []);
 
   const handleBacktoSignIn = () => {
-    localStorage.removeItem("signupCurrentPage", 3);
+    localStorage.removeItem("signupCurrentPage");
     localStorage.setItem("LoginFlowPageRoute", 1);
-    dispatch(LoginFlowRoutes(1));
+   dispatch(LoginFlowRoutes(1));
     navigate("/");
   };
 

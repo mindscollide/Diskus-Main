@@ -219,9 +219,9 @@ const PasswordVerification = () => {
 
   //Handle Goback functionality
 
-  const handleGoBack = () => {
-    localStorage.setItem("LoginFlowPageRoute", 10);
-    dispatch(LoginFlowRoutes(10));
+  const handelForgotPassword = () => {
+    //localStorage.setItem("LoginFlowPageRoute", 10);
+   dispatch(LoginFlowRoutes(10));
   };
 
   //Password Remeber
@@ -370,7 +370,7 @@ const PasswordVerification = () => {
                     className={styles["forogt_email_link"]}
                   >
                     <Link
-                      onClick={handleGoBack}
+                      onClick={handelForgotPassword}
                       className={styles["ForgotPassword"]}
                     >
                       {t("Forgot-password")}
