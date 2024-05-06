@@ -20,7 +20,10 @@ import {
 } from "../../../../store/actions/Auth2_actions";
 import { ResendOTP } from "../../../../store/actions/Auth_Verify_Opt";
 import { useSelector } from "react-redux";
-import { LoginFlowRoutes } from "../../../../store/actions/UserManagementActions";
+import {
+  LoginFlowRoutes,
+  signUpFlowRoutes,
+} from "../../../../store/actions/UserManagementActions";
 
 const VerifyOTPUM = () => {
   const { t } = useTranslation();
@@ -157,9 +160,9 @@ const VerifyOTPUM = () => {
   }, []);
 
   const handleBacktoSignIn = () => {
-    localStorage.removeItem("signupCurrentPage");
+    localStorage.removeItem("SignupFlowPageRoute");
     localStorage.setItem("LoginFlowPageRoute", 1);
-   dispatch(LoginFlowRoutes(1));
+    dispatch(LoginFlowRoutes(1));
     navigate("/");
   };
 
