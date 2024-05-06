@@ -957,7 +957,7 @@ const Dashboard = () => {
             setNotification({
               notificationShow: true,
               message: changeMQTTJSONOne(
-                t("NEW_COMMITTEE_CREATION"),
+                t("NEW_MEMBER_ADDED_IN_COMMITTEE"),
                 "[Committe Title]",
                 data.payload.committees.committeesTitle.substring(0, 100)
               ),
@@ -1001,6 +1001,23 @@ const Dashboard = () => {
           setNotificationID(id);
         } else if (
           data.payload.message.toLowerCase() ===
+          "COMMITTTEE_STATUS_EDITED_ACTIVE".toLowerCase()
+        ) {
+          if (data.viewable) {
+            setNotification({
+              notificationShow: true,
+              message: changeMQTTJSONOne(
+                t("COMMITTTEE_STATUS_EDITED_ACTIVE"),
+                "[Committee Title]",
+                data.payload.committeeTitle.substring(0, 100)
+              ),
+              // message: `Committee ${data.payload.committeeTitle} in which you are a member has been set as In-Active`,
+            });
+          }
+          dispatch(realtimeCommitteeStatusResponse(data.payload));
+          setNotificationID(id);
+        } else if (
+          data.payload.message.toLowerCase() ===
           "MEMBER_REMOVED_FROM_COMMITTEE".toLowerCase()
         ) {
           dispatch(removeCommitteeMemberMQTT(data.payload));
@@ -1009,7 +1026,7 @@ const Dashboard = () => {
             setNotification({
               notificationShow: true,
               message: changeMQTTJSONOne(
-                t("COMMITTTEE_STATUS_EDITED_IN_ACTIVE"),
+                t("MEMBER_REMOVED_FROM_COMMITTEE"),
                 "[Committee Title]",
                 data.payload.committees.committeesTitle.substring(0, 100)
               ),
@@ -1044,7 +1061,7 @@ const Dashboard = () => {
             setNotification({
               notificationShow: true,
               message: changeMQTTJSONOne(
-                t("NEW_GROUP_CREATION"),
+                t("NEW_GROUP_MEMBER_ADDED"),
                 "[Group Title]",
                 data.payload.groups.groupTitle.substring(0, 100)
               ),
@@ -1094,7 +1111,7 @@ const Dashboard = () => {
             setNotification({
               notificationShow: true,
               message: changeMQTTJSONOne(
-                t("NEW_GROUP_CREATION"),
+                t("GROUP_MEMBER_REMOVED"),
                 "[Group Title]",
                 data.payload.groups.groupTitle.substring(0, 100)
               ),
@@ -1102,6 +1119,23 @@ const Dashboard = () => {
             });
           }
           dispatch(removeGroupMemberMQTT(data.payload));
+          setNotificationID(id);
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "GROUP_STATUS_EDITED_ACTIVE".toLowerCase()
+        ) {
+          if (data.viewable) {
+            setNotification({
+              notificationShow: true,
+              message: changeMQTTJSONOne(
+                t("GROUP_STATUS_EDITED_ACTIVE"),
+                "[Group Title]",
+                data.payload.groupTitle.substring(0, 100)
+              ),
+              // message: `Group ${data.payload.groupTitle} in which you are a member has been set as In-Active`,
+            });
+          }
+          dispatch(realtimeGroupStatusResponse(data.payload));
           setNotificationID(id);
         }
       }
