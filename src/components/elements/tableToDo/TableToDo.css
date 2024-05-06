@@ -20,7 +20,7 @@
   margin: 20px 0 20px 0 !important;
 }
 
-.ant-table-thead>tr>th {
+.ant-table-thead > tr > th {
   background-color: none !important;
   white-space: nowrap !important;
   /* border-bottom   : 2px solid blue !important; */
@@ -34,39 +34,47 @@
   height: 0px !important;
 }
 
-.ant-table-wrapper.ToDo .ant-table .ant-table-thead>tr>th {
+.ant-table-wrapper.ToDo .ant-table .ant-table-thead > tr > th {
   background: none !important;
   border-bottom: none !important;
 }
 
-.ant-table-wrapper.ToDo .ant-table .ant-table-thead>tr>th:nth-child(5) {
-  background: none !important;
-  border-bottom: none !important;
-  text-align: center !important;
-}
-
-.ant-table-wrapper.ToDo .ant-table .ant-table-thead>tr>th:nth-child(6) {
+.ant-table-wrapper.ToDo .ant-table .ant-table-thead > tr > th:nth-child(5) {
   background: none !important;
   border-bottom: none !important;
   text-align: center !important;
 }
 
-.ant-table-wrapper.Resolution_table .ant-table .ant-table-thead>tr>th {
+.ant-table-wrapper.ToDo .ant-table .ant-table-thead > tr > th:nth-child(6) {
+  background: none !important;
+  border-bottom: none !important;
+  text-align: center !important;
+}
+
+.ant-table-wrapper.Resolution_table .ant-table .ant-table-thead > tr > th {
   background: none !important;
   border-bottom: none !important;
 }
 
-.ant-table-wrapper.Resolution_table .ant-table .ant-table-tbody>tr>td {
+.ant-table-wrapper.Resolution_table .ant-table .ant-table-tbody > tr > td {
   position: initial !important;
 }
 
-.ant-table-wrapper.Resolution_table .ant-table .ant-table-thead>tr>th:nth-child(6) {
+.ant-table-wrapper.Resolution_table
+  .ant-table
+  .ant-table-thead
+  > tr
+  > th:nth-child(6) {
   background: none !important;
   border-bottom: none !important;
   text-align: center !important;
 }
 
-.ant-table-wrapper.Resolution_table .ant-table .ant-table-thead>tr>th:nth-child(6) {
+.ant-table-wrapper.Resolution_table
+  .ant-table
+  .ant-table-thead
+  > tr
+  > th:nth-child(6) {
   background: none !important;
   border-bottom: none !important;
   text-align: center !important;
@@ -81,6 +89,27 @@
   margin-bottom: 50px;
 } */
 
-.ant-table-wrapper.ToDo .ant-table .ant-table-container .ant-table-content thead.ant-table-thead {
+.ant-table-wrapper.ToDo
+  .ant-table
+  .ant-table-container
+  .ant-table-content
+  thead.ant-table-thead {
   background: none !important;
+}
+
+.ApprovalSending-wrapper {
+  clear: both;
+  max-width: 100%;
+}
+/* .PendingApprovalsTable table  */
+.ant-table-wrapper.PendingApprovalsTable .ant-table .ant-table-tbody > tr > td {
+  padding: 8px 16px !important;
+}
+.ant-table-wrapper.PendingApprovalsTable
+  .ant-table
+  .ant-table-thead
+  > tr
+  > th
+  .ant-table-column-sorter {
+  display: none;
 }

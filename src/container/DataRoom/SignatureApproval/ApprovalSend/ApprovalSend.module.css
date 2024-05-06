@@ -33,3 +33,25 @@ p.DeclineStatus {
   font-size: 12px;
   text-transform: uppercase;
 }
+.signatories_vale {
+  color: #6172d6;
+  font-weight: 600;
+  text-decoration: underline;
+  font-size: 12px;
+  cursor: pointer;
+}
+.date_vale {
+  color: #5a5a5a;
+  font-size: 12px;
+  font-weight: 600;
+}
+.Sort_icon_descend {
+  user-select: none;
+}
+.Sort_icon_ascend {
+  user-select: none;
+}
+.fileName_Approvals {
+  font-weight: 600;
+  margin: 0;
+}

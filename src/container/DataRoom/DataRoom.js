@@ -3434,11 +3434,11 @@ const DataRoom = () => {
                 </Dropdown>
               </Col>
 
-              <Col sm={1} md={1} lg={1}></Col>
+              <Col sm={12} md={1} lg={1}></Col>
               <Col
                 lg={6}
                 md={6}
-                sm={6}
+                sm={12}
                 className="d-flex position-relative Inputfield_for_data_room justify-content-end "
               >
                 <SearchBarComponent

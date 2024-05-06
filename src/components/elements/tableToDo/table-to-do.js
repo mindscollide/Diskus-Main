@@ -16,6 +16,7 @@ const CustomTableToDo = ({
   rowSelection,
   onRow,
   sortDirections,
+  prefClassName
 }) => {
   const { Text } = Typography;
 
@@ -24,6 +25,7 @@ const CustomTableToDo = ({
       <Text className="labelTitle">{labelTitle}</Text>
       <Table
         rowClassName={id}
+        prefixCls={prefClassName}
         columns={column}
         dataSource={rows}
         className={className}
