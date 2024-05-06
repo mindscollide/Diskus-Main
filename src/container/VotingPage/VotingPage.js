@@ -42,7 +42,7 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
   const userID = JSON.parse(localStorage.getItem("userID"));
   const [decision, setDecision] = useState("");
   const [decisionId, setDecisionId] = useState(0);
-  console.log(decisionId, "decisionIddecisionIddecisionId")
+  console.log(decisionId, "decisionIddecisionIddecisionId");
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -78,24 +78,24 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
   const data = [
     ["Year", "Visitations", { role: "style" }],
     [
-      "Approved",
+      t("Approved"),
       approved,
 
       "stroke-color: #6DE595; stroke-opacity: 1 ;  fill-color: #6DE595; fill-opacity:1",
     ],
     [
-      "Non-Approved",
+      t("Not-approved"),
       nonApproved,
 
       "stroke-color: #F16B6B; stroke-opacity: 1 ; stroke-color:#F16B6B; fill-color: #F16B6B; fill-opacity:1; text-color:#F16B6B",
     ],
     [
-      "Pending",
+      t("Pending"),
       pending,
       "stroke-color: #000; stroke-opacity: 1 ; stroke-color:#000000; fill-color: #000000; fill-opacity:1",
     ],
     [
-      "Abstain",
+      t("Abstain"),
       abstain,
       "stroke-color: #000; stroke-color:#949494;  stroke-width: 4; fill-color: #949494 ; fill-opacity:1",
     ],

@@ -36,6 +36,7 @@ const initialState = {
   newPollGroups: null,
   newPollCommittees: null,
   newPollMeeting: null,
+  newPollDelete: null,
 };
 
 const PollsReducer = (state = initialState, action) => {
@@ -591,6 +592,14 @@ const PollsReducer = (state = initialState, action) => {
       return {
         ...state,
         newPollMeeting: action.response,
+      };
+    }
+    case actions.DELETE_POLLS_MQTT: {
+      console.log(action, "responseresponseresponse");
+
+      return {
+        ...state,
+        newPollDelete: action.deleteData,
       };
     }
     default: {

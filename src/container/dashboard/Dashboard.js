@@ -107,6 +107,7 @@ import {
   createPollCommitteesMQTT,
   createPollGroupsMQTT,
   createPollMeetingMQTT,
+  deletePollsMQTT,
   notifyPollingSocket,
 } from "../../store/actions/Polls_actions";
 import {
@@ -1397,25 +1398,29 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "PUBLISHED_POLL_DELETED".toLowerCase()
         ) {
-          if (data.viewable) {
-            setNotification({
-              ...notification,
-              notificationShow: true,
-              message: changeMQTTJSONOne(
-                t("PUBLISHED_POLL_DELETED"),
-                "[Poll Title]",
-                data.payload.pollTitle
-              ),
-            });
-          }
-          dispatch(notifyPollingSocket(data.payload.polls));
+          dispatch(deletePollsMQTT(data.payload.polls));
           setNotificationID(id);
+          try {
+            if (data.viewable) {
+              setNotification({
+                ...notification,
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("PUBLISHED_POLL_DELETED"),
+                  "[Poll Title]",
+                  data.payload.pollTitle
+                ),
+              });
+            }
+          } catch {}
         } else if (
           data.payload.message
             .toLowerCase()
             .includes("NEW_POLL_PUBLISHED_GROUP".toLowerCase())
         ) {
           dispatch(createPollGroupsMQTT(data.payload));
+          setNotificationID(id);
+
           if (data.viewable) {
             setNotification({
               ...notification,
@@ -1433,6 +1438,8 @@ const Dashboard = () => {
             .includes("NEW_POLL_PUBLISHED_COMMITTEE".toLowerCase())
         ) {
           dispatch(createPollCommitteesMQTT(data.payload));
+          setNotificationID(id);
+
           if (data.viewable) {
             setNotification({
               ...notification,
@@ -1450,6 +1457,7 @@ const Dashboard = () => {
             .includes("NEW_POLL_PUBLISHED_MEETING".toLowerCase())
         ) {
           dispatch(createPollMeetingMQTT(data.payload));
+          setNotificationID(id);
 
           if (data.viewable) {
             setNotification({
@@ -1463,6 +1471,25 @@ const Dashboard = () => {
             });
           }
         }
+        // else if (
+        //   data.payload.message.toLowerCase() ===
+        //   "PUBLISHED_POLL_DELETED".toLowerCase()
+        // ) {
+        //   dispatch(deletePollsMQTT(data.payload));
+        //   setNotificationID(id);
+
+        //   if (data.viewable) {
+        //     setNotification({
+        //       ...notification,
+        //       notificationShow: true,
+        //       message: changeMQTTJSONOne(
+        //         t("PUBLISHED_POLL_DELETED"),
+        //         "[Poll Title]",
+        //         data.payload.pollTitle
+        //       ),
+        //     });
+        //   }
+        // }
       }
       if (data.action.toLowerCase() === "Resolution".toLowerCase()) {
         if (

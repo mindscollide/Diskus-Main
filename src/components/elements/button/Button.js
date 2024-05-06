@@ -22,6 +22,7 @@ const CustomButton = ({
   iconClass,
   iconClass2,
   textClass,
+  buttonValue
 }) => {
   return (
     <>
@@ -41,6 +42,7 @@ const CustomButton = ({
         data-tut={datatut}
         style={style}
       >
+        {buttonValue}
         <span className={iconClass}>{icon}</span>
         <span className={textClass}>{text}</span>
         <span className={iconClass2}>{icon2}</span>
