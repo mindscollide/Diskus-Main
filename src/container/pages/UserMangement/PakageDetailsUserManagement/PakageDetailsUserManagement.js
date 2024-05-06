@@ -332,10 +332,14 @@ const PakageDetailsUserManagement = () => {
 
   //Pay Now B Button On Click
   const handlePayNowClick = () => {
-    localStorage.removeItem("SignupFlowPageRoute", 1);
-    localStorage.setItem("SignupFlowPageRoute", 2);
-    dispatch(signUpFlowRoutes(2));
-    navigate("/Signup");
+    if (SignupPage) {
+      localStorage.removeItem("SignupFlowPageRoute", 1);
+      localStorage.setItem("SignupFlowPageRoute", 2);
+      dispatch(signUpFlowRoutes(2));
+      navigate("/Signup");
+    } else {
+      navigate("/Admin/PaymentFormUserManagement");
+    }
   };
 
   //For buttons default row flag

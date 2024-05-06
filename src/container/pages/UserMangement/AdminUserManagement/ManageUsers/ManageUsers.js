@@ -126,11 +126,6 @@ const ManageUsers = () => {
     }
   }, [UserMangementReducer.allOrganizationUsersData]);
 
-  console.log(
-    UserMangementReducer.allOrganizationUsersData,
-    "UserMangementReducersxcwedwece"
-  );
-
   //Table Columns All Users
   const ManageUsersColumn = [
     {

@@ -19,6 +19,7 @@ import {
   getAllUserTypePackagesApi,
   LoginFlowRoutes,
 } from "../../../../../store/actions/UserManagementActions";
+import { openPaymentProcessModal } from "../../../../../store/actions/UserMangementModalActions";
 const PakageDetailsUMUpgrade = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -107,6 +108,11 @@ const PakageDetailsUMUpgrade = () => {
   useEffect(() => {
     document.body.dir = currentLangObj.dir || "ltr";
   }, [currentLangObj, t]);
+
+  const modalPriceClick = () => {
+    // dispatch(openPaymentProcessModal(true));
+    navigate("/Admin/PaymentFormUserManagement");
+  };
 
   const ColumnsPakageSelection = [
     {
@@ -243,7 +249,7 @@ const PakageDetailsUMUpgrade = () => {
                 <Button
                   text={t("Pay-now")}
                   className={styles["PayNowButtons"]}
-                  // onClick={handlePayNowClick}
+                  onClick={modalPriceClick}
                 />
               </span>
             </>
@@ -294,7 +300,7 @@ const PakageDetailsUMUpgrade = () => {
                 <Button
                   text={t("Pay-now")}
                   className={styles["PayNowButtons"]}
-                  // onClick={handlePayNowClick}
+                  onClick={modalPriceClick}
                 />
               </span>
             </>
@@ -343,9 +349,7 @@ const PakageDetailsUMUpgrade = () => {
                 <Button
                   text={t("Pay-now")}
                   className={styles["PayNowButtons"]}
-
-                  // onClick={dispatch(openPaymentProcessModal(true))}
-                  // onClick={handlePayNowClick}
+                  onClick={modalPriceClick}
                 />
               </span>
             </>

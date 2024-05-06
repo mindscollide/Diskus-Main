@@ -312,6 +312,15 @@ export const router = createHashRouter(
               </RouteWrapperAdmin>
             }
           />
+
+          <Route
+            path="PaymentFormUserManagement"
+            element={
+              <RouteWrapperAdmin name="PaymentFormUserManagement">
+                <BillingMethodUsermanagement />
+              </RouteWrapperAdmin>
+            }
+          />
           {/* Route For Payment Processs end */}
 
           <Route

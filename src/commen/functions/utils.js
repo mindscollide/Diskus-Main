@@ -221,6 +221,7 @@ export async function handleLoginResponse(response) {
           { name: "PackageDetailUMupgrade", id: 28 },
           { name: "PaymentHistory", id: 218 },
           { name: "changePassword", id: 220 },
+          { name: "PaymentFormUserManagement", id: 222 },
         ]
       : [];
     if (response.isTrial) {
@@ -247,7 +248,8 @@ export async function handleLoginResponse(response) {
           { name: "PakageDetailsUserManagement", id: 206 },
           { name: "CustomerInformation", id: 208 },
           { name: "AddUsers", id: 26 },
-          { name: "loginreport", id: 35 }
+          { name: "loginreport", id: 35 },
+          { name: "PaymentFormUserManagement", id: 209 }
         );
       }
     } else {
