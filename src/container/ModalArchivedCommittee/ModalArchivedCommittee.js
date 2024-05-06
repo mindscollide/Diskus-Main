@@ -222,6 +222,7 @@ const ModalArchivedCommittee = ({
                               data.committeeStatusID === 2 &&
                               t("View-committee")
                             }
+                            flag={true}
                           />
                         </Col>
                       );

@@ -36,7 +36,10 @@ import CustomPagination from "../../../commen/functions/customPagination/Paginat
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
 import { UpdateOrganizersMeeting } from "../../../store/actions/MeetingOrganizers_action";
 import { truncateString } from "../../../commen/functions/regex";
-import { createCommitteeMeeting } from "../../../store/actions/GetMeetingUserId";
+import {
+  createCommitteeMeeting,
+  getMeetingStatusfromSocket,
+} from "../../../store/actions/GetMeetingUserId";
 
 const CommitteeMeetingTab = ({ committeeStatus }) => {
   const { t } = useTranslation();
@@ -46,7 +49,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
   const meetingStatusNotConductedMqttData = useSelector(
     (state) => state.NewMeetingreducer.meetingStatusNotConductedMqttData
   );
-  const { CommitteeMeetingMQTT } = useSelector(
+  const { CommitteeMeetingMQTT, MeetingStatusSocket } = useSelector(
     (state) => state.meetingIdReducer
   );
   const [isOrganisers, setIsOrganisers] = useState(false);
@@ -553,7 +556,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
         );
         const isQuickMeeting = record.isQuickMeeting;
 
-        if (record.status === "8") {
+        if (record.status === "8" || record.status === "4") {
           return null;
         } else {
           if (isQuickMeeting) {
@@ -680,6 +683,48 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
     }
     dispatch(meetingNotConductedMQTT(null));
   }, [meetingStatusNotConductedMqttData, rows]);
+
+  //  Update Meeting Status Cancelled and Start Meeting
+  useEffect(() => {
+    if (MeetingStatusSocket !== null) {
+      console.log(
+        MeetingStatusSocket,
+        "MeetingStatusSocketMeetingStatusSocket"
+      );
+      let meetingStatusID = MeetingStatusSocket.meetingStatusID;
+      if (
+        MeetingStatusSocket.message
+          .toLowerCase()
+          .includes("MEETING_STATUS_EDITED_CANCELLED".toLowerCase())
+      ) {
+        let meetingID = MeetingStatusSocket.meetingID;
+        setRow((meetingRow) => {
+          return meetingRow.map((meetingData) => {
+            if (Number(meetingData.pK_MDID) === Number(meetingID)) {
+              return {
+                ...meetingData,
+                status: "4",
+              };
+            } else {
+              // If the condition isn't met, return the original value
+              return meetingData;
+            }
+          });
+        });
+      } else if (
+        MeetingStatusSocket.message
+          .toLowerCase()
+          .includes("MEETING_STATUS_EDITED_STARTED".toLowerCase())
+      ) {
+        let meetingID = MeetingStatusSocket.meeting.pK_MDID;
+      }
+
+      dispatch(getMeetingStatusfromSocket(null));
+      // if (meetingStatusID === 4) {
+      //   updateCalendarData(true, meetingID);
+      // }
+    }
+  }, [MeetingStatusSocket]);
   return (
     <>
       {createMeetingModal && (

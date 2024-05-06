@@ -1898,7 +1898,6 @@
   "Invoice-details-does-not-exist": "Invoice Details does not exist",
   "Failed-to-save-billing-information": "Failed to Save Billing Information",
   "Payment-gateway-api-response-failed": "Payment Gateway Api Response Failed",
-  "Information-saved": "Information saved",
   "User-does-not-exist": "User does not exist",
   "Account-is-blocked": "Account is blocked..",
   "Wrong-password": "Wrong Password",
@@ -1960,5 +1959,13 @@
   "Org-sub-is-cancel-and-this-is-an-admin": "Org sub is Cancel. and this is a admin",
   "Org-sub-is-cancel-and-this-is-an-user": "Org sub is Cancel. and this is a user",
   "Organization-is-currently-locked-please-contact-the-global-Admin-for-further-assistance": "Organization is currently locked. Please contact the Global Admin for further assistance.",
-  "You-have-not-been-assigned-any-license-please-contact-the-admin-for-further-assistance": "You have not been assigned any license. Please contact the admin for further assistance."
+  "You-have-not-been-assigned-any-license-please-contact-the-admin-for-further-assistance": "You have not been assigned any license. Please contact the admin for further assistance.",
+  "Information-saved": "Information saved",
+  "Notify-when-group-becomes-in-active": "Notify When Group becomes In Active",
+  "Notify-when-group-becomes-active": "Notify When Group becomes Active",
+  "NEW_GROUP_MEMBER_ADDED": "You have been added in a [Group Title] Group",
+  "GROUP_MEMBER_REMOVED": "You have been removed in a [Group Title] Group",
+  "MEMBER_REMOVED_FROM_COMMITTEE": "You have been removed in a [Committee Title] Committee",
+  "NEW_MEMBER_ADDED_IN_COMMITTEE": "You have been added in a [Committee Title] Committee",
+  "COMMITTTEE_STATUS_EDITED_ACTIVE": "Committee [Committee Title] in which you are a member has been set as Active"
 }

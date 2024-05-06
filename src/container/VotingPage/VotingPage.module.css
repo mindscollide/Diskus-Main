@@ -10,7 +10,7 @@ body[dir="rtl"] .Vote_Heading {
 }
 
 .Sub_heading_VoteResolution {
-  font-size: 20pt !important;
+  font-size: 20px !important;
   font-weight: 600;
 
   color: #6172d6;
@@ -223,7 +223,7 @@ body[dir="rtl"] .Sub_heading_VoteResolution {
 }
 
 .Voters_voteResolution {
-  font-size: 16pt !important;
+  font-size: 16px !important;
   font-weight: 600;
 
   color: #6172d6;
@@ -251,7 +251,7 @@ body[dir="rtl"] .Voters_voteResolution {
 }
 
 .Total_voters_voteResolution {
-  font-size: 16pt !important;
+  font-size: 16px !important;
   font-weight: 600;
 
   color: #5a5a5a;
@@ -262,7 +262,7 @@ body[dir="rtl"] .Total_voters_voteResolution {
 }
 
 .No_of_Votes_voteResolution {
-  font-size: 16pt !important;
+  font-size: 16px !important;
   font-weight: 600;
 
   color: #6172d6;
@@ -278,10 +278,10 @@ body[dir="rtl"] .Total_voters_voteResolution {
 }
 
 .Status_voteResolutioin {
-  font-size: 30pt !important;
+  font-size: 30px !important;
   font-weight: 600;
 
-  color: #ddb227 !important;
+  /* color: #ddb227 !important; */
 }
 
 body[dir="rtl"] .Status_voteResolutioin {
@@ -385,4 +385,45 @@ body[dir="rtl"] .Your_vote_voteresolution {
   font-weight: 600;
   font-size: 16px !important;
   margin-left: 3px !important;
+}
+.votingMethodKey {
+  font-size: 600;
+  color: #5a5a5a;
+}
+.votingMethodValue {
+  font-size: 600;
+
+  color: #6172d6;
+}
+.pending_state {
+  width: 282px !important;
+  height: 125px !important;
+  background-color: #fff !important;
+  border: 1px solid #ddb227;
+  color: #ddb227 !important;
+  border-radius: 4px !important;
+}
+.approved_state {
+  width: 282px !important;
+  height: 125px !important;
+  background-color: #fff !important;
+  border: 1px solid #6de595;
+  border-radius: 4px !important;
+  color: #6de595 !important;
+}
+.notApproved_state {
+  width: 282px !important;
+  height: 125px !important;
+  background-color: #fff !important;
+  border: 1px solid #f16b6b !important;
+  color: #f16b6b !important;
+  border-radius: 4px !important;
+}
+.Tie_state {
+  width: 282px !important;
+  height: 125px !important;
+  background-color: #fff !important;
+  border: 1px solid #5a5a5a;
+  border-radius: 4px !important;
+  color: #5a5a5a !important;
 }

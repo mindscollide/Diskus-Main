@@ -1418,6 +1418,10 @@ const FetchMeetingURLApi = (
               localStorage.setItem("activeRoomID", match[1]);
               localStorage.setItem("acceptedRecipientID", currentUserID);
               localStorage.setItem("isMeetingVideo", true);
+              localStorage.setItem(
+                "meetingTitle",
+                response.data.responseResult.meetingTitle
+              );
               dispatch(callRequestReceivedMQTT({}, ""));
               if (flag === 0) {
                 dispatch(maximizeVideoPanelFlag(true));

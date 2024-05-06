@@ -1606,7 +1606,15 @@ const viewGroupPageFlag = (response) => {
   };
 };
 
+const removeGroupMemberMQTT = (response) => {
+  return {
+    type: actions.REMOVE_GROUP_MEMBER,
+    response: response,
+  };
+};
+
 export {
+  removeGroupMemberMQTT,
   getGroups,
   getAllGroups,
   realtimeGroupResponse,

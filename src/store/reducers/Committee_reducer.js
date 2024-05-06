@@ -22,6 +22,7 @@ const initialState = {
   createCommitteePageFlag: false,
   updateCommitteePageFlag: false,
   viewCommitteePageFlag: false,
+  removeCommitteeMember: null,
 };
 
 const ComitteeGroupsReducer = (state = initialState, action) => {
@@ -401,6 +402,14 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
       return {
         ...state,
         viewCommitteePageFlag: action.response,
+      };
+    }
+    case actions.REMOVE_COMMITTEE_MEMBER: {
+      console.log(action, "removeCommitteeMemberMQTTremoveCommitteeMemberMQTT");
+
+      return {
+        ...state,
+        removeCommitteeMember: action.response,
       };
     }
 

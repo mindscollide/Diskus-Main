@@ -102,10 +102,12 @@ import { NotificationBar } from "../../components/elements";
 import {
   realtimeGroupStatusResponse,
   realtimeGroupResponse,
+  removeGroupMemberMQTT,
 } from "../../store/actions/Groups_actions";
 import {
   realtimeCommitteeResponse,
   realtimeCommitteeStatusResponse,
+  removeCommitteeMemberMQTT,
 } from "../../store/actions/Committee_actions";
 import { mqttConnection } from "../../commen/functions/mqttconnection";
 import { useTranslation } from "react-i18next";
@@ -978,6 +980,23 @@ const Dashboard = () => {
           setNotificationID(id);
         } else if (
           data.payload.message.toLowerCase() ===
+          "NEW_MEMBER_ADDED_IN_COMMITTEE".toLowerCase()
+        ) {
+          if (data.viewable) {
+            setNotification({
+              notificationShow: true,
+              message: changeMQTTJSONOne(
+                t("NEW_MEMBER_ADDED_IN_COMMITTEE"),
+                "[Committe Title]",
+                data.payload.committees.committeesTitle.substring(0, 100)
+              ),
+              // message: `You have been added as a member in Committee ${data.payload.committees.committeesTitle}`,
+            });
+          }
+          dispatch(realtimeCommitteeResponse(data.payload.committees));
+          setNotificationID(id);
+        } else if (
+          data.payload.message.toLowerCase() ===
           "COMMITTTEE_STATUS_EDITED_IN_ACTIVE".toLowerCase()
         ) {
           if (data.viewable) {
@@ -1009,6 +1028,40 @@ const Dashboard = () => {
           }
           dispatch(realtimeCommitteeStatusResponse(data.payload));
           setNotificationID(id);
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "COMMITTTEE_STATUS_EDITED_ACTIVE".toLowerCase()
+        ) {
+          if (data.viewable) {
+            setNotification({
+              notificationShow: true,
+              message: changeMQTTJSONOne(
+                t("COMMITTTEE_STATUS_EDITED_ACTIVE"),
+                "[Committee Title]",
+                data.payload.committeeTitle.substring(0, 100)
+              ),
+              // message: `Committee ${data.payload.committeeTitle} in which you are a member has been set as In-Active`,
+            });
+          }
+          dispatch(realtimeCommitteeStatusResponse(data.payload));
+          setNotificationID(id);
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "MEMBER_REMOVED_FROM_COMMITTEE".toLowerCase()
+        ) {
+          dispatch(removeCommitteeMemberMQTT(data.payload));
+          setNotificationID(id);
+          if (data.viewable) {
+            setNotification({
+              notificationShow: true,
+              message: changeMQTTJSONOne(
+                t("MEMBER_REMOVED_FROM_COMMITTEE"),
+                "[Committee Title]",
+                data.payload.committees.committeesTitle.substring(0, 100)
+              ),
+              // message: `Committee ${data.payload.committeeTitle} in which you are a member has been set as In-Active`,
+            });
+          }
         }
       }
       if (data.action.toLowerCase() === "Group".toLowerCase()) {
@@ -1021,6 +1074,23 @@ const Dashboard = () => {
               notificationShow: true,
               message: changeMQTTJSONOne(
                 t("NEW_GROUP_CREATION"),
+                "[Group Title]",
+                data.payload.groups.groupTitle.substring(0, 100)
+              ),
+              // message: `You have been added as a member in Group  ${data.payload.groups.groupTitle}`,
+            });
+          }
+          dispatch(realtimeGroupResponse(data.payload.groups));
+          setNotificationID(id);
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "NEW_GROUP_MEMBER_ADDED".toLowerCase()
+        ) {
+          if (data.viewable) {
+            setNotification({
+              notificationShow: true,
+              message: changeMQTTJSONOne(
+                t("NEW_GROUP_MEMBER_ADDED"),
                 "[Group Title]",
                 data.payload.groups.groupTitle.substring(0, 100)
               ),
@@ -1058,6 +1128,40 @@ const Dashboard = () => {
                 "[Group Title]",
                 data.payload.groupTitle.substring(0, 100)
               ),
+            });
+          }
+          dispatch(realtimeGroupStatusResponse(data.payload));
+          setNotificationID(id);
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "GROUP_MEMBER_REMOVED".toLowerCase()
+        ) {
+          if (data.viewable) {
+            setNotification({
+              notificationShow: true,
+              message: changeMQTTJSONOne(
+                t("GROUP_MEMBER_REMOVED"),
+                "[Group Title]",
+                data.payload.groups.groupTitle.substring(0, 100)
+              ),
+              // message: `You have been added as a member in Group  ${data.payload.groups.groupTitle}`,
+            });
+          }
+          dispatch(removeGroupMemberMQTT(data.payload));
+          setNotificationID(id);
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "GROUP_STATUS_EDITED_ACTIVE".toLowerCase()
+        ) {
+          if (data.viewable) {
+            setNotification({
+              notificationShow: true,
+              message: changeMQTTJSONOne(
+                t("GROUP_STATUS_EDITED_ACTIVE"),
+                "[Group Title]",
+                data.payload.groupTitle.substring(0, 100)
+              ),
+              // message: `Group ${data.payload.groupTitle} in which you are a member has been set as In-Active`,
             });
           }
           dispatch(realtimeGroupStatusResponse(data.payload));

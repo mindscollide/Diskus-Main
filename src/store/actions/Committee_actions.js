@@ -1565,7 +1565,16 @@ const viewCommitteePageFlag = (response) => {
   };
 };
 
+const removeCommitteeMemberMQTT = (response) => {
+  console.log(response, "removeCommitteeMemberMQTTremoveCommitteeMemberMQTT")
+  return {
+    type: actions.REMOVE_COMMITTEE_MEMBER,
+    response: response,
+  };
+};
+
 export {
+  removeCommitteeMemberMQTT,
   viewDetailsCommitteeID,
   saveCommitteeDocumentsApi,
   reteriveCommitteeDocumentsApi,
