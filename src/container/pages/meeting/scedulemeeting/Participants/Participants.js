@@ -826,7 +826,8 @@ const Participants = ({
                     </Col>
                   </Row>
                 </>
-              ) : Number(editorRole.status) === 1 ? null : (
+              ) : (
+                // ) : Number(editorRole.status) === 1 ? null : (
                 <>
                   <Button
                     text={t("Edit")}
@@ -858,7 +859,7 @@ const Participants = ({
               <Col lg={12} md={12} sm={12}>
                 <Table
                   column={ParticipantsColoumn}
-                  scroll={{ y: rspvRows.length === 0 ? "55vh" :  "42vh" }}
+                  scroll={{ y: rspvRows.length === 0 ? "55vh" : "42vh" }}
                   pagination={false}
                   locale={{
                     emptyText: (

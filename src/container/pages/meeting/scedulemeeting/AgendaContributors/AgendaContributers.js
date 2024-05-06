@@ -413,7 +413,6 @@ const AgendaContributers = ({
         align: "left",
         ellipsis: true,
 
-
         render: (text, record) => {
           if (
             (Number(editorRole.status) === 9 ||
@@ -902,7 +901,8 @@ const AgendaContributers = ({
                   className={styles["Save_button"]}
                 />
               </>
-            ) : Number(editorRole.status) === 1 ? null : (
+            ) : (
+              // ) : Number(editorRole.status) === 1 ? null : (
               <>
                 <Button
                   text={t("Edit")}
