@@ -8,6 +8,8 @@ import Clock from "../../assets/images/Clock.svg";
 import line from "../../assets/images/line.png";
 import VoterSecretBalloting from "../../assets/images/Voter_Secret_Balloting.svg";
 import Abstain from "../../assets/images/Abstain.svg";
+import Tie from "../../assets/images/Tie.svg";
+
 import { Chart } from "react-google-charts";
 import { Button, Notification } from "./../../components/elements";
 import { useTranslation } from "react-i18next";
@@ -34,10 +36,13 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
   const [totalVoters, setTotalVoters] = useState(0);
   const [isResolutionTitle, setResolutionTitle] = useState("");
   const [isVotingMethod, setVotingMethod] = useState("");
+  const [isVotingMethodId, setVotingMethodId] = useState(0);
   const [voteId, setVoteId] = useState(1);
   const [voter, setVoter] = useState([]);
   const userID = JSON.parse(localStorage.getItem("userID"));
   const [decision, setDecision] = useState("");
+  const [decisionId, setDecisionId] = useState(0);
+  console.log(decisionId, "decisionIddecisionIddecisionId");
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -114,16 +119,23 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
   };
   useEffect(() => {
     if (ResolutionReducer.getVoteDetailsByID !== null) {
-      let getVoteresult = ResolutionReducer.getVoteDetailsByID;
-      setResolutionTitle(getVoteresult.resolutionTite);
-      setVotingMethod(getVoteresult.votingMethod);
-      setApproved(getVoteresult.approvedVotes);
-      setAbstain(0);
-      setPending(getVoteresult.pendingVoters);
-      setNonApproved(getVoteresult.nonApprovedVotes);
-      setTotalVoters(getVoteresult.totalVoters);
-      setDecision(getVoteresult.decision);
-      setVoter(getVoteresult.voters);
+      try {
+        let getVoteresult = ResolutionReducer.getVoteDetailsByID;
+        setResolutionTitle(getVoteresult.resolutionTite);
+        setVotingMethod(getVoteresult.votingMethod);
+        setVotingMethodId(getVoteresult.votingMethodID);
+        setApproved(getVoteresult.approvedVotes);
+        setAbstain(0);
+        setPending(getVoteresult.pendingVoters);
+        setNonApproved(getVoteresult.nonApprovedVotes);
+        setTotalVoters(getVoteresult.totalVoters);
+        setDecision(getVoteresult.decision);
+        setVoter(getVoteresult.voters);
+
+        setDecisionId(getVoteresult.decisionID);
+      } catch (error) {
+        console.log(error);
+      }
     }
   }, [ResolutionReducer.getVoteDetailsByID]);
   return (
@@ -151,7 +163,7 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
                         {isResolutionTitle || ""}
                       </span>
                       <span>
-                        {isVotingMethod === "Secret Balloting" ? (
+                        {isVotingMethodId === 2 ? (
                           <img
                             src={SeceretBallotingIcon}
                             height="23.19px"
@@ -278,13 +290,13 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
                           </span>{" "}
                           <span className={styles["voting_methong_value"]}>
                             {" "}
-                            {isVotingMethod === "Secret Balloting"
+                            {isVotingMethodId === 2
                               ? t("Secret-balloting")
                               : t("Show-of-hands")}
                           </span>
                         </Col>
                       </Row>
-                      {isVotingMethod === "Secret Balloting" ? (
+                      {isVotingMethodId === 2 ? (
                         <>
                           <Row>
                             <Col
@@ -298,13 +310,22 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
                                 alt=""
                                 draggable="false"
                               />
-                              <span>
-                                {t("Voting-method")} {isVotingMethod || ""}
-                              </span>
+                              <div className="d-flex">
+                                <span
+                                  className={styles["voting_method_heading"]}
+                                >
+                                  {t("Voting-method") + " : "}{" "}
+                                </span>{" "}
+                                <span
+                                  className={styles["voting_methong_value"]}
+                                >
+                                  {t("Secret-balloting")}
+                                </span>
+                              </div>
                             </Col>
                           </Row>
                         </>
-                      ) : isVotingMethod === "Show of Hands" ? (
+                      ) : isVotingMethodId === 1 ? (
                         <>
                           <Row className="mt-3">
                             <Col
@@ -390,7 +411,19 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
                               md={12}
                               sm={12}
                               className={
-                                styles["Pending_status_voteResolutionBox"]
+                                // Pending State
+                                decisionId === 1
+                                  ? styles["pending_state"]
+                                  : // Approved State
+                                  decisionId === 2
+                                  ? styles["approved_state"]
+                                  : // Not Approved State
+                                  decisionId === 3
+                                  ? styles["notApproved_state"]
+                                  : decisionId === 4
+                                  ? // Tie State
+                                    styles["Tie_state"]
+                                  : null
                               }
                             >
                               <Row className="mt-4">
@@ -402,7 +435,17 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
                                 >
                                   <span>
                                     <img
-                                      src={Clock}
+                                      src={
+                                        decisionId === 1
+                                          ? Clock
+                                          : decisionId === 2
+                                          ? thumbsup
+                                          : decisionId === 3
+                                          ? thumbsdown
+                                          : decisionId === 4
+                                          ? Tie
+                                          : null
+                                      }
                                       height="37px"
                                       width="36.98px"
                                     />
@@ -419,7 +462,15 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
                                   <span
                                     className={styles["Status_voteResolutioin"]}
                                   >
-                                    {decision || ""}
+                                    {Number(decisionId) === 1
+                                      ? t("Pending")
+                                      : Number(decisionId) === 2
+                                      ? t("Approved")
+                                      : Number(decisionId) === 3
+                                      ? t("Not-approved")
+                                      : Number(decisionId) === 4
+                                      ? t("Tie")
+                                      : ""}
                                   </span>
                                 </Col>
                               </Row>

@@ -21,6 +21,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import {
   getGoogleValidToken,
   getMicrosoftValidToken,
+  revokeMicrosoftTokenApi,
   revokeToken,
   updateUserSettingFunc,
 } from "../../../store/actions/UpdateUserGeneralSetting";
@@ -779,14 +780,33 @@ const UserSettings = () => {
     // userOptionsSettings.AllowMicrosoftCalenderSync;
     if (settingReducer.UserProfileData.userAllowMicrosoftCalendarSynch) {
       if (userOptionsSettings.AllowMicrosoftCalenderSync === false) {
+        AllowMicrosoftCalenderSyncCall = false;
+        dispatch(
+          revokeMicrosoftTokenApi(
+            navigate,
+            userOptionsSettings,
+            t,
+            userOptionsSettings.AllowGoogleCalenderSync,
+            AllowMicrosoftCalenderSyncCall
+          )
+        );
         // revoke token api hit
         console.log(
           "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
           AllowMicrosoftCalenderSyncCall
         );
-        AllowMicrosoftCalenderSyncCall = false;
+    
       } else {
         AllowMicrosoftCalenderSyncCall = true;
+        await dispatch(
+          updateUserSettingFunc(
+            navigate,
+            userOptionsSettings,
+            t,
+            true,
+            AllowMicrosoftCalenderSyncCall
+          )
+        );
       }
     } else if (userOptionsSettings.AllowMicrosoftCalenderSync) {
       console.log(
@@ -1855,7 +1875,7 @@ const UserSettings = () => {
                               }
                             >
                               <span className={styles["Class_CheckBox"]}>
-                                {t("Push-notification-when-group-is-inActive")}
+                                {t("Notify-when-group-becomes-in-active")}
                               </span>
                             </Checkbox>
                           </Col>
@@ -1886,7 +1906,7 @@ const UserSettings = () => {
                             >
                               <span className={styles["Class_CheckBox"]}>
                                 {t(
-                                  "Push-notification-when-group-is-set-active"
+                                  "Notify-when-group-becomes-active"
                                 )}
                               </span>
                             </Checkbox>
@@ -2258,7 +2278,12 @@ const UserSettings = () => {
           </Col>
         </Row>
         <Row>
-          <Col lg={12} md={12} sm={12} className="d-flex justify-content-end mb-2">
+          <Col
+            lg={12}
+            md={12}
+            sm={12}
+            className="d-flex justify-content-end mb-2"
+          >
             <Button
               text={t("Update")}
               className={styles["New_settings_Update_Button"]}

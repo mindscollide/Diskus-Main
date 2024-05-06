@@ -260,6 +260,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       dataIndex: "Emails",
       key: "Emails",
       align: "left",
+      ellipsis: true,
+      
       render: (text, record) => {
         if (record.UserStatus === "Closed") {
           return <p className="Disabled-Close">{text}</p>;

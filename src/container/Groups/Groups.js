@@ -193,6 +193,21 @@ const Groups = () => {
     } catch (error) {}
   }, [GroupsReducer.getAllGroupsResponse]);
 
+  useEffect(() => {
+    try {
+      if (GroupsReducer.removeGroupMember !== null) {
+        let groupRemoveMemberData = GroupsReducer.removeGroupMember.groups;
+        setgroupsData((groupremover) => {
+          return groupremover.filter((groupData, index) => {
+            return groupData.groupID !== groupRemoveMemberData.groupID;
+          });
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [GroupsReducer.removeGroupMember]);
+
   const handlechange = (value) => {
     localStorage.setItem("groupsCurrent", value);
     dispatch(getGroups(navigate, t, value));

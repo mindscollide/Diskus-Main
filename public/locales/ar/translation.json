@@ -1721,7 +1721,7 @@
   "Date-to": "Date To",
   "Select-send-response-by-date": "Select Send Response by Date",
   "Add-the-people-who-need-to-sign-this-document": "Add the people who need to sign this document",
-  "Work-email-address": "Work Email Address",
+  "Work-email-address": "Work Email Address*",
   "Deselect-all": "Deselect all",
   "Add-another-signer": "Add another signer",
   "Add-assignee": "Add Assignee",
@@ -1786,5 +1786,12 @@
   "Edit-comment": "Edit Comment",
   "Save-changes": "Save Changes",
   "Write-a-comment": "Write a comment",
-  "Are-you-sure-you-want-to-delete-your-comment": "Are you sure you want to delete your comment?"
+  "Are-you-sure-you-want-to-delete-your-comment": "Are you sure you want to delete your comment?",
+  "Notify-when-group-becomes-in-active": "Notify When Group becomes In Active",
+  "Notify-when-group-becomes-active": "Notify When Group becomes Active",
+  "NEW_GROUP_MEMBER_ADDED": "You have been added in a [Group Title] Group",
+  "GROUP_MEMBER_REMOVED": "You have been removed in a [Group Title] Group",
+  "MEMBER_REMOVED_FROM_COMMITTEE": "You have been removed in a [Committee Title] Committee",
+  "NEW_MEMBER_ADDED_IN_COMMITTEE": "You have been added in a [Committee Title] Committee",
+  "COMMITTTEE_STATUS_EDITED_ACTIVE": "Committee [Committee Title] in which you are a member has been set as Active"
 }

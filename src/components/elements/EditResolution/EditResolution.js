@@ -1542,7 +1542,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                   value={circulationDateTime.dateValue}
                                   calendar={calendarValue}
                                   locale={localValue}
-                                  onChange={circulationDateChangeHandler}
+                                  onFocusedDateChange={circulationDateChangeHandler}
                                 />
                               </div>
                               <Row>
@@ -1661,7 +1661,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                   value={votingDateTime.dateValue}
                                   calendar={calendarValue}
                                   locale={localValue}
-                                  onChange={votingDateChangeHandler}
+                                  onFocusedDateChange={votingDateChangeHandler}
                                 />
                               </div>
                               <Row>
@@ -1777,7 +1777,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                   value={decisionDateTime.dateValue}
                                   calendar={calendarValue}
                                   locale={localValue}
-                                  onChange={decisionChangeHandler}
+                                  onFocusedDateChange={decisionChangeHandler}
                                 />
                               </div>
                               <Row>

@@ -53,6 +53,13 @@ const toDoListLoaderStart = () => {
   };
 };
 
+const TaskLoader = (value) => {
+  return {
+    type: actions.TODOLIST_LOADER,
+    loader: value,
+  };
+};
+
 const toDoFail = (message) => {
   return {
     type: actions.GET_TODO_FAIL,
@@ -356,7 +363,7 @@ const GetAllAssigneesToDoList = (navigate, object, t, check) => {
     OrganizationID: OrganizationID,
   };
   return (dispatch) => {
-    // dispatch(toDoListLoaderStart());
+    dispatch(TaskLoader(true));
     let form = new FormData();
     form.append("RequestMethod", getAllAssigneesToDoList.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
@@ -387,6 +394,7 @@ const GetAllAssigneesToDoList = (navigate, object, t, check) => {
                   t("Record-found")
                 )
               );
+              dispatch(TaskLoader(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -394,6 +402,8 @@ const GetAllAssigneesToDoList = (navigate, object, t, check) => {
                   "ToDoList_ToDoListServiceManager_GetAllAssignees_02".toLowerCase()
                 )
             ) {
+              dispatch(TaskLoader(false));
+
               await dispatch(GetAllAssigneesFail(t("No-records-found")));
             } else if (
               response.data.responseResult.responseMessage
@@ -402,20 +412,26 @@ const GetAllAssigneesToDoList = (navigate, object, t, check) => {
                   "ToDoList_ToDoListServiceManager_GetAllAssignees_03".toLowerCase()
                 )
             ) {
+              dispatch(TaskLoader(false));
+
               await dispatch(GetAllAssigneesFail(t("Something-went-wrong")));
             }
           } else {
+            dispatch(TaskLoader(false));
+
             await dispatch(GetAllAssigneesFail(t("Something-went-wrong")));
             dispatch(SetLoaderFalse());
           }
         } else {
           await dispatch(GetAllAssigneesFail(t("Something-went-wrong")));
           await dispatch(SetLoaderFalse());
+          dispatch(TaskLoader(false));
         }
       })
       .catch((response) => {
         dispatch(GetAllAssigneesFail(t("Something-went-wrong")));
         dispatch(SetLoaderFalse());
+        dispatch(TaskLoader(false));
       });
   };
 };
@@ -528,7 +544,7 @@ const UpdateToDoList = (navigate, object, t) => {
   let createrID = localStorage.getItem("userID");
   let dataForList = { UserID: parseInt(createrID), NumberOfRecords: 300 };
   return (dispatch) => {
-    dispatch(toDoListLoaderStart());
+    // dispatch(toDoListLoaderStart());
     let form = new FormData();
     form.append("RequestMethod", updateToDoList.RequestMethod);
     form.append("RequestData", JSON.stringify(object));

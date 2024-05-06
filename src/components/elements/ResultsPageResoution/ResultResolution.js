@@ -31,12 +31,16 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
   const [pending, setPending] = useState(0);
   const [abstain, setAbstain] = useState(0);
   const [votingMethod, setVotingMethod] = useState("");
+  const [isVotingMethodId, setVotingMethodId] = useState(0);
+
   console.log(votingMethod, "votingMethodvotingMethod");
   const [notes, setNotes] = useState("");
   const [totalVoters, setTotalVoters] = useState(0);
   const [decisionDateExpiry, setDesicionDateExpiry] = useState(false);
   const [voter, setVoter] = useState([]);
   const [decision, setDecision] = useState("");
+  const [decisionId, setDecisionId] = useState(0);
+  console.log(decisionId, "decisionIddecisionId");
   const options = {
     backgroundColor: "transparent",
     border: "1px solid #ffffff",
@@ -122,6 +126,8 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
         setVoter(resolutionresult.voters);
         setResolutionID(resolutionresult.resolutionID);
         setResolutionTitle(resolutionresult.resolutionTite);
+        setDecisionId(resolutionresult.decisionID);
+        setVotingMethodId(resolutionresult.votingMethodID);
         let newDate = new Date();
         let DecisionDateExpiry = resolutionResultTable(
           resolutionresult.decisionAnnouncementDateTime
@@ -151,7 +157,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
               <Col lg={5} md={5} sm={12} className="d-flex gap-2">
                 <span className={styles["results_paper_heading"]}>
                   {resolutionTitle || ""}{" "}
-                  {votingMethod === "Secret Balloting" ? (
+                  {isVotingMethodId === 2 ? (
                     <img
                       src={SeceretBallotingIcon}
                       height="23.19px"
@@ -181,7 +187,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                 </span>{" "}
                 <span className={styles["voting_methong_value"]}>
                   {" "}
-                  {votingMethod === "Secret Balloting"
+                  {isVotingMethodId === 2
                     ? t("Secret-balloting")
                     : t("Show-of-hands")}
                 </span>
@@ -201,7 +207,21 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className={styles["yellow_border_box"]}
+                        className={
+                          // Pending State
+                          decisionId === 1
+                            ? styles["pending_state"]
+                            : // Approved State
+                            decisionId === 2
+                            ? styles["approved_state"]
+                            : // Not Approved State
+                            decisionId === 3
+                            ? styles["notApproved_state"]
+                            : decisionId === 4
+                            ? // Tie State
+                              styles["Tie_state"]
+                            : null
+                        }
                       >
                         <Row className="mt-4">
                           <Col
@@ -212,17 +232,13 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                           >
                             <img
                               src={
-                                decision.toLowerCase() ===
-                                "Approved".toLowerCase()
+                                decisionId === 1
                                   ? Clock
-                                  : decision.toLowerCase() ===
-                                    "NotApproved".toLowerCase()
+                                  : decisionId === 2
+                                  ? thumbsup
+                                  : decisionId === 3
                                   ? thumbsdown
-                                  : decision.toLowerCase() ===
-                                    "Pending".toLowerCase()
-                                  ? Clock
-                                  : decision.toLowerCase() ===
-                                    "tie".toLowerCase()
+                                  : decisionId === 4
                                   ? Tie
                                   : null
                               }
@@ -241,7 +257,15 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                             className="d-flex justify-content-center"
                           >
                             <span className={styles["status_vote_resolution"]}>
-                              {decision}
+                              {Number(decisionId) === 1
+                                ? t("Pending")
+                                : Number(decisionId) === 2
+                                ? t("Approved")
+                                : Number(decisionId) === 3
+                                ? t("Not-approved")
+                                : Number(decisionId) === 4
+                                ? t("Tie")
+                                : ""}
                             </span>
                           </Col>
                         </Row>
@@ -265,6 +289,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                       data={data}
                       options={options}
                       className={styles["Addchart"]}
+                      
                     />
                   </Col>
                 </Row>

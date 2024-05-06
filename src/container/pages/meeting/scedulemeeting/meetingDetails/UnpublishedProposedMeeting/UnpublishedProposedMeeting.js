@@ -317,15 +317,30 @@ const UnpublishedProposedMeeting = ({
     },
     {
       title: <span> {t("Organizer")}</span>,
-      dataIndex: "host",
-      key: "host",
+      dataIndex: "meetingAttendees",
+      key: "meetingAttendees",
       width: "120px",
       align: "center",
       sorter: (a, b) => {
-        return a?.host.toLowerCase().localeCompare(b?.host.toLowerCase());
+        const primaryOrganizerA = a.meetingAttendees.find(
+          (item) => item.isPrimaryOrganizer === true
+        );
+        const primaryOrganizerB = b.meetingAttendees.find(
+          (item) => item.isPrimaryOrganizer === true
+        );
+        const nameA = primaryOrganizerA?.user?.name || "";
+        const nameB = primaryOrganizerB?.user?.name || "";
+        return nameA.localeCompare(nameB);
       },
       render: (text, record) => {
-        return <span className={styles["align-organizer-col"]}>{text}</span>;
+        const primaryOrganizer = record.meetingAttendees.find(
+          (item) => item.isPrimaryOrganizer === true
+        );
+        return (
+          <span className={styles["orgaizer_value"]}>
+            {primaryOrganizer?.user?.name}
+          </span>
+        );
       },
     },
     {
@@ -676,51 +691,51 @@ const UnpublishedProposedMeeting = ({
           let newRowData = [];
           searchMeetings.meetings.forEach((data, index) => {
             // Filter and map meeting attendees based on your conditions
-            const filteredAttendees = data.meetingAttendees.filter(
-              (attendee) => {
-                if (
-                  (data.status === "11" &&
-                    Number(attendee.user.pK_UID) === Number(currentUserId) &&
-                    (attendee.meetingAttendeeRole.role === "Organizer" ||
-                      attendee.meetingAttendeeRole.role ===
-                        "Agenda Contributor")) ||
-                  (data.status === "12" &&
-                    Number(attendee.user.pK_UID) === Number(currentUserId))
-                ) {
-                  return true;
-                }
-                return false;
-              }
-            );
+            // const filteredAttendees = data.meetingAttendees.filter(
+            //   (attendee) => {
+            //     if (
+            //       (data.status === "11" &&
+            //         Number(attendee.user.pK_UID) === Number(currentUserId) &&
+            //         (attendee.meetingAttendeeRole.role === "Organizer" ||
+            //           attendee.meetingAttendeeRole.role ===
+            //             "Agenda Contributor")) ||
+            //       (data.status === "12" &&
+            //         Number(attendee.user.pK_UID) === Number(currentUserId))
+            //     ) {
+            //       return true;
+            //     }
+            //     return false;
+            //   }
+            // );
 
             // If there are attendees that meet the criteria, include the meeting
-            if (filteredAttendees.length > 0) {
-              newRowData.push({
-                dateOfMeeting: data.dateOfMeeting,
-                host: data.host,
-                isAttachment: data.isAttachment,
-                isChat: data.isChat,
-                isVideoCall: data.isVideoCall,
-                isQuickMeeting: data.isQuickMeeting,
-                meetingAgenda: data.meetingAgenda,
-                meetingAttendees: filteredAttendees, // Use filtered attendees here
-                meetingEndTime: data.meetingEndTime,
-                meetingStartTime: data.meetingStartTime,
-                meetingURL: data.meetingURL,
-                orignalProfilePictureName: data.orignalProfilePictureName,
-                pK_MDID: data.pK_MDID,
-                meetingPoll: {
-                  totalNoOfDirectors:
-                    data.proposedMeetingDetail.totalNoOfDirectors,
-                  totalNoOfDirectorsVoted:
-                    data.proposedMeetingDetail.totalNoOfDirectorsVoted,
-                },
-                responseDeadLine: data.responseDeadLine,
-                status: data.status,
-                title: data.title,
-                key: index,
-              });
-            }
+            // if (filteredAttendees.length > 0) {
+            newRowData.push({
+              dateOfMeeting: data.dateOfMeeting,
+              host: data.host,
+              isAttachment: data.isAttachment,
+              isChat: data.isChat,
+              isVideoCall: data.isVideoCall,
+              isQuickMeeting: data.isQuickMeeting,
+              meetingAgenda: data.meetingAgenda,
+              meetingAttendees: data.meetingAttendees, // Use filtered attendees here
+              meetingEndTime: data.meetingEndTime,
+              meetingStartTime: data.meetingStartTime,
+              meetingURL: data.meetingURL,
+              orignalProfilePictureName: data.orignalProfilePictureName,
+              pK_MDID: data.pK_MDID,
+              meetingPoll: {
+                totalNoOfDirectors:
+                  data.proposedMeetingDetail.totalNoOfDirectors,
+                totalNoOfDirectorsVoted:
+                  data.proposedMeetingDetail.totalNoOfDirectorsVoted,
+              },
+              responseDeadLine: data.responseDeadLine,
+              status: data.status,
+              title: data.title,
+              key: index,
+            });
+            // }
           });
           setRow(newRowData);
         } else {

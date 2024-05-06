@@ -1383,7 +1383,7 @@ const Resolution = () => {
                                       : t("Circulation-date")}
                                   </span>
                                   <DatePicker
-                                    onChange={changeCirculateDateHandler}
+                                    onFocusedDateChange={changeCirculateDateHandler}
                                     // inputClass="datepicker_input"
                                     format={"DD/MM/YYYY"}
                                     // value={toDoDate}
@@ -1426,7 +1426,7 @@ const Resolution = () => {
                                 >
                                   <span>{t("Voting-deadline")}</span>
                                   <DatePicker
-                                    onChange={changeSearchDateHandler}
+                                    onFocusedDateChange={changeSearchDateHandler}
                                     format={"DD/MM/YYYY"}
                                     minDate={moment().toDate()}
                                     placeholder="DD/MM/YYYY"

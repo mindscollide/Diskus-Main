@@ -150,29 +150,32 @@ const AgendaContributers = ({
   };
 
   let allowRSVPValue = NewMeetingreducer?.getAllAgendaContributorsAllowRSVP;
-
+  let AgendaColoumns = [];
   if (allowRSVPValue === true) {
-    var AgendaColoumns = [
+    AgendaColoumns = [
       {
         title: t("Name"),
         dataIndex: "userName",
         key: "userName",
         align: "left",
-        width: "80px",
+        // width: "80px",
+        ellipsis: true,
       },
       {
         title: t("Email"),
         dataIndex: "email",
         key: "email",
         align: "left",
-        width: "80px",
+        // width: "80px",
+        ellipsis: true,
       },
       {
         title: t("contributor-title"),
         dataIndex: "Title",
         key: "Title",
         align: "left",
-        width: "80px",
+        ellipsis: true,
+
         render: (text, record) => {
           if (
             (Number(editorRole.status) === 9 ||
@@ -214,7 +217,8 @@ const AgendaContributers = ({
         dataIndex: "isContributorNotified",
         key: "isContributorNotified",
         align: "center",
-        width: "80px",
+        ellipsis: true,
+
         className: "notification-class-table",
         render: (text, record) => {
           if (
@@ -305,7 +309,8 @@ const AgendaContributers = ({
         title: "RSVP",
         dataIndex: "attendeeAvailability",
         key: "attendeeAvailability",
-        width: "80px",
+        ellipsis: true,
+
         render: (text, record) => {
           if (record.attendeeAvailability === 1) {
             return (
@@ -353,7 +358,8 @@ const AgendaContributers = ({
       {
         dataIndex: "Close",
         key: "Close",
-        width: "80px",
+        ellipsis: true,
+
         render: (text, record) => {
           return (
             <>
@@ -383,27 +389,30 @@ const AgendaContributers = ({
       },
     ];
   } else {
-    var AgendaColoumns = [
+    AgendaColoumns = [
       {
         title: t("Name"),
         dataIndex: "userName",
         key: "userName",
         align: "left",
-        width: "80px",
+        // width: "80px",
+        ellipsis: true,
       },
       {
         title: t("Email"),
         dataIndex: "email",
         key: "email",
         align: "left",
-        width: "80px",
+        // width: "80px",
+        ellipsis: true,
       },
       {
         title: t("contributor-title"),
         dataIndex: "Title",
         key: "Title",
         align: "left",
-        width: "80px",
+        ellipsis: true,
+
         render: (text, record) => {
           if (
             (Number(editorRole.status) === 9 ||
@@ -444,8 +453,9 @@ const AgendaContributers = ({
         title: t("Notification"),
         dataIndex: "isContributorNotified",
         key: "isContributorNotified",
-        align: "center",
-        width: "80px",
+        align: "left",
+        ellipsis: true,
+
         className: "notification-class-table",
         render: (text, record) => {
           if (
@@ -891,7 +901,8 @@ const AgendaContributers = ({
                   className={styles["Save_button"]}
                 />
               </>
-            ) : Number(editorRole.status) === 1 ? null : (
+            ) : (
+              // ) : Number(editorRole.status) === 1 ? null : (
               <>
                 <Button
                   text={t("Edit")}

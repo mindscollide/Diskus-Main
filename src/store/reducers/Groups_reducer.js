@@ -22,6 +22,7 @@ const initialState = {
   createGroupPageFlag: false,
   updateGroupPageFlag: false,
   viewGroupPageFlag: false,
+  removeGroupMember: null
 };
 
 const GroupsReducer = (state = initialState, action) => {
@@ -392,7 +393,12 @@ const GroupsReducer = (state = initialState, action) => {
         viewGroupPageFlag: action.response,
       };
     }
-
+    case actions.REMOVE_GROUP_MEMBER : {
+      return {
+        ...state,
+        removeGroupMember: action.response
+      }
+    }
     default:
       return { ...state };
   }

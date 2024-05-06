@@ -97,7 +97,7 @@ const GroupViewPolls = ({ groupStatus }) => {
     try {
       if (PollsReducer.newPollGroups !== null) {
         let PollData = PollsReducer.newPollGroups;
-        if (Number(PollData.committeeID) === Number(ViewGroupID)) {
+        if (Number(PollData.groupID) === Number(ViewGroupID)) {
           setPollsRows([PollData.polls, ...pollsRows]);
         }
         dispatch(createPollGroupsMQTT(null));
