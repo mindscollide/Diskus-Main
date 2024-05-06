@@ -72,6 +72,19 @@ const SignupProcessUserManagement = () => {
   //   }
   // }, []);
 
+  // Retrieve currentStep value from localStorage, default to 1 if not found
+  const storedStep = Number(localStorage.getItem("SignupFlowPageRoute"));
+  useEffect(() => {
+    // Retrieve current step from local storage
+    if (performance.navigation.type === PerformanceNavigation.TYPE_RELOAD) {
+      if (storedStep) {
+        dispatch(signUpFlowRoutes(storedStep));
+      }
+    } else {
+      localStorage.setItem("SignupFlowPageRoute", 1);
+      dispatch(signUpFlowRoutes(1));
+    }
+  }, []);
   useEffect(() => {
     if (UserMangementReducer.defaulSignUpRoute) {
       // Update local storage with the current step
@@ -380,11 +393,11 @@ const SignupProcessUserManagement = () => {
   }, [UserMangementReducer.ResponseMessage]);
 
   let SignupComponent;
-  console.log(
-    UserMangementReducer.defaulSignUpRoute,
-    "defaultRoutesUserMangementReducer"
-  );
-  if (UserMangementReducer.defaulSignUpRoute === 1) {
+  if (
+    UserMangementReducer.defaulSignUpRoute === 1 ||
+    UserMangementReducer.defaulSignUpRoute === null ||
+    UserMangementReducer.defaulSignUpRoute === undefined
+  ) {
     SignupComponent = <PakageDetailsUserManagement />;
   } else if (UserMangementReducer.defaulSignUpRoute === 2) {
     SignupComponent = <SignUpOrganizationUM />;
