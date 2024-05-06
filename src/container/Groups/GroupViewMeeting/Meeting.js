@@ -37,7 +37,10 @@ import {
 import CustomPagination from "../../../commen/functions/customPagination/Paginations";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
 import { UpdateOrganizersMeeting } from "../../../store/actions/MeetingOrganizers_action";
-import { createGroupMeeting } from "../../../store/actions/GetMeetingUserId";
+import {
+  createGroupMeeting,
+  getMeetingStatusfromSocket,
+} from "../../../store/actions/GetMeetingUserId";
 
 const CommitteeMeetingTab = ({ groupStatus }) => {
   const { t } = useTranslation();
@@ -47,7 +50,9 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
   const meetingStatusNotConductedMqttData = useSelector(
     (state) => state.NewMeetingreducer.meetingStatusNotConductedMqttData
   );
-  const { GroupMeetingMQTT } = useSelector((state) => state.meetingIdReducer);
+  const { GroupMeetingMQTT, MeetingStatusSocket } = useSelector(
+    (state) => state.meetingIdReducer
+  );
   const [isOrganisers, setIsOrganisers] = useState(false);
   const [rows, setRow] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -534,6 +539,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       key: "Edit",
       width: "33px",
       render: (text, record) => {
+        console.log(record, "GroupMeetingTable")
         const isOrganiser = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
@@ -547,12 +553,20 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
         );
 
         const isQuickMeeting = record.isQuickMeeting;
-        if (record.status === "8") {
+        if (
+          record.status === "8" ||
+          record.status === "9" ||
+          record.status === "4"
+        ) {
           return null;
-        } else {
+        } else  {
           if (isQuickMeeting) {
             if (isOrganiser) {
-              if (record.status !== "10") {
+              if (
+                record.status !== "10" ||
+                record.status !== "9" ||
+                record.status !== "4"
+              ) {
                 return (
                   <>
                     <Row>
@@ -671,6 +685,47 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       />
     );
   };
+  //  Update Meeting Status Cancelled and Start Meeting
+  useEffect(() => {
+    if (MeetingStatusSocket !== null) {
+      console.log(
+        MeetingStatusSocket,
+        "MeetingStatusSocketMeetingStatusSocket"
+      );
+      let meetingStatusID = MeetingStatusSocket.meetingStatusID;
+      if (
+        MeetingStatusSocket.message
+          .toLowerCase()
+          .includes("MEETING_STATUS_EDITED_CANCELLED".toLowerCase())
+      ) {
+        let meetingID = MeetingStatusSocket.meetingID;
+        setRow((meetingRow) => {
+          return meetingRow.map((meetingData) => {
+            if (Number(meetingData.pK_MDID) === Number(meetingID)) {
+              return {
+                ...meetingData,
+                status: "4",
+              };
+            } else {
+              // If the condition isn't met, return the original value
+              return meetingData;
+            }
+          });
+        });
+      } else if (
+        MeetingStatusSocket.message
+          .toLowerCase()
+          .includes("MEETING_STATUS_EDITED_STARTED".toLowerCase())
+      ) {
+        let meetingID = MeetingStatusSocket.meeting.pK_MDID;
+      }
+
+      dispatch(getMeetingStatusfromSocket(null));
+      // if (meetingStatusID === 4) {
+      //   updateCalendarData(true, meetingID);
+      // }
+    }
+  }, [MeetingStatusSocket]);
 
   return (
     <>

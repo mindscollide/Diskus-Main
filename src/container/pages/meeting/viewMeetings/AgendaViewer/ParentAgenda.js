@@ -83,20 +83,67 @@ const ParentAgenda = ({
   const dispatch = useDispatch();
   const [mainLock, setmainLock] = useState([]);
   const [subLockArry, setSubLockArray] = useState([]);
-  // const [expandSubIndex, setExpandSubIndex] = useState(-1);
-  const [expandIndex, setExpandIndex] = useState(-1);
-  // const [subexpandIndex, setsubexpandIndex] = useState(-1);
-  const [expand, setExpand] = useState(false);
+  const [expandIndex, setExpandIndex] = useState([
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+  ]);
+  const [expand, setExpand] = useState(true);
   const [subExpand, setSubExpand] = useState([]);
+  const [expandedArray, setExpandedArray] = useState([]);
+
+  useEffect(() => {
+    let agendaIDs = [];
+    let subAgendaIDs = [];
+
+    rows.forEach((item) => {
+      agendaIDs.push(item.id);
+      item.subAgenda.forEach((subItem) => {
+        subAgendaIDs.push(subItem.subAgendaID);
+      });
+    });
+
+    const allIDs = [...agendaIDs, ...subAgendaIDs];
+    setExpandedArray(allIDs);
+    console.log("IDSIDSIDS", allIDs);
+  }, [rows]);
+  function findIDInArray(id) {
+    return expandedArray.includes(id);
+  }
+
+  console.log("rowsrows", rows);
   //Timepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
 
   // Function For Expanding Main Agenda See More Options
-  const handleExpandedBtn = (index) => {
-    setExpandIndex((prevIndex) => (prevIndex === index ? -1 : index));
-  };
+  // const handleExpandedBtn = (index) => {
+  //   setExpandIndex((prevIndex) => {
+  //     // Check if the index already exists in the expandIndex array
+  //     const indexExists = prevIndex.includes(index);
+  //     if (indexExists) {
+  //       // If the index exists, remove it from the array
+  //       return prevIndex.filter((item) => item !== index);
+  //     } else {
+  //       // If the index doesn't exist, add it to the array
+  //       return [...prevIndex, index];
+  //     }
+  //   });
+  // };
 
+  function handleExpandedBtn(id) {
+    const index = expandedArray.indexOf(id);
+    if (index !== -1) {
+      // If ID exists, remove it from the array
+      expandedArray.splice(index, 1);
+    } else {
+      // If ID doesn't exist, add it to the array
+      expandedArray.push(id);
+    }
+    // Update state with the modified array
+    setExpandedArray([...expandedArray]);
+  }
+
+  console.log("handleExpandedBtn",expandedArray)
+  
   const printFlag = useSelector(
     (state) => state.MeetingAgendaReducer.PrintAgendaFlag
   );
@@ -257,8 +304,6 @@ const ParentAgenda = ({
     }
   };
 
-  console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
-
   return (
     <>
       <div
@@ -270,370 +315,337 @@ const ParentAgenda = ({
             : ""
         }
       >
-        <Draggable
+        {/* <Draggable
           key={data.id}
           draggableId={data.id}
           index={index}
           isDragDisabled={true}
-        >
-          {(provided, snapshot) => (
-            <div ref={provided.innerRef} {...provided.draggableProps}>
-              {/* Main Agenda Items Mapping */}
-              <span className="position-relative">
-                <Row key={data.id} className="mt-4 m-0 p-0">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    key={index + 1}
-                    className={
-                      apllyLockOnParentAgenda(index)
-                        ? styles["BackGround_Agenda_InActive"]
-                        : styles["BackGround_Agenda"]
-                    }
-                  >
-                    <Row>
-                      <Col lg={12} md={12} sm={12}>
-                        <Row key={index + 2} className="mt-4">
-                          <Col lg={8} md={8} sm={12}>
-                            <span className={styles["AgendaTitle_Heading"]}>
-                              {index + 1 + ". " + data.title}
-                            </span>
-                            {expandIndex === index && expand ? (
-                              <span
-                                className={styles["ParaGraph_SavedMeeting"]}
-                              >
-                                {data.description}
-                              </span>
-                            ) : null}
-                          </Col>
-                          <Col lg={3} md={3} sm={12} className="p-0">
-                            {/* <div className={styles["agendaCreationDetail"]}> */}
-                            <Row className="m-0">
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex align-items-center justify-content-end gap-3 p-0"
-                              >
-                                <img
-                                  src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
-                                  className={styles["Image"]}
-                                  alt=""
-                                  draggable={false}
-                                />
-                                <p className={styles["agendaCreater"]}>
-                                  {data?.presenterName}
-                                </p>
-                              </Col>
-                            </Row>
-                            <Row className="m-0">
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className={
-                                  currentLanguage === "ar"
-                                    ? "p-0 text-start"
-                                    : "p-0 text-end"
-                                }
-                              >
-                                <p
-                                  className={`${styles["agendaCreaterTime"]} MontserratMedium-500`}
-                                >
-                                  {/* {moment(
+        > */}
+        {/* {(provided, snapshot) => (
+            <div ref={provided.innerRef} {...provided.draggableProps}> */}
+        {/* Main Agenda Items Mapping */}
+        <span className="position-relative">
+          <Row key={data.id} className="mt-4 m-0 p-0">
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              key={index + 1}
+              className={
+                apllyLockOnParentAgenda(index)
+                  ? styles["BackGround_Agenda_InActive"]
+                  : styles["BackGround_Agenda"]
+              }
+            >
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <Row key={index + 2} className="mt-4">
+                    <Col lg={8} md={8} sm={12}>
+                      <span className={styles["AgendaTitle_Heading"]}>
+                        {index + 1 + ". " + data.title}
+                      </span>
+                      {findIDInArray(data.id) ? (
+                        <span className={styles["ParaGraph_SavedMeeting"]}>
+                          {data.description}
+                        </span>
+                      ) : null}
+                    </Col>
+                    <Col lg={3} md={3} sm={12} className="p-0">
+                      {/* <div className={styles["agendaCreationDetail"]}> */}
+                      <Row className="m-0">
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex align-items-center justify-content-end gap-3 p-0"
+                        >
+                          <img
+                            src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
+                            className={styles["Image"]}
+                            alt=""
+                            draggable={false}
+                          />
+                          <p className={styles["agendaCreater"]}>
+                            {data?.presenterName}
+                          </p>
+                        </Col>
+                      </Row>
+                      <Row className="m-0">
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className={
+                            currentLanguage === "ar"
+                              ? "p-0 text-start"
+                              : "p-0 text-end"
+                          }
+                        >
+                          <p
+                            className={`${styles["agendaCreaterTime"]} MontserratMedium-500`}
+                          >
+                            {/* {moment(
                                     data?.startDate,
                                     "HHmmss"
                                   ).toISOString()} */}
-                                  {moment(
-                                    timeFormatFunction(data.startDate)
-                                  ).format("hh:mm a")}
-                                  <span className={styles["dashMinute"]}>
-                                    -----
-                                  </span>
-                                  {moment(
-                                    timeFormatFunction(data.endDate)
-                                  ).format("hh:mm a")}
-                                  {/* {moment(data?.endDate, "HHmmss").format(
+                            {moment(timeFormatFunction(data.startDate)).format(
+                              "hh:mm a"
+                            )}
+                            <span className={styles["dashMinute"]}>-----</span>
+                            {moment(timeFormatFunction(data.endDate)).format(
+                              "hh:mm a"
+                            )}
+                            {/* {moment(data?.endDate, "HHmmss").format(
                                     "hh:mm a"
                                   )} */}
-                                </p>
-                                {printFlag === true ||
-                                exportFlag === true ? null : (
-                                  <>
-                                    {Number(data.agendaVotingID) !== 0 &&
-                                    Number(editorRole.status) === 10 &&
-                                    Number(data.voteOwner.userid) ===
-                                      Number(currentUserID) &&
-                                    !data.voteOwner?.currentVotingClosed ? (
-                                      <>
-                                        <Button
-                                          text={t("Start-voting")}
-                                          className={
-                                            styles["startVotingButton"]
-                                          }
-                                          onClick={() => startVoting(data)}
-                                        />
-                                        <Button
-                                          text={t("View-votes")}
-                                          className={styles["ViewVoteButton"]}
-                                          onClick={() =>
-                                            EnableViewVoteModal(data)
-                                          }
-                                        />
-                                      </>
-                                    ) : Number(data.agendaVotingID) !== 0 &&
-                                      Number(editorRole.status) === 10 &&
-                                      Number(data.voteOwner.userid) ===
-                                        Number(currentUserID) &&
-                                      data.voteOwner?.currentVotingClosed ? (
-                                      <>
-                                        <Button
-                                          text={t("End-voting")}
-                                          className={
-                                            styles["startVotingButton"]
-                                          }
-                                          onClick={() => endVoting(data)}
-                                        />
-                                        <Button
-                                          text={t("View-votes")}
-                                          className={styles["ViewVoteButton"]}
-                                          onClick={() =>
-                                            EnableViewVoteModal(data)
-                                          }
-                                        />
-                                      </>
-                                    ) : editorRole.role === "Organizer" &&
-                                      (data.voteOwner?.currentVotingClosed ||
-                                        Number(data.agendaVotingID) !== 0) ? (
-                                      <>
-                                        <Button
-                                          text={t("View-votes")}
-                                          className={styles["ViewVoteButton"]}
-                                          onClick={() =>
-                                            EnableViewVoteModal(data)
-                                          }
-                                        />
-                                      </>
-                                    ) : null}
+                          </p>
+                          {printFlag === true || exportFlag === true ? null : (
+                            <>
+                              {Number(data.agendaVotingID) !== 0 &&
+                              Number(editorRole.status) === 10 &&
+                              Number(data.voteOwner.userid) ===
+                                Number(currentUserID) &&
+                              !data.voteOwner?.currentVotingClosed ? (
+                                <>
+                                  <Button
+                                    text={t("Start-voting")}
+                                    className={styles["startVotingButton"]}
+                                    onClick={() => startVoting(data)}
+                                  />
+                                  <Button
+                                    text={t("View-votes")}
+                                    className={styles["ViewVoteButton"]}
+                                    onClick={() => EnableViewVoteModal(data)}
+                                  />
+                                </>
+                              ) : Number(data.agendaVotingID) !== 0 &&
+                                Number(editorRole.status) === 10 &&
+                                Number(data.voteOwner.userid) ===
+                                  Number(currentUserID) &&
+                                data.voteOwner?.currentVotingClosed ? (
+                                <>
+                                  <Button
+                                    text={t("End-voting")}
+                                    className={styles["startVotingButton"]}
+                                    onClick={() => endVoting(data)}
+                                  />
+                                  <Button
+                                    text={t("View-votes")}
+                                    className={styles["ViewVoteButton"]}
+                                    onClick={() => EnableViewVoteModal(data)}
+                                  />
+                                </>
+                              ) : editorRole.role === "Organizer" &&
+                                (data.voteOwner?.currentVotingClosed ||
+                                  Number(data.agendaVotingID) !== 0) ? (
+                                <>
+                                  <Button
+                                    text={t("View-votes")}
+                                    className={styles["ViewVoteButton"]}
+                                    onClick={() => EnableViewVoteModal(data)}
+                                  />
+                                </>
+                              ) : null}
 
-                                    {Number(data.agendaVotingID) ===
-                                    0 ? null : Number(editorRole.status) ===
-                                        10 &&
-                                      Number(data.voteOwner.userid) !==
-                                        Number(currentUserID) &&
-                                      data.voteOwner?.currentVotingClosed &&
-                                      editorRole.role !== "Organizer" &&
-                                      checkUserAuthentication(data) ? (
-                                      <Button
-                                        text={t("Cast-your-vote")}
-                                        className={styles["CastYourVoteButton"]}
-                                        onClick={() =>
-                                          EnableCastVoteModal(data)
-                                        }
-                                      />
-                                    ) : null}
-                                  </>
-                                )}
-                              </Col>
-                            </Row>
-                            {/* </div> */}
-                          </Col>
-                          <Col lg={1} md={1} sm={12} className="p-0">
-                            <img
-                              draggable={false}
-                              src={CollapseIcon}
-                              alt=""
-                              className={
-                                expandIndex === index && expand
-                                  ? styles["Arrow_Expanded"]
-                                  : styles["Arrow"]
-                              }
-                              onClick={() => {
-                                handleExpandedBtn(index);
-                              }}
-                            />
-                          </Col>
-                        </Row>
-                        {expandIndex !== index && expand ? (
-                          <>
-                            {
-                              data.selectedRadio === 1 &&
-                              Object.keys(data.files).length > 0 ? (
-                                <div className={styles["filesParentClass"]}>
-                                  {data.files
-                                    .slice(0, 3)
-                                    .map((filesData, fileIndex) => (
-                                      <AttachmentViewer
-                                        handleClickDownload={() =>
-                                          downloadDocument(filesData)
-                                        }
-                                        data={filesData}
-                                        name={filesData?.displayAttachmentName}
-                                        id={Number(
-                                          filesData.originalAttachmentName
-                                        )}
-                                        handleEyeIcon={() =>
-                                          pdfData(
-                                            filesData,
-                                            getFileExtension(
-                                              filesData?.displayAttachmentName
-                                            )
-                                          )
-                                        }
-                                      />
-                            
-                                    ))}
-                                  {data.files.length > 3 && (
-                                    <Button
-                                      text={t("More")}
-                                      className={styles["Show_More_Button"]}
-                                      onClick={() =>
-                                        showMoreFiles(
-                                          data.files,
-                                          data.title,
-                                          index
-                                        )
-                                      }
-                                    />
-                                  )}
-                                </div>
-                              ) : data.selectedRadio === 1 &&
-                                Object.keys(data.files).length ===
-                                  0 ? null : null // </span> //   No Files Attached // <span className={styles["NoFiles_Heading"]}>
+                              {Number(data.agendaVotingID) ===
+                              0 ? null : Number(editorRole.status) === 10 &&
+                                Number(data.voteOwner.userid) !==
+                                  Number(currentUserID) &&
+                                data.voteOwner?.currentVotingClosed &&
+                                editorRole.role !== "Organizer" &&
+                                checkUserAuthentication(data) ? (
+                                <Button
+                                  text={t("Cast-your-vote")}
+                                  className={styles["CastYourVoteButton"]}
+                                  onClick={() => EnableCastVoteModal(data)}
+                                />
+                              ) : null}
+                            </>
+                          )}
+                        </Col>
+                      </Row>
+                      {/* </div> */}
+                    </Col>
+                    <Col lg={1} md={1} sm={12} className="p-0">
+                      <img
+                        draggable={false}
+                        src={CollapseIcon}
+                        alt=""
+                        className={
+                          findIDInArray(data.id)
+                            ? styles["Arrow_Expanded"]
+                            : styles["Arrow"]
+                        }
+                        onClick={() => {
+                          handleExpandedBtn(data.id);
+                        }}
+                      />
+                    </Col>
+                  </Row>
+                  {findIDInArray(data.id) ? (
+                    <>
+                      {
+                        data.selectedRadio === 1 &&
+                        Object.keys(data.files).length > 0 ? (
+                          <div className={styles["filesParentClass"]}>
+                            {data.files
+                              .slice(0, 3)
+                              .map((filesData, fileIndex) => (
+                                <AttachmentViewer
+                                  handleClickDownload={() =>
+                                    downloadDocument(filesData)
+                                  }
+                                  data={filesData}
+                                  name={filesData?.displayAttachmentName}
+                                  id={Number(filesData.originalAttachmentName)}
+                                  handleEyeIcon={() =>
+                                    pdfData(
+                                      filesData,
+                                      getFileExtension(
+                                        filesData?.displayAttachmentName
+                                      )
+                                    )
+                                  }
+                                />
+                              ))}
+                            {data.files.length > 3 && (
+                              <Button
+                                text={t("More")}
+                                className={styles["Show_More_Button"]}
+                                onClick={() =>
+                                  showMoreFiles(data.files, data.title, index)
+                                }
+                              />
+                            )}
+                          </div>
+                        ) : data.selectedRadio === 1 &&
+                          Object.keys(data.files).length === 0 ? null : null // </span> //   No Files Attached // <span className={styles["NoFiles_Heading"]}>
+                      }
+
+                      {data.selectedRadio === 2 && (
+                        <Urls
+                          data={data}
+                          index={index}
+                          setRows={setRows}
+                          rows={rows}
+                        />
+                      )}
+
+                      {data.selectedRadio === 3 && (
+                        <RequestContributor
+                          data={data}
+                          index={index}
+                          setRows={setRows}
+                          rows={rows}
+                        />
+                      )}
+                    </>
+                  ) : null}
+                  {/* </Droppable> */}
+                  {findIDInArray(data.id) ? (
+                    <>
+                      {
+                        data.selectedRadio === 1 &&
+                        Object.keys(data.files).length > 0 ? (
+                          <div className={styles["filesParentClass"]}>
+                            {data.files
+                              .slice(0, 3)
+                              .map((filesData, fileIndex) => (
+                                <AttachmentViewer
+                                  handleClickDownload={() =>
+                                    downloadDocument(filesData)
+                                  }
+                                  data={filesData}
+                                  name={filesData?.displayAttachmentName}
+                                  id={Number(filesData.originalAttachmentName)}
+                                  handleEyeIcon={() =>
+                                    pdfData(
+                                      filesData,
+                                      getFileExtension(
+                                        filesData?.displayAttachmentName
+                                      )
+                                    )
+                                  }
+                                />
+                              ))}
+                            {data.files.length > 3 && (
+                              <Button
+                                text={t("More")}
+                                className={styles["Show_More_Button"]}
+                                onClick={() =>
+                                  showMoreFiles(data.files, data.title, index)
+                                }
+                              />
+                            )}
+                          </div>
+                        ) : data.selectedRadio === 1 &&
+                          Object.keys(data.files).length === 0 ? null : null // </span> //   No Files Attached // <span className={styles["NoFiles_Heading"]}>
+                      }
+
+                      {data.selectedRadio === 2 && (
+                        <Urls
+                          data={data}
+                          index={index}
+                          setRows={setRows}
+                          rows={rows}
+                        />
+                      )}
+
+                      {data.selectedRadio === 3 && (
+                        <RequestContributor
+                          data={data}
+                          index={index}
+                          setRows={setRows}
+                          rows={rows}
+                        />
+                      )}
+                      {findIDInArray(data.id) ? (
+                        <div className={styles["borderDesigningSubAgenda"]}>
+                          <SubAgendaMappingDragging
+                            data={data}
+                            index={index}
+                            setRows={setRows}
+                            rows={rows}
+                            subExpand={subExpand}
+                            apllyLockOnParentAgenda={apllyLockOnParentAgenda}
+                            subLockArry={subLockArry}
+                            setSubLockArray={setSubLockArray}
+                            agendaItemRemovedIndex={agendaItemRemovedIndex}
+                            setAgendaItemRemovedIndex={
+                              setAgendaItemRemovedIndex
                             }
-
-                            {data.selectedRadio === 2 && (
-                              <Urls
-                                data={data}
-                                index={index}
-                                setRows={setRows}
-                                rows={rows}
-                              />
-                            )}
-
-                            {data.selectedRadio === 3 && (
-                              <RequestContributor
-                                data={data}
-                                index={index}
-                                setRows={setRows}
-                                rows={rows}
-                              />
-                            )}
-                          </>
-                        ) : null}
-                        {/* </Droppable> */}
-                        {expandIndex === index && expand ? (
-                          <>
-                            {
-                              data.selectedRadio === 1 &&
-                              Object.keys(data.files).length > 0 ? (
-                                <div className={styles["filesParentClass"]}>
-                                  {data.files
-                                    .slice(0, 3)
-                                    .map((filesData, fileIndex) => (
-                                      <AttachmentViewer
-                                        handleClickDownload={() =>
-                                          downloadDocument(filesData)
-                                        }
-                                        data={filesData}
-                                        name={filesData?.displayAttachmentName}
-                                        id={Number(
-                                          filesData.originalAttachmentName
-                                        )}
-                                        handleEyeIcon={() =>
-                                          pdfData(
-                                            filesData,
-                                            getFileExtension(
-                                              filesData?.displayAttachmentName
-                                            )
-                                          )
-                                        }
-                                      />
-                                    ))}
-                                  {data.files.length > 3 && (
-                                    <Button
-                                      text={t("More")}
-                                      className={styles["Show_More_Button"]}
-                                      onClick={() =>
-                                        showMoreFiles(
-                                          data.files,
-                                          data.title,
-                                          index
-                                        )
-                                      }
-                                    />
-                                  )}
-                                </div>
-                              ) : data.selectedRadio === 1 &&
-                                Object.keys(data.files).length ===
-                                  0 ? null : null // </span> //   No Files Attached // <span className={styles["NoFiles_Heading"]}>
+                            setSubajendaRemoval={setSubajendaRemoval}
+                            setSubExpand={setSubExpand}
+                            openAdvancePermissionModal={
+                              openAdvancePermissionModal
                             }
-
-                            {data.selectedRadio === 2 && (
-                              <Urls
-                                data={data}
-                                index={index}
-                                setRows={setRows}
-                                rows={rows}
-                              />
-                            )}
-
-                            {data.selectedRadio === 3 && (
-                              <RequestContributor
-                                data={data}
-                                index={index}
-                                setRows={setRows}
-                                rows={rows}
-                              />
-                            )}
-                            <div className={styles["borderDesigningSubAgenda"]}>
-                              <SubAgendaMappingDragging
-                                data={data}
-                                index={index}
-                                setRows={setRows}
-                                rows={rows}
-                                subExpand={subExpand}
-                                apllyLockOnParentAgenda={
-                                  apllyLockOnParentAgenda
-                                }
-                                subLockArry={subLockArry}
-                                setSubLockArray={setSubLockArray}
-                                agendaItemRemovedIndex={agendaItemRemovedIndex}
-                                setAgendaItemRemovedIndex={
-                                  setAgendaItemRemovedIndex
-                                }
-                                setSubajendaRemoval={setSubajendaRemoval}
-                                setSubExpand={setSubExpand}
-                                openAdvancePermissionModal={
-                                  openAdvancePermissionModal
-                                }
-                                openVoteMOdal={openVoteMOdal}
-                                advanceMeetingModalID={advanceMeetingModalID}
-                                editorRole={editorRole}
-                                setFileDataAgenda={setFileDataAgenda}
-                                fileDataAgenda={fileDataAgenda}
-                                setAgendaName={setAgendaName}
-                                agendaName={agendaName}
-                                setAgendaIndex={setAgendaIndex}
-                                agendaIndex={agendaIndex}
-                                setSubAgendaIndex={setSubAgendaIndex}
-                                subAgendaIndex={subAgendaIndex}
-                                setShowMoreFilesView={setShowMoreFilesView}
-                              />
-                            </div>
-                          </>
-                        ) : null}
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-              </span>
-              {NewMeetingreducer.viewVotesAgenda && <ViewVoteModal />}
-              {NewMeetingreducer.castVoteAgendaPage && <CastVoteAgendaModal />}
-            </div>
-          )}
-        </Draggable>
+                            openVoteMOdal={openVoteMOdal}
+                            advanceMeetingModalID={advanceMeetingModalID}
+                            editorRole={editorRole}
+                            setFileDataAgenda={setFileDataAgenda}
+                            fileDataAgenda={fileDataAgenda}
+                            setAgendaName={setAgendaName}
+                            agendaName={agendaName}
+                            setAgendaIndex={setAgendaIndex}
+                            agendaIndex={agendaIndex}
+                            setSubAgendaIndex={setSubAgendaIndex}
+                            subAgendaIndex={subAgendaIndex}
+                            setShowMoreFilesView={setShowMoreFilesView}
+                          />
+                        </div>
+                      ) : null}
+                    </>
+                  ) : null}
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </span>
+        {NewMeetingreducer.viewVotesAgenda && <ViewVoteModal />}
+        {NewMeetingreducer.castVoteAgendaPage && <CastVoteAgendaModal />}
+        {/* </div>
+          )} */}
+        {/* </Draggable> */}
       </div>
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
     </>

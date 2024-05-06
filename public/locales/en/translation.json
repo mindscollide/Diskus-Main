@@ -791,7 +791,7 @@
   "Successfully": "Successfully",
   "Remove": "Remove",
   "Cancel-this-resolution": "Cancel this Resolution?",
-  "Are-you-sure-you-want-to-update": "Are you sure You want to Update",
+  "Are-you-sure-you-want-to-update": "Are you sure you want to Update",
   "the-resolution": "the Resolution?",
   "Are-you-sure-you-want-to-discard": "Are you sure you want to Discard",
   "Committee-type-is-required": "Committee type is required",
@@ -1760,7 +1760,7 @@
   "Date-to": "Date To",
   "Select-send-response-by-date": "Select Send Response by Date",
   "Add-the-people-who-need-to-sign-this-document": "Add the people who need to sign this document",
-  "Work-email-address": "Work Email Address",
+  "Work-email-address": "Work Email Address*",
   "Deselect-all": "Deselect all",
   "Add-another-signer": "Add another signer",
   "Add-assignee": "Add Assignee",
@@ -1819,5 +1819,12 @@
   "Folder-share-successfully": "Folder share successfully",
   "Non-primary": "Non-primary",
   "Information-saved": "Information saved",
-  "Send-for-approval": "Send for approval"
+  "Send-for-approval": "Send for approval",
+  "Notify-when-group-becomes-in-active": "Notify When Group becomes In Active",
+  "Notify-when-group-becomes-active": "Notify When Group becomes Active",
+  "NEW_GROUP_MEMBER_ADDED": "You have been added in a [Group Title] Group",
+  "GROUP_MEMBER_REMOVED": "You have been removed in a [Group Title] Group",
+  "MEMBER_REMOVED_FROM_COMMITTEE": "You have been removed in a [Committee Title] Committee",
+  "NEW_MEMBER_ADDED_IN_COMMITTEE": "You have been added in a [Committee Title] Committee",
+  "COMMITTTEE_STATUS_EDITED_ACTIVE": "Committee [Committee Title] in which you are a member has been set as Active"
 }

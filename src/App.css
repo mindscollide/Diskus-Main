@@ -2119,6 +2119,7 @@ button.btn.btn-primary.meeting.end {
 
 .CreateMeetingTime input {
   color: #666666;
+  font-weight: 500;
 }
 
 .CreateMeetingDate svg.DatePickerIcon {
@@ -7034,4 +7035,8 @@ td.ant-table-cell.minutesParticipant {
 }
 .ant-table-thead > tr > th {
   font-weight: 600 !important;
+}
+
+.d-block.loader-zindex .videoCallScreen {
+  z-index: 99999999999 !important;
 }
