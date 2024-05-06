@@ -13,6 +13,7 @@ import {
   PaymentInitiateStepperThree,
   CancelSubReasons,
   CancelOrganizationsSubscriptions,
+  ExtendOrganizationTrial,
 } from "../../commen/apis/Api_config";
 import {
   authenticationApi,
@@ -330,14 +331,14 @@ const organizationTrialExtendedFail = (message) => {
   };
 };
 
-const ExtendOrganizationTrialApi = (navigate, t) => {
+const ExtendOrganizationTrialApi = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
     dispatch(organizationTrialExtendedInit());
     let form = new FormData();
-    // form.append("RequestData", JSON.stringify(data));
-    form.append("RequestMethod", IsPackageExpiryDetail.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    form.append("RequestMethod", ExtendOrganizationTrial.RequestMethod);
     axios({
       method: "post",
       url: getAdminURLs,
@@ -349,7 +350,7 @@ const ExtendOrganizationTrialApi = (navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(ExtendOrganizationTrialApi(navigate, t));
+          dispatch(ExtendOrganizationTrialApi(navigate, t, data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
