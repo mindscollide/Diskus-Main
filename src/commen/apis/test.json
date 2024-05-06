@@ -1,20 +1,11 @@
 {
-  "TenureOfSubscriptionID": 2,
-  "Organization": {
-    "OrganizationName": "Mehdi free trial ",
-    "FK_WorldCountryID": 1,
-    "ContactPersonName": "sasdfdsf",
-    "ContactPersonEmail": "owisefree@yopmail.com",
-    "ContactPersonNumber": "3454535345",
-    "FK_NumberWorldCountryID": 1,
-    "CustomerReferenceNumber": "",
-    "PersonalNumber": "3454535345",
-    "OrganizationAddress1": "asd",
-    "OrganizationAddress2": "",
-    "City": "asd",
-    "StateProvince": "asd",
-    "PostalCode": "23423423",
-    "TimeZoneID": 1
-  },
-  "Packages": [{ "PackageID": 4, "HeadCount": 20 }]
+  "UserID": 1430,
+  "StatusID": 1,
+  "UserName": "Basit updated",
+  "Designation": "CFO",
+  "MobileNumber": "",
+  "RoleID": 3,
+  "OrganizationID": 689,
+  "OrganizationSelectedPackageID": 2,
+  "FK_NumberWorldCountryID": 1
 }

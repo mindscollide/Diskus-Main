@@ -114,8 +114,6 @@ const SignInUserManagement = () => {
     localStorage.setItem("TenureOfSuscriptionID", 2);
     localStorage.setItem("SignupFlowPageRoute", 2);
     dispatch(signUpFlowRoutes(2));
-
-    // setCurrentStep(9);
     navigate("/Signup", {
       state: {
         freeTrail: true,

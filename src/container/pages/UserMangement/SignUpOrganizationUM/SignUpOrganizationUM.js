@@ -650,7 +650,7 @@ const SignUpOrganizationUM = () => {
             value: signUpDetails.CountryName.value,
             errorMessage:
               signUpDetails.CountryName.value === ""
-                ? t("Country-selection-is-required")
+                ? t("Please-select-country")
                 : signUpDetails.CountryName.errorMessage,
             errorStatus:
               signUpDetails.CountryName.value === ""
