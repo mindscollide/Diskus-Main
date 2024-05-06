@@ -16,6 +16,7 @@ import ReactFlagsSelect from "react-flags-select";
 import { Check2 } from "react-bootstrap-icons";
 import {
   LoginFlowRoutes,
+  signUpFlowRoutes,
   signUpOrganizationAndPakageSelection,
 } from "../../../../store/actions/UserManagementActions";
 import {
@@ -30,13 +31,10 @@ const SignUpOrganizationUM = () => {
 
   const {
     countryNamesReducer,
-    Authreducer,
     adminReducer,
     LanguageReducer,
     UserMangementReducer,
   } = useSelector((state) => state);
-
-  console.log(countryNamesReducer, "countryNamesReducer");
 
   const location = useLocation();
 
@@ -419,7 +417,8 @@ const SignUpOrganizationUM = () => {
         signUpDetails.CompanyName.value !== "" &&
         signUpDetails.FullName.value !== "" &&
         signUpDetails.Email.value !== "" &&
-        signUpDetails.FullName.value !== ""
+        signUpDetails.FullName.value !== "" &&
+        signUpDetails.CountryName.value !== ""
       ) {
         if (validateEmailEnglishAndArabicFormat(signUpDetails.Email.value)) {
           if (
@@ -577,7 +576,8 @@ const SignUpOrganizationUM = () => {
         signUpDetails.CompanyName.value !== "" &&
         signUpDetails.FullName.value !== "" &&
         signUpDetails.Email.value !== "" &&
-        signUpDetails.FullName.value !== ""
+        signUpDetails.FullName.value !== "" &&
+        signUpDetails.CountryName.value !== ""
       ) {
         if (validateEmailEnglishAndArabicFormat(signUpDetails.Email.value)) {
           if (
@@ -650,7 +650,7 @@ const SignUpOrganizationUM = () => {
             value: signUpDetails.CountryName.value,
             errorMessage:
               signUpDetails.CountryName.value === ""
-                ? t("Country-name-is-required")
+                ? t("Country-selection-is-required")
                 : signUpDetails.CountryName.errorMessage,
             errorStatus:
               signUpDetails.CountryName.value === ""
@@ -798,7 +798,6 @@ const SignUpOrganizationUM = () => {
       countryNamesReducer.CountryNamesData !== null &&
       countryNamesReducer.CountryNamesData !== undefined
     ) {
-      console.log(countryNamesReducer.CountryNamesData, "countryOnSelect");
       setCountryNames(countryNamesReducer.CountryNamesData);
     }
   }, [countryNamesReducer.CountryNamesData]);
@@ -810,9 +809,10 @@ const SignUpOrganizationUM = () => {
       dispatch(LoginFlowRoutes(1));
       navigate("/");
     } else {
+      localStorage.removeItem("SignupFlowPageRoute", 2);
+      localStorage.setItem("SignupFlowPageRoute", 1);
+      dispatch(signUpFlowRoutes(1));
       navigate("/Signup");
-
-      localStorage.setItem("signupCurrentPage", 1);
     }
   };
 
@@ -925,6 +925,20 @@ const SignUpOrganizationUM = () => {
                         onSelect={countryOnSelect}
                         searchable={true}
                       />
+                      <Row>
+                        <Col>
+                          <p
+                            className={
+                              signUpDetails.CountryName.errorStatus &&
+                              signUpDetails.CountryName.value === ""
+                                ? ` ${styles["errorMessage"]} `
+                                : `${styles["errorMessage_hidden"]}`
+                            }
+                          >
+                            {signUpDetails.CountryName.errorMessage}
+                          </p>
+                        </Col>
+                      </Row>
                     </Col>
                   </Row>
                   <Row className="mb-3">

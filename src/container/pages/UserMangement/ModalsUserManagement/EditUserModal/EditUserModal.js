@@ -159,7 +159,7 @@ const EditUserModal = ({ editModalData }) => {
       MobileNumber: "",
       RoleID: editUserModalValues.isAdminUser,
       OrganizationID: Number(organizationID),
-      OrganizationSelectedPackageID: Number(editModalData.userAllotedPackageID),
+      PackageID: Number(editModalData.userAllotedPackageID),
       FK_NumberWorldCountryID: Number(editModalData.fK_WorldCountryID),
     };
     //The True is The Flag for AllOrganization User After Editing the User

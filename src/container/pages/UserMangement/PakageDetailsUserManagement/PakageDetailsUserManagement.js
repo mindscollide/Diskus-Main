@@ -18,6 +18,8 @@ import {
 import {
   LoginFlowRoutes,
   getAllUserTypePackagesApi,
+  signUpFlowRoutes,
+  signupFlowRoutes,
 } from "../../../../store/actions/UserManagementActions";
 
 const PakageDetailsUserManagement = () => {
@@ -329,7 +331,9 @@ const PakageDetailsUserManagement = () => {
 
   //Pay Now B Button On Click
   const handlePayNowClick = () => {
-    localStorage.setItem("signupCurrentPage", 2);
+    localStorage.removeItem("SignupFlowPageRoute", 1);
+    localStorage.setItem("SignupFlowPageRoute", 2);
+    dispatch(signUpFlowRoutes(2));
     navigate("/Signup");
   };
 
@@ -380,8 +384,13 @@ const PakageDetailsUserManagement = () => {
 
   //Handle Goback Function
   const onClickLink = () => {
-    localStorage.removeItem("signupCurrentPage");
-    //localStorage.setItem("LoginFlowPageRoute", 1);
+    // localStorage.removeItem("signupCurrentPage");
+    // //localStorage.setItem("LoginFlowPageRoute", 1);
+    // dispatch(LoginFlowRoutes(1));
+    // navigate("/");
+
+    localStorage.removeItem("SignupFlowPageRoute", 1);
+    localStorage.setItem("LoginFlowPageRoute", 1);
     dispatch(LoginFlowRoutes(1));
     navigate("/");
   };
@@ -529,22 +538,20 @@ const PakageDetailsUserManagement = () => {
           />
         </Col>
       </Row>
-      {SignupPage ? (
-        <>
-          <Row className="mt-3">
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex justify-content-center"
-            >
-              <span onClick={onClickLink} className={styles["signUp_goBack"]}>
-                {t("Go-back")}
-              </span>
-            </Col>
-          </Row>
-        </>
-      ) : null}
+      <>
+        <Row className="mt-3">
+          <Col
+            lg={12}
+            md={12}
+            sm={12}
+            className="d-flex justify-content-center"
+          >
+            <span onClick={onClickLink} className={styles["signUp_goBack"]}>
+              {t("Go-back")}
+            </span>
+          </Col>
+        </Row>
+      </>
 
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
       {UserMangementReducer.Loading || LanguageReducer.Loading ? (

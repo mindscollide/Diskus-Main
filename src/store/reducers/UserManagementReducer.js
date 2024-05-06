@@ -22,6 +22,7 @@ const initialState = {
   cancelSubReasonData: [],
   cancelOrganizationSubsData: null,
   packageUpgradeDetail: null,
+  defaultRoutes: null,
 };
 
 const UserMangementReducer = (state = initialState, action) => {

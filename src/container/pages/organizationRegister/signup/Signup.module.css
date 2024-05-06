@@ -147,7 +147,7 @@ body[dir="rtl"] .rightsection_roundLogo {
   transform: rotate(-475deg);
 }
 
-.errorMessage {
+/* .errorMessage {
   margin: 4px;
   height: 7px;
   color: #f16b6b;
@@ -169,7 +169,7 @@ body[dir="rtl"] .errorMessage {
 
 body[dir="rtl"] .errorMessage_hidden {
   font-weight: 400 !important;
-}
+} */
 
 .emailCheckbox span,
 .companynamecheckbox span {

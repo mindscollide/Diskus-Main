@@ -45,17 +45,20 @@ const CancelSubscriptionAdmin = () => {
   }, []);
 
   //useEffect to render data in expiry and subscription date
+
   useEffect(() => {
     let cancelPackage =
       UserMangementReducer.organizationSelectedPakagesByOrganizationIDData;
-
     if (cancelPackage !== null && cancelPackage !== undefined) {
-      setCancelSubsDetail({
-        cancelPackageName: cancelPackage.organizationSelectedPackages.name,
-        cancelSubscriptionDate:
-          cancelPackage.organizationSubscription.subscriptionStartDate,
-        cancelExpiryDate:
-          cancelPackage.organizationSubscription.subscriptionExpiryDate,
+      cancelPackage.organizationSubscriptions?.map((subscription) => {
+        setCancelSubsDetail((prevState) => ({
+          ...prevState,
+          cancelSubscriptionDate: subscription.subscriptionStartDate,
+          cancelExpiryDate: subscription.subscriptionExpiryDate,
+          cancelPackageName: subscription.organizationSelectedPackages
+            .map((pkg) => pkg.name)
+            .join(", "),
+        }));
       });
     }
   }, [UserMangementReducer.organizationSelectedPakagesByOrganizationIDData]);
@@ -109,42 +112,59 @@ const CancelSubscriptionAdmin = () => {
   ];
 
   // col data in package details
-  const organizationSelectedPackages =
+  const organizationPackages =
     UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
-      ?.organizationSelectedPackages;
+      ?.organizationSubscriptions;
 
   let Data = [];
-  if (organizationSelectedPackages) {
-    Data = organizationSelectedPackages.map((packages) => ({
-      Pakagedetails: (
-        <span className={styles["Tableheading"]}>{packages.name}</span>
-      ),
-      Chargesperlicense: (
-        <span className={styles["ChargesPerLicesense"]}>{packages.price}</span>
-      ),
-      Numberoflicenses: (
-        <span className={styles["ChargesPerLicesense"]}>
-          {packages.headCount}
-        </span>
-      ),
-      Yearlycharges: (
-        <span className={styles["ChargesPerLicesense"]}>
-          {packages.price * packages.headCount * 12}
-        </span>
-      ),
-    }));
+
+  if (organizationPackages) {
+    organizationPackages.map((subscription) => {
+      Data = subscription.organizationSelectedPackages.map((packages) => ({
+        Pakagedetails: (
+          <span className={styles["Tableheading"]}>{packages.name}</span>
+        ),
+        Chargesperlicense: (
+          <span className={styles["ChargesPerLicesense"]}>
+            {packages.price}
+          </span>
+        ),
+        Numberoflicenses: (
+          <span className={styles["ChargesPerLicesense"]}>
+            {packages.headCount}
+          </span>
+        ),
+        Yearlycharges: (
+          <span className={styles["ChargesPerLicesense"]}>
+            {packages.price * packages.headCount * 12}
+          </span>
+        ),
+      }));
+    });
   }
 
   // COunt number or add number of Number of license and Yearly Charges
   let totalLicenses = 0;
   let totalYearlyCharges = 0;
 
-  UserMangementReducer.organizationSelectedPakagesByOrganizationIDData?.organizationSelectedPackages.map(
-    (packages) => {
-      totalLicenses += packages.headCount;
-      totalYearlyCharges += packages.price * packages.headCount * 12;
+  UserMangementReducer.organizationSelectedPakagesByOrganizationIDData?.organizationSubscriptions.map(
+    (packageses) => {
+      packageses.organizationSelectedPackages.map((totals) => {
+        let totalofLicences = totals.headCount;
+        let totalOfYearlyPrices = totals.price * totals.headCount * 12;
+        totalLicenses += totalofLicences;
+        totalYearlyCharges += totalOfYearlyPrices;
+      });
     }
   );
+
+  // for ServiceManager.CancelOrganizationsSubscription pass as a request data
+  const subscriptionID =
+    UserMangementReducer.organizationSelectedPakagesByOrganizationIDData?.organizationSubscriptions.map(
+      (SubsID) => SubsID.pK_OrganizationsSubscriptionID
+    );
+
+  console.log(subscriptionID, "subscriptionIDsubscriptionID");
 
   const defaultRow = {
     Pakagedetails: (
@@ -283,7 +303,10 @@ const CancelSubscriptionAdmin = () => {
         <CancelSubscriptionModal />
       )}
       {UserManagementModals.reasonForleavingModal && (
-        <ReasonForCancelSubs completionContract={completionContract} />
+        <ReasonForCancelSubs
+          completionContract={completionContract}
+          subscriptionID={subscriptionID}
+        />
       )}
       {UserMangementReducer.Loading ? <Loader /> : null}
     </Container>

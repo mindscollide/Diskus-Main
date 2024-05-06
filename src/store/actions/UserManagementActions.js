@@ -98,7 +98,7 @@ const signUpOrganizationAndPakageSelection = (data, navigate, t) => {
                 response.data.responseResult.responseMessage
                   .toLowerCase()
                   .includes(
-                    "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_01".toLowerCase()
+                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_01".toLowerCase()
                   )
               ) {
                 localStorage.setItem(
@@ -126,7 +126,9 @@ const signUpOrganizationAndPakageSelection = (data, navigate, t) => {
                 localStorage.removeItem("PackageID");
                 localStorage.setItem("minutes", 4);
                 localStorage.setItem("seconds", 60);
-                localStorage.setItem("signupCurrentPage", 3);
+                localStorage.removeItem("SignupFlowPageRoute", 2);
+                localStorage.setItem("SignupFlowPageRoute", 3);
+                dispatch(signUpFlowRoutes(3));
                 navigate("/Signup");
               } else if (
                 response.data.responseResult.responseMessage
@@ -162,7 +164,9 @@ const signUpOrganizationAndPakageSelection = (data, navigate, t) => {
                 localStorage.setItem("minutes", 0);
                 localStorage.setItem("seconds", 0);
                 localStorage.removeItem("PackageID");
-                localStorage.setItem("signupCurrentPage", 3);
+                localStorage.removeItem("SignupFlowPageRoute", 2);
+                localStorage.setItem("SignupFlowPageRoute", 3);
+                dispatch(signUpFlowRoutes(3));
                 navigate("/Signup");
               } else if (
                 response.data.responseResult.responseMessage
@@ -618,6 +622,26 @@ const EditOrganizationsUserApi = (navigate, t, data, flag) => {
                 )
             ) {
               dispatch(editOrganizationUsersFail(t("Something-went-wrong")));
+              dispatch(showEditUserModal(true));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_EditOrganizationsUser_06".toLowerCase()
+                )
+            ) {
+              dispatch(editOrganizationUsersFail(t("User-deletion-failed")));
+              dispatch(showEditUserModal(true));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_EditOrganizationsUser_07".toLowerCase()
+                )
+            ) {
+              dispatch(
+                editOrganizationUsersFail(t("User-deleted-succesfully"))
+              );
               dispatch(showEditUserModal(true));
             } else {
               dispatch(editOrganizationUsersFail(t("Something-went-wrong")));
@@ -1813,5 +1837,6 @@ export {
   getCancelSubscriptionReasonApi,
   cancelOrganizationSubApi,
   clearMessegesUserManagement,
+  // signupFlowRoutes,
   // paymentUpgradeDetailMainApi
 };

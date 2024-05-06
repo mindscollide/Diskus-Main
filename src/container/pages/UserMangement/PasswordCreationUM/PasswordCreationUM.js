@@ -22,7 +22,10 @@ import {
   createPasswordAction,
   updatePasswordAction,
 } from "../../../../store/actions/Auth2_actions";
-import { LoginFlowRoutes } from "../../../../store/actions/UserManagementActions";
+import {
+  LoginFlowRoutes,
+  signUpFlowRoutes,
+} from "../../../../store/actions/UserManagementActions";
 
 const PasswordCreationUM = ({ isFreetrail }) => {
   const { t, i18n } = useTranslation();
@@ -214,9 +217,9 @@ const PasswordCreationUM = ({ isFreetrail }) => {
   }, []);
 
   const goBackButton = () => {
-    localStorage.removeItem("signupCurrentPage");
+    localStorage.removeItem("SignupFlowPageRoute");
     localStorage.setItem("LoginFlowPageRoute", 1);
-   dispatch(LoginFlowRoutes(1));
+    dispatch(LoginFlowRoutes(1));
     navigate("/");
   };
 
