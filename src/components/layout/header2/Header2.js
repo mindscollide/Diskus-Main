@@ -312,6 +312,7 @@ const Header2 = () => {
   };
 
   const handleShowUpgradedNowModal = () => {
+    console.log("Clicked");
     dispatch(showUpgradeNowModal(true));
   };
 
