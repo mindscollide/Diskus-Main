@@ -160,14 +160,15 @@ const PakageDetailsUserManagement = () => {
             );
           } else {
             const handleChange = (newValue) => {
-              if (newValue === "" || /^\d+$/.test(newValue)) {
-                const newData = tableData.map((item) => {
-                  return item.pK_PackageID === row.pK_PackageID
-                    ? { ...item, licenseCount: newValue }
-                    : item;
-                });
-                setTableData(newData);
-              }
+              const numericValue = newValue.replace(/\D/g, "");
+
+              // Update state with numeric value
+              const newData = tableData.map((item) => {
+                return item.pK_PackageID === row.pK_PackageID
+                  ? { ...item, licenseCount: numericValue }
+                  : item;
+              });
+              setTableData(newData);
             };
 
             return (
