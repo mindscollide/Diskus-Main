@@ -58,10 +58,6 @@ const PakageDetailsUMUpgrade = () => {
   useEffect(() => {
     if (location.state && location.state.organizationSelectedPackages) {
       const selectedPackages = location.state.organizationSelectedPackages[0];
-      console.log(selectedPackages);
-      const prices = selectedPackages.map((packages) => packages.price); // Extract prices from packages
-      console.log(prices, "selectedPackagesselectedPackages");
-      setOrganizationPackagePrice(prices);
       const newData = selectedPackages.map((packages) => ({
         name: packages.name,
         price: packages.price,
@@ -185,19 +181,21 @@ const PakageDetailsUMUpgrade = () => {
           } else {
             const handleChange = (newValue) => {
               if (newValue === "" || /^\d+$/.test(newValue)) {
-                const newData = tableData.map((item, i) => {
+                const newData = packageTableData.map((item, i) => {
                   if (i === index) {
-                    // Check if the index matches the current row
                     return { ...item, licenseCount: newValue };
                   }
                   return item;
                 });
-                console.log(newData, "newDatanewData");
-                setTableData(newData);
+                console.log(newData, "newData");
+                setPackageTableData(newData);
               }
             };
-            const priceValue = organizationPackagePrice[index] || "";
-            console.log(priceValue, "priceValueeeee");
+            const matchedPackage = packageTableData.find(
+              (pkg) => pkg.name === row.name
+            );
+            console.log(matchedPackage, "matchedPackagematchedPackage");
+            const priceValue = matchedPackage ? matchedPackage.price : "";
             return (
               <Row>
                 <Col className="d-flex justify-content-center">
@@ -345,6 +343,8 @@ const PakageDetailsUMUpgrade = () => {
                 <Button
                   text={t("Pay-now")}
                   className={styles["PayNowButtons"]}
+
+                  // onClick={dispatch(openPaymentProcessModal(true))}
                   // onClick={handlePayNowClick}
                 />
               </span>
@@ -585,7 +585,7 @@ const PakageDetailsUMUpgrade = () => {
       <Row className="mt-3">
         <Col lg={12} md={12} sm={12} className="d-flex justify-content-center">
           <span onClick={onClickLink} className={styles["signUp_goBack"]}>
-            {t("Go-back")}
+            {t("Go-backs")}
           </span>
         </Col>
       </Row>
