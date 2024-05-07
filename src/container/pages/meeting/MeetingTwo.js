@@ -1628,38 +1628,53 @@ const NewMeeting = () => {
       NewMeetingreducer.meetingStatusPublishedMqttData !== undefined
     ) {
       let meetingData = NewMeetingreducer.meetingStatusPublishedMqttData;
-      console.log(
-        { meetingData, rows },
-        "indexToUpdateindexToUpdateindexToUpdate"
-      );
+
       try {
         const indexToUpdate = rows.findIndex(
           (obj) => Number(obj.pK_MDID) === Number(meetingData.pK_MDID)
         );
-        console.log(
-          { indexToUpdate },
-          "indexToUpdateindexToUpdateindexToUpdate"
-        );
+        let newMeetingData = {
+          dateOfMeeting: meetingData.dateOfMeeting,
+          host: meetingData.host,
+          isAttachment: meetingData.isAttachment,
+          isChat: meetingData.isChat,
+          isVideoCall: meetingData.isVideoCall,
+          isQuickMeeting: meetingData.isQuickMeeting,
+          meetingAgenda: meetingData.meetingAgenda,
+          meetingAttendees: meetingData.meetingAttendees,
+          meetingEndTime: meetingData.meetingEndTime,
+          meetingStartTime: meetingData.meetingStartTime,
+          meetingURL: meetingData.meetingURL,
+          orignalProfilePictureName: meetingData.orignalProfilePictureName,
+          pK_MDID: meetingData.pK_MDID,
+          meetingPoll: {
+            totalNoOfDirectors: 0,
+            totalNoOfDirectorsVoted: 0,
+          },
+          responseDeadLine: "",
+          status: meetingData.status,
+          title: meetingData.title,
+          talkGroupID: 0,
+          meetingType:
+            Number(meetingData.meetingType) === 1 &&
+            meetingData.isQuickMeeting === true
+              ? 0
+              : meetingData.meetingType,
+        };
         if (indexToUpdate !== -1) {
-          console.log(
-            { meetingData, rows },
-            "indexToUpdateindexToUpdateindexToUpdate"
-          );
           let updatedRows = [...rows];
-          updatedRows[indexToUpdate] = meetingData;
+          updatedRows[indexToUpdate] = newMeetingData;
           setRow(updatedRows);
         } else {
-          console.log(
-            { meetingData, rows },
-            "indexToUpdateindexToUpdateindexToUpdate"
-          );
-          setRow([...rows, meetingData]);
+          setRow([newMeetingData, ...rows]);
         }
       } catch (error) {
         console.log(error, "Meeting Created and Published");
       }
     }
   }, [NewMeetingreducer.meetingStatusPublishedMqttData]);
+
+  console.log(rows, "rowsrowsrowsrowsrows");
 
   useEffect(() => {
     if (
