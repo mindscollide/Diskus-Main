@@ -20,38 +20,14 @@ const ApprovalSend = () => {
   const pendingApprovalColumns = [
     {
       // Column for file name
-      title: ({ sortColumns }) => {
-        // Find the sorted column
-        const sortedColumn = sortColumns?.find(
-          ({ column }) => column.key === "name"
-        );
-        return (
-          <div className="d-flex gap-2">
-            {t("File-name")}
-            {/* Display sorting icon based on the sorting order */}
-            {sortedColumn ? (
-              sortedColumn.order === "ascend" ? (
-                <img
-                  className={styles["Sort_icon_ascend"]}
-                  src={SorterIconAscend}
-                  alt="Ascending sort"
-                />
-              ) : (
-                <img
-                  className={styles["Sort_icon_descend"]}
-                  src={SorterIconDescend}
-                  alt="Descending sort"
-                />
-              )
-            ) : null}
-          </div>
-        );
-      },
+      title: t("File-name"),
       dataIndex: "name",
       key: "name",
       className: "nameParticipant",
       align: "left",
       ellipsis: true,
+      sortDirections: ["ascend", "descend"],
+      sortOrder: "ascend",
       sorter: (a, b) => b.name - a.name, // Custom sorter function for sorting by name
       render: (text, record) => {
         return (
@@ -69,6 +45,9 @@ const ApprovalSend = () => {
       key: "signatories",
       className: "signatories",
       ellipsis: true,
+      sortOrder: "ascend",
+      sortDirections: ["ascend", "descend"],
+      sorter: (a, b) => b.name - a.name,
       render: (text, record) => (
         <span
           onClick={() => setSignatoriesList(true)}
