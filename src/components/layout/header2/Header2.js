@@ -25,7 +25,7 @@ import {
   viewMeetingFlag,
   uploadGlobalFlag,
   LeaveCurrentMeeting,
-  currentMeetingStatus
+  currentMeetingStatus,
 } from "../../../store/actions/NewMeetingActions";
 import {
   getUserDetails,
@@ -211,8 +211,8 @@ const Header2 = () => {
         };
         if (CurrentMeetingStatus === 10) {
           dispatch(LeaveCurrentMeeting(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
-      }
+          dispatch(currentMeetingStatus(0));
+        }
       }
     }
   };
@@ -245,8 +245,42 @@ const Header2 = () => {
         };
         if (CurrentMeetingStatus === 10) {
           dispatch(LeaveCurrentMeeting(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
+          dispatch(currentMeetingStatus(0));
+        }
       }
+    }
+  };
+
+  const handleMeetingPendingApprovals = () => {
+    if (location.pathname.includes("/Admin") === false) {
+      if (
+        (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+          NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+          NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+          NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+          NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+          NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+        NewMeetingreducer.viewMeetingFlag === false
+      ) {
+        dispatch(showCancelModalmeetingDeitals(true));
+        localStorage.setItem("navigateLocation", "pendingApprovals");
+      } else {
+        dispatch(showCancelModalmeetingDeitals(false));
+        dispatch(scheduleMeetingPageFlag(false));
+        dispatch(viewProposeDateMeetingPageFlag(false));
+        dispatch(viewAdvanceMeetingPublishPageFlag(false));
+        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+        dispatch(viewProposeOrganizerMeetingPageFlag(false));
+        dispatch(proposeNewMeetingPageFlag(false));
+        dispatch(viewMeetingFlag(false));
+        let Data = {
+          FK_MDID: currentMeeting,
+          DateTime: getCurrentDateTimeUTC(),
+        };
+        if (CurrentMeetingStatus === 10) {
+          dispatch(LeaveCurrentMeeting(navigate, t, Data));
+          dispatch(currentMeetingStatus(0));
+        }
       }
     }
   };
@@ -279,8 +313,8 @@ const Header2 = () => {
         };
         if (CurrentMeetingStatus === 10) {
           dispatch(LeaveCurrentMeeting(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
-      }
+          dispatch(currentMeetingStatus(0));
+        }
       }
     }
   };
@@ -629,6 +663,35 @@ const Header2 = () => {
                           onClick={RecentFilesTab}
                         >
                           {t("Recently-added-files")}
+                        </Dropdown.Item>
+                        <Dropdown.Item
+                          className="d-flex title-className"
+                          // onClick={RecentFilesTab}
+                        >
+                          <Nav.Link
+                            as={Link}
+                            to={
+                              (NewMeetingreducer.scheduleMeetingPageFlag ===
+                                true ||
+                                NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                                  true ||
+                                NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                                  true ||
+                                NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                                  true ||
+                                NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                                  true ||
+                                NewMeetingreducer.proposeNewMeetingPageFlag ===
+                                  true) &&
+                              NewMeetingreducer.viewMeetingFlag === false
+                                ? "/DisKus/Meeting"
+                                : "/DisKus/Minutes"
+                            }
+                            onClick={handleMeetingPendingApprovals}
+                            className="pendingApprovalsNav"
+                          >
+                            {t("Pending-approvals")}
+                          </Nav.Link>
                         </Dropdown.Item>
                       </DropdownButton>
                     )}

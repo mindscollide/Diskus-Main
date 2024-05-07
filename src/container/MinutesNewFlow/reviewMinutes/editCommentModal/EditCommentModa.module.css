@@ -1,0 +1,49 @@
+p.EditCommentTitle {
+    margin: 0;
+    font-weight: 600;
+    font-size: 20px;
+    color: #6172d6;
+  }
+  
+  .Edit_Comment_Modal,
+  .Edit_Comment_Modal:is(:hover, :active, :focus, :focus-visible, :target) {
+    background: #6172D6 !important;
+    border-radius: 4px !important;
+    width: 147px !important;
+    height: 39px !important;
+    border-color: #6172D6 !important;
+    font-weight: 600 !important;
+    font-size: 12px !important;
+  }
+  
+  img.image-close {
+    position: absolute;
+    right: 10px;
+    top: 0px;
+    cursor: pointer;
+  }
+  
+  body[dir="rtl"] img.image-close {
+    position: absolute;
+    right: auto;
+    top: 0px;
+    cursor: pointer;
+    left: 10px;
+  }
+  
+  textarea.textField-RejectComment {
+    height: 156px !important;
+    border-radius: 4px !important;
+    border-color: #e1e1e1 !important;
+    margin-bottom: 15px !important;
+    font-weight: 600 !important;
+    color: #5a5a5a !important;
+    font-size: 12px !important;
+  }
+  
+  textarea.textField-RejectComment::placeholder {
+    color: #a2a2a2 !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+  }
+  
