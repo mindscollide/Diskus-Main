@@ -34,18 +34,17 @@ const PakageDetailsUMUpgrade = () => {
   //States
   const [tableData, setTableData] = useState([]);
   const [packageTableData, setPackageTableData] = useState([]);
+
   const [lisence, setlisence] = useState({
     TotalLisence: "",
   });
   const [packageDetail, setPackageDetail] = useState([]);
-  console.log(packageDetail, "packageDetailpackageDetail");
   const [open, setOpen] = useState({
     open: false,
     message: "",
   });
 
   const [organizationPackagePrice, setOrganizationPackagePrice] = useState([]);
-  console.log(organizationPackagePrice, "organizationPackagePrice");
 
   //get All user pakages Api call
   useEffect(() => {

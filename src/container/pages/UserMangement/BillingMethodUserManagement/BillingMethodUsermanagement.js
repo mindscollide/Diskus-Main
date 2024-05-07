@@ -34,14 +34,13 @@ const BillingMethodUsermanagement = () => {
     "organizationSubscriptionID"
   );
 
+  const SignupPage = localStorage.getItem("SignupFlowPageRoute", 5);
+
   const [activeComponent, setActiveComponent] = useState("PakageDetails");
   const [activeStep, setActiveStep] = useState(0);
 
   const [select, setSelect] = useState("");
   const [countryNames, setCountryNames] = useState([]);
-
-  // states for open Iframe modal
-  const [paymentSourceLink, setPaymentSourceLink] = useState(null);
 
   // update totalYearly from child component step three
   const [totalYearlyCharges, setTotalYearlyCharges] = useState(0);
@@ -368,11 +367,15 @@ const BillingMethodUsermanagement = () => {
 
   return (
     <Container className={styles["sectionStyling"]}>
-      <Row className="position-relative">
-        <Col className={styles["languageSelector"]}>
-          <LanguageSelector />
-        </Col>
-      </Row>
+      {SignupPage ? (
+        <>
+          <Row className="position-relative">
+            <Col className={styles["languageSelector"]}>
+              <LanguageSelector />
+            </Col>
+          </Row>
+        </>
+      ) : null}
       <Row>
         <Col lg={1} md={1} sm={12} xs={12}></Col>
         <Col lg={10} md={10} sm={12} xs={12}>

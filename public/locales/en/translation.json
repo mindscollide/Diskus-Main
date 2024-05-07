@@ -2017,5 +2017,9 @@
   "COMMITTTEE_STATUS_EDITED_ACTIVE": "Committee [Committee Title] in which you are a member has been set as Active",
   "User-deleted-succesfully": "User Deleted Succesfully",
   "User-deletion-failed": "User Deletion Failed",
-  "Country-selection-is-required": "Country selection is required"
+  "Country-selection-is-required": "Country selection is required",
+  "Trial-requested-successfully": "Trial Requested Successfully",
+  "User-is-not-an-admin-user": "User is not an admin user",
+  "Error-inserting-trial-request": "Error inserting trial request",
+  "Trial-requested-successfully-and-auto-extended": "Trial Requested Successfully and Auto Extended"
 }
