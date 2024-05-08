@@ -1218,21 +1218,26 @@ const Home = () => {
   }, [meetingIdReducer.MeetingStatusEnded]);
 
   const upcomingEventsHandler = (upComingEvents) => {
+    console.log("upComingEvents", upComingEvents);
     let flag = false;
     let indexforUndeline = null;
-    upComingEvents.map((upcomingEventsData, index) => {
-      if (
-        upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
-        getCurrentDate
-      ) {
-        if (indexforUndeline === null && flag === false) {
-          // if (index - 1 >= 0) {
-          flag = true;
-          indexforUndeline = index;
-          // }
+    try {
+      upComingEvents.map((upcomingEventsData, index) => {
+        if (
+          upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
+          getCurrentDate
+        ) {
+          if (indexforUndeline === null && flag === false) {
+            // if (index - 1 >= 0) {
+            flag = true;
+            indexforUndeline = index;
+            // }
+          }
         }
-      }
-    });
+      });
+    } catch (error) {
+      console.log(error);
+    }
 
     return upComingEvents.map((upcomingEventsData, index) => {
       let meetingDateTime =
