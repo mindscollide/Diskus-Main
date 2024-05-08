@@ -11,7 +11,7 @@ import crossicon from "../../../../../assets/images/BlackCrossIconModals.svg";
 import { getLocalStorageItemNonActiveCheck } from "../../../../../commen/functions/utils";
 import { useEffect } from "react";
 import { userLogOutApiFunc } from "../../../../../store/actions/Auth_Sign_Out";
-import { ExtendOrganizationTrialApi } from "../../../../../store/actions/UserManagementActions";
+import { requestOrganizationExtendApi } from "../../../../../store/actions/UserManagementActions";
 const UpgradeNowModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -21,13 +21,18 @@ const UpgradeNowModal = () => {
     "TrialExpireSelectPac"
   );
   const organizationID = localStorage.getItem("organizationID");
+  const UserID = localStorage.getItem("userID");
   const isExtensionAvailable = JSON.parse(
     localStorage.getItem("isExtensionAvailable")
   );
 
+  // new API apply which is requestOrganizationTrialExtend
   const handleForExtenstionRequest = () => {
-    let data = { OrganizationID: Number(organizationID) };
-    dispatch(ExtendOrganizationTrialApi(navigate, t, data));
+    let data = {
+      OrganizationID: Number(organizationID),
+      UserID: Number(UserID),
+    };
+    dispatch(requestOrganizationExtendApi(navigate, t, data));
   };
 
   const handleCrossIcon = () => {

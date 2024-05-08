@@ -1968,5 +1968,9 @@
   "MEMBER_REMOVED_FROM_COMMITTEE": "You have been removed in a [Committee Title] Committee",
   "NEW_MEMBER_ADDED_IN_COMMITTEE": "You have been added in a [Committee Title] Committee",
   "COMMITTTEE_STATUS_EDITED_ACTIVE": "Committee [Committee Title] in which you are a member has been set as Active",
-  "Country-selection-is-required": "Country selection is required"
+  "Country-selection-is-required": "Country selection is required",
+  "Trial-requested-successfully": "Trial Requested Successfully",
+  "User-is-not-an-admin-user": "User is not an admin user",
+  "Error-inserting-trial-request": "Error inserting trial request",
+  "Trial-requested-successfully-and-auto-extended": "Trial Requested Successfully and Auto Extended"
 }

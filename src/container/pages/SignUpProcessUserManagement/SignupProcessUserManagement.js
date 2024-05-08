@@ -31,47 +31,6 @@ const SignupProcessUserManagement = () => {
     message: "",
   });
 
-  // useEffect(() => {
-  //   if (location.state !== null) {
-  //     if (location.state?.freeTrail) {
-  //       setFreetrail(true);
-  //     }
-  //   }
-  // }, [location.state]);
-
-  // useEffect(() => {
-  //   if (currentStage !== null) {
-  //     setCurrentPage(currentStage);
-  //     localStorage.setItem("signupCurrentPage", currentStage);
-  //   }
-  // }, [currentStage]);
-
-  // //Updating the state of the local storage routes pages
-  // useEffect(() => {
-  //   localStorage.removeItem("LoginFlowPageRoute");
-  //   dispatch(LoginFlowRoutes(1));
-  //   try {
-  //     if (UserMangementReducer.defaultRoutingValue) {
-  //       setCurrentPage(UserMangementReducer.defaultRoutingValue);
-  //     }
-  //   } catch {}
-  // }, [UserMangementReducer.defaultRoutingValue]);
-
-  // const storedStep = Number(localStorage.getItem("SignupFlowPageRoute"));
-  // useEffect(() => {
-  //   // Retrieve current step from local storage
-  //   if (performance.navigation.type === PerformanceNavigation.TYPE_RELOAD) {
-  //     console.log("SignupFlowPageRoute", storedStep);
-  //     if (storedStep) {
-  //       dispatch(signUpFlowRoutes(storedStep));
-  //     }
-  //   } else {
-  //     console.log("SignupFlowPageRoute");
-  //     localStorage.setItem("SignupFlowPageRoute", 1);
-  //     dispatch(signUpFlowRoutes(1));
-  //   }
-  // }, []);
-
   // Retrieve currentStep value from localStorage, default to 1 if not found
   const storedStep = Number(localStorage.getItem("SignupFlowPageRoute"));
   useEffect(() => {

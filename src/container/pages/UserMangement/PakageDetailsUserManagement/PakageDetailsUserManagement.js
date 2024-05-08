@@ -29,7 +29,7 @@ const PakageDetailsUserManagement = () => {
 
   const { t } = useTranslation();
 
-  const SignupPage = localStorage.getItem("signupCurrentPage", 1);
+  const SignupPage = localStorage.getItem("SignupFlowPageRoute", 1);
 
   const { UserMangementReducer, LanguageReducer } = useSelector(
     (state) => state
@@ -332,10 +332,14 @@ const PakageDetailsUserManagement = () => {
 
   //Pay Now B Button On Click
   const handlePayNowClick = () => {
-    localStorage.removeItem("SignupFlowPageRoute", 1);
-    localStorage.setItem("SignupFlowPageRoute", 2);
-    dispatch(signUpFlowRoutes(2));
-    navigate("/Signup");
+    if (SignupPage) {
+      localStorage.removeItem("SignupFlowPageRoute", 1);
+      localStorage.setItem("SignupFlowPageRoute", 2);
+      dispatch(signUpFlowRoutes(2));
+      navigate("/Signup");
+    } else {
+      navigate("/Admin/PaymentFormUserManagement");
+    }
   };
 
   //For buttons default row flag
@@ -385,16 +389,13 @@ const PakageDetailsUserManagement = () => {
 
   //Handle Goback Function
   const onClickLink = () => {
-    // localStorage.removeItem("signupCurrentPage");
-    // //localStorage.setItem("LoginFlowPageRoute", 1);
-    // dispatch(LoginFlowRoutes(1));
-    // navigate("/");
-
     localStorage.removeItem("SignupFlowPageRoute", 1);
     localStorage.setItem("LoginFlowPageRoute", 1);
     dispatch(LoginFlowRoutes(1));
     navigate("/");
   };
+
+  const GoBackCheck = localStorage.getItem("SignupFlowPageRoute");
 
   return (
     <Container>
@@ -540,18 +541,22 @@ const PakageDetailsUserManagement = () => {
         </Col>
       </Row>
       <>
-        <Row className="mt-3">
-          <Col
-            lg={12}
-            md={12}
-            sm={12}
-            className="d-flex justify-content-center"
-          >
-            <span onClick={onClickLink} className={styles["signUp_goBack"]}>
-              {t("Go-back")}
-            </span>
-          </Col>
-        </Row>
+        {SignupPage ? (
+          <>
+            <Row className="mt-3">
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-center"
+              >
+                <span onClick={onClickLink} className={styles["signUp_goBack"]}>
+                  {t("Go-back")}
+                </span>
+              </Col>
+            </Row>
+          </>
+        ) : null}
       </>
 
       <Notification setOpen={setOpen} open={open.open} message={open.message} />

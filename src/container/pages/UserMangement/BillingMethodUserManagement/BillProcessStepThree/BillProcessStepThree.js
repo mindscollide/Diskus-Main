@@ -16,6 +16,7 @@ const BillProcessStepThree = ({ updateTotalYearlyCharges }) => {
   const navigate = useNavigate();
 
   let currentLanguage = localStorage.getItem("i18nextLng");
+  const SignupPage = localStorage.getItem("SignupFlowPageRoute", 5);
 
   const { UserMangementReducer, LanguageReducer } = useSelector(
     (state) => state
@@ -33,11 +34,19 @@ const BillProcessStepThree = ({ updateTotalYearlyCharges }) => {
 
   useEffect(() => {
     try {
-      let data = {
-        OrganizationName: organizationName,
-        OrganizationSubscriptionID: Number(organizationSubscriptionID),
-      };
-      dispatch(getOrganizationSelectedPakagesAPI(navigate, t, data));
+      if (SignupPage) {
+        let data = {
+          OrganizationName: organizationName,
+          OrganizationSubscriptionID: Number(organizationSubscriptionID),
+        };
+        dispatch(getOrganizationSelectedPakagesAPI(navigate, t, data));
+      } else {
+        let data = {
+          OrganizationName: organizationName,
+          OrganizationSubscriptionID: 722,
+        };
+        dispatch(getOrganizationSelectedPakagesAPI(navigate, t, data));
+      }
     } catch (error) {
       console.log(error);
     }

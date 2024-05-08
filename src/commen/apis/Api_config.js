@@ -1558,6 +1558,10 @@ const revokeMicrosoftToken = {
   RequestMethod: "ServiceManager.RevokeMicrosoftToken",
 };
 
+const requestOrganizationTrialExtend = {
+  RequestMethod: "ServiceManager.RequestOrganizationTrialExtend",
+};
+
 export {
   revokeMicrosoftToken,
   leaveFolderSharingRM,
@@ -1972,4 +1976,5 @@ export {
   CancelSubReasons,
   CancelOrganizationsSubscriptions,
   // upgradePackageApiCallOnPackageDetailPage,
+  requestOrganizationTrialExtend,
 };

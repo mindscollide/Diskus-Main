@@ -14,6 +14,7 @@ import {
   CancelSubReasons,
   CancelOrganizationsSubscriptions,
   ExtendOrganizationTrial,
+  requestOrganizationTrialExtend,
 } from "../../commen/apis/Api_config";
 import {
   authenticationApi,
@@ -1818,6 +1819,120 @@ const cancelOrganizationSubApi = (navigate, t, data) => {
 //   };
 // };
 
+// FOR REQUEST ORGANIZATION TRIAL EXTEND
+const requestOrganizationExtendInit = () => {
+  return {
+    type: actions.REQUEST_ORGANIZATION_TRIAL_EXTEND_INIT,
+  };
+};
+
+const requestOrganizationExtendSuccess = (response, message) => {
+  return {
+    type: actions.REQUEST_ORGANIZATION_TRIAL_EXTEND_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const requestOrganizationExtendFail = (message) => {
+  return {
+    type: actions.REQUEST_ORGANIZATION_TRIAL_EXTEND_FAIL,
+    message: message,
+  };
+};
+
+const requestOrganizationExtendApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(requestOrganizationExtendInit());
+    let form = new FormData();
+    form.append("RequestMethod", requestOrganizationTrialExtend.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: getAdminURLs,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(requestOrganizationExtendApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_RequestOrganizationTrialExtend_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                requestOrganizationExtendSuccess(
+                  response.data.responseResult,
+                  t("Trial-requested-successfully")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_RequestOrganizationTrialExtend_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                requestOrganizationExtendFail(t("User-is-not-an-admin-user"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_RequestOrganizationTrialExtend_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                requestOrganizationExtendFail(
+                  t("Error-inserting-trial-request")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_RequestOrganizationTrialExtend_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                requestOrganizationExtendFail(
+                  t("Trial-requested-successfully-and-auto-extended")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_RequestOrganizationTrialExtend_05".toLowerCase()
+                )
+            ) {
+              dispatch(
+                requestOrganizationExtendFail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(requestOrganizationExtendFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(requestOrganizationExtendFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(requestOrganizationExtendFail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   signUpOrganizationAndPakageSelection,
   // getAllorganizationSubscriptionExpiryDetailsApi,
@@ -1840,4 +1955,5 @@ export {
   clearMessegesUserManagement,
   // signupFlowRoutes,
   // paymentUpgradeDetailMainApi
+  requestOrganizationExtendApi,
 };
