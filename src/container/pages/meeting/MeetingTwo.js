@@ -899,14 +899,29 @@ const NewMeeting = () => {
     },
     {
       title: t("Organizer"),
-      dataIndex: "host",
-      key: "host",
+      dataIndex: "meetingAttendees",
+      key: "meetingAttendees",
       width: "70px",
       sorter: (a, b) => {
-        return a?.host.toLowerCase().localeCompare(b?.host.toLowerCase());
+        const primaryOrganizerA = a.meetingAttendees.find(
+          (item) => item.isPrimaryOrganizer === true
+        );
+        const primaryOrganizerB = b.meetingAttendees.find(
+          (item) => item.isPrimaryOrganizer === true
+        );
+        const nameA = primaryOrganizerA?.user?.name || "";
+        const nameB = primaryOrganizerB?.user?.name || "";
+        return nameA.localeCompare(nameB);
       },
       render: (text, record) => {
-        return <span className={styles["orgaizer_value"]}>{text}</span>;
+        const primaryOrganizer = record.meetingAttendees.find(
+          (item) => item.isPrimaryOrganizer === true
+        );
+        return (
+          <span className={styles["orgaizer_value"]}>
+            {primaryOrganizer?.user?.name}
+          </span>
+        );
       },
     },
     {
