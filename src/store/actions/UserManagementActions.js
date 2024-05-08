@@ -1920,6 +1920,26 @@ const requestOrganizationExtendApi = (navigate, t, data) => {
                 requestOrganizationExtendFail(t("Something-went-wrong"))
               );
             }
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_RequestOrganizationTrialExtend_06".toLowerCase()
+              )
+          ) {
+            dispatch(
+              requestOrganizationExtendFail(t("Request-already-exists"))
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_RequestOrganizationTrialExtend_07".toLowerCase()
+              )
+          ) {
+            dispatch(
+              requestOrganizationExtendFail(t("Trial-extension-already-given"))
+            );
           } else {
             dispatch(requestOrganizationExtendFail(t("Something-went-wrong")));
           }

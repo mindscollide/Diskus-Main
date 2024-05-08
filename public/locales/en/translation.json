@@ -2021,5 +2021,7 @@
   "Trial-requested-successfully": "Trial Requested Successfully",
   "User-is-not-an-admin-user": "User is not an admin user",
   "Error-inserting-trial-request": "Error inserting trial request",
-  "Trial-requested-successfully-and-auto-extended": "Trial Requested Successfully and Auto Extended"
+  "Trial-requested-successfully-and-auto-extended": "Trial Requested Successfully and Auto Extended",
+  "Request-already-exists": "request already exists",
+  "Trial-extension-already-given": "trial extension already given"
 }

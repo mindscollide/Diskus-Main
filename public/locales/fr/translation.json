@@ -1988,5 +1988,7 @@
   "Folder-share-successfully": "Folder share successfully",
   "Notify-when-group-becomes-in-active": "Notify When Group becomes In Active",
   "Notify-when-group-becomes-active": "Notify When Group becomes Active",
-  "Country-selection-is-required": "Country selection is required"
+  "Country-selection-is-required": "Country selection is required",
+  "Request-already-exists": "request already exists",
+  "Trial-extension-already-given": "trial extension already given"
 }
