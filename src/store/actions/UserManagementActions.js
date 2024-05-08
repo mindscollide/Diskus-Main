@@ -1875,6 +1875,7 @@ const requestOrganizationExtendApi = (navigate, t, data) => {
                   t("Trial-requested-successfully")
                 )
               );
+              dispatch(userLogOutApiFunc(navigate, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1905,10 +1906,11 @@ const requestOrganizationExtendApi = (navigate, t, data) => {
                 )
             ) {
               dispatch(
-                requestOrganizationExtendFail(
+                requestOrganizationExtendSuccess(
                   t("Trial-requested-successfully-and-auto-extended")
                 )
               );
+              dispatch(userLogOutApiFunc(navigate, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1928,8 +1930,9 @@ const requestOrganizationExtendApi = (navigate, t, data) => {
               )
           ) {
             dispatch(
-              requestOrganizationExtendFail(t("Request-already-exists"))
+              requestOrganizationExtendSuccess(t("Request-already-exists"))
             );
+            dispatch(userLogOutApiFunc(navigate, t));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
