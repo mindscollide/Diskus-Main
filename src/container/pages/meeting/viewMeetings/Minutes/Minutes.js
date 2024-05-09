@@ -781,7 +781,7 @@ const Minutes = ({
   return (
     <section>
       <Row className="mt-3">
-        <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+        <Col lg={6} md={6} sm={12} className="d-flex gap-2">
           <Button
             text={t("General")}
             className={
@@ -795,14 +795,26 @@ const Minutes = ({
             text={t("Agenda-wise")}
             className={
               agenda
-                ? styles["Button_General"]
-                : styles["Button_General_nonActive"]
+                ? styles["Button_Agenda"]
+                : styles["Button_Agenda_nonActive"]
             }
             onClick={handleAgendaWiseClick}
           />
         </Col>
+        <Col lg={6} md={6} sm={12} className="d-flex justify-content-end">
+          <Button
+            text={t("Add-reviewers")}
+            className={styles["Add_Reviewers"]}
+            // onClick={handleResetBtnFunc}
+          />
+        </Col>
       </Row>
-
+      <Row>
+        <Col lg={6} md={6} sm={12}></Col>
+        <Col lg={6} md={6} sm={12}>
+          <p className={styles["Attachments"]}>{t("Attachments")}</p>
+        </Col>
+      </Row>
       {agenda ? (
         <AgendaWise
           advanceMeetingModalID={advanceMeetingModalID}
@@ -866,20 +878,20 @@ const Minutes = ({
                   <Row className="mt-0">
                     <Col
                       lg={12}
-                      md={12}
+                      md={6}
                       sm={12}
                       className="d-flex gap-2 justify-content-end"
                     >
                       <Button
                         text={t("Reset")}
-                        className={styles["Previous_Button"]}
+                        className={styles["Reset_Button"]}
                         onClick={handleResetBtnFunc}
                       />
                       {isEdit === true ? (
                         <>
                           <Button
                             text={t("Update")}
-                            className={styles["Button_General"]}
+                            className={styles["Button_Save"]}
                             onClick={handleUpdateFunc}
                           />
                         </>
@@ -887,7 +899,7 @@ const Minutes = ({
                         <>
                           <Button
                             text={t("Save")}
-                            className={styles["Button_General"]}
+                            className={styles["Button_Save"]}
                             onClick={handleAddClick}
                           />
                         </>
@@ -1356,16 +1368,16 @@ const Minutes = ({
           sm={12}
           className="d-flex justify-content-end gap-2"
         >
-          <Button
+          {/* <Button
             text={t("Cancel")}
             className={styles["Cancel_button_Minutes"]}
             onClick={handleUNsaveChangesModal}
-          />
+          /> */}
 
           {editorRole.isPrimaryOrganizer === true ? (
             <Button
               text={t("Invite-to-collaborate")}
-              className={styles["Next_button_Minutes"]}
+              className={styles["Invite_Button"]}
               onClick={handleInvitetoCollaborateView}
             />
           ) : null}
@@ -1378,7 +1390,7 @@ const Minutes = ({
           <Button
             text={t("Next")}
             onClick={handleNextButton}
-            className={styles["Button_General"]}
+            className={styles["Button_Next"]}
           />
         </Col>
       </Row>

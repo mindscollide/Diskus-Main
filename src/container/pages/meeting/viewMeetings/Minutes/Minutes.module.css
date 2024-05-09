@@ -26,17 +26,17 @@ body[dir="rtl"] .modal-Note-Title-Input {
 .ant-upload-text {
   font-size: 12px !important;
   color: #5a5a5a !important;
-  font-weight: 600 !important;
+  font-weight: 700 !important;
 }
 
 body[dir="rtl"] .ant-upload-text {
-  font-weight: 600 !important;
+  font-weight: 700 !important;
 }
 
 .Choose_file_style {
   font-size: 12px !important;
   color: #6172d6 !important;
-  font-weight: 600 !important;
+  font-weight: 700 !important;
   margin-left: 3px !important;
 }
 
@@ -122,51 +122,255 @@ body[dir="rtl"] .Leftpolygon {
 .Button_General {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  background: #5f78d6 !important;
+  background: #6172d6 !important;
   color: #fff !important;
   border: none !important;
   border-radius: 4px !important;
   font-weight: 600 !important;
-}
-
-.Button_General_nonActive {
-  padding: 12px 30px !important;
-  font-size: 12px !important;
-  background: #fff !important;
-  color: #5a5a5a !important;
-  border: 1px solid #e1e1e1 !important;
-  border-radius: 4px !important;
-  font-weight: 600 !important;
+  width: 73px !important;
+  height: 29px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
 }
 
 .Button_General:is(:hover, :active, :focus, :focus-visible) {
   padding: 12px 30px !important;
   font-size: 12px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  width: 73px !important;
+  height: 29px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+}
+
+.Button_General_nonActive {
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  width: 73px !important;
+  height: 29px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+}
+
+.Button_Agenda {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  width: 127px !important;
+  height: 29px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+}
+
+.Button_Agenda_nonActive {
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  width: 127px !important;
+  height: 29px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+}
+
+.Button_Agenda:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  width: 127px !important;
+  height: 29px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+}
+
+.Button_Save {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
   background: #5f78d6 !important;
   color: #fff !important;
   border: none !important;
   border-radius: 4px !important;
   font-weight: 600 !important;
+  width: 89px !important;
+  height: 39px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
 }
 
-.Previous_Button {
+.Button_Save:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  width: 89px !important;
+  height: 39px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+}
+
+.Reset_Button {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  border: 1px solid #e1e1e1 !important;
+  border-color: #e1e1e1 !important;
   border-radius: 4px !important;
   font-weight: 600 !important;
+  width: 95px !important;
+  height: 39px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
 }
 
-.Previous_Button:is(:active, :focus, :focus-visible, :active) {
+.Reset_Button:is(:hover, :active, :focus, :focus-visible) {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  border: 1px solid #e1e1e1 !important;
+  border-color: #e1e1e1 !important;
   border-radius: 4px !important;
   font-weight: 600 !important;
+  width: 95px !important;
+  height: 39px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+}
+
+.Add_Reviewers {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  width: 153px !important;
+  height: 39px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+}
+
+.Add_Reviewers:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  width: 153px !important;
+  height: 39px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+}
+
+.Button_Next {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  width: 88px !important;
+  height: 39px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+}
+
+.Button_Next:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  width: 88px !important;
+  height: 39px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+}
+
+.Invite_Button {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border-color: #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  width: 179px !important;
+  height: 39px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+}
+
+.Invite_Button:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border-color: #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  width: 179px !important;
+  height: 39px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
 }
 
 .RedCrossClass {
@@ -318,4 +522,12 @@ body[dir="rtl"] .errorNotesMessage_hidden_description {
   border: none !important;
   border-radius: 4px !important;
   font-weight: 600 !important;
+}
+
+p.Attachments {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: -15px;
+  color: #6172D6 !important;
 }

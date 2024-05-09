@@ -7041,7 +7041,7 @@ a.pendingApprovalsNav.nav-link {
 
 .PendingApprovalsTable .ant-table-thead > tr * {
   font-weight: 700 !important;
-  border-bottom: 1px solid #5a5a5a !important;
+  /* border-bottom: 1px solid #5a5a5a !important; */
   padding-bottom: 5px !important;
   font-size: 16px !important;
   color: #5f78d6 !important;
@@ -7055,7 +7055,7 @@ a.pendingApprovalsNav.nav-link {
 .PendingApprovalsTable
   tr.ant-table-row.ant-table-row-level-0
   td.ant-table-cell {
-  padding: 7px 16px !important;
+  padding: 10px 16px !important;
   border-bottom: 1px solid #e1e1e1 !important;
   color: #5a5a5a !important;
   font-style: normal;
@@ -7150,4 +7150,17 @@ th.ant-table-cell.statusParticipant
 
 .d-block.loader-zindex .videoCallScreen {
   z-index: 99999999999 !important;
+}
+
+.PendingApprovalsTable .ant-table-thead > tr > th {
+  border-bottom: 1px solid #5a5a5a !important;
+}
+
+.ant-table-wrapper.PendingApprovalsTable
+  .ant-table
+  .ant-table-thead
+  > tr
+  > th
+  .ant-table-column-sorter {
+  display: none;
 }

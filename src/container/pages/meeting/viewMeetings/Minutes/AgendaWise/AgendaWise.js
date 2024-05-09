@@ -794,7 +794,7 @@ const AgendaWise = ({
         (Number(editorRole.status) === 10 &&
           editorRole.role === "Organizer") ? (
         <>
-          <Row className="mt-4">
+          {/* <Row className="mt-4">
             <Col lg={6} md={6} sm={6}>
               <Select
                 options={agendaOptions}
@@ -803,11 +803,12 @@ const AgendaWise = ({
                   value: agendaOptionvalue.value,
                   label: agendaOptionvalue.label,
                 }}
+                placeholder={t("Select-agenda")}
                 onChange={handleAgendaSelect}
                 isSearchable={false}
               />
             </Col>
-          </Row>
+          </Row> */}
           <Row className="mt-4">
             <Col lg={6} md={6} sm={6}>
               <Row className={styles["Add-note-QuillRow"]}>
@@ -818,6 +819,17 @@ const AgendaWise = ({
                   xs={12}
                   className={styles["Arabic_font_Applied"]}
                 >
+                  <Select
+                    options={agendaOptions}
+                    maxMenuHeight={140}
+                    value={{
+                      value: agendaOptionvalue.value,
+                      label: agendaOptionvalue.label,
+                    }}
+                    placeholder={t("Select-agenda")}
+                    onChange={handleAgendaSelect}
+                    isSearchable={false}
+                  />
                   <ReactQuill
                     ref={editorRef}
                     theme="snow"

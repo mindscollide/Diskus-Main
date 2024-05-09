@@ -116,6 +116,7 @@ body[dir="rtl"] .modal-Note-Title-Input {
   height: 18vh !important;
   border-radius: 3px !important;
   position: relative;
+  margin-top: 15px;
 }
 
 .quill-height-addNote .ql-toolbar.ql-snow {
