@@ -46,6 +46,7 @@ const SignatoriesList = ({ setSignatoriesList, signatoriesList }) => {
         setSignatoriesList(false);
       }}
       size={"sm"}
+      modalBodyClassName={"px-4 py-1"}
       ModalBody={
         <>
           <Row>
@@ -57,7 +58,7 @@ const SignatoriesList = ({ setSignatoriesList, signatoriesList }) => {
             <Col sm={12} md={12} lg={12} className={styles["signatoriesUsers"]}>
               {UserList.map((nameValues, index) => {
                 return (
-                  <section className="my-3 d-flex gap-3 align-items-center">
+                  <section className="my-4 d-flex gap-3 align-items-center">
                     <img className="rounded-circle" width={22} height={22} src={nameValues.profilePic} />
                     <span className={styles["signatoriesname_value"]}> {nameValues.name}</span>
                   </section>

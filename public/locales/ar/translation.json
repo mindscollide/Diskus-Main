@@ -1797,5 +1797,7 @@
   "COMMITTTEE_STATUS_EDITED_ACTIVE": "Committee [Committee Title] in which you are a member has been set as Active",
   "File-name": "File Name",
   "Signatories": "Signatories",
-  "Sent-on": "Sent On"
+  "Sent-on": "Sent On",
+  "Requested-by": "Requested by",
+  "Date-and-time": "Date and Time"
 }

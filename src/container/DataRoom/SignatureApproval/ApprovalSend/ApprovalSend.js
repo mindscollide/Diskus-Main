@@ -160,7 +160,7 @@ const ApprovalSend = () => {
           <TableToDo
             sortDirections={["descend", "ascend"]}
             column={pendingApprovalColumns}
-            className={"PendingApprovalsTable"}
+            className={"ApprovalsTable"}
             // prefClassName="ApprovalSending"
             rows={rowsPendingApproval}
             // scroll={scroll}

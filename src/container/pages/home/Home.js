@@ -436,13 +436,13 @@ const Home = () => {
             return eventData.pK_MDID !== Number(meetingID);
           })
         );
-        setUpComingEvents((upcomingeventData) =>
-          upcomingeventData.map((meetingData) => {
-            return (
-              Number(meetingData.meetingDetails.pK_MDID) !== Number(meetingID)
-            );
-          })
-        );
+        // setUpComingEvents((upcomingeventData) =>
+        //   upcomingeventData.filter((meetingData) => {
+        //     return (
+        //       Number(meetingData.meetingDetails.pK_MDID) !== Number(meetingID)
+        //     );
+        //   })
+        // );
       } else if (
         meetingIdReducer.MeetingStatusSocket.message
           .toLowerCase()
@@ -1222,7 +1222,7 @@ const Home = () => {
     let indexforUndeline = null;
     upComingEvents.map((upcomingEventsData, index) => {
       if (
-        upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
+        upcomingEventsData.meetingEvent?.meetingDate?.slice(6, 8) ===
         getCurrentDate
       ) {
         if (indexforUndeline === null && flag === false) {

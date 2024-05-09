@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux"; // Importing Redux hook
 import { useNavigate } from "react-router-dom"; // Importing navigation hook
 import { Button, Paper, TableToDo } from "../../../components/elements"; // Importing custom components
 import { ChevronDown } from "react-bootstrap-icons"; //Bootstrap Icon
+import ReviewSignature from "../../DataRoom/SignatureApproval/ReviewAndSign/ReviewSignature";
 
 // Functional component for pending approvals section
 const PendingApproval = () => {
@@ -205,114 +206,116 @@ const PendingApproval = () => {
           </span>
         </Col>
       </Row>
-        <Paper className={styles["pendingApprovalPaper"]}>
-          {/* Paper component for styling */}
-          <Container>
-            <Row>
-              <Col>
-                <div className={styles["overallGap"]}>
-                  {/* Buttons for reviewing minutes */}
-                  <Button
-                    text="Review Minutes"
-                    className={
-                      reviewMinutesActive
-                        ? styles.activeMinutes
-                        : styles.inActiveMinutes
-                    } // Apply active or inactive styles based on state
-                    onClick={handleReviewMinutesClick} // Attach click handler
+      <Paper className={styles["pendingApprovalPaper"]}>
+        {/* Paper component for styling */}
+        <Container>
+          <Row>
+            <Col>
+              <div className={styles["overallGap"]}>
+                {/* Buttons for reviewing minutes */}
+                <Button
+                  text="Review Minutes"
+                  className={
+                    reviewMinutesActive
+                      ? styles.activeMinutes
+                      : styles.inActiveMinutes
+                  } // Apply active or inactive styles based on state
+                  onClick={handleReviewMinutesClick} // Attach click handler
+                />
+                {/* Review & Sign button */}
+                <Button
+                  text="Review & Sign"
+                  className={
+                    reviewAndSignActive
+                      ? styles.activeMinutes
+                      : styles.inActiveMinutes
+                  } // Apply active or inactive styles based on state
+                  onClick={handleReviewAndSignClick} // Attach click handler
+                />
+              </div>
+            </Col>
+          </Row>
+          {reviewMinutesActive ? (
+            <>
+              {" "}
+              <Row>
+                <Col>
+                  <div className={styles["progressWrapper"]}>
+                    <Row>
+                      <Col lg={6} md={6} sm={12}>
+                        <div className="d-flex positionRelative">
+                          {/* Progress bars with different colors and percentages */}
+                          <ProgressBar
+                            width={100}
+                            color="#F16B6B"
+                            indexValue="0"
+                            percentageValue={"60%"}
+                          />
+                          <ProgressBar
+                            width={30}
+                            color="#ffc300"
+                            indexValue="1"
+                            percentageValue={"30%"}
+                          />
+                          <ProgressBar
+                            width={10}
+                            color="#6172D6"
+                            indexValue="2"
+                            percentageValue={"10%"}
+                          />
+                        </div>
+                      </Col>
+                      <Col lg={6} md={6} sm={12} className="d-flex">
+                        <span className={styles["line"]} />
+                        <div
+                          className={styles["progress-value-wrapper-purple"]}
+                        >
+                          <span className={styles["numeric-value"]}>03</span>
+                          <span className={styles["value"]}>Reviewed</span>
+                        </div>
+                        <span className={styles["line"]} />
+                        <div
+                          className={styles["progress-value-wrapper-yellow"]}
+                        >
+                          <span className={styles["numeric-value"]}>03</span>
+                          <span className={styles["value"]}>Pending</span>
+                        </div>
+                        <span className={styles["line"]} />
+                        <div className={styles["progress-value-wrapper-red"]}>
+                          <span className={styles["numeric-value"]}>02</span>
+                          <span className={styles["value"]}>Expired</span>
+                        </div>
+                      </Col>
+                    </Row>
+                  </div>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <TableToDo
+                    sortDirections={["descend", "ascend"]}
+                    column={pendingApprovalColumns}
+                    className={"PendingApprovalsTable"}
+                    rows={rowsPendingApproval}
+                    // scroll={scroll}
+                    pagination={false}
+                    scroll={
+                      rowsPendingApproval.length > 10 ? { y: 385 } : undefined
+                    }
+                    id={(record, index) =>
+                      index === rowsPendingApproval.length - 1
+                        ? "last-row-class"
+                        : ""
+                    }
                   />
-                  {/* Review & Sign button */}
-                  <Button
-                    text="Review & Sign"
-                    className={
-                      reviewAndSignActive
-                        ? styles.activeMinutes
-                        : styles.inActiveMinutes
-                    } // Apply active or inactive styles based on state
-                    onClick={handleReviewAndSignClick} // Attach click handler
-                  />
-                </div>
-              </Col>
-            </Row>
-            {reviewMinutesActive ? (
-              <>
-                {" "}
-                <Row>
-                  <Col>
-                    <div className={styles["progressWrapper"]}>
-                      <Row>
-                        <Col lg={6} md={6} sm={12}>
-                          <div className="d-flex positionRelative">
-                            {/* Progress bars with different colors and percentages */}
-                            <ProgressBar
-                              width={100}
-                              color="#F16B6B"
-                              indexValue="0"
-                              percentageValue={"60%"}
-                            />
-                            <ProgressBar
-                              width={30}
-                              color="#ffc300"
-                              indexValue="1"
-                              percentageValue={"30%"}
-                            />
-                            <ProgressBar
-                              width={10}
-                              color="#6172D6"
-                              indexValue="2"
-                              percentageValue={"10%"}
-                            />
-                          </div>
-                        </Col>
-                        <Col lg={6} md={6} sm={12} className="d-flex">
-                          <span className={styles["line"]} />
-                          <div
-                            className={styles["progress-value-wrapper-purple"]}
-                          >
-                            <span className={styles["numeric-value"]}>03</span>
-                            <span className={styles["value"]}>Reviewed</span>
-                          </div>
-                          <span className={styles["line"]} />
-                          <div
-                            className={styles["progress-value-wrapper-yellow"]}
-                          >
-                            <span className={styles["numeric-value"]}>03</span>
-                            <span className={styles["value"]}>Pending</span>
-                          </div>
-                          <span className={styles["line"]} />
-                          <div className={styles["progress-value-wrapper-red"]}>
-                            <span className={styles["numeric-value"]}>02</span>
-                            <span className={styles["value"]}>Expired</span>
-                          </div>
-                        </Col>
-                      </Row>
-                    </div>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <TableToDo
-                      sortDirections={["descend", "ascend"]}
-                      column={pendingApprovalColumns}
-                      className={"PendingApprovalsTable"}
-                      rows={rowsPendingApproval}
-                      // scroll={scroll}
-                      pagination={false}
-                      scroll={
-                        rowsPendingApproval.length > 10 ? { y: 385 } : undefined
-                      }
-                      id={(record, index) =>
-                        index === rowsPendingApproval.length - 1
-                          ? "last-row-class"
-                          : ""
-                      }
-                    />
-                  </Col>
-                </Row>{" "}
-              </>
-            ) : null}
-          </Container>
-        </Paper>
+                </Col>
+              </Row>{" "}
+            </>
+          ) : (
+            <ReviewSignature />
+          )}
+        </Container>
+      </Paper>
     </section>
   );
 };
