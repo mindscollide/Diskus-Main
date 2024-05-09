@@ -82,6 +82,7 @@ import {
   createConvert,
   getCurrentDateTimeUTC,
 } from "../../commen/functions/date_formater";
+import { getAllUnpublishedMeetingData } from "../../hooks/meetingResponse/response";
 
 const ClearMessegeMeetingdetails = () => {
   return {
@@ -1008,6 +1009,8 @@ const searchNewUserMeeting = (navigate, Data, t) => {
                   "Meeting_MeetingServiceManager_SearchMeetings_01".toLowerCase()
                 )
             ) {
+              let getMeetingData = await getAllUnpublishedMeetingData(response.data.responseResult.meetings)
+              console.log(getMeetingData, "getMeetingDatagetMeetingDatagetMeetingData")
               dispatch(
                 SearchMeeting_Success(
                   response.data.responseResult,
