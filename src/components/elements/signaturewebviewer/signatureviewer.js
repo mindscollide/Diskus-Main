@@ -100,10 +100,8 @@ const SignatureViewer = () => {
     creatorID: "",
     isCreator: 0,
   });
-  console.log(pdfResponceData, "pdfResponceDatapdfResponceDatapdfResponceData");
   // { userID: "user1", xml: [] }
   const [userAnnotations, setUserAnnotations] = useState([]);
-  console.log(userAnnotations, "userAnnotationsuserAnnotationsuserAnnotations");
   const [deletedDataTem, setTeletedDataTem] = useState([]);
   const selectedUserRef = useRef(selectedUser);
   const signerDataRef = useRef(signerData);
