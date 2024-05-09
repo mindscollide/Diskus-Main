@@ -803,7 +803,6 @@ const NewMeeting = () => {
       dataIndex: "title",
       key: "title",
       ellipsis: true,
-
       width: "115px",
       render: (text, record) => {
         const isParticipant = record.meetingAttendees.some(
@@ -857,9 +856,9 @@ const NewMeeting = () => {
       title: t("Status"),
       dataIndex: "status",
       key: "status",
-      width: "50px",
+      width: "90px",
       ellipsis: true,
-
+      align:"center",
       filters: [
         {
           text: t("Active"),
@@ -901,7 +900,7 @@ const NewMeeting = () => {
       title: t("Organizer"),
       dataIndex: "meetingAttendees",
       key: "meetingAttendees",
-      width: "70px",
+      width: "110px",
       sorter: (a, b) => {
         const primaryOrganizerA = a.meetingAttendees.find(
           (item) => item.isPrimaryOrganizer === true
@@ -928,11 +927,11 @@ const NewMeeting = () => {
       title: t("Date-time"),
       dataIndex: "dateOfMeeting",
       key: "dateOfMeeting",
-      width: "115px",
+      width: "155px",
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           return (
-            <span>
+            <span className="text-truncate d-block">
               {newTimeFormaterAsPerUTCFullDate(
                 record.dateOfMeeting + record.meetingStartTime
               )}
