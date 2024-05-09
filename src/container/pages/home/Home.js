@@ -425,6 +425,7 @@ const Home = () => {
       ) {
         let meetingID = meetingIdReducer.MeetingStatusSocket.meetingID;
         updateCalendarData(true, meetingID);
+        console.log("upComingEvents");
         setUpComingEvents((upcomingeventData) =>
           upcomingeventData.filter(
             (meetingData) =>
@@ -436,6 +437,7 @@ const Home = () => {
             return eventData.pK_MDID !== Number(meetingID);
           })
         );
+        console.log("upComingEvents");
         setUpComingEvents((upcomingeventData) =>
           upcomingeventData.map((meetingData) => {
             return (
@@ -467,6 +469,7 @@ const Home = () => {
             return eventData;
           })
         );
+        console.log("upComingEvents", events);
         setUpComingEvents((upcomingeventData) =>
           upcomingeventData.map((meetingData) => {
             if (
@@ -752,8 +755,10 @@ const Home = () => {
           }
         );
 
+        console.log("upComingEvents", updatedUpcomingEvents);
         setUpComingEvents(updatedUpcomingEvents); // Set the updated state
       } else {
+        console.log("upComingEvents", upComingEvents);
         setUpComingEvents([]);
       }
     } catch (error) {
@@ -1179,12 +1184,14 @@ const Home = () => {
     events,
     "meetingIdReducermeetingIdReducermeetingIdReducer"
   );
+  console.log("upComingEvents", upComingEvents);
   // Meeting Status End Updated
   useEffect(() => {
     try {
       if (meetingIdReducer.MeetingStatusEnded !== null) {
         let meetingID = meetingIdReducer.MeetingStatusEnded?.meeting?.pK_MDID;
         console.log(meetingID, "meetingIDmeetingIDmeetingID");
+        console.log("upComingEvents");
         setUpComingEvents((upcomingeventData) => {
           return upcomingeventData.filter((meetingData) => {
             return (
