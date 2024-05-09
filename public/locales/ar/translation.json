@@ -1781,5 +1781,6 @@
   "MEMBER_REMOVED_FROM_COMMITTEE": "You have been removed from Committee [Committee Title]",
   "NEW_MEMBER_ADDED_IN_COMMITTEE": "You have been added in a [Committee Title] Committee",
   "COMMITTTEE_STATUS_EDITED_ACTIVE": "Committee [Committee Title] in which you are a member has been set as Active",
-  "Task-has-been-created-successfully": "Task has been created successfully"
+  "Task-has-been-created-successfully": "Task has been created successfully",
+  "Signers-is-required": "Signers is required"
 }
