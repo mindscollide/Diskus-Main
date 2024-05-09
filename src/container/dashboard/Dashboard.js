@@ -2242,7 +2242,7 @@ const Dashboard = () => {
           {!navigator.onLine ? (
             <React.Fragment>
               {/* Display alert when offline */}
-              {alert("No internet connection. Please check your connection.")}
+              {console.log("No internet connection. Please check your connection.")}
             </React.Fragment>
           ) : // Check for loading states to determine whether to display loader
           NewMeetingreducer.Loading ||
