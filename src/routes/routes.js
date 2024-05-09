@@ -73,7 +73,6 @@ import PrivateAdminRoute from "./privateadmin_routes";
 import PrivateAdminRouteNonActive from "./privateadminNonactive_routes";
 import PrivateParAdminRouteNonActive from "./PrivateParAdminRouteNonActive";
 import PrivateRoutes from "./private_routes";
-import PrivateRouteDataroom from "./private_route_dataroom";
 import Reports from "../container/Admin/Reports/Reports";
 import SignatureViewer from "../components/elements/signaturewebviewer/signatureviewer";
 export const router = createHashRouter(

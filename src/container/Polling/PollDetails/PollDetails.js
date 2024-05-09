@@ -11,7 +11,6 @@ import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import { Col, Container, Row } from "react-bootstrap";
 import profile from "../../../assets/images/profile_polls.svg";
 import { Progress } from "antd";
-import { style } from "@material-ui/system";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
