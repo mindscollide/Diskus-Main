@@ -19,7 +19,7 @@ import { AccordionDetails } from "@mui/material";
 import CrossIcon from "../../../../../../assets/images/CrossIcon.svg";
 import Rightploygon from "../../../../../../assets/images/Polygon right.svg";
 import RedCroseeIcon from "../../../../../../assets/images/CrossIcon.svg";
-import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
+// import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import { useSelector } from "react-redux";
 import { newTimeFormaterAsPerUTCFullDate } from "../../../../../../commen/functions/date_formater";
 import {
@@ -39,6 +39,10 @@ import {
 } from "../../../../../../store/actions/NewMeetingActions";
 import { GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes } from "../../../../../../store/actions/AgendaWiseAgendaAction";
 import ViewAgendaFilesMinutes from "./ViewAgendaFilesMinutes";
+import ArrowDown from "./../Images/Arrow-Down.png";
+import DefaultAvatar from "./../Images/avatar.png";
+import EditIcon from "./../Images/Edit-Icon.png";
+
 const AgendaWise = ({
   advanceMeetingModalID,
   editorRole,
@@ -94,14 +98,14 @@ const AgendaWise = ({
     let Data = {
       MeetingID: Number(advanceMeetingModalID),
     };
-    dispatch(
-      GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes(
-        Data,
-        navigate,
-        t,
-        advanceMeetingModalID
-      )
-    );
+    // dispatch(
+    //   GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes(
+    //     Data,
+    //     navigate,
+    //     t,
+    //     advanceMeetingModalID
+    //   )
+    // );
     return () => {
       setMessages([]);
       setFileAttachments([]);
@@ -784,6 +788,15 @@ const AgendaWise = ({
     }
   }, [NewMeetingreducer.ResponseMessage]);
 
+  // NEW WORK OWAIS!!!!!!!!! ->>>> cxxx|::::::::::::::>
+
+  const [accordianOpen, setAccordianOpen] = useState(false);
+
+  const accordianClick = () => {
+    setAccordianOpen(!accordianOpen);
+    console.log("accordianValue", accordianOpen);
+  };
+
   return (
     <section>
       {Number(editorRole.status) === 1 ||
@@ -794,21 +807,6 @@ const AgendaWise = ({
         (Number(editorRole.status) === 10 &&
           editorRole.role === "Organizer") ? (
         <>
-          {/* <Row className="mt-4">
-            <Col lg={6} md={6} sm={6}>
-              <Select
-                options={agendaOptions}
-                maxMenuHeight={140}
-                value={{
-                  value: agendaOptionvalue.value,
-                  label: agendaOptionvalue.label,
-                }}
-                placeholder={t("Select-agenda")}
-                onChange={handleAgendaSelect}
-                isSearchable={false}
-              />
-            </Col>
-          </Row> */}
           <Row className="mt-4">
             <Col lg={6} md={6} sm={6}>
               <Row className={styles["Add-note-QuillRow"]}>
@@ -1058,22 +1056,38 @@ const AgendaWise = ({
       {/* Mapping of The Create Minutes */}
       <Row className="mt-2">
         <Col lg={12} md={12} sm={12} className={styles["ScrollerMinutes"]}>
-          {Object.values(groupedMessages).map((data, index) => {
-            console.log(data, "groupedMessagesgroupedMessages");
-            return (
-              <>
-                <div key={data.agendaID}>
-                  {/* Display agendaTitle once */}
-
-                  {/* Map associated minutes within AccordionDetails */}
-                  <Row key={index}>
-                    <Col lg={12} md={12} sm={12} className="mt-2">
-                      <Accordion
+          {/* {Object.values(groupedMessages).map((data, index) => { */}
+          {/* return ( */}
+          <>
+            <div>
+              <Row>
+                <Col lg={12} md={12} sm={12} className="mt-2">
+                  <div
+                    onClick={() => accordianClick()}
+                    className={
+                      accordianOpen
+                        ? styles["agenda-wrapper-closed"]
+                        : styles["agenda-wrapper-open"]
+                    }
+                  >
+                    <p className={styles["agenda-title"]}>1. Introduction</p>
+                    <span>
+                      <img
+                        alt=""
+                        src={ArrowDown}
+                        className={
+                          accordianOpen
+                            ? styles["Arrow"]
+                            : styles["Arrow_Expanded"]
+                        }
+                      />
+                    </span>
+                  </div>
+                  {/* <Accordion
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                         className={styles["notes_accordion"]}
                         key={data.agendaID}
-                        // onChange={handleChangeExpanded(data?.pK_NotesID)}
                       >
                         <AccordionSummary
                           disableRipple={true}
@@ -1376,13 +1390,83 @@ const AgendaWise = ({
                             </Col>
                           </Row>
                         </AccordionDetails>
-                      </Accordion>
-                    </Col>
-                  </Row>
-                </div>
-              </>
-            );
-          })}
+                      </Accordion> */}
+                </Col>
+              </Row>
+              {accordianOpen ? (
+                <Row>
+                  <Col lg={12} md={12} sm={12} className="position-relative">
+                    <div className={styles["uploaded-details"]}>
+                      <Row className={styles["inherit-height"]}>
+                        <Col lg={9} md={9} sm={12}>
+                          <p className={styles["minutes-text"]}>
+                            Task updates: Design phase completed, moving to
+                            development, discussed resource reallocation to
+                            address delays and decided unknown unknown printer
+                            took a galley of type a printer took a galley of
+                            type a to hold daily check-ins for quicker progress
+                            Design phase completed, moving to development,
+                            discussed resource reallocation to address delays
+                            and decided unknown unknown printer took a galley of
+                            type a printer took a galley of type a to hold daily
+                            check-ins for quicker progress Design phase
+                            completed, moving to development, discussed resource
+                            reallocation to address delays and decided unknown
+                            unknown printer took a galley of type a printer took
+                            a galley of type a to update.
+                          </p>
+                        </Col>
+                        <Col
+                          lg={3}
+                          md={3}
+                          sm={12}
+                          className="position-relative"
+                        >
+                          <Row className="m-0">
+                            <Col lg={9} md={9} sm={12} className="p-0">
+                              <span className={styles["bar-line"]}></span>
+                              <p className={styles["uploadedbyuser"]}>
+                                Uploaded By
+                              </p>
+                              <div className={styles["gap-ti"]}>
+                                <img
+                                  src={DefaultAvatar}
+                                  className={styles["Image"]}
+                                  alt=""
+                                  draggable={false}
+                                />
+                                <p className={styles["agendaCreater"]}>
+                                  Alex Rodriguez
+                                </p>
+                              </div>
+                            </Col>
+                            <Col
+                              lg={3}
+                              md={3}
+                              sm={12}
+                              className="d-grid justify-content-end p-0"
+                            >
+                              <img src={EditIcon} alt="" />
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col lg={12} md={12} sm={12}>
+                              <p className={styles["time-uploader"]}>4:00pm,</p>
+                              <p className={styles["date-uploader"]}>
+                                18th May, 2024
+                              </p>
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                    </div>
+                  </Col>
+                </Row>
+              ) : null}
+            </div>
+          </>
+          {/* ); */}
+          {/* // })} */}
         </Col>
       </Row>
 
