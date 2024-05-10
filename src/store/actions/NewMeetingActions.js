@@ -1009,13 +1009,22 @@ const searchNewUserMeeting = (navigate, Data, t) => {
                   "Meeting_MeetingServiceManager_SearchMeetings_01".toLowerCase()
                 )
             ) {
-              let getMeetingData = await getAllUnpublishedMeetingData(response.data.responseResult.meetings)
-              console.log(getMeetingData, "getMeetingDatagetMeetingDatagetMeetingData")
+              let getMeetingData = await getAllUnpublishedMeetingData(
+                response.data.responseResult.meetings
+              );
+              console.log(
+                getMeetingData,
+                "getMeetingDatagetMeetingDatagetMeetingData"
+              );
+              let newMeetingData = {
+                meetingStartedMinuteAgo:
+                  response.data.responseResult.meetingStartedMinuteAgo,
+                meetings: getMeetingData,
+                pageNumbers: response.data.responseResult.pageNumbers,
+                totalRecords: response.data.responseResult.totalRecords,
+              };
               dispatch(
-                SearchMeeting_Success(
-                  response.data.responseResult,
-                  t("Record-found")
-                )
+                SearchMeeting_Success(newMeetingData, t("Record-found"))
               );
             } else if (
               response.data.responseResult.responseMessage

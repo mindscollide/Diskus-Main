@@ -156,6 +156,8 @@ body[dir="rtl"] .polling_searchinput {
   background: #81db86;
   border: none;
   border-radius: 4px !important;
+  white-space: nowrap;
+  font-weight: 500;
 }
 
 .Start-Meeting:is(:hover, :focus, :focus-visible:active) {
