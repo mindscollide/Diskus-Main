@@ -598,7 +598,7 @@ const NewMeeting = () => {
   const eventClickHandler = () => {};
 
   //Published Meeting Page
-  const handlePublishedMeeting = () => {
+  const handlePublishedMeeting = async () => {
     let searchData = {
       Date: "",
       Title: "",
@@ -608,6 +608,8 @@ const NewMeeting = () => {
       Length: 50,
       PublishedMeetings: true,
     };
+    await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.setItem("MeetingCurrentView", 1);
     localStorage.setItem("MeetingPageRows", 50);
@@ -615,7 +617,7 @@ const NewMeeting = () => {
   };
 
   //UnPublished Meeting Page
-  const handleUnPublishedMeeting = () => {
+  const handleUnPublishedMeeting = async () => {
     let searchData = {
       Date: "",
       Title: "",
@@ -625,6 +627,8 @@ const NewMeeting = () => {
       Length: 50,
       PublishedMeetings: false,
     };
+    await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.setItem("MeetingCurrentView", 2);
     localStorage.setItem("MeetingPageRows", 50);
