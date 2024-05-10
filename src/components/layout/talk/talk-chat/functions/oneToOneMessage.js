@@ -20,6 +20,7 @@ export const oneToOneMessages = (setAllOtoMessages, allotomessages) => {
 
       return {
         attachmentLocation: messagesData.attachmentLocation,
+        base64Image: messagesData.base64Image,
         blockCount: messagesData.blockCount,
         broadcastName: messagesData.broadcastName,
         currDate: messagesData.currDate,
@@ -85,6 +86,7 @@ export const groupMessages = (allGroupMessagesReducer, setAllGroupMessages) => {
       }
       allGroupMessagesArr.push({
         attachmentLocation: messagesData.attachmentLocation,
+        base64Image: messagesData.base64Image,
         currDate: messagesData.currDate,
         fileGeneratedName: messagesData.fileGeneratedName,
         fileName: messagesData.fileName,
@@ -197,6 +199,7 @@ export const groupCreationFunction = (
   let groupCreationDataMqtt = {
     admin: mqttCreatedGroup.admin,
     attachmentLocation: "",
+    base64Image: "",
     companyName: "",
     fullName: mqttCreatedGroup.fullName,
     id: mqttCreatedGroup.id,
@@ -228,6 +231,7 @@ export const groupUpdationFunction = (
   let groupUpdationDataMqtt = {
     admin: mqttCreatedGroup.admin,
     attachmentLocation: "",
+    base64Image: "",
     companyName: "",
     fullName: mqttCreatedGroup.fullName,
     id: mqttCreatedGroup.id,
