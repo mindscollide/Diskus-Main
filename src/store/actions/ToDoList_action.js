@@ -240,9 +240,7 @@ const CreateToDoList = (navigate, object, t, setCreateTaskID, value) => {
                   "ToDoList_ToDoListServiceManager_CreateToDoList_01".toLowerCase()
                 )
             ) {
-              await dispatch(
-                ShowNotification(t("The-record-has-been-saved-successfully"))
-              );
+              await dispatch(ShowNotification(""));
               await dispatch(SetLoaderFalse());
 
               setCreateTaskID(Number(response.data.responseResult.tid));
@@ -1683,7 +1681,7 @@ const saveTaskDocumentsApi = (navigate, Data, t, value, setShow) => {
               dispatch(
                 saveTaskDocuments_success(
                   response.data.responseResult,
-                  t("Update-successful")
+                  t("Task-has-been-created-successfully")
                 )
               );
 

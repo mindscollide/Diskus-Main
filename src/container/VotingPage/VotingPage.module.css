@@ -294,10 +294,11 @@ body[dir="rtl"] .Status_voteResolutioin {
   background: #fff;
   border: 1px solid #e1e1e1;
   color: #5a5a5a;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .close_btn_VoteResolution {
-  font-weight: 400;
+  font-weight: 600;
 }
 
 .close_btn_VoteResolution:hover,
@@ -309,6 +310,8 @@ body[dir="rtl"] .close_btn_VoteResolution {
   background: #fff !important;
   border: 1px solid #e1e1e1 !important;
   color: #5a5a5a !important;
+  font-weight: 600;
+
 }
 
 .save_btn_VoteResolution {
@@ -317,10 +320,13 @@ body[dir="rtl"] .close_btn_VoteResolution {
   border: none !important;
   background: #6172d6;
   color: #fff;
+  font-weight: 600;
+
 }
 
 body[dir="rtl"] .save_btn_VoteResolution {
-  font-weight: 400;
+  font-weight: 600;
+
 }
 
 .save_btn_VoteResolution:hover,

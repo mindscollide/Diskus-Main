@@ -55,6 +55,9 @@
   color: #fff !important;
   background: #81db86 !important;
   font-weight: 600 !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .Not_Vote_Button_Polls:is(:hover, :active, :focus, :focus-visible) {
@@ -201,6 +204,10 @@ body[dir="rtl"] .PaginationStyle-Resolution {
 .poll_status {
   font-size: 14px;
   font-weight: 400 !important;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: block;
+  overflow: hidden;
 }
 .Background-nonvoted-Button {
   max-width: 109px !important;

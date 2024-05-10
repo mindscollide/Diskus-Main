@@ -81,7 +81,7 @@ const AttachmentViewer = ({
           </Col>
         )}
       </Row>
-      {currentUser === fk_UID && (
+      {currentUser === Number(fk_UID) && (
         <img
           src={CrossIcon}
           className={styles["Cross_Icon"]}

@@ -2816,7 +2816,12 @@ const createPollCommitteesMQTT = (response) => {
 const createPollMeetingMQTT = (response) => {
   return { type: actions.POLL_CREATE_ADVANCED_MEETING, response: response };
 };
+const deletePollsMQTT = (response) => {
+  console.log(response, "responseresponseresponse")
+  return { type: actions.DELETE_POLLS_MQTT, deleteData: response };
+};
 export {
+  deletePollsMQTT,
   createPollGroupsMQTT,
   createPollCommitteesMQTT,
   createPollMeetingMQTT,

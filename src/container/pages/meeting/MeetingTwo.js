@@ -598,7 +598,7 @@ const NewMeeting = () => {
   const eventClickHandler = () => {};
 
   //Published Meeting Page
-  const handlePublishedMeeting = () => {
+  const handlePublishedMeeting = async () => {
     let searchData = {
       Date: "",
       Title: "",
@@ -608,6 +608,8 @@ const NewMeeting = () => {
       Length: 50,
       PublishedMeetings: true,
     };
+    await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.setItem("MeetingCurrentView", 1);
     localStorage.setItem("MeetingPageRows", 50);
@@ -615,7 +617,7 @@ const NewMeeting = () => {
   };
 
   //UnPublished Meeting Page
-  const handleUnPublishedMeeting = () => {
+  const handleUnPublishedMeeting = async () => {
     let searchData = {
       Date: "",
       Title: "",
@@ -625,6 +627,8 @@ const NewMeeting = () => {
       Length: 50,
       PublishedMeetings: false,
     };
+    await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.setItem("MeetingCurrentView", 2);
     localStorage.setItem("MeetingPageRows", 50);
@@ -1628,38 +1632,53 @@ const NewMeeting = () => {
       NewMeetingreducer.meetingStatusPublishedMqttData !== undefined
     ) {
       let meetingData = NewMeetingreducer.meetingStatusPublishedMqttData;
-      console.log(
-        { meetingData, rows },
-        "indexToUpdateindexToUpdateindexToUpdate"
-      );
+
       try {
         const indexToUpdate = rows.findIndex(
           (obj) => Number(obj.pK_MDID) === Number(meetingData.pK_MDID)
         );
-        console.log(
-          { indexToUpdate },
-          "indexToUpdateindexToUpdateindexToUpdate"
-        );
+        let newMeetingData = {
+          dateOfMeeting: meetingData.dateOfMeeting,
+          host: meetingData.host,
+          isAttachment: meetingData.isAttachment,
+          isChat: meetingData.isChat,
+          isVideoCall: meetingData.isVideoCall,
+          isQuickMeeting: meetingData.isQuickMeeting,
+          meetingAgenda: meetingData.meetingAgenda,
+          meetingAttendees: meetingData.meetingAttendees,
+          meetingEndTime: meetingData.meetingEndTime,
+          meetingStartTime: meetingData.meetingStartTime,
+          meetingURL: meetingData.meetingURL,
+          orignalProfilePictureName: meetingData.orignalProfilePictureName,
+          pK_MDID: meetingData.pK_MDID,
+          meetingPoll: {
+            totalNoOfDirectors: 0,
+            totalNoOfDirectorsVoted: 0,
+          },
+          responseDeadLine: "",
+          status: meetingData.status,
+          title: meetingData.title,
+          talkGroupID: 0,
+          meetingType:
+            Number(meetingData.meetingType) === 1 &&
+            meetingData.isQuickMeeting === true
+              ? 0
+              : meetingData.meetingType,
+        };
         if (indexToUpdate !== -1) {
-          console.log(
-            { meetingData, rows },
-            "indexToUpdateindexToUpdateindexToUpdate"
-          );
           let updatedRows = [...rows];
-          updatedRows[indexToUpdate] = meetingData;
+          updatedRows[indexToUpdate] = newMeetingData;
           setRow(updatedRows);
         } else {
-          console.log(
-            { meetingData, rows },
-            "indexToUpdateindexToUpdateindexToUpdate"
-          );
-          setRow([...rows, meetingData]);
+          setRow([newMeetingData, ...rows]);
         }
       } catch (error) {
         console.log(error, "Meeting Created and Published");
       }
     }
   }, [NewMeetingreducer.meetingStatusPublishedMqttData]);
+
+  console.log(rows, "rowsrowsrowsrowsrows");
 
   useEffect(() => {
     if (

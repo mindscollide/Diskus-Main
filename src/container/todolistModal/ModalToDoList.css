@@ -60,7 +60,7 @@
 }
 
 .bodytodoCreateModal {
-  max-height: 470px !important;
+  max-height: 420px !important;
   height: auto;
   overflow-y: auto;
   overflow-x: hidden !important;
@@ -68,7 +68,7 @@
 }
 
 .todoModalCreateModal {
-  max-width: 500px !important;
+  /* max-width: 500px !important; */
   display: flex;
   overflow-x: auto;
   overflow-y: hidden;
@@ -205,4 +205,13 @@ body[dir="rtl"] .ArabicFontSemiBold {
 }
 .deleteBtn img {
   cursor: pointer !important;
+}
+.todolist_files {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  max-height: 120px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
