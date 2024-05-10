@@ -1394,74 +1394,159 @@ const AgendaWise = ({
                 </Col>
               </Row>
               {accordianOpen ? (
-                <Row>
-                  <Col lg={12} md={12} sm={12} className="position-relative">
-                    <div className={styles["uploaded-details"]}>
-                      <Row className={styles["inherit-height"]}>
-                        <Col lg={9} md={9} sm={12}>
-                          <p className={styles["minutes-text"]}>
-                            Task updates: Design phase completed, moving to
-                            development, discussed resource reallocation to
-                            address delays and decided unknown unknown printer
-                            took a galley of type a printer took a galley of
-                            type a to hold daily check-ins for quicker progress
-                            Design phase completed, moving to development,
-                            discussed resource reallocation to address delays
-                            and decided unknown unknown printer took a galley of
-                            type a printer took a galley of type a to hold daily
-                            check-ins for quicker progress Design phase
-                            completed, moving to development, discussed resource
-                            reallocation to address delays and decided unknown
-                            unknown printer took a galley of type a printer took
-                            a galley of type a to update.
-                          </p>
-                        </Col>
-                        <Col
-                          lg={3}
-                          md={3}
-                          sm={12}
-                          className="position-relative"
-                        >
-                          <Row className="m-0">
-                            <Col lg={9} md={9} sm={12} className="p-0">
-                              <span className={styles["bar-line"]}></span>
-                              <p className={styles["uploadedbyuser"]}>
-                                Uploaded By
-                              </p>
-                              <div className={styles["gap-ti"]}>
-                                <img
-                                  src={DefaultAvatar}
-                                  className={styles["Image"]}
-                                  alt=""
-                                  draggable={false}
-                                />
-                                <p className={styles["agendaCreater"]}>
-                                  Alex Rodriguez
+                <>
+                  <Row>
+                    <Col lg={12} md={12} sm={12} className="position-relative">
+                      <div className={styles["uploaded-details"]}>
+                        <Row className={styles["inherit-height"]}>
+                          <Col lg={9} md={9} sm={12}>
+                            <p className={styles["minutes-text"]}>
+                              Task updates: Design phase completed, moving to
+                              development, discussed resource reallocation to
+                              address delays and decided unknown unknown printer
+                              took a galley of type a printer took a galley of
+                              type a to hold daily check-ins for quicker
+                              progress Design phase completed, moving to
+                              development, discussed resource reallocation to
+                              address delays and decided unknown unknown printer
+                              took a galley of type a printer took a galley of
+                              type a to hold daily check-ins for quicker
+                              progress Design phase completed, moving to
+                              development, discussed resource reallocation to
+                              address delays and decided unknown unknown printer
+                              took a galley of type a printer took a galley of
+                              type a to update.
+                            </p>
+                          </Col>
+                          <Col
+                            lg={3}
+                            md={3}
+                            sm={12}
+                            className="position-relative"
+                          >
+                            <Row className="m-0">
+                              <Col lg={9} md={9} sm={12} className="p-0">
+                                <span className={styles["bar-line"]}></span>
+                                <p className={styles["uploadedbyuser"]}>
+                                  Uploaded By
                                 </p>
-                              </div>
-                            </Col>
-                            <Col
-                              lg={3}
-                              md={3}
-                              sm={12}
-                              className="d-grid justify-content-end p-0"
-                            >
-                              <img src={EditIcon} alt="" />
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              <p className={styles["time-uploader"]}>4:00pm,</p>
-                              <p className={styles["date-uploader"]}>
-                                18th May, 2024
-                              </p>
-                            </Col>
-                          </Row>
-                        </Col>
-                      </Row>
-                    </div>
-                  </Col>
-                </Row>
+                                <div className={styles["gap-ti"]}>
+                                  <img
+                                    src={DefaultAvatar}
+                                    className={styles["Image"]}
+                                    alt=""
+                                    draggable={false}
+                                  />
+                                  <p className={styles["agendaCreater"]}>
+                                    Alex Rodriguez
+                                  </p>
+                                </div>
+                              </Col>
+                              <Col
+                                lg={3}
+                                md={3}
+                                sm={12}
+                                className="d-grid justify-content-end p-0"
+                              >
+                                <img src={EditIcon} alt="" />
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col lg={12} md={12} sm={12}>
+                                <p className={styles["time-uploader"]}>
+                                  4:00pm,
+                                </p>
+                                <p className={styles["date-uploader"]}>
+                                  18th May, 2024
+                                </p>
+                              </Col>
+                            </Row>
+                          </Col>
+                        </Row>
+                      </div>
+                    </Col>
+                  </Row>
+                  <Row className="mx-50">
+                    <Col lg={12} md={12} sm={12}>
+                      <p className={styles["Parent-title-heading"]}>
+                        2.1 CEO Speech
+                      </p>
+                    </Col>
+                  </Row>
+
+                  <Row>
+                    <Col lg={12} md={12} sm={12} className="position-relative">
+                      <div className={styles["version-control-wrapper"]}>
+                        <span></span>
+                      </div>
+                      <div className={styles["uploaded-details"]}>
+                        <Row className={styles["inherit-height"]}>
+                          <Col lg={9} md={9} sm={12}>
+                            <p className={styles["minutes-text"]}>
+                              Task updates: Design phase completed, moving to
+                              development, discussed resource reallocation to
+                              address delays and decided unknown unknown printer
+                              took a galley of type a printer took a galley of
+                              type a to hold daily check-ins for quicker
+                              progress Design phase completed, moving to
+                              development, discussed resource reallocation to
+                              address delays and decided unknown unknown printer
+                              took a galley of type a printer took a galley of
+                              type a to hold daily check-ins for quicker
+                              progress Design phase completed, moving to
+                              development, discussed resource reallocation to
+                              address delays and decided unknown unknown printer
+                              took a galley of type a printer took a galley of
+                              type a to update.
+                            </p>
+                          </Col>
+                          <Col
+                            lg={3}
+                            md={3}
+                            sm={12}
+                            className="position-relative"
+                          >
+                            <Row className="m-0">
+                              <Col lg={6} md={6} sm={12} className="p-0">
+                                <span className={styles["bar-line"]}></span>
+                                <p className={styles["uploadedbyuser"]}>
+                                  Uploaded By
+                                </p>
+                                <div className={styles["gap-ti"]}>
+                                  <img
+                                    src={DefaultAvatar}
+                                    className={styles["Image"]}
+                                    alt=""
+                                    draggable={false}
+                                  />
+                                  <p className={styles["agendaCreater"]}>
+                                    Alex Rodriguez
+                                  </p>
+                                </div>
+                              </Col>
+                              <Col
+                                lg={6}
+                                md={6}
+                                sm={12}
+                                className="d-grid justify-content-end p-0"
+                              ></Col>
+                            </Row>
+                            <Row>
+                              <Col lg={12} md={12} sm={12}>
+                                <p className={styles["time-uploader"]}>
+                                  4:00pm,
+                                </p>
+                                <p className={styles["date-uploader"]}>
+                                  18th May, 2024
+                                </p>
+                              </Col>
+                            </Row>
+                          </Col>
+                        </Row>
+                      </div>
+                    </Col>
+                  </Row>
+                </>
               ) : null}
             </div>
           </>
