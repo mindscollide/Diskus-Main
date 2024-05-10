@@ -1692,7 +1692,6 @@ const verificationEmailOTP = (
                 console.log("LoginFlowPageRoute");
                 localStorage.removeItem("seconds");
                 localStorage.removeItem("minutes");
-                localStorage.removeItem("SignupFlowPageRoute", 3);
                 localStorage.setItem("SignupFlowPageRoute", 4);
                 dispatch(signUpFlowRoutes(4));
                 navigate("/Signup");
@@ -1886,11 +1885,13 @@ const createPasswordAction = (value, navigate, t) => {
           //Password Created and this is an admin user
           if (response.data.responseResult.hasAdminRights) {
             if (response.data.responseResult.authToken.isFirstLogIn) {
+              localStorage.removeItem("SignupFlowPageRoute");
               navigate("/Admin/ManageUsers");
             } else {
               if (response.data.responseResult.hasUserRights) {
                 navigate("/DisKus/");
               } else {
+                localStorage.removeItem("SignupFlowPageRoute");
                 navigate("/Admin/ManageUsers");
               }
             }
@@ -2220,7 +2221,6 @@ const createPasswordAction = (value, navigate, t) => {
             // localStorage.setItem("signupCurrentPage", 5);
             // navigate("/Signup");
 
-            localStorage.removeItem("SignupFlowPageRoute", 4);
             localStorage.setItem("SignupFlowPageRoute", 5);
             dispatch(signUpFlowRoutes(5));
             navigate("/Signup");

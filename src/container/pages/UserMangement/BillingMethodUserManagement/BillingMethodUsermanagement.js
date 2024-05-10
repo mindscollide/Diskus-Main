@@ -34,7 +34,7 @@ const BillingMethodUsermanagement = () => {
     "organizationSubscriptionID"
   );
 
-  const SignupPage = localStorage.getItem("SignupFlowPageRoute", 5);
+  const SignupPage = localStorage.getItem("SignupFlowPageRoute");
 
   const [activeComponent, setActiveComponent] = useState("PakageDetails");
   const [activeStep, setActiveStep] = useState(0);
@@ -367,7 +367,7 @@ const BillingMethodUsermanagement = () => {
 
   return (
     <Container className={styles["sectionStyling"]}>
-      {SignupPage ? (
+      {SignupPage === 5 ? (
         <>
           <Row className="position-relative">
             <Col className={styles["languageSelector"]}>

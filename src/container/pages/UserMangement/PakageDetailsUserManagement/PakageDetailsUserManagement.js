@@ -29,7 +29,8 @@ const PakageDetailsUserManagement = () => {
 
   const { t } = useTranslation();
 
-  const SignupPage = localStorage.getItem("SignupFlowPageRoute", 1);
+  const SignupPage = localStorage.getItem("SignupFlowPageRoute");
+  const trialPage = localStorage.getItem("isTrial");
 
   const { UserMangementReducer, LanguageReducer } = useSelector(
     (state) => state
@@ -333,10 +334,11 @@ const PakageDetailsUserManagement = () => {
   //Pay Now B Button On Click
   const handlePayNowClick = () => {
     if (SignupPage) {
-      localStorage.removeItem("SignupFlowPageRoute", 1);
       localStorage.setItem("SignupFlowPageRoute", 2);
       dispatch(signUpFlowRoutes(2));
       navigate("/Signup");
+    } else if (trialPage === true) {
+      navigate("/Admin/PaymentFormUserManagement");
     } else {
       navigate("/Admin/PaymentFormUserManagement");
     }
