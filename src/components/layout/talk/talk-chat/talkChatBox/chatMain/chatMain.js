@@ -1527,6 +1527,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
             broadcastName: messagesData.broadcastName,
             messageCount: messagesData.messageCount,
             attachmentLocation: messagesData.attachmentLocation,
+            base64Image: messagesData.base64Image,
             sourceMessageBody: messagesData.sourceMessageBody,
             sourceMessageId: messagesData.sourceMessageId,
           });
@@ -1626,6 +1627,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
             broadcastName: messagesData.broadcastName,
             messageCount: messagesData.messageCount,
             attachmentLocation: messagesData.attachmentLocation,
+            base64Image: messagesData.base64Image,
             sourceMessageBody: messagesData.sourceMessageBody,
             sourceMessageId: messagesData.sourceMessageId,
           });
@@ -1916,6 +1918,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
           fileName: "",
           messageCount: 0,
           attachmentLocation: "",
+          base64Image: "",
           uid: uniqueId,
           blockCount: 0,
           sourceMessageBody: "",
@@ -1943,6 +1946,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
           fileName: "",
           messageCount: 0,
           attachmentLocation: "",
+          base64Image: "",
           uid: uniqueId,
           blockCount: 0,
           sourceMessageBody: "",
@@ -1965,6 +1969,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
           receivedDate: "",
           seenDate: "",
           attachmentLocation: messageSendData.AttachmentLocation,
+          base64Image: "",
           senderID: parseInt(messageSendData.SenderID),
           admin: talkStateData.ActiveChatData.admin,
         };
@@ -2055,6 +2060,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
           currDate: "",
           messageCount: 0,
           attachmentLocation: "",
+          base64Image: "",
           uid: uniqueId,
           sourceMessageBody: "",
           sourceMessageId: 0,
@@ -2075,6 +2081,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
           receivedDate: "",
           seenDate: "",
           attachmentLocation: messageSendData.AttachmentLocation,
+          base64Image: "",
           senderID: parseInt(messageSendData.SenderID),
           admin: talkStateData.ActiveChatData.admin,
         };
@@ -2119,6 +2126,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
         let newMessageBroadcast = {
           attachmentLocation: "",
+          base64Image: "",
           blockCount: 0,
           broadcastName: talkStateData.ActiveChatData.fullName,
           currDate: currentDateTimeUtc,
@@ -2156,6 +2164,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
           receivedDate: "",
           seenDate: "",
           attachmentLocation: messageSendData.AttachmentLocation,
+          base64Image: "",
           senderID: parseInt(messageSendData.SenderID),
           admin: talkStateData.ActiveChatData.admin,
         };
@@ -2261,6 +2270,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
         }
         let insertMqttOtoMessageData = {
           attachmentLocation: mqttResponseSingleMessage.attachmentLocation,
+          base64Image: mqttResponseSingleMessage.base64Image,
           blockCount: 0,
           broadcastName: mqttResponseSingleMessage.broadcastName,
           currDate: mqttResponseSingleMessage.currDate,
@@ -2325,7 +2335,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
         }
         let insertMqttOtoMessageData = {
           attachmentLocation: mqttResponseSingleMessage.attachmentLocation,
-          blockCount: 0,
+            base64Image: mqttResponseSingleMessage.base64Image,
+            blockCount: 0,
           broadcastName: mqttResponseSingleMessage.broadcastName,
           currDate: mqttResponseSingleMessage.currDate,
           fileGeneratedName: mqttResponseSingleMessage.fileGeneratedName,
@@ -2418,6 +2429,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
             frMessages: frMessages,
             messageCount: 0,
             attachmentLocation: mqttInsertGroupMessageData.attachmentLocation,
+            base64Image: mqttInsertGroupMessageData.base64Image,
             uid: mqttInsertGroupMessageData.uid,
             isRetry: false,
             sourceMessageBody: mqttInsertGroupMessageData.sourceMessageBody,
@@ -2465,6 +2477,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
             frMessages: frMessages,
             messageCount: 0,
             attachmentLocation: mqttInsertGroupMessageData.attachmentLocation,
+            base64Image: mqttInsertGroupMessageData.base64Image,
             uid: mqttInsertGroupMessageData.uid,
             sourceMessageBody: mqttInsertGroupMessageData.sourceMessageBody,
             isRetry: false,
@@ -2512,6 +2525,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
             frMessages: frMessages,
             messageCount: 0,
             attachmentLocation: mqttInsertGroupMessageData.attachmentLocation,
+            base64Image: mqttInsertGroupMessageData.base64Image,
             uid: mqttInsertGroupMessageData.uid,
             sourceMessageBody: mqttInsertGroupMessageData.sourceMessageBody,
             isRetry: false,
@@ -2554,6 +2568,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
             receivedDate: "",
             seenDate: "",
             attachmentLocation: mqttInsertGroupMessageData.attachmentLocation,
+            base64Image: "",
             senderID: parseInt(messageSendData.SenderID),
             admin: mqttInsertGroupMessageData.admin,
             uid: mqttInsertGroupMessageData.uid,
@@ -3640,10 +3655,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   >
                                                     <img
                                                       draggable="false"
-                                                      src={
-                                                        filesUrlTalk +
-                                                        messageData.attachmentLocation
-                                                      }
+                                                      // src={
+                                                      //   filesUrlTalk +
+                                                      //   messageData.attachmentLocation
+                                                      // }
+                                                      src={`data:image/jpeg;base64,${messageData.base64Image}`}
                                                       alt=""
                                                     />
                                                   </a>
@@ -3714,10 +3730,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   >
                                                     <img
                                                       draggable="false"
-                                                      src={
-                                                        filesUrlTalk +
-                                                        messageData.attachmentLocation
-                                                      }
+                                                      // src={
+                                                      //   filesUrlTalk +
+                                                      //   messageData.attachmentLocation
+                                                      // }
+                                                      src={`data:image/jpeg;base64,${messageData.base64Image}`}
                                                       alt=""
                                                     />
                                                   </a>
@@ -4060,10 +4077,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 >
                                                   <img
                                                     draggable="false"
-                                                    src={
-                                                      filesUrlTalk +
-                                                      messageData.attachmentLocation
-                                                    }
+                                                    // src={
+                                                    //   filesUrlTalk +
+                                                    //   messageData.attachmentLocation
+                                                    // }
+                                                    src={`data:image/jpeg;base64,${messageData.base64Image}`}
                                                     alt=""
                                                   />
                                                 </a>
@@ -4303,10 +4321,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 >
                                                   <img
                                                     draggable="false"
-                                                    src={
-                                                      filesUrlTalk +
-                                                      messageData.attachmentLocation
-                                                    }
+                                                    // src={
+                                                    //   filesUrlTalk +
+                                                    //   messageData.attachmentLocation
+                                                    // }
+                                                    src={`data:image/jpeg;base64,${messageData.base64Image}`}
                                                     alt=""
                                                   />
                                                 </a>
@@ -4782,10 +4801,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   >
                                                     <img
                                                       draggable="false"
-                                                      src={
-                                                        filesUrlTalk +
-                                                        messageData.attachmentLocation
-                                                      }
+                                                      // src={
+                                                      //   filesUrlTalk +
+                                                      //   messageData.attachmentLocation
+                                                      // }
+                                                      src={`data:image/jpeg;base64,${messageData.base64Image}`}
                                                       alt=""
                                                     />
                                                   </a>

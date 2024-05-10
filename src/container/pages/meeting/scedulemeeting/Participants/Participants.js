@@ -963,8 +963,26 @@ const Participants = ({
                           onClick={nextTabOrganizer}
                         />
                       </>
-                    ) : Number(editorRole.status) === 1 ||
-                      isEditClicked ? null : (
+                    ) : Number(editorRole.status) === 1 ? (
+                      <>
+                        {" "}
+                        <Button
+                          text={t("Cancel")}
+                          className={styles["Cancel_Organization"]}
+                          onClick={handleCancelParticipants}
+                        />
+                        {/* <Button
+                  text={t("Previous")}
+                  className={styles["publish_button_participant"]}
+                  onClick={previousTabOrganizer}
+                /> */}
+                        <Button
+                          text={t("Next")}
+                          className={styles["publish_button_participant"]}
+                          onClick={nextTabOrganizer}
+                        />{" "}
+                      </>
+                    ) : isEditClicked ? null : (
                       <>
                         <Button
                           text={t("Propose-meeting-dates")}
