@@ -15,6 +15,7 @@ import {
   Button,
   Modal,
   Notification,
+  AttachmentViewer,
 } from "./../../components/elements";
 import {
   createConvert,
@@ -817,134 +818,26 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                           }}
                           className="UploadFileButton"
                         />
-                        <Row>
-                          <Col
-                            sm={12}
-                            lg={12}
-                            md={12}
-                            className="todoModalCreateModal"
-                          >
-                            {tasksAttachments.TasksAttachments.length > 0
-                              ? tasksAttachments.TasksAttachments.map(
-                                  (data, index) => {
-                                    var ext =
-                                      data.DisplayAttachmentName.split(
-                                        "."
-                                      ).pop();
-
-                                    const first =
-                                      data.DisplayAttachmentName.split(" ")[0];
-                                    return (
-                                      <Col
-                                        sm={12}
-                                        lg={2}
-                                        md={2}
-                                        className="modaltodolist-attachment-icon"
-                                      >
-                                        {ext === "doc" ? (
-                                          <FileIcon
-                                            extension={"docx"}
-                                            size={78}
-                                            type={"document"}
-                                            labelColor={"rgba(44, 88, 152)"}
-                                          />
-                                        ) : ext === "docx" ? (
-                                          <FileIcon
-                                            extension={"docx"}
-                                            size={78}
-                                            type={"font"}
-                                            labelColor={"rgba(44, 88, 152)"}
-                                          />
-                                        ) : ext === "xls" ? (
-                                          <FileIcon
-                                            extension={"xls"}
-                                            type={"spreadsheet"}
-                                            size={78}
-                                            labelColor={"rgba(16, 121, 63)"}
-                                          />
-                                        ) : ext === "xlsx" ? (
-                                          <FileIcon
-                                            extension={"xls"}
-                                            type={"spreadsheet"}
-                                            size={78}
-                                            labelColor={"rgba(16, 121, 63)"}
-                                          />
-                                        ) : ext === "pdf" ? (
-                                          <FileIcon
-                                            extension={"pdf"}
-                                            size={78}
-                                            {...defaultStyles.pdf}
-                                          />
-                                        ) : ext === "png" ? (
-                                          <FileIcon
-                                            extension={"png"}
-                                            size={78}
-                                            type={"image"}
-                                            labelColor={"rgba(102, 102, 224)"}
-                                          />
-                                        ) : ext === "txt" ? (
-                                          <FileIcon
-                                            extension={"txt"}
-                                            size={78}
-                                            type={"document"}
-                                            labelColor={"rgba(52, 120, 199)"}
-                                          />
-                                        ) : ext === "jpg" ? (
-                                          <FileIcon
-                                            extension={"jpg"}
-                                            size={78}
-                                            type={"image"}
-                                            labelColor={"rgba(102, 102, 224)"}
-                                          />
-                                        ) : ext === "jpeg" ? (
-                                          <FileIcon
-                                            extension={"jpeg"}
-                                            size={78}
-                                            type={"image"}
-                                            labelColor={"rgba(102, 102, 224)"}
-                                          />
-                                        ) : ext === "gif" ? (
-                                          <FileIcon
-                                            extension={"gif"}
-                                            size={78}
-                                            {...defaultStyles.gif}
-                                          />
-                                        ) : (
-                                          <FileIcon
-                                            extension={ext}
-                                            size={78}
-                                            {...defaultStyles.ext}
-                                          />
-                                        )}
-                                        <span className="deleteBtn">
-                                          <img
-                                            draggable="false"
-                                            src={deleteButtonCreateMeeting}
-                                            width={15}
-                                            height={15}
-                                            alt=""
-                                            onClick={() =>
-                                              deleteFilefromAttachments(
-                                                data,
-                                                index
-                                              )
-                                            }
-                                          />
-                                        </span>
-                                        <p
-                                          className="modaltodolist-attachment-text"
-                                          title={data.DisplayAttachmentName}
-                                        >
-                                          {first}
-                                        </p>
-                                      </Col>
-                                    );
-                                  }
-                                )
-                              : null}
-                          </Col>
-                        </Row>
                       </span>
+                      <section className="todolist_files ">
+                        {tasksAttachments.TasksAttachments.length > 0
+                          ? tasksAttachments.TasksAttachments.map(
+                              (data, index) => {
+                                return (
+                                  <AttachmentViewer
+                                    name={data.DisplayAttachmentName}
+                                    data={data}
+                                    id={0}
+                                    fk_UID={createrID}
+                                    handleClickRemove={() => {
+                                      deleteFilefromAttachments(data, index);
+                                    }}
+                                  />
+                                );
+                              }
+                            )
+                          : null}
+                      </section>
                     </Col>
                   </Row>
                 </div>

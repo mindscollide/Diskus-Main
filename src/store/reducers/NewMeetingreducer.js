@@ -1862,7 +1862,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         sceduleproposedMeeting: false,
         viewVotesAgenda: false,
         castVoteAgendaPage: false,
-        getALlMeetingTypes: [],
+        // getALlMeetingTypes: [],
         meetingDetails: [],
         getAllReminderFrequency: [],
         recurring: [],

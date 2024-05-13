@@ -31,6 +31,7 @@ import PollsEmpty from "../../assets/images/Poll_emptyState.svg";
 import {
   LoaderState,
   castVoteApi,
+  deletePollsMQTT,
   getPollsByPollIdApi,
   globalFlag,
   searchPollsApi,
@@ -182,53 +183,50 @@ const Polling = () => {
       moment.locale(currentLanguage);
     }
   }, [currentLanguage]);
+  useEffect(() => {
+    if (
+      PollsReducer.pollingSocket &&
+      Object.keys(PollsReducer.pollingSocket).length > 0
+    ) {
+      const { pollingSocket } = PollsReducer;
+      const { committeeID, groupID, meetingID, polls } = pollingSocket;
+
+      if (committeeID === -1 && groupID === -1 && meetingID === -1) {
+        let updatedRows = [...rows];
+
+        const findIndex = updatedRows.findIndex(
+          (rowData) => rowData?.pollID === polls?.pollID
+        );
+
+        if (findIndex !== -1) {
+          if (Number(polls.pollStatus.pollStatusId) === 4) {
+            updatedRows.splice(findIndex, 1); // Remove the poll
+          } else if (Number(polls.pollStatus.pollStatusId) === 3) {
+            updatedRows[findIndex] = polls; // Update the existing poll
+          }
+        } 
+        setRows(updatedRows);
+      }
+    }
+  }, [PollsReducer.pollingSocket]);
 
   useEffect(() => {
     try {
-      if (
-        PollsReducer.pollingSocket !== null &&
-        PollsReducer.pollingSocket !== undefined
-      ) {
-        if (Object.keys(PollsReducer.pollingSocket).length > 0) {
-          let pollData = PollsReducer.pollingSocket.polls;
-          let pollMQTT = PollsReducer.pollingSocket;
-          if (
-            pollMQTT.committeeID === -1 &&
-            pollMQTT.groupID === -1 &&
-            pollMQTT.meetingID === -1
-          ) {
-            let rowCopy = [...rows];
-            let findIndex = rowCopy.findIndex(
-              (rowData, index) => rowData?.pollID === pollData?.pollID
-            );
-            if (findIndex !== -1) {
-              const newState = rowCopy.map((obj, index) => {
-                // 👇️ if id equals 2 replace object
-                if (
-                  findIndex === index &&
-                  Number(pollData.pollStatus.pollStatusId) === 4
-                ) {
-                  rowCopy.splice(findIndex, 1);
-                  // return rowCopy;
-                } else if (
-                  findIndex === index &&
-                  Number(pollData.pollStatus.pollStatusId) === 3
-                ) {
-                  rowCopy[index] = pollData;
-                  // return rowCopy;
-                } else {
-                  // return obj;
-                }
-              });
-              setRows(rowCopy);
-            } else {
-              setRows([pollData, ...rowCopy]);
-            }
-          }
-        }
+      if (PollsReducer.newPollDelete !== null) {
+        const polls = PollsReducer.newPollDelete;
+
+        setRows((pollingDataDelete) => {
+          return pollingDataDelete.filter(
+            (newData2, index) =>
+              Number(newData2.pollID) !== Number(polls?.pollID)
+          );
+        });
+        dispatch(deletePollsMQTT(null));
       }
-    } catch (error) {}
-  }, [PollsReducer.pollingSocket]);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [PollsReducer.newPollDelete]);
 
   const handleEditpollModal = (record) => {
     let check = 0;

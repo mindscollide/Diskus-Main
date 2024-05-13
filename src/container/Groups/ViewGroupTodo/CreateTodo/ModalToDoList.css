@@ -60,7 +60,7 @@
 }
 
 .bodytodoCreateModal {
-  max-height: 470px !important;
+  max-height: 420px !important;
   height: auto;
   overflow-y: auto;
   overflow-x: hidden !important;
@@ -222,4 +222,13 @@ body[dir="rtl"] .ArabicFontSemiBold {
   border: none !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
+}
+.todolist_files {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  max-height: 120px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }

@@ -255,7 +255,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         setAddUserSection({
           ...addUserSection,
           Email: {
-            value: value.trimStart(),
+            value: value.trim(),
             errorMessage: "",
             errorStatus: false,
           },
