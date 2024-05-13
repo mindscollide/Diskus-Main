@@ -1562,6 +1562,10 @@ const requestOrganizationTrialExtend = {
   RequestMethod: "ServiceManager.RequestOrganizationTrialExtend",
 };
 
+const paymentStatus = {
+  RequestMethod: "ServiceManager.PaymentStatus",
+};
+
 export {
   revokeMicrosoftToken,
   leaveFolderSharingRM,
@@ -1977,4 +1981,5 @@ export {
   CancelOrganizationsSubscriptions,
   // upgradePackageApiCallOnPackageDetailPage,
   requestOrganizationTrialExtend,
+  paymentStatus,
 };

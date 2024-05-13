@@ -24,6 +24,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import {
   LoginFlowRoutes,
+  paymentStatusApi,
   signUpFlowRoutes,
 } from "../../../../store/actions/UserManagementActions";
 import { getActionFromURLPayment } from "../../../../commen/functions/utils";
@@ -47,6 +48,8 @@ const SignInUserManagement = () => {
   //Getting Action URL PAYMENT
 
   const actionValue = getActionFromURLPayment();
+
+  console.log(actionValue, "actionValueactionValueactionValue");
 
   //States For Email Validation Integration
   const [email, setEmail] = useState("");
@@ -134,6 +137,11 @@ const SignInUserManagement = () => {
       console.log("Code:", code);
       localStorage.setItem("Ms", code);
       window.close();
+    } else if (actionValue) {
+      let data = {
+        EncryptedString: actionValue,
+      };
+      dispatch(paymentStatusApi(navigate, t, data));
     } else {
       emailRef.current.focus();
       let RememberEmailLocal = JSON.parse(

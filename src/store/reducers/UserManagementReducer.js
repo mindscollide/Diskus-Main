@@ -24,6 +24,7 @@ const initialState = {
   packageUpgradeDetail: null,
   defaultRoutes: null,
   organizationTrialExtendData: null,
+  paymentStatusModal: null,
 };
 
 const UserMangementReducer = (state = initialState, action) => {
@@ -453,6 +454,29 @@ const UserMangementReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         organizationTrialExtendData: null,
+        ResponseMessage: action.message,
+      };
+
+    //Payment Status Modal
+    case actions.PAYMENT_STATUS_INIT:
+      return {
+        ...state,
+        Loading: true,
+      };
+
+    case actions.PAYMENT_STATUS_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        paymentStatusModal: action.response,
+        ResponseMessage: action.message,
+      };
+
+    case actions.PAYMENT_STATUS_FAILED:
+      return {
+        ...state,
+        Loading: false,
+        paymentStatusModal: null,
         ResponseMessage: action.message,
       };
 

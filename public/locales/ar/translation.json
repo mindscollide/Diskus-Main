@@ -1976,5 +1976,11 @@
   "Request-already-exists": "request already exists",
   "Trial-extension-already-given": "trial extension already given",
   "Task-has-been-created-successfully": "Task has been created successfully",
-  "Signers-is-required": "Signers is required"
+  "Signers-is-required": "Signers is required",
+  "Successful-organization-subscription-is-activated": "Successful Organization Subscription Is Activated",
+  "UnSuccessful-response-from-edfa-pay": "UnSuccessful Response from Edfa Pay",
+  "UnSuccessful-response-code-from-edfa-pay": "UnSuccessful Response Code from Edfa Pay",
+  "Not-an-authentic-user": "Not An Authentic User",
+  "Payment-not-settled": "Payment Not Settled",
+  "Error-activating-organization-subscription-and-creator": "Error Activating Organization Subscription and Creator"
 }

@@ -15,6 +15,7 @@ import {
   CancelOrganizationsSubscriptions,
   ExtendOrganizationTrial,
   requestOrganizationTrialExtend,
+  paymentStatus,
 } from "../../commen/apis/Api_config";
 import {
   authenticationApi,
@@ -1956,6 +1957,142 @@ const requestOrganizationExtendApi = (navigate, t, data) => {
   };
 };
 
+//Payment Status Api
+const paymentStatusInit = () => {
+  return {
+    type: actions.PAYMENT_STATUS_INIT,
+  };
+};
+
+const paymentStatusSuccess = (response, message) => {
+  return {
+    type: actions.PAYMENT_STATUS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const paymentStatusFailed = (response, message) => {
+  return {
+    type: actions.PAYMENT_STATUS_FAILED,
+    message: message,
+  };
+};
+
+const paymentStatusApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(paymentStatusInit());
+    let form = new FormData();
+    form.append("RequestMethod", paymentStatus.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: getAdminURLs,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(paymentStatusApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_PaymentStatus_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                paymentStatusSuccess(
+                  response.data.responseResult,
+                  t("Successful-organization-subscription-is-activated")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_PaymentStatus_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                paymentStatusFailed(t("UnSuccessful-response-from-edfa-pay"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_PaymentStatus_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                paymentStatusFailed(
+                  t("UnSuccessful-response-code-from-edfa-pay")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_PaymentStatus_04".toLowerCase()
+                )
+            ) {
+              dispatch(paymentStatusFailed(t("Invalid-request-data")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_PaymentStatus_05".toLowerCase()
+                )
+            ) {
+              dispatch(paymentStatusFailed(t("Not-an-authentic-user")));
+            }
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "ERM_AuthService_SignUpManager_PaymentStatus_06".toLowerCase()
+              )
+          ) {
+            dispatch(paymentStatusFailed(t("Payment-not-settled")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "ERM_AuthService_SignUpManager_PaymentStatus_07".toLowerCase()
+              )
+          ) {
+            dispatch(
+              paymentStatusFailed(
+                t("Error-activating-organization-subscription-and-creator")
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "ERM_AuthService_SignUpManager_PaymentStatus_08".toLowerCase()
+              )
+          ) {
+            dispatch(paymentStatusFailed(t("Something-went-wrong")));
+          } else {
+            dispatch(paymentStatusFailed(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(paymentStatusFailed(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(paymentStatusFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   signUpOrganizationAndPakageSelection,
   // getAllorganizationSubscriptionExpiryDetailsApi,
@@ -1979,4 +2116,5 @@ export {
   // signupFlowRoutes,
   // paymentUpgradeDetailMainApi
   requestOrganizationExtendApi,
+  paymentStatusApi,
 };
