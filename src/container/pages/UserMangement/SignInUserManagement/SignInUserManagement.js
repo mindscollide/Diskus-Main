@@ -26,6 +26,7 @@ import {
   LoginFlowRoutes,
   signUpFlowRoutes,
 } from "../../../../store/actions/UserManagementActions";
+import { getActionFromURLPayment } from "../../../../commen/functions/utils";
 
 const SignInUserManagement = () => {
   const navigate = useNavigate();
@@ -39,6 +40,13 @@ const SignInUserManagement = () => {
   const { Authreducer, adminReducer, LanguageReducer } = useSelector(
     (state) => state
   );
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const code = urlParams.get("code");
+
+  //Getting Action URL PAYMENT
+
+  const actionValue = getActionFromURLPayment();
 
   //States For Email Validation Integration
   const [email, setEmail] = useState("");
@@ -122,123 +130,139 @@ const SignInUserManagement = () => {
   };
 
   useEffect(() => {
-    emailRef.current.focus();
-    let RememberEmailLocal = JSON.parse(localStorage.getItem("rememberEmail"));
-    let RememberPasswordLocal = JSON.parse(
-      localStorage.getItem("remeberPassword")
-    );
-    let reLang = localStorage.getItem("i18nextLng");
-
-    let RSVP = localStorage.getItem("RSVP");
-    let DataRoomEmailValue = localStorage.getItem("DataRoomEmail");
-    let LoginFlowPageRoute = JSON.parse(
-      localStorage.getItem("LoginFlowPageRoute")
-    );
-
-    if (RememberEmailLocal === true && RememberPasswordLocal === true) {
-      let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
-
-      let RememberPasswordLocalValue = localStorage.getItem(
-        "rememberPasswordValue"
-      );
-
-      localStorage.clear();
-      try {
-        if (Number(LoginFlowPageRoute) !== 1) {
-          //localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
-          dispatch(LoginFlowRoutes(LoginFlowPageRoute));
-        }
-      } catch {}
-      if (reLang != undefined && reLang != null) {
-        localStorage.setItem("i18nextLng", reLang);
-      }
-      if (RSVP) {
-        localStorage.setItem("RSVP", RSVP);
-      }
-      if (DataRoomEmailValue) {
-        localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
-      }
-      localStorage.setItem("remeberPassword", RememberPasswordLocal);
-      localStorage.setItem("rememberPasswordValue", RememberPasswordLocalValue);
-      localStorage.setItem("rememberEmail", RememberEmailLocal);
-      localStorage.setItem("rememberEmailValue", RememberEmailLocalValue);
-      setErrorMessage("");
-      setErrorBar(false);
-      setRemeberEmail(RememberEmailLocal);
-      setEmail(RememberEmailLocalValue);
-    } else if (RememberEmailLocal === true) {
-      let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
-      localStorage.clear();
-      try {
-        if (Number(LoginFlowPageRoute) !== 1) {
-          //localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
-          dispatch(LoginFlowRoutes(LoginFlowPageRoute));
-        }
-      } catch {}
-      if (reLang != undefined && reLang != null) {
-        localStorage.setItem("i18nextLng", reLang);
-      }
-      if (RSVP) {
-        localStorage.setItem("RSVP", RSVP);
-      }
-      if (DataRoomEmailValue) {
-        localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
-      }
-      localStorage.setItem("rememberEmail", RememberEmailLocal);
-      localStorage.setItem("rememberEmailValue", RememberEmailLocalValue);
-      setErrorMessage("");
-      setErrorBar(false);
-      setRemeberEmail(RememberEmailLocal);
-      setEmail(RememberEmailLocalValue);
-    } else if (RememberPasswordLocal === true) {
-      let RememberPasswordLocalValue = localStorage.getItem(
-        "rememberPasswordValue"
-      );
-      localStorage.clear();
-      try {
-        if (Number(LoginFlowPageRoute) !== 1) {
-          //localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
-          dispatch(LoginFlowRoutes(LoginFlowPageRoute));
-        }
-      } catch {}
-
-      if (reLang != undefined && reLang != null) {
-        localStorage.setItem("i18nextLng", reLang);
-      }
-      if (RSVP) {
-        localStorage.setItem("RSVP", RSVP);
-      }
-      if (DataRoomEmailValue) {
-        localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
-      }
-      localStorage.setItem("remeberPassword", RememberPasswordLocal);
-      localStorage.setItem("rememberPasswordValue", RememberPasswordLocalValue);
-      setErrorMessage("");
-      setErrorBar(false);
+    if (code) {
+      console.log("Code:", code);
+      localStorage.setItem("Ms", code);
+      window.close();
     } else {
-      localStorage.clear();
-      try {
-        if (Number(LoginFlowPageRoute) !== 1) {
-          //localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
-          dispatch(LoginFlowRoutes(LoginFlowPageRoute));
-        }
-      } catch {}
+      emailRef.current.focus();
+      let RememberEmailLocal = JSON.parse(
+        localStorage.getItem("rememberEmail")
+      );
+      let RememberPasswordLocal = JSON.parse(
+        localStorage.getItem("remeberPassword")
+      );
+      let reLang = localStorage.getItem("i18nextLng");
 
-      if (reLang != undefined && reLang != null) {
-        localStorage.setItem("i18nextLng", reLang);
+      let RSVP = localStorage.getItem("RSVP");
+      let DataRoomEmailValue = localStorage.getItem("DataRoomEmail");
+      let LoginFlowPageRoute = JSON.parse(
+        localStorage.getItem("LoginFlowPageRoute")
+      );
+
+      if (RememberEmailLocal === true && RememberPasswordLocal === true) {
+        let RememberEmailLocalValue =
+          localStorage.getItem("rememberEmailValue");
+
+        let RememberPasswordLocalValue = localStorage.getItem(
+          "rememberPasswordValue"
+        );
+
+        localStorage.clear();
+        try {
+          if (Number(LoginFlowPageRoute) !== 1) {
+            //localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
+            dispatch(LoginFlowRoutes(LoginFlowPageRoute));
+          }
+        } catch {}
+        if (reLang != undefined && reLang != null) {
+          localStorage.setItem("i18nextLng", reLang);
+        }
+        if (RSVP) {
+          localStorage.setItem("RSVP", RSVP);
+        }
+        if (DataRoomEmailValue) {
+          localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
+        }
+        localStorage.setItem("remeberPassword", RememberPasswordLocal);
+        localStorage.setItem(
+          "rememberPasswordValue",
+          RememberPasswordLocalValue
+        );
+        localStorage.setItem("rememberEmail", RememberEmailLocal);
+        localStorage.setItem("rememberEmailValue", RememberEmailLocalValue);
+        setErrorMessage("");
+        setErrorBar(false);
+        setRemeberEmail(RememberEmailLocal);
+        setEmail(RememberEmailLocalValue);
+      } else if (RememberEmailLocal === true) {
+        let RememberEmailLocalValue =
+          localStorage.getItem("rememberEmailValue");
+        localStorage.clear();
+        try {
+          if (Number(LoginFlowPageRoute) !== 1) {
+            //localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
+            dispatch(LoginFlowRoutes(LoginFlowPageRoute));
+          }
+        } catch {}
+        if (reLang != undefined && reLang != null) {
+          localStorage.setItem("i18nextLng", reLang);
+        }
+        if (RSVP) {
+          localStorage.setItem("RSVP", RSVP);
+        }
+        if (DataRoomEmailValue) {
+          localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
+        }
+        localStorage.setItem("rememberEmail", RememberEmailLocal);
+        localStorage.setItem("rememberEmailValue", RememberEmailLocalValue);
+        setErrorMessage("");
+        setErrorBar(false);
+        setRemeberEmail(RememberEmailLocal);
+        setEmail(RememberEmailLocalValue);
+      } else if (RememberPasswordLocal === true) {
+        let RememberPasswordLocalValue = localStorage.getItem(
+          "rememberPasswordValue"
+        );
+        localStorage.clear();
+        try {
+          if (Number(LoginFlowPageRoute) !== 1) {
+            //localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
+            dispatch(LoginFlowRoutes(LoginFlowPageRoute));
+          }
+        } catch {}
+
+        if (reLang != undefined && reLang != null) {
+          localStorage.setItem("i18nextLng", reLang);
+        }
+        if (RSVP) {
+          localStorage.setItem("RSVP", RSVP);
+        }
+        if (DataRoomEmailValue) {
+          localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
+        }
+        localStorage.setItem("remeberPassword", RememberPasswordLocal);
+        localStorage.setItem(
+          "rememberPasswordValue",
+          RememberPasswordLocalValue
+        );
+        setErrorMessage("");
+        setErrorBar(false);
+      } else {
+        localStorage.clear();
+        try {
+          if (Number(LoginFlowPageRoute) !== 1) {
+            //localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
+            dispatch(LoginFlowRoutes(LoginFlowPageRoute));
+          }
+        } catch {}
+
+        if (reLang != undefined && reLang != null) {
+          localStorage.setItem("i18nextLng", reLang);
+        }
+        if (RSVP) {
+          localStorage.setItem("RSVP", RSVP);
+        }
+        if (DataRoomEmailValue) {
+          localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
+        }
+        localStorage.setItem("rememberEmail", false);
+        localStorage.setItem("rememberEmailValue", "");
+        localStorage.setItem("remeberPassword", false);
+        localStorage.setItem("rememberPasswordValue", "");
+        setErrorMessage("");
+        setErrorBar(false);
       }
-      if (RSVP) {
-        localStorage.setItem("RSVP", RSVP);
-      }
-      if (DataRoomEmailValue) {
-        localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
-      }
-      localStorage.setItem("rememberEmail", false);
-      localStorage.setItem("rememberEmailValue", "");
-      localStorage.setItem("remeberPassword", false);
-      localStorage.setItem("rememberPasswordValue", "");
-      setErrorMessage("");
-      setErrorBar(false);
     }
   }, []);
 
@@ -261,156 +285,173 @@ const SignInUserManagement = () => {
   return (
     <>
       <Container fluid className={styles["auth_container"]}>
-        <Row>
-          <Col sm={12} md={12} lg={12}>
-            <section className={styles["freetrail_banner"]}>
-              <span className={styles["freetrail_heading"]}>
-                {t("Start-your-Free-Trial-now")}
-              </span>
-              <span
-                className={styles["Free-Trial_btn"]}
-                onClick={handleClickFreeTrail}
-              >
-                {t("Free-Trial")}
-              </span>
-            </section>
-          </Col>
-        </Row>
-        <Row className="position-relative">
-          <Col className={styles["languageSelector"]}>
-            <LanguageSelector />
-          </Col>
-        </Row>
-        <Row>
-          <Col lg={4} md={4} sm={12} className={styles["SignInEmailBox"]}>
-            <Paper className={styles["EmailVerifyBox"]}>
-              <Col sm={12} lg={12} md={12}>
-                <Row>
-                  <Col
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    className="d-flex justify-content-center"
+        {code ? (
+          <></>
+        ) : actionValue ? (
+          <></>
+        ) : (
+          <>
+            <Row>
+              <Col sm={12} md={12} lg={12}>
+                <section className={styles["freetrail_banner"]}>
+                  <span className={styles["freetrail_heading"]}>
+                    {t("Start-your-Free-Trial-now")}
+                  </span>
+                  <span
+                    className={styles["Free-Trial_btn"]}
+                    onClick={handleClickFreeTrail}
                   >
-                    <img draggable="false" src={DiskusLogo} alt="diskus_logo" />
-                  </Col>
-                </Row>
-                <Row className="mt-4 mb-4 text-center">
-                  <Col>
-                    <span className={styles["signIn_heading"]}>
-                      {t("Sign-in")}
-                    </span>
-                  </Col>
-                </Row>
-                <Form onSubmit={loginHandler}>
-                  <Row className="">
-                    <Col
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      className="d-flex justify-content-center flex-column"
-                    >
-                      <Form.Control
-                        required
-                        className={styles["inputEmailField"]}
-                        onChange={emailChangeHandler}
-                        value={email || ""}
-                        width="100%"
-                        placeholder={t("Email")}
-                        maxLength={160}
-                        ref={emailRef}
-                      />
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <Col
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
-                      <Checkbox
-                        checked={rememberEmail}
-                        classNameDiv=""
-                        onChange={rememberChangeEmail}
-                        className={styles["RememberEmail"]}
-                      />
-                      <span className={styles["Remember-Email-text"]}>
-                        {t("Remeber-email")}
-                      </span>
-                    </Col>
-                  </Row>
-                  <Row className="mt-4 mb-1 d-flex justify-content-center">
-                    <Col
-                      sm={12}
-                      lg={12}
-                      md={12}
-                      className="d-flex justify-content-center  "
-                    >
-                      <Button
-                        text={t("Next")}
-                        onClick={loginHandler}
-                        className={styles["Next_button_EmailVerify"]}
-                      />
-                    </Col>
-                  </Row>
-                </Form>
-                <Row className="mt-3">
-                  <Col sm={12} md={12} lg={12}>
-                    {" "}
-                    <span className={styles["havent-subscribed-text"]}>
-                      {t("Havent-subscribed-yet")}
-                    </span>
-                  </Col>
-                </Row>
-                <Row className="d-flex justify-content-center mt-1">
-                  <Col
-                    sm={12}
-                    lg={12}
-                    md={12}
-                    className="w-100 d-flex justify-content-center"
-                  >
-                    <Button
-                      text={t("Subscribe-now")}
-                      onClick={handleSubscribeNowButton}
-                      className={styles["subscribNow_button_EmailVerify"]}
-                    />
-                  </Col>
-                </Row>
+                    {t("Free-Trial")}
+                  </span>
+                </section>
               </Col>
-            </Paper>
-          </Col>
-          <Col
-            lg={8}
-            md={8}
-            sm={8}
-            className="position-relative d-flex overflow-hidden"
-          >
-            <Col md={8} lg={8} sm={12} className={styles["Login_page_text"]}>
-              <h1 className={styles["heading-1"]}>
-                {t("Simplify-management")}
-              </h1>
-              <h1 className={styles["heading-2"]}>{t("Collaborate")}</h1>
-              <h1 className={styles["heading-1"]}>{t("Prioritize")}</h1>
-            </Col>
-            <Col md={4} lg={4} sm={12} className="position-relative">
-              <img
-                draggable="false"
-                src={DiskusAuthPageLogo}
-                alt="auth_icon"
-                width="600px"
-                className={styles["Auth_Icon"]}
-              />
-            </Col>
-          </Col>
-        </Row>
-        <Notification
-          setOpen={setOpen}
-          open={open.open}
-          message={open.message}
-        />
-        {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
+            </Row>
+            <Row className="position-relative">
+              <Col className={styles["languageSelector"]}>
+                <LanguageSelector />
+              </Col>
+            </Row>
+            <Row>
+              <Col lg={4} md={4} sm={12} className={styles["SignInEmailBox"]}>
+                <Paper className={styles["EmailVerifyBox"]}>
+                  <Col sm={12} lg={12} md={12}>
+                    <Row>
+                      <Col
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        className="d-flex justify-content-center"
+                      >
+                        <img
+                          draggable="false"
+                          src={DiskusLogo}
+                          alt="diskus_logo"
+                        />
+                      </Col>
+                    </Row>
+                    <Row className="mt-4 mb-4 text-center">
+                      <Col>
+                        <span className={styles["signIn_heading"]}>
+                          {t("Sign-in")}
+                        </span>
+                      </Col>
+                    </Row>
+                    <Form onSubmit={loginHandler}>
+                      <Row className="">
+                        <Col
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          className="d-flex justify-content-center flex-column"
+                        >
+                          <Form.Control
+                            required
+                            className={styles["inputEmailField"]}
+                            onChange={emailChangeHandler}
+                            value={email || ""}
+                            width="100%"
+                            placeholder={t("Email")}
+                            maxLength={160}
+                            ref={emailRef}
+                          />
+                        </Col>
+                      </Row>
+
+                      <Row>
+                        <Col
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          className="d-flex gap-2 align-items-center"
+                        >
+                          <Checkbox
+                            checked={rememberEmail}
+                            classNameDiv=""
+                            onChange={rememberChangeEmail}
+                            className={styles["RememberEmail"]}
+                          />
+                          <span className={styles["Remember-Email-text"]}>
+                            {t("Remeber-email")}
+                          </span>
+                        </Col>
+                      </Row>
+                      <Row className="mt-4 mb-1 d-flex justify-content-center">
+                        <Col
+                          sm={12}
+                          lg={12}
+                          md={12}
+                          className="d-flex justify-content-center  "
+                        >
+                          <Button
+                            text={t("Next")}
+                            onClick={loginHandler}
+                            className={styles["Next_button_EmailVerify"]}
+                          />
+                        </Col>
+                      </Row>
+                    </Form>
+                    <Row className="mt-3">
+                      <Col sm={12} md={12} lg={12}>
+                        {" "}
+                        <span className={styles["havent-subscribed-text"]}>
+                          {t("Havent-subscribed-yet")}
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row className="d-flex justify-content-center mt-1">
+                      <Col
+                        sm={12}
+                        lg={12}
+                        md={12}
+                        className="w-100 d-flex justify-content-center"
+                      >
+                        <Button
+                          text={t("Subscribe-now")}
+                          onClick={handleSubscribeNowButton}
+                          className={styles["subscribNow_button_EmailVerify"]}
+                        />
+                      </Col>
+                    </Row>
+                  </Col>
+                </Paper>
+              </Col>
+              <Col
+                lg={8}
+                md={8}
+                sm={8}
+                className="position-relative d-flex overflow-hidden"
+              >
+                <Col
+                  md={8}
+                  lg={8}
+                  sm={12}
+                  className={styles["Login_page_text"]}
+                >
+                  <h1 className={styles["heading-1"]}>
+                    {t("Simplify-management")}
+                  </h1>
+                  <h1 className={styles["heading-2"]}>{t("Collaborate")}</h1>
+                  <h1 className={styles["heading-1"]}>{t("Prioritize")}</h1>
+                </Col>
+                <Col md={4} lg={4} sm={12} className="position-relative">
+                  <img
+                    draggable="false"
+                    src={DiskusAuthPageLogo}
+                    alt="auth_icon"
+                    width="600px"
+                    className={styles["Auth_Icon"]}
+                  />
+                </Col>
+              </Col>
+            </Row>
+            <Notification
+              setOpen={setOpen}
+              open={open.open}
+              message={open.message}
+            />
+            {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
+          </>
+        )}
       </Container>
     </>
   );
