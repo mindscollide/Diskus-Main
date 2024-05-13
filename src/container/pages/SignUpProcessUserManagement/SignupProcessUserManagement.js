@@ -40,8 +40,8 @@ const SignupProcessUserManagement = () => {
         dispatch(signUpFlowRoutes(storedStep));
       }
     } else {
-      localStorage.setItem("SignupFlowPageRoute", 1);
-      dispatch(signUpFlowRoutes(1));
+      localStorage.setItem("SignupFlowPageRoute", 2);
+      // dispatch(signUpFlowRoutes(1));
     }
   }, []);
   useEffect(() => {

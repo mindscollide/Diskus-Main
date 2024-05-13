@@ -182,6 +182,12 @@ const handleResponseMessage = async (result, dispatch, t, message) => {
       )
     ) {
       dispatch(getExpiryDetailFail(t("Subscription-not-found")));
+    } else if (
+      message.includes(
+        "admin_adminservicemanager_getorganizationsubscriptionexpirydetails_04"
+      )
+    ) {
+      dispatch(getExpiryDetailFail(t("Something-went-wrong")));
     } else {
       dispatch(getExpiryDetailFail(t("Something-went-wrong")));
     }

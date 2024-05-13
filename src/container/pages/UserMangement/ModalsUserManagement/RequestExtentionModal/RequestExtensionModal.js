@@ -8,6 +8,7 @@ import { showRequestExtentionModal } from "../../../../../store/actions/UserMang
 import { Col, Row } from "react-bootstrap";
 import crossicon from "../../../../../assets/images/BlackCrossIconModals.svg";
 import { Button, Modal } from "../../../../../components/elements";
+import { requestOrganizationExtendApi } from "../../../../../store/actions/UserManagementActions";
 const RequestExtensionModal = ({ setTrailExpiry }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -16,6 +17,13 @@ const RequestExtensionModal = ({ setTrailExpiry }) => {
   const { UserManagementModals } = useSelector((state) => state);
 
   const yesBtnFunctionality = () => {
+    const organizationID = localStorage.getItem("organizationID");
+    const UserID = localStorage.getItem("userID");
+    let data = {
+      OrganizationID: Number(organizationID),
+      UserID: Number(UserID),
+    };
+    dispatch(requestOrganizationExtendApi(navigate, t, data));
     dispatch(showRequestExtentionModal(false));
     setTrailExpiry(true);
   };

@@ -308,9 +308,11 @@ const Header2 = () => {
     }
   };
 
+  // as huzeifa bhai said when we click on upgrade button then it'll navigate to the billing calculator page
   const handleShowUpgradedNowModal = () => {
     console.log("Clicked");
-    dispatch(showUpgradeNowModal(true));
+    // dispatch(showUpgradeNowModal(true));
+    navigate("/Admin/PakageDetailsUserManagement");
   };
 
   const handleRequestExtentionModal = () => {
