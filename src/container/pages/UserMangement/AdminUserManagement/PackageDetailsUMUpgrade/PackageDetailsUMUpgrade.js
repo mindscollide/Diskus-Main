@@ -45,6 +45,10 @@ const PakageDetailsUMUpgrade = () => {
   });
 
   const [organizationPackagePrice, setOrganizationPackagePrice] = useState([]);
+  console.log(
+    organizationPackagePrice,
+    "organizationPackagePriceorganizationPackagePrice"
+  );
 
   //get All user pakages Api call
   useEffect(() => {
@@ -58,14 +62,30 @@ const PakageDetailsUMUpgrade = () => {
   useEffect(() => {
     if (location.state && location.state.organizationSelectedPackages) {
       const selectedPackages = location.state.organizationSelectedPackages[0];
-      const newData = selectedPackages.map((packages) => ({
-        name: packages.name,
-        price: packages.price,
-        ...packages,
-      }));
-      setPackageTableData(newData);
+      if (selectedPackages) {
+        console.log(selectedPackages, "selectedPackagesselectedPackages");
+        const prices = selectedPackages.map((pkg) => {
+          return {
+            price: pkg.price,
+            name: pkg.name,
+          };
+        });
+        setOrganizationPackagePrice(prices);
+
+        const newData = selectedPackages.map((pkg) => ({
+          name: pkg.name,
+          price: pkg.price,
+          licenseCount: 0,
+          ...pkg,
+        }));
+        setPackageTableData(newData);
+      } else {
+        setPackageTableData([]);
+        setOrganizationPackagePrice([]);
+      }
     } else {
       setPackageTableData([]);
+      setOrganizationPackagePrice([]);
     }
   }, [location.state]);
 
@@ -174,6 +194,7 @@ const PakageDetailsUMUpgrade = () => {
       key: "Numberoflicenses",
       align: "center",
       render: (text, row, index) => {
+        console.log({ row, text }, "pricepriceprice");
         if (row.shouldDisplayTextField) {
           return;
         } else {
@@ -234,14 +255,16 @@ const PakageDetailsUMUpgrade = () => {
       width: 100,
       align: "center",
       render: (text, row, index) => {
-        console.log(row, "Monthlycharges");
-        console.log(text, "texttexttext");
-        const monthlyCharges =
-          row.price &&
-          !isNaN(row.price) &&
-          !isNaN(organizationPackagePrice[index])
-            ? row.price * Number(organizationPackagePrice[index])
-            : 0;
+        let monthlyCharges = 0;
+        if (row?.name) {
+          const matchedPackage = organizationPackagePrice.find(
+            (pkg) => pkg.name === row.name
+          );
+          if (matchedPackage) {
+            monthlyCharges = row.price * matchedPackage.price;
+          }
+        }
+
         console.log(monthlyCharges, "shouldDisplayTextFieldprice");
         if (row.shouldDisplayTextField) {
           return (
@@ -288,12 +311,16 @@ const PakageDetailsUMUpgrade = () => {
       align: "center",
       width: 100,
       render: (text, row, index) => {
-        const quarterlyCharges =
-          row.price &&
-          !isNaN(row.price) &&
-          !isNaN(organizationPackagePrice[index])
-            ? row.price * Number(organizationPackagePrice[index]) * 3
-            : 0;
+        let quarterlyCharges = 0;
+        if (row?.name) {
+          const findName = organizationPackagePrice.find(
+            (pkg) => pkg.name === row.name
+          );
+          if (findName) {
+            quarterlyCharges = row.price * (findName.price * 3);
+          }
+        }
+
         if (row.shouldDisplayTextField) {
           return (
             <>
@@ -337,12 +364,16 @@ const PakageDetailsUMUpgrade = () => {
       align: "center",
       width: 100,
       render: (text, row, index) => {
-        const YearlyCharges =
-          row.price &&
-          !isNaN(row.price) &&
-          !isNaN(organizationPackagePrice[index])
-            ? row.price * Number(organizationPackagePrice[index]) * 12
-            : 0;
+        let YearlyCharges = 0;
+        if (row?.name) {
+          const findName = organizationPackagePrice.find(
+            (pkg) => pkg.name === row.name
+          );
+          if (findName) {
+            YearlyCharges = row.price * (findName.price * 12);
+          }
+        }
+
         if (row.shouldDisplayTextField) {
           return (
             <>
@@ -388,46 +419,56 @@ const PakageDetailsUMUpgrade = () => {
   //Calculating the totals
   const calculateTotals = (data) => {
     const totalOrganizationPackagePrice = organizationPackagePrice.reduce(
-      (total, value) => total + Number(value || 0),
+      (total, value) => total + Number(value.price || 0),
       0
     );
 
     // Calculate total monthly charges
-    const totalMonthlyCharges = data.reduce((total, row, index) => {
-      const monthlyCharge =
+    const totalMonthlyCharges = packageTableData.reduce((total, row) => {
+      const matchedPackage = organizationPackagePrice.find(
+        (pkg) => pkg.name === row.name
+      );
+      const monthlyCharges =
         row.price &&
+        matchedPackage &&
         !isNaN(row.price) &&
-        !isNaN(organizationPackagePrice[index])
-          ? row.price * Number(organizationPackagePrice[index])
-          : 0;
-      return total + monthlyCharge;
+        !isNaN(matchedPackage.price)
+          ? row.price * matchedPackage.price
+          : 0; // Multiply by 3 for quarterly
+
+      return total + monthlyCharges;
     }, 0);
 
-    console.log(totalMonthlyCharges, "totalMonthlyCharges");
-
-    const totalQuarterlyCharges = data.reduce((total, row, index) => {
+    const totalQuarterlyCharges = packageTableData.reduce((total, row) => {
+      const matchedPackage = organizationPackagePrice.find(
+        (pkg) => pkg.name === row.name
+      );
       const quarterlyCharge =
         row.price &&
+        matchedPackage &&
         !isNaN(row.price) &&
-        !isNaN(organizationPackagePrice[index])
-          ? row.price * Number(organizationPackagePrice[index]) * 3
+        !isNaN(matchedPackage.price)
+          ? row.price * matchedPackage.price * 3
           : 0; // Multiply by 3 for quarterly
+
       return total + quarterlyCharge;
     }, 0);
 
     console.log(totalQuarterlyCharges, "totalMonthlyCharges");
-
-    const totalYearlyCharges = data.reduce((total, row, index) => {
+    const totalYearlyCharges = packageTableData.reduce((total, row) => {
+      const matchedPackage = organizationPackagePrice.find(
+        (pkg) => pkg.name === row.name
+      );
       const yearlyCharge =
         row.price &&
+        matchedPackage &&
         !isNaN(row.price) &&
-        !isNaN(organizationPackagePrice[index])
-          ? row.price * Number(organizationPackagePrice[index]) * 12
-          : 0; // Multiply by 12 for yearly
+        !isNaN(matchedPackage.price)
+          ? row.price * matchedPackage.price * 12
+          : 0; // Multiply by 3 for quarterly
+
       return total + yearlyCharge;
     }, 0);
-
-    console.log(totalYearlyCharges, "totalMonthlyCharges");
 
     // Return an object with the totals that can be used as a row in your table.
     return {
