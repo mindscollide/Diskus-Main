@@ -201,23 +201,23 @@ const PakageDetailsAdmin = () => {
           <Card className={styles["packagecard"]}>
             <Row className="mt-3">
               <Col sm={12}>
-                <span class="icon-star package-icon-style">
+                {/* <span class="icon-star package-icon-style">
                   <span
                     class="path1"
-                    // style={{ color: packageColorPath1 }}
+                    style={{ color: packageColorPath1 }}
                   ></span>
                   <span
                     class="path2"
-                    // style={{ color: packageColorPath2 }}
+                    style={{ color: packageColorPath2 }}
                   ></span>
                   <span
                     class="path3"
-                    // style={{ color: packageColorPath2 }}
+                    style={{ color: packageColorPath2 }}
                   ></span>
                 </span>
                 <h3 className={styles["packageCard_title"]}>
-                  {/* {isPackageDetail.PackageTitle} */}
-                </h3>{" "}
+                  {isPackageDetail.PackageTitle}
+                </h3>{" "} */}
               </Col>
             </Row>
             <Row className="mt-5">
