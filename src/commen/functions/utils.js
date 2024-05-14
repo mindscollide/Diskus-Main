@@ -238,7 +238,8 @@ export async function handleLoginResponse(response) {
           { name: "committee", id: 17 },
           { name: "resolution", id: 18 },
           { name: "signatureviewer", id: 19 },
-          { name: "documentViewer", id: 20 }
+          { name: "documentViewer", id: 20 },
+          { name: "Payment", id: 109 }
         );
       }
       if (response.hasAdminRights) {

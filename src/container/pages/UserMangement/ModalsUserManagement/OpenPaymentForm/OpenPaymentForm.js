@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { Container } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { Loader, LoaderPanel, Modal } from "../../../../../components/elements";
+import { Loader, Modal } from "../../../../../components/elements";
 import { openPaymentProcessModal } from "../../../../../store/actions/UserMangementModalActions";
 
 const OpenPaymentForm = () => {
@@ -27,6 +27,8 @@ const OpenPaymentForm = () => {
     dispatch(openPaymentProcessModal(false));
   };
 
+  console.log(sourceLink, "sourceLinksourceLink");
+
   return (
     <>
       <Container>
@@ -38,7 +40,13 @@ const OpenPaymentForm = () => {
           ModalBody={
             <>
               {sourceLink !== null && (
-                <iframe width={"100%"} height="550px" src={sourceLink}></iframe>
+                <iframe
+                  id="paymentFrame"
+                  width="100%"
+                  height="550px"
+                  src={sourceLink}
+                  sandbox="allow-scripts allow-same-origin allow-top-navigation allow-forms"
+                ></iframe>
               )}
             </>
           }

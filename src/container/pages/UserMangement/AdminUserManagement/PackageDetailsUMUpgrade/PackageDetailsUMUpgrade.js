@@ -201,6 +201,7 @@ const PakageDetailsUMUpgrade = () => {
             );
             console.log(matchedPackage, "matchedPackagematchedPackage");
             const priceValue = matchedPackage ? matchedPackage.price : "";
+            console.log(priceValue, "priceValuepriceValuepriceValue");
             return (
               <Row>
                 <Col className="d-flex justify-content-center">
@@ -234,13 +235,14 @@ const PakageDetailsUMUpgrade = () => {
       align: "center",
       render: (text, row, index) => {
         console.log(row, "Monthlycharges");
+        console.log(text, "texttexttext");
         const monthlyCharges =
           row.price &&
           !isNaN(row.price) &&
           !isNaN(organizationPackagePrice[index])
             ? row.price * Number(organizationPackagePrice[index])
             : 0;
-        console.log(monthlyCharges, "licenseCount");
+        console.log(monthlyCharges, "shouldDisplayTextFieldprice");
         if (row.shouldDisplayTextField) {
           return (
             <>
@@ -401,6 +403,8 @@ const PakageDetailsUMUpgrade = () => {
       return total + monthlyCharge;
     }, 0);
 
+    console.log(totalMonthlyCharges, "totalMonthlyCharges");
+
     const totalQuarterlyCharges = data.reduce((total, row, index) => {
       const quarterlyCharge =
         row.price &&
@@ -411,6 +415,8 @@ const PakageDetailsUMUpgrade = () => {
       return total + quarterlyCharge;
     }, 0);
 
+    console.log(totalQuarterlyCharges, "totalMonthlyCharges");
+
     const totalYearlyCharges = data.reduce((total, row, index) => {
       const yearlyCharge =
         row.price &&
@@ -420,6 +426,8 @@ const PakageDetailsUMUpgrade = () => {
           : 0; // Multiply by 12 for yearly
       return total + yearlyCharge;
     }, 0);
+
+    console.log(totalYearlyCharges, "totalMonthlyCharges");
 
     // Return an object with the totals that can be used as a row in your table.
     return {
