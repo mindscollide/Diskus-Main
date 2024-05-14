@@ -458,7 +458,7 @@ export const optionsforPDFandSignatureFlow = (t) => [
   { label: t("Download"), value: 5 },
   { label: t("Delete"), value: 6 },
   { label: t("Analytics"), value: 7 },
-  { label: t("Signaure"), value: 8 },
+  { label: t("Signature"), value: 8 },
 ];
 
 // Viewer Options and Permission Id is 01
@@ -598,7 +598,7 @@ export const optionMyDocumentsTabForSignature = (t) => [
   { label: t("Download"), value: 5 },
   { label: t("Remove"), value: 6 },
   { label: t("Analytics"), value: 7 },
-  { label: t("Signaure"), value: 8 },
+  { label: t("Signature"), value: 8 },
 ];
 
 // Permission ID 1 = Viewer , 2 = Editor, 3 = Not share , 4 =
