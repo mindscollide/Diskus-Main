@@ -144,6 +144,8 @@ const initialState = {
   joinMeetingResponse: null,
   leaveMeetingResponse: null,
   currentMeetingStatus: 0,
+  mqttMeetingPrAdded: null,
+  mqtMeetingPrRemoved: null,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -2258,7 +2260,18 @@ const NewMeetingreducer = (state = initialState, action) => {
         currentMeetingStatus: action.response,
       };
     }
-
+    case actions.MQTT_MEETING_PAR_ADDED: {
+      return {
+        ...state,
+        mqttMeetingPrAdded: action.response
+      }
+    }
+    case actions.MQTT_MEETING_PAR_REMOVED: {
+      return {
+        ...state,
+        mqtMeetingPrRemoved: action.response
+      }
+    }
     default:
       return {
         ...state,

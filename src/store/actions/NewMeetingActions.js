@@ -1010,7 +1010,8 @@ const searchNewUserMeeting = (navigate, Data, t) => {
                 )
             ) {
               let getMeetingData = await getAllUnpublishedMeetingData(
-                response.data.responseResult.meetings
+                response.data.responseResult.meetings,
+                1
               );
               console.log(
                 getMeetingData,
@@ -8010,7 +8011,18 @@ const currentMeetingStatus = (response) => {
     response: response,
   };
 };
-
+const meetingParticipantAdded = (response) => {
+  return {
+    type: actions.MQTT_MEETING_PAR_ADDED,
+    response: response,
+  };
+};
+const meetingParticipantRemoved = (response) => {
+  return {
+    type: actions.MQTT_MEETING_PAR_REMOVED,
+    response: response,
+  };
+};
 export {
   clearResponseNewMeetingReducerMessage,
   getAllAgendaContributorApi,
@@ -8162,6 +8174,8 @@ export {
   meetingAgendaContributorRemoved,
   meetingOrganizerAdded,
   meetingOrganizerRemoved,
+  meetingParticipantAdded,
+  meetingParticipantRemoved,
   JoinCurrentMeeting,
   LeaveCurrentMeeting,
   LeaveCurrentMeetingOtherMenus,

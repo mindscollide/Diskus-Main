@@ -1335,7 +1335,7 @@ const NewMeeting = () => {
                   </Row>
                 </>
               );
-            } else if (isAgendaContributor) {
+            } else if (record.isAgendaContributor) {
               return (
                 <>
                   <Row>
@@ -1487,6 +1487,26 @@ const NewMeeting = () => {
     } catch {}
   }, [searchMeetings]);
   console.log(rows, "rowsrowsrowsrowsrowsrows");
+
+  useEffect(() => {
+    if (NewMeetingreducer.mqttMeetingPrAdded !== null) {
+    }
+    if (NewMeetingreducer.mqtMeetingPrRemoved !== null) {
+      try {
+        let meetingID = NewMeetingreducer.mqtMeetingPrRemoved.meetingID;
+        setRow((isRowData) => {
+          return isRowData.filter((newData, index) => {
+            return Number(newData.pK_MDID) !== Number(meetingID);
+          });
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [
+    NewMeetingreducer.mqttMeetingPrAdded,
+    NewMeetingreducer.mqtMeetingPrRemoved,
+  ]);
   useEffect(() => {
     try {
       if (
@@ -1733,6 +1753,42 @@ const NewMeeting = () => {
       });
     }
   }, [meetingIdReducer.allMeetingsSocketData]);
+  useEffect(() => {
+    if (
+      meetingIdReducer.CommitteeMeetingMQTT !== null &&
+      meetingIdReducer.CommitteeMeetingMQTT !== undefined
+    ) {
+      let meetingID = meetingIdReducer.CommitteeMeetingMQTT.meeting.pK_MDID;
+      let meetingData = meetingIdReducer.CommitteeMeetingMQTT.meeting;
+      setRow((rowsData) => {
+        return rowsData.map((item) => {
+          if (item.pK_MDID === meetingID) {
+            return meetingData;
+          } else {
+            return item; // Return the original item if the condition is not met
+          }
+        });
+      });
+    }
+  }, [meetingIdReducer.CommitteeMeetingMQTT]);
+  useEffect(() => {
+    if (
+      meetingIdReducer.GroupMeetingMQTT !== null &&
+      meetingIdReducer.GroupMeetingMQTT !== undefined
+    ) {
+      let meetingID = meetingIdReducer.GroupMeetingMQTT.meeting.pK_MDID;
+      let meetingData = meetingIdReducer.GroupMeetingMQTT.meeting;
+      setRow((rowsData) => {
+        return rowsData.map((item) => {
+          if (item.pK_MDID === meetingID) {
+            return meetingData;
+          } else {
+            return item; // Return the original item if the condition is not met
+          }
+        });
+      });
+    }
+  }, [meetingIdReducer.GroupMeetingMQTT]);
   useEffect(() => {
     if (
       ResponseMessages !== "" &&

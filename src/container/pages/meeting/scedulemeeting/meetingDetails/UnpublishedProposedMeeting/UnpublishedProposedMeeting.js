@@ -64,6 +64,7 @@ import { UpdateOrganizersMeeting } from "../../../../../../store/actions/Meeting
 import moment from "moment";
 import { truncateString } from "../../../../../../commen/functions/regex";
 import { Tooltip } from "antd";
+import { mqttMeetingData } from "../../../../../../hooks/meetingResponse/response";
 
 const UnpublishedProposedMeeting = ({
   setViewProposeDatePoll,
@@ -727,37 +728,29 @@ const UnpublishedProposedMeeting = ({
   }, [NewMeetingreducer.meetingStatusPublishedMqttData]);
 
   useEffect(() => {
-    if (
-      NewMeetingreducer.mqttMeetingAcAdded !== null &&
-      NewMeetingreducer.mqttMeetingAcAdded !== undefined
-    ) {
-      let newObj = NewMeetingreducer.mqttMeetingAcAdded;
-      // Convert the status value to string
-      newObj.status = String(newObj.status);
-      try {
-        setRow((prevState) => [
-          ...prevState,
-          {
-            ...newObj,
-            attendanceReportAvaliable: false,
-            canBeStarted: false,
-            isAttachment: false,
-            isChat: false,
-            isVideoCall: false,
-            meetingAgenda: [],
-            meetingAttendees: [],
-            meetingEndTime: "",
-            meetingTypeID: 0,
-            meetingURL: "",
-            orignalProfilePictureName: "",
-            talkGroupID: 0,
-          },
-        ]);
-        dispatch(meetingAgendaContributorAdded(null));
-        dispatch(meetingAgendaContributorRemoved(null));
-        dispatch(meetingOrganizerAdded(null));
-        dispatch(meetingOrganizerRemoved(null));
-      } catch {}
+    try {
+      const callAddAgendaContributor = async () => {
+        if (
+          NewMeetingreducer.mqttMeetingAcAdded !== null &&
+          NewMeetingreducer.mqttMeetingAcAdded !== undefined
+        ) {
+          let newObj = NewMeetingreducer.mqttMeetingAcAdded;
+          try {
+            let getData = await mqttMeetingData(newObj, 2);
+            setRow([getData, ...rows]);
+            console.log(getData, "getDatagetDatagetData");
+          } catch (error) {
+            console.log(error, "getDatagetDatagetData");
+          }
+          dispatch(meetingAgendaContributorAdded(null));
+          dispatch(meetingAgendaContributorRemoved(null));
+          dispatch(meetingOrganizerAdded(null));
+          dispatch(meetingOrganizerRemoved(null));
+        }
+      };
+      callAddAgendaContributor();
+    } catch (error) {
+      console.log(error);
     }
   }, [NewMeetingreducer.mqttMeetingAcAdded]);
 
@@ -781,37 +774,29 @@ const UnpublishedProposedMeeting = ({
   }, [NewMeetingreducer.mqttMeetingAcRemoved]);
 
   useEffect(() => {
-    if (
-      NewMeetingreducer.mqttMeetingOrgAdded !== null &&
-      NewMeetingreducer.mqttMeetingOrgAdded !== undefined
-    ) {
-      let newObj = NewMeetingreducer.mqttMeetingOrgAdded;
-      // Convert the status value to string
-      newObj.status = String(newObj.status);
-      try {
-        setRow((prevState) => [
-          ...prevState,
-          {
-            ...newObj,
-            attendanceReportAvaliable: false,
-            canBeStarted: false,
-            isAttachment: false,
-            isChat: false,
-            isVideoCall: false,
-            meetingAgenda: [],
-            meetingAttendees: [],
-            meetingEndTime: "",
-            meetingTypeID: 0,
-            meetingURL: "",
-            orignalProfilePictureName: "",
-            talkGroupID: 0,
-          },
-        ]);
-        dispatch(meetingAgendaContributorAdded(null));
-        dispatch(meetingAgendaContributorRemoved(null));
-        dispatch(meetingOrganizerAdded(null));
-        dispatch(meetingOrganizerRemoved(null));
-      } catch {}
+    try {
+      const callAddOrganizer = async () => {
+        if (
+          NewMeetingreducer.mqttMeetingOrgAdded !== null &&
+          NewMeetingreducer.mqttMeetingOrgAdded !== undefined
+        ) {
+          let newObj = NewMeetingreducer.mqttMeetingOrgAdded;
+          try {
+            let getData = await mqttMeetingData(newObj, 2);
+            setRow([getData, ...rows]);
+            console.log(getData, "getDatagetDatagetData");
+          } catch (error) {
+            console.log(error, "getDatagetDatagetData");
+          }
+          dispatch(meetingAgendaContributorAdded(null));
+          dispatch(meetingAgendaContributorRemoved(null));
+          dispatch(meetingOrganizerAdded(null));
+          dispatch(meetingOrganizerRemoved(null));
+        }
+      };
+      callAddOrganizer();
+    } catch (error) {
+      console.error(error);
     }
   }, [NewMeetingreducer.mqttMeetingOrgAdded]);
 

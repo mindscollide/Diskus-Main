@@ -1,6 +1,8 @@
 // import { isArray } from "lodash"
 
-const getUserInfo = (data, currentUserId) => {
+const getUserInfo = (data, currentUserId, currentSource) => {
+  // current Source 1 = get All meetings
+  // current Source 2 = mqtt aad and update organizers
   const userInfo = {
     isAgendaContributor: false,
     isOrganiser: false,
@@ -8,11 +10,29 @@ const getUserInfo = (data, currentUserId) => {
     userData: null,
     isPrimaryOrganizer: false,
   };
-
-  data.meetingAttendees.forEach((attendee) => {
-    if (Number(attendee.user.pK_UID) === Number(currentUserId)) {
-      userInfo.userData = attendee.user;
-      switch (attendee.meetingAttendeeRole.pK_MARID) {
+  try {
+    if (Number(currentSource) === 1) {
+      data.meetingAttendees.forEach((attendee) => {
+        if (Number(attendee.user.pK_UID) === Number(currentUserId)) {
+          userInfo.userData = attendee.user;
+          switch (attendee.meetingAttendeeRole.pK_MARID) {
+            case 1:
+              userInfo.isOrganiser = true;
+              break;
+            case 2:
+              userInfo.isParticipant = true;
+              break;
+            case 4:
+              userInfo.isAgendaContributor = true;
+              break;
+          }
+          if (attendee.isPrimaryOrganizer === true) {
+            userInfo.isPrimaryOrganizer = true;
+          }
+        }
+      });
+    } else if (Number(currentSource) === 2) {
+      switch (data.attendeeRoleID) {
         case 1:
           userInfo.isOrganiser = true;
           break;
@@ -23,16 +43,19 @@ const getUserInfo = (data, currentUserId) => {
           userInfo.isAgendaContributor = true;
           break;
       }
-      if (attendee.isPrimaryOrganizer === true) {
+      if (data.isPrimaryOrganizer === true) {
         userInfo.isPrimaryOrganizer = true;
       }
     }
-  });
+  } catch {}
 
   return userInfo;
 };
 
-export const getAllUnpublishedMeetingData = async (meetingData) => {
+export const getAllUnpublishedMeetingData = async (
+  meetingData,
+  currentSourceID
+) => {
   let currentUserId = Number(localStorage.getItem("userID"));
 
   let newMeetingData = [];
@@ -48,7 +71,7 @@ export const getAllUnpublishedMeetingData = async (meetingData) => {
           ? data.meetingAgenda
           : [];
 
-      let usersData = await getUserInfo(data, currentUserId);
+      let usersData = await getUserInfo(data, currentUserId, currentSourceID);
       newMeetingData.push({
         dateOfMeeting: data.dateOfMeeting,
         host: primaryOrganizerA?.user?.name,
@@ -85,47 +108,64 @@ export const getAllUnpublishedMeetingData = async (meetingData) => {
   return newMeetingData;
 };
 
-export const mqttMeetingData = async (meetingData) => {
+export const mqttMeetingData = async (meetingData, currentSourceID) => {
   let currentUserId = Number(localStorage.getItem("userID"));
+  let usersData = await getUserInfo(
+    meetingData,
+    currentUserId,
+    currentSourceID
+  );
 
-  // const primaryOrganizerA = meetingData.meetingAttendees.find(
-  //   (item) => item.isPrimaryOrganizer === true
-  // );
   const meetingAgendas =
     meetingData.meetingAgenda !== null &&
     meetingData.meetingAgenda !== undefined &&
     meetingData.meetingAgenda.length > 0
       ? meetingData.meetingAgenda
       : [];
-
-  // let usersData = await getUserInfo(
-  //   meetingData.meetingAttendees,
-  //   currentUserId
-  // );
   let Data = {
-    dateOfMeeting: meetingData.dateOfMeeting,
+    dateOfMeeting: meetingData?.dateOfMeeting,
     host: meetingData?.host,
     isAttachment:
-      meetingData.isAttachment !== null ? meetingData.isAttachment : false,
-    isChat: meetingData.isChat !== null ? meetingData.isChat : false,
+      meetingData.isAttachment !== null &&
+      meetingData.isAttachment !== undefined
+        ? meetingData.isAttachment
+        : false,
+    isChat:
+      meetingData.isChat !== null && meetingData.isChat !== undefined
+        ? meetingData.isChat
+        : false,
     isVideoCall:
-      meetingData.isVideoCall !== null ? meetingData.isVideoCall : false,
+      meetingData.isVideoCall !== null && meetingData.isVideoCall !== undefined
+        ? meetingData.isVideoCall
+        : false,
     isQuickMeeting:
-      meetingData.isQuickMeeting !== null ? meetingData.isQuickMeeting : false,
+      meetingData.isQuickMeeting !== null &&
+      meetingData.isQuickMeeting !== undefined
+        ? meetingData.isQuickMeeting
+        : false,
     meetingAgenda: meetingAgendas,
-    isOrganizer: meetingData?.isOrganiser,
-    isAgendaContributor: meetingData?.isAgendaContributor,
-    isParticipant: meetingData?.isParticipant,
+    isOrganizer: usersData.isOrganiser,
+    isAgendaContributor: usersData.isAgendaContributor,
+    isParticipant: usersData?.isParticipant,
     talkGroupID:
-      meetingData.talkGroupID !== null ? meetingData.talkGroupID : false,
+      meetingData.talkGroupID !== null && meetingData.talkGroupID !== undefined
+        ? meetingData.talkGroupID
+        : false,
     meetingType:
-      meetingData.meetingTypeID === 1 && meetingData.isQuickMeeting === true
+      meetingData.meetingTypeID == null ||
+      meetingData.meetingTypeID === undefined
+        ? 0
+        : meetingData.meetingTypeID === 1 && meetingData.isQuickMeeting === true
         ? 0
         : meetingData.meetingTypeID,
     meetingEndTime:
-      meetingData.meetingEndTime !== null ? meetingData.meetingEndTime : false,
+      meetingData.meetingEndTime !== null &&
+      meetingData.meetingEndTime !== undefined
+        ? meetingData.meetingEndTime
+        : false,
     meetingStartTime:
-      meetingData.meetingStartTime !== null
+      meetingData.meetingStartTime !== null &&
+      meetingData.meetingStartTime !== undefined
         ? meetingData.meetingStartTime
         : false,
     pK_MDID: meetingData?.pK_MDID,
@@ -136,9 +176,10 @@ export const mqttMeetingData = async (meetingData) => {
         meetingData?.proposedMeetingDetail?.totalNoOfDirectorsVoted,
     },
     responseDeadLine: meetingData?.responseDeadLine,
-    status: meetingData?.status,
+    status: String(meetingData?.status),
     title: meetingData?.title,
-    isPrimaryOrganizer: meetingData?.isPrimaryOrganizer,
-    userDetails: meetingData?.userData,
+    isPrimaryOrganizer: usersData?.isPrimaryOrganizer,
+    userDetails: usersData?.userData,
   };
+  return Data;
 };
