@@ -46,11 +46,15 @@ const SignInUserManagement = () => {
   const urlParams = new URLSearchParams(window.location.search);
   const code = urlParams.get("code");
 
-  //Getting Action URL PAYMENT
+  const [paymentAction, setPaymentAction] = useState("");
 
-  const actionValue = getActionFromURLPayment();
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const paymentActionValue = searchParams.get("Payment_action");
+    setPaymentAction(decodeURIComponent(paymentActionValue));
+  }, []);
 
-  console.log(actionValue, "actionValueactionValueactionValue");
+  console.log(paymentAction, "paymentActionpaymentActionpaymentAction");
 
   //States For Email Validation Integration
   const [email, setEmail] = useState("");
@@ -115,21 +119,6 @@ const SignInUserManagement = () => {
 
   //Subscribe now
   const handleSubscribeNowButton = () => {
-    // let newData = {
-    //   OrganizationSubscriptionID: 21,
-    //   OrderDescription: "A Diskus License Order",
-    //   OrganizationBillingInformation: {
-    //     FirstName: "lb 1",
-    //     LastName: "admin",
-    //     Email: "lb1admin@yopmail.com",
-    //     Phone: "923452585768",
-    //     Address: "E96",
-    //     FK_WorldCountryID: 1,
-    //     City: "Karachi",
-    //     Zip: "10001",
-    //   },
-    // };
-    // dispatch(paymentInitiateMainApi(navigate, t, newData));
     localStorage.setItem("SignupFlowPageRoute", 1);
     dispatch(signUpFlowRoutes(1));
     navigate("/Signup");
@@ -153,9 +142,10 @@ const SignInUserManagement = () => {
       console.log("Code:", code);
       localStorage.setItem("Ms", code);
       window.close();
-    } else if (actionValue) {
+    } else if (paymentAction) {
+      console.log("I am coming");
       let data = {
-        EncryptedString: actionValue,
+        EncryptedString: paymentAction,
       };
       dispatch(paymentStatusApi(navigate, t, data));
     } else {
@@ -311,7 +301,7 @@ const SignInUserManagement = () => {
       <Container fluid className={styles["auth_container"]}>
         {code ? (
           <></>
-        ) : actionValue ? (
+        ) : paymentAction ? (
           <></>
         ) : (
           <>
