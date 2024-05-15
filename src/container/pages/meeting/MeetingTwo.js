@@ -787,12 +787,7 @@ const NewMeeting = () => {
     }
   };
 
-  const handleEditMeeting = async (
-    id,
-    isQuick,
-    isAgendaContributor,
-    record
-  ) => {
+  const handleEditMeeting = async (id, isQuick, role, record) => {
     let Data = { MeetingID: Number(id) };
 
     if (isQuick) {
@@ -808,36 +803,53 @@ const NewMeeting = () => {
         )
       );
     } else if (isQuick === false) {
-      let Data = {
-        MeetingID: Number(id),
-      };
-      await dispatch(
-        GetAllMeetingDetailsApiFunc(
-          navigate,
-          t,
-          Data,
-          true,
-          setCurrentMeetingID,
-          setSceduleMeeting,
-          setDataroomMapFolderId,
-          0,
-          1
-        )
-      );
-      dispatch(scheduleMeetingPageFlag(true));
-      dispatch(viewMeetingFlag(false));
-      dispatch(meetingDetailsGlobalFlag(true));
-      dispatch(organizersGlobalFlag(false));
-      dispatch(agendaContributorsGlobalFlag(false));
-      dispatch(participantsGlobalFlag(false));
-      dispatch(agendaGlobalFlag(false));
-      dispatch(meetingMaterialGlobalFlag(false));
-      dispatch(minutesGlobalFlag(false));
-      dispatch(proposedMeetingDatesGlobalFlag(false));
-      dispatch(actionsGlobalFlag(false));
-      dispatch(pollsGlobalFlag(false));
-      dispatch(attendanceGlobalFlag(false));
-      dispatch(uploadGlobalFlag(false));
+      if (role === "Agenda Contributor") {
+        dispatch(scheduleMeetingPageFlag(true));
+        dispatch(viewMeetingFlag(false));
+        dispatch(meetingDetailsGlobalFlag(false));
+        dispatch(organizersGlobalFlag(false));
+        dispatch(agendaContributorsGlobalFlag(false));
+        dispatch(participantsGlobalFlag(false));
+        dispatch(agendaGlobalFlag(true));
+        dispatch(meetingMaterialGlobalFlag(false));
+        dispatch(minutesGlobalFlag(false));
+        dispatch(proposedMeetingDatesGlobalFlag(false));
+        dispatch(actionsGlobalFlag(false));
+        dispatch(pollsGlobalFlag(false));
+        dispatch(attendanceGlobalFlag(false));
+        dispatch(uploadGlobalFlag(false));
+      } else {
+        let Data = {
+          MeetingID: Number(id),
+        };
+        await dispatch(
+          GetAllMeetingDetailsApiFunc(
+            navigate,
+            t,
+            Data,
+            true,
+            setCurrentMeetingID,
+            setSceduleMeeting,
+            setDataroomMapFolderId,
+            0,
+            1
+          )
+        );
+        dispatch(scheduleMeetingPageFlag(true));
+        dispatch(viewMeetingFlag(false));
+        dispatch(meetingDetailsGlobalFlag(true));
+        dispatch(organizersGlobalFlag(false));
+        dispatch(agendaContributorsGlobalFlag(false));
+        dispatch(participantsGlobalFlag(false));
+        dispatch(agendaGlobalFlag(false));
+        dispatch(meetingMaterialGlobalFlag(false));
+        dispatch(minutesGlobalFlag(false));
+        dispatch(proposedMeetingDatesGlobalFlag(false));
+        dispatch(actionsGlobalFlag(false));
+        dispatch(pollsGlobalFlag(false));
+        dispatch(attendanceGlobalFlag(false));
+        dispatch(uploadGlobalFlag(false));
+      }
     } else {
     }
   };
@@ -1333,7 +1345,7 @@ const NewMeeting = () => {
                               handleEditMeeting(
                                 record.pK_MDID,
                                 record.isQuickMeeting,
-                                record.isAgendaContributor,
+                                "Organizer",
                                 record
                               )
                             }
@@ -1369,7 +1381,8 @@ const NewMeeting = () => {
                             handleEditMeeting(
                               record.pK_MDID,
                               record.isQuickMeeting,
-                              record.isAgendaContributor,
+                              // record.isAgendaContributor,
+                              "Organizer",
                               record
                             );
                             setEdiorRole({
@@ -1408,7 +1421,8 @@ const NewMeeting = () => {
                             handleEditMeeting(
                               record.pK_MDID,
                               record.isQuickMeeting,
-                              record.isAgendaContributor,
+                              // record.isAgendaContributor,
+                              "Agenda Contributor",
                               record
                             );
                             setEdiorRole({
