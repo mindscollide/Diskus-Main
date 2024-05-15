@@ -183,23 +183,25 @@ const UnpublishedProposedMeeting = ({
     dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
   };
 
-  const handleEditMeeting = async (id, record) => {
-    let Data = {
-      MeetingID: Number(id),
-    };
-    await dispatch(
-      GetAllMeetingDetailsApiFunc(
-        navigate,
-        t,
-        Data,
-        false,
-        setCurrentMeetingID,
-        setSceduleMeeting,
-        setDataroomMapFolderId,
-        0,
-        1
-      )
-    );
+  const handleEditMeeting = async (id, record, role) => {
+    if (role !== "Agenda Contributor") {
+      let Data = {
+        MeetingID: Number(id),
+      };
+      await dispatch(
+        GetAllMeetingDetailsApiFunc(
+          navigate,
+          t,
+          Data,
+          false,
+          setCurrentMeetingID,
+          setSceduleMeeting,
+          setDataroomMapFolderId,
+          0,
+          1
+        )
+      );
+    }
     dispatch(scheduleMeetingPageFlag(true));
   };
 
@@ -500,11 +502,11 @@ const UnpublishedProposedMeeting = ({
                           role: "Agenda Contributor",
                         });
                         setEditMeeting(true);
-                        dispatch(meetingDetailsGlobalFlag(true));
+                        dispatch(meetingDetailsGlobalFlag(false));
                         dispatch(organizersGlobalFlag(false));
                         dispatch(agendaContributorsGlobalFlag(false));
                         dispatch(participantsGlobalFlag(false));
-                        dispatch(agendaGlobalFlag(false));
+                        dispatch(agendaGlobalFlag(true));
                         dispatch(meetingMaterialGlobalFlag(false));
                         dispatch(minutesGlobalFlag(false));
                         dispatch(proposedMeetingDatesGlobalFlag(false));
