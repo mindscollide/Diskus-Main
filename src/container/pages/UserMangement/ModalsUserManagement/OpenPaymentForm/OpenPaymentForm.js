@@ -46,6 +46,7 @@ const OpenPaymentForm = () => {
                   height="550px"
                   src={sourceLink}
                   sandbox="allow-scripts allow-same-origin allow-top-navigation allow-forms"
+                  //   sandbox="allow-scripts allow-same-origin"
                 ></iframe>
               )}
             </>

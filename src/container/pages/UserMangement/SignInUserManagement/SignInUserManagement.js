@@ -24,6 +24,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import {
   LoginFlowRoutes,
+  paymentInitiateMainApi,
   paymentStatusApi,
   signUpFlowRoutes,
 } from "../../../../store/actions/UserManagementActions";
@@ -114,6 +115,21 @@ const SignInUserManagement = () => {
 
   //Subscribe now
   const handleSubscribeNowButton = () => {
+    // let newData = {
+    //   OrganizationSubscriptionID: 21,
+    //   OrderDescription: "A Diskus License Order",
+    //   OrganizationBillingInformation: {
+    //     FirstName: "lb 1",
+    //     LastName: "admin",
+    //     Email: "lb1admin@yopmail.com",
+    //     Phone: "923452585768",
+    //     Address: "E96",
+    //     FK_WorldCountryID: 1,
+    //     City: "Karachi",
+    //     Zip: "10001",
+    //   },
+    // };
+    // dispatch(paymentInitiateMainApi(navigate, t, newData));
     localStorage.setItem("SignupFlowPageRoute", 1);
     dispatch(signUpFlowRoutes(1));
     navigate("/Signup");
