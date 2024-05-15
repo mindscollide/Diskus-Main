@@ -322,23 +322,3 @@ export function clearLocalStorageAtloginresponce(value, navigate) {
     navigate("/");
   }
 }
-
-//Export function for getting the URL payment action
-
-// This function extracts the 'action' parameter from the URL hash
-export function getActionFromURLPayment() {
-  // Get the full URL hash (part after the #), then split it at '?' if present
-  const hash = window.location.hash;
-  const queryStart = hash.indexOf("?");
-
-  if (queryStart === -1) {
-    // No query string present in the hash
-    return null;
-  }
-
-  // Create URLSearchParams from the substring after '?'
-  const queryParams = new URLSearchParams(hash.substring(queryStart + 1));
-
-  // Get the value of the 'action' parameter
-  return queryParams.get("action");
-}

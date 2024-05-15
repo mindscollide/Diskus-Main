@@ -43,18 +43,13 @@ const SignInUserManagement = () => {
     (state) => state
   );
 
+  const [paymentAction, setPaymentAction] = useState("");
+
   const urlParams = new URLSearchParams(window.location.search);
   const code = urlParams.get("code");
 
-  const [paymentAction, setPaymentAction] = useState("");
-
-  useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
-    const paymentActionValue = searchParams.get("Payment_action");
-    setPaymentAction(decodeURIComponent(paymentActionValue));
-  }, []);
-
-  console.log(paymentAction, "paymentActionpaymentActionpaymentAction");
+  const searchParams = new URLSearchParams(window.location.search);
+  const paymentActionValue = searchParams.get("Payment_action");
 
   //States For Email Validation Integration
   const [email, setEmail] = useState("");
@@ -142,13 +137,14 @@ const SignInUserManagement = () => {
       console.log("Code:", code);
       localStorage.setItem("Ms", code);
       window.close();
-    } else if (paymentAction) {
-      console.log("I am coming");
+    } else if (paymentActionValue) {
+      console.log("Code");
       let data = {
-        EncryptedString: paymentAction,
+        EncryptedString: paymentActionValue,
       };
       dispatch(paymentStatusApi(navigate, t, data));
     } else {
+      console.log("Code");
       emailRef.current.focus();
       let RememberEmailLocal = JSON.parse(
         localStorage.getItem("rememberEmail")
@@ -301,7 +297,7 @@ const SignInUserManagement = () => {
       <Container fluid className={styles["auth_container"]}>
         {code ? (
           <></>
-        ) : paymentAction ? (
+        ) : paymentActionValue ? (
           <></>
         ) : (
           <>
