@@ -48,7 +48,7 @@
 
 .Not_Vote_Button_Polls {
   width: 64px !important;
-  height: 20px !important;
+  height: auto !important;
   border-radius: 4px !important;
   border: none !important;
   font-size: 8px !important;
@@ -62,7 +62,7 @@
 
 .Not_Vote_Button_Polls:is(:hover, :active, :focus, :focus-visible) {
   width: 64px !important;
-  height: 20px !important;
+  height: auto !important;
   border-radius: 4px !important;
   border: none !important;
   font-size: 8px !important;

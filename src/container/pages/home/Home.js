@@ -1189,35 +1189,39 @@ const Home = () => {
   useEffect(() => {
     try {
       if (meetingIdReducer.MeetingStatusEnded !== null) {
-        let meetingID = meetingIdReducer.MeetingStatusEnded?.meeting?.pK_MDID;
-        console.log(meetingID, "meetingIDmeetingIDmeetingID");
-        console.log("upComingEvents");
-        setUpComingEvents((upcomingeventData) => {
-          return upcomingeventData.filter((meetingData) => {
-            return (
-              Number(meetingData.meetingDetails.pK_MDID) !== Number(meetingID)
-            );
+        try {
+          let meetingID = meetingIdReducer.MeetingStatusEnded?.meeting?.pK_MDID;
+          console.log(meetingID, "meetingIDmeetingIDmeetingID");
+          console.log("upComingEvents");
+          setUpComingEvents((upcomingeventData) => {
+            return upcomingeventData.filter((meetingData) => {
+              return (
+                Number(meetingData.meetingDetails.pK_MDID) !== Number(meetingID)
+              );
+            });
           });
-        });
-        setCalendarEvents((calendarEventData) => {
-          return calendarEventData.map((data) => {
-            if (Number(data.pK_MDID) === Number(meetingID)) {
-              // Assuming statusID is defined somewhere and you want to update it for this data item
-              data.statusID = 9;
-            }
-            return data; // Always return the data item
+          setCalendarEvents((calendarEventData) => {
+            return calendarEventData.map((data) => {
+              if (Number(data.pK_MDID) === Number(meetingID)) {
+                // Assuming statusID is defined somewhere and you want to update it for this data item
+                data.statusID = 9;
+              }
+              return data; // Always return the data item
+            });
           });
-        });
-        setEvents((event) =>
-          event.map((eventData, index) => {
-            if (eventData.pK_MDID === Number(meetingID)) {
-              eventData.status = 9;
-            }
-            return eventData;
-          })
-        );
-        // dispatch(getMeetingStatusfromSocket(null));
-        dispatch(mqttCurrentMeetingEnded(null));
+          setEvents((event) =>
+            event.map((eventData, index) => {
+              if (eventData.pK_MDID === Number(meetingID)) {
+                eventData.status = 9;
+              }
+              return eventData;
+            })
+          );
+          // dispatch(getMeetingStatusfromSocket(null));
+          dispatch(mqttCurrentMeetingEnded(null));
+        } catch (error) {
+          console.log(error);
+        }
       }
     } catch (error) {
       console.log(error);
