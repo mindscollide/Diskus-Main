@@ -1491,7 +1491,13 @@ const revokeMicrosoftToken = {
   RequestMethod: "ServiceManager.RevokeMicrosoftToken",
 };
 
+const ValidateEmailRelatedString = {
+  RequestMethod:
+    "ServiceManager.ValidateEncryptedStringMeetingRelatedEmailData",
+};
+
 export {
+  ValidateEmailRelatedString,
   revokeMicrosoftToken,
   leaveFolderSharingRM,
   leaveFileSharingRM,

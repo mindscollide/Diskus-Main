@@ -146,10 +146,18 @@ const initialState = {
   currentMeetingStatus: 0,
   mqttMeetingPrAdded: null,
   mqtMeetingPrRemoved: null,
+  validatencryptedstring: null,
+  emailRouteID: 0,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
   switch (action.type) {
+    case actions.EMAIL_ROUTE_ID: {
+      return {
+        ...state,
+        emailRouteID: action.response,
+      };
+    }
     case actions.CLEAR_MEETING_MESSAGES: {
       return {
         ...state,
@@ -2263,14 +2271,37 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.MQTT_MEETING_PAR_ADDED: {
       return {
         ...state,
-        mqttMeetingPrAdded: action.response
-      }
+        mqttMeetingPrAdded: action.response,
+      };
     }
     case actions.MQTT_MEETING_PAR_REMOVED: {
       return {
         ...state,
-        mqtMeetingPrRemoved: action.response
-      }
+        mqtMeetingPrRemoved: action.response,
+      };
+    }
+    // validatencryptedstring
+    case actions.VALIDATE_ENCRYPTEDSTRING_EMAIL_RELATED_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.VALIDATE_ENCRYPTEDSTRING_EMAIL_RELATED_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        validatencryptedstring: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.VALIDATE_ENCRYPTEDSTRING_EMAIL_RELATED_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        validatencryptedstring: null,
+        ResponseMessage: action.message,
+      };
     }
     default:
       return {

@@ -83,6 +83,7 @@ import {
   GetAllMeetingTypesNewFunction,
   JoinCurrentMeeting,
   LeaveCurrentMeeting,
+  validateStringEmailApi,
 } from "../../../store/actions/NewMeetingActions";
 import { mqttCurrentMeetingEnded } from "../../../store/actions/GetMeetingUserId";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
@@ -149,6 +150,7 @@ const NewMeeting = () => {
   let currentOrganization = Number(localStorage.getItem("organizationID"));
 
   let currentLanguage = localStorage.getItem("i18nextLng");
+  let AgCont = localStorage.getItem("AgCont");
   //Current User ID
   let currentUserId = localStorage.getItem("userID");
   //Current Organization
@@ -370,6 +372,55 @@ const NewMeeting = () => {
       dispatch(proposeNewMeetingPageFlag(false));
     }
   }, [location.state]);
+
+  useEffect(() => {
+    if (AgCont !== null) {
+      // dispatch(validateStringEmailApi(AgCont, navigate, t, 1));
+      // Usage example:
+      validateStringEmailApi(AgCont, navigate, t, 1, dispatch)
+        .then(async (result) => {
+          console.log("Result:", result);
+          // Handle the result here
+          let Data = {
+            MeetingID: Number(result.meetingID),
+          };
+          await dispatch(
+            GetAllMeetingDetailsApiFunc(
+              navigate,
+              t,
+              Data,
+              true,
+              setCurrentMeetingID,
+              setSceduleMeeting,
+              setDataroomMapFolderId,
+              0,
+              1
+            )
+          );
+          dispatch(scheduleMeetingPageFlag(true));
+          dispatch(viewMeetingFlag(false));
+          dispatch(meetingDetailsGlobalFlag(true));
+          dispatch(organizersGlobalFlag(false));
+          dispatch(agendaContributorsGlobalFlag(true));
+          dispatch(participantsGlobalFlag(false));
+          dispatch(agendaGlobalFlag(false));
+          dispatch(meetingMaterialGlobalFlag(false));
+          dispatch(minutesGlobalFlag(false));
+          dispatch(proposedMeetingDatesGlobalFlag(false));
+          dispatch(actionsGlobalFlag(false));
+          dispatch(pollsGlobalFlag(false));
+          dispatch(attendanceGlobalFlag(false));
+          dispatch(uploadGlobalFlag(false));
+          setEditMeeting(true);
+
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          // Handle errors here
+        });
+      console.log(AgCont, "AgContAgContAgContAgCont");
+    }
+  }, [AgCont]);
 
   //  Call all search meetings api
   useEffect(() => {
