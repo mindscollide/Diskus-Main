@@ -98,6 +98,7 @@ const ViewMeetingDetails = ({
   let currentUserID = Number(localStorage.getItem("userID"));
   let currentOrganization = Number(localStorage.getItem("organizationID"));
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+  let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
 
   let activeCall = JSON.parse(localStorage.getItem("activeCall"));
 
@@ -164,7 +165,13 @@ const ViewMeetingDetails = ({
 
   const callApiOnComponentMount = async () => {
     let Data = {
-      MeetingID: Number(advanceMeetingModalID),
+      MeetingID:
+        advanceMeetingModalID === "0" ||
+        advanceMeetingModalID === 0 ||
+        advanceMeetingModalID === null ||
+        advanceMeetingModalID === undefined
+          ? currentMeetingID
+          : Number(advanceMeetingModalID),
     };
     await dispatch(
       GetAllMeetingDetailsApiFunc(
@@ -368,7 +375,7 @@ const ViewMeetingDetails = ({
             label: getmeetingRecurrance.recurrance,
           },
           IsVideoCall: MeetingData.isVideo,
-          TalkGroupID: MeetingData.talkGroupID
+          TalkGroupID: MeetingData.talkGroupID,
         });
         let newDateTimeData = [];
         if (
@@ -508,7 +515,7 @@ const ViewMeetingDetails = ({
   };
 
   const groupChatInitiation = (data) => {
-    console.log("groupChatInitiationgroupChatInitiation", data)
+    console.log("groupChatInitiationgroupChatInitiation", data);
     if (
       data.TalkGroupID !== 0 &&
       talkStateData.AllUserChats.AllUserChatsData !== undefined &&
@@ -574,7 +581,7 @@ const ViewMeetingDetails = ({
     }
   }, [NewMeetingreducer.ResponseMessage]);
 
-  console.log("talkStateDatatalkStateData", talkStateData)
+  console.log("talkStateDatatalkStateData", talkStateData);
 
   return (
     <>

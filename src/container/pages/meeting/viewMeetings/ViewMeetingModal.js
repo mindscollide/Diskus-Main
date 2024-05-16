@@ -300,42 +300,50 @@ const ViewMeetingModal = ({
                     }
                     onClick={showMeetingDeitals}
                   />
-                  <Button
-                    text={t("Organizers")}
-                    className={
-                      organizers === true
-                        ? styles["Schedule_meetings_options_active"]
-                        : styles["Schedule_meetings_options"]
-                    }
-                    onClick={showOrganizers}
-                  />
-                  <Button
-                    text={t("Agenda-contributors")}
-                    className={
-                      agendaContributors === true
-                        ? styles["Schedule_meetings_options_active"]
-                        : styles["Schedule_meetings_options"]
-                    }
-                    onClick={showAgendaContributers}
-                  />
-                  <Button
-                    text={t("Participants")}
-                    className={
-                      participants === true
-                        ? styles["Schedule_meetings_options_active"]
-                        : styles["Schedule_meetings_options"]
-                    }
-                    onClick={showParticipants}
-                  />
-                  <Button
-                    text={t("Agenda-builder")}
-                    className={
-                      agenda === true
-                        ? styles["Schedule_meetings_options_active"]
-                        : styles["Schedule_meetings_options"]
-                    }
-                    onClick={showAgenda}
-                  />
+                  {editorRole.role === "Participant" ? null : (
+                    <Button
+                      text={t("Organizers")}
+                      className={
+                        organizers === true
+                          ? styles["Schedule_meetings_options_active"]
+                          : styles["Schedule_meetings_options"]
+                      }
+                      onClick={showOrganizers}
+                    />
+                  )}
+                  {editorRole.role === "Participant" ? null : (
+                    <Button
+                      text={t("Agenda-contributors")}
+                      className={
+                        agendaContributors === true
+                          ? styles["Schedule_meetings_options_active"]
+                          : styles["Schedule_meetings_options"]
+                      }
+                      onClick={showAgendaContributers}
+                    />
+                  )}
+                  {editorRole.role === "Participant" ? null : (
+                    <Button
+                      text={t("Participants")}
+                      className={
+                        participants === true
+                          ? styles["Schedule_meetings_options_active"]
+                          : styles["Schedule_meetings_options"]
+                      }
+                      onClick={showParticipants}
+                    />
+                  )}
+                  {editorRole.role === "Participant" ? null : (
+                    <Button
+                      text={t("Agenda-builder")}
+                      className={
+                        agenda === true
+                          ? styles["Schedule_meetings_options_active"]
+                          : styles["Schedule_meetings_options"]
+                      }
+                      onClick={showAgenda}
+                    />
+                  )}
                   <Button
                     text={t("Agenda-viewer")}
                     className={
@@ -346,70 +354,74 @@ const ViewMeetingModal = ({
                     onClick={showMeetingMaterial}
                   />
                   <>
-                    <Button
-                      text={t("Minutes")}
-                      className={
-                        minutes === true
-                          ? styles["Schedule_meetings_options_active"]
-                          : styles["Schedule_meetings_options"]
-                      }
-                      onClick={showMinutes}
-                      disableBtn={
-                        Number(editorRole.status) === 10 ||
-                        Number(editorRole.status) === 9
-                          ? false
-                          : true
-                      }
-                      // disableBtn={
-                      //   unPublish
-                      //     ? true
-                      //     : Number(editorRole.status) === 1 ||
-                      //       Number(editorRole.status) === 11 ||
-                      //       Number(editorRole.status) === 12
-                      //     ? true
-                      //     : editorRole.role === "Organizer" &&
-                      //       Number(editorRole.status) === 9
-                      //     ? false
-                      //     : Number(editorRole.status) === 10 &&
-                      //       editorRole.role === "Organizer"
-                      //     ? false
-                      //     : true
-                      // }
-                    />
-                    <Button
-                      text={t("Task")}
-                      className={
-                        actionsPage === true
-                          ? styles["Schedule_meetings_options_active"]
-                          : styles["Schedule_meetings_options"]
-                      }
-                      onClick={showActions}
-                      disableBtn={
-                        Number(editorRole.status) === 10 ||
-                        Number(editorRole.status) === 9
-                          ? false
-                          : true
-                      }
-                      // disableBtn={
-                      //   unPublish
-                      //     ? true
-                      //     : Number(editorRole.status) === 1 ||
-                      //       Number(editorRole.status) === 11 ||
-                      //       Number(editorRole.status) === 12
-                      //     ? true
-                      //     : (editorRole.role === "Organizer" ||
-                      //         editorRole.role === "Participant" ||
-                      //         editorRole.role === "Agenda Contributor") &&
-                      //       Number(editorRole.status) === 9
-                      //     ? false
-                      //     : Number(editorRole.status) === 10 &&
-                      //       (editorRole.role === "Participant" ||
-                      //         editorRole.role === "Agenda Contributor" ||
-                      //         editorRole.role === "Organizer")
-                      //     ? false
-                      //     : true
-                      // }
-                    />
+                    {editorRole.role === "Participant" ? null : (
+                      <Button
+                        text={t("Minutes")}
+                        className={
+                          minutes === true
+                            ? styles["Schedule_meetings_options_active"]
+                            : styles["Schedule_meetings_options"]
+                        }
+                        onClick={showMinutes}
+                        disableBtn={
+                          Number(editorRole.status) === 10 ||
+                          Number(editorRole.status) === 9
+                            ? false
+                            : true
+                        }
+                        // disableBtn={
+                        //   unPublish
+                        //     ? true
+                        //     : Number(editorRole.status) === 1 ||
+                        //       Number(editorRole.status) === 11 ||
+                        //       Number(editorRole.status) === 12
+                        //     ? true
+                        //     : editorRole.role === "Organizer" &&
+                        //       Number(editorRole.status) === 9
+                        //     ? false
+                        //     : Number(editorRole.status) === 10 &&
+                        //       editorRole.role === "Organizer"
+                        //     ? false
+                        //     : true
+                        // }
+                      />
+                    )}
+                    {editorRole.role === "Participant" ? null : (
+                      <Button
+                        text={t("Task")}
+                        className={
+                          actionsPage === true
+                            ? styles["Schedule_meetings_options_active"]
+                            : styles["Schedule_meetings_options"]
+                        }
+                        onClick={showActions}
+                        disableBtn={
+                          Number(editorRole.status) === 10 ||
+                          Number(editorRole.status) === 9
+                            ? false
+                            : true
+                        }
+                        // disableBtn={
+                        //   unPublish
+                        //     ? true
+                        //     : Number(editorRole.status) === 1 ||
+                        //       Number(editorRole.status) === 11 ||
+                        //       Number(editorRole.status) === 12
+                        //     ? true
+                        //     : (editorRole.role === "Organizer" ||
+                        //         editorRole.role === "Participant" ||
+                        //         editorRole.role === "Agenda Contributor") &&
+                        //       Number(editorRole.status) === 9
+                        //     ? false
+                        //     : Number(editorRole.status) === 10 &&
+                        //       (editorRole.role === "Participant" ||
+                        //         editorRole.role === "Agenda Contributor" ||
+                        //         editorRole.role === "Organizer")
+                        //     ? false
+                        //     : true
+                        // }
+                      />
+                    )}
                     <Button
                       text={t("Polls")}
                       className={
@@ -425,7 +437,7 @@ const ViewMeetingModal = ({
                           : true
                       }
                     />
-                    {Number(editorRole.status) === 10 ? (
+                    {Number(editorRole.status) === 10 && editorRole.role !== "Participant" ? (
                       <Button
                         text={t("Attendence")}
                         className={
@@ -506,6 +518,7 @@ const ViewMeetingModal = ({
                   advanceMeetingModalID={advanceMeetingModalID}
                   editorRole={editorRole}
                   setEdiorRole={setEdiorRole}
+                  setAdvanceMeetingModalID={setAdvanceMeetingModalID}
                 />
               )}
               {meetingMaterial && (

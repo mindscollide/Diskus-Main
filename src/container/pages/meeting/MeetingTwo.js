@@ -83,6 +83,7 @@ import {
   GetAllMeetingTypesNewFunction,
   JoinCurrentMeeting,
   LeaveCurrentMeeting,
+  validateStringEmailApi,
 } from "../../../store/actions/NewMeetingActions";
 import { mqttCurrentMeetingEnded } from "../../../store/actions/GetMeetingUserId";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
@@ -149,6 +150,7 @@ const NewMeeting = () => {
   let currentOrganization = Number(localStorage.getItem("organizationID"));
 
   let currentLanguage = localStorage.getItem("i18nextLng");
+  let AgCont = localStorage.getItem("AgCont");
   //Current User ID
   let currentUserId = localStorage.getItem("userID");
   //Current Organization
@@ -370,6 +372,55 @@ const NewMeeting = () => {
       dispatch(proposeNewMeetingPageFlag(false));
     }
   }, [location.state]);
+
+  useEffect(() => {
+    if (AgCont !== null) {
+      // dispatch(validateStringEmailApi(AgCont, navigate, t, 1));
+      // Usage example:
+      validateStringEmailApi(AgCont, navigate, t, 1, dispatch)
+        .then(async (result) => {
+          console.log("Result:", result);
+          // Handle the result here
+          let Data = {
+            MeetingID: Number(result.meetingID),
+          };
+          await dispatch(
+            GetAllMeetingDetailsApiFunc(
+              navigate,
+              t,
+              Data,
+              true,
+              setCurrentMeetingID,
+              setSceduleMeeting,
+              setDataroomMapFolderId,
+              0,
+              1
+            )
+          );
+          dispatch(scheduleMeetingPageFlag(true));
+          dispatch(viewMeetingFlag(false));
+          dispatch(meetingDetailsGlobalFlag(true));
+          dispatch(organizersGlobalFlag(false));
+          dispatch(agendaContributorsGlobalFlag(true));
+          dispatch(participantsGlobalFlag(false));
+          dispatch(agendaGlobalFlag(false));
+          dispatch(meetingMaterialGlobalFlag(false));
+          dispatch(minutesGlobalFlag(false));
+          dispatch(proposedMeetingDatesGlobalFlag(false));
+          dispatch(actionsGlobalFlag(false));
+          dispatch(pollsGlobalFlag(false));
+          dispatch(attendanceGlobalFlag(false));
+          dispatch(uploadGlobalFlag(false));
+          setEditMeeting(true);
+
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          // Handle errors here
+        });
+      console.log(AgCont, "AgContAgContAgContAgCont");
+    }
+  }, [AgCont]);
 
   //  Call all search meetings api
   useEffect(() => {
@@ -609,7 +660,6 @@ const NewMeeting = () => {
       PublishedMeetings: true,
     };
     await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
-
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.setItem("MeetingCurrentView", 1);
     localStorage.setItem("MeetingPageRows", 50);
@@ -628,7 +678,6 @@ const NewMeeting = () => {
       PublishedMeetings: false,
     };
     await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
-
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.setItem("MeetingCurrentView", 2);
     localStorage.setItem("MeetingPageRows", 50);
@@ -738,12 +787,7 @@ const NewMeeting = () => {
     }
   };
 
-  const handleEditMeeting = async (
-    id,
-    isQuick,
-    isAgendaContributor,
-    record
-  ) => {
+  const handleEditMeeting = async (id, isQuick, role, record) => {
     let Data = { MeetingID: Number(id) };
 
     if (isQuick) {
@@ -759,36 +803,71 @@ const NewMeeting = () => {
         )
       );
     } else if (isQuick === false) {
-      let Data = {
-        MeetingID: Number(id),
-      };
-      await dispatch(
-        GetAllMeetingDetailsApiFunc(
-          navigate,
-          t,
-          Data,
-          true,
-          setCurrentMeetingID,
-          setSceduleMeeting,
-          setDataroomMapFolderId,
-          0,
-          1
-        )
-      );
-      dispatch(scheduleMeetingPageFlag(true));
-      dispatch(viewMeetingFlag(false));
-      dispatch(meetingDetailsGlobalFlag(true));
-      dispatch(organizersGlobalFlag(false));
-      dispatch(agendaContributorsGlobalFlag(false));
-      dispatch(participantsGlobalFlag(false));
-      dispatch(agendaGlobalFlag(false));
-      dispatch(meetingMaterialGlobalFlag(false));
-      dispatch(minutesGlobalFlag(false));
-      dispatch(proposedMeetingDatesGlobalFlag(false));
-      dispatch(actionsGlobalFlag(false));
-      dispatch(pollsGlobalFlag(false));
-      dispatch(attendanceGlobalFlag(false));
-      dispatch(uploadGlobalFlag(false));
+      if (role === "Agenda Contributor") {
+        dispatch(scheduleMeetingPageFlag(true));
+        dispatch(viewMeetingFlag(false));
+        dispatch(meetingDetailsGlobalFlag(false));
+        dispatch(organizersGlobalFlag(false));
+        dispatch(agendaContributorsGlobalFlag(false));
+        dispatch(participantsGlobalFlag(false));
+        dispatch(agendaGlobalFlag(true));
+        dispatch(meetingMaterialGlobalFlag(false));
+        dispatch(minutesGlobalFlag(false));
+        dispatch(proposedMeetingDatesGlobalFlag(false));
+        dispatch(actionsGlobalFlag(false));
+        dispatch(pollsGlobalFlag(false));
+        dispatch(attendanceGlobalFlag(false));
+        dispatch(uploadGlobalFlag(false));
+        let Data = {
+          MeetingID: Number(id),
+        };
+        await dispatch(
+          GetAllMeetingDetailsApiFunc(
+            navigate,
+            t,
+            Data,
+            true,
+            setCurrentMeetingID,
+            setSceduleMeeting,
+            setDataroomMapFolderId,
+            0,
+            1,
+            role
+          )
+        );
+      } else {
+        let Data = {
+          MeetingID: Number(id),
+        };
+        await dispatch(
+          GetAllMeetingDetailsApiFunc(
+            navigate,
+            t,
+            Data,
+            true,
+            setCurrentMeetingID,
+            setSceduleMeeting,
+            setDataroomMapFolderId,
+            0,
+            1,
+            role
+          )
+        );
+        dispatch(scheduleMeetingPageFlag(true));
+        dispatch(viewMeetingFlag(false));
+        dispatch(meetingDetailsGlobalFlag(true));
+        dispatch(organizersGlobalFlag(false));
+        dispatch(agendaContributorsGlobalFlag(false));
+        dispatch(participantsGlobalFlag(false));
+        dispatch(agendaGlobalFlag(false));
+        dispatch(meetingMaterialGlobalFlag(false));
+        dispatch(minutesGlobalFlag(false));
+        dispatch(proposedMeetingDatesGlobalFlag(false));
+        dispatch(actionsGlobalFlag(false));
+        dispatch(pollsGlobalFlag(false));
+        dispatch(attendanceGlobalFlag(false));
+        dispatch(uploadGlobalFlag(false));
+      }
     } else {
     }
   };
@@ -807,25 +886,8 @@ const NewMeeting = () => {
       dataIndex: "title",
       key: "title",
       ellipsis: true,
-
       width: "115px",
       render: (text, record) => {
-        const isParticipant = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.pK_MARID === 2
-        );
-        const isAgendaContributor = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.pK_MARID === 4
-        );
-        const isPrimaryOrganizer = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.isPrimaryOrganizer === true
-        );
-
         return (
           <span
             className={styles["meetingTitle"]}
@@ -837,19 +899,18 @@ const NewMeeting = () => {
               );
               setEdiorRole({
                 status: record.status,
-                role: isParticipant
+                role: record.isParticipant
                   ? "Participant"
-                  : isAgendaContributor
+                  : record.isAgendaContributor
                   ? "Agenda Contributor"
                   : "Organizer",
-                isPrimaryOrganizer: isPrimaryOrganizer,
+                isPrimaryOrganizer: record.isPrimaryOrganizer,
               });
               dispatch(viewMeetingFlag(true));
               // setIsOrganisers(isOrganiser);
             }}
           >
             {text}
-            {/* {truncateString(text, 35)} */}
           </span>
         );
       },
@@ -861,9 +922,9 @@ const NewMeeting = () => {
       title: t("Status"),
       dataIndex: "status",
       key: "status",
-      width: "50px",
+      width: "90px",
       ellipsis: true,
-
+      align: "center",
       filters: [
         {
           text: t("Active"),
@@ -905,38 +966,25 @@ const NewMeeting = () => {
       title: t("Organizer"),
       dataIndex: "meetingAttendees",
       key: "meetingAttendees",
-      width: "70px",
+      width: "110px",
       sorter: (a, b) => {
-        const primaryOrganizerA = a.meetingAttendees.find(
-          (item) => item.isPrimaryOrganizer === true
-        );
-        const primaryOrganizerB = b.meetingAttendees.find(
-          (item) => item.isPrimaryOrganizer === true
-        );
-        const nameA = primaryOrganizerA?.user?.name || "";
-        const nameB = primaryOrganizerB?.user?.name || "";
+        const nameA = a.userDetails?.name || "";
+        const nameB = b.userDetails?.name || "";
         return nameA.localeCompare(nameB);
       },
       render: (text, record) => {
-        const primaryOrganizer = record.meetingAttendees.find(
-          (item) => item.isPrimaryOrganizer === true
-        );
-        return (
-          <span className={styles["orgaizer_value"]}>
-            {primaryOrganizer?.user?.name}
-          </span>
-        );
+        return <span className={styles["orgaizer_value"]}>{record?.host}</span>;
       },
     },
     {
       title: t("Date-time"),
       dataIndex: "dateOfMeeting",
       key: "dateOfMeeting",
-      width: "115px",
+      width: "155px",
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           return (
-            <span>
+            <span className="text-truncate d-block">
               {newTimeFormaterAsPerUTCFullDate(
                 record.dateOfMeeting + record.meetingStartTime
               )}
@@ -988,11 +1036,6 @@ const NewMeeting = () => {
       key: "Chat",
       width: "36px",
       render: (text, record) => {
-        const isOrganiser = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.pK_MARID === 1
-        );
         return (
           <>
             <Row>
@@ -1077,7 +1120,7 @@ const NewMeeting = () => {
                   ></span>
                 )} */}
                 {record.status === "9" &&
-                  isOrganiser &&
+                  record.isOrganizer &&
                   record.isQuickMeeting === false && (
                     <Tooltip placement="topLeft" title={t("Attendance")}>
                       <img
@@ -1100,28 +1143,8 @@ const NewMeeting = () => {
     {
       dataIndex: "Join",
       key: "Join",
-      width: "55px",
+      width: "75px",
       render: (text, record) => {
-        const isParticipant = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.pK_MARID === 2
-        );
-        const isAgendaContributor = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.pK_MARID === 4
-        );
-        const isOrganiser = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.pK_MARID === 1
-        );
-        const isPrimaryOrganizer = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.isPrimaryOrganizer === true
-        );
         const startMeetingRequest = {
           MeetingID: Number(record.pK_MDID),
           StatusID: 10,
@@ -1152,8 +1175,8 @@ const NewMeeting = () => {
         const minutesDifference = Math.floor(timeDifference / (1000 * 60));
 
         if (Number(record.status) === 1) {
-          if (isParticipant) {
-          } else if (isAgendaContributor) {
+          if (record.isParticipant) {
+          } else if (record.isAgendaContributor) {
           } else {
             if (
               // startMeetingButton === true
@@ -1211,7 +1234,7 @@ const NewMeeting = () => {
                         setViewAdvanceMeetingModal,
                         setAdvanceMeetingModalID,
                         setViewAdvanceMeetingModal,
-                        isPrimaryOrganizer
+                        record.isPrimaryOrganizer
                       )
                     );
                     localStorage.setItem("currentMeetingID", record.pK_MDID);
@@ -1223,7 +1246,7 @@ const NewMeeting = () => {
                     setEdiorRole({
                       status: 10,
                       role: "Organizer",
-                      isPrimaryOrganizer: isPrimaryOrganizer,
+                      isPrimaryOrganizer: record.isPrimaryOrganizer,
                     });
                   }}
                 />
@@ -1231,7 +1254,7 @@ const NewMeeting = () => {
             }
           }
         } else if (Number(record.status) === 10) {
-          if (isParticipant) {
+          if (record.isParticipant) {
             return (
               <Button
                 text={t("Join-meeting")}
@@ -1252,7 +1275,7 @@ const NewMeeting = () => {
                 }}
               />
             );
-          } else if (isAgendaContributor) {
+          } else if (record.isAgendaContributor) {
             return (
               <Button
                 text={t("Join-meeting")}
@@ -1273,7 +1296,7 @@ const NewMeeting = () => {
                 }}
               />
             );
-          } else if (isOrganiser) {
+          } else if (record.isOrganizer) {
             return (
               <Button
                 text={t("Join-meeting")}
@@ -1288,7 +1311,7 @@ const NewMeeting = () => {
                   setEdiorRole({
                     status: record.status,
                     role: "Organizer",
-                    isPrimaryOrganizer: isPrimaryOrganizer,
+                    isPrimaryOrganizer: record.isPrimaryOrganizer,
                   });
                   dispatch(viewMeetingFlag(true));
                 }}
@@ -1296,8 +1319,8 @@ const NewMeeting = () => {
             );
           }
         } else if (Number(record.status) === 2) {
-          if (isOrganiser) {
-          } else if (isParticipant) {
+          if (record.isOrganizer) {
+          } else if (record.isParticipant) {
           }
         } else {
         }
@@ -1308,30 +1331,6 @@ const NewMeeting = () => {
       key: "Edit",
       width: "33px",
       render: (text, record) => {
-        const isParticipant = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.pK_MARID === 2
-        );
-
-        const isOrganiser = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.pK_MARID === 1
-        );
-
-        const isAgendaContributor = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.pK_MARID === 4
-        );
-
-        const isPrimaryOrganizer = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.isPrimaryOrganizer === true
-        );
-
         const isQuickMeeting = record.isQuickMeeting;
         if (
           record.status === "8" ||
@@ -1341,7 +1340,7 @@ const NewMeeting = () => {
           return null;
         } else {
           if (isQuickMeeting) {
-            if (isOrganiser) {
+            if (record.isOrganizer) {
               if (record.status !== "10") {
                 return (
                   <>
@@ -1364,7 +1363,7 @@ const NewMeeting = () => {
                               handleEditMeeting(
                                 record.pK_MDID,
                                 record.isQuickMeeting,
-                                isAgendaContributor,
+                                "Organizer",
                                 record
                               )
                             }
@@ -1377,8 +1376,8 @@ const NewMeeting = () => {
               }
             }
           } else {
-            if (isParticipant) {
-            } else if (isOrganiser) {
+            if (record.isParticipant) {
+            } else if (record.isOrganizer) {
               return (
                 <>
                   <Row>
@@ -1400,13 +1399,14 @@ const NewMeeting = () => {
                             handleEditMeeting(
                               record.pK_MDID,
                               record.isQuickMeeting,
-                              isAgendaContributor,
+                              // record.isAgendaContributor,
+                              "Organizer",
                               record
                             );
                             setEdiorRole({
                               status: record.status,
                               role: "Organizer",
-                              isPrimaryOrganizer: isPrimaryOrganizer,
+                              isPrimaryOrganizer: record.isPrimaryOrganizer,
                             });
                             setEditMeeting(true);
                             dispatch(viewMeetingFlag(false));
@@ -1417,7 +1417,7 @@ const NewMeeting = () => {
                   </Row>
                 </>
               );
-            } else if (isAgendaContributor) {
+            } else if (record.isAgendaContributor) {
               return (
                 <>
                   <Row>
@@ -1439,13 +1439,14 @@ const NewMeeting = () => {
                             handleEditMeeting(
                               record.pK_MDID,
                               record.isQuickMeeting,
-                              isAgendaContributor,
+                              // record.isAgendaContributor,
+                              "Agenda Contributor",
                               record
                             );
                             setEdiorRole({
                               status: record.status,
                               role: "Agenda Contributor",
-                              isPrimaryOrganizer: isPrimaryOrganizer,
+                              isPrimaryOrganizer: record.isPrimaryOrganizer,
                             });
                             setEditMeeting(true);
                             dispatch(viewMeetingFlag(false));
@@ -1523,50 +1524,72 @@ const NewMeeting = () => {
         setTotalRecords(searchMeetings.totalRecords);
         setMinutesAgo(searchMeetings.meetingStartedMinuteAgo);
         if (Object.keys(searchMeetings.meetings).length > 0) {
-          let newRowData = [];
-          searchMeetings.meetings.map((data, index) => {
-            try {
-              newRowData.push({
-                dateOfMeeting: data.dateOfMeeting,
-                host: data.host,
-                isAttachment: data.isAttachment,
-                isChat: data.isChat,
-                isVideoCall: data.isVideoCall,
-                isQuickMeeting: data.isQuickMeeting,
-                meetingAgenda: data.meetingAgenda,
-                meetingAttendees: data.meetingAttendees,
-                meetingEndTime: data.meetingEndTime,
-                meetingStartTime: data.meetingStartTime,
-                meetingURL: data.meetingURL,
-                orignalProfilePictureName: data.orignalProfilePictureName,
-                pK_MDID: data.pK_MDID,
-                meetingPoll: {
-                  totalNoOfDirectors:
-                    data.proposedMeetingDetail.totalNoOfDirectors,
-                  totalNoOfDirectorsVoted:
-                    data.proposedMeetingDetail.totalNoOfDirectorsVoted,
-                },
-                responseDeadLine: data.responseDeadLine,
-                status: data.status,
-                title: data.title,
-                talkGroupID: data.talkGroupID,
-                key: index,
-                // meetingType: data.meetingTypeID,
-                meetingType:
-                  data.meetingTypeID === 1 && data.isQuickMeeting === true
-                    ? 0
-                    : data.meetingTypeID,
-              });
-            } catch {}
-          });
-          setRow(newRowData);
+          // });
+          setRow(searchMeetings.meetings);
+          // let newRowData = [];
+          // searchMeetings.meetings.map((data, index) => {
+          //   try {
+          //     newRowData.push({
+          //       dateOfMeeting: data.dateOfMeeting,
+          //       host: data.host,
+          //       isAttachment: data.isAttachment,
+          //       isChat: data.isChat,
+          //       isVideoCall: data.isVideoCall,
+          //       isQuickMeeting: data.isQuickMeeting,
+          //       meetingAgenda: data.meetingAgenda,
+          //       meetingAttendees: data.meetingAttendees,
+          //       meetingEndTime: data.meetingEndTime,
+          //       meetingStartTime: data.meetingStartTime,
+          //       meetingURL: data.meetingURL,
+          //       orignalProfilePictureName: data.orignalProfilePictureName,
+          //       pK_MDID: data.pK_MDID,
+          //       meetingPoll: {
+          //         totalNoOfDirectors:
+          //           data.proposedMeetingDetail.totalNoOfDirectors,
+          //         totalNoOfDirectorsVoted:
+          //           data.proposedMeetingDetail.totalNoOfDirectorsVoted,
+          //       },
+          //       responseDeadLine: data.responseDeadLine,
+          //       status: data.status,
+          //       title: data.title,
+          //       talkGroupID: data.talkGroupID,
+          //       key: index,
+          //       // meetingType: data.meetingTypeID,
+          //       meetingType:
+          //         data.meetingTypeID === 1 && data.isQuickMeeting === true
+          //           ? 0
+          //           : data.meetingTypeID,
+          //     });
+          //   } catch {}
+          // });
+          // setRow(newRowData);
         }
       } else {
         setRow([]);
       }
     } catch {}
   }, [searchMeetings]);
+  console.log(rows, "rowsrowsrowsrowsrowsrows");
 
+  useEffect(() => {
+    if (NewMeetingreducer.mqttMeetingPrAdded !== null) {
+    }
+    if (NewMeetingreducer.mqtMeetingPrRemoved !== null) {
+      try {
+        let meetingID = NewMeetingreducer.mqtMeetingPrRemoved.meetingID;
+        setRow((isRowData) => {
+          return isRowData.filter((newData, index) => {
+            return Number(newData.pK_MDID) !== Number(meetingID);
+          });
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [
+    NewMeetingreducer.mqttMeetingPrAdded,
+    NewMeetingreducer.mqtMeetingPrRemoved,
+  ]);
   useEffect(() => {
     try {
       if (
@@ -1813,6 +1836,42 @@ const NewMeeting = () => {
       });
     }
   }, [meetingIdReducer.allMeetingsSocketData]);
+  useEffect(() => {
+    if (
+      meetingIdReducer.CommitteeMeetingMQTT !== null &&
+      meetingIdReducer.CommitteeMeetingMQTT !== undefined
+    ) {
+      let meetingID = meetingIdReducer.CommitteeMeetingMQTT.meeting.pK_MDID;
+      let meetingData = meetingIdReducer.CommitteeMeetingMQTT.meeting;
+      setRow((rowsData) => {
+        return rowsData.map((item) => {
+          if (item.pK_MDID === meetingID) {
+            return meetingData;
+          } else {
+            return item; // Return the original item if the condition is not met
+          }
+        });
+      });
+    }
+  }, [meetingIdReducer.CommitteeMeetingMQTT]);
+  useEffect(() => {
+    if (
+      meetingIdReducer.GroupMeetingMQTT !== null &&
+      meetingIdReducer.GroupMeetingMQTT !== undefined
+    ) {
+      let meetingID = meetingIdReducer.GroupMeetingMQTT.meeting.pK_MDID;
+      let meetingData = meetingIdReducer.GroupMeetingMQTT.meeting;
+      setRow((rowsData) => {
+        return rowsData.map((item) => {
+          if (item.pK_MDID === meetingID) {
+            return meetingData;
+          } else {
+            return item; // Return the original item if the condition is not met
+          }
+        });
+      });
+    }
+  }, [meetingIdReducer.GroupMeetingMQTT]);
   useEffect(() => {
     if (
       ResponseMessages !== "" &&
@@ -2365,17 +2424,19 @@ const NewMeeting = () => {
                             }}
                             expandable={{
                               expandedRowRender: (record) => {
-                                return record.meetingAgenda.map((data) => (
-                                  <p className={styles["meeting-expanded-row"]}>
-                                    {data.objMeetingAgenda.title}
-                                  </p>
-                                ));
+                                return (
+                                  record.meetingAgenda.length > 0 &&
+                                  record.meetingAgenda.map((data) => (
+                                    <p
+                                      className={styles["meeting-expanded-row"]}
+                                    >
+                                      {data.objMeetingAgenda.title}
+                                    </p>
+                                  ))
+                                );
                               },
                               rowExpandable: (record) =>
-                                record.meetingAgenda !== null &&
-                                record.meetingAgenda.length > 0
-                                  ? true
-                                  : false,
+                                record.meetingAgenda.length > 0 ? true : false,
                             }}
                           />
                         ) : null}

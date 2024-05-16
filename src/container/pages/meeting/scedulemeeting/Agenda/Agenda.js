@@ -1594,75 +1594,80 @@ const Agenda = ({
             </Col>
           </Row> */}
           <section>
-            <DragDropContext
-              onDragEnd={(result) => onDragEnd(result, rows, setRows)}
-            >
-              {emptyStateRows === true &&
-              (editorRole.role === "Agenda Contributor" ||
-                editorRole.role === "Participant") ? null : (
-                <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className={styles["Scroller_Agenda"]}
-                  >
-                    <Droppable
-                      //  key={`main-agenda-${rows.id}`}
-                      //  droppableId={`main-agenda-${rows.id}`}
-                      droppableId="board"
-                      type="PARENT"
+            {editorRole.role === "Agenda Contributor" &&
+            rows[0].title === "" ? null : (
+              <DragDropContext
+                onDragEnd={(result) => onDragEnd(result, rows, setRows)}
+              >
+                {emptyStateRows === true &&
+                (editorRole.role === "Agenda Contributor" ||
+                  editorRole.role === "Participant") ? null : (
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className={styles["Scroller_Agenda"]}
                     >
-                      {(provided) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.droppableProps}
-                        >
-                          {rows.length > 0
-                            ? rows.map((data, index) => {
-                                return (
-                                  <>
-                                    <div
-                                      // className={styles["agenda-border-class"]}
-                                      className={
-                                        data.canView === false &&
-                                        editorRole.role === "Agenda Contributor"
-                                          ? "d-none"
-                                          : styles["agenda-border-class"]
-                                      }
-                                    >
-                                      <ParentAgenda
-                                        fileForSend={fileForSend}
-                                        setFileForSend={setFileForSend}
-                                        currentMeeting={currentMeeting}
-                                        data={data}
-                                        allUsersRC={allUsersRC}
-                                        setAllUsersRC={setAllUsersRC}
-                                        index={index}
-                                        allSavedPresenters={allSavedPresenters}
-                                        setAllSavedPresenters={
-                                          setAllSavedPresenters
+                      <Droppable
+                        //  key={`main-agenda-${rows.id}`}
+                        //  droppableId={`main-agenda-${rows.id}`}
+                        droppableId="board"
+                        type="PARENT"
+                      >
+                        {(provided) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.droppableProps}
+                          >
+                            {rows.length > 0
+                              ? rows.map((data, index) => {
+                                  return (
+                                    <>
+                                      <div
+                                        // className={styles["agenda-border-class"]}
+                                        className={
+                                          data.canView === false &&
+                                          editorRole.role ===
+                                            "Agenda Contributor"
+                                            ? "d-none"
+                                            : styles["agenda-border-class"]
                                         }
-                                        rows={rows}
-                                        setRows={setRows}
-                                        setMainAgendaRemovalIndex={
-                                          setMainAgendaRemovalIndex
-                                        }
-                                        agendaItemRemovedIndex={
-                                          agendaItemRemovedIndex
-                                        }
-                                        setAgendaItemRemovedIndex={
-                                          setAgendaItemRemovedIndex
-                                        }
-                                        setSubajendaRemoval={
-                                          setSubajendaRemoval
-                                        }
-                                        editorRole={editorRole}
-                                        setSelectedID={setSelectedID}
-                                      />
-                                    </div>
-                                    {/* Line Seperator */}
-                                    {/* <Row className="mt-3">
+                                      >
+                                        <ParentAgenda
+                                          fileForSend={fileForSend}
+                                          setFileForSend={setFileForSend}
+                                          currentMeeting={currentMeeting}
+                                          data={data}
+                                          allUsersRC={allUsersRC}
+                                          setAllUsersRC={setAllUsersRC}
+                                          index={index}
+                                          allSavedPresenters={
+                                            allSavedPresenters
+                                          }
+                                          setAllSavedPresenters={
+                                            setAllSavedPresenters
+                                          }
+                                          rows={rows}
+                                          setRows={setRows}
+                                          setMainAgendaRemovalIndex={
+                                            setMainAgendaRemovalIndex
+                                          }
+                                          agendaItemRemovedIndex={
+                                            agendaItemRemovedIndex
+                                          }
+                                          setAgendaItemRemovedIndex={
+                                            setAgendaItemRemovedIndex
+                                          }
+                                          setSubajendaRemoval={
+                                            setSubajendaRemoval
+                                          }
+                                          editorRole={editorRole}
+                                          setSelectedID={setSelectedID}
+                                        />
+                                      </div>
+                                      {/* Line Seperator */}
+                                      {/* <Row className="mt-3">
                                       <Col lg={12} md={12} sm={12}>
                                         <img
                                           draggable={false}
@@ -1677,22 +1682,25 @@ const Agenda = ({
                                         />
                                       </Col>
                                     </Row> */}
-                                  </>
-                                );
-                              })
-                            : null}
+                                    </>
+                                  );
+                                })
+                              : null}
 
-                          {provided.placeholder}
-                        </div>
-                      )}
-                    </Droppable>
-                  </Col>
-                </Row>
-              )}
-            </DragDropContext>
-            {emptyStateRows === true &&
-            (editorRole.role === "Agenda Contributor" ||
-              editorRole.role === "Participant") ? (
+                            {provided.placeholder}
+                          </div>
+                        )}
+                      </Droppable>
+                    </Col>
+                  </Row>
+                )}
+              </DragDropContext>
+            )}
+            {(emptyStateRows === true &&
+              (editorRole.role === "Agenda Contributor" ||
+                editorRole.role === "Participant")) ||
+            (editorRole.role === "Agenda Contributor" &&
+              rows[0].title === "") ? (
               <>
                 <Row>
                   <Col

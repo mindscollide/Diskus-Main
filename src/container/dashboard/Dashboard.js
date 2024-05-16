@@ -79,6 +79,8 @@ import {
   meetingAgendaContributorRemoved,
   meetingOrganizerAdded,
   meetingOrganizerRemoved,
+  meetingParticipantRemoved,
+  meetingParticipantAdded,
 } from "../../store/actions/NewMeetingActions";
 import {
   meetingAgendaStartedMQTT,
@@ -574,6 +576,42 @@ const Dashboard = () => {
                   data.payload.meetingTitle.substring(0, 100)
                 ),
               });
+            }
+            setNotificationID(id);
+          } else if (
+            data.payload.message.toLowerCase() ===
+            "MEETING_PARTICIPANT_DELETED".toLowerCase()
+          ) {
+            dispatch(meetingParticipantRemoved(data.payload));
+
+            if (data.viewable) {
+              // setNotification({
+              //   ...notification,
+              //   notificationShow: true,
+              //   message: changeMQTTJSONOne(
+              //     t("MeetingReminderNotification"),
+              //     "[Meeting Title]",
+              //     data.payload.meetingTitle.substring(0, 100)
+              //   ),
+              // });
+            }
+            setNotificationID(id);
+          } else if (
+            data.payload.message.toLowerCase() ===
+            "NEW_MEETING_PARTICIPANT_ADDED".toLowerCase()
+          ) {
+            dispatch(meetingParticipantAdded(data.payload));
+
+            if (data.viewable) {
+              // setNotification({
+              //   ...notification,
+              //   notificationShow: true,
+              //   message: changeMQTTJSONOne(
+              //     t("MeetingReminderNotification"),
+              //     "[Meeting Title]",
+              //     data.payload.meetingTitle.substring(0, 100)
+              //   ),
+              // });
             }
             setNotificationID(id);
           }
