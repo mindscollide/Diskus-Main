@@ -51,24 +51,23 @@ const PrivateRoutes = () => {
     // Action: Add Agenda Contributor
     if (currentUrl.includes("DisKus/Meeting?Addagendacontributor_action=")) {
       // Extract action parameter from URL
-      const parts = currentUrl.split("Addagendacontributor_action=")[1];
-      localStorage.setItem("AgCont", parts);
-      console.log(parts, "partspartsparts Addagendacontributor");
+      // const parts = currentUrl.split("Addagendacontributor_action=")[1];
+      // localStorage.setItem("AgCont", parts);
+      // console.log(parts, "partspartsparts Addagendacontributor");
       // Add action-specific logic here if needed
     }
 
     // Action: Update Agenda Contributor
     if (currentUrl.includes("DisKus/Meeting?Updateagendacontributor_action=")) {
       // Add action-specific logic here if needed
-      const parts = currentUrl.split("Updateagendacontributor_action=")[1];
+      // const parts = currentUrl.split("Updateagendacontributor_action=")[1];
     }
 
     // Action: Add Organizer
     if (currentUrl.includes("DisKus/Meeting/?Addorganizer_action=")) {
       // Extract action parameter from URL
-      const parts = currentUrl.split("Addorganizer_action=")[1];
-      localStorage.setItem("AdOrg", parts);
-
+      // const parts = currentUrl.split("Addorganizer_action=")[1];
+      // localStorage.setItem("AdOrg", parts);
       // Add action-specific logic here if needed
     }
 
@@ -112,10 +111,9 @@ const PrivateRoutes = () => {
 
     // Action: Poll Published
     if (currentUrl.includes("DisKus/polling?PollPublished_action=")) {
-      const parts = currentUrl.split("action=")[1];
-      console.log(parts, "currentUrlcurrentUrlcurrentUrl");
-      localStorage.setItem("poPub", parts);
-
+      // const parts = currentUrl.split("action=")[1];
+      // console.log(parts, "currentUrlcurrentUrlcurrentUrl");
+      // localStorage.setItem("poPub", parts);
       // Add action-specific logic here if needed
     }
     // Action: Poll Published
@@ -130,11 +128,15 @@ const PrivateRoutes = () => {
     }
 
     // Action: Poll Update
-    if (currentUrl.toLowerCase().includes("DisKus/polling?PollUpdate_action=".toLowerCase())) {
+    if (
+      currentUrl
+        .toLowerCase()
+        .includes("DisKus/polling?PollUpdate_action=".toLowerCase())
+    ) {
       // Add action-specific logic here if needed
-      const parts = currentUrl.split("action=")[1];
-      console.log(parts, "currentUrlcurrentUrlcurrentUrl");
-      localStorage.setItem("poPub", parts);
+      // const parts = currentUrl.split("action=")[1];
+      // console.log(parts, "currentUrlcurrentUrlcurrentUrl");
+      // localStorage.setItem("poPub", parts);
     }
     // Action: Poll Update
     if (currentUrl.includes("DisKus/groups?GroupPollUpdate_action=")) {

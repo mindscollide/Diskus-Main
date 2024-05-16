@@ -1646,10 +1646,7 @@ const NewMeeting = () => {
           const indexToUpdate = rows.findIndex(
             (obj) => Number(obj.pK_MDID) === Number(meetingData.pK_MDID)
           );
-          let newMeetingData = await mqttMeetingData(
-            meetingData,
-            1
-          );
+          let newMeetingData = await mqttMeetingData(meetingData, 1);
 
           if (indexToUpdate !== -1) {
             let updatedRows = [...rows];
@@ -1663,12 +1660,9 @@ const NewMeeting = () => {
         }
       };
 
-      callMQTT()
+      callMQTT();
     }
   }, [NewMeetingreducer.meetingStatusPublishedMqttData]);
-
-  console.log(rows, "rowsrowsrowsrowsrows");
-
   useEffect(() => {
     if (
       meetingIdReducer.MeetingStatusSocket !== null &&
