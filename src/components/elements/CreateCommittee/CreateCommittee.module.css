@@ -51,6 +51,10 @@ body[dir="rtl"] .Create-Committee-Head-Heading {
   color: #5a5a5a;
   font-size: 12px !important;
   font-weight: 600 !important;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: block;
+  overflow: hidden;
 }
 
 body[dir="rtl"] .name-create-Committee {
