@@ -818,6 +818,23 @@ const NewMeeting = () => {
         dispatch(pollsGlobalFlag(false));
         dispatch(attendanceGlobalFlag(false));
         dispatch(uploadGlobalFlag(false));
+        let Data = {
+          MeetingID: Number(id),
+        };
+        await dispatch(
+          GetAllMeetingDetailsApiFunc(
+            navigate,
+            t,
+            Data,
+            true,
+            setCurrentMeetingID,
+            setSceduleMeeting,
+            setDataroomMapFolderId,
+            0,
+            1,
+            role
+          )
+        );
       } else {
         let Data = {
           MeetingID: Number(id),
@@ -832,7 +849,8 @@ const NewMeeting = () => {
             setSceduleMeeting,
             setDataroomMapFolderId,
             0,
-            1
+            1,
+            role
           )
         );
         dispatch(scheduleMeetingPageFlag(true));
