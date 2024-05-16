@@ -84,6 +84,7 @@ import {
   getCurrentDateTimeUTC,
 } from "../../commen/functions/date_formater";
 import { getAllUnpublishedMeetingData } from "../../hooks/meetingResponse/response";
+import { GetAdvanceMeetingAgendabyMeetingID } from "./MeetingAgenda_action";
 
 const ClearMessegeMeetingdetails = () => {
   return {
@@ -2204,7 +2205,8 @@ const GetAllMeetingDetailsApiFunc = (
   setSceduleMeeting,
   setDataroomMapFolderId,
   viewValue,
-  flag
+  flag,
+  role
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
@@ -2233,7 +2235,8 @@ const GetAllMeetingDetailsApiFunc = (
               setSceduleMeeting,
               setDataroomMapFolderId,
               viewValue,
-              flag
+              flag,
+              role
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -2294,8 +2297,21 @@ const GetAllMeetingDetailsApiFunc = (
               );
               try {
                 setSceduleMeeting(true);
+                console.log("rolerole goes in this check");
                 // dispatch(scheduleMeetingPageFlag(true));
                 setCurrentMeetingID(Data.MeetingID);
+                if (role === "Agenda Contributor") {
+                  let agendaMeetingID = {
+                    MeetingID: Data.MeetingID,
+                  };
+                  dispatch(
+                    GetAdvanceMeetingAgendabyMeetingID(
+                      agendaMeetingID,
+                      navigate,
+                      t
+                    )
+                  );
+                }
               } catch {}
             } else if (
               response.data.responseResult.responseMessage
@@ -8168,7 +8184,7 @@ const validateStringEmailApi = (
                   t("Successfully")
                 )
               );
-              dispatch(emailRouteID(RouteNo))
+              dispatch(emailRouteID(RouteNo));
               resolve(response.data.responseResult.data);
             } else if (
               response.data.responseResult.responseMessage
