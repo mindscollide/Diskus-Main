@@ -39,7 +39,6 @@ filter blur background on dropdown click
 
 /*normalize bootstrap and other primary style*/
 * {
-  font-family: "Montserrat" !important;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -3737,7 +3736,7 @@ p.Disabled-Close {
 
 input[type="text"] {
   font-size: 12px !important;
-  font-weight: 500;
+  font-weight: 500 !important;
   box-shadow: none !important;
 }
 

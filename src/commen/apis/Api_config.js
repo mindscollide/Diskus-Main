@@ -1496,7 +1496,13 @@ const ValidateEmailRelatedString = {
     "ServiceManager.ValidateEncryptedStringMeetingRelatedEmailData",
 };
 
+const ValidateEmailRelatedStringPolls = {
+  RequestMethod:
+  "ServiceManager.ValidateEncryptedStringPollRelatedEmailData",
+}
+
 export {
+  ValidateEmailRelatedStringPolls,
   ValidateEmailRelatedString,
   revokeMicrosoftToken,
   leaveFolderSharingRM,

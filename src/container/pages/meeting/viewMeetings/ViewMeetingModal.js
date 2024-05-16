@@ -48,6 +48,7 @@ const ViewMeetingModal = ({
   console.log(editorRole, "editorRoleeditorRoleeditorRoleeditorRole");
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const routeID = useSelector((state) => state.NewMeetingreducer.emailRouteID)
   const [meetingDetails, setmeetingDetails] = useState(
     (editorRole.role === "Organizer" || editorRole.role === "Participant") &&
       Number(editorRole.status) === 10
@@ -83,7 +84,15 @@ const ViewMeetingModal = ({
     meetingIdReducer.meetingDetails,
     "meetingIdReducermeetingIdReducermeetingIdReducer"
   );
-
+  useEffect(() => {
+    if(routeID !== null ) {
+      if(routeID === 1) {
+        // Agenda Contributor Tab
+        setAgendaContributors(true)
+        setmeetingDetails(false)
+      }
+    }
+  }, [routeID])
   useEffect(() => {
     return () => {
       dispatch(cleareAllState());
