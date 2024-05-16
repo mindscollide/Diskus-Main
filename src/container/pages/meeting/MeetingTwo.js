@@ -119,6 +119,8 @@ import {
   clearResponseMessage,
 } from "../../../store/actions/MeetingOrganizers_action";
 import ProposedNewMeeting from "./scedulemeeting/ProposedNewMeeting/ProposedNewMeeting";
+import { getAllUnpublishedMeetingData } from "../../../hooks/meetingResponse/response";
+import { mqttMeetingData } from "../../../hooks/meetingResponse/response";
 
 const NewMeeting = () => {
   const { t } = useTranslation();
@@ -388,14 +390,15 @@ const NewMeeting = () => {
           setEdiorRole({
             ...editorRole,
             isPrimaryOrganizer: false,
-            role:    Number(result.attendeeId) === 2
-            ? "Participant"
-            : Number(result.attendeeId) === 4
-            ? "Agenda Contributor"
-            : "Organizer",
-            status: Number(result.meetingStatusId)
-          })
-          localStorage.removeItem("AgCont")
+            role:
+              Number(result.attendeeId) === 2
+                ? "Participant"
+                : Number(result.attendeeId) === 4
+                ? "Agenda Contributor"
+                : "Organizer",
+            status: Number(result.meetingStatusId),
+          });
+          localStorage.removeItem("AgCont");
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -1637,50 +1640,30 @@ const NewMeeting = () => {
       NewMeetingreducer.meetingStatusPublishedMqttData !== null &&
       NewMeetingreducer.meetingStatusPublishedMqttData !== undefined
     ) {
-      let meetingData = NewMeetingreducer.meetingStatusPublishedMqttData;
+      const callMQTT = async () => {
+        let meetingData = NewMeetingreducer.meetingStatusPublishedMqttData;
+        try {
+          const indexToUpdate = rows.findIndex(
+            (obj) => Number(obj.pK_MDID) === Number(meetingData.pK_MDID)
+          );
+          let newMeetingData = await mqttMeetingData(
+            meetingData,
+            1
+          );
 
-      try {
-        const indexToUpdate = rows.findIndex(
-          (obj) => Number(obj.pK_MDID) === Number(meetingData.pK_MDID)
-        );
-        let newMeetingData = {
-          dateOfMeeting: meetingData.dateOfMeeting,
-          host: meetingData.host,
-          isAttachment: meetingData.isAttachment,
-          isChat: meetingData.isChat,
-          isVideoCall: meetingData.isVideoCall,
-          isQuickMeeting: meetingData.isQuickMeeting,
-          meetingAgenda: meetingData.meetingAgenda,
-          meetingAttendees: meetingData.meetingAttendees,
-          meetingEndTime: meetingData.meetingEndTime,
-          meetingStartTime: meetingData.meetingStartTime,
-          meetingURL: meetingData.meetingURL,
-          orignalProfilePictureName: meetingData.orignalProfilePictureName,
-          pK_MDID: meetingData.pK_MDID,
-          meetingPoll: {
-            totalNoOfDirectors: 0,
-            totalNoOfDirectorsVoted: 0,
-          },
-          responseDeadLine: "",
-          status: meetingData.status,
-          title: meetingData.title,
-          talkGroupID: 0,
-          meetingType:
-            Number(meetingData.meetingType) === 1 &&
-            meetingData.isQuickMeeting === true
-              ? 0
-              : meetingData.meetingType,
-        };
-        if (indexToUpdate !== -1) {
-          let updatedRows = [...rows];
-          updatedRows[indexToUpdate] = newMeetingData;
-          setRow(updatedRows);
-        } else {
-          setRow([newMeetingData, ...rows]);
+          if (indexToUpdate !== -1) {
+            let updatedRows = [...rows];
+            updatedRows[indexToUpdate] = newMeetingData;
+            setRow(updatedRows);
+          } else {
+            setRow([newMeetingData, ...rows]);
+          }
+        } catch (error) {
+          console.log(error, "Meeting Created and Published");
         }
-      } catch (error) {
-        console.log(error, "Meeting Created and Published");
-      }
+      };
+
+      callMQTT()
     }
   }, [NewMeetingreducer.meetingStatusPublishedMqttData]);
 
