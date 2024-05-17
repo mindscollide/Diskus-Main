@@ -7,16 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import {
   ClearMessageAnnotations,
-  GetAnnotationsOfToDoAttachementMessageCleare,
-  addAnnotationsOnDataroomAttachement,
-  addAnnotationsOnNotesAttachement,
-  addAnnotationsOnResolutionAttachement,
-  addAnnotationsOnToDoAttachement,
-  getAnnotationsOfDataroomAttachement,
-  getAnnotationsOfNotesAttachement,
-  getAnnotationsOfResolutionAttachement,
-  getAnnotationsOfToDoAttachement,
-  setUserAnnotation,
 } from "../../../store/actions/webVieverApi_actions";
 import { useTranslation } from "react-i18next";
 import { Notification, Loader, Modal, Button, TextField } from "../index";
@@ -24,16 +14,10 @@ import { Col, Row } from "react-bootstrap";
 import DeleteIcon from "../../../assets/images/Icon material-delete.svg";
 import Select from "react-select";
 import {
-  addAnnoationSignatrueFlow,
-  addUpdateFieldValueApi,
-  createWorkflowApi,
   getWorkFlowByWorkFlowIdwApi,
-  saveSignatureDocumentApi,
   saveWorkflowApi,
-  sendDocumentIdApi,
 } from "../../../store/actions/workflow_actions";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
-import { convertDocumentintoBase64 } from "../../../commen/functions/generateBase64";
 const SignatureViewer = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -688,18 +672,18 @@ const SignatureViewer = () => {
             AnnotationString: xfdfString,
           };
           let newData = { ActorsFieldValuesList: convertData };
-          // dispatch(
-          //   saveWorkflowApi(
-          //     saveWorkFlowData,
-          //     navigate,
-          //     t,
-          //     setOpenAddParticipentModal,
-          //     1,
-          //     newData,
-          //     addAnnoatationofFilesAttachment,
-          //     saveSignatureDocument
-          //   )
-          // );
+          dispatch(
+            saveWorkflowApi(
+              saveWorkFlowData,
+              navigate,
+              t,
+              setOpenAddParticipentModal,
+              1,
+              newData,
+              addAnnoatationofFilesAttachment,
+              saveSignatureDocument
+            )
+          );
         };
 
         const handleClickPublishBtn = () => {
