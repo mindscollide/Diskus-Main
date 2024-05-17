@@ -64,6 +64,7 @@ import {
   endMeetingStatus,
   joinMeeting,
   leaveMeeting,
+  ValidateEmailRelatedString,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -82,6 +83,8 @@ import {
   createConvert,
   getCurrentDateTimeUTC,
 } from "../../commen/functions/date_formater";
+import { getAllUnpublishedMeetingData } from "../../hooks/meetingResponse/response";
+import { GetAdvanceMeetingAgendabyMeetingID } from "./MeetingAgenda_action";
 
 const ClearMessegeMeetingdetails = () => {
   return {
@@ -1008,11 +1011,23 @@ const searchNewUserMeeting = (navigate, Data, t) => {
                   "Meeting_MeetingServiceManager_SearchMeetings_01".toLowerCase()
                 )
             ) {
+              let getMeetingData = await getAllUnpublishedMeetingData(
+                response.data.responseResult.meetings,
+                1
+              );
+              console.log(
+                getMeetingData,
+                "getMeetingDatagetMeetingDatagetMeetingData"
+              );
+              let newMeetingData = {
+                meetingStartedMinuteAgo:
+                  response.data.responseResult.meetingStartedMinuteAgo,
+                meetings: getMeetingData,
+                pageNumbers: response.data.responseResult.pageNumbers,
+                totalRecords: response.data.responseResult.totalRecords,
+              };
               dispatch(
-                SearchMeeting_Success(
-                  response.data.responseResult,
-                  t("Record-found")
-                )
+                SearchMeeting_Success(newMeetingData, t("Record-found"))
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -2190,7 +2205,8 @@ const GetAllMeetingDetailsApiFunc = (
   setSceduleMeeting,
   setDataroomMapFolderId,
   viewValue,
-  flag
+  flag,
+  role
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
@@ -2219,7 +2235,8 @@ const GetAllMeetingDetailsApiFunc = (
               setSceduleMeeting,
               setDataroomMapFolderId,
               viewValue,
-              flag
+              flag,
+              role
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -2280,8 +2297,21 @@ const GetAllMeetingDetailsApiFunc = (
               );
               try {
                 setSceduleMeeting(true);
+                console.log("rolerole goes in this check");
                 // dispatch(scheduleMeetingPageFlag(true));
                 setCurrentMeetingID(Data.MeetingID);
+                if (role === "Agenda Contributor") {
+                  let agendaMeetingID = {
+                    MeetingID: Data.MeetingID,
+                  };
+                  dispatch(
+                    GetAdvanceMeetingAgendabyMeetingID(
+                      agendaMeetingID,
+                      navigate,
+                      t
+                    )
+                  );
+                }
               } catch {}
             } else if (
               response.data.responseResult.responseMessage
@@ -7998,8 +8028,208 @@ const currentMeetingStatus = (response) => {
     response: response,
   };
 };
+const meetingParticipantAdded = (response) => {
+  return {
+    type: actions.MQTT_MEETING_PAR_ADDED,
+    response: response,
+  };
+};
+const meetingParticipantRemoved = (response) => {
+  return {
+    type: actions.MQTT_MEETING_PAR_REMOVED,
+    response: response,
+  };
+};
+
+const validateStringEmail_init = () => {
+  return {
+    type: actions.VALIDATE_ENCRYPTEDSTRING_EMAIL_RELATED_INIT,
+  };
+};
+const validateStringEmail_success = (response, message) => {
+  return {
+    type: actions.VALIDATE_ENCRYPTEDSTRING_EMAIL_RELATED_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const validateStringEmail_fail = (message) => {
+  return {
+    type: actions.VALIDATE_ENCRYPTEDSTRING_EMAIL_RELATED_FAIL,
+    message: message,
+  };
+};
+
+// const validateStringEmailApi = (emailString, navigate, t, RouteNo) => {
+//   let Data = {
+//     EncryptedString: emailString,
+//   };
+//   let token = JSON.parse(localStorage.getItem("token"));
+//   return async (dispatch) => {
+//     await dispatch(validateStringEmail_init());
+//     let form = new FormData();
+//     form.append("RequestMethod", ValidateEmailRelatedString.RequestMethod);
+//     form.append("RequestData", JSON.stringify(Data));
+//     axios({
+//       method: "post",
+//       url: meetingApi,
+//       data: form,
+//       headers: {
+//         _token: token,
+//       },
+//     })
+//       .then(async (response) => {
+//         if (response.data.responseCode === 417) {
+//           await dispatch(RefreshToken(navigate, t));
+//           dispatch(validateStringEmailApi(emailString, navigate, t, RouteNo));
+//         } else if (response.data.responseCode === 200) {
+//           if (response.data.responseResult.isExecuted === true) {
+//             if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "Meeting_MeetingServiceManager_ValidateEncryptedStringMeetingRelatedEmailData_01".toLowerCase()
+//                 )
+//             ) {
+//               await dispatch(
+//                 validateStringEmail_success(
+//                   response.data.responseResult?.data,
+//                   t("Successfully")
+//                 )
+//               );
+//             } else if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "Meeting_MeetingServiceManager_ValidateEncryptedStringMeetingRelatedEmailData_02".toLowerCase()
+//                 )
+//             ) {
+//               dispatch(validateStringEmail_fail(t("Unsuccessful")));
+//             } else if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "Meeting_MeetingServiceManager_ValidateEncryptedStringMeetingRelatedEmailData_03".toLowerCase()
+//                 )
+//             ) {
+//               dispatch(validateStringEmail_fail(t("Something-went-wrong")));
+//             }
+//           } else {
+//             dispatch(validateStringEmail_fail(t("Something-went-wrong")));
+//           }
+//         } else {
+//           dispatch(validateStringEmail_fail(t("Something-went-wrong")));
+//         }
+//       })
+//       .catch((response) => {
+//         dispatch(validateStringEmail_fail("Something-went-wrong"));
+//       });
+//   };
+// };
+const validateStringEmailApi = (
+  emailString,
+  navigate,
+  t,
+  RouteNo,
+  dispatch
+) => {
+  return new Promise((resolve, reject) => {
+    let Data = {
+      EncryptedString: emailString,
+    };
+    let token = JSON.parse(localStorage.getItem("token"));
+
+    dispatch(validateStringEmail_init());
+
+    let form = new FormData();
+    form.append("RequestMethod", ValidateEmailRelatedString.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          // Retry the API call
+          resolve(
+            dispatch(
+              validateStringEmailApi(
+                emailString,
+                navigate,
+                t,
+                RouteNo,
+                dispatch
+              )
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ValidateEncryptedStringMeetingRelatedEmailData_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                validateStringEmail_success(
+                  response.data.responseResult?.data,
+                  t("Successfully")
+                )
+              );
+              dispatch(emailRouteID(RouteNo));
+              resolve(response.data.responseResult.data);
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ValidateEncryptedStringMeetingRelatedEmailData_02".toLowerCase()
+                )
+            ) {
+              dispatch(validateStringEmail_fail(t("Unsuccessful")));
+              resolve("Unsuccessful");
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ValidateEncryptedStringMeetingRelatedEmailData_03".toLowerCase()
+                )
+            ) {
+              dispatch(validateStringEmail_fail(t("Something-went-wrong")));
+              resolve("Something-went-wrong");
+            }
+          } else {
+            dispatch(validateStringEmail_fail(t("Something-went-wrong")));
+            resolve("Something-went-wrong");
+          }
+        } else {
+          dispatch(validateStringEmail_fail(t("Something-went-wrong")));
+          resolve("Something-went-wrong");
+        }
+      })
+      .catch((error) => {
+        dispatch(validateStringEmail_fail("Something-went-wrong"));
+        reject(error);
+      });
+  });
+};
+
+const emailRouteID = (id) => {
+  return {
+    type: actions.EMAIL_ROUTE_ID,
+    response: id,
+  };
+};
 
 export {
+  emailRouteID,
   clearResponseNewMeetingReducerMessage,
   getAllAgendaContributorApi,
   saveAgendaContributors,
@@ -8150,8 +8380,11 @@ export {
   meetingAgendaContributorRemoved,
   meetingOrganizerAdded,
   meetingOrganizerRemoved,
+  meetingParticipantAdded,
+  meetingParticipantRemoved,
   JoinCurrentMeeting,
   LeaveCurrentMeeting,
   LeaveCurrentMeetingOtherMenus,
   currentMeetingStatus,
+  validateStringEmailApi,
 };

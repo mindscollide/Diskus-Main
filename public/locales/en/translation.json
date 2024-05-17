@@ -2031,5 +2031,6 @@
   "UnSuccessful-response-code-from-edfa-pay": "UnSuccessful Response Code from Edfa Pay",
   "Not-an-authentic-user": "Not An Authentic User",
   "Payment-not-settled": "Payment Not Settled",
-  "Error-activating-organization-subscription-and-creator": "Error Activating Organization Subscription and Creator"
+  "Error-activating-organization-subscription-and-creator": "Error Activating Organization Subscription and Creator",
+  "Signature": "Signature"
 }

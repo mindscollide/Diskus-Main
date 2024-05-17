@@ -1566,7 +1566,13 @@ const paymentStatus = {
   RequestMethod: "ServiceManager.PaymentStatus",
 };
 
+const ValidateEmailRelatedString = {
+  RequestMethod:
+    "ServiceManager.ValidateEncryptedStringMeetingRelatedEmailData",
+};
+
 export {
+  ValidateEmailRelatedString,
   revokeMicrosoftToken,
   leaveFolderSharingRM,
   leaveFileSharingRM,
