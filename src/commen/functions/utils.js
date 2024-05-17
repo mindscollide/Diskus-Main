@@ -140,6 +140,7 @@ export function updateAdminRoutes(adminFeatures, LocalAdminRoutes) {
 // for enter posword state management and routes management
 // Export the handleLoginResponse function
 export async function handleLoginResponse(response) {
+  console.log(response, "handleLoginResponsehandleLoginResponse");
   try {
     if (response.organizationID) {
       localStorage.setItem("organizationID", response.organizationID);

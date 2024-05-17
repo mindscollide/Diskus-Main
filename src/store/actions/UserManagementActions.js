@@ -35,6 +35,10 @@ import {
   showUpgradeNowModal,
 } from "./UserMangementModalActions";
 import { userLogOutApiFunc } from "./Auth_Sign_Out";
+import {
+  clearLocalStorageAtloginresponce,
+  handleLoginResponse,
+} from "../../commen/functions/utils";
 
 const clearMessegesUserManagement = (response) => {
   return {
@@ -2007,12 +2011,15 @@ const paymentStatusApi = (navigate, t, data) => {
                   "ERM_AuthService_SignUpManager_PaymentStatus_01".toLowerCase()
                 )
             ) {
-              dispatch(
+              await handleLoginResponse(response.data.responseResult);
+              await dispatch(
                 paymentStatusSuccess(
                   response.data.responseResult,
                   t("Successful-organization-subscription-is-activated")
                 )
               );
+              navigate("/Diskus");
+              clearLocalStorageAtloginresponce(1, navigate);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
