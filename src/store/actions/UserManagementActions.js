@@ -1988,7 +1988,7 @@ const paymentStatusApi = (navigate, t, data) => {
     form.append("RequestData", JSON.stringify(data));
     axios({
       method: "post",
-      url: getAdminURLs,
+      url: authenticationApi,
       data: form,
       headers: {
         _token: token,
