@@ -84,6 +84,8 @@ import {
   JoinCurrentMeeting,
   LeaveCurrentMeeting,
   validateStringEmailApi,
+  meetingParticipantAdded,
+  meetingParticipantRemoved,
 } from "../../../store/actions/NewMeetingActions";
 import { mqttCurrentMeetingEnded } from "../../../store/actions/GetMeetingUserId";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
@@ -1559,7 +1561,51 @@ const NewMeeting = () => {
 
   useEffect(() => {
     if (NewMeetingreducer.mqttMeetingPrAdded !== null) {
-      console.log(NewMeetingreducer.mqttMeetingPrAdded, "mqttMeetingPrAddedmqttMeetingPrAdded")
+      console.log(
+        NewMeetingreducer.mqttMeetingPrAdded,
+        "mqttMeetingPrAddedmqttMeetingPrAdded"
+      );
+      let meetingData = NewMeetingreducer.mqttMeetingPrAdded;
+      let newData = {
+        dateOfMeeting: meetingData.dateOfMeeting,
+        host: "",
+        isAttachment: false,
+        isChat: false,
+        isVideoCall: false,
+        isQuickMeeting: meetingData.isQuickMeeting,
+        meetingAgenda: [],
+        isOrganizer: meetingData.attendeeRoleID === 1 ? true : false,
+        isAgendaContributor: meetingData.attendeeRoleID === 4 ? true : false,
+        isParticipant: meetingData.attendeeRoleID === 2 ? true : false,
+        talkGroupID: 0,
+        meetingType: meetingData.meetingTypeID,
+        meetingEndTime: meetingData.meetingEndTime,
+        meetingStartTime: meetingData.meetingStartTime,
+        pK_MDID: meetingData.meetingID,
+        meetingPoll: {
+          totalNoOfDirectors: 0,
+          totalNoOfDirectorsVoted: 0,
+        },
+        responseDeadLine: "",
+        status: String(meetingData.status),
+        title: meetingData.title,
+        key: 0,
+        isPrimaryOrganizer: meetingData.isPrimaryOrganizer,
+        userDetails: {
+          pK_UID: 1381,
+          name: "Tresmark User III",
+          designation: null,
+          orignalProfilePictureName: null,
+          displayProfilePictureName: null,
+          organization: null,
+          emailAddress: "tplco3@yopmail.com",
+          mobileNumber: null,
+          creationDate: null,
+          creationTime: null,
+        },
+      };
+      setRow([newData, ...rows]);
+      dispatch(meetingParticipantAdded(null));
     }
     if (NewMeetingreducer.mqtMeetingPrRemoved !== null) {
       try {
@@ -1569,6 +1615,7 @@ const NewMeeting = () => {
             return Number(newData.pK_MDID) !== Number(meetingID);
           });
         });
+        dispatch(meetingParticipantRemoved(null));
       } catch (error) {
         console.log(error);
       }
