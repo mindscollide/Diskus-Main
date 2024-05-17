@@ -460,7 +460,7 @@ const UnpublishedProposedMeeting = ({
                         handleEditMeeting(
                           record.pK_MDID,
                           record.isQuickMeeting,
-                          record.isAgendaContributor,
+                          // record.isAgendaContributor,
                           record
                         );
                         setEdiorRole({
@@ -497,7 +497,7 @@ const UnpublishedProposedMeeting = ({
                           handleEditMeeting(
                             record.pK_MDID,
                             record.isQuickMeeting,
-                            record.isAgendaContributor,
+                            // record.isAgendaContributor,
                             record
                           );
 

@@ -2299,6 +2299,8 @@ const Dashboard = () => {
               chatMessageClass="chat-messenger-head-video"
             />
           ) : null}
+          {/* <Modal show={true} size="md" setShow={true} /> */}
+
           {videoFeatureReducer.NormalizeVideoFlag === true ||
           videoFeatureReducer.MinimizeVideoFlag === true ||
           videoFeatureReducer.MaximizeVideoFlag === true ? (

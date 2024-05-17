@@ -4,6 +4,19 @@
   color: #6172d6;
 }
 
+/* .modal-class-width {
+  width: 1150px !important;
+} */
+
+.custom-modal-dialog {
+  max-width: 1470px; /* Set your desired max-width */
+  width: 100%; /* Adjust the width as needed */
+}
+
+.custom-modal-content {
+  width: 100%;
+}
+
 .DateButtonSceduleProposedMeeting {
   font-size: 12px !important;
   background: #fff !important;
@@ -77,7 +90,8 @@
 }
 
 .Date-Object-Detail {
-  padding: 4px 16px;
+  width: 200px;
+  padding: 4px 12px;
   font-size: 16px !important;
   border: 3px solid #f1f1f1;
   border-radius: 4px !important;
@@ -89,14 +103,14 @@
 }
 
 .Date-Object-Detail_active {
+  width: 200px;
   background: #ffffff !important;
   color: #ffffff !important;
   padding: 4px 16px;
-  font-size: 22px !important;
+  font-size: 17px !important;
   font-weight: 600 !important;
   border: 3px solid #6172d6;
   border-radius: 4px !important;
-  font-weight: 600 !important;
   cursor: pointer !important;
   user-select: none;
 }
@@ -243,6 +257,11 @@
   border: none !important;
   font-size: 12px !important;
   font-weight: 600 !important;
+}
+
+.date-time-column {
+  flex-direction: column !important;
+  justify-content: center !important;
 }
 
 /* .schedule-footer-class {
