@@ -570,7 +570,7 @@ const Polls = ({
       PollsReducer.ResponseMessage !== "" &&
       PollsReducer.ResponseMessage !== t("Data-available") &&
       PollsReducer.ResponseMessage !== t("No-data-available") &&
-      PollsReducer.ResponseMessage !== t("Record-found") &&
+      PollsReducer.ResponseMessage !== "" &&
       PollsReducer.ResponseMessage !== t("No-records-found") &&
       PollsReducer.ResponseMessage !== t("No-record-found")
     ) {
@@ -596,7 +596,7 @@ const Polls = ({
       NewMeetingreducer.ResponseMessage !== "" &&
       NewMeetingreducer.ResponseMessage !== t("Data-available") &&
       NewMeetingreducer.ResponseMessage !== t("No-data-available") &&
-      NewMeetingreducer.ResponseMessage !== t("Record-found") &&
+      NewMeetingreducer.ResponseMessage !== "" &&
       NewMeetingreducer.ResponseMessage !== t("No-records-found") &&
       NewMeetingreducer.ResponseMessage !== t("No-record-found")
     ) {

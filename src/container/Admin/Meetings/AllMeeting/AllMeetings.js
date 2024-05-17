@@ -614,7 +614,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     if (
       adminReducer.UpdateOrganizationMessageResponseMessage != "" &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
-        t("Record-found") &&
+        "" &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
         t("Data-available")
     ) {
@@ -638,7 +638,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     if (
       adminReducer.DeleteOrganizationMessageResponseMessage != "" &&
       adminReducer.DeleteOrganizationMessageResponseMessage !==
-        t("Record-found") &&
+        "" &&
       adminReducer.DeleteOrganizationMessageResponseMessage !==
         t("Data-available")
     ) {
@@ -662,7 +662,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   useEffect(() => {
     if (
       adminReducer.AllOrganizationResponseMessage != "" &&
-      adminReducer.AllOrganizationResponseMessage !== t("Record-found") &&
+      adminReducer.AllOrganizationResponseMessage !== "" &&
       adminReducer.AllOrganizationResponseMessage !== t("Data-available") &&
       adminReducer.AllOrganizationResponseMessage !==
         t("No-data-available-against-this-organization")
@@ -687,7 +687,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   useEffect(() => {
     if (
       adminReducer.ResponseMessage !== "" &&
-      adminReducer.ResponseMessage !== t("Record-found") &&
+      adminReducer.ResponseMessage !== "" &&
       adminReducer.ResponseMessage !== t("Data-available") &&
       adminReducer.ResponseMessage !==
         t("No-data-available-against-this-organization")

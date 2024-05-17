@@ -529,7 +529,7 @@ const Organization = () => {
   useEffect(() => {
     if (
       settingReducer.UpdateUserSettingResponseMessage !== "" &&
-      settingReducer.UpdateUserSettingResponseMessage !== t("Record-found")
+      settingReducer.UpdateUserSettingResponseMessage !== ""
     ) {
       setOpen({
         flag: true,

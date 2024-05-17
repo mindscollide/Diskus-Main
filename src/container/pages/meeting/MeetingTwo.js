@@ -1892,7 +1892,7 @@ const NewMeeting = () => {
     if (
       ResponseMessages !== "" &&
       ResponseMessages !== undefined &&
-      ResponseMessages !== t("Record-found") &&
+      ResponseMessages !== "" &&
       ResponseMessages !== t("No-records-found") &&
       ResponseMessages !== t("No-record-found")
     ) {
@@ -1910,7 +1910,7 @@ const NewMeeting = () => {
       ResponseMessage !== "" &&
       ResponseMessage !== t("No-record-found") &&
       ResponseMessage !== t("No-records-found") &&
-      ResponseMessage !== t("Record-found") &&
+      ResponseMessage !== "" &&
       ResponseMessage !== t("List-updated-successfully") &&
       ResponseMessage !== t("No-data-available") &&
       ResponseMessage !== t("Successful") &&

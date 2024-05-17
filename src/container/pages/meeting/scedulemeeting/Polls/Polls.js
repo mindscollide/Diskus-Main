@@ -555,7 +555,7 @@ const Polls = ({
     if (
       NewMeetingreducer.ResponseMessage !== "" &&
       NewMeetingreducer.ResponseMessage !== t("Record-not-found") &&
-      NewMeetingreducer.ResponseMessage !== t("Record-found")
+      NewMeetingreducer.ResponseMessage !== ""
     ) {
       setOpen({
         ...open,

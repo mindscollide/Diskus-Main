@@ -742,7 +742,7 @@ const Polling = () => {
   useEffect(() => {
     if (
       PollsReducer.ResponseMessage !== "" &&
-      PollsReducer.ResponseMessage !== t("Record-found") &&
+      PollsReducer.ResponseMessage !== "" &&
       PollsReducer.ResponseMessage !== t("No-records-found") &&
       PollsReducer.ResponseMessage !== t("No-data-available")
     ) {

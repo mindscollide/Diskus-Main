@@ -3231,7 +3231,7 @@ const DataRoom = () => {
       DataRoomReducer.ResponseMessage !==
         t("No-folder-exist-against-this-name") &&
       DataRoomReducer.ResponseMessage !== t("No-duplicate-found") &&
-      DataRoomReducer.ResponseMessage !== t("Record-found") &&
+      DataRoomReducer.ResponseMessage !== "" &&
       DataRoomReducer.ResponseMessage !== t("Document-uploaded-successfully") &&
       DataRoomReducer.ResponseMessage !== t("Files-saved-successfully")
     ) {

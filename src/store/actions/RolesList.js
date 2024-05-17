@@ -57,7 +57,7 @@ const GetAllOrganizationRoles = (navigate, t) => {
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_GetAllOrganizationRoles_01"
           ) {
-            let newError = t("Record-Found");
+            let newError = "";
             dispatch(
               getAllOrganizationRolesSuccess(
                 response.data.responseResult.organizationRoles,
@@ -137,7 +137,7 @@ const GetAllUserRoles = (navigate, t) => {
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_GetAllUserRoles_01"
           ) {
-            let newError = t("Record-Found");
+            let newError = "";
             await dispatch(
               getAllUserRolesSuccess(
                 response.data.responseResult.userRoles,
@@ -217,7 +217,7 @@ const GetOrganizationByID = (navigate, object, t) => {
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_GetOrganizationByID_01"
           ) {
-            let newError = t("Record-Found");
+            let newError = "";
             await dispatch(
               getOrganizationByIDSuccess(
                 response.data.responseResult.organizationDetails,
@@ -298,7 +298,7 @@ const GetAllUserStatus = (navigate, t) => {
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_GetAllUserStatus_01"
           ) {
-            let newError = t("Record-Found");
+            let newError = "";
             await dispatch(
               getAllUserStatusSuccess(
                 response.data.responseResult.userRoles,

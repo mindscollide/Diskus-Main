@@ -152,7 +152,7 @@ const GetTodoListByUser = (navigate, data, t) => {
               await dispatch(
                 getTodoListSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -389,7 +389,7 @@ const GetAllAssigneesToDoList = (navigate, object, t, check) => {
               await dispatch(
                 GetAllAssigneesSuccess(
                   response.data.responseResult.user,
-                  t("Record-found")
+                  ""
                 )
               );
               dispatch(TaskLoader(false));
@@ -484,7 +484,7 @@ const ViewToDoList = (
                   "ToDoList_ToDoListServiceManager_GetToDoListByToDoListID_01".toLowerCase()
                 )
             ) {
-              await dispatch(ShowNotification(t("Record-found")));
+              await dispatch(ShowNotification(""));
               dispatch(emptyCommentState());
 
               await dispatch(ViewToDoSuccess(response.data.responseResult));
@@ -639,7 +639,7 @@ const searchTodoListByUser = (navigate, data, t) => {
               await dispatch(
                 getTodoListSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -726,7 +726,7 @@ const GetWeeklyToDoCount = (navigate, data, t) => {
               await dispatch(
                 getWeeklyToDoCountSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
               await dispatch(SetSpinnerFalse());
@@ -830,7 +830,7 @@ const SearchTodoListApi = (navigate, searchData, page, size, t) => {
               dispatch(
                 searchTodoList_success(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (

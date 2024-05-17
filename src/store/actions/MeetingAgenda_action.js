@@ -107,7 +107,7 @@ const GetAgendaVotingDetails = (Data, navigate, t) => {
               dispatch(
                 getAgendaVotingDetails_success(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -190,7 +190,7 @@ const GetAllVotingResultDisplay = (navigate, t) => {
               dispatch(
                 getAllVotingResultDisplay_success(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -391,7 +391,7 @@ const GetAgendaAndVotingInfo = (Data, navigate, t) => {
               dispatch(
                 getAgendaAndVotingInfo_success(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -561,7 +561,7 @@ const ViewAgendaVotingResults = (Data, navigate, t) => {
               dispatch(
                 viewAgendaVotingResults_success(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -672,14 +672,14 @@ const GetAdvanceMeetingAgendabyMeetingID = (
                 dispatch(
                   getAdvanceMeetingAgendabyMeetingID_success(
                     response.data.responseResult,
-                    t("Record-found")
+                    ""
                   )
                 );
               } else {
                 dispatch(
                   getAdvanceMeetingAgendabyMeetingID_success(
                     response.data.responseResult,
-                    t("Record-found")
+                    ""
                   )
                 );
               }
@@ -1750,7 +1750,7 @@ const GetAllMeetingForAgendaImport = (Data, navigate, t) => {
               dispatch(
                 getAllMeetingForAgendaImport_success(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -1985,7 +1985,7 @@ const GetMeetingParticipantsAgenda = (Data, navigate, t) => {
               dispatch(
                 getMeetingParticipantsAgenda_success(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (

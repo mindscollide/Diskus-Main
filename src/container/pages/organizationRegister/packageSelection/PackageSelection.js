@@ -175,7 +175,7 @@ const PackageSelection = () => {
     if (
       GetSubscriptionPackage.ResponseMessage !== "" &&
       GetSubscriptionPackage.ResponseMessage !== undefined &&
-      GetSubscriptionPackage.ResponseMessage !== t("Record-found") &&
+      GetSubscriptionPackage.ResponseMessage !== "" &&
       GetSubscriptionPackage.ResponseMessage !== t("Data-available")
     ) {
       setOpen({
@@ -198,7 +198,7 @@ const PackageSelection = () => {
   useEffect(() => {
     if (
       Authreducer.VerifyOTPEmailResponseMessage !== "" &&
-      Authreducer.VerifyOTPEmailResponseMessage !== t("Record-found") &&
+      Authreducer.VerifyOTPEmailResponseMessage !== "" &&
       Authreducer.VerifyOTPEmailResponseMessage !== t("Data-available")
     ) {
       setOpen({
@@ -217,7 +217,7 @@ const PackageSelection = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.EnterPasswordResponseMessage !== "" &&
-      Authreducer.EnterPasswordResponseMessage !== t("Record-found") &&
+      Authreducer.EnterPasswordResponseMessage !== "" &&
       Authreducer.EnterPasswordResponseMessage !== t("Data-available")
     ) {
       setOpen({
@@ -236,7 +236,7 @@ const PackageSelection = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.OrganizationCreateResponseMessage !== "" &&
-      Authreducer.OrganizationCreateResponseMessage !== t("Record-found") &&
+      Authreducer.OrganizationCreateResponseMessage !== "" &&
       Authreducer.OrganizationCreateResponseMessage !== t("Data-available")
     ) {
       setOpen({
@@ -255,7 +255,7 @@ const PackageSelection = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.CreatePasswordResponseMessage !== "" &&
-      Authreducer.CreatePasswordResponseMessage !== t("Record-found") &&
+      Authreducer.CreatePasswordResponseMessage !== "" &&
       Authreducer.CreatePasswordResponseMessage !== t("Data-available")
     ) {
       setOpen({
@@ -274,7 +274,7 @@ const PackageSelection = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.GetSelectedPackageResponseMessage !== "" &&
-      Authreducer.GetSelectedPackageResponseMessage !== t("Record-found") &&
+      Authreducer.GetSelectedPackageResponseMessage !== "" &&
       Authreducer.GetSelectedPackageResponseMessage !== t("Data-available")
     ) {
       setOpen({
@@ -293,7 +293,7 @@ const PackageSelection = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.EmailValidationResponseMessage !== "" &&
-      Authreducer.EmailValidationResponseMessage !== t("Record-found") &&
+      Authreducer.EmailValidationResponseMessage !== "" &&
       Authreducer.EmailValidationResponseMessage !== t("Data-available")
     ) {
       setOpen({

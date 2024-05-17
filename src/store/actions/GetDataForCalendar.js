@@ -76,7 +76,7 @@ const getCalendarDataResponse = (navigate, t, data, flag) => {
                   getCalendarDataSuccess(
                     response.data.responseResult,
                     false,
-                    t("Record-found")
+                    ""
                   )
                 );
                 dispatch(calendarLoader(false));
@@ -157,7 +157,7 @@ const getCalendarDataResponseMQTT = (navigate, t, data, flag) => {
                   getCalendarDataSuccess(
                     response.data.responseResult,
                     false,
-                    t("Record-found")
+                    ""
                   )
                 );
                 // dispatch(calendarLoader(false));
