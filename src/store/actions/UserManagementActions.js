@@ -2011,14 +2011,16 @@ const paymentStatusApi = (navigate, t, data) => {
                   "ERM_AuthService_SignUpManager_PaymentStatus_01".toLowerCase()
                 )
             ) {
-              await handleLoginResponse(response.data.responseResult);
+              await handleLoginResponse(
+                response.data.responseResult.userAuthData
+              );
               await dispatch(
                 paymentStatusSuccess(
                   response.data.responseResult,
                   t("Successful-organization-subscription-is-activated")
                 )
               );
-              navigate("/Diskus");
+              navigate("/Admin/ManageUsers");
               clearLocalStorageAtloginresponce(1, navigate);
             } else if (
               response.data.responseResult.responseMessage
