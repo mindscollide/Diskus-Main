@@ -309,7 +309,19 @@ const SignInUserManagement = () => {
                 className="d-flex justify-content-center"
               >
                 <span className={styles["PaymentSucessfull"]}>
-                  Payment Suscessful
+                  Payment Successful
+                </span>
+              </Col>
+            </Row>
+            <Row className="mt-2">
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-center"
+              >
+                <span className={styles["PaymentSucessfullWait"]}>
+                  Please Wait .......
                 </span>
               </Col>
             </Row>

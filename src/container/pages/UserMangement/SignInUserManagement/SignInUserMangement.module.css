@@ -66,6 +66,12 @@ body[dir="rtl"] .Remember-Email-text {
   font-size: 30px !important;
 }
 
+.PaymentSucessfullWait {
+  font-weight: 600 !important;
+  color: #6172d6 !important;
+  font-size: 20px !important;
+}
+
 body[dir="rtl"] .Next_button_EmailVerify {
   font-weight: 600 !important;
 }
