@@ -5,9 +5,7 @@ import PlusSignSignatureFlow from "../../../assets/images/plus-sign-signatureflo
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import {
-  ClearMessageAnnotations,
-} from "../../../store/actions/webVieverApi_actions";
+import { ClearMessageAnnotations } from "../../../store/actions/webVieverApi_actions";
 import { useTranslation } from "react-i18next";
 import { Notification, Loader, Modal, Button, TextField } from "../index";
 import { Col, Row } from "react-bootstrap";
@@ -79,7 +77,6 @@ const SignatureViewer = () => {
   const signerDataRef = useRef(signerData);
   const userAnnotationsRef = useRef(userAnnotations);
   const pdfResponceDataRef = useRef(pdfResponceData.xfdfData);
-  const removedAnnotationsRef = useRef(pdfResponceData.removedAnnotations);
   const participantsRef = useRef(participants);
 
   // ===== this use for current state update get =====//
@@ -94,10 +91,6 @@ const SignatureViewer = () => {
   useEffect(() => {
     pdfResponceDataRef.current = pdfResponceData.xfdfData;
   }, [pdfResponceData]);
-
-  useEffect(() => {
-    removedAnnotationsRef.current = pdfResponceData.removedAnnotations;
-  }, [removedAnnotationsRef]);
 
   useEffect(() => {
     participantsRef.current = participants;
@@ -132,12 +125,13 @@ const SignatureViewer = () => {
     if (getAllFieldsByWorkflowID !== null) {
       try {
         let newFieldsData = [];
+        let revertedData;
         if (
           getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails.bundleDetails
             .length > 0
         ) {
           getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails.bundleDetails.forEach(
-            (fieldsData, index) => {
+            (fieldsData) => {
               newFieldsData.push({
                 pK_WorkFlowActionableBundle_ID:
                   fieldsData.pK_WorkFlowActionableBundle_ID,
@@ -156,6 +150,23 @@ const SignatureViewer = () => {
               });
             }
           );
+          function revert(data) {
+            return data.map((item) => {
+              const xmlField = item.xmlField
+                .split("_#_")
+                .map((str) => JSON.parse(str));
+              return {
+                actorID: item.actorID,
+                userID: item.userID,
+                actorColor: item.actorColor,
+                xml: xmlField,
+              };
+            });
+          }
+          revertedData = revert(
+            getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails.listOfFields
+          );
+          setUserAnnotations(revertedData);
           setFieldsData(newFieldsData);
         }
       } catch {}
@@ -170,25 +181,9 @@ const SignatureViewer = () => {
         let bundleModels = getWorkfFlowByFileId.workFlow.bundleModels;
         if (bundleModels?.length > 0) {
           let listOfUsers = [];
-          let selectedUserList = [];
           let signersData = [];
-          const extractXML = (ID) => {
-            const xmlData = userAnnotations.find(
-              (userAnnotData) => Number(userAnnotData.userID) === Number(ID)
-            );
-
-            if (xmlData) {
-              return xmlData.xml;
-            } else {
-              return []; // or any appropriate default value if no XML data is found
-            }
-          };
           bundleModels.forEach((users, index) => {
             users.actors.forEach((usersData, index) => {
-              // Find matching user in FieldsData to get actorColor
-              const fieldData = FieldsData.find(
-                (field) => field.userID === usersData.pK_UID
-              );
               listOfUsers.push({
                 name: usersData.name,
                 pk_UID: usersData.pK_UID,
@@ -198,20 +193,12 @@ const SignatureViewer = () => {
                 EmailAddress: usersData.emailAddress,
                 userID: usersData.pK_UID,
               });
-              // FieldsData?.find()
-              selectedUserList.push({
-                xml: extractXML(usersData.pK_UID),
-                userID: usersData.pK_UID,
-                actorID: usersData.fK_WorkFlowActor_ID,
-                actorColor: fieldData ? fieldData.actorColor : "#000000",
-              });
             });
           });
           setSignerData(signersData);
           setParticipants(listOfUsers);
           setLastParticipants(listOfUsers);
           setSelectedUser(listOfUsers[0].pk_UID);
-          setUserAnnotations(selectedUserList);
         } else {
           setOpenAddParticipentModal(true);
         }
@@ -347,96 +334,53 @@ const SignatureViewer = () => {
   }
   // ==== End ===//
 
-  // ===Check if any user has non-empty xml array === //
-  const handlerForCheckAllAnnotationsEmptyOrNot = (userAnnotations) => {
-    for (const user of userAnnotations) {
-      if (Object.keys(user.xml).length > 0) {
-        return false;
-      }
-    }
-    return true;
-  };
-  // ==== End ===//
-
   // this will generate my xfdf files for user base and send into AddUpdateFieldValue
   const updateXFDF = (action, xmlString, userSelectID, userAnnotations) => {
     try {
       let userSelect = parseInt(userSelectID);
+      // Iterate over each user's annotations
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(xmlString, "text/xml");
 
-      // if (handlerForCheckAllAnnotationsEmptyOrNot(userAnnotations)) {
-      //   const parser = new DOMParser();
-      //   const xmlDoc = parser.parseFromString(xmlString, "text/xml");
-
-      //   if (
-      //     xmlDoc.getElementsByTagName("ffield").length > 0 &&
-      //     xmlDoc.getElementsByTagName("widget").length > 0
-      //   ) {
-      //     const ffield = xmlDoc.getElementsByTagName("ffield")[0].outerHTML;
-      //     const widget = xmlDoc.getElementsByTagName("widget")[0].outerHTML;
-      //     setUserAnnotations((prevState) => {
-      //       const updatedAnnotations = prevState.map((user) => {
-      //         if (user.userID === userSelect) {
-      //           return {
-      //             ...user,
-      //             xml: [{ ffield: ffield, widget: widget }],
-      //           };
-      //         }
-      //         return user;
-      //       });
-      //       console.log("userAnnotations", updatedAnnotations);
-      //       return updatedAnnotations;
-      //     });
-      //   }
-      // } else {
-        // Iterate over each user's annotations
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(xmlString, "text/xml");
-
-        xmlDoc.querySelectorAll("widget").forEach((widget) => {
-          const widgetName = widget.getAttribute("name");
-          const ffieldName = widget.getAttribute("field");
-          let widgetFound = false;
-          userAnnotations.forEach((user) => {
-            user.xml.forEach((xml) => {
-              if (xml.widget.includes(widgetName)) {
-                // Replace the ffield and widget with new values from the main XML
-                // xml.ffield = xmlDoc.querySelector(
-                //   `ffield[name="${ffieldName}"]`
-                // ).outerHTML;
-                // xml.widget = widget.outerHTML;
-                // widgetFound = true;
-
-                const ffieldElement = xmlDoc.querySelector(
-                  `ffield[name="${ffieldName}"]`
-                );
-                const widgetElement = widget;
-                if (ffieldElement && widgetElement) {
-                  // Only access outerHTML if elements are not null
-                  xml.ffield = ffieldElement.outerHTML;
-                  xml.widget = widgetElement.outerHTML;
-                  widgetFound = true;
-                } else {
-                  console.log("Element not found:", ffieldName, widgetName);
-                }
+      xmlDoc.querySelectorAll("widget").forEach((widget) => {
+        const widgetName = widget.getAttribute("name");
+        const ffieldName = widget.getAttribute("field");
+        let widgetFound = false;
+        userAnnotations.forEach((user) => {
+          user.xml.forEach((xml) => {
+            if (xml.widget.includes(widgetName)) {
+              // Replace the ffield and widget with new values from the main XML
+              const ffieldElement = xmlDoc.querySelector(
+                `ffield[name="${ffieldName}"]`
+              );
+              const widgetElement = widget;
+              if (ffieldElement && widgetElement) {
+                // Only access outerHTML if elements are not null
+                xml.ffield = ffieldElement.outerHTML;
+                xml.widget = widgetElement.outerHTML;
+                widgetFound = true;
+              } else {
+                console.log("Element not found:", ffieldName, widgetName);
               }
-            });
+            }
           });
-          // If the widget was not found in userAnnotations, add it
-          if (!widgetFound) {
-            userAnnotations.forEach((user) => {
-              if (user.userID === userSelect) {
-                // Assuming you want to add to the current user's annotations
-                user.xml.push({
-                  ffield: xmlDoc.querySelector(`ffield[name="${ffieldName}"]`)
-                    .outerHTML,
-                  widget: widget.outerHTML,
-                });
-              }
-            });
-          }
         });
-        // Update the state with the modified userAnnotations
-        setUserAnnotations(userAnnotations);
+        // If the widget was not found in userAnnotations, add it
+        if (!widgetFound) {
+          userAnnotations.forEach((user) => {
+            if (user.userID === userSelect) {
+              // Assuming you want to add to the current user's annotations
+              user.xml.push({
+                ffield: xmlDoc.querySelector(`ffield[name="${ffieldName}"]`)
+                  .outerHTML,
+                widget: widget.outerHTML,
+              });
+            }
+          });
+        }
+      });
+      // Update the state with the modified userAnnotations
+      setUserAnnotations(userAnnotations);
       // }
     } catch (error) {
       console.log("userAnnotations", error);
@@ -466,13 +410,8 @@ const SignatureViewer = () => {
           }
         );
 
-        const {
-          documentViewer,
-          annotationManager,
-          Annotations,
-          PDFNet,
-          Tools,
-        } = instance.Core;
+        const { documentViewer, annotationManager, Annotations, Tools } =
+          instance.Core;
         //======================================== disable header =====================================//
         instance.UI.disableTools([Tools.disableTextSelection]);
         instance.UI.disableElements([
@@ -658,9 +597,7 @@ const SignatureViewer = () => {
             });
           });
 
-          console.log("saveWorkFlowData", userAnnotationsRef.current);
           console.log("saveWorkFlowData", convertData);
-          console.log("saveWorkFlowData", xfdfString);
           // save signature document api
           let saveSignatureDocument = {
             FileID: Number(docWorkflowID),
@@ -905,13 +842,9 @@ const SignatureViewer = () => {
     }
   }, [pdfResponceData.attachmentBlob]);
   // ==== End ====//
-  console.log("userAnnotations", userAnnotationsRef.current);
 
   // ==== this is for remove specifi from Xfdf Main   === //
-  function removeSignatureAnnotationsFromXFDF(
-    xfdfString,
-    usersNotInParticipants
-  ) {
+  function removeSignatureAnnotationsFromXFDF(xfdfString) {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xfdfString, "text/xml");
     deletedDataTem.forEach(({ xml, userID }) => {
