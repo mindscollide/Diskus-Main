@@ -36,6 +36,8 @@ a.m-0.p-0.icon-active-sidebar_expand.nav-link span {
 
 a.icon-active-sidebar_expand.nav-link:hover span {
   color: #505050 !important;
+  font-weight: 600;
+  font-family: "Montserrat";
 }
 
 .pollsHeading {

@@ -24,7 +24,7 @@
   cursor: pointer !important;
   overflow: hidden !important;
   display: inline-block !important;
-  width: 200px !important;
+  /* width: 200px !important; */
   white-space: nowrap !important;
   text-overflow: ellipsis !important;
 }
@@ -72,4 +72,10 @@
 .align-organizer-col {
   display: flex !important;
   justify-content: center !important;
+}
+.orgaizer_value {
+  display: block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }

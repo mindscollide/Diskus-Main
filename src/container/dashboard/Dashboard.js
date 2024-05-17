@@ -79,6 +79,8 @@ import {
   meetingAgendaContributorRemoved,
   meetingOrganizerAdded,
   meetingOrganizerRemoved,
+  meetingParticipantRemoved,
+  meetingParticipantAdded,
 } from "../../store/actions/NewMeetingActions";
 import {
   meetingAgendaStartedMQTT,
@@ -107,6 +109,7 @@ import {
   createPollCommitteesMQTT,
   createPollGroupsMQTT,
   createPollMeetingMQTT,
+  deletePollsMQTT,
   notifyPollingSocket,
 } from "../../store/actions/Polls_actions";
 import {
@@ -233,125 +236,9 @@ const Dashboard = () => {
     );
     try {
       if (data.action?.toLowerCase() === "Meeting".toLowerCase()) {
-        if (data.action && data.payload && data.message !== null) {
-          if (
-            data.message?.toLowerCase() ===
-            "NEW_MEETING_AGENDA_CONTRIBUTOR_ADDED".toLowerCase()
-          ) {
-            // if (data.viewable) {
-            //   setNotification({
-            //     ...notification,
-            //     notificationShow: true,
-            //     message: changeMQTTJSONOne(
-            //       t("NEW_MEETING_CREATION"),
-            //       "[Place holder]",
-            //       data.payload.meetingTitle.substring(0, 100)
-            //     ),
-            //   });
-            // }
+        // if (data.action && data.payload ) {
 
-            dispatch(meetingAgendaContributorAdded(data.payload));
-            setNotificationID(id);
-          } else if (
-            data.message
-              ?.toLowerCase()
-              .includes("NEW_MEETING_AGENDA_CONTRIBUTOR_DELETED".toLowerCase())
-          ) {
-            if (data.viewable) {
-              setNotification({
-                ...notification,
-                notificationShow: true,
-                message: changeMQTTJSONOne(
-                  t("NEW_MEETING_CREATION"),
-                  "[Place holder]",
-                  data.payload.meetingTitle.substring(0, 100)
-                ),
-              });
-            }
-
-            dispatch(meetingAgendaContributorRemoved(data.payload));
-            setNotificationID(id);
-          } else if (
-            data.message
-              ?.toLowerCase()
-              .includes("NEW_MEETING_ORGANIZER_ADDED".toLowerCase())
-          ) {
-            if (data.viewable) {
-              setNotification({
-                ...notification,
-                notificationShow: true,
-                message: changeMQTTJSONOne(
-                  t("NEW_MEETING_CREATION"),
-                  "[Place holder]",
-                  data.payload.meetingTitle.substring(0, 100)
-                ),
-              });
-            }
-            dispatch(meetingOrganizerAdded(data.payload));
-            setNotificationID(id);
-          } else if (
-            data.message
-              ?.toLowerCase()
-              .includes("MEETING_ORGANIZER_DELETED".toLowerCase())
-          ) {
-            if (data.viewable) {
-              setNotification({
-                ...notification,
-                notificationShow: true,
-                message: changeMQTTJSONOne(
-                  t("NEW_MEETING_CREATION"),
-                  "[Place holder]",
-                  data.payload.meetingTitle.substring(0, 100)
-                ),
-              });
-            }
-            dispatch(meetingOrganizerRemoved(data.payload));
-            setNotificationID(id);
-          } else if (
-            data.message?.toLowerCase() ===
-            "MeetingNotConductedNotification".toLowerCase()
-          ) {
-            try {
-              console.log(
-                "MeetingNotConductedNotificationMeetingNotConductedNotification"
-              );
-              dispatch(meetingNotConductedMQTT(data.payload));
-              console.log(
-                "MeetingNotConductedNotificationMeetingNotConductedNotification"
-              );
-              if (data.viewable) {
-                setNotification({
-                  ...notification,
-                  notificationShow: true,
-                  message: changeMQTTJSONOne(
-                    t("MEETING_STATUS_EDITED_NOTCONDUCTED"),
-                    "[Meeting Title]",
-                    data.payload.meetingTitle.substring(0, 100)
-                  ),
-                });
-              }
-            } catch (error) {}
-          } else if (
-            data.message?.toLowerCase() ===
-            "MeetingReminderNotification".toLowerCase()
-          ) {
-            dispatch(meetingNotConductedMQTT(data.payload));
-
-            if (data.viewable) {
-              setNotification({
-                ...notification,
-                notificationShow: true,
-                message: changeMQTTJSONOne(
-                  t("MeetingReminderNotification"),
-                  "[Meeting Title]",
-                  data.payload.meetingTitle.substring(0, 100)
-                ),
-              });
-            }
-            setNotificationID(id);
-          }
-        }
-        if (data.action && data.payload && data.payload.message) {
+        if (data.action && data.payload) {
           if (
             data?.payload?.message.toLowerCase() ===
             "NEW_MEETING_CREATION".toLowerCase()
@@ -576,6 +463,157 @@ const Dashboard = () => {
                 ),
               });
             }
+          } else if (
+            data.payload.message?.toLowerCase() ===
+            "NEW_MEETING_AGENDA_CONTRIBUTOR_ADDED".toLowerCase()
+          ) {
+            // if (data.viewable) {
+            //   setNotification({
+            //     ...notification,
+            //     notificationShow: true,
+            //     message: changeMQTTJSONOne(
+            //       t("NEW_MEETING_CREATION"),
+            //       "[Place holder]",
+            //       data.payload.meetingTitle.substring(0, 100)
+            //     ),
+            //   });
+            // }
+
+            dispatch(meetingAgendaContributorAdded(data.payload));
+            setNotificationID(id);
+          } else if (
+            data.payload.message
+              ?.toLowerCase()
+              .includes("NEW_MEETING_AGENDA_CONTRIBUTOR_DELETED".toLowerCase())
+          ) {
+            if (data.viewable) {
+              setNotification({
+                ...notification,
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("NEW_MEETING_CREATION"),
+                  "[Place holder]",
+                  data.payload.meetingTitle.substring(0, 100)
+                ),
+              });
+            }
+
+            dispatch(meetingAgendaContributorRemoved(data.payload));
+            setNotificationID(id);
+          } else if (
+            data.payload.message
+              ?.toLowerCase()
+              .includes("NEW_MEETING_ORGANIZER_ADDED".toLowerCase())
+          ) {
+            if (data.viewable) {
+              setNotification({
+                ...notification,
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("NEW_MEETING_CREATION"),
+                  "[Place holder]",
+                  data.payload.title.substring(0, 100)
+                ),
+              });
+            }
+            dispatch(meetingOrganizerAdded(data.payload));
+            setNotificationID(id);
+          } else if (
+            data.payload.message
+              ?.toLowerCase()
+              .includes("MEETING_ORGANIZER_DELETED".toLowerCase())
+          ) {
+            if (data.viewable) {
+              setNotification({
+                ...notification,
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("NEW_MEETING_CREATION"),
+                  "[Place holder]",
+                  data.payload.title.substring(0, 100)
+                ),
+              });
+            }
+            dispatch(meetingOrganizerRemoved(data.payload));
+            setNotificationID(id);
+          } else if (
+            data.payload.message?.toLowerCase() ===
+            "MeetingNotConductedNotification".toLowerCase()
+          ) {
+            try {
+              console.log(
+                "MeetingNotConductedNotificationMeetingNotConductedNotification"
+              );
+              dispatch(meetingNotConductedMQTT(data.payload));
+              console.log(
+                "MeetingNotConductedNotificationMeetingNotConductedNotification"
+              );
+              if (data.viewable) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("MEETING_STATUS_EDITED_NOTCONDUCTED"),
+                    "[Meeting Title]",
+                    data.payload.meetingTitle.substring(0, 100)
+                  ),
+                });
+              }
+            } catch (error) {}
+          } else if (
+            data.payload.message?.toLowerCase() ===
+            "MeetingReminderNotification".toLowerCase()
+          ) {
+            dispatch(meetingNotConductedMQTT(data.payload));
+
+            if (data.viewable) {
+              setNotification({
+                ...notification,
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("MeetingReminderNotification"),
+                  "[Meeting Title]",
+                  data.payload.meetingTitle.substring(0, 100)
+                ),
+              });
+            }
+            setNotificationID(id);
+          } else if (
+            data.payload.message.toLowerCase() ===
+            "MEETING_PARTICIPANT_DELETED".toLowerCase()
+          ) {
+            dispatch(meetingParticipantRemoved(data.payload));
+
+            if (data.viewable) {
+              // setNotification({
+              //   ...notification,
+              //   notificationShow: true,
+              //   message: changeMQTTJSONOne(
+              //     t("MeetingReminderNotification"),
+              //     "[Meeting Title]",
+              //     data.payload.meetingTitle.substring(0, 100)
+              //   ),
+              // });
+            }
+            setNotificationID(id);
+          } else if (
+            data.payload.message.toLowerCase() ===
+            "NEW_MEETING_PARTICIPANT_ADDED".toLowerCase()
+          ) {
+            dispatch(meetingParticipantAdded(data.payload));
+
+            if (data.viewable) {
+              // setNotification({
+              //   ...notification,
+              //   notificationShow: true,
+              //   message: changeMQTTJSONOne(
+              //     t("MeetingReminderNotification"),
+              //     "[Meeting Title]",
+              //     data.payload.meetingTitle.substring(0, 100)
+              //   ),
+              // });
+            }
+            setNotificationID(id);
           }
         }
       }
@@ -1397,25 +1435,29 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "PUBLISHED_POLL_DELETED".toLowerCase()
         ) {
-          if (data.viewable) {
-            setNotification({
-              ...notification,
-              notificationShow: true,
-              message: changeMQTTJSONOne(
-                t("PUBLISHED_POLL_DELETED"),
-                "[Poll Title]",
-                data.payload.pollTitle
-              ),
-            });
-          }
-          dispatch(notifyPollingSocket(data.payload.polls));
+          dispatch(deletePollsMQTT(data.payload.polls));
           setNotificationID(id);
+          try {
+            if (data.viewable) {
+              setNotification({
+                ...notification,
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("PUBLISHED_POLL_DELETED"),
+                  "[Poll Title]",
+                  data.payload.pollTitle
+                ),
+              });
+            }
+          } catch {}
         } else if (
           data.payload.message
             .toLowerCase()
             .includes("NEW_POLL_PUBLISHED_GROUP".toLowerCase())
         ) {
           dispatch(createPollGroupsMQTT(data.payload));
+          setNotificationID(id);
+
           if (data.viewable) {
             setNotification({
               ...notification,
@@ -1433,6 +1475,8 @@ const Dashboard = () => {
             .includes("NEW_POLL_PUBLISHED_COMMITTEE".toLowerCase())
         ) {
           dispatch(createPollCommitteesMQTT(data.payload));
+          setNotificationID(id);
+
           if (data.viewable) {
             setNotification({
               ...notification,
@@ -1450,6 +1494,7 @@ const Dashboard = () => {
             .includes("NEW_POLL_PUBLISHED_MEETING".toLowerCase())
         ) {
           dispatch(createPollMeetingMQTT(data.payload));
+          setNotificationID(id);
 
           if (data.viewable) {
             setNotification({
@@ -1463,6 +1508,25 @@ const Dashboard = () => {
             });
           }
         }
+        // else if (
+        //   data.payload.message.toLowerCase() ===
+        //   "PUBLISHED_POLL_DELETED".toLowerCase()
+        // ) {
+        //   dispatch(deletePollsMQTT(data.payload));
+        //   setNotificationID(id);
+
+        //   if (data.viewable) {
+        //     setNotification({
+        //       ...notification,
+        //       notificationShow: true,
+        //       message: changeMQTTJSONOne(
+        //         t("PUBLISHED_POLL_DELETED"),
+        //         "[Poll Title]",
+        //         data.payload.pollTitle
+        //       ),
+        //     });
+        //   }
+        // }
       }
       if (data.action.toLowerCase() === "Resolution".toLowerCase()) {
         if (
@@ -2215,7 +2279,9 @@ const Dashboard = () => {
           {!navigator.onLine ? (
             <React.Fragment>
               {/* Display alert when offline */}
-              {console.log("No internet connection. Please check your connection.")}
+              {console.log(
+                "No internet connection. Please check your connection."
+              )}
             </React.Fragment>
           ) : // Check for loading states to determine whether to display loader
           NewMeetingreducer.Loading ||

@@ -64,6 +64,7 @@ import { UpdateOrganizersMeeting } from "../../../../../../store/actions/Meeting
 import moment from "moment";
 import { truncateString } from "../../../../../../commen/functions/regex";
 import { Tooltip } from "antd";
+import { mqttMeetingData } from "../../../../../../hooks/meetingResponse/response";
 
 const UnpublishedProposedMeeting = ({
   setViewProposeDatePoll,
@@ -183,23 +184,25 @@ const UnpublishedProposedMeeting = ({
     dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
   };
 
-  const handleEditMeeting = async (id, record) => {
-    let Data = {
-      MeetingID: Number(id),
-    };
-    await dispatch(
-      GetAllMeetingDetailsApiFunc(
-        navigate,
-        t,
-        Data,
-        false,
-        setCurrentMeetingID,
-        setSceduleMeeting,
-        setDataroomMapFolderId,
-        0,
-        1
-      )
-    );
+  const handleEditMeeting = async (id, record, role) => {
+    if (role !== "Agenda Contributor") {
+      let Data = {
+        MeetingID: Number(id),
+      };
+      await dispatch(
+        GetAllMeetingDetailsApiFunc(
+          navigate,
+          t,
+          Data,
+          false,
+          setCurrentMeetingID,
+          setSceduleMeeting,
+          setDataroomMapFolderId,
+          0,
+          1
+        )
+      );
+    }
     dispatch(scheduleMeetingPageFlag(true));
   };
 
@@ -213,28 +216,18 @@ const UnpublishedProposedMeeting = ({
       title: <span>{t("Title")}</span>,
       dataIndex: "title",
       key: "title",
-      width: "130px",
+      width: "115px",
       align: "left",
       render: (text, record) => {
-        const isParticipant = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.role === "Participant"
-        );
-        const isAgendaContributor = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.role === "Agenda Contributor"
-        );
         return (
           <span
             className={styles["meetingTitle_view"]}
             onClick={() => {
               setEdiorRole({
                 status: record.status,
-                role: isParticipant
+                role: record.isParticipant
                   ? "Participant"
-                  : isAgendaContributor
+                  : record.isAgendaContributor
                   ? "Agenda Contributor"
                   : "Organizer",
               });
@@ -293,7 +286,7 @@ const UnpublishedProposedMeeting = ({
       title: t("Status"),
       dataIndex: "status",
       key: "status",
-      width: "100px",
+      width: "90px",
       filters: [
         {
           text: t("Proposed"),
@@ -319,40 +312,30 @@ const UnpublishedProposedMeeting = ({
       title: <span> {t("Organizer")}</span>,
       dataIndex: "meetingAttendees",
       key: "meetingAttendees",
-      width: "120px",
+      width: "110px",
+      ellipsis: true,
+
       align: "center",
       sorter: (a, b) => {
-        const primaryOrganizerA = a.meetingAttendees.find(
-          (item) => item.isPrimaryOrganizer === true
-        );
-        const primaryOrganizerB = b.meetingAttendees.find(
-          (item) => item.isPrimaryOrganizer === true
-        );
-        const nameA = primaryOrganizerA?.user?.name || "";
-        const nameB = primaryOrganizerB?.user?.name || "";
+        const nameA = a.userDetails?.name || "";
+        const nameB = b.userDetails?.name || "";
         return nameA.localeCompare(nameB);
       },
       render: (text, record) => {
-        const primaryOrganizer = record.meetingAttendees.find(
-          (item) => item.isPrimaryOrganizer === true
-        );
-        return (
-          <span className={styles["orgaizer_value"]}>
-            {primaryOrganizer?.user?.name}
-          </span>
-        );
+        return <span className={styles["orgaizer_value"]}>{record.host}</span>;
       },
     },
     {
       title: t("Date-time"),
       dataIndex: "Date",
       key: "Date",
-      width: "165px",
+      width: "155px",
+      ellipsis: true,
 
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           return (
-            <span>
+            <span className="text-truncate d-block">
               {newTimeFormaterAsPerUTCFullDate(
                 record.dateOfMeeting + record.meetingStartTime
               )}
@@ -374,7 +357,7 @@ const UnpublishedProposedMeeting = ({
       title: t("Propose-date-poll"),
       dataIndex: "getAllMeetingDetails",
       key: "MeetingPoll",
-      width: "120px",
+      width: "115px",
       render: (text, record) => {
         let maxValue = record.meetingPoll?.totalNoOfDirectors;
         let value = record.meetingPoll?.totalNoOfDirectorsVoted;
@@ -430,7 +413,7 @@ const UnpublishedProposedMeeting = ({
       title: t("Send-reponse-by"),
       dataIndex: "responseDeadLine",
       key: "responseDeadLine",
-      width: "129px",
+      width: "115px",
       render: (text, record) => {
         return (
           <>
@@ -449,23 +432,8 @@ const UnpublishedProposedMeeting = ({
     {
       dataIndex: "Edit",
       key: "Edit",
-      width: "90px",
+      width: "33px",
       render: (text, record) => {
-        const isParticipant = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.role === "Participant"
-        );
-        const isAgendaContributor = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.role === "Agenda Contributor"
-        );
-        const isOrganiser = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.role === "Organizer"
-        );
         let apiData = {
           MeetingID: Number(record.pK_MDID),
           StatusID: 1,
@@ -479,7 +447,7 @@ const UnpublishedProposedMeeting = ({
                 lg={12}
                 className="d-flex  align-items-center justify-content-center gap-4"
               >
-                {isAgendaContributor ? (
+                {record.isAgendaContributor ? (
                   <Tooltip placement="bottomLeft" title={t("Edit")}>
                     <img
                       src={EditIcon}
@@ -492,7 +460,7 @@ const UnpublishedProposedMeeting = ({
                         handleEditMeeting(
                           record.pK_MDID,
                           record.isQuickMeeting,
-                          isAgendaContributor,
+                          record.isAgendaContributor,
                           record
                         );
                         setEdiorRole({
@@ -500,11 +468,11 @@ const UnpublishedProposedMeeting = ({
                           role: "Agenda Contributor",
                         });
                         setEditMeeting(true);
-                        dispatch(meetingDetailsGlobalFlag(true));
+                        dispatch(meetingDetailsGlobalFlag(false));
                         dispatch(organizersGlobalFlag(false));
                         dispatch(agendaContributorsGlobalFlag(false));
                         dispatch(participantsGlobalFlag(false));
-                        dispatch(agendaGlobalFlag(false));
+                        dispatch(agendaGlobalFlag(true));
                         dispatch(meetingMaterialGlobalFlag(false));
                         dispatch(minutesGlobalFlag(false));
                         dispatch(proposedMeetingDatesGlobalFlag(false));
@@ -515,7 +483,7 @@ const UnpublishedProposedMeeting = ({
                       }}
                     />
                   </Tooltip>
-                ) : isOrganiser ? (
+                ) : record.isOrganizer ? (
                   <>
                     <Tooltip placement="bottomLeft" title={t("Edit")}>
                       <img
@@ -529,7 +497,7 @@ const UnpublishedProposedMeeting = ({
                           handleEditMeeting(
                             record.pK_MDID,
                             record.isQuickMeeting,
-                            isAgendaContributor,
+                            record.isAgendaContributor,
                             record
                           );
 
@@ -564,24 +532,9 @@ const UnpublishedProposedMeeting = ({
     {
       dataIndex: "Edit",
       key: "Edit",
-      width: "90px",
+      width: "115px",
       align: "center",
       render: (text, record) => {
-        const isParticipant = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.role === "Participant"
-        );
-        const isAgendaContributor = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.role === "Agenda Contributor"
-        );
-        const isOrganiser = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.role === "Organizer"
-        );
         const isResponseDateGone = forRecentActivity(
           `${record.responseDeadLine}000000`
         );
@@ -606,7 +559,7 @@ const UnpublishedProposedMeeting = ({
                 className="d-flex  align-items-center gap-4"
               >
                 {record.status === "11" ? (
-                  isParticipant ? null : isAgendaContributor ? null : (
+                  record.isParticipant ? null : record.isAgendaContributor ? null : (
                     <Button
                       text={t("Publish-meeting")}
                       className={styles["publish_meeting_btn"]}
@@ -618,7 +571,7 @@ const UnpublishedProposedMeeting = ({
                     />
                   )
                 ) : record.status === "12" ? (
-                  isParticipant ? (
+                  record.isParticipant ? (
                     <Button
                       text={t("Send-reply")}
                       className={styles["publish_meeting_btn_View_poll"]}
@@ -633,7 +586,7 @@ const UnpublishedProposedMeeting = ({
                         )
                       }
                     />
-                  ) : isAgendaContributor ? null : (
+                  ) : record.isAgendaContributor ? null : (
                     <Button
                       text={t("View-poll")}
                       className={styles["publish_meeting_btn_View_poll"]}
@@ -688,56 +641,7 @@ const UnpublishedProposedMeeting = ({
           searchMeetings.meetings !== undefined &&
           searchMeetings.meetings.length > 0
         ) {
-          let newRowData = [];
-          searchMeetings.meetings.forEach((data, index) => {
-            // Filter and map meeting attendees based on your conditions
-            // const filteredAttendees = data.meetingAttendees.filter(
-            //   (attendee) => {
-            //     if (
-            //       (data.status === "11" &&
-            //         Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            //         (attendee.meetingAttendeeRole.role === "Organizer" ||
-            //           attendee.meetingAttendeeRole.role ===
-            //             "Agenda Contributor")) ||
-            //       (data.status === "12" &&
-            //         Number(attendee.user.pK_UID) === Number(currentUserId))
-            //     ) {
-            //       return true;
-            //     }
-            //     return false;
-            //   }
-            // );
-
-            // If there are attendees that meet the criteria, include the meeting
-            // if (filteredAttendees.length > 0) {
-            newRowData.push({
-              dateOfMeeting: data.dateOfMeeting,
-              host: data.host,
-              isAttachment: data.isAttachment,
-              isChat: data.isChat,
-              isVideoCall: data.isVideoCall,
-              isQuickMeeting: data.isQuickMeeting,
-              meetingAgenda: data.meetingAgenda,
-              meetingAttendees: data.meetingAttendees, // Use filtered attendees here
-              meetingEndTime: data.meetingEndTime,
-              meetingStartTime: data.meetingStartTime,
-              meetingURL: data.meetingURL,
-              orignalProfilePictureName: data.orignalProfilePictureName,
-              pK_MDID: data.pK_MDID,
-              meetingPoll: {
-                totalNoOfDirectors:
-                  data.proposedMeetingDetail.totalNoOfDirectors,
-                totalNoOfDirectorsVoted:
-                  data.proposedMeetingDetail.totalNoOfDirectorsVoted,
-              },
-              responseDeadLine: data.responseDeadLine,
-              status: data.status,
-              title: data.title,
-              key: index,
-            });
-            // }
-          });
-          setRow(newRowData);
+          setRow(searchMeetings.meetings);
         } else {
           setRow([]);
         }
@@ -826,37 +730,29 @@ const UnpublishedProposedMeeting = ({
   }, [NewMeetingreducer.meetingStatusPublishedMqttData]);
 
   useEffect(() => {
-    if (
-      NewMeetingreducer.mqttMeetingAcAdded !== null &&
-      NewMeetingreducer.mqttMeetingAcAdded !== undefined
-    ) {
-      let newObj = NewMeetingreducer.mqttMeetingAcAdded;
-      // Convert the status value to string
-      newObj.status = String(newObj.status);
-      try {
-        setRow((prevState) => [
-          ...prevState,
-          {
-            ...newObj,
-            attendanceReportAvaliable: false,
-            canBeStarted: false,
-            isAttachment: false,
-            isChat: false,
-            isVideoCall: false,
-            meetingAgenda: [],
-            meetingAttendees: [],
-            meetingEndTime: "",
-            meetingTypeID: 0,
-            meetingURL: "",
-            orignalProfilePictureName: "",
-            talkGroupID: 0,
-          },
-        ]);
-        dispatch(meetingAgendaContributorAdded(null));
-        dispatch(meetingAgendaContributorRemoved(null));
-        dispatch(meetingOrganizerAdded(null));
-        dispatch(meetingOrganizerRemoved(null));
-      } catch {}
+    try {
+      const callAddAgendaContributor = async () => {
+        if (
+          NewMeetingreducer.mqttMeetingAcAdded !== null &&
+          NewMeetingreducer.mqttMeetingAcAdded !== undefined
+        ) {
+          let newObj = NewMeetingreducer.mqttMeetingAcAdded;
+          try {
+            let getData = await mqttMeetingData(newObj, 2);
+            setRow([getData, ...rows]);
+            console.log(getData, "getDatagetDatagetData");
+          } catch (error) {
+            console.log(error, "getDatagetDatagetData");
+          }
+          dispatch(meetingAgendaContributorAdded(null));
+          dispatch(meetingAgendaContributorRemoved(null));
+          dispatch(meetingOrganizerAdded(null));
+          dispatch(meetingOrganizerRemoved(null));
+        }
+      };
+      callAddAgendaContributor();
+    } catch (error) {
+      console.log(error);
     }
   }, [NewMeetingreducer.mqttMeetingAcAdded]);
 
@@ -880,37 +776,29 @@ const UnpublishedProposedMeeting = ({
   }, [NewMeetingreducer.mqttMeetingAcRemoved]);
 
   useEffect(() => {
-    if (
-      NewMeetingreducer.mqttMeetingOrgAdded !== null &&
-      NewMeetingreducer.mqttMeetingOrgAdded !== undefined
-    ) {
-      let newObj = NewMeetingreducer.mqttMeetingOrgAdded;
-      // Convert the status value to string
-      newObj.status = String(newObj.status);
-      try {
-        setRow((prevState) => [
-          ...prevState,
-          {
-            ...newObj,
-            attendanceReportAvaliable: false,
-            canBeStarted: false,
-            isAttachment: false,
-            isChat: false,
-            isVideoCall: false,
-            meetingAgenda: [],
-            meetingAttendees: [],
-            meetingEndTime: "",
-            meetingTypeID: 0,
-            meetingURL: "",
-            orignalProfilePictureName: "",
-            talkGroupID: 0,
-          },
-        ]);
-        dispatch(meetingAgendaContributorAdded(null));
-        dispatch(meetingAgendaContributorRemoved(null));
-        dispatch(meetingOrganizerAdded(null));
-        dispatch(meetingOrganizerRemoved(null));
-      } catch {}
+    try {
+      const callAddOrganizer = async () => {
+        if (
+          NewMeetingreducer.mqttMeetingOrgAdded !== null &&
+          NewMeetingreducer.mqttMeetingOrgAdded !== undefined
+        ) {
+          let newObj = NewMeetingreducer.mqttMeetingOrgAdded;
+          try {
+            let getData = await mqttMeetingData(newObj, 2);
+            setRow([getData, ...rows]);
+            console.log(getData, "getDatagetDatagetData");
+          } catch (error) {
+            console.log(error, "getDatagetDatagetData");
+          }
+          dispatch(meetingAgendaContributorAdded(null));
+          dispatch(meetingAgendaContributorRemoved(null));
+          dispatch(meetingOrganizerAdded(null));
+          dispatch(meetingOrganizerRemoved(null));
+        }
+      };
+      callAddOrganizer();
+    } catch (error) {
+      console.error(error);
     }
   }, [NewMeetingreducer.mqttMeetingOrgAdded]);
 
@@ -943,7 +831,7 @@ const UnpublishedProposedMeeting = ({
         <Col lg={12} md={12} sm={12} className="w-100">
           <Table
             column={MeetingColoumns}
-            scroll={{ y: "54vh", x: "auto" }}
+            scroll={{ y: "54vh", x: false }}
             pagination={false}
             className="newMeetingTable"
             rows={rows}
@@ -952,14 +840,17 @@ const UnpublishedProposedMeeting = ({
             }}
             expandable={{
               expandedRowRender: (record) => {
-                return record.meetingAgenda.map((data) => (
-                  <p className={styles["meeting-expanded-row"]}>
-                    {data.objMeetingAgenda.title}
-                  </p>
-                ));
+                return (
+                  record.meetingAgenda.length > 0 &&
+                  record.meetingAgenda.map((data) => (
+                    <p className={styles["meeting-expanded-row"]}>
+                      {data.objMeetingAgenda.title}
+                    </p>
+                  ))
+                );
               },
               rowExpandable: (record) =>
-                record.meetingAgenda.length > 0 && record.meetingAgenda !== null
+                record.meetingAgenda !== null && record.meetingAgenda.length > 0
                   ? true
                   : false,
             }}
