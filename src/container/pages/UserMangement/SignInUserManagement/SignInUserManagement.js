@@ -300,7 +300,20 @@ const SignInUserManagement = () => {
         {code ? (
           <></>
         ) : paymentActionValue ? (
-          <></>
+          <>
+            <Row className="mt-5">
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-center"
+              >
+                <span className={styles["PaymentSucessfull"]}>
+                  Payment Suscessful
+                </span>
+              </Col>
+            </Row>
+          </>
         ) : (
           <>
             <Row>

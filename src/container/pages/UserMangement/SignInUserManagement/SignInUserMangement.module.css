@@ -60,6 +60,12 @@ body[dir="rtl"] .Remember-Email-text {
   font-size: 12px !important;
 }
 
+.PaymentSucessfull {
+  font-weight: 600 !important;
+  color: #6172d6 !important;
+  font-size: 30px !important;
+}
+
 body[dir="rtl"] .Next_button_EmailVerify {
   font-weight: 600 !important;
 }
