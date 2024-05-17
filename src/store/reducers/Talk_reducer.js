@@ -306,6 +306,8 @@ const initialState = {
   },
 
   LastMessageDeletionObject: [],
+
+  imageData: null,
 };
 
 const talkReducer = (state = initialState, action) => {
@@ -1709,6 +1711,13 @@ const talkReducer = (state = initialState, action) => {
       return {
         ...state,
         LastMessageDeletionObject: action.response,
+      };
+    }
+
+    case actions.GET_IMAGE_DATA: {
+      return {
+        ...state,
+        imageData: action.response,
       };
     }
 

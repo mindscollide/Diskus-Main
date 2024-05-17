@@ -1496,6 +1496,10 @@ const ValidateEmailRelatedString = {
     "ServiceManager.ValidateEncryptedStringMeetingRelatedEmailData",
 };
 
+const downloadAttachmentTalk = {
+  RequestMethod: "ServiceManager.DownloadAttachment",
+};
+
 export {
   ValidateEmailRelatedString,
   revokeMicrosoftToken,
@@ -1896,4 +1900,5 @@ export {
   printMeetingAgenda,
   joinMeeting,
   leaveMeeting,
+  downloadAttachmentTalk
 };
