@@ -1497,9 +1497,12 @@ const ValidateEmailRelatedString = {
 };
 
 const ValidateEmailRelatedStringPolls = {
-  RequestMethod:
-  "ServiceManager.ValidateEncryptedStringPollRelatedEmailData",
-}
+  RequestMethod: "ServiceManager.ValidateEncryptedStringPollRelatedEmailData",
+};
+
+const downloadAttachmentTalk = {
+  RequestMethod: "ServiceManager.DownloadAttachment",
+};
 
 export {
   ValidateEmailRelatedStringPolls,
@@ -1902,4 +1905,5 @@ export {
   printMeetingAgenda,
   joinMeeting,
   leaveMeeting,
+  downloadAttachmentTalk,
 };
