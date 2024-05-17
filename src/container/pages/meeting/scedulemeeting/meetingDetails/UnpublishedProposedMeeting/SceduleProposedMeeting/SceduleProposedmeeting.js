@@ -169,7 +169,7 @@ const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
             className={dateDetailClass}
             onClick={() => toggleActive(index, record, formattedDate)}
           >
-            {formattedDate}
+            <span className={styles["date-time-column"]}>{formattedDate}</span>
           </span>
         ),
         dataIndex: "selectedProposedDates",
@@ -220,13 +220,16 @@ const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
       <Modal
         show={sceduleproposedMeeting}
         setShow={dispatch(showSceduleProposedMeeting)}
+        className={styles["main-modal-class"]}
         modalHeaderClassName={"d-block"}
+        modalBodyClassName={styles["modal-class-width"]}
         modalFooterClassName={"d-block"}
         onHide={() => {
           dispatch(showSceduleProposedMeeting(false));
           setActiveIndex(-1);
         }}
-        size={"lg"}
+        dialogClassName={`${styles["modal-class-width"]} ${styles["custom-modal-dialog"]}`}
+        size={"xl"}
         ModalTitle={
           <>
             <Row>

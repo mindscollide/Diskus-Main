@@ -1711,9 +1711,6 @@ const NewMeeting = () => {
       callMQTT();
     }
   }, [NewMeetingreducer.meetingStatusPublishedMqttData]);
-
-  console.log(rows, "rowsrowsrowsrowsrows");
-
   useEffect(() => {
     if (
       meetingIdReducer.MeetingStatusSocket !== null &&

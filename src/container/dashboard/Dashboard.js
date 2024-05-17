@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Sidebar, Talk } from "../../components/layout";
 import CancelButtonModal from "../pages/meeting/closeMeetingTab/CancelModal";
-import { Loader, LoaderPanel, Notification } from "../../components/elements";
+import { Loader, LoaderPanel, Notification, Modal } from "../../components/elements";
 import Header2 from "../../components/layout/header2/Header2";
 import { ConfigProvider, Layout } from "antd";
 import ar_EG from "antd/es/locale/ar_EG";
@@ -2272,6 +2272,8 @@ const Dashboard = () => {
               chatMessageClass="chat-messenger-head-video"
             />
           ) : null}
+      {/* <Modal show={true} size="md" setShow={true} /> */}
+          
           {videoFeatureReducer.NormalizeVideoFlag === true ||
           videoFeatureReducer.MinimizeVideoFlag === true ||
           videoFeatureReducer.MaximizeVideoFlag === true ? (
