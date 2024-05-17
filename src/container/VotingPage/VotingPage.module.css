@@ -433,3 +433,6 @@ body[dir="rtl"] .Your_vote_voteresolution {
   border-radius: 4px !important;
   color: #5a5a5a !important;
 }
+.Addchart {
+  width: 400px;
+}

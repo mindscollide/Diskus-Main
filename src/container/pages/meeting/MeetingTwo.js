@@ -1559,6 +1559,7 @@ const NewMeeting = () => {
 
   useEffect(() => {
     if (NewMeetingreducer.mqttMeetingPrAdded !== null) {
+      console.log(NewMeetingreducer.mqttMeetingPrAdded, "mqttMeetingPrAddedmqttMeetingPrAdded")
     }
     if (NewMeetingreducer.mqtMeetingPrRemoved !== null) {
       try {
@@ -1646,10 +1647,7 @@ const NewMeeting = () => {
           const indexToUpdate = rows.findIndex(
             (obj) => Number(obj.pK_MDID) === Number(meetingData.pK_MDID)
           );
-          let newMeetingData = await mqttMeetingData(
-            meetingData,
-            1
-          );
+          let newMeetingData = await mqttMeetingData(meetingData, 1);
 
           if (indexToUpdate !== -1) {
             let updatedRows = [...rows];
@@ -1663,7 +1661,7 @@ const NewMeeting = () => {
         }
       };
 
-      callMQTT()
+      callMQTT();
     }
   }, [NewMeetingreducer.meetingStatusPublishedMqttData]);
 
@@ -1789,17 +1787,25 @@ const NewMeeting = () => {
       meetingIdReducer.allMeetingsSocketData !== null &&
       meetingIdReducer.allMeetingsSocketData !== undefined
     ) {
-      let meetingID = meetingIdReducer.allMeetingsSocketData.pK_MDID;
-      let meetingData = meetingIdReducer.allMeetingsSocketData;
-      setRow((rowsData) => {
-        return rowsData.map((item) => {
-          if (item.pK_MDID === meetingID) {
-            return meetingData;
-          } else {
-            return item; // Return the original item if the condition is not met
-          }
-        });
-      });
+      try {
+        const updateMeeting = async () => {
+          let meetingID = meetingIdReducer.allMeetingsSocketData.pK_MDID;
+          let meetingData = meetingIdReducer.allMeetingsSocketData;
+          let newMeetingData = await mqttMeetingData(meetingData, 1);
+          setRow((rowsData) => {
+            return rowsData.map((item) => {
+              if (item.pK_MDID === meetingID) {
+                return newMeetingData;
+              } else {
+                return item; // Return the original item if the condition is not met
+              }
+            });
+          });
+        };
+        updateMeeting();
+      } catch (error) {
+        console.log(error, "error");
+      }
     }
   }, [meetingIdReducer.allMeetingsSocketData]);
   useEffect(() => {

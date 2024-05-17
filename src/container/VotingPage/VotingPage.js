@@ -84,9 +84,8 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
       "stroke-color: #6DE595; stroke-opacity: 1 ;  fill-color: #6DE595; fill-opacity:1",
     ],
     [
-      t("Not-approved"),
+    t("Not-approved"),
       nonApproved,
-
       "stroke-color: #F16B6B; stroke-opacity: 1 ; stroke-color:#F16B6B; fill-color: #F16B6B; fill-opacity:1; text-color:#F16B6B",
     ],
     [
@@ -183,7 +182,7 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
                     </Col>
                   </Row>
                   <Row className="mt-5">
-                    <Col lg={7} md={7} sm={12}>
+                    <Col lg={6} md={6} sm={12}>
                       <Row className="mt-2">
                         <Col
                           lg={12}
@@ -389,15 +388,15 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
                         ""
                       )}
                     </Col>
-                    <Col
+                    {/* <Col
                       lg={1}
                       md={1}
                       sm={false}
                       className="d-flex justify-content-center"
                     >
                       <span className={styles["line_voteResolution"]}></span>
-                    </Col>
-                    <Col lg={4} md={4} sm={12} className="px-3">
+                    </Col> */}
+                    <Col lg={6} md={6} sm={12} >
                       <Row>
                         <Col
                           lg={12}
@@ -482,12 +481,15 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
                         <Col lg={12} md={12} sm={12}>
                           <Chart
                             chartType="ColumnChart"
-                            width="100%"
+                            width="350px"
                             height="250px"
                             radius={10}
                             data={data}
                             options={options}
                             className={styles["Addchart"]}
+                            style={{
+                              whiteSpace: "nowrap"
+                            }}
                           />
                         </Col>
                       </Row>

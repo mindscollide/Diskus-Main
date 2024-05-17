@@ -600,20 +600,22 @@ const Dashboard = () => {
             data.payload.message.toLowerCase() ===
             "NEW_MEETING_PARTICIPANT_ADDED".toLowerCase()
           ) {
+            // if (data.payload.status !== 11 || 12) {
             dispatch(meetingParticipantAdded(data.payload));
+            setNotificationID(id);
 
             if (data.viewable) {
-              // setNotification({
-              //   ...notification,
-              //   notificationShow: true,
-              //   message: changeMQTTJSONOne(
-              //     t("MeetingReminderNotification"),
-              //     "[Meeting Title]",
-              //     data.payload.meetingTitle.substring(0, 100)
-              //   ),
-              // });
+              setNotification({
+                ...notification,
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("MeetingReminderNotification"),
+                  "[Meeting Title]",
+                  data.payload.title.substring(0, 100)
+                ),
+              });
             }
-            setNotificationID(id);
+            // }
           }
         }
       }
