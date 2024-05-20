@@ -1,22 +1,9 @@
 {
-  "MeetingDetails": {
-    "MeetingID": 0,
-    "MeetingTitle": "testing the meeting dates ",
-    "MeetingType": { "PK_MTID": 4, "Type": "Board Meeting" },
-    "Location": "",
-    "Description": "hello testing ",
-    "IsVideoChat": true,
-    "IsTalkGroup": false,
-    "OrganizationId": 417,
-    "MeetingDates": [
-      { "MeetingDate": "20240416", "StartTime": "070000", "EndTime": "080000" }
-    ],
-    "MeetingReminders": [4],
-    "Notes": "",
-    "AllowRSVP": true,
-    "NotifyOrganizerOnRSVP": true,
-    "ReucurringMeetingID": 1,
-    "VideoURL": "",
-    "MeetingStatusID": 11
-  }
+  "MeetingID": 3441,
+  "SendResponsebyDate": "20240528",
+  "ProposedDates": [
+    { "ProposedDate": "20240527", "StartTime": "110000", "EndTime": "120000" },
+    { "ProposedDate": "20240528", "StartTime": "110000", "EndTime": "120000" },
+    { "ProposedDate": "20240529", "StartTime": "110000", "EndTime": "120000" }
+  ]
 }

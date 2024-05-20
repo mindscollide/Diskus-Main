@@ -1655,25 +1655,12 @@ const SaveparticipantsApi = (
                 )
               );
               if (flag === true) {
-                let NewDates = [];
-                rows.forEach((data, index) => {
-                  NewDates.push({
-                    ProposedDate: createConvert(
-                      data.selectedOption + data.startDate
-                    ).slice(0, 8),
-                    StartTime: createConvert(
-                      data.selectedOption + data.startDate
-                    ).slice(8, 14),
-                    EndTime: createConvert(
-                      data.selectedOption + data.endDate
-                    ).slice(8, 14),
-                    // proposedDateID: 0,
-                  });
-                });
+                console.log(rows, "flagflag");
+
                 let Data = {
                   MeetingID: currentMeeting,
                   SendResponsebyDate: ResponseDate,
-                  ProposedDates: NewDates,
+                  ProposedDates: rows,
                 };
                 dispatch(
                   setProposedMeetingDateApiFunc(
