@@ -646,7 +646,8 @@ const ProposedNewMeeting = ({
     if (
       proposedMeetingDetails.MeetingTitle !== "" &&
       membersParticipants.length !== 0 &&
-      sendResponseVal !== ""
+      sendResponseVal !== "" &&
+      rows.length !== 1
     ) {
       let data = {
         MeetingDetails: {
