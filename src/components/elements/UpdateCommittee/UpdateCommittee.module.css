@@ -384,3 +384,9 @@ body[dir="rtl"] .Leftpolygon {
   padding: 10px 10px !important;
   margin-top: 8px !important;
 }
+
+.UpdateCommitteeAttachment {
+  max-height: 120px !important;
+  overflow-y: auto;
+  overflow-x: hidden;
+}

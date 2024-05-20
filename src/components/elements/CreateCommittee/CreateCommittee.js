@@ -1705,6 +1705,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                         name={data.DisplayAttachmentName}
                                         id={data.pK_FileID}
                                         data={data}
+                                        fk_UID={creatorID}
                                       />
                                     </>
                                   );

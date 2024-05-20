@@ -89,6 +89,9 @@ body[dir="rtl"] .email-create-Committee {
 body[dir="rtl"] .No-member {
   font-weight: 600;
 }
+.No-member {
+  font-weight: 600;
+}
 
 .members-create-Committee-page {
   font-size: 20px !important;

@@ -61,7 +61,7 @@ body[dir="rtl"] .Heading_Authorize_Viewresolution {
 }
 
 body[dir="rtl"] .Paragraph {
-  font-weight:400;
+  font-weight: 400;
 }
 
 .View_resolution_circulationHeading {
@@ -326,4 +326,8 @@ body[dir="rtl"] .CheckboxAlignmnet {
 
 .viewResolutionCheckBox {
   cursor: auto !important;
+}
+.ViewResolution_attachment {
+  max-height: 120px !important;
+  overflow-y: auto;
 }
