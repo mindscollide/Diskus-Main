@@ -222,13 +222,15 @@ body[dir="rtl"] .quill-update-height {
 }
 
 .notes-updates-attachment {
-  width: 500px !important;
+  min-width: 100% !important;
   display: flex;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   align-items: center;
   padding: 0 !important;
-  height: 120px !important;
+  max-height: 90px !important;
+  flex-wrap: wrap;
+  gap: 15px;
 }
 
 .notes-updates-attachment::-webkit-scrollbar {

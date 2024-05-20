@@ -75,7 +75,7 @@ const AttachmentViewer = ({
               draggable={false}
               src={EyeIcon}
               alt=""
-              className="ms-1"
+              className="mx-1"
               onClick={handleEyeIcon}
             />
           </Col>

@@ -246,8 +246,10 @@ const Polls = ({
             updatedRows.splice(findIndex, 1); // Remove the poll
           } else if (Number(polls.pollStatus.pollStatusId) === 3) {
             updatedRows[findIndex] = polls; // Update the existing poll
+          } else if (Number(polls.pollStatus.pollStatusId) === 2) {
+            updatedRows[findIndex] = polls; // Update the existing poll
           }
-        } 
+        }
 
         setPollsRows(updatedRows);
       }
@@ -383,6 +385,9 @@ const Polls = ({
       key: "pollCreator",
       width: "110px",
       sorter: (a, b) => a.pollCreator.localeCompare(b.pollCreator),
+      render: (text, record) => (
+        <span className="text-truncate d-block">{text}</span>
+      ),
     },
     {
       title: t("Vote"),

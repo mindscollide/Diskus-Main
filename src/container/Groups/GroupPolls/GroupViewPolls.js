@@ -139,6 +139,7 @@ const GroupViewPolls = ({ groupStatus }) => {
       console.log(error, "errorerror");
     }
   }, [PollsReducer.pollingSocket]);
+  
   useEffect(() => {
     try {
       if (PollsReducer.newPollDelete !== null) {

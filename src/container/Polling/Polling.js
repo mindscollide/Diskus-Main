@@ -310,7 +310,7 @@ const Polling = () => {
   };
 
   const handleSearchEvent = () => {
-    setSearchpoll(true);
+    setSearchpoll(false);
     setPollsState({
       ...pollsState,
       searchValue: searchBoxState.searchByTitle,

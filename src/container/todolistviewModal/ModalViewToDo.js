@@ -13,6 +13,7 @@ import {
   TodoAssgineeEmployeeCard,
   TextArea,
   Button,
+  AttachmentViewer,
 } from "./../../components/elements";
 import userImage from "../../assets/images/user.png";
 import {
@@ -647,7 +648,12 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
               </Row>
               {/* File Attachments */}
               <Row className="my-3">
-                <Col sm={12} md={12} lg={12} className=" fw-600 Saved_money_Tagline">
+                <Col
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  className=" fw-600 Saved_money_Tagline"
+                >
                   {/* Attachments */}
                   {t("Attachement")}
                 </Col>
@@ -679,6 +685,24 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                             commingFrom: 4,
                           };
                           const pdfDataJson = JSON.stringify(pdfData);
+                          return (
+                            <AttachmentViewer
+                              handleClickDownload={() =>
+                                handleClickDownloadFile(
+                                  modalviewAttachmentFiles.OriginalAttachmentName,
+                                  modalviewAttachmentFiles.DisplayAttachmentName
+                                )
+                              }
+                              handleEyeIcon={() => handleLinkClick(pdfDataJson)}
+                              id={
+                                modalviewAttachmentFiles.OriginalAttachmentName
+                              }
+                              data={modalviewAttachmentFiles}
+                              name={
+                                modalviewAttachmentFiles.DisplayAttachmentName
+                              }
+                            />
+                          );
                           return (
                             <Col
                               sm={12}

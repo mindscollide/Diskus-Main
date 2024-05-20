@@ -1,5 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Button, Modal, Notification } from "../../components/elements";
+import {
+  AttachmentViewer,
+  Button,
+  Modal,
+  Notification,
+} from "../../components/elements";
 import FileIcon, { defaultStyles } from "react-file-icon";
 import CustomUpload from "./../../components/elements/upload/Upload";
 import deleteButtonCreateMeeting from "../../assets/images/cancel_meeting_icon.svg";
@@ -443,6 +448,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                 data.FK_NotesID !== null && data.FK_NotesID !== undefined
                   ? data.FK_NotesID
                   : 0,
+              attachmentID: Number(data.pK_NAID),
             });
           });
           let Data = {
@@ -717,112 +723,116 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                                 const first =
                                   data.DisplayAttachmentName.split(" ")[0];
                                 return (
-                                  <Col
-                                    sm={12}
-                                    lg={2}
-                                    md={2}
-                                    className={
-                                      styles["modaltodolist-attachment-icon"]
-                                    }
-                                  >
-                                    {ext === "doc" ? (
-                                      <FileIcon
-                                        extension={"docx"}
-                                        size={78}
-                                        type={"document"}
-                                        labelColor={"rgba(44, 88, 152)"}
-                                      />
-                                    ) : ext === "docx" ? (
-                                      <FileIcon
-                                        extension={"docx"}
-                                        size={78}
-                                        type={"font"}
-                                        labelColor={"rgba(44, 88, 152)"}
-                                      />
-                                    ) : ext === "xls" ? (
-                                      <FileIcon
-                                        extension={"xls"}
-                                        type={"spreadsheet"}
-                                        size={78}
-                                        labelColor={"rgba(16, 121, 63)"}
-                                      />
-                                    ) : ext === "xlsx" ? (
-                                      <FileIcon
-                                        extension={"xls"}
-                                        type={"spreadsheet"}
-                                        size={78}
-                                        labelColor={"rgba(16, 121, 63)"}
-                                      />
-                                    ) : ext === "pdf" ? (
-                                      <FileIcon
-                                        extension={"pdf"}
-                                        size={78}
-                                        {...defaultStyles.pdf}
-                                      />
-                                    ) : ext === "png" ? (
-                                      <FileIcon
-                                        extension={"png"}
-                                        size={78}
-                                        type={"image"}
-                                        labelColor={"rgba(102, 102, 224)"}
-                                      />
-                                    ) : ext === "txt" ? (
-                                      <FileIcon
-                                        extension={"txt"}
-                                        size={78}
-                                        type={"document"}
-                                        labelColor={"rgba(52, 120, 199)"}
-                                      />
-                                    ) : ext === "jpg" ? (
-                                      <FileIcon
-                                        extension={"jpg"}
-                                        size={78}
-                                        type={"image"}
-                                        labelColor={"rgba(102, 102, 224)"}
-                                      />
-                                    ) : ext === "jpeg" ? (
-                                      <FileIcon
-                                        extension={"jpeg"}
-                                        size={78}
-                                        type={"image"}
-                                        labelColor={"rgba(102, 102, 224)"}
-                                      />
-                                    ) : ext === "gif" ? (
-                                      <FileIcon
-                                        extension={"gif"}
-                                        size={78}
-                                        {...defaultStyles.gif}
-                                      />
-                                    ) : (
-                                      <FileIcon
-                                        extension={ext}
-                                        size={78}
-                                        {...defaultStyles.ext}
-                                      />
-                                    )}
-                                    <span
-                                      className={
-                                        styles["deleteUpdateNoteAttachment"]
-                                      }
-                                    >
-                                      <img
-                                        draggable="false"
-                                        src={deleteButtonCreateMeeting}
-                                        width={15}
-                                        height={15}
-                                        alt=""
-                                        onClick={() =>
-                                          deleteFilefromAttachments(data, index)
-                                        }
-                                      />
-                                    </span>
-                                    <p
-                                      className="modaltodolist-attachment-text"
-                                      title={data.displayAttachmentName}
-                                    >
-                                      {first}
-                                    </p>
-                                  </Col>
+                                  <AttachmentViewer
+                                    data={data}
+                                    name={data.DisplayAttachmentName}
+                                  />
+                                  // <Col
+                                  //   sm={12}
+                                  //   lg={2}
+                                  //   md={2}
+                                  //   className={
+                                  //     styles["modaltodolist-attachment-icon"]
+                                  //   }
+                                  // >
+                                  //   {ext === "doc" ? (
+                                  //     <FileIcon
+                                  //       extension={"docx"}
+                                  //       size={78}
+                                  //       type={"document"}
+                                  //       labelColor={"rgba(44, 88, 152)"}
+                                  //     />
+                                  //   ) : ext === "docx" ? (
+                                  //     <FileIcon
+                                  //       extension={"docx"}
+                                  //       size={78}
+                                  //       type={"font"}
+                                  //       labelColor={"rgba(44, 88, 152)"}
+                                  //     />
+                                  //   ) : ext === "xls" ? (
+                                  //     <FileIcon
+                                  //       extension={"xls"}
+                                  //       type={"spreadsheet"}
+                                  //       size={78}
+                                  //       labelColor={"rgba(16, 121, 63)"}
+                                  //     />
+                                  //   ) : ext === "xlsx" ? (
+                                  //     <FileIcon
+                                  //       extension={"xls"}
+                                  //       type={"spreadsheet"}
+                                  //       size={78}
+                                  //       labelColor={"rgba(16, 121, 63)"}
+                                  //     />
+                                  //   ) : ext === "pdf" ? (
+                                  //     <FileIcon
+                                  //       extension={"pdf"}
+                                  //       size={78}
+                                  //       {...defaultStyles.pdf}
+                                  //     />
+                                  //   ) : ext === "png" ? (
+                                  //     <FileIcon
+                                  //       extension={"png"}
+                                  //       size={78}
+                                  //       type={"image"}
+                                  //       labelColor={"rgba(102, 102, 224)"}
+                                  //     />
+                                  //   ) : ext === "txt" ? (
+                                  //     <FileIcon
+                                  //       extension={"txt"}
+                                  //       size={78}
+                                  //       type={"document"}
+                                  //       labelColor={"rgba(52, 120, 199)"}
+                                  //     />
+                                  //   ) : ext === "jpg" ? (
+                                  //     <FileIcon
+                                  //       extension={"jpg"}
+                                  //       size={78}
+                                  //       type={"image"}
+                                  //       labelColor={"rgba(102, 102, 224)"}
+                                  //     />
+                                  //   ) : ext === "jpeg" ? (
+                                  //     <FileIcon
+                                  //       extension={"jpeg"}
+                                  //       size={78}
+                                  //       type={"image"}
+                                  //       labelColor={"rgba(102, 102, 224)"}
+                                  //     />
+                                  //   ) : ext === "gif" ? (
+                                  //     <FileIcon
+                                  //       extension={"gif"}
+                                  //       size={78}
+                                  //       {...defaultStyles.gif}
+                                  //     />
+                                  //   ) : (
+                                  //     <FileIcon
+                                  //       extension={ext}
+                                  //       size={78}
+                                  //       {...defaultStyles.ext}
+                                  //     />
+                                  //   )}
+                                  //   <span
+                                  //     className={
+                                  //       styles["deleteUpdateNoteAttachment"]
+                                  //     }
+                                  //   >
+                                  //     <img
+                                  //       draggable="false"
+                                  //       src={deleteButtonCreateMeeting}
+                                  //       width={15}
+                                  //       height={15}
+                                  //       alt=""
+                                  //       onClick={() =>
+                                  //         deleteFilefromAttachments(data, index)
+                                  //       }
+                                  //     />
+                                  //   </span>
+                                  //   <p
+                                  //     className="modaltodolist-attachment-text"
+                                  //     title={data.displayAttachmentName}
+                                  //   >
+                                  //     {first}
+                                  //   </p>
+                                  // </Col>
                                 );
                               })
                             : null}
