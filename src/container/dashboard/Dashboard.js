@@ -1423,7 +1423,7 @@ const Dashboard = () => {
               ),
             });
           }
-          dispatch(notifyPollingSocket(data.payload.polls));
+          dispatch(notifyPollingSocket(data.payload));
           setNotificationID(id);
         } else if (
           data.payload.message.toLowerCase() === "POLL_EXPIRED".toLowerCase()

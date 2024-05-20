@@ -128,6 +128,8 @@ const GroupViewPolls = ({ groupStatus }) => {
             updatedRows.splice(findIndex, 1); // Remove the poll
           } else if (Number(polls.pollStatus.pollStatusId) === 3) {
             updatedRows[findIndex] = polls; // Update the existing poll
+          } else if (Number(polls.pollStatus.pollStatusId) === 2) {
+            updatedRows[findIndex] = polls; // Update the existing poll
           }
         }
 

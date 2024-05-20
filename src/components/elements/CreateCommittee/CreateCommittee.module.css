@@ -72,11 +72,14 @@ body[dir="rtl"] .Designation-create-Committee {
 }
 
 .email-create-Committee {
-  color: #5a5a5a;
   color: #6172d6;
   text-decoration: underline !important;
   font-size: 10px !important;
   font-weight: 400 !important;
+  white-space: nowrap;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 body[dir="rtl"] .email-create-Committee {
