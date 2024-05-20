@@ -148,6 +148,9 @@ const initialState = {
   mqtMeetingPrRemoved: null,
   validatencryptedstring: null,
   emailRouteID: 0,
+
+  boardDeckModalData: false,
+  boarddeckShareModal: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -2301,6 +2304,20 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: false,
         validatencryptedstring: null,
         ResponseMessage: action.message,
+      };
+    }
+
+    case actions.BOARD_DECK_MODAL: {
+      return {
+        ...state,
+        boardDeckModalData: action.response,
+      };
+    }
+
+    case actions.BOARD_DECK_SHARE_MODAL: {
+      return {
+        ...state,
+        boarddeckShareModal: action.response,
       };
     }
     default:

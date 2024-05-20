@@ -84,6 +84,7 @@ import {
   JoinCurrentMeeting,
   LeaveCurrentMeeting,
   validateStringEmailApi,
+  boardDeckModal,
 } from "../../../store/actions/NewMeetingActions";
 import { mqttCurrentMeetingEnded } from "../../../store/actions/GetMeetingUserId";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
@@ -122,6 +123,8 @@ import ProposedNewMeeting from "./scedulemeeting/ProposedNewMeeting/ProposedNewM
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 import { getAllUnpublishedMeetingData } from "../../../hooks/meetingResponse/response";
 import { mqttMeetingData } from "../../../hooks/meetingResponse/response";
+import BoardDeckModal from "../../BoardDeck/BoardDeckModal/BoardDeckModal";
+import ShareModalBoarddeck from "../../BoardDeck/ShareModalBoardDeck/ShareModalBoarddeck";
 
 const NewMeeting = () => {
   const { t } = useTranslation();
@@ -1310,6 +1313,10 @@ const NewMeeting = () => {
           } else if (record.isParticipant) {
           }
         } else {
+          <Button
+            text={t("Board-deck")}
+            className={styles["BoardDeckButton"]}
+          />;
         }
       },
     },
@@ -1489,6 +1496,12 @@ const NewMeeting = () => {
       await dispatch(searchNewUserMeeting(navigate, searchData, t));
       setentereventIcon(true);
     }
+  };
+
+  //Board Deck Onclick function
+
+  const boardDeckOnClick = () => {
+    dispatch(boardDeckModal(true));
   };
 
   useEffect(() => {
@@ -2177,6 +2190,14 @@ const NewMeeting = () => {
                       >
                         {t("Propose-new-meeting")}
                       </Dropdown.Item>
+
+                      {/* BoardDeck For Time Being */}
+                      <Dropdown.Item
+                        className="dropdown-item"
+                        onClick={boardDeckOnClick}
+                      >
+                        {t("Board-deck")}
+                      </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
                 </Col>
@@ -2452,6 +2473,8 @@ const NewMeeting = () => {
               </Paper>
             </Col>
           </Row>
+          {NewMeetingreducer.boardDeckModalData && <BoardDeckModal />}
+          {NewMeetingreducer.boarddeckShareModal && <ShareModalBoarddeck />}
         </>
       )}
     </section>
