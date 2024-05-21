@@ -34,6 +34,7 @@
     "bootstrap": "^5.2.2",
     "broadcast-channel": "^4.18.1",
     "clipboard-copy": "^4.0.1",
+    "crypto-js": "^4.2.0",
     "date-fns": "^2.29.3",
     "datepicker": "^0.0.0",
     "emoji-mart": "^5.4.0",
