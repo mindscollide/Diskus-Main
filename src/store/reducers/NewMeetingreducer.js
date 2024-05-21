@@ -150,6 +150,7 @@ const initialState = {
   emailRouteID: 0,
   boardDeckModalData: false,
   boarddeckShareModal: false,
+  boardDeckEmailModal: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -2319,6 +2320,14 @@ const NewMeetingreducer = (state = initialState, action) => {
         boarddeckShareModal: action.response,
       };
     }
+
+    case actions.BOARD_DECK_EMAIL_MODAL: {
+      return {
+        ...state,
+        boardDeckEmailModal: action.response,
+      };
+    }
+
     default:
       return {
         ...state,

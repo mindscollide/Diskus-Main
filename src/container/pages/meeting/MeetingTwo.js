@@ -126,6 +126,7 @@ import { getAllUnpublishedMeetingData } from "../../../hooks/meetingResponse/res
 import { mqttMeetingData } from "../../../hooks/meetingResponse/response";
 import BoardDeckModal from "../../BoardDeck/BoardDeckModal/BoardDeckModal";
 import ShareModalBoarddeck from "../../BoardDeck/ShareModalBoardDeck/ShareModalBoarddeck";
+import BoardDeckSendEmail from "../../BoardDeck/BoardDeckSendEmail/BoardDeckSendEmail";
 
 const NewMeeting = () => {
   const { t } = useTranslation();
@@ -2494,6 +2495,7 @@ const NewMeeting = () => {
       </section>
       {NewMeetingreducer.boardDeckModalData && <BoardDeckModal />}
       {NewMeetingreducer.boarddeckShareModal && <ShareModalBoarddeck />}
+      {NewMeetingreducer.boardDeckEmailModal && <BoardDeckSendEmail />}
     </>
   );
 };

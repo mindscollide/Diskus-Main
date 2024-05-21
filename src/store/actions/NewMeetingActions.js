@@ -101,6 +101,13 @@ const boardDeckShareModal = (response) => {
   };
 };
 
+const boardDeckEmailModal = (response) => {
+  return {
+    type: actions.BOARD_DECK_EMAIL_MODAL,
+    response: response,
+  };
+};
+
 const ClearMessegeMeetingdetails = () => {
   return {
     type: actions.CLEAR_MEETING_DETAILS,
@@ -8391,4 +8398,5 @@ export {
   validateStringEmailApi,
   boardDeckModal,
   boardDeckShareModal,
+  boardDeckEmailModal,
 };

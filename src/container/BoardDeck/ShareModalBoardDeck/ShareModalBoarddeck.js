@@ -7,7 +7,10 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Radio } from "antd";
 import { useNavigate } from "react-router-dom";
-import { boardDeckShareModal } from "../../../store/actions/NewMeetingActions";
+import {
+  boardDeckEmailModal,
+  boardDeckShareModal,
+} from "../../../store/actions/NewMeetingActions";
 import crossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 const ShareModalBoarddeck = () => {
   const { t } = useTranslation();
@@ -23,6 +26,11 @@ const ShareModalBoarddeck = () => {
   const handleRadioChange = (value) => {
     setRadioValue(value);
     console.log("valuevaluevalue", value);
+  };
+
+  const handleSharebutton = () => {
+    dispatch(boardDeckShareModal(false));
+    dispatch(boardDeckEmailModal(true));
   };
   return (
     <Container>
@@ -79,6 +87,7 @@ const ShareModalBoarddeck = () => {
                 <Button
                   text={"Share"}
                   className={styles["Cancel_Vote_Modal"]}
+                  onClick={handleSharebutton}
                 />
               </Col>
             </Row>
