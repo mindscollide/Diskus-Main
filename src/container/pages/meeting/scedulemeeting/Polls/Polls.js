@@ -188,8 +188,10 @@ const Polls = ({
             updatedRows.splice(findIndex, 1); // Remove the poll
           } else if (Number(polls.pollStatus.pollStatusId) === 3) {
             updatedRows[findIndex] = polls; // Update the existing poll
+          } else if (Number(polls.pollStatus.pollStatusId) === 2) {
+            updatedRows[findIndex] = polls; // Update the existing poll
           }
-        } 
+        }
 
         setPollsRows(updatedRows);
       }
@@ -215,7 +217,6 @@ const Polls = ({
       console.log(error);
     }
   }, [PollsReducer.newPollDelete]);
-
 
   const handleClickTitle = (record) => {
     if (
@@ -555,7 +556,7 @@ const Polls = ({
     if (
       NewMeetingreducer.ResponseMessage !== "" &&
       NewMeetingreducer.ResponseMessage !== t("Record-not-found") &&
-      NewMeetingreducer.ResponseMessage !== t("Record-found")
+      NewMeetingreducer.ResponseMessage !== ""
     ) {
       setOpen({
         ...open,

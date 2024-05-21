@@ -203,13 +203,15 @@ body[dir="rtl"] .Add-Notes-Attachment {
 }
 
 .notes-create-attachment {
-  width: 500px !important;
+  width: 100% !important;
   display: flex;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   align-items: center;
   padding: 0 !important;
-  height: 120px !important;
+  max-height: 90px !important;
+  gap: 15px;
+  flex-wrap: wrap;
 }
 
 .notes-create-attachment::-webkit-scrollbar {

@@ -50,6 +50,9 @@ body[dir="rtl"] .Update-Committee-Head-Heading {
   color: #5a5a5a;
   font-size: 12px !important;
   font-weight: 600 !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 body[dir="rtl"] .name-Update-Committee {
@@ -71,11 +74,14 @@ body[dir="rtl"] .Designation-Update-Committee {
 }
 
 .email-Update-Committee {
-  color: #5a5a5a;
   color: #6172d6;
   text-decoration: underline !important;
   font-size: 10px !important;
   font-weight: 400 !important;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 body[dir="rtl"] .email-Update-Committee {
@@ -232,6 +238,7 @@ body[dir="rtl"] .Update-Committee-Heading {
   color: #5a5a5a;
   margin-top: 13px !important;
   margin-left: 4px !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .Label_Of_CheckBox {
@@ -272,11 +279,10 @@ body[dir="rtl"] .errorMessage_hidden {
 }
 
 .ADD-Committee-btn {
-  padding: 12px 30px !important;
+  padding: 10px 30px !important;
   font-size: 12px !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
-  height: 39px !important;
   font-weight: 600;
   border-radius: 4px !important;
   margin-top: 2px !important;
@@ -377,4 +383,10 @@ body[dir="rtl"] .Leftpolygon {
   border-radius: 4px !important;
   padding: 10px 10px !important;
   margin-top: 8px !important;
+}
+
+.UpdateCommitteeAttachment {
+  max-height: 120px !important;
+  overflow-y: auto;
+  overflow-x: hidden;
 }

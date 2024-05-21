@@ -1496,7 +1496,16 @@ const ValidateEmailRelatedString = {
     "ServiceManager.ValidateEncryptedStringMeetingRelatedEmailData",
 };
 
+const ValidateEmailRelatedStringPolls = {
+  RequestMethod: "ServiceManager.ValidateEncryptedStringPollRelatedEmailData",
+};
+
+const downloadAttachmentTalk = {
+  RequestMethod: "ServiceManager.DownloadAttachment",
+};
+
 export {
+  ValidateEmailRelatedStringPolls,
   ValidateEmailRelatedString,
   revokeMicrosoftToken,
   leaveFolderSharingRM,
@@ -1896,4 +1905,5 @@ export {
   printMeetingAgenda,
   joinMeeting,
   leaveMeeting,
+  downloadAttachmentTalk,
 };

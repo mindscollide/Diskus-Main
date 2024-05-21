@@ -11,6 +11,7 @@ import {
   SelectBox,
   InputSearchFilter,
   Notification,
+  AttachmentViewer,
 } from "./../../../components/elements";
 import styles from "./UpdateCommittee.module.css";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
@@ -1779,133 +1780,34 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                         </Col>
                       </Row>
                       <Row className="mt-1">
-                        <Col lg={1} md={1} sm={1} className="mt-4">
-                          {fileAttachments.length > 2 ? (
-                            <>
-                              <Button
-                                icon={
-                                  <img
-                                    src={Leftploygon}
-                                    width="20px"
-                                    height="15px"
-                                    draggable="false"
-                                  />
-                                }
-                                onClick={SlideLeft}
-                                className={styles["Leftpolygon"]}
-                              />
-                            </>
-                          ) : null}
-                        </Col>
-                        <Col lg={10} md={10} sm={10}>
+                        <Col lg={12} md={12} sm={12} className={styles["UpdateCommitteeAttachment"]}>
                           <Row>
-                            <Col
-                              lg={12}
-                              md={12}
-                              sm={12}
-                              className="ScrolllerFiles_Committees"
-                              id="Slider"
-                            >
-                              {fileAttachments.length > 0
-                                ? fileAttachments.map((data, index) => {
-                                    return (
-                                      <>
-                                        <Col
-                                          lg={4}
-                                          md={4}
-                                          sm={12}
-                                          className="position-relative gap-2"
-                                        >
-                                          <span
-                                            className={
-                                              styles["Crossicon_Class"]
-                                            }
-                                          >
-                                            <img
-                                              src={CrossIcon}
-                                              height="12.68px"
-                                              width="12.68px"
-                                              onClick={() =>
-                                                handleRemoveFile(data)
-                                              }
-                                            />
-                                          </span>
-                                          <section
-                                            className={styles["Outer_Box"]}
-                                            onClick={handleDoubleCLickFile}
-                                          >
-                                            <Row>
-                                              <Col lg={12} md={12} sm={12}>
-                                                <img
-                                                  src={file_image}
-                                                  width={"100%"}
-                                                  alt=""
-                                                  draggable="false"
-                                                />
-                                              </Col>
-                                            </Row>
-
-                                            <section
-                                              className={
-                                                styles["backGround_name_Icon"]
-                                              }
-                                            >
-                                              <Row className="mb-2">
-                                                <Col
-                                                  lg={12}
-                                                  md={12}
-                                                  sm={12}
-                                                  className={
-                                                    styles["IconTextClass"]
-                                                  }
-                                                >
-                                                  <img
-                                                    src={pdfIcon}
-                                                    height="10px"
-                                                    width="10px"
-                                                    className={
-                                                      styles["IconPDF"]
-                                                    }
-                                                  />
-                                                  <span
-                                                    className={
-                                                      styles["FileName"]
-                                                    }
-                                                    title={
-                                                      data.DisplayAttachmentName
-                                                    }
-                                                  >
-                                                    {data.DisplayAttachmentName}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                            </section>
-                                          </section>
-                                        </Col>
-                                      </>
-                                    );
-                                  })
-                                : null}
-                            </Col>
+                            {fileAttachments.length > 0
+                              ? fileAttachments.map((data, index) => {
+                                  return (
+                                    <>
+                                      <Col
+                                        lg={4}
+                                        md={4}
+                                        sm={12}
+                                        className="position-relative "
+                                      >
+                                        <AttachmentViewer
+                                          handleClickRemove={() =>
+                                            handleRemoveFile(data)
+                                          }
+                                          fk_UID={creatorID}
+                                          data={data}
+                                          id={0}
+                                          name={data.DisplayAttachmentName}
+                                        />
+                                   
+                                      </Col>
+                                    </>
+                                  );
+                                })
+                              : null}
                           </Row>
-                        </Col>
-                        <Col lg={1} md={1} sm={1} className="mt-4">
-                          {fileAttachments.length > 2 ? (
-                            <>
-                              <Button
-                                icon={
-                                  <img
-                                    src={Rightploygon}
-                                    width="20px"
-                                    height="15px"
-                                    draggable="false"
-                                  />
-                                }
-                                onClick={Slideright}
-                                className={styles["Leftpolygon"]}
-                              />
-                            </>
-                          ) : null}
                         </Col>
                       </Row>
                       <Row className="mt-2">

@@ -34,6 +34,7 @@ import {
   deletePollsMQTT,
   getPollsByPollIdApi,
   globalFlag,
+  notifyPollingSocket,
   searchPollsApi,
   setCreatePollModal,
   setDeltePollModal,
@@ -41,6 +42,7 @@ import {
   setVotePollModal,
   setviewpollModal,
   setviewpollProgressModal,
+  validateStringPollApi,
   viewVotesDetailsModal,
 } from "../../store/actions/Polls_actions";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -82,6 +84,7 @@ const Polling = () => {
   });
 
   let organizationID = localStorage.getItem("organizationID");
+  let pollPub = localStorage.getItem("poPub");
   let userID = localStorage.getItem("userID");
   const [isTotalRecords, setTotalRecords] = useState(0);
 
@@ -90,7 +93,7 @@ const Polling = () => {
 
   const currentPage = JSON.parse(localStorage.getItem("pollingPage"));
   const currentPageSize = localStorage.getItem("pollingPageSize");
-
+  console.log(pollPub, "pollPubpollPubpollPub");
   useEffect(() => {
     if (currentPage !== null && currentPageSize !== null) {
       let data = {
@@ -156,6 +159,24 @@ const Polling = () => {
     }
   }, [state]);
 
+  // Email Route for poll Published
+  useEffect(() => {
+    if (pollPub !== null) {
+      validateStringPollApi(pollPub, navigate, t, 2, dispatch)
+        .then(async (result) => {
+          localStorage.removeItem("poPub");
+          let data = {
+            PollID: result.pollID,
+            UserID: parseInt(result.userID),
+          };
+          await dispatch(getPollsByPollIdApi(navigate, data, 5, t));
+        })
+        .catch((error) => {
+          console.log(error, "result");
+        });
+    }
+  }, [pollPub]);
+
   useEffect(() => {
     try {
       if (
@@ -183,33 +204,45 @@ const Polling = () => {
       moment.locale(currentLanguage);
     }
   }, [currentLanguage]);
+
+  // MQTT for Polls Add , Update & Delete
   useEffect(() => {
     if (
       PollsReducer.pollingSocket &&
       Object.keys(PollsReducer.pollingSocket).length > 0
     ) {
-      const { pollingSocket } = PollsReducer;
-      const { committeeID, groupID, meetingID, polls } = pollingSocket;
+      try {
+        const { committeeID, groupID, meetingID, polls } =
+          PollsReducer.pollingSocket;
 
-      if (committeeID === -1 && groupID === -1 && meetingID === -1) {
-        let updatedRows = [...rows];
-
-        const findIndex = updatedRows.findIndex(
-          (rowData) => rowData?.pollID === polls?.pollID
-        );
-
-        if (findIndex !== -1) {
-          if (Number(polls.pollStatus.pollStatusId) === 4) {
-            updatedRows.splice(findIndex, 1); // Remove the poll
-          } else if (Number(polls.pollStatus.pollStatusId) === 3) {
-            updatedRows[findIndex] = polls; // Update the existing poll
-          }
-        } 
-        setRows(updatedRows);
+        if (committeeID === -1 && groupID === -1 && meetingID === -1) {
+          setRows((prevRows) => {
+            const updatedRows = [...prevRows];
+            const findIndex = updatedRows.findIndex(
+              (rowData) => Number(rowData?.pollID) === Number(polls?.pollID)
+            );
+            if (findIndex !== -1) {
+              if (Number(polls.pollStatus.pollStatusId) === 4) {
+                updatedRows.splice(findIndex, 1); // Remove the poll
+              } else if (Number(polls.pollStatus.pollStatusId) === 3) {
+                updatedRows[findIndex] = polls; // Update the existing poll
+              } else if (Number(polls.pollStatus.pollStatusId) === 2) {
+                updatedRows[findIndex] = polls; // Update the existing poll
+              }
+            } else {
+              updatedRows.unshift(polls);
+            }
+            return updatedRows;
+          });
+          dispatch(notifyPollingSocket(null));
+        }
+      } catch (error) {
+        console.error("Error in useEffect:", error);
       }
     }
   }, [PollsReducer.pollingSocket]);
 
+  console.log({ rows }, "rowsrowsrowsrowsrows");
   useEffect(() => {
     try {
       if (PollsReducer.newPollDelete !== null) {
@@ -277,7 +310,7 @@ const Polling = () => {
   };
 
   const handleSearchEvent = () => {
-    setSearchpoll(true);
+    setSearchpoll(false);
     setPollsState({
       ...pollsState,
       searchValue: searchBoxState.searchByTitle,
@@ -392,6 +425,9 @@ const Polling = () => {
       key: "pollCreator",
       width: "97px",
       sorter: (a, b) => a.pollCreator.localeCompare(b.pollCreator),
+      render: (text, record) => {
+        return <span className="text-truncate d-block">{text}</span>
+      }
     },
     {
       title: (
@@ -711,7 +747,7 @@ const Polling = () => {
   useEffect(() => {
     if (
       PollsReducer.ResponseMessage !== "" &&
-      PollsReducer.ResponseMessage !== t("Record-found") &&
+      PollsReducer.ResponseMessage !== "" &&
       PollsReducer.ResponseMessage !== t("No-records-found") &&
       PollsReducer.ResponseMessage !== t("No-data-available")
     ) {

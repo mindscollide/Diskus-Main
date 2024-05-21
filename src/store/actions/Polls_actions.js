@@ -20,8 +20,12 @@ import {
   deleteMeetingPollsRM,
   deleteGroupPollsRM,
   deleteCommitteePollRM,
+  ValidateEmailRelatedStringPolls,
 } from "../../commen/apis/Api_config";
-import { showunsavedEditPollsMeetings } from "./NewMeetingActions";
+import {
+  emailRouteID,
+  showunsavedEditPollsMeetings,
+} from "./NewMeetingActions";
 import { pollApi, toDoListApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
@@ -176,7 +180,7 @@ const searchPollsApi = (navigate, t, data) => {
               dispatch(
                 searchPolls_success(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -723,7 +727,7 @@ const getAllPollsStatusApi = (navigate, data, t) => {
             await dispatch(
               getAllPollsStatusSuccess(
                 response.data.responseResult,
-                t("Record-found")
+                ""
               )
             );
           } else if (
@@ -801,6 +805,8 @@ const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
                 "Polls_PollsServiceManager_GetPollByPollID_01".toLowerCase()
               )
           ) {
+            dispatch(emailRouteID(0));
+
             if (parseInt(check) === 1) {
               await dispatch(setviewpollModal(false));
               await dispatch(setCreatePollModal(false));
@@ -846,7 +852,7 @@ const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
             await dispatch(
               getAllPollsByPollsIDSuccess(
                 response.data.responseResult,
-                t("Record-found")
+                ""
               )
             );
             if (typeof setEditPolls === "function") {
@@ -941,7 +947,7 @@ const viewVotesApi = (navigate, data, t, check, setviewVotes) => {
                 await dispatch(
                   viewVotesSuccess(
                     response.data.responseResult.voteDetails,
-                    t("Record-found")
+                    ""
                   )
                 );
               }
@@ -954,7 +960,7 @@ const viewVotesApi = (navigate, data, t, check, setviewVotes) => {
               await dispatch(
                 viewVotesSuccess(
                   response.data.responseResult.voteDetails,
-                  t("Record-found")
+                  ""
                 )
               );
 
@@ -1045,7 +1051,7 @@ const getAllCommitteesandGroups = (navigate, t) => {
               dispatch(
                 getAllcommittesandGroups_success(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -1383,7 +1389,7 @@ const GetPollsByCommitteeIDapi = (navigate, t, data) => {
               dispatch(
                 searchPollsByCommitteeID_success(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -1482,7 +1488,7 @@ const getPollsByGroupMainApi = (
               dispatch(
                 getPollsByGroupSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -1568,7 +1574,7 @@ const setGroupPollsMainApi = (navigate, t, Data) => {
                 )
             ) {
               dispatch(
-                setGroupSuccess(response.data.responseResult, t("Record-found"))
+                setGroupSuccess(response.data.responseResult, "")
               );
               let OrganizationID = localStorage.getItem("organizationID");
               let ViewGroupID = localStorage.getItem("ViewGroupID");
@@ -1766,7 +1772,7 @@ const getTasksByGroupIDApi = (navigate, t, newData) => {
               dispatch(
                 getTaskGroupIdSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -1855,7 +1861,7 @@ const setTasksByGroupApi = (navigate, t, data) => {
               dispatch(
                 setTaskGroupSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
               let ViewGroupID = localStorage.getItem("ViewGroupID");
@@ -1950,7 +1956,7 @@ const getTaskCommitteeIDApi = (navigate, t, newData) => {
               dispatch(
                 getTaskCommitteeIdSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -2039,7 +2045,7 @@ const setTasksByCommitteeApi = (navigate, t, data) => {
               dispatch(
                 setTaskCommitteeSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
               let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
@@ -2482,7 +2488,7 @@ const getPollsByPollIdforCommitteeApi = (
             await dispatch(
               getAllPollsByPollsIDSuccess(
                 response.data.responseResult,
-                t("Record-found")
+                ""
               )
             );
           } else if (
@@ -2626,7 +2632,7 @@ const getPollByPollIdforGroups = (
             await dispatch(
               getAllPollsByPollsIDSuccess(
                 response.data.responseResult,
-                t("Record-found")
+                ""
               )
             );
           } else if (
@@ -2770,7 +2776,7 @@ const getPollByPollIdforMeeting = (
             await dispatch(
               getAllPollsByPollsIDSuccess(
                 response.data.responseResult,
-                t("Record-found")
+                ""
               )
             );
           } else if (
@@ -2817,10 +2823,110 @@ const createPollMeetingMQTT = (response) => {
   return { type: actions.POLL_CREATE_ADVANCED_MEETING, response: response };
 };
 const deletePollsMQTT = (response) => {
-  console.log(response, "responseresponseresponse")
+  console.log(response, "responseresponseresponse");
   return { type: actions.DELETE_POLLS_MQTT, deleteData: response };
 };
+const validateStringPoll_init = () => {
+  return {
+    type: actions.VALIDATE_ENCRYPTEDSTRING_EMAIL_RELATED_POLLS_INIT,
+  };
+};
+const validateStringPoll_success = (response, message) => {
+  return {
+    type: actions.VALIDATE_ENCRYPTEDSTRING_EMAIL_RELATED_POLLS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const validateStringPoll_fail = (message) => {
+  return {
+    type: actions.VALIDATE_ENCRYPTEDSTRING_EMAIL_RELATED_POLLS_FAIL,
+    message: message,
+  };
+};
+const validateStringPollApi = (emailString, navigate, t, RouteNo, dispatch) => {
+  return new Promise((resolve, reject) => {
+    let Data = {
+      EncryptedString: emailString,
+    };
+    let token = JSON.parse(localStorage.getItem("token"));
+
+    dispatch(validateStringPoll_init());
+
+    let form = new FormData();
+    form.append("RequestMethod", ValidateEmailRelatedStringPolls.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+
+    axios({
+      method: "post",
+      url: pollApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          // Retry the API call
+          resolve(
+            dispatch(
+              validateStringPollApi(emailString, navigate, t, RouteNo, dispatch)
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_ValidateEncryptedStringPollRelatedEmailData_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                validateStringPoll_success(
+                  response.data.responseResult?.data,
+                  t("Successfully")
+                )
+              );
+              dispatch(emailRouteID(RouteNo));
+              resolve(response.data.responseResult.data);
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_ValidateEncryptedStringPollRelatedEmailData_02".toLowerCase()
+                )
+            ) {
+              dispatch(validateStringPoll_fail(t("Unsuccessful")));
+              reject("Unsuccessful");
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_ValidateEncryptedStringPollRelatedEmailData_03".toLowerCase()
+                )
+            ) {
+              dispatch(validateStringPoll_fail(t("Something-went-wrong")));
+              reject("Something-went-wrong");
+            }
+          } else {
+            dispatch(validateStringPoll_fail(t("Something-went-wrong")));
+            reject("Something-went-wrong");
+          }
+        } else {
+          dispatch(validateStringPoll_fail(t("Something-went-wrong")));
+          reject("Something-went-wrong");
+        }
+      })
+      .catch((error) => {
+        dispatch(validateStringPoll_fail("Something-went-wrong"));
+        reject(error);
+      });
+  });
+};
 export {
+  validateStringPollApi,
   deletePollsMQTT,
   createPollGroupsMQTT,
   createPollCommitteesMQTT,

@@ -2101,3 +2101,22 @@ span.background-close-search {
   font-family: "Montserrat" !important;
   font-weight: 400 !important;
 }
+
+img.image-close {
+  position: absolute;
+  right: 10px;
+  top: 0px;
+  cursor: pointer;
+}
+
+body[dir="rtl"] img.image-close {
+  position: absolute;
+  right: auto;
+  top: 0px;
+  cursor: pointer;
+  left: 10px;
+}
+
+.image-modal.modal-header .modal-title {
+  width: 100% !important;
+}

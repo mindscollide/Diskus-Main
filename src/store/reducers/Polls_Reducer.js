@@ -37,6 +37,7 @@ const initialState = {
   newPollCommittees: null,
   newPollMeeting: null,
   newPollDelete: null,
+  validateEmailString: null,
 };
 
 const PollsReducer = (state = initialState, action) => {
@@ -600,6 +601,28 @@ const PollsReducer = (state = initialState, action) => {
       return {
         ...state,
         newPollDelete: action.deleteData,
+      };
+    }
+    case actions.VALIDATE_ENCRYPTEDSTRING_EMAIL_RELATED_POLLS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.VALIDATE_ENCRYPTEDSTRING_EMAIL_RELATED_POLLS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        validateEmailString: action.response,
+        responseMessage: action.message,
+      };
+    }
+    case actions.VALIDATE_ENCRYPTEDSTRING_EMAIL_RELATED_POLLS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        validateEmailString: null,
+        responseMessage: action.message,
       };
     }
     default: {

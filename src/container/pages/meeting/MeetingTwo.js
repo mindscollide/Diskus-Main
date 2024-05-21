@@ -84,6 +84,8 @@ import {
   JoinCurrentMeeting,
   LeaveCurrentMeeting,
   validateStringEmailApi,
+  meetingParticipantAdded,
+  meetingParticipantRemoved,
 } from "../../../store/actions/NewMeetingActions";
 import { mqttCurrentMeetingEnded } from "../../../store/actions/GetMeetingUserId";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
@@ -119,6 +121,8 @@ import {
   clearResponseMessage,
 } from "../../../store/actions/MeetingOrganizers_action";
 import ProposedNewMeeting from "./scedulemeeting/ProposedNewMeeting/ProposedNewMeeting";
+import { getAllUnpublishedMeetingData } from "../../../hooks/meetingResponse/response";
+import { mqttMeetingData } from "../../../hooks/meetingResponse/response";
 
 const NewMeeting = () => {
   const { t } = useTranslation();
@@ -151,6 +155,7 @@ const NewMeeting = () => {
 
   let currentLanguage = localStorage.getItem("i18nextLng");
   let AgCont = localStorage.getItem("AgCont");
+  // let AdCont
   //Current User ID
   let currentUserId = localStorage.getItem("userID");
   //Current Organization
@@ -375,44 +380,27 @@ const NewMeeting = () => {
 
   useEffect(() => {
     if (AgCont !== null) {
-      // dispatch(validateStringEmailApi(AgCont, navigate, t, 1));
       // Usage example:
       validateStringEmailApi(AgCont, navigate, t, 1, dispatch)
         .then(async (result) => {
           console.log("Result:", result);
           // Handle the result here
-          let Data = {
-            MeetingID: Number(result.meetingID),
-          };
-          await dispatch(
-            GetAllMeetingDetailsApiFunc(
-              navigate,
-              t,
-              Data,
-              true,
-              setCurrentMeetingID,
-              setSceduleMeeting,
-              setDataroomMapFolderId,
-              0,
-              1
-            )
-          );
-          dispatch(scheduleMeetingPageFlag(true));
-          dispatch(viewMeetingFlag(false));
-          dispatch(meetingDetailsGlobalFlag(true));
-          dispatch(organizersGlobalFlag(false));
-          dispatch(agendaContributorsGlobalFlag(true));
-          dispatch(participantsGlobalFlag(false));
-          dispatch(agendaGlobalFlag(false));
-          dispatch(meetingMaterialGlobalFlag(false));
-          dispatch(minutesGlobalFlag(false));
-          dispatch(proposedMeetingDatesGlobalFlag(false));
-          dispatch(actionsGlobalFlag(false));
-          dispatch(pollsGlobalFlag(false));
-          dispatch(attendanceGlobalFlag(false));
-          dispatch(uploadGlobalFlag(false));
-          setEditMeeting(true);
 
+          await setAdvanceMeetingModalID(Number(result.meetingID));
+          await setViewAdvanceMeetingModalUnpublish(true);
+          await dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+          setEdiorRole({
+            ...editorRole,
+            isPrimaryOrganizer: false,
+            role:
+              Number(result.attendeeId) === 2
+                ? "Participant"
+                : Number(result.attendeeId) === 4
+                ? "Agenda Contributor"
+                : "Organizer",
+            status: Number(result.meetingStatusId),
+          });
+          localStorage.removeItem("AgCont");
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -1573,6 +1561,40 @@ const NewMeeting = () => {
 
   useEffect(() => {
     if (NewMeetingreducer.mqttMeetingPrAdded !== null) {
+      console.log(
+        NewMeetingreducer.mqttMeetingPrAdded,
+        "mqttMeetingPrAddedmqttMeetingPrAdded"
+      );
+      let meetingData = NewMeetingreducer.mqttMeetingPrAdded;
+      let newData = {
+        dateOfMeeting: meetingData?.dateOfMeeting,
+        host: meetingData?.host,
+        isAttachment: false,
+        isChat: false,
+        isVideoCall: false,
+        isQuickMeeting: meetingData?.isQuickMeeting,
+        meetingAgenda: [],
+        isOrganizer: meetingData?.attendeeRoleID === 1 ? true : false,
+        isAgendaContributor: meetingData?.attendeeRoleID === 4 ? true : false,
+        isParticipant: meetingData?.attendeeRoleID === 2 ? true : false,
+        talkGroupID: 0,
+        meetingType: meetingData?.meetingTypeID,
+        meetingEndTime: meetingData?.meetingEndTime,
+        meetingStartTime: meetingData?.meetingStartTime,
+        pK_MDID: meetingData?.meetingID,
+        meetingPoll: {
+          totalNoOfDirectors: 0,
+          totalNoOfDirectorsVoted: 0,
+        },
+        responseDeadLine: "",
+        status: String(meetingData?.status),
+        title: meetingData?.title,
+        key: 0,
+        isPrimaryOrganizer: meetingData?.isPrimaryOrganizer,
+        userDetails: null,
+      };
+      setRow([newData, ...rows]);
+      dispatch(meetingParticipantAdded(null));
     }
     if (NewMeetingreducer.mqtMeetingPrRemoved !== null) {
       try {
@@ -1582,6 +1604,7 @@ const NewMeeting = () => {
             return Number(newData.pK_MDID) !== Number(meetingID);
           });
         });
+        dispatch(meetingParticipantRemoved(null));
       } catch (error) {
         console.log(error);
       }
@@ -1654,55 +1677,29 @@ const NewMeeting = () => {
       NewMeetingreducer.meetingStatusPublishedMqttData !== null &&
       NewMeetingreducer.meetingStatusPublishedMqttData !== undefined
     ) {
-      let meetingData = NewMeetingreducer.meetingStatusPublishedMqttData;
+      const callMQTT = async () => {
+        let meetingData = NewMeetingreducer.meetingStatusPublishedMqttData;
+        try {
+          const indexToUpdate = rows.findIndex(
+            (obj) => Number(obj.pK_MDID) === Number(meetingData.pK_MDID)
+          );
+          let newMeetingData = await mqttMeetingData(meetingData, 1);
 
-      try {
-        const indexToUpdate = rows.findIndex(
-          (obj) => Number(obj.pK_MDID) === Number(meetingData.pK_MDID)
-        );
-        let newMeetingData = {
-          dateOfMeeting: meetingData.dateOfMeeting,
-          host: meetingData.host,
-          isAttachment: meetingData.isAttachment,
-          isChat: meetingData.isChat,
-          isVideoCall: meetingData.isVideoCall,
-          isQuickMeeting: meetingData.isQuickMeeting,
-          meetingAgenda: meetingData.meetingAgenda,
-          meetingAttendees: meetingData.meetingAttendees,
-          meetingEndTime: meetingData.meetingEndTime,
-          meetingStartTime: meetingData.meetingStartTime,
-          meetingURL: meetingData.meetingURL,
-          orignalProfilePictureName: meetingData.orignalProfilePictureName,
-          pK_MDID: meetingData.pK_MDID,
-          meetingPoll: {
-            totalNoOfDirectors: 0,
-            totalNoOfDirectorsVoted: 0,
-          },
-          responseDeadLine: "",
-          status: meetingData.status,
-          title: meetingData.title,
-          talkGroupID: 0,
-          meetingType:
-            Number(meetingData.meetingType) === 1 &&
-            meetingData.isQuickMeeting === true
-              ? 0
-              : meetingData.meetingType,
-        };
-        if (indexToUpdate !== -1) {
-          let updatedRows = [...rows];
-          updatedRows[indexToUpdate] = newMeetingData;
-          setRow(updatedRows);
-        } else {
-          setRow([newMeetingData, ...rows]);
+          if (indexToUpdate !== -1) {
+            let updatedRows = [...rows];
+            updatedRows[indexToUpdate] = newMeetingData;
+            setRow(updatedRows);
+          } else {
+            setRow([newMeetingData, ...rows]);
+          }
+        } catch (error) {
+          console.log(error, "Meeting Created and Published");
         }
-      } catch (error) {
-        console.log(error, "Meeting Created and Published");
-      }
+      };
+
+      callMQTT();
     }
   }, [NewMeetingreducer.meetingStatusPublishedMqttData]);
-
-  console.log(rows, "rowsrowsrowsrowsrows");
-
   useEffect(() => {
     if (
       meetingIdReducer.MeetingStatusSocket !== null &&
@@ -1823,17 +1820,25 @@ const NewMeeting = () => {
       meetingIdReducer.allMeetingsSocketData !== null &&
       meetingIdReducer.allMeetingsSocketData !== undefined
     ) {
-      let meetingID = meetingIdReducer.allMeetingsSocketData.pK_MDID;
-      let meetingData = meetingIdReducer.allMeetingsSocketData;
-      setRow((rowsData) => {
-        return rowsData.map((item) => {
-          if (item.pK_MDID === meetingID) {
-            return meetingData;
-          } else {
-            return item; // Return the original item if the condition is not met
-          }
-        });
-      });
+      try {
+        const updateMeeting = async () => {
+          let meetingID = meetingIdReducer.allMeetingsSocketData.pK_MDID;
+          let meetingData = meetingIdReducer.allMeetingsSocketData;
+          let newMeetingData = await mqttMeetingData(meetingData, 1);
+          setRow((rowsData) => {
+            return rowsData.map((item) => {
+              if (item.pK_MDID === meetingID) {
+                return newMeetingData;
+              } else {
+                return item; // Return the original item if the condition is not met
+              }
+            });
+          });
+        };
+        updateMeeting();
+      } catch (error) {
+        console.log(error, "error");
+      }
     }
   }, [meetingIdReducer.allMeetingsSocketData]);
   useEffect(() => {
@@ -1876,7 +1881,7 @@ const NewMeeting = () => {
     if (
       ResponseMessages !== "" &&
       ResponseMessages !== undefined &&
-      ResponseMessages !== t("Record-found") &&
+      ResponseMessages !== "" &&
       ResponseMessages !== t("No-records-found") &&
       ResponseMessages !== t("No-record-found")
     ) {
@@ -1894,7 +1899,7 @@ const NewMeeting = () => {
       ResponseMessage !== "" &&
       ResponseMessage !== t("No-record-found") &&
       ResponseMessage !== t("No-records-found") &&
-      ResponseMessage !== t("Record-found") &&
+      ResponseMessage !== "" &&
       ResponseMessage !== t("List-updated-successfully") &&
       ResponseMessage !== t("No-data-available") &&
       ResponseMessage !== t("Successful") &&

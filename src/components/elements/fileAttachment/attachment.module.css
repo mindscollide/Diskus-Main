@@ -84,12 +84,13 @@ body[dir="rtl"] .fileNameAttachment {
 
 .agendaFileAttachedView {
   cursor: pointer;
+  -webkit-user-select: none !important;
   user-select: none !important;
   box-sizing: border-box;
   background: #f6f9fc;
   border: 1px solid #d4d4d4;
   border-radius: 25px;
-  width: 160px;
+  min-width: 165px;
   height: 30px;
   position: relative;
   z-index: 0;

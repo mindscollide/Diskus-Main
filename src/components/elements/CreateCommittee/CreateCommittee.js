@@ -250,6 +250,11 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       setTaskAssignedTo(0);
       setParticipantRoleName("Regular");
       setTaskAssignedToInput("");
+      setPresenterValue({
+        label: "",
+        value: 0,
+        name: "",
+      });
     } else if (taskAssignedTo !== 0) {
       var foundIndex = meetingAttendees.findIndex(
         (x) => x.FK_UID === taskAssignedTo
@@ -287,6 +292,11 @@ const CreateCommittee = ({ setCreategrouppage }) => {
           setTaskAssignedTo(0);
           setParticipantRoleName("Regular");
           setTaskAssignedToInput("");
+          setPresenterValue({
+            label: "",
+            value: 0,
+            name: "",
+          });
         } else {
           setOpen({
             flag: true,
@@ -297,6 +307,11 @@ const CreateCommittee = ({ setCreategrouppage }) => {
           setTaskAssignedTo(0);
           setParticipantRoleName("Regular");
           setTaskAssignedToInput("");
+          setPresenterValue({
+            label: "",
+            value: 0,
+            name: "",
+          });
         }
       } else {
         setOpen({
@@ -325,6 +340,11 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         });
         setAttendees([]);
         setParticipantRoleName("Regular");
+        setPresenterValue({
+          label: "",
+          value: 0,
+          name: "",
+        });
       } else {
         if (participantOptionsWithID !== undefined) {
           attendees.forEach((dataID, index) => {
@@ -351,6 +371,11 @@ const CreateCommittee = ({ setCreategrouppage }) => {
             setTaskAssignedTo(0);
             setParticipantRoleName("Regular");
             setTaskAssignedToInput("");
+            setPresenterValue({
+              label: "",
+              value: 0,
+              name: "",
+            });
           });
         } else {
           setOpen({
@@ -368,6 +393,11 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       setTaskAssignedTo(0);
       setParticipantRoleName("Regular");
       setTaskAssignedToInput("");
+      setPresenterValue({
+        label: "",
+        value: 0,
+        name: "",
+      });
     }
   };
 
@@ -1675,6 +1705,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                         name={data.DisplayAttachmentName}
                                         id={data.pK_FileID}
                                         data={data}
+                                        fk_UID={creatorID}
                                       />
                                     </>
                                   );

@@ -532,7 +532,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
     if (
       PollsReducer.ResponseMessage !== "" &&
       PollsReducer.ResponseMessage !== undefined &&
-      PollsReducer.ResponseMessage !== t("Record-found") &&
+      PollsReducer.ResponseMessage !== "" &&
       PollsReducer.ResponseMessage !== t("No-records-found")
     ) {
       setOpen({
@@ -572,7 +572,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
     if (
       getTodosStatus.ResponseMessage !== "" &&
       getTodosStatus.ResponseMessage !== undefined &&
-      getTodosStatus.ResponseMessage !== t("Record-found") &&
+      getTodosStatus.ResponseMessage !== "" &&
       getTodosStatus.ResponseMessage !== t("No-records-found")
     ) {
       setOpen({
@@ -592,7 +592,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
     } else if (
       getTodosStatus.UpdateTodoStatusMessage !== "" &&
       getTodosStatus.UpdateTodoStatusMessage !== undefined &&
-      getTodosStatus.UpdateTodoStatusMessage !== t("Record-found") &&
+      getTodosStatus.UpdateTodoStatusMessage !== "" &&
       getTodosStatus.UpdateTodoStatusMessage !== t("No-records-found")
     ) {
       setOpen({
@@ -612,7 +612,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
     } else if (
       getTodosStatus.UpdateTodoStatus !== "" &&
       getTodosStatus.UpdateTodoStatus !== undefined &&
-      getTodosStatus.UpdateTodoStatus !== t("Record-found") &&
+      getTodosStatus.UpdateTodoStatus !== "" &&
       getTodosStatus.UpdateTodoStatus !== t("No-records-found")
     ) {
       setOpen({

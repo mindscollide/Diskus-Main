@@ -135,7 +135,7 @@ const getMeetingUserId = (navigate, data, t) => {
               await dispatch(
                 getMeetingIdSuccess(
                   response.data.responseResult.meetings,
-                  t("Record-found")
+                  ""
                 )
               );
               dispatch(SetLoaderFalse());
@@ -207,7 +207,7 @@ const getMeetingUserId = (navigate, data, t) => {
 //               await dispatch(
 //                 getMeetingIdSuccess(
 //                   response.data.responseResult.meetings,
-//                   t("Record-found")
+//                   ""
 //                 )
 //               );
 //               dispatch(SetLoaderFalse());
@@ -301,7 +301,7 @@ const GetWeeklyMeetingsCount = (navigate, id, t, loader) => {
               await dispatch(
                 getWeeklyMeetingsCountSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
               dispatch(SetSpinnerFalse());
@@ -394,7 +394,7 @@ const GetUpcomingEvents = (navigate, data, t, loader) => {
               await dispatch(
                 getUpcomingEventsSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
               dispatch(SetSpinnerFalse());
@@ -465,7 +465,7 @@ const GetUpcomingEventsForMQTT = (navigate, data, t, loader) => {
               await dispatch(
                 getUpcomingEventsSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
               // dispatch(SetSpinnerFalse());
@@ -576,7 +576,7 @@ const searchUserMeeting = (navigate, searchData, t) => {
               dispatch(
                 SearchMeeting_Success(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (

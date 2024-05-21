@@ -3,7 +3,12 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Sidebar, Talk } from "../../components/layout";
 import CancelButtonModal from "../pages/meeting/closeMeetingTab/CancelModal";
-import { Loader, LoaderPanel, Notification } from "../../components/elements";
+import {
+  Loader,
+  LoaderPanel,
+  Notification,
+  Modal,
+} from "../../components/elements";
 import Header2 from "../../components/layout/header2/Header2";
 import { ConfigProvider, Layout } from "antd";
 import ar_EG from "antd/es/locale/ar_EG";
@@ -600,20 +605,25 @@ const Dashboard = () => {
             data.payload.message.toLowerCase() ===
             "NEW_MEETING_PARTICIPANT_ADDED".toLowerCase()
           ) {
-            dispatch(meetingParticipantAdded(data.payload));
+            if (
+              Number(data.payload.status) !== 11 &&
+              Number(data.payload.status) !== 12
+            ) {
+              dispatch(meetingParticipantAdded(data.payload));
+              setNotificationID(id);
 
-            if (data.viewable) {
-              // setNotification({
-              //   ...notification,
-              //   notificationShow: true,
-              //   message: changeMQTTJSONOne(
-              //     t("MeetingReminderNotification"),
-              //     "[Meeting Title]",
-              //     data.payload.meetingTitle.substring(0, 100)
-              //   ),
-              // });
+              if (data.viewable) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("MeetingReminderNotification"),
+                    "[Meeting Title]",
+                    data.payload.title.substring(0, 100)
+                  ),
+                });
+              }
             }
-            setNotificationID(id);
           }
         }
       }
@@ -1413,7 +1423,7 @@ const Dashboard = () => {
               ),
             });
           }
-          dispatch(notifyPollingSocket(data.payload.polls));
+          dispatch(notifyPollingSocket(data.payload));
           setNotificationID(id);
         } else if (
           data.payload.message.toLowerCase() === "POLL_EXPIRED".toLowerCase()
@@ -2270,6 +2280,8 @@ const Dashboard = () => {
               chatMessageClass="chat-messenger-head-video"
             />
           ) : null}
+          {/* <Modal show={true} size="md" setShow={true} /> */}
+
           {videoFeatureReducer.NormalizeVideoFlag === true ||
           videoFeatureReducer.MinimizeVideoFlag === true ||
           videoFeatureReducer.MaximizeVideoFlag === true ? (

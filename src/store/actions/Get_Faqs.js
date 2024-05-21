@@ -57,7 +57,7 @@ const GetUserFAQs = (navigate, t) => {
                 )
             ) {
               await dispatch(
-                faqsSuccess(response.data.responseResult, t("Record-found"))
+                faqsSuccess(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage

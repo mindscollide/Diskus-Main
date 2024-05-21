@@ -430,7 +430,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
       PollsReducer.ResponseMessage !== "" &&
       PollsReducer.ResponseMessage !== t("Data-available") &&
       PollsReducer.ResponseMessage !== t("No-data-available") &&
-      PollsReducer.ResponseMessage !== t("Record-found") &&
+      PollsReducer.ResponseMessage !== "" &&
       PollsReducer.ResponseMessage !== t("No-record-found")
     ) {
       setOpen({

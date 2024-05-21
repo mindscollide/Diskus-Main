@@ -71,14 +71,14 @@ const packagesforUpgrade = (navigate, t) => {
               dispatch(
                 packageUpgradeSuccess(
                   response.data.responseResult.subscriptionPackages,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
               response.data.responseResult.responseMessage ===
               "ERM_AuthService_SignUpManager_GetSubscriptionPackagesForUpgrade_02"
             ) {
-              dispatch(packageUpgradeFail(t("Record-found")));
+              dispatch(packageUpgradeFail(""));
             } else if (
               response.data.responseResult.responseMessage ===
               "ERM_AuthService_SignUpManager_GetSubscriptionPackagesForUpgrade_03"

@@ -246,8 +246,10 @@ const Polls = ({
             updatedRows.splice(findIndex, 1); // Remove the poll
           } else if (Number(polls.pollStatus.pollStatusId) === 3) {
             updatedRows[findIndex] = polls; // Update the existing poll
+          } else if (Number(polls.pollStatus.pollStatusId) === 2) {
+            updatedRows[findIndex] = polls; // Update the existing poll
           }
-        } 
+        }
 
         setPollsRows(updatedRows);
       }
@@ -383,6 +385,9 @@ const Polls = ({
       key: "pollCreator",
       width: "110px",
       sorter: (a, b) => a.pollCreator.localeCompare(b.pollCreator),
+      render: (text, record) => (
+        <span className="text-truncate d-block">{text}</span>
+      ),
     },
     {
       title: t("Vote"),
@@ -570,7 +575,7 @@ const Polls = ({
       PollsReducer.ResponseMessage !== "" &&
       PollsReducer.ResponseMessage !== t("Data-available") &&
       PollsReducer.ResponseMessage !== t("No-data-available") &&
-      PollsReducer.ResponseMessage !== t("Record-found") &&
+      PollsReducer.ResponseMessage !== "" &&
       PollsReducer.ResponseMessage !== t("No-records-found") &&
       PollsReducer.ResponseMessage !== t("No-record-found")
     ) {
@@ -596,7 +601,7 @@ const Polls = ({
       NewMeetingreducer.ResponseMessage !== "" &&
       NewMeetingreducer.ResponseMessage !== t("Data-available") &&
       NewMeetingreducer.ResponseMessage !== t("No-data-available") &&
-      NewMeetingreducer.ResponseMessage !== t("Record-found") &&
+      NewMeetingreducer.ResponseMessage !== "" &&
       NewMeetingreducer.ResponseMessage !== t("No-records-found") &&
       NewMeetingreducer.ResponseMessage !== t("No-record-found")
     ) {
