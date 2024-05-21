@@ -5,6 +5,7 @@ import {
   GetAllUsers,
   GetAllUsersGroupsRoomsList,
   getAllUserChatsSuccess,
+  GetAllUserChats,
 } from "../../../store/actions/Talk_action";
 import {
   recentChatFlag,
@@ -129,6 +130,14 @@ const Talk = () => {
           t
         )
       );
+      // dispatch(
+      //   GetAllUserChats(
+      //     navigate,
+      //     parseInt(currentUserId),
+      //     parseInt(currentOrganizationId),
+      //     t
+      //   )
+      // );
       dispatch(headerShowHideStatus(true));
       dispatch(footerShowHideStatus(true));
       dispatch(activeChatBoxGS(true));
@@ -143,7 +152,7 @@ const Talk = () => {
       dispatch(privateChatFlag(false));
       dispatch(videoChatSearchFlag(false));
       dispatch(globalChatsSearchFlag(false));
-      dispatch(getAllUserChatsSuccess([], ""));
+      // dispatch(getAllUserChatsSuccess([], ""));
     }
   };
 
@@ -279,39 +288,6 @@ const Talk = () => {
               className={subIcons ? "talk_subIcon" : "talk_subIcon_hidden"}
               onClick={handleOpenAddNotesModal}
             >
-              {/* <span className="talk-count"></span> */}
-              {/* <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="30"
-            height="40.144"
-            viewBox="0 0 38.586 40.144"
-          >
-            <defs>
-              <linearGradient
-                id="linear-gradient"
-                x1="0.5"
-                x2="0.5"
-                y2="1"
-                gradientUnits="objectBoundingBox"
-              >
-                <stop offset="0" stopColor="#4adede" />
-                <stop offset="1" stopColor="#6172d6" />
-              </linearGradient>
-            </defs>
-            <g
-              id="Group_1347"
-              data-name="Group 1347"
-              transform="translate(-307.429 -3290.113)"
-            >
-              <path
-                id="Union_7"
-                data-name="Union 7"
-                d="M-7696.01,3002.017l-.035,0c-.217-.031-.434-.058-.65-.087-.484-.062-.983-.128-1.475-.209a19.745,19.745,0,0,1-9.859-4.669c-.34-.3-.662-.594-.952-.889a1.836,1.836,0,0,1-.041-2.615,1.838,1.838,0,0,1,1.322-.567,1.88,1.88,0,0,1,1.309.542,17.3,17.3,0,0,0,4.269,3.066,16.208,16.208,0,0,0,7.286,1.723,16.279,16.279,0,0,0,11.15-4.344,16.256,16.256,0,0,0,5.112-9.636,16.212,16.212,0,0,0-13.375-18.45,19.917,19.917,0,0,0-3.142-.26c-5.264,0-9.685,2.354-13.15,7,.889,0,1.781,0,2.671,0q.787,0,1.57,0a1.815,1.815,0,0,1,1.744,1.073,1.774,1.774,0,0,1-.219,1.918,1.794,1.794,0,0,1-1.456.716l-1.038,0q-1.524,0-3.053,0c-1.307,0-2.393,0-3.418-.01a1.813,1.813,0,0,1-1.832-1.837c-.013-2.488-.013-5.008,0-7.493a1.81,1.81,0,0,1,1.845-1.843h.021a1.839,1.839,0,0,1,1.835,1.87c0,.439,0,.877,0,1.328a19.988,19.988,0,0,1,11.042-6.115,19.7,19.7,0,0,1,3.74-.36,19.916,19.916,0,0,1,5.951.914,20.342,20.342,0,0,1,5.368,2.594,19.72,19.72,0,0,1,7.426,9.354,20.052,20.052,0,0,1-.5,15.632,20.12,20.12,0,0,1-11.64,10.536,19.091,19.091,0,0,1-5.06,1.047.982.982,0,0,0-.14.029l-.12.029-.051.01Zm-4.226-13.459a1.8,1.8,0,0,1-1.252-1.471,1.848,1.848,0,0,1,.6-1.671c.579-.575,1.166-1.159,1.732-1.727.78-.78,1.587-1.585,2.387-2.375a.356.356,0,0,0,.131-.308c-.008-3.687-.008-7.724,0-12.335a1.84,1.84,0,0,1,1.76-1.969c.027,0,.058,0,.085,0a1.845,1.845,0,0,1,1.853,1.911c0,1.583,0,3.192,0,4.747v1.9c0,.577,0,1.154,0,1.731,0,1.558,0,3.171.008,4.756a2.2,2.2,0,0,1-.675,1.655c-1.082,1.071-2.178,2.164-3.239,3.223q-.72.723-1.444,1.444a1.848,1.848,0,0,1-1.334.589A1.976,1.976,0,0,1-7700.236,2988.558Z"
-                transform="translate(8020.708 328.24)"
-                fill="url(#linear-gradient)"
-              />
-            </g>
-          </svg> */}
               <svg
                 id="Group_2034"
                 data-name="Group 2034"
@@ -320,7 +296,6 @@ const Talk = () => {
                 height="39.841"
                 viewBox="0 0 35.237 39.841"
               >
-                {/* <title className="tooltip">Notes </title> */}
                 <defs>
                   <linearGradient
                     id="linear-gradient"

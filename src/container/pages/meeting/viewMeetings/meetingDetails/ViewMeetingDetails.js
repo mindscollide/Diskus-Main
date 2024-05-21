@@ -36,6 +36,7 @@ import {
 import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
 import {
   GetAllUsers,
+  GetAllUserChats,
   GetAllUsersGroupsRoomsList,
   GetGroupMessages,
   activeChat,
@@ -182,6 +183,14 @@ const ViewMeetingDetails = ({
         setAdvanceMeetingModalID,
         setViewAdvanceMeetingModal,
         setDataroomMapFolderId
+      )
+    );
+    dispatch(
+      GetAllUserChats(
+        navigate,
+        parseInt(currentUserID),
+        parseInt(currentOrganization),
+        t
       )
     );
     let Data2 = {
