@@ -826,7 +826,6 @@ const SignatureViewer = () => {
               textBoxButton.textContent = "Send";
               textBoxButton.style.background = "#6172d6";
               textBoxButton.style.color = "#fff";
-              textBoxButton.style.padding = "8px 30px";
               textBoxButton.style.borderRadius = "4px";
               textBoxButton.style.cursor = "pointer";
               textBoxButton.style.margin = "10px 0 10px 10px";

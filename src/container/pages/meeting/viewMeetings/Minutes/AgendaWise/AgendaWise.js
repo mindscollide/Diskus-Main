@@ -3,7 +3,11 @@ import styles from "./AgendaWise.module.css";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Button, Notification } from "../../../../../../components/elements";
+import {
+  AttachmentViewer,
+  Button,
+  Notification,
+} from "../../../../../../components/elements";
 import Select from "react-select";
 import { Col, Row } from "react-bootstrap";
 import { useRef } from "react";
@@ -880,136 +884,34 @@ const AgendaWise = ({
               </Row>
             </Col>
             <Col lg={6} md={6} sm={6}>
-              {fileAttachments.length > 0 ? (
-                <>
-                  <Row className="mt-1">
-                    <Col lg={1} md={1} sm={1} className="mt-4">
-                      {fileAttachments.length > 2 ? (
-                        <>
-                          <Button
-                            icon={
-                              <img
-                                src={Leftploygon}
-                                width="20px"
-                                height="15px"
-                                draggable="false"
-                                alt=""
-                              />
-                            }
-                            onClick={SlideLeft}
-                            className={styles["Leftpolygon"]}
-                          />
-                        </>
-                      ) : null}
-                    </Col>
-                    <Col lg={10} md={10} sm={10}>
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="ScrolllerFiles_Committees"
-                          id="Slider"
-                        >
-                          {fileAttachments.length > 0
-                            ? fileAttachments.map((data, index) => {
-                                console.log(data, "datadatadata");
-                                return (
-                                  <>
-                                    <Col
-                                      lg={4}
-                                      md={4}
-                                      sm={12}
-                                      className="position-relative gap-2"
-                                    >
-                                      <span
-                                        className={styles["Crossicon_Class"]}
-                                      >
-                                        <img
-                                          src={CrossIcon}
-                                          height="12.68px"
-                                          width="12.68px"
-                                          alt=""
-                                          onClick={() => handleRemoveFile(data)}
-                                        />
-                                      </span>
-                                      <section className={styles["Outer_Box"]}>
-                                        <Row>
-                                          <Col lg={12} md={12} sm={12}>
-                                            <img
-                                              src={file_image}
-                                              width={"100%"}
-                                              alt=""
-                                              draggable="false"
-                                            />
-                                          </Col>
-                                        </Row>
-
-                                        <section
-                                          className={
-                                            styles["backGround_name_Icon"]
-                                          }
-                                        >
-                                          <Row className="mb-2">
-                                            <Col
-                                              lg={12}
-                                              md={12}
-                                              sm={12}
-                                              className={
-                                                styles["IconTextClass"]
-                                              }
-                                            >
-                                              <img
-                                                src={getIconSource(
-                                                  getFileExtension(
-                                                    data.DisplayAttachmentName
-                                                  )
-                                                )}
-                                                height="10px"
-                                                width="10px"
-                                                className={styles["IconPDF"]}
-                                                alt=""
-                                              />
-                                              <span
-                                                className={styles["FileName"]}
-                                              >
-                                                {data.DisplayAttachmentName}
-                                              </span>
-                                            </Col>
-                                          </Row>
-                                        </section>
-                                      </section>
-                                    </Col>
-                                  </>
-                                );
-                              })
-                            : null}
-                        </Col>
-                      </Row>
-                    </Col>
-                    <Col lg={1} md={1} sm={1} className="mt-4">
-                      {fileAttachments.length > 2 ? (
-                        <>
-                          <Button
-                            icon={
-                              <img
-                                src={Rightploygon}
-                                width="20px"
-                                height="15px"
-                                draggable="false"
-                                alt=""
-                              />
-                            }
-                            onClick={Slideright}
-                            className={styles["Leftpolygon"]}
-                          />
-                        </>
-                      ) : null}
-                    </Col>
-                  </Row>
-                </>
-              ) : null}
-
+              <section className={styles["viewAgendaWiseAttachments"]}>
+                {fileAttachments.length > 0 ? (
+                  <>
+                    <Row className="mt-1">
+                      {fileAttachments.length > 0
+                        ? fileAttachments.map((data, index) => {
+                            console.log(data, "datadatadata");
+                            return (
+                              <>
+                                <Col lg={4} md={4} sm={4}>
+                                  <AttachmentViewer
+                                    data={data}
+                                    id={0}
+                                    name={data.DisplayAttachmentName}
+                                    fk_UID={userID}
+                                    handleClickRemove={() =>
+                                      handleRemoveFile(data)
+                                    }
+                                  />
+                                </Col>
+                              </>
+                            );
+                          })
+                        : null}
+                    </Row>
+                  </>
+                ) : null}
+              </section>
               <Row className="mt-2">
                 <Col lg={12} md={12} sm={12}>
                   <Dragger

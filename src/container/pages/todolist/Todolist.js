@@ -255,7 +255,7 @@ const TodoList = () => {
       ToDoID: Number(record.pK_TID),
       UpdateFileList: [],
     };
-    dispatch(saveTaskDocumentsApi(navigate, NewData, t, 2, setShow));
+    dispatch(saveTaskDocumentsApi(navigate, NewData, t, 2, setShow, 6));
     // await dispatch(updateTodoStatusFunc(navigate, 6, record.pK_TID, t, false));
     // if (todoListPageSize !== null && todoListCurrentPage !== null) {
     //   dispatch(
