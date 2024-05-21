@@ -702,10 +702,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
     } catch {}
   };
 
-  const activateChatMenu = () => {
-    setChatMenuActive(!chatMenuActive);
-  };
-
   const modalHandlerSave = async (data) => {
     setSave(true);
     setPrint(false);
@@ -2641,13 +2637,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
   const handleOutsideClick = (event) => {
     if (
-      chatMenuRef.current &&
-      !chatMenuRef.current.contains(event.target) &&
-      chatMenuActive
-    ) {
-      setChatMenuActive(false);
-    }
-    if (
       emojiMenuRef.current &&
       !emojiMenuRef.current.contains(event.target) &&
       emojiActive
@@ -2668,7 +2657,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     return () => {
       document.removeEventListener("click", handleOutsideClick);
     };
-  }, [chatMenuActive, emojiActive, uploadOptions]);
+  }, [emojiActive, uploadOptions]);
 
   useEffect(() => {
     if (inputRef.current) {
@@ -3320,136 +3309,127 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       </div>
                     </Col>
                     <Col lg={1} md={1} sm={12}>
-                      {" "}
-                      <div
-                        className="chat-box-icons cursor-pointer positionRelative"
-                        onClick={activateChatMenu}
-                        ref={chatMenuRef}
-                      >
-                        <img draggable="false" src={MenuIcon} alt="" />
-                        {chatMenuActive && (
-                          <div className="dropdown-menus-chat">
-                            {talkStateData.ActiveChatData.messageType ===
-                              "O" && (
-                              <>
-                                <span
-                                  onClick={() =>
-                                    modalHandlerSave(
-                                      talkStateData.ActiveChatData
-                                    )
-                                  }
-                                >
-                                  {t("Save")}
-                                </span>
-                                <span
-                                  onClick={() =>
-                                    modalHandlerPrint(
-                                      talkStateData.ActiveChatData
-                                    )
-                                  }
-                                >
-                                  {t("Print")}
-                                </span>
-                                <span
-                                  style={{ borderBottom: "none" }}
-                                  onClick={() =>
-                                    modalHandlerEmail(
-                                      talkStateData.ActiveChatData
-                                    )
-                                  }
-                                >
-                                  {t("Email")}
-                                </span>
-                              </>
-                            )}
-                            {talkStateData.ActiveChatData.messageType ===
-                              "G" && (
-                              <>
-                                <span
-                                  onClick={() =>
-                                    modalHandlerSave(
-                                      talkStateData.ActiveChatData
-                                    )
-                                  }
-                                >
-                                  {t("Save")}
-                                </span>
-                                <span
-                                  onClick={() =>
-                                    modalHandlerPrint(
-                                      talkStateData.ActiveChatData
-                                    )
-                                  }
-                                >
-                                  {t("Print")}
-                                </span>
-                                <span
-                                  onClick={() =>
-                                    modalHandlerEmail(
-                                      talkStateData.ActiveChatData
-                                    )
-                                  }
-                                >
-                                  {t("Email")}
-                                </span>
-                                <span onClick={modalHandlerGroupInfo}>
-                                  {t("Group-Info")}
-                                </span>
-                                <span onClick={deleteMultipleMessages}>
-                                  {t("Delete-messages")}
-                                </span>
-                                <span onClick={() => setLeave(true)}>
-                                  {t("Leave-Group")}
-                                </span>
-                                <span
-                                  style={{ borderBottom: "none" }}
-                                  onClick={modalHandlerGroupEdit}
-                                >
-                                  {t("Edit-Info")}
-                                </span>
-                              </>
-                            )}
-                            {talkStateData.ActiveChatData.messageType ===
-                              "B" && (
-                              <>
-                                <span
-                                  onClick={() =>
-                                    modalHandlerSave(
-                                      talkStateData.ActiveChatData
-                                    )
-                                  }
-                                >
-                                  {t("Save")}
-                                </span>
-                                <span
-                                  onClick={() =>
-                                    modalHandlerPrint(
-                                      talkStateData.ActiveChatData
-                                    )
-                                  }
-                                >
-                                  {t("Print")}
-                                </span>
-                                <span
-                                  onClick={() =>
-                                    modalHandlerEmail(
-                                      talkStateData.ActiveChatData
-                                    )
-                                  }
-                                >
-                                  {t("Email")}
-                                </span>
-                                <span onClick={deleteShoutFunction}>
-                                  {t("Delete-Shout")}
-                                </span>
-                                <span onClick={editShoutFunction}>
-                                  {t("Edit-Shout")}
-                                </span>
-                              </>
-                            )}
-                          </div>
-                        )}
-                      </div>
+                      <Dropdown className="chat-box-icons cursor-pointer positionRelative">
+                        <Dropdown.Toggle
+                          // as="div"
+                          className="talk-dropdown-toggle"
+                          id="dropdown-basic"
+                        >
+                          <img draggable="false" src={MenuIcon} alt="" />
+                        </Dropdown.Toggle>
+
+                        <Dropdown.Menu>
+                          {talkStateData.ActiveChatData.messageType === "O" && (
+                            <>
+                              <Dropdown.Item
+                                onClick={() =>
+                                  modalHandlerSave(talkStateData.ActiveChatData)
+                                }
+                              >
+                                {t("Save")}
+                              </Dropdown.Item>
+                              <Dropdown.Item
+                                onClick={() =>
+                                  modalHandlerPrint(
+                                    talkStateData.ActiveChatData
+                                  )
+                                }
+                              >
+                                {t("Print")}
+                              </Dropdown.Item>
+                              <Dropdown.Item
+                                style={{ borderBottom: "none" }}
+                                onClick={() =>
+                                  modalHandlerEmail(
+                                    talkStateData.ActiveChatData
+                                  )
+                                }
+                              >
+                                {t("Email")}
+                              </Dropdown.Item>
+                            </>
+                          )}
+                          {talkStateData.ActiveChatData.messageType === "G" && (
+                            <>
+                              <Dropdown.Item
+                                onClick={() =>
+                                  modalHandlerSave(talkStateData.ActiveChatData)
+                                }
+                              >
+                                {t("Save")}
+                              </Dropdown.Item>
+                              <Dropdown.Item
+                                onClick={() =>
+                                  modalHandlerPrint(
+                                    talkStateData.ActiveChatData
+                                  )
+                                }
+                              >
+                                {t("Print")}
+                              </Dropdown.Item>
+                              <Dropdown.Item
+                                onClick={() =>
+                                  modalHandlerEmail(
+                                    talkStateData.ActiveChatData
+                                  )
+                                }
+                              >
+                                {t("Email")}
+                              </Dropdown.Item>
+                              <Dropdown.Item onClick={modalHandlerGroupInfo}>
+                                {t("Group-Info")}
+                              </Dropdown.Item>
+                              <Dropdown.Item onClick={deleteMultipleMessages}>
+                                {t("Delete-messages")}
+                              </Dropdown.Item>
+                              <Dropdown.Item onClick={() => setLeave(true)}>
+                                {t("Leave-Group")}
+                              </Dropdown.Item>
+                              <Dropdown.Item
+                                style={{ borderBottom: "none" }}
+                                onClick={modalHandlerGroupEdit}
+                              >
+                                {t("Edit-Info")}
+                              </Dropdown.Item>
+                            </>
+                          )}
+                          {talkStateData.ActiveChatData.messageType === "B" && (
+                            <>
+                              <Dropdown.Item
+                                onClick={() =>
+                                  modalHandlerSave(talkStateData.ActiveChatData)
+                                }
+                              >
+                                {t("Save")}
+                              </Dropdown.Item>
+                              <Dropdown.Item
+                                onClick={() =>
+                                  modalHandlerPrint(
+                                    talkStateData.ActiveChatData
+                                  )
+                                }
+                              >
+                                {t("Print")}
+                              </Dropdown.Item>
+                              <Dropdown.Item
+                                onClick={() =>
+                                  modalHandlerEmail(
+                                    talkStateData.ActiveChatData
+                                  )
+                                }
+                              >
+                                {t("Email")}
+                              </Dropdown.Item>
+                              <Dropdown.Item onClick={deleteShoutFunction}>
+                                {t("Delete-Shout")}
+                              </Dropdown.Item>
+                              <Dropdown.Item onClick={editShoutFunction}>
+                                {t("Edit-Shout")}
+                              </Dropdown.Item>
+                            </>
+                          )}
+                        </Dropdown.Menu>
+                      </Dropdown>
                     </Col>
                     {activeCall === false ? (
                       <Col lg={1} md={1} sm={12}>
@@ -4409,25 +4389,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 }
                                                 className="image-thumbnail-chat"
                                               >
-                                                {/* <a
-                                                  href={
-                                                    filesUrlTalk +
-                                                    messageData.attachmentLocation
-                                                  }
-                                                  target="_blank"
-                                                  rel="noopener noreferrer"
-                                                > */}
                                                 <img
                                                   draggable="false"
-                                                  // src={
-                                                  //   filesUrlTalk +
-                                                  //   messageData.attachmentLocation
-                                                  // }
                                                   src={`data:image/jpeg;base64,${messageData.base64Image}`}
                                                   alt=""
                                                   className="cursor-pointer"
                                                 />
-                                                {/* </a> */}
                                               </div>
                                             ) : messageData.attachmentLocation !==
                                                 "" &&
@@ -4461,20 +4428,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     )
                                                     .replace(/^\d+_/, "")}
                                                 </span>
-                                                {/* <a
-                                                  href={
-                                                    filesUrlTalk +
-                                                    messageData.attachmentLocation
-                                                  }
-                                                  target="_blank"
-                                                  rel="noopener noreferrer"
-                                                > */}
                                                 <img
                                                   draggable="false"
                                                   src={DownloadIcon}
                                                   alt=""
                                                 />
-                                                {/* </a> */}
                                               </div>
                                             ) : null}
                                             <span className="direct-chat-body color-5a5a5a">
@@ -4714,6 +4672,71 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                             <span className="direct-chat-body color-white">
                                               {messageData.messageBody}
                                             </span>
+                                            {messageData.attachmentLocation !==
+                                              "" &&
+                                            (ext === "jpg" ||
+                                              ext === "JPG" ||
+                                              ext === "png" ||
+                                              ext === "PNG" ||
+                                              ext === "jpeg" ||
+                                              ext === "JPEG") ? (
+                                              <div
+                                                onClick={() =>
+                                                  imageClickFunction(
+                                                    messageData
+                                                  )
+                                                }
+                                                className="image-thumbnail-chat"
+                                              >
+                                                <img
+                                                  draggable="false"
+                                                  src={`data:image/jpeg;base64,${messageData.base64Image}`}
+                                                  alt=""
+                                                  className="cursor-pointer"
+                                                />
+                                              </div>
+                                            ) : messageData.attachmentLocation !==
+                                                "" &&
+                                              (ext === "doc" ||
+                                                ext === "docx" ||
+                                                ext === "xls" ||
+                                                ext === "xlsx" ||
+                                                ext === "pdf" ||
+                                                ext === "txt" ||
+                                                ext === "gif") ? (
+                                              <div
+                                                className="file-uploaded-chat cursor-pointer"
+                                                onClick={() =>
+                                                  DownloadFileFunction(
+                                                    messageData,
+                                                    ext
+                                                  )
+                                                }
+                                              >
+                                                <img
+                                                  draggable="false"
+                                                  src={DocumentIcon}
+                                                  alt=""
+                                                />
+                                                <span className="attached-file">
+                                                  {messageData.attachmentLocation
+                                                    .substring(
+                                                      messageData.attachmentLocation.lastIndexOf(
+                                                        "/"
+                                                      ) + 1
+                                                    )
+                                                    .replace(/^\d+_/, "")}
+                                                </span>
+                                                <img
+                                                  draggable="false"
+                                                  src={DownloadIcon}
+                                                  alt=""
+                                                />
+                                              </div>
+                                            ) : null}
+                                            {/* <span className="direct-chat-body color-5a5a5a">
+                                              {messageData.messageBody}
+                                            </span> */}
                                           </>
                                         ) : (
                                           <>

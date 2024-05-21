@@ -2097,7 +2097,8 @@ span.background-close-search {
   font-weight: 400 !important;
 }
 
-::-ms-input-placeholder { /* Edge 12-18 */
+::-ms-input-placeholder {
+  /* Edge 12-18 */
   font-family: "Montserrat" !important;
   font-weight: 400 !important;
 }
@@ -2119,4 +2120,25 @@ body[dir="rtl"] img.image-close {
 
 .image-modal.modal-header .modal-title {
   width: 100% !important;
+}
+
+button.talk-dropdown-toggle.dropdown-toggle {
+  border: none !important;
+}
+
+/* .chat-box-icons.cursor-pointer.positionRelative.show.dropdown .dropdown-menu.show {
+background: #fff;
+border: 1px solid #b6b6b6;
+border-radius: 5px;
+text-align: center;
+width: 105px;
+min-width: 105px;
+} */
+
+.chat-box-icons.cursor-pointer.positionRelative.show.dropdown a.dropdown-item {
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
 }

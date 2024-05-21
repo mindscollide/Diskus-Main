@@ -124,7 +124,7 @@ const AgendaViewer = ({
   const [rows, setRows] = useState([]);
   const [emptyStateRows, setEmptyStateRows] = useState(false);
 
-  const [fullScreenView, setFullScreenView] = useState(false);
+  const [fullScreenView, setFullScreenView] = useState(true);
   const [agendaSelectOptionView, setAgendaSelectOptionView] = useState(false);
   const [exportAgendaView, setExportAgendaView] = useState(false);
   const [printAgendaView, setPrintAgendaView] = useState(false);
