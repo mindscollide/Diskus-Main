@@ -83,31 +83,30 @@ const ParentAgenda = ({
   const dispatch = useDispatch();
   const [mainLock, setmainLock] = useState([]);
   const [subLockArry, setSubLockArray] = useState([]);
-  const [expandIndex, setExpandIndex] = useState([
-    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-  ]);
+  const [expandIndex, setExpandIndex] = useState(-1);
+  // const [subexpandIndex, setsubexpandIndex] = useState(-1);
   const [expand, setExpand] = useState(true);
   const [subExpand, setSubExpand] = useState([]);
-  const [expandedArray, setExpandedArray] = useState([]);
+  // const [expandedArray, setExpandedArray] = useState([]);
 
-  useEffect(() => {
-    let agendaIDs = [];
-    let subAgendaIDs = [];
+  // useEffect(() => {
+  //   let agendaIDs = [];
+  //   let subAgendaIDs = [];
 
-    rows.forEach((item) => {
-      agendaIDs.push(item.id);
-      item.subAgenda.forEach((subItem) => {
-        subAgendaIDs.push(subItem.subAgendaID);
-      });
-    });
+  //   rows.forEach((item) => {
+  //     agendaIDs.push(item.id);
+  //     item.subAgenda.forEach((subItem) => {
+  //       subAgendaIDs.push(subItem.subAgendaID);
+  //     });
+  //   });
 
-    const allIDs = [...agendaIDs, ...subAgendaIDs];
-    setExpandedArray(allIDs);
-    console.log("IDSIDSIDS", allIDs);
-  }, [rows]);
-  function findIDInArray(id) {
-    return expandedArray.includes(id);
-  }
+  //   const allIDs = [...agendaIDs, ...subAgendaIDs];
+  //   setExpandedArray(allIDs);
+  //   console.log("IDSIDSIDS", allIDs);
+  // }, [rows]);
+  // function findIDInArray(id) {
+  //   return expandedArray.includes(id);
+  // }
 
   console.log("rowsrows", rows);
   //Timepicker
@@ -115,35 +114,25 @@ const ParentAgenda = ({
   const [localValue, setLocalValue] = useState(gregorian_en);
 
   // Function For Expanding Main Agenda See More Options
-  // const handleExpandedBtn = (index) => {
-  //   setExpandIndex((prevIndex) => {
-  //     // Check if the index already exists in the expandIndex array
-  //     const indexExists = prevIndex.includes(index);
-  //     if (indexExists) {
-  //       // If the index exists, remove it from the array
-  //       return prevIndex.filter((item) => item !== index);
-  //     } else {
-  //       // If the index doesn't exist, add it to the array
-  //       return [...prevIndex, index];
-  //     }
-  //   });
-  // };
+  const handleExpandedBtn = (index) => {
+    setExpandIndex((prevIndex) => (prevIndex === index ? -1 : index));
+  };
 
-  function handleExpandedBtn(id) {
-    const index = expandedArray.indexOf(id);
-    if (index !== -1) {
-      // If ID exists, remove it from the array
-      expandedArray.splice(index, 1);
-    } else {
-      // If ID doesn't exist, add it to the array
-      expandedArray.push(id);
-    }
-    // Update state with the modified array
-    setExpandedArray([...expandedArray]);
-  }
+  // function handleExpandedBtn(id) {
+  //   const index = expandedArray.indexOf(id);
+  //   if (index !== -1) {
+  //     // If ID exists, remove it from the array
+  //     expandedArray.splice(index, 1);
+  //   } else {
+  //     // If ID doesn't exist, add it to the array
+  //     expandedArray.push(id);
+  //   }
+  //   // Update state with the modified array
+  //   setExpandedArray([...expandedArray]);
+  // }
 
-  console.log("handleExpandedBtn",expandedArray)
-  
+  // console.log("handleExpandedBtn",expandedArray)
+
   const printFlag = useSelector(
     (state) => state.MeetingAgendaReducer.PrintAgendaFlag
   );
@@ -344,11 +333,13 @@ const ParentAgenda = ({
                       <span className={styles["AgendaTitle_Heading"]}>
                         {index + 1 + ". " + data.title}
                       </span>
-                      {findIDInArray(data.id) ? (
+                      {/* {findIDInArray(data.id) ? ( */}
+                      {expandIndex === index && expand ? (
                         <span className={styles["ParaGraph_SavedMeeting"]}>
                           {data.description}
                         </span>
                       ) : null}
+                      {/* ) : null} */}
                     </Col>
                     <Col lg={3} md={3} sm={12} className="p-0">
                       {/* <div className={styles["agendaCreationDetail"]}> */}
@@ -472,17 +463,17 @@ const ParentAgenda = ({
                         src={CollapseIcon}
                         alt=""
                         className={
-                          findIDInArray(data.id)
+                          expandIndex === index && expand
                             ? styles["Arrow_Expanded"]
                             : styles["Arrow"]
                         }
                         onClick={() => {
-                          handleExpandedBtn(data.id);
+                          handleExpandedBtn(index);
                         }}
                       />
                     </Col>
                   </Row>
-                  {findIDInArray(data.id) ? (
+                  {expandIndex === index && expand ? (
                     <>
                       {
                         data.selectedRadio === 1 &&
@@ -539,10 +530,135 @@ const ParentAgenda = ({
                           rows={rows}
                         />
                       )}
+                      <div className={styles["borderDesigningSubAgenda"]}>
+                        <SubAgendaMappingDragging
+                          data={data}
+                          index={index}
+                          setRows={setRows}
+                          rows={rows}
+                          subExpand={subExpand}
+                          apllyLockOnParentAgenda={apllyLockOnParentAgenda}
+                          subLockArry={subLockArry}
+                          setSubLockArray={setSubLockArray}
+                          agendaItemRemovedIndex={agendaItemRemovedIndex}
+                          setAgendaItemRemovedIndex={setAgendaItemRemovedIndex}
+                          setSubajendaRemoval={setSubajendaRemoval}
+                          setSubExpand={setSubExpand}
+                          openAdvancePermissionModal={
+                            openAdvancePermissionModal
+                          }
+                          openVoteMOdal={openVoteMOdal}
+                          advanceMeetingModalID={advanceMeetingModalID}
+                          editorRole={editorRole}
+                          setFileDataAgenda={setFileDataAgenda}
+                          fileDataAgenda={fileDataAgenda}
+                          setAgendaName={setAgendaName}
+                          agendaName={agendaName}
+                          setAgendaIndex={setAgendaIndex}
+                          agendaIndex={agendaIndex}
+                          setSubAgendaIndex={setSubAgendaIndex}
+                          subAgendaIndex={subAgendaIndex}
+                          setShowMoreFilesView={setShowMoreFilesView}
+                        />
+                      </div>
                     </>
                   ) : null}
+                  {/* {expandIndex !== index && expand ? (
+                    <>
+                      {
+                        data.selectedRadio === 1 &&
+                        Object.keys(data.files).length > 0 ? (
+                          <div className={styles["filesParentClass"]}>
+                            {data.files
+                              .slice(0, 3)
+                              .map((filesData, fileIndex) => (
+                                <AttachmentViewer
+                                  handleClickDownload={() =>
+                                    downloadDocument(filesData)
+                                  }
+                                  data={filesData}
+                                  name={filesData?.displayAttachmentName}
+                                  id={Number(filesData.originalAttachmentName)}
+                                  handleEyeIcon={() =>
+                                    pdfData(
+                                      filesData,
+                                      getFileExtension(
+                                        filesData?.displayAttachmentName
+                                      )
+                                    )
+                                  }
+                                />
+                              ))}
+                            {data.files.length > 3 && (
+                              <Button
+                                text={t("More")}
+                                className={styles["Show_More_Button"]}
+                                onClick={() =>
+                                  showMoreFiles(data.files, data.title, index)
+                                }
+                              />
+                            )}
+                          </div>
+                        ) : data.selectedRadio === 1 &&
+                          Object.keys(data.files).length === 0 ? null : null // </span> //   No Files Attached // <span className={styles["NoFiles_Heading"]}>
+                      }
+
+                      {data.selectedRadio === 2 && (
+                        <Urls
+                          data={data}
+                          index={index}
+                          setRows={setRows}
+                          rows={rows}
+                        />
+                      )}
+
+                      {data.selectedRadio === 3 && (
+                        <RequestContributor
+                          data={data}
+                          index={index}
+                          setRows={setRows}
+                          rows={rows}
+                        />
+                      )}
+
+                      <div className={styles["borderDesigningSubAgenda"]}>
+                        <SubAgendaMappingDragging
+                          data={data}
+                          index={index}
+                          setRows={setRows}
+                          rows={rows}
+                          subExpand={subExpand}
+                          apllyLockOnParentAgenda={apllyLockOnParentAgenda}
+                          subLockArry={subLockArry}
+                          setSubLockArray={setSubLockArray}
+                          agendaItemRemovedIndex={agendaItemRemovedIndex}
+                          setAgendaItemRemovedIndex={setAgendaItemRemovedIndex}
+                          setSubajendaRemoval={setSubajendaRemoval}
+                          setSubExpand={setSubExpand}
+                          openAdvancePermissionModal={
+                            openAdvancePermissionModal
+                          }
+                          openVoteMOdal={openVoteMOdal}
+                          advanceMeetingModalID={advanceMeetingModalID}
+                          editorRole={editorRole}
+                          setFileDataAgenda={setFileDataAgenda}
+                          fileDataAgenda={fileDataAgenda}
+                          setAgendaName={setAgendaName}
+                          agendaName={agendaName}
+                          setAgendaIndex={setAgendaIndex}
+                          agendaIndex={agendaIndex}
+                          setSubAgendaIndex={setSubAgendaIndex}
+                          subAgendaIndex={subAgendaIndex}
+                          setShowMoreFilesView={setShowMoreFilesView}
+                        />
+                      </div>
+                    </>
+                  ) : null} */}
+                  {/* {findIDInArray(data.id) ? ( */}
+
+                  {/* ) : null} */}
                   {/* </Droppable> */}
-                  {findIDInArray(data.id) ? (
+                  {/* {findIDInArray(data.id) ? (
                     <>
                       {
                         data.selectedRadio === 1 &&
@@ -635,7 +751,7 @@ const ParentAgenda = ({
                         </div>
                       ) : null}
                     </>
-                  ) : null}
+                  ) : null} */}
                 </Col>
               </Row>
             </Col>

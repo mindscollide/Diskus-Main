@@ -618,15 +618,21 @@ const NewMeeting = () => {
           t
         )
       );
-      let allChatMessages =
-        talkStateData.AllUserChats.AllUserChatsData.allMessages;
-      const foundRecord = allChatMessages.find(
-        (item) => item.id === data.talkGroupID
-      );
-      if (foundRecord) {
-        dispatch(activeChat(foundRecord));
+      let allChatMessages = talkStateData.AllUserChats.AllUserChatsData;
+      console.log("allChatMessagesallChatMessages", allChatMessages);
+      if (
+        allChatMessages !== null &&
+        allChatMessages !== undefined &&
+        allChatMessages.length !== 0
+      ) {
+        const foundRecord = allChatMessages.allMessages.find(
+          (item) => item.id === data.talkGroupID
+        );
+        if (foundRecord) {
+          dispatch(activeChat(foundRecord));
+        }
+        localStorage.setItem("activeOtoChatID", data.talkGroupID);
       }
-      localStorage.setItem("activeOtoChatID", data.talkGroupID);
     }
   };
 
