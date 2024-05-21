@@ -6,15 +6,14 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import makeAnimated from "react-select/animated";
 import Select from "react-select";
+import CrossEmail from "./../../pages/meeting/viewMeetings/AgendaViewer/AV-Images/Cross-Email.png";
 import { Col, Container, Row } from "react-bootstrap";
-import {
-  Modal,
-  TextField,
-  UploadTextField,
-} from "../../../components/elements";
+import { Button, Modal, TextField } from "../../../components/elements";
 import { boardDeckEmailModal } from "../../../store/actions/NewMeetingActions";
 import crossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import { validateInput } from "../../../commen/functions/regex";
+import blueCrossIcon from "../../../assets/images/BlueCross.png";
+import { Checkbox } from "antd";
 const BoardDeckSendEmail = () => {
   const { t } = useTranslation();
 
@@ -27,12 +26,19 @@ const BoardDeckSendEmail = () => {
   const { NewMeetingreducer } = useSelector((state) => state);
 
   const [selectedsearch, setSelectedsearch] = useState([]);
+  const [tags, setTags] = useState([]);
   const [notificationMessage, setNotificationMessage] = useState("");
+  const [notifyPeople, setNotifyPeople] = useState({
+    notifyPeople: false,
+  });
 
   // for selection of data
   const handleSelectValue = (value) => {
+    console.log(value, "handleSelectValue");
     setSelectedsearch(value);
   };
+
+  console.log(tags, "tagstags");
 
   //Default options react select
   const options = [
@@ -41,14 +47,7 @@ const BoardDeckSendEmail = () => {
     { value: "vanilla", label: "Vanilla" },
   ];
 
-  //Custom Filter React select
-  const customFilter = (option, searchText) => {
-    if (option && option.label && searchText) {
-      return option.label.toLowerCase().includes(searchText.toLowerCase());
-    }
-    return false;
-  };
-
+  //handle Change For TextArea
   const HandleChange = (e, index) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -60,6 +59,34 @@ const BoardDeckSendEmail = () => {
         setNotificationMessage("");
       }
     }
+  };
+
+  const onChangenotifyPeople = (e) => {
+    let value = e.target.checked;
+    setNotifyPeople({
+      ...notifyPeople,
+      notifyPeople: value,
+    });
+  };
+
+  const customFilter = (option, searchText) => {
+    if (searchText) {
+      return option.label.toLowerCase().includes(searchText.toLowerCase());
+    }
+    return true;
+  };
+
+  const handleAddTag = () => {
+    if (selectedsearch && selectedsearch.length > 0) {
+      setTags((prevTags) => [...prevTags, ...selectedsearch]);
+      setSelectedsearch([]);
+    }
+  };
+
+  const removeTag = (indexToRemove) => {
+    setTags((prevTags) =>
+      prevTags.filter((_, index) => index !== indexToRemove)
+    );
   };
 
   return (
@@ -86,15 +113,9 @@ const BoardDeckSendEmail = () => {
         ModalBody={
           <>
             <Row>
-              <Col lg={12} md={12} sm={12}>
+              <Col lg={10} md={10} sm={10}>
                 <Select
                   onChange={handleSelectValue}
-                  //   isDisabled={
-                  //     MeetingOrganizersReducer.AllUserCommitteesGroupsData
-                  //       .length === 0
-                  //       ? true
-                  //       : false
-                  //   }
                   value={selectedsearch}
                   classNamePrefix={"selectMemberAgendaView"}
                   closeMenuOnSelect={false}
@@ -104,6 +125,41 @@ const BoardDeckSendEmail = () => {
                   isSearchable={true}
                   filterOption={customFilter}
                 />
+              </Col>
+              <Col
+                lg={2}
+                md={2}
+                sm={2}
+                className="d-flex justify-content-center align-items-center"
+              >
+                <Button
+                  text={t("Add")}
+                  className={styles["AddButton"]}
+                  onClick={handleAddTag}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <div
+                  className={
+                    tags.length <= 4
+                      ? styles["tags-input-container"]
+                      : styles["tags-input-containerr"]
+                  }
+                >
+                  {tags.map((tag, index) => (
+                    <div className={styles["tag-item"]} key={index}>
+                      <span className={styles["text"]}>{tag.label}</span>
+                      <span
+                        className={styles["close"]}
+                        onClick={() => removeTag(index)}
+                      >
+                        <img src={blueCrossIcon} alt="Remove" />
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </Col>
             </Row>
             <Row className="m-0">
@@ -132,6 +188,32 @@ const BoardDeckSendEmail = () => {
                   name="Message"
                   maxLength={500}
                 />
+              </Col>
+            </Row>
+            <Row className="mt-3">
+              <Col lg={12} md={12} sm={12}>
+                <Checkbox
+                  onChange={onChangenotifyPeople}
+                  checked={notifyPeople.notifyPeople}
+                >
+                  <span className={styles["Class_CheckBox_notify_people"]}>
+                    {t("Notify-people")}
+                  </span>
+                </Checkbox>
+              </Col>
+            </Row>
+          </>
+        }
+        ModalFooter={
+          <>
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-end"
+              >
+                <Button text={t("Send")} className={styles["SendButton"]} />
               </Col>
             </Row>
           </>
