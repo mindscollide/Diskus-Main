@@ -51,9 +51,8 @@ const PrivateRoutes = () => {
     // Action: Add Agenda Contributor
     if (currentUrl.includes("DisKus/Meeting?Addagendacontributor_action=")) {
       // Extract action parameter from URL
-      // const parts = currentUrl.split("Addagendacontributor_action=")[1];
-      // localStorage.setItem("AgCont", parts);
-      // console.log(parts, "partspartsparts Addagendacontributor");
+      const parts = currentUrl.split("Addagendacontributor_action=")[1];
+      localStorage.setItem("AgCont", parts);
       // Add action-specific logic here if needed
     }
 
@@ -66,8 +65,8 @@ const PrivateRoutes = () => {
     // Action: Add Organizer
     if (currentUrl.includes("DisKus/Meeting/?Addorganizer_action=")) {
       // Extract action parameter from URL
-      // const parts = currentUrl.split("Addorganizer_action=")[1];
-      // localStorage.setItem("AdOrg", parts);
+      const parts = currentUrl.split("Addorganizer_action=")[1];
+      localStorage.setItem("AdOrg", parts);
       // Add action-specific logic here if needed
     }
 
@@ -111,19 +110,8 @@ const PrivateRoutes = () => {
 
     // Action: Poll Published
     if (currentUrl.includes("DisKus/polling?PollPublished_action=")) {
-      // const parts = currentUrl.split("action=")[1];
-      // console.log(parts, "currentUrlcurrentUrlcurrentUrl");
-      // localStorage.setItem("poPub", parts);
-      // Add action-specific logic here if needed
-    }
-    // Action: Poll Published
-    if (currentUrl.includes("DisKus/groups?GroupPollPublished_action=")) {
-      // Add action-specific logic here if needed
-    }
-    // Action: Poll Published
-    if (
-      currentUrl.includes("DisKus/committee?CommitteePollPublished_action=")
-    ) {
+      const parts = currentUrl.split("action=")[1];
+      localStorage.setItem("poPub", parts);
       // Add action-specific logic here if needed
     }
 
@@ -134,17 +122,8 @@ const PrivateRoutes = () => {
         .includes("DisKus/polling?PollUpdate_action=".toLowerCase())
     ) {
       // Add action-specific logic here if needed
-      // const parts = currentUrl.split("action=")[1];
-      // console.log(parts, "currentUrlcurrentUrlcurrentUrl");
-      // localStorage.setItem("poPub", parts);
-    }
-    // Action: Poll Update
-    if (currentUrl.includes("DisKus/groups?GroupPollUpdate_action=")) {
-      // Add action-specific logic here if needed
-    }
-    // Action: Poll Update
-    if (currentUrl.includes("DisKus/committee?CommitteePollUpdate_action=")) {
-      // Add action-specific logic here if needed
+      const parts = currentUrl.split("action=")[1];
+      localStorage.setItem("poPub", parts);
     }
 
     // Action: Resolution Reminder
@@ -153,17 +132,13 @@ const PrivateRoutes = () => {
     }
 
     // Action: Organization Status Enable
-    if (
-      currentUrl.includes("DisKus/Meeting/Organizationstatusenable?action=")
-    ) {
+    if (currentUrl.includes("DisKus/Admin/Organizationstatusenable?action=")) {
       // Add action-specific logic here if needed
     }
 
     // Action: Organization Subscription Enable
     if (
-      currentUrl.includes(
-        "DisKus/Meeting/Organizationsubscriptionenable?action="
-      )
+      currentUrl.includes("DisKus/Admin/Organizationsubscriptionenable?action=")
     ) {
       // Add action-specific logic here if needed
     }

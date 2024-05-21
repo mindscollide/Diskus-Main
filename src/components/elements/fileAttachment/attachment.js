@@ -18,7 +18,9 @@ const AttachmentViewer = ({
   data,
   fk_UID = 1049,
 }) => {
-  let fileExtension = "pdf";
+  let fileExtension = ["pdf", "doc", "docx", "xls", "xlsx"].includes(
+    getFileExtension(name)
+  );
   let currentUser = Number(localStorage.getItem("userID"));
 
   return (
@@ -75,7 +77,7 @@ const AttachmentViewer = ({
               draggable={false}
               src={EyeIcon}
               alt=""
-              className="ms-1"
+              className="mx-1"
               onClick={handleEyeIcon}
             />
           </Col>

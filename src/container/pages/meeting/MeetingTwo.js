@@ -84,6 +84,8 @@ import {
   JoinCurrentMeeting,
   LeaveCurrentMeeting,
   validateStringEmailApi,
+  meetingParticipantAdded,
+  meetingParticipantRemoved,
 } from "../../../store/actions/NewMeetingActions";
 import { mqttCurrentMeetingEnded } from "../../../store/actions/GetMeetingUserId";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
@@ -1559,6 +1561,40 @@ const NewMeeting = () => {
 
   useEffect(() => {
     if (NewMeetingreducer.mqttMeetingPrAdded !== null) {
+      console.log(
+        NewMeetingreducer.mqttMeetingPrAdded,
+        "mqttMeetingPrAddedmqttMeetingPrAdded"
+      );
+      let meetingData = NewMeetingreducer.mqttMeetingPrAdded;
+      let newData = {
+        dateOfMeeting: meetingData?.dateOfMeeting,
+        host: meetingData?.host,
+        isAttachment: false,
+        isChat: false,
+        isVideoCall: false,
+        isQuickMeeting: meetingData?.isQuickMeeting,
+        meetingAgenda: [],
+        isOrganizer: meetingData?.attendeeRoleID === 1 ? true : false,
+        isAgendaContributor: meetingData?.attendeeRoleID === 4 ? true : false,
+        isParticipant: meetingData?.attendeeRoleID === 2 ? true : false,
+        talkGroupID: 0,
+        meetingType: meetingData?.meetingTypeID,
+        meetingEndTime: meetingData?.meetingEndTime,
+        meetingStartTime: meetingData?.meetingStartTime,
+        pK_MDID: meetingData?.meetingID,
+        meetingPoll: {
+          totalNoOfDirectors: 0,
+          totalNoOfDirectorsVoted: 0,
+        },
+        responseDeadLine: "",
+        status: String(meetingData?.status),
+        title: meetingData?.title,
+        key: 0,
+        isPrimaryOrganizer: meetingData?.isPrimaryOrganizer,
+        userDetails: null,
+      };
+      setRow([newData, ...rows]);
+      dispatch(meetingParticipantAdded(null));
     }
     if (NewMeetingreducer.mqtMeetingPrRemoved !== null) {
       try {
@@ -1568,6 +1604,7 @@ const NewMeeting = () => {
             return Number(newData.pK_MDID) !== Number(meetingID);
           });
         });
+        dispatch(meetingParticipantRemoved(null));
       } catch (error) {
         console.log(error);
       }
@@ -1783,17 +1820,25 @@ const NewMeeting = () => {
       meetingIdReducer.allMeetingsSocketData !== null &&
       meetingIdReducer.allMeetingsSocketData !== undefined
     ) {
-      let meetingID = meetingIdReducer.allMeetingsSocketData.pK_MDID;
-      let meetingData = meetingIdReducer.allMeetingsSocketData;
-      setRow((rowsData) => {
-        return rowsData.map((item) => {
-          if (item.pK_MDID === meetingID) {
-            return meetingData;
-          } else {
-            return item; // Return the original item if the condition is not met
-          }
-        });
-      });
+      try {
+        const updateMeeting = async () => {
+          let meetingID = meetingIdReducer.allMeetingsSocketData.pK_MDID;
+          let meetingData = meetingIdReducer.allMeetingsSocketData;
+          let newMeetingData = await mqttMeetingData(meetingData, 1);
+          setRow((rowsData) => {
+            return rowsData.map((item) => {
+              if (item.pK_MDID === meetingID) {
+                return newMeetingData;
+              } else {
+                return item; // Return the original item if the condition is not met
+              }
+            });
+          });
+        };
+        updateMeeting();
+      } catch (error) {
+        console.log(error, "error");
+      }
     }
   }, [meetingIdReducer.allMeetingsSocketData]);
   useEffect(() => {
@@ -1836,7 +1881,7 @@ const NewMeeting = () => {
     if (
       ResponseMessages !== "" &&
       ResponseMessages !== undefined &&
-      ResponseMessages !== t("Record-found") &&
+      ResponseMessages !== "" &&
       ResponseMessages !== t("No-records-found") &&
       ResponseMessages !== t("No-record-found")
     ) {
@@ -1854,7 +1899,7 @@ const NewMeeting = () => {
       ResponseMessage !== "" &&
       ResponseMessage !== t("No-record-found") &&
       ResponseMessage !== t("No-records-found") &&
-      ResponseMessage !== t("Record-found") &&
+      ResponseMessage !== "" &&
       ResponseMessage !== t("List-updated-successfully") &&
       ResponseMessage !== t("No-data-available") &&
       ResponseMessage !== t("Successful") &&

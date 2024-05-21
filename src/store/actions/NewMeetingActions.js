@@ -392,7 +392,7 @@ const GetAllMeetingTypesNewFunction = (navigate, t, loader) => {
             dispatch(
               handlegetAllMeetingTypesSuccess(
                 response.data.responseResult,
-                t("Record-found"),
+                "",
                 loader
               )
             );
@@ -825,7 +825,7 @@ const GetAllMeetingRemindersApiFrequencyNew = (navigate, t) => {
             dispatch(
               handlegetallReminderFrequencySuccess(
                 response.data.responseResult,
-                t("Record-found")
+                ""
               )
             );
           } else if (
@@ -922,7 +922,7 @@ const GetAllMeetingRecurringApiNew = (navigate, t, loader) => {
               dispatch(
                 handleReucrringSuccess(
                   response.data.responseResult,
-                  t("Record-found"),
+                  "",
                   loader
                 )
               );
@@ -1027,7 +1027,7 @@ const searchNewUserMeeting = (navigate, Data, t) => {
                 totalRecords: response.data.responseResult.totalRecords,
               };
               dispatch(
-                SearchMeeting_Success(newMeetingData, t("Record-found"))
+                SearchMeeting_Success(newMeetingData, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -1190,7 +1190,7 @@ const GetAllCommitteesUsersandGroupsParticipants = (Data, navigate, t) => {
               dispatch(
                 showAddMoreParticipantsSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -1282,7 +1282,7 @@ const GetAllParticipantsRoleNew = (navigate, t) => {
               dispatch(
                 showParticipantsRolesSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -1396,7 +1396,7 @@ const FetchMeetingURLApi = (
               dispatch(
                 showMeetingURLSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
               dispatch(MeetingUrlSpinner(false));
@@ -1775,7 +1775,7 @@ const getAllAgendaContributorApi = (navigate, t, data) => {
               dispatch(
                 getAllAgendaContributor_success(
                   response.data.responseResult.meetingAgendaContributors,
-                  t("Record-found")
+                  ""
                 )
               );
               dispatch(
@@ -2005,7 +2005,7 @@ const GetAllSavedparticipantsAPI = (Data, navigate, t) => {
               dispatch(
                 showAllMeetingParticipantsSuccess(
                   response.data.responseResult.meetingParticipants,
-                  t("Record-found")
+                  ""
                 )
               );
               dispatch(
@@ -2119,7 +2119,7 @@ const SendNotificationApiFunc = (Data, navigate, t) => {
               dispatch(
                 sendNotificationParticipantsSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -2278,7 +2278,7 @@ const GetAllMeetingDetailsApiFunc = (
               await dispatch(
                 showGetAllMeetingDetialsSuccess(
                   response.data.responseResult,
-                  t("Record-found"),
+                  "",
                   loader
                 )
               );
@@ -2388,7 +2388,7 @@ const GetAllPollsByMeetingIdApiFunc = (Data, navigate, t) => {
               dispatch(
                 showPollsByMeetingIdSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -2478,7 +2478,7 @@ const GetAllMeetingUserApiFunc = (Data, navigate, t) => {
               dispatch(
                 showGetAllMeetingUsersSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -2562,7 +2562,7 @@ const SetMeetingPollsApiFunc = (Data, navigate, t, currentMeeting) => {
                   "Polls_PollsServiceManager_SetMeetingPolls_01".toLowerCase()
                 )
             ) {
-              dispatch(showSetMeetingPollsSuccess(t("Record-found")));
+              dispatch(showSetMeetingPollsSuccess(""));
               let OrganizationID = localStorage.getItem("organizationID");
               let Data1 = {
                 MeetingID: currentMeeting,
@@ -2664,7 +2664,7 @@ const GetAllProposedMeetingDateApiFunc = (Data, navigate, t, flag) => {
               dispatch(
                 showGetAllProposedMeetingDatesSuccess(
                   response.data.responseResult,
-                  t("Record-found"),
+                  "",
                   flag
                 )
               );
@@ -3019,7 +3019,7 @@ const getMeetingMaterialAPI = (navigate, t, meetingMaterialData, rows, id) => {
               dispatch(
                 meetingMaterialSuccess(
                   response.data.responseResult.meetingMaterial,
-                  t("Record-found")
+                  ""
                 )
               );
               dispatch(
@@ -3286,7 +3286,7 @@ const GetAllUserAgendaRightsApiFunc = (navigate, t, Data) => {
               dispatch(
                 showGetAllUserAgendaRightsSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -3684,7 +3684,7 @@ const GetAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
             dispatch(
               showAllGeneralMinutesSuccess(
                 response.data.responseResult,
-                t("Record-found")
+                ""
               )
             );
           } else if (
@@ -4202,7 +4202,7 @@ const getUserProposedWiseApi = (navigate, t, proposedData, loader) => {
               dispatch(
                 getProposedWiseSuccess(
                   response.data.responseResult.userWiseMeetingProposedDates,
-                  t("Record-found"),
+                  "",
                   loader
                 )
               );
@@ -4320,7 +4320,7 @@ const GetAllAgendaWiseMinutesApiFunc = (
             await dispatch(
               showGetAllAgendaWiseMinutesSuccess(
                 response.data.responseResult,
-                t("Record-found"),
+                "",
                 loader
               )
             );
@@ -5885,7 +5885,7 @@ const getMeetingbyGroupApi = (navigate, t, Data) => {
               dispatch(
                 getMeetingbyGroup_success(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -6070,7 +6070,7 @@ const getMeetingByCommitteeIDApi = (navigate, t, Data) => {
               dispatch(
                 getMeetingByCommitteeID_success(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -7310,7 +7310,7 @@ const getUserWiseProposedDatesMainApi = (navigate, t, Data) => {
               dispatch(
                 getUserProposedDatesSuccess(
                   response.data.responseResult.userWiseMeetingProposedDates,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (

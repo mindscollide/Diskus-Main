@@ -81,6 +81,10 @@ body[dir="rtl"] .no-members-found {
   text-decoration: underline !important;
   font-size: 10px !important;
   font-weight: 400;
+  white-space: nowrap;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 body[dir="rtl"] .email-create-group a {

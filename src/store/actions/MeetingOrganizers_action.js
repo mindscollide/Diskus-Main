@@ -76,7 +76,7 @@ const GetAllCommitteesUsersandGroups = (Data, navigate, t) => {
               dispatch(
                 getAllCommitteesUsersandGroups_success(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -669,7 +669,7 @@ const GetAllMeetingOrganizers = (Data, navigate, t) => {
               dispatch(
                 getAllMeetingOrganizers_success(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (

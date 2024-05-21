@@ -83,7 +83,7 @@ const GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes = (
             await dispatch(
               getAllAgendaForAgendaWiseSuccess(
                 response.data.responseResult,
-                t("Record-found")
+                ""
               )
             );
           } else if (

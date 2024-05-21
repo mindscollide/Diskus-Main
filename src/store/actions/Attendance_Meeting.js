@@ -60,7 +60,7 @@ const getAllAttendanceMeetingApi = (navigate, t, meetingData) => {
               dispatch(
                 getAttendanceMeetingSuccess(
                   response.data.responseResult.meetingAttendance,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (

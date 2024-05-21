@@ -69,7 +69,7 @@ const GetAllVideoCallUsers = (Data, navigate, t) => {
               await dispatch(
                 getAllVideoCallUsersSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -361,7 +361,7 @@ const GetUserRecentCalls = (Data, navigate, t) => {
               await dispatch(
                 getUserRecentCallsSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -431,7 +431,7 @@ const GetUserRecentCallsScroll = (Data, navigate, t) => {
               await dispatch(
                 getUserRecentCallsSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -610,7 +610,7 @@ const GetUserMissedCallCount = (navigate, t) => {
               await dispatch(
                 getUserMissedCallCountSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (

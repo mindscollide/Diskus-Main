@@ -63,7 +63,7 @@ const getAllLanguages = (navigate, t) => {
               await dispatch(
                 getAllLanguagesSuccess(
                   response.data.responseResult.systemSupportedLanguages,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -246,7 +246,7 @@ const getSelectedLanguage = (data, navigate, t) => {
               await dispatch(
                 getSelectedLanguageSuccess(
                   response.data.responseResult.userSelectedLanguage,
-                  t("Record-found")
+                  ""
                 )
               );
               if (
