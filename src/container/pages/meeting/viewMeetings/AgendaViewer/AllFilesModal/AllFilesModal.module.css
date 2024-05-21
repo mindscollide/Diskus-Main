@@ -47,7 +47,9 @@ body[dir="rtl"] span.fileNameAttachment {
 }
 
 .FileSectionHeight {
-  height: auto;
-  overflow: auto;
-  max-height: 365px;
+  min-height: 280px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 280px;
+  padding-right: 10px;
 }

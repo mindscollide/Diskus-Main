@@ -8,6 +8,7 @@ import {
   getFileExtension,
   getIconSource,
 } from "../../../../DataRoom/SearchFunctionality/option";
+import { AttachmentViewer } from "../../../../../components/elements";
 
 const Documents = ({
   data,
@@ -53,83 +54,49 @@ const Documents = ({
             {data?.files?.length > 0
               ? data?.files?.map((filesData, Fileindex) => {
                   return (
-                    <Draggable
-                      key={filesData.agendaAttachmentsID}
-                      draggableId={`parent-attachments-${parentId}-${filesData.agendaAttachmentsID}`}
-                      index={Fileindex}
-                      isDragDisabled={
-                        editorRole.role === "Participant" ||
-                        editorRole.role === "Agenda Contributor"
-                          ? true
-                          : editorRole.status === 9 || editorRole.status === "9"
-                          ? true
-                          : false
-                      }
-                    >
-                      {(provided) => (
-                        <div
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          ref={provided.innerRef}
-                        >
-                          <Row>
-                            <Col sm={12} md={12} lg={12}>
-                              <span className={styles["card"]}>
-                                <Row>
-                                  <Col
-                                    lg={10}
-                                    md={10}
-                                    sm={12}
-                                    className="d-flex gap-2"
-                                  >
-                                    <img
-                                      draggable={false}
-                                      src={getIconSource(
-                                        getFileExtension(
-                                          filesData.displayAttachmentName
-                                        )
-                                      )}
-                                      alt=""
-                                    />
-                                    <span
-                                      className={styles["TitleFile"]}
-                                      title={filesData.displayAttachmentName}
-                                    >
-                                      {filesData.displayAttachmentName}
-                                    </span>
-                                  </Col>
-                                  <Col
-                                    lg={2}
-                                    md={2}
-                                    sm={12}
-                                    className="d-flex justify-content-end align-items-center"
-                                  >
-                                    {editorRole.role === "Participant" ||
-                                    editorRole.status === 9 ||
-                                    editorRole.status === "9" ||
-                                    (editorRole.role === "Agenda Contributor" &&
-                                      (filesData.fK_UID !== currentUserID ||
-                                        data.canEdit === false)) ? null : (
-                                      <img
-                                        draggable={false}
-                                        src={redcrossIcon}
-                                        width="15px"
-                                        height="15px"
-                                        className="cursor-pointer"
-                                        onClick={() => {
-                                          CrossDocument(index, filesData);
-                                        }}
-                                        alt=""
-                                      />
-                                    )}
-                                  </Col>
-                                </Row>
-                              </span>
+                    <Row>
+                      <Draggable
+                        key={filesData.agendaAttachmentsID}
+                        draggableId={`parent-attachments-${parentId}-${filesData.agendaAttachmentsID}`}
+                        index={Fileindex}
+                        isDragDisabled={
+                          editorRole.role === "Participant" ||
+                          editorRole.role === "Agenda Contributor"
+                            ? true
+                            : editorRole.status === 9 ||
+                              editorRole.status === "9"
+                            ? true
+                            : false
+                        }
+                      >
+                        {(provided) => (
+                          <div
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            ref={provided.innerRef}
+                          >
+                            <Col sm={4} md={4} lg={4}>
+                              <AttachmentViewer
+                                name={filesData.displayAttachmentName}
+                                fk_UID={filesData.fK_UID}
+                                id={0}
+                                handleClickRemove={
+                                  editorRole.role === "Participant" ||
+                                  editorRole.status === 9 ||
+                                  editorRole.status === "9" ||
+                                  (editorRole.role === "Agenda Contributor" &&
+                                    (filesData.fK_UID !== currentUserID ||
+                                      data.canEdit === false))
+                                    ? null
+                                    : () => CrossDocument(index, filesData)
+                                }
+                                data={filesData}
+                              />
                             </Col>
-                          </Row>
-                        </div>
-                      )}
-                    </Draggable>
+                          </div>
+                        )}
+                      </Draggable>
+                    </Row>
                   );
                 })
               : null}

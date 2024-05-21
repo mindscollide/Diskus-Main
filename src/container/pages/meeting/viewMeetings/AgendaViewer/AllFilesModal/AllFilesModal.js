@@ -128,84 +128,28 @@ const AllFilesModal = ({
         }
         ModalBody={
           <>
-            <Row key={Math.random()}>
-              <Col lg={2} md={2} sm={12}></Col>
-              <Col
-                lg={8}
-                md={8}
-                sm={12}
-                className={styles["FileSectionHeight"]}
-              >
-                {fileDataAgenda?.map((filesData, fileIndex) => (
-                  <AttachmentViewer
-                    handleClickDownload={() => downloadDocument(filesData)}
-                    data={filesData}
-                    name={filesData?.displayAttachmentName}
-                    id={Number(filesData.originalAttachmentName)}
-                    handleEyeIcon={() =>
-                      pdfData(
-                        filesData,
-                        getFileExtension(filesData?.displayAttachmentName)
-                      )
-                    }
-                  />
-                  // <div
-                  //   onClick={() => downloadDocument(filesData)}
-                  //   className={styles["allFileUI"]}
-                  // >
-                  //   <Row className="m-0 text-center align-items-center">
-                  //     <Col
-                  //       lg={10}
-                  //       md={10}
-                  //       sm={12}
-                  //       className="d-flex align-items-center justify-content-start p-0"
-                  //     >
-                  //       <div className={styles["fileNameTruncateStyle"]}>
-                  //         <img
-                  //           draggable={false}
-                  //           src={getIconSource(
-                  //             getFileExtension(filesData?.displayAttachmentName)
-                  //           )}
-                  //           alt=""
-                  //           width={25}
-                  //         />
-                  //         <span
-                  //           onClick={() =>
-                  //             pdfData(
-                  //               filesData,
-                  //               getFileExtension(
-                  //                 filesData?.displayAttachmentName
-                  //               )
-                  //             )
-                  //           }
-                  //           className={
-                  //             ["pdf", "doc", "docx", "xls", "xlsx"].includes(
-                  //               getFileExtension(
-                  //                 filesData?.displayAttachmentName
-                  //               )
-                  //             )
-                  //               ? styles["fileNameAttachment"]
-                  //               : styles["fileNameAttachmentNotOpened"]
-                  //           }
-                  //         >
-                  //           {filesData?.displayAttachmentName}
-                  //         </span>
-                  //       </div>
-                  //     </Col>
-                  //     <Col lg={2} md={2} sm={12} className="p-0">
-                  //       <img
-                  //         onClick={() => downloadDocument(filesData)}
-                  //         draggable={false}
-                  //         src={DownloadIcon}
-                  //         alt=""
-                  //       />
-                  //     </Col>
-                  //   </Row>
-                  // </div>
-                ))}
-              </Col>
-              <Col lg={2} md={2} sm={12}></Col>
-            </Row>
+            <section className={styles["FileSectionHeight"]}>
+              <Row key={Math.random()}>
+                {fileDataAgenda?.map((filesData, fileIndex) => {
+                  return (
+                    <Col lg={4} md={4} sm={4}>
+                      <AttachmentViewer
+                        handleClickDownload={() => downloadDocument(filesData)}
+                        data={filesData}
+                        name={filesData?.displayAttachmentName}
+                        id={Number(filesData.originalAttachmentName)}
+                        handleEyeIcon={() =>
+                          pdfData(
+                            filesData,
+                            getFileExtension(filesData?.displayAttachmentName)
+                          )
+                        }
+                      />
+                    </Col>
+                  );
+                })}
+              </Row>
+            </section>
           </>
         }
         ModalFooter={

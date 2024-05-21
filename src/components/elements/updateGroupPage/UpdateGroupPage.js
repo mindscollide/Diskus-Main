@@ -14,6 +14,7 @@ import {
   SelectBox,
   InputSearchFilter,
   Notification,
+  AttachmentViewer,
 } from "./../../../components/elements";
 import userImage from "../../../assets/images/user.png";
 import styles from "./UpadateGroup.module.css";
@@ -75,6 +76,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   // for   select participant Role Name
   const [participantRoleName, setParticipantRoleName] = useState("");
   const participantOptions = [t("Head"), t("Regular")];
+  const userID = localStorage.getItem("userID");
   const [groupTypeOptions, setGroupTypeOptions] = useState([]);
   const [participantRoles, setParticipantRoles] = useState([]);
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
@@ -103,87 +105,12 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     dispatch(getOrganizationGroupTypes(navigate, Data, t));
   }, []);
 
-  //Drop Down Values
-  // const searchFilterHandler = (value) => {
-  //   let allAssignees = assignees.user;
-  //   if (
-  //     allAssignees != undefined &&
-  //     allAssignees != null &&
-  //     allAssignees != NaN &&
-  //     allAssignees != []
-  //   ) {
-  //     return allAssignees
-  //       .filter((item) => {
-  //         const searchTerm = value.toLowerCase();
-  //         const assigneesName = item.name.toLowerCase();
-  //         return (
-  //           searchTerm &&
-  //           assigneesName.startsWith(searchTerm) &&
-  //           assigneesName !== searchTerm
-  //         );
-  //       })
-  //       .slice(0, 3)
-  //       .map((item) => (
-  //         <div
-  //           onClick={() => onSearch(item.name, item.pK_UID)}
-  //           className="dropdown-row-assignee d-flex flex-row align-items-center"
-  //           key={item.pK_UID}
-  //         >
-  //           <img src={userImage} />
-  //           <p className="p-0 m-0">{item.name}</p>
-  //         </div>
-  //       ));
-  //   } else {
-  //   }
-  // };
-  const searchFilterHandler = (value) => {
-    let allAssignees = assignees.user;
-
-    if (
-      allAssignees != undefined &&
-      allAssignees != null &&
-      allAssignees != NaN &&
-      allAssignees != []
-    ) {
-      return allAssignees
-        .filter((item) => {
-          const searchTerm = value.toLowerCase();
-          const assigneesName = item.name.toLowerCase();
-
-          return (
-            searchTerm && assigneesName.startsWith(searchTerm)
-            // assigneesName !== searchTerm.toLowerCase()
-          );
-        })
-        .slice(0, 10)
-        .map((item) => (
-          <div
-            onClick={() => onSearch(item.name, item.pK_UID)}
-            className="dropdown-row-assignee d-flex align-items-center flex-row"
-            key={item.pK_UID}
-          >
-            {}
-            <img
-              src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
-              alt=""
-              className="user-img"
-              draggable="false"
-            />
-            <p className="p-0 m-0">{item.name}</p>
-          </div>
-        ));
-    } else {
-    }
-  };
-
   const onSearch = (name, id) => {
     setOnclickFlag(true);
     setTaskAssignedToInput(name);
     setTaskAssignedTo(id);
     setTaskAssignedName(name);
   };
-
-  // for meatings  Attendees
 
   // for attendies Role handler
   const assigntRoleAttendies = (e, value) => {
@@ -424,14 +351,6 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   const onChangeSearch = (item) => {
     setPresenterValue(item);
     setTaskAssignedTo(item.value);
-    // setOnclickFlag(false);
-    // if (e.target.value.trimStart() != "") {
-    //   setTaskAssignedToInput(e.target.value.trimStart());
-    // } else {
-    //   setTaskAssignedToInput("");
-    //   setTaskAssignedTo(0);
-    //   setTaskAssignedName("");
-    // }
   };
 
   // onChange Function for set input values in state
@@ -543,6 +462,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       });
     }
   };
+
   const checkAttendeeBox = (data, id, index) => {
     if (attendees.includes(id)) {
       let attendIndex = attendees.findIndex((data, index) => data === id);
@@ -1392,136 +1312,29 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                           </span>
                         </Col>
                       </Row>
+                      <section className={styles["UpdateGroupAttachments"]}>
                       <Row className="mt-1">
-                        <Col lg={1} md={1} sm={1} className="mt-4">
-                          {fileAttachments.length > 2 ? (
-                            <>
-                              <Button
-                                icon={
-                                  <img
-                                    src={Leftploygon}
-                                    width="20px"
-                                    height="15px"
-                                    draggable="false"
-                                  />
-                                }
-                                onClick={SlideLeft}
-                                className={styles["Leftpolygon"]}
-                              />
-                            </>
-                          ) : null}
-                        </Col>
-                        <Col lg={10} md={10} sm={10}>
-                          <Row>
-                            <Col
-                              lg={12}
-                              md={12}
-                              sm={12}
-                              className="ScrolllerFiles_Committees"
-                              id="Slider"
-                            >
-                              {fileAttachments.length > 0
-                                ? fileAttachments.map((data, index) => {
-                                    return (
-                                      <>
-                                        <Col
-                                          lg={4}
-                                          md={4}
-                                          sm={12}
-                                          className="position-relative gap-2"
-                                        >
-                                          <span
-                                            className={
-                                              styles["Crossicon_Class"]
-                                            }
-                                          >
-                                            <img
-                                              src={CrossIcon}
-                                              height="12.68px"
-                                              alt=""
-                                              width="12.68px"
-                                              onClick={() =>
-                                                handleRemoveFile(data)
-                                              }
-                                            />
-                                          </span>
-                                          <section
-                                            className={styles["Outer_Box"]}
-                                          >
-                                            <Row>
-                                              <Col lg={12} md={12} sm={12}>
-                                                <img
-                                                  src={file_image}
-                                                  width={"100%"}
-                                                  alt=""
-                                                  draggable="false"
-                                                />
-                                              </Col>
-                                            </Row>
-
-                                            <section
-                                              className={
-                                                styles["backGround_name_Icon"]
-                                              }
-                                            >
-                                              <Row className="mb-2">
-                                                <Col
-                                                  lg={12}
-                                                  md={12}
-                                                  sm={12}
-                                                  className={
-                                                    styles["IconTextClass"]
-                                                  }
-                                                >
-                                                  <img
-                                                    src={pdfIcon}
-                                                    height="10px"
-                                                    width="10px"
-                                                    className={
-                                                      styles["IconPDF"]
-                                                    }
-                                                  />
-                                                  <span
-                                                    className={
-                                                      styles["FileName"]
-                                                    }
-                                                    title={
-                                                      data.DisplayAttachmentName
-                                                    }
-                                                  >
-                                                    {data.DisplayAttachmentName}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                            </section>
-                                          </section>
-                                        </Col>
-                                      </>
-                                    );
-                                  })
-                                : null}
-                            </Col>
-                          </Row>
-                        </Col>
-                        <Col lg={1} md={1} sm={1} className="mt-4">
-                          {fileAttachments.length > 2 ? (
-                            <>
-                              <Button
-                                icon={
-                                  <img
-                                    src={Rightploygon}
-                                    width="20px"
-                                    height="15px"
-                                    draggable="false"
-                                  />
-                                }
-                                onClick={Slideright}
-                                className={styles["Leftpolygon"]}
-                              />
-                            </>
-                          ) : null}
-                        </Col>
+                        {fileAttachments.length > 0
+                          ? fileAttachments.map((data, index) => {
+                              return (
+                                <>
+                                  <Col lg={4} md={4} sm={4}>
+                                    <AttachmentViewer
+                                      data={data}
+                                      id={0}
+                                      handleClickRemove={() =>
+                                        handleRemoveFile(data)
+                                      }
+                                      name={data.DisplayAttachmentName}
+                                      fk_UID={userID}
+                                    />
+                                  </Col>
+                                </>
+                              );
+                            })
+                          : null}
                       </Row>
+                      </section>
                       <Row className="mt-2">
                         <Col lg={12} md={12} sm={12}>
                           <Dragger

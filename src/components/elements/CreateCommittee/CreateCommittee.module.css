@@ -406,7 +406,9 @@ body[dir="rtl"] .Leftpolygon {
   right: -4px !important;
 }
 .files_View {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  min-height: 120px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 20px;
+  max-height: 120px;
 }

@@ -395,3 +395,10 @@ body[dir="rtl"] .Leftpolygon {
   padding: 10px 10px !important;
   margin-top: 8px !important;
 }
+.CreateGroupAttachments {
+  min-height: 120px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 10px;
+  max-height: 120px;
+}

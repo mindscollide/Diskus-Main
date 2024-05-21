@@ -36,7 +36,6 @@ body[dir="rtl"] .details-class {
   font-size: 18px !important;
   color: #6172d6 !important;
   font-weight: 600;
-
 }
 
 body[dir="rtl"] .Create-group-Head-Heading {
@@ -50,6 +49,11 @@ body[dir="rtl"] .Create-group-Head-Heading {
 .name-create-group {
   color: #5a5a5a;
   font-size: 12px !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .name-create-group {
@@ -66,10 +70,14 @@ body[dir="rtl"] .Designation-create-group {
 }
 
 .email-create-group {
-  color: #5a5a5a;
   color: #6172d6;
   text-decoration: underline !important;
   font-size: 10px !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  white-space: nowrap;
+  font-weight: 400;
 }
 
 body[dir="rtl"] .email-create-group {
@@ -226,6 +234,7 @@ body[dir="rtl"] .Create-Group-Heading {
   color: #5a5a5a;
   margin-top: 13px !important;
   margin-left: 4px !important;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .Label_Of_CheckBox {
@@ -248,7 +257,6 @@ body[dir="rtl"] .Checkbox {
   color: #f16b6b;
   visibility: visible !important;
   font-weight: 600 !important;
-
 }
 
 body[dir="rtl"] .errorMessage {
@@ -361,4 +369,11 @@ body[dir="rtl"] .Leftpolygon {
   border-radius: 4px !important;
   padding: 10px 10px !important;
   margin-top: 8px !important;
+}
+.UpdateGroupAttachments {
+  min-height: 120px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 18px;
+  max-height: 120px;
 }

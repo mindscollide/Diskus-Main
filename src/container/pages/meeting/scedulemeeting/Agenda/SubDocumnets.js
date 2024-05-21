@@ -9,6 +9,7 @@ import {
   getIconSource,
 } from "../../../../DataRoom/SearchFunctionality/option";
 import styles from "./Agenda.module.css";
+import { AttachmentViewer } from "../../../../../components/elements";
 
 const SubDocumnets = ({
   subAgendaData,
@@ -67,13 +68,13 @@ const SubDocumnets = ({
   return (
     <Row>
       <Col lg={12} md={12} sm={12} className={styles["SubAgendaDocScroller"]}>
-        <Row>
-          <div className="d-flex gap-2 flex-wrap  mt-2">
-            {subAgendaData?.subfiles?.length > 0
-              ? subAgendaData?.subfiles?.map(
-                  (subAgendaFiles, subAgendaFilesIndex) => {
-                    return (
-                      <>
+        <div className="d-flex gap-2 flex-wrap  mt-2">
+          {subAgendaData?.subfiles?.length > 0
+            ? subAgendaData?.subfiles?.map(
+                (subAgendaFiles, subAgendaFilesIndex) => {
+                  return (
+                    <>
+                      <Row>
                         <Draggable
                           key={subAgendaFiles.agendaAttachmentsID}
                           draggableId={`parent-attachments-${parentId}-subAgendaID-${subAgendaData.subAgendaID}-attachments-${subAgendaFiles.agendaAttachmentsID}`}
@@ -94,79 +95,44 @@ const SubDocumnets = ({
                               ref={provided.innerRef}
                             >
                               <Col
+                                sm={4}
+                                md={4}
+                                lg={4}
                                 key={subAgendaFilesIndex}
-                                lg={3}
-                                md={3}
-                                sm={3}
-                                className="mt-2"
                               >
-                                <section className={styles["cardSubAgenda"]}>
-                                  <Row
-                                    key={subAgendaFilesIndex}
-                                    className="d-flex mt-2"
-                                  >
-                                    <Col
-                                      lg={10}
-                                      md={10}
-                                      sm={10}
-                                      className="d-flex gap-2 align-items-center"
-                                    >
-                                      <img
-                                        alt=""
-                                        draggable={false}
-                                        src={getIconSource(
-                                          getFileExtension(
-                                            subAgendaFiles.displayAttachmentName
+                                <AttachmentViewer
+                                  name={subAgendaFiles.displayAttachmentName}
+                                  fk_UID={subAgendaFiles.fK_UID}
+                                  id={0}
+                                  handleClickRemove={
+                                    editorRole.role === "Participant" ||
+                                    editorRole.status === 9 ||
+                                    editorRole.status === "9" ||
+                                    (editorRole.role === "Agenda Contributor" &&
+                                      (subAgendaFiles.fK_UID !==
+                                        currentUserID ||
+                                        data.canEdit === false))
+                                      ? null
+                                      : () =>
+                                          handlesubAgendaCrossFiles(
+                                            subAgendaFilesIndex,
+                                            subAgendaFiles
                                           )
-                                        )}
-                                        height="25.57px"
-                                        width="25.57px"
-                                      />
-                                      <span
-                                        className={styles["SubagendaFilesName"]}
-                                      >
-                                        {subAgendaFiles.displayAttachmentName}
-                                      </span>
-                                    </Col>
-                                    <Col lg={2} md={2} sm={2}>
-                                      {editorRole.role === "Participant" ||
-                                      editorRole.status === 9 ||
-                                      editorRole.status === "9" ||
-                                      (editorRole.role ===
-                                        "Agenda Contributor" &&
-                                        (subAgendaFiles.fK_UID !==
-                                          currentUserID ||
-                                          subAgendaData.canEdit ===
-                                            false)) ? null : (
-                                        <img
-                                          alt=""
-                                          src={redcrossIcon}
-                                          height="19px"
-                                          width="19px"
-                                          className="cursor-pointer"
-                                          onClick={() =>
-                                            handlesubAgendaCrossFiles(
-                                              subAgendaFilesIndex,
-                                              subAgendaFiles
-                                            )
-                                          }
-                                        />
-                                      )}
-                                    </Col>
-                                  </Row>
-                                </section>
+                                  }
+                                  data={subAgendaFiles}
+                                />
                               </Col>
                             </div>
                           )}
                         </Draggable>
-                      </>
-                    );
-                  }
-                )
-              : null}
-          </div>
-          <Col lg={12} md={12} sm={12}></Col>
-        </Row>
+                      </Row>
+                    </>
+                  );
+                }
+              )
+            : null}
+        </div>
+        <Col lg={12} md={12} sm={12}></Col>
       </Col>
     </Row>
   );
