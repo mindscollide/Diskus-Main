@@ -2038,5 +2038,7 @@
   "Attendence-report": "Attendence Report",
   "Agenda-Contributor": "Agenda Contributor",
   "Share-via-dataroom": "Share via Data Room",
-  "Share-via-email": "Share via Email"
+  "Share-via-email": "Share via Email",
+  "Agenda-with-attachments": "Agenda with Attachments",
+  "Agenda-without-attachments": "Agenda without Attachments"
 }

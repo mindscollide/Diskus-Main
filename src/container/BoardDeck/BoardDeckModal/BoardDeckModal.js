@@ -9,7 +9,7 @@ import {
   boardDeckModal,
   boardDeckShareModal,
 } from "../../../store/actions/NewMeetingActions";
-import { Checkbox } from "antd";
+import { Checkbox, Radio } from "antd";
 import { Col, Container, Row } from "react-bootstrap";
 const BoardDeckModal = () => {
   const { t } = useTranslation();
@@ -19,6 +19,8 @@ const BoardDeckModal = () => {
   const navigate = useNavigate();
 
   const { NewMeetingreducer } = useSelector((state) => state);
+
+  const [radioValue, setRadioValue] = useState(1);
 
   const [boarddeckOptions, setBoarddeckOptions] = useState({
     selectall: false,
@@ -107,6 +109,11 @@ const BoardDeckModal = () => {
   const handlesharebuttonModal = () => {
     dispatch(boardDeckShareModal(true));
     dispatch(boardDeckModal(false));
+  };
+
+  const handleRadioChange = (value) => {
+    setRadioValue(value);
+    console.log("valuevaluevalue", value);
   };
 
   return (
@@ -227,6 +234,29 @@ const BoardDeckModal = () => {
                     checked={boarddeckOptions.video}
                   >
                     <span className={styles["Box_options"]}>{t("Video")}</span>
+                  </Checkbox>
+                </Col>
+              </Row>
+              <Row className="mt-4">
+                <Col lg={12} md={12} sm={12}>
+                  <Checkbox
+                    onChange={onChangeTask}
+                    checked={boarddeckOptions.Task}
+                  >
+                    <span className={styles["Box_options_Agendaas"]}>
+                      <Radio.Group
+                        onChange={(e) => handleRadioChange(e.target.value)}
+                        value={radioValue}
+                        className="BoarddeckSelection"
+                      >
+                        <Radio value={1}>
+                          <span>{t("Agenda-with-attachments")}</span>
+                        </Radio>
+                        <Radio value={2}>
+                          <span>{t("Agenda-without-attachments")}</span>
+                        </Radio>
+                      </Radio.Group>
+                    </span>
                   </Checkbox>
                 </Col>
               </Row>

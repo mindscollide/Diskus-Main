@@ -27,6 +27,15 @@ body[dir="rtl"] .Class_CheckBox {
   padding: 5px 10px !important;
 }
 
+.Box_options_Agendaas {
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  min-width: 191px !important;
+  display: block;
+  padding: 5px 10px !important;
+}
+
 .CancelButton {
   padding: 12px 30px !important;
   font-size: 12px !important;
