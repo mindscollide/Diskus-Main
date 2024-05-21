@@ -180,7 +180,7 @@ const searchPollsApi = (navigate, t, data) => {
               dispatch(
                 searchPolls_success(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -727,7 +727,7 @@ const getAllPollsStatusApi = (navigate, data, t) => {
             await dispatch(
               getAllPollsStatusSuccess(
                 response.data.responseResult,
-                t("Record-found")
+                ""
               )
             );
           } else if (
@@ -852,7 +852,7 @@ const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
             await dispatch(
               getAllPollsByPollsIDSuccess(
                 response.data.responseResult,
-                t("Record-found")
+                ""
               )
             );
             if (typeof setEditPolls === "function") {
@@ -947,7 +947,7 @@ const viewVotesApi = (navigate, data, t, check, setviewVotes) => {
                 await dispatch(
                   viewVotesSuccess(
                     response.data.responseResult.voteDetails,
-                    t("Record-found")
+                    ""
                   )
                 );
               }
@@ -960,7 +960,7 @@ const viewVotesApi = (navigate, data, t, check, setviewVotes) => {
               await dispatch(
                 viewVotesSuccess(
                   response.data.responseResult.voteDetails,
-                  t("Record-found")
+                  ""
                 )
               );
 
@@ -1051,7 +1051,7 @@ const getAllCommitteesandGroups = (navigate, t) => {
               dispatch(
                 getAllcommittesandGroups_success(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -1389,7 +1389,7 @@ const GetPollsByCommitteeIDapi = (navigate, t, data) => {
               dispatch(
                 searchPollsByCommitteeID_success(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -1488,7 +1488,7 @@ const getPollsByGroupMainApi = (
               dispatch(
                 getPollsByGroupSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -1574,7 +1574,7 @@ const setGroupPollsMainApi = (navigate, t, Data) => {
                 )
             ) {
               dispatch(
-                setGroupSuccess(response.data.responseResult, t("Record-found"))
+                setGroupSuccess(response.data.responseResult, "")
               );
               let OrganizationID = localStorage.getItem("organizationID");
               let ViewGroupID = localStorage.getItem("ViewGroupID");
@@ -1772,7 +1772,7 @@ const getTasksByGroupIDApi = (navigate, t, newData) => {
               dispatch(
                 getTaskGroupIdSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -1861,7 +1861,7 @@ const setTasksByGroupApi = (navigate, t, data) => {
               dispatch(
                 setTaskGroupSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
               let ViewGroupID = localStorage.getItem("ViewGroupID");
@@ -1956,7 +1956,7 @@ const getTaskCommitteeIDApi = (navigate, t, newData) => {
               dispatch(
                 getTaskCommitteeIdSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -2045,7 +2045,7 @@ const setTasksByCommitteeApi = (navigate, t, data) => {
               dispatch(
                 setTaskCommitteeSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
               let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
@@ -2488,7 +2488,7 @@ const getPollsByPollIdforCommitteeApi = (
             await dispatch(
               getAllPollsByPollsIDSuccess(
                 response.data.responseResult,
-                t("Record-found")
+                ""
               )
             );
           } else if (
@@ -2632,7 +2632,7 @@ const getPollByPollIdforGroups = (
             await dispatch(
               getAllPollsByPollsIDSuccess(
                 response.data.responseResult,
-                t("Record-found")
+                ""
               )
             );
           } else if (
@@ -2776,7 +2776,7 @@ const getPollByPollIdforMeeting = (
             await dispatch(
               getAllPollsByPollsIDSuccess(
                 response.data.responseResult,
-                t("Record-found")
+                ""
               )
             );
           } else if (

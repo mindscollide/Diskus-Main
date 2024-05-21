@@ -23,7 +23,7 @@
   font-size: 14px !important;
   cursor: pointer !important;
   overflow: hidden !important;
-  display: inline-block !important;
+  display: block !important;
   /* width: 200px !important; */
   white-space: nowrap !important;
   text-overflow: ellipsis !important;

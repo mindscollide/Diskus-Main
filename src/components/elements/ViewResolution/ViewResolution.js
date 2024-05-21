@@ -7,7 +7,11 @@ import line from "../../../assets/images/line.png";
 import backward from "../../../assets/images/backward.svg";
 import forward from "../../../assets/images/forward.svg";
 import FileIcon, { defaultStyles } from "react-file-icon";
-import { Button, Checkbox } from "./../../../components/elements";
+import {
+  AttachmentViewer,
+  Button,
+  Checkbox,
+} from "./../../../components/elements";
 import { useState } from "react";
 import EmployeeinfoCard from "../Employeeinfocard/EmployeeinfoCard";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +20,7 @@ import { viewResolutionModal } from "../../../store/actions/Resolution_actions";
 import { ArrowLeft, ArrowRight } from "react-bootstrap-icons";
 import { Link, useNavigate } from "react-router-dom";
 import { DataRoomDownloadFileApiFunc } from "../../../store/actions/DataRoom_actions";
+import { getFileExtension } from "../../../container/DataRoom/SearchFunctionality/option";
 const ViewResolution = ({ setViewresolution }) => {
   const { t } = useTranslation();
   const currentLanguage = localStorage.getItem("i18nextLng");
@@ -75,6 +80,19 @@ const ViewResolution = ({ setViewresolution }) => {
       setResolutionData(ResolutionReducer.getResolutionbyID);
     }
   }, [ResolutionReducer.getResolutionbyID]);
+
+  const handleLinkClick = (data, extension) => {
+    let fileExtension = ["pdf", "doc", "docx", "xls", "xlsx"].includes(
+      extension
+    );
+    if (fileExtension) {
+      window.open(
+        `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(data)}`,
+        "_blank",
+        "noopener noreferrer"
+      );
+    }
+  };
   return (
     <section>
       <Row className="my-3">
@@ -341,293 +359,246 @@ const ViewResolution = ({ setViewresolution }) => {
                   </Col>
                 </Row>
                 <Row>
-                  <Col lg={12} md={12} sm={12}>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className={styles["ViewResolution_attachment"]}
+                  >
                     <Row className="mt-3">
-                      <Col lg={1} md={1} sm={1} className="mt-5">
-                        {resolutionData?.attachments.length > 6 ? (
-                          <>
-                            <Button
-                              icon={
-                                <img
-                                  src={backward}
-                                  height="12.41px"
-                                  width="16.13px"
-                                  draggable="false"
-                                />
-                              }
-                              onClick={SlideLeft}
-                              className={
-                                styles["Backward_button_viewresolution"]
-                              }
-                            />
-                          </>
-                        ) : null}
-                      </Col>
-
-                      <Col lg={10} md={10} sm={10}>
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="Scroller-x-resolution"
-                            id="Slider"
-                          >
-                            {resolutionData?.attachments.length > 0
-                              ? resolutionData?.attachments.map(
-                                  (data, index) => {
-                                    let ext = data.displayAttachmentName
-                                      .split(".")
-                                      .pop();
-                                    const first =
-                                      data.displayAttachmentName.split(" ")[0];
-                                    const pdfData = {
-                                      taskId:
-                                        resolutionData?.resolution
-                                          .pK_ResolutionID,
-                                      attachmentID: Number(
-                                        data.originalAttachmentName
-                                      ),
-                                      fileName: data.displayAttachmentName,
-                                      commingFrom: 4,
-                                    };
-                                    const pdfDataJson = JSON.stringify(pdfData);
-                                    return (
-                                      <>
-                                        <Col
-                                          sm={12}
-                                          lg={2}
-                                          md={2}
-                                          className="file-icon-viewResolution text-center"
-                                        >
-                                          {ext === "doc" ? (
-                                            <span
-                                              onClick={() =>
-                                                handleClickDownloadFile(
-                                                  pdfData.attachmentID,
-                                                  pdfData.fileName
-                                                )
-                                              }
-                                              className="cursor-pointer"
-                                            >
-                                              <FileIcon
-                                                extension={"docx"}
-                                                size={78}
-                                                type={"document"}
-                                                labelColor={"rgba(44, 88, 152)"}
-                                              />
-                                            </span>
-                                          ) : ext === "docx" ? (
-                                            <span
-                                              onClick={() =>
-                                                handleClickDownloadFile(
-                                                  pdfData.attachmentID,
-                                                  pdfData.fileName
-                                                )
-                                              }
-                                              className="cursor-pointer"
-                                            >
-                                              <FileIcon
-                                                extension={"docx"}
-                                                size={78}
-                                                type={"font"}
-                                                labelColor={"rgba(44, 88, 152)"}
-                                              />
-                                            </span>
-                                          ) : ext === "xls" ? (
-                                            <span
-                                              onClick={() =>
-                                                handleClickDownloadFile(
-                                                  pdfData.attachmentID,
-                                                  pdfData.fileName
-                                                )
-                                              }
-                                              className="cursor-pointer"
-                                            >
-                                              <FileIcon
-                                                extension={"xls"}
-                                                type={"spreadsheet"}
-                                                size={78}
-                                                labelColor={"rgba(16, 121, 63)"}
-                                              />
-                                            </span>
-                                          ) : ext === "xlsx" ? (
-                                            <span
-                                              onClick={() =>
-                                                handleClickDownloadFile(
-                                                  pdfData.attachmentID,
-                                                  pdfData.fileName
-                                                )
-                                              }
-                                              className="cursor-pointer"
-                                            >
-                                              <FileIcon
-                                                extension={"xls"}
-                                                type={"spreadsheet"}
-                                                size={78}
-                                                labelColor={"rgba(16, 121, 63)"}
-                                              />
-                                            </span>
-                                          ) : ext === "pdf" ? (
-                                            <Link
-                                              to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
-                                                pdfDataJson
-                                              )}`}
-                                              target="_blank"
-                                              rel="noopener noreferrer"
-                                            >
-                                              <FileIcon
-                                                extension={"pdf"}
-                                                size={78}
-                                                {...defaultStyles.pdf}
-                                              />
-                                            </Link>
-                                          ) : ext === "png" ? (
-                                            <span
-                                              onClick={() =>
-                                                handleClickDownloadFile(
-                                                  pdfData.attachmentID,
-                                                  pdfData.fileName
-                                                )
-                                              }
-                                              className="cursor-pointer"
-                                            >
-                                              <FileIcon
-                                                extension={"png"}
-                                                size={78}
-                                                type={"image"}
-                                                labelColor={
-                                                  "rgba(102, 102, 224)"
-                                                }
-                                              />
-                                            </span>
-                                          ) : ext === "txt" ? (
-                                            <span
-                                              onClick={() =>
-                                                handleClickDownloadFile(
-                                                  pdfData.attachmentID,
-                                                  pdfData.fileName
-                                                )
-                                              }
-                                              className="cursor-pointer"
-                                            >
-                                              <FileIcon
-                                                extension={"txt"}
-                                                size={78}
-                                                type={"document"}
-                                                labelColor={
-                                                  "rgba(52, 120, 199)"
-                                                }
-                                              />
-                                            </span>
-                                          ) : ext === "jpg" ? (
-                                            <span
-                                              onClick={() =>
-                                                handleClickDownloadFile(
-                                                  pdfData.attachmentID,
-                                                  pdfData.fileName
-                                                )
-                                              }
-                                              className="cursor-pointer"
-                                            >
-                                              <FileIcon
-                                                extension={"jpg"}
-                                                size={78}
-                                                type={"image"}
-                                                labelColor={
-                                                  "rgba(102, 102, 224)"
-                                                }
-                                              />
-                                            </span>
-                                          ) : ext === "jpeg" ? (
-                                            <span
-                                              onClick={() =>
-                                                handleClickDownloadFile(
-                                                  pdfData.attachmentID,
-                                                  pdfData.fileName
-                                                )
-                                              }
-                                              className="cursor-pointer"
-                                            >
-                                              <FileIcon
-                                                extension={"jpeg"}
-                                                size={78}
-                                                type={"image"}
-                                                labelColor={
-                                                  "rgba(102, 102, 224)"
-                                                }
-                                              />
-                                            </span>
-                                          ) : ext === "gif" ? (
-                                            <span
-                                              onClick={() =>
-                                                handleClickDownloadFile(
-                                                  pdfData.attachmentID,
-                                                  pdfData.fileName
-                                                )
-                                              }
-                                              className="cursor-pointer"
-                                            >
-                                              <FileIcon
-                                                extension={"gif"}
-                                                size={78}
-                                                {...defaultStyles.gif}
-                                              />
-                                            </span>
-                                          ) : (
-                                            <span
-                                              onClick={() =>
-                                                handleClickDownloadFile(
-                                                  pdfData.attachmentID,
-                                                  pdfData.fileName
-                                                )
-                                              }
-                                              className="cursor-pointer"
-                                            >
-                                              <FileIcon
-                                                extension={ext}
-                                                size={78}
-                                                {...defaultStyles.ext}
-                                              />
-                                            </span>
-                                          )}
-                                          <span className="deleteBtn"></span>
-                                          <p
-                                            className="file-icon-modalmeeting-p text-center FontArabicRegular"
-                                            title={data.displayAttachmentName}
-                                          >
-                                            {first}
-                                          </p>
-                                        </Col>
-                                      </>
-                                    );
-                                  }
-                                )
-                              : null}
-                          </Col>
-                        </Row>
-                      </Col>
-
-                      <Col lg={1} md={1} sm={1} className="mt-5">
-                        {resolutionData?.attachments.length > 6 ? (
-                          <>
-                            <Button
-                              icon={
-                                <img
-                                  src={forward}
-                                  height="12.41px"
-                                  width="16.13px"
-                                  draggable="false"
-                                />
-                              }
-                              onClick={Slideright}
-                              className={
-                                styles["Backward_button_viewresolution"]
-                              }
-                            />
-                          </>
-                        ) : null}
-                      </Col>
+                      {resolutionData?.attachments.length > 0
+                        ? resolutionData?.attachments.map((data, index) => {
+                            const pdfData = {
+                              taskId:
+                                resolutionData?.resolution.pK_ResolutionID,
+                              attachmentID: Number(data.originalAttachmentName),
+                              fileName: data.displayAttachmentName,
+                              commingFrom: 4,
+                            };
+                            let fileExtension = getFileExtension(
+                              data.displayAttachmentName
+                            );
+                            const pdfDataJson = JSON.stringify(pdfData);
+                            return (
+                              <>
+                                <Col
+                                  sm={4}
+                                  lg={4}
+                                  md={4}
+                                  // className="file-icon-viewResolution text-center"
+                                >
+                                  <AttachmentViewer
+                                    handleClickDownload={() => {
+                                      handleClickDownloadFile(
+                                        pdfData.attachmentID,
+                                        pdfData.fileName
+                                      );
+                                    }}
+                                    data={data}
+                                    name={data.displayAttachmentName}
+                                    id={Number(data.originalAttachmentName)}
+                                    handleEyeIcon={() =>
+                                      handleLinkClick(
+                                        pdfDataJson,
+                                        fileExtension
+                                      )
+                                    }
+                                  />
+                                  {/* {ext === "doc" ? (
+                                    <span
+                                      onClick={() =>
+                                        handleClickDownloadFile(
+                                          pdfData.attachmentID,
+                                          pdfData.fileName
+                                        )
+                                      }
+                                      className="cursor-pointer"
+                                    >
+                                      <FileIcon
+                                        extension={"docx"}
+                                        size={78}
+                                        type={"document"}
+                                        labelColor={"rgba(44, 88, 152)"}
+                                      />
+                                    </span>
+                                  ) : ext === "docx" ? (
+                                    <span
+                                      onClick={() =>
+                                        handleClickDownloadFile(
+                                          pdfData.attachmentID,
+                                          pdfData.fileName
+                                        )
+                                      }
+                                      className="cursor-pointer"
+                                    >
+                                      <FileIcon
+                                        extension={"docx"}
+                                        size={78}
+                                        type={"font"}
+                                        labelColor={"rgba(44, 88, 152)"}
+                                      />
+                                    </span>
+                                  ) : ext === "xls" ? (
+                                    <span
+                                      onClick={() =>
+                                        handleClickDownloadFile(
+                                          pdfData.attachmentID,
+                                          pdfData.fileName
+                                        )
+                                      }
+                                      className="cursor-pointer"
+                                    >
+                                      <FileIcon
+                                        extension={"xls"}
+                                        type={"spreadsheet"}
+                                        size={78}
+                                        labelColor={"rgba(16, 121, 63)"}
+                                      />
+                                    </span>
+                                  ) : ext === "xlsx" ? (
+                                    <span
+                                      onClick={() =>
+                                        handleClickDownloadFile(
+                                          pdfData.attachmentID,
+                                          pdfData.fileName
+                                        )
+                                      }
+                                      className="cursor-pointer"
+                                    >
+                                      <FileIcon
+                                        extension={"xls"}
+                                        type={"spreadsheet"}
+                                        size={78}
+                                        labelColor={"rgba(16, 121, 63)"}
+                                      />
+                                    </span>
+                                  ) : ext === "pdf" ? (
+                                    <Link
+                                      to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                                        pdfDataJson
+                                      )}`}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                    >
+                                      <FileIcon
+                                        extension={"pdf"}
+                                        size={78}
+                                        {...defaultStyles.pdf}
+                                      />
+                                    </Link>
+                                  ) : ext === "png" ? (
+                                    <span
+                                      onClick={() =>
+                                        handleClickDownloadFile(
+                                          pdfData.attachmentID,
+                                          pdfData.fileName
+                                        )
+                                      }
+                                      className="cursor-pointer"
+                                    >
+                                      <FileIcon
+                                        extension={"png"}
+                                        size={78}
+                                        type={"image"}
+                                        labelColor={"rgba(102, 102, 224)"}
+                                      />
+                                    </span>
+                                  ) : ext === "txt" ? (
+                                    <span
+                                      onClick={() =>
+                                        handleClickDownloadFile(
+                                          pdfData.attachmentID,
+                                          pdfData.fileName
+                                        )
+                                      }
+                                      className="cursor-pointer"
+                                    >
+                                      <FileIcon
+                                        extension={"txt"}
+                                        size={78}
+                                        type={"document"}
+                                        labelColor={"rgba(52, 120, 199)"}
+                                      />
+                                    </span>
+                                  ) : ext === "jpg" ? (
+                                    <span
+                                      onClick={() =>
+                                        handleClickDownloadFile(
+                                          pdfData.attachmentID,
+                                          pdfData.fileName
+                                        )
+                                      }
+                                      className="cursor-pointer"
+                                    >
+                                      <FileIcon
+                                        extension={"jpg"}
+                                        size={78}
+                                        type={"image"}
+                                        labelColor={"rgba(102, 102, 224)"}
+                                      />
+                                    </span>
+                                  ) : ext === "jpeg" ? (
+                                    <span
+                                      onClick={() =>
+                                        handleClickDownloadFile(
+                                          pdfData.attachmentID,
+                                          pdfData.fileName
+                                        )
+                                      }
+                                      className="cursor-pointer"
+                                    >
+                                      <FileIcon
+                                        extension={"jpeg"}
+                                        size={78}
+                                        type={"image"}
+                                        labelColor={"rgba(102, 102, 224)"}
+                                      />
+                                    </span>
+                                  ) : ext === "gif" ? (
+                                    <span
+                                      onClick={() =>
+                                        handleClickDownloadFile(
+                                          pdfData.attachmentID,
+                                          pdfData.fileName
+                                        )
+                                      }
+                                      className="cursor-pointer"
+                                    >
+                                      <FileIcon
+                                        extension={"gif"}
+                                        size={78}
+                                        {...defaultStyles.gif}
+                                      />
+                                    </span>
+                                  ) : (
+                                    <span
+                                      onClick={() =>
+                                        handleClickDownloadFile(
+                                          pdfData.attachmentID,
+                                          pdfData.fileName
+                                        )
+                                      }
+                                      className="cursor-pointer"
+                                    >
+                                      <FileIcon
+                                        extension={ext}
+                                        size={78}
+                                        {...defaultStyles.ext}
+                                      />
+                                    </span>
+                                  )}
+                                  <span className="deleteBtn"></span>
+                                  <p
+                                    className="file-icon-modalmeeting-p text-center FontArabicRegular"
+                                    title={data.displayAttachmentName}
+                                  >
+                                    {first}
+                                  </p> */}
+                                </Col>
+                              </>
+                            );
+                          })
+                        : null}
                     </Row>
                   </Col>
                 </Row>

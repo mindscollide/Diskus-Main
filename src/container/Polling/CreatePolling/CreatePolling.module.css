@@ -203,6 +203,10 @@ body[dir="rtl"] .Card_border2 {
   color: #5a5a5a;
   font-weight: 600 !important;
   margin-left: 5px !important;
+  white-space: nowrap;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .Cancell_btn_class {

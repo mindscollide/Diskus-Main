@@ -15,7 +15,12 @@ import FileIcon, { defaultStyles } from "react-file-icon";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Plus } from "react-bootstrap-icons";
-import { Button, Loader, Notification } from "../../components/elements";
+import {
+  AttachmentViewer,
+  Button,
+  Loader,
+  Notification,
+} from "../../components/elements";
 import { Accordion, AccordionSummary, Tooltip } from "@material-ui/core";
 import { AccordionDetails } from "@mui/material";
 import {
@@ -418,99 +423,103 @@ const Notes = () => {
                                       file.displayAttachmentName.split(" ")[0];
 
                                     return (
-                                      <Col
-                                        sm={12}
-                                        lg={2}
-                                        md={2}
-                                        className={
-                                          styles["notes-attachment-icon"]
-                                        }
-                                      >
-                                        {ext === "doc" ? (
-                                          <FileIcon
-                                            extension={"docx"}
-                                            size={78}
-                                            type={"document"}
-                                            labelColor={"rgba(44, 88, 152)"}
-                                          />
-                                        ) : ext === "docx" ? (
-                                          <FileIcon
-                                            extension={"docx"}
-                                            size={78}
-                                            type={"font"}
-                                            labelColor={"rgba(44, 88, 152)"}
-                                          />
-                                        ) : ext === "xls" ? (
-                                          <FileIcon
-                                            extension={"xls"}
-                                            type={"spreadsheet"}
-                                            size={78}
-                                            labelColor={"rgba(16, 121, 63)"}
-                                          />
-                                        ) : ext === "xlsx" ? (
-                                          <FileIcon
-                                            extension={"xls"}
-                                            type={"spreadsheet"}
-                                            size={78}
-                                            labelColor={"rgba(16, 121, 63)"}
-                                          />
-                                        ) : ext === "pdf" ? (
-                                          <FileIcon
-                                            extension={"pdf"}
-                                            size={78}
-                                            {...defaultStyles.pdf}
-                                          />
-                                        ) : ext === "png" ? (
-                                          <FileIcon
-                                            extension={"png"}
-                                            size={78}
-                                            type={"image"}
-                                            labelColor={"rgba(102, 102, 224)"}
-                                          />
-                                        ) : ext === "txt" ? (
-                                          <FileIcon
-                                            extension={"txt"}
-                                            size={78}
-                                            type={"document"}
-                                            labelColor={"rgba(52, 120, 199)"}
-                                          />
-                                        ) : ext === "jpg" ? (
-                                          <FileIcon
-                                            extension={"jpg"}
-                                            size={78}
-                                            type={"image"}
-                                            labelColor={"rgba(102, 102, 224)"}
-                                          />
-                                        ) : ext === "jpeg" ? (
-                                          <FileIcon
-                                            extension={"jpeg"}
-                                            size={78}
-                                            type={"image"}
-                                            labelColor={"rgba(102, 102, 224)"}
-                                          />
-                                        ) : ext === "gif" ? (
-                                          <FileIcon
-                                            extension={"gif"}
-                                            size={78}
-                                            {...defaultStyles.gif}
-                                          />
-                                        ) : (
-                                          <FileIcon
-                                            extension={ext}
-                                            size={78}
-                                            {...defaultStyles.ext}
-                                          />
-                                        )}
+                                      <AttachmentViewer
+                                        data={file}
+                                        name={file.displayAttachmentName}
+                                      />
+                                      // <Col
+                                      //   sm={12}
+                                      //   lg={2}
+                                      //   md={2}
+                                      //   className={
+                                      //     styles["notes-attachment-icon"]
+                                      //   }
+                                      // >
+                                      //   {ext === "doc" ? (
+                                      //     <FileIcon
+                                      //       extension={"docx"}
+                                      //       size={78}
+                                      //       type={"document"}
+                                      //       labelColor={"rgba(44, 88, 152)"}
+                                      //     />
+                                      //   ) : ext === "docx" ? (
+                                      //     <FileIcon
+                                      //       extension={"docx"}
+                                      //       size={78}
+                                      //       type={"font"}
+                                      //       labelColor={"rgba(44, 88, 152)"}
+                                      //     />
+                                      //   ) : ext === "xls" ? (
+                                      //     <FileIcon
+                                      //       extension={"xls"}
+                                      //       type={"spreadsheet"}
+                                      //       size={78}
+                                      //       labelColor={"rgba(16, 121, 63)"}
+                                      //     />
+                                      //   ) : ext === "xlsx" ? (
+                                      //     <FileIcon
+                                      //       extension={"xls"}
+                                      //       type={"spreadsheet"}
+                                      //       size={78}
+                                      //       labelColor={"rgba(16, 121, 63)"}
+                                      //     />
+                                      //   ) : ext === "pdf" ? (
+                                      //     <FileIcon
+                                      //       extension={"pdf"}
+                                      //       size={78}
+                                      //       {...defaultStyles.pdf}
+                                      //     />
+                                      //   ) : ext === "png" ? (
+                                      //     <FileIcon
+                                      //       extension={"png"}
+                                      //       size={78}
+                                      //       type={"image"}
+                                      //       labelColor={"rgba(102, 102, 224)"}
+                                      //     />
+                                      //   ) : ext === "txt" ? (
+                                      //     <FileIcon
+                                      //       extension={"txt"}
+                                      //       size={78}
+                                      //       type={"document"}
+                                      //       labelColor={"rgba(52, 120, 199)"}
+                                      //     />
+                                      //   ) : ext === "jpg" ? (
+                                      //     <FileIcon
+                                      //       extension={"jpg"}
+                                      //       size={78}
+                                      //       type={"image"}
+                                      //       labelColor={"rgba(102, 102, 224)"}
+                                      //     />
+                                      //   ) : ext === "jpeg" ? (
+                                      //     <FileIcon
+                                      //       extension={"jpeg"}
+                                      //       size={78}
+                                      //       type={"image"}
+                                      //       labelColor={"rgba(102, 102, 224)"}
+                                      //     />
+                                      //   ) : ext === "gif" ? (
+                                      //     <FileIcon
+                                      //       extension={"gif"}
+                                      //       size={78}
+                                      //       {...defaultStyles.gif}
+                                      //     />
+                                      //   ) : (
+                                      //     <FileIcon
+                                      //       extension={ext}
+                                      //       size={78}
+                                      //       {...defaultStyles.ext}
+                                      //     />
+                                      //   )}
 
-                                        <p
-                                          className={
-                                            styles["notes-attachment-text"]
-                                          }
-                                          title={file.displayAttachmentName}
-                                        >
-                                          {first}
-                                        </p>
-                                      </Col>
+                                      //   <p
+                                      //     className={
+                                      //       styles["notes-attachment-text"]
+                                      //     }
+                                      //     title={file.displayAttachmentName}
+                                      //   >
+                                      //     {first}
+                                      //   </p>
+                                      // </Col>
                                     );
                                   })
                                 : null}

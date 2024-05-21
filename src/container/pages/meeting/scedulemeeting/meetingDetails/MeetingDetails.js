@@ -967,7 +967,7 @@ const MeetingDetails = ({
   useEffect(() => {
     if (
       ResponseMessage !== "" &&
-      ResponseMessage !== t("Record-found") &&
+      ResponseMessage !== "" &&
       ResponseMessage !== t("No-record-found") &&
       ResponseMessage !== t("No-records-found") &&
       ResponseMessage !== undefined &&

@@ -117,57 +117,31 @@ export const mqttMeetingData = async (meetingData, currentSourceID) => {
   );
 
   const meetingAgendas =
-    meetingData.meetingAgenda !== null &&
-    meetingData.meetingAgenda !== undefined &&
+    Array.isArray(meetingData.meetingAgenda) &&
     meetingData.meetingAgenda.length > 0
       ? meetingData.meetingAgenda
       : [];
+
+  let meetingTypeID = meetingData.meetingTypeID ?? meetingData.meetingType ?? 0;
+  if (meetingTypeID === 1 && meetingData.isQuickMeeting === true) {
+    meetingTypeID = 0;
+  }
+
   let Data = {
     dateOfMeeting: meetingData?.dateOfMeeting,
     host: meetingData?.host,
-    isAttachment:
-      meetingData.isAttachment !== null &&
-      meetingData.isAttachment !== undefined
-        ? meetingData.isAttachment
-        : false,
-    isChat:
-      meetingData.isChat !== null && meetingData.isChat !== undefined
-        ? meetingData.isChat
-        : false,
-    isVideoCall:
-      meetingData.isVideoCall !== null && meetingData.isVideoCall !== undefined
-        ? meetingData.isVideoCall
-        : false,
-    isQuickMeeting:
-      meetingData.isQuickMeeting !== null &&
-      meetingData.isQuickMeeting !== undefined
-        ? meetingData.isQuickMeeting
-        : false,
+    isAttachment: meetingData.isAttachment ?? false,
+    isChat: meetingData.isChat ?? false,
+    isVideoCall: meetingData.isVideoCall ?? false,
+    isQuickMeeting: meetingData.isQuickMeeting ?? false,
     meetingAgenda: meetingAgendas,
-    isOrganizer: usersData.isOrganiser,
-    isAgendaContributor: usersData.isAgendaContributor,
+    isOrganizer: usersData?.isOrganiser,
+    isAgendaContributor: usersData?.isAgendaContributor,
     isParticipant: usersData?.isParticipant,
-    talkGroupID:
-      meetingData.talkGroupID !== null && meetingData.talkGroupID !== undefined
-        ? meetingData.talkGroupID
-        : false,
-    meetingType:
-      meetingData.meetingTypeID == null ||
-      meetingData.meetingTypeID === undefined
-        ? 0
-        : meetingData.meetingTypeID === 1 && meetingData.isQuickMeeting === true
-        ? 0
-        : meetingData.meetingTypeID,
-    meetingEndTime:
-      meetingData.meetingEndTime !== null &&
-      meetingData.meetingEndTime !== undefined
-        ? meetingData.meetingEndTime
-        : false,
-    meetingStartTime:
-      meetingData.meetingStartTime !== null &&
-      meetingData.meetingStartTime !== undefined
-        ? meetingData.meetingStartTime
-        : false,
+    talkGroupID: meetingData.talkGroupID ?? false,
+    meetingType: meetingTypeID,
+    meetingEndTime: meetingData.meetingEndTime ?? false,
+    meetingStartTime: meetingData.meetingStartTime ?? false,
     pK_MDID: meetingData?.pK_MDID,
     meetingPoll: {
       totalNoOfDirectors:
@@ -181,5 +155,6 @@ export const mqttMeetingData = async (meetingData, currentSourceID) => {
     isPrimaryOrganizer: usersData?.isPrimaryOrganizer,
     userDetails: usersData?.userData,
   };
+
   return Data;
 };

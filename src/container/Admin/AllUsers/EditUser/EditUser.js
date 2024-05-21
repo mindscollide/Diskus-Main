@@ -871,7 +871,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     if (
       adminReducer.UpdateOrganizationMessageResponseMessage !== "" &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
-        t("Record-found") &&
+        "" &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
         t("Data-available") &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
@@ -894,7 +894,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       dispatch(cleareMessage());
     } else if (
       adminReducer.AllOrganizationResponseMessage !== "" &&
-      adminReducer.AllOrganizationResponseMessage !== t("Record-found") &&
+      adminReducer.AllOrganizationResponseMessage !== "" &&
       adminReducer.AllOrganizationResponseMessage !== t("Data-available") &&
       adminReducer.AllOrganizationResponseMessage !==
         t("The-user-has-been-edited-successfully")
@@ -918,7 +918,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     } else if (
       adminReducer.DeleteOrganizationMessageResponseMessage !== "" &&
       adminReducer.DeleteOrganizationMessageResponseMessage !==
-        t("Record-found") &&
+        "" &&
       adminReducer.DeleteOrganizationMessageResponseMessage !==
         t("Data-available")
     ) {
@@ -940,7 +940,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       dispatch(cleareMessage());
     } else if (
       adminReducer.ResponseMessage !== "" &&
-      adminReducer.ResponseMessage !== t("Record-found") &&
+      adminReducer.ResponseMessage !== "" &&
       adminReducer.ResponseMessage !== t("Data-available") &&
       adminReducer.ResponseMessage !==
         t("The-user-has-been-edited-successfully") &&

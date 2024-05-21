@@ -81,8 +81,7 @@ textarea {
   overflow-y: hidden;
   align-items: center;
   padding: 0;
-  /* margin: 0 10px 0 10px; */
-  /* flex-wrap   : wrap; */
+  gap: 15px;
 }
 
 .todoModalViewFiles::-webkit-scrollbar {

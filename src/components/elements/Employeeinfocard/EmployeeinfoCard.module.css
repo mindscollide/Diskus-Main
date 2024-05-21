@@ -13,10 +13,14 @@ body[dir="rtl"] .Lineheight {
 }
 
 .name_participant {
-  font-size: 12pt !important;
+  font-size: 12px;
   font-weight: 600;
   color: #5a5a5a !important;
-  /* margin-top: 15px !important; */
+  margin-top: 15px !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
 }
 
 body[dir="rtl"] .name_participant {

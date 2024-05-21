@@ -208,7 +208,7 @@ const PackageSelected = () => {
   useEffect(() => {
     if (
       Authreducer.VerifyOTPEmailResponseMessage !== "" &&
-      Authreducer.VerifyOTPEmailResponseMessage !== t("Record-found") &&
+      Authreducer.VerifyOTPEmailResponseMessage !== "" &&
       Authreducer.VerifyOTPEmailResponseMessage !== undefined &&
       Authreducer.VerifyOTPEmailResponseMessage !== t("2fa-verification") &&
       Authreducer.VerifyOTPEmailResponseMessage !== t("2fa-enabled")
@@ -229,7 +229,7 @@ const PackageSelected = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.EnterPasswordResponseMessage !== "" &&
-      Authreducer.EnterPasswordResponseMessage !== t("Record-found") &&
+      Authreducer.EnterPasswordResponseMessage !== "" &&
       Authreducer.EnterPasswordResponseMessage !==
         t("The-user-is-an-admin-user") &&
       Authreducer.EnterPasswordResponseMessage !== t("2fa-enabled") &&
@@ -255,7 +255,7 @@ const PackageSelected = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.OrganizationCreateResponseMessage !== "" &&
-      Authreducer.OrganizationCreateResponseMessage !== t("Record-found") &&
+      Authreducer.OrganizationCreateResponseMessage !== "" &&
       Authreducer.OrganizationCreateResponseMessage !== undefined &&
       Authreducer.OrganizationCreateResponseMessage !== t("2fa-verification") &&
       Authreducer.OrganizationCreateResponseMessage !== t("2fa-enabled")
@@ -276,7 +276,7 @@ const PackageSelected = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.CreatePasswordResponseMessage !== "" &&
-      Authreducer.CreatePasswordResponseMessage !== t("Record-found") &&
+      Authreducer.CreatePasswordResponseMessage !== "" &&
       Authreducer.CreatePasswordResponseMessage !==
         t("The-user-is-an-admin-user") &&
       Authreducer.CreatePasswordResponseMessage !== t("2fa-enabled") &&
@@ -308,7 +308,7 @@ const PackageSelected = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.GetSelectedPackageResponseMessage !== "" &&
-      Authreducer.GetSelectedPackageResponseMessage !== t("Record-found") &&
+      Authreducer.GetSelectedPackageResponseMessage !== "" &&
       Authreducer.GetSelectedPackageResponseMessage !== undefined &&
       Authreducer.GetSelectedPackageResponseMessage !== t("2fa-verification") &&
       Authreducer.GetSelectedPackageResponseMessage !== t("2fa-enabled")
@@ -329,7 +329,7 @@ const PackageSelected = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.EmailValidationResponseMessage !== "" &&
-      Authreducer.EmailValidationResponseMessage !== t("Record-found") &&
+      Authreducer.EmailValidationResponseMessage !== "" &&
       Authreducer.EmailValidationResponseMessage !== undefined &&
       Authreducer.EmailValidationResponseMessage !== t("2fa-verification") &&
       Authreducer.EmailValidationResponseMessage !== t("2fa-enabled")
