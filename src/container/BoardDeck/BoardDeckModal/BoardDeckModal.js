@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./BoardDeckModal.module.css";
 import { Button, Modal } from "../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { boardDeckModal } from "../../../store/actions/NewMeetingActions";
+import {
+  boardDeckModal,
+  boardDeckShareModal,
+} from "../../../store/actions/NewMeetingActions";
 import { Checkbox } from "antd";
 import { Col, Container, Row } from "react-bootstrap";
 const BoardDeckModal = () => {
@@ -99,6 +102,11 @@ const BoardDeckModal = () => {
       ...boarddeckOptions,
       video: value,
     });
+  };
+
+  const handlesharebuttonModal = () => {
+    dispatch(boardDeckShareModal(true));
+    dispatch(boardDeckModal(false));
   };
 
   return (
@@ -237,7 +245,11 @@ const BoardDeckModal = () => {
                     text={t("Cancel")}
                     className={styles["CancelButton"]}
                   />
-                  <Button text={t("Share")} className={styles["ShareButton"]} />
+                  <Button
+                    text={t("Share")}
+                    className={styles["ShareButton"]}
+                    onClick={handlesharebuttonModal}
+                  />
                   <Button
                     text={t("Download")}
                     className={styles["ShareButton"]}

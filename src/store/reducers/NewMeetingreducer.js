@@ -148,7 +148,6 @@ const initialState = {
   mqtMeetingPrRemoved: null,
   validatencryptedstring: null,
   emailRouteID: 0,
-
   boardDeckModalData: false,
   boarddeckShareModal: false,
 };
