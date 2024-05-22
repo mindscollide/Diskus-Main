@@ -5,29 +5,34 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
-import { Button, Modal } from "../../../../../components/elements";
+import { Button, Loader, Modal } from "../../../../../components/elements";
 import { showUpgradeNowModal } from "../../../../../store/actions/UserMangementModalActions";
 import crossicon from "../../../../../assets/images/BlackCrossIconModals.svg";
 import { getLocalStorageItemNonActiveCheck } from "../../../../../commen/functions/utils";
 import { useEffect } from "react";
 import { userLogOutApiFunc } from "../../../../../store/actions/Auth_Sign_Out";
-import { ExtendOrganizationTrialApi } from "../../../../../store/actions/UserManagementActions";
+import { requestOrganizationExtendApi } from "../../../../../store/actions/UserManagementActions";
 const UpgradeNowModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { UserManagementModals } = useSelector((state) => state);
+  const { UserManagementModals, Authreducer } = useSelector((state) => state);
   const TrialExpireSelectPac = getLocalStorageItemNonActiveCheck(
     "TrialExpireSelectPac"
   );
   const organizationID = localStorage.getItem("organizationID");
+  const UserID = localStorage.getItem("userID");
   const isExtensionAvailable = JSON.parse(
     localStorage.getItem("isExtensionAvailable")
   );
 
+  // new API apply which is requestOrganizationTrialExtend
   const handleForExtenstionRequest = () => {
-    // let data = { OrganizationID: Number(organizationID) };
-    dispatch(ExtendOrganizationTrialApi(navigate, t));
+    let data = {
+      OrganizationID: Number(organizationID),
+      UserID: Number(UserID),
+    };
+    dispatch(requestOrganizationExtendApi(navigate, t, data));
   };
 
   const handleCrossIcon = () => {
@@ -36,7 +41,6 @@ const UpgradeNowModal = () => {
     localStorage.removeItem("LocalAdminRoutes");
     localStorage.removeItem("VERIFICATION");
     localStorage.removeItem("TrialExpireSelectPac");
-    dispatch(showUpgradeNowModal(false));
     dispatch(userLogOutApiFunc(navigate, t));
   };
 
@@ -60,9 +64,6 @@ const UpgradeNowModal = () => {
         setShow={dispatch(showUpgradeNowModal)}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}
-        // onHide={() => {
-        //   dispatch(showUpgradeNowModal(false));
-        // }}
         ModalTitle={
           <>
             <Row>

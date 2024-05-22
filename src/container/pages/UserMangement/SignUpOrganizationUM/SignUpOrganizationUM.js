@@ -281,11 +281,12 @@ const SignUpOrganizationUM = () => {
       });
     }
     if (name === "State" && value !== "") {
-      if (value !== "") {
+      const valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      if (valueCheck !== "") {
         setSignUpDetails({
           ...signUpDetails,
           State: {
-            value: value.trimStart(),
+            value: valueCheck.trimStart(),
             errorMessage: "",
             errorStatus: false,
           },
@@ -302,11 +303,12 @@ const SignUpOrganizationUM = () => {
       });
     }
     if (name === "City" && value !== "") {
-      if (value !== "") {
+      const valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      if (valueCheck !== "") {
         setSignUpDetails({
           ...signUpDetails,
           City: {
-            value: value.trimStart(),
+            value: valueCheck.trimStart(),
             errorMessage: "",
             errorStatus: false,
           },
@@ -345,11 +347,12 @@ const SignUpOrganizationUM = () => {
       });
     }
     if (name === "FullName" && value !== "") {
-      if (value !== "") {
+      const valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      if (valueCheck !== "") {
         setSignUpDetails({
           ...signUpDetails,
           FullName: {
-            value: value.trimStart(),
+            value: valueCheck.trimStart(),
             errorMessage: "Full Name is required",
             errorStatus: false,
           },
@@ -650,7 +653,7 @@ const SignUpOrganizationUM = () => {
             value: signUpDetails.CountryName.value,
             errorMessage:
               signUpDetails.CountryName.value === ""
-                ? t("Country-selection-is-required")
+                ? t("Please-select-country")
                 : signUpDetails.CountryName.errorMessage,
             errorStatus:
               signUpDetails.CountryName.value === ""

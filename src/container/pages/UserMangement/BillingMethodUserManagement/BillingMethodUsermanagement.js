@@ -34,14 +34,13 @@ const BillingMethodUsermanagement = () => {
     "organizationSubscriptionID"
   );
 
+  const SignupPage = localStorage.getItem("SignupFlowPageRoute");
+
   const [activeComponent, setActiveComponent] = useState("PakageDetails");
   const [activeStep, setActiveStep] = useState(0);
 
   const [select, setSelect] = useState("");
   const [countryNames, setCountryNames] = useState([]);
-
-  // states for open Iframe modal
-  const [paymentSourceLink, setPaymentSourceLink] = useState(null);
 
   // update totalYearly from child component step three
   const [totalYearlyCharges, setTotalYearlyCharges] = useState(0);
@@ -160,134 +159,6 @@ const BillingMethodUsermanagement = () => {
 
   console.log(activeComponent, "activeComponentactiveComponent");
   console.log(activeStep, "activeComponentactiveComponent");
-
-  // const handleNext = () => {
-  //   if (activeStep === 0 && activeComponent === "PakageDetails") {
-  //     let newData = {
-  //       FirstName: billingContactDetails.Name.value,
-  //       LastName: billingContactDetails.LastName.value,
-  //       Email: billingContactDetails.Email.value,
-  //       Phone: billingContactDetails.Contact.value,
-  //       Address: billingAddress.Address.value,
-  //       Country: billingAddress.Country.value,
-  //       City: billingAddress.City.value,
-  //       Zip: billingAddress.PostalCode.value,
-  //       OrderAmount: Number(totalYearlyCharges),
-  //       OrderCurrency: "USD",
-  //       OrderDescription: "An Order On Diskus",
-  //     };
-  //     dispatch(paymentInitiateMainApi(navigate, t, newData));
-  //     setActiveComponent("billingContactDetails");
-  //     setActiveStep(1);
-  //   } else if (
-  //     activeStep === 1 &&
-  //     activeComponent === "billingContactDetails "
-  //   ) {
-  //     if (
-  //       activeComponent === "billingContactDetails" &&
-  //       billingContactDetails.Email.value !== ""
-  //     ) {
-  //       if (
-  //         validateEmailEnglishAndArabicFormat(billingContactDetails.Email.value)
-  //       ) {
-  //         setBillingContactDetails({
-  //           ...billingContactDetails,
-  //           Email: {
-  //             value: billingContactDetails.Email.value,
-  //             errorMessage: "",
-  //             errorStatus: billingContactDetails.Email.errorStatus,
-  //           },
-  //         });
-  //         setActiveComponent("billingAddress");
-  //         setActiveStep(2);
-  //       } else {
-  //         setBillingContactDetails({
-  //           ...billingContactDetails,
-  //           Email: {
-  //             value: billingContactDetails.Email.value,
-  //             errorMessage: t("Enter-valid-email-address"),
-  //             errorStatus: billingContactDetails.Email.errorStatus,
-  //           },
-  //         });
-  //       }
-  //     } else {
-  //       setBillingContactDetails({
-  //         ...billingContactDetails,
-  //         Email: {
-  //           value: billingContactDetails.Email.value,
-  //           errorMessage: t("Email-address-is-required"),
-  //           errorStatus: billingContactDetails.Email.errorStatus,
-  //         },
-  //       });
-  //     }
-  //     ///////
-  //   } else if (activeStep === 2 && activeComponent === "billingAddress") {
-  //     if (
-  //       billingAddress.PostalCode.value !== "" &&
-  //       billingAddress.State.value !== "" &&
-  //       billingAddress.City.value !== "" &&
-  //       billingAddress.Address.value !== ""
-  //     ) {
-  //       setBillingAddress({
-  //         ...billingAddress,
-  //         Country: {
-  //           value: billingAddress.Country.value,
-  //           errorMessage: "",
-  //           errorStatus: billingAddress.Country.errorStatus,
-  //         },
-  //         PostalCode: {
-  //           value: billingAddress.PostalCode.value,
-  //           errorMessage: "",
-  //           errorStatus: billingAddress.PostalCode.errorStatus,
-  //         },
-  //         State: {
-  //           value: billingAddress.State.value,
-  //           errorMessage: "",
-  //           errorStatus: billingAddress.State.errorStatus,
-  //         },
-  //         City: {
-  //           value: billingAddress.City.value,
-  //           errorMessage: "",
-  //           errorStatus: billingAddress.City.errorStatus,
-  //         },
-  //         Address: {
-  //           value: billingAddress.Address.value,
-  //           errorMessage: "",
-  //           errorStatus: billingAddress.Address.errorStatus,
-  //         },
-  //       });
-  //     } else {
-  //       setBillingAddress({
-  //         ...billingAddress,
-  //         Country: {
-  //           value: billingAddress.Country.value,
-  //           errorMessage: t("Please-select-country"),
-  //           errorStatus: billingAddress.Country.errorStatus,
-  //         },
-  //         PostalCode: {
-  //           value: billingAddress.PostalCode.value,
-  //           errorMessage: t("Please add Postal/Zip code"),
-  //           errorStatus: billingAddress.PostalCode.errorStatus,
-  //         },
-  //         State: {
-  //           value: billingAddress.State.value,
-  //           errorMessage: t("Please enter state/province"),
-  //           errorStatus: billingAddress.State.errorStatus,
-  //         },
-  //         City: {
-  //           value: billingAddress.City.value,
-  //           errorMessage: t("Please enter city"),
-  //           errorStatus: billingAddress.City.errorStatus,
-  //         },
-  //         Address: {
-  //           value: billingAddress.Address.value,
-  //           errorMessage: t("Please enter address"),
-  //           errorStatus: billingAddress.Address.errorStatus,
-  //         },
-  //       });
-  //     }
-  //   }
-  // };
 
   const handleNext = () => {
     if (activeStep === 0 && activeComponent === "PakageDetails") {
@@ -496,11 +367,15 @@ const BillingMethodUsermanagement = () => {
 
   return (
     <Container className={styles["sectionStyling"]}>
-      <Row className="position-relative">
-        <Col className={styles["languageSelector"]}>
-          <LanguageSelector />
-        </Col>
-      </Row>
+      {SignupPage === 5 ? (
+        <>
+          <Row className="position-relative">
+            <Col className={styles["languageSelector"]}>
+              <LanguageSelector />
+            </Col>
+          </Row>
+        </>
+      ) : null}
       <Row>
         <Col lg={1} md={1} sm={12} xs={12}></Col>
         <Col lg={10} md={10} sm={12} xs={12}>

@@ -23,6 +23,8 @@ const initialState = {
   cancelOrganizationSubsData: null,
   packageUpgradeDetail: null,
   defaultRoutes: null,
+  organizationTrialExtendData: null,
+  paymentStatusModal: null,
 };
 
 const UserMangementReducer = (state = initialState, action) => {
@@ -431,6 +433,52 @@ const UserMangementReducer = (state = initialState, action) => {
     //     packageUpgradeDetail: null,
     //     ResponseMessage: action.message,
     //   };
+
+    //Request Organizattion Trial Extend Data
+    case actions.REQUEST_ORGANIZATION_TRIAL_EXTEND_INIT:
+      return {
+        ...state,
+        Loading: true,
+      };
+
+    case actions.REQUEST_ORGANIZATION_TRIAL_EXTEND_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        organizationTrialExtendData: action.response,
+        ResponseMessage: action.message,
+      };
+
+    case actions.REQUEST_ORGANIZATION_TRIAL_EXTEND_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        organizationTrialExtendData: null,
+        ResponseMessage: action.message,
+      };
+
+    //Payment Status Modal
+    case actions.PAYMENT_STATUS_INIT:
+      return {
+        ...state,
+        Loading: true,
+      };
+
+    case actions.PAYMENT_STATUS_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        paymentStatusModal: action.response,
+        ResponseMessage: action.message,
+      };
+
+    case actions.PAYMENT_STATUS_FAILED:
+      return {
+        ...state,
+        Loading: false,
+        paymentStatusModal: null,
+        ResponseMessage: action.message,
+      };
 
     case actions.CLEAR_MESSEGES_USER_MANAGEMENT:
       return {

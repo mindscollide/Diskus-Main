@@ -87,6 +87,7 @@ import PakageDetailsUMUpgrade from "../container/pages/UserMangement/AdminUserMa
 import PaymentProcess from "../container/pages/UserMangement/PaymentProcess/PaymentProcess";
 import { getLocalStorageItemNonActiveCheck } from "../commen/functions/utils";
 import TwoFactorVerifyUM from "../container/pages/UserMangement/2FA Verification/TwoFactorVerifyUM";
+import PaymentTest from "../container/pages/UserMangement/PaymentTestPage/PaymentTest";
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
 export const router = createHashRouter(
@@ -207,6 +208,15 @@ export const router = createHashRouter(
               </RouteWrapperUser>
             }
           />
+
+          <Route
+            path="Payment"
+            element={
+              <RouteWrapperUser name="Payment">
+                <PaymentTest />
+              </RouteWrapperUser>
+            }
+          />
           <Route
             path="setting"
             element={
@@ -308,6 +318,15 @@ export const router = createHashRouter(
             element={
               <RouteWrapperAdmin name="PaymentProcess">
                 <PaymentProcess />
+              </RouteWrapperAdmin>
+            }
+          />
+
+          <Route
+            path="PaymentFormUserManagement"
+            element={
+              <RouteWrapperAdmin name="PaymentFormUserManagement">
+                <BillingMethodUsermanagement />
               </RouteWrapperAdmin>
             }
           />

@@ -13,6 +13,9 @@ import {
   PaymentInitiateStepperThree,
   CancelSubReasons,
   CancelOrganizationsSubscriptions,
+  ExtendOrganizationTrial,
+  requestOrganizationTrialExtend,
+  paymentStatus,
 } from "../../commen/apis/Api_config";
 import {
   authenticationApi,
@@ -32,6 +35,10 @@ import {
   showUpgradeNowModal,
 } from "./UserMangementModalActions";
 import { userLogOutApiFunc } from "./Auth_Sign_Out";
+import {
+  clearLocalStorageAtloginresponce,
+  handleLoginResponse,
+} from "../../commen/functions/utils";
 
 const clearMessegesUserManagement = (response) => {
   return {
@@ -330,14 +337,14 @@ const organizationTrialExtendedFail = (message) => {
   };
 };
 
-const ExtendOrganizationTrialApi = (navigate, t) => {
+const ExtendOrganizationTrialApi = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
     dispatch(organizationTrialExtendedInit());
     let form = new FormData();
-    // form.append("RequestData", JSON.stringify(data));
-    form.append("RequestMethod", IsPackageExpiryDetail.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    form.append("RequestMethod", ExtendOrganizationTrial.RequestMethod);
     axios({
       method: "post",
       url: getAdminURLs,
@@ -349,7 +356,7 @@ const ExtendOrganizationTrialApi = (navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(ExtendOrganizationTrialApi(navigate, t));
+          dispatch(ExtendOrganizationTrialApi(navigate, t, data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1817,6 +1824,284 @@ const cancelOrganizationSubApi = (navigate, t, data) => {
 //   };
 // };
 
+// FOR REQUEST ORGANIZATION TRIAL EXTEND
+const requestOrganizationExtendInit = () => {
+  return {
+    type: actions.REQUEST_ORGANIZATION_TRIAL_EXTEND_INIT,
+  };
+};
+
+const requestOrganizationExtendSuccess = (response, message) => {
+  return {
+    type: actions.REQUEST_ORGANIZATION_TRIAL_EXTEND_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const requestOrganizationExtendFail = (message) => {
+  return {
+    type: actions.REQUEST_ORGANIZATION_TRIAL_EXTEND_FAIL,
+    message: message,
+  };
+};
+
+const requestOrganizationExtendApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(requestOrganizationExtendInit());
+    let form = new FormData();
+    form.append("RequestMethod", requestOrganizationTrialExtend.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: getAdminURLs,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(requestOrganizationExtendApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_RequestOrganizationTrialExtend_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                requestOrganizationExtendSuccess(
+                  response.data.responseResult,
+                  t("Trial-requested-successfully")
+                )
+              );
+              dispatch(userLogOutApiFunc(navigate, t));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_RequestOrganizationTrialExtend_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                requestOrganizationExtendFail(t("User-is-not-an-admin-user"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_RequestOrganizationTrialExtend_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                requestOrganizationExtendFail(
+                  t("Error-inserting-trial-request")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_RequestOrganizationTrialExtend_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                requestOrganizationExtendSuccess(
+                  t("Trial-requested-successfully-and-auto-extended")
+                )
+              );
+              dispatch(userLogOutApiFunc(navigate, t));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_RequestOrganizationTrialExtend_05".toLowerCase()
+                )
+            ) {
+              dispatch(
+                requestOrganizationExtendFail(t("Something-went-wrong"))
+              );
+            }
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_RequestOrganizationTrialExtend_06".toLowerCase()
+              )
+          ) {
+            dispatch(
+              requestOrganizationExtendSuccess(t("Request-already-exists"))
+            );
+            dispatch(userLogOutApiFunc(navigate, t));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_RequestOrganizationTrialExtend_07".toLowerCase()
+              )
+          ) {
+            dispatch(
+              requestOrganizationExtendFail(t("Trial-extension-already-given"))
+            );
+          } else {
+            dispatch(requestOrganizationExtendFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(requestOrganizationExtendFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(requestOrganizationExtendFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+//Payment Status Api
+const paymentStatusInit = () => {
+  return {
+    type: actions.PAYMENT_STATUS_INIT,
+  };
+};
+
+const paymentStatusSuccess = (response, message) => {
+  return {
+    type: actions.PAYMENT_STATUS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const paymentStatusFailed = (response, message) => {
+  return {
+    type: actions.PAYMENT_STATUS_FAILED,
+    message: message,
+  };
+};
+
+const paymentStatusApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(paymentStatusInit());
+    let form = new FormData();
+    form.append("RequestMethod", paymentStatus.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: authenticationApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(paymentStatusApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_PaymentStatus_01".toLowerCase()
+                )
+            ) {
+              await handleLoginResponse(
+                response.data.responseResult.userAuthData
+              );
+              await dispatch(
+                paymentStatusSuccess(
+                  response.data.responseResult,
+                  t("Successful-organization-subscription-is-activated")
+                )
+              );
+              navigate("/Admin/ManageUsers");
+              clearLocalStorageAtloginresponce(1, navigate);
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_PaymentStatus_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                paymentStatusFailed(t("UnSuccessful-response-from-edfa-pay"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_PaymentStatus_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                paymentStatusFailed(
+                  t("UnSuccessful-response-code-from-edfa-pay")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_PaymentStatus_04".toLowerCase()
+                )
+            ) {
+              dispatch(paymentStatusFailed(t("Invalid-request-data")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_PaymentStatus_05".toLowerCase()
+                )
+            ) {
+              dispatch(paymentStatusFailed(t("Not-an-authentic-user")));
+            }
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "ERM_AuthService_SignUpManager_PaymentStatus_06".toLowerCase()
+              )
+          ) {
+            dispatch(paymentStatusFailed(t("Payment-not-settled")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "ERM_AuthService_SignUpManager_PaymentStatus_07".toLowerCase()
+              )
+          ) {
+            dispatch(
+              paymentStatusFailed(
+                t("Error-activating-organization-subscription-and-creator")
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "ERM_AuthService_SignUpManager_PaymentStatus_08".toLowerCase()
+              )
+          ) {
+            dispatch(paymentStatusFailed(t("Something-went-wrong")));
+          } else {
+            dispatch(paymentStatusFailed(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(paymentStatusFailed(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(paymentStatusFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   signUpOrganizationAndPakageSelection,
   // getAllorganizationSubscriptionExpiryDetailsApi,
@@ -1839,4 +2124,6 @@ export {
   clearMessegesUserManagement,
   // signupFlowRoutes,
   // paymentUpgradeDetailMainApi
+  requestOrganizationExtendApi,
+  paymentStatusApi,
 };

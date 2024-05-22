@@ -7463,3 +7463,63 @@ tr.ant-table-row.ant-table-row-level-0.UpgradePakageDetails:last-child:hover {
 .d-block.loader-zindex .videoCallScreen {
   z-index: 99999999999 !important;
 }
+
+/* BoardDeck Css */
+
+.ant-radio-group.ant-radio-group-outline.BoarddeckSelection
+  label.ant-radio-wrapper
+  span {
+  font-style: normal !important;
+  font-weight: 500 !important;
+  font-size: 13px !important;
+  color: #a2a2a2 !important;
+}
+
+.ant-radio-group.ant-radio-group-outline.BoarddeckSelection
+  label.ant-radio-wrapper.ant-radio-wrapper-checked
+  span {
+  font-style: normal !important;
+  font-weight: 500 !important;
+  font-size: 13px !important;
+  color: #5a5a5a !important;
+}
+
+.ant-radio-group.ant-radio-group-outline.BoarddeckSelection
+  label.ant-radio-wrapper.ant-radio-wrapper-checked
+  input {
+  display: none !important;
+}
+
+.ant-radio-group.ant-radio-group-outline.BoarddeckSelection
+  label.ant-radio-wrapper
+  input {
+  display: none !important;
+}
+
+.ant-radio-group.ant-radio-group-outline.BoarddeckSelection
+  label.ant-radio-wrapper.ant-radio-wrapper-checked
+  span
+  span.ant-radio-inner:after {
+  content: none !important;
+}
+
+.ant-radio-group.ant-radio-group-outline.BoarddeckSelection
+  .ant-radio-checked
+  .ant-radio-inner {
+  background: linear-gradient(180deg, #4adede 0%, #6172d6 100%) !important;
+  transform: rotate(90deg) !important;
+  border: none !important;
+  width: 10px !important;
+  height: 10px !important;
+  top: -1px !important;
+}
+
+.ant-radio-group.ant-radio-group-outline.BoarddeckSelection .ant-radio-inner {
+  background: #e1e1e1 !important;
+  transform: rotate(90deg) !important;
+  border: none !important;
+  width: 10px !important;
+  height: 10px !important;
+  top: -1px !important;
+}
+/* BoardDeck Ends */

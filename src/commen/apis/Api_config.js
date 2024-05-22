@@ -1558,6 +1558,14 @@ const revokeMicrosoftToken = {
   RequestMethod: "ServiceManager.RevokeMicrosoftToken",
 };
 
+const requestOrganizationTrialExtend = {
+  RequestMethod: "ServiceManager.RequestOrganizationTrialExtend",
+};
+
+const paymentStatus = {
+  RequestMethod: "ServiceManager.PaymentStatus",
+};
+
 const ValidateEmailRelatedString = {
   RequestMethod:
     "ServiceManager.ValidateEncryptedStringMeetingRelatedEmailData",
@@ -1987,5 +1995,7 @@ export {
   CancelSubReasons,
   CancelOrganizationsSubscriptions,
   // upgradePackageApiCallOnPackageDetailPage,
+  requestOrganizationTrialExtend,
+  paymentStatus,
   downloadAttachmentTalk,
 };

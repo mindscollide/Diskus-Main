@@ -140,6 +140,7 @@ export function updateAdminRoutes(adminFeatures, LocalAdminRoutes) {
 // for enter posword state management and routes management
 // Export the handleLoginResponse function
 export async function handleLoginResponse(response) {
+  console.log(response, "handleLoginResponsehandleLoginResponse");
   try {
     if (response.organizationID) {
       localStorage.setItem("organizationID", response.organizationID);
@@ -221,6 +222,7 @@ export async function handleLoginResponse(response) {
           { name: "PackageDetailUMupgrade", id: 28 },
           { name: "PaymentHistory", id: 218 },
           { name: "changePassword", id: 220 },
+          { name: "PaymentFormUserManagement", id: 222 },
         ]
       : [];
     if (response.isTrial) {
@@ -237,7 +239,8 @@ export async function handleLoginResponse(response) {
           { name: "committee", id: 17 },
           { name: "resolution", id: 18 },
           { name: "signatureviewer", id: 19 },
-          { name: "documentViewer", id: 20 }
+          { name: "documentViewer", id: 20 },
+          { name: "Payment", id: 109 }
         );
       }
       if (response.hasAdminRights) {
@@ -247,7 +250,8 @@ export async function handleLoginResponse(response) {
           { name: "PakageDetailsUserManagement", id: 206 },
           { name: "CustomerInformation", id: 208 },
           { name: "AddUsers", id: 26 },
-          { name: "loginreport", id: 35 }
+          { name: "loginreport", id: 35 },
+          { name: "PaymentFormUserManagement", id: 209 }
         );
       }
     } else {

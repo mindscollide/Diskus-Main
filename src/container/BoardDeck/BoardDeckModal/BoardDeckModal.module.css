@@ -1,0 +1,77 @@
+.BoardDeckHeading {
+  font-size: 30px !important;
+  font-weight: 600 !important;
+  color: #6172d6 !important;
+}
+
+.Class_CheckBox {
+  font-size: 16px !important;
+  color: #5a5a5a;
+  font-weight: 500 !important;
+}
+
+body[dir="rtl"] .Class_CheckBox {
+  font-weight: 500 !important;
+}
+
+.checkbox {
+  margin-top: 7px !important;
+}
+
+.Box_options {
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  min-width: 191px !important;
+  display: block;
+  padding: 5px 10px !important;
+}
+
+.Box_options_Agendaas {
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  min-width: 191px !important;
+  display: block;
+  padding: 5px 10px !important;
+}
+
+.CancelButton {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  font-size: 600 !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.CancelButton:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  font-size: 600 !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.ShareButton {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #fff !important;
+  font-size: 600 !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.ShareButton:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #fff !important;
+  font-size: 600 !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  border: 1px solid #e1e1e1 !important;
+}

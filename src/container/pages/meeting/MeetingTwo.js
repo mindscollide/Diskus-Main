@@ -81,6 +81,8 @@ import {
   validateStringEmailApi,
   meetingParticipantAdded,
   meetingParticipantRemoved,
+  boardDeckModal,
+  boardDeckShareModal,
 } from "../../../store/actions/NewMeetingActions";
 import { mqttCurrentMeetingEnded } from "../../../store/actions/GetMeetingUserId";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
@@ -114,6 +116,9 @@ import {
 import ProposedNewMeeting from "./scedulemeeting/ProposedNewMeeting/ProposedNewMeeting";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 import { mqttMeetingData } from "../../../hooks/meetingResponse/response";
+import BoardDeckModal from "../../BoardDeck/BoardDeckModal/BoardDeckModal";
+import ShareModalBoarddeck from "../../BoardDeck/ShareModalBoardDeck/ShareModalBoarddeck";
+import BoardDeckSendEmail from "../../BoardDeck/BoardDeckSendEmail/BoardDeckSendEmail";
 
 const NewMeeting = () => {
   const { t } = useTranslation();
@@ -1300,6 +1305,10 @@ const NewMeeting = () => {
           } else if (record.isParticipant) {
           }
         } else {
+          <Button
+            text={t("Board-deck")}
+            className={styles["BoardDeckButton"]}
+          />;
         }
       },
     },
@@ -1479,6 +1488,12 @@ const NewMeeting = () => {
       await dispatch(searchNewUserMeeting(navigate, searchData, t));
       setentereventIcon(true);
     }
+  };
+
+  //Board Deck Onclick function
+
+  const boardDeckOnClick = () => {
+    dispatch(boardDeckModal(true));
   };
 
   useEffect(() => {
@@ -2065,429 +2080,456 @@ const NewMeeting = () => {
   console.log("NewMeetingReducerNewMeetingReducer", NewMeetingreducer);
 
   return (
-    <section className={styles["NewMeeting_container"]}>
-      {endForAllMeeting && <NewEndLeaveMeeting />}
-      {endMeetingModal && <NewEndMeetingModal />}
-      {quickMeeting && (
-        <ModalMeeting
-          setShow={setQuickMeeting}
-          show={quickMeeting}
-          // this is check from where its called 4 is from Meeting
-          checkFlag={4}
+    <>
+      <section className={styles["NewMeeting_container"]}>
+        {endForAllMeeting && <NewEndLeaveMeeting />}
+        {endMeetingModal && <NewEndMeetingModal />}
+        {quickMeeting && (
+          <ModalMeeting
+            setShow={setQuickMeeting}
+            show={quickMeeting}
+            // this is check from where its called 4 is from Meeting
+            checkFlag={4}
+          />
+        )}
+        {viewFlag ? (
+          <ModalView viewFlag={viewFlag} setViewFlag={setViewFlag} />
+        ) : null}
+        {editFlag ? (
+          <ModalUpdate
+            editFlag={editFlag}
+            setEditFlag={setEditFlag}
+            // this is check from where its called 4 is from Meeting
+            checkFlag={4}
+          />
+        ) : null}
+        <Notification
+          message={open.message}
+          open={open.open}
+          setOpen={setOpen}
         />
-      )}
-      {viewFlag ? (
-        <ModalView viewFlag={viewFlag} setViewFlag={setViewFlag} />
-      ) : null}
-      {editFlag ? (
-        <ModalUpdate
-          editFlag={editFlag}
-          setEditFlag={setEditFlag}
-          // this is check from where its called 4 is from Meeting
-          checkFlag={4}
-        />
-      ) : null}
-      <Notification message={open.message} open={open.open} setOpen={setOpen} />
-      {sceduleMeeting && NewMeetingreducer.scheduleMeetingPageFlag === true ? (
-        <SceduleMeeting
-          setSceduleMeeting={setSceduleMeeting}
-          setCurrentMeetingID={setCurrentMeetingID}
-          currentMeeting={currentMeetingID}
-          editorRole={editorRole}
-          setEdiorRole={setEdiorRole}
-          setEditMeeting={setEditMeeting}
-          isEditMeeting={isEditMeeting}
-          setDataroomMapFolderId={setDataroomMapFolderId}
-          dataroomMapFolderId={dataroomMapFolderId}
-        />
-      ) : viewProposeDatePoll &&
-        NewMeetingreducer.viewProposeDateMeetingPageFlag === true ? (
-        <ViewParticipantsDates
-          setViewProposeDatePoll={setViewProposeDatePoll}
-          responseByDate={responseByDate}
-          setCurrentMeetingID={setCurrentMeetingID}
-          setSceduleMeeting={setViewProposeDatePoll}
-          setDataroomMapFolderId={setDataroomMapFolderId}
-        />
-      ) : viewAdvanceMeetingModal &&
-        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ? (
-        <ViewMeetingModal
-          advanceMeetingModalID={advanceMeetingModalID}
-          setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
-          setAdvanceMeetingModalID={setAdvanceMeetingModalID}
-          unPublish={false}
-          editorRole={editorRole}
-          setEdiorRole={setEdiorRole}
-          dataroomMapFolderId={dataroomMapFolderId}
-          setDataroomMapFolderId={setDataroomMapFolderId}
-          setCurrentMeetingID={setCurrentMeetingID}
-        />
-      ) : viewAdvanceMeetingModalUnpublish &&
-        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ? (
-        <ViewMeetingModal
-          advanceMeetingModalID={advanceMeetingModalID}
-          setViewAdvanceMeetingModal={setViewAdvanceMeetingModalUnpublish}
-          setAdvanceMeetingModalID={setAdvanceMeetingModalID}
-          unPublish={true}
-          editorRole={editorRole}
-          setEdiorRole={setEdiorRole}
-          dataroomMapFolderId={dataroomMapFolderId}
-          setDataroomMapFolderId={setDataroomMapFolderId}
-        />
-      ) : viewProposeOrganizerPoll &&
-        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ? (
-        <OrganizerViewModal
-          setViewProposeOrganizerPoll={setViewProposeOrganizerPoll}
-          currentMeeting={currentMeetingID}
-        />
-      ) : proposedNewMeeting ? (
-        <ProposedNewMeeting
-          setProposedNewMeeting={setProposedNewMeeting}
-          setCurrentMeetingID={setCurrentMeetingID}
-          currentMeeting={currentMeetingID}
-          editorRole={editorRole}
-          setEdiorRole={setEdiorRole}
-          setEditMeeting={setEditMeeting}
-          isEditMeeting={isEditMeeting}
-          setDataroomMapFolderId={setDataroomMapFolderId}
-          dataroomMapFolderId={dataroomMapFolderId}
-        />
-      ) : (
-        <>
-          <Row className="mt-2">
-            <Col
-              sm={12}
-              md={8}
-              lg={8}
-              className="d-flex gap-3 align-items-center"
-            >
-              <span className={styles["NewMeetinHeading"]}>
-                {t("Meetings")}
-              </span>
-              <Row>
-                <Col lg={12} md={12} sm={12}>
-                  <Dropdown
-                    className="SceduleMeetingButton"
-                    onClick={eventClickHandler}
-                  >
-                    <Dropdown.Toggle title={t("Create")}>
+        {sceduleMeeting &&
+        NewMeetingreducer.scheduleMeetingPageFlag === true ? (
+          <SceduleMeeting
+            setSceduleMeeting={setSceduleMeeting}
+            setCurrentMeetingID={setCurrentMeetingID}
+            currentMeeting={currentMeetingID}
+            editorRole={editorRole}
+            setEdiorRole={setEdiorRole}
+            setEditMeeting={setEditMeeting}
+            isEditMeeting={isEditMeeting}
+            setDataroomMapFolderId={setDataroomMapFolderId}
+            dataroomMapFolderId={dataroomMapFolderId}
+          />
+        ) : viewProposeDatePoll &&
+          NewMeetingreducer.viewProposeDateMeetingPageFlag === true ? (
+          <ViewParticipantsDates
+            setViewProposeDatePoll={setViewProposeDatePoll}
+            responseByDate={responseByDate}
+            setCurrentMeetingID={setCurrentMeetingID}
+            setSceduleMeeting={setViewProposeDatePoll}
+            setDataroomMapFolderId={setDataroomMapFolderId}
+          />
+        ) : viewAdvanceMeetingModal &&
+          NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ? (
+          <ViewMeetingModal
+            advanceMeetingModalID={advanceMeetingModalID}
+            setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+            setAdvanceMeetingModalID={setAdvanceMeetingModalID}
+            unPublish={false}
+            editorRole={editorRole}
+            setEdiorRole={setEdiorRole}
+            dataroomMapFolderId={dataroomMapFolderId}
+            setDataroomMapFolderId={setDataroomMapFolderId}
+            setCurrentMeetingID={setCurrentMeetingID}
+          />
+        ) : viewAdvanceMeetingModalUnpublish &&
+          NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ? (
+          <ViewMeetingModal
+            advanceMeetingModalID={advanceMeetingModalID}
+            setViewAdvanceMeetingModal={setViewAdvanceMeetingModalUnpublish}
+            setAdvanceMeetingModalID={setAdvanceMeetingModalID}
+            unPublish={true}
+            editorRole={editorRole}
+            setEdiorRole={setEdiorRole}
+            dataroomMapFolderId={dataroomMapFolderId}
+            setDataroomMapFolderId={setDataroomMapFolderId}
+          />
+        ) : viewProposeOrganizerPoll &&
+          NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ? (
+          <OrganizerViewModal
+            setViewProposeOrganizerPoll={setViewProposeOrganizerPoll}
+            currentMeeting={currentMeetingID}
+          />
+        ) : proposedNewMeeting ? (
+          <ProposedNewMeeting
+            setProposedNewMeeting={setProposedNewMeeting}
+            setCurrentMeetingID={setCurrentMeetingID}
+            currentMeeting={currentMeetingID}
+            editorRole={editorRole}
+            setEdiorRole={setEdiorRole}
+            setEditMeeting={setEditMeeting}
+            isEditMeeting={isEditMeeting}
+            setDataroomMapFolderId={setDataroomMapFolderId}
+            dataroomMapFolderId={dataroomMapFolderId}
+          />
+        ) : (
+          <>
+            <Row className="mt-2">
+              <Col
+                sm={12}
+                md={8}
+                lg={8}
+                className="d-flex gap-3 align-items-center"
+              >
+                <span className={styles["NewMeetinHeading"]}>
+                  {t("Meetings")}
+                </span>
+                <Row>
+                  <Col lg={12} md={12} sm={12}>
+                    <Dropdown
+                      className="SceduleMeetingButton"
+                      onClick={eventClickHandler}
+                    >
+                      <Dropdown.Toggle title={t("Create")}>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className={styles["schedule_button"]}
+                          >
+                            <Plus width={20} height={20} fontWeight={800} />
+                            <span> {t("Schedule-a-meeting")}</span>
+                          </Col>
+                        </Row>
+                      </Dropdown.Toggle>
+
+                      <Dropdown.Menu>
+                        {checkFeatureIDAvailability(1) ? (
+                          <Dropdown.Item
+                            className="dropdown-item"
+                            onClick={CreateQuickMeeting}
+                          >
+                            {t("Quick-meeting")}
+                          </Dropdown.Item>
+                        ) : null}
+
+                        {checkFeatureIDAvailability(12) ? (
+                          <Dropdown.Item
+                            className="dropdown-item"
+                            onClick={openSceduleMeetingPage}
+                          >
+                            {t("Advance-meeting")}
+                          </Dropdown.Item>
+                        ) : null}
+
+                        {/* Proposed New Meeting */}
+                        <Dropdown.Item
+                          className="dropdown-item"
+                          onClick={openProposedNewMeetingPage}
+                        >
+                          {t("Propose-new-meeting")}
+                        </Dropdown.Item>
+
+                        {/* BoardDeck For Time Being */}
+                        <Dropdown.Item
+                          className="dropdown-item"
+                          onClick={boardDeckOnClick}
+                        >
+                          {t("Board-deck")}
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </Col>
+                </Row>
+              </Col>
+              <Col
+                sm={12}
+                md={4}
+                lg={4}
+                className="d-flex justify-content-end align-items-center"
+              >
+                <span className="position-relative">
+                  <TextField
+                    width={"502px"}
+                    placeholder={t("Search")}
+                    applyClass={"meetingSearch"}
+                    name={"SearchVal"}
+                    labelClass="d-none"
+                    value={searchText}
+                    change={handleSearchChange}
+                    onKeyDown={handleKeyPress}
+                    inputicon={
                       <Row>
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className={styles["schedule_button"]}
+                          className="d-flex gap-2 align-items-center"
                         >
-                          <Plus width={20} height={20} fontWeight={800} />
-                          <span> {t("Schedule-a-meeting")}</span>
-                        </Col>
-                      </Row>
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu>
-                      {checkFeatureIDAvailability(1) ? (
-                        <Dropdown.Item
-                          className="dropdown-item"
-                          onClick={CreateQuickMeeting}
-                        >
-                          {t("Quick-meeting")}
-                        </Dropdown.Item>
-                      ) : null}
-
-                      {checkFeatureIDAvailability(12) ? (
-                        <Dropdown.Item
-                          className="dropdown-item"
-                          onClick={openSceduleMeetingPage}
-                        >
-                          {t("Advance-meeting")}
-                        </Dropdown.Item>
-                      ) : null}
-
-                      {/* Proposed New Meeting */}
-                      <Dropdown.Item
-                        className="dropdown-item"
-                        onClick={openProposedNewMeetingPage}
-                      >
-                        {t("Propose-new-meeting")}
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </Col>
-              </Row>
-            </Col>
-            <Col
-              sm={12}
-              md={4}
-              lg={4}
-              className="d-flex justify-content-end align-items-center"
-            >
-              <span className="position-relative">
-                <TextField
-                  width={"502px"}
-                  placeholder={t("Search")}
-                  applyClass={"meetingSearch"}
-                  name={"SearchVal"}
-                  labelClass="d-none"
-                  value={searchText}
-                  change={handleSearchChange}
-                  onKeyDown={handleKeyPress}
-                  inputicon={
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex gap-2 align-items-center"
-                      >
-                        {entereventIcon === true ? (
-                          <img
-                            src={BlackCrossIcon}
-                            className="cursor-pointer"
-                            onClick={handleClearSearch}
-                            alt=""
-                            draggable="false"
-                          />
-                        ) : null}
-                        <Tooltip
-                          placement="bottomLeft"
-                          title={t("Search-filters")}
-                        >
-                          <img
-                            src={searchicon}
-                            className={styles["Search_Bar_icon_class"]}
-                            onClick={HandleShowSearch} // Add click functionality here
-                            alt=""
-                            draggable="false"
-                          />
-                        </Tooltip>
-                      </Col>
-                    </Row>
-                  }
-                  iconClassName={styles["polling_searchinput"]}
-                />
-                {searchMeeting ? (
-                  <>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className={styles["Search-Box_meeting"]}
-                      >
-                        <Row className="mt-2">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-end"
-                          >
+                          {entereventIcon === true ? (
                             <img
                               src={BlackCrossIcon}
-                              className={styles["Cross_Icon_Styling"]}
-                              width="16px"
-                              height="16px"
-                              onClick={HandleCloseSearchModalMeeting}
+                              className="cursor-pointer"
+                              onClick={handleClearSearch}
                               alt=""
                               draggable="false"
                             />
-                          </Col>
-                        </Row>
-                        <Row className="mt-4">
-                          <Col lg={12} md={12} sm={12}>
-                            <TextField
-                              placeholder={t("Meeting-title")}
-                              applyClass={"meetinInnerSearch"}
-                              labelClass="d-none"
-                              name="MeetingTitle"
-                              value={searchFields.MeetingTitle}
-                              change={searchMeetingChangeHandler}
-                            />
-                          </Col>
-                        </Row>
-                        <Row className="mt-3">
-                          <Col lg={6} md={6} sm={12}>
-                            <DatePicker
-                              value={searchFields.DateView}
-                              format={"DD/MM/YYYY"}
-                              placeholder="DD/MM/YYYY"
-                              render={
-                                <InputIcon
-                                  placeholder="DD/MM/YYYY"
-                                  className="datepicker_input"
-                                />
-                              }
-                              editable={false}
-                              className="datePickerTodoCreate2"
-                              onOpenPickNewDate={false}
-                              inputMode=""
-                              calendar={calendarValue}
-                              locale={localValue}
-                              ref={calendRef}
-                              onFocusedDateChange={meetingDateChangeHandler}
-                            />
-                          </Col>
-                          <Col lg={6} md={6} sm={12}>
-                            <TextField
-                              placeholder={t("Organizer-name")}
-                              labelClass="d-none"
-                              name="OrganizerName"
-                              applyClass={"meetinInnerSearch"}
-                              value={searchFields.OrganizerName}
-                              change={searchMeetingChangeHandler}
-                            />
-                          </Col>
-                        </Row>
-                        <Row className="mt-4">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-end gap-2"
+                          ) : null}
+                          <Tooltip
+                            placement="bottomLeft"
+                            title={t("Search-filters")}
                           >
-                            <Button
-                              text={t("Reset")}
-                              className={styles["ResetButtonMeeting"]}
-                              onClick={handleReset}
+                            <img
+                              src={searchicon}
+                              className={styles["Search_Bar_icon_class"]}
+                              onClick={HandleShowSearch} // Add click functionality here
+                              alt=""
+                              draggable="false"
                             />
-                            <Button
-                              text={t("Search")}
-                              className={styles["SearchButtonMeetings"]}
-                              onClick={handleSearch}
-                            />
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
-                  </>
-                ) : null}
-              </span>
-            </Col>
-          </Row>
-          <Row className="mt-2">
-            <Col lg={12} md={12} sm={12}>
-              <Paper className={styles["PaperStylesMeetingTwoPage"]}>
-                <Row>
-                  <Col lg={12} md={12} sm={12} className="d-flex gap-2">
-                    <Button
-                      text={t("Published-meeting")}
-                      className={
-                        Number(currentView) === 1
-                          ? styles["publishedMeetingButton-active"]
-                          : styles["publishedMeetingButton"]
-                      }
-                      onClick={handlePublishedMeeting}
-                    />
-                    <Button
-                      text={t("Unpublished-proposed-meetings")}
-                      className={
-                        Number(currentView) === 2
-                          ? styles["UnpublishedMeetingButton-active"]
-                          : styles["UnpublishedMeetingButton"]
-                      }
-                      onClick={handleUnPublishedMeeting}
-                    />
-                  </Col>
-                </Row>
-                {Number(currentView) === 2 ? (
-                  <UnpublishedProposedMeeting
-                    viewProposeDatePoll={viewProposeDatePoll}
-                    setViewProposeDatePoll={setViewProposeDatePoll}
-                    setViewProposeOrganizerPoll={setViewProposeOrganizerPoll}
-                    setAdvanceMeetingModalID={setAdvanceMeetingModalID}
-                    setViewAdvanceMeetingModalUnpublish={
-                      setViewAdvanceMeetingModalUnpublish
+                          </Tooltip>
+                        </Col>
+                      </Row>
                     }
-                    setResponseByDate={setResponseByDate}
-                    setSceduleMeeting={setSceduleMeeting}
-                    setEdiorRole={setEdiorRole}
-                    setEditMeeting={setEditMeeting}
-                    setCurrentMeetingID={setCurrentMeetingID}
-                    currentMeeting={currentMeetingID}
-                    editorRole={editorRole}
-                    setDataroomMapFolderId={setDataroomMapFolderId}
+                    iconClassName={styles["polling_searchinput"]}
                   />
-                ) : Number(currentView) === 1 ? (
-                  <Row className="mt-2">
-                    <Col lg={12} md={12} sm={12}>
-                      <>
-                        {defaultFiltersValues.length > 0 ? (
-                          <Table
-                            column={MeetingColoumns}
-                            scroll={{ y: "54vh", x: false }}
-                            pagination={false}
-                            className="newMeetingTable"
-                            rows={rows}
-                            locale={{
-                              emptyText: emptyText(), // Set your custom empty text here
-                            }}
-                            expandable={{
-                              expandedRowRender: (record) => {
-                                return (
-                                  record.meetingAgenda.length > 0 &&
-                                  record.meetingAgenda.map((data) => (
-                                    <p
-                                      className={styles["meeting-expanded-row"]}
-                                    >
-                                      {data.objMeetingAgenda.title}
-                                    </p>
-                                  ))
-                                );
-                              },
-                              rowExpandable: (record) =>
-                                record.meetingAgenda.length > 0 ? true : false,
-                            }}
-                          />
-                        ) : null}
-                      </>
+                  {searchMeeting ? (
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className={styles["Search-Box_meeting"]}
+                        >
+                          <Row className="mt-2">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="d-flex justify-content-end"
+                            >
+                              <img
+                                src={BlackCrossIcon}
+                                className={styles["Cross_Icon_Styling"]}
+                                width="16px"
+                                height="16px"
+                                onClick={HandleCloseSearchModalMeeting}
+                                alt=""
+                                draggable="false"
+                              />
+                            </Col>
+                          </Row>
+                          <Row className="mt-4">
+                            <Col lg={12} md={12} sm={12}>
+                              <TextField
+                                placeholder={t("Meeting-title")}
+                                applyClass={"meetinInnerSearch"}
+                                labelClass="d-none"
+                                name="MeetingTitle"
+                                value={searchFields.MeetingTitle}
+                                change={searchMeetingChangeHandler}
+                              />
+                            </Col>
+                          </Row>
+                          <Row className="mt-3">
+                            <Col lg={6} md={6} sm={12}>
+                              <DatePicker
+                                value={searchFields.DateView}
+                                format={"DD/MM/YYYY"}
+                                placeholder="DD/MM/YYYY"
+                                render={
+                                  <InputIcon
+                                    placeholder="DD/MM/YYYY"
+                                    className="datepicker_input"
+                                  />
+                                }
+                                editable={false}
+                                className="datePickerTodoCreate2"
+                                onOpenPickNewDate={false}
+                                inputMode=""
+                                calendar={calendarValue}
+                                locale={localValue}
+                                ref={calendRef}
+                                onFocusedDateChange={meetingDateChangeHandler}
+                              />
+                            </Col>
+                            <Col lg={6} md={6} sm={12}>
+                              <TextField
+                                placeholder={t("Organizer-name")}
+                                labelClass="d-none"
+                                name="OrganizerName"
+                                applyClass={"meetinInnerSearch"}
+                                value={searchFields.OrganizerName}
+                                change={searchMeetingChangeHandler}
+                              />
+                            </Col>
+                          </Row>
+                          <Row className="mt-4">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="d-flex justify-content-end gap-2"
+                            >
+                              <Button
+                                text={t("Reset")}
+                                className={styles["ResetButtonMeeting"]}
+                                onClick={handleReset}
+                              />
+                              <Button
+                                text={t("Search")}
+                                className={styles["SearchButtonMeetings"]}
+                                onClick={handleSearch}
+                              />
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                    </>
+                  ) : null}
+                </span>
+              </Col>
+            </Row>
+            <Row className="mt-2">
+              <Col lg={12} md={12} sm={12}>
+                <Paper className={styles["PaperStylesMeetingTwoPage"]}>
+                  <Row>
+                    <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                      <Button
+                        text={t("Published-meeting")}
+                        className={
+                          Number(currentView) === 1
+                            ? styles["publishedMeetingButton-active"]
+                            : styles["publishedMeetingButton"]
+                        }
+                        onClick={handlePublishedMeeting}
+                      />
+                      <Button
+                        text={t("Unpublished-proposed-meetings")}
+                        className={
+                          Number(currentView) === 2
+                            ? styles["UnpublishedMeetingButton-active"]
+                            : styles["UnpublishedMeetingButton"]
+                        }
+                        onClick={handleUnPublishedMeeting}
+                      />
                     </Col>
                   </Row>
-                ) : null}
-                {rows.length > 0 ? (
-                  <>
-                    <Row className="mt-5">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex justify-content-center "
-                      >
-                        <Row className={styles["PaginationStyle-Committee"]}>
-                          <Col
-                            className={"pagination-groups-table"}
-                            sm={12}
-                            md={12}
-                            lg={12}
-                          >
-                            <CustomPagination
-                              current={
-                                meetingPageCurrent !== null &&
-                                meetingPageCurrent !== undefined
-                                  ? meetingPageCurrent
-                                  : 1
-                              }
-                              pageSize={
-                                meetingpageRow !== null &&
-                                meetingpageRow !== undefined
-                                  ? meetingpageRow
-                                  : 50
-                              }
-                              onChange={handelChangePagination}
-                              total={totalRecords}
-                              showSizer={true}
-                              pageSizeOptionsValues={["30", "50", "100", "200"]}
+                  {Number(currentView) === 2 ? (
+                    <UnpublishedProposedMeeting
+                      viewProposeDatePoll={viewProposeDatePoll}
+                      setViewProposeDatePoll={setViewProposeDatePoll}
+                      setViewProposeOrganizerPoll={setViewProposeOrganizerPoll}
+                      setAdvanceMeetingModalID={setAdvanceMeetingModalID}
+                      setViewAdvanceMeetingModalUnpublish={
+                        setViewAdvanceMeetingModalUnpublish
+                      }
+                      setResponseByDate={setResponseByDate}
+                      setSceduleMeeting={setSceduleMeeting}
+                      setEdiorRole={setEdiorRole}
+                      setEditMeeting={setEditMeeting}
+                      setCurrentMeetingID={setCurrentMeetingID}
+                      currentMeeting={currentMeetingID}
+                      editorRole={editorRole}
+                      setDataroomMapFolderId={setDataroomMapFolderId}
+                    />
+                  ) : Number(currentView) === 1 ? (
+                    <Row className="mt-2">
+                      <Col lg={12} md={12} sm={12}>
+                        <>
+                          {defaultFiltersValues.length > 0 ? (
+                            <Table
+                              column={MeetingColoumns}
+                              scroll={{ y: "54vh", x: false }}
+                              pagination={false}
+                              className="newMeetingTable"
+                              rows={rows}
+                              locale={{
+                                emptyText: emptyText(), // Set your custom empty text here
+                              }}
+                              expandable={{
+                                expandedRowRender: (record) => {
+                                  return (
+                                    record.meetingAgenda.length > 0 &&
+                                    record.meetingAgenda.map((data) => (
+                                      <p
+                                        className={
+                                          styles["meeting-expanded-row"]
+                                        }
+                                      >
+                                        {data.objMeetingAgenda.title}
+                                      </p>
+                                    ))
+                                  );
+                                },
+                                rowExpandable: (record) =>
+                                  record.meetingAgenda.length > 0
+                                    ? true
+                                    : false,
+                              }}
                             />
-                          </Col>
-                        </Row>
+                          ) : null}
+                        </>
                       </Col>
                     </Row>
-                  </>
-                ) : null}
-              </Paper>
-            </Col>
-          </Row>
-        </>
-      )}
-    </section>
+                  ) : null}
+                  {rows.length > 0 ? (
+                    <>
+                      <Row className="mt-5">
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex justify-content-center "
+                        >
+                          <Row className={styles["PaginationStyle-Committee"]}>
+                            <Col
+                              className={"pagination-groups-table"}
+                              sm={12}
+                              md={12}
+                              lg={12}
+                            >
+                              <CustomPagination
+                                current={
+                                  meetingPageCurrent !== null &&
+                                  meetingPageCurrent !== undefined
+                                    ? meetingPageCurrent
+                                    : 1
+                                }
+                                pageSize={
+                                  meetingpageRow !== null &&
+                                  meetingpageRow !== undefined
+                                    ? meetingpageRow
+                                    : 50
+                                }
+                                onChange={handelChangePagination}
+                                total={totalRecords}
+                                showSizer={true}
+                                pageSizeOptionsValues={[
+                                  "30",
+                                  "50",
+                                  "100",
+                                  "200",
+                                ]}
+                              />
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                    </>
+                  ) : null}
+                </Paper>
+              </Col>
+            </Row>
+          </>
+        )}
+      </section>
+      {NewMeetingreducer.boardDeckModalData && <BoardDeckModal />}
+      {NewMeetingreducer.boarddeckShareModal && <ShareModalBoarddeck />}
+      {NewMeetingreducer.boardDeckEmailModal && <BoardDeckSendEmail />}
+    </>
   );
 };
 

@@ -2,11 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 const PrivateRoutes = () => {
   const currentUrl = window.location.href;
+
+  // Effect hook to perform actions based on the current URL
+
   useEffect(() => {
     // Action: Meeting RSVP
     if (
       currentUrl.includes("DisKus/Meeting/Useravailabilityformeeting?action=")
     ) {
+      // Extract action parameter from URL
+
       const parts = currentUrl.split("?action=");
       if (parts.length === 2) {
         const remainingString = parts[1];
@@ -44,7 +49,17 @@ const PrivateRoutes = () => {
     }
 
     // Action: Add Agenda Contributor
-    if (currentUrl.includes("DisKus/Meeting/Addagendacontributor?action=")) {
+    if (currentUrl.includes("DisKus/Meeting?Addagendacontributor_action=")) {
+      // Extract action parameter from URL
+
+      const parts = currentUrl.split("Addagendacontributor_action=")[1];
+      localStorage.setItem("AgCont", parts);
+      console.log(parts, "partspartsparts Addagendacontributor");
+
+      // const parts = currentUrl.split("Addagendacontributor_action=")[1];
+      // localStorage.setItem("AgCont", parts);
+      // console.log(parts, "partspartsparts Addagendacontributor");
+
       // Add action-specific logic here if needed
     }
 
@@ -54,7 +69,15 @@ const PrivateRoutes = () => {
     }
 
     // Action: Add Organizer
-    if (currentUrl.includes("DisKus/Meeting/Addorganizer?action=")) {
+    if (currentUrl.includes("DisKus/Meeting/?Addorganizer_action=")) {
+      // Extract action parameter from URL
+
+      const parts = currentUrl.split("Addorganizer_action=")[1];
+      localStorage.setItem("AdOrg", parts);
+
+      // const parts = currentUrl.split("Addorganizer_action=")[1];
+      // localStorage.setItem("AdOrg", parts);
+
       // Add action-specific logic here if needed
     }
 
