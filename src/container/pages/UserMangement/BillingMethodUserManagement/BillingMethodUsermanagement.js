@@ -243,11 +243,7 @@ const BillingMethodUsermanagement = () => {
   };
 
   const handleBack = () => {
-    if (activeComponent === "PaymentMethods") {
-      setActiveComponent("PakageDetails");
-      setActiveStep((prevActiveStep) => Math.max(prevActiveStep - 1, 0));
-    }
-
+    console.log("i am clicked");
     if (activeComponent === "PakageDetails") {
       setActiveComponent("billingAddress");
       setActiveStep((prevActiveStep) => Math.max(prevActiveStep - 1, 0));
@@ -256,6 +252,15 @@ const BillingMethodUsermanagement = () => {
     if (activeComponent === "billingAddress") {
       setActiveComponent("billingContactDetails");
       setActiveStep((prevActiveStep) => Math.max(prevActiveStep - 1, 0));
+    }
+
+    if (activeComponent === "billingContactDetails") {
+      setActiveComponent("PakageDetails");
+      setActiveStep((prevActiveStep) => Math.max(prevActiveStep - 1, 0));
+    }
+
+    if (activeComponent === "PakageDetails") {
+      setActiveComponent("PakageDetails");
     }
   };
 
@@ -409,17 +414,7 @@ const BillingMethodUsermanagement = () => {
                     select={select}
                   />
                 </>
-              ) : // : activeStep === 3 && activeComponent === "PaymentMethods" ? (
-              //   <>
-              //     <>
-              //       <BillProcessStepFour
-              //         paymentMethods={paymentMethods}
-              //         setPaymentMethods={setPaymentMethods}
-              //       />
-              //     </>
-              //   </>
-              // )
-              null}
+              ) : null}
             </Col>
           </Row>
 
@@ -431,13 +426,15 @@ const BillingMethodUsermanagement = () => {
               xs={12}
               className="d-flex justify-content-end gap-2"
             >
+              {activeComponent === "PakageDetails" ? null : (
+                <Button
+                  text={t("Back")}
+                  className={styles["BackbuttonBillingMethod"]}
+                  onClick={handleBack}
+                />
+              )}
+
               <Button
-                text={t("Back")}
-                className={styles["BackbuttonBillingMethod"]}
-                onClick={handleBack}
-              />
-              <Button
-                // text={activeStep === 3 ? t("Confirm-payment") : t("Next")}
                 text={t("Next")}
                 className={styles["NextbuttonBillingMethod"]}
                 onClick={handleNext}
@@ -448,7 +445,6 @@ const BillingMethodUsermanagement = () => {
         <Col lg={1} md={1} sm={12} xs={12}></Col>
       </Row>
       {UserManagementModals.thanksForPaymentModal && <ThankForPayment />}
-      {UserManagementModals.paymentProceedFailed && <PaymentFailedModal />}
       {UserMangementReducer.Loading || LanguageReducer.Loading ? (
         <Loader />
       ) : null}
