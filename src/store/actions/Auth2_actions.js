@@ -516,14 +516,14 @@ const enterPasswordvalidation = (value, navigate, t) => {
     try {
       const response = await axios.post(authenticationApi, formData);
       if (response.data.responseCode !== 200) {
-        clearLocalStorageAtloginresponce(1, navigate);
+        clearLocalStorageAtloginresponce(dispatch, 1, navigate);
         dispatch(enterPasswordFail("Something-went-wrong"));
         return;
       }
 
       const { responseMessage, isExecuted } = response.data.responseResult;
       if (!isExecuted) {
-        clearLocalStorageAtloginresponce(1, navigate);
+        clearLocalStorageAtloginresponce(dispatch, 1, navigate);
 
         dispatch(enterPasswordFail("Something-went-wrong"));
         return;
@@ -540,45 +540,38 @@ const enterPasswordvalidation = (value, navigate, t) => {
       switch (responseMessage.toLowerCase()) {
         case USERPASSWORDVERIFICATION.VERIFICATION_01:
           dispatch(enterPasswordFail(t("Device-does-not-exists")));
-          clearLocalStorageAtloginresponce(2, navigate);
-          dispatch(LoginFlowRoutes(1));
+          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
           dispatch(LoginFlowRoutes(1));
           // no action
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_02:
-          clearLocalStorageAtloginresponce(2, navigate);
-          dispatch(LoginFlowRoutes(1));
+          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
           dispatch(LoginFlowRoutes(1));
           dispatch(enterPasswordFail(t("Device-id-does-not-exists")));
           // no action
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_03:
-          clearLocalStorageAtloginresponce(2, navigate);
+          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
           dispatch(LoginFlowRoutes(1));
 
           dispatch(enterPasswordFail(t("User-does-not-exist")));
-          dispatch(LoginFlowRoutes(1));
           // no action
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_04:
-          clearLocalStorageAtloginresponce(2, navigate);
+          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
           dispatch(LoginFlowRoutes(1));
-
           dispatch(enterPasswordFail(t("Account-is-blocked")));
-          dispatch(LoginFlowRoutes(1));
           // no action
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_05:
           dispatch(enterPasswordFail(t("Wrong-password")));
-          clearLocalStorageAtloginresponce(2, navigate);
-          dispatch(LoginFlowRoutes(1));
+          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
           dispatch(LoginFlowRoutes(1));
           // no action
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_06:
           dispatch(enterPasswordFail(t("User-is-inactive")));
-          clearLocalStorageAtloginresponce(2, navigate);
-          dispatch(LoginFlowRoutes(1));
+          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
           dispatch(LoginFlowRoutes(1));
           // no action
           break;
@@ -586,8 +579,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
           dispatch(
             enterPasswordFail(t("Organization-subscription-packages-not-found"))
           );
-          clearLocalStorageAtloginresponce(2, navigate);
-          dispatch(LoginFlowRoutes(1));
+          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
           dispatch(LoginFlowRoutes(1));
           // no action
           break;
@@ -601,10 +593,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
             );
             localStorage.removeItem("LoginFlowPageRoute");
             localStorage.setItem("signupCurrentPage", 5);
+            dispatch(signUpFlowRoutes(5));
             navigate("/Signup");
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
-            dispatch(LoginFlowRoutes(1));
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
           }
 
@@ -627,7 +619,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               navigate
             )
           );
-          clearLocalStorageAtloginresponce(3);
+          clearLocalStorageAtloginresponce(dispatch, 3, navigate);
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_10:
           if (response.data.responseResult.hasAdminRights) {
@@ -646,10 +638,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 t("Password-verified-admin-user")
               )
             );
-            clearLocalStorageAtloginresponce(1, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 1, navigate);
           } else {
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
           }
           break;
@@ -666,10 +658,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 t("Password-verified-admin")
               )
             );
-            clearLocalStorageAtloginresponce(1, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 1, navigate);
           } else {
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
           }
           break;
@@ -680,7 +672,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
             } else {
               navigate("/Diskus");
             }
-            clearLocalStorageAtloginresponce(1, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 1, navigate);
 
             dispatch(
               enterPasswordSuccess(
@@ -689,7 +681,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               )
             );
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
           }
@@ -698,7 +690,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
         case USERPASSWORDVERIFICATION.VERIFICATION_17:
           //yeah pay outstanding per lai jai ga
           // if (response.data.responseResult.hasAdminRights) {
-          //   clearLocalStorageAtloginresponce(1, navigate);
+          //   clearLocalStorageAtloginresponce(dispatch,1, navigate);
           //   localStorage.removeItem("LocalUserRoutes");
           //   localStorage.setItem("VERIFICATION", true);
           //   packageFeatureIDs = [33];
@@ -721,7 +713,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
           //     )
           //   );
           // } else {
-          //   clearLocalStorageAtloginresponce(2, navigate);
+          //   clearLocalStorageAtloginresponce(dispatch,2, navigate);
           //  dispatch(LoginFlowRoutes(1));
           //   localStorage.removeItem("LocalUserRoutes");
           //   localStorage.setItem("VERIFICATION", false);
@@ -786,7 +778,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               )
             );
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
             localStorage.removeItem("LocalUserRoutes");
             localStorage.setItem("VERIFICATION", false);
@@ -854,7 +846,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               )
             );
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
             localStorage.removeItem("LocalUserRoutes");
             localStorage.setItem("VERIFICATION", false);
@@ -921,7 +913,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               )
             );
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
             localStorage.removeItem("LocalUserRoutes");
             localStorage.setItem("VERIFICATION", false);
@@ -930,7 +922,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_20:
           //yeah user dash board non active per jai ga
-          clearLocalStorageAtloginresponce(1, navigate);
+          clearLocalStorageAtloginresponce(dispatch, 1, navigate);
 
           localStorage.removeItem("LocalAdminRoutes");
           localStorage.setItem("VERIFICATION", true);
@@ -960,7 +952,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               )
             );
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
 
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
@@ -968,7 +960,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_21:
           // The Organization Trial has expired and This is the Organization Creator. Direct To Billing Flow
-          clearLocalStorageAtloginresponce(1, navigate);
+          clearLocalStorageAtloginresponce(dispatch, 1, navigate);
 
           localStorage.removeItem("LocalAdminRoutes");
           localStorage.removeItem("LocalUserRoutes");
@@ -997,13 +989,13 @@ const enterPasswordvalidation = (value, navigate, t) => {
               )
             );
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
           }
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_22:
-          clearLocalStorageAtloginresponce(1, navigate);
+          clearLocalStorageAtloginresponce(dispatch, 1, navigate);
           localStorage.removeItem("LocalAdminRoutes");
           localStorage.removeItem("LocalUserRoutes");
 
@@ -1035,20 +1027,20 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 )
               );
             } else {
-              clearLocalStorageAtloginresponce(2, navigate);
+              clearLocalStorageAtloginresponce(dispatch, 2, navigate);
               dispatch(LoginFlowRoutes(1));
               dispatch(
                 enterPasswordFail(t("User-not-authorised-contact-admin"))
               );
             }
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
           }
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_23:
-          clearLocalStorageAtloginresponce(1, navigate);
+          clearLocalStorageAtloginresponce(dispatch, 1, navigate);
           localStorage.removeItem("LocalAdminRoutes");
           localStorage.removeItem("LocalUserRoutes");
 
@@ -1080,20 +1072,20 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 )
               );
             } else {
-              clearLocalStorageAtloginresponce(2, navigate);
+              clearLocalStorageAtloginresponce(dispatch, 2, navigate);
               dispatch(LoginFlowRoutes(1));
               dispatch(
                 enterPasswordFail(t("User-not-authorised-contact-admin"))
               );
             }
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
           }
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_24:
-          clearLocalStorageAtloginresponce(1, navigate);
+          clearLocalStorageAtloginresponce(dispatch, 1, navigate);
 
           localStorage.removeItem("LocalAdminRoutes");
           localStorage.setItem("VERIFICATION", true);
@@ -1120,20 +1112,20 @@ const enterPasswordvalidation = (value, navigate, t) => {
               )
             );
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
 
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
           }
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_25:
-          clearLocalStorageAtloginresponce(2, navigate);
+          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
           dispatch(LoginFlowRoutes(1));
 
           dispatch(enterPasswordFail("Something-went-wrong"));
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_26:
-          clearLocalStorageAtloginresponce(2, navigate);
+          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
           dispatch(LoginFlowRoutes(1));
           dispatch(
             enterPasswordFail(
@@ -1142,7 +1134,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
           );
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_27:
-          clearLocalStorageAtloginresponce(2, navigate);
+          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
           dispatch(LoginFlowRoutes(1));
           dispatch(
             enterPasswordFail(
@@ -1151,7 +1143,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
           );
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_28:
-          clearLocalStorageAtloginresponce(2, navigate);
+          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
           dispatch(LoginFlowRoutes(1));
           dispatch(
             enterPasswordFail(
@@ -1162,7 +1154,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
           );
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_29:
-          clearLocalStorageAtloginresponce(2, navigate);
+          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
           dispatch(LoginFlowRoutes(1));
 
           dispatch(
@@ -1172,7 +1164,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
           );
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_30:
-          clearLocalStorageAtloginresponce(2, navigate);
+          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
           dispatch(LoginFlowRoutes(1));
 
           dispatch(
@@ -1182,7 +1174,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
           );
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_31:
-          clearLocalStorageAtloginresponce(2, navigate);
+          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
           dispatch(LoginFlowRoutes(1));
 
           dispatch(
@@ -1252,7 +1244,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               )
             );
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
             localStorage.removeItem("LocalUserRoutes");
             localStorage.setItem("VERIFICATION", false);
@@ -1319,7 +1311,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               )
             );
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
             localStorage.removeItem("LocalUserRoutes");
             localStorage.setItem("VERIFICATION", false);
@@ -1386,7 +1378,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               )
             );
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
             localStorage.removeItem("LocalUserRoutes");
             localStorage.setItem("VERIFICATION", false);
@@ -1394,7 +1386,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
           }
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_35:
-          clearLocalStorageAtloginresponce(1, navigate);
+          clearLocalStorageAtloginresponce(dispatch, 1, navigate);
           localStorage.removeItem("LocalAdminRoutes");
           localStorage.setItem("VERIFICATION", true);
           packageFeatureIDs = [100, 101, 102];
@@ -1423,14 +1415,14 @@ const enterPasswordvalidation = (value, navigate, t) => {
               )
             );
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
 
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
           }
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_36:
-          clearLocalStorageAtloginresponce(2, navigate);
+          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
           dispatch(LoginFlowRoutes(1));
 
           dispatch(
@@ -1499,7 +1491,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               )
             );
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
             localStorage.removeItem("LocalUserRoutes");
             localStorage.setItem("VERIFICATION", false);
@@ -1566,7 +1558,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               )
             );
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
             localStorage.removeItem("LocalUserRoutes");
             localStorage.setItem("VERIFICATION", false);
@@ -1574,7 +1566,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
           }
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_39:
-          clearLocalStorageAtloginresponce(1, navigate);
+          clearLocalStorageAtloginresponce(dispatch, 1, navigate);
           localStorage.removeItem("LocalAdminRoutes");
           localStorage.setItem("VERIFICATION", true);
           packageFeatureIDs = [100, 101, 102];
@@ -1603,7 +1595,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               )
             );
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
 
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
@@ -1614,7 +1606,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
       }
     } catch (error) {
       console.error("Network or other error:", error);
-      clearLocalStorageAtloginresponce(2, navigate);
+      clearLocalStorageAtloginresponce(dispatch, 2, navigate);
       dispatch(LoginFlowRoutes(1));
 
       dispatch(enterPasswordFail("Something-went-wrong"));
@@ -1821,7 +1813,7 @@ const createPasswordAction = (value, navigate, t) => {
           break;
         case USERSPASSWORDCREATION.CREATION_03:
           //(Direct to Package Selection).
-          clearLocalStorageAtloginresponce(1, navigate);
+          clearLocalStorageAtloginresponce(dispatch, 1, navigate);
 
           localStorage.removeItem("LocalAdminRoutes");
           localStorage.removeItem("LocalUserRoutes");
@@ -1850,7 +1842,7 @@ const createPasswordAction = (value, navigate, t) => {
               )
             );
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
           }
@@ -1877,7 +1869,7 @@ const createPasswordAction = (value, navigate, t) => {
               navigate
             )
           );
-          clearLocalStorageAtloginresponce(1, navigate);
+          clearLocalStorageAtloginresponce(dispatch, 1, navigate);
           // }
           // no action
           break;
@@ -1901,12 +1893,12 @@ const createPasswordAction = (value, navigate, t) => {
                 t("Password-created-and-this-is-an-admin-user")
               )
             );
-            clearLocalStorageAtloginresponce(1, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 1, navigate);
           } else {
             dispatch(
               createPasswordFail(t("User-not-authorised-contact-admin"))
             );
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
           }
           // no action
@@ -1925,12 +1917,12 @@ const createPasswordAction = (value, navigate, t) => {
                 t("Password-created-and-this-is-a-admin")
               )
             );
-            clearLocalStorageAtloginresponce(1, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 1, navigate);
           } else {
             dispatch(
               createPasswordFail(t("User-not-authorised-contact-admin"))
             );
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
           }
           // no action
@@ -1943,7 +1935,7 @@ const createPasswordAction = (value, navigate, t) => {
             } else {
               navigate("/Diskus");
             }
-            clearLocalStorageAtloginresponce(1, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 1, navigate);
 
             dispatch(
               createPasswordSuccess(
@@ -1952,7 +1944,7 @@ const createPasswordAction = (value, navigate, t) => {
               )
             );
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
             dispatch(
               createPasswordFail(t("User-not-authorised-contact-admin"))
@@ -2022,7 +2014,7 @@ const createPasswordAction = (value, navigate, t) => {
               )
             );
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
             localStorage.removeItem("LocalUserRoutes");
             localStorage.setItem("VERIFICATION", false);
@@ -2090,7 +2082,7 @@ const createPasswordAction = (value, navigate, t) => {
               )
             );
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
             localStorage.removeItem("LocalUserRoutes");
             localStorage.setItem("VERIFICATION", false);
@@ -2158,7 +2150,7 @@ const createPasswordAction = (value, navigate, t) => {
               )
             );
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
             localStorage.removeItem("LocalUserRoutes");
             localStorage.setItem("VERIFICATION", false);
@@ -2168,7 +2160,7 @@ const createPasswordAction = (value, navigate, t) => {
           }
           break;
         case USERSPASSWORDCREATION.CREATION_11:
-          clearLocalStorageAtloginresponce(1, navigate);
+          clearLocalStorageAtloginresponce(dispatch, 1, navigate);
           localStorage.removeItem("LocalAdminRoutes");
           localStorage.setItem("VERIFICATION", true);
           packageFeatureIDs = [100, 101, 102];
@@ -2195,7 +2187,7 @@ const createPasswordAction = (value, navigate, t) => {
               )
             );
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
 
             dispatch(
@@ -2205,10 +2197,7 @@ const createPasswordAction = (value, navigate, t) => {
           break;
         case USERSPASSWORDCREATION.CREATION_12:
           // setting organization subscription ID
-          localStorage.setItem(
-            "organizationSubscriptionID",
-            response.data.responseResult.organizationSubscriptionID
-          );
+
           if (response.data.responseResult.isOrganizationCreator) {
             dispatch(
               createPasswordSuccess(
@@ -2225,7 +2214,7 @@ const createPasswordAction = (value, navigate, t) => {
             dispatch(signUpFlowRoutes(5));
             navigate("/Signup");
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
             dispatch(
               createPasswordFail(
@@ -2248,7 +2237,7 @@ const createPasswordAction = (value, navigate, t) => {
             localStorage.setItem("signupCurrentPage", 5);
             navigate("/Signup");
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
             dispatch(
               createPasswordFail(
@@ -2271,7 +2260,7 @@ const createPasswordAction = (value, navigate, t) => {
             localStorage.setItem("signupCurrentPage", 5);
             navigate("/Signup");
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
             dispatch(
               createPasswordFail(
@@ -2282,13 +2271,13 @@ const createPasswordAction = (value, navigate, t) => {
 
           break;
         case USERSPASSWORDCREATION.CREATION_15:
-          clearLocalStorageAtloginresponce(2, navigate);
+          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
           dispatch(LoginFlowRoutes(1));
 
           dispatch(createPasswordFail("Something-went-wrong"));
           break;
         case USERSPASSWORDCREATION.CREATION_16:
-          clearLocalStorageAtloginresponce(2, navigate);
+          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
           dispatch(LoginFlowRoutes(1));
 
           dispatch(
@@ -2298,7 +2287,7 @@ const createPasswordAction = (value, navigate, t) => {
           );
           break;
         case USERSPASSWORDCREATION.CREATION_17:
-          clearLocalStorageAtloginresponce(2, navigate);
+          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
           dispatch(LoginFlowRoutes(1));
 
           dispatch(
@@ -2367,7 +2356,7 @@ const createPasswordAction = (value, navigate, t) => {
               )
             );
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
             localStorage.removeItem("LocalUserRoutes");
             localStorage.setItem("VERIFICATION", false);
@@ -2435,7 +2424,7 @@ const createPasswordAction = (value, navigate, t) => {
               )
             );
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
             localStorage.removeItem("LocalUserRoutes");
             localStorage.setItem("VERIFICATION", false);
@@ -2503,7 +2492,7 @@ const createPasswordAction = (value, navigate, t) => {
               )
             );
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
             localStorage.removeItem("LocalUserRoutes");
             localStorage.setItem("VERIFICATION", false);
@@ -2514,7 +2503,7 @@ const createPasswordAction = (value, navigate, t) => {
           // no action
           break;
         case USERSPASSWORDCREATION.CREATION_21:
-          clearLocalStorageAtloginresponce(1, navigate);
+          clearLocalStorageAtloginresponce(dispatch, 1, navigate);
           localStorage.removeItem("LocalAdminRoutes");
           localStorage.setItem("VERIFICATION", true);
           packageFeatureIDs = [100, 101, 102];
@@ -2541,7 +2530,7 @@ const createPasswordAction = (value, navigate, t) => {
               )
             );
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
 
             dispatch(
@@ -2551,7 +2540,7 @@ const createPasswordAction = (value, navigate, t) => {
           // no action
           break;
         case USERSPASSWORDCREATION.CREATION_22:
-          clearLocalStorageAtloginresponce(2, navigate);
+          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
           dispatch(LoginFlowRoutes(1));
           dispatch(
             createPasswordFail(
@@ -2563,7 +2552,7 @@ const createPasswordAction = (value, navigate, t) => {
           // no action
           break;
         case USERSPASSWORDCREATION.CREATION_23:
-          clearLocalStorageAtloginresponce(2, navigate);
+          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
           dispatch(LoginFlowRoutes(1));
           dispatch(
             createPasswordFail(t("Org-sub-is-closed-and-this-is-an-admin-user"))
@@ -2571,7 +2560,7 @@ const createPasswordAction = (value, navigate, t) => {
           // no action
           break;
         case USERSPASSWORDCREATION.CREATION_24:
-          clearLocalStorageAtloginresponce(2, navigate);
+          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
           dispatch(LoginFlowRoutes(1));
           dispatch(
             createPasswordFail(t("Org-sub-is-closed-and-this-is-a-admin"))
@@ -2579,7 +2568,7 @@ const createPasswordAction = (value, navigate, t) => {
           // no action
           break;
         case USERSPASSWORDCREATION.CREATION_25:
-          clearLocalStorageAtloginresponce(2, navigate);
+          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
           dispatch(LoginFlowRoutes(1));
           dispatch(
             createPasswordFail(t("Org-sub-is-closed-and-this-is-a-user"))
@@ -2646,7 +2635,7 @@ const createPasswordAction = (value, navigate, t) => {
               )
             );
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
             localStorage.removeItem("LocalUserRoutes");
             localStorage.setItem("VERIFICATION", false);
@@ -2714,7 +2703,7 @@ const createPasswordAction = (value, navigate, t) => {
               )
             );
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
             localStorage.removeItem("LocalUserRoutes");
             localStorage.setItem("VERIFICATION", false);
@@ -2782,7 +2771,7 @@ const createPasswordAction = (value, navigate, t) => {
               )
             );
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
             localStorage.removeItem("LocalUserRoutes");
             localStorage.setItem("VERIFICATION", false);
@@ -2793,7 +2782,7 @@ const createPasswordAction = (value, navigate, t) => {
           // no action
           break;
         case USERSPASSWORDCREATION.CREATION_29:
-          clearLocalStorageAtloginresponce(1, navigate);
+          clearLocalStorageAtloginresponce(dispatch, 1, navigate);
           localStorage.removeItem("LocalAdminRoutes");
           localStorage.setItem("VERIFICATION", true);
           packageFeatureIDs = [100, 101, 102];
@@ -2820,7 +2809,7 @@ const createPasswordAction = (value, navigate, t) => {
               )
             );
           } else {
-            clearLocalStorageAtloginresponce(2, navigate);
+            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
 
             dispatch(
@@ -2834,7 +2823,7 @@ const createPasswordAction = (value, navigate, t) => {
       }
     } catch (error) {
       console.error("Network or other error:", error);
-      clearLocalStorageAtloginresponce(2, navigate);
+      clearLocalStorageAtloginresponce(dispatch, 2, navigate);
       dispatch(LoginFlowRoutes(1));
 
       dispatch(enterPasswordFail("Something-went-wrong"));

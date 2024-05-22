@@ -77,9 +77,9 @@ const UserManagementProcess = () => {
 
       dispatch(cleareMessage());
     } else if (
-      Authreducer.EnterPasswordResponseMessage != "" &&
-      Authreducer.EnterPasswordResponseMessage != t("2fa-enabled") &&
-      Authreducer.EnterPasswordResponseMessage != undefined &&
+      Authreducer.EnterPasswordResponseMessage !== "" &&
+      Authreducer.EnterPasswordResponseMessage !== t("2fa-enabled") &&
+      Authreducer.EnterPasswordResponseMessage !== undefined &&
       Authreducer.EnterPasswordResponseMessage !==
         t("The-user-is-not-an-admin-user")
     ) {

@@ -42,9 +42,6 @@ const BillingMethodUsermanagement = () => {
   const [select, setSelect] = useState("");
   const [countryNames, setCountryNames] = useState([]);
 
-  // update totalYearly from child component step three
-  const [totalYearlyCharges, setTotalYearlyCharges] = useState(0);
-
   //Billing Contact States
   const [billingContactDetails, setBillingContactDetails] = useState({
     Name: {
@@ -104,44 +101,6 @@ const BillingMethodUsermanagement = () => {
     },
   });
 
-  //Payment method
-  const [paymentMethods, setPaymentMethods] = useState({
-    Name: {
-      value: "",
-      errorMessage: "",
-      errorStatus: false,
-    },
-
-    LastName: {
-      value: "",
-      errorMessage: "",
-      errorStatus: false,
-    },
-
-    CreditCardNumber: {
-      value: "",
-      errorMessage: "",
-      errorStatus: false,
-    },
-
-    CardExpirationDate: {
-      value: "",
-      errorMessage: "",
-      errorStatus: false,
-    },
-
-    CVV: {
-      value: "",
-      errorMessage: "",
-      errorStatus: false,
-    },
-  });
-
-  // update totalYearly from child component step three
-  const updateTotalYearlyCharges = (charges) => {
-    setTotalYearlyCharges(charges);
-  };
-
   // translate Languages start
   const languages = [
     { name: "English", code: "en" },
@@ -156,9 +115,6 @@ const BillingMethodUsermanagement = () => {
   useEffect(() => {
     document.body.dir = currentLangObj.dir || "ltr";
   }, [currentLangObj, t]);
-
-  console.log(activeComponent, "activeComponentactiveComponent");
-  console.log(activeStep, "activeComponentactiveComponent");
 
   const handleNext = () => {
     if (activeStep === 0 && activeComponent === "PakageDetails") {
@@ -301,11 +257,6 @@ const BillingMethodUsermanagement = () => {
       setActiveComponent("billingContactDetails");
       setActiveStep((prevActiveStep) => Math.max(prevActiveStep - 1, 0));
     }
-
-    if (activeComponent === "billingContactDetails") {
-      //Enable payment failed modal
-      dispatch(showFailedPaymentModal(true));
-    }
   };
 
   // get Country Action Api
@@ -434,28 +385,13 @@ const BillingMethodUsermanagement = () => {
                     </span>
                   }
                 />
-                {/* <Step
-                  label={
-                    <span
-                      className={
-                        activeStep >= 3
-                          ? "payment-methodActive"
-                          : "payment-method"
-                      }
-                    >
-                      {t("Payment-method")}
-                    </span>
-                  }
-                /> */}
               </Stepper>
             </Col>
           </Row>
           <Row>
             <Col lg={12} md={12} sm={12} xs={12}>
               {activeStep === 0 && activeComponent === "PakageDetails" ? (
-                <BillProcessStepThree
-                  updateTotalYearlyCharges={updateTotalYearlyCharges}
-                />
+                <BillProcessStepThree />
               ) : activeStep === 1 &&
                 activeComponent === "billingContactDetails" ? (
                 <>

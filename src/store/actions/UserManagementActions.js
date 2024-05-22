@@ -24,8 +24,6 @@ import {
 import * as actions from "../action_types";
 import axios from "axios";
 import { RefreshToken } from "./Auth_action";
-import { getUserSetting } from "./GetUserSetting";
-import { getAllLanguages } from "./Language_actions";
 import {
   openPaymentProcessModal,
   showDeleteUsersModal,
@@ -1526,45 +1524,47 @@ const paymentInitiateMainApi = (navigate, t, newData) => {
                 )
             ) {
               dispatch(paymentInitiateFailApi(t("Invalid-request-data")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_PaymentInitiate_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                paymentInitiateFailApi(t("Invoice-details-does-not-exist"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_PaymentInitiate_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                paymentInitiateFailApi(t("Failed-to-save-billing-information"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_PaymentInitiate_05".toLowerCase()
+                )
+            ) {
+              dispatch(paymentInitiateFailApi(t("Something-went-wrong")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_PaymentInitiate_06".toLowerCase()
+                )
+            ) {
+              dispatch(
+                paymentInitiateFailApi(t("Payment-gateway-api-response-failed"))
+              );
+            } else {
+              dispatch(paymentInitiateFailApi(t("Something-went-wrong")));
             }
-          } else if (
-            response.data.responseResult.responseMessage
-              .toLowerCase()
-              .includes(
-                "ERM_AuthService_SignUpManager_PaymentInitiate_03".toLowerCase()
-              )
-          ) {
-            dispatch(
-              paymentInitiateFailApi(t("Invoice-details-does-not-exist"))
-            );
-          } else if (
-            response.data.responseResult.responseMessage
-              .toLowerCase()
-              .includes(
-                "ERM_AuthService_SignUpManager_PaymentInitiate_04".toLowerCase()
-              )
-          ) {
-            dispatch(
-              paymentInitiateFailApi(t("Failed-to-save-billing-information"))
-            );
-          } else if (
-            response.data.responseResult.responseMessage
-              .toLowerCase()
-              .includes(
-                "ERM_AuthService_SignUpManager_PaymentInitiate_05".toLowerCase()
-              )
-          ) {
-            dispatch(paymentInitiateFailApi(t("Something-went-wrong")));
-          } else if (
-            response.data.responseResult.responseMessage
-              .toLowerCase()
-              .includes(
-                "ERM_AuthService_SignUpManager_PaymentInitiate_06".toLowerCase()
-              )
-          ) {
-            dispatch(
-              paymentInitiateFailApi(t("Payment-gateway-api-response-failed"))
-            );
           } else {
             dispatch(paymentInitiateFailApi(t("Something-went-wrong")));
           }
@@ -2021,7 +2021,7 @@ const paymentStatusApi = (navigate, t, data) => {
                 )
               );
               navigate("/Admin/ManageUsers");
-              clearLocalStorageAtloginresponce(1, navigate);
+              clearLocalStorageAtloginresponce(dispatch, 1, navigate);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

@@ -45,7 +45,7 @@ filter blur background on dropdown click
 }
 
 body {
-  font-weight: 400 !important;
+  font-family: "Montserrat" !important;
   font-size: 13px !important;
   color: #000000;
   line-height: 1.5;
@@ -54,7 +54,7 @@ body {
 }
 
 body[dir="rtl"] {
-  font-weight: 400 !important;
+  font-family: "IBM Plex Sans Arabic" !important;
 }
 
 .MuiAutocomplete-paper {
@@ -5112,7 +5112,7 @@ body[dir="rtl"] .ql-editor.ql-blank {
   margin-left: 10px !important;
   height: 39px !important;
   margin-top: 2px;
-  font-family: 'Montserrat';
+  font-family: "Montserrat";
 }
 
 .searchBox-dropdowns-resolution
