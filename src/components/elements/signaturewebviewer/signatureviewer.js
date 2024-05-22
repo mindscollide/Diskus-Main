@@ -4,8 +4,22 @@ import "./signaturewebviewer.css";
 import PlusSignSignatureFlow from "../../../assets/images/plus-sign-signatureflow.svg";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import DragIcon from "../../../assets/images/DragIcon_SignatureFlow.png";
+import {
+  ClearMessageAnnotations,
+  GetAnnotationsOfToDoAttachementMessageCleare,
+  addAnnotationsOnDataroomAttachement,
+  addAnnotationsOnNotesAttachement,
+  addAnnotationsOnResolutionAttachement,
+  addAnnotationsOnToDoAttachement,
+  getAnnotationsOfDataroomAttachement,
+  getAnnotationsOfNotesAttachement,
+  getAnnotationsOfResolutionAttachement,
+  getAnnotationsOfToDoAttachement,
+  setUserAnnotation,
+} from "../../../store/actions/webVieverApi_actions";
 
-import { ClearMessageAnnotations } from "../../../store/actions/webVieverApi_actions";
 import { useTranslation } from "react-i18next";
 import { Notification, Loader, Modal, Button, TextField } from "../index";
 import { Col, Row } from "react-bootstrap";
@@ -36,7 +50,7 @@ const SignatureViewer = () => {
   const viewer = useRef(null);
   const [userList, setUserList] = useState([]);
   const [signerData, setSignerData] = useState([]);
-
+  console.log(signerData, "signerDatasignerDatasignerData");
   const [participants, setParticipants] = useState([]);
   const [lastParticipants, setLastParticipants] = useState([]);
   const [FieldsData, setFieldsData] = useState([]);
@@ -812,7 +826,6 @@ const SignatureViewer = () => {
               textBoxButton.textContent = "Send";
               textBoxButton.style.background = "#6172d6";
               textBoxButton.style.color = "#fff";
-              textBoxButton.style.padding = "8px 30px";
               textBoxButton.style.borderRadius = "4px";
               textBoxButton.style.cursor = "pointer";
               textBoxButton.style.margin = "10px 0 10px 10px";
@@ -1181,6 +1194,16 @@ const SignatureViewer = () => {
   }, [webViewer.ResponseMessage]);
   // === End ===//
 
+  const handleOnDragEnd = (result) => {
+    if (!result.destination) return;
+
+    const items = Array.from(signerData);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+
+    setSignerData(items);
+  };
+
   return (
     <>
       <div className="documnetviewer">
@@ -1240,58 +1263,110 @@ const SignatureViewer = () => {
                   </Row>
                   <Row className="d-flex align-items-center">
                     <Col sm={12} md={12} lg={12} className="signersList">
-                      <Row>
-                        {signerData.length > 0 &&
-                          signerData.map((fieldsData, index) => {
-                            return (
-                              <>
-                                <Col sm={11} md={11} lg={11} className="my-1">
-                                  <Row>
-                                    <Col sm={6} md={6} lg={6}>
-                                      <TextField
-                                        placeholder={t("Full-name")}
-                                        labelClass={"inputlabel_style"}
-                                        width={"100%"}
-                                        applyClass={"signatureflow_input"}
-                                        name={"Name"}
-                                        type="text"
-                                        disable={true}
-                                        value={fieldsData.Name}
-                                        label={"Name"}
-                                      />
-                                    </Col>
-                                    <Col sm={6} md={6} lg={6}>
-                                      <TextField
-                                        width={"100%"}
-                                        name={"EmailAddress"}
-                                        type="email"
-                                        disable={true}
-                                        labelClass={"inputlabel_style"}
-                                        applyClass={"signatureflow_input"}
-                                        placeholder={t("Email")}
-                                        value={fieldsData.EmailAddress}
-                                        label={"Email"}
-                                      />
-                                    </Col>
-                                  </Row>
-                                </Col>
-                                <Col
-                                  sm={1}
-                                  md={1}
-                                  lg={1}
-                                  className="my-1 d-flex align-items-end mb-3"
-                                >
-                                  <img
-                                    src={DeleteIcon}
-                                    className="cursor-pointer"
-                                    onClick={() => handleRemoveSigner(index)}
-                                    width={20}
-                                  />
-                                </Col>
-                              </>
-                            );
-                          })}
-                      </Row>
+                      <DragDropContext onDragEnd={handleOnDragEnd}>
+                        <Droppable droppableId="signers">
+                          {(provided) => (
+                            <Row
+                              {...provided.droppableProps}
+                              ref={provided.innerRef}
+                            >
+                              {signerData.length > 0 &&
+                                signerData.map((fieldsData, index) => {
+                                  return (
+                                    <Draggable
+                                      key={index}
+                                      draggableId={index.toString()}
+                                      index={index}
+                                    >
+                                      {(provided) => (
+                                        <>
+                                          <Col
+                                            sm={1}
+                                            md={1}
+                                            lg={1}
+                                            className="my-1 d-flex align-items-end mb-2"
+                                          >
+                                            <img
+                                              src={DragIcon}
+                                              width={20}
+                                              ref={provided.innerRef}
+                                              {...provided.draggableProps}
+                                              {...provided.dragHandleProps}
+                                            />
+                                          </Col>
+                                          <Col
+                                            sm={10}
+                                            md={10}
+                                            lg={10}
+                                            className="my-1"
+                                            // ref={provided.innerRef}
+                                            // {...provided.draggableProps}
+                                            // {...provided.dragHandleProps}
+                                          >
+                                            <Row>
+                                              <Col sm={6} md={6} lg={6}>
+                                                <TextField
+                                                  placeholder={t("Full-name")}
+                                                  labelClass={
+                                                    "inputlabel_style"
+                                                  }
+                                                  width={"100%"}
+                                                  applyClass={
+                                                    "signatureflow_input"
+                                                  }
+                                                  name={"Name"}
+                                                  type="text"
+                                                  disable={true}
+                                                  value={fieldsData.Name}
+                                                  label={"Name"}
+                                                />
+                                              </Col>
+                                              <Col sm={6} md={6} lg={6}>
+                                                <TextField
+                                                  width={"100%"}
+                                                  name={"EmailAddress"}
+                                                  type="email"
+                                                  disable={true}
+                                                  labelClass={
+                                                    "inputlabel_style"
+                                                  }
+                                                  applyClass={
+                                                    "signatureflow_input"
+                                                  }
+                                                  placeholder={t("Email")}
+                                                  value={
+                                                    fieldsData.EmailAddress
+                                                  }
+                                                  label={"Email"}
+                                                />
+                                              </Col>
+                                            </Row>
+                                          </Col>
+                                          <Col
+                                            sm={1}
+                                            md={1}
+                                            lg={1}
+                                            className="my-1 d-flex align-items-end mb-3"
+                                          >
+                                            <img
+                                              src={DeleteIcon}
+                                              className="cursor-pointer"
+                                              onClick={() =>
+                                                handleRemoveSigner(index)
+                                              }
+                                              width={20}
+                                            />
+                                          </Col>
+                                        </>
+                                      )}
+                                    </Draggable>
+                                  );
+                                })}
+                              {provided.placeholder}
+                            </Row>
+                          )}
+                        </Droppable>
+                      </DragDropContext>
                     </Col>
                   </Row>
                 </Col>

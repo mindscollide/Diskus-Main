@@ -726,6 +726,10 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                                   <AttachmentViewer
                                     data={data}
                                     name={data.DisplayAttachmentName}
+                                    id={0}
+                                    fk_UID={Number(
+                                      localStorage.getItem("userID")
+                                    )}
                                   />
                                   // <Col
                                   //   sm={12}

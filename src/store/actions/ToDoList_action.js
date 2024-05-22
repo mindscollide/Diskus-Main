@@ -1647,7 +1647,7 @@ const saveTaskDocuments_fail = (message) => {
   };
 };
 
-const saveTaskDocumentsApi = (navigate, Data, t, value, setShow) => {
+const saveTaskDocumentsApi = (navigate, Data, t, value, setShow, todoStatus) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     try {
@@ -1678,12 +1678,22 @@ const saveTaskDocumentsApi = (navigate, Data, t, value, setShow) => {
                   "DataRoom_DataRoomManager_SaveToDoDocuments_01".toLowerCase()
                 )
             ) {
-              dispatch(
-                saveTaskDocuments_success(
-                  response.data.responseResult,
-                  t("Task-has-been-created-successfully")
-                )
-              );
+              if(Number(value) === 2) {
+                dispatch(
+                  saveTaskDocuments_success(
+                    response.data.responseResult,
+                    t("Task-has-been-deleted-successfully")
+                  )
+                );
+              } else {
+                dispatch(
+                  saveTaskDocuments_success(
+                    response.data.responseResult,
+                    t("Task-has-been-created-successfully")
+                  )
+                );
+              }
+             
 
               // Create Task from main TOdo list
               if (value === 1) {

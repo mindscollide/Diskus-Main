@@ -27,11 +27,9 @@ body[dir="rtl"] .Details_ViewResolution {
   color: #6172d6 !important;
   word-break: break-word;
   max-height: 95px;
-  height: 95px;
   display: block;
   overflow-y: auto;
 }
-
 .Heading_Authorize_Viewresolution::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;

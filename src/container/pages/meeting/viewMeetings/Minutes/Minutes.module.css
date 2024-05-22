@@ -531,3 +531,11 @@ p.Attachments {
   margin-bottom: -15px;
   color: #6172D6 !important;
 }
+.viewMinutesAttachments {
+  max-height: 110px;
+  min-height: 110px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 15px;
+
+}

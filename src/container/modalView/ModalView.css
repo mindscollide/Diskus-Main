@@ -230,7 +230,6 @@ body[dir="rtl"] .isDetail-View-top-btn {
   font-size: 14px !important;
   height: 33px !important;
   font-weight: 600;
-
 }
 
 .isAgenda-View-top-btn {
@@ -242,7 +241,6 @@ body[dir="rtl"] .isDetail-View-top-btn {
   margin-left: -15px;
   height: 33px !important;
   font-weight: 600;
-
 }
 
 body[dir="rtl"] .isAgenda-View-top-btn {
@@ -259,7 +257,6 @@ body[dir="rtl"] .isAgenda-View-top-btn {
   margin-left: -15px;
   height: 33px !important;
   font-weight: 600;
-
 }
 
 .isAttendee-View-top-btn {
@@ -271,7 +268,6 @@ body[dir="rtl"] .isAgenda-View-top-btn {
   margin-left: -15px;
   height: 33px !important;
   font-weight: 600;
-
 }
 
 body[dir="rtl"] .isAttendee-View-top-btn {
@@ -582,4 +578,9 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
   color: #fff !important;
   border-radius: 4px !important;
   font-weight: 600 !important;
+}
+.meetingView_documents {
+  max-height: 90px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
