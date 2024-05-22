@@ -64,6 +64,7 @@ import {
   endMeetingStatus,
   joinMeeting,
   leaveMeeting,
+  ValidateEmailRelatedString,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -82,6 +83,8 @@ import {
   createConvert,
   getCurrentDateTimeUTC,
 } from "../../commen/functions/date_formater";
+import { getAllUnpublishedMeetingData } from "../../hooks/meetingResponse/response";
+import { GetAdvanceMeetingAgendabyMeetingID } from "./MeetingAgenda_action";
 
 const ClearMessegeMeetingdetails = () => {
   return {
@@ -389,7 +392,7 @@ const GetAllMeetingTypesNewFunction = (navigate, t, loader) => {
             dispatch(
               handlegetAllMeetingTypesSuccess(
                 response.data.responseResult,
-                t("Record-found"),
+                "",
                 loader
               )
             );
@@ -822,7 +825,7 @@ const GetAllMeetingRemindersApiFrequencyNew = (navigate, t) => {
             dispatch(
               handlegetallReminderFrequencySuccess(
                 response.data.responseResult,
-                t("Record-found")
+                ""
               )
             );
           } else if (
@@ -919,7 +922,7 @@ const GetAllMeetingRecurringApiNew = (navigate, t, loader) => {
               dispatch(
                 handleReucrringSuccess(
                   response.data.responseResult,
-                  t("Record-found"),
+                  "",
                   loader
                 )
               );
@@ -1008,11 +1011,23 @@ const searchNewUserMeeting = (navigate, Data, t) => {
                   "Meeting_MeetingServiceManager_SearchMeetings_01".toLowerCase()
                 )
             ) {
+              let getMeetingData = await getAllUnpublishedMeetingData(
+                response.data.responseResult.meetings,
+                1
+              );
+              console.log(
+                getMeetingData,
+                "getMeetingDatagetMeetingDatagetMeetingData"
+              );
+              let newMeetingData = {
+                meetingStartedMinuteAgo:
+                  response.data.responseResult.meetingStartedMinuteAgo,
+                meetings: getMeetingData,
+                pageNumbers: response.data.responseResult.pageNumbers,
+                totalRecords: response.data.responseResult.totalRecords,
+              };
               dispatch(
-                SearchMeeting_Success(
-                  response.data.responseResult,
-                  t("Record-found")
-                )
+                SearchMeeting_Success(newMeetingData, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -1175,7 +1190,7 @@ const GetAllCommitteesUsersandGroupsParticipants = (Data, navigate, t) => {
               dispatch(
                 showAddMoreParticipantsSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -1267,7 +1282,7 @@ const GetAllParticipantsRoleNew = (navigate, t) => {
               dispatch(
                 showParticipantsRolesSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -1381,7 +1396,7 @@ const FetchMeetingURLApi = (
               dispatch(
                 showMeetingURLSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
               dispatch(MeetingUrlSpinner(false));
@@ -1640,25 +1655,12 @@ const SaveparticipantsApi = (
                 )
               );
               if (flag === true) {
-                let NewDates = [];
-                rows.forEach((data, index) => {
-                  NewDates.push({
-                    ProposedDate: createConvert(
-                      data.selectedOption + data.startDate
-                    ).slice(0, 8),
-                    StartTime: createConvert(
-                      data.selectedOption + data.startDate
-                    ).slice(8, 14),
-                    EndTime: createConvert(
-                      data.selectedOption + data.endDate
-                    ).slice(8, 14),
-                    // proposedDateID: 0,
-                  });
-                });
+                console.log(rows, "flagflag");
+
                 let Data = {
                   MeetingID: currentMeeting,
                   SendResponsebyDate: ResponseDate,
-                  ProposedDates: NewDates,
+                  ProposedDates: rows,
                 };
                 dispatch(
                   setProposedMeetingDateApiFunc(
@@ -1773,7 +1775,7 @@ const getAllAgendaContributorApi = (navigate, t, data) => {
               dispatch(
                 getAllAgendaContributor_success(
                   response.data.responseResult.meetingAgendaContributors,
-                  t("Record-found")
+                  ""
                 )
               );
               dispatch(
@@ -2003,7 +2005,7 @@ const GetAllSavedparticipantsAPI = (Data, navigate, t) => {
               dispatch(
                 showAllMeetingParticipantsSuccess(
                   response.data.responseResult.meetingParticipants,
-                  t("Record-found")
+                  ""
                 )
               );
               dispatch(
@@ -2117,7 +2119,7 @@ const SendNotificationApiFunc = (Data, navigate, t) => {
               dispatch(
                 sendNotificationParticipantsSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -2190,7 +2192,8 @@ const GetAllMeetingDetailsApiFunc = (
   setSceduleMeeting,
   setDataroomMapFolderId,
   viewValue,
-  flag
+  flag,
+  role
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
@@ -2219,7 +2222,8 @@ const GetAllMeetingDetailsApiFunc = (
               setSceduleMeeting,
               setDataroomMapFolderId,
               viewValue,
-              flag
+              flag,
+              role
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -2274,14 +2278,27 @@ const GetAllMeetingDetailsApiFunc = (
               await dispatch(
                 showGetAllMeetingDetialsSuccess(
                   response.data.responseResult,
-                  t("Record-found"),
+                  "",
                   loader
                 )
               );
               try {
                 setSceduleMeeting(true);
+                console.log("rolerole goes in this check");
                 // dispatch(scheduleMeetingPageFlag(true));
                 setCurrentMeetingID(Data.MeetingID);
+                if (role === "Agenda Contributor") {
+                  let agendaMeetingID = {
+                    MeetingID: Data.MeetingID,
+                  };
+                  dispatch(
+                    GetAdvanceMeetingAgendabyMeetingID(
+                      agendaMeetingID,
+                      navigate,
+                      t
+                    )
+                  );
+                }
               } catch {}
             } else if (
               response.data.responseResult.responseMessage
@@ -2371,7 +2388,7 @@ const GetAllPollsByMeetingIdApiFunc = (Data, navigate, t) => {
               dispatch(
                 showPollsByMeetingIdSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -2461,7 +2478,7 @@ const GetAllMeetingUserApiFunc = (Data, navigate, t) => {
               dispatch(
                 showGetAllMeetingUsersSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -2545,7 +2562,7 @@ const SetMeetingPollsApiFunc = (Data, navigate, t, currentMeeting) => {
                   "Polls_PollsServiceManager_SetMeetingPolls_01".toLowerCase()
                 )
             ) {
-              dispatch(showSetMeetingPollsSuccess(t("Record-found")));
+              dispatch(showSetMeetingPollsSuccess(""));
               let OrganizationID = localStorage.getItem("organizationID");
               let Data1 = {
                 MeetingID: currentMeeting,
@@ -2647,7 +2664,7 @@ const GetAllProposedMeetingDateApiFunc = (Data, navigate, t, flag) => {
               dispatch(
                 showGetAllProposedMeetingDatesSuccess(
                   response.data.responseResult,
-                  t("Record-found"),
+                  "",
                   flag
                 )
               );
@@ -3002,7 +3019,7 @@ const getMeetingMaterialAPI = (navigate, t, meetingMaterialData, rows, id) => {
               dispatch(
                 meetingMaterialSuccess(
                   response.data.responseResult.meetingMaterial,
-                  t("Record-found")
+                  ""
                 )
               );
               dispatch(
@@ -3269,7 +3286,7 @@ const GetAllUserAgendaRightsApiFunc = (navigate, t, Data) => {
               dispatch(
                 showGetAllUserAgendaRightsSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -3667,7 +3684,7 @@ const GetAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
             dispatch(
               showAllGeneralMinutesSuccess(
                 response.data.responseResult,
-                t("Record-found")
+                ""
               )
             );
           } else if (
@@ -4185,7 +4202,7 @@ const getUserProposedWiseApi = (navigate, t, proposedData, loader) => {
               dispatch(
                 getProposedWiseSuccess(
                   response.data.responseResult.userWiseMeetingProposedDates,
-                  t("Record-found"),
+                  "",
                   loader
                 )
               );
@@ -4303,7 +4320,7 @@ const GetAllAgendaWiseMinutesApiFunc = (
             await dispatch(
               showGetAllAgendaWiseMinutesSuccess(
                 response.data.responseResult,
-                t("Record-found"),
+                "",
                 loader
               )
             );
@@ -5868,7 +5885,7 @@ const getMeetingbyGroupApi = (navigate, t, Data) => {
               dispatch(
                 getMeetingbyGroup_success(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -6053,7 +6070,7 @@ const getMeetingByCommitteeIDApi = (navigate, t, Data) => {
               dispatch(
                 getMeetingByCommitteeID_success(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -7293,7 +7310,7 @@ const getUserWiseProposedDatesMainApi = (navigate, t, Data) => {
               dispatch(
                 getUserProposedDatesSuccess(
                   response.data.responseResult.userWiseMeetingProposedDates,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -7998,8 +8015,208 @@ const currentMeetingStatus = (response) => {
     response: response,
   };
 };
+const meetingParticipantAdded = (response) => {
+  return {
+    type: actions.MQTT_MEETING_PAR_ADDED,
+    response: response,
+  };
+};
+const meetingParticipantRemoved = (response) => {
+  return {
+    type: actions.MQTT_MEETING_PAR_REMOVED,
+    response: response,
+  };
+};
+
+const validateStringEmail_init = () => {
+  return {
+    type: actions.VALIDATE_ENCRYPTEDSTRING_EMAIL_RELATED_INIT,
+  };
+};
+const validateStringEmail_success = (response, message) => {
+  return {
+    type: actions.VALIDATE_ENCRYPTEDSTRING_EMAIL_RELATED_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const validateStringEmail_fail = (message) => {
+  return {
+    type: actions.VALIDATE_ENCRYPTEDSTRING_EMAIL_RELATED_FAIL,
+    message: message,
+  };
+};
+
+// const validateStringEmailApi = (emailString, navigate, t, RouteNo) => {
+//   let Data = {
+//     EncryptedString: emailString,
+//   };
+//   let token = JSON.parse(localStorage.getItem("token"));
+//   return async (dispatch) => {
+//     await dispatch(validateStringEmail_init());
+//     let form = new FormData();
+//     form.append("RequestMethod", ValidateEmailRelatedString.RequestMethod);
+//     form.append("RequestData", JSON.stringify(Data));
+//     axios({
+//       method: "post",
+//       url: meetingApi,
+//       data: form,
+//       headers: {
+//         _token: token,
+//       },
+//     })
+//       .then(async (response) => {
+//         if (response.data.responseCode === 417) {
+//           await dispatch(RefreshToken(navigate, t));
+//           dispatch(validateStringEmailApi(emailString, navigate, t, RouteNo));
+//         } else if (response.data.responseCode === 200) {
+//           if (response.data.responseResult.isExecuted === true) {
+//             if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "Meeting_MeetingServiceManager_ValidateEncryptedStringMeetingRelatedEmailData_01".toLowerCase()
+//                 )
+//             ) {
+//               await dispatch(
+//                 validateStringEmail_success(
+//                   response.data.responseResult?.data,
+//                   t("Successfully")
+//                 )
+//               );
+//             } else if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "Meeting_MeetingServiceManager_ValidateEncryptedStringMeetingRelatedEmailData_02".toLowerCase()
+//                 )
+//             ) {
+//               dispatch(validateStringEmail_fail(t("Unsuccessful")));
+//             } else if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "Meeting_MeetingServiceManager_ValidateEncryptedStringMeetingRelatedEmailData_03".toLowerCase()
+//                 )
+//             ) {
+//               dispatch(validateStringEmail_fail(t("Something-went-wrong")));
+//             }
+//           } else {
+//             dispatch(validateStringEmail_fail(t("Something-went-wrong")));
+//           }
+//         } else {
+//           dispatch(validateStringEmail_fail(t("Something-went-wrong")));
+//         }
+//       })
+//       .catch((response) => {
+//         dispatch(validateStringEmail_fail("Something-went-wrong"));
+//       });
+//   };
+// };
+const validateStringEmailApi = (
+  emailString,
+  navigate,
+  t,
+  RouteNo,
+  dispatch
+) => {
+  return new Promise((resolve, reject) => {
+    let Data = {
+      EncryptedString: emailString,
+    };
+    let token = JSON.parse(localStorage.getItem("token"));
+
+    dispatch(validateStringEmail_init());
+
+    let form = new FormData();
+    form.append("RequestMethod", ValidateEmailRelatedString.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          // Retry the API call
+          resolve(
+            dispatch(
+              validateStringEmailApi(
+                emailString,
+                navigate,
+                t,
+                RouteNo,
+                dispatch
+              )
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ValidateEncryptedStringMeetingRelatedEmailData_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                validateStringEmail_success(
+                  response.data.responseResult?.data,
+                  t("Successfully")
+                )
+              );
+              dispatch(emailRouteID(RouteNo));
+              resolve(response.data.responseResult.data);
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ValidateEncryptedStringMeetingRelatedEmailData_02".toLowerCase()
+                )
+            ) {
+              dispatch(validateStringEmail_fail(t("Unsuccessful")));
+              resolve("Unsuccessful");
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ValidateEncryptedStringMeetingRelatedEmailData_03".toLowerCase()
+                )
+            ) {
+              dispatch(validateStringEmail_fail(t("Something-went-wrong")));
+              resolve("Something-went-wrong");
+            }
+          } else {
+            dispatch(validateStringEmail_fail(t("Something-went-wrong")));
+            resolve("Something-went-wrong");
+          }
+        } else {
+          dispatch(validateStringEmail_fail(t("Something-went-wrong")));
+          resolve("Something-went-wrong");
+        }
+      })
+      .catch((error) => {
+        dispatch(validateStringEmail_fail("Something-went-wrong"));
+        reject(error);
+      });
+  });
+};
+
+const emailRouteID = (id) => {
+  return {
+    type: actions.EMAIL_ROUTE_ID,
+    response: id,
+  };
+};
 
 export {
+  emailRouteID,
   clearResponseNewMeetingReducerMessage,
   getAllAgendaContributorApi,
   saveAgendaContributors,
@@ -8150,8 +8367,11 @@ export {
   meetingAgendaContributorRemoved,
   meetingOrganizerAdded,
   meetingOrganizerRemoved,
+  meetingParticipantAdded,
+  meetingParticipantRemoved,
   JoinCurrentMeeting,
   LeaveCurrentMeeting,
   LeaveCurrentMeetingOtherMenus,
   currentMeetingStatus,
+  validateStringEmailApi,
 };

@@ -124,7 +124,7 @@ const getUserSetting = (navigate, t) => {
               await dispatch(
                 settingSuccess(
                   response.data.responseResult.userSettings,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -242,7 +242,7 @@ const getUserDetails = (
               await dispatch(
                 getuserdetailssuccess(
                   response.data.responseResult.organization,
-                  t("Record-found")
+                  ""
                 )
               );
               setUserProfileModal(true);

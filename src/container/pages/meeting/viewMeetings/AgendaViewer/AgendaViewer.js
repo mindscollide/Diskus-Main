@@ -124,7 +124,7 @@ const AgendaViewer = ({
   const [rows, setRows] = useState([]);
   const [emptyStateRows, setEmptyStateRows] = useState(false);
 
-  const [fullScreenView, setFullScreenView] = useState(false);
+  const [fullScreenView, setFullScreenView] = useState(true);
   const [agendaSelectOptionView, setAgendaSelectOptionView] = useState(false);
   const [exportAgendaView, setExportAgendaView] = useState(false);
   const [printAgendaView, setPrintAgendaView] = useState(false);
@@ -139,9 +139,16 @@ const AgendaViewer = ({
   let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
 
   useEffect(() => {
+    console.log(
+      "advanceMeetingModalIDadvanceMeetingModalID",
+      advanceMeetingModalID
+    );
     let Data = {
       MeetingID:
-        advanceMeetingModalID === "0" || advanceMeetingModalID === 0
+        advanceMeetingModalID === "0" ||
+        advanceMeetingModalID === 0 ||
+        advanceMeetingModalID === null ||
+        advanceMeetingModalID === undefined
           ? currentMeeting
           : Number(advanceMeetingModalID),
     };

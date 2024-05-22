@@ -249,7 +249,7 @@ body[dir="rtl"] .Meeting_Side_bar_Tag_todo {
 
 .expanded_menu {
   position: absolute !important;
-  width: 210px !important;
+  width: 100% !important;
   height: auto !important;
   left: 61px !important;
   background-color: #fff !important;
@@ -295,7 +295,7 @@ a.iconSidebar:hover span {
 
 a.iconSidebar span {
   color: #505050 !important;
-  font-size: 10px !important;
+  font-size: 8px !important;
   white-space: nowrap;
   font-weight: 600;
 }

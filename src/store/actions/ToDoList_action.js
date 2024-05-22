@@ -152,7 +152,7 @@ const GetTodoListByUser = (navigate, data, t) => {
               await dispatch(
                 getTodoListSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -240,9 +240,7 @@ const CreateToDoList = (navigate, object, t, setCreateTaskID, value) => {
                   "ToDoList_ToDoListServiceManager_CreateToDoList_01".toLowerCase()
                 )
             ) {
-              await dispatch(
-                ShowNotification(t("The-record-has-been-saved-successfully"))
-              );
+              await dispatch(ShowNotification(""));
               await dispatch(SetLoaderFalse());
 
               setCreateTaskID(Number(response.data.responseResult.tid));
@@ -391,7 +389,7 @@ const GetAllAssigneesToDoList = (navigate, object, t, check) => {
               await dispatch(
                 GetAllAssigneesSuccess(
                   response.data.responseResult.user,
-                  t("Record-found")
+                  ""
                 )
               );
               dispatch(TaskLoader(false));
@@ -486,7 +484,7 @@ const ViewToDoList = (
                   "ToDoList_ToDoListServiceManager_GetToDoListByToDoListID_01".toLowerCase()
                 )
             ) {
-              await dispatch(ShowNotification(t("Record-found")));
+              await dispatch(ShowNotification(""));
               dispatch(emptyCommentState());
 
               await dispatch(ViewToDoSuccess(response.data.responseResult));
@@ -641,7 +639,7 @@ const searchTodoListByUser = (navigate, data, t) => {
               await dispatch(
                 getTodoListSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -728,7 +726,7 @@ const GetWeeklyToDoCount = (navigate, data, t) => {
               await dispatch(
                 getWeeklyToDoCountSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
               await dispatch(SetSpinnerFalse());
@@ -832,7 +830,7 @@ const SearchTodoListApi = (navigate, searchData, page, size, t) => {
               dispatch(
                 searchTodoList_success(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -1683,7 +1681,7 @@ const saveTaskDocumentsApi = (navigate, Data, t, value, setShow) => {
               dispatch(
                 saveTaskDocuments_success(
                   response.data.responseResult,
-                  t("Update-successful")
+                  t("Task-has-been-created-successfully")
                 )
               );
 

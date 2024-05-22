@@ -554,20 +554,21 @@ const ProposedNewMeeting = ({
       let newDate = new Date(date);
       let DateDate = new DateObject(date).format("YYYYMMDD");
       const updatedRows = [...rows];
-      if (
-        index > 0 &&
-        Number(DateDate) < Number(updatedRows[index - 1].selectedOption)
-      ) {
-        setOpen({
-          flag: true,
-          message: t("Selected-date-should-not-be-less-than-the-previous-one"),
-        });
-        return;
-      } else {
-        updatedRows[index].selectedOption = DateDate;
-        updatedRows[index].dateForView = newDate;
-        setRows(updatedRows);
-      }
+      updatedRows[index].selectedOption = DateDate;
+      updatedRows[index].dateForView = newDate;
+      setRows(updatedRows);
+      // if (
+      //   index > 0 &&
+      //   Number(DateDate) < Number(updatedRows[index - 1].selectedOption)
+      // ) {
+      //   setOpen({
+      //     flag: true,
+      //     message: t("Selected-date-should-not-be-less-than-the-previous-one"),
+      //   });
+      //   return;
+      // } else {
+
+      // }
     } catch {}
   };
 
@@ -611,10 +612,28 @@ const ProposedNewMeeting = ({
       });
     });
 
+    console.log(rows, "sortedDatessortedDates");
+
+    //For Set Proposed  Dates
+    let ProposedDates = [];
+    rows.forEach((data, index) => {
+      ProposedDates.push({
+        ProposedDate: createConvert(data.selectedOption + data.startDate).slice(
+          0,
+          8
+        ),
+        StartTime: createConvert(data.selectedOption + data.startDate).slice(
+          8,
+          14
+        ),
+        EndTime: createConvert(data.selectedOption + data.endDate).slice(8, 14),
+      });
+    });
+
     // Sorting the Dates array
-    Dates.sort((a, b) => {
-      if (a.MeetingDate !== b.MeetingDate) {
-        return a.MeetingDate.localeCompare(b.MeetingDate);
+    let sortedDates = ProposedDates.sort((a, b) => {
+      if (a.ProposedDate !== b.ProposedDate) {
+        return a.ProposedDate.localeCompare(b.ProposedDate);
       } else if (a.StartTime !== b.StartTime) {
         return a.StartTime.localeCompare(b.StartTime);
       } else {
@@ -622,10 +641,13 @@ const ProposedNewMeeting = ({
       }
     });
 
+    console.log(sortedDates, "sortedDatessortedDates");
+
     if (
       proposedMeetingDetails.MeetingTitle !== "" &&
       membersParticipants.length !== 0 &&
-      sendResponseVal !== ""
+      sendResponseVal !== "" &&
+      rows.length !== 1
     ) {
       let data = {
         MeetingDetails: {
@@ -647,6 +669,8 @@ const ProposedNewMeeting = ({
           MeetingStatusID: 11,
         },
       };
+      console.log(data, "sortedDatessortedDates");
+
       dispatch(
         SaveMeetingDetialsNewApiFunction(
           navigate,
@@ -661,7 +685,7 @@ const ProposedNewMeeting = ({
           proposedMeetingDetails,
           setDataroomMapFolderId,
           membersParticipants,
-          rows,
+          sortedDates,
           sendResponseBy.date,
           setProposedNewMeeting
         )
@@ -1311,7 +1335,9 @@ const ProposedNewMeeting = ({
                           calendar={calendarValue}
                           locale={localValue}
                           ref={calendRef}
-                          onFocusedDateChange={(value) => SendResponseHndler(value)}
+                          onFocusedDateChange={(value) =>
+                            SendResponseHndler(value)
+                          }
                         />
                       </Col>
                     </Row>

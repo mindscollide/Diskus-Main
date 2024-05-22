@@ -188,6 +188,10 @@ body[dir="rtl"] .polling_Options_backGround {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   padding: 0px 20px !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
 }
 
 .ProfileStyles {

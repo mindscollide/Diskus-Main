@@ -755,7 +755,7 @@ const Minutes = ({
       ResponseMessage.trim() !== "" &&
       ResponseMessage !== t("No-record-found") &&
       ResponseMessage !== t("No-records-found") &&
-      ResponseMessage !== t("Record-found") &&
+      ResponseMessage !== "" &&
       ResponseMessage !== t("No-record-found") &&
       ResponseMessage !== t("List-updated-successfully") &&
       ResponseMessage !== t("No-data-available")

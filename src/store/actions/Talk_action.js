@@ -42,6 +42,7 @@ import {
   updateMessageAcknowledgement,
   getAllStarredMessages,
   deleteMultipleGroupMessages,
+  downloadAttachmentTalk,
 } from "../../commen/apis/Api_config";
 import { changeMQTTJSONOne } from "../../commen/functions/MQTTJson";
 import axios from "axios";
@@ -4248,6 +4249,80 @@ const lastMessageDeletion = (response) => {
   };
 };
 
+//get Group Messages Init
+const getImageData = (response) => {
+  return {
+    type: actions.GET_IMAGE_DATA,
+    response: response,
+  };
+};
+
+const DownloadTalkFile = (navigate, Data, ext, originalFileName, t) => {
+  console.log("DataDataData", Data)
+  let token = JSON.parse(localStorage.getItem("token"));
+  let form = new FormData();
+  form.append("RequestMethod", downloadAttachmentTalk.RequestMethod);
+  form.append("RequestData", JSON.stringify(Data));
+  let contentType;
+  if (ext === "doc") {
+    contentType = "application/msword";
+  } else if (ext === "docx") {
+    contentType =
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+  } else if (ext === "xls") {
+    contentType =
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+  } else if (ext === "xlsx") {
+    contentType =
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+  } else if (ext === "pdf") {
+    contentType = "application/pdf";
+  } else if (ext === "png") {
+    contentType = "image/png";
+  } else if (ext === "txt") {
+    contentType = "text/plain";
+  } else if (ext === "jpg") {
+    contentType = "image/jpeg";
+  } else if (ext === "jpeg") {
+    contentType = "image/jpeg";
+  } else {
+  }
+  return (dispatch) => {
+    // dispatch(DownloadLoaderStart());
+    axios({
+      method: "post",
+      url: talkApiReport,
+      data: form,
+      headers: {
+        _token: token,
+        "Content-Disposition": "attachment; filename=template." + ext,
+        // "Content-Type":
+        //   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "Content-Type": contentType,
+      },
+      responseType: "blob",
+    })
+      .then(async (response) => {
+        if (response.status === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(DownloadTalkFile(navigate, Data, ext, t));
+        } else if (response.status === 200) {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", originalFileName);
+          document.body.appendChild(link);
+          link.click();
+
+          // dispatch(SetLoaderFalseDownload(false));
+        }
+      })
+      .catch((response) => {
+        // dispatch(downloadFail(response));
+      });
+  };
+};
+
 export {
   activeChatID,
   activeMessageID,
@@ -4319,4 +4394,5 @@ export {
   OTOMessageSendSuccess,
   PrintChat,
   getAllUserChatsSuccess,
+  getImageData,DownloadTalkFile
 };

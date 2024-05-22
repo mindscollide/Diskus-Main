@@ -71,7 +71,7 @@ const customerInfoOrganizationDetails = (navigate, t) => {
               await dispatch(
                 customerInformationSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
