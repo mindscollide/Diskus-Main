@@ -1431,6 +1431,12 @@ const saveCommitteeDocumentsApi = (navigate, t, data, setCreategrouppage) => {
                 getAllCommitteesByUserIdActions(navigate, t, currentPage)
               );
             }
+            if (typeof setCreategrouppage === "number") {
+              if (setCreategrouppage === 1) {
+                let getData = { CommitteeID: Number(data.CommitteeID) };
+                dispatch(reteriveCommitteeDocumentsApi(navigate, t, getData));
+              }
+            }
           } else if (
             response.data.responseResult.responseMessage.toLowerCase() ===
             "DataRoom_DataRoomManager_SaveCommitteeDocuments_02".toLowerCase()
@@ -1566,7 +1572,7 @@ const viewCommitteePageFlag = (response) => {
 };
 
 const removeCommitteeMemberMQTT = (response) => {
-  console.log(response, "removeCommitteeMemberMQTTremoveCommitteeMemberMQTT")
+  console.log(response, "removeCommitteeMemberMQTTremoveCommitteeMemberMQTT");
   return {
     type: actions.REMOVE_COMMITTEE_MEMBER,
     response: response,

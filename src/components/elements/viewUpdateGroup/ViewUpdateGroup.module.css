@@ -118,12 +118,13 @@ body[dir="rtl"] .members-create-group-page {
 .Close-ViewGroup-btn {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  background: #6172d6 !important;
-  color: #fff !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
   font-weight: 600;;
   border-radius: 4px !important;
-  border: none !important;
+  border: 1px solid #e1e1e1 !important;
 }
+
 body[dir="rtl"] .Close-ViewGroup-btn {
   font-weight: 600;
 }
@@ -131,13 +132,32 @@ body[dir="rtl"] .Close-ViewGroup-btn {
 .Close-ViewGroup-btn:is(:hover, :active, :visited, :focus, :focus-visible) {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  background: #6172d6 !important;
-  color: #fff !important;
-  font-weight: 600;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-weight: 600;;
   border-radius: 4px !important;
-  border: none !important;
+  border: 1px solid #e1e1e1 !important;
 }
 
+.Save-ViewGroup-btn {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 600;;
+  border-radius: 4px !important;
+  border: none;
+}
+
+.Save-ViewGroup-btn:is(:hover, :active, :visited, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 600;;
+  border-radius: 4px !important;
+  border: none;
+}
 .ant-upload-text {
   font-size: 12px !important;
   color: #5a5a5a !important;
@@ -191,10 +211,11 @@ body[dir="rtl"] .ant-upload-text {
 }
 
 .Scroller_files {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  height: 39vh !important;
-  overflow-x: hidden !important;
+  min-height: 43vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 20px;
+  max-height: 43vh;
 }
 
 .Scroller_files::-webkit-scrollbar {

@@ -25,6 +25,7 @@ import {
   Checkbox,
   Loader,
   MultiDatePicker,
+  AttachmentViewer,
 } from "./../../components/elements";
 import {
   FileUploadToDo,
@@ -2741,7 +2742,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                             md={12}
                             sm={12}
                             xs={12}
-                            className="d-flex justify-content-start flex-column margin-left-15"
+                            className="d-flex justify-content-start flex-column "
                           >
                             <label>{t("Attachement")}</label>
                             <span className="custom-upload-input">
@@ -2765,132 +2766,22 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                                           data.DisplayAttachmentName.split(
                                             " "
                                           )[0];
-                                        if (first !== "") {
-                                          return (
-                                            <Col
-                                              sm={12}
-                                              lg={3}
-                                              md={3}
-                                              className="file-icon-updateMeeting"
-                                            >
-                                              {ext === "doc" ? (
-                                                <FileIcon
-                                                  extension={"docx"}
-                                                  size={78}
-                                                  type={"document"}
-                                                  labelColor={
-                                                    "rgba(44, 88, 152)"
-                                                  }
-                                                />
-                                              ) : ext === "docx" ? (
-                                                <FileIcon
-                                                  extension={"docx"}
-                                                  size={78}
-                                                  type={"font"}
-                                                  labelColor={
-                                                    "rgba(44, 88, 152)"
-                                                  }
-                                                />
-                                              ) : ext === "xls" ? (
-                                                <FileIcon
-                                                  extension={"xls"}
-                                                  type={"spreadsheet"}
-                                                  size={78}
-                                                  labelColor={
-                                                    "rgba(16, 121, 63)"
-                                                  }
-                                                />
-                                              ) : ext === "xlsx" ? (
-                                                <FileIcon
-                                                  extension={"xls"}
-                                                  type={"spreadsheet"}
-                                                  size={78}
-                                                  labelColor={
-                                                    "rgba(16, 121, 63)"
-                                                  }
-                                                />
-                                              ) : ext === "pdf" ? (
-                                                <FileIcon
-                                                  extension={"pdf"}
-                                                  size={78}
-                                                  {...defaultStyles.pdf}
-                                                />
-                                              ) : ext === "png" ? (
-                                                <FileIcon
-                                                  extension={"png"}
-                                                  size={78}
-                                                  type={"image"}
-                                                  labelColor={
-                                                    "rgba(102, 102, 224)"
-                                                  }
-                                                />
-                                              ) : ext === "txt" ? (
-                                                <FileIcon
-                                                  extension={"txt"}
-                                                  size={78}
-                                                  type={"document"}
-                                                  labelColor={
-                                                    "rgba(52, 120, 199)"
-                                                  }
-                                                />
-                                              ) : ext === "jpg" ? (
-                                                <FileIcon
-                                                  extension={"jpg"}
-                                                  size={78}
-                                                  type={"image"}
-                                                  labelColor={
-                                                    "rgba(102, 102, 224)"
-                                                  }
-                                                />
-                                              ) : ext === "jpeg" ? (
-                                                <FileIcon
-                                                  extension={"jpeg"}
-                                                  size={78}
-                                                  type={"image"}
-                                                  labelColor={
-                                                    "rgba(102, 102, 224)"
-                                                  }
-                                                />
-                                              ) : ext === "gif" ? (
-                                                <FileIcon
-                                                  extension={"gif"}
-                                                  size={78}
-                                                  {...defaultStyles.gif}
-                                                />
-                                              ) : (
-                                                <FileIcon
-                                                  extension={ext}
-                                                  size={78}
-                                                  {...defaultStyles.ext}
-                                                />
-                                              )}
-                                              <span className="deleteBtn">
-                                                <img
-                                                  draggable="false"
-                                                  src={
-                                                    deleteButtonCreateMeeting
-                                                  }
-                                                  width={15}
-                                                  height={15}
-                                                  onClick={() =>
-                                                    deleteAttachmentfromAgenda(
-                                                      data,
-                                                      index
-                                                    )
-                                                  }
-                                                />
-                                              </span>
-                                              <p
-                                                className="file-icon-updatemeeting-p"
-                                                title={
-                                                  data.DisplayAttachmentName
-                                                }
-                                              >
-                                                {first}
-                                              </p>
-                                            </Col>
-                                          );
-                                        }
+                                        return (
+                                          <Col sm={4} md={4} lg={4}>
+                                            <AttachmentViewer
+                                              data={data}
+                                              handleClickRemove={() => {
+                                                deleteAttachmentfromAgenda(
+                                                  data,
+                                                  index
+                                                );
+                                              }}
+                                              name={data.DisplayAttachmentName}
+                                              fk_UID={createrID}
+                                              id={0}
+                                            />
+                                          </Col>
+                                        );
                                       }
                                     )
                                   : null}
@@ -3001,120 +2892,17 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                                               MeetingAgendaAttachmentsData,
                                               index
                                             ) => {
-                                              var ext =
-                                                MeetingAgendaAttachmentsData.DisplayAttachmentName.split(
-                                                  "."
-                                                ).pop();
-                                              const first =
-                                                MeetingAgendaAttachmentsData.DisplayAttachmentName.split(
-                                                  " "
-                                                )[0];
                                               return (
-                                                <Col
-                                                  sm={12}
-                                                  lg={3}
-                                                  md={3}
-                                                  className="file-icon-updateMeeting"
-                                                  onClick={(e) =>
-                                                    downloadClick(
-                                                      e,
+                                                <Col sm={4} md={4} lg={4}>
+                                                  <AttachmentViewer
+                                                    data={
                                                       MeetingAgendaAttachmentsData
-                                                    )
-                                                  }
-                                                >
-                                                  {ext === "doc" ? (
-                                                    <FileIcon
-                                                      extension={"docx"}
-                                                      size={78}
-                                                      type={"document"}
-                                                      labelColor={
-                                                        "rgba(44, 88, 152)"
-                                                      }
-                                                    />
-                                                  ) : ext === "docx" ? (
-                                                    <FileIcon
-                                                      extension={"docx"}
-                                                      size={78}
-                                                      type={"font"}
-                                                      labelColor={
-                                                        "rgba(44, 88, 152)"
-                                                      }
-                                                    />
-                                                  ) : ext === "xls" ? (
-                                                    <FileIcon
-                                                      extension={"xls"}
-                                                      type={"spreadsheet"}
-                                                      size={78}
-                                                      labelColor={
-                                                        "rgba(16, 121, 63)"
-                                                      }
-                                                    />
-                                                  ) : ext === "xlsx" ? (
-                                                    <FileIcon
-                                                      extension={"xls"}
-                                                      type={"spreadsheet"}
-                                                      size={78}
-                                                      labelColor={
-                                                        "rgba(16, 121, 63)"
-                                                      }
-                                                    />
-                                                  ) : ext === "pdf" ? (
-                                                    <FileIcon
-                                                      extension={"pdf"}
-                                                      size={78}
-                                                      {...defaultStyles.pdf}
-                                                    />
-                                                  ) : ext === "png" ? (
-                                                    <FileIcon
-                                                      extension={"png"}
-                                                      size={78}
-                                                      type={"image"}
-                                                      labelColor={
-                                                        "rgba(102, 102, 224)"
-                                                      }
-                                                    />
-                                                  ) : ext === "txt" ? (
-                                                    <FileIcon
-                                                      extension={"txt"}
-                                                      size={78}
-                                                      type={"document"}
-                                                      labelColor={
-                                                        "rgba(52, 120, 199)"
-                                                      }
-                                                    />
-                                                  ) : ext === "jpg" ? (
-                                                    <FileIcon
-                                                      extension={"jpg"}
-                                                      size={78}
-                                                      type={"image"}
-                                                      labelColor={
-                                                        "rgba(102, 102, 224)"
-                                                      }
-                                                    />
-                                                  ) : ext === "jpeg" ? (
-                                                    <FileIcon
-                                                      extension={"jpeg"}
-                                                      size={78}
-                                                      type={"image"}
-                                                      labelColor={
-                                                        "rgba(102, 102, 224)"
-                                                      }
-                                                    />
-                                                  ) : ext === "gif" ? (
-                                                    <FileIcon
-                                                      extension={"gif"}
-                                                      size={78}
-                                                      {...defaultStyles.gif}
-                                                    />
-                                                  ) : null}
-                                                  <p
-                                                    className="text-center"
-                                                    title={
+                                                    }
+                                                    name={
                                                       MeetingAgendaAttachmentsData.DisplayAttachmentName
                                                     }
-                                                  >
-                                                    {first}
-                                                  </p>
+                                                    id={0}
+                                                  />
                                                 </Col>
                                               );
                                             }
@@ -3435,9 +3223,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         disableBtn={endMeetingStatus}
                         onClick={addAnOtherAgenda}
                         className={
-                          " modal-update-addagenda" +
-                          " " +
-                          currentLanguage
+                          " modal-update-addagenda" + " " + currentLanguage
                         }
                         text={
                           editRecordFlag
@@ -3447,9 +3233,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                       />
                       <Button
                         onClick={navigateToAttendees}
-                        className={
-                          " btn btn-primary modal-update-meeting"
-                        }
+                        className={" btn btn-primary modal-update-meeting"}
                         text={t("Next")}
                       />
                     </Col>
@@ -3466,9 +3250,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         className="d-flex justify-content-end"
                       >
                         <Button
-                          className={
-                            " btn btn-primary modal-update-meeting"
-                          }
+                          className={" btn btn-primary modal-update-meeting"}
                           text={t("Next")}
                           onClick={navigateToMinutes}
                         />
@@ -3502,9 +3284,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                           onClick={cancelMeetingConfirmation}
                         />
                         <Button
-                          className={
-                            " btn btn-primary publish-meeting-btn"
-                          }
+                          className={" btn btn-primary publish-meeting-btn"}
                           text={t("Publish")}
                           onClick={handleSubmit}
                         />
@@ -3523,9 +3303,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         className="d-flex justify-content-end"
                       >
                         <Button
-                          className={
-                            " btn btn-primary ismeeting-finish-btn"
-                          }
+                          className={" btn btn-primary ismeeting-finish-btn"}
                           text={t("Publish")}
                           onClick={navigateToPublish}
                         />

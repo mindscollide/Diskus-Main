@@ -416,11 +416,7 @@ const Notes = () => {
                             >
                               {data?.notesAttachments.length > 0
                                 ? data?.notesAttachments.map((file, index) => {
-                                    var ext = file.displayAttachmentName
-                                      .split(".")
-                                      .pop();
-                                    const first =
-                                      file.displayAttachmentName.split(" ")[0];
+                                   
 
                                     return (
                                       <AttachmentViewer

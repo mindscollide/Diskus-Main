@@ -334,3 +334,14 @@ body[dir="rtl"] .header-of-collapse-material {
 body[dir="rtl"] .MinusIcon {
   margin-right: 60px !important;
 }
+.viewAgendaWiseAttachments {
+  max-height: 110px;
+  min-height: 110px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 15px;
+}
+
+.viewAgendaWiseFiles {
+  margin-bottom: 10px;
+}
