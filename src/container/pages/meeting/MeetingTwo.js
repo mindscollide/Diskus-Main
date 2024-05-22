@@ -4,7 +4,6 @@ import searchicon from "../../../assets/images/searchicon.svg";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 
 import ClipIcon from "../../../assets/images/ClipIcon.png";
-import VideoIcon from "../../../assets/images/Video-Icon.png";
 import {
   GetAllUsers,
   GetAllUsersGroupsRoomsList,
@@ -35,7 +34,6 @@ import NoMeetingsIcon from "../../../assets/images/No-Meetings.png";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import { useTranslation } from "react-i18next";
 import { Tooltip } from "antd";
-import { truncateString } from "../../../commen/functions/regex";
 import {
   Button,
   Table,
@@ -44,7 +42,6 @@ import {
   Notification,
 } from "../../../components/elements";
 import { Paper } from "@material-ui/core";
-import CancelButtonModal from "./closeMeetingTab/CancelModal";
 import { Col, Dropdown, Row } from "react-bootstrap";
 import { ChevronDown, Plus } from "react-bootstrap-icons";
 import gregorian from "react-date-object/calendars/gregorian";
@@ -79,10 +76,8 @@ import {
   pollsGlobalFlag,
   attendanceGlobalFlag,
   uploadGlobalFlag,
-  FetchMeetingURLClipboard,
   GetAllMeetingTypesNewFunction,
   JoinCurrentMeeting,
-  LeaveCurrentMeeting,
   validateStringEmailApi,
   meetingParticipantAdded,
   meetingParticipantRemoved,
@@ -103,11 +98,7 @@ import {
   utcConvertintoGMT,
   getCurrentDateTimeUTC,
 } from "../../../commen/functions/date_formater";
-import {
-  getCurrentDate,
-  getEndTimeWitlCeilFunction,
-  getStartTimeWithCeilFunction,
-} from "../../../commen/functions/time_formatter";
+
 import { StatusValue } from "./statusJson";
 import ModalMeeting from "../../modalmeeting/ModalMeeting";
 import ModalUpdate from "../../modalUpdate/ModalUpdate";
@@ -122,7 +113,6 @@ import {
 } from "../../../store/actions/MeetingOrganizers_action";
 import ProposedNewMeeting from "./scedulemeeting/ProposedNewMeeting/ProposedNewMeeting";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
-import { getAllUnpublishedMeetingData } from "../../../hooks/meetingResponse/response";
 import { mqttMeetingData } from "../../../hooks/meetingResponse/response";
 
 const NewMeeting = () => {
@@ -150,10 +140,6 @@ const NewMeeting = () => {
     (state) => state.MeetingOrganizersReducer.ResponseMessage
   );
 
-  let currentUserID = Number(localStorage.getItem("userID"));
-
-  let currentOrganization = Number(localStorage.getItem("organizationID"));
-
   let currentLanguage = localStorage.getItem("i18nextLng");
   let AgCont = localStorage.getItem("AgCont");
   // let AdCont
@@ -173,9 +159,6 @@ const NewMeeting = () => {
   let minutes = now.getUTCMinutes().toString().padStart(2, "0");
   let seconds = now.getUTCSeconds().toString().padStart(2, "0");
   let currentUTCDateTime = `${year}${month}${day}${hours}${minutes}${seconds}`;
-  const getStartTime = getStartTimeWithCeilFunction();
-  const getEndTime = getEndTimeWitlCeilFunction();
-  const getCurrentDateforMeeting = getCurrentDate();
   const [quickMeeting, setQuickMeeting] = useState(false);
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
   const [proposedNewMeeting, setProposedNewMeeting] = useState(false);
@@ -217,7 +200,6 @@ const NewMeeting = () => {
     useState(false);
   const [viewAdvanceMeetingModal, setViewAdvanceMeetingModal] = useState(false);
   const [advanceMeetingModalID, setAdvanceMeetingModalID] = useState(null);
-  const [responseDate, setResponseDate] = useState("");
   const [responseByDate, setResponseByDate] = useState("");
 
   const [editorRole, setEdiorRole] = useState({
