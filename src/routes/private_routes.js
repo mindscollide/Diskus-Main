@@ -4,14 +4,12 @@ const PrivateRoutes = () => {
   const currentUrl = window.location.href;
 
   // Effect hook to perform actions based on the current URL
-
   useEffect(() => {
     // Action: Meeting RSVP
     if (
       currentUrl.includes("DisKus/Meeting/Useravailabilityformeeting?action=")
     ) {
       // Extract action parameter from URL
-
       const parts = currentUrl.split("?action=");
       if (parts.length === 2) {
         const remainingString = parts[1];
@@ -25,6 +23,7 @@ const PrivateRoutes = () => {
 
     // Action: Data Room
     if (currentUrl.includes("DisKus/dataroom?action=")) {
+      // Extract action parameter from URL
       const parts = currentUrl.split("?action=");
       if (parts.length === 2) {
         const remainingString = parts[1];
@@ -51,97 +50,99 @@ const PrivateRoutes = () => {
     // Action: Add Agenda Contributor
     if (currentUrl.includes("DisKus/Meeting?Addagendacontributor_action=")) {
       // Extract action parameter from URL
-
       const parts = currentUrl.split("Addagendacontributor_action=")[1];
       localStorage.setItem("AgCont", parts);
-      console.log(parts, "partspartsparts Addagendacontributor");
-
-      // const parts = currentUrl.split("Addagendacontributor_action=")[1];
-      // localStorage.setItem("AgCont", parts);
-      // console.log(parts, "partspartsparts Addagendacontributor");
-
       // Add action-specific logic here if needed
     }
 
     // Action: Update Agenda Contributor
-    if (currentUrl.includes("DisKus/Meeting/Updateagendacontributor?action=")) {
+    if (currentUrl.includes("DisKus/Meeting?Updateagendacontributor_action=")) {
       // Add action-specific logic here if needed
+      // const parts = currentUrl.split("Updateagendacontributor_action=")[1];
     }
 
     // Action: Add Organizer
     if (currentUrl.includes("DisKus/Meeting/?Addorganizer_action=")) {
       // Extract action parameter from URL
-
       const parts = currentUrl.split("Addorganizer_action=")[1];
       localStorage.setItem("AdOrg", parts);
-
-      // const parts = currentUrl.split("Addorganizer_action=")[1];
-      // localStorage.setItem("AdOrg", parts);
-
       // Add action-specific logic here if needed
     }
 
     // Action: Update Organizer
-    if (currentUrl.includes("DisKus/Meeting/Updateorganizer?action=")) {
+    if (currentUrl.includes("DisKus/Meeting?Updateorganizer_action=")) {
       // Add action-specific logic here if needed
     }
 
     // Action: Cancel Meeting
-    if (currentUrl.includes("DisKus/Meeting/Cancelmeeting?action=")) {
+    if (currentUrl.includes("DisKus/Meeting?Cancelmeeting_action=")) {
       // Add action-specific logic here if needed
     }
 
     // Action: Delete Meeting
-    if (currentUrl.includes("DisKus/Meeting/Deletemeeting?action=")) {
+    if (currentUrl.includes("DisKus/Meeting?Deletemeeting_action=")) {
       // Add action-specific logic here if needed
     }
 
     // Action: Update Meeting
-    if (currentUrl.includes("DisKus/Meeting/Updatemeeting?action=")) {
+    if (currentUrl.includes("DisKus/Meeting?Updatemeeting_action=")) {
       // Add action-specific logic here if needed
     }
 
     // Action: Start Meeting
-    if (currentUrl.includes("DisKus/Meeting/Startmeeting?action=")) {
+    if (currentUrl.includes("DisKus/Meeting?Startmeeting_action=")) {
       // Add action-specific logic here if needed
     }
 
     // Action: Poll Expire
-    if (currentUrl.includes("DisKus/Meeting/Pollexpire?action=")) {
+    if (currentUrl.includes("DisKus/polling?Pollexpire_action=")) {
+      // Add action-specific logic here if needed
+    }
+    // Action: Poll Expire
+    if (currentUrl.includes("DisKus/groups?GroupPollExpire_action=")) {
+      // Add action-specific logic here if needed
+    }
+    // Action: Poll Expire
+    if (currentUrl.includes("DisKus/committee?CommitteePollExpire_action=")) {
       // Add action-specific logic here if needed
     }
 
     // Action: Poll Published
-    if (currentUrl.includes("DisKus/Meeting/Pollpublished?action=")) {
+    if (currentUrl.includes("DisKus/polling?PollPublished_action=")) {
+      const parts = currentUrl.split("action=")[1];
+      localStorage.setItem("poPub", parts);
       // Add action-specific logic here if needed
     }
 
     // Action: Poll Update
-    if (currentUrl.includes("DisKus/Meeting/Pollupdate?action=")) {
+    if (
+      currentUrl
+        .toLowerCase()
+        .includes("DisKus/polling?PollUpdate_action=".toLowerCase())
+    ) {
       // Add action-specific logic here if needed
+      const parts = currentUrl.split("action=")[1];
+      localStorage.setItem("poPub", parts);
     }
 
     // Action: Resolution Reminder
-    if (currentUrl.includes("DisKus/Meeting/Resolutionreminder?action=")) {
+    if (currentUrl.includes("DisKus/reminder?Resolutionreminder_action=")) {
       // Add action-specific logic here if needed
     }
 
     // Action: Organization Status Enable
-    if (
-      currentUrl.includes("DisKus/Meeting/Organizationstatusenable?action=")
-    ) {
+    if (currentUrl.includes("DisKus/Admin/Organizationstatusenable?action=")) {
       // Add action-specific logic here if needed
     }
 
     // Action: Organization Subscription Enable
     if (
-      currentUrl.includes(
-        "DisKus/Meeting/Organizationsubscriptionenable?action="
-      )
+      currentUrl.includes("DisKus/Admin/Organizationsubscriptionenable?action=")
     ) {
       // Add action-specific logic here if needed
     }
   }, [currentUrl]);
+
   let Blur = localStorage.getItem("blur");
   let currentUserID = localStorage.getItem("userID");
   let RoleID = localStorage.getItem("roleID");
