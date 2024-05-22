@@ -27,6 +27,7 @@ import {
   SelectBox,
   Notification,
   InputSearchFilter,
+  AttachmentViewer,
 } from "./../../../components/elements";
 import { useState } from "react";
 import ModalresolutionRemove from "../../../container/ModalresolutionRemove/ModalresolutionRemove";
@@ -1542,7 +1543,9 @@ const EditResolution = ({ setCancelresolution }) => {
                                   value={circulationDateTime.dateValue}
                                   calendar={calendarValue}
                                   locale={localValue}
-                                  onFocusedDateChange={circulationDateChangeHandler}
+                                  onFocusedDateChange={
+                                    circulationDateChangeHandler
+                                  }
                                 />
                               </div>
                               <Row>
@@ -2253,218 +2256,162 @@ const EditResolution = ({ setCancelresolution }) => {
                                       lg={12}
                                     >
                                       <Row>
-                                        <Col
-                                          lg={1}
-                                          md={1}
-                                          sm={1}
-                                          className="mt-4"
-                                        >
-                                          {attachments.length > 6 ? (
-                                            <>
-                                              <Button
-                                                icon={
-                                                  <img
-                                                    alt=""
-                                                    src={Leftploygon}
-                                                    width="20px"
-                                                    height="15px"
-                                                  />
-                                                }
-                                                onClick={SlideLeft}
-                                                className={
-                                                  styles["Leftpolygon"]
-                                                }
-                                                draggable="false"
-                                              />
-                                            </>
-                                          ) : null}
-                                        </Col>
+                                        {attachments.length > 0
+                                          ? attachments.map((data, index) => {
+                                              console.log(
+                                                data,
+                                                "attachmentsResolution"
+                                              );
 
-                                        <Col sm={10} lg={10} md={10}>
-                                          <Row>
-                                            <Col
-                                              lg={12}
-                                              md={12}
-                                              sm={12}
-                                              className="Scroller-x-resolution"
-                                              id="Slider"
-                                            >
-                                              {attachments.length > 0
-                                                ? attachments.map(
-                                                    (data, index) => {
-                                                      console.log(
-                                                        data,
-                                                        "attachmentsResolution"
-                                                      );
-                                                      var ext =
-                                                        data?.displayAttachmentName
-                                                          ?.split(".")
-                                                          .pop();
-                                                      const first =
-                                                        data?.displayAttachmentName?.split(
-                                                          " "
-                                                        )[0];
-                                                      return (
-                                                        <Col
-                                                          sm={12}
-                                                          lg={2}
-                                                          md={2}
-                                                          className="modaltodolist-attachment-icon"
-                                                        >
-                                                          {ext === "doc" ? (
-                                                            <FileIcon
-                                                              extension={"docx"}
-                                                              size={78}
-                                                              type={"document"}
-                                                              labelColor={
-                                                                "rgba(44, 88, 152)"
-                                                              }
-                                                            />
-                                                          ) : ext === "docx" ? (
-                                                            <FileIcon
-                                                              extension={"docx"}
-                                                              size={78}
-                                                              type={"font"}
-                                                              labelColor={
-                                                                "rgba(44, 88, 152)"
-                                                              }
-                                                            />
-                                                          ) : ext === "xls" ? (
-                                                            <FileIcon
-                                                              extension={"xls"}
-                                                              type={
-                                                                "spreadsheet"
-                                                              }
-                                                              size={78}
-                                                              labelColor={
-                                                                "rgba(16, 121, 63)"
-                                                              }
-                                                            />
-                                                          ) : ext === "xlsx" ? (
-                                                            <FileIcon
-                                                              extension={"xls"}
-                                                              type={
-                                                                "spreadsheet"
-                                                              }
-                                                              size={78}
-                                                              labelColor={
-                                                                "rgba(16, 121, 63)"
-                                                              }
-                                                            />
-                                                          ) : ext === "pdf" ? (
-                                                            <FileIcon
-                                                              extension={"pdf"}
-                                                              size={78}
-                                                              {...defaultStyles.pdf}
-                                                            />
-                                                          ) : ext === "png" ? (
-                                                            <FileIcon
-                                                              extension={"png"}
-                                                              size={78}
-                                                              type={"image"}
-                                                              labelColor={
-                                                                "rgba(102, 102, 224)"
-                                                              }
-                                                            />
-                                                          ) : ext === "txt" ? (
-                                                            <FileIcon
-                                                              extension={"txt"}
-                                                              size={78}
-                                                              type={"document"}
-                                                              labelColor={
-                                                                "rgba(52, 120, 199)"
-                                                              }
-                                                            />
-                                                          ) : ext === "jpg" ? (
-                                                            <FileIcon
-                                                              extension={"jpg"}
-                                                              size={78}
-                                                              type={"image"}
-                                                              labelColor={
-                                                                "rgba(102, 102, 224)"
-                                                              }
-                                                            />
-                                                          ) : ext === "jpeg" ? (
-                                                            <FileIcon
-                                                              extension={"jpeg"}
-                                                              size={78}
-                                                              type={"image"}
-                                                              labelColor={
-                                                                "rgba(102, 102, 224)"
-                                                              }
-                                                            />
-                                                          ) : ext === "gif" ? (
-                                                            <FileIcon
-                                                              extension={"gif"}
-                                                              size={78}
-                                                              {...defaultStyles.gif}
-                                                            />
-                                                          ) : (
-                                                            <FileIcon
-                                                              extension={ext}
-                                                              size={78}
-                                                              {...defaultStyles.ext}
-                                                            />
-                                                          )}
-                                                          <span className="deleteBtn">
-                                                            <img
-                                                              src={
-                                                                deleteButtonCreateMeeting
-                                                              }
-                                                              width={15}
-                                                              alt=""
-                                                              height={15}
-                                                              onClick={() =>
-                                                                deleteFilefromAttachments(
-                                                                  data,
-                                                                  index
-                                                                )
-                                                              }
-                                                              draggable="false"
-                                                            />
-                                                          </span>
-                                                          <p
-                                                            className="modaltodolist-attachment-text  FontArabicRegular"
-                                                            title={
-                                                              data.displayAttachmentName
-                                                            }
-                                                          >
-                                                            {first}
-                                                          </p>
-                                                        </Col>
-                                                      );
+                                              return (
+                                                <Col sm={4} lg={4} md={4}>
+                                                  <AttachmentViewer
+                                                    id={
+                                                     0
                                                     }
-                                                  )
-                                                : null}
-                                            </Col>
-                                          </Row>
-                                        </Col>
-                                        <Col
-                                          lg={1}
-                                          md={1}
-                                          sm={1}
-                                          className="mt-4"
-                                        >
-                                          {attachments.length > 6 ? (
-                                            <>
-                                              <Button
-                                                icon={
-                                                  <img
-                                                    src={Rightploygon}
-                                                    width="20px"
-                                                    height="15px"
-                                                    alt=""
-                                                    draggable="false"
+                                                    handleClickRemove={() =>
+                                                      deleteFilefromAttachments(
+                                                        data,
+                                                        index
+                                                      )
+                                                    }
+                                                    data={data}
+                                                    name={
+                                                      data.displayAttachmentName
+                                                    }
+                                                    fk_UID={Number(
+                                                      localStorage.getItem(
+                                                        "userID"
+                                                      )
+                                                    )}
                                                   />
-                                                }
-                                                onClick={Slideright}
-                                                className={
-                                                  styles["Leftpolygon"]
-                                                }
-                                              />
-                                            </>
-                                          ) : null}
-                                        </Col>
+                                                </Col>
+
+                                                // <Col
+                                                //   sm={4}
+                                                //   lg={4}
+                                                //   md={4}
+                                                // >
+                                                //   {ext === "doc" ? (
+                                                //     <FileIcon
+                                                //       extension={"docx"}
+                                                //       size={78}
+                                                //       type={"document"}
+                                                //       labelColor={
+                                                //         "rgba(44, 88, 152)"
+                                                //       }
+                                                //     />
+                                                //   ) : ext === "docx" ? (
+                                                //     <FileIcon
+                                                //       extension={"docx"}
+                                                //       size={78}
+                                                //       type={"font"}
+                                                //       labelColor={
+                                                //         "rgba(44, 88, 152)"
+                                                //       }
+                                                //     />
+                                                //   ) : ext === "xls" ? (
+                                                //     <FileIcon
+                                                //       extension={"xls"}
+                                                //       type={"spreadsheet"}
+                                                //       size={78}
+                                                //       labelColor={
+                                                //         "rgba(16, 121, 63)"
+                                                //       }
+                                                //     />
+                                                //   ) : ext === "xlsx" ? (
+                                                //     <FileIcon
+                                                //       extension={"xls"}
+                                                //       type={"spreadsheet"}
+                                                //       size={78}
+                                                //       labelColor={
+                                                //         "rgba(16, 121, 63)"
+                                                //       }
+                                                //     />
+                                                //   ) : ext === "pdf" ? (
+                                                //     <FileIcon
+                                                //       extension={"pdf"}
+                                                //       size={78}
+                                                //       {...defaultStyles.pdf}
+                                                //     />
+                                                //   ) : ext === "png" ? (
+                                                //     <FileIcon
+                                                //       extension={"png"}
+                                                //       size={78}
+                                                //       type={"image"}
+                                                //       labelColor={
+                                                //         "rgba(102, 102, 224)"
+                                                //       }
+                                                //     />
+                                                //   ) : ext === "txt" ? (
+                                                //     <FileIcon
+                                                //       extension={"txt"}
+                                                //       size={78}
+                                                //       type={"document"}
+                                                //       labelColor={
+                                                //         "rgba(52, 120, 199)"
+                                                //       }
+                                                //     />
+                                                //   ) : ext === "jpg" ? (
+                                                //     <FileIcon
+                                                //       extension={"jpg"}
+                                                //       size={78}
+                                                //       type={"image"}
+                                                //       labelColor={
+                                                //         "rgba(102, 102, 224)"
+                                                //       }
+                                                //     />
+                                                //   ) : ext === "jpeg" ? (
+                                                //     <FileIcon
+                                                //       extension={"jpeg"}
+                                                //       size={78}
+                                                //       type={"image"}
+                                                //       labelColor={
+                                                //         "rgba(102, 102, 224)"
+                                                //       }
+                                                //     />
+                                                //   ) : ext === "gif" ? (
+                                                //     <FileIcon
+                                                //       extension={"gif"}
+                                                //       size={78}
+                                                //       {...defaultStyles.gif}
+                                                //     />
+                                                //   ) : (
+                                                //     <FileIcon
+                                                //       extension={ext}
+                                                //       size={78}
+                                                //       {...defaultStyles.ext}
+                                                //     />
+                                                //   )}
+                                                //   <span className="deleteBtn">
+                                                //     <img
+                                                //       src={
+                                                //         deleteButtonCreateMeeting
+                                                //       }
+                                                //       width={15}
+                                                //       alt=""
+                                                //       height={15}
+                                                //       onClick={() =>
+                                                //         deleteFilefromAttachments(
+                                                //           data,
+                                                //           index
+                                                //         )
+                                                //       }
+                                                //       draggable="false"
+                                                //     />
+                                                //   </span>
+                                                //   <p
+                                                //     className="modaltodolist-attachment-text  FontArabicRegular"
+                                                //     title={
+                                                //       data.displayAttachmentName
+                                                //     }
+                                                //   >
+                                                //     {first}
+                                                //   </p>
+                                                // </Col>
+                                              );
+                                            })
+                                          : null}
                                       </Row>
                                     </Col>
                                   )}

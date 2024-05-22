@@ -100,3 +100,8 @@ body[dir="rtl"] .modal-view-discription {
   background: #ccc;
   margin-left: -15px;
 }
+.NotesViewAttachment {
+  max-height: 120px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}

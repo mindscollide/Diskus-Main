@@ -413,7 +413,6 @@ const AgendaContributers = ({
         align: "left",
         ellipsis: true,
 
-
         render: (text, record) => {
           if (
             (Number(editorRole.status) === 9 ||
@@ -674,7 +673,7 @@ const AgendaContributers = ({
   //Initiate the Add Flow with Empty stae
 
   const handleInitiatewithEmptyState = () => {
-    if (Number(editorRole.status) === 1) {
+    if (Number(editorRole.status) === 10) {
     } else {
       setIsEditFlag(0);
       dispatch(showAddAgendaContributor(true));
@@ -902,7 +901,8 @@ const AgendaContributers = ({
                   className={styles["Save_button"]}
                 />
               </>
-            ) : Number(editorRole.status) === 1 ? null : (
+            ) : (
+              // ) : Number(editorRole.status) === 1 ? null : (
               <>
                 <Button
                   text={t("Edit")}
@@ -949,7 +949,7 @@ const AgendaContributers = ({
                             draggable={false}
                             src={emptyContributorState}
                             className={
-                              Number(editorRole.status) === 1
+                              Number(editorRole.status) === 10
                                 ? ""
                                 : "cursor-pointer"
                             }

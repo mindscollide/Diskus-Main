@@ -453,9 +453,10 @@ body[dir="rtl"] .errorMessage_hidden {
   margin-bottom: 95px !important;
 }
 
-/* .attachments_height {
-  height: 100px !important;
-} */
+.attachments_height {
+  max-height: 120px !important;
+  overflow-y: auto;
+}
 .EditResolution_dragger {
   height: auto !important;
 }

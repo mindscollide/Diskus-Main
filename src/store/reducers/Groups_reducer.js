@@ -325,6 +325,7 @@ const GroupsReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        groupDocuments: null,
         ResponseMessage: action.message,
       };
     }

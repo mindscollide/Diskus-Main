@@ -390,7 +390,7 @@ const GetMeetingStatus = (navigate, t) => {
             await dispatch(
               getMeetingStatusSuccess(
                 response.data.responseResult.meetingStatus,
-                t("Record-found")
+                ""
               )
             );
           }

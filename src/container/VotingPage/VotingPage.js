@@ -42,7 +42,7 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
   const userID = JSON.parse(localStorage.getItem("userID"));
   const [decision, setDecision] = useState("");
   const [decisionId, setDecisionId] = useState(0);
-  console.log(decisionId, "decisionIddecisionIddecisionId")
+  console.log(decisionId, "decisionIddecisionIddecisionId");
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -59,7 +59,8 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
       textStyle: {
         color: "#000000",
         // this will change the color of the text to white
-        fontSize: 11, // this will change the font size of the text to 12px
+        fontSize: 9, // this will change the font size of the text to 12px
+        whiteSpace: "nowrap"
       },
     },
     legend: "none",
@@ -78,24 +79,23 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
   const data = [
     ["Year", "Visitations", { role: "style" }],
     [
-      "Approved",
+      t("Approved"),
       approved,
 
       "stroke-color: #6DE595; stroke-opacity: 1 ;  fill-color: #6DE595; fill-opacity:1",
     ],
     [
-      "Non-Approved",
+      t("Not-approved"),
       nonApproved,
-
       "stroke-color: #F16B6B; stroke-opacity: 1 ; stroke-color:#F16B6B; fill-color: #F16B6B; fill-opacity:1; text-color:#F16B6B",
     ],
     [
-      "Pending",
+      t("Pending"),
       pending,
       "stroke-color: #000; stroke-opacity: 1 ; stroke-color:#000000; fill-color: #000000; fill-opacity:1",
     ],
     [
-      "Abstain",
+      t("Abstain"),
       abstain,
       "stroke-color: #000; stroke-color:#949494;  stroke-width: 4; fill-color: #949494 ; fill-opacity:1",
     ],
@@ -310,12 +310,18 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
                                 alt=""
                                 draggable="false"
                               />
-                              <span className={styles["voting_method_heading"]}>
-                                {t("Voting-method") + " : "}{" "}
-                              </span>{" "}
-                              <span className={styles["voting_methong_value"]}>
-                                {t("Secret-balloting")}
-                              </span>
+                              <div className="d-flex">
+                                <span
+                                  className={styles["voting_method_heading"]}
+                                >
+                                  {t("Voting-method") + " : "}{" "}
+                                </span>{" "}
+                                <span
+                                  className={styles["voting_methong_value"]}
+                                >
+                                  {t("Secret-balloting")}
+                                </span>
+                              </div>
                             </Col>
                           </Row>
                         </>
@@ -391,7 +397,7 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
                     >
                       <span className={styles["line_voteResolution"]}></span>
                     </Col>
-                    <Col lg={4} md={4} sm={12} className="px-3">
+                    <Col lg={4} md={4} sm={12}>
                       <Row>
                         <Col
                           lg={12}
@@ -473,15 +479,16 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
                         </Col>
                       </Row>
                       <Row>
-                        <Col lg={12} md={12} sm={12}>
+                        <Col lg={12} md={12} sm={12} className="d-flex justify-content-center">
                           <Chart
                             chartType="ColumnChart"
-                            width="100%"
+                            width="500px"
                             height="250px"
                             radius={10}
                             data={data}
                             options={options}
                             className={styles["Addchart"]}
+                         
                           />
                         </Col>
                       </Row>

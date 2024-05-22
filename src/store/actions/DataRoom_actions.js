@@ -2376,7 +2376,7 @@ const getRecentDocumentsApi = (navigate, t, data) => {
               dispatch(
                 recentDocuments_success(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -2461,7 +2461,7 @@ const getSharedFileUsersApi = (navigate, data, t, setShareFileModal) => {
               dispatch(
                 getSharedFileUser_success(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
               setShareFileModal(true);
@@ -2547,7 +2547,7 @@ const getSharedFolderUsersApi = (navigate, data, t, setSharefoldermodal) => {
               dispatch(
                 getSharedFolderUser_success(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
               setSharefoldermodal(true);

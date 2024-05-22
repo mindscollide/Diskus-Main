@@ -1008,7 +1008,7 @@ const OrganizationLevelSetting = () => {
                             : styles["Options_headings"]
                         }
                       >
-                        {t("Todo")}
+                        {t("Tasks")}
                       </span>
                     </Col>
                   </Row>

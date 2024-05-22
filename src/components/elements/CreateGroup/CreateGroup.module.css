@@ -81,6 +81,10 @@ body[dir="rtl"] .no-members-found {
   text-decoration: underline !important;
   font-size: 10px !important;
   font-weight: 400;
+  white-space: nowrap;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 body[dir="rtl"] .email-create-group a {
@@ -390,4 +394,11 @@ body[dir="rtl"] .Leftpolygon {
   border-radius: 4px !important;
   padding: 10px 10px !important;
   margin-top: 8px !important;
+}
+.CreateGroupAttachments {
+  min-height: 120px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 10px;
+  max-height: 120px;
 }

@@ -51,6 +51,10 @@ body[dir="rtl"] .Create-Committee-Head-Heading {
   color: #5a5a5a;
   font-size: 12px !important;
   font-weight: 600 !important;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: block;
+  overflow: hidden;
 }
 
 body[dir="rtl"] .name-create-Committee {
@@ -68,11 +72,14 @@ body[dir="rtl"] .Designation-create-Committee {
 }
 
 .email-create-Committee {
-  color: #5a5a5a;
   color: #6172d6;
   text-decoration: underline !important;
   font-size: 10px !important;
   font-weight: 400 !important;
+  white-space: nowrap;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 body[dir="rtl"] .email-create-Committee {
@@ -80,6 +87,9 @@ body[dir="rtl"] .email-create-Committee {
 }
 
 body[dir="rtl"] .No-member {
+  font-weight: 600;
+}
+.No-member {
   font-weight: 600;
 }
 
@@ -396,7 +406,9 @@ body[dir="rtl"] .Leftpolygon {
   right: -4px !important;
 }
 .files_View {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  min-height: 120px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 20px;
+  max-height: 120px;
 }

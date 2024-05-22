@@ -425,6 +425,7 @@ const Home = () => {
       ) {
         let meetingID = meetingIdReducer.MeetingStatusSocket.meetingID;
         updateCalendarData(true, meetingID);
+        console.log("upComingEvents");
         setUpComingEvents((upcomingeventData) =>
           upcomingeventData.filter(
             (meetingData) =>
@@ -436,6 +437,7 @@ const Home = () => {
             return eventData.pK_MDID !== Number(meetingID);
           })
         );
+        console.log("upComingEvents");
         setUpComingEvents((upcomingeventData) =>
           upcomingeventData.map((meetingData) => {
             return (
@@ -467,6 +469,7 @@ const Home = () => {
             return eventData;
           })
         );
+        console.log("upComingEvents", events);
         setUpComingEvents((upcomingeventData) =>
           upcomingeventData.map((meetingData) => {
             if (
@@ -752,8 +755,10 @@ const Home = () => {
           }
         );
 
+        console.log("upComingEvents", updatedUpcomingEvents);
         setUpComingEvents(updatedUpcomingEvents); // Set the updated state
       } else {
+        console.log("upComingEvents", upComingEvents);
         setUpComingEvents([]);
       }
     } catch (error) {
@@ -1179,38 +1184,44 @@ const Home = () => {
     events,
     "meetingIdReducermeetingIdReducermeetingIdReducer"
   );
+  console.log("upComingEvents", upComingEvents);
   // Meeting Status End Updated
   useEffect(() => {
     try {
       if (meetingIdReducer.MeetingStatusEnded !== null) {
-        let meetingID = meetingIdReducer.MeetingStatusEnded?.meeting?.pK_MDID;
-        console.log(meetingID, "meetingIDmeetingIDmeetingID");
-        setUpComingEvents((upcomingeventData) => {
-          return upcomingeventData.filter((meetingData) => {
-            return (
-              Number(meetingData.meetingDetails.pK_MDID) !== Number(meetingID)
-            );
+        try {
+          let meetingID = meetingIdReducer.MeetingStatusEnded?.meeting?.pK_MDID;
+          console.log(meetingID, "meetingIDmeetingIDmeetingID");
+          console.log("upComingEvents");
+          setUpComingEvents((upcomingeventData) => {
+            return upcomingeventData.filter((meetingData) => {
+              return (
+                Number(meetingData.meetingDetails.pK_MDID) !== Number(meetingID)
+              );
+            });
           });
-        });
-        setCalendarEvents((calendarEventData) => {
-          return calendarEventData.map((data) => {
-            if (Number(data.pK_MDID) === Number(meetingID)) {
-              // Assuming statusID is defined somewhere and you want to update it for this data item
-              data.statusID = 9;
-            }
-            return data; // Always return the data item
+          setCalendarEvents((calendarEventData) => {
+            return calendarEventData.map((data) => {
+              if (Number(data.pK_MDID) === Number(meetingID)) {
+                // Assuming statusID is defined somewhere and you want to update it for this data item
+                data.statusID = 9;
+              }
+              return data; // Always return the data item
+            });
           });
-        });
-        setEvents((event) =>
-          event.map((eventData, index) => {
-            if (eventData.pK_MDID === Number(meetingID)) {
-              eventData.status = 9;
-            }
-            return eventData;
-          })
-        );
-        // dispatch(getMeetingStatusfromSocket(null));
-        dispatch(mqttCurrentMeetingEnded(null));
+          setEvents((event) =>
+            event.map((eventData, index) => {
+              if (eventData.pK_MDID === Number(meetingID)) {
+                eventData.status = 9;
+              }
+              return eventData;
+            })
+          );
+          // dispatch(getMeetingStatusfromSocket(null));
+          dispatch(mqttCurrentMeetingEnded(null));
+        } catch (error) {
+          console.log(error);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -1218,21 +1229,26 @@ const Home = () => {
   }, [meetingIdReducer.MeetingStatusEnded]);
 
   const upcomingEventsHandler = (upComingEvents) => {
+    console.log("upComingEvents", upComingEvents);
     let flag = false;
     let indexforUndeline = null;
-    upComingEvents.map((upcomingEventsData, index) => {
-      if (
-        upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
-        getCurrentDate
-      ) {
-        if (indexforUndeline === null && flag === false) {
-          // if (index - 1 >= 0) {
-          flag = true;
-          indexforUndeline = index;
-          // }
+    try {
+      upComingEvents.map((upcomingEventsData, index) => {
+        if (
+          upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
+          getCurrentDate
+        ) {
+          if (indexforUndeline === null && flag === false) {
+            // if (index - 1 >= 0) {
+            flag = true;
+            indexforUndeline = index;
+            // }
+          }
         }
-      }
-    });
+      });
+    } catch (error) {
+      console.log(error);
+    }
 
     return upComingEvents.map((upcomingEventsData, index) => {
       let meetingDateTime =

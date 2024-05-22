@@ -1045,6 +1045,7 @@ span.SubAgenda_Description {
   text-transform: uppercase !important;
   height: 30px !important;
   width: 85px !important;
+  margin-top: 10px;
 }
 
 .box-agendas-camera {

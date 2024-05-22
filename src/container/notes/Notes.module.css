@@ -223,10 +223,13 @@ body[dir="rtl"] .editIconBox {
 .NotesAttachments {
   width: 100% !important;
   display: flex;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   align-items: center;
   padding: 0 !important;
+  gap: 10px;
+  flex-wrap: wrap;
+  max-height: 85px !important;
 }
 
 .NotesAttachments::-webkit-scrollbar {

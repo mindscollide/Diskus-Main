@@ -64,7 +64,6 @@ const getUserSetting = (navigate, t, loader) => {
               response.data.responseResult.responseMessage ===
               "Settings_SettingsServiceManager_GetUserSettings_01"
             ) {
-          
               localStorage.setItem(
                 "calenderMonthsSpan",
                 response.data.responseResult.userSettings.calenderMonthsSpan
@@ -120,11 +119,7 @@ const getUserSetting = (navigate, t, loader) => {
               );
 
               await dispatch(
-                settingSuccess(
-                  response.data.responseResult.userSettings,
-                  t("Record-found"),
-                  loader
-                )
+                settingSuccess(response.data.responseResult.userSettings, "")
               );
               // navigate("/Admin/ManageUsers");
             } else if (
@@ -242,7 +237,7 @@ const getUserDetails = (
               await dispatch(
                 getuserdetailssuccess(
                   response.data.responseResult.organization,
-                  t("Record-found")
+                  ""
                 )
               );
               setUserProfileModal(true);

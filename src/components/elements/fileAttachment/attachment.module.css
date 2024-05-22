@@ -39,21 +39,19 @@ body[dir="rtl"] .borderFileName {
 }
 
 .fileNameTruncateStyle {
-  width: 125px !important;
+  width: 87px !important;
   justify-content: flex-start !important;
   display: flex !important;
   gap: 5px;
-
 }
 .fileNameTruncateStyle_fullwidth {
-  width: 160px !important;
+  width: 158px !important;
   display: flex !important;
   gap: 10px;
+  padding: 0 10px;
 }
 .fileNameAttachment {
-
   font-size: 12px;
-  /* text-decoration-line: underline; */
   color: #5a5a5c;
   font-weight: 500;
   text-overflow: ellipsis;
@@ -86,15 +84,16 @@ body[dir="rtl"] .fileNameAttachment {
 
 .agendaFileAttachedView {
   cursor: pointer;
+  -webkit-user-select: none !important;
   user-select: none !important;
   box-sizing: border-box;
   background: #f6f9fc;
   border: 1px solid #d4d4d4;
   border-radius: 25px;
-  width: 190px;
+  min-width: 165px;
   height: 30px;
   position: relative;
-  z-index: 1;
+  z-index: 0;
   margin-top: 10px;
   display: flex;
   align-items: center;

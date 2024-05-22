@@ -187,6 +187,10 @@ body[dir="rtl"] .PaginationStyle-Resolution {
   font-size: 12px !important;
   border-radius: 4px !important;
   font-weight: 500 !important;
+  white-space: nowrap;
+  display: block;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .votedButton {
@@ -204,7 +208,7 @@ body[dir="rtl"] .PaginationStyle-Resolution {
 
 .Not_Vote_Button_Polls {
   width: 64px !important;
-  height: 20px !important;
+  height: auto !important;
   border-radius: 4px !important;
   border: none !important;
   font-size: 8px !important;
@@ -215,7 +219,7 @@ body[dir="rtl"] .PaginationStyle-Resolution {
 
 .Not_Vote_Button_Polls:is(:hover, :active, :focus, :focus-visible) {
   width: 64px !important;
-  height: 20px !important;
+  height: auto !important;
   border-radius: 4px !important;
   border: none !important;
   font-size: 8px !important;

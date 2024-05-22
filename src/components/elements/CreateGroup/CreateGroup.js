@@ -18,6 +18,7 @@ import {
   InputSearchFilter,
   Notification,
   Loader,
+  AttachmentViewer,
 } from "./../../../components/elements";
 import styles from "./CreateGroup.module.css";
 import Select from "react-select";
@@ -93,7 +94,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
     name: "",
   });
 
-  const [onclickFlag, setOnclickFlag] = useState(false);
   // for Participant id's
   const participantOptionsWithIDs = [
     { label: t("Head"), id: 2 },
@@ -109,80 +109,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
     dispatch(getGroupMembersRoles(navigate, Data, t));
     dispatch(getOrganizationGroupTypes(navigate, Data, t));
   }, []);
-
-  //Drop Down Values
-  // const searchFilterHandler = (value) => {
-  //   let allAssignees = assignees.user;
-  //   if (
-  //     allAssignees != undefined &&
-  //     allAssignees != null &&
-  //     allAssignees != NaN &&
-  //     allAssignees != []
-  //   ) {
-  //     return allAssignees
-  //       .filter((item) => {
-  //         const searchTerm = value.toLowerCase();
-  //         const assigneesName = item.name.toLowerCase();
-  //         return (
-  //           searchTerm &&
-  //           assigneesName.startsWith(searchTerm) &&
-  //           assigneesName !== searchTerm
-  //         );
-  //       })
-  //       .slice(0, 3)
-  //       .map((item) => (
-  //         <div
-  //           onClick={() => onSearch(item.name, item.pK_UID)}
-  //           className="dropdown-row-assignee d-flex flex-row align-items-center"
-  //           key={item.pK_UID}
-  //         >
-  //           <img src={userImage} />
-  //           <p className="p-0 m-0">{item.name}</p>
-  //         </div>
-  //       ));
-  //   } else {
-  //   }
-  // };
-  // const searchFilterHandler = (value) => {
-  //   if (meetingAttendeesList.length > 0 && meetingAttendeesList) {
-  //     return meetingAttendeesList
-  //       .filter((item) => {
-  //         const searchTerm = value.toLowerCase();
-  //         const assigneesName = item.name.toLowerCase();
-
-  //         return (
-  //           searchTerm && assigneesName.startsWith(searchTerm)
-  //           // assigneesName !== searchTerm.toLowerCase()
-  //         );
-  //       })
-  //       .slice(0, 10)
-  //       .map((item) => (
-  //         <div
-  //           onClick={() => onSearch(item.name, item.pK_UID)}
-  //           className="dropdown-row-assignee d-flex align-items-center flex-row"
-  //           key={item.pK_UID}
-  //         >
-  //           {}
-  //           <img
-  //             src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
-  //             alt=""
-  //             className="user-img"
-  //             draggable="false"
-  //           />
-  //           <p className="p-0 m-0">{item.name}</p>
-  //         </div>
-  //       ));
-  //   } else {
-  //   }
-  // };
-  // const onSearch = (name, id) => {
-  //   setOnclickFlag(true);
-  //   setTaskAssignedToInput(name);
-  //   setTaskAssignedTo(id);
-  //   setTaskAssignedName(name);
-  // };
-
-  // for meatings  Attendees
 
   // for attendies Role handler
   const assigntRoleAttendies = (e, value) => {
@@ -291,12 +217,12 @@ const CreateGroup = ({ setCreategrouppage }) => {
     if (taskAssignedTo !== 0 && attendees.length > 0) {
       setOpen({
         flag: true,
-        message: t("You can add data from only one form option at a time"),
+        message: t("You-can-add-data-from-only-one-form-option-at-a-time"),
       });
     } else if (!participantRoleName) {
       setOpen({
         flag: true,
-        message: t("Please select a group member type as well"),
+        message: t("Please-select-a-group-member-type-as-well"),
       });
     } else if (taskAssignedTo !== 0) {
       const foundIndex = newMeetingAttendees.findIndex(
@@ -346,7 +272,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
       } else {
         setOpen({
           flag: true,
-          message: t("User already exists"),
+          message: t("User-already-exists"),
         });
         setTaskAssignedTo(0);
         setParticipantRoleName("");
@@ -370,7 +296,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
       if (check === true) {
         setOpen({
           flag: true,
-          message: t("User already exists"),
+          message: t("User-already-exists"),
         });
         setAttendees([]);
         setTaskAssignedTo(0);
@@ -415,7 +341,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
       } else {
         setOpen({
           flag: true,
-          message: t("Please select a group member type as well"),
+          message: t("Please-select-a-group-member-type-as-well"),
         });
         setTaskAssignedTo(0);
         setParticipantRoleName("");
@@ -425,7 +351,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
     } else {
       setOpen({
         flag: true,
-        message: t("Please select at least one member"),
+        message: t("Please-select-at-least-one-member"),
       });
       setTaskAssignedTo(0);
       setParticipantRoleName("");
@@ -1335,45 +1261,28 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           </span>
                         </Col>
                       </Row>
-                      <Row className="mt-1">
-                        <Col lg={1} md={1} sm={1} className="mt-4">
-                          {fileAttachments.length > 2 ? (
-                            <>
-                              <Button
-                                icon={
-                                  <img
-                                    src={Leftploygon}
-                                    width="20px"
-                                    height="15px"
-                                    draggable="false"
-                                  />
-                                }
-                                onClick={SlideLeft}
-                                className={styles["Leftpolygon"]}
-                              />
-                            </>
-                          ) : null}
-                        </Col>
-                        <Col lg={10} md={10} sm={10}>
-                          <Row>
-                            <Col
-                              lg={12}
-                              md={12}
-                              sm={12}
-                              className="ScrolllerFiles_Committees"
-                              id="Slider"
-                            >
-                              {fileAttachments.length > 0
-                                ? fileAttachments.map((data, index) => {
-                                    return (
-                                      <>
-                                        <Col
-                                          lg={4}
-                                          md={4}
-                                          sm={12}
-                                          className="position-relative gap-2"
-                                        >
-                                          <span
+                      <section className={styles["CreateGroupAttachments"]}>
+                      <Row>
+                        {fileAttachments.length > 0
+                          ? fileAttachments.map((data, index) => {
+                              return (
+                                <>
+                                  <Col
+                                    lg={4}
+                                    md={4}
+                                    sm={4}
+                                    // className="position-relative gap-2"
+                                  >
+                                    <AttachmentViewer
+                                      data={data}
+                                      name={data.DisplayAttachmentName}
+                                      fk_UID={creatorID}
+                                      id={0}
+                                      handleClickRemove={() => {
+                                        handleRemoveFile(index)
+                                      }}
+                                    />
+                                    {/* <span
                                             className={
                                               styles["Crossicon_Class"]
                                             }
@@ -1442,34 +1351,14 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                 </Col>
                                               </Row>
                                             </section>
-                                          </section>
-                                        </Col>
-                                      </>
-                                    );
-                                  })
-                                : null}
-                            </Col>
-                          </Row>
-                        </Col>
-                        <Col lg={1} md={1} sm={1} className="mt-4">
-                          {fileAttachments.length > 2 ? (
-                            <>
-                              <Button
-                                icon={
-                                  <img
-                                    src={Rightploygon}
-                                    width="20px"
-                                    height="15px"
-                                    draggable="false"
-                                  />
-                                }
-                                onClick={Slideright}
-                                className={styles["Leftpolygon"]}
-                              />
-                            </>
-                          ) : null}
-                        </Col>
+                                          </section> */}
+                                  </Col>
+                                </>
+                              );
+                            })
+                          : null}
                       </Row>
+                      </section>
                       <Row className="mt-2">
                         <Col lg={12} md={12} sm={12}>
                           <Dragger

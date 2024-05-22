@@ -393,7 +393,6 @@
   "No-record-has-been-updated": "لم يتم تحديث أي سجل",
   "The-meeting-has-been-cancelled": "الغي الاجتماع",
   "The-meeting-has-not-been-cancelled-successfully": "لم يتم إلغاء الاجتماع بنجاح",
-  "Record-found": "تم العثور على سجل",
   "The-meeting-has-been-started": "بدأ الاجتماع",
   "The-meeting-has-been-ended": "انتهى الاجتماع",
   "The-meeting-has-not-been-ended": "الاجتماع لم ينته",
@@ -1964,9 +1963,16 @@
   "Notify-when-group-becomes-in-active": "Notify When Group becomes In Active",
   "Notify-when-group-becomes-active": "Notify When Group becomes Active",
   "NEW_GROUP_MEMBER_ADDED": "You have been added in a [Group Title] Group",
-  "GROUP_MEMBER_REMOVED": "You have been removed in a [Group Title] Group",
-  "MEMBER_REMOVED_FROM_COMMITTEE": "You have been removed in a [Committee Title] Committee",
+  "GROUP_MEMBER_REMOVED": "You have been removed from Group [Group Title]",
+  "MEMBER_REMOVED_FROM_COMMITTEE": "You have been removed from Committee [Committee Title]",
   "NEW_MEMBER_ADDED_IN_COMMITTEE": "You have been added in a [Committee Title] Committee",
   "COMMITTTEE_STATUS_EDITED_ACTIVE": "Committee [Committee Title] in which you are a member has been set as Active",
-  "Country-selection-is-required": "Country selection is required"
+  "Country-selection-is-required": "Country selection is required",
+  "Task-has-been-created-successfully": "Task has been created successfully",
+  "Signature": "Signature",
+  "Signers-is-required": "Signers is required",
+  "You-can-add-data-from-only-one-form-option-at-a-time": "You can add data from only one form option at a time",
+  "Please-select-a-group-member-type-as-well": "Please select a group member type as well",
+  "Please-select-at-least-one-member": "Please select at least one member",
+  "Task-has-been-deleted-successfully": "Task has been deleted successfully"
 }

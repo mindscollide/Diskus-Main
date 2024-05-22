@@ -328,3 +328,11 @@ body[dir="rtl"] .errorNotesMessage_description {
 body[dir="rtl"] .errorNotesMessage_hidden_description {
   font-weight: 600 !important;
 }
+.viewMinutesAttachments {
+  max-height: 110px;
+  min-height: 110px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 15px;
+
+}

@@ -1558,7 +1558,22 @@ const revokeMicrosoftToken = {
   RequestMethod: "ServiceManager.RevokeMicrosoftToken",
 };
 
+const ValidateEmailRelatedString = {
+  RequestMethod:
+    "ServiceManager.ValidateEncryptedStringMeetingRelatedEmailData",
+};
+
+const ValidateEmailRelatedStringPolls = {
+  RequestMethod: "ServiceManager.ValidateEncryptedStringPollRelatedEmailData",
+};
+
+const downloadAttachmentTalk = {
+  RequestMethod: "ServiceManager.DownloadAttachment",
+};
+
 export {
+  ValidateEmailRelatedStringPolls,
+  ValidateEmailRelatedString,
   revokeMicrosoftToken,
   leaveFolderSharingRM,
   leaveFileSharingRM,
@@ -1972,4 +1987,5 @@ export {
   CancelSubReasons,
   CancelOrganizationsSubscriptions,
   // upgradePackageApiCallOnPackageDetailPage,
+  downloadAttachmentTalk,
 };

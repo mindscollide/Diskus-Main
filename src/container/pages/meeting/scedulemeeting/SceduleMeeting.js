@@ -50,11 +50,11 @@ const SceduleMeeting = ({
 }) => {
   const { t } = useTranslation();
   const { NewMeetingreducer } = useSelector((state) => state);
-  const [meetingDetails, setmeetingDetails] = useState(true);
+  const [meetingDetails, setmeetingDetails] = useState(editorRole.role === "Agenda Contributor" ? false : true);
   const [organizers, setorganizers] = useState(false);
   const [agendaContributors, setAgendaContributors] = useState(false);
   const [participants, setParticipants] = useState(false);
-  const [agenda, setAgenda] = useState(false);
+  const [agenda, setAgenda] = useState(editorRole.role === "Agenda Contributor" ? true : false);
   const [meetingMaterial, setMeetingMaterial] = useState(false);
   const [minutes, setMinutes] = useState(false);
   const [proposedMeetingDates, setProposedMeetingDates] = useState(false);

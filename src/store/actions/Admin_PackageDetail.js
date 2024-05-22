@@ -67,7 +67,7 @@ const getSubscribeOrganizationPackage = (navigate, t) => {
               dispatch(
                 packageDetailSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (

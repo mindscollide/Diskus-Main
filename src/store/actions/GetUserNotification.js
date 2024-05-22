@@ -62,7 +62,7 @@ const getNotifications = (navigate, userID, t) => {
               await dispatch(
                 getuusernotifcationsuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (

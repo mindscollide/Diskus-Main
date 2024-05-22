@@ -255,7 +255,7 @@ const TodoList = () => {
       ToDoID: Number(record.pK_TID),
       UpdateFileList: [],
     };
-    dispatch(saveTaskDocumentsApi(navigate, NewData, t, 2, setShow));
+    dispatch(saveTaskDocumentsApi(navigate, NewData, t, 2, setShow, 6));
     // await dispatch(updateTodoStatusFunc(navigate, 6, record.pK_TID, t, false));
     // if (todoListPageSize !== null && todoListCurrentPage !== null) {
     //   dispatch(
@@ -619,7 +619,7 @@ const TodoList = () => {
     if (
       toDoListReducer.ResponseMessage != "" &&
       toDoListReducer.ResponseMessage != undefined &&
-      toDoListReducer.ResponseMessage != t("Record-found") &&
+      toDoListReducer.ResponseMessage != "" &&
       toDoListReducer.ResponseMessage !== t("No-records-found")
     ) {
       setOpen({
@@ -638,7 +638,7 @@ const TodoList = () => {
       dispatch(clearResponce());
     } else if (
       assignees.ResponseMessage !== "" &&
-      assignees.ResponseMessage !== t("Record-found") &&
+      assignees.ResponseMessage !== "" &&
       assignees.ResponseMessage !== t("No-records-found")
     ) {
       setOpen({
@@ -681,7 +681,7 @@ const TodoList = () => {
     if (
       getTodosStatus.ResponseMessage !== "" &&
       getTodosStatus.ResponseMessage !== undefined &&
-      getTodosStatus.ResponseMessage !== t("Record-found") &&
+      getTodosStatus.ResponseMessage !== "" &&
       getTodosStatus.ResponseMessage !== t("No-records-found")
     ) {
       setOpen({
@@ -701,7 +701,7 @@ const TodoList = () => {
     } else if (
       getTodosStatus.UpdateTodoStatusMessage !== "" &&
       getTodosStatus.UpdateTodoStatusMessage !== undefined &&
-      getTodosStatus.UpdateTodoStatusMessage !== t("Record-found") &&
+      getTodosStatus.UpdateTodoStatusMessage !== "" &&
       getTodosStatus.UpdateTodoStatusMessage !== t("No-records-found")
     ) {
       setOpen({
@@ -721,7 +721,7 @@ const TodoList = () => {
     } else if (
       getTodosStatus.UpdateTodoStatus !== "" &&
       getTodosStatus.UpdateTodoStatus !== undefined &&
-      getTodosStatus.UpdateTodoStatus !== t("Record-found") &&
+      getTodosStatus.UpdateTodoStatus !== "" &&
       getTodosStatus.UpdateTodoStatus !== t("No-records-found")
     ) {
       setOpen({

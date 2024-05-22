@@ -255,7 +255,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         setAddUserSection({
           ...addUserSection,
           Email: {
-            value: value.trimStart(),
+            value: value.trim(),
             errorMessage: "",
             errorStatus: false,
           },
@@ -594,7 +594,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     if (
       adminReducer.UpdateOrganizationMessageResponseMessage !== "" &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
-        t("Record-found") &&
+        "" &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
         t(
           "User-created-successfully-and-the-otp-has-been-generated-please-verify-you-email"
@@ -623,7 +623,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     } else if (
       adminReducer.AllOrganizationResponseMessage !== "" &&
       adminReducer.AllOrganizationResponseMessage !== t("Data-available") &&
-      adminReducer.AllOrganizationResponseMessage !== t("Record-found") &&
+      adminReducer.AllOrganizationResponseMessage !== "" &&
       adminReducer.AllOrganizationResponseMessage !==
         t(
           "User-created-successfully-and-the-otp-has-been-generated-please-verify-you-email"
@@ -654,7 +654,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       adminReducer.DeleteOrganizationMessageResponseMessage !== "" &&
       adminReducer.DeleteOrganizationMessageResponseMessage !== null &&
       adminReducer.DeleteOrganizationMessageResponseMessage !==
-        t("Record-found") &&
+        "" &&
       adminReducer.DeleteOrganizationMessageResponseMessage !==
         t(
           "User-created-successfully-and-the-otp-has-been-generated-please-verify-you-email"
@@ -683,7 +683,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       dispatch(cleareMessage());
     } else if (
       adminReducer.ResponseMessage !== "" &&
-      adminReducer.ResponseMessage !== t("Record-found") &&
+      adminReducer.ResponseMessage !== "" &&
       adminReducer.ResponseMessage !== t("Data-available") &&
       adminReducer.ResponseMessage !==
         t(

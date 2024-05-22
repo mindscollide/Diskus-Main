@@ -57,7 +57,7 @@ const getOrganizationLevelSetting = (navigate, t) => {
               dispatch(
                 getOrganizationLevelSettingSuccess(
                   response.data.responseResult.organizationSettings,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (

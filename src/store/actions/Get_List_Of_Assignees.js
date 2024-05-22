@@ -109,7 +109,7 @@ const allAssignessList = (navigate, t) => {
               await dispatch(
                 allassignesslistsuccess(
                   response.data.responseResult.user,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -504,7 +504,7 @@ const ViewMeeting = (
               await dispatch(
                 ViewMeetingSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
               if (no === 1) {
@@ -945,7 +945,7 @@ const GetAllReminders = (navigate, t) => {
               await dispatch(
                 getAllRemindersSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (

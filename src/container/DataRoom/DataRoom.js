@@ -837,6 +837,10 @@ const DataRoom = () => {
   };
 
   const handleSortMyDocuments = (pagination, filters, sorter) => {
+    console.log(
+      { filters, sorter },
+      "handleSortMyDocumentshandleSortMyDocuments"
+    );
     if (sorter.field === "name") {
       if (sorter.order === "ascend") {
         dispatch(
@@ -893,6 +897,29 @@ const DataRoom = () => {
     }
 
     if (sorter.field === "owner") {
+      if (sorter.order === "descend" || sorter.order === undefined) {
+        dispatch(
+          getDocumentsAndFolderApi(
+            navigate,
+            Number(currentView),
+            t,
+            1,
+            Number(2),
+            true
+          )
+        );
+      } else if (sorter.order === "ascend") {
+        dispatch(
+          getDocumentsAndFolderApi(
+            navigate,
+            Number(currentView),
+            t,
+            1,
+            Number(2),
+            false
+          )
+        );
+      }
     }
     setFilteredInfo(filters);
     setSortedInfo(sorter);
@@ -1789,6 +1816,7 @@ const DataRoom = () => {
       key: "owner",
       width: "90px",
       sortDirections: ["ascend", "descend"],
+      sorter: true,
       sortOrder: sortedInfo.columnKey === "owner" && sortedInfo.order,
       render: (text, record) => {
         return <span className={styles["ownerName"]}>{text}</span>;
@@ -3231,7 +3259,7 @@ const DataRoom = () => {
       DataRoomReducer.ResponseMessage !==
         t("No-folder-exist-against-this-name") &&
       DataRoomReducer.ResponseMessage !== t("No-duplicate-found") &&
-      DataRoomReducer.ResponseMessage !== t("Record-found") &&
+      DataRoomReducer.ResponseMessage !== "" &&
       DataRoomReducer.ResponseMessage !== t("Document-uploaded-successfully") &&
       DataRoomReducer.ResponseMessage !== t("Files-saved-successfully")
     ) {

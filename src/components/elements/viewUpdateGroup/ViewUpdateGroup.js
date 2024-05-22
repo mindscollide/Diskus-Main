@@ -16,6 +16,7 @@ import {
   SelectBox,
   InputSearchFilter,
   Loader,
+  AttachmentViewer,
 } from "./../../../components/elements";
 import CrossIcon from "../../../assets/images/cancel_meeting_icon.svg";
 import { useDispatch, useSelector } from "react-redux";
@@ -164,7 +165,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
   let previousFileList = [];
   //Sliders For Attachments
 
-  const handleDoubleCLickFile = (data) => {
+  const handleClickViewIcon = (data) => {
     let ext = data.DisplayAttachmentName.split(".").pop();
     let pdfData = {
       taskId: data.pK_FileID,
@@ -173,25 +174,28 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
       attachmentID: data.pK_FileID,
     };
     const pdfDataJson = JSON.stringify(pdfData);
-    if (ext === "pdf") {
+    let fileExtension = ["pdf", "doc", "docx", "xls", "xlsx"].includes(ext);
+    if (fileExtension) {
       window.open(
         `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
         "_blank",
         "noopener noreferrer"
       );
-    } else {
-      let data2 = {
-        FileID: Number(data.pK_FileID),
-      };
-      dispatch(
-        DataRoomDownloadFileApiFunc(
-          navigate,
-          data2,
-          t,
-          data.DisplayAttachmentName
-        )
-      );
     }
+  };
+
+  const handleClickDownloadfunc = (data) => {
+    let data2 = {
+      FileID: Number(data.pK_FileID),
+    };
+    dispatch(
+      DataRoomDownloadFileApiFunc(
+        navigate,
+        data2,
+        t,
+        data.DisplayAttachmentName
+      )
+    );
   };
 
   useEffect(() => {
@@ -285,15 +289,6 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
   return (
     <>
       <section className=" color-5a5a5a">
-        {/* <Row className="mt-3">
-        <Col lg={12} md={12} sm={12}>
-          <span className={styles["View-Group-heading"]}>
-            {t("View-group")}
-          </span>
-        </Col>
-      </Row> */}
-
-        {/* <Paper className={styles["View-group-paper"]}> */}
         <Row>
           <Col lg={6} md={6} sm={6}>
             <Row>
@@ -487,8 +482,9 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
                 </Dragger>
               </Col>
             </Row>
-            <Row className="mt-4">
-              <Col lg={12} md={12} sm={12} className={styles["Scroller_files"]}>
+            <section className={styles["Scroller_files"]}>
+              <Row className="mt-2">
+                {/* <Col lg={12} md={12} sm={12} className={styles["Scroller_files"]}> */}
                 {fileAttachments.length > 0
                   ? fileAttachments.map((data, index) => {
                       return (
@@ -497,76 +493,27 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
                             lg={4}
                             md={4}
                             sm={4}
-                            className="position-relative gap-2 mt-2 "
+                            // className="position-relative gap-2 mt-2 "
                           >
-                            {Number(data.fk_UserID) === Number(userID) && (
-                              <>
-                                <span className={styles["Crossicon_Class"]}>
-                                  <img
-                                    src={CrossIcon}
-                                    height="12.68px"
-                                    width="12.68px"
-                                    onClick={() => handleRemoveFile(data)}
-                                    alt=""
-                                  />
-                                </span>
-                              </>
-                            )}
-
-                            <section
-                              className={styles["Outer_Box"]}
-                              onClick={() => handleDoubleCLickFile(data)}
-                            >
-                              <Row>
-                                <Col lg={12} md={12} sm={12}>
-                                  <img
-                                    src={file_image}
-                                    width={"100%"}
-                                    alt=""
-                                    draggable="false"
-                                  />
-                                </Col>
-                              </Row>
-
-                              <section
-                                className={styles["backGround_name_Icon"]}
-                              >
-                                <Row className="mb-2">
-                                  <Col
-                                    lg={12}
-                                    md={12}
-                                    sm={12}
-                                    className={styles["IconTextClass"]}
-                                  >
-                                    <img
-                                      src={getIconSource(
-                                        getFileExtension(
-                                          data.DisplayAttachmentName
-                                        )
-                                      )}
-                                      height="10px"
-                                      width="10px"
-                                      className={styles["IconPDF"]}
-                                      alt=""
-                                      draggable="false"
-                                    />
-                                    <span
-                                      className={styles["FileName"]}
-                                      title={data.DisplayAttachmentName}
-                                    >
-                                      {data.DisplayAttachmentName}
-                                    </span>
-                                  </Col>
-                                </Row>
-                              </section>
-                            </section>
+                            <AttachmentViewer
+                              data={data}
+                              fk_UID={data.fk_UserID}
+                              handleEyeIcon={() => handleClickViewIcon(data)}
+                              id={data.pK_FileID}
+                              handleClickRemove={() => handleRemoveFile(data)}
+                              handleClickDownload={() =>
+                                handleClickDownloadfunc(data)
+                              }
+                              name={data.DisplayAttachmentName}
+                            />
                           </Col>
                         </>
                       );
                     })
                   : null}
-              </Col>
-            </Row>
+                {/* </Col> */}
+              </Row>
+            </section>
           </Col>
         </Row>
         <Row className="mt-4">
@@ -582,7 +529,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
               onClick={handleClose}
             />
             <Button
-              className={styles["Close-ViewGroup-btn"]}
+              className={styles["Save-ViewGroup-btn"]}
               text={t("Save")}
               onClick={handleViewSave}
             />

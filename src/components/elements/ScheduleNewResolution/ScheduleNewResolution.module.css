@@ -407,9 +407,10 @@ body[dir="rtl"] .errorMessage_hidden {
   font-weight: 600;
 }
 
-/* .attachments_height {
-  height: 100px !important;
-} */
+.attachments_height {
+  max-height: 120px !important;
+  overflow-y: auto;
+}
 
 .ant-upload-text {
   font-size: 12px !important;
