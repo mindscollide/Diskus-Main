@@ -111,7 +111,7 @@ const SubDocumnets = ({
                                     (editorRole.role === "Agenda Contributor" &&
                                       (subAgendaFiles.fK_UID !==
                                         currentUserID ||
-                                        data.canEdit === false))
+                                        subAgendaData.canEdit === false))
                                       ? null
                                       : () =>
                                           handlesubAgendaCrossFiles(
