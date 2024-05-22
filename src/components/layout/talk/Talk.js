@@ -37,6 +37,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import ModalAddNote from "../../../container/modalAddNote/ModalAddNote";
 import { openAddNotesModal } from "../../../store/actions/Notes_actions";
+import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 
 const Talk = () => {
   const { t } = useTranslation();
@@ -362,44 +363,47 @@ const Talk = () => {
               </svg>
             </div>
           </Tooltip>
-          <Tooltip placement="leftTop" title={t("Video-call")}>
-            <div
-              className={subIcons ? "talk_subIcon" : "talk_subIcon_hidden"}
-              onClick={videoIconClick}
-            >
-              {/* <span className="talk-count"></span> */}
-              <span className={missedCallCount === 0 ? "" : "talk-count"}>
-                {missedCallCount === 0 ? "" : missedCallCount}
-              </span>
-              <svg
-                id="Icon_feather-video"
-                data-name="Icon feather-video"
-                xmlns="http://www.w3.org/2000/svg"
-                width="34"
-                height="29.4"
-                viewBox="0 0 44.65 29.4"
+          {checkFeatureIDAvailability(4) ? (
+            <Tooltip placement="leftTop" title={t("Video-call")}>
+              <div
+                className={subIcons ? "talk_subIcon" : "talk_subIcon_hidden"}
+                onClick={videoIconClick}
               >
-                <defs>
-                  <linearGradient
-                    id="linear-gradient"
-                    x1="0.5"
-                    x2="0.5"
-                    y2="1"
-                    gradientUnits="objectBoundingBox"
-                  >
-                    <stop offset="0" stopColor="#4adede" />
-                    <stop offset="1" stopColor="#6172d6" />
-                  </linearGradient>
-                </defs>
-                <path
-                  id="Union_4"
-                  data-name="Union 4"
-                  d="M5.171,29.4A5.176,5.176,0,0,1,0,24.23V5.169A5.175,5.175,0,0,1,5.171,0H26.136a5.175,5.175,0,0,1,5.171,5.169v6.891l11.2-8a1.357,1.357,0,0,1,2.147,1.1V24.23a1.359,1.359,0,0,1-2.147,1.1l-11.2-8V24.23A5.176,5.176,0,0,1,26.136,29.4ZM2.716,5.169V24.23a2.458,2.458,0,0,0,2.456,2.454H26.136a2.457,2.457,0,0,0,2.456-2.454V5.169a2.456,2.456,0,0,0-2.456-2.454H5.171A2.457,2.457,0,0,0,2.716,5.169ZM32.285,14.7l9.649,6.892V7.808Z"
-                  fill="url(#linear-gradient)"
-                />
-              </svg>
-            </div>
-          </Tooltip>
+                {/* <span className="talk-count"></span> */}
+                <span className={missedCallCount === 0 ? "" : "talk-count"}>
+                  {missedCallCount === 0 ? "" : missedCallCount}
+                </span>
+                <svg
+                  id="Icon_feather-video"
+                  data-name="Icon feather-video"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="34"
+                  height="29.4"
+                  viewBox="0 0 44.65 29.4"
+                >
+                  <defs>
+                    <linearGradient
+                      id="linear-gradient"
+                      x1="0.5"
+                      x2="0.5"
+                      y2="1"
+                      gradientUnits="objectBoundingBox"
+                    >
+                      <stop offset="0" stopColor="#4adede" />
+                      <stop offset="1" stopColor="#6172d6" />
+                    </linearGradient>
+                  </defs>
+                  <path
+                    id="Union_4"
+                    data-name="Union 4"
+                    d="M5.171,29.4A5.176,5.176,0,0,1,0,24.23V5.169A5.175,5.175,0,0,1,5.171,0H26.136a5.175,5.175,0,0,1,5.171,5.169v6.891l11.2-8a1.357,1.357,0,0,1,2.147,1.1V24.23a1.359,1.359,0,0,1-2.147,1.1l-11.2-8V24.23A5.176,5.176,0,0,1,26.136,29.4ZM2.716,5.169V24.23a2.458,2.458,0,0,0,2.456,2.454H26.136a2.457,2.457,0,0,0,2.456-2.454V5.169a2.456,2.456,0,0,0-2.456-2.454H5.171A2.457,2.457,0,0,0,2.716,5.169ZM32.285,14.7l9.649,6.892V7.808Z"
+                    fill="url(#linear-gradient)"
+                  />
+                </svg>
+              </div>
+            </Tooltip>
+          ) : null}
+
           <Tooltip placement="leftTop" title={t("Chat")}>
             <div
               className={subIcons ? "talk_subIcon" : "talk_subIcon_hidden"}

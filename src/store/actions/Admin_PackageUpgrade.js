@@ -67,7 +67,7 @@ const packagesforUpgrade = (navigate, t) => {
               response.data.responseResult.responseMessage ===
               "ERM_AuthService_SignUpManager_GetSubscriptionPackagesForUpgrade_01"
             ) {
-              navigate("/Diskus/Admin/UpgradePackage");
+              navigate("/Admin/UpgradePackage");
               dispatch(
                 packageUpgradeSuccess(
                   response.data.responseResult.subscriptionPackages,
@@ -83,7 +83,7 @@ const packagesforUpgrade = (navigate, t) => {
               response.data.responseResult.responseMessage ===
               "ERM_AuthService_SignUpManager_GetSubscriptionPackagesForUpgrade_03"
             ) {
-              navigate("/Diskus/Admin/EmptyState");
+              navigate("/Admin/EmptyState");
 
               dispatch(packageUpgradeFail(t("No-record-found")));
             } else {
@@ -163,7 +163,7 @@ const updateSubscribePackage = (navigate, ID, t) => {
                   t("Organization-subscription-update")
                 )
               );
-              navigate("/Diskus/Admin/PackageDetail");
+              navigate("/Admin/PackageDetail");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

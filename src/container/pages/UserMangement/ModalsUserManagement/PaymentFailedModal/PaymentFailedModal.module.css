@@ -1,0 +1,33 @@
+.PaymentFailedHeading {
+  font-size: 19px !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .PaymentFailedHeading {
+  font-weight: 600 !important;
+}
+
+.PaymentDetailspage {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+}
+
+.PaymentDetailspage:is(:active, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .PaymentDetailspage {
+  font-weight: 600 !important;
+}

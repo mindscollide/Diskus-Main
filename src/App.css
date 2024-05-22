@@ -45,7 +45,7 @@ filter blur background on dropdown click
 }
 
 body {
-  font-family: "Montserrat" !important;
+  font-weight: 400 !important;
   font-size: 13px !important;
   color: #000000;
   line-height: 1.5;
@@ -54,11 +54,11 @@ body {
 }
 
 body[dir="rtl"] {
-  font-family: "IBM Plex Sans Arabic" !important;
+  font-weight: 400 !important;
 }
 
 .MuiAutocomplete-paper {
-  font-family: "Montserrat" !important;
+  font-weight: 400 !important;
 }
 
 .fw-500 {
@@ -1711,7 +1711,19 @@ i.icon-add-square.uploadfile {
   background: none !important;
 }
 
+.ant-table-wrapper.Billing_TablePakageSelection
+  .ant-table
+  .ant-table-container
+  .ant-table-content
+  thead.ant-table-thead {
+  background: none !important;
+}
+
 .ant-table-wrapper.ToDo .ant-table {
+  background: none !important;
+}
+
+.ant-table-wrapper.Billing_TablePakageSelection .ant-table {
   background: none !important;
 }
 
@@ -2803,6 +2815,13 @@ input#Participant::placeholder {
   margin-top: -19px !important;
 }
 
+.Billing_TablePakageSelection .ant-table table {
+  border-spacing: 0 30px !important;
+  border-radius: 50px !important;
+  table-layout: inherit !important;
+  margin-top: -19px !important;
+}
+
 .Resolution .ant-table table {
   border-spacing: 0 10px !important;
   border-radius: 50px !important;
@@ -3104,6 +3123,7 @@ a.icon.nav-link.active i.icon-calendar:before {
 a.ant-picker-now-btn:hover {
   color: #6172d6 !important;
 }
+
 /* a.dropdown-item.dropdown-item {
   line-height: 36px ;
 } */
@@ -3396,7 +3416,7 @@ li.invalid {
   padding: 5px 0px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  /* align-items: center; */
 }
 
 li.valid {
@@ -4193,19 +4213,12 @@ span.ant-notification-notice-icon img {
   line-height: 1.2;
 }
 
-/* .ant-table-wrapper.ToDo {
-  overflow: hidden;
-  padding-right: 10px;
-  max-height: 82vh !important;
-} */
-
-/* .ant-table-wrapper.Resolution_table {
-  overflow: auto;
-  padding-right: 10px;
-  height: 500px;
-} */
-
 body[dir="rtl"] .ant-table-wrapper.ToDo {
+  padding-left: 10px;
+  padding-right: 0px;
+}
+
+body[dir="rtl"] .ant-table-wrapper.Billing_TablePakageSelection {
   padding-left: 10px;
   padding-right: 0px;
 }
@@ -4217,6 +4230,18 @@ body[dir="rtl"] .ant-table-wrapper.ToDo {
 }
 
 .ToDo::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.Billing_TablePakageSelection::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2 !important;
+}
+
+.Billing_TablePakageSelection::-webkit-scrollbar-thumb {
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px;
@@ -5311,6 +5336,13 @@ body[dir="rtl"]
   padding: 2px 16px !important;
 }
 
+.ant-table-wrapper.Billing_TablePakageSelection.ant-table
+  .ant-table-thead
+  > tr
+  > th {
+  padding: 2px 16px !important;
+}
+
 /* for todo pagination focus color */
 .Resolution_table
   .ant-select-item.ant-select-item-option.ant-select-item-option-selected {
@@ -5591,7 +5623,6 @@ body[dir="rtl"] .modalNote-fields input.form-control {
 
 .ql-container {
   font-weight: 600;
-  font-family: "Montserrat" !important;
 }
 
 body[dir="rtl"] .ql-container {
@@ -5623,6 +5654,7 @@ body[dir="rtl"] .ant-result-subtitle {
   border-radius: 4px;
   height: 39px;
 }
+
 .Progress_bar_Polls {
   width: 90% !important;
 }
@@ -6568,24 +6600,31 @@ button.grayScaled:focus-visible button.grayScaled:focus-within {
 th.ant-table-cell.notification-class-table {
   text-align: center !important;
 }
+
 /* custom.css */
 
 /* Customize the outer circle of the radio button */
 .ant-radio-wrapper {
-  font-size: 16px; /* Adjust font size as needed */
-  color: #333; /* Adjust text color as needed */
+  font-size: 16px;
+  /* Adjust font size as needed */
+  color: #333;
+  /* Adjust text color as needed */
 }
 
 /* Customize the inner circle of the radio button */
 .ant-radio-inner {
-  background-color: yellow; /* Change inner color as needed */
-  border-color: yellow; /* Change border color as needed */
+  background-color: yellow;
+  /* Change inner color as needed */
+  border-color: yellow;
+  /* Change border color as needed */
 }
 
 /* Change the color of the radio button label */
 .ant-radio-wrapper .ant-radio + span {
-  color: #333; /* Adjust label text color as needed */
+  color: #333;
+  /* Adjust label text color as needed */
 }
+
 .ant-table-wrapper.userlogin_history_tableP .ant-table-tbody tr td {
   font-weight: 600;
 }
@@ -6617,6 +6656,39 @@ th.ant-table-cell.notification-class-table {
 
 .searchResult_Document__control--is-focused {
   width: 200px !important;
+}
+
+.pakageselectionSpanUsermanagement {
+  line-height: 15px !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+}
+
+body[dir="rtl"] .Tableheading {
+  font-weight: 700 !important;
+}
+
+.Billing_document .ant-table table {
+  border-spacing: 0 10px !important;
+  border-radius: 50px !important;
+  table-layout: inherit !important;
+  margin-top: -19px !important;
+}
+
+.ant-table-wrapper.Billing_document.ant-table .ant-table-thead > tr > th {
+  padding: 2px 16px !important;
+}
+
+.ant-table-wrapper.Billing_document
+  .ant-table
+  .ant-table-container
+  .ant-table-content
+  thead.ant-table-thead {
+  background: none !important;
+}
+
+.ant-table-wrapper.Billing_document.ant-table .ant-table-thead > tr > th {
+  padding: 2px 16px !important;
 }
 
 span.subAgendaBorderClass {
@@ -6939,6 +7011,348 @@ td.ant-table-cell.minutesParticipant {
   text-align: center !important;
 }
 
+/* React Stepper Styles */
+
+.StepButton-d2-0-3-12.active {
+  padding: 33px !important;
+  background: #6172d6 !important;
+  z-index: 1 !important;
+}
+
+.StepButton-d4-0-3-20.active {
+  padding: 33px !important;
+  background: #6172d6 !important;
+  z-index: 1 !important;
+}
+
+.StepButton-d6-0-3-26.active {
+  padding: 33px !important;
+  background: #6172d6 !important;
+  z-index: 1 !important;
+}
+
+.StepButton-d6-0-3-26.completed {
+  padding: 33px !important;
+  background: #6172d6 !important;
+  z-index: 1 !important;
+}
+
+.StepButton-d0-0-3-6.active {
+  padding: 33px !important;
+  background: #6172d6 !important;
+  z-index: 1 !important;
+}
+
+.StepButton-d2-0-3-12.completed:hover {
+  background: #4adede !important;
+  z-index: 1 !important;
+  padding: 33px !important;
+}
+
+.StepButton-d4-0-3-20.completed {
+  background: #4adede !important;
+  z-index: 1 !important;
+  padding: 33px !important;
+}
+
+.StepButton-d2-0-3-12.completed {
+  background: #4adede !important;
+  z-index: 1 !important;
+  padding: 33px !important;
+}
+
+.StepButton-d2-0-3-12.active:hover {
+  padding: 33px !important;
+  background: #6172d6 !important;
+  z-index: 1 !important;
+}
+
+.StepButton-d0-0-3-6.completed {
+  background: #4adede !important;
+  z-index: 1 !important;
+  padding: 33px !important;
+}
+
+.StepButton-d4-0-3-20 {
+  z-index: 1 !important;
+  padding: 33px !important;
+}
+
+.StepButton-d2-0-3-12 {
+  z-index: 1 !important;
+  padding: 33px !important;
+}
+
+.StepButton-d6-0-3-26 {
+  z-index: 1 !important;
+  padding: 33px !important;
+}
+
+.StepButton-d0-0-3-6 {
+  z-index: 1 !important;
+  padding: 33px !important;
+}
+
+.StepButtonContent-d3-0-3-13 {
+  color: #fff !important;
+  font-weight: 700 !important;
+  font-size: 30px !important;
+}
+
+body[dir="rtl"] .StepButtonContent-d3-0-3-13 {
+  font-weight: 700 !important;
+}
+
+.StepButtonContent-d1-0-3-7 {
+  color: #fff !important;
+  font-weight: 700 !important;
+  font-size: 30px !important;
+}
+
+body[dir="rtl"] .StepButtonContent-d1-0-3-7 {
+  font-weight: 700 !important;
+}
+
+.StepButtonContent-d1-0-3-7.active {
+  color: #fff !important;
+  font-weight: 700 !important;
+  font-size: 30px !important;
+}
+
+body[dir="rtl"] .StepButtonContent-d1-0-3-7.active {
+  font-weight: 700 !important;
+}
+
+.StepButtonContent-d5-0-3-21 {
+  color: #fff !important;
+  font-weight: 700 !important;
+  font-size: 30px !important;
+}
+
+body[dir="rtl"] .StepButtonContent-d5-0-3-21 {
+  font-weight: 700 !important;
+}
+
+.StepButtonContent-d7-0-3-27 {
+  color: #fff !important;
+  font-weight: 700 !important;
+  font-size: 30px !important;
+}
+
+body[dir="rtl"] .StepButtonContent-d7-0-3-27 {
+  font-weight: 700 !important;
+}
+
+.Connector-d1-0-3-17 {
+  border-color: #e1e1e1 !important;
+  border-top-style: dashed !important;
+  width: 100% !important;
+  margin-top: 18px !important;
+}
+
+.Connector-d3-0-3-23 {
+  border-color: #e1e1e1 !important;
+  border-top-style: dashed !important;
+  width: 100% !important;
+  margin-top: 18px !important;
+}
+
+.Connector-d5-0-3-29 {
+  border-color: #e1e1e1 !important;
+  border-top-style: dashed !important;
+  width: 100% !important;
+  margin-top: 18px !important;
+}
+
+body[dir="rtl"] .Connector-d3-0-3-23 {
+  margin-right: -226% !important;
+}
+
+.StepButtonContent-d1-0-3-7.completed {
+  color: #fff !important;
+  font-weight: 700 !important;
+  font-size: 30px !important;
+}
+
+body[dir="rtl"] .StepButtonContent-d1-0-3-7.completed {
+  font-weight: 700 !important;
+}
+
+span.billing-contact {
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+}
+
+span.billing-contactActive {
+  color: #6172d6 !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+}
+
+span.billing-address {
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+}
+
+span.billing-addressActive {
+  color: #6172d6 !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+}
+
+span.package-details {
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+}
+
+span.package-detailsActive {
+  color: #6172d6 !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+}
+
+span.payment-method {
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+}
+
+span.payment-methodActive {
+  color: #6172d6 !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+}
+
+body[dir="rtl"] span.billing-address {
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] span.billing-addressActive {
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] span.package-details {
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] span.package-detailsActive {
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] span.payment-method {
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] span.payment-methodActive {
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] span.billing-contactActive {
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] span.billing-contact {
+  font-weight: 600 !important;
+}
+
+/* Selecting pakage Details Css Usermangement */
+tr.ant-table-row.ant-table-row-level-0.saif {
+  outline: solid;
+  outline-color: #e1e1e1;
+  outline-width: 1px;
+}
+
+tr.ant-table-row.ant-table-row-level-0.saif:last-child {
+  outline: none !important;
+  background: none !important;
+  border: none !important;
+}
+
+tr.ant-table-row.ant-table-row-level-0.saif:last-child:hover {
+  outline: none !important;
+  background: none !important;
+  border: none !important;
+}
+
+.ant-table-tbody > tr.saif:last-child.ant-table-row:hover > td,
+.ant-table-tbody > tr.saif:last-child > td.ant-table-cell-row-hover {
+  background: transparent !important;
+}
+
+.ant-table-tbody > tr.saif > td {
+  border-bottom: none !important;
+}
+
+/* PakageDetails Table Css usermanagement */
+tr.ant-table-row.ant-table-row-level-0.PakageDetails {
+  outline: solid;
+  outline-color: #e1e1e1;
+  outline-width: 1px;
+  border-radius: 4px !important;
+  background: none !important;
+}
+
+tr.ant-table-row.ant-table-row-level-0.PakageDetails:last-child {
+  outline: none !important;
+  background: #e1e1e1 !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
+
+tr.ant-table-row.ant-table-row-level-0.PakageDetails:last-child:hover {
+  outline: none !important;
+  border-radius: 4px !important;
+  background: #e1e1e1 !important;
+  border: none !important;
+}
+
+.ant-table-tbody > tr.PakageDetails:last-child.ant-table-row:hover > td,
+.ant-table-tbody > tr.PakageDetails:last-child > td.ant-table-cell-row-hover {
+  background: transparent !important;
+}
+
+.ant-table-tbody > tr.PakageDetails > td {
+  border-bottom: none !important;
+}
+
+/* pakageDetails UpgradeUsermanagement */
+
+tr.ant-table-row.ant-table-row-level-0.UpgradePakageDetails {
+  outline: solid;
+  outline-color: #e1e1e1;
+  outline-width: 1px;
+  border-radius: 4px !important;
+  background: none !important;
+}
+
+tr.ant-table-row.ant-table-row-level-0.UpgradePakageDetails:last-child {
+  outline: none !important;
+  background: #6172d6 !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
+
+tr.ant-table-row.ant-table-row-level-0.UpgradePakageDetails:last-child:hover {
+  outline: none !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  border: none !important;
+}
+
+.ant-table-tbody > tr.UpgradePakageDetails:last-child.ant-table-row:hover > td,
+.ant-table-tbody
+  > tr.UpgradePakageDetails:last-child
+  > td.ant-table-cell-row-hover {
+  background: transparent !important;
+}
+
+.ant-table-tbody > tr.UpgradePakageDetails > td {
+  border-bottom: none !important;
+}
+
 /* this radiobutton is for polls vote start */
 .ant-radio-group.ant-radio-group-outline.AnotherRadioSelect
   label.ant-radio-wrapper {
@@ -7030,8 +7444,10 @@ td.ant-table-cell.minutesParticipant {
   left: 50%;
   transform: translateX(-50%);
   white-space: nowrap;
-  z-index: 1; /* Ensure tooltip appears on top of other elements */
+  z-index: 1;
+  /* Ensure tooltip appears on top of other elements */
 }
+
 .title_tooltip {
   border-radius: 50%;
 }
@@ -7039,6 +7455,7 @@ td.ant-table-cell.minutesParticipant {
 .border-none.dropdown button {
   border: none !important;
 }
+
 .ant-table-thead > tr > th {
   font-weight: 600 !important;
 }
@@ -7046,3 +7463,63 @@ td.ant-table-cell.minutesParticipant {
 .d-block.loader-zindex .videoCallScreen {
   z-index: 99999999999 !important;
 }
+
+/* BoardDeck Css */
+
+.ant-radio-group.ant-radio-group-outline.BoarddeckSelection
+  label.ant-radio-wrapper
+  span {
+  font-style: normal !important;
+  font-weight: 500 !important;
+  font-size: 13px !important;
+  color: #a2a2a2 !important;
+}
+
+.ant-radio-group.ant-radio-group-outline.BoarddeckSelection
+  label.ant-radio-wrapper.ant-radio-wrapper-checked
+  span {
+  font-style: normal !important;
+  font-weight: 500 !important;
+  font-size: 13px !important;
+  color: #5a5a5a !important;
+}
+
+.ant-radio-group.ant-radio-group-outline.BoarddeckSelection
+  label.ant-radio-wrapper.ant-radio-wrapper-checked
+  input {
+  display: none !important;
+}
+
+.ant-radio-group.ant-radio-group-outline.BoarddeckSelection
+  label.ant-radio-wrapper
+  input {
+  display: none !important;
+}
+
+.ant-radio-group.ant-radio-group-outline.BoarddeckSelection
+  label.ant-radio-wrapper.ant-radio-wrapper-checked
+  span
+  span.ant-radio-inner:after {
+  content: none !important;
+}
+
+.ant-radio-group.ant-radio-group-outline.BoarddeckSelection
+  .ant-radio-checked
+  .ant-radio-inner {
+  background: linear-gradient(180deg, #4adede 0%, #6172d6 100%) !important;
+  transform: rotate(90deg) !important;
+  border: none !important;
+  width: 10px !important;
+  height: 10px !important;
+  top: -1px !important;
+}
+
+.ant-radio-group.ant-radio-group-outline.BoarddeckSelection .ant-radio-inner {
+  background: #e1e1e1 !important;
+  transform: rotate(90deg) !important;
+  border: none !important;
+  width: 10px !important;
+  height: 10px !important;
+  top: -1px !important;
+}
+/* BoardDeck Ends */

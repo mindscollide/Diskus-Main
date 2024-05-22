@@ -3,26 +3,21 @@ import { Container, Row, Col, Form } from "react-bootstrap";
 import {
   Button,
   Paper,
-  TextField,
   Checkbox,
   Notification,
   Loader,
-  NotificationBar,
 } from "../../../../../components/elements";
-import { CopyOutlined } from "@ant-design/icons";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import DiskusLogo from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
 import styles from "./EmailValidation.module.css";
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
-import AttachmentIcon from "../../../../../assets/images/Metro-attachment.png";
-import ErrorBar from "../../../../authentication/sign_up/errorbar/ErrorBar";
 import { validationEmail } from "../../../../../commen/functions/validations";
 import {
   cleareMessage,
   validationEmailAction,
 } from "../../../../../store/actions/Auth2_actions";
 import { useDispatch, useSelector } from "react-redux";
-import { useTranslation } from "react-i18next"; //ya
+import { useTranslation } from "react-i18next";
 import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
 
 const EmailValidation = () => {
@@ -33,7 +28,6 @@ const EmailValidation = () => {
   const { Authreducer, adminReducer, LanguageReducer } = useSelector(
     (state) => state
   );
-  console.log(Authreducer, "AuthreducerAuthreducerAuthreducer");
 
   const [email, setEmail] = useState("");
   const [errorBar, setErrorBar] = useState(false);
@@ -91,8 +85,10 @@ const EmailValidation = () => {
       localStorage.setItem("rememberEmailValue", "");
     }
   };
+
   const urlParams = new URLSearchParams(window.location.search);
   const code = urlParams.get("code");
+
   useEffect(() => {
     if (code) {
       console.log("Code:", code);
@@ -138,7 +134,6 @@ const EmailValidation = () => {
         setErrorBar(false);
         setRemeberEmail(RememberEmailLocal);
         setEmail(RememberEmailLocalValue);
-        emailRef.current.focus();
       } else if (RememberEmailLocal === true) {
         let RememberEmailLocalValue =
           localStorage.getItem("rememberEmailValue");
@@ -158,7 +153,6 @@ const EmailValidation = () => {
         setErrorBar(false);
         setRemeberEmail(RememberEmailLocal);
         setEmail(RememberEmailLocalValue);
-        emailRef.current.focus();
       } else if (RememberPasswordLocal === true) {
         let RememberPasswordLocalValue = localStorage.getItem(
           "rememberPasswordValue"
@@ -180,7 +174,6 @@ const EmailValidation = () => {
         );
         setErrorMessage("");
         setErrorBar(false);
-        emailRef.current.focus();
       } else {
         localStorage.clear();
         if (reLang != undefined && reLang != null) {
@@ -198,21 +191,21 @@ const EmailValidation = () => {
         localStorage.setItem("rememberPasswordValue", "");
         setErrorMessage("");
         setErrorBar(false);
-        emailRef.current.focus();
       }
     }
   }, []);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    emailRef.current.focus();
+  }, []);
 
   const goForSignUp = () => {
     navigate("/packageselection");
   };
 
-  const handleClickFreeTrail = async () => {
-    await localStorage.setItem("PackageID", 4);
-    await localStorage.setItem("TenureOfSuscriptionID", 2);
-
+  const handleClickFreeTrail = () => {
+    localStorage.setItem("PackageID", 4);
+    localStorage.setItem("TenureOfSuscriptionID", 2);
     navigate("/signuporganization", {
       state: {
         freeTrail: true,
@@ -384,7 +377,7 @@ const EmailValidation = () => {
                         />
                       </Col>
                     </Row>
-                    <Row className="mt-3 mb-4 text-center">
+                    <Row className="mt-4 mb-4 text-center">
                       <Col>
                         <span className={styles["signIn_heading"]}>
                           {t("Sign-in")}
@@ -409,21 +402,22 @@ const EmailValidation = () => {
                             maxLength={160}
                             ref={emailRef}
                           />
+                          <Row>
+                            <Col>
+                              <p
+                                className={
+                                  errorBar
+                                    ? ` ${styles["errorMessage-inLogin"]} `
+                                    : `${styles["errorMessage-inLogin_hidden"]}`
+                                }
+                              >
+                                {errorMessage}
+                              </p>
+                            </Col>
+                          </Row>
                         </Col>
                       </Row>
-                      <Row>
-                        <Col>
-                          <p
-                            className={
-                              errorBar
-                                ? ` ${styles["errorMessage-inLogin"]} `
-                                : `${styles["errorMessage-inLogin_hidden"]}`
-                            }
-                          >
-                            {errorMessage}
-                          </p>
-                        </Col>
-                      </Row>
+
                       <Row>
                         <Col
                           sm={12}
@@ -437,7 +431,7 @@ const EmailValidation = () => {
                             onChange={rememberChangeEmail}
                             className={styles["RememberEmail"]}
                           />
-                          <span className="Remember_checkbox_styles fw-500 Arabicstyles_Subtotal_Not_include_taxes">
+                          <span className="Remember_checkbox_styles Arabicstyles_Subtotal_Not_include_taxes">
                             {t("Remeber-email")}
                           </span>
                         </Col>
@@ -465,7 +459,7 @@ const EmailValidation = () => {
                         </span>
                       </Col>
                     </Row>
-                    <Row className="d-flex justify-content-center">
+                    <Row className="d-flex justify-content-center mt-1">
                       <Col
                         sm={12}
                         lg={12}
@@ -480,19 +474,19 @@ const EmailValidation = () => {
                       </Col>
                     </Row>
                     {/* <Row className="d-flex mt-3 justify-content-center">
-                <Col
-                  sm={12}
-                  lg={12}
-                  md={12}
-                  className="w-100 d-flex justify-content-center"
-                >
-                  <Button
-                    text={t("Free-Trial")}
-                    onClick={handleClickFreeTrail}
-                    className={styles["subscribNow_button_EmailVerify"]}
-                  />
-                </Col>
-              </Row> */}
+                  <Col
+                    sm={12}
+                    lg={12}
+                    md={12}
+                    className="w-100 d-flex justify-content-center"
+                  >
+                    <Button
+                      text={t("Free-Trial")}
+                      onClick={handleClickFreeTrail}
+                      className={styles["subscribNow_button_EmailVerify"]}
+                    />
+                  </Col>
+                </Row> */}
                   </Col>
                 </Paper>
               </Col>

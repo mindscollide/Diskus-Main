@@ -1,55 +1,68 @@
 .disabled-row {
-    background-color: red;
-    pointer-events  : none;
+  background-color: red;
+  pointer-events: none;
 }
 
 .rowColor {
-    background-color: none !important;
+  background-color: none !important;
 }
 
 .ant-table-thead thead tr th {
-    background-color: none !important;
+  background-color: none !important;
 }
 
 .ant-table-row {
-    margin    : 30px 0 0 0 !important;
-    /* background: none !important; */
+  margin: 30px 0 0 0 !important;
+  /* background: none !important; */
 }
 
 .ant-table-tbody {
-    margin: 20px 0 20px 0 !important;
+  margin: 20px 0 20px 0 !important;
 }
 
-.ant-table-thead>tr>th {
-    background-color   : none !important;
-    /* border-bottom   : 2px solid blue !important; */
+.ant-table-thead > tr > th {
+  background-color: none !important;
+  /* border-bottom   : 2px solid blue !important; */
 }
 
 .ant-table-thead tr {
-    border-bottom: 3px solid #ccc !important;
+  border-bottom: 3px solid #ccc !important;
 }
 
 .ant-table-cell::before {
-    height: 0px !important;
+  height: 0px !important;
 }
 
-.ant-table-wrapper.ToDo .ant-table .ant-table-thead>tr>th {
-    background   : none !important;
-    border-bottom: none !important;
+.ant-table-wrapper.ToDo .ant-table .ant-table-thead > tr > th {
+  background: none !important;
+  border-bottom: none !important;
 }
 
-/* .ant-table-wrapper.ToDo
-    ul.ant-pagination.ant-table-pagination.ant-table-pagination-right {
-    display: none !important;
-  } */
-
-/* .ant-table table {
-    margin-bottom: 50px;
-} */
-
-.ant-table-wrapper.ToDo .ant-table .ant-table-container .ant-table-content thead.ant-table-thead {
-    background: none !important;
+.ant-table-wrapper.Billing_TablePakageSelection
+  .ant-table
+  .ant-table-thead
+  > tr
+  > th {
+  background: none !important;
+  border-bottom: none !important;
 }
+
+.ant-table-wrapper.ToDo
+  .ant-table
+  .ant-table-container
+  .ant-table-content
+  thead.ant-table-thead {
+  background: none !important;
+}
+
+.ant-table-wrapper.Billing_TablePakageSelection
+  .ant-table
+  .ant-table-container
+  .ant-table-content
+  thead.ant-table-thead {
+  background: none !important;
+}
+
 .labelTitle {
-    color: #5A5A5A;
+  color: #5a5a5a;
 }

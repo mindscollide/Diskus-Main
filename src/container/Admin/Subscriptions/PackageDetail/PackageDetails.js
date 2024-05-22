@@ -97,7 +97,7 @@ const PackageDetails = () => {
   }, [GetSubscriptionPackage.getCurrentActiveSubscriptionPackage]);
 
   const navigatetoUpgrade = () => {
-    // navigate("/Diskus/Admin/UpgradePackage");
+    // navigate("/Admin/UpgradePackage");
     dispatch(packagesforUpgrade(navigate, t));
   };
 

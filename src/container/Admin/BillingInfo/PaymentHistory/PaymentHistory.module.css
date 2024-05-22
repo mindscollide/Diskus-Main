@@ -53,7 +53,7 @@
 .Edit-Main-Heading {
   font-size: calc(38px - 50%) !important;
   color: #6172d6 !important;
-  font-weight: 600 !important;
+  font-weight: 700 !important;
 }
 
 body[dir="rtl"] .Edit-Main-Heading {
@@ -404,4 +404,28 @@ body[dir="rtl"] .paymenthistory_searchbar::placeholder {
 .paymenthistory_searchbar:hover,
 .paymenthistory_searchbar:focus {
   box-shadow: none !important;
+}
+
+.DownloadButton {
+  background: #fff !important;
+  color: #5a5a5a !important;
+  padding: 12px 30px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .DownloadButton {
+  font-weight: 600 !important;
+}
+
+.DownloadButton:is(:hover, :focus, :focus-visible, :active) {
+  background: #fff !important;
+  color: #5a5a5a !important;
+  padding: 12px 30px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
 }

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-
 const PrivateRoutes = () => {
   const currentUrl = window.location.href;
 
@@ -144,22 +143,22 @@ const PrivateRoutes = () => {
     }
   }, [currentUrl]);
 
-  // Retrieving data from local storage
   let Blur = localStorage.getItem("blur");
   let currentUserID = localStorage.getItem("userID");
   let RoleID = localStorage.getItem("roleID");
-  const token = localStorage.getItem("token") || ""; // Using logical OR to set default value
-  let TwoFA = JSON.parse(localStorage.getItem("2fa"));
-  let TowApproval = JSON.parse(localStorage.getItem("TowApproval"));
-
-  // State for current user
+  const token =
+    localStorage.getItem("token") !== undefined &&
+    localStorage.getItem("token") !== null
+      ? localStorage.getItem("token")
+      : "";
   const [currentUser, setCurrentUser] = useState(
-    RoleID === "3" && (Blur === undefined || Blur === null) ? true : null
+    (RoleID === "3" || RoleID === "4") && (Blur === undefined || Blur === null)
+      ? true
+      : null
   );
 
-  // Rendering logic based on authentication and authorization
   return currentUser && token ? (
-    <Outlet /> // Render nested routes if authenticated and authorized
+    <Outlet />
   ) : (
     <Navigate
       to={
@@ -169,10 +168,9 @@ const PrivateRoutes = () => {
         ) ||
           currentUrl.includes("DisKus/dataroom?action="))
           ? "/"
-          : "*" // Redirect to home page or fallback route if not authenticated or authorized
+          : "*"
       }
     />
   );
 };
-
 export default PrivateRoutes;

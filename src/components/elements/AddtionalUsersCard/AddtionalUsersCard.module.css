@@ -1,0 +1,40 @@
+.Lineheight {
+  line-height: 15px !important;
+  margin-top: 6px !important;
+  margin-left: 10px !important;
+  display: block !important;
+}
+
+body[dir="rtl"] .Lineheight {
+  line-height: 15px !important;
+  margin-top: 6px !important;
+  margin-right: 10px !important;
+  display: block !important;
+}
+
+.name_participant {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: #5a5a5a !important;
+  /* margin-top: 15px !important; */
+}
+
+body[dir="rtl"] .name_participant {
+  font-weight: 600 !important;
+}
+
+.email_participant {
+  font-size: 10pt !important;
+  color: #6172d6 !important;
+  font-weight: 600 !important;
+  text-decoration: underline;
+  width: 100%;
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+body[dir="rtl"] .email_participant {
+  font-weight: 600 !important;
+}

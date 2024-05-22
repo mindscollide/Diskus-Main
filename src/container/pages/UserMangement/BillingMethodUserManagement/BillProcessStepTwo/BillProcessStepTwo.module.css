@@ -1,0 +1,143 @@
+.outerBoxForBilling {
+  width: 100% !important;
+  min-height: 55vh !important;
+  padding: 30px 40px !important;
+  height: auto !important;
+  background: #fff !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.nameStyles {
+  font-size: 10px !important;
+  color: #6172d6 !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] span.billing-address {
+  font-weight: 600 !important;
+}
+
+.stericClass {
+  color: #f16b6b !important;
+}
+
+.errorMessage {
+  margin: 4px;
+  height: 7px;
+  color: #f16b6b;
+  visibility: visible !important;
+}
+
+body[dir="rtl"] .errorMessage {
+  font-weight: 400 !important;
+}
+
+.errorMessage_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 7px;
+  color: #f16b6b !important;
+}
+
+body[dir="rtl"] .errorMessage_hidden {
+  font-weight: 400 !important;
+}
+
+.body[dir="rtl"] .react-flag-Info-Signup button {
+  cursor: pointer !important;
+  max-width: 100% !important;
+  max-height: 120px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 2px 12px !important;
+  font-family: inherit !important;
+  font-size: 12px !important;
+  color: #4d4d4d !important;
+  border: thin solid #e1e1e1;
+  border-radius: 4px !important;
+  background: white !important;
+}
+
+.body[dir="rtl"] .react-flag-Info-Signup button:focus {
+  cursor: pointer !important;
+  max-width: 100% !important;
+  max-height: 120px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 2px 12px !important;
+  font-family: inherit !important;
+  font-size: 12px !important;
+  color: #000000 !important;
+  border: thin solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: white !important;
+}
+
+.react-flag-Info-Signup {
+  height: 39px !important;
+  padding: auto !important;
+  margin-top: -1px !important;
+  font-weight: 500 !important;
+  font-size: 13px !important;
+}
+
+.react-flag-Info-Signup button {
+  cursor: pointer !important;
+  max-width: 100% !important;
+  /* max-height: 120px !important; */
+  min-height: 39px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 2px 12px !important;
+  font-weight: 500 !important;
+  font-size: 13px !important;
+  color: #4d4d4d !important;
+  border: thin solid #e1e1e1;
+  border-radius: 4px !important;
+  background: white !important;
+}
+
+.react-flag-Info-Signup input {
+  cursor: pointer !important;
+  padding: 5px 8px !important;
+  margin: 4px 5px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  white-space: nowrap !important;
+}
+
+.react-flag-Info-Signup button:after {
+  border-top: 3px solid #4d4d4d;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-bottom: 0;
+  margin-left: -3px;
+}
+
+.react-flag-Info-Signup button[aria-expanded="true"]:after {
+  border-top: 0;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-bottom: 3px solid #4d4d4d;
+  margin-left: -3px;
+}
+
+.react-flag-Info-Signup button:focus {
+  cursor: pointer !important;
+  max-width: 100% !important;
+  max-height: 120px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 2px 12px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: #000000 !important;
+  border: thin solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: white !important;
+}

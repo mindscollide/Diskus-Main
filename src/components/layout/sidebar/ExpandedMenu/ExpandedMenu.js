@@ -45,6 +45,7 @@ import {
   viewResolutionModal,
 } from "../../../../store/actions/Resolution_actions";
 import { getCurrentDateTimeUTC } from "../../../../commen/functions/date_formater";
+import { checkFeatureIDAvailability } from "../../../../commen/functions/utils";
 
 const ExpandedMenu = () => {
   const location = useLocation();
@@ -263,150 +264,167 @@ const ExpandedMenu = () => {
 
   return (
     <Nav className={styles.iconGrid}>
-      <Nav.Link
-        as={Link}
-        to={
-          (NewMeetingreducer.scheduleMeetingPageFlag === true ||
-            NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
-            NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
-            NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
-            NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
-            NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
-          NewMeetingreducer.viewMeetingFlag === false
-            ? "/DisKus/Meeting"
-            : "/DisKus/dataroom"
-        }
-        draggable="false"
-        className={
-          location.pathname === "/DisKus/dataroom" ||
-          location.pathname === "/Diskus/dataroom"
-            ? styles.iconItem_active
-            : styles.iconItem
-        }
-        onClick={handleMeetingSidebarDataroom}
-      >
-        <img src={DataroomImage} alt="DataroomIcon" />
-        <p>{t("Data-room")}</p>
-      </Nav.Link>
+      {checkFeatureIDAvailability(2) ||
+      checkFeatureIDAvailability(13) ||
+      checkFeatureIDAvailability(19) ||
+      checkFeatureIDAvailability(20) ||
+      checkFeatureIDAvailability(21) ? (
+        <Nav.Link
+          as={Link}
+          to={
+            (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+              NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+              NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+              NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+              NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+              NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+            NewMeetingreducer.viewMeetingFlag === false
+              ? "/DisKus/Meeting"
+              : "/DisKus/dataroom"
+          }
+          draggable="false"
+          className={
+            location.pathname === "/DisKus/dataroom" ||
+            location.pathname === "/Diskus/dataroom"
+              ? styles.iconItem_active
+              : styles.iconItem
+          }
+          onClick={handleMeetingSidebarDataroom}
+        >
+          <img src={DataroomImage} alt="DataroomIcon" />
+          <p>{t("Data-room")}</p>
+        </Nav.Link>
+      ) : null}
 
       {/* Groups */}
-      <Nav.Link
-        as={Link}
-        // to="groups"
-        to={
-          (NewMeetingreducer.scheduleMeetingPageFlag === true ||
-            NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
-            NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
-            NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
-            NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
-            NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
-          NewMeetingreducer.viewMeetingFlag === false
-            ? "/DisKus/Meeting"
-            : "/DisKus/groups"
-        }
-        disabled={false}
-        draggable="false"
-        className={
-          location.pathname === "/DisKus/groups" ||
-          location.pathname === "/Diskus/groups"
-            ? styles.iconItem_active
-            : styles.iconItem
-        }
-        onClick={handleMeetingSidebarGroups}
-      >
-        {/* Grouo Icon */}
-        <img src={GroupImage} />
+      {checkFeatureIDAvailability(17) ? (
+        <Nav.Link
+          as={Link}
+          // to="groups"
+          to={
+            (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+              NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+              NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+              NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+              NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+              NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+            NewMeetingreducer.viewMeetingFlag === false
+              ? "/DisKus/Meeting"
+              : "/DisKus/groups"
+          }
+          disabled={false}
+          draggable="false"
+          className={
+            location.pathname === "/DisKus/groups" ||
+            location.pathname === "/Diskus/groups"
+              ? styles.iconItem_active
+              : styles.iconItem
+          }
+          onClick={handleMeetingSidebarGroups}
+        >
+          {/* Grouo Icon */}
+          <img src={GroupImage} alt="" />
 
-        <p>{t("Groups")}</p>
-      </Nav.Link>
+          <p>{t("Groups")}</p>
+        </Nav.Link>
+      ) : null}
+
       {/* Committee */}
-      <Nav.Link
-        as={Link}
-        // to="committee"
-        to={
-          (NewMeetingreducer.scheduleMeetingPageFlag === true ||
-            NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
-            NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
-            NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
-            NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
-            NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
-          NewMeetingreducer.viewMeetingFlag === false
-            ? "/DisKus/Meeting"
-            : "/DisKus/committee"
-        }
-        disabled={false}
-        draggable="false"
-        className={
-          location.pathname === "/DisKus/committee" ||
-          location.pathname === "/Diskus/committee"
-            ? styles.iconItem_active
-            : styles.iconItem
-        }
-        onClick={handleMeetingSidebarCommittees}
-      >
-        {/* CommitteeIcon */}
+      {checkFeatureIDAvailability(17) ? (
+        <Nav.Link
+          as={Link}
+          // to="committee"
+          to={
+            (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+              NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+              NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+              NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+              NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+              NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+            NewMeetingreducer.viewMeetingFlag === false
+              ? "/DisKus/Meeting"
+              : "/DisKus/committee"
+          }
+          disabled={false}
+          draggable="false"
+          className={
+            location.pathname === "/DisKus/committee" ||
+            location.pathname === "/Diskus/committee"
+              ? styles.iconItem_active
+              : styles.iconItem
+          }
+          onClick={handleMeetingSidebarCommittees}
+        >
+          {/* CommitteeIcon */}
 
-        <img src={CommitteeImage} />
-        <p>{t("Committees")}</p>
-      </Nav.Link>
+          <img src={CommitteeImage} alt="" />
+          <p>{t("Committees")}</p>
+        </Nav.Link>
+      ) : null}
+
       {/* Resolution */}
-      <Nav.Link
-        as={Link}
-        // to="resolution"
-        to={
-          (NewMeetingreducer.scheduleMeetingPageFlag === true ||
-            NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
-            NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
-            NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
-            NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
-            NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
-          NewMeetingreducer.viewMeetingFlag === false
-            ? "/DisKus/Meeting"
-            : "/DisKus/resolution"
-        }
-        disabled={false}
-        draggable="false"
-        className={
-          location.pathname === "/DisKus/resolution" ||
-          location.pathname === "/Diskus/resolution"
-            ? styles.iconItem_active
-            : styles.iconItem
-        }
-        onClick={handleMeetingSidebarResolutions}
-      >
-        {/* Resolution Icon */}
-        <img src={ResolutionImage} />
-        <p>{t("Resolutions")}</p>
-      </Nav.Link>
-      {/* Polls */}
-      <Nav.Link
-        as={Link}
-        // to="polling"
-        to={
-          (NewMeetingreducer.scheduleMeetingPageFlag === true ||
-            NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
-            NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
-            NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
-            NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
-            NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
-          NewMeetingreducer.viewMeetingFlag === false
-            ? "/DisKus/Meeting"
-            : "/DisKus/polling"
-        }
-        disabled={false}
-        draggable="false"
-        className={
-          location.pathname === "/DisKus/polling" ||
-          location.pathname === "/Diskus/polling"
-            ? styles.iconItem_active
-            : styles.iconItem
-        }
-        onClick={handleMeetingSidebarPolls}
-      >
-        <img src={PollImage} />
+      {checkFeatureIDAvailability(18) ? (
+        <Nav.Link
+          as={Link}
+          // to="resolution"
+          to={
+            (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+              NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+              NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+              NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+              NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+              NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+            NewMeetingreducer.viewMeetingFlag === false
+              ? "/DisKus/Meeting"
+              : "/DisKus/resolution"
+          }
+          disabled={false}
+          draggable="false"
+          className={
+            location.pathname === "/DisKus/resolution" ||
+            location.pathname === "/Diskus/resolution"
+              ? styles.iconItem_active
+              : styles.iconItem
+          }
+          onClick={handleMeetingSidebarResolutions}
+        >
+          {/* Resolution Icon */}
+          <img src={ResolutionImage} alt="" />
+          <p>{t("Resolutions")}</p>
+        </Nav.Link>
+      ) : null}
 
-        <p>{t("Polls")}</p>
-      </Nav.Link>
+      {/* Polls */}
+      {checkFeatureIDAvailability(15) ? (
+        <Nav.Link
+          as={Link}
+          // to="polling"
+          to={
+            (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+              NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+              NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+              NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+              NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+              NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+            NewMeetingreducer.viewMeetingFlag === false
+              ? "/DisKus/Meeting"
+              : "/DisKus/polling"
+          }
+          disabled={false}
+          draggable="false"
+          className={
+            location.pathname === "/DisKus/polling" ||
+            location.pathname === "/Diskus/polling"
+              ? styles.iconItem_active
+              : styles.iconItem
+          }
+          onClick={handleMeetingSidebarPolls}
+        >
+          <img src={PollImage} alt="" />
+
+          <p>{t("Polls")}</p>
+        </Nav.Link>
+      ) : null}
     </Nav>
   );
 };

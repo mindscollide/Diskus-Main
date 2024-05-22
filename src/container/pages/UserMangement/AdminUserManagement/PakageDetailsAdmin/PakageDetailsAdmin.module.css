@@ -1,0 +1,185 @@
+.PakageDetailsHeading {
+  font-size: 30px !important;
+  color: #6172d6 !important;
+  font-weight: 700 !important;
+}
+
+body[dir="rtl"] .PakageDetailsHeading {
+  font-weight: 700 !important;
+}
+
+.packagecard {
+  border-radius: 4px;
+  background-color: #fff !important;
+  padding: 15px 35px;
+  height: 560px !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.DetailsCard {
+  border-radius: 4px;
+  background-color: #fff !important;
+  padding: 15px 35px;
+  width: 100% !important;
+  height: 560px !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.subcriptionkey_1 {
+  background: #6172d6 !important;
+  margin: 0;
+  padding: 13px;
+  color: #fff;
+  height: 50px;
+  display: flex;
+  font-weight: 600 !important;
+  justify-content: center;
+  font-size: 16px !important;
+  text-align: center;
+  font-weight: 500;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+body[dir="rtl"] .subcriptionkey_1 {
+  background: #6172d6 !important;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 4px;
+  font-weight: 600 !important;
+}
+
+.subcriptionkey_2 {
+  background: #6172d6 !important;
+  margin: 0;
+  padding: 13px;
+  color: #fff;
+  height: 50px;
+  display: flex;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  justify-content: center;
+  text-align: center;
+  font-weight: 500;
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+}
+
+body[dir="rtl"] .subcriptionkey_2 {
+  background: #6172d6 !important;
+  border-top-right-radius: 0px !important;
+  border-top-left-radius: 4px !important;
+  font-weight: 600 !important;
+}
+
+.subcriptionvalue_2 {
+  border-bottom-right-radius: 4px;
+  border: 1px solid #ccc;
+  font-weight: 600 !important;
+  color: #5a5a5a;
+  font-size: 16px !important;
+  padding: 15px 0px;
+}
+
+body[dir="rtl"] .subcriptionvalue_2 {
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 4px;
+  font-weight: 600 !important;
+}
+
+.subcriptionvalue_1 {
+  border-bottom-left-radius: 4px;
+  border: 1px solid #ccc;
+  font-weight: 600 !important;
+  color: #5a5a5a;
+  font-size: 16px !important;
+  padding: 15px 0px;
+}
+
+body[dir="rtl"] .subcriptionvalue_1 {
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 4px;
+  font-weight: 600 !important;
+}
+
+.UpgradePlanHeading {
+  font-size: 30px !important;
+  white-space: nowrap !important;
+  color: #5a5a5a !important;
+  font-weight: 700 !important;
+}
+
+body[dir="rtl"] .UpgradePlanHeading {
+  font-weight: 700 !important;
+}
+
+.UpdateButtonPakageDetails {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+
+.UpdateButtonPakageDetails:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .UpdateButtonPakageDetails {
+  font-weight: 600 !important;
+}
+
+.TableheadingTotal {
+  font-size: 20px !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .TableheadingTotal {
+  font-weight: 600 !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.ChargesPerLicesense {
+  font-size: 20px !important;
+  color: #5a5a5a !important;
+  font-weight: 700 !important;
+}
+
+body[dir="rtl"] .ChargesPerLicesense {
+  font-weight: 700 !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.ChargesPerLicesensetotal {
+  font-size: 20px !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+}
+
+body[dir="rtl"] .ChargesPerLicesensetotal {
+  font-weight: 700 !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.Tableheading {
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .Tableheading {
+  font-weight: 600 !important;
+  display: flex !important;
+  justify-content: center !important;
+}

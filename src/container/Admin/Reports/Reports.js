@@ -210,8 +210,16 @@ const Reports = () => {
       key: "deviceID",
       width: 100,
 
-      render: (text, data) => (
-        <span className={styles["voterCountStyle"]}>{text}</span>
+      render: (text, record) => (
+        <span className={styles["voterCountStyle"]}>
+          {record.deviceID === "1" ? (
+            <span>{t("Web")}</span>
+          ) : record.deviceID === "2" ? (
+            <span>{t("Mobile")}</span>
+          ) : record.deviceID === "3" ? (
+            <span>{t("Tablet")}</span>
+          ) : null}
+        </span>
       ),
     },
     {

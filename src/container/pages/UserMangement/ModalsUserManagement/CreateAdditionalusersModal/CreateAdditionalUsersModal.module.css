@@ -1,0 +1,196 @@
+.AddtionalUserheading {
+  font-size: 20px !important;
+  color: #6172d6 !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .AddtionalUserheading {
+  font-weight: 600 !important;
+}
+
+.NameCreateAddtional {
+  font-style: normal;
+  color: #6172d6 !important;
+  font-weight: 600 !important;
+  font-size: 10px;
+  line-height: 12px;
+}
+
+body[dir="rtl"] .NameCreateAddtional {
+  font-weight: 600 !important;
+}
+
+.Steric {
+  color: #f16b6b !important;
+}
+
+body[dir="rtl"] .NameCreateAddtional {
+  font-weight: 600 !important;
+}
+
+.NameClass {
+  font-size: 12px !important;
+  color: #a2a2a2 !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .NameClass {
+  font-weight: 600 !important;
+}
+
+.AdminAlsoClass {
+  font-weight: 500 !important;
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  margin-top: 2px !important;
+}
+
+body[dir="rtl"] .AdminAlsoClass {
+  font-weight: 500 !important;
+}
+
+.Padding_Alignment {
+  padding: 0px 20px !important;
+}
+
+.SkipandResetButtonClass {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  font-weight: 600 !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+}
+
+.SkipandResetButtonClass:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  font-weight: 600 !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+}
+
+body[dir="rtl"] .SkipandResetButtonClass {
+  font-weight: 600 !important;
+}
+
+.CreateButtonClass {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  border: none !important;
+  font-weight: 600 !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+}
+
+.CreateButtonClass:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  border: none !important;
+  font-weight: 600 !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+}
+
+body[dir="rtl"] .CreateButtonClass {
+  font-weight: 600 !important;
+}
+
+.Scroller_Users {
+  height: 10vh !important;
+  overflow-x: hidden !important;
+}
+
+.Scroller_Users::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_Users::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.Card_border2 {
+  /* border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  margin-left: 0px;
+  padding: 8px 0;
+  display: flex;
+  align-items: center; */
+}
+
+body[dir="rtl"] .Card_border2 {
+  /* margin-right: 0px !important; */
+}
+
+.Name_cards {
+  font-size: 12px !important;
+  color: #5a5a5a;
+  font-weight: 600 !important;
+  margin-left: 5px !important;
+}
+
+body[dir="rtl"] .Name_cards {
+  font-weight: 600 !important;
+}
+
+.RedSrtip {
+  background: #ffe8e8 !important;
+  padding: 8px 10px !important;
+  border-radius: 4px !important;
+  align-items: center !important;
+}
+
+.RedStripContent {
+  font-weight: 700 !important;
+  font-size: 12px !important;
+  color: #f16b6b !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+body[dir="rtl"] .RedStripContent {
+  font-weight: 700 !important;
+}
+
+.Buttonclass {
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  height: 39px !important;
+}
+
+.Buttonclass:is(:hover, :focus, :focus-visible, :active) {
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  height: 39px !important;
+}
+
+.buttonStyles {
+  display: flex !important;
+  justify-content: end !important;
+}
+
+.PlusIcons {
+  margin-top: 2px !important;
+}
+
+.errorMessage {
+  margin: 4px;
+  height: 7px;
+  color: #f16b6b;
+  visibility: visible !important;
+}
+
+body[dir="rtl"] .errorMessage {
+  font-weight: 400 !important;
+}

@@ -1,0 +1,305 @@
+.Auth_Icon1SendEmailVerificationCodeThree {
+  position: absolute;
+  left: 33%;
+  top: 15%;
+  z-index: 9;
+}
+
+.circle-imageVerifcationCodeThree {
+  position: absolute;
+  right: -250px;
+  bottom: -220px;
+  transform: rotate(-66deg);
+}
+.SigninDenied {
+  overflow: hidden;
+}
+
+.SubHeadingVerificationCodeThree {
+  font-weight: 600 !important;
+  color: #5a5a5a;
+  font-size: 12px;
+}
+
+.Next_button_EmailVerify_For_SignInDenied {
+  /* width: 368px !important; */
+  /* height: 50px !important; */
+  width: 100% !important;
+  border-radius: 4px;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  font-weight: 600 !important;
+}
+.Next_button_EmailVerify_For_SignInDenied:disabled {
+  filter: grayscale(0.5);
+}
+
+.Next_button_EmailVerify_For_SignInDenied:focus-visible {
+  width: 100%;
+  border-radius: 4px;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  font-weight: 600 !important;
+}
+
+.forogt_email_link_for_openrealmextra {
+  display: flex;
+  justify-content: center;
+  text-decoration: underline;
+  font-weight: 400 !important;
+}
+
+.forogt_email_link_for_openrealmextra {
+  color: #5a5a5a !important;
+}
+
+.EmailBoxverifcationCodeThree {
+  margin-top: 2rem;
+}
+
+.Auth_Icon1SendEmailVerificationCodeThree {
+  position: absolute;
+  left: 33%;
+  top: 15%;
+  z-index: 9;
+}
+
+.circle-imageVerifcationCodeThree {
+  position: absolute;
+  right: -250px;
+  bottom: -220px;
+  transform: rotate(-66deg);
+}
+
+.Verification-CodeThree-language {
+  position: absolute;
+  overflow: hidden !important;
+  top: 50px;
+  right: 150px;
+  padding: 8px 40px !important;
+  z-index: 9999;
+  /* background-color: #fff !important; */
+  border-color: rgb(64, 64, 64) !important;
+  box-shadow: none !important;
+}
+
+.Verification-CodeThree-language,
+.Verification-CodeThree-language:focus-within,
+.Verification-CodeThree-language:focus-visible {
+  border-color: rgb(133, 133, 133) !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.SubHeadingVerificationCodeThree {
+  font-weight: 600 !important;
+  color: #5a5a5a;
+  margin-top: -1rem;
+  font-size: 12px;
+}
+
+/* ya css classes change karni hy  */
+
+.EmailVerifyBox_for_SignInDenied {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.Next_button_EmailVerify_For_SignInDenied {
+  width: 100%;
+  border-radius: 4px;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  font-weight: 600 !important;
+}
+
+.Next_button_EmailVerify_For_SignInDenied:focus-visible {
+  width: 280px;
+  border-radius: 4px;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  font-weight: 600 !important;
+}
+
+.loginbox_auth_paper_for_SignInDenied {
+  padding: 40px 30px;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  height: 469px !important;
+  width: 330px !important;
+}
+
+.forogt_email_link_for_openrealmextra {
+  display: flex;
+  justify-content: center;
+  font-weight: 400 !important;
+}
+.forogt_email_link_for_openrealmextra a {
+  color: #5a5a5a;
+}
+
+.EmailBoxverifcationCodeThree {
+  margin-top: 2rem;
+}
+
+.Auth_Icon1SendEmailVerificationCodeThree {
+  position: absolute;
+  left: 33%;
+  top: 15%;
+  z-index: 9;
+}
+
+.circle-imageVerifcationCodeThree {
+  position: absolute;
+  right: -250px;
+  bottom: -220px;
+  transform: rotate(-66deg);
+}
+.device-title {
+  font-weight: 600 !important;
+  font-size: 20px;
+  color: "#5A5A5A";
+}
+.otp_value {
+  font-weight: 600 !important;
+  font-size: 24px;
+  color: #6172d6;
+}
+.select-language-signin_2FAverificationdevieotp {
+  position: absolute;
+  overflow: hidden !important;
+  top: 30px;
+  right: 150px;
+  padding: 0 50px !important;
+  z-index: 9999;
+  height: 2.9em !important;
+  border: 1px solid #e1e1e1 !important;
+  box-shadow: none !important;
+  font-weight: 600 !important;
+  border-radius: 4px;
+  outline: none !important;
+}
+
+.language_options {
+  -webkit-appearance: none !important;
+  -mox-appearance: none !important;
+  appearance: none !important;
+  padding: 20px;
+}
+body[dir="rtl"] .select-language-signin_2FAverificationdevieotp {
+  right: 80%;
+}
+
+.select-language-signin_2FAverificationdevieotp:focus,
+.select-language-signin_2FAverificationdevieotp:focus-within,
+.select-language-signin_2FAverificationdevieotp:focus-visible {
+  border: 1px solid #e1e1e1 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.languageIcon_2FAverificationdevieotp {
+  z-index: 99999 !important;
+  position: absolute;
+  right: 295px;
+  top: 37px;
+  width: 25px;
+  height: 25px;
+}
+
+body[dir="rtl"] .languageIcon_2FAverificationdevieotp {
+  right: 80.6%;
+  top: 37px;
+}
+.mobile_image {
+  position: absolute;
+  top: 19%;
+  right: -80px;
+  z-index: 1;
+}
+body[dir="rtl"] .mobile_image {
+  position: absolute;
+  top: 19%;
+  right: 260px;
+  z-index: 1;
+}
+
+.MainHeading_For_SigninDenied {
+  font-size: 20px !important;
+  color: #5a5a5a;
+  font-weight: 600 !important;
+}
+.Image_logo_singin_denied {
+  margin-top: 25px !important;
+  margin-bottom: 30px !important;
+}
+.Un_Ordered_List {
+  padding-left: 1rem !important;
+  /* margin: 0 !important; */
+}
+
+.List_Components {
+  font-size: 17px !important;
+  font-weight: 400 !important;
+  color: #5a5a5a;
+}
+.anchor_tag_text {
+  font-weight: 600 !important;
+  color: #6172d6;
+}
+
+body[dir="rtl"] .Un_Ordered_List {
+  padding-right: 1rem !important;
+}
+
+.roundspinner-image-SigninDenied {
+  background-image: url("../../../../../assets/images/3.png");
+  background-repeat: no-repeat;
+  background-position: right -632px top 330px !important;
+  /* position: relative; */
+}
+
+body[dir="rtl"] .roundspinner-image-SigninDenied {
+  background-image: url("../../../../../assets/images/3.png");
+  background-position: left -632px top 330px !important;
+}
+
+.denied_signIn_Auth_Icon {
+  position: absolute;
+  right: -250px;
+  bottom: -205px;
+  transform: rotate(280deg);
+}
+
+body[dir="rtl"] .denied_signIn_Auth_Icon {
+  position: absolute;
+  right: 100px;
+  bottom: -205px;
+  transform: rotate(135deg);
+}
+
+.languageSelector {
+  position: absolute;
+  right: 100px;
+  z-index: 99999 !important;
+  margin-top: 50px;
+  margin-right: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+body[dir="rtl"] .languageSelector {
+  position: absolute;
+  right: -100px;
+  z-index: 99999 !important;
+  margin-top: 50px;
+  margin-right: 0 !important;
+  display: flex;
+  justify-content: flex-end;
+}

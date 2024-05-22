@@ -1,0 +1,291 @@
+.EmailBoxtwofac {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.Next_button_EmailVerifyForTwoFac {
+  width: 100% !important;
+  border-radius: 4px !important;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  font-weight: 600 !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 22px !important;
+}
+
+body[dir="rtl"] .Next_button_EmailVerifyForTwoFac {
+  font-weight: 600 !important;
+}
+
+.Next_button_EmailVerifyForTwoFac button:disabled {
+  filter: grayscale(0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: auto 0 !important;
+}
+
+body[dir="rtl"] .Next_button_EmailVerifyForTwoFac button:disabled {
+  font-weight: 600 !important;
+}
+
+.Auth_Icon1_Two_fac {
+  position: absolute;
+  left: 25%;
+  top: 20%;
+  z-index: 9;
+}
+
+.parent-class-images {
+  height: 100%;
+  width: 100%;
+}
+
+.circle-image_Two_Fac {
+  position: absolute;
+  right: -230px;
+  bottom: -200px;
+  transform: rotate(-96deg);
+}
+
+.phone-image {
+  position: absolute;
+  top: 19%;
+  right: -170px;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Auth_Icon {
+  position: absolute;
+  right: -205px;
+  bottom: -205px;
+  transform: rotate(264deg);
+}
+
+body[dir="rtl"] .Auth_Icon {
+  transform: scaleX(-1);
+}
+
+body[dir="rtl"] .phone-image {
+  position: absolute;
+  top: 19%;
+  right: 222px;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body[dir="rtl"] .Auth_Icon {
+  position: absolute;
+  left: -290px !important;
+  bottom: -190px;
+  right: 50px;
+  transform: rotate(22deg);
+}
+
+.auth_container {
+  position: relative;
+}
+
+.auth_container.container-fluid {
+  overflow: hidden;
+}
+
+.Two_fac_auth_paper {
+  margin-top: -1px !important;
+  padding: 40px 30px;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  height: 469px !important;
+  width: 330px !important;
+}
+
+.forogt_email_link {
+  display: flex;
+  justify-content: center;
+  text-decoration: underline;
+  user-select: none !important;
+  font-weight: 400 !important;
+}
+
+.forogt_email_link a {
+  color: #5a5a5a !important;
+}
+
+.EmailLabeltwofacboth {
+  /* margin-left: 10px; */
+  font-size: 12px;
+  margin-top: 0.13rem;
+  color: #5a5a5a;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .EmailLabeltwofacboth {
+  font-weight: 600 !important;
+}
+
+.EmailLabeltwofacboth_active {
+  /* margin-left: 10px; */
+  font-size: 12px;
+  margin-top: 0.13rem;
+  color: #e1e1e1 !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .EmailLabeltwofacboth_active {
+  font-weight: 600 !important;
+}
+
+.sendCodeEmail {
+  /* margin-left: 10px; */
+  font-size: 12px;
+  margin-top: 0.13rem;
+  color: #5a5a5a;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .sendCodeEmail {
+  font-weight: 600 !important;
+}
+
+.sendCodeEmail_active {
+  /* margin-left: 10px; */
+  font-size: 12px;
+  color: #e1e1e1 !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .sendCodeEmail_active {
+  font-weight: 600 !important;
+}
+
+.EmailBoxtwofac {
+  margin-top: 2rem;
+}
+
+.SelectLinetwofac {
+  margin-top: -0.9rem;
+  color: #5a5a5a;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .SelectLinetwofac {
+  font-weight: 600 !important;
+}
+
+.VerifyHeadingtwofac {
+  color: #5a5a5a;
+  margin-top: 5rem;
+  font-size: calc(35px - 20%) !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .VerifyHeadingtwofac {
+  font-weight: 600 !important;
+  font-size: calc(35px - 10%) !important;
+}
+
+.diskus-logo {
+  width: 255px;
+}
+
+.select-language-signin_twofac {
+  position: absolute;
+  overflow: hidden !important;
+  top: 30px;
+  right: 150px;
+  padding: 0 50px !important;
+  z-index: 9999;
+  height: 2.9em !important;
+  border: 1px solid #e1e1e1 !important;
+  box-shadow: none !important;
+  font-weight: 600 !important;
+  border-radius: 4px;
+  outline: none !important;
+}
+
+.select-language-signin_twofac:focus,
+.select-language-signin_twofac:focus-visible {
+  border: 1px solid #e1e1e1 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  border-color: #e1e1e1 !important;
+}
+
+body[dir="rtl"] .select-language-signin_twofac {
+  right: 74.8%;
+}
+
+.language_options {
+  -webkit-appearance: none !important;
+  -mox-appearance: none !important;
+  appearance: none !important;
+  padding: 20px;
+}
+
+.select-language-signin:focus,
+.select-language-signin:focus-within,
+.select-language-signin:focus-visible {
+  border: 1px solid #e1e1e1 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.languageIcon_twofac {
+  z-index: 99999 !important;
+  position: absolute;
+  right: 295px;
+  top: 38px;
+  width: 25px;
+  height: 25px;
+}
+
+body[dir="rtl"] .languageIcon_twofac {
+  right: 75.5%;
+}
+
+.twoFac_checkbox {
+  opacity: 0.5 !important;
+}
+
+.two_fac_image_active {
+  opacity: 1 !important;
+}
+
+.two_fac_image {
+  opacity: 0.4 !important;
+}
+
+body[dir="rtl"] .forogt_email_link a {
+  font-size: 16px !important;
+  font-weight: 400 !important;
+}
+
+.languageSelector {
+  position: absolute;
+  right: 100px;
+  z-index: 99999 !important;
+  margin-top: 50px;
+  margin-right: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+body[dir="rtl"] .languageSelector {
+  position: absolute;
+  right: -100px;
+  z-index: 99999 !important;
+  margin-top: 50px;
+  margin-right: 0 !important;
+  display: flex;
+  justify-content: flex-end;
+}

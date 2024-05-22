@@ -1,0 +1,33 @@
+.Sucessfully_Update_heading {
+  font-size: 20px !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .Sucessfully_Update_heading {
+  font-weight: 600 !important;
+}
+
+.OkButton {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+
+.OkButton:is(:hover, :focus, :active, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .OkButton {
+  font-weight: 600 !important;
+}

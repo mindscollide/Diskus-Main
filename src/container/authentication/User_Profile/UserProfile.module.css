@@ -83,7 +83,7 @@ body[dir="rtl"] .save-User-btn {
   margin-top: 5px;
   font-size: 16px !important;
   color: #5a5a5a !important;
-  font-weight:500;
+  font-weight: 500;
 }
 
 .Designation-label-User {
@@ -157,7 +157,7 @@ body[dir="rtl"] .save-User-btn {
   height: 39px !important;
   background-color: transparent !important;
   border: none !important;
-  font-weight:400;
+  font-weight: 400;
   color: #5a5a5a !important;
   background-image: none !important;
 }
@@ -196,7 +196,7 @@ body[dir="rtl"] .save-User-btn {
 .text-fields-Mobile-disabled {
   background-color: transparent !important;
   border: none !important;
-  font-weight:400;
+  font-weight: 400;
   color: #5a5a5a !important;
   background-image: none !important;
 }
@@ -321,7 +321,6 @@ body[dir="rtl"] .ErrorMessege {
   color: #f16b6b;
   visibility: visible !important;
   font-weight: 600 !important;
-
 }
 
 .errorMessage_hidden {
