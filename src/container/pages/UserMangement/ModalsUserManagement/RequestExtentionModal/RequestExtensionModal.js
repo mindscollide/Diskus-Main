@@ -17,13 +17,6 @@ const RequestExtensionModal = ({ setTrailExpiry }) => {
   const { UserManagementModals } = useSelector((state) => state);
 
   const yesBtnFunctionality = () => {
-    const organizationID = localStorage.getItem("organizationID");
-    const UserID = localStorage.getItem("userID");
-    let data = {
-      OrganizationID: Number(organizationID),
-      UserID: Number(UserID),
-    };
-    dispatch(requestOrganizationExtendApi(navigate, t, data));
     dispatch(showRequestExtentionModal(false));
     setTrailExpiry(true);
   };

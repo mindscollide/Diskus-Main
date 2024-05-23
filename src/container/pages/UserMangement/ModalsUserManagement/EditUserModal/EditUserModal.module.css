@@ -73,3 +73,13 @@ body[dir="rtl"] .EmailStyles {
 body[dir="rtl"] .EdituserModalUpdateButton {
   font-weight: 600 !important;
 }
+
+.label-styling {
+  color: #6172d6 !important;
+  font-weight: 600 !important;
+  font-size: 10px !important;
+}
+
+.aesterick-color {
+  color: #f16b6b !important;
+}
