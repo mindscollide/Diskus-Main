@@ -37,10 +37,18 @@ const deleteCommentModal = (response) => {
   };
 };
 
+const deleteCommentMeetingModal = (response) => {
+  return {
+    type: actions.DELETE_COMMENT_MEETING_MODAL,
+    response: response,
+  };
+};
+
 export {
   pendingApprovalPage,
   reviewMinutesPage,
   rejectCommentModal,
   editCommentModal,
   deleteCommentModal,
+  deleteCommentMeetingModal,
 };

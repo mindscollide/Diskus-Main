@@ -5087,7 +5087,7 @@ body[dir="rtl"] .ql-editor.ql-blank {
   margin-left: 10px !important;
   height: 39px !important;
   margin-top: 2px;
-  font-family: 'Montserrat';
+  font-family: "Montserrat";
 }
 
 .searchBox-dropdowns-resolution
@@ -7169,4 +7169,9 @@ th.ant-table-cell.statusParticipant
   > th
   .ant-table-column-sorter {
   display: none;
+}
+
+.fade.DeleteCommentModal.modal.show .modal-content {
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 3px;
 }

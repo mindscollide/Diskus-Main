@@ -7,6 +7,7 @@ const initialState = {
   rejectCommentModal: false,
   editCommentModal: false,
   deleteCommentModal: false,
+  deleteMeetingCommentModal: false,
 };
 
 const MinutesReducer = (state = initialState, action) => {
@@ -43,6 +44,13 @@ const MinutesReducer = (state = initialState, action) => {
       return {
         ...state,
         deleteCommentModal: action.response,
+      };
+    }
+
+    case actions.DELETE_COMMENT_MEETING_MODAL: {
+      return {
+        ...state,
+        deleteMeetingCommentModal: action.response,
       };
     }
 

@@ -1849,5 +1849,6 @@
   "You-can-add-data-from-only-one-form-option-at-a-time": "You can add data from only one form option at a time",
   "Please-select-a-group-member-type-as-well": "Please select a group member type as well",
   "Please-select-at-least-one-member" : "Please select at least one member",
-  "Task-has-been-deleted-successfully": "Task has been deleted successfully"
+  "Task-has-been-deleted-successfully": "Task has been deleted successfully",
+  "Are-you-sure-you-want-to-delete-this-minute": "Are you sure you want to delete this minute?"
 }
