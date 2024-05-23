@@ -648,25 +648,27 @@ const Header2 = () => {
                         </>
                       )}
                       {JSON.parse(localStorage.getItem("remainingDays")) ===
-                        1 && (
-                        <>
-                          {" "}
-                          <Button
-                            text={t("Upgrade-now")}
-                            className="UpgradeNowbutton"
-                            onClick={handleShowUpgradedNowModal}
-                          />
-                          {JSON.parse(
-                            localStorage.getItem("isExtensionAvailable")
-                          ) && (
+                        1 &&
+                        JSON.parse(localStorage.getItem("remainingDays")) ===
+                          0 && (
+                          <>
+                            {" "}
                             <Button
-                              text={t("Request-an-extention")}
+                              text={t("Upgrade-now")}
                               className="UpgradeNowbutton"
-                              onClick={handleRequestExtentionModal}
+                              onClick={handleShowUpgradedNowModal}
                             />
-                          )}
-                        </>
-                      )}
+                            {JSON.parse(
+                              localStorage.getItem("isExtensionAvailable")
+                            ) && (
+                              <Button
+                                text={t("Request-an-extention")}
+                                className="UpgradeNowbutton"
+                                onClick={handleRequestExtentionModal}
+                              />
+                            )}
+                          </>
+                        )}
                     </>
                   )}
                 </Col>
