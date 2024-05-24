@@ -158,7 +158,7 @@ const BillProcessStepTwo = ({
                       />
                     </Col>
                     <Row>
-                      <Col>
+                      <Col className={styles["errorContainer"]}>
                         <p
                           className={
                             billingAddress.Country.value === ""
@@ -188,7 +188,7 @@ const BillProcessStepTwo = ({
                     name="PostalCode"
                   />
                   <Row>
-                    <Col>
+                    <Col className={styles["errorContainer"]}>
                       <p
                         className={
                           billingAddress.PostalCode.value === ""
@@ -219,7 +219,7 @@ const BillProcessStepTwo = ({
                     name="State"
                   />
                   <Row>
-                    <Col>
+                    <Col className={styles["errorContainer"]}>
                       <p
                         className={
                           billingAddress.State.value === ""
@@ -248,7 +248,7 @@ const BillProcessStepTwo = ({
                     name="City"
                   />
                   <Row>
-                    <Col>
+                    <Col className={styles["errorContainer"]}>
                       <p
                         className={
                           billingAddress.City.value === ""
@@ -279,7 +279,7 @@ const BillProcessStepTwo = ({
                     name="Address"
                   />
                   <Row>
-                    <Col>
+                    <Col className={styles["errorContainer"]}>
                       <p
                         className={
                           billingAddress.Address.value === ""

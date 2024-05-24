@@ -23,8 +23,8 @@ body[dir="rtl"] span.billing-address {
 }
 
 .errorMessage_Billing {
-  margin: 4px;
-  height: 7px;
+  height: 20px;
+  margin: 0;
   color: #f16b6b;
   visibility: visible !important;
 }
@@ -35,13 +35,17 @@ body[dir="rtl"] .errorMessage_Billing {
 
 .errorMessage_hidden_Billing {
   visibility: hidden;
+  height: 20px;
   margin: 0;
-  height: 7px;
   color: #f16b6b !important;
 }
 
 body[dir="rtl"] .errorMessage_hidden_Billing {
   font-weight: 400 !important;
+}
+
+.errorContainer {
+  height: 20px; /* Ensures consistent space for error messages */
 }
 
 .body[dir="rtl"] .react-flag-Info-Signup button {
