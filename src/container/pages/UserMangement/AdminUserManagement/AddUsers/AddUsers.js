@@ -369,7 +369,7 @@ const AddUsers = () => {
             </Col>
           </Row>
           <Row className="mt-4">
-            <Col lg={11} md={11} sm={12} xs={12}>
+            <Col lg={12} md={12} sm={12} xs={12} className="position-relative">
               <TextField
                 onBlur={() => {
                   handeEmailvlidate();
@@ -392,6 +392,10 @@ const AddUsers = () => {
                 }
                 applyClass={"updateNotes_titleInput"}
               />
+              {adminReducer.EmailCheckSpinner ? (
+                <Spinner className={styles["checkEmailSpinner"]} />
+              ) : null}
+              {isEmailUnique && <Check2 className={styles["isEmailUnique"]} />}
               <Row>
                 <Col>
                   {!isEmailUnique && (
@@ -412,12 +416,6 @@ const AddUsers = () => {
                   )}
                 </Col>
               </Row>
-            </Col>
-            <Col lg={1} md={1} sm={12} xs={12}>
-              {adminReducer.EmailCheckSpinner ? (
-                <Spinner className={styles["checkEmailSpinner"]} />
-              ) : null}
-              {isEmailUnique && <Check2 className={styles["isEmailUnique"]} />}
             </Col>
           </Row>
         </Col>
