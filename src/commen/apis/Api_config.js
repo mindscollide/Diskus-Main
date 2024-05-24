@@ -1579,6 +1579,10 @@ const downloadAttachmentTalk = {
   RequestMethod: "ServiceManager.DownloadAttachment",
 };
 
+const changeSelectedSubscription = {
+  RequestMethod: "ServiceManager.ChangeSelectedSubscriptionDetails"
+}
+
 export {
   ValidateEmailRelatedStringPolls,
   ValidateEmailRelatedString,
@@ -1998,4 +2002,5 @@ export {
   requestOrganizationTrialExtend,
   paymentStatus,
   downloadAttachmentTalk,
+  changeSelectedSubscription
 };

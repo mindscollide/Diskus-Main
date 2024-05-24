@@ -17,6 +17,7 @@ import {
 } from "../../../../components/elements";
 import {
   LoginFlowRoutes,
+  changeSelectPacakgeApi,
   getAllUserTypePackagesApi,
   signUpFlowRoutes,
   signupFlowRoutes,
@@ -31,6 +32,7 @@ const PakageDetailsUserManagement = () => {
 
   const SignupPage = localStorage.getItem("SignupFlowPageRoute");
   const trialPage = localStorage.getItem("isTrial");
+  let changePacakgeFlag = localStorage.getItem("changePacakgeFlag");
 
   const { UserMangementReducer, LanguageReducer } = useSelector(
     (state) => state
@@ -47,34 +49,89 @@ const PakageDetailsUserManagement = () => {
     message: "",
   });
 
+  console.log(tableData, "tableDatatableDatatableData");
+
   //get All user pakages Api call
   useEffect(() => {
     try {
-      dispatch(getAllUserTypePackagesApi(navigate, t));
+      if (
+        changePacakgeFlag !== null &&
+        changePacakgeFlag !== undefined &&
+        changePacakgeFlag
+      ) {
+        dispatch(getAllUserTypePackagesApi(navigate, t, true));
+      } else {
+        dispatch(getAllUserTypePackagesApi(navigate, t, false));
+      }
     } catch (error) {
       console.log(error, "error");
     }
   }, []);
 
-  //Fetching the data for pakage selection
   useEffect(() => {
     try {
       const pakageDetails = UserMangementReducer.getAllUserTypePackagesData;
       console.log(pakageDetails, "datadatadatadata");
+
+      // Check if the package details object and its packages array exist and are not empty
       if (
         pakageDetails &&
         pakageDetails.packages &&
         pakageDetails.packages.length > 0
       ) {
-        setPackageDetail(
-          UserMangementReducer.getAllUserTypePackagesData.packages
-        );
-        setTableData(UserMangementReducer.getAllUserTypePackagesData.packages);
+        // Set package details state
+        setPackageDetail(pakageDetails.packages);
+        let newPackagesData = [];
+        // Update table data by resetting the licenseCount to an empty string for each package
+        pakageDetails.packages.forEach((packageData) => {
+          newPackagesData.push({
+            ...packageData,
+            licenseCount: "",
+          });
+        });
+        setTableData(newPackagesData);
       }
     } catch (error) {
+      // Log any errors that occur
       console.log(error, "error");
     }
   }, [UserMangementReducer.getAllUserTypePackagesData]);
+
+  console.log(tableData, "setTableDatasetTableDatasetTableData");
+
+  //Fetching User headcounts data and set in the table
+  useEffect(() => {
+    if (UserMangementReducer.getAllSelectedPakagesData) {
+      const { organizationSubscription } =
+        UserMangementReducer.getAllSelectedPakagesData;
+
+      if (
+        organizationSubscription &&
+        Array.isArray(organizationSubscription.organizationSelectedPackages)
+      ) {
+        organizationSubscription.organizationSelectedPackages.forEach(
+          (packageData) => {
+            setTableData((prevTableData) =>
+              prevTableData.map((newData) => {
+                if (newData.name === packageData.name) {
+                  return {
+                    ...newData,
+                    licenseCount: String(packageData.headCount),
+                  };
+                }
+                return newData;
+              })
+            );
+          }
+        );
+      }
+
+      console.log(
+        UserMangementReducer.getAllSelectedPakagesData,
+        "UserMangementReducerUserMangementReducer"
+      );
+    }
+  }, [UserMangementReducer.getAllSelectedPakagesData]);
 
   // translate Languages start
   const languages = [
@@ -213,9 +270,15 @@ const PakageDetailsUserManagement = () => {
             <>
               <span className={styles["ButtonsArabicStylesSpan"]}>
                 <Button
-                  text={t("Pay-now")}
+                  text={
+                    changePacakgeFlag !== null &&
+                    changePacakgeFlag !== undefined &&
+                    changePacakgeFlag
+                      ? t("Upgrade-now")
+                      : t("Pay-now")
+                  }
                   className={styles["PayNowButtons"]}
-                  onClick={handlePayNowClick}
+                  onClick={() => handlePayNowClick(2)}
                 />
               </span>
             </>
@@ -260,9 +323,15 @@ const PakageDetailsUserManagement = () => {
             <>
               <span className={styles["ButtonsArabicStylesSpan"]}>
                 <Button
-                  text={t("Pay-now")}
+                  text={
+                    changePacakgeFlag !== null &&
+                    changePacakgeFlag !== undefined &&
+                    changePacakgeFlag
+                      ? t("Upgrade-now")
+                      : t("Pay-now")
+                  }
                   className={styles["PayNowButtons"]}
-                  onClick={handlePayNowClick}
+                  onClick={() => handlePayNowClick(3)}
                 />
               </span>
             </>
@@ -305,9 +374,15 @@ const PakageDetailsUserManagement = () => {
             <>
               <span className={styles["ButtonsArabicStylesSpan"]}>
                 <Button
-                  text={t("Pay-now")}
+                  text={
+                    changePacakgeFlag !== null &&
+                    changePacakgeFlag !== undefined &&
+                    changePacakgeFlag
+                      ? t("Upgrade-now")
+                      : t("Pay-now")
+                  }
                   className={styles["PayNowButtons"]}
-                  onClick={handlePayNowClick}
+                  onClick={() => handlePayNowClick(1)}
                 />
               </span>
             </>
@@ -332,15 +407,50 @@ const PakageDetailsUserManagement = () => {
   ];
 
   //Pay Now B Button On Click
-  const handlePayNowClick = () => {
-    if (SignupPage) {
-      localStorage.setItem("SignupFlowPageRoute", 2);
-      dispatch(signUpFlowRoutes(2));
-      navigate("/Signup");
-    } else if (trialPage === true) {
-      navigate("/Admin/PaymentFormUserManagement");
+  const handlePayNowClick = (tenureOfSuscriptionID) => {
+    let newArr = [];
+
+    tableData.forEach((data, index) => {
+      if (data?.licenseCount) {
+        if (data?.licenseCount !== "") {
+          newArr.push({
+            PackageID: data.pK_PackageID,
+            HeadCount: Number(data.licenseCount),
+          });
+        }
+      }
+    });
+    if (
+      changePacakgeFlag !== null &&
+      changePacakgeFlag !== undefined &&
+      changePacakgeFlag
+    ) {
+      let requestData = {
+        TenureOfSubscriptionID: Number(tenureOfSuscriptionID),
+        Packages: newArr,
+      };
+      dispatch(
+        changeSelectPacakgeApi(navigate, t, requestData, changePacakgeFlag)
+      );
+      // localStorage.removeItem("changePacakgeFlag")
     } else {
-      navigate("/Admin/PaymentFormUserManagement");
+      if (SignupPage) {
+        let requestData = {
+          TenureOfSubscriptionID: Number(tenureOfSuscriptionID),
+          Packages: newArr,
+        };
+        localStorage.setItem(
+          "packageSubscriptionDetail",
+          JSON.stringify(requestData)
+        );
+        localStorage.setItem("SignupFlowPageRoute", 2);
+        dispatch(signUpFlowRoutes(2));
+        navigate("/Signup");
+      } else if (trialPage === true) {
+        navigate("/Admin/PaymentFormUserManagement");
+      } else {
+        navigate("/Admin/PaymentFormUserManagement");
+      }
     }
   };
 
