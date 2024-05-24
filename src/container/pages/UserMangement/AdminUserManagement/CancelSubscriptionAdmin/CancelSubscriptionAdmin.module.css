@@ -14,6 +14,9 @@ body[dir="rtl"] .CancelSubscriptionHeading {
   border: 1px solid #e1e1e1 !important;
   padding: 10px 40px !important;
   border-radius: 4px !important;
+  overflow-x: auto; /* Ensure horizontal overflow is handled */
+  display: flex;
+  flex-direction: column;
 }
 
 .subheadingCancelsubscription {
