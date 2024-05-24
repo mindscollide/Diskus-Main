@@ -65,13 +65,10 @@ const EditUserModal = ({ editModalData }) => {
       const defaultOption = packageAssignedOption.find(
         (option) => option.value === editModalData.userAllotedPackageID
       );
-      console.log(defaultOption, "packageAssignedOption");
 
       setPackageAssignedValue(defaultOption);
     }
   }, [editModalData, packageAssignedOption]);
-
-  console.log(packageAssignedValue, "packageAssignedOption");
 
   //options for the dropdowm
   const options = [
