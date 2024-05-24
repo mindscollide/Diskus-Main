@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Button, TableToDo, Loader } from "../../../../../components/elements";
 import ellipses from "../../../../../assets/images/ellipses.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { getOrganizationSelectedPakagesAPI } from "../../../../../store/actions/UserManagementActions";
+import { getOrganizationSelectedPakagesAPI, signUpFlowRoutes } from "../../../../../store/actions/UserManagementActions";
 import { useNavigate } from "react-router-dom";
 import { convertUTCDateToLocalDate } from "../../../../../commen/functions/date_formater";
 const BillProcessStepThree = () => {
@@ -192,6 +192,12 @@ const BillProcessStepThree = () => {
 
   const totalRow = calculateTotals(getAllPakagesData);
 
+  const handleChangePackageSelected = () => {
+    localStorage.setItem("changePacakgeFlag", true)
+    localStorage.setItem("SignupFlowPageRoute", 1);
+    dispatch(signUpFlowRoutes(1));
+  }
+
   return (
     <>
       <Container>
@@ -262,6 +268,7 @@ const BillProcessStepThree = () => {
                       <Button
                         text={t("Change-pakage-details")}
                         className={styles["ChangePakageDetailsButton"]}
+                        onClick={handleChangePackageSelected}
                       />
                     </Col>
                   </Row>

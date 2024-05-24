@@ -25,6 +25,7 @@ const initialState = {
   defaultRoutes: null,
   organizationTrialExtendData: null,
   paymentStatusModal: null,
+  changeSelectedPackage: null,
 };
 
 const UserMangementReducer = (state = initialState, action) => {
@@ -260,7 +261,7 @@ const UserMangementReducer = (state = initialState, action) => {
     case actions.GET_ALL_USER_TYPES_PAKAGES_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: action.loader,
         getAllUserTypePackagesData: action.response,
         ResponseMessage: action.message,
       };
@@ -480,6 +481,28 @@ const UserMangementReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
 
+    case actions.CHANGE_PACKAGE_SELECTED_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.CHANGE_PACKAGE_SELECTED_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        changeSelectedPackage: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.CHANGE_PACKAGE_SELECTED_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        changeSelectedPackage: null,
+        ResponseMessage: action.message,
+      };
+    }
     case actions.CLEAR_MESSEGES_USER_MANAGEMENT:
       return {
         ...state,
