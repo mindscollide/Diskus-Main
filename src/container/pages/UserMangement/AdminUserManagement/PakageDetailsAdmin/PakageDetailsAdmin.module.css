@@ -28,9 +28,9 @@ body[dir="rtl"] .PakageDetailsHeading {
 .subcriptionkey_1 {
   background: #6172d6 !important;
   margin: 0;
-  padding: 13px;
+  padding: 10px 5px;
   color: #fff;
-  height: 50px;
+  height: 53px;
   display: flex;
   font-weight: 600 !important;
   justify-content: center;
@@ -102,8 +102,10 @@ body[dir="rtl"] .subcriptionvalue_1 {
 }
 
 .UpgradePlanHeading {
+  width: 100% !important;
+  text-align: center;
   font-size: 30px !important;
-  white-space: nowrap !important;
+  /* white-space: nowrap !important; */
   color: #5a5a5a !important;
   font-weight: 700 !important;
 }
@@ -182,4 +184,8 @@ body[dir="rtl"] .Tableheading {
   font-weight: 600 !important;
   display: flex !important;
   justify-content: center !important;
+}
+
+.side-card-packagedetail {
+  padding: 5px 10px !important;
 }

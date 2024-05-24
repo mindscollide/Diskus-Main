@@ -379,6 +379,8 @@ const AddUserMain = () => {
         errorStatus: false,
       },
     });
+    setSelected("US");
+    setEmailUnique(false);
     setPackageAssignedValue([]);
   };
 
