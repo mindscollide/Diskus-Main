@@ -85,7 +85,14 @@ const VerificationEmailAndNumber = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     let userID = localStorage.getItem("userID");
-    let Data = { UserID: JSON.parse(userID), Email: email, OTP: otpCode };
+    // let Data = { UserID: JSON.parse(userID), Email: email, OTP: otpCode };
+    let Data = {
+      UserID: JSON.parse(userID),
+      IsRequestFromDevice: false,
+      IsYesSelectedOnDevice: false,
+      OTP: otpCode,
+    };
+
     setOtpCode("");
     dispatch(verificationTwoFacOtp(Data, t, navigate, setOtpCode));
   };

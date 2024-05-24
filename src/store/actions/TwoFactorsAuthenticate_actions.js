@@ -642,54 +642,82 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
                   t("Otp-has-been-verified-successfully")
                 )
               );
-              clearLocalStorageAtloginresponce(dispatch, 1, navigate);
               localStorage.setItem("TowApproval", true);
               console.log("TowApproval");
-              if (localStorage.getItem("hasAdminRights")) {
-                if (localStorage.getItem("isFirstLogIn")) {
+              let hasAdminRights = localStorage.getItem("hasAdminRights");
+              let hasUserRights = localStorage.getItem("hasUserRights");
+              let isFirstLogin = localStorage.getItem("isFirstLogin");
+
+              clearLocalStorageAtloginresponce(dispatch, 1, navigate);
+              if (isFirstLogin === "true") {
+                if (RSVP !== undefined && RSVP !== null) {
+                  if (hasUserRights === "true") {
+                    navigate("/DisKus/Meeting/Useravailabilityformeeting");
+                  } else if (hasAdminRights === "true") {
+                    navigate("/Admin/ManageUsers");
+                  }
+                } else if (
+                  dataroomValue !== null &&
+                  dataroomValue !== undefined
+                ) {
+                  if (hasUserRights === "true") {
+                    navigate("/Diskus/dataroom");
+                  } else if (hasAdminRights === "true") {
+                    navigate("/Admin/ManageUsers");
+                  }
+                } else if (hasAdminRights === "true") {
                   navigate("/Admin/ManageUsers");
+                } else if (hasUserRights === "true") {
+                  navigate("/onboard/");
+                }
+              } else {
+                if (RSVP !== undefined && RSVP !== null) {
+                  if (hasUserRights === "true") {
+                    navigate("/DisKus/Meeting/Useravailabilityformeeting");
+                  } else if (hasAdminRights === "true") {
+                    navigate("/Admin/ManageUsers");
+                  }
+                } else if (
+                  dataroomValue !== null &&
+                  dataroomValue !== undefined
+                ) {
+                  if (hasUserRights === "true") {
+                    navigate("/Diskus/dataroom");
+                  } else if (hasAdminRights === "true") {
+                    navigate("/Admin/ManageUsers");
+                  }
                 } else {
-                  if (localStorage.getItem("hasUserRights")) {
-                    if (localStorage.getItem("isFirstLogIn")) {
-                      navigate("/onboard/");
-                    } else {
-                      if (RSVP !== undefined && RSVP !== null) {
-                        navigate("/DisKus/Meeting/Useravailabilityformeeting");
-                      } else if (
-                        dataroomValue !== null &&
-                        dataroomValue !== undefined
-                      ) {
-                        navigate("/Diskus/dataroom");
-                      } else {
-                        navigate("/Diskus/");
-                      }
-                    }
-                  } else {
+                  if (hasUserRights === "true") {
+                    navigate("/Diskus/");
+                  } else if (hasAdminRights === "true") {
                     navigate("/Admin/ManageUsers");
                   }
                 }
-              } else if (localStorage.getItem("hasUserRights")) {
-                if (localStorage.getItem("isFirstLogIn")) {
-                  navigate("/onboard/");
-                } else {
-                  if (RSVP !== undefined && RSVP !== null) {
-                    navigate("/DisKus/Meeting/Useravailabilityformeeting");
-                  } else if (
-                    dataroomValue !== null &&
-                    dataroomValue !== undefined
-                  ) {
-                    navigate("/Diskus/dataroom");
-                  } else {
-                    navigate("/Diskus/");
-                  }
-                }
-              } else {
-                dispatch(
-                  verifyOtpFacFail(t("User-not-authorised-contact-admin"))
-                );
-                clearLocalStorageAtloginresponce(dispatch, 2, navigate);
-                console.log("TowApproval");
               }
+              console.log(
+                Boolean(hasUserRights),
+                Boolean(hasAdminRights),
+                Boolean(isFirstLogin),
+                "PrivateRoutesPrivateRoutesPrivateRoutes"
+              );
+              // if (RSVP !== undefined && RSVP !== null) {
+              //   navigate("/DisKus/Meeting/Useravailabilityformeeting");
+              // } else if (
+              //   dataroomValue !== null &&
+              //   dataroomValue !== undefined
+              // ) {
+              //   navigate("/Diskus/dataroom");
+              // } else {
+              //   navigate("/Diskus/");
+              // }
+              //  else {
+              //     dispatch(
+              //       verifyOtpFacFail(t("User-not-authorised-contact-admin"))
+              //     );
+              //     clearLocalStorageAtloginresponce(dispatch, 2, navigate);
+              //     console.log("TowApproval");
+              //   }
+
               // if (JSON.parse(localStorage.getItem("roleID")) === 1) {
               //   navigate("/Admin/");
               // } else if (JSON.parse(localStorage.getItem("roleID")) === 2) {
