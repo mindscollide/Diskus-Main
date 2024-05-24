@@ -2823,6 +2823,14 @@ input#Participant::placeholder {
   margin-top: -19px !important;
 }
 
+.package-TablePakageSelection .ant-table table {
+  padding: 0px 5px;
+  border-spacing: 0 25px !important;
+  border-radius: 50px !important;
+  table-layout: inherit !important;
+  margin-top: -19px !important;
+}
+
 .Resolution .ant-table table {
   border-spacing: 0 10px !important;
   border-radius: 50px !important;

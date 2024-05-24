@@ -83,3 +83,27 @@ body[dir="rtl"] .EdituserModalUpdateButton {
 .aesterick-color {
   color: #f16b6b !important;
 }
+
+.errorMessage {
+  font-weight: 600;
+  font-size: 10px;
+  margin: 4px;
+  height: 7px;
+  color: #f16b6b;
+  visibility: visible !important;
+}
+
+body[dir="rtl"] .errorMessage {
+  font-weight: 400 !important;
+}
+
+.errorMessage_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 15px;
+  color: #f16b6b !important;
+}
+
+body[dir="rtl"] .errorMessage_hidden {
+  font-weight: 400 !important;
+}

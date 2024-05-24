@@ -429,3 +429,23 @@ body[dir="rtl"] .DownloadButton {
   font-size: 12px !important;
   font-weight: 600 !important;
 }
+
+.NameStylesTable {
+  font-weight: 700 !important;
+  font-size: 12px !important;
+  color: #505050 !important;
+}
+
+body[dir="rtl"] .NameStylesTable {
+  font-weight: 700 !important;
+}
+
+.DesignationStyles {
+  font-weight: 400 !important;
+  font-size: 12px !important;
+  color: #505050 !important;
+}
+
+body[dir="rtl"] .DesignationStyles {
+  font-weight: 400 !important;
+}

@@ -182,11 +182,13 @@ body[dir="rtl"] .OutStandingHeading {
 
 .Assistance {
   background: #f2f2f2 !important;
-  height: 251.71px !important;
   width: 100% !important;
   border-radius: 4px !important;
   padding: 10px 10px !important;
   margin-top: 70px !important;
+  align-items: center;
+  height: auto !important;
+  max-height: 261px !important;
 }
 
 .CallAssistantSubHeading {
@@ -203,8 +205,58 @@ body[dir="rtl"] .CallAssistantSubHeading {
   font-size: 16px !important;
   color: #6172d6 !important;
   font-weight: 700 !important;
+  word-break: break-word; /* Ensure long text breaks properly */
+  overflow-wrap: break-word; /* Ensure long text wraps properly */
 }
 
 body[dir="rtl"] .BussniessmailStyles {
   font-weight: 700 !important;
+}
+
+@media (max-width: 1024px) {
+  .Assistance {
+    padding: 10px 20px !important;
+    margin-top: 20px !important;
+    max-height: 331px !important;
+  }
+
+  .CallAssistantSubHeading {
+    font-size: 14px !important;
+  }
+
+  .BussniessmailStyles {
+    font-size: 14px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .Assistance {
+    padding: 10px 15px !important;
+    margin-top: 20px !important;
+    max-height: 351px !important;
+  }
+
+  .CallAssistantSubHeading {
+    font-size: 12px !important;
+  }
+
+  .BussniessmailStyles {
+    font-size: 12px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .Assistance {
+    padding: 5px 10px !important;
+    margin-top: 10px !important;
+    max-height: 371px !important;
+  }
+
+  .CallAssistantSubHeading {
+    font-size: 10px !important;
+  }
+
+  .BussniessmailStyles {
+    font-size: 10px !important;
+  }
 }

@@ -225,80 +225,80 @@ const PakageDetailsAdmin = () => {
                 </h3>{" "} */}
               </Col>
             </Row>
-            <Row className="mt-5">
-              <Col xs={12} sm={12} md={1} lg={1}></Col>
-              <Col
-                lg={10}
-                md={10}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-center"
-              >
-                <span className={styles["UpgradePlanHeading"]}>
-                  {t("Upgrade-your-plan")}
-                </span>
-              </Col>
-              <Col xs={12} sm={12} md={1} lg={1}></Col>
-            </Row>
-            <Row>
-              <Col sm={12}>
-                <Row className="mt-4">
-                  <Col xs={12} sm={12} md={2} lg={2}></Col>
-                  <Col
-                    xs={12}
-                    sm={12}
-                    md={8}
-                    lg={8}
-                    className="text-center m-0 p-0 "
-                  >
-                    <p className={styles["subcriptionkey_1"]}>
-                      {t("Subscription-date")}
-                    </p>
-                    <p className={styles["subcriptionvalue_1"]}>
-                      {_justShowDateformat(
-                        packageDetails.PackageSubscriptionDate + "000000"
-                      )}
-                    </p>
-                  </Col>
-                  <Col xs={12} sm={12} md={2} lg={2}></Col>
-                </Row>
-                <Row className="mt-4">
-                  <Col xs={12} sm={12} md={2} lg={2}></Col>
-                  <Col
-                    xs={12}
-                    sm={12}
-                    md={8}
-                    lg={8}
-                    className="text-center m-0 p-0 "
-                  >
-                    <p className={styles["subcriptionkey_2"]}>
-                      {t("Expiry-date")}
-                    </p>
-                    <p className={styles["subcriptionvalue_2"]}>
-                      {_justShowDateformat(
-                        packageDetails.PackageExpiryDate + "000000"
-                      )}
-                    </p>
-                  </Col>
-                  <Col xs={12} sm={12} md={2} lg={2}></Col>
-                </Row>
-              </Col>
-            </Row>
-            <Row className="mt-5">
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-center"
-              >
-                <Button
-                  text={t("Upgrade")}
-                  className={styles["UpdateButtonPakageDetails"]}
-                  onClick={upgradeOnclickHandler}
-                />
-              </Col>
-            </Row>
+            <div className={styles["side-card-packagedetail"]}>
+              <Row className="mt-5">
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  xs={12}
+                  className="d-flex justify-content-center"
+                >
+                  <span className={styles["UpgradePlanHeading"]}>
+                    {t("Upgrade-your-plan")}
+                  </span>
+                </Col>
+              </Row>
+              <Row>
+                <Col sm={12}>
+                  <Row className="mt-4">
+                    <Col xs={12} sm={12} md={2} lg={2}></Col>
+                    <Col
+                      xs={12}
+                      sm={12}
+                      md={8}
+                      lg={8}
+                      className="text-center m-0 p-0 "
+                    >
+                      <p className={styles["subcriptionkey_1"]}>
+                        {t("Subscription-date")}
+                      </p>
+                      <p className={styles["subcriptionvalue_1"]}>
+                        {_justShowDateformat(
+                          packageDetails.PackageSubscriptionDate + "000000"
+                        )}
+                      </p>
+                    </Col>
+                    <Col xs={12} sm={12} md={2} lg={2}></Col>
+                  </Row>
+                  <Row className="mt-4">
+                    <Col xs={12} sm={12} md={2} lg={2}></Col>
+                    <Col
+                      xs={12}
+                      sm={12}
+                      md={8}
+                      lg={8}
+                      className="text-center m-0 p-0 "
+                    >
+                      <p className={styles["subcriptionkey_2"]}>
+                        {t("Expiry-date")}
+                      </p>
+                      <p className={styles["subcriptionvalue_2"]}>
+                        {_justShowDateformat(
+                          packageDetails.PackageExpiryDate + "000000"
+                        )}
+                      </p>
+                    </Col>
+                    <Col xs={12} sm={12} md={2} lg={2}></Col>
+                  </Row>
+                </Col>
+              </Row>
+              <Row className="mt-5">
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  xs={12}
+                  className="d-flex justify-content-center"
+                >
+                  <Button
+                    text={t("Upgrade")}
+                    className={styles["UpdateButtonPakageDetails"]}
+                    onClick={upgradeOnclickHandler}
+                  />
+                </Col>
+              </Row>
+            </div>
           </Card>
         </Col>
         <Col xl={8} lg={8} md={8} sm={12} xs={12}>
@@ -310,7 +310,7 @@ const PakageDetailsAdmin = () => {
               <Col lg={12} md={12} sm={12} xs={12}>
                 <TableToDo
                   column={ColumnsPakageSelection}
-                  className={"Billing_TablePakageSelection"}
+                  className={"package-TablePakageSelection"}
                   rows={[...Data, defaultRow]}
                   pagination={false}
                   footer={false}

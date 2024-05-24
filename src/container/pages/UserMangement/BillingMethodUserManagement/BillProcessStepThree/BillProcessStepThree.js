@@ -5,7 +5,10 @@ import { useTranslation } from "react-i18next";
 import { Button, TableToDo, Loader } from "../../../../../components/elements";
 import ellipses from "../../../../../assets/images/ellipses.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { getOrganizationSelectedPakagesAPI, signUpFlowRoutes } from "../../../../../store/actions/UserManagementActions";
+import {
+  getOrganizationSelectedPakagesAPI,
+  signUpFlowRoutes,
+} from "../../../../../store/actions/UserManagementActions";
 import { useNavigate } from "react-router-dom";
 import { convertUTCDateToLocalDate } from "../../../../../commen/functions/date_formater";
 const BillProcessStepThree = () => {
@@ -88,6 +91,7 @@ const BillProcessStepThree = () => {
       width: 100,
       dataIndex: "name",
       key: "name",
+      ellipses: true,
       align: "center",
       render: (text, record) => {
         return (
@@ -106,6 +110,7 @@ const BillProcessStepThree = () => {
       dataIndex: "price",
       key: "price",
       width: 100,
+      ellipses: true,
       align: "center",
       render: (text, record) => {
         return (
@@ -126,6 +131,7 @@ const BillProcessStepThree = () => {
       width: 100,
       dataIndex: "headCount",
       key: "headCount",
+      ellipses: true,
       align: "center",
       render: (text, record) => {
         return (
@@ -146,6 +152,7 @@ const BillProcessStepThree = () => {
       dataIndex: "Yearlycharges",
       key: "Yearlycharges",
       align: "center",
+      ellipses: true,
       width: 100,
       render: (text, record) => {
         if (record.name === "Total") {
@@ -193,14 +200,14 @@ const BillProcessStepThree = () => {
   const totalRow = calculateTotals(getAllPakagesData);
 
   const handleChangePackageSelected = () => {
-    localStorage.setItem("changePacakgeFlag", true)
+    localStorage.setItem("changePacakgeFlag", true);
     localStorage.setItem("SignupFlowPageRoute", 1);
     dispatch(signUpFlowRoutes(1));
-  }
+  };
 
   return (
     <>
-      <Container>
+      <section className={styles["sectionstyles"]}>
         <Row>
           <Col
             lg={12}
@@ -217,8 +224,8 @@ const BillProcessStepThree = () => {
                   rows={[...getAllPakagesData, totalRow]}
                   pagination={false}
                   id="PakageDetails"
+                  scroll={{ x: "max-content" }}
                   rowHoverBg="none"
-                  scroll={{ x: true }}
                 />
               </Col>
               <Col lg={3} md={3} sm={12} xs={12}>
@@ -277,7 +284,7 @@ const BillProcessStepThree = () => {
             </Row>
           </Col>
         </Row>
-      </Container>
+      </section>
       {UserMangementReducer.Loading || LanguageReducer.Loading ? (
         <Loader />
       ) : null}
