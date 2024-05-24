@@ -91,6 +91,7 @@ const BillProcessStepThree = () => {
       width: 100,
       dataIndex: "name",
       key: "name",
+      ellipses: true,
       align: "center",
       render: (text, record) => {
         return (
@@ -109,6 +110,7 @@ const BillProcessStepThree = () => {
       dataIndex: "price",
       key: "price",
       width: 100,
+      ellipses: true,
       align: "center",
       render: (text, record) => {
         return (
@@ -129,6 +131,7 @@ const BillProcessStepThree = () => {
       width: 100,
       dataIndex: "headCount",
       key: "headCount",
+      ellipses: true,
       align: "center",
       render: (text, record) => {
         return (
@@ -149,6 +152,7 @@ const BillProcessStepThree = () => {
       dataIndex: "Yearlycharges",
       key: "Yearlycharges",
       align: "center",
+      ellipses: true,
       width: 100,
       render: (text, record) => {
         if (record.name === "Total") {
