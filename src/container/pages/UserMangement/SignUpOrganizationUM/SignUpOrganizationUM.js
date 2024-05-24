@@ -420,7 +420,7 @@ const SignUpOrganizationUM = () => {
         signUpDetails.CompanyName.value !== "" &&
         signUpDetails.FullName.value !== "" &&
         signUpDetails.Email.value !== "" &&
-        signUpDetails.FullName.value !== "" &&
+        signUpDetails.PhoneNumber.value !== "" &&
         signUpDetails.CountryName.value !== ""
       ) {
         if (validateEmailEnglishAndArabicFormat(signUpDetails.Email.value)) {
@@ -579,7 +579,7 @@ const SignUpOrganizationUM = () => {
         signUpDetails.CompanyName.value !== "" &&
         signUpDetails.FullName.value !== "" &&
         signUpDetails.Email.value !== "" &&
-        signUpDetails.FullName.value !== "" &&
+        signUpDetails.PhoneNumber.value !== "" &&
         signUpDetails.CountryName.value !== ""
       ) {
         if (validateEmailEnglishAndArabicFormat(signUpDetails.Email.value)) {
@@ -653,7 +653,7 @@ const SignUpOrganizationUM = () => {
             value: signUpDetails.CountryName.value,
             errorMessage:
               signUpDetails.CountryName.value === ""
-                ? t("Please-select-country")
+                ? t("Country-name-is-required")
                 : signUpDetails.CountryName.errorMessage,
             errorStatus:
               signUpDetails.CountryName.value === ""

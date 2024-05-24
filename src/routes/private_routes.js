@@ -145,18 +145,20 @@ const PrivateRoutes = () => {
 
   let Blur = localStorage.getItem("blur");
   let currentUserID = localStorage.getItem("userID");
-  let RoleID = localStorage.getItem("roleID");
+  let RoleID = Number(localStorage.getItem("roleID"));
   const token =
     localStorage.getItem("token") !== undefined &&
     localStorage.getItem("token") !== null
       ? localStorage.getItem("token")
       : "";
-  const [currentUser, setCurrentUser] = useState(
-    (RoleID === "3" || RoleID === "4") && (Blur === undefined || Blur === null)
+  let currentUser =
+    (RoleID === 3 || RoleID === 4) && (Blur === undefined || Blur === null)
       ? true
-      : null
+      : null;
+  console.log(
+    { currentUser, token },
+    "PrivateRoutesPrivateRoutesPrivateRoutes"
   );
-
   return currentUser && token ? (
     <Outlet />
   ) : (

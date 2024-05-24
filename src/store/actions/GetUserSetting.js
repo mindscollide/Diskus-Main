@@ -240,7 +240,9 @@ const getUserDetails = (
                   ""
                 )
               );
-              setUserProfileModal(true);
+              if (typeof setUserProfileModal === "function") {
+                setUserProfileModal(true);
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -249,7 +251,9 @@ const getUserDetails = (
                 )
             ) {
               await dispatch(getuserdetailsfail(t("No-records-found")));
-              setUserProfileModal(false);
+              if (typeof setUserProfileModal === "function") {
+                setUserProfileModal(false);
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -258,20 +262,28 @@ const getUserDetails = (
                 )
             ) {
               await dispatch(getuserdetailsfail(t("No-records-found")));
-              setUserProfileModal(false);
+              if (typeof setUserProfileModal === "function") {
+                setUserProfileModal(false);
+              }
             }
           } else {
             dispatch(getuserdetailsfail(t("Something-went-wrong")));
-            setUserProfileModal(false);
+            if (typeof setUserProfileModal === "function") {
+              setUserProfileModal(false);
+            }
           }
         } else {
           dispatch(getuserdetailsfail(t("Something-went-wrong")));
-          setUserProfileModal(false);
+          if (typeof setUserProfileModal === "function") {
+            setUserProfileModal(false);
+          }
         }
       })
       .catch((response) => {
         dispatch(getuserdetailsfail(t("Something-went-wrong")));
-        setUserProfileModal(false);
+        if (typeof setUserProfileModal === "function") {
+          setUserProfileModal(false);
+        }
       });
   };
 };

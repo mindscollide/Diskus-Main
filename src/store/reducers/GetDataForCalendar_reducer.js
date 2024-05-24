@@ -81,7 +81,7 @@ const calendarReducer = (state = initialState, action) => {
     case actions.GET_DATA_FOR_CALENDAR_FAIL: {
       return {
         ...state,
-        Loading: false,
+        Loading: action.flag,
         Spinner: false,
         CalenderData: [],
         ResponseMessage: action.message,
@@ -99,6 +99,7 @@ const calendarReducer = (state = initialState, action) => {
         ResponseMessage: "",
       };
     case actions.CALENDAR_LOADER: {
+      console.log(action.payload, "payloadpayloadpayload");
       return {
         ...state,
         Loading: action.payload,

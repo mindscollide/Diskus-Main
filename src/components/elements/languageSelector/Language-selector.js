@@ -188,6 +188,7 @@ const LanguageSelector = () => {
       <span
         className={
           location.pathname.includes("/DisKus/") ||
+          location.pathname.includes("/Diskus") ||
           location.pathname.includes("/Diskus/") ||
           location.pathname.includes("/paymentForm") ||
           location.pathname.includes("/signuporganization") ||
@@ -196,19 +197,7 @@ const LanguageSelector = () => {
             : "text-black d-flex gap-2 align-items-center position-relative cursor-pointer"
         }
       >
-        {/* <img
-          src={
-            location.pathname.includes("/DisKus/") ||
-            location.pathname.includes("/Diskus/") ||
-            location.pathname.includes("/paymentForm") ||
-            location.pathname.includes("/signuporganization") ||
-            location.pathname.includes("/Admin")
-              ? LanguageIcon
-              : LanguageBlack
-          }
-          alt=""
-          draggable="false"
-        /> */}
+   
         {/* {selectedLanguage.languageTitle} */}
         {currentLanguage === "en"
           ? t("EN")
@@ -220,6 +209,7 @@ const LanguageSelector = () => {
             src={
               location.pathname.includes("/DisKus/") ||
               location.pathname.includes("/Diskus/") ||
+              location.pathname.includes("/Diskus") ||
               location.pathname.includes("/paymentForm") ||
               location.pathname.includes("/signuporganization") ||
               location.pathname.includes("/Admin")
@@ -235,6 +225,7 @@ const LanguageSelector = () => {
             src={
               location.pathname.includes("/DisKus/") ||
               location.pathname.includes("/Diskus/") ||
+              location.pathname.includes("/Diskus") ||
               location.pathname.includes("/paymentForm") ||
               location.pathname.includes("/signuporganization") ||
               location.pathname.includes("/Admin")

@@ -95,7 +95,6 @@ body[dir="rtl"] .viewInvocieButton {
   justify-content: center;
   align-items: center;
   transition: all 0.2s;
-  font-size: 13px;
   display: flex;
   justify-content: space-between;
   font-weight: 500 !important;
@@ -123,10 +122,9 @@ body[dir="rtl"] .DownloadInvoiceButton {
   transition: all 0.2s !important;
   display: flex !important;
   justify-content: space-between !important;
-  font-weight: 600 !important;
+  font-weight: 500 !important;
   font-size: 12px !important;
   /* padding: 12px 30px; */
-  font-size: 12px !important;
 }
 
 .PayOutstanding_Heading {
