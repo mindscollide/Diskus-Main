@@ -29,6 +29,10 @@ const EditUserModal = ({ editModalData }) => {
 
   const navigate = useNavigate();
 
+  let isTrialCheck = localStorage.getItem("isTrial");
+
+  console.log(isTrialCheck, "isTrialCheck");
+
   const { UserManagementModals, UserMangementReducer } = useSelector(
     (state) => state
   );
@@ -310,25 +314,33 @@ const EditUserModal = ({ editModalData }) => {
                       </Row>
                     </Col>
                   </Row>
-                  <Row>
-                    <Col lg={12} md={12} sm={12}>
-                      <label className={styles["label-styling"]}>
-                        {t("Package-assigned")}{" "}
-                        <span className={styles["aesterick-color"]}> *</span>
-                      </label>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col lg={12} md={12} sm={12}>
-                      <Select
-                        name="PackageAssigned"
-                        value={packageAssignedValue}
-                        options={packageAssignedOption}
-                        onChange={handlePackageAssigned}
-                        placeholder={t("Please-select-one-option")}
-                      />
-                    </Col>
-                  </Row>
+                  {isTrialCheck && (
+                    <>
+                      <Row>
+                        <Col lg={12} md={12} sm={12}>
+                          <label className={styles["label-styling"]}>
+                            {t("Package-assigned")}{" "}
+                            <span className={styles["aesterick-color"]}>
+                              {" "}
+                              *
+                            </span>
+                          </label>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col lg={12} md={12} sm={12}>
+                          <Select
+                            name="PackageAssigned"
+                            value={packageAssignedValue}
+                            options={packageAssignedOption}
+                            onChange={handlePackageAssigned}
+                            placeholder={t("Please-select-one-option")}
+                          />
+                        </Col>
+                      </Row>
+                    </>
+                  )}
+
                   <Row className="mt-2">
                     <Col lg={12} md={12} sm={12}>
                       <span className={styles["NameCreateAddtional"]}>
