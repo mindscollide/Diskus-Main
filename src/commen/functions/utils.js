@@ -336,3 +336,15 @@ export function clearLocalStorageAtloginresponce(dispatch, value, navigate) {
     navigate("/");
   }
 }
+
+//Clearing URL function
+
+export const clearPaymentActionFromUrl = () => {
+  const currentUrl = new URL(window.location.href);
+  console.log(currentUrl, "currentUrlcurrentUrl");
+  // Create the new URL without query parameters and hash
+  const newUrl = currentUrl.origin + currentUrl.pathname;
+
+  // Update the browser's URL without reloading the page
+  window.history.replaceState({}, document.title, newUrl);
+};
