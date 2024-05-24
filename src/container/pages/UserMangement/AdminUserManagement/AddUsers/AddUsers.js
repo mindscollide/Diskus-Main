@@ -261,22 +261,48 @@ const AddUsers = () => {
 
   //Add User Function
   const handleAddUsers = () => {
-    let data = {
-      UserDataList: [
-        {
-          UserName: addUserFreeTrial.Name.value,
-          OrganizationName: "",
-          Designation: addUserFreeTrial.Desgination.value,
-          MobileNumber: "",
-          UserEmail: addUserFreeTrial.Email.value,
-          OrganizationID: Number(organizationID),
-          RoleID: addUserFreeTrial.isAdmin,
-          FK_NumberWorldCountryID: Number(worldCountryID),
-          PackageID: 4,
+    if (
+      addUserFreeTrial.Name.value !== "" &&
+      addUserFreeTrial.Desgination.value !== "" &&
+      addUserFreeTrial.Email.value !== ""
+    ) {
+      let data = {
+        UserDataList: [
+          {
+            UserName: addUserFreeTrial.Name.value,
+            OrganizationName: "",
+            Designation: addUserFreeTrial.Desgination.value,
+            MobileNumber: "",
+            UserEmail: addUserFreeTrial.Email.value,
+            OrganizationID: Number(organizationID),
+            RoleID: addUserFreeTrial.isAdmin,
+            FK_NumberWorldCountryID: Number(worldCountryID),
+            PackageID: 4,
+          },
+        ],
+      };
+      dispatch(AddOrganizationsUserApi(navigate, t, data));
+    } else {
+      setAddUserFreeTrial({
+        ...addUserFreeTrial,
+
+        Name: {
+          value: addUserFreeTrial.Name.value,
+          errorMessage: t("Please-enter-full-name"),
+          errorStatus: addUserFreeTrial.Name.errorStatus,
         },
-      ],
-    };
-    dispatch(AddOrganizationsUserApi(navigate, t, data));
+        Desgination: {
+          value: addUserFreeTrial.Desgination.value,
+          errorMessage: t("Please-enter-designation"),
+          errorStatus: addUserFreeTrial.Desgination.errorStatus,
+        },
+        Email: {
+          value: addUserFreeTrial.Email.value,
+          errorMessage: t("Please-enter-email"),
+          errorStatus: addUserFreeTrial.Email.errorStatus,
+        },
+      });
+    }
   };
 
   return (
@@ -310,8 +336,19 @@ const AddUsers = () => {
                 applyClass={"updateNotes_titleInput"}
               />
             </Col>
+            <Col>
+              <p
+                className={
+                  addUserFreeTrial.Name.value === ""
+                    ? ` ${styles["errorMessage"]}`
+                    : `${styles["errorMessage_hidden"]}`
+                }
+              >
+                {addUserFreeTrial.Name.errorMessage}
+              </p>
+            </Col>
           </Row>
-          <Row className="mt-4">
+          <Row className="mt-3">
             <Col
               lg={12}
               md={12}
@@ -325,7 +362,7 @@ const AddUsers = () => {
               <span className={styles["NameClass"]}>Waqas Associates</span>
             </Col>
           </Row>
-          <Row className="mt-4">
+          <Row className="mt-3">
             <Col lg={12} md={12} sm={12} className="flex-column flex-wrap">
               <span className={styles["NameCreateAddtional"]}>
                 {t("Organization-role")}
@@ -345,7 +382,7 @@ const AddUsers = () => {
               </Row>
             </Col>
           </Row>
-          <Row className="mt-4">
+          <Row className="mt-3">
             <Col lg={12} md={12} sm={12} xs={12}>
               <TextField
                 placeholder={t("Designation")}
@@ -367,8 +404,19 @@ const AddUsers = () => {
                 applyClass={"updateNotes_titleInput"}
               />
             </Col>
+            <Col>
+              <p
+                className={
+                  addUserFreeTrial.Desgination.value === ""
+                    ? ` ${styles["errorMessage"]}`
+                    : `${styles["errorMessage_hidden"]}`
+                }
+              >
+                {addUserFreeTrial.Desgination.errorMessage}
+              </p>
+            </Col>
           </Row>
-          <Row className="mt-4">
+          <Row className="mt-3">
             <Col lg={12} md={12} sm={12} xs={12} className="position-relative">
               <TextField
                 onBlur={() => {
