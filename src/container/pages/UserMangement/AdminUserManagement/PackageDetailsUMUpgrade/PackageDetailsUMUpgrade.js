@@ -53,7 +53,7 @@ const PakageDetailsUMUpgrade = () => {
   //get All user pakages Api call
   useEffect(() => {
     try {
-      dispatch(getAllUserTypePackagesApi(navigate, t));
+      dispatch(getAllUserTypePackagesApi(navigate, t, false));
     } catch (error) {
       console.log(error, "error");
     }
