@@ -22,25 +22,25 @@ body[dir="rtl"] span.billing-address {
   color: #f16b6b !important;
 }
 
-.errorMessage {
+.errorMessage_Billing {
   margin: 4px;
   height: 7px;
   color: #f16b6b;
   visibility: visible !important;
 }
 
-body[dir="rtl"] .errorMessage {
+body[dir="rtl"] .errorMessage_Billing {
   font-weight: 400 !important;
 }
 
-.errorMessage_hidden {
+.errorMessage_hidden_Billing {
   visibility: hidden;
   margin: 0;
   height: 7px;
   color: #f16b6b !important;
 }
 
-body[dir="rtl"] .errorMessage_hidden {
+body[dir="rtl"] .errorMessage_hidden_Billing {
   font-weight: 400 !important;
 }
 
@@ -79,7 +79,6 @@ body[dir="rtl"] .errorMessage_hidden {
 .react-flag-Info-Signup {
   height: 39px !important;
   padding: auto !important;
-  margin-top: -1px !important;
   font-weight: 500 !important;
   font-size: 13px !important;
 }
