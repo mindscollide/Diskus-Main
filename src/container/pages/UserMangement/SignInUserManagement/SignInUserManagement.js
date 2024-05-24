@@ -138,7 +138,7 @@ const SignInUserManagement = () => {
       window.close();
     } else if (paymentActionValue) {
       let data = {
-        EncryptedString: "adfjlhasdasdlhasldashl",
+        EncryptedString: paymentActionValue,
       };
       dispatch(paymentStatusApi(navigate, t, data, paymentActionValue));
     } else {
