@@ -23,6 +23,7 @@ const AvatarEditorComponent = ({ pictureObj }) => {
   const [previewImage, setPreviewImage] = useState(null);
 
   const handlePreview = async (file) => {
+    console.log("handlePreview", file)
     setPreviewImage(file.url);
     setPreviewOpen(true);
   };
@@ -56,9 +57,7 @@ const AvatarEditorComponent = ({ pictureObj }) => {
         rotationSlider
         modalCancel={t("Cancel")}
         modalOk={t("Ok")}
-        cropperProps={{
-          objectFit: "auto-cover",
-        }}
+     
       >
         <Upload
           action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
@@ -84,11 +83,13 @@ const AvatarEditorComponent = ({ pictureObj }) => {
         <Modal
           zIndex={10}
           open={previewOpen}
+
           footer={null}
           onCancel={handleCancel}
         >
           <img
             alt="example"
+            
             style={{
               width: "100%",
             }}
