@@ -906,7 +906,7 @@ const AddUserMain = () => {
                   </Col>
                 </Row>
 
-                <Row className="mt-4">
+                <Row className="mt-4 ">
                   <Col lg={6} md={6} sm={6} className="mt-1">
                     <label className={styles["label-styling"]}>
                       {t("Package-assigned")}{" "}
@@ -932,7 +932,7 @@ const AddUserMain = () => {
                     </Col>
                   </Col>
 
-                  <Col lg={6} md={6} sm={6}>
+                  <Col lg={6} md={6} sm={6} className="position-relative">
                     <label className={styles["label-styling"]}>
                       {t("Email")}{" "}
                       <span className={styles["aesterick-color"]}> *</span>
@@ -949,28 +949,28 @@ const AddUserMain = () => {
                       maxLength={200}
                       applyClass="form-control2"
                     />
-                    <Col>
-                      <p
-                        className={
-                          userAddMain.Email.value === "" ||
-                          userAddMain.Email.errorStatus
-                            ? ` ${styles["errorMessage"]} `
-                            : `${styles["errorMessage_hidden"]}`
-                        }
-                      >
-                        {userAddMain.Email.errorMessage}
-                      </p>
-                    </Col>
                     {adminReducer.EmailCheckSpinner ? (
                       <Spinner className={styles["checkEmailSpinner"]} />
                     ) : null}
                     {isEmailUnique && (
                       <Check2 className={styles["isEmailUnique"]} />
                     )}
+                    <Col>
+                      <p
+                        className={
+                          userAddMain.Email.value === "" ||
+                          userAddMain.Email.errorStatus
+                            ? ` ${styles["errorMessageemail"]} `
+                            : `${styles["errorMessageemail_hidden"]}`
+                        }
+                      >
+                        {userAddMain.Email.errorMessage}
+                      </p>
+                    </Col>
                   </Col>
                 </Row>
 
-                <Row className="mt-5 py-4">
+                <Row className="mt-5">
                   <Col
                     lg={12}
                     md={12}

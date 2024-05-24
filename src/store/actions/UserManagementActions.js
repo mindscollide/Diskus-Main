@@ -29,6 +29,7 @@ import {
   showDeleteUsersModal,
   showEditUserModal,
   showReasonForLeavingModal,
+  showRequestExtentionModal,
   showSucessfullyUpdatedModal,
   showUpgradeNowModal,
 } from "./UserMangementModalActions";
@@ -1880,6 +1881,7 @@ const requestOrganizationExtendApi = (navigate, t, data) => {
                   t("Trial-requested-successfully")
                 )
               );
+              dispatch(showRequestExtentionModal(true));
               dispatch(userLogOutApiFunc(navigate, t));
             } else if (
               response.data.responseResult.responseMessage

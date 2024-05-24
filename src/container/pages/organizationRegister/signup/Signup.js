@@ -147,7 +147,10 @@ const Signup = () => {
     });
   };
 
-  console.log(signUpDetails.CountryName, "CountryNameCountryNameCountryName");
+  console.log(
+    signUpDetails.CountryName.errorMessage,
+    "CountryNameCountryNameCountryName"
+  );
   console.log(
     signUpDetails.CountryName.value,
     "CountryNameCountryNameCountryName"

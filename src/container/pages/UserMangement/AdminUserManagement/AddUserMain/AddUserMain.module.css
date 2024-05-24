@@ -276,6 +276,28 @@ body[dir="rtl"] .errorMessage_hidden {
   font-weight: 600 !important;
 }
 
+.errorMessageemail {
+  margin: 0;
+  height: 25px;
+  color: #f16b6b;
+  visibility: visible !important;
+}
+
+body[dir="rtl"] .errorMessageemail {
+  font-weight: 600 !important;
+}
+
+.errorMessageemail_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 25px;
+  color: #f16b6b !important;
+}
+
+body[dir="rtl"] .errorMessageemail_hidden {
+  font-weight: 600 !important;
+}
+
 .add-User-Reset-btn {
   width: 120px;
   height: 40px;
@@ -339,38 +361,36 @@ body[dir="rtl"]
 
 .isEmailUnique {
   position: absolute;
-  right: -14px;
-  width: 20px;
-  height: 20px;
-  bottom: 10px;
+  right: -22px;
+  width: 30px;
+  bottom: 30px;
+  height: 30px;
   color: green;
 }
 
 body[dir="rtl"] .isEmailUnique {
   position: absolute;
-  right: auto;
-  width: 20px;
-  height: 20px;
-  bottom: 10px;
+  right: 100%;
+  width: 30px;
+  bottom: 30px;
+  height: 30px;
   color: green;
-  left: -14px;
 }
 
 .checkEmailSpinner {
   position: absolute;
-  right: -14px;
-  width: 20px;
-  height: 20px;
-  bottom: 10px;
+  left: 100%;
+  width: 29px;
+  height: 29px;
+  top: 30px;
 }
 
 body[dir="rtl"] .checkEmailSpinner {
   position: absolute;
-  right: auto;
-  width: 20px;
-  height: 20px;
-  bottom: 10px;
-  left: -14px;
+  right: 100%;
+  width: 29px;
+  height: 29px;
+  top: 30px;
 }
 
 .emailcheckbox {
@@ -516,17 +536,17 @@ button#rfs-btn {
   padding: 0px 40px !important;
 }
 
-.isEmailUnique {
+/* .isEmailUnique {
   position: relative;
-  left: 345px;
+  left: 315px;
   top: -41px;
   width: 30px;
   height: 30px;
   bottom: 20px;
   color: green;
-}
+} */
 
-.checkEmailSpinner {
+/* .checkEmailSpinner {
   position: relative;
   left: 345px;
   top: -41px;
@@ -534,4 +554,4 @@ button#rfs-btn {
   height: 30px;
   bottom: 20px;
   color: green;
-}
+} */

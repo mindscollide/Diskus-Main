@@ -161,12 +161,7 @@ const handleResponseMessage = async (result, dispatch, t, message) => {
           "isExtensionAvailable",
           result.isExtensionAvailable
         ),
-        // localStorage.setItem(
-        //   "isExtensionAvailable",
-        //   false
-        // ),
         localStorage.setItem("remainingDays", result.remainingDays),
-        // localStorage.setItem("remainingDays", 0),
         localStorage.setItem("isAlert", result.isAlert ?? false),
       ]);
       dispatch(getExpiryDetailsSuccess(t("successful")));

@@ -161,9 +161,15 @@ const Reports = () => {
       title: t("User-name"),
       dataIndex: "userName",
       key: "userName",
-      align: "center",
+      align: "left",
       ellipsis: true,
-      width: 220,
+      render: (text, record) => {
+        return (
+          <>
+            <span className={styles["NameStylesTable"]}>{record.userName}</span>
+          </>
+        );
+      },
     },
     {
       title: t("User-email"),
@@ -171,16 +177,29 @@ const Reports = () => {
       key: "emailAddress",
       align: "center",
       ellipsis: true,
-      width: 200,
+      render: (text, record) => {
+        return (
+          <>
+            <span className={styles["DesignationStyles"]}>
+              {record.emailAddress}
+            </span>
+          </>
+        );
+      },
     },
     {
       title: t("Login-date-time"),
       dataIndex: "dateLogin",
       key: "dateLogin",
       align: "center",
-      width: 200,
       render: (text, record) => {
-        return newTimeFormaterForImportMeetingAgenda(text);
+        return (
+          <>
+            <span className={styles["DesignationStyles"]}>
+              {newTimeFormaterForImportMeetingAgenda(text)}
+            </span>
+          </>
+        );
       },
     },
     {
@@ -188,9 +207,14 @@ const Reports = () => {
       dataIndex: "dateLogOut",
       key: "dateLogOut",
       align: "center",
-      width: 200,
       render: (text, record) => {
-        return newTimeFormaterForImportMeetingAgenda(text);
+        return (
+          <>
+            <span className={styles["DesignationStyles"]}>
+              {newTimeFormaterForImportMeetingAgenda(text)}
+            </span>
+          </>
+        );
       },
     },
     {
@@ -198,9 +222,14 @@ const Reports = () => {
       dataIndex: "decision",
       key: "decision",
       align: "center",
-      width: 150,
       render: (text, record) => {
-        return getTimeDifference(record.dateLogin, record.dateLogOut);
+        return (
+          <>
+            <span className={styles["DesignationStyles"]}>
+              {getTimeDifference(record.dateLogin, record.dateLogOut)}
+            </span>
+          </>
+        );
       },
     },
     {
@@ -208,10 +237,9 @@ const Reports = () => {
       dataIndex: "deviceID",
       align: "center",
       key: "deviceID",
-      width: 100,
 
       render: (text, record) => (
-        <span className={styles["voterCountStyle"]}>
+        <span className={styles["DesignationStyles"]}>
           {record.deviceID === "1" ? (
             <span>{t("Web")}</span>
           ) : record.deviceID === "2" ? (
@@ -227,7 +255,13 @@ const Reports = () => {
       dataIndex: "loggedInFromIP",
       align: "center",
       key: "loggedInFromIP",
-      width: 120,
+      render: (text, record) => {
+        return (
+          <>
+            <span className={styles["DesignationStyles"]}>{text}</span>
+          </>
+        );
+      },
     },
   ];
 
