@@ -2000,7 +2000,7 @@ const paymentStatusFailed = (response, message) => {
   };
 };
 
-const paymentStatusApi = (navigate, t, data) => {
+const paymentStatusApi = (navigate, t, data, paymentActionValue) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(paymentStatusInit());
@@ -2018,7 +2018,7 @@ const paymentStatusApi = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(paymentStatusApi(navigate, t, data));
+          dispatch(paymentStatusApi(navigate, t, data, paymentActionValue));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2049,6 +2049,8 @@ const paymentStatusApi = (navigate, t, data) => {
               dispatch(
                 paymentStatusFailed(t("UnSuccessful-response-from-edfa-pay"))
               );
+              paymentActionValue = "";
+              navigate("/");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2061,6 +2063,8 @@ const paymentStatusApi = (navigate, t, data) => {
                   t("UnSuccessful-response-code-from-edfa-pay")
                 )
               );
+              paymentActionValue = "";
+              navigate("/");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2069,6 +2073,8 @@ const paymentStatusApi = (navigate, t, data) => {
                 )
             ) {
               dispatch(paymentStatusFailed(t("Invalid-request-data")));
+              paymentActionValue = "";
+              navigate("/");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2077,6 +2083,8 @@ const paymentStatusApi = (navigate, t, data) => {
                 )
             ) {
               dispatch(paymentStatusFailed(t("Not-an-authentic-user")));
+              paymentActionValue = "";
+              navigate("/");
             }
           } else if (
             response.data.responseResult.responseMessage
@@ -2086,6 +2094,8 @@ const paymentStatusApi = (navigate, t, data) => {
               )
           ) {
             dispatch(paymentStatusFailed(t("Payment-not-settled")));
+            paymentActionValue = "";
+            navigate("/");
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -2098,6 +2108,8 @@ const paymentStatusApi = (navigate, t, data) => {
                 t("Error-activating-organization-subscription-and-creator")
               )
             );
+            paymentActionValue = "";
+            navigate("/");
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -2106,6 +2118,8 @@ const paymentStatusApi = (navigate, t, data) => {
               )
           ) {
             dispatch(paymentStatusFailed(t("Something-went-wrong")));
+            paymentActionValue = "";
+            navigate("/");
           } else {
             dispatch(paymentStatusFailed(t("Something-went-wrong")));
           }
@@ -2171,13 +2185,15 @@ const changeSelectPacakgeApi = (navigate, t, data, changePacakgeFlag) => {
                 )
             ) {
               dispatch(changeSelectPacakge_Success(t("Successfully")));
-              localStorage.setItem("organizationSubscriptionID", Number(response.data.responseResult.subscriptionID))
+              localStorage.setItem(
+                "organizationSubscriptionID",
+                Number(response.data.responseResult.subscriptionID)
+              );
               if (changePacakgeFlag) {
-              
                 localStorage.setItem("SignupFlowPageRoute", 5);
                 dispatch(signUpFlowRoutes(5));
                 localStorage.removeItem("changePacakgeFlag");
-                navigate("/Signup")
+                navigate("/Signup");
               }
             } else if (
               response.data.responseResult.responseMessage
