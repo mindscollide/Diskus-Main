@@ -182,11 +182,16 @@ body[dir="rtl"] .OutStandingHeading {
 
 .Assistance {
   background: #f2f2f2 !important;
-  height: 251.71px !important;
+  height: auto !important;
+  min-height: 251.71px !important;
   width: 100% !important;
   border-radius: 4px !important;
   padding: 10px 10px !important;
   margin-top: 70px !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box; /* Ensure padding is included in the width */
 }
 
 .CallAssistantSubHeading {
@@ -203,8 +208,60 @@ body[dir="rtl"] .CallAssistantSubHeading {
   font-size: 16px !important;
   color: #6172d6 !important;
   font-weight: 700 !important;
+  word-break: break-word; /* Ensure long text breaks properly */
+  overflow-wrap: break-word; /* Ensure long text wraps properly */
+}
+
+img {
+  max-width: 100%; /* Ensure images are responsive */
+  height: auto; /* Maintain aspect ratio */
 }
 
 body[dir="rtl"] .BussniessmailStyles {
   font-weight: 700 !important;
+}
+
+@media (max-width: 1024px) {
+  .Assistance {
+    padding: 10px 20px !important; /* Adjust padding for smaller screens */
+    margin-top: 50px !important; /* Adjust margin for smaller screens */
+  }
+
+  .CallAssistantSubHeading {
+    font-size: 14px !important; /* Adjust font size for smaller screens */
+  }
+
+  .BussniessmailStyles {
+    font-size: 14px !important; /* Adjust font size for smaller screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .Assistance {
+    padding: 10px 15px !important; /* Further reduce padding for smaller screens */
+    margin-top: 40px !important; /* Further adjust margin for smaller screens */
+  }
+
+  .CallAssistantSubHeading {
+    font-size: 12px !important; /* Further adjust font size for smaller screens */
+  }
+
+  .BussniessmailStyles {
+    font-size: 12px !important; /* Further adjust font size for smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .Assistance {
+    padding: 5px 10px !important; /* Further reduce padding for very small screens */
+    margin-top: 30px !important; /* Further adjust margin for very small screens */
+  }
+
+  .CallAssistantSubHeading {
+    font-size: 10px !important; /* Further adjust font size for very small screens */
+  }
+
+  .BussniessmailStyles {
+    font-size: 10px !important; /* Further adjust font size for very small screens */
+  }
 }

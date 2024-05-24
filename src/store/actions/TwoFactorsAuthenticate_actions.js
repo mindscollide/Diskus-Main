@@ -323,7 +323,8 @@ const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
                   t("Otp-code-sent-via-devices")
                 )
               );
-              navigate("/2FAverificationdevieotp");
+              // navigate("/2FAverificationdevieotp");
+              dispatch(LoginFlowRoutes(14));
               localStorage.setItem("seconds", 60);
               localStorage.setItem("minutes", 4);
             } else if (
