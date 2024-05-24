@@ -242,7 +242,14 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       ),
       dataIndex: "InvoiceNo",
       key: "InvoiceNo",
-      width: "150px",
+      align: "left",
+      render: (text, record) => {
+        return (
+          <>
+            <span className={styles["NameStylesTable"]}>{text}</span>
+          </>
+        );
+      },
     },
     {
       title: (
@@ -250,9 +257,15 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       ),
       dataIndex: "invoiceDate",
       key: "invoiceDate",
-      width: "10rem",
+      align: "center",
       render: (text, data) => {
-        return <span>{_justShowDateformatBilling(text)}</span>;
+        return (
+          <>
+            <span className={styles["DesignationStyles"]}>
+              {_justShowDateformatBilling(text)}
+            </span>
+          </>
+        );
       },
     },
     {
@@ -261,18 +274,28 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       ),
       dataIndex: "paymentdate",
       key: "paymentdate",
-      width: "10rem",
+      align: "center",
       render: (text, data) => {
-        return <span>{_justShowDateformatBilling(text)}</span>;
+        return (
+          <>
+            <span className={styles["DesignationStyles"]}>
+              {_justShowDateformatBilling(text)}
+            </span>
+          </>
+        );
       },
     },
     {
       title: t("Paid-amount"),
       dataIndex: "paidamount",
       key: "paidamount",
-      width: "13rem",
+      align: "center",
       render: (text, data) => {
-        return <span>${text}</span>;
+        return (
+          <>
+            <span className={styles["DesignationStyles"]}>${text}</span>
+          </>
+        );
       },
     },
   ];

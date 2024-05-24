@@ -250,7 +250,7 @@ const CancelSubscriptionAdmin = () => {
                 <div className="Billing_TableContainer">
                   <TableToDo
                     column={ColumnsPakageSelection}
-                    className={"Billing_TablePakageSelection"}
+                    className={"package-TablePakageSelection"}
                     rows={[...Data, defaultRow]}
                     pagination={false}
                     scroll={{ x: "max-content" }}

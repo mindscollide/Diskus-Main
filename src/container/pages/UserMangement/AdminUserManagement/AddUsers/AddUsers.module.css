@@ -50,7 +50,8 @@ body[dir="rtl"] .AdminAlsoClass {
 }
 
 .AddUserCancelButton {
-  padding: 12px 30px !important;
+  width: 100px;
+  height: 40px;
   font-size: 12px !important;
   background: #fff !important;
   border: 1px solid #e1e1e1 !important;
@@ -60,7 +61,8 @@ body[dir="rtl"] .AdminAlsoClass {
 }
 
 .AddUserCancelButton:is(:hover, :active, :focus, :focus-visible) {
-  padding: 12px 30px !important;
+  width: 100px;
+  height: 40px;
   font-size: 12px !important;
   background: #fff !important;
   border: 1px solid #e1e1e1 !important;
@@ -74,7 +76,8 @@ body[dir="rtl"] .AddUserCancelButton {
 }
 
 .AddUserCreateButton {
-  padding: 12px 30px !important;
+  width: 100px;
+  height: 40px;
   font-size: 12px !important;
   background: #6172d6 !important;
   border: none !important;
@@ -84,7 +87,8 @@ body[dir="rtl"] .AddUserCancelButton {
 }
 
 .AddUserCreateButton:is(:hover, :active, :focus, :focus-visible) {
-  padding: 12px 30px !important;
+  width: 100px;
+  height: 40px;
   font-size: 12px !important;
   background: #6172d6 !important;
   border: none !important;
@@ -98,12 +102,12 @@ body[dir="rtl"] .AddUserCreateButton {
 }
 
 .checkEmailSpinner {
-  position: relative;
-  right: 10px;
-  width: 30px;
+  position: absolute !important;
+  width: 29px;
+  left: 436px;
+  bottom: 14px;
   height: 30px;
-  top: 30px !important;
-  bottom: 0px;
+  color: green;
 }
 
 .errorMessage {
@@ -128,12 +132,28 @@ body[dir="rtl"] .errorMessage_hidden {
   font-weight: 400 !important;
 }
 
-.isEmailUnique {
+/* .isEmailUnique {
   position: relative;
   right: 10px;
   top: 30px;
   width: 30px;
   height: 30px;
   bottom: 0px;
+  color: green;
+} */
+.isEmailUnique {
+  position: absolute !important;
+  width: 100px;
+  left: 400px;
+  bottom: 5px;
+  height: 30px;
+  color: green;
+}
+
+body[dir="rtl"] .isEmailUnique {
+  position: absolute;
+  width: 30px;
+  bottom: 30px;
+  height: 30px;
   color: green;
 }

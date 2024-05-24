@@ -147,7 +147,7 @@ const Header2 = () => {
     let userID = localStorage.getItem("userID");
     let OrganizationID = localStorage.getItem("organizationID");
     dispatch(
-      getUserDetails(navigate, userID, t, OrganizationID, setUserProfileModal)
+      getUserDetails(navigate, userID, t, OrganizationID)
       // getUserDetails(navigate, userID, t, OrganizationID)
     );
   };
