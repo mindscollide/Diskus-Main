@@ -4,11 +4,9 @@ import VerifyOTPUM from "../UserMangement/VerifyOTPUM/VerifyOTPUM";
 import PakageDetailsUserManagement from "../UserMangement/PakageDetailsUserManagement/PakageDetailsUserManagement";
 import BillingMethodUsermanagement from "../UserMangement/BillingMethodUserManagement/BillingMethodUsermanagement";
 import PasswordCreationUM from "../UserMangement/PasswordCreationUM/PasswordCreationUM";
-import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import {
-  LoginFlowRoutes,
   clearMessegesUserManagement,
   signUpFlowRoutes,
 } from "../../../store/actions/UserManagementActions";
@@ -20,19 +18,13 @@ const SignupProcessUserManagement = () => {
   const { UserMangementReducer, Authreducer } = useSelector((state) => state);
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const location = useLocation();
-  let currentStage = Number(localStorage.getItem("signupCurrentPage"))
-    ? Number(localStorage.getItem("signupCurrentPage"))
-    : 1;
-  const [isFreetrail, setFreetrail] = useState(false);
-  const [currentPage, setCurrentPage] = useState(null);
   const [open, setOpen] = useState({
     open: false,
     message: "",
   });
 
   // Retrieve currentStep value from localStorage, default to 1 if not found
-  const storedStep = Number(localStorage.getItem("SignupFlowPageRoute"));
+  const storedStep = Number(localStorage.getItem("signupCurrentPage"));
   useEffect(() => {
     // Retrieve current step from local storage
     if (performance.navigation.type === PerformanceNavigation.TYPE_RELOAD) {
@@ -41,9 +33,9 @@ const SignupProcessUserManagement = () => {
       }
     } else {
       localStorage.setItem("SignupFlowPageRoute", 2);
-      // dispatch(signUpFlowRoutes(1));
     }
   }, []);
+
   useEffect(() => {
     if (UserMangementReducer.defaulSignUpRoute) {
       // Update local storage with the current step
@@ -363,7 +355,7 @@ const SignupProcessUserManagement = () => {
   } else if (UserMangementReducer.defaulSignUpRoute === 3) {
     SignupComponent = <VerifyOTPUM />;
   } else if (UserMangementReducer.defaulSignUpRoute === 4) {
-    SignupComponent = <PasswordCreationUM isFreetrail={isFreetrail} />;
+    SignupComponent = <PasswordCreationUM />;
   } else if (UserMangementReducer.defaulSignUpRoute === 5) {
     SignupComponent = <BillingMethodUsermanagement />;
   } else {

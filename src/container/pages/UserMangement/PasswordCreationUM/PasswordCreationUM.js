@@ -12,35 +12,28 @@ import PasswordChecklist from "react-password-checklist";
 import PasswordHideEyeIcon from "../../../../assets/images/newElements/password_hide.svg";
 import DiskusAuthPageLogo from "../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { showCreateAddtionalUsersModal } from "../../../../store/actions/UserMangementModalActions";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import CreateAddtionalUsersModal from "../ModalsUserManagement/CreateAdditionalusersModal/CreateAddtionalUsersModal";
 import Cookies from "js-cookie";
 import {
-  cleareMessage,
   createPasswordAction,
   updatePasswordAction,
 } from "../../../../store/actions/Auth2_actions";
-import {
-  LoginFlowRoutes,
-  signUpFlowRoutes,
-} from "../../../../store/actions/UserManagementActions";
+import { LoginFlowRoutes } from "../../../../store/actions/UserManagementActions";
 
-const PasswordCreationUM = ({ isFreetrail }) => {
-  const { t, i18n } = useTranslation();
+const PasswordCreationUM = () => {
+  const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
-  const location = useLocation();
 
   const passwordRef = useRef();
 
   const { UserManagementModals } = useSelector((state) => state);
 
   const [errorBar, setErrorBar] = useState(false);
-  const [newConfirmPassword, setNewConfirmPassword] = useState("");
   const [remeberPassword, SetRememberPassword] = useState(false);
   const [password, setPassword] = useState("");
   const [isPasswordStrong, setPasswordStrong] = useState(false);

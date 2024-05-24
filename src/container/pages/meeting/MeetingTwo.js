@@ -2233,12 +2233,12 @@ const NewMeeting = () => {
                         </Dropdown.Item>
 
                         {/* BoardDeck For Time Being */}
-                        <Dropdown.Item
+                        {/* <Dropdown.Item
                           className="dropdown-item"
                           onClick={boardDeckOnClick}
                         >
                           {t("Board-deck")}
-                        </Dropdown.Item>
+                        </Dropdown.Item> */}
                       </Dropdown.Menu>
                     </Dropdown>
                   </Col>

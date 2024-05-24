@@ -79,20 +79,25 @@ import DeleteOrganizationAdmin from "../container/pages/UserMangement/AdminUserM
 import PaymentMethodBillInfo from "../container/pages/UserMangement/AdminUserManagement/PaymentMethodBillInfoUserManagement/PaymentMethodBillInfo";
 import AddUserMain from "../container/pages/UserMangement/AdminUserManagement/AddUserMain/AddUserMain";
 import UserManagementProcess from "../container/pages/UserManagementProcess/UserManagementProcess";
-import PasswordVerification from "../container/pages/UserMangement/PasswordVerification/PasswordVerification";
 import SignupProcessUserManagement from "../container/pages/SignUpProcessUserManagement/SignupProcessUserManagement";
 import RouteWrapperUser from "./RouteWrapperUser";
 import RouteWrapperAdmin from "./RouteWrapperAdmin";
 import PakageDetailsUMUpgrade from "../container/pages/UserMangement/AdminUserManagement/PackageDetailsUMUpgrade/PackageDetailsUMUpgrade";
 import PaymentProcess from "../container/pages/UserMangement/PaymentProcess/PaymentProcess";
 import { getLocalStorageItemNonActiveCheck } from "../commen/functions/utils";
-import TwoFactorVerifyUM from "../container/pages/UserMangement/2FA Verification/TwoFactorVerifyUM";
 import PaymentTest from "../container/pages/UserMangement/PaymentTestPage/PaymentTest";
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
+      {/* for all login Routes  */}
+      <Route path="/" element={<UserManagementProcess />} />
+
+      {/* For All Signup Route */}
+      <Route path="/Signup" element={<SignupProcessUserManagement />} />
+
+      {/* ============================================================ */}
       <Route path="/packageselection" element={<PackageSelection />} />
       <Route
         path="/PakageDetailsUserManagement"
@@ -132,6 +137,7 @@ export const router = createHashRouter(
       <Route path="/SigninDenied" element={<SigninDenied />} />
       <Route path="/404" element={<NotFound />} />
       <Route path="*" element={<NotFound />} />
+      {/* ============================================================ */}
 
       <Route element={<PrivateRoutes />}>
         <Route
@@ -570,19 +576,6 @@ export const router = createHashRouter(
       <Route Route element={<PrivateRoutes />}>
         <Route path="/onboard" element={<OnBoard />} />
       </Route>
-      {/* for all login Routes  */}
-      <Route path="/" element={<UserManagementProcess />} />
-
-      {/* For All Signup Route */}
-      <Route path="/Signup" element={<SignupProcessUserManagement />} />
-
-      <Route path="/signupUsermanagement" element={<SignUpOrganizationUM />} />
-      <Route
-        path="/PasswordVerificationUM"
-        element={<PasswordVerification />}
-      />
-
-      <Route path="/TwoFactorVerifyUM" element={<TwoFactorVerifyUM />} />
     </>
   )
 );

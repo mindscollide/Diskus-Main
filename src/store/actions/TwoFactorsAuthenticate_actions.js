@@ -115,11 +115,11 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
               if (response.data.responseResult.userDevices.length === 1) {
                 // navigate("/sendmailwithdevice");
                 //localStorage.setItem("LoginFlowPageRoute", 8);
-               dispatch(LoginFlowRoutes(8));
+                dispatch(LoginFlowRoutes(8));
               } else {
                 // navigate("/twofacmultidevice");
                 //localStorage.setItem("LoginFlowPageRoute", 13);
-               dispatch(LoginFlowRoutes(13));
+                dispatch(LoginFlowRoutes(13));
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -135,7 +135,7 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
                 )
               );
               //localStorage.setItem("LoginFlowPageRoute", 4);
-             dispatch(LoginFlowRoutes(4));
+              dispatch(LoginFlowRoutes(4));
               // navigate("/twofac");
             } else if (
               response.data.responseResult.responseMessage
@@ -246,7 +246,7 @@ const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
                 )
               );
               //localStorage.setItem("LoginFlowPageRoute", 6);
-             dispatch(LoginFlowRoutes(6));
+              dispatch(LoginFlowRoutes(6));
               // navigate("/2FAverificationotp");
               localStorage.setItem("seconds", 60);
               localStorage.setItem("minutes", 4);
@@ -265,7 +265,7 @@ const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
               );
 
               //localStorage.setItem("LoginFlowPageRoute", 6);
-             dispatch(LoginFlowRoutes(6));
+              dispatch(LoginFlowRoutes(6));
               // navigate("/2FAverificationotp");
               localStorage.setItem("seconds", 60);
               localStorage.setItem("minutes", 4);
@@ -283,7 +283,7 @@ const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
                 )
               );
               //localStorage.setItem("LoginFlowPageRoute", 6);
-             dispatch(LoginFlowRoutes(6));
+              dispatch(LoginFlowRoutes(6));
               // navigate("/2FAverificationotp");
               localStorage.setItem("seconds", 60);
               localStorage.setItem("minutes", 4);
@@ -303,7 +303,7 @@ const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
                 )
               );
               //localStorage.setItem("LoginFlowPageRoute", 6);
-             dispatch(LoginFlowRoutes(6));
+              dispatch(LoginFlowRoutes(6));
               // navigate("/2FAverificationotp");
               localStorage.setItem("seconds", 60);
               localStorage.setItem("minutes", 4);
@@ -343,7 +343,7 @@ const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
               );
 
               //localStorage.setItem("LoginFlowPageRoute", 6);
-             dispatch(LoginFlowRoutes(6));
+              dispatch(LoginFlowRoutes(6));
               // navigate("/2FAverificationotp");
               localStorage.setItem("seconds", 60);
               localStorage.setItem("minutes", 4);
@@ -363,7 +363,7 @@ const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
               );
 
               //localStorage.setItem("LoginFlowPageRoute", 6);
-             dispatch(LoginFlowRoutes(6));
+              dispatch(LoginFlowRoutes(6));
               // navigate("/2FAverificationotp");
               localStorage.setItem("seconds", 60);
               localStorage.setItem("minutes", 4);
@@ -455,7 +455,7 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
                 )
               );
               //localStorage.setItem("LoginFlowPageRoute", 6);
-             dispatch(LoginFlowRoutes(6));
+              dispatch(LoginFlowRoutes(6));
               // navigate("/2FAverificationotp");
               return setSeconds(60), setMinutes(4);
             } else if (
@@ -472,7 +472,7 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
                 )
               );
               //localStorage.setItem("LoginFlowPageRoute", 6);
-             dispatch(LoginFlowRoutes(6));
+              dispatch(LoginFlowRoutes(6));
               // navigate("/2FAverificationotp");
               return setSeconds(60), setMinutes(4);
             } else if (
@@ -489,7 +489,7 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
                 )
               );
               //localStorage.setItem("LoginFlowPageRoute", 6);
-             dispatch(LoginFlowRoutes(6));
+              dispatch(LoginFlowRoutes(6));
               // navigate("/2FAverificationotp");
               return setSeconds(60), setMinutes(4);
             } else if (
@@ -508,7 +508,7 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
                 )
               );
               //localStorage.setItem("LoginFlowPageRoute", 6);
-             dispatch(LoginFlowRoutes(6));
+              dispatch(LoginFlowRoutes(6));
               // navigate("/2FAverificationotp", { state: { value: 2 } });
               return setSeconds(60), setMinutes(4);
             } else if (
@@ -544,7 +544,7 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
                 )
               );
               //localStorage.setItem("LoginFlowPageRoute", 6);
-             dispatch(LoginFlowRoutes(6));
+              dispatch(LoginFlowRoutes(6));
               // navigate("/2FAverificationotp", { state: { value: 0 } });
               return setSeconds(60), setMinutes(4);
             } else if (
@@ -561,7 +561,7 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
                 )
               );
               //localStorage.setItem("LoginFlowPageRoute", 6);
-             dispatch(LoginFlowRoutes(6));
+              dispatch(LoginFlowRoutes(6));
               // navigate("/2FAverificationotp", { state: { value: 1 } });
               return setSeconds(60), setMinutes(4);
             } else if (
@@ -642,7 +642,7 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
                   t("Otp-has-been-verified-successfully")
                 )
               );
-              clearLocalStorageAtloginresponce(1);
+              clearLocalStorageAtloginresponce(dispatch, 1, navigate);
               localStorage.setItem("TowApproval", true);
               console.log("TowApproval");
               if (localStorage.getItem("hasAdminRights")) {
@@ -687,7 +687,7 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
                 dispatch(
                   verifyOtpFacFail(t("User-not-authorised-contact-admin"))
                 );
-                clearLocalStorageAtloginresponce(2);
+                clearLocalStorageAtloginresponce(dispatch, 2, navigate);
                 console.log("TowApproval");
               }
               // if (JSON.parse(localStorage.getItem("roleID")) === 1) {

@@ -136,17 +136,14 @@ const SignInUserManagement = () => {
 
   useEffect(() => {
     if (code) {
-      console.log("Code:", code);
       localStorage.setItem("Ms", code);
       window.close();
     } else if (paymentActionValue) {
-      console.log("Code");
       let data = {
         EncryptedString: paymentActionValue,
       };
       dispatch(paymentStatusApi(navigate, t, data));
     } else {
-      console.log("Code");
       emailRef.current.focus();
       let RememberEmailLocal = JSON.parse(
         localStorage.getItem("rememberEmail")
@@ -173,11 +170,10 @@ const SignInUserManagement = () => {
         localStorage.clear();
         try {
           if (Number(LoginFlowPageRoute) !== 1) {
-            //localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
             dispatch(LoginFlowRoutes(LoginFlowPageRoute));
           }
         } catch {}
-        if (reLang != undefined && reLang != null) {
+        if (reLang !== undefined && reLang != null) {
           localStorage.setItem("i18nextLng", reLang);
         }
         if (RSVP) {
@@ -207,7 +203,7 @@ const SignInUserManagement = () => {
             dispatch(LoginFlowRoutes(LoginFlowPageRoute));
           }
         } catch {}
-        if (reLang != undefined && reLang != null) {
+        if (reLang !== undefined && reLang != null) {
           localStorage.setItem("i18nextLng", reLang);
         }
         if (RSVP) {

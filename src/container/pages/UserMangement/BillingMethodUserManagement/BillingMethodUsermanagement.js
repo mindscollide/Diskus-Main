@@ -42,9 +42,6 @@ const BillingMethodUsermanagement = () => {
   const [select, setSelect] = useState("");
   const [countryNames, setCountryNames] = useState([]);
 
-  // update totalYearly from child component step three
-  const [totalYearlyCharges, setTotalYearlyCharges] = useState(0);
-
   //Billing Contact States
   const [billingContactDetails, setBillingContactDetails] = useState({
     Name: {
@@ -104,44 +101,6 @@ const BillingMethodUsermanagement = () => {
     },
   });
 
-  //Payment method
-  const [paymentMethods, setPaymentMethods] = useState({
-    Name: {
-      value: "",
-      errorMessage: "",
-      errorStatus: false,
-    },
-
-    LastName: {
-      value: "",
-      errorMessage: "",
-      errorStatus: false,
-    },
-
-    CreditCardNumber: {
-      value: "",
-      errorMessage: "",
-      errorStatus: false,
-    },
-
-    CardExpirationDate: {
-      value: "",
-      errorMessage: "",
-      errorStatus: false,
-    },
-
-    CVV: {
-      value: "",
-      errorMessage: "",
-      errorStatus: false,
-    },
-  });
-
-  // update totalYearly from child component step three
-  const updateTotalYearlyCharges = (charges) => {
-    setTotalYearlyCharges(charges);
-  };
-
   // translate Languages start
   const languages = [
     { name: "English", code: "en" },
@@ -156,9 +115,6 @@ const BillingMethodUsermanagement = () => {
   useEffect(() => {
     document.body.dir = currentLangObj.dir || "ltr";
   }, [currentLangObj, t]);
-
-  console.log(activeComponent, "activeComponentactiveComponent");
-  console.log(activeStep, "activeComponentactiveComponent");
 
   const handleNext = () => {
     if (activeStep === 0 && activeComponent === "PakageDetails") {
@@ -287,11 +243,7 @@ const BillingMethodUsermanagement = () => {
   };
 
   const handleBack = () => {
-    if (activeComponent === "PaymentMethods") {
-      setActiveComponent("PakageDetails");
-      setActiveStep((prevActiveStep) => Math.max(prevActiveStep - 1, 0));
-    }
-
+    console.log("i am clicked");
     if (activeComponent === "PakageDetails") {
       setActiveComponent("billingAddress");
       setActiveStep((prevActiveStep) => Math.max(prevActiveStep - 1, 0));
@@ -303,8 +255,12 @@ const BillingMethodUsermanagement = () => {
     }
 
     if (activeComponent === "billingContactDetails") {
-      //Enable payment failed modal
-      dispatch(showFailedPaymentModal(true));
+      setActiveComponent("PakageDetails");
+      setActiveStep((prevActiveStep) => Math.max(prevActiveStep - 1, 0));
+    }
+
+    if (activeComponent === "PakageDetails") {
+      setActiveComponent("PakageDetails");
     }
   };
 
@@ -434,28 +390,13 @@ const BillingMethodUsermanagement = () => {
                     </span>
                   }
                 />
-                {/* <Step
-                  label={
-                    <span
-                      className={
-                        activeStep >= 3
-                          ? "payment-methodActive"
-                          : "payment-method"
-                      }
-                    >
-                      {t("Payment-method")}
-                    </span>
-                  }
-                /> */}
               </Stepper>
             </Col>
           </Row>
           <Row>
             <Col lg={12} md={12} sm={12} xs={12}>
               {activeStep === 0 && activeComponent === "PakageDetails" ? (
-                <BillProcessStepThree
-                  updateTotalYearlyCharges={updateTotalYearlyCharges}
-                />
+                <BillProcessStepThree />
               ) : activeStep === 1 &&
                 activeComponent === "billingContactDetails" ? (
                 <>
@@ -473,17 +414,7 @@ const BillingMethodUsermanagement = () => {
                     select={select}
                   />
                 </>
-              ) : // : activeStep === 3 && activeComponent === "PaymentMethods" ? (
-              //   <>
-              //     <>
-              //       <BillProcessStepFour
-              //         paymentMethods={paymentMethods}
-              //         setPaymentMethods={setPaymentMethods}
-              //       />
-              //     </>
-              //   </>
-              // )
-              null}
+              ) : null}
             </Col>
           </Row>
 
@@ -495,13 +426,15 @@ const BillingMethodUsermanagement = () => {
               xs={12}
               className="d-flex justify-content-end gap-2"
             >
+              {activeComponent === "PakageDetails" ? null : (
+                <Button
+                  text={t("Back")}
+                  className={styles["BackbuttonBillingMethod"]}
+                  onClick={handleBack}
+                />
+              )}
+
               <Button
-                text={t("Back")}
-                className={styles["BackbuttonBillingMethod"]}
-                onClick={handleBack}
-              />
-              <Button
-                // text={activeStep === 3 ? t("Confirm-payment") : t("Next")}
                 text={t("Next")}
                 className={styles["NextbuttonBillingMethod"]}
                 onClick={handleNext}
@@ -512,7 +445,6 @@ const BillingMethodUsermanagement = () => {
         <Col lg={1} md={1} sm={12} xs={12}></Col>
       </Row>
       {UserManagementModals.thanksForPaymentModal && <ThankForPayment />}
-      {UserManagementModals.paymentProceedFailed && <PaymentFailedModal />}
       {UserMangementReducer.Loading || LanguageReducer.Loading ? (
         <Loader />
       ) : null}

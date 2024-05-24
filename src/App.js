@@ -1,9 +1,7 @@
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense } from "react";
 import "./App.css";
 import "./fr.css";
 import "./ar.css";
-import { logoutAllTabs } from "./store/actions/Auth_Sign_Out";
-import moment from "moment";
 import "./assets/font-icons/font-icons.css";
 import "@fontsource/montserrat"; // Defaults to weight 400
 import "@fontsource/montserrat/100.css";

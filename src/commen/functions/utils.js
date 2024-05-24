@@ -1,3 +1,8 @@
+import {
+  LoginFlowRoutes,
+  signUpFlowRoutes,
+} from "../../store/actions/UserManagementActions";
+
 // this is function save avalable feature for current user implementation its save all data in local storage
 export function savePackageFeatureIDs(userFeatures) {
   // Fetch existing data from local storage
@@ -146,6 +151,11 @@ export async function handleLoginResponse(response) {
       localStorage.setItem("organizationID", response.organizationID);
     }
 
+    localStorage.setItem(
+      "organizationSubscriptionID",
+      response.organizationSubscriptionID
+    );
+
     if (response.organizationName) {
       localStorage.setItem("organizatioName", response.organizationName);
     }
@@ -276,7 +286,10 @@ export async function handleLoginResponse(response) {
     localStorage.setItem("LocalUserRoutes", JSON.stringify(LocalUserRoutes));
     localStorage.setItem("LocalAdminRoutes", JSON.stringify(LocalAdminRoutes));
   } catch (error) {
-    console.error("Error processing login response:", error);
+    console.log(
+      "handleLoginResponsehandleLoginResponse Error processing login response:",
+      error
+    );
   }
 }
 
@@ -313,7 +326,7 @@ export function getLocalStorageItemNonActiveCheck(key) {
 }
 
 // this is for non active organisation check only
-export function clearLocalStorageAtloginresponce(value, navigate) {
+export function clearLocalStorageAtloginresponce(dispatch, value, navigate) {
   if (value === 1) {
     localStorage.removeItem("signupCurrentPage");
     localStorage.removeItem("LoginFlowPageRoute");
