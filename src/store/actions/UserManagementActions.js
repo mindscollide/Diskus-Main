@@ -16,6 +16,7 @@ import {
   ExtendOrganizationTrial,
   requestOrganizationTrialExtend,
   paymentStatus,
+  changeSelectedSubscription,
 } from "../../commen/apis/Api_config";
 import {
   authenticationApi,
@@ -1197,11 +1198,12 @@ const getAllUserTypePackagesInit = () => {
   };
 };
 
-const getAllUserTypePackagesSuccess = (response, message) => {
+const getAllUserTypePackagesSuccess = (response, message, flag) => {
   return {
     type: actions.GET_ALL_USER_TYPES_PAKAGES_SUCCESS,
     response: response,
     message: message,
+    loader: flag,
   };
 };
 
@@ -1212,7 +1214,7 @@ const getAllUserTypePackagesFail = (message) => {
   };
 };
 
-const getAllUserTypePackagesApi = (navigate, t) => {
+const getAllUserTypePackagesApi = (navigate, t, flag) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getAllUserTypePackagesInit());
@@ -1229,7 +1231,7 @@ const getAllUserTypePackagesApi = (navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getAllUserTypePackagesApi(navigate, t));
+          dispatch(getAllUserTypePackagesApi(navigate, t, flag));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1239,12 +1241,25 @@ const getAllUserTypePackagesApi = (navigate, t) => {
                   "ERM_AuthService_SignUpManager_GetAllUserTypePackages_01".toLowerCase()
                 )
             ) {
-              dispatch(
+              await dispatch(
                 getAllUserTypePackagesSuccess(
                   response.data.responseResult,
-                  t("Data-available")
+                  t("Data-available"),
+                  flag
                 )
               );
+              if (flag) {
+                let OrganizationName = localStorage.getItem("organizatioName");
+                let OrganiationSubscriptionID = localStorage.getItem(
+                  "organizationSubscriptionID"
+                );
+                let Data = {
+                  OrganizationName: OrganizationName,
+                  OrganizationSubscriptionID: Number(OrganiationSubscriptionID),
+                };
+                dispatch(getOrganizationSelectedPakagesAPI(navigate, t, Data));
+              } else {
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2103,8 +2118,115 @@ const paymentStatusApi = (navigate, t, data) => {
       });
   };
 };
+//Payment Status Api
+const changeSelectPacakge_Init = () => {
+  return {
+    type: actions.CHANGE_PACKAGE_SELECTED_INIT,
+  };
+};
+
+const changeSelectPacakge_Success = (response, message) => {
+  return {
+    type: actions.CHANGE_PACKAGE_SELECTED_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const changeSelectPacakge_Failed = (response, message) => {
+  return {
+    type: actions.CHANGE_PACKAGE_SELECTED_FAIL,
+    message: message,
+  };
+};
+
+const changeSelectPacakgeApi = (navigate, t, data, changePacakgeFlag) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(changeSelectPacakge_Init());
+    let form = new FormData();
+    form.append("RequestMethod", changeSelectedSubscription.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: getAdminURLs,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            changeSelectPacakgeApi(navigate, t, data, changePacakgeFlag)
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_ChangeSelectedSubscriptionDetails_01".toLowerCase()
+                )
+            ) {
+              dispatch(changeSelectPacakge_Success(t("Successfully")));
+              localStorage.setItem("organizationSubscriptionID", Number(response.data.responseResult.subscriptionID))
+              if (changePacakgeFlag) {
+              
+                localStorage.setItem("SignupFlowPageRoute", 5);
+                dispatch(signUpFlowRoutes(5));
+                localStorage.removeItem("changePacakgeFlag");
+                navigate("/Signup")
+              }
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_ChangeSelectedSubscriptionDetails_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                changeSelectPacakge_Failed(
+                  t("Failed-to-delete-current-Inactive-ubscription")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_ChangeSelectedSubscriptionDetails_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                changeSelectPacakge_Failed(
+                  t("Failed-to-save-organization-subscription")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_ChangeSelectedSubscriptionDetails_04".toLowerCase()
+                )
+            ) {
+              dispatch(changeSelectPacakge_Failed(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(changeSelectPacakge_Failed(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(changeSelectPacakge_Failed(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(changeSelectPacakge_Failed(t("Something-went-wrong")));
+      });
+  };
+};
 
 export {
+  changeSelectPacakgeApi,
   signUpOrganizationAndPakageSelection,
   // getAllorganizationSubscriptionExpiryDetailsApi,
   ExtendOrganizationTrialApi,

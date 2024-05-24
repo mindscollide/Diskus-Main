@@ -66,7 +66,7 @@ const ExpandedMenu = () => {
     (state) => state.NewMeetingreducer.currentMeetingStatus
   );
 
-  // //Dataroom Sidebar Click
+  //Dataroom Sidebar Click
   const handleMeetingSidebarDataroom = () => {
     if (
       (NewMeetingreducer.scheduleMeetingPageFlag === true ||
@@ -103,7 +103,7 @@ const ExpandedMenu = () => {
     // navigate(`/${dataroomNavigation}`);
   };
 
-  // //Groups Sidebar Click
+  //Groups Sidebar Click
   const handleMeetingSidebarGroups = () => {
     if (
       (NewMeetingreducer.scheduleMeetingPageFlag === true ||
@@ -143,7 +143,7 @@ const ExpandedMenu = () => {
     // navigate(`/${groupNavigation}`);
   };
 
-  // //Committees Sidebar Click
+  //Committees Sidebar Click
   const handleMeetingSidebarCommittees = () => {
     if (
       (NewMeetingreducer.scheduleMeetingPageFlag === true ||
@@ -183,7 +183,7 @@ const ExpandedMenu = () => {
     // navigate(`/${committeeNavigation}`);
   };
 
-  // //Resolutions Sidebar Click
+  //Resolutions Sidebar Click
   const handleMeetingSidebarResolutions = () => {
     if (
       (NewMeetingreducer.scheduleMeetingPageFlag === true ||
@@ -225,7 +225,7 @@ const ExpandedMenu = () => {
     // navigate(`/${resolutionNavigation}`);
   };
 
-  // //Polls Sidebar Click
+  //Polls Sidebar Click
   const handleMeetingSidebarPolls = () => {
     if (
       (NewMeetingreducer.scheduleMeetingPageFlag === true ||
