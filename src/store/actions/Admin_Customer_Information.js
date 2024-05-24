@@ -13,11 +13,9 @@ const SetLoaderFalse = () => {
   };
 };
 
-const customerInformationInit = (response, message) => {
+const customerInformationInit = () => {
   return {
     type: actions.ADMIN_CUSTOMERINFORMATION_INIT,
-    response: response,
-    message: message,
   };
 };
 
@@ -29,10 +27,9 @@ const customerInformationSuccess = (response, message) => {
   };
 };
 
-const customerInformationFail = (response, message) => {
+const customerInformationFail = (message) => {
   return {
     type: actions.ADMIN_CUSTOMERINFORMATION_FAIL,
-    response: response,
     message: message,
   };
 };
@@ -69,10 +66,7 @@ const customerInfoOrganizationDetails = (navigate, t) => {
                 )
             ) {
               await dispatch(
-                customerInformationSuccess(
-                  response.data.responseResult,
-                  ""
-                )
+                customerInformationSuccess(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage

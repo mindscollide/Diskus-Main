@@ -9,7 +9,7 @@
   width: 100%;
   border: 1px solid #e1e1e1;
   border-radius: 4px !important;
-  padding: 0 20px 20px 0;
+  padding: 30px 30px 30px 30px;
 }
 .export-to-excel-btn {
   padding: 10px 20px;
@@ -91,4 +91,24 @@ body[dir="rtl"] .searchbox_icon_userhistoryLogin {
 .Searches {
   font-size: 12px !important;
   color: #fff !important;
+}
+
+.NameStylesTable {
+  font-weight: 700 !important;
+  font-size: 12px !important;
+  color: #505050 !important;
+}
+
+body[dir="rtl"] .NameStylesTable {
+  font-weight: 700 !important;
+}
+
+.DesignationStyles {
+  font-weight: 400 !important;
+  font-size: 12px !important;
+  color: #505050 !important;
+}
+
+body[dir="rtl"] .DesignationStyles {
+  font-weight: 400 !important;
 }

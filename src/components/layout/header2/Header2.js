@@ -147,6 +147,7 @@ const Header2 = () => {
     let OrganizationID = localStorage.getItem("organizationID");
     dispatch(
       getUserDetails(navigate, userID, t, OrganizationID, setUserProfileModal)
+      // getUserDetails(navigate, userID, t, OrganizationID)
     );
   };
 
@@ -521,7 +522,8 @@ const Header2 = () => {
                     </Dropdown.Item>
                     <Dropdown.Item
                       className={" text-black" + " " + currentLanguage}
-                      onClick={() => forgotPasswordCheck()}
+                      onClick={handleModalCustomerInformation}
+                      // onClick={() => forgotPasswordCheck()}
                     >
                       <Nav.Link
                         as={Link}
@@ -802,6 +804,14 @@ const Header2 = () => {
                           >
                             {/* Change Password */}
                             {t("Customer-information")}
+                          </Nav.Link>
+                        </Dropdown.Item>
+                        <Dropdown.Item
+                          className={currentLanguage}
+                          onClick={modalUserProfileHandler}
+                        >
+                          <Nav.Link className="d-flex text-black FontClass">
+                            {t("My-profile")}
                           </Nav.Link>
                         </Dropdown.Item>
                         <Dropdown.Item
