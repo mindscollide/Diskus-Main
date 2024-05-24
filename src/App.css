@@ -7524,6 +7524,7 @@ tr.ant-table-row.ant-table-row-level-0.UpgradePakageDetails:last-child:hover {
 }
 /* BoardDeck Ends */
 
+/* Responsiveness CancelSubscription starts*/
 .Billing_TableContainer {
   overflow-x: auto; /* Ensures the table can scroll horizontally if it overflows */
   width: 100%; /* Ensures the container takes the full width */
@@ -7558,3 +7559,5 @@ tr.ant-table-row.ant-table-row-level-0.UpgradePakageDetails:last-child:hover {
     font-size: 10px; /* Further adjust font size for very small screens */
   }
 }
+
+/* Responsiveness CancelSubscription Ends*/
