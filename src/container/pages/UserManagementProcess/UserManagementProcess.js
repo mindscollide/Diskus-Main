@@ -20,6 +20,7 @@ import { Notification } from "../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { cleareChangePasswordMessage } from "../../../store/actions/Auth_Forgot_Password";
 import { LoginFlowRoutes } from "../../../store/actions/UserManagementActions";
+import VerificationCodeThree from "../organizationRegister/2FA/VerficationCodeThree/VerificationCodeThree";
 
 const UserManagementProcess = () => {
   // Define setCurrentStep function
@@ -180,6 +181,8 @@ const UserManagementProcess = () => {
     componentToRender = <ForgotPasswordVerificationUM />;
   } else if (UserMangementReducer.defaultRoutingValue === 13) {
     componentToRender = <TwoFactorMultipleDevices />;
+  } else if (UserMangementReducer.defaultRoutingValue === 14) {
+    componentToRender = <VerificationCodeThree />;
   } else {
     componentToRender = null;
     console.log("Errorr in route");
