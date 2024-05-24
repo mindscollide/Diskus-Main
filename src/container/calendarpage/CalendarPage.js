@@ -139,7 +139,7 @@ const CalendarPage = () => {
       setEndDataUpdate(newDateFormaterAsPerUTC(endDate));
 
       await dispatch(getEventsTypes(navigate, t));
-      await dispatch(getCalendarDataResponse(navigate, t, calendarData, true));
+      await dispatch(getCalendarDataResponse(navigate, t, calendarData));
     } catch (error) {
       console.error("An error occurred:", error);
     }
