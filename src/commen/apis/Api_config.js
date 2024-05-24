@@ -1580,9 +1580,11 @@ const downloadAttachmentTalk = {
 };
 
 const changeSelectedSubscription = {
-  RequestMethod: "ServiceManager.ChangeSelectedSubscriptionDetails"
-}
-
+  RequestMethod: "ServiceManager.ChangeSelectedSubscriptionDetails",
+};
+const CancelTrailandUpdageOrganiztionRM = {
+  RequestMethod: "ServiceManager.CancelTrialAndUpgradeOrganizationSubscription",
+};
 export {
   ValidateEmailRelatedStringPolls,
   ValidateEmailRelatedString,
@@ -2002,5 +2004,6 @@ export {
   requestOrganizationTrialExtend,
   paymentStatus,
   downloadAttachmentTalk,
-  changeSelectedSubscription
+  changeSelectedSubscription,
+  CancelTrailandUpdageOrganiztionRM
 };

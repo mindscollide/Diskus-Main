@@ -17,6 +17,7 @@ import {
   requestOrganizationTrialExtend,
   paymentStatus,
   changeSelectedSubscription,
+  CancelTrailandUpdageOrganiztionRM,
 } from "../../commen/apis/Api_config";
 import {
   authenticationApi,
@@ -2170,7 +2171,7 @@ const changeSelectPacakgeApi = (navigate, t, data, changePacakgeFlag) => {
                   "Admin_AdminServiceManager_ChangeSelectedSubscriptionDetails_01".toLowerCase()
                 )
             ) {
-              dispatch(changeSelectPacakge_Success(t("Successfully")));
+              dispatch(changeSelectPacakge_Success(t("Successfully"), ""));
               localStorage.setItem("organizationSubscriptionID", Number(response.data.responseResult.subscriptionID))
               if (changePacakgeFlag) {
               
@@ -2225,6 +2226,116 @@ const changeSelectPacakgeApi = (navigate, t, data, changePacakgeFlag) => {
   };
 };
 
+
+// 
+//Payment Status Api
+const cancelisTrailandSubscription_Init = () => {
+  return {
+    type: actions.CANCELFREETRAILANDUPDGRADEORGANIZATION_INIT,
+  };
+};
+
+const cancelisTrailandSubscription_Success = (response, message) => {
+  return {
+    type: actions.CANCELFREETRAILANDUPDGRADEORGANIZATION_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const cancelisTrailandSubscription_Failed = (response, message) => {
+  return {
+    type: actions.CANCELFREETRAILANDUPDGRADEORGANIZATION_FAIL,
+    message: message,
+  };
+};
+
+const cancelisTrailandSubscriptionApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(cancelisTrailandSubscription_Init());
+    let form = new FormData();
+    form.append("RequestMethod", CancelTrailandUpdageOrganiztionRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: getAdminURLs,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            cancelisTrailandSubscriptionApi(navigate, t, data)
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_CancelTrialAndUpgradeOrganizationSubscription_01".toLowerCase()
+                )
+            ) {
+              dispatch(cancelisTrailandSubscription_Success(t("Successfully"), ""));
+              localStorage.setItem("organizationSubscriptionID", Number(response.data.responseResult.subscriptionID))
+              navigate("/Admin/PaymentFormUserManagement");
+              // localStorage.setItem("organizationSubscriptionID", Number(response.data.responseResult.subscriptionID))
+              // if (changePacakgeFlag) {
+              
+              //   localStorage.setItem("SignupFlowPageRoute", 5);
+              //   dispatch(signUpFlowRoutes(5));
+              //   localStorage.removeItem("changePacakgeFlag");
+              //   navigate("/Signup")
+              // }
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_CancelTrialAndUpgradeOrganizationSubscription_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                cancelisTrailandSubscription_Failed(
+                  t("Failed-to-cancel-trial-subscription")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_CancelTrialAndUpgradeOrganizationSubscription_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                cancelisTrailandSubscription_Failed(
+                  t("Failed-to-save-organization-subscription")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_CancelTrialAndUpgradeOrganizationSubscription_04".toLowerCase()
+                )
+            ) {
+              dispatch(cancelisTrailandSubscription_Failed(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(cancelisTrailandSubscription_Failed(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(cancelisTrailandSubscription_Failed(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(cancelisTrailandSubscription_Failed(t("Something-went-wrong")));
+      });
+  };
+};
 export {
   changeSelectPacakgeApi,
   signUpOrganizationAndPakageSelection,
@@ -2250,4 +2361,5 @@ export {
   // paymentUpgradeDetailMainApi
   requestOrganizationExtendApi,
   paymentStatusApi,
+  cancelisTrailandSubscriptionApi
 };

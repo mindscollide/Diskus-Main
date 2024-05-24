@@ -17,6 +17,7 @@ import {
 } from "../../../../components/elements";
 import {
   LoginFlowRoutes,
+  cancelisTrailandSubscriptionApi,
   changeSelectPacakgeApi,
   getAllUserTypePackagesApi,
   signUpFlowRoutes,
@@ -32,6 +33,7 @@ const PakageDetailsUserManagement = () => {
 
   const SignupPage = localStorage.getItem("SignupFlowPageRoute");
   const trialPage = localStorage.getItem("isTrial");
+  console.log(trialPage, "trialPagetrialPagetrialPage")
   let changePacakgeFlag = localStorage.getItem("changePacakgeFlag");
 
   const { UserMangementReducer, LanguageReducer } = useSelector(
@@ -446,8 +448,12 @@ const PakageDetailsUserManagement = () => {
         localStorage.setItem("SignupFlowPageRoute", 2);
         dispatch(signUpFlowRoutes(2));
         navigate("/Signup");
-      } else if (trialPage === true) {
-        navigate("/Admin/PaymentFormUserManagement");
+      } else if (Boolean(trialPage) === true) {
+        let requestData = {
+          TenureOfSubscriptionID: Number(tenureOfSuscriptionID),
+          Packages: newArr,
+        };
+        dispatch(cancelisTrailandSubscriptionApi(navigate, t, requestData));
       } else {
         navigate("/Admin/PaymentFormUserManagement");
       }
