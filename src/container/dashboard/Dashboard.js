@@ -812,37 +812,7 @@ const Dashboard = () => {
       }
       if (data.action.toLowerCase() === "Notification".toLowerCase()) {
         if (
-          data.payload.message.toLowerCase() ===
-          "USER_STATUS_EDITED".toLowerCase()
-        ) {
-          setNotification({
-            notificationShow: true,
-            message: changeMQTTJSONOne(
-              t("USER_STATUS_EDITED"),
-              "[organizationName]",
-              data.payload.organizationName
-            ),
-          });
-          setNotificationID(id);
-          setTimeout(() => {
-            navigate("/");
-          }, 4000);
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "USER_STATUS_ENABLED".toLowerCase()
-        ) {
-          setNotification({
-            notificationShow: true,
-            message: changeMQTTJSONOne(
-              t("USER_STATUS_ENABLED"),
-              "[organizationName]",
-              data.payload.organizationName
-            ),
-          });
-          setNotificationID(id);
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "USER_ROLE_EDITED".toLowerCase()
+          data.payload.message.toLowerCase() === "USER_EDITED".toLowerCase()
         ) {
           setNotification({
             notificationShow: true,
@@ -854,7 +824,10 @@ const Dashboard = () => {
           });
           setNotificationID(id);
           setTimeout(() => {
-            navigate("/");
+            if (data.payload.isLoggedOut === true) {
+              //Apply Logout API here
+              dispatch(userLogOutApiFunc(navigate, t));
+            }
           }, 4000);
         } else if (
           data.payload.message.toLowerCase() ===
@@ -992,14 +965,6 @@ const Dashboard = () => {
               key: 0,
             };
             dispatch(setRecentActivityDataNotification(data2));
-          }
-        } else if (
-          data.payload.message.toLowerCase() === "USER_DELETED".toLowerCase()
-        ) {
-          console.log("Inside USER_DELETED Check");
-          if (data.payload.isLoggedOut === false) {
-            //Apply Logout API here
-            dispatch(userLogOutApiFunc(navigate, t));
           }
         }
       }

@@ -15,7 +15,10 @@ import {
   showEditUserModal,
   showSucessfullyUpdatedModal,
 } from "../../../../../store/actions/UserMangementModalActions";
-import { EditOrganizationsUserApi } from "../../../../../store/actions/UserManagementActions";
+import {
+  EditOrganizationsUserApi,
+  getOrganizationPackageUserStatsAPI,
+} from "../../../../../store/actions/UserManagementActions";
 import { useNavigate } from "react-router-dom";
 import { regexOnlyCharacters } from "../../../../../commen/functions/regex";
 const EditUserModal = ({ editModalData }) => {
@@ -26,10 +29,15 @@ const EditUserModal = ({ editModalData }) => {
 
   const navigate = useNavigate();
 
-  const { UserManagementModals } = useSelector((state) => state);
+  const { UserManagementModals, UserMangementReducer } = useSelector(
+    (state) => state
+  );
 
   let organizationID = localStorage.getItem("organizationID");
 
+  const [packageAssignedValue, setPackageAssignedValue] = useState([]);
+  const [packageAssignedOption, setPackageAssignedOption] = useState([]);
+  const [editPakageID, setEditPakageID] = useState(0);
   const [editUserModalValues, setEditUserModalValues] = useState({
     Name: {
       value: editModalData.userName,
@@ -45,8 +53,6 @@ const EditUserModal = ({ editModalData }) => {
     Email: editModalData.email,
     isAdminUser: editModalData.userRoleID === 4 ? 4 : 3,
   });
-
-  console.log(editModalData.userRoleID, "editModalDataeditModalData");
 
   //options for the dropdowm
   const options = [
@@ -84,12 +90,36 @@ const EditUserModal = ({ editModalData }) => {
 
   const [userStatusID, setUserStatusID] = useState(userStatus.value);
 
-  console.log(userStatus, "userStatususerStatususerStatus");
+  //For Now I set static data in this getOrganizationPackageUserStatsAPI Api
+  useEffect(() => {
+    dispatch(getOrganizationPackageUserStatsAPI(navigate, t));
+  }, []);
 
   useEffect(() => {
     // Update state when the editModalData.userStatus changes
     setUserStatus(findOptionByValue(editModalData.userStatus));
   }, [editModalData.userStatus]);
+
+  // package assigned option dropdown useEffect it will disable option when packageAllotedUsers greater then headCount
+  useEffect(() => {
+    if (
+      UserMangementReducer.getOrganizationUserStatsGraph &&
+      Object.keys(UserMangementReducer.getOrganizationUserStatsGraph).length > 0
+    ) {
+      let temp = [];
+      UserMangementReducer.getOrganizationUserStatsGraph.selectedPackageDetails.map(
+        (data, index) => {
+          console.log(data, "packageDatapackageData");
+          temp.push({
+            value: data.pK_PackageID,
+            label: data.name,
+            isDisabled: data.packageAllotedUsers > data.headCount,
+          });
+        }
+      );
+      setPackageAssignedOption(temp);
+    }
+  }, [UserMangementReducer.getOrganizationUserStatsGraph]);
 
   // Handler for when an option is selected.
   const handleSelectChange = (selectedOption) => {
@@ -159,7 +189,7 @@ const EditUserModal = ({ editModalData }) => {
       MobileNumber: "",
       RoleID: editUserModalValues.isAdminUser,
       OrganizationID: Number(organizationID),
-      PackageID: Number(editModalData.userAllotedPackageID),
+      PackageID: Number(editPakageID),
       FK_NumberWorldCountryID: Number(editModalData.fK_WorldCountryID),
     };
     //The True is The Flag for AllOrganization User After Editing the User
@@ -172,7 +202,13 @@ const EditUserModal = ({ editModalData }) => {
       isAdminUser: e.target.checked ? 4 : 3,
     }));
   };
-  console.log(editUserModalValues.isAdminUser, "editUserModalValues");
+
+  const handlePackageAssigned = async (selectedOption) => {
+    console.log(selectedOption, "selectedOptionselectedOption");
+    setPackageAssignedValue(selectedOption);
+    setEditPakageID(selectedOption.value);
+  };
+
   return (
     <section>
       <Modal
@@ -272,6 +308,25 @@ const EditUserModal = ({ editModalData }) => {
                           </span>
                         </Col>
                       </Row>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col lg={12} md={12} sm={12}>
+                      <label className={styles["label-styling"]}>
+                        {t("Package-assigned")}{" "}
+                        <span className={styles["aesterick-color"]}> *</span>
+                      </label>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col lg={12} md={12} sm={12}>
+                      <Select
+                        name="PackageAssigned"
+                        value={packageAssignedValue}
+                        options={packageAssignedOption}
+                        onChange={handlePackageAssigned}
+                        placeholder={t("Please-select-one-option")}
+                      />
                     </Col>
                   </Row>
                   <Row className="mt-2">

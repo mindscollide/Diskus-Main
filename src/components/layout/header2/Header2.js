@@ -45,6 +45,7 @@ import {
 import RequestExtensionModal from "../../../container/pages/UserMangement/ModalsUserManagement/RequestExtentionModal/RequestExtensionModal.js";
 import { getCurrentDateTimeUTC } from "../../../commen/functions/date_formater.js";
 import { getLocalStorageItemNonActiveCheck } from "../../../commen/functions/utils";
+import { requestOrganizationExtendApi } from "../../../store/actions/UserManagementActions.js";
 
 const Header2 = () => {
   const location = useLocation();
@@ -316,7 +317,13 @@ const Header2 = () => {
   };
 
   const handleRequestExtentionModal = () => {
-    dispatch(showRequestExtentionModal(true));
+    const organizationID = localStorage.getItem("organizationID");
+    const UserID = localStorage.getItem("userID");
+    let data = {
+      OrganizationID: Number(organizationID),
+      UserID: Number(UserID),
+    };
+    dispatch(requestOrganizationExtendApi(navigate, t, data));
   };
   const openAdminTab = () => {
     window.open(window.location.origin + "/#/Admin", "_blank");
@@ -647,8 +654,10 @@ const Header2 = () => {
                           />
                         </>
                       )}
-                      {JSON.parse(localStorage.getItem("remainingDays")) ===
-                        1 && (
+                      {(JSON.parse(localStorage.getItem("remainingDays")) ===
+                        1 ||
+                        JSON.parse(localStorage.getItem("remainingDays")) ===
+                          0) && (
                         <>
                           {" "}
                           <Button

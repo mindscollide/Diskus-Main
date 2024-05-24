@@ -39,6 +39,7 @@ const PakageDetailsAdmin = () => {
       width: 100,
       dataIndex: "Pakagedetails",
       key: "Pakagedetails",
+      ellipsis: true,
       align: "center",
     },
     {
@@ -50,6 +51,7 @@ const PakageDetailsAdmin = () => {
       dataIndex: "Chargesperlicense",
       key: "Chargesperlicense",
       width: 100,
+      ellipsis: true,
       align: "center",
     },
     {
@@ -59,6 +61,7 @@ const PakageDetailsAdmin = () => {
         </span>
       ),
       width: 100,
+      ellipsis: true,
       dataIndex: "Numberoflicenses",
       key: "Numberoflicenses",
       align: "center",
@@ -71,6 +74,7 @@ const PakageDetailsAdmin = () => {
       ),
       dataIndex: "Yearlycharges",
       key: "Yearlycharges",
+      ellipsis: true,
       align: "center",
       width: 100,
     },
@@ -308,6 +312,10 @@ const PakageDetailsAdmin = () => {
                   className={"Billing_TablePakageSelection"}
                   rows={[...Data, defaultRow]}
                   pagination={false}
+                  footer={false}
+                  scroll={{
+                    x: "hidden",
+                  }}
                   id="UpgradePakageDetails"
                   rowHoverBg="none"
                 />
