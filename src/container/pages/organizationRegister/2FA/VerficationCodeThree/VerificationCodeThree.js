@@ -62,7 +62,7 @@ const VerificationCodeThree = () => {
     localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60
   );
   console.log(minutes, seconds, "datadatadatadatadata");
-  let currentDevice = JSON.parse(localStorage.getItem("currentDevice"));
+  let currentDevice = JSON.parse(localStorage.getItem("selectDevice"));
   const [device, setDevice] = useState({
     DeviceName: currentDevice?.DeviceName,
     UserDeviceID: currentDevice?.UserDeviceID,
@@ -203,6 +203,11 @@ const VerificationCodeThree = () => {
       }
     });
   }, []);
+
+  const handleGoback = () => {
+    localStorage.setItem("LoginFlowPageRoute", 15);
+    dispatch(LoginFlowRoutes(15));
+  };
   return (
     <>
       {/* <Row>
@@ -254,6 +259,7 @@ const VerificationCodeThree = () => {
                     <img
                       draggable="false"
                       src={img1}
+                      alt=""
                       width="220px"
                       height="69px"
                       // width="229.58px"
@@ -338,19 +344,9 @@ const VerificationCodeThree = () => {
                     lg={12}
                     className="forogt_email_link_for_openrealmextra"
                   >
-                    <Link
-                      to={
-                        parseInt(GobackSelection) === 1
-                          ? "/twofac"
-                          : parseInt(GobackSelection) === 2
-                          ? "/sendmailwithdevice"
-                          : parseInt(GobackSelection) === 3
-                          ? "/twofacmultidevice"
-                          : "/twofac"
-                      }
-                    >
+                    <span className="cursor-pointer" onClick={handleGoback}>
                       {t("Go-back")}
-                    </Link>
+                    </span>
                   </Col>
                 </Row>
               </Col>
