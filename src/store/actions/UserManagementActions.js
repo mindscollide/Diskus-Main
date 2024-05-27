@@ -37,6 +37,7 @@ import {
 import { userLogOutApiFunc } from "./Auth_Sign_Out";
 import {
   clearLocalStorageAtloginresponce,
+  clearPaymentActionFromUrl,
   handleLoginResponse,
 } from "../../commen/functions/utils";
 
@@ -2049,7 +2050,7 @@ const paymentStatusApi = (navigate, t, data, paymentActionValue) => {
               dispatch(
                 paymentStatusFailed(t("UnSuccessful-response-from-edfa-pay"))
               );
-              paymentActionValue = "";
+              clearPaymentActionFromUrl();
               navigate("/");
             } else if (
               response.data.responseResult.responseMessage
@@ -2063,7 +2064,7 @@ const paymentStatusApi = (navigate, t, data, paymentActionValue) => {
                   t("UnSuccessful-response-code-from-edfa-pay")
                 )
               );
-              paymentActionValue = "";
+              clearPaymentActionFromUrl();
               navigate("/");
             } else if (
               response.data.responseResult.responseMessage
@@ -2073,7 +2074,7 @@ const paymentStatusApi = (navigate, t, data, paymentActionValue) => {
                 )
             ) {
               dispatch(paymentStatusFailed(t("Invalid-request-data")));
-              paymentActionValue = "";
+              clearPaymentActionFromUrl();
               navigate("/");
             } else if (
               response.data.responseResult.responseMessage
@@ -2083,7 +2084,7 @@ const paymentStatusApi = (navigate, t, data, paymentActionValue) => {
                 )
             ) {
               dispatch(paymentStatusFailed(t("Not-an-authentic-user")));
-              paymentActionValue = "";
+              clearPaymentActionFromUrl();
               navigate("/");
             }
           } else if (
@@ -2094,7 +2095,7 @@ const paymentStatusApi = (navigate, t, data, paymentActionValue) => {
               )
           ) {
             dispatch(paymentStatusFailed(t("Payment-not-settled")));
-            paymentActionValue = "";
+            clearPaymentActionFromUrl();
             navigate("/");
           } else if (
             response.data.responseResult.responseMessage
@@ -2108,7 +2109,7 @@ const paymentStatusApi = (navigate, t, data, paymentActionValue) => {
                 t("Error-activating-organization-subscription-and-creator")
               )
             );
-            paymentActionValue = "";
+            clearPaymentActionFromUrl();
             navigate("/");
           } else if (
             response.data.responseResult.responseMessage
@@ -2117,14 +2118,19 @@ const paymentStatusApi = (navigate, t, data, paymentActionValue) => {
                 "ERM_AuthService_SignUpManager_PaymentStatus_08".toLowerCase()
               )
           ) {
+            console.log(dispatch, "dispatchdispatch");
             dispatch(paymentStatusFailed(t("Something-went-wrong")));
-            paymentActionValue = "";
+            clearPaymentActionFromUrl();
             navigate("/");
           } else {
             dispatch(paymentStatusFailed(t("Something-went-wrong")));
+            clearPaymentActionFromUrl();
+            navigate("/");
           }
         } else {
           dispatch(paymentStatusFailed(t("Something-went-wrong")));
+          clearPaymentActionFromUrl();
+          navigate("/");
         }
       })
       .catch((response) => {
