@@ -12,7 +12,6 @@ import styles from "./SignInUserMangement.module.css";
 import DiskusAuthPageLogo from "../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
-import SignUpOrganizationUM from "../../UserMangement/SignUpOrganizationUM/SignUpOrganizationUM";
 import { useNavigate } from "react-router-dom";
 // import SignupProcessUserManagement from "../../SignUpProcessUserManagement/SignupProcessUserManagement";
 import { validationEmail } from "../../../../commen/functions/validations";
@@ -24,11 +23,9 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import {
   LoginFlowRoutes,
-  paymentInitiateMainApi,
   paymentStatusApi,
   signUpFlowRoutes,
 } from "../../../../store/actions/UserManagementActions";
-import { getActionFromURLPayment } from "../../../../commen/functions/utils";
 
 const SignInUserManagement = () => {
   const navigate = useNavigate();
@@ -42,14 +39,12 @@ const SignInUserManagement = () => {
   const { Authreducer, adminReducer, LanguageReducer } = useSelector(
     (state) => state
   );
-
+  const currentUrl = window.location.href;
   const urlParams = new URLSearchParams(window.location.search);
   const code = urlParams.get("code");
-
-  const searchParams = new URLSearchParams(window.location.search);
-  const paymentActionValue = searchParams.get("Payment_action");
-
-  console.log(paymentActionValue, "paymentActionValuepaymentActionValue");
+  const getpayemntString = currentUrl.includes("Payment_action")
+    ? currentUrl.includes("Payment_action")[1]
+    : "";
 
   //States For Email Validation Integration
   const [email, setEmail] = useState("");
@@ -136,11 +131,13 @@ const SignInUserManagement = () => {
     if (code) {
       localStorage.setItem("Ms", code);
       window.close();
-    } else if (paymentActionValue) {
+    } else if (getpayemntString !== "") {
+      console.log("Payment_actionPayment_action");
+      const paymentStringValue = currentUrl.split("Payment_action=")[1];
       let data = {
-        EncryptedString: paymentActionValue,
+        EncryptedString: paymentStringValue,
       };
-      dispatch(paymentStatusApi(navigate, t, data, paymentActionValue));
+      dispatch(paymentStatusApi(navigate, t, data));
     } else {
       emailRef.current.focus();
       let RememberEmailLocal = JSON.parse(
@@ -156,7 +153,9 @@ const SignInUserManagement = () => {
       let LoginFlowPageRoute = JSON.parse(
         localStorage.getItem("LoginFlowPageRoute")
       );
-
+      let AdOrg = localStorage.getItem("AdOrg");
+      let AgCont = localStorage.getItem("AgCont");
+      let poPub = localStorage.getItem("poPub");
       if (RememberEmailLocal === true && RememberPasswordLocal === true) {
         let RememberEmailLocalValue =
           localStorage.getItem("rememberEmailValue");
@@ -167,15 +166,26 @@ const SignInUserManagement = () => {
 
         localStorage.clear();
         try {
-          if (Number(LoginFlowPageRoute) !== 1) {
-            dispatch(LoginFlowRoutes(LoginFlowPageRoute));
-          }
+          // if (Number(LoginFlowPageRoute) !== 1) {
+          console.log("LoginFlowRoutes", LoginFlowPageRoute);
+          localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
+          dispatch(LoginFlowRoutes(LoginFlowPageRoute));
+          // }
         } catch {}
         if (reLang !== undefined && reLang != null) {
           localStorage.setItem("i18nextLng", reLang);
         }
         if (RSVP) {
           localStorage.setItem("RSVP", RSVP);
+        }
+        if (AgCont) {
+          localStorage.setItem("AgCont", AgCont);
+        }
+        if (poPub) {
+          localStorage.setItem("poPub", poPub);
+        }
+        if (AdOrg) {
+          localStorage.setItem("AdOrg", AdOrg);
         }
         if (DataRoomEmailValue) {
           localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
@@ -196,16 +206,26 @@ const SignInUserManagement = () => {
           localStorage.getItem("rememberEmailValue");
         localStorage.clear();
         try {
-          if (Number(LoginFlowPageRoute) !== 1) {
-            //localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
-            dispatch(LoginFlowRoutes(LoginFlowPageRoute));
-          }
+          // if (Number(LoginFlowPageRoute) !== 1) {
+          localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
+          console.log("LoginFlowRoutes", LoginFlowPageRoute);
+          dispatch(LoginFlowRoutes(LoginFlowPageRoute));
+          // }
         } catch {}
         if (reLang !== undefined && reLang != null) {
           localStorage.setItem("i18nextLng", reLang);
         }
         if (RSVP) {
           localStorage.setItem("RSVP", RSVP);
+        }
+        if (AgCont) {
+          localStorage.setItem("AgCont", AgCont);
+        }
+        if (poPub) {
+          localStorage.setItem("poPub", poPub);
+        }
+        if (AdOrg) {
+          localStorage.setItem("AdOrg", AdOrg);
         }
         if (DataRoomEmailValue) {
           localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
@@ -222,10 +242,11 @@ const SignInUserManagement = () => {
         );
         localStorage.clear();
         try {
-          if (Number(LoginFlowPageRoute) !== 1) {
-            //localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
-            dispatch(LoginFlowRoutes(LoginFlowPageRoute));
-          }
+          // if (Number(LoginFlowPageRoute) !== 1) {
+          localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
+          console.log("LoginFlowRoutes", LoginFlowPageRoute);
+          dispatch(LoginFlowRoutes(LoginFlowPageRoute));
+          // }
         } catch {}
 
         if (reLang != undefined && reLang != null) {
@@ -233,6 +254,15 @@ const SignInUserManagement = () => {
         }
         if (RSVP) {
           localStorage.setItem("RSVP", RSVP);
+        }
+        if (AgCont) {
+          localStorage.setItem("AgCont", AgCont);
+        }
+        if (poPub) {
+          localStorage.setItem("poPub", poPub);
+        }
+        if (AdOrg) {
+          localStorage.setItem("AdOrg", AdOrg);
         }
         if (DataRoomEmailValue) {
           localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
@@ -247,10 +277,11 @@ const SignInUserManagement = () => {
       } else {
         localStorage.clear();
         try {
-          if (Number(LoginFlowPageRoute) !== 1) {
-            //localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
-            dispatch(LoginFlowRoutes(LoginFlowPageRoute));
-          }
+          // if (Number(LoginFlowPageRoute) !== 1) {
+          localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
+          console.log("LoginFlowRoutes", LoginFlowPageRoute);
+          dispatch(LoginFlowRoutes(LoginFlowPageRoute));
+          // }
         } catch {}
 
         if (reLang != undefined && reLang != null) {
@@ -293,7 +324,7 @@ const SignInUserManagement = () => {
       <Container fluid className={styles["auth_container"]}>
         {code ? (
           <></>
-        ) : paymentActionValue ? (
+        ) : getpayemntString !== "" ? (
           <></>
         ) : (
           <>
@@ -459,7 +490,7 @@ const SignInUserManagement = () => {
           </>
         )}
       </Container>
-      {paymentActionValue && paymentActionValue !== "" && <Loader />}
+      {getpayemntString && getpayemntString !== "" && <Loader />}
     </>
   );
 };

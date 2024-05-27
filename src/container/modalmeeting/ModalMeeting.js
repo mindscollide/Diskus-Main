@@ -35,6 +35,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   ScheduleNewMeeting,
   GetAllReminders,
+  allAssignessList,
 } from "../../store/actions/Get_List_Of_Assignees";
 import ErrorBar from "./../../container/authentication/sign_up/errorbar/ErrorBar";
 import {
@@ -1124,11 +1125,15 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       dispatch(ResetAllFilesUpload());
     };
   }, []);
+  const callApi = async () => {
+    await dispatch(allAssignessList(navigate, t));
+    dispatch(GetAllReminders(navigate, t));
+  };
   // for list of all assignees
   useEffect(() => {
     try {
       if (show) {
-        dispatch(GetAllReminders(navigate, t));
+        callApi();
       } else {
         setModalField(false);
         setShow(false);
