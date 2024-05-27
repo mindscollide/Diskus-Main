@@ -16,6 +16,7 @@ import {
   TextField,
 } from "../../../../../components/elements";
 import {
+  cancelisTrailandSubscriptionApi,
   getAllUserTypePackagesApi,
   LoginFlowRoutes,
 } from "../../../../../store/actions/UserManagementActions";
@@ -34,6 +35,7 @@ const PakageDetailsUMUpgrade = () => {
   //States
   const [tableData, setTableData] = useState([]);
   const [packageTableData, setPackageTableData] = useState([]);
+  let isTrial = localStorage.getItem("isTrial");
 
   const [lisence, setlisence] = useState({
     TotalLisence: "",
@@ -47,6 +49,7 @@ const PakageDetailsUMUpgrade = () => {
   const [organizationPackagePrice, setOrganizationPackagePrice] = useState([]);
   console.log(
     organizationPackagePrice,
+    packageDetail,
     "organizationPackagePriceorganizationPackagePrice"
   );
 
@@ -61,13 +64,19 @@ const PakageDetailsUMUpgrade = () => {
 
   useEffect(() => {
     if (location.state && location.state.organizationSelectedPackages) {
+      console.log(
+        location.state.organizationSelectedPackages,
+        "selectedPackagesselectedPackages"
+      );
       const selectedPackages = location.state.organizationSelectedPackages[0];
       if (selectedPackages) {
         console.log(selectedPackages, "selectedPackagesselectedPackages");
         const prices = selectedPackages.map((pkg) => {
           return {
+            Id: pkg.pK_OrganizationsSelectedPackageID,
             price: pkg.price,
             name: pkg.name,
+            licenseCount: pkg.headCount,
           };
         });
         setOrganizationPackagePrice(prices);
@@ -75,7 +84,8 @@ const PakageDetailsUMUpgrade = () => {
         const newData = selectedPackages.map((pkg) => ({
           name: pkg.name,
           price: pkg.price,
-          licenseCount: 0,
+          licenseCount: pkg.headCount,
+          Id: pkg.pK_OrganizationsSelectedPackageID,
           ...pkg,
         }));
         setPackageTableData(newData);
@@ -89,10 +99,7 @@ const PakageDetailsUMUpgrade = () => {
     }
   }, [location.state]);
 
-  console.log(
-    location.state.organizationSelectedPackages,
-    "organizationSelectedPackages"
-  );
+  console.log(organizationPackagePrice, "organizationSelectedPackages");
 
   //Fetching the data for pakage selection
   useEffect(() => {
@@ -128,9 +135,30 @@ const PakageDetailsUMUpgrade = () => {
     document.body.dir = currentLangObj.dir || "ltr";
   }, [currentLangObj, t]);
 
-  const modalPriceClick = () => {
-    // dispatch(openPaymentProcessModal(true));
-    navigate("/Admin/PaymentFormUserManagement");
+  const modalPriceClick = (tenureSubscriptionID) => {
+    if (isTrial === true) {
+      let newArr = [];
+      tableData.forEach((tbData) => {
+        let matchingData = packageTableData.find(
+          (tbData2) => tbData.name === tbData2.name
+        );
+        if (matchingData) {
+          newArr.push({
+            PackageID: Number(tbData.pK_PackageID), // Get PackageID from tableData and convert to number
+            HeadCount: Number(matchingData.licenseCount), // Get HeadCount from packageTableData and convert to number
+          });
+        }
+      });
+
+      let data = {
+        TenureOfSubscriptionID: Number(tenureSubscriptionID),
+        Packages: newArr,
+      };
+      dispatch(cancelisTrailandSubscriptionApi(navigate, t, data));
+    } else {
+    }
+
+    // navigate("/Admin/PaymentFormUserManagement");
   };
 
   const ColumnsPakageSelection = [
@@ -209,7 +237,7 @@ const PakageDetailsUMUpgrade = () => {
               if (newValue === "" || /^\d+$/.test(newValue)) {
                 const newData = packageTableData.map((item, i) => {
                   if (i === index) {
-                    return { ...item, licenseCount: newValue };
+                    return { ...item, licenseCount: Number(newValue) };
                   }
                   return item;
                 });
@@ -221,7 +249,9 @@ const PakageDetailsUMUpgrade = () => {
               (pkg) => pkg.name === row.name
             );
             console.log(matchedPackage, "matchedPackagematchedPackage");
-            const priceValue = matchedPackage ? matchedPackage.price : "";
+            const priceValue = matchedPackage
+              ? matchedPackage.licenseCount
+              : "";
             console.log(priceValue, "priceValuepriceValuepriceValue");
             return (
               <Row>
@@ -261,7 +291,7 @@ const PakageDetailsUMUpgrade = () => {
             (pkg) => pkg.name === row.name
           );
           if (matchedPackage) {
-            monthlyCharges = row.price * matchedPackage.price;
+            monthlyCharges = row.price * matchedPackage.licenseCount;
           }
         }
 
@@ -273,7 +303,7 @@ const PakageDetailsUMUpgrade = () => {
                 <Button
                   text={t("Pay-now")}
                   className={styles["PayNowButtons"]}
-                  onClick={modalPriceClick}
+                  onClick={() => modalPriceClick(2)}
                 />
               </span>
             </>
@@ -317,7 +347,7 @@ const PakageDetailsUMUpgrade = () => {
             (pkg) => pkg.name === row.name
           );
           if (findName) {
-            quarterlyCharges = row.price * (findName.price * 3);
+            quarterlyCharges = row.price * (findName.licenseCount * 3);
           }
         }
 
@@ -328,7 +358,7 @@ const PakageDetailsUMUpgrade = () => {
                 <Button
                   text={t("Pay-now")}
                   className={styles["PayNowButtons"]}
-                  onClick={modalPriceClick}
+                  onClick={() => modalPriceClick(3)}
                 />
               </span>
             </>
@@ -370,7 +400,7 @@ const PakageDetailsUMUpgrade = () => {
             (pkg) => pkg.name === row.name
           );
           if (findName) {
-            YearlyCharges = row.price * (findName.price * 12);
+            YearlyCharges = row.price * (findName.licenseCount * 12);
           }
         }
 
@@ -381,7 +411,7 @@ const PakageDetailsUMUpgrade = () => {
                 <Button
                   text={t("Pay-now")}
                   className={styles["PayNowButtons"]}
-                  onClick={modalPriceClick}
+                  onClick={() => modalPriceClick(1)}
                 />
               </span>
             </>
@@ -419,7 +449,7 @@ const PakageDetailsUMUpgrade = () => {
   //Calculating the totals
   const calculateTotals = (data) => {
     const totalOrganizationPackagePrice = organizationPackagePrice.reduce(
-      (total, value) => total + Number(value.price || 0),
+      (total, value) => total + Number(value.licenseCount || 0),
       0
     );
 
@@ -433,7 +463,7 @@ const PakageDetailsUMUpgrade = () => {
         matchedPackage &&
         !isNaN(row.price) &&
         !isNaN(matchedPackage.price)
-          ? row.price * matchedPackage.price
+          ? row.price * matchedPackage.licenseCount
           : 0; // Multiply by 3 for quarterly
 
       return total + monthlyCharges;
@@ -448,7 +478,7 @@ const PakageDetailsUMUpgrade = () => {
         matchedPackage &&
         !isNaN(row.price) &&
         !isNaN(matchedPackage.price)
-          ? row.price * matchedPackage.price * 3
+          ? row.price * matchedPackage.licenseCount * 3
           : 0; // Multiply by 3 for quarterly
 
       return total + quarterlyCharge;
@@ -464,7 +494,7 @@ const PakageDetailsUMUpgrade = () => {
         matchedPackage &&
         !isNaN(row.price) &&
         !isNaN(matchedPackage.price)
-          ? row.price * matchedPackage.price * 12
+          ? row.price * matchedPackage.licenseCount * 12
           : 0; // Multiply by 3 for quarterly
 
       return total + yearlyCharge;

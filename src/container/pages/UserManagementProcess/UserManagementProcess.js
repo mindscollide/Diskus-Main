@@ -41,9 +41,11 @@ const UserManagementProcess = () => {
     open: false,
     message: "",
   });
-
+  const [storedStep, setStoredStep] = useState(
+    Number(localStorage.getItem("LoginFlowPageRoute"))
+  );
   // Retrieve currentStep value from localStorage, default to 1 if not found
-  const storedStep = Number(localStorage.getItem("LoginFlowPageRoute"));
+  // let storedStep = Number(localStorage.getItem("LoginFlowPageRoute"));
   useEffect(() => {
     // Retrieve current step from local storage
     if (performance.navigation.type === PerformanceNavigation.TYPE_RELOAD) {
@@ -51,7 +53,9 @@ const UserManagementProcess = () => {
         dispatch(LoginFlowRoutes(storedStep));
       }
     } else {
+      console.log("LoginFlowPageRoute");
       localStorage.setItem("LoginFlowPageRoute", 1);
+      setStoredStep(1);
       dispatch(LoginFlowRoutes(1));
     }
   }, []);

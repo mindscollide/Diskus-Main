@@ -508,6 +508,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
     DeviceID: "1",
     UserPassword: value,
   };
+  let RSVP = localStorage.getItem("RSVP");
+  let dataroomValue = localStorage.getItem("DataRoomEmail");
+  let AgCont = localStorage.getItem("AgCont");
+  let AdOrg = localStorage.getItem("AdOrg");
 
   return async (dispatch) => {
     dispatch(enterPasswordInit());
@@ -627,7 +631,20 @@ const enterPasswordvalidation = (value, navigate, t) => {
               navigate("/Admin/ManageUsers");
             } else {
               if (response.data.responseResult.hasUserRights) {
-                navigate("/DisKus/");
+                if (RSVP !== undefined && RSVP !== null) {
+                  navigate("/DisKus/Meeting/Useravailabilityformeeting");
+                } else if (
+                  dataroomValue !== null &&
+                  dataroomValue !== undefined
+                ) {
+                  navigate("/Diskus/dataroom");
+                } else if (AgCont !== null) {
+                  navigate("/DisKus/Meeting");
+                } else if (AdOrg !== null) {
+                  navigate("/DisKus/Meeting");
+                } else {
+                  navigate("/DisKus/");
+                }
               } else {
                 navigate("/Admin/ManageUsers");
               }
@@ -668,9 +685,35 @@ const enterPasswordvalidation = (value, navigate, t) => {
         case USERPASSWORDVERIFICATION.VERIFICATION_12:
           if (response.data.responseResult.hasUserRights) {
             if (response.data.responseResult.authToken.isFirstLogIn) {
-              navigate("/onboard");
+              if (RSVP !== undefined && RSVP !== null) {
+                navigate("/DisKus/Meeting/Useravailabilityformeeting");
+              } else if (
+                dataroomValue !== null &&
+                dataroomValue !== undefined
+              ) {
+                navigate("/Diskus/dataroom");
+              } else if (AgCont !== null) {
+                navigate("/DisKus/Meeting");
+              } else if (AdOrg !== null) {
+                navigate("/DisKus/Meeting");
+              } else {
+                navigate("/onboard/");
+              }
             } else {
-              navigate("/Diskus");
+              if (RSVP !== undefined && RSVP !== null) {
+                navigate("/DisKus/Meeting/Useravailabilityformeeting");
+              } else if (
+                dataroomValue !== null &&
+                dataroomValue !== undefined
+              ) {
+                navigate("/Diskus/dataroom");
+              } else if (AgCont !== null) {
+                navigate("/DisKus/Meeting");
+              } else if (AdOrg !== null) {
+                navigate("/DisKus/Meeting");
+              } else {
+                navigate("/Diskus/");
+              }
             }
             clearLocalStorageAtloginresponce(dispatch, 1, navigate);
 
@@ -1772,7 +1815,10 @@ const createPasswordFail = (message) => {
 const createPasswordAction = (value, navigate, t) => {
   let userID = localStorage.getItem("userID");
   let data = { UserID: JSON.parse(userID), Password: value };
-
+  let RSVP = localStorage.getItem("RSVP");
+  let dataroomValue = localStorage.getItem("DataRoomEmail");
+  let AgCont = localStorage.getItem("AgCont");
+  let AdOrg = localStorage.getItem("AdOrg");
   return async (dispatch) => {
     dispatch(createPasswordInit());
     const formData = getFormData(data, userPasswordCreation);
