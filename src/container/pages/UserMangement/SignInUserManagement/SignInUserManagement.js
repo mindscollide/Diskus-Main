@@ -165,6 +165,7 @@ const SignInUserManagement = () => {
           "rememberPasswordValue"
         );
 
+        
         localStorage.clear();
         try {
           if (Number(LoginFlowPageRoute) !== 1) {
@@ -194,6 +195,7 @@ const SignInUserManagement = () => {
       } else if (RememberEmailLocal === true) {
         let RememberEmailLocalValue =
           localStorage.getItem("rememberEmailValue");
+        
         localStorage.clear();
         try {
           if (Number(LoginFlowPageRoute) !== 1) {
@@ -220,6 +222,7 @@ const SignInUserManagement = () => {
         let RememberPasswordLocalValue = localStorage.getItem(
           "rememberPasswordValue"
         );
+        
         localStorage.clear();
         try {
           if (Number(LoginFlowPageRoute) !== 1) {
@@ -245,6 +248,7 @@ const SignInUserManagement = () => {
         setErrorMessage("");
         setErrorBar(false);
       } else {
+        
         localStorage.clear();
         try {
           if (Number(LoginFlowPageRoute) !== 1) {
