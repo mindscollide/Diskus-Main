@@ -158,12 +158,12 @@ const BillProcessStepTwo = ({
                       />
                     </Col>
                     <Row>
-                      <Col>
+                      <Col className={styles["errorContainer"]}>
                         <p
                           className={
                             billingAddress.Country.value === ""
-                              ? ` ${styles["errorMessage"]} `
-                              : `${styles["errorMessage_hidden"]}`
+                              ? ` ${styles["errorMessage_Billing"]} `
+                              : `${styles["errorMessage_hidden_Billing"]}`
                           }
                         >
                           {billingAddress.Country.errorMessage}
@@ -188,12 +188,12 @@ const BillProcessStepTwo = ({
                     name="PostalCode"
                   />
                   <Row>
-                    <Col>
+                    <Col className={styles["errorContainer"]}>
                       <p
                         className={
                           billingAddress.PostalCode.value === ""
-                            ? ` ${styles["errorMessage"]} `
-                            : `${styles["errorMessage_hidden"]}`
+                            ? ` ${styles["errorMessage_Billing"]} `
+                            : `${styles["errorMessage_hidden_Billing"]}`
                         }
                       >
                         {billingAddress.PostalCode.errorMessage}
@@ -219,12 +219,12 @@ const BillProcessStepTwo = ({
                     name="State"
                   />
                   <Row>
-                    <Col>
+                    <Col className={styles["errorContainer"]}>
                       <p
                         className={
                           billingAddress.State.value === ""
-                            ? ` ${styles["errorMessage"]} `
-                            : `${styles["errorMessage_hidden"]}`
+                            ? ` ${styles["errorMessage_Billing"]} `
+                            : `${styles["errorMessage_hidden_Billing"]}`
                         }
                       >
                         {billingAddress.State.errorMessage}
@@ -247,14 +247,13 @@ const BillProcessStepTwo = ({
                     change={billingAddressDetailsHandler}
                     name="City"
                   />
-
                   <Row>
-                    <Col>
+                    <Col className={styles["errorContainer"]}>
                       <p
                         className={
                           billingAddress.City.value === ""
-                            ? ` ${styles["errorMessage"]} `
-                            : `${styles["errorMessage_hidden"]}`
+                            ? ` ${styles["errorMessage_Billing"]} `
+                            : `${styles["errorMessage_hidden_Billing"]}`
                         }
                       >
                         {billingAddress.City.errorMessage}
@@ -280,12 +279,12 @@ const BillProcessStepTwo = ({
                     name="Address"
                   />
                   <Row>
-                    <Col>
+                    <Col className={styles["errorContainer"]}>
                       <p
                         className={
                           billingAddress.Address.value === ""
-                            ? ` ${styles["errorMessage"]} `
-                            : `${styles["errorMessage_hidden"]}`
+                            ? ` ${styles["errorMessage_Billing"]} `
+                            : `${styles["errorMessage_hidden_Billing"]}`
                         }
                       >
                         {billingAddress.Address.errorMessage}

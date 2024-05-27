@@ -120,3 +120,7 @@ body[dir="rtl"] .errorMessage {
 body[dir="rtl"] .errorMessage_hidden {
   font-weight: 400 !important;
 }
+
+.sectionstyles {
+  width: 100% !important;
+}

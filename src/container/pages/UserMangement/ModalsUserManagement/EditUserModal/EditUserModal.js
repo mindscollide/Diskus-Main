@@ -29,7 +29,7 @@ const EditUserModal = ({ editModalData }) => {
 
   const navigate = useNavigate();
 
-  let isTrialCheck = localStorage.getItem("isTrial");
+  let isTrialCheck = localStorage.getItem("isTrial") === "true";
 
   console.log(isTrialCheck, "isTrialCheck");
 
@@ -57,6 +57,18 @@ const EditUserModal = ({ editModalData }) => {
     Email: editModalData.email,
     isAdminUser: editModalData.userRoleID === 4 ? 4 : 3,
   });
+
+  //ByDefault Pakage Selected
+
+  useEffect(() => {
+    if (editModalData && packageAssignedOption.length > 0) {
+      const defaultOption = packageAssignedOption.find(
+        (option) => option.value === editModalData.userAllotedPackageID
+      );
+
+      setPackageAssignedValue(defaultOption);
+    }
+  }, [editModalData, packageAssignedOption]);
 
   //options for the dropdowm
   const options = [
@@ -126,7 +138,7 @@ const EditUserModal = ({ editModalData }) => {
   }, [UserMangementReducer.getOrganizationUserStatsGraph]);
 
   // Handler for when an option is selected.
-  const handleSelectChange = (selectedOption) => {
+  const handleSelectChange = async (selectedOption) => {
     console.log(selectedOption, "selectedOptionselectedOption");
     setUserStatus(selectedOption);
     setUserStatusID(selectedOption.value);
@@ -185,19 +197,39 @@ const EditUserModal = ({ editModalData }) => {
   };
 
   const handleUpdateButton = () => {
-    let data = {
-      UserID: Number(editModalData.userID),
-      StatusID: Number(userStatusID),
-      UserName: editUserModalValues.Name.value,
-      Designation: editUserModalValues.Desgiantion.value,
-      MobileNumber: "",
-      RoleID: editUserModalValues.isAdminUser,
-      OrganizationID: Number(organizationID),
-      PackageID: Number(editPakageID),
-      FK_NumberWorldCountryID: Number(editModalData.fK_WorldCountryID),
-    };
-    //The True is The Flag for AllOrganization User After Editing the User
-    dispatch(EditOrganizationsUserApi(navigate, t, data, true));
+    if (
+      editUserModalValues.Name.value !== "" &&
+      editUserModalValues.Desgiantion.value !== ""
+    ) {
+      let data = {
+        UserID: Number(editModalData.userID),
+        StatusID: Number(userStatusID),
+        UserName: editUserModalValues.Name.value,
+        Designation: editUserModalValues.Desgiantion.value,
+        MobileNumber: "",
+        RoleID: editUserModalValues.isAdminUser,
+        OrganizationID: Number(organizationID),
+        PackageID: Number(editPakageID),
+        FK_NumberWorldCountryID: Number(editModalData.fK_WorldCountryID),
+      };
+      //The True is The Flag for AllOrganization User After Editing the User
+      dispatch(EditOrganizationsUserApi(navigate, t, data, true));
+    } else {
+      setEditUserModalValues({
+        ...editUserModalValues,
+        Name: {
+          value: editUserModalValues.Name.value,
+          errorMessage: t("Please-enter-full-name"),
+          errorStatus: editUserModalValues.Name.errorStatus,
+        },
+
+        Desgiantion: {
+          value: editUserModalValues.Desgiantion.value,
+          errorMessage: t("Please-enter-designation"),
+          errorStatus: editUserModalValues.Desgiantion.errorStatus,
+        },
+      });
+    }
   };
 
   const handleIsAdminCheckbox = (e) => {
@@ -259,6 +291,17 @@ const EditUserModal = ({ editModalData }) => {
                         applyClass={"updateNotes_titleInput"}
                       />
                     </Col>
+                    <Col>
+                      <p
+                        className={
+                          editUserModalValues.Name.value === ""
+                            ? ` ${styles["errorMessage"]}`
+                            : `${styles["errorMessage_hidden"]}`
+                        }
+                      >
+                        {editUserModalValues.Name.errorMessage}
+                      </p>
+                    </Col>
                   </Row>
                   <Row className="mt-3">
                     <Col lg={12} md={12} sm={12} xs={12}>
@@ -281,6 +324,17 @@ const EditUserModal = ({ editModalData }) => {
                         change={handleUpdateModal}
                         applyClass={"updateNotes_titleInput"}
                       />
+                    </Col>
+                    <Col>
+                      <p
+                        className={
+                          editUserModalValues.Desgiantion.value === ""
+                            ? ` ${styles["errorMessage"]}`
+                            : `${styles["errorMessage_hidden"]}`
+                        }
+                      >
+                        {editUserModalValues.Desgiantion.errorMessage}
+                      </p>
                     </Col>
                   </Row>
                   <Row className="mt-3">
@@ -314,16 +368,13 @@ const EditUserModal = ({ editModalData }) => {
                       </Row>
                     </Col>
                   </Row>
-                  {isTrialCheck && (
+                  {!isTrialCheck && (
                     <>
                       <Row>
                         <Col lg={12} md={12} sm={12}>
                           <label className={styles["label-styling"]}>
                             {t("Package-assigned")}{" "}
-                            <span className={styles["aesterick-color"]}>
-                              {" "}
-                              *
-                            </span>
+                            <span className={styles["aesterick-color"]}>*</span>
                           </label>
                         </Col>
                       </Row>
@@ -340,7 +391,6 @@ const EditUserModal = ({ editModalData }) => {
                       </Row>
                     </>
                   )}
-
                   <Row className="mt-2">
                     <Col lg={12} md={12} sm={12}>
                       <span className={styles["NameCreateAddtional"]}>

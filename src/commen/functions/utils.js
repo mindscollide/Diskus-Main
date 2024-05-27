@@ -245,7 +245,7 @@ export async function handleLoginResponse(response) {
           { name: "dataroom", id: 13 },
           { name: "todolist", id: 14 },
           { name: "polling", id: 15 },
-          { name: "groups", id: 16 },
+          { name: "groups", id: 17 },
           { name: "committee", id: 17 },
           { name: "resolution", id: 18 },
           { name: "signatureviewer", id: 19 },
@@ -336,3 +336,15 @@ export function clearLocalStorageAtloginresponce(dispatch, value, navigate) {
     navigate("/");
   }
 }
+
+//Clearing URL function
+
+export const clearPaymentActionFromUrl = () => {
+  const currentUrl = new URL(window.location.href);
+  console.log(currentUrl, "currentUrlcurrentUrl");
+  // Create the new URL without query parameters and hash
+  const newUrl = currentUrl.origin + currentUrl.pathname;
+
+  // Update the browser's URL without reloading the page
+  window.history.replaceState({}, document.title, newUrl);
+};

@@ -43,8 +43,6 @@ const SignInUserManagement = () => {
     (state) => state
   );
 
-  const [paymentAction, setPaymentAction] = useState("");
-
   const urlParams = new URLSearchParams(window.location.search);
   const code = urlParams.get("code");
 
@@ -142,7 +140,7 @@ const SignInUserManagement = () => {
       let data = {
         EncryptedString: paymentActionValue,
       };
-      dispatch(paymentStatusApi(navigate, t, data));
+      dispatch(paymentStatusApi(navigate, t, data, paymentActionValue));
     } else {
       emailRef.current.focus();
       let RememberEmailLocal = JSON.parse(
@@ -296,32 +294,7 @@ const SignInUserManagement = () => {
         {code ? (
           <></>
         ) : paymentActionValue ? (
-          <>
-            <Row className="mt-5">
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex justify-content-center"
-              >
-                <span className={styles["PaymentSucessfull"]}>
-                  Payment Successful
-                </span>
-              </Col>
-            </Row>
-            <Row className="mt-2">
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex justify-content-center"
-              >
-                <span className={styles["PaymentSucessfullWait"]}>
-                  Please Wait .......
-                </span>
-              </Col>
-            </Row>
-          </>
+          <></>
         ) : (
           <>
             <Row>
@@ -486,6 +459,7 @@ const SignInUserManagement = () => {
           </>
         )}
       </Container>
+      {paymentActionValue && paymentActionValue !== "" && <Loader />}
     </>
   );
 };

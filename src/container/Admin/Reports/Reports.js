@@ -537,7 +537,7 @@ const Reports = () => {
                 sm={12}
                 md={4}
                 lg={4}
-                className="d-flex justify-content-end align-items-center"
+                className="d-flex justify-content-end align-items-center gap-4"
               >
                 <span className={styles["export-to-excel-btn"]}>
                   <img src={XLSIcon} alt="" /> {t("Export-to-excel")}

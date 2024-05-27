@@ -42,6 +42,10 @@ const SignUpOrganizationUM = () => {
 
   const dispatch = useDispatch();
 
+  let packageSubscriptionDetail = JSON.parse(
+    localStorage.getItem("packageSubscriptionDetail")
+  );
+  console.log(packageSubscriptionDetail, "packageSubscriptionDetailpackageSubscriptionDetailpackageSubscriptionDetail")
   const [signUpDetails, setSignUpDetails] = useState({
     CompanyName: {
       value: "",
@@ -588,7 +592,9 @@ const SignUpOrganizationUM = () => {
             adminReducer.EmailCheck !== false
           ) {
             let data = {
-              TenureOfSubscriptionID: JSON.parse(2),
+              TenureOfSubscriptionID: Number(
+                packageSubscriptionDetail.TenureOfSubscriptionID
+              ),
               Organization: {
                 OrganizationName: signUpDetails.CompanyName.value,
                 FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
@@ -607,11 +613,7 @@ const SignUpOrganizationUM = () => {
                 PostalCode: signUpDetails.PostalCode.value,
                 TimeZoneID: 1,
               },
-              Packages: [
-                { PackageID: 1, HeadCount: 5 },
-                { PackageID: 2, HeadCount: 5 },
-                { PackageID: 3, HeadCount: 5 },
-              ],
+              Packages: packageSubscriptionDetail.Packages,
             };
             dispatch(signUpOrganizationAndPakageSelection(data, navigate, t));
           } else {
