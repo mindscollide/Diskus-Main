@@ -721,12 +721,12 @@ const ManageUsers = () => {
                         className="d-flex justify-content-end gap-2 align-items-center"
                       >
                         <Button
-                          text={"Reset"}
+                          text={t("Reset")}
                           className={styles["ResetButtonSearchBox"]}
                           onClick={handleResetButton}
                         />
                         <Button
-                          text={"Search"}
+                          text={t("Search")}
                           className={styles["SearchButtonSearchBox"]}
                           onClick={handleSearch}
                         />
