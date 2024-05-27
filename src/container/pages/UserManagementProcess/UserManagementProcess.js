@@ -212,11 +212,7 @@ const UserManagementProcess = () => {
 
   let componentToRender;
 
-  if (
-    UserMangementReducer.defaultRoutingValue === 1 ||
-    UserMangementReducer.defaultRoutingValue === null ||
-    UserMangementReducer.defaultRoutingValue === undefined
-  ) {
+  if (UserMangementReducer.defaultRoutingValue === 1 && storedStep === 1) {
     componentToRender = <SignInComponent />;
   } else if (UserMangementReducer.defaultRoutingValue === 2) {
     componentToRender = <PasswordVerification />;

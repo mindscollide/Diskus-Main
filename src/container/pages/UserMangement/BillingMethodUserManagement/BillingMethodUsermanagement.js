@@ -243,24 +243,21 @@ const BillingMethodUsermanagement = () => {
   };
 
   const handleBack = () => {
-    console.log("i am clicked");
-    if (activeComponent === "PakageDetails") {
-      setActiveComponent("billingAddress");
-      setActiveStep((prevActiveStep) => Math.max(prevActiveStep - 1, 0));
-    }
-
-    if (activeComponent === "billingAddress") {
-      setActiveComponent("billingContactDetails");
-      setActiveStep((prevActiveStep) => Math.max(prevActiveStep - 1, 0));
-    }
-
-    if (activeComponent === "billingContactDetails") {
-      setActiveComponent("PakageDetails");
-      setActiveStep((prevActiveStep) => Math.max(prevActiveStep - 1, 0));
-    }
-
-    if (activeComponent === "PakageDetails") {
-      setActiveComponent("PakageDetails");
+    try {
+      if (activeComponent === "PakageDetails") {
+        setActiveComponent("billingAddress");
+        setActiveStep((prevActiveStep) => Math.max(prevActiveStep - 1, 0));
+      } else if (activeComponent === "billingAddress") {
+        setActiveComponent("billingContactDetails");
+        setActiveStep((prevActiveStep) => Math.max(prevActiveStep - 1, 0));
+      } else if (activeComponent === "billingContactDetails") {
+        setActiveComponent("PakageDetails");
+        setActiveStep((prevActiveStep) => Math.max(prevActiveStep - 1, 0));
+      } else if (activeComponent === "PakageDetails") {
+        setActiveComponent("PakageDetails");
+      }
+    } catch {
+      console.log("error on back");
     }
   };
 
