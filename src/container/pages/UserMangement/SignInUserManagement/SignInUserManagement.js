@@ -46,15 +46,9 @@ const SignInUserManagement = () => {
   const urlParams = new URLSearchParams(window.location.search);
   const code = urlParams.get("code");
 
-  // const searchParams = new URLSearchParams(window.location.search);
-  // const paymentActionValue = searchParams.get("Payment_action");
-
-  // console.log(paymentActionValue, "paymentActionValuepaymentActionValue");
-
   const searchParams = new URLSearchParams(window.location.search);
-  const paymentActionValue = decodeURIComponent(
-    searchParams.get("Payment_action")
-  );
+  const paymentActionValue = searchParams.get("Payment_action");
+
   console.log(paymentActionValue, "paymentActionValuepaymentActionValue");
 
   //States For Email Validation Integration

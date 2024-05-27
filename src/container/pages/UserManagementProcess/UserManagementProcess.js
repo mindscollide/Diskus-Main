@@ -21,11 +21,15 @@ import { useTranslation } from "react-i18next";
 import { cleareChangePasswordMessage } from "../../../store/actions/Auth_Forgot_Password";
 import { LoginFlowRoutes } from "../../../store/actions/UserManagementActions";
 import VerificationCodeThree from "../organizationRegister/2FA/VerficationCodeThree/VerificationCodeThree";
+import Helper from "../../../commen/functions/history_logout";
+import { mqttConnection } from "../../../commen/functions/mqttconnection";
+import { useNavigate } from "react-router-dom";
 
 const UserManagementProcess = () => {
   // Define setCurrentStep function
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const { UserMangementReducer, Authreducer, auth } = useSelector(
     (state) => state
@@ -104,6 +108,62 @@ const UserManagementProcess = () => {
     Authreducer.EmailValidationResponseMessage,
     Authreducer.EnterPasswordResponseMessage,
   ]);
+
+  //MQTT
+  const onMessageArrived = (msg) => {
+    let data = JSON.parse(msg.payloadString);
+    let roleID = parseInt(localStorage.getItem("roleID"));
+    let isFirstLogin = localStorage.getItem("isFirstLogin");
+
+    console.log("message arrived", data);
+    if (
+      data.payload.message
+        .toLowerCase()
+        .includes("2FA_VERIFIED_FROM_DEVICE".toLowerCase())
+    ) {
+      localStorage.setItem("TowApproval", true);
+
+      if (roleID === 1 || roleID === 2) {
+        navigate("/Admin/");
+      } else {
+        console.log("message arrived");
+        if (isFirstLogin != undefined) {
+          if (isFirstLogin === true) {
+            navigate("/onboard");
+          } else {
+            let RSVP = localStorage.getItem("RSVP");
+            if (RSVP !== undefined && RSVP !== null) {
+              navigate("/DisKus/Meeting/Useravailabilityformeeting");
+            } else {
+              if (
+                localStorage.getItem("RSVP") !== null &&
+                localStorage.getItem("RSVP") !== undefined
+              ) {
+                navigate("/Diskus/Meeting/Useravailabilityformeeting");
+              } else {
+                navigate("/Diskus/");
+              }
+            }
+          }
+        }
+      }
+    } else {
+      localStorage.setItem("TowApproval", false);
+      console.log("TowApproval");
+      dispatch(LoginFlowRoutes(7));
+    }
+  };
+
+  let newClient = Helper.socket;
+
+  useEffect(() => {
+    if (newClient != null && newClient != "" && newClient != undefined) {
+      newClient.onMessageArrived = onMessageArrived;
+    } else {
+      let userID = localStorage.getItem("userID");
+      mqttConnection(userID);
+    }
+  }, [Helper.socket]);
 
   //USer Password Verification After forget password
   useEffect(() => {
