@@ -134,7 +134,7 @@ export const router = createHashRouter(
         path="/2FAverificationdevieotp"
         element={<VerificationCodeThree />}
       /> */}
-      <Route path="/SigninDenied" element={<SigninDenied />} />
+      {/* <Route path="/SigninDenied" element={<SigninDenied />} /> */}
       <Route path="/404" element={<NotFound />} />
       <Route path="*" element={<NotFound />} />
       {/* ============================================================ */}

@@ -111,8 +111,9 @@ const signOut = (navigate, message, dispatch) => {
     let RememberPasswordLocalValue = localStorage.getItem(
       "rememberPasswordValue"
     );
+    
     localStorage.clear();
-    if (reLang != undefined && reLang != null) {
+    if (reLang !== undefined && reLang != null) {
       localStorage.setItem("i18nextLng", reLang);
     }
     localStorage.setItem("remeberPassword", RememberPasswordLocal);
@@ -121,8 +122,9 @@ const signOut = (navigate, message, dispatch) => {
     localStorage.setItem("rememberEmailValue", RememberEmailLocalValue);
   } else if (RememberEmailLocal === true) {
     let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
+    
     localStorage.clear();
-    if (reLang != undefined && reLang != null) {
+    if (reLang !== undefined && reLang != null) {
       localStorage.setItem("i18nextLng", reLang);
     }
     localStorage.setItem("rememberEmail", RememberEmailLocal);
@@ -131,15 +133,17 @@ const signOut = (navigate, message, dispatch) => {
     let RememberPasswordLocalValue = localStorage.getItem(
       "rememberPasswordValue"
     );
+    
     localStorage.clear();
-    if (reLang != undefined && reLang != null) {
+    if (reLang !== undefined && reLang != null) {
       localStorage.setItem("i18nextLng", reLang);
     }
     localStorage.setItem("remeberPassword", RememberPasswordLocal);
     localStorage.setItem("rememberPasswordValue", RememberPasswordLocalValue);
   } else {
+    
     localStorage.clear();
-    if (reLang != undefined && reLang != null) {
+    if (reLang !== undefined && reLang != null) {
       localStorage.setItem("i18nextLng", reLang);
     }
     localStorage.setItem("rememberEmail", false);
