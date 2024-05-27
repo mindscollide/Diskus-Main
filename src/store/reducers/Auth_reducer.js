@@ -235,6 +235,7 @@ const authReducer = (state = initialState, action) => {
         let RememberPasswordLocalValue = localStorage.getItem(
           "rememberPasswordValue"
         );
+        
         localStorage.clear();
         if (reLang !== undefined && reLang !== null) {
           localStorage.setItem("i18nextLng", reLang);
@@ -249,6 +250,7 @@ const authReducer = (state = initialState, action) => {
       } else if (RememberEmailLocal === true) {
         let RememberEmailLocalValue =
           localStorage.getItem("rememberEmailValue");
+        
         localStorage.clear();
         if (reLang !== undefined && reLang !== null) {
           localStorage.setItem("i18nextLng", reLang);
@@ -259,6 +261,7 @@ const authReducer = (state = initialState, action) => {
         let RememberPasswordLocalValue = localStorage.getItem(
           "rememberPasswordValue"
         );
+        
         localStorage.clear();
         if (reLang !== undefined && reLang !== null) {
           localStorage.setItem("i18nextLng", reLang);
@@ -269,6 +272,7 @@ const authReducer = (state = initialState, action) => {
           RememberPasswordLocalValue
         );
       } else {
+        
         localStorage.clear();
         if (reLang !== undefined && reLang !== null) {
           localStorage.setItem("i18nextLng", reLang);

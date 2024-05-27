@@ -113,8 +113,9 @@ const EmailValidation = () => {
           "rememberPasswordValue"
         );
 
+        
         localStorage.clear();
-        if (reLang != undefined && reLang != null) {
+        if (reLang !== undefined && reLang != null) {
           localStorage.setItem("i18nextLng", reLang);
         }
         if (RSVP) {
@@ -137,8 +138,9 @@ const EmailValidation = () => {
       } else if (RememberEmailLocal === true) {
         let RememberEmailLocalValue =
           localStorage.getItem("rememberEmailValue");
+        
         localStorage.clear();
-        if (reLang != undefined && reLang != null) {
+        if (reLang !== undefined && reLang != null) {
           localStorage.setItem("i18nextLng", reLang);
         }
         if (RSVP) {
@@ -157,8 +159,9 @@ const EmailValidation = () => {
         let RememberPasswordLocalValue = localStorage.getItem(
           "rememberPasswordValue"
         );
+        
         localStorage.clear();
-        if (reLang != undefined && reLang != null) {
+        if (reLang !== undefined && reLang != null) {
           localStorage.setItem("i18nextLng", reLang);
         }
         if (RSVP) {
@@ -175,8 +178,9 @@ const EmailValidation = () => {
         setErrorMessage("");
         setErrorBar(false);
       } else {
+        
         localStorage.clear();
-        if (reLang != undefined && reLang != null) {
+        if (reLang !== undefined && reLang != null) {
           localStorage.setItem("i18nextLng", reLang);
         }
         if (RSVP) {
