@@ -637,6 +637,8 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
             ) {
               let RSVP = localStorage.getItem("RSVP");
               let dataroomValue = localStorage.getItem("DataRoomEmail");
+              let AgCont = localStorage.getItem("AgCont");
+              let AdOrg = localStorage.getItem("AdOrg");
               dispatch(
                 verifyOtpFacSuccess(
                   response.data.responseResult,
@@ -666,6 +668,10 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
                   } else if (hasAdminRights === "true") {
                     navigate("/Admin/ManageUsers");
                   }
+                } else if (AgCont !== null) {
+                  navigate("/DisKus/Meeting");
+                } else if (AdOrg !== null) {
+                  navigate("/DisKus/Meeting");
                 } else if (hasAdminRights === "true") {
                   navigate("/Admin/ManageUsers");
                 } else if (hasUserRights === "true") {
@@ -687,6 +693,10 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
                   } else if (hasAdminRights === "true") {
                     navigate("/Admin/ManageUsers");
                   }
+                } else if (AgCont !== null) {
+                  navigate("/DisKus/Meeting");
+                } else if (AdOrg !== null) {
+                  navigate("/DisKus/Meeting");
                 } else {
                   if (hasUserRights === "true") {
                     navigate("/Diskus/");

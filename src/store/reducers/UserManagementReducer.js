@@ -26,6 +26,7 @@ const initialState = {
   organizationTrialExtendData: null,
   paymentStatusModal: null,
   changeSelectedPackage: null,
+  isFreeTrailCancelandUpgradeOrganization: null,
 };
 
 const UserMangementReducer = (state = initialState, action) => {
@@ -500,6 +501,28 @@ const UserMangementReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         changeSelectedPackage: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.CANCELFREETRAILANDUPDGRADEORGANIZATION_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.CANCELFREETRAILANDUPDGRADEORGANIZATION_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        isFreeTrailCancelandUpgradeOrganization: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.CANCELFREETRAILANDUPDGRADEORGANIZATION_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        isFreeTrailCancelandUpgradeOrganization: null,
         ResponseMessage: action.message,
       };
     }

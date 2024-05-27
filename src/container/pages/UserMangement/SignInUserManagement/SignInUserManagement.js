@@ -39,14 +39,12 @@ const SignInUserManagement = () => {
   const { Authreducer, adminReducer, LanguageReducer } = useSelector(
     (state) => state
   );
-
+  const currentUrl = window.location.href;
   const urlParams = new URLSearchParams(window.location.search);
   const code = urlParams.get("code");
-
-  const searchParams = new URLSearchParams(window.location.search);
-  const paymentActionValue = searchParams.get("Payment_action");
-
-  console.log(paymentActionValue, "paymentActionValuepaymentActionValue");
+  const getpayemntString = currentUrl.includes("Payment_action")
+    ? currentUrl.includes("Payment_action")[1]
+    : "";
 
   //States For Email Validation Integration
   const [email, setEmail] = useState("");
@@ -133,11 +131,13 @@ const SignInUserManagement = () => {
     if (code) {
       localStorage.setItem("Ms", code);
       window.close();
-    } else if (paymentActionValue) {
+    } else if (getpayemntString !== "") {
+      console.log("Payment_actionPayment_action");
+      const paymentStringValue = currentUrl.split("Payment_action=")[1];
       let data = {
-        EncryptedString: paymentActionValue,
+        EncryptedString: paymentStringValue,
       };
-      dispatch(paymentStatusApi(navigate, t, data, paymentActionValue));
+      dispatch(paymentStatusApi(navigate, t, data));
     } else {
       emailRef.current.focus();
       let RememberEmailLocal = JSON.parse(
@@ -153,7 +153,9 @@ const SignInUserManagement = () => {
       let LoginFlowPageRoute = JSON.parse(
         localStorage.getItem("LoginFlowPageRoute")
       );
-
+      let AdOrg = localStorage.getItem("AdOrg");
+      let AgCont = localStorage.getItem("AgCont");
+      let poPub = localStorage.getItem("poPub");
       if (RememberEmailLocal === true && RememberPasswordLocal === true) {
         let RememberEmailLocalValue =
           localStorage.getItem("rememberEmailValue");
@@ -175,6 +177,15 @@ const SignInUserManagement = () => {
         }
         if (RSVP) {
           localStorage.setItem("RSVP", RSVP);
+        }
+        if (AgCont) {
+          localStorage.setItem("AgCont", AgCont);
+        }
+        if (poPub) {
+          localStorage.setItem("poPub", poPub);
+        }
+        if (AdOrg) {
+          localStorage.setItem("AdOrg", AdOrg);
         }
         if (DataRoomEmailValue) {
           localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
@@ -207,6 +218,15 @@ const SignInUserManagement = () => {
         if (RSVP) {
           localStorage.setItem("RSVP", RSVP);
         }
+        if (AgCont) {
+          localStorage.setItem("AgCont", AgCont);
+        }
+        if (poPub) {
+          localStorage.setItem("poPub", poPub);
+        }
+        if (AdOrg) {
+          localStorage.setItem("AdOrg", AdOrg);
+        }
         if (DataRoomEmailValue) {
           localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
         }
@@ -234,6 +254,15 @@ const SignInUserManagement = () => {
         }
         if (RSVP) {
           localStorage.setItem("RSVP", RSVP);
+        }
+        if (AgCont) {
+          localStorage.setItem("AgCont", AgCont);
+        }
+        if (poPub) {
+          localStorage.setItem("poPub", poPub);
+        }
+        if (AdOrg) {
+          localStorage.setItem("AdOrg", AdOrg);
         }
         if (DataRoomEmailValue) {
           localStorage.setItem("DataRoomEmail", DataRoomEmailValue);
@@ -295,7 +324,7 @@ const SignInUserManagement = () => {
       <Container fluid className={styles["auth_container"]}>
         {code ? (
           <></>
-        ) : paymentActionValue ? (
+        ) : getpayemntString !== "" ? (
           <></>
         ) : (
           <>
@@ -461,7 +490,7 @@ const SignInUserManagement = () => {
           </>
         )}
       </Container>
-      {paymentActionValue && paymentActionValue !== "" && <Loader />}
+      {getpayemntString && getpayemntString !== "" && <Loader />}
     </>
   );
 };
