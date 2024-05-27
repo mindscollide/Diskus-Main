@@ -12,7 +12,6 @@ import styles from "./SignInUserMangement.module.css";
 import DiskusAuthPageLogo from "../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
-import SignUpOrganizationUM from "../../UserMangement/SignUpOrganizationUM/SignUpOrganizationUM";
 import { useNavigate } from "react-router-dom";
 // import SignupProcessUserManagement from "../../SignUpProcessUserManagement/SignupProcessUserManagement";
 import { validationEmail } from "../../../../commen/functions/validations";
@@ -24,11 +23,9 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import {
   LoginFlowRoutes,
-  paymentInitiateMainApi,
   paymentStatusApi,
   signUpFlowRoutes,
 } from "../../../../store/actions/UserManagementActions";
-import { getActionFromURLPayment } from "../../../../commen/functions/utils";
 
 const SignInUserManagement = () => {
   const navigate = useNavigate();
@@ -167,12 +164,13 @@ const SignInUserManagement = () => {
           "rememberPasswordValue"
         );
 
-        
         localStorage.clear();
         try {
-          if (Number(LoginFlowPageRoute) !== 1) {
-            dispatch(LoginFlowRoutes(LoginFlowPageRoute));
-          }
+          // if (Number(LoginFlowPageRoute) !== 1) {
+          console.log("LoginFlowRoutes", LoginFlowPageRoute);
+          localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
+          dispatch(LoginFlowRoutes(LoginFlowPageRoute));
+          // }
         } catch {}
         if (reLang !== undefined && reLang != null) {
           localStorage.setItem("i18nextLng", reLang);
@@ -206,13 +204,13 @@ const SignInUserManagement = () => {
       } else if (RememberEmailLocal === true) {
         let RememberEmailLocalValue =
           localStorage.getItem("rememberEmailValue");
-        
         localStorage.clear();
         try {
-          if (Number(LoginFlowPageRoute) !== 1) {
-            //localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
-            dispatch(LoginFlowRoutes(LoginFlowPageRoute));
-          }
+          // if (Number(LoginFlowPageRoute) !== 1) {
+          localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
+          console.log("LoginFlowRoutes", LoginFlowPageRoute);
+          dispatch(LoginFlowRoutes(LoginFlowPageRoute));
+          // }
         } catch {}
         if (reLang !== undefined && reLang != null) {
           localStorage.setItem("i18nextLng", reLang);
@@ -242,13 +240,13 @@ const SignInUserManagement = () => {
         let RememberPasswordLocalValue = localStorage.getItem(
           "rememberPasswordValue"
         );
-        
         localStorage.clear();
         try {
-          if (Number(LoginFlowPageRoute) !== 1) {
-            //localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
-            dispatch(LoginFlowRoutes(LoginFlowPageRoute));
-          }
+          // if (Number(LoginFlowPageRoute) !== 1) {
+          localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
+          console.log("LoginFlowRoutes", LoginFlowPageRoute);
+          dispatch(LoginFlowRoutes(LoginFlowPageRoute));
+          // }
         } catch {}
 
         if (reLang != undefined && reLang != null) {
@@ -277,13 +275,13 @@ const SignInUserManagement = () => {
         setErrorMessage("");
         setErrorBar(false);
       } else {
-        
         localStorage.clear();
         try {
-          if (Number(LoginFlowPageRoute) !== 1) {
-            //localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
-            dispatch(LoginFlowRoutes(LoginFlowPageRoute));
-          }
+          // if (Number(LoginFlowPageRoute) !== 1) {
+          localStorage.setItem("LoginFlowPageRoute", LoginFlowPageRoute);
+          console.log("LoginFlowRoutes", LoginFlowPageRoute);
+          dispatch(LoginFlowRoutes(LoginFlowPageRoute));
+          // }
         } catch {}
 
         if (reLang != undefined && reLang != null) {
