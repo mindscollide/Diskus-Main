@@ -147,6 +147,7 @@ const NewMeeting = () => {
 
   let currentLanguage = localStorage.getItem("i18nextLng");
   let AgCont = localStorage.getItem("AgCont");
+  let AdOrg = localStorage.getItem("AdOrg");
   // let AdCont
   //Current User ID
   let currentUserId = localStorage.getItem("userID");
@@ -397,6 +398,36 @@ const NewMeeting = () => {
       console.log(AgCont, "AgContAgContAgContAgCont");
     }
   }, [AgCont]);
+
+  useEffect(() => {
+    if (AdOrg !== null) {
+      validateStringEmailApi(AgCont, navigate, t, 2, dispatch)
+        .then(async (result) => {
+          console.log("Result:", result);
+          // Handle the result here
+
+          await setAdvanceMeetingModalID(Number(result.meetingID));
+          await setViewAdvanceMeetingModalUnpublish(true);
+          await dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+          setEdiorRole({
+            ...editorRole,
+            isPrimaryOrganizer: false,
+            role:
+              Number(result.attendeeId) === 2
+                ? "Participant"
+                : Number(result.attendeeId) === 4
+                ? "Agenda Contributor"
+                : "Organizer",
+            status: Number(result.meetingStatusId),
+          });
+          localStorage.removeItem("AdOrg");
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          // Handle errors here
+        });
+    }
+  }, [AdOrg]);
 
   //  Call all search meetings api
   useEffect(() => {

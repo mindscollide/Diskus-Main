@@ -168,6 +168,7 @@ const PakageDetailsAdmin = () => {
 
   const upgradeOnclickHandler = () => {
     if (UserMangementReducer.organizationSelectedPakagesByOrganizationIDData) {
+      console.log(UserMangementReducer.organizationSelectedPakagesByOrganizationIDData, "UserMangementReducerUserMangementReducer")
       const organizationSelectedVariable =
         UserMangementReducer.organizationSelectedPakagesByOrganizationIDData.organizationSubscriptions?.map(
           (subscription) => subscription.organizationSelectedPackages
