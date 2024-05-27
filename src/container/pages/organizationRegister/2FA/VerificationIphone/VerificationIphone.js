@@ -23,6 +23,7 @@ import LanguageChangeIcon from "../../../../../assets/images/newElements/Languag
 import { mqttConnection } from "../../../../../commen/functions/mqttconnection";
 import Helper from "../../../../../commen/functions/history_logout";
 import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
+import { LoginFlowRoutes } from "../../../../../store/actions/UserManagementActions";
 
 const VerificationIphone = () => {
   const navigate = useNavigate();
@@ -113,17 +114,26 @@ const VerificationIphone = () => {
       );
     }
   };
+
   useEffect(() => {
-    if (location.state !== null) {
-      console.log(location, "location");
-      let devices = location.state.currentDevice;
-      let currentDevices = [];
-      devices.map((data, index) => {
-        currentDevices.push(data);
-      });
-      setDevices(currentDevices);
+    try {
+      const devicesi = localStorage.getItem("currentDevice");
+      console.log(devicesi, "devicesidevicesidevicesi");
+      if (devicesi) {
+        try {
+          const parsedDevices = JSON.parse(devicesi);
+          console.log(parsedDevices, "Parsed Devices");
+          setDevices(parsedDevices);
+        } catch (e) {
+          console.error("Failed to parse devices from localStorage", e);
+        }
+      } else {
+        console.log("No devices found in local storage.");
+      }
+    } catch (error) {
+      console.log("Error accessing local storage:", error);
     }
-  }, [location.state]);
+  }, []);
 
   let newClient = Helper.socket;
   useEffect(() => {
@@ -133,6 +143,12 @@ const VerificationIphone = () => {
       mqttConnection(userID);
     }
   }, [Helper.socket]);
+
+  //handle Go back Functionality
+  const handleGoback = () => {
+    localStorage.setItem("LoginFlowPageRoute", 13);
+    dispatch(LoginFlowRoutes(13));
+  };
 
   return (
     <>
@@ -211,6 +227,7 @@ const VerificationIphone = () => {
                   <Row className="Scroll_bar_For_devices mt-3">
                     {devices !== null && devices.length > 0
                       ? devices.map((data, index) => {
+                          console.log(data, "datadatadatadata");
                           return (
                             <Col sm={12} lg={12} md={12} className="mx-2">
                               <Row key={index} className="my-2">
@@ -274,7 +291,7 @@ const VerificationIphone = () => {
                 </Form>
                 <Row className="mt-1">
                   <Col sm={12} md={12} lg={12} className="forogt_email_link">
-                    <Link to="/twofacmultidevice">{t("Go-back")}</Link>
+                    <span onClick={handleGoback}>{t("Go-back")}</span>
                   </Col>
                 </Row>
               </Col>

@@ -25,6 +25,7 @@ import {
   Notification,
   Loader,
 } from "../../../../../components/elements";
+import { LoginFlowRoutes } from "../../../../../store/actions/UserManagementActions";
 const TwoFactorMultipleDevices = () => {
   const { Authreducer, LanguageReducer } = useSelector((state) => state);
 
@@ -101,7 +102,10 @@ const TwoFactorMultipleDevices = () => {
     if (notificationdevice) {
       if (currentDevice[0].DeviceName !== "") {
         localStorage.setItem("GobackSelection", 3);
-        navigate("/selectfrommultidevices", { state: { currentDevice } });
+        localStorage.setItem("currentDevice", JSON.stringify(currentDevice));
+        localStorage.setItem("LoginFlowPageRoute", 15);
+        dispatch(LoginFlowRoutes(15));
+        // navigate("/selectfrommultidevices", { state: { currentDevice } });
       } else {
         setOpen({
           open: true,
@@ -177,6 +181,11 @@ const TwoFactorMultipleDevices = () => {
     }
   }, [Helper.socket]);
 
+  const handleGoback = () => {
+    localStorage.setItem("LoginFlowPageRoute", 2);
+    dispatch(LoginFlowRoutes(2));
+  };
+
   return (
     <>
       <Container fluid className={styles["auth_container"]}>
@@ -225,15 +234,15 @@ const TwoFactorMultipleDevices = () => {
                           lg={12}
                           className="d-flex justify-content-center flex-column"
                         >
-                          <h3
+                          <span
                             className={
                               styles[
-                                "VerifyHeadingTwofacSendEmail_twofacmultidevice "
+                                "VerifyHeadingTwofacSendEmail_twofacmultidevice"
                               ]
                             }
                           >
                             {t("2fa-verification")}
-                          </h3>
+                          </span>
                           <span
                             className={
                               styles[
@@ -392,14 +401,19 @@ const TwoFactorMultipleDevices = () => {
                       </Row>
                     </Form>
                   </Col>
-                  <Row className="mb-2 mt-1">
+                  <Row className="mt-2">
                     <Col
                       sm={12}
                       md={12}
                       lg={12}
-                      className={styles["forogt_email_link "]}
+                      className="d-flex justify-content-center"
                     >
-                      <Link>{t("Go-back")}</Link>
+                      <span
+                        onClick={handleGoback}
+                        className={styles["forogt_email_link"]}
+                      >
+                        {t("Go-back")}
+                      </span>
                     </Col>
                   </Row>
                 </Paper>
