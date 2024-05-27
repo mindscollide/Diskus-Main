@@ -7,17 +7,22 @@ import PasswordCreationUM from "../UserMangement/PasswordCreationUM/PasswordCrea
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import {
+  LoginFlowRoutes,
   clearMessegesUserManagement,
   signUpFlowRoutes,
 } from "../../../store/actions/UserManagementActions";
 import { cleareMessage } from "../../../store/actions/Auth2_actions";
 import { useTranslation } from "react-i18next";
 import { Notification } from "../../../components/elements";
+import Helper from "../../../commen/functions/history_logout";
+import { mqttConnection } from "../../../commen/functions/mqttconnection";
+import { useNavigate } from "react-router-dom";
 
 const SignupProcessUserManagement = () => {
   const { UserMangementReducer, Authreducer } = useSelector((state) => state);
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -342,6 +347,62 @@ const SignupProcessUserManagement = () => {
       dispatch(clearMessegesUserManagement());
     }
   }, [UserMangementReducer.ResponseMessage]);
+
+  //MQTT
+  const onMessageArrived = (msg) => {
+    let data = JSON.parse(msg.payloadString);
+    let roleID = parseInt(localStorage.getItem("roleID"));
+    let isFirstLogin = localStorage.getItem("isFirstLogin");
+
+    console.log("message arrived", data);
+    if (
+      data.payload.message
+        .toLowerCase()
+        .includes("2FA_VERIFIED_FROM_DEVICE".toLowerCase())
+    ) {
+      localStorage.setItem("TowApproval", true);
+
+      if (roleID === 1 || roleID === 2) {
+        navigate("/Admin/");
+      } else {
+        console.log("message arrived");
+        if (isFirstLogin != undefined) {
+          if (isFirstLogin === true) {
+            navigate("/onboard");
+          } else {
+            let RSVP = localStorage.getItem("RSVP");
+            if (RSVP !== undefined && RSVP !== null) {
+              navigate("/DisKus/Meeting/Useravailabilityformeeting");
+            } else {
+              if (
+                localStorage.getItem("RSVP") !== null &&
+                localStorage.getItem("RSVP") !== undefined
+              ) {
+                navigate("/Diskus/Meeting/Useravailabilityformeeting");
+              } else {
+                navigate("/Diskus/");
+              }
+            }
+          }
+        }
+      }
+    } else {
+      localStorage.setItem("TowApproval", false);
+      console.log("TowApproval");
+      dispatch(LoginFlowRoutes(7));
+    }
+  };
+
+  let newClient = Helper.socket;
+
+  useEffect(() => {
+    if (newClient != null && newClient != "" && newClient != undefined) {
+      newClient.onMessageArrived = onMessageArrived;
+    } else {
+      let userID = localStorage.getItem("userID");
+      mqttConnection(userID);
+    }
+  }, [Helper.socket]);
 
   let SignupComponent;
   if (

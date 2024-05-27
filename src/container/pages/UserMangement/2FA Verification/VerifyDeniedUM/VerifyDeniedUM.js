@@ -8,8 +8,19 @@ import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_
 import logo from "../../../../../assets/images/signinlogo.svg";
 import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
 import { Button, Paper } from "../../../../../components/elements";
+import { useNavigate } from "react-router-dom";
+import { LoginFlowRoutes } from "../../../../../store/actions/UserManagementActions";
+import { useDispatch } from "react-redux";
 const VerifyDeniedUM = () => {
   const { t } = useTranslation();
+
+  const dispatch = useDispatch();
+
+  const handleBacktoSignIn = () => {
+    console.log("clicked");
+    localStorage.setItem("LoginFlowPageRoute", 1);
+    dispatch(LoginFlowRoutes(1));
+  };
 
   return (
     <>
@@ -93,6 +104,7 @@ const VerifyDeniedUM = () => {
                       className={
                         styles["Next_button_EmailVerify_For_SignInDenied"]
                       }
+                      onClick={handleBacktoSignIn}
                     />
                   </Col>
                 </Row>

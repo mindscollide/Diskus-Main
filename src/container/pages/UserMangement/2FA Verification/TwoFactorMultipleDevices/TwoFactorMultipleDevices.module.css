@@ -36,10 +36,12 @@
   justify-content: center;
   text-decoration: underline;
   font-weight: 400 !important;
+  cursor: pointer !important;
 }
 
 body[dir="rtl"] .forogt_email_link {
   font-weight: 400 !important;
+  cursor: pointer !important;
 }
 
 .forogt_email_link a {
@@ -56,11 +58,9 @@ body[dir="rtl"] .SelectLineTwofacSendEmail_twofacmultidevice {
 }
 .VerifyHeadingTwofacSendEmail_twofacmultidevice {
   color: #5a5a5a;
-  margin-top: 3rem !important;
+  margin-top: 2rem !important;
   font-weight: 600 !important;
-  font-size: calc(35px - 20%) !important;
-  margin: 0;
-  padding: 0;
+  font-size: 30px !important;
 }
 body[dir="rtl"] .VerifyHeadingTwofacSendEmail_twofacmultidevice {
   font-weight: 600 !important;
