@@ -48,7 +48,7 @@ const ViewMeetingModal = ({
   console.log(editorRole, "editorRoleeditorRoleeditorRoleeditorRole");
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const routeID = useSelector((state) => state.NewMeetingreducer.emailRouteID)
+  const routeID = useSelector((state) => state.NewMeetingreducer.emailRouteID);
   const [meetingDetails, setmeetingDetails] = useState(
     (editorRole.role === "Organizer" || editorRole.role === "Participant") &&
       Number(editorRole.status) === 10
@@ -85,14 +85,18 @@ const ViewMeetingModal = ({
     "meetingIdReducermeetingIdReducermeetingIdReducer"
   );
   useEffect(() => {
-    if(routeID !== null ) {
-      if(routeID === 1) {
+    if (routeID !== null) {
+      if (Number(routeID) === 1) {
         // Agenda Contributor Tab
-        setAgendaContributors(true)
-        setmeetingDetails(false)
+        setAgendaContributors(true);
+        setmeetingDetails(false);
+      } else if (Number(routeID) === 2) {
+        setorganizers(true);
+        setmeetingDetails(false);
       }
     }
-  }, [routeID])
+  }, [routeID]);
+
   useEffect(() => {
     return () => {
       dispatch(cleareAllState());
@@ -446,7 +450,8 @@ const ViewMeetingModal = ({
                           : true
                       }
                     />
-                    {Number(editorRole.status) === 10 && editorRole.role !== "Participant" ? (
+                    {Number(editorRole.status) === 10 &&
+                    editorRole.role !== "Participant" ? (
                       <Button
                         text={t("Attendence")}
                         className={

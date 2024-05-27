@@ -2002,7 +2002,7 @@ const paymentStatusFailed = (response, message) => {
   };
 };
 
-const paymentStatusApi = (navigate, t, data, paymentActionValue) => {
+const paymentStatusApi = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(paymentStatusInit());
@@ -2020,7 +2020,7 @@ const paymentStatusApi = (navigate, t, data, paymentActionValue) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(paymentStatusApi(navigate, t, data, paymentActionValue));
+          dispatch(paymentStatusApi(navigate, t, data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (

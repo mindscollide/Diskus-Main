@@ -108,7 +108,7 @@ const VerificationCodeThree = () => {
         navigate("/Admin/");
       } else {
         console.log("message arrived");
-        if (isFirstLogin != undefined) {
+        if (isFirstLogin !== null && isFirstLogin !== undefined) {
           if (isFirstLogin === true) {
             navigate("/onboard");
           } else {
