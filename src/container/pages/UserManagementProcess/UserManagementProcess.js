@@ -24,6 +24,7 @@ import VerificationCodeThree from "../organizationRegister/2FA/VerficationCodeTh
 import Helper from "../../../commen/functions/history_logout";
 import { mqttConnection } from "../../../commen/functions/mqttconnection";
 import { useNavigate } from "react-router-dom";
+import VerificationIphone from "../organizationRegister/2FA/VerificationIphone/VerificationIphone";
 
 const UserManagementProcess = () => {
   // Define setCurrentStep function
@@ -243,6 +244,8 @@ const UserManagementProcess = () => {
     componentToRender = <TwoFactorMultipleDevices />;
   } else if (UserMangementReducer.defaultRoutingValue === 14) {
     componentToRender = <VerificationCodeThree />;
+  } else if (UserMangementReducer.defaultRoutingValue === 15) {
+    componentToRender = <VerificationIphone />;
   } else {
     componentToRender = null;
     console.log("Errorr in route");
