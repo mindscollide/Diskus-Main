@@ -50,8 +50,7 @@ body[dir="rtl"] .AdminAlsoClass {
 }
 
 .AddUserCancelButton {
-  width: 100px;
-  height: 40px;
+  padding: 12px 30px !important;
   font-size: 12px !important;
   background: #fff !important;
   border: 1px solid #e1e1e1 !important;
@@ -61,8 +60,7 @@ body[dir="rtl"] .AdminAlsoClass {
 }
 
 .AddUserCancelButton:is(:hover, :active, :focus, :focus-visible) {
-  width: 100px;
-  height: 40px;
+  padding: 12px 30px !important;
   font-size: 12px !important;
   background: #fff !important;
   border: 1px solid #e1e1e1 !important;
@@ -76,8 +74,7 @@ body[dir="rtl"] .AddUserCancelButton {
 }
 
 .AddUserCreateButton {
-  width: 100px;
-  height: 40px;
+  padding: 12px 30px !important;
   font-size: 12px !important;
   background: #6172d6 !important;
   border: none !important;
@@ -87,8 +84,7 @@ body[dir="rtl"] .AddUserCancelButton {
 }
 
 .AddUserCreateButton:is(:hover, :active, :focus, :focus-visible) {
-  width: 100px;
-  height: 40px;
+  padding: 12px 30px !important;
   font-size: 12px !important;
   background: #6172d6 !important;
   border: none !important;
@@ -102,15 +98,17 @@ body[dir="rtl"] .AddUserCreateButton {
 }
 
 .checkEmailSpinner {
-  position: absolute !important;
-  width: 29px;
-  left: 436px;
-  bottom: 14px;
+  position: absolute;
+  right: -30px;
+  width: 30px;
   height: 30px;
-  color: green;
+  top: 25px !important;
+  bottom: 0px;
 }
 
 .errorMessage {
+  font-weight: 600;
+  font-size: 10px;
   margin: 4px;
   height: 7px;
   color: #f16b6b;
@@ -124,7 +122,7 @@ body[dir="rtl"] .errorMessage {
 .errorMessage_hidden {
   visibility: hidden;
   margin: 0;
-  height: 7px;
+  height: 15px;
   color: #f16b6b !important;
 }
 
@@ -132,28 +130,12 @@ body[dir="rtl"] .errorMessage_hidden {
   font-weight: 400 !important;
 }
 
-/* .isEmailUnique {
-  position: relative;
-  right: 10px;
-  top: 30px;
+.isEmailUnique {
+  position: absolute;
+  right: -30px;
+  top: 25px;
   width: 30px;
   height: 30px;
   bottom: 0px;
-  color: green;
-} */
-.isEmailUnique {
-  position: absolute !important;
-  width: 100px;
-  left: 400px;
-  bottom: 5px;
-  height: 30px;
-  color: green;
-}
-
-body[dir="rtl"] .isEmailUnique {
-  position: absolute;
-  width: 30px;
-  bottom: 30px;
-  height: 30px;
   color: green;
 }

@@ -2825,7 +2825,7 @@ input#Participant::placeholder {
 
 .package-TablePakageSelection .ant-table table {
   padding: 0px 5px;
-  border-spacing: 0 30px !important;
+  border-spacing: 0 25px !important;
   border-radius: 50px !important;
   table-layout: inherit !important;
   margin-top: -19px !important;
