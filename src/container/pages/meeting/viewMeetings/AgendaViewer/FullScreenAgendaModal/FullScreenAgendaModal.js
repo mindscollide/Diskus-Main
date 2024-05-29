@@ -223,9 +223,11 @@ const FullScreenAgendaModal = ({
         )
       );
       localStorage.setItem("meetingTitle", meetingTitle);
+      setFullScreenView(false);
     } else if (activeCall === true && isMeeting === false) {
       setInitiateVideoModalOto(true);
       dispatch(callRequestReceivedMQTT({}, ""));
+      setFullScreenView(false);
     }
   };
 

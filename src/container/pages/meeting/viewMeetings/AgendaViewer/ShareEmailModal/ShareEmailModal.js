@@ -29,7 +29,7 @@ const ShareEmailModal = ({ setShareEmailView }) => {
   const navigate = useNavigate();
   const animatedComponents = makeAnimated();
 
-  let currentMeeting = Number(localStorage.getItem("currentMeetingLS"));
+  let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
 
   let meetingTitle = localStorage.getItem("meetingTitle");
 
