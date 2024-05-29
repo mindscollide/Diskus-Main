@@ -54,6 +54,10 @@ body {
   overflow: hidden auto;
 }
 
+.MuiInputBase-root {
+  font-family: "Montserrat" !important;
+}
+
 body[dir="rtl"] {
   font-family: "IBM Plex Sans Arabic" !important;
 }
