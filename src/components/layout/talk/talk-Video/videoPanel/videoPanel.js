@@ -13,8 +13,8 @@ const VideoPanel = () => {
     <>
       <div className="chatBox-video ">
         <div className="chat-inner-content">
-          <span className="triangle-overlay-video"></span>
-          <Triangle className="pointer-video-icon" />
+          {/* <span className="triangle-overlay-video"></span>
+          <Triangle className="pointer-video-icon" /> */}
           <>
             <div className="videocall-header-panel">
               <VideoPanelHeader />

@@ -53,6 +53,7 @@ import {
   groupCallRecipients,
   callRequestReceivedMQTT,
 } from "../../../../../../store/actions/VideoMain_actions";
+import { checkFeatureIDAvailability } from "../../../../../../commen/functions/utils";
 import {
   resetCloseChatFlags,
   retryFlagState,
@@ -3431,7 +3432,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         </Dropdown.Menu>
                       </Dropdown>
                     </Col>
-                    {activeCall === false ? (
+                    {activeCall === false &&
+                    checkFeatureIDAvailability(5) ? (
                       <Col lg={1} md={1} sm={12}>
                         <div className="chat-box-icons">
                           <img
