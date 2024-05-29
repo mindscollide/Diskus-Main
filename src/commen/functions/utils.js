@@ -298,10 +298,10 @@ export async function handleLoginResponse(response) {
 
 // Features IDs Check Fucntion
 export function checkFeatureIDAvailability(id) {
-  let packageID = localStorage.getItem("packageFeatureIDs");
+  let packageID = JSON.parse(localStorage.getItem("packageFeatureIDs"));
   if (Array.isArray(packageID)) {
-    let getFeaturesIDs = JSON.parse(packageID);
-    return getFeaturesIDs.includes(id);
+    let getFeaturesIDs = packageID;
+    return getFeaturesIDs.includes(Number(id));
   } else {
     return false;
   }
