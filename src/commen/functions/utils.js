@@ -151,6 +151,9 @@ export async function handleLoginResponse(response) {
       localStorage.setItem("organizationID", response.organizationID);
     }
 
+    localStorage.setItem("MicOff", true);
+    localStorage.setItem("VidOff", true);
+
     localStorage.setItem(
       "organizationSubscriptionID",
       response.organizationSubscriptionID
