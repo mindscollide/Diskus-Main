@@ -31,7 +31,11 @@ export function checkFeatureID(id) {
 
 //Export function userFeatures from the Response
 export function updateLocalUserRoutes(userFeatures, LocalUserRoutes) {
+  console.log("updateLocalUserRoutes",userFeatures)
+  console.log("updateLocalUserRoutes",LocalUserRoutes)
   let user = [
+    { id: 1, name: "Meeting" },
+    { id: 12, name: "Meeting" },
     { id: 19, name: "signatureviewer" },
     { id: 20, name: "documentViewer" },
     { id: 21, name: "signatureviewer" },
@@ -44,13 +48,11 @@ export function updateLocalUserRoutes(userFeatures, LocalUserRoutes) {
     { id: 14, name: "todolist" },
     { id: 15, name: "polling" },
     { id: 17, name: "groups" },
-    { id: 17, name: "committee" },
+    { id: 48, name: "committee" },
     { id: 18, name: "resolution" },
-    { id: 1, name: "Meeting" },
     { id: 9, name: "Meeting" },
     { id: 10, name: "Meeting" },
     { id: 11, name: "Meeting" },
-    { id: 12, name: "Meeting" },
     { id: 1, name: "Meeting/Useravailabilityformeeting" },
     { id: 9, name: "Meeting/Useravailabilityformeeting" },
     { id: 10, name: "Meeting/Useravailabilityformeeting" },
@@ -286,10 +288,7 @@ export async function handleLoginResponse(response) {
     localStorage.setItem("LocalUserRoutes", JSON.stringify(LocalUserRoutes));
     localStorage.setItem("LocalAdminRoutes", JSON.stringify(LocalAdminRoutes));
   } catch (error) {
-    console.log(
-      "handleLoginResponsehandleLoginResponse Error processing login response:",
-      error
-    );
+    console.error(error);
   }
 }
 
@@ -338,7 +337,6 @@ export function clearLocalStorageAtloginresponce(dispatch, value, navigate) {
 }
 
 //Clearing URL function
-
 export const clearPaymentActionFromUrl = () => {
   const currentUrl = new URL(window.location.href);
   console.log(currentUrl, "currentUrlcurrentUrl");
