@@ -88,7 +88,9 @@ import PaymentProcess from "../container/pages/UserMangement/PaymentProcess/Paym
 import { getLocalStorageItemNonActiveCheck } from "../commen/functions/utils";
 import PaymentTest from "../container/pages/UserMangement/PaymentTestPage/PaymentTest";
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
-{/* <Route path="Minutes" element={<MinutesFlow />} /> */}
+{
+  /* <Route path="Minutes" element={<MinutesFlow />} /> */
+}
 
 export const router = createHashRouter(
   createRoutesFromElements(
@@ -156,6 +158,14 @@ export const router = createHashRouter(
             element={
               <RouteWrapperUser name="">
                 <Home />
+              </RouteWrapperUser>
+            }
+          />
+          <Route
+            path="Minutes"
+            element={
+              <RouteWrapperUser name="Minutes">
+                <MinutesFlow />
               </RouteWrapperUser>
             }
           />
