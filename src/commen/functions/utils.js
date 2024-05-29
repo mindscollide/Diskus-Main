@@ -151,6 +151,9 @@ export async function handleLoginResponse(response) {
       localStorage.setItem("organizationID", response.organizationID);
     }
 
+    localStorage.setItem("MicOff", true);
+    localStorage.setItem("VidOff", true);
+
     localStorage.setItem(
       "organizationSubscriptionID",
       response.organizationSubscriptionID
@@ -296,16 +299,9 @@ export async function handleLoginResponse(response) {
 // Features IDs Check Fucntion
 export function checkFeatureIDAvailability(id) {
   let packageID = localStorage.getItem("packageFeatureIDs");
-  if (packageID) {
-    packageID = packageID.replace(/,\s*\.\.\.\]$/, "]");
-    let idsArray;
-    try {
-      idsArray = JSON.parse(packageID);
-    } catch (e) {
-      console.error("Error parsing on checkFeatureIDAvailability:", e);
-      return false;
-    }
-    return idsArray.includes(id);
+  if (Array.isArray(packageID)) {
+    let getFeaturesIDs = JSON.parse(packageID);
+    return getFeaturesIDs.includes(id);
   } else {
     return false;
   }
@@ -332,7 +328,18 @@ export function clearLocalStorageAtloginresponce(dispatch, value, navigate) {
     localStorage.removeItem("LoginFlowPageRoute");
   } else if (value === 2) {
     localStorage.removeItem("signupCurrentPage");
-    //localStorage.setItem("LoginFlowPageRoute", 1);
+    localStorage.setItem("LoginFlowPageRoute", 1);
+    navigate("/");
+  } else if (value === 3) {
+    // Set for Wrong Password
+    dispatch(LoginFlowRoutes(2));
+    localStorage.setItem("LoginFlowPageRoute", 2);
+
+    // localStorage.removeItem("signupCurrentPage");
+  } else if (Number(value) === 4) {
+    // for User is in Active and Account is Blocked
+    dispatch(LoginFlowRoutes(1));
+    localStorage.setItem("LoginFlowPageRoute", 1);
     navigate("/");
   }
 }

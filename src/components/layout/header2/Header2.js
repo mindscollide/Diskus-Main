@@ -355,7 +355,7 @@ const Header2 = () => {
                     : cancelSub
                     ? "/Admin/ManageUsers"
                     : "/Admin/ManageUsers"
-                  : "/DisKus/home"
+                  : "/DisKus"
               }
               // onClick={homePageDashboardClick}
             >
@@ -620,7 +620,7 @@ const Header2 = () => {
                       NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
                     NewMeetingreducer.viewMeetingFlag === false
                   ? "/Admin/ManageUsers"
-                  : "/DisKus/home"
+                  : "/Diskus"
               }
               onClick={homePageDashboardClick}
             >
