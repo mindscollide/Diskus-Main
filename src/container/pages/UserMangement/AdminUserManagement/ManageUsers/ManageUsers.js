@@ -32,6 +32,7 @@ import {
   clearMessegesUserManagement,
 } from "../../../../../store/actions/UserManagementActions";
 import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
+import { validateEmailEnglishAndArabicFormat } from "../../../../../commen/functions/validations";
 const ManageUsers = () => {
   const { t } = useTranslation();
 
@@ -354,6 +355,13 @@ const ManageUsers = () => {
   //manual filteration performed on the GRID
   const handleSearch = () => {
     let adminFound = false;
+    const emailInput = searchDetails.Email || "";
+
+    // Validate the email before proceeding
+    if (emailInput && !validateEmailEnglishAndArabicFormat(emailInput)) {
+      console.error("Invalid email format");
+      return;
+    }
 
     const filteredData =
       UserMangementReducer.allOrganizationUsersData.organizationUsers.filter(
