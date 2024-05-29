@@ -12,7 +12,7 @@ body[dir="rtl"] .PakageDetailsHeading {
   border-radius: 4px;
   background-color: #fff !important;
   padding: 15px 35px;
-  height: 560px !important;
+  height: 100% !important;
   border: 1px solid #e1e1e1 !important;
 }
 
@@ -21,7 +21,7 @@ body[dir="rtl"] .PakageDetailsHeading {
   background-color: #fff !important;
   padding: 15px 35px;
   width: 100% !important;
-  height: 560px !important;
+  height: 100% !important;
   border: 1px solid #e1e1e1 !important;
 }
 

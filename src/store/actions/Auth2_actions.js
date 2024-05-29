@@ -544,47 +544,43 @@ const enterPasswordvalidation = (value, navigate, t) => {
       switch (responseMessage.toLowerCase()) {
         case USERPASSWORDVERIFICATION.VERIFICATION_01:
           dispatch(enterPasswordFail(t("Device-does-not-exists")));
-          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
-          dispatch(LoginFlowRoutes(1));
+          clearLocalStorageAtloginresponce(dispatch, 5, navigate);
           // no action
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_02:
-          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
-          dispatch(LoginFlowRoutes(1));
+          clearLocalStorageAtloginresponce(dispatch, 4, navigate);
           dispatch(enterPasswordFail(t("Device-id-does-not-exists")));
           // no action
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_03:
-          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
-          dispatch(LoginFlowRoutes(1));
+          clearLocalStorageAtloginresponce(dispatch, 4, navigate);
 
           dispatch(enterPasswordFail(t("User-does-not-exist")));
           // no action
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_04:
-          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
-          dispatch(LoginFlowRoutes(1));
+          clearLocalStorageAtloginresponce(dispatch, 4, navigate);
           dispatch(enterPasswordFail(t("Account-is-blocked")));
           // no action
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_05:
           dispatch(enterPasswordFail(t("Wrong-password")));
-          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
-          dispatch(LoginFlowRoutes(1));
+          // For Wrong password
+          clearLocalStorageAtloginresponce(dispatch, 3, navigate);
+          dispatch(LoginFlowRoutes(2));
           // no action
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_06:
           dispatch(enterPasswordFail(t("User-is-inactive")));
-          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
-          dispatch(LoginFlowRoutes(1));
+          clearLocalStorageAtloginresponce(dispatch, 4, navigate);
           // no action
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_07:
           dispatch(
             enterPasswordFail(t("Organization-subscription-packages-not-found"))
           );
-          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
-          dispatch(LoginFlowRoutes(1));
+          clearLocalStorageAtloginresponce(dispatch, 4, navigate);
+          // dispatch(LoginFlowRoutes(1));
           // no action
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_08:
