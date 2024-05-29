@@ -1,0 +1,541 @@
+.packageselection_heading {
+  color: #5a5a5a !important;
+  text-align: center;
+  font-weight: 700 !important;
+  font-size: 30px !important;
+}
+
+body[dir="rtl"] .packageselection_heading {
+  font-weight: 700 !important;
+}
+
+.PerUserheading {
+  color: #6172d6 !important;
+  text-align: center;
+  font-weight: 700 !important;
+  font-size: 20px !important;
+  margin-top: -10px !important;
+}
+
+body[dir="rtl"] .PerUserheading {
+  font-weight: 700 !important;
+}
+
+.goBackPackageSelectionBtn {
+  color: #000 !important;
+  font-size: 1.2rem;
+  text-decoration: underline;
+  font-weight: 400 !important;
+}
+
+body[dir="rtl"] .goBackPackageSelectionBtn {
+  font-weight: 400 !important;
+}
+
+.goBackPackageSelectionBtn:hover {
+  text-decoration: underline !important;
+}
+
+.crossicon {
+  color: #707070 !important;
+}
+
+/* Card */
+.packagecard {
+  border-radius: 5px;
+  background-color: #fff !important;
+  padding: 30px 15px;
+  position: relative;
+}
+
+.packageRibbon {
+  position: absolute;
+  top: -8px;
+  left: 20px;
+}
+
+.packageRibbon svg path {
+  fill: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
+  transition: all 0.5s ease-in-out;
+}
+
+body[dir="rtl"] .packageRibbon svg path {
+  fill: linear-gradient(to right, #4adede 0%, #6172d6 100%) !important;
+}
+
+.packagecard h4 {
+  color: #076db7;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: calc(38px - 20%) !important;
+}
+
+.packagecard_pricebox {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  padding: 5px 12px;
+  border-radius: 4px;
+}
+
+body[dir="rtl"] .packagecard_pricebox {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
+}
+
+.packagecard_pricebox_Active {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  padding: 14px 0px;
+  border-radius: 4px;
+  opacity: 59%;
+}
+
+body[dir="rtl"] .packagecard_pricebox_Active {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
+}
+
+.packagecard_priceBox_container {
+  width: 155px;
+  margin: 20px auto 10px auto;
+}
+
+.packagecard_priceBox_container h4 {
+  text-transform: lowercase;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  font-size: 2.2rem;
+  font-weight: 700 !important;
+}
+
+.packagecard_priceBox_container p {
+  font-size: 10px;
+  margin: 0 0 0 0 !important;
+  padding: 0 !important;
+}
+
+.packagecard_priceBox_container span {
+  text-align: center;
+  transition: 0.3s ease-in-out;
+  user-select: none;
+  border-radius: 4px;
+}
+
+.packagecard_priceBox_container span:hover {
+  color: #fff;
+  transition: 0.3s ease-in-out;
+  background: #6172d6;
+}
+
+.packagecard_one {
+  border: 1px solid #ccc;
+  /* width: 155px !important; */
+}
+
+.selectedPackage_priceDetails {
+  padding: 12px 0;
+  color: #fff;
+  margin-bottom: 20px;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+}
+
+body[dir="rtl"] .selectedPackage_priceDetails {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
+}
+
+.selectedPackage_priceDetails h4 {
+  color: #fff;
+  font-weight: 900;
+}
+
+.selectedpackagecard_disoucntprice_para {
+  text-align: center;
+  margin: 0 !important;
+  font-size: 30px !important;
+}
+
+.packagecard_usersallows_members {
+  padding: 8px 0;
+  font-size: 11px;
+  width: 120px;
+  text-align: center;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  color: #fff;
+  text-transform: uppercase;
+}
+
+body[dir="rtl"] .packagecard_usersallows_members {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
+}
+
+.packagecard_usersallows_members p {
+  margin: 0;
+}
+
+.packagecard_usersallows_members_value {
+  border: 1px solid #ccc;
+}
+
+.packagecard_btn {
+  width: 100%;
+  background: #6172d6;
+  border-radius: 4px !important;
+  visibility: visible;
+  border: none !important;
+  font-weight: 600 !important;
+  text-transform: uppercase;
+  font-size: calc(18px - 20%) !important;
+}
+
+body[dir="rtl"] .packagecard_btn {
+  font-weight: 600 !important;
+}
+
+.packagecard_btn:hover,
+.packagecard_btn:active,
+.packagecard_btn:visited,
+.packagecard_btn:focus,
+.packagecard_btn:focus-visible {
+  width: 100% !important;
+  background: #6172d6 !important;
+  border-radius: 4px !important;
+  visibility: visible !important;
+  border: none !important;
+  font-weight: 600 !important;
+}
+
+.visible {
+  visibility: visible;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.ExecutiveMembersRange {
+  width: 100%;
+  margin: 0;
+}
+
+.BoardMembersRange {
+  width: 100%;
+}
+
+.crossicon {
+  color: #707070 !important;
+}
+
+.spandefault {
+  width: 100%;
+  background-color: none;
+  border: 1px solid #ddd;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  text-align: center;
+  z-index: 0;
+}
+
+body[dir="rtl"] .spandefault {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
+}
+
+.package_actualPrice {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-weight: 700 !important;
+  color: #fff !important;
+  font-size: 60px;
+  margin-bottom: 0;
+}
+
+@media screen and (max-width: 1050px) {
+  .package_actualPrice {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-weight: 700 !important;
+    color: #fff !important;
+    font-size: 40px !important;
+    margin-bottom: 0;
+  }
+}
+
+body[dir="rtl"] .package_actualPrice {
+  font-weight: 600 !important;
+}
+
+.fixboxwidth {
+  width: 155px !important;
+  margin: 0 auto;
+}
+
+.package_title {
+  color: #6172d6 !important;
+  text-align: center;
+  font-size: 30px !important;
+  display: flex !important;
+  justify-content: center !important;
+  font-weight: 700 !important;
+}
+
+body[dir="rtl"] .package_title {
+  font-weight: 700 !important;
+}
+
+.package_actualPrice_p {
+  font-size: 12px !important;
+  margin: 19px 0 0 0;
+  text-transform: lowercase;
+}
+
+body[dir="rtl"] .package_actualPrice_p {
+  margin-right: 5px;
+  font-weight: 500 !important;
+}
+
+img.package-icon {
+  position: absolute;
+  top: -8px;
+  left: 20px;
+  width: 60px;
+}
+
+body[dir="rtl"] img.package-icon {
+  left: 77%;
+}
+
+.Package-select-language {
+  position: absolute;
+  overflow: hidden !important;
+  top: 15px;
+  right: 140px;
+  padding: 8px 40px !important;
+  z-index: 9999;
+  /* background-color: #fff !important; */
+  border-color: rgb(64, 64, 64) !important;
+  box-shadow: none !important;
+}
+
+.Package-select-language:focus,
+.Package-select-language:focus-within,
+.Package-select-language:focus-visible {
+  border-color: rgb(133, 133, 133) !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.select-language-signin {
+  position: absolute;
+  overflow: hidden !important;
+  top: 20px;
+  right: 116px;
+  padding: 0 50px !important;
+  z-index: 9999;
+  height: 2.9em !important;
+  border: 1px solid #e1e1e1 !important;
+  box-shadow: none !important;
+  font-weight: 600 !important;
+  border-radius: 4px;
+}
+
+body[dir="rtl"] .select-language-signin {
+  right: 78%;
+}
+
+.select-language-signin:focus,
+.select-language-signin:focus-within,
+.select-language-signin:focus-visible {
+  border: 1px solid #e1e1e1 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.languageIcon {
+  z-index: 99999 !important;
+  position: absolute;
+  right: 258px;
+  top: 27px;
+  width: 25px;
+  height: 25px;
+}
+
+body[dir="rtl"] .languageIcon {
+  z-index: 99999 !important;
+  position: absolute;
+  right: 78.8%;
+  top: 27px;
+  width: 25px;
+  height: 25px;
+}
+
+.span-foranually {
+  width: 100%;
+  background-color: none;
+  text-align: center;
+  cursor: pointer;
+  /* opacity: 0.7; */
+  border-right: 1px solid #e1e1e1;
+  border-top: 1px solid #e1e1e1;
+  border-bottom: 1px solid #e1e1e1;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  font-weight: 500 !important;
+  height: 25px;
+  margin-top: 3px;
+  padding-top: 2px;
+}
+
+body[dir="rtl"] .span-foranually {
+  border-right: 0px !important;
+  border-left: 1px solid #e1e1e1 !important;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  font-weight: 500 !important;
+}
+
+.languageSelector {
+  position: absolute;
+  right: 0;
+  z-index: 99999 !important;
+  margin-top: 20px;
+  margin-right: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+body[dir="rtl"] .languageSelector {
+  position: absolute;
+  right: 0;
+  z-index: 99999 !important;
+  margin-top: 20px;
+  margin-right: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.MeetingHeading {
+  font-size: 20px !important;
+  color: #5a5a5a !important;
+  font-weight: 700 !important;
+}
+
+body[dir="rtl"] .MeetingHeading {
+  font-weight: 700 !important;
+}
+
+.keypoints {
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+  font-weight: 500 !important;
+}
+
+body[dir="rtl"] .keypoints {
+  font-weight: 500 !important;
+}
+
+.BillingHeading {
+  font-size: 30px !important;
+  color: #5a5a5a !important;
+  font-weight: 700 !important;
+}
+
+body[dir="rtl"] .BillingHeading {
+  font-weight: 700 !important;
+}
+
+.Tableheading {
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .Tableheading {
+  font-weight: 600 !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.ChargesPerLicesense {
+  font-size: 30px !important;
+  color: #5a5a5a !important;
+  font-weight: 700 !important;
+}
+
+body[dir="rtl"] .ChargesPerLicesense {
+  font-weight: 700 !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.TableheadingTotal {
+  font-size: 30px !important;
+  color: #5a5a5a !important;
+  font-weight: 700 !important;
+}
+
+body[dir="rtl"] .TableheadingTotal {
+  font-weight: 700 !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.PayNowButtons {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+}
+
+body[dir="rtl"] .PayNowButtons {
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .ButtonsArabicStylesSpan {
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.PayNowButtons:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+}
+
+.signUp_goBack {
+  color: #000;
+  margin: 21px 0 0 0 !important;
+  text-decoration: underline;
+  cursor: pointer !important;
+  font-weight: 400 !important;
+}
+
+body[dir="rtl"] .signUp_goBack {
+  font-weight: 400 !important;
+}
+
+.Scroller_PakagesSelectionCard {
+  height: 40vh !important;
+  overflow-x: hidden !important;
+  gap: 5px !important;
+}
+
+.Scroller_PakagesSelectionCard::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_PakagesSelectionCard::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}

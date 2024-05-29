@@ -46,14 +46,16 @@ const CustomMiscellaneous = () => {
           return (
             <>
               <Row className="mb-3" key={index}>
-                <Col lg={6} md={6} xs={6}>
+                <Col lg={7} md={7} xs={7}>
                   <Accordian
                     // defaultActiveKey={"0"}
                     eventKey="1"
                     flush
                     className={"ABC" + " " + currentLanguage}
                     AccordioonHeader={
-                      <Card.Title className="fs-4">{data.question}</Card.Title>
+                      <Card.Title className="fs-4 FaqsQuestionsStyles">
+                        {data.question}
+                      </Card.Title>
                     }
                     AccordioonBody={
                       <>
@@ -67,6 +69,7 @@ const CustomMiscellaneous = () => {
           );
         })}
       </section>
+      {fAQsReducer.Loading ? <Loader /> : null}
     </>
   );
 };

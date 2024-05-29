@@ -218,6 +218,7 @@ input#MeetingReminderID::placeholder {
   /* margin-top: 25px; */
   font-size: 20px;
   margin-bottom: 10px;
+  font-weight: 600;
 }
 
 .add-another-agendabutton-div {

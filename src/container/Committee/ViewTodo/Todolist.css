@@ -82,9 +82,10 @@ body[dir="rtl"] .todolist-create-btn button {
   overflow-y: auto;
 }
 
-/* .ToDo .ant-table table {
-  margin-bottom: 10px !important;
-} */
+.Billing_TablePakageSelection {
+  /* min-height: 79vh !important; */
+  overflow-y: auto;
+}
 
 .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell {
   padding: 3px 3px !important;
@@ -94,7 +95,25 @@ body[dir="rtl"] .todolist-create-btn button {
   color: #505050 !important;
 }
 
+.Billing_TablePakageSelection
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell {
+  padding: 3px 3px !important;
+  /* border-radius: 4px !important; */
+  border-top: 1px solid #e1e1e1 !important;
+  border-bottom: 1px solid #e1e1e1 !important;
+  color: #505050 !important;
+}
+
 .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:nth-child(1) {
+  border-left: 1px solid #e1e1e1 !important;
+  border-top-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
+}
+
+.Billing_TablePakageSelection
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell:nth-child(1) {
   border-left: 1px solid #e1e1e1 !important;
   border-top-left-radius: 4px !important;
   border-bottom-left-radius: 4px !important;
@@ -112,7 +131,28 @@ body[dir="rtl"]
   border-left: 0px !important;
 }
 
+body[dir="rtl"]
+  .Billing_TablePakageSelection
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell:nth-child(1) {
+  border-right: 1px solid #e1e1e1 !important;
+  border-top-right-radius: 4px !important;
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 4px !important;
+  border-left: 0px !important;
+}
+
 .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:nth-child(6) {
+  border-right: 1px solid #e1e1e1 !important;
+  border-top-right-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
+  text-align: center;
+}
+
+.Billing_TablePakageSelection
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell:nth-child(6) {
   border-right: 1px solid #e1e1e1 !important;
   border-top-right-radius: 4px !important;
   border-bottom-right-radius: 4px !important;
@@ -132,22 +172,33 @@ body[dir="rtl"]
   text-align: center;
 }
 
+body[dir="rtl"]
+  .Billing_TablePakageSelection
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell:nth-child(6) {
+  border-left: 1px solid #e1e1e1 !important;
+  border-top-left-radius: 4px !important;
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  border-bottom-left-radius: 4px !important;
+  border-right: 0px !important;
+  text-align: center;
+}
+
 /* for todo pagination focus color */
 
 .ToDo .ant-select-item.ant-select-item-option.ant-select-item-option-selected {
   background-color: #e9e9e9 !important;
   font-size: 14px;
   font-weight: bold;
-  /* display      : contents !important; */
 }
 
-/* .Status-Todo .rc-virtual-list-holder-inner {
-  width: 100px !important;
-  overflow: hidden !important;
-  display:flex !important;
-  text-align: center !important; 
-  grid-template-columns: 150px 150px;
-} */
+.Billing_TablePakageSelection
+  .ant-select-item.ant-select-item-option.ant-select-item-option-selected {
+  background-color: #e9e9e9 !important;
+  font-size: 14px;
+  font-weight: bold;
+}
 
 .Status-Todo .ant-select-dropdown.ant-select-dropdown-placement-bottomLeft {
   width: 100px !important;
@@ -188,13 +239,6 @@ body[dir="rtl"]
   width: 100% !important;
 }
 
-/* .ant-table-wrapper.ToDo .ant-table-thead > tr > th {
-  padding: 5px 16px !important;
-} */
-/* .ant-table-wrapper.ToDo table thead tr th:nth-child(3) {
-  padding: 0 0 0 0;
-} */
-
 .ant-table-wrapper.ToDo table thead tr th:nth-child(4) {
   text-align: center !important;
   /* padding: 0 0 0 80px; */
@@ -205,6 +249,19 @@ body[dir="rtl"]
 }
 
 .ant-table-wrapper.ToDo table tbody tr td:nth-child(5) {
+  text-align: center !important;
+}
+
+.ant-table-wrapper.Billing_TablePakageSelection table thead tr th:nth-child(4) {
+  text-align: center !important;
+  /* padding: 0 0 0 80px; */
+}
+
+.ant-table-wrapper.Billing_TablePakageSelection table tbody tr td:nth-child(4) {
+  text-align: center !important;
+}
+
+.ant-table-wrapper.Billing_TablePakageSelection table tbody tr td:nth-child(5) {
   text-align: center !important;
 }
 
@@ -285,6 +342,16 @@ button.btn.btn-primary.meeting.search.me-3.btn.btn-Primary svg {
 
 body[dir="rtl"]
   .ant-table-wrapper.ToDo
+  .ant-table
+  .ant-table-thead
+  > tr
+  > th.deadLineTodo {
+  text-align: center !important;
+  padding-right: 0 !important;
+}
+
+body[dir="rtl"]
+  .ant-table-wrapper.Billing_TablePakageSelection
   .ant-table
   .ant-table-thead
   > tr
@@ -415,6 +482,11 @@ body[dir="rtl"] .PaginationStyle-TodoList {
 td.ant-table-column-sort {
   background: transparent;
 }
+
 .ToDo .ant-table .ant-table-body {
+  padding-right: 10px;
+}
+
+.Billing_TablePakageSelection .ant-table .ant-table-body {
   padding-right: 10px;
 }

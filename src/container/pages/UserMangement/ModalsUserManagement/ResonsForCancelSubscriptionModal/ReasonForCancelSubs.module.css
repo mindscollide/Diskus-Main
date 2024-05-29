@@ -1,0 +1,89 @@
+.AdminAlsoClass {
+  font-size: 16px !important;
+  margin-top: 0;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .AdminAlsoClass {
+  font-weight: 600 !important;
+}
+
+.ResonseModalHeading {
+  font-size: 20px !important;
+  color: #6172d6 !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .ResonseModalHeading {
+  font-weight: 600 !important;
+}
+
+.appliedScroller {
+  height: 60vh !important;
+  overflow-x: hidden !important;
+}
+
+.appliedScroller::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.appliedScroller::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.overAllAlignmentModal {
+  padding: 8px 20px !important;
+}
+
+.NevermindbuttonStyles {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+}
+
+.NevermindbuttonStyles:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .NevermindbuttonStyles {
+  font-weight: 600 !important;
+}
+
+.ContinurToCancelButton {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+
+.ContinurToCancelButton:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .ContinurToCancelButton {
+  font-weight: 600 !important;
+}

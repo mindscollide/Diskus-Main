@@ -85,6 +85,28 @@ import {
 } from "../../commen/functions/date_formater";
 import { getAllUnpublishedMeetingData } from "../../hooks/meetingResponse/response";
 import { GetAdvanceMeetingAgendabyMeetingID } from "./MeetingAgenda_action";
+import { type } from "@testing-library/user-event/dist/cjs/utility/type.js";
+
+const boardDeckModal = (response) => {
+  return {
+    type: actions.BOARD_DECK_MODAL,
+    response: response,
+  };
+};
+
+const boardDeckShareModal = (response) => {
+  return {
+    type: actions.BOARD_DECK_SHARE_MODAL,
+    response: response,
+  };
+};
+
+const boardDeckEmailModal = (response) => {
+  return {
+    type: actions.BOARD_DECK_EMAIL_MODAL,
+    response: response,
+  };
+};
 
 const ClearMessegeMeetingdetails = () => {
   return {
@@ -8374,4 +8396,7 @@ export {
   LeaveCurrentMeetingOtherMenus,
   currentMeetingStatus,
   validateStringEmailApi,
+  boardDeckModal,
+  boardDeckShareModal,
+  boardDeckEmailModal,
 };

@@ -15,6 +15,7 @@ import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_
 import Helper from "../../../../../commen/functions/history_logout";
 import { mqttConnection } from "../../../../../commen/functions/mqttconnection";
 import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
+import { LoginFlowRoutes } from "../../../../../store/actions/UserManagementActions";
 const VerificationCodeThree = () => {
   const { t, i18n } = useTranslation();
   const { Authreducer, LanguageReducer } = useSelector((state) => state);
@@ -105,10 +106,10 @@ const VerificationCodeThree = () => {
       localStorage.setItem("TowApproval", true);
 
       if (roleID === 1 || roleID === 2) {
-        navigate("/Diskus/Admin/");
+        navigate("/Admin/");
       } else {
         console.log("message arrived");
-        if (isFirstLogin != undefined) {
+        if (isFirstLogin !== null && isFirstLogin !== undefined) {
           if (isFirstLogin === true) {
             navigate("/onboard");
           } else {
@@ -130,7 +131,9 @@ const VerificationCodeThree = () => {
       }
     } else {
       localStorage.setItem("TowApproval", false);
-      navigate("/SigninDenied/");
+      console.log("TowApproval");
+      dispatch(LoginFlowRoutes(7));
+      // navigate("/SigninDenied/");
     }
   };
 

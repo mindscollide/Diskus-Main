@@ -1,0 +1,110 @@
+.UserLevelConfig_Heading {
+  font-size: 30px !important;
+  color: #6172d6 !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .UserLevelConfig_Heading {
+  font-weight: 600 !important;
+}
+
+.UserConfigsContainer {
+  width: 93% !important;
+  margin: 0px auto !important;
+}
+
+.Options_headings {
+  font-size: 20px !important;
+  color: #5a5a5a;
+  font-weight: 500 !important;
+}
+
+body[dir="rtl"] .Options_headings {
+  font-weight: 500 !important;
+}
+
+.Options_headings_active {
+  font-size: 20px !important;
+  color: #5a5a5a;
+  font-weight: 800 !important;
+}
+
+body[dir="rtl"] .Options_headings_active {
+  font-weight: 800 !important;
+}
+
+.Padding_around_class {
+  padding: 0px 45px !important;
+}
+
+.Class_CheckBox {
+  font-size: 16px !important;
+  color: #5a5a5a;
+  font-weight: 500 !important;
+}
+
+body[dir="rtl"] .Class_CheckBox {
+  font-weight: 500 !important;
+}
+
+.Diskus_calender {
+  font-size: 16px !important;
+  color: #5a5a5a;
+  font-weight: 500 !important;
+}
+
+body[dir="rtl"] .Diskus_calender {
+  font-weight: 500 !important;
+}
+.Diskus_calender_microsoft {
+  font-size: 16px !important;
+  color: #5a5a5a;
+  font-weight: 500 !important;
+  width: 120px !important;
+}
+
+body[dir="rtl"] .Diskus_calender_microsoft {
+  font-weight: 500 !important;
+}
+
+.BackGround_Calender_color_box {
+  width: 262px !important;
+  height: 71px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+}
+
+.Committee_material {
+  /* margin-left: -48px !important; */
+}
+.user-setting-row {
+  height: calc(80vh - 65px);
+}
+
+.New_settings_Update_Button {
+  width: 160px;
+  background-color: #6172d6;
+  border-radius: 4px;
+  color: #fff;
+  border: none;
+  font-weight: 500 !important;
+  font-size: 14px;
+}
+
+body[dir="rtl"] .New_settings_Update_Button {
+  font-weight: 500 !important;
+}
+
+.New_settings_Update_Button:hover,
+.New_settings_Update_Button:active,
+.New_settings_Update_Button:focus,
+.New_settings_Update_Button:focus-visible {
+  width: 160px !important;
+  background-color: #6172d6 !important;
+  border-radius: 4px !important;
+  color: #fff !important;
+  border: none !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+}

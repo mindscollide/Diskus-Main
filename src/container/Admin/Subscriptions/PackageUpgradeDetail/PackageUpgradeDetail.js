@@ -218,7 +218,7 @@ const PackageUpgradeDetail = () => {
           >
             <Link
               className={styles["goBackLink"]}
-              to="/Diskus/Admin/UpgradePackage"
+              to="/Admin/UpgradePackage"
             >
               {t("Go-back")}
             </Link>

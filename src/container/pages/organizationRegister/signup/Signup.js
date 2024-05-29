@@ -132,6 +132,7 @@ const Signup = () => {
     }
   }, [location.state]);
   const countryOnSelect = (code) => {
+    console.log(code, "countryOnSelect");
     setSelect(code);
     let a = Object.values(countryNames).find((obj) => {
       return obj.shortCode === code;
@@ -146,7 +147,10 @@ const Signup = () => {
     });
   };
 
-  console.log(signUpDetails.CountryName, "CountryNameCountryNameCountryName");
+  console.log(
+    signUpDetails.CountryName.errorMessage,
+    "CountryNameCountryNameCountryName"
+  );
   console.log(
     signUpDetails.CountryName.value,
     "CountryNameCountryNameCountryName"

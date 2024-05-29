@@ -519,8 +519,9 @@ body[dir="rtl"] .Cancel-btn {
 }
 
 label.logout-confirmation-label {
-  font-weight: bold;
-  font-size: 18px;
+  font-weight: 600 !important;
+  font-size: 20px !important;
+  color: #5a5a5a !important;
 }
 
 body[dir="rtl"] label.logout-confirmation-label {
@@ -628,4 +629,51 @@ body[dir="rtl"] .header2-container {
   left: 0 !important;
   width: 100% !important;
   top: 29px !important;
+}
+
+.UpgradeButtonsClass {
+  display: flex !important;
+  gap: 10px !important;
+  margin-left: 150px !important;
+}
+
+.UpgradeNowbutton {
+  height: 39px !important;
+  font-size: 14px !important;
+  border-radius: 4px !important;
+  border: none !important;
+  background: #fff !important;
+  font-weight: 600 !important;
+  color: #5a5a5a !important;
+}
+
+.UpgradeNowbutton:is(:hover, :focus, :focus-visible, :active) {
+  font-size: 14px !important;
+  height: 39px !important;
+  border-radius: 4px !important;
+  border: none !important;
+  background: #fff !important;
+  font-weight: 600 !important;
+  color: #5a5a5a !important;
+}
+
+body[dir="rtl"] .UpgradeNowbutton {
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .UpgradeButtonsClass {
+  margin-right: 150px !important;
+}
+
+.trialExpireButton {
+  padding: 8px 30px !important;
+  font-size: 14px !important;
+  border-radius: 4px !important;
+  border: 1px solid #f16b6b !important;
+  background: #ffdcdc !important;
+  font-weight: 600 !important;
+}
+
+.InnerText {
+  color: #f16b6b !important;
 }

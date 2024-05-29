@@ -36,6 +36,7 @@ import {
 } from "../../../../store/actions/NewMeetingActions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { checkFeatureIDAvailability } from "../../../../commen/functions/utils";
 const SceduleMeeting = ({
   setEdiorRole,
   setEditMeeting,
@@ -415,16 +416,18 @@ const SceduleMeeting = ({
                       // onClick={handleClickOrganizers}
                       onClick={showOrganizers}
                     />
-                    <Button
-                      disableBtn={Number(currentMeeting) === 0 ? true : false}
-                      text={t("Agenda-contributors")}
-                      className={
-                        agendaContributors === true
-                          ? styles["Schedule_meetings_options_active"]
-                          : styles["Schedule_meetings_options"]
-                      }
-                      onClick={showAgendaContributers}
-                    />
+                    {checkFeatureIDAvailability(11) ? (
+                      <Button
+                        disableBtn={Number(currentMeeting) === 0 ? true : false}
+                        text={t("Agenda-contributors")}
+                        className={
+                          agendaContributors === true
+                            ? styles["Schedule_meetings_options_active"]
+                            : styles["Schedule_meetings_options"]
+                        }
+                        onClick={showAgendaContributers}
+                      />
+                    ) : null}
                     <Button
                       disableBtn={Number(currentMeeting) === 0 ? true : false}
                       text={t("Participants")}
@@ -435,16 +438,18 @@ const SceduleMeeting = ({
                       }
                       onClick={showParticipants}
                     />
-                    <Button
-                      disableBtn={Number(currentMeeting) === 0 ? true : false}
-                      text={t("Agenda-builder")}
-                      className={
-                        agenda === true
-                          ? styles["Schedule_meetings_options_active"]
-                          : styles["Schedule_meetings_options"]
-                      }
-                      onClick={showAgenda}
-                    />
+                    {checkFeatureIDAvailability(10) ? (
+                      <Button
+                        disableBtn={Number(currentMeeting) === 0 ? true : false}
+                        text={t("Agenda-builder")}
+                        className={
+                          agenda === true
+                            ? styles["Schedule_meetings_options_active"]
+                            : styles["Schedule_meetings_options"]
+                        }
+                        onClick={showAgenda}
+                      />
+                    ) : null}
                     <Button
                       disableBtn={Number(currentMeeting) === 0 ? true : false}
                       text={t("Agenda-viewer")}

@@ -9,17 +9,13 @@ import {
   TextField,
   Checkbox,
   Notification,
-  Loader,
 } from "../../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
-import {
-  regexOnlyForNumberNCharacters,
-  validateInput,
-} from "../../../../../../commen/functions/regex";
+import { validateInput } from "../../../../../../commen/functions/regex";
 import WhiteCrossIcon from "../../../../../../assets/images/PollCrossIcon.svg";
 import plusFaddes from "../../../../../../assets/images/NewBluePLus.svg";
 import DatePicker, { DateObject } from "react-multi-date-picker";
@@ -28,8 +24,6 @@ import moment from "moment";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import Profile from "../../../../../../assets/images/newprofile.png";
-import GroupIcon from "../../../../../../assets/images/groupdropdown.svg";
 import RedCross from "../../../../../../assets/images/CrossIcon.svg";
 import UnsavedPollsMeeting from "./UnsavedPollsMeeting/UnsavedPollsMeeting";
 import {

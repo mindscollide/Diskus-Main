@@ -1,0 +1,69 @@
+.CancelMessegeHeading {
+  font-size: 30px !important;
+  white-space: nowrap !important;
+  color: #6172d6 !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .CancelMessegeHeading {
+  font-weight: 600 !important;
+}
+
+.messegeStyles {
+  font-size: 20px !important;
+  white-space: nowrap !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .messegeStyles {
+  font-weight: 600 !important;
+}
+
+.NoButtonStyles {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+}
+
+.NoButtonStyles:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .NoButtonStyles {
+  font-weight: 600 !important;
+}
+
+.YesButtonStyles {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+
+.YesButtonStyles:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .YesButtonStyles {
+  font-weight: 600 !important;
+}

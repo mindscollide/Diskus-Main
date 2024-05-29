@@ -24,10 +24,11 @@ const getCalendarDataSuccess = (response, flag, message) => {
   };
 };
 
-const getCalendarDataFail = (message) => {
+const getCalendarDataFail = (message, flag) => {
   return {
     type: actions.GET_DATA_FOR_CALENDAR_FAIL,
     message: message,
+    flag: flag,
   };
 };
 
@@ -36,17 +37,17 @@ const clearCalendarState = () => {
     type: actions.CLEAR_CALENDAR_STATE,
   };
 };
-const calendarLoader = (payload) => {
+const calendarLoader = (loader) => {
   return {
     type: actions.CALENDAR_LOADER,
-    payload: payload,
+    payload: loader,
   };
 };
 const getCalendarDataResponse = (navigate, t, data, flag) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     try {
-      dispatch(getCalendarDataInit(flag));
+      // dispatch(getCalendarDataInit(flag));
       dispatch(calendarLoader(true));
       let form = new FormData();
       form.append("RequestMethod", calendarDataRequest.RequestMethod);
@@ -80,6 +81,7 @@ const getCalendarDataResponse = (navigate, t, data, flag) => {
                   )
                 );
                 dispatch(calendarLoader(false));
+                // dispatch(getCalendarDataInit(false));
               } else if (
                 response.data.responseResult.responseMessage
                   .toLowerCase()
@@ -87,7 +89,9 @@ const getCalendarDataResponse = (navigate, t, data, flag) => {
                     "Calender_CalenderServiceManager_GetCalenderList_02".toLowerCase()
                   )
               ) {
-                await dispatch(getCalendarDataFail(t("No-records-found")));
+                await dispatch(
+                  getCalendarDataFail(t("No-records-found"), false)
+                );
                 dispatch(calendarLoader(false));
               } else if (
                 response.data.responseResult.responseMessage
@@ -96,26 +100,39 @@ const getCalendarDataResponse = (navigate, t, data, flag) => {
                     "Calender_CalenderServiceManager_GetCalenderList_03".toLowerCase()
                   )
               ) {
-                await dispatch(getCalendarDataFail(t("Something-went-wrong")));
+                await dispatch(
+                  getCalendarDataFail(t("Something-went-wrong"), false)
+                );
                 dispatch(calendarLoader(false));
+                // dispatch(getCalendarDataInit(false));
               } else {
-                await dispatch(getCalendarDataFail(t("Something-went-wrong")));
+                await dispatch(
+                  getCalendarDataFail(t("Something-went-wrong"), false)
+                );
                 dispatch(calendarLoader(false));
+                // dispatch(getCalendarDataInit(false));
               }
 
               //   dispatch(SetLoaderFalse());
             } else {
-              await dispatch(getCalendarDataFail(t("Something-went-wrong")));
+              await dispatch(
+                getCalendarDataFail(t("Something-went-wrong"), false)
+              );
               dispatch(calendarLoader(false));
+              // dispatch(getCalendarDataInit(false));
             }
           } else {
-            await dispatch(getCalendarDataFail(t("Something-went-wrong")));
+            await dispatch(
+              getCalendarDataFail(t("Something-went-wrong"), false)
+            );
             dispatch(calendarLoader(false));
+            // dispatch(getCalendarDataInit(false));
           }
         })
         .catch((response) => {
-          dispatch(getCalendarDataFail(t("Something-went-wrong")));
+          dispatch(getCalendarDataFail(t("Something-went-wrong"), false));
           dispatch(calendarLoader(false));
+          // dispatch(getCalendarDataInit(false));
         });
     } catch (error) {
       console.log(error, "errorerrorerrorerrorerror");
@@ -168,7 +185,11 @@ const getCalendarDataResponseMQTT = (navigate, t, data, flag) => {
                     "Calender_CalenderServiceManager_GetCalenderList_02".toLowerCase()
                   )
               ) {
-                await dispatch(getCalendarDataFail(t("No-records-found")));
+                await dispatch(
+                  getCalendarDataFail(t("No-records-found"), false)
+                );
+                // dispatch(getCalendarDataInit(false));
+
                 // dispatch(calendarLoader(false));
               } else if (
                 response.data.responseResult.responseMessage
@@ -177,25 +198,43 @@ const getCalendarDataResponseMQTT = (navigate, t, data, flag) => {
                     "Calender_CalenderServiceManager_GetCalenderList_03".toLowerCase()
                   )
               ) {
-                await dispatch(getCalendarDataFail(t("Something-went-wrong")));
+                await dispatch(
+                  getCalendarDataFail(t("Something-went-wrong"), false)
+                );
+                dispatch(getCalendarDataInit(false));
+
                 // dispatch(calendarLoader(false));
               } else {
-                await dispatch(getCalendarDataFail(t("Something-went-wrong")));
+                await dispatch(
+                  getCalendarDataFail(t("Something-went-wrong"), false)
+                );
+                dispatch(getCalendarDataInit(false));
+
                 // dispatch(calendarLoader(false));
               }
 
               //   dispatch(SetLoaderFalse());
             } else {
-              await dispatch(getCalendarDataFail(t("Something-went-wrong")));
+              await dispatch(
+                getCalendarDataFail(t("Something-went-wrong"), false)
+              );
+              // dispatch(getCalendarDataInit(false));
+
               // dispatch(calendarLoader(false));
             }
           } else {
-            await dispatch(getCalendarDataFail(t("Something-went-wrong")));
+            await dispatch(
+              getCalendarDataFail(t("Something-went-wrong"), false)
+            );
+            dispatch(getCalendarDataInit(false));
+
             // dispatch(calendarLoader(false));
           }
         })
         .catch((response) => {
-          dispatch(getCalendarDataFail(t("Something-went-wrong")));
+          dispatch(getCalendarDataFail(t("Something-went-wrong"), false));
+          // dispatch(getCalendarDataInit(false));
+
           // dispatch(calendarLoader(false));
         });
     } catch (error) {

@@ -367,19 +367,18 @@ const TodoList = () => {
       title: t("Deadline"),
       dataIndex: "deadlineDateTime",
       key: "deadlineDateTime",
-      // className: "deadLineTodo",
-      width: "280px",
+      ellipsis: true,
       align: "center",
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
         utcConvertintoGMT(a.deadlineDateTime) -
         utcConvertintoGMT(b.deadlineDateTime),
-      // width: "220px",
+
       render: (text, record) => {
         return (
-          <p className="text-nowrap text-center m-0 p-0">
+          <span className="text-nowrap text-center">
             {newTimeFormaterAsPerUTCFullDate(record.deadlineDateTime)}
-          </p>
+          </span>
         );
       },
     },

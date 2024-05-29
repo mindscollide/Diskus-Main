@@ -1,0 +1,402 @@
+.EmailVerifyBox {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 380px !important;
+  height: auto;
+  padding: 30px 41px !important;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  margin: 0px 40px;
+}
+
+.signIn_heading {
+  font-size: calc(35px - 20%) !important;
+  user-select: none;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .signIn_heading {
+  font-size: calc(33px - 20%) !important;
+  user-select: none;
+  color: #6172d6;
+  font-weight: 600 !important;
+}
+
+.RememberEmail {
+  font-size: calc(16px - 20%) !important;
+  border-radius: 4px;
+  /* margin-top: 5px; */
+}
+
+.Remember-Email-text {
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+  font-weight: 400 !important;
+}
+
+body[dir="rtl"] .Remember-Email-text {
+  font-weight: 400 !important;
+}
+
+.havent-subscribed-text {
+  display: flex;
+  justify-content: center;
+  font-size: calc(16px - 20%) !important;
+  color: #5a5a5a !important;
+  font-weight: 500 !important;
+}
+
+.Next_button_EmailVerify {
+  width: 100%;
+  padding: 10px 30px !important;
+  border-radius: 4px;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  font-size: 12px !important;
+}
+
+.PaymentSucessfull {
+  font-weight: 600 !important;
+  color: #6172d6 !important;
+  font-size: 30px !important;
+}
+
+.PaymentSucessfullWait {
+  font-weight: 600 !important;
+  color: #6172d6 !important;
+  font-size: 20px !important;
+}
+
+body[dir="rtl"] .Next_button_EmailVerify {
+  font-weight: 600 !important;
+}
+
+.Next_button_EmailVerify:focus-visible {
+  width: 100%;
+  border-radius: 4px;
+  padding: 10px 30px !important;
+  font-size: 12px !important;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  font-weight: 600 !important;
+  text-transform: uppercase;
+}
+
+.subscribNow_button_EmailVerify {
+  width: 100%;
+  border-radius: 4px;
+  padding: 10px 30px !important;
+  /* font-size: calc(18px - 20%) !important; */
+  font-size: 12px !important;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  font-weight: 600 !important;
+  text-transform: uppercase;
+}
+
+body[dir="rtl"] .subscribNow_button_EmailVerify {
+  font-weight: 600 !important;
+}
+
+.subscribNow_button_EmailVerify:focus-visible {
+  width: 100%;
+  border-radius: 4px;
+  padding: 10px 30px !important;
+  /* font-size: calc(18px - 20%) !important; */
+  font-size: 12px !important;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  font-weight: 600 !important;
+  text-transform: uppercase;
+}
+
+/* .subscribNow_button_EmailVerify {
+    width: 280px;
+    border-radius: 1px;
+  } */
+
+.Auth_Icon {
+  position: fixed;
+  right: -115px;
+  bottom: -190px;
+  transform: rotate(0deg);
+  z-index: 0;
+}
+
+body[dir="rtl"] .Auth_Icon {
+  transform: rotate(0deg) scaleX(-1);
+  right: auto !important;
+  left: -190px;
+}
+
+/* .signInError {
+      background-color: #fff !important;
+      color: #000 !important;
+  } */
+.Login_page_text {
+  display: flex;
+  margin-top: 10%;
+  flex-direction: column;
+  margin-left: 20px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.Login_page_text h1 {
+  font-size: calc(60px - 20%) !important;
+  font-weight: 600 !important;
+  margin: 0 !important;
+  width: 100%;
+  white-space: nowrap;
+  z-index: 1;
+}
+
+.loginbox_auth_paper {
+  margin-left: 60px;
+  padding: 30px 25px;
+  border-radius: 4px;
+  max-width: 380px;
+  border: 1px solid #e1e1e1 !important;
+}
+
+body[dir="rtl"] .loginbox_auth_paper {
+  margin-right: 60px;
+  padding: 30px 0;
+  border-radius: 4px;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.inputEmailField {
+  border-radius: 4px !important;
+  height: 39px !important;
+}
+
+body[dir="rtl"] .inputEmailField {
+  font-weight: 500 !important;
+}
+
+.inputEmailField:focus,
+.inputEmailField:focus-visible {
+  border: 1px solid #e1e1e1 !important;
+  height: 30px;
+}
+
+.inputEmailField::placeholder {
+  color: #171d2d !important;
+  opacity: 50%;
+}
+
+.heading-1 {
+  color: #6172d6;
+}
+
+body[dir="rtl"] .heading-1 {
+  font-weight: 600 !important;
+  font-size: 70px !important;
+  /* letter-spacing: 3xpx; */
+}
+
+body[dir="rtl"] .heading-2 {
+  font-weight: 600 !important;
+  font-size: 60px !important;
+}
+
+.heading-2 {
+  color: #6172d6;
+}
+
+.forogt_email_link {
+  display: flex;
+  justify-content: center;
+  text-decoration: underline;
+  font-weight: 400 !important;
+  font-size: calc(16px - 20%) !important;
+  margin-bottom: 20px;
+}
+
+.forogt_email_link a {
+  color: #171d2d !important;
+}
+
+.signup-text-inloginpage {
+  display: flex;
+  justify-content: center;
+  font-size: 10px !important;
+  color: #5a5a5a !important;
+  font-weight: 400 !important;
+  font-size: calc(16px - 20%) !important;
+}
+
+body[dir="rtl"] .signup-text-inloginpage {
+  font-weight: 400 !important;
+}
+
+.errorMessage-inLogin {
+  margin: 2px;
+  height: 13px;
+  color: #f16b6b;
+  visibility: visible;
+  font-weight: 500 !important;
+}
+
+body[dir="rtl"] .errorMessage-inLogin {
+  font-weight: 500 !important;
+}
+
+.errorMessage-inLogin_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 0px;
+  color: #f16b6b;
+}
+
+.select-language-signin {
+  position: absolute;
+  overflow: hidden !important;
+  top: 30px;
+  right: 150px;
+  padding: 0 50px !important;
+  z-index: 9999;
+  height: 2.9em !important;
+  border: 1px solid #e1e1e1 !important;
+  box-shadow: none !important;
+  font-weight: 600 !important;
+  border-radius: 4px;
+  width: 181px !important;
+  height: 38px !important;
+}
+
+.select-language-signin:focus,
+.select-language-signin:focus-within,
+.select-language-signin:focus-visible {
+  border: 1px solid #e1e1e1 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+body[dir="rtl"] .select-language-signin {
+  position: absolute;
+  overflow: hidden !important;
+  top: 30px;
+  right: 80%;
+  padding: 0 50px !important;
+  z-index: 9999;
+  height: 2.9em !important;
+  border: 1px solid #e1e1e1 !important;
+  box-shadow: none !important;
+  font-weight: 700 !important;
+  border-radius: 4px;
+  width: 181px !important;
+  height: 38px !important;
+}
+
+.languageIcon {
+  z-index: 99999 !important;
+  position: absolute;
+  right: 295px;
+  top: 38px;
+  width: 25px;
+  height: 25px;
+}
+
+body[dir="rtl"] .languageIcon {
+  z-index: 99999 !important;
+  position: absolute;
+  right: 80%;
+  margin-right: 11px;
+  top: 37px;
+  width: 25px;
+  height: 25px;
+}
+
+.Remember_checkbox_styles {
+  font-weight: 500 !important;
+  color: #5a5a5a !important;
+}
+
+.languageSelector {
+  position: absolute;
+  right: 100px;
+  z-index: 99999 !important;
+  margin-top: 30px !important;
+  margin-right: 0 !important;
+  display: flex;
+  justify-content: flex-end;
+}
+
+body[dir="rtl"] .languageSelector {
+  position: absolute;
+  right: -100px;
+  z-index: 99999 !important;
+  margin-top: 50px !important;
+  margin-right: 0 !important;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.SignInEmailBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 88vh;
+}
+
+.languageSelector {
+  position: absolute;
+  right: 100px;
+  z-index: 99999 !important;
+  margin-top: 50px !important;
+  margin-right: 0 !important;
+  display: flex;
+  justify-content: flex-end;
+}
+
+body[dir="rtl"] .languageSelector {
+  position: absolute;
+  right: -100px;
+  z-index: 99999 !important;
+  margin-top: 50px !important;
+  margin-right: 0 !important;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.freetrail_heading {
+  color: #fff !important;
+  font-weight: 500 !important;
+  font-size: 16px !important;
+}
+
+.Free-Trial_btn {
+  color: #5a5a5a;
+  background-color: #fff;
+  padding: 8px 20px;
+  font-weight: 600 !important;
+  border-radius: 4px;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.freetrail_banner {
+  position: relative;
+  background-color: #6172d6;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 8px 0;
+  margin-top: 20px;
+  border-radius: 4px;
+}

@@ -242,7 +242,14 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       ),
       dataIndex: "InvoiceNo",
       key: "InvoiceNo",
-      width: "150px",
+      align: "left",
+      render: (text, record) => {
+        return (
+          <>
+            <span className={styles["NameStylesTable"]}>{text}</span>
+          </>
+        );
+      },
     },
     {
       title: (
@@ -250,9 +257,15 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       ),
       dataIndex: "invoiceDate",
       key: "invoiceDate",
-      width: "10rem",
+      align: "center",
       render: (text, data) => {
-        return <span>{_justShowDateformatBilling(text)}</span>;
+        return (
+          <>
+            <span className={styles["DesignationStyles"]}>
+              {_justShowDateformatBilling(text)}
+            </span>
+          </>
+        );
       },
     },
     {
@@ -261,18 +274,28 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       ),
       dataIndex: "paymentdate",
       key: "paymentdate",
-      width: "10rem",
+      align: "center",
       render: (text, data) => {
-        return <span>{_justShowDateformatBilling(text)}</span>;
+        return (
+          <>
+            <span className={styles["DesignationStyles"]}>
+              {_justShowDateformatBilling(text)}
+            </span>
+          </>
+        );
       },
     },
     {
       title: t("Paid-amount"),
       dataIndex: "paidamount",
       key: "paidamount",
-      width: "13rem",
+      align: "center",
       render: (text, data) => {
-        return <span>${text}</span>;
+        return (
+          <>
+            <span className={styles["DesignationStyles"]}>${text}</span>
+          </>
+        );
       },
     },
   ];
@@ -508,10 +531,17 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     <>
       <Container>
         <Row className={styles["filterdrow"]}>
-          <Col lg={4} md={4} sm={12} xs={12}>
+          <Col
+            lg={7}
+            md={7}
+            sm={12}
+            xs={12}
+            className="d-flex gap-3 align-items-center"
+          >
             <label className={styles["Edit-Main-Heading"]}>
               {t("Payment-history")}
             </label>
+            <Button text={"Download"} className={styles["DownloadButton"]} />
           </Col>
           <Col
             lg={5}
@@ -540,7 +570,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
               />
             </div>
           </Col>
-          <Col lg={3} md={3} sm={false} xs={12} />
         </Row>
 
         <Row className={styles["tablecolumnrow"]}>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { NavbarAdmin } from "../../../components/layout";
 import Header2 from "../../../components/layout/header2/Header2";
 import ar_EG from "antd/es/locale/ar_EG";
@@ -9,7 +9,9 @@ import Helper from "../../../commen/functions/history_logout";
 import { getSocketConnection } from "../../../commen/apis/Api_ends_points";
 import IconMetroAttachment from "../../../assets/images/newElements/Icon metro-attachment.svg";
 import {
+  Button,
   Loader,
+  Modal,
   NotificationBar,
   Subscriptionwarningline,
 } from "../../../components/elements";
@@ -22,15 +24,22 @@ import { _justShowDateformat } from "../../../commen/functions/date_formater";
 import { setLoader } from "../../../store/actions/Auth2_actions";
 import { mqttConnection } from "../../../commen/functions/mqttconnection";
 import { ConfigProvider } from "antd";
+import { Col, Row } from "react-bootstrap";
 // import { GetSubscriptionPackages } from "../../../store/reducers";
+import VerificationFailedIcon from "../../../assets/images/failed.png";
+import { userLogOutApiFunc } from "../../../store/actions/Auth_Sign_Out";
+import { getLocalStorageItemNonActiveCheck } from "../../../commen/functions/utils";
+import UpgradeNowModal from "../../pages/UserMangement/ModalsUserManagement/UpgradeNowModal/UpgradeNowModal";
 
 const AdminHome = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const state = useSelector((state) => state);
   // settingReducer.Loading;
+  const location = useLocation();
   const { GetSubscriptionPackage, settingReducer, UserReportReducer } = state;
   const [currentLanguge, setCurrentLanguage] = useState("en");
+  const [flagForStopRerendring, setFlagForStopRerendring] = useState(false);
   const { t } = useTranslation();
   const [client, setClient] = useState(null);
   let createrID = localStorage.getItem("userID");
@@ -48,6 +57,9 @@ const AdminHome = () => {
     message: "",
   });
   let newClient = Helper.socket;
+  const TrialExpireSelectPac = getLocalStorageItemNonActiveCheck(
+    "TrialExpireSelectPac"
+  );
   const closeNotification = () => {
     setNotification({
       notificationShow: false,
@@ -57,6 +69,8 @@ const AdminHome = () => {
   useEffect(() => {
     setCurrentLanguage(currentLanguageSelect);
   }, [currentLanguageSelect]);
+
+  console.log("location.pathname", location.pathname);
 
   const onMessageArrived = (msg) => {
     let data = JSON.parse(msg.payloadString);
@@ -137,17 +151,21 @@ const AdminHome = () => {
 
   useEffect(() => {
     console.log("Connected to MQTT broker onConnectionLost useEffect");
-    if (Helper.socket === null) {
-      let userID = localStorage.getItem("userID");
-      mqttConnection(userID);
+    if(!flagForStopRerendring){
+      if (Helper.socket === null) {
+        let userID = localStorage.getItem("userID");
+        mqttConnection(userID);
+      }
+      if (newClient != null) {
+        // newClient.onConnected = onConnected; // Callback when connected
+        newClient.onConnectionLost = onConnectionLost; // Callback when lost connection
+        // newClient.disconnectedPublishing = true; // Enable disconnected publishing
+        newClient.onMessageArrived = onMessageArrived;
+      }
+      setFlagForStopRerendring(true)
     }
-    if (newClient != null) {
-      // newClient.onConnected = onConnected; // Callback when connected
-      newClient.onConnectionLost = onConnectionLost; // Callback when lost connection
-      // newClient.disconnectedPublishing = true; // Enable disconnected publishing
-      newClient.onMessageArrived = onMessageArrived;
-    }
-  }, []);
+   
+  }, [flagForStopRerendring]);
 
   // useEffect(() => {
   //   mqttConnection();
@@ -157,16 +175,10 @@ const AdminHome = () => {
   //   newClient.onMessageArrived = onMessageArrived;
   // }, []);
   useEffect(() => {
-    if (roleID !== 3) {
-      dispatch(getPackageExpiryDetail(navigate, JSON.parse(OrganizationID), t));
-    }
+    // if (roleID !== 3) {
+    //   dispatch(getPackageExpiryDetail(navigate, JSON.parse(OrganizationID), t));
+    // }
   }, []);
-  useEffect(() => {
-    console.log(
-      "isExpiry color",
-      GetSubscriptionPackage.getPackageExpiryDetailResponse
-    );
-  }, [GetSubscriptionPackage.getPackageExpiryDetailResponse]);
 
   return (
     <>
@@ -203,6 +215,9 @@ const AdminHome = () => {
           id={notificationID}
         />
         <Outlet />
+        {TrialExpireSelectPac && (
+          <UpgradeNowModal />
+          )}
         {settingReducer.Loading || UserReportReducer.Loading ? (
           <Loader />
         ) : null}
