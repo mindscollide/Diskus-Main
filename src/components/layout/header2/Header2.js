@@ -44,7 +44,10 @@ import {
 } from "../../../store/actions/UserMangementModalActions.js";
 import RequestExtensionModal from "../../../container/pages/UserMangement/ModalsUserManagement/RequestExtentionModal/RequestExtensionModal.js";
 import { getCurrentDateTimeUTC } from "../../../commen/functions/date_formater.js";
-import { getLocalStorageItemNonActiveCheck } from "../../../commen/functions/utils";
+import {
+  checkFeatureIDAvailability,
+  getLocalStorageItemNonActiveCheck,
+} from "../../../commen/functions/utils";
 import { requestOrganizationExtendApi } from "../../../store/actions/UserManagementActions.js";
 
 const Header2 = () => {
@@ -424,7 +427,6 @@ const Header2 = () => {
                         disabled={true}
                         className="text-black"
                       >
-                        {/* Change Password */}
                         {t("Customer-information")}
                       </Nav.Link>
                     </Dropdown.Item>
@@ -799,20 +801,24 @@ const Header2 = () => {
                             {t("User-dashboard")}
                           </Nav.Link>
                         </Dropdown.Item>
-                        <Dropdown.Item
-                          className={`${" text-black"} ${currentLanguage}`}
-                          onClick={handleModalCustomerInformation}
-                          // onClick={() => forgotPasswordCheck()}
-                        >
-                          <Nav.Link
-                            as={Link}
-                            to="CustomerInformation"
-                            className="text-black FontClass"
-                          >
-                            {/* Change Password */}
-                            {t("Customer-information")}
-                          </Nav.Link>
-                        </Dropdown.Item>
+                        {checkFeatureIDAvailability(1) ? (
+                          <>
+                            <Dropdown.Item
+                              className={`${" text-black"} ${currentLanguage}`}
+                              onClick={handleModalCustomerInformation}
+                              // onClick={() => forgotPasswordCheck()}
+                            >
+                              <Nav.Link
+                                as={Link}
+                                to="CustomerInformation"
+                                className="text-black FontClass"
+                              >
+                                {/* Change Password */}
+                                {t("Customer-information")}
+                              </Nav.Link>
+                            </Dropdown.Item>
+                          </>
+                        ) : null}
                         <Dropdown.Item
                           className={currentLanguage}
                           onClick={modalUserProfileHandler}
