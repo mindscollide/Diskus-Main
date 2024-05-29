@@ -31,18 +31,17 @@ export function checkFeatureID(id) {
 
 //Export function userFeatures from the Response
 export function updateLocalUserRoutes(userFeatures, LocalUserRoutes) {
-  console.log("updateLocalUserRoutes",userFeatures)
-  console.log("updateLocalUserRoutes",LocalUserRoutes)
   let user = [
     { id: 1, name: "Meeting" },
     { id: 12, name: "Meeting" },
-    { id: 19, name: "signatureviewer" },
-    { id: 20, name: "documentViewer" },
-    { id: 21, name: "signatureviewer" },
-    { id: 2, name: "dataroom" },
-    { id: 19, name: "dataroom" },
-    { id: 21, name: "dataroom" },
+    { id: 9, name: "Meeting" },
+    { id: 1, name: "Meeting/Useravailabilityformeeting" },
+    { id: 9, name: "Meeting/Useravailabilityformeeting" },
+    { id: 12, name: "Meeting/Useravailabilityformeeting" },
     { id: 13, name: "dataroom" },
+    { id: 19, name: "signatureviewer" },
+    { id: 21, name: "signatureviewer" },
+    { id: 20, name: "documentViewer" },
     { id: 6, name: "notes" },
     { id: 7, name: "calendar" },
     { id: 14, name: "todolist" },
@@ -50,14 +49,6 @@ export function updateLocalUserRoutes(userFeatures, LocalUserRoutes) {
     { id: 17, name: "groups" },
     { id: 48, name: "committee" },
     { id: 18, name: "resolution" },
-    { id: 9, name: "Meeting" },
-    { id: 10, name: "Meeting" },
-    { id: 11, name: "Meeting" },
-    { id: 1, name: "Meeting/Useravailabilityformeeting" },
-    { id: 9, name: "Meeting/Useravailabilityformeeting" },
-    { id: 10, name: "Meeting/Useravailabilityformeeting" },
-    { id: 11, name: "Meeting/Useravailabilityformeeting" },
-    { id: 12, name: "Meeting/Useravailabilityformeeting" },
   ];
   try {
     // Iterate through each feature from the API response
@@ -91,12 +82,11 @@ export function updateAdminRoutes(adminFeatures, LocalAdminRoutes) {
     { id: 26, name: "ManageUsers" },
     { id: 27, name: "ManageUsers" },
     { id: 31, name: "ManageUsers" },
-    { id: 32, name: "ManageUsers" },
     { id: 28, name: "PackageDetailsUserManagement" },
     { id: 28, name: "PakageDetailsUserManagement" },
     { id: 29, name: "CancelSubscriptionUserManagement" },
     { id: 30, name: "deleteorganizationUserMangement" },
-    { id: 19, name: "CustomerInformation" },
+    { id: 45, name: "CustomerInformation" },
     { id: 33, name: "PayOutstanding" },
     { id: 34, name: "Summary" },
     { id: 35, name: "loginreport" },
@@ -147,7 +137,6 @@ export function updateAdminRoutes(adminFeatures, LocalAdminRoutes) {
 // for enter posword state management and routes management
 // Export the handleLoginResponse function
 export async function handleLoginResponse(response) {
-  console.log(response, "handleLoginResponsehandleLoginResponse");
   try {
     if (response.organizationID) {
       localStorage.setItem("organizationID", response.organizationID);
