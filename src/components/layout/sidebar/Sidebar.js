@@ -726,7 +726,8 @@ const Sidebar = () => {
               <>
                 {/* Meeting Menu */}
                 {checkFeatureIDAvailability(1) ||
-                checkFeatureIDAvailability(12) ? (
+                checkFeatureIDAvailability(12) ||
+                checkFeatureIDAvailability(9) ? (
                   <Nav.Link
                     as={Link}
                     to={
@@ -1056,78 +1057,19 @@ const Sidebar = () => {
                 ) : null}
 
                 {/* Add more btn */}
-                <Nav.Link
-                  disabled={false}
-                  eventKey="link-6"
-                  draggable="false"
-                  className={
-                    showMore ||
-                    location.pathname === "/DisKus/dataroom" ||
-                    location.pathname === "/DisKus/groups" ||
-                    location.pathname === "/DisKus/committee" ||
-                    location.pathname === "/DisKus/resolution" ||
-                    location.pathname === "/DisKus/polling"
-                      ? "m-0 p-0 iconSidebar-active-sidebar position-relative"
-                      : "m-0 p-0 iconSidebar  position-relative"
-                  }
-                  ref={sidebarshow}
-                  onClick={handleMoreOptions}
-                >
-                  <div className="d-flex flex-column" draggable="false">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="30.718"
-                      height="30.721"
-                      viewBox="0 0 30.718 30.721"
-                    >
-                      <defs>
-                        <linearGradient
-                          id="linear-gradient"
-                          x1="0.5"
-                          x2="0.5"
-                          y2="1"
-                          gradientUnits="objectBoundingBox"
-                        >
-                          <stop offset="0" stopColor="#4adede" />
-                          <stop offset="1" stopColor="#6172d6" />
-                        </linearGradient>
-                      </defs>
-                      <g
-                        id="Group_3154"
-                        data-name="Group 3154"
-                        transform="translate(-105.102 -74.249)"
-                      >
-                        <path
-                          id="Path_1849"
-                          data-name="Path 1849"
-                          d="M283.519,250.144c-.725,0-1.451.012-2.176-.006-.253-.006-.328.052-.325.317.014,1.463.008,2.926.006,4.39a1.14,1.14,0,0,1-.651,1.074,1.094,1.094,0,0,1-1.186-.076,1.17,1.17,0,0,1-.525-1.037c0-1.439-.009-2.877.01-4.316,0-.3-.092-.353-.366-.351-1.414.013-2.828.008-4.242.006a1.186,1.186,0,1,1-.015-2.361c1.426,0,2.853-.008,4.279.006.269,0,.347-.053.344-.336-.017-1.463-.013-2.926,0-4.39a1.177,1.177,0,0,1,2.32-.29,1.814,1.814,0,0,1,.038.438c0,1.414.011,2.828-.006,4.242,0,.285.078.337.345.335,1.414-.014,2.828-.008,4.242-.006a1.188,1.188,0,1,1,.018,2.361C284.921,250.145,284.22,250.144,283.519,250.144Z"
-                          transform="translate(-151.114 -151.087)"
-                          fill="url(#linear-gradient)"
-                        />
-                        <path
-                          id="Path_1850"
-                          data-name="Path 1850"
-                          d="M119.286,81.34c0-1.143,0-2.287,0-3.43a3.537,3.537,0,0,0-3.645-3.656q-3.449-.009-6.9,0a3.535,3.535,0,0,0-3.629,3.635q-.009,3.449,0,6.9a3.535,3.535,0,0,0,3.626,3.638q3.449.011,6.9,0a3.538,3.538,0,0,0,3.648-3.654C119.289,83.627,119.286,82.483,119.286,81.34Zm-3.731,4.724H112.2q-1.7,0-3.393,0a1.2,1.2,0,0,1-1.332-1.313q0-3.411,0-6.822a1.192,1.192,0,0,1,1.33-1.313q3.393,0,6.785,0a1.2,1.2,0,0,1,1.333,1.349q0,3.374,0,6.748A1.206,1.206,0,0,1,115.555,86.064Z"
-                          transform="translate(-0.006 0)"
-                          fill="url(#linear-gradient)"
-                        />
-                        <path
-                          id="Path_1851"
-                          data-name="Path 1851"
-                          d="M286.9,77.905a3.535,3.535,0,0,0-3.655-3.646q-3.43-.008-6.861,0a3.54,3.54,0,0,0-3.656,3.646c0,1.144,0,2.287,0,3.43s0,2.311,0,3.467a3.538,3.538,0,0,0,3.637,3.628q3.449.009,6.9,0A3.533,3.533,0,0,0,286.9,84.8Q286.915,81.354,286.9,77.905Zm-2.362,6.849a1.2,1.2,0,0,1-1.33,1.315q-3.393,0-6.785,0a1.2,1.2,0,0,1-1.333-1.35q0-3.374,0-6.749a1.2,1.2,0,0,1,1.33-1.35q3.393,0,6.785,0a1.2,1.2,0,0,1,1.334,1.348q0,1.7,0,3.393C284.543,82.493,284.545,83.623,284.543,84.754Z"
-                          transform="translate(-151.089 -0.006)"
-                          fill="url(#linear-gradient)"
-                        />
-                        <path
-                          id="Path_1852"
-                          data-name="Path 1852"
-                          d="M119.278,245.516a3.537,3.537,0,0,0-3.656-3.646c-1.143,0-2.287,0-3.43,0s-2.311-.005-3.467,0a3.535,3.535,0,0,0-3.617,3.61q-.012,3.467,0,6.934a3.536,3.536,0,0,0,3.637,3.627q3.449.009,6.9,0a3.534,3.534,0,0,0,3.636-3.628Q119.289,248.965,119.278,245.516Zm-3.747,8.165h-3.356q-1.678,0-3.356,0a1.2,1.2,0,0,1-1.351-1.331q0-3.393,0-6.785a1.2,1.2,0,0,1,1.348-1.332q3.374,0,6.749,0a1.207,1.207,0,0,1,1.352,1.367q0,3.356,0,6.712A1.211,1.211,0,0,1,115.531,253.681Z"
-                          transform="translate(0 -151.081)"
-                          fill="url(#linear-gradient)"
-                        />
-                      </g>
-                    </svg>
-                    <span
+                {checkFeatureIDAvailability(2) ||
+                checkFeatureIDAvailability(13) ||
+                checkFeatureIDAvailability(19) ||
+                checkFeatureIDAvailability(20) ||
+                checkFeatureIDAvailability(21) ||
+                checkFeatureIDAvailability(17) ||
+                checkFeatureIDAvailability(18) ||
+                checkFeatureIDAvailability(15) ? (
+                  <>
+                    <Nav.Link
+                      disabled={false}
+                      eventKey="link-6"
+                      draggable="false"
                       className={
                         showMore ||
                         location.pathname === "/DisKus/dataroom" ||
@@ -1135,23 +1077,93 @@ const Sidebar = () => {
                         location.pathname === "/DisKus/committee" ||
                         location.pathname === "/DisKus/resolution" ||
                         location.pathname === "/DisKus/polling"
-                          ? "Meeting_Side_bar_Tag_active"
-                          : "Meeting_Side_bar_Tag"
+                          ? "m-0 p-0 iconSidebar-active-sidebar position-relative"
+                          : "m-0 p-0 iconSidebar  position-relative"
                       }
-                      draggable="false"
+                      ref={sidebarshow}
+                      onClick={handleMoreOptions}
                     >
-                      {t("More")}
-                    </span>
-                  </div>
+                      <div className="d-flex flex-column" draggable="false">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="30.718"
+                          height="30.721"
+                          viewBox="0 0 30.718 30.721"
+                        >
+                          <defs>
+                            <linearGradient
+                              id="linear-gradient"
+                              x1="0.5"
+                              x2="0.5"
+                              y2="1"
+                              gradientUnits="objectBoundingBox"
+                            >
+                              <stop offset="0" stopColor="#4adede" />
+                              <stop offset="1" stopColor="#6172d6" />
+                            </linearGradient>
+                          </defs>
+                          <g
+                            id="Group_3154"
+                            data-name="Group 3154"
+                            transform="translate(-105.102 -74.249)"
+                          >
+                            <path
+                              id="Path_1849"
+                              data-name="Path 1849"
+                              d="M283.519,250.144c-.725,0-1.451.012-2.176-.006-.253-.006-.328.052-.325.317.014,1.463.008,2.926.006,4.39a1.14,1.14,0,0,1-.651,1.074,1.094,1.094,0,0,1-1.186-.076,1.17,1.17,0,0,1-.525-1.037c0-1.439-.009-2.877.01-4.316,0-.3-.092-.353-.366-.351-1.414.013-2.828.008-4.242.006a1.186,1.186,0,1,1-.015-2.361c1.426,0,2.853-.008,4.279.006.269,0,.347-.053.344-.336-.017-1.463-.013-2.926,0-4.39a1.177,1.177,0,0,1,2.32-.29,1.814,1.814,0,0,1,.038.438c0,1.414.011,2.828-.006,4.242,0,.285.078.337.345.335,1.414-.014,2.828-.008,4.242-.006a1.188,1.188,0,1,1,.018,2.361C284.921,250.145,284.22,250.144,283.519,250.144Z"
+                              transform="translate(-151.114 -151.087)"
+                              fill="url(#linear-gradient)"
+                            />
+                            <path
+                              id="Path_1850"
+                              data-name="Path 1850"
+                              d="M119.286,81.34c0-1.143,0-2.287,0-3.43a3.537,3.537,0,0,0-3.645-3.656q-3.449-.009-6.9,0a3.535,3.535,0,0,0-3.629,3.635q-.009,3.449,0,6.9a3.535,3.535,0,0,0,3.626,3.638q3.449.011,6.9,0a3.538,3.538,0,0,0,3.648-3.654C119.289,83.627,119.286,82.483,119.286,81.34Zm-3.731,4.724H112.2q-1.7,0-3.393,0a1.2,1.2,0,0,1-1.332-1.313q0-3.411,0-6.822a1.192,1.192,0,0,1,1.33-1.313q3.393,0,6.785,0a1.2,1.2,0,0,1,1.333,1.349q0,3.374,0,6.748A1.206,1.206,0,0,1,115.555,86.064Z"
+                              transform="translate(-0.006 0)"
+                              fill="url(#linear-gradient)"
+                            />
+                            <path
+                              id="Path_1851"
+                              data-name="Path 1851"
+                              d="M286.9,77.905a3.535,3.535,0,0,0-3.655-3.646q-3.43-.008-6.861,0a3.54,3.54,0,0,0-3.656,3.646c0,1.144,0,2.287,0,3.43s0,2.311,0,3.467a3.538,3.538,0,0,0,3.637,3.628q3.449.009,6.9,0A3.533,3.533,0,0,0,286.9,84.8Q286.915,81.354,286.9,77.905Zm-2.362,6.849a1.2,1.2,0,0,1-1.33,1.315q-3.393,0-6.785,0a1.2,1.2,0,0,1-1.333-1.35q0-3.374,0-6.749a1.2,1.2,0,0,1,1.33-1.35q3.393,0,6.785,0a1.2,1.2,0,0,1,1.334,1.348q0,1.7,0,3.393C284.543,82.493,284.545,83.623,284.543,84.754Z"
+                              transform="translate(-151.089 -0.006)"
+                              fill="url(#linear-gradient)"
+                            />
+                            <path
+                              id="Path_1852"
+                              data-name="Path 1852"
+                              d="M119.278,245.516a3.537,3.537,0,0,0-3.656-3.646c-1.143,0-2.287,0-3.43,0s-2.311-.005-3.467,0a3.535,3.535,0,0,0-3.617,3.61q-.012,3.467,0,6.934a3.536,3.536,0,0,0,3.637,3.627q3.449.009,6.9,0a3.534,3.534,0,0,0,3.636-3.628Q119.289,248.965,119.278,245.516Zm-3.747,8.165h-3.356q-1.678,0-3.356,0a1.2,1.2,0,0,1-1.351-1.331q0-3.393,0-6.785a1.2,1.2,0,0,1,1.348-1.332q3.374,0,6.749,0a1.207,1.207,0,0,1,1.352,1.367q0,3.356,0,6.712A1.211,1.211,0,0,1,115.531,253.681Z"
+                              transform="translate(0 -151.081)"
+                              fill="url(#linear-gradient)"
+                            />
+                          </g>
+                        </svg>
+                        <span
+                          className={
+                            showMore ||
+                            location.pathname === "/DisKus/dataroom" ||
+                            location.pathname === "/DisKus/groups" ||
+                            location.pathname === "/DisKus/committee" ||
+                            location.pathname === "/DisKus/resolution" ||
+                            location.pathname === "/DisKus/polling"
+                              ? "Meeting_Side_bar_Tag_active"
+                              : "Meeting_Side_bar_Tag"
+                          }
+                          draggable="false"
+                        >
+                          {t("More")}
+                        </span>
+                      </div>
 
-                  {showMore ? (
-                    <>
-                      <section className="expanded_menu">
-                        <ExpandedMenu />
-                      </section>
-                    </>
-                  ) : null}
-                </Nav.Link>
+                      {showMore ? (
+                        <>
+                          <section className="expanded_menu">
+                            <ExpandedMenu />
+                          </section>
+                        </>
+                      ) : null}
+                    </Nav.Link>
+                  </>
+                ) : null}
               </>
             </Nav>
           </Col>
