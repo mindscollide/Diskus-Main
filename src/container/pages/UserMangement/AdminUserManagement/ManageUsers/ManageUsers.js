@@ -79,6 +79,8 @@ const ManageUsers = () => {
     },
   });
 
+  const [emailError, setEmailError] = useState("");
+
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -359,8 +361,10 @@ const ManageUsers = () => {
 
     // Validate the email before proceeding
     if (emailInput && !validateEmailEnglishAndArabicFormat(emailInput)) {
-      console.error("Invalid email format");
+      setEmailError(t("Enter-valid-email-address"));
       return;
+    } else {
+      setEmailError("");
     }
 
     const filteredData =
@@ -443,6 +447,7 @@ const ManageUsers = () => {
         label: "",
       },
     });
+    setEmailError("");
   };
 
   //Handle Delele user Modal
@@ -689,6 +694,15 @@ const ManageUsers = () => {
                           onChange={handleStatusChange}
                         />
                       </Col>
+                      <Row>
+                        <Col>
+                          {emailError && (
+                            <div className={styles["errorMessage"]}>
+                              {emailError}
+                            </div>
+                          )}
+                        </Col>
+                      </Row>
                     </Row>
                     <Row className="mt-4">
                       <Col

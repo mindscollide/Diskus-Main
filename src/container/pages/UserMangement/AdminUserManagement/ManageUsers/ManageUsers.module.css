@@ -243,7 +243,7 @@ body[dir="rtl"] .polling_searchinput {
 
 .errorMessage {
   margin: 4px;
-  height: 7px;
+  height: 0px;
   color: #f16b6b;
   visibility: visible !important;
 }
@@ -256,7 +256,6 @@ body[dir="rtl"] .errorMessage {
   visibility: hidden;
   margin: 0;
   /* height: 7px; */
-  color: #f16b6b !important;
 }
 
 body[dir="rtl"] .errorMessage_hidden {

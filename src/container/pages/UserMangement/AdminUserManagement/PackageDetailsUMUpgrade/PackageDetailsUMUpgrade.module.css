@@ -260,9 +260,13 @@ body[dir="rtl"] .package_actualPrice {
   color: #6172d6 !important;
   text-align: center;
   font-size: 30px !important;
-  display: flex !important;
-  justify-content: center !important;
   font-weight: 700 !important;
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 2; /* Number of lines to show before truncating */
+  overflow: hidden !important;
+  height: 90px !important;
+  cursor: pointer;
 }
 
 body[dir="rtl"] .package_title {
