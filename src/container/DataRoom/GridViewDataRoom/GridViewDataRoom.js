@@ -51,6 +51,7 @@ import {
   getFilesandFolderDetailsApi,
 } from "../../../store/actions/DataRoom2_actions";
 import { createWorkflowApi } from "../../../store/actions/workflow_actions";
+import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 const GridViewDataRoom = ({
   data,
   sRowsData,
@@ -182,27 +183,7 @@ const GridViewDataRoom = ({
 
   const handleClickFile = (e, record) => {
     let ext = record.name.split(".").pop();
-    if (ext === "pdf") {
-      const pdfData = {
-        taskId: record.id,
-        commingFrom: 4,
-        fileName: record.name,
-        attachmentID: record.id,
-        isPermission: record.permissionID,
-      };
-      const pdfDataJson = JSON.stringify(pdfData);
-      window.open(
-        `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
-        "_blank",
-        "noopener noreferrer"
-      );
-    }
-  };
-
-  const fileOptionsSelect = (data, record, pdfDataJson) => {
-    if (data.value === 1) {
-      // Open on Apryse
-      let ext = record.name.split(".").pop();
+    if (checkFeatureIDAvailability(20)) {
       if (ext === "pdf") {
         const pdfData = {
           taskId: record.id,
@@ -217,6 +198,32 @@ const GridViewDataRoom = ({
           "_blank",
           "noopener noreferrer"
         );
+      }
+    }
+  };
+
+  const fileOptionsSelect = (data, record, pdfDataJson) => {
+    if (data.value === 1) {
+      if (checkFeatureIDAvailability(20)) {
+        // Open on Apryse
+        let ext = record.name.split(".").pop();
+        if (ext === "pdf") {
+          const pdfData = {
+            taskId: record.id,
+            commingFrom: 4,
+            fileName: record.name,
+            attachmentID: record.id,
+            isPermission: record.permissionID,
+          };
+          const pdfDataJson = JSON.stringify(pdfData);
+          window.open(
+            `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+              pdfDataJson
+            )}`,
+            "_blank",
+            "noopener noreferrer"
+          );
+        }
       }
     } else if (data.value === 2) {
       // Share File Modal

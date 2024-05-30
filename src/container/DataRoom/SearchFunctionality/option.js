@@ -463,8 +463,7 @@ export const optionsforPDFandSignatureFlow = (t) => {
   ];
 
   if (
-    checkFeatureIDAvailability(19) &&
-    checkFeatureIDAvailability(20) &&
+    checkFeatureIDAvailability(19) ||
     checkFeatureIDAvailability(21)
   ) {
     options.push({ label: t("Signature"), value: 8 });
@@ -614,8 +613,7 @@ export const optionMyDocumentsTabForSignature = (t) => {
   ];
 
   if (
-    checkFeatureIDAvailability(19) &&
-    checkFeatureIDAvailability(20) &&
+    checkFeatureIDAvailability(19) ||
     checkFeatureIDAvailability(21)
   ) {
     options.push({ label: t("Signature"), value: 8 });
