@@ -991,7 +991,6 @@ const OrganizationLevelSetting = () => {
                     <hr />
                   </>
                 )}
-
                 {checkFeatureIDAvailability(37) && (
                   <>
                     {" "}
@@ -1241,7 +1240,6 @@ const OrganizationLevelSetting = () => {
                 sm={4}
                 className="m-0 p-0 justify-content-start"
               >
-                {/* {checkFeatureIDAvailability(36) ? } */}
                 {securitystate && checkFeatureIDAvailability(36) ? (
                   <>
                     <Row className="mt-3">
