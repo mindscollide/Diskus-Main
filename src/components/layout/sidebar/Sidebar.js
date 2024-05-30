@@ -1064,7 +1064,8 @@ const Sidebar = () => {
                 checkFeatureIDAvailability(21) ||
                 checkFeatureIDAvailability(17) ||
                 checkFeatureIDAvailability(18) ||
-                checkFeatureIDAvailability(15) ? (
+                checkFeatureIDAvailability(15) ||
+                checkFeatureIDAvailability(48) ? (
                   <>
                     <Nav.Link
                       disabled={false}
