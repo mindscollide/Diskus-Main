@@ -139,7 +139,10 @@ import {
   updateMicrosftEventMQTT,
 } from "../../store/actions/GetDataForCalendar";
 import { userLogOutApiFunc } from "../../store/actions/Auth_Sign_Out";
-import { getLocalStorageItemNonActiveCheck } from "../../commen/functions/utils";
+import {
+  checkFeatureIDAvailability,
+  getLocalStorageItemNonActiveCheck,
+} from "../../commen/functions/utils";
 import { Col, Row } from "react-bootstrap";
 
 const Dashboard = () => {
@@ -1176,7 +1179,10 @@ const Dashboard = () => {
           setNotificationID(id);
         }
       }
-      if (data.action.toLowerCase() === "TALK".toLowerCase()) {
+      if (
+        data.action.toLowerCase() === "TALK".toLowerCase() &&
+        checkFeatureIDAvailability(3)
+      ) {
         if (
           data.payload.message.toLowerCase() ===
           "NEW_ONE_TO_ONE_MESSAGE".toLowerCase()
@@ -1578,7 +1584,10 @@ const Dashboard = () => {
           dispatch(resolutionMQTTClosed(data.payload.model));
         }
       }
-      if (data.action.toLowerCase() === "Video".toLowerCase()) {
+      if (
+        data.action.toLowerCase() === "Video".toLowerCase() &&
+        checkFeatureIDAvailability(4)
+      ) {
         if (
           data.payload.message.toLowerCase() ===
           "NEW_VIDEO_CALL_INITIATED".toLowerCase()

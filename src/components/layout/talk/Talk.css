@@ -2,7 +2,7 @@
   display: flex;
   align-items: flex-end;
   flex-direction: column;
-  height: 202px;
+  /* height: 202px; */
   width: 65px;
   border-radius: 2px;
   position: fixed;
@@ -179,6 +179,8 @@ body[dir="rtl"] .talk-count.total {
   border-radius: 4px;
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
+  position: absolute;
+  bottom: 55px;
 }
 
 body[dir="rtl"] .talk-count {

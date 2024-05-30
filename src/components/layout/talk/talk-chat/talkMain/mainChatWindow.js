@@ -28,8 +28,8 @@ const MainChatWindow = () => {
       >
         <Container>
           <div className="chat-inner-content">
-            <span className="triangle-overlay-chat" />
-            <Triangle className="pointer-chat-icon" />
+            {/* <span className="triangle-overlay-chat" />
+            <Triangle className="pointer-chat-icon" /> */}
             {talkFeatureStates.HeaderShowStatus === true ? (
               <TalkHeader />
             ) : null}
