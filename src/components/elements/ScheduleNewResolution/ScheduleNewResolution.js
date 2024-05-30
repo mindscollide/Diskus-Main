@@ -1210,7 +1210,6 @@ const ScheduleNewResolution = () => {
                               <TimePicker
                                 hideSeconds
                                 position="bottom"
-                                onFocusCapture={false}
                               />,
                             ]}
                             render={<CustomInput />}
@@ -1337,7 +1336,7 @@ const ScheduleNewResolution = () => {
                             format="hh:mm A"
                             editable={false}
                             plugins={[
-                              <TimePicker hideSeconds onFocusCapture={false} />,
+                              <TimePicker hideSeconds />,
                             ]}
                             render={<CustomInput />}
                             // selected={votingDateTime.timeVotingforView}
@@ -1459,7 +1458,7 @@ const ScheduleNewResolution = () => {
                             // shouldCloseOnSelect={true}
                             editable={false}
                             plugins={[
-                              <TimePicker hideSeconds onFocusCapture={false} />,
+                              <TimePicker hideSeconds  />,
                             ]}
                             render={<CustomInput />}
                             // selected={decisionDateTime.timeDecisionforView}
