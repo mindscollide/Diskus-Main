@@ -623,35 +623,46 @@ const enterPasswordvalidation = (value, navigate, t) => {
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_10:
           if (response.data.responseResult.hasAdminRights) {
-            if (response.data.responseResult.authToken.isFirstLogIn) {
-              navigate("/Admin/ManageUsers");
-            } else {
-              if (response.data.responseResult.hasUserRights) {
-                if (RSVP !== undefined && RSVP !== null) {
-                  navigate("/DisKus/Meeting/Useravailabilityformeeting");
-                } else if (
-                  dataroomValue !== null &&
-                  dataroomValue !== undefined
-                ) {
-                  navigate("/Diskus/dataroom");
-                } else if (AgCont !== null) {
-                  navigate("/DisKus/Meeting");
-                } else if (AdOrg !== null) {
-                  navigate("/DisKus/Meeting");
-                } else {
-                  navigate("/DisKus/");
-                }
-              } else {
-                navigate("/Admin/ManageUsers");
-              }
-            }
             dispatch(
               enterPasswordSuccess(
                 response.data.responseResult,
                 t("Password-verified-admin-user")
               )
             );
+            navigate("/Admin/ManageUsers");
             clearLocalStorageAtloginresponce(dispatch, 1, navigate);
+          } else if (response.data.responseResult.hasUserRights) {
+            if (response.data.responseResult.authToken.isFirstLogIn) {
+              if (RSVP !== undefined && RSVP !== null) {
+                navigate("/DisKus/Meeting/Useravailabilityformeeting");
+              } else if (
+                dataroomValue !== null &&
+                dataroomValue !== undefined
+              ) {
+                navigate("/Diskus/dataroom");
+              } else if (AgCont !== null) {
+                navigate("/DisKus/Meeting");
+              } else if (AdOrg !== null) {
+                navigate("/DisKus/Meeting");
+              } else {
+                navigate("/onboard");
+              }
+            } else {
+              if (RSVP !== undefined && RSVP !== null) {
+                navigate("/DisKus/Meeting/Useravailabilityformeeting");
+              } else if (
+                dataroomValue !== null &&
+                dataroomValue !== undefined
+              ) {
+                navigate("/Diskus/dataroom");
+              } else if (AgCont !== null) {
+                navigate("/DisKus/Meeting");
+              } else if (AdOrg !== null) {
+                navigate("/DisKus/Meeting");
+              } else {
+                navigate("/DisKus/");
+              }
+            }
           } else {
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);

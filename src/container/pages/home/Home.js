@@ -99,6 +99,7 @@ import {
   meetingStatusPublishedMqtt,
 } from "../../../store/actions/NewMeetingActions";
 import ModalToDoList from "../../todolistModal/ModalToDoList";
+import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 // import Todolis from "../../modalView/ModalView";
 
 const Home = () => {
@@ -253,28 +254,36 @@ const Home = () => {
   }, [lang]);
 
   const callApi = async () => {
-    dispatch(getTodoListInit());
     dispatch(SetSpinnerTrue(true));
     dispatch(SetSpinnersTrue());
     dispatch(getusernotificationinit());
-    // dispatch(getCalendarDataInit(true));
-    dispatch(getNotes_Init());
-    //
-    // await dispatch(getUserSetting(navigate, t));
-    let Data = {
-      UserID: parseInt(createrID),
-      OrganizationID: JSON.parse(OrganizationID),
-      Title: "",
-      PageNumber: 1,
-      Length: 50,
-    };
-    dispatch(GetNotes(navigate, Data, t));
+    dispatch(getCalendarDataInit(true));
+
+    await dispatch(getUserSetting(navigate, t));
+    // Notes Feature
+    if (checkFeatureIDAvailability(6)) {
+      await dispatch(getNotes_Init());
+
+      let Data = {
+        UserID: parseInt(createrID),
+        OrganizationID: JSON.parse(OrganizationID),
+        Title: "",
+        PageNumber: 1,
+        Length: 50,
+      };
+      dispatch(GetNotes(navigate, Data, t));
+    }
+
     let Data2 = {
       UserID: parseInt(createrID),
     };
-    dispatch(GetTodoListByUser(navigate, Data2, t));
+    // todoList Feature
+    if (checkFeatureIDAvailability(14)) {
+      await dispatch(getTodoListInit());
+      dispatch(GetWeeklyToDoCount(navigate, Data2, t));
+      dispatch(GetTodoListByUser(navigate, Data2, t));
+    }
     dispatch(GetWeeklyMeetingsCount(navigate, createrID, t));
-    dispatch(GetWeeklyToDoCount(navigate, Data2, t));
     dispatch(GetUpcomingEvents(navigate, Data2, t));
     dispatch(getNotifications(navigate, createrID, t));
   };
@@ -1926,6 +1935,9 @@ const Home = () => {
                       }
                       extra={[
                         <Button
+                          disableBtn={
+                            checkFeatureIDAvailability(14) ? false : true
+                          }
                           text={t("Create-new-task")}
                           className={"CreateNewTaskButton"}
                           onClick={handleOpenTodoListModal}
@@ -2243,13 +2255,15 @@ const Home = () => {
                     className=" d-flex align-items-center gap-3 justify-content-start"
                   >
                     <h1 className="noteheading color-5a5a5a ">{t("Notes")}</h1>
-                    <img
-                      src={PlusButton}
-                      onClick={handleClickNoteModal}
-                      className="cursor-pointer"
-                      alt=""
-                      draggable="false"
-                    />
+                    {checkFeatureIDAvailability(6) ? (
+                      <img
+                        src={PlusButton}
+                        onClick={handleClickNoteModal}
+                        className="cursor-pointer"
+                        alt=""
+                        draggable="false"
+                      />
+                    ) : null}
                   </Col>
                 </Row>
                 <Row className="notes-box mr-0">
