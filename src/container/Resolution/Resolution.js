@@ -96,7 +96,11 @@ const Resolution = () => {
   let buttonTab = JSON.parse(localStorage.getItem("ButtonTab"));
   let userID = localStorage.getItem("userID");
 
-  console.log(totalResolution,totalVoterResolution, "totalResolutiontotalResolution")
+  console.log(
+    totalResolution,
+    totalVoterResolution,
+    "totalResolutiontotalResolution"
+  );
 
   // call resolution
   useEffect(() => {
@@ -1383,7 +1387,9 @@ const Resolution = () => {
                                       : t("Circulation-date")}
                                   </span>
                                   <DatePicker
-                                    onFocusedDateChange={changeCirculateDateHandler}
+                                    onFocusedDateChange={
+                                      changeCirculateDateHandler
+                                    }
                                     // inputClass="datepicker_input"
                                     format={"DD/MM/YYYY"}
                                     // value={toDoDate}
@@ -1426,7 +1432,9 @@ const Resolution = () => {
                                 >
                                   <span>{t("Voting-deadline")}</span>
                                   <DatePicker
-                                    onFocusedDateChange={changeSearchDateHandler}
+                                    onFocusedDateChange={
+                                      changeSearchDateHandler
+                                    }
                                     format={"DD/MM/YYYY"}
                                     minDate={moment().toDate()}
                                     placeholder="DD/MM/YYYY"
@@ -1580,12 +1588,16 @@ const Resolution = () => {
                           className="d-flex justify-content-center my-3 pagination-groups-table"
                         >
                           <CustomPagination
-                            current={moderatorPage !== null ? Number(moderatorPage) : 1}
+                            current={
+                              moderatorPage !== null ? Number(moderatorPage) : 1
+                            }
                             onChange={handleChangeResolutionPagination}
                             pageSizeOptionsValues={["30", "50", "100", "200"]}
                             showSizer={true}
                             pageSize={
-                              moderatorRows !== null ? Number(moderatorRows) : 50
+                              moderatorRows !== null
+                                ? Number(moderatorRows)
+                                : 50
                             }
                             className={styles["PaginationStyle-Resolution"]}
                             total={totalResolution}
@@ -1687,7 +1699,9 @@ const Resolution = () => {
                           <CustomPagination
                             current={voterPage !== null ? Number(voterPage) : 1}
                             total={totalVoterResolution}
-                            pageSize={voterRows !== null ? Number(voterRows) : 50}
+                            pageSize={
+                              voterRows !== null ? Number(voterRows) : 50
+                            }
                             pageSizeOptionsValues={["30", "50", "100", "200"]}
                             className={styles["PaginationStyle-Resolution"]}
                             onChange={handleChangeVoterResolutionPagination}

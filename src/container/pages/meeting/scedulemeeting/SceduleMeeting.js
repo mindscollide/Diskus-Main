@@ -50,11 +50,15 @@ const SceduleMeeting = ({
 }) => {
   const { t } = useTranslation();
   const { NewMeetingreducer } = useSelector((state) => state);
-  const [meetingDetails, setmeetingDetails] = useState(editorRole.role === "Agenda Contributor" ? false : true);
+  const [meetingDetails, setmeetingDetails] = useState(
+    editorRole.role === "Agenda Contributor" ? false : true
+  );
   const [organizers, setorganizers] = useState(false);
   const [agendaContributors, setAgendaContributors] = useState(false);
   const [participants, setParticipants] = useState(false);
-  const [agenda, setAgenda] = useState(editorRole.role === "Agenda Contributor" ? true : false);
+  const [agenda, setAgenda] = useState(
+    editorRole.role === "Agenda Contributor" ? true : false
+  );
   const [meetingMaterial, setMeetingMaterial] = useState(false);
   const [minutes, setMinutes] = useState(false);
   const [proposedMeetingDates, setProposedMeetingDates] = useState(false);
@@ -416,18 +420,18 @@ const SceduleMeeting = ({
                       // onClick={handleClickOrganizers}
                       onClick={showOrganizers}
                     />
-                    {checkFeatureIDAvailability(11) ? (
-                      <Button
-                        disableBtn={Number(currentMeeting) === 0 ? true : false}
-                        text={t("Agenda-contributors")}
-                        className={
-                          agendaContributors === true
-                            ? styles["Schedule_meetings_options_active"]
-                            : styles["Schedule_meetings_options"]
-                        }
-                        onClick={showAgendaContributers}
-                      />
-                    ) : null}
+                    {/* {checkFeatureIDAvailability(11) ? ( */}
+                    <Button
+                      disableBtn={Number(currentMeeting) === 0 ? true : false}
+                      text={t("Agenda-contributors")}
+                      className={
+                        agendaContributors === true
+                          ? styles["Schedule_meetings_options_active"]
+                          : styles["Schedule_meetings_options"]
+                      }
+                      onClick={showAgendaContributers}
+                    />
+                    {/* ) : null} */}
                     <Button
                       disableBtn={Number(currentMeeting) === 0 ? true : false}
                       text={t("Participants")}
@@ -438,18 +442,18 @@ const SceduleMeeting = ({
                       }
                       onClick={showParticipants}
                     />
-                    {checkFeatureIDAvailability(10) ? (
-                      <Button
-                        disableBtn={Number(currentMeeting) === 0 ? true : false}
-                        text={t("Agenda-builder")}
-                        className={
-                          agenda === true
-                            ? styles["Schedule_meetings_options_active"]
-                            : styles["Schedule_meetings_options"]
-                        }
-                        onClick={showAgenda}
-                      />
-                    ) : null}
+                    {/* {checkFeatureIDAvailability(10) ? ( */}
+                    <Button
+                      disableBtn={Number(currentMeeting) === 0 ? true : false}
+                      text={t("Agenda-builder")}
+                      className={
+                        agenda === true
+                          ? styles["Schedule_meetings_options_active"]
+                          : styles["Schedule_meetings_options"]
+                      }
+                      onClick={showAgenda}
+                    />
+                    {/* ) : null} */}
                     <Button
                       disableBtn={Number(currentMeeting) === 0 ? true : false}
                       text={t("Agenda-viewer")}
@@ -476,51 +480,40 @@ const SceduleMeeting = ({
                       }
                       onClick={showMinutes}
                     />
-                    <Button
-                      disableBtn={
-                        Number(editorRole.status) === 10 ||
-                        Number(editorRole.status) === 9
-                          ? false
-                          : true
-                      }
-                      text={t("Task")}
-                      className={
-                        actionsPage === true
-                          ? styles["Schedule_meetings_options_active"]
-                          : styles["Schedule_meetings_options"]
-                      }
-                      onClick={showActions}
-                    />
-                    <Button
-                      disableBtn={
-                        Number(editorRole.status) === 10 ||
-                        Number(editorRole.status) === 9
-                          ? false
-                          : true
-                      }
-                      // disableBtn={
-                      //   (Number(editorRole.status) === 1 ||
-                      //     Number(editorRole.status) === 11 ||
-                      //     Number(editorRole.status) === 12) &&
-                      //   (editorRole.role === "Organizer" ||
-                      //     editorRole.role === "Participant" ||
-                      //     editorRole.role === "Agenda Contributor") &&
-                      //   isEditMeeting === true
-                      //     ? true
-                      //     : Number(currentMeeting) === 0
-                      //     ? true
-                      //     : isEditMeeting === false
-                      //     ? true
-                      //     : false
-                      // }
-                      text={t("Polls")}
-                      className={
-                        polls === true
-                          ? styles["Schedule_meetings_options_active"]
-                          : styles["Schedule_meetings_options"]
-                      }
-                      onClick={ShowPolls}
-                    />
+                    {checkFeatureIDAvailability(14) ? (
+                      <Button
+                        disableBtn={
+                          Number(editorRole.status) === 10 ||
+                          Number(editorRole.status) === 9
+                            ? false
+                            : true
+                        }
+                        text={t("Task")}
+                        className={
+                          actionsPage === true
+                            ? styles["Schedule_meetings_options_active"]
+                            : styles["Schedule_meetings_options"]
+                        }
+                        onClick={showActions}
+                      />
+                    ) : null}
+                    {checkFeatureIDAvailability(15) ? (
+                      <Button
+                        disableBtn={
+                          Number(editorRole.status) === 10 ||
+                          Number(editorRole.status) === 9
+                            ? false
+                            : true
+                        }
+                        text={t("Polls")}
+                        className={
+                          polls === true
+                            ? styles["Schedule_meetings_options_active"]
+                            : styles["Schedule_meetings_options"]
+                        }
+                        onClick={ShowPolls}
+                      />
+                    ) : null}
                     {Number(editorRole.status) === 10 &&
                     editorRole.role === "Organizer" &&
                     isEditMeeting === true ? (
