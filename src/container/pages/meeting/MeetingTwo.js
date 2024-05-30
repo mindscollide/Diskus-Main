@@ -2255,13 +2255,16 @@ const NewMeeting = () => {
                           </Dropdown.Item>
                         ) : null}
 
+                        {/* Proposed New Meeting */}
                         {checkFeatureIDAvailability(12) ? (
-                          <Dropdown.Item
-                            className="dropdown-item"
-                            onClick={openProposedNewMeetingPage}
-                          >
-                            {t("Propose-new-meeting")}
-                          </Dropdown.Item>
+                          <>
+                            <Dropdown.Item
+                              className="dropdown-item"
+                              onClick={openProposedNewMeetingPage}
+                            >
+                              {t("Propose-new-meeting")}
+                            </Dropdown.Item>
+                          </>
                         ) : null}
 
                         {/* BoardDeck For Time Being */}

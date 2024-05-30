@@ -29,9 +29,9 @@ const EditUserModal = ({ editModalData }) => {
 
   const navigate = useNavigate();
 
-  let isTrialCheck = localStorage.getItem("isTrial") === "true";
+  let isTrialCheck = localStorage.getItem("isTrial") === "true" ? true : false;
 
-  console.log(isTrialCheck, "isTrialCheck");
+  console.log(typeof isTrialCheck, "isTrialCheck");
 
   const { UserManagementModals, UserMangementReducer } = useSelector(
     (state) => state
@@ -42,6 +42,7 @@ const EditUserModal = ({ editModalData }) => {
   const [packageAssignedValue, setPackageAssignedValue] = useState([]);
   const [packageAssignedOption, setPackageAssignedOption] = useState([]);
   const [editPakageID, setEditPakageID] = useState(0);
+  console.log(editPakageID, "editPakageIDeditPakageIDeditPakageID");
   const [editUserModalValues, setEditUserModalValues] = useState({
     Name: {
       value: editModalData.userName,
@@ -65,7 +66,7 @@ const EditUserModal = ({ editModalData }) => {
       const defaultOption = packageAssignedOption.find(
         (option) => option.value === editModalData.userAllotedPackageID
       );
-
+      setEditPakageID(editModalData.userAllotedPackageID);
       setPackageAssignedValue(defaultOption);
     }
   }, [editModalData, packageAssignedOption]);
@@ -209,7 +210,7 @@ const EditUserModal = ({ editModalData }) => {
         MobileNumber: "",
         RoleID: editUserModalValues.isAdminUser,
         OrganizationID: Number(organizationID),
-        PackageID: Number(editPakageID),
+        PackageID: isTrialCheck ? 4 : Number(editPakageID),
         FK_NumberWorldCountryID: Number(editModalData.fK_WorldCountryID),
       };
       //The True is The Flag for AllOrganization User After Editing the User
@@ -368,7 +369,7 @@ const EditUserModal = ({ editModalData }) => {
                       </Row>
                     </Col>
                   </Row>
-                  {!isTrialCheck && (
+                  {isTrialCheck === false && (
                     <>
                       <Row>
                         <Col lg={12} md={12} sm={12}>

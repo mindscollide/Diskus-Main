@@ -330,7 +330,7 @@ const ExpandedMenu = () => {
       ) : null}
 
       {/* Committee */}
-      {checkFeatureIDAvailability(17) ? (
+      {checkFeatureIDAvailability(48) ? (
         <Nav.Link
           as={Link}
           // to="committee"

@@ -192,13 +192,12 @@ const UserManagementProcess = () => {
     }
   }, [Authreducer.VerifyOTPEmailResponseMessage]);
 
-  //For Response messeges
   useEffect(() => {
-    if (auth.ResponseMessage !== "") {
+    if (Authreducer.AuthenticateAFAResponseMessage !== "") {
       setOpen({
         ...open,
         open: true,
-        message: auth.ResponseMessage,
+        message: Authreducer.AuthenticateAFAResponseMessage,
       });
       setTimeout(() => {
         setOpen({
@@ -208,11 +207,11 @@ const UserManagementProcess = () => {
         });
       }, 3000);
 
-      dispatch(cleareChangePasswordMessage());
+      dispatch(cleareMessage());
     } else {
-      dispatch(cleareChangePasswordMessage());
+      dispatch(cleareMessage());
     }
-  }, [auth.ResponseMessage]);
+  }, [Authreducer.AuthenticateAFAResponseMessage]);
 
   let componentToRender;
 

@@ -386,12 +386,14 @@ const Header2 = () => {
                       onClick={dropDownMenuFunction}
                     >
                       {checkFeatureIDAvailability(1) ? (
-                        <Dropdown.Item
-                          className="d-flex title-className"
-                          onClick={openMeetingModal}
-                        >
-                          <span>{t("Quick-meeting")}</span>
-                        </Dropdown.Item>
+                        <>
+                          <Dropdown.Item
+                            className="d-flex title-className"
+                            onClick={openMeetingModal}
+                          >
+                            <span>{t("Quick-meeting")}</span>
+                          </Dropdown.Item>
+                        </>
                       ) : null}
 
                       <Dropdown.Item className="d-flex title-className">
@@ -430,7 +432,6 @@ const Header2 = () => {
                         disabled={true}
                         className="text-black"
                       >
-                        {/* Change Password */}
                         {t("Customer-information")}
                       </Nav.Link>
                     </Dropdown.Item>
@@ -712,52 +713,66 @@ const Header2 = () => {
                         onClick={dropDownMenuFunction}
                       >
                         {checkFeatureIDAvailability(1) ? (
-                          <Dropdown.Item
-                            className="d-flex title-className"
-                            onClick={openMeetingModal}
-                          >
-                            <span>{t("Quick-meeting")}</span>
-                          </Dropdown.Item>
-                        ) : null}
-                        <Dropdown.Item className="d-flex title-className">
-                          {/* {t("Upload-document")} */}
-                          {(NewMeetingreducer.scheduleMeetingPageFlag ===
-                            true ||
-                            NewMeetingreducer.viewProposeDateMeetingPageFlag ===
-                              true ||
-                            NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
-                              true ||
-                            NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
-                              true ||
-                            NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
-                              true ||
-                            NewMeetingreducer.proposeNewMeetingPageFlag ===
-                              true) &&
-                          NewMeetingreducer.viewMeetingFlag === false ? (
-                            <div
-                              onClick={() => {
-                                dispatch(showCancelModalmeetingDeitals(true));
-                                dispatch(uploadGlobalFlag(true));
-                              }}
+                          <>
+                            <Dropdown.Item
+                              className="d-flex title-className"
+                              onClick={openMeetingModal}
                             >
-                              {t("Upload-document")}
-                            </div>
-                          ) : (
-                            <UploadTextField
-                              title={t("Upload-document")}
-                              handleFileUploadRequest={handleUploadFile}
-                              // setProgress={setProgress}
-                            />
-                          )}
+                              {t("Quick-meeting")}
+                            </Dropdown.Item>
+                          </>
+                        ) : null}
 
-                          {/* <input type="file" /> */}
-                        </Dropdown.Item>
-                        <Dropdown.Item
-                          className="d-flex title-className"
-                          onClick={RecentFilesTab}
-                        >
-                          {t("Recently-added-files")}
-                        </Dropdown.Item>
+                        {checkFeatureIDAvailability(13) ? (
+                          <>
+                            <Dropdown.Item className="d-flex title-className">
+                              {/* {t("Upload-document")} */}
+                              {(NewMeetingreducer.scheduleMeetingPageFlag ===
+                                true ||
+                                NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                                  true ||
+                                NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                                  true ||
+                                NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                                  true ||
+                                NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                                  true ||
+                                NewMeetingreducer.proposeNewMeetingPageFlag ===
+                                  true) &&
+                              NewMeetingreducer.viewMeetingFlag === false ? (
+                                <div
+                                  onClick={() => {
+                                    dispatch(
+                                      showCancelModalmeetingDeitals(true)
+                                    );
+                                    dispatch(uploadGlobalFlag(true));
+                                  }}
+                                >
+                                  {t("Upload-document")}
+                                </div>
+                              ) : (
+                                <UploadTextField
+                                  title={t("Upload-document")}
+                                  handleFileUploadRequest={handleUploadFile}
+                                  // setProgress={setProgress}
+                                />
+                              )}
+
+                              {/* <input type="file" /> */}
+                            </Dropdown.Item>
+                          </>
+                        ) : null}
+
+                        {checkFeatureIDAvailability(13) ? (
+                          <>
+                            <Dropdown.Item
+                              className="d-flex title-className"
+                              onClick={RecentFilesTab}
+                            >
+                              {t("Recently-added-files")}
+                            </Dropdown.Item>
+                          </>
+                        ) : null}
                       </DropdownButton>
                     )}
                   </div>
@@ -807,20 +822,24 @@ const Header2 = () => {
                             {t("User-dashboard")}
                           </Nav.Link>
                         </Dropdown.Item>
-                        <Dropdown.Item
-                          className={`${" text-black"} ${currentLanguage}`}
-                          onClick={handleModalCustomerInformation}
-                          // onClick={() => forgotPasswordCheck()}
-                        >
-                          <Nav.Link
-                            as={Link}
-                            to="CustomerInformation"
-                            className="text-black FontClass"
-                          >
-                            {/* Change Password */}
-                            {t("Customer-information")}
-                          </Nav.Link>
-                        </Dropdown.Item>
+                        {checkFeatureIDAvailability(1) ? (
+                          <>
+                            <Dropdown.Item
+                              className={`${" text-black"} ${currentLanguage}`}
+                              onClick={handleModalCustomerInformation}
+                              // onClick={() => forgotPasswordCheck()}
+                            >
+                              <Nav.Link
+                                as={Link}
+                                to="CustomerInformation"
+                                className="text-black FontClass"
+                              >
+                                {/* Change Password */}
+                                {t("Customer-information")}
+                              </Nav.Link>
+                            </Dropdown.Item>
+                          </>
+                        ) : null}
                         <Dropdown.Item
                           className={currentLanguage}
                           onClick={modalUserProfileHandler}

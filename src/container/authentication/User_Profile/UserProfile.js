@@ -191,13 +191,11 @@ const UserProfileModal = ({
       setNameEanble(true);
 
       setUserProfileEdit(data);
-      setSelectedCountry(
-        UserData.organization.numberWorldCountry.fK_NumberWorldCountryID
-      );
+      setSelectedCountry(UserData.numberWorldCountry.fK_NumberWorldCountryID);
       let a = Object.values(countryNameforPhoneNumber).find((obj) => {
         return (
-          obj.primary ===
-          UserData.organization.countryCode.fK_NumberWorldCountryID
+          Number(obj.id) ===
+          Number(UserData.numberWorldCountry.fK_NumberWorldCountryID)
         );
       });
       setSelectedNonEditCountry(a.secondary);

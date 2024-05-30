@@ -45,7 +45,10 @@ const SignUpOrganizationUM = () => {
   let packageSubscriptionDetail = JSON.parse(
     localStorage.getItem("packageSubscriptionDetail")
   );
-  console.log(packageSubscriptionDetail, "packageSubscriptionDetailpackageSubscriptionDetailpackageSubscriptionDetail")
+  console.log(
+    packageSubscriptionDetail,
+    "packageSubscriptionDetailpackageSubscriptionDetailpackageSubscriptionDetail"
+  );
   const [signUpDetails, setSignUpDetails] = useState({
     CompanyName: {
       value: "",
@@ -894,8 +897,8 @@ const SignUpOrganizationUM = () => {
                                 (signUpDetails.CompanyName.errorStatus &&
                                   signUpDetails.CompanyName.value === "") ||
                                 signUpDetails.CompanyName.errorMessage !== ""
-                                  ? ` ${styles["errorMessage"]} `
-                                  : `${styles["errorMessage_hidden"]}`
+                                  ? ` ${styles["errorMessageCompany"]} `
+                                  : `${styles["errorMessageCompany_hidden"]}`
                               }
                             >
                               {signUpDetails.CompanyName.errorMessage}
@@ -1129,7 +1132,7 @@ const SignUpOrganizationUM = () => {
                       </Row>
                       {/* <Spinner className={styles["checkEmailSpinner"]} /> */}
                     </Col>
-                    <Col sm={12} md={1} lg={1}>
+                    <Col sm={12} md={1} lg={1} className="position-relative">
                       {adminReducer.EmailCheckSpinner ? (
                         <Spinner className={styles["checkEmailSpinner"]} />
                       ) : null}
