@@ -231,7 +231,20 @@ const Talk = () => {
     }
   }, [VideoMainReducer.MissedCallCountMqttData.missedCallCount]);
 
-  let totalValue = Number(missedCallCount) + Number(unreadMessageCount);
+  let totalValue;
+  useEffect(() => {
+    try {
+      if (checkFeatureIDAvailability(4) && checkFeatureIDAvailability(3)) {
+        totalValue = Number(missedCallCount) + Number(unreadMessageCount);
+      } else if (checkFeatureIDAvailability(4)) {
+        totalValue = Number(missedCallCount);
+      } else if (checkFeatureIDAvailability(3)) {
+        totalValue = Number(unreadMessageCount);
+      }
+    } catch {}
+  }, []);
+
+  console.log("totalValueTotalValue", totalValue);
 
   useEffect(() => {
     if (videoFeatureReducer.VideoChatPanel === false) {
@@ -447,8 +460,18 @@ const Talk = () => {
         </div>
 
         <div className="talk_Icon" onClick={showsubTalkIcons}>
-          <span className={totalValue === 0 ? "" : "talk-count total"}>
-            {totalValue === 0 ? "" : totalValue}
+          <span
+            className={
+              totalValue === 0 ||
+              totalValue === undefined ||
+              totalValue === null
+                ? ""
+                : "talk-count total"
+            }
+          >
+            {totalValue === 0 || totalValue === undefined || totalValue === null
+              ? ""
+              : totalValue}
           </span>
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -510,7 +510,7 @@ const VideoCallNormalHeader = ({
                 </Tooltip>
               </div>
             ) : null}
-            {currentCallType === 1 ? (
+            {currentCallType === 1 && checkFeatureIDAvailability(3) ? (
               <div className="screenShare-Toggle flipHorizontal">
                 <Tooltip placement="topRight" title={t("Chat")}>
                   <img
