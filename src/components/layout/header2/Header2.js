@@ -385,12 +385,17 @@ const Header2 = () => {
                       }
                       onClick={dropDownMenuFunction}
                     >
-                      <Dropdown.Item
-                        className="d-flex title-className"
-                        onClick={openMeetingModal}
-                      >
-                        <span>{t("Quick-meeting")}</span>
-                      </Dropdown.Item>
+                      {checkFeatureIDAvailability(1) ? (
+                        <>
+                          <Dropdown.Item
+                            className="d-flex title-className"
+                            onClick={openMeetingModal}
+                          >
+                            <span>{t("Quick-meeting")}</span>
+                          </Dropdown.Item>
+                        </>
+                      ) : null}
+
                       <Dropdown.Item className="d-flex title-className">
                         {t("Upload-document")}
                       </Dropdown.Item>
@@ -707,12 +712,17 @@ const Header2 = () => {
                         }
                         onClick={dropDownMenuFunction}
                       >
-                        <Dropdown.Item
-                          className="d-flex title-className"
-                          onClick={openMeetingModal}
-                        >
-                          {t("Quick-meeting")}
-                        </Dropdown.Item>
+                        {checkFeatureIDAvailability(1) ? (
+                          <>
+                            <Dropdown.Item
+                              className="d-flex title-className"
+                              onClick={openMeetingModal}
+                            >
+                              {t("Quick-meeting")}
+                            </Dropdown.Item>
+                          </>
+                        ) : null}
+
                         <Dropdown.Item className="d-flex title-className">
                           {/* {t("Upload-document")} */}
                           {(NewMeetingreducer.scheduleMeetingPageFlag ===
