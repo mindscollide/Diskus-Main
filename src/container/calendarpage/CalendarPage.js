@@ -42,6 +42,7 @@ import { HideNotificationMeetings } from "../../store/actions/GetMeetingUserId";
 import { clearResponce } from "../../store/actions/ToDoList_action";
 import { useNavigate } from "react-router-dom";
 import MeetingViewModalCalendar from "../modalView/ModalView";
+import { checkFeatureIDAvailability } from "../../commen/functions/utils";
 
 const CalendarPage = () => {
   //For Localization
@@ -888,12 +889,14 @@ const CalendarPage = () => {
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu>
-                    <Dropdown.Item
-                      className="dropdown-item"
-                      onClick={handleCreateMeeting}
-                    >
-                      {t("Schedule-a-meeting")}
-                    </Dropdown.Item>
+                    {checkFeatureIDAvailability(1) ? (
+                      <Dropdown.Item
+                        className="dropdown-item"
+                        onClick={handleCreateMeeting}
+                      >
+                        {t("Schedule-a-meeting")}
+                      </Dropdown.Item>
+                    ) : null}
                     <Dropdown.Item
                       className="dropdown-item"
                       onClick={handleCreateTodo}

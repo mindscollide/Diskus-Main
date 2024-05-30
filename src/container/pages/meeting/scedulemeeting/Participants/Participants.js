@@ -49,6 +49,7 @@ import NextModal from "../meetingDetails/NextModal/NextModal";
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
 import { Tooltip } from "antd";
+import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
 
 const Participants = ({
   setParticipants,
@@ -935,7 +936,8 @@ const Participants = ({
                     (editorRole.role === "Agenda Contributor" &&
                       isEditMeeting === true) ? (
                       <>
-                        {Number(editorRole.status) === 10 ? null : (
+                        {Number(editorRole.status) ===
+                        10 ? null : checkFeatureIDAvailability(12) ? (
                           <>
                             <Button
                               text={t("Propose-meeting-dates")}
@@ -943,7 +945,7 @@ const Participants = ({
                               onClick={handleProposedmeetingDates}
                             />
                           </>
-                        )}
+                        ) : null}
 
                         <Button
                           text={t("Cancel")}
