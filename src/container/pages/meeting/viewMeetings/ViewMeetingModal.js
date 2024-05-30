@@ -34,6 +34,7 @@ import { cleareAllState } from "../../../../store/actions/NewMeetingActions";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { checkFeatureIDAvailability } from "../../../../commen/functions/utils";
 const ViewMeetingModal = ({
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
@@ -399,57 +400,44 @@ const ViewMeetingModal = ({
                         // }
                       />
                     )}
-                    {editorRole.role === "Participant" ? null : (
+                    {checkFeatureIDAvailability(14) ? (
+                      <>
+                        {editorRole.role === "Participant" ? null : (
+                          <Button
+                            text={t("Task")}
+                            className={
+                              actionsPage === true
+                                ? styles["Schedule_meetings_options_active"]
+                                : styles["Schedule_meetings_options"]
+                            }
+                            onClick={showActions}
+                            disableBtn={
+                              Number(editorRole.status) === 10 ||
+                              Number(editorRole.status) === 9
+                                ? false
+                                : true
+                            }
+                          />
+                        )}
+                      </>
+                    ) : null}
+                    {checkFeatureIDAvailability(15) ? (
                       <Button
-                        text={t("Task")}
+                        text={t("Polls")}
                         className={
-                          actionsPage === true
+                          polls === true
                             ? styles["Schedule_meetings_options_active"]
                             : styles["Schedule_meetings_options"]
                         }
-                        onClick={showActions}
+                        onClick={ShowPolls}
                         disableBtn={
                           Number(editorRole.status) === 10 ||
                           Number(editorRole.status) === 9
                             ? false
                             : true
                         }
-                        // disableBtn={
-                        //   unPublish
-                        //     ? true
-                        //     : Number(editorRole.status) === 1 ||
-                        //       Number(editorRole.status) === 11 ||
-                        //       Number(editorRole.status) === 12
-                        //     ? true
-                        //     : (editorRole.role === "Organizer" ||
-                        //         editorRole.role === "Participant" ||
-                        //         editorRole.role === "Agenda Contributor") &&
-                        //       Number(editorRole.status) === 9
-                        //     ? false
-                        //     : Number(editorRole.status) === 10 &&
-                        //       (editorRole.role === "Participant" ||
-                        //         editorRole.role === "Agenda Contributor" ||
-                        //         editorRole.role === "Organizer")
-                        //     ? false
-                        //     : true
-                        // }
                       />
-                    )}
-                    <Button
-                      text={t("Polls")}
-                      className={
-                        polls === true
-                          ? styles["Schedule_meetings_options_active"]
-                          : styles["Schedule_meetings_options"]
-                      }
-                      onClick={ShowPolls}
-                      disableBtn={
-                        Number(editorRole.status) === 10 ||
-                        Number(editorRole.status) === 9
-                          ? false
-                          : true
-                      }
-                    />
+                    ) : null}
                     {Number(editorRole.status) === 10 &&
                     editorRole.role !== "Participant" ? (
                       <Button
