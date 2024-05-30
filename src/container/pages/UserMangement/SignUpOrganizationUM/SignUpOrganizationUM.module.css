@@ -168,6 +168,30 @@ body[dir="rtl"] .errorMessage_hidden {
   font-weight: 400 !important;
 }
 
+.errorMessageCompany {
+  margin: 4px;
+  height: 7px;
+  color: #f16b6b;
+  visibility: visible !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .errorMessageCompany {
+  font-weight: 400 !important;
+}
+
+.errorMessageCompany_hidden {
+  visibility: hidden;
+  margin: 0;
+  /* height: 7px; */
+  color: #f16b6b !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .errorMessageCompany_hidden {
+  font-weight: 400 !important;
+}
+
 .emailCheckbox span,
 .companynamecheckbox span {
   width: 35px;
@@ -221,9 +245,10 @@ body[dir="rtl"] .errorMessage_hidden {
 }
 
 .checkOrganiationSpinner {
-  position: relative;
+  position: absolute;
   width: 30px;
   height: 30px;
+  top: 105px;
   /* margin: 4px; */
 }
 
@@ -236,21 +261,20 @@ body[dir="rtl"] .errorMessage_hidden {
 }
 
 .isEmailUnique {
-  position: relative;
-  right: 10px;
+  position: absolute;
+  right: 35px;
   width: 30px;
   height: 30px;
-  bottom: 0px;
-  top: 10px;
+  bottom: 15px;
   color: green;
 }
 
 .checkEmailSpinner {
-  position: relative;
-  right: 10px;
+  position: absolute;
+  right: 35px;
   width: 30px;
   height: 30px;
-  bottom: 0px;
+  bottom: 15px;
 }
 
 .react-flag-Signup {

@@ -32,6 +32,7 @@ import {
   clearMessegesUserManagement,
 } from "../../../../../store/actions/UserManagementActions";
 import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
+import { validateEmailEnglishAndArabicFormat } from "../../../../../commen/functions/validations";
 const ManageUsers = () => {
   const { t } = useTranslation();
 
@@ -77,6 +78,8 @@ const ManageUsers = () => {
       label: "",
     },
   });
+
+  const [emailError, setEmailError] = useState("");
 
   const [open, setOpen] = useState({
     open: false,
@@ -354,6 +357,15 @@ const ManageUsers = () => {
   //manual filteration performed on the GRID
   const handleSearch = () => {
     let adminFound = false;
+    const emailInput = searchDetails.Email || "";
+
+    // Validate the email before proceeding
+    if (emailInput && !validateEmailEnglishAndArabicFormat(emailInput)) {
+      setEmailError(t("Enter-valid-email-address"));
+      return;
+    } else {
+      setEmailError("");
+    }
 
     const filteredData =
       UserMangementReducer.allOrganizationUsersData.organizationUsers.filter(
@@ -435,6 +447,7 @@ const ManageUsers = () => {
         label: "",
       },
     });
+    setEmailError("");
   };
 
   //Handle Delele user Modal
@@ -681,6 +694,15 @@ const ManageUsers = () => {
                           onChange={handleStatusChange}
                         />
                       </Col>
+                      <Row>
+                        <Col>
+                          {emailError && (
+                            <div className={styles["errorMessage"]}>
+                              {emailError}
+                            </div>
+                          )}
+                        </Col>
+                      </Row>
                     </Row>
                     <Row className="mt-4">
                       <Col
@@ -721,12 +743,12 @@ const ManageUsers = () => {
                         className="d-flex justify-content-end gap-2 align-items-center"
                       >
                         <Button
-                          text={"Reset"}
+                          text={t("Reset")}
                           className={styles["ResetButtonSearchBox"]}
                           onClick={handleResetButton}
                         />
                         <Button
-                          text={"Search"}
+                          text={t("Search")}
                           className={styles["SearchButtonSearchBox"]}
                           onClick={handleSearch}
                         />

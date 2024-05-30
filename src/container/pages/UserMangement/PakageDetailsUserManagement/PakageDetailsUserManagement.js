@@ -33,7 +33,7 @@ const PakageDetailsUserManagement = () => {
 
   const SignupPage = localStorage.getItem("SignupFlowPageRoute");
   const trialPage = localStorage.getItem("isTrial");
-  console.log(trialPage, "trialPagetrialPagetrialPage")
+  console.log(trialPage, "trialPagetrialPagetrialPage");
   let changePacakgeFlag = localStorage.getItem("changePacakgeFlag");
 
   const { UserMangementReducer, LanguageReducer } = useSelector(
@@ -573,7 +573,7 @@ const PakageDetailsUserManagement = () => {
                             <span className={styles["package_title"]}>
                               {/* {t("Gold")} */}
                               {/* {data.PackageName} */}
-                              {data.name}
+                              <p title={data.name}>{data.name}</p>
                             </span>{" "}
                           </>
                         </Col>
