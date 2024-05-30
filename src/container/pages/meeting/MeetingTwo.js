@@ -2246,7 +2246,7 @@ const NewMeeting = () => {
                           </Dropdown.Item>
                         ) : null}
 
-                        {checkFeatureIDAvailability(12) ? (
+                        {checkFeatureIDAvailability(9) ? (
                           <Dropdown.Item
                             className="dropdown-item"
                             onClick={openSceduleMeetingPage}
@@ -2255,13 +2255,14 @@ const NewMeeting = () => {
                           </Dropdown.Item>
                         ) : null}
 
-                        {/* Proposed New Meeting */}
-                        <Dropdown.Item
-                          className="dropdown-item"
-                          onClick={openProposedNewMeetingPage}
-                        >
-                          {t("Propose-new-meeting")}
-                        </Dropdown.Item>
+                        {checkFeatureIDAvailability(12) ? (
+                          <Dropdown.Item
+                            className="dropdown-item"
+                            onClick={openProposedNewMeetingPage}
+                          >
+                            {t("Propose-new-meeting")}
+                          </Dropdown.Item>
+                        ) : null}
 
                         {/* BoardDeck For Time Being */}
                         {/* <Dropdown.Item

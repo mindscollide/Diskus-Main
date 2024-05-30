@@ -44,7 +44,10 @@ import {
 } from "../../../store/actions/UserMangementModalActions.js";
 import RequestExtensionModal from "../../../container/pages/UserMangement/ModalsUserManagement/RequestExtentionModal/RequestExtensionModal.js";
 import { getCurrentDateTimeUTC } from "../../../commen/functions/date_formater.js";
-import { getLocalStorageItemNonActiveCheck } from "../../../commen/functions/utils";
+import {
+  checkFeatureIDAvailability,
+  getLocalStorageItemNonActiveCheck,
+} from "../../../commen/functions/utils";
 import { requestOrganizationExtendApi } from "../../../store/actions/UserManagementActions.js";
 
 const Header2 = () => {
@@ -382,12 +385,15 @@ const Header2 = () => {
                       }
                       onClick={dropDownMenuFunction}
                     >
-                      <Dropdown.Item
-                        className="d-flex title-className"
-                        onClick={openMeetingModal}
-                      >
-                        <span>{t("Quick-meeting")}</span>
-                      </Dropdown.Item>
+                      {checkFeatureIDAvailability(1) ? (
+                        <Dropdown.Item
+                          className="d-flex title-className"
+                          onClick={openMeetingModal}
+                        >
+                          <span>{t("Quick-meeting")}</span>
+                        </Dropdown.Item>
+                      ) : null}
+
                       <Dropdown.Item className="d-flex title-className">
                         {t("Upload-document")}
                       </Dropdown.Item>
@@ -705,12 +711,14 @@ const Header2 = () => {
                         }
                         onClick={dropDownMenuFunction}
                       >
-                        <Dropdown.Item
-                          className="d-flex title-className"
-                          onClick={openMeetingModal}
-                        >
-                          {t("Quick-meeting")}
-                        </Dropdown.Item>
+                        {checkFeatureIDAvailability(1) ? (
+                          <Dropdown.Item
+                            className="d-flex title-className"
+                            onClick={openMeetingModal}
+                          >
+                            <span>{t("Quick-meeting")}</span>
+                          </Dropdown.Item>
+                        ) : null}
                         <Dropdown.Item className="d-flex title-className">
                           {/* {t("Upload-document")} */}
                           {(NewMeetingreducer.scheduleMeetingPageFlag ===
