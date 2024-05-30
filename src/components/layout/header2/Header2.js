@@ -723,45 +723,56 @@ const Header2 = () => {
                           </>
                         ) : null}
 
-                        <Dropdown.Item className="d-flex title-className">
-                          {/* {t("Upload-document")} */}
-                          {(NewMeetingreducer.scheduleMeetingPageFlag ===
-                            true ||
-                            NewMeetingreducer.viewProposeDateMeetingPageFlag ===
-                              true ||
-                            NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
-                              true ||
-                            NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
-                              true ||
-                            NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
-                              true ||
-                            NewMeetingreducer.proposeNewMeetingPageFlag ===
-                              true) &&
-                          NewMeetingreducer.viewMeetingFlag === false ? (
-                            <div
-                              onClick={() => {
-                                dispatch(showCancelModalmeetingDeitals(true));
-                                dispatch(uploadGlobalFlag(true));
-                              }}
-                            >
-                              {t("Upload-document")}
-                            </div>
-                          ) : (
-                            <UploadTextField
-                              title={t("Upload-document")}
-                              handleFileUploadRequest={handleUploadFile}
-                              // setProgress={setProgress}
-                            />
-                          )}
+                        {checkFeatureIDAvailability(13) ? (
+                          <>
+                            <Dropdown.Item className="d-flex title-className">
+                              {/* {t("Upload-document")} */}
+                              {(NewMeetingreducer.scheduleMeetingPageFlag ===
+                                true ||
+                                NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                                  true ||
+                                NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                                  true ||
+                                NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                                  true ||
+                                NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                                  true ||
+                                NewMeetingreducer.proposeNewMeetingPageFlag ===
+                                  true) &&
+                              NewMeetingreducer.viewMeetingFlag === false ? (
+                                <div
+                                  onClick={() => {
+                                    dispatch(
+                                      showCancelModalmeetingDeitals(true)
+                                    );
+                                    dispatch(uploadGlobalFlag(true));
+                                  }}
+                                >
+                                  {t("Upload-document")}
+                                </div>
+                              ) : (
+                                <UploadTextField
+                                  title={t("Upload-document")}
+                                  handleFileUploadRequest={handleUploadFile}
+                                  // setProgress={setProgress}
+                                />
+                              )}
 
-                          {/* <input type="file" /> */}
-                        </Dropdown.Item>
-                        <Dropdown.Item
-                          className="d-flex title-className"
-                          onClick={RecentFilesTab}
-                        >
-                          {t("Recently-added-files")}
-                        </Dropdown.Item>
+                              {/* <input type="file" /> */}
+                            </Dropdown.Item>
+                          </>
+                        ) : null}
+
+                        {checkFeatureIDAvailability(13) ? (
+                          <>
+                            <Dropdown.Item
+                              className="d-flex title-className"
+                              onClick={RecentFilesTab}
+                            >
+                              {t("Recently-added-files")}
+                            </Dropdown.Item>
+                          </>
+                        ) : null}
                       </DropdownButton>
                     )}
                   </div>
