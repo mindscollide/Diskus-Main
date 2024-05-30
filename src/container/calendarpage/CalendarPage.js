@@ -890,19 +890,25 @@ const CalendarPage = () => {
 
                   <Dropdown.Menu>
                     {checkFeatureIDAvailability(1) ? (
-                      <Dropdown.Item
-                        className="dropdown-item"
-                        onClick={handleCreateMeeting}
-                      >
-                        {t("Schedule-a-meeting")}
-                      </Dropdown.Item>
+                      <>
+                        <Dropdown.Item
+                          className="dropdown-item"
+                          onClick={handleCreateMeeting}
+                        >
+                          {t("Schedule-a-meeting")}
+                        </Dropdown.Item>
+                      </>
                     ) : null}
-                    <Dropdown.Item
-                      className="dropdown-item"
-                      onClick={handleCreateTodo}
-                    >
-                      {t("Create-a-to-do-list")}
-                    </Dropdown.Item>
+                    {checkFeatureIDAvailability(14) ? (
+                      <>
+                        <Dropdown.Item
+                          className="dropdown-item"
+                          onClick={handleCreateTodo}
+                        >
+                          {t("Create-a-to-do-list")}
+                        </Dropdown.Item>
+                      </>
+                    ) : null}
                   </Dropdown.Menu>
                 </Dropdown>
               </Col>
