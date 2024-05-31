@@ -144,6 +144,8 @@ import {
   getLocalStorageItemNonActiveCheck,
 } from "../../commen/functions/utils";
 import { Col, Row } from "react-bootstrap";
+import InternetConnectivityModal from "../pages/UserMangement/ModalsUserManagement/InternetConnectivityModal/InternetConnectivityModal";
+import { InsternetDisconnectModal } from "../../store/actions/UserMangementModalActions";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -190,7 +192,14 @@ const Dashboard = () => {
     DataRoomFileAndFoldersDetailsReducer,
     SignatureWorkFlowReducer,
     UserMangementReducer,
+    UserManagementModals,
   } = useSelector((state) => state);
+
+  console.log(
+    UserManagementModals,
+    "UserManagementModalsUserManagementModalsUserManagementModalsz"
+  );
+
   // const [socket, setSocket] = useState(Helper.socket);
 
   const navigate = useNavigate();
@@ -241,14 +250,33 @@ const Dashboard = () => {
 
     dispatch(userLogOutApiFunc(navigate, t));
   };
-  // if (!navigator.onLine) {
-  //   setOpen({
-  //     ...open,
-  //     flag: true,
-  //     message: "No internet connection. Please check your connection.",
-  //   });
-  //   alert("No internet connection. Please check your connection.");
-  // }
+
+  const isInternetDisconnectModalVisible = useSelector(
+    (state) => state.UserManagementModals.internetDisconnectModal
+  );
+
+  useEffect(() => {
+    const handleOnline = () => {
+      dispatch(InsternetDisconnectModal(false));
+    };
+
+    const handleOffline = () => {
+      dispatch(InsternetDisconnectModal(true));
+    };
+
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+
+    if (!navigator.onLine) {
+      dispatch(InsternetDisconnectModal(true));
+    }
+
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, [dispatch]);
+
   const onMessageArrived = (msg) => {
     var min = 10000;
     var max = 90000;
@@ -2279,13 +2307,11 @@ const Dashboard = () => {
             />
           ) : null}
           {/* <Modal show={true} size="md" setShow={true} /> */}
-
           {videoFeatureReducer.NormalizeVideoFlag === true ||
           videoFeatureReducer.MinimizeVideoFlag === true ||
           videoFeatureReducer.MaximizeVideoFlag === true ? (
             <VideoCallScreen />
           ) : null}
-
           {!navigator.onLine ? (
             <React.Fragment>
               {/* Display alert when offline */}
@@ -2335,7 +2361,8 @@ const Dashboard = () => {
             UserMangementReducer.Loading ? (
             <Loader />
           ) : null}
-
+          {/* Disconnectivity Modal  */}
+          {isInternetDisconnectModalVisible && <InternetConnectivityModal />}
           <Notification
             setOpen={setOpen}
             open={open.flag}
