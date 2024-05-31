@@ -32,31 +32,23 @@ export function checkFeatureID(id) {
 //Export function userFeatures from the Response
 export function updateLocalUserRoutes(userFeatures, LocalUserRoutes) {
   let user = [
-    { id: 19, name: "signatureviewer" },
-    { id: 20, name: "documentViewer" },
-    { id: 21, name: "signatureviewer" },
-    { id: 2, name: "dataroom" },
-    { id: 19, name: "dataroom" },
-    { id: 21, name: "dataroom" },
+    { id: 1, name: "Meeting" },
+    { id: 12, name: "Meeting" },
+    { id: 9, name: "Meeting" },
+    { id: 1, name: "Meeting/Useravailabilityformeeting" },
+    { id: 9, name: "Meeting/Useravailabilityformeeting" },
+    { id: 12, name: "Meeting/Useravailabilityformeeting" },
     { id: 13, name: "dataroom" },
+    { id: 19, name: "signatureviewer" },
+    { id: 21, name: "signatureviewer" },
+    { id: 20, name: "documentViewer" },
     { id: 6, name: "notes" },
     { id: 7, name: "calendar" },
     { id: 14, name: "todolist" },
     { id: 15, name: "polling" },
     { id: 17, name: "groups" },
-    { id: 17, name: "committee" },
+    { id: 48, name: "committee" },
     { id: 18, name: "resolution" },
-    { id: 1, name: "Meeting" },
-    { id: 9, name: "Meeting" },
-    { id: 10, name: "Meeting" },
-    { id: 11, name: "Meeting" },
-    { id: 12, name: "Meeting" },
-    { id: 12, name: "Minutes" },
-    { id: 1, name: "Meeting/Useravailabilityformeeting" },
-    { id: 9, name: "Meeting/Useravailabilityformeeting" },
-    { id: 10, name: "Meeting/Useravailabilityformeeting" },
-    { id: 11, name: "Meeting/Useravailabilityformeeting" },
-    { id: 12, name: "Meeting/Useravailabilityformeeting" },
   ];
   try {
     // Iterate through each feature from the API response
@@ -90,12 +82,11 @@ export function updateAdminRoutes(adminFeatures, LocalAdminRoutes) {
     { id: 26, name: "ManageUsers" },
     { id: 27, name: "ManageUsers" },
     { id: 31, name: "ManageUsers" },
-    { id: 32, name: "ManageUsers" },
     { id: 28, name: "PackageDetailsUserManagement" },
     { id: 28, name: "PakageDetailsUserManagement" },
     { id: 29, name: "CancelSubscriptionUserManagement" },
     { id: 30, name: "deleteorganizationUserMangement" },
-    { id: 19, name: "CustomerInformation" },
+    { id: 45, name: "CustomerInformation" },
     { id: 33, name: "PayOutstanding" },
     { id: 34, name: "Summary" },
     { id: 35, name: "loginreport" },
@@ -146,7 +137,6 @@ export function updateAdminRoutes(adminFeatures, LocalAdminRoutes) {
 // for enter posword state management and routes management
 // Export the handleLoginResponse function
 export async function handleLoginResponse(response) {
-  console.log(response, "handleLoginResponsehandleLoginResponse");
   try {
     if (response.organizationID) {
       localStorage.setItem("organizationID", response.organizationID);
@@ -292,26 +282,16 @@ export async function handleLoginResponse(response) {
     localStorage.setItem("LocalUserRoutes", JSON.stringify(LocalUserRoutes));
     localStorage.setItem("LocalAdminRoutes", JSON.stringify(LocalAdminRoutes));
   } catch (error) {
-    console.log(
-      "handleLoginResponsehandleLoginResponse Error processing login response:",
-      error
-    );
+    console.error(error);
   }
 }
 
 // Features IDs Check Fucntion
 export function checkFeatureIDAvailability(id) {
-  let packageID = localStorage.getItem("packageFeatureIDs");
-  if (packageID) {
-    packageID = packageID.replace(/,\s*\.\.\.\]$/, "]");
-    let idsArray;
-    try {
-      idsArray = JSON.parse(packageID);
-    } catch (e) {
-      console.error("Error parsing on checkFeatureIDAvailability:", e);
-      return false;
-    }
-    return idsArray.includes(id);
+  let packageID = JSON.parse(localStorage.getItem("packageFeatureIDs"));
+  if (Array.isArray(packageID)) {
+    let getFeaturesIDs = packageID;
+    return getFeaturesIDs.includes(Number(id));
   } else {
     return false;
   }
@@ -338,13 +318,23 @@ export function clearLocalStorageAtloginresponce(dispatch, value, navigate) {
     localStorage.removeItem("LoginFlowPageRoute");
   } else if (value === 2) {
     localStorage.removeItem("signupCurrentPage");
-    //localStorage.setItem("LoginFlowPageRoute", 1);
+    localStorage.setItem("LoginFlowPageRoute", 1);
+    navigate("/");
+  } else if (value === 3) {
+    // Set for Wrong Password
+    dispatch(LoginFlowRoutes(2));
+    localStorage.setItem("LoginFlowPageRoute", 2);
+
+    // localStorage.removeItem("signupCurrentPage");
+  } else if (Number(value) === 4) {
+    // for User is in Active and Account is Blocked
+    dispatch(LoginFlowRoutes(1));
+    localStorage.setItem("LoginFlowPageRoute", 1);
     navigate("/");
   }
 }
 
 //Clearing URL function
-
 export const clearPaymentActionFromUrl = () => {
   const currentUrl = new URL(window.location.href);
   console.log(currentUrl, "currentUrlcurrentUrl");

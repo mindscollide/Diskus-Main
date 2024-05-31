@@ -264,11 +264,7 @@ const ExpandedMenu = () => {
 
   return (
     <Nav className={styles.iconGrid}>
-      {checkFeatureIDAvailability(2) ||
-      checkFeatureIDAvailability(13) ||
-      checkFeatureIDAvailability(19) ||
-      checkFeatureIDAvailability(20) ||
-      checkFeatureIDAvailability(21) ? (
+      {checkFeatureIDAvailability(13) ? (
         <Nav.Link
           as={Link}
           to={
@@ -330,7 +326,7 @@ const ExpandedMenu = () => {
       ) : null}
 
       {/* Committee */}
-      {checkFeatureIDAvailability(17) ? (
+      {checkFeatureIDAvailability(48) ? (
         <Nav.Link
           as={Link}
           // to="committee"

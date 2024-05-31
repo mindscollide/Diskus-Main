@@ -240,3 +240,24 @@ body[dir="rtl"] .polling_searchinput {
   right: 88% !important;
   cursor: pointer !important;
 }
+
+.errorMessage {
+  margin: 4px;
+  height: 0px;
+  color: #f16b6b;
+  visibility: visible !important;
+}
+
+body[dir="rtl"] .errorMessage {
+  font-weight: 400 !important;
+}
+
+.errorMessage_hidden {
+  visibility: hidden;
+  margin: 0;
+  /* height: 7px; */
+}
+
+body[dir="rtl"] .errorMessage_hidden {
+  font-weight: 400 !important;
+}

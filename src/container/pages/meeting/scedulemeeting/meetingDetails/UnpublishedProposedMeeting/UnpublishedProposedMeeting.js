@@ -65,6 +65,7 @@ import moment from "moment";
 import { truncateString } from "../../../../../../commen/functions/regex";
 import { Tooltip } from "antd";
 import { mqttMeetingData } from "../../../../../../hooks/meetingResponse/response";
+import { checkFeatureIDAvailability } from "../../../../../../commen/functions/utils";
 
 const UnpublishedProposedMeeting = ({
   setViewProposeDatePoll,
@@ -641,7 +642,16 @@ const UnpublishedProposedMeeting = ({
           searchMeetings.meetings !== undefined &&
           searchMeetings.meetings.length > 0
         ) {
-          setRow(searchMeetings.meetings);
+          let copyMeetingData = [...searchMeetings.meetings];
+          if (checkFeatureIDAvailability(12)) {
+            setRow(copyMeetingData);
+          } else {
+            let filterOutPropsed = copyMeetingData.filter((data) => {
+              return data.status !== "12";
+            });
+
+            setRow(filterOutPropsed);
+          }
         } else {
           setRow([]);
         }

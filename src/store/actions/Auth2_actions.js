@@ -544,47 +544,43 @@ const enterPasswordvalidation = (value, navigate, t) => {
       switch (responseMessage.toLowerCase()) {
         case USERPASSWORDVERIFICATION.VERIFICATION_01:
           dispatch(enterPasswordFail(t("Device-does-not-exists")));
-          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
-          dispatch(LoginFlowRoutes(1));
+          clearLocalStorageAtloginresponce(dispatch, 5, navigate);
           // no action
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_02:
-          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
-          dispatch(LoginFlowRoutes(1));
+          clearLocalStorageAtloginresponce(dispatch, 4, navigate);
           dispatch(enterPasswordFail(t("Device-id-does-not-exists")));
           // no action
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_03:
-          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
-          dispatch(LoginFlowRoutes(1));
+          clearLocalStorageAtloginresponce(dispatch, 4, navigate);
 
           dispatch(enterPasswordFail(t("User-does-not-exist")));
           // no action
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_04:
-          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
-          dispatch(LoginFlowRoutes(1));
+          clearLocalStorageAtloginresponce(dispatch, 4, navigate);
           dispatch(enterPasswordFail(t("Account-is-blocked")));
           // no action
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_05:
           dispatch(enterPasswordFail(t("Wrong-password")));
-          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
-          dispatch(LoginFlowRoutes(1));
+          // For Wrong password
+          clearLocalStorageAtloginresponce(dispatch, 3, navigate);
+          dispatch(LoginFlowRoutes(2));
           // no action
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_06:
           dispatch(enterPasswordFail(t("User-is-inactive")));
-          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
-          dispatch(LoginFlowRoutes(1));
+          clearLocalStorageAtloginresponce(dispatch, 4, navigate);
           // no action
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_07:
           dispatch(
             enterPasswordFail(t("Organization-subscription-packages-not-found"))
           );
-          clearLocalStorageAtloginresponce(dispatch, 2, navigate);
-          dispatch(LoginFlowRoutes(1));
+          clearLocalStorageAtloginresponce(dispatch, 4, navigate);
+          // dispatch(LoginFlowRoutes(1));
           // no action
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_08:
@@ -627,35 +623,46 @@ const enterPasswordvalidation = (value, navigate, t) => {
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_10:
           if (response.data.responseResult.hasAdminRights) {
-            if (response.data.responseResult.authToken.isFirstLogIn) {
-              navigate("/Admin/ManageUsers");
-            } else {
-              if (response.data.responseResult.hasUserRights) {
-                if (RSVP !== undefined && RSVP !== null) {
-                  navigate("/DisKus/Meeting/Useravailabilityformeeting");
-                } else if (
-                  dataroomValue !== null &&
-                  dataroomValue !== undefined
-                ) {
-                  navigate("/Diskus/dataroom");
-                } else if (AgCont !== null) {
-                  navigate("/DisKus/Meeting");
-                } else if (AdOrg !== null) {
-                  navigate("/DisKus/Meeting");
-                } else {
-                  navigate("/DisKus/");
-                }
-              } else {
-                navigate("/Admin/ManageUsers");
-              }
-            }
             dispatch(
               enterPasswordSuccess(
                 response.data.responseResult,
                 t("Password-verified-admin-user")
               )
             );
+            navigate("/Admin/ManageUsers");
             clearLocalStorageAtloginresponce(dispatch, 1, navigate);
+          } else if (response.data.responseResult.hasUserRights) {
+            if (response.data.responseResult.authToken.isFirstLogIn) {
+              if (RSVP !== undefined && RSVP !== null) {
+                navigate("/DisKus/Meeting/Useravailabilityformeeting");
+              } else if (
+                dataroomValue !== null &&
+                dataroomValue !== undefined
+              ) {
+                navigate("/Diskus/dataroom");
+              } else if (AgCont !== null) {
+                navigate("/DisKus/Meeting");
+              } else if (AdOrg !== null) {
+                navigate("/DisKus/Meeting");
+              } else {
+                navigate("/onboard");
+              }
+            } else {
+              if (RSVP !== undefined && RSVP !== null) {
+                navigate("/DisKus/Meeting/Useravailabilityformeeting");
+              } else if (
+                dataroomValue !== null &&
+                dataroomValue !== undefined
+              ) {
+                navigate("/Diskus/dataroom");
+              } else if (AgCont !== null) {
+                navigate("/DisKus/Meeting");
+              } else if (AdOrg !== null) {
+                navigate("/DisKus/Meeting");
+              } else {
+                navigate("/DisKus/");
+              }
+            }
           } else {
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);

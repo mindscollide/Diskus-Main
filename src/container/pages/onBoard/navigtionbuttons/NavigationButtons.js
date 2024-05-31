@@ -25,16 +25,12 @@ const NavigationButtons = () => {
   //For Localization
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
-  console.log("currentLanguage", currentLanguage, t);
   const navigate = useNavigate();
   const { currentStep, setCurrentStep } = useTour();
-  const [modalSteps, setModalSteps] = useState(false);
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const { OnBoardModal } = state;
-  console.log("first");
   const goNextStep = () => {
-    console.log("currentStep modalSteps", OnBoardModal.modalSteps);
     if (OnBoardModal.modalSteps) {
       if (OnBoardModal.show) {
         if (OnBoardModal.isDetails) {
@@ -148,7 +144,7 @@ const NavigationButtons = () => {
           </Row>
           <Row>
             <Col
-              onClick={() => navigate("/Diskus/home")}
+              onClick={() => navigate("/Diskus/")}
               className="d-flex justify-content-center mt-2"
             >
               <h3 className={"tour-skip_demo" + " " + currentLanguage}>

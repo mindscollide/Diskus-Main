@@ -42,6 +42,7 @@ import { HideNotificationMeetings } from "../../store/actions/GetMeetingUserId";
 import { clearResponce } from "../../store/actions/ToDoList_action";
 import { useNavigate } from "react-router-dom";
 import MeetingViewModalCalendar from "../modalView/ModalView";
+import { checkFeatureIDAvailability } from "../../commen/functions/utils";
 
 const CalendarPage = () => {
   //For Localization
@@ -137,9 +138,9 @@ const CalendarPage = () => {
 
       setStartDataUpdate(newDateFormaterAsPerUTC(startDate));
       setEndDataUpdate(newDateFormaterAsPerUTC(endDate));
+      await dispatch(getCalendarDataResponse(navigate, t, calendarData));
 
       await dispatch(getEventsTypes(navigate, t));
-      await dispatch(getCalendarDataResponse(navigate, t, calendarData));
     } catch (error) {
       console.error("An error occurred:", error);
     }
@@ -888,18 +889,26 @@ const CalendarPage = () => {
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu>
-                    <Dropdown.Item
-                      className="dropdown-item"
-                      onClick={handleCreateMeeting}
-                    >
-                      {t("Schedule-a-meeting")}
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      className="dropdown-item"
-                      onClick={handleCreateTodo}
-                    >
-                      {t("Create-a-to-do-list")}
-                    </Dropdown.Item>
+                    {checkFeatureIDAvailability(1) ? (
+                      <>
+                        <Dropdown.Item
+                          className="dropdown-item"
+                          onClick={handleCreateMeeting}
+                        >
+                          {t("Schedule-a-meeting")}
+                        </Dropdown.Item>
+                      </>
+                    ) : null}
+                    {checkFeatureIDAvailability(14) ? (
+                      <>
+                        <Dropdown.Item
+                          className="dropdown-item"
+                          onClick={handleCreateTodo}
+                        >
+                          {t("Create-a-to-do-list")}
+                        </Dropdown.Item>
+                      </>
+                    ) : null}
                   </Dropdown.Menu>
                 </Dropdown>
               </Col>
