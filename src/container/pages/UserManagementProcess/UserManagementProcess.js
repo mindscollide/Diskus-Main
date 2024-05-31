@@ -32,9 +32,7 @@ const UserManagementProcess = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const { UserMangementReducer, Authreducer, auth } = useSelector(
-    (state) => state
-  );
+  const { UserMangementReducer, Authreducer } = useSelector((state) => state);
 
   //state to show snackbar
   const [open, setOpen] = useState({
@@ -71,7 +69,11 @@ const UserManagementProcess = () => {
   }, [UserMangementReducer.defaultRoutingValue]);
 
   useEffect(() => {
-    if (Authreducer.EmailValidationResponseMessage !== "") {
+    if (
+      Authreducer.EmailValidationResponseMessage !== "" &&
+      Authreducer.EmailValidationResponseMessage !==
+        t("Users-password-is-created")
+    ) {
       setOpen({
         ...open,
         open: true,

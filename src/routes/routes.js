@@ -12,9 +12,6 @@ import {
   NotFound,
   OnBoard,
   TodoList,
-  AddUser,
-  AllUserPage,
-  EditUser,
   Invoice,
   PaymentHistory,
   PayOutstanding,
@@ -40,8 +37,6 @@ import {
   TwoFactor,
   TwoFacSendEmail,
   VerificationIphone,
-  VerificationCodeThree,
-  SigninDenied,
   ForgotPasswordVerification,
   UpdatePasswordSuccessfully,
   Committee,
@@ -57,16 +52,10 @@ import {
 } from "../container";
 
 import DocumentViewer from "../components/elements/webviewer/DocumentViewer";
-import PrivateNonActive from "./PrivateNonActive";
 import PrivateAdminRoute from "./privateadmin_routes";
-import PrivateAdminRouteNonActive from "./privateadminNonactive_routes";
-import PrivateParAdminRouteNonActive from "./PrivateParAdminRouteNonActive";
 import PrivateRoutes from "./private_routes";
 import Reports from "../container/Admin/Reports/Reports";
 import SignatureViewer from "../components/elements/signaturewebviewer/signatureviewer";
-import SignUpOrganizationUM from "../container/pages/UserMangement/SignUpOrganizationUM/SignUpOrganizationUM";
-import VerifyOTPUM from "../container/pages/UserMangement/VerifyOTPUM/VerifyOTPUM";
-import PasswordCreationUM from "../container/pages/UserMangement/PasswordCreationUM/PasswordCreationUM";
 import ManageUsers from "../container/pages/UserMangement/AdminUserManagement/ManageUsers/ManageUsers";
 import AddUsers from "../container/pages/UserMangement/AdminUserManagement/AddUsers/AddUsers";
 import OrganizationLevelConfigUM from "../container/pages/UserMangement/OrganziationLevelConfigUM/OrganizationLevelConfigUM";
@@ -104,8 +93,7 @@ export const router = createHashRouter(
         element={<PakageDetailsUserManagement />}
       />
       <Route path="/signuporganization" element={<Signup />} />
-      {/* <Route path="/" element={<ValidateEmail />} /> */}
-      {/* <Route path="/forgotpasssowrd" element={<ForgotPassword />} /> */}
+
       <Route
         path="/forgotpasswordVerification"
         element={<ForgotPasswordVerification />}
@@ -126,15 +114,8 @@ export const router = createHashRouter(
       />
       {/* Two Fac Routes */}
       <Route path="/twofac" element={<TwoFactor />} />
-      {/* <Route path="/sendmailwithdevice" element={<SendEmailRealmeXtra />} /> */}
       <Route path="/twofacmultidevice" element={<TwoFacSendEmail />} />
       <Route path="/selectfrommultidevices" element={<VerificationIphone />} />
-      {/* <Route path="/2FAverificationotp" element={<VerificationCodeOne />} /> */}
-      {/* <Route
-        path="/2FAverificationdevieotp"
-        element={<VerificationCodeThree />}
-      /> */}
-      {/* <Route path="/SigninDenied" element={<SigninDenied />} /> */}
       <Route path="/404" element={<NotFound />} />
       <Route path="*" element={<NotFound />} />
       {/* ============================================================ */}
