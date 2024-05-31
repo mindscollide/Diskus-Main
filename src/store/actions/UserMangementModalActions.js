@@ -76,6 +76,14 @@ const openPaymentProcessModal = (response) => {
     response: response,
   };
 };
+
+const InsternetDisconnectModal = (response) => {
+  return {
+    type: actions.INTERNET_DISCONNECT_MODAL,
+    response: response,
+  };
+};
+
 export {
   showUpgradeNowModal,
   showRequestExtentionModal,
@@ -88,4 +96,5 @@ export {
   showCancelSubscriptionModal,
   showReasonForLeavingModal,
   openPaymentProcessModal,
+  InsternetDisconnectModal,
 };

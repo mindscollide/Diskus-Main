@@ -14,6 +14,7 @@ const initialState = {
   cancelSubscriptionModal: false,
   reasonForleavingModal: false,
   paymentProcessModal: false,
+  internetDisconnectModal: false,
 };
 
 const UserManagementModals = (state = initialState, action) => {
@@ -93,6 +94,13 @@ const UserManagementModals = (state = initialState, action) => {
       return {
         ...state,
         paymentProcessModal: action.response,
+      };
+    }
+
+    case actions.INTERNET_DISCONNECT_MODAL: {
+      return {
+        ...state,
+        internetDisconnectModal: action.response,
       };
     }
 
