@@ -1057,11 +1057,8 @@ const Sidebar = () => {
                 ) : null}
 
                 {/* Add more btn */}
-                {checkFeatureIDAvailability(2) ||
+                {
                 checkFeatureIDAvailability(13) ||
-                checkFeatureIDAvailability(19) ||
-                checkFeatureIDAvailability(20) ||
-                checkFeatureIDAvailability(21) ||
                 checkFeatureIDAvailability(17) ||
                 checkFeatureIDAvailability(18) ||
                 checkFeatureIDAvailability(15) ||

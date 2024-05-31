@@ -48,7 +48,7 @@ const calendarReducer = (state = initialState, action) => {
     case actions.GETEVENTSTYPES_SUCCESS: {
       return {
         ...state,
-        Loading: true,
+        Loading: false,
         getEventTypeIds: action.response,
         ResponseMessage: action.message,
       };
