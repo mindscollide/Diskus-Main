@@ -694,90 +694,94 @@ const Header2 = () => {
               <LanguageSelector />
 
               <Nav.Link className="me-2">
-                <Tooltip placement="topRight" title={t("Shortcuts")}>
-                  <div className="dropdown-btn_dotted">
-                    {location.pathname.includes("/Admin") ||
-                    location.pathname.includes("/Admin") ? null : roleRoute ||
-                      TrialExpireSelectPac ? null : (
-                      <DropdownButton
-                        id="dropdown-btn_dotted"
-                        className="dropdown-btn_dotted"
-                        title={
-                          <img
-                            src={DiskusNotificationIcon}
-                            alt=""
-                            width={28}
-                            draggable="false"
-                          />
-                        }
-                        onClick={dropDownMenuFunction}
-                      >
-                        {checkFeatureIDAvailability(1) ? (
-                          <>
-                            <Dropdown.Item
-                              className="d-flex title-className"
-                              onClick={openMeetingModal}
-                            >
-                              {t("Quick-meeting")}
-                            </Dropdown.Item>
-                          </>
-                        ) : null}
+                {checkFeatureIDAvailability(1) ||
+                checkFeatureIDAvailability(13) ? (
+                  <Tooltip placement="topRight" title={t("Shortcuts")}>
+                    <div className="dropdown-btn_dotted">
+                      {location.pathname.includes("/Admin") ||
+                      location.pathname.includes("/Admin") ? null : roleRoute ||
+                        TrialExpireSelectPac ? null : (
+                        <DropdownButton
+                          id="dropdown-btn_dotted"
+                          className="dropdown-btn_dotted"
+                          title={
+                            <img
+                              src={DiskusNotificationIcon}
+                              alt=""
+                              width={28}
+                              draggable="false"
+                            />
+                          }
+                          onClick={dropDownMenuFunction}
+                        >
+                          {checkFeatureIDAvailability(1) ? (
+                            <>
+                              <Dropdown.Item
+                                className="d-flex title-className"
+                                onClick={openMeetingModal}
+                              >
+                                {t("Quick-meeting")}
+                              </Dropdown.Item>
+                            </>
+                          ) : null}
 
-                        {checkFeatureIDAvailability(13) ? (
-                          <>
-                            <Dropdown.Item className="d-flex title-className">
-                              {/* {t("Upload-document")} */}
-                              {(NewMeetingreducer.scheduleMeetingPageFlag ===
-                                true ||
-                                NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                          {checkFeatureIDAvailability(13) ? (
+                            <>
+                              <Dropdown.Item className="d-flex title-className">
+                                {/* {t("Upload-document")} */}
+                                {(NewMeetingreducer.scheduleMeetingPageFlag ===
                                   true ||
-                                NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
-                                  true ||
-                                NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
-                                  true ||
-                                NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
-                                  true ||
-                                NewMeetingreducer.proposeNewMeetingPageFlag ===
-                                  true) &&
-                              NewMeetingreducer.viewMeetingFlag === false ? (
-                                <div
-                                  onClick={() => {
-                                    dispatch(
-                                      showCancelModalmeetingDeitals(true)
-                                    );
-                                    dispatch(uploadGlobalFlag(true));
-                                  }}
-                                >
-                                  {t("Upload-document")}
-                                </div>
-                              ) : (
-                                <UploadTextField
-                                  title={t("Upload-document")}
-                                  handleFileUploadRequest={handleUploadFile}
-                                  // setProgress={setProgress}
-                                />
-                              )}
+                                  NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                                    true ||
+                                  NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                                    true ||
+                                  NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                                    true ||
+                                  NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                                    true ||
+                                  NewMeetingreducer.proposeNewMeetingPageFlag ===
+                                    true) &&
+                                NewMeetingreducer.viewMeetingFlag === false ? (
+                                  <div
+                                    onClick={() => {
+                                      dispatch(
+                                        showCancelModalmeetingDeitals(true)
+                                      );
+                                      dispatch(uploadGlobalFlag(true));
+                                    }}
+                                  >
+                                    {t("Upload-document")}
+                                  </div>
+                                ) : (
+                                  <UploadTextField
+                                    title={t("Upload-document")}
+                                    handleFileUploadRequest={handleUploadFile}
+                                    // setProgress={setProgress}
+                                  />
+                                )}
 
-                              {/* <input type="file" /> */}
-                            </Dropdown.Item>
-                          </>
-                        ) : null}
+                                {/* <input type="file" /> */}
+                              </Dropdown.Item>
+                            </>
+                          ) : null}
 
-                        {checkFeatureIDAvailability(13) ? (
-                          <>
-                            <Dropdown.Item
-                              className="d-flex title-className"
-                              onClick={RecentFilesTab}
-                            >
-                              {t("Recently-added-files")}
-                            </Dropdown.Item>
-                          </>
-                        ) : null}
-                      </DropdownButton>
-                    )}
-                  </div>
-                </Tooltip>
+                          {checkFeatureIDAvailability(13) ? (
+                            <>
+                              <Dropdown.Item
+                                className="d-flex title-className"
+                                onClick={RecentFilesTab}
+                              >
+                                {t("Recently-added-files")}
+                              </Dropdown.Item>
+                            </>
+                          ) : null}
+                        </DropdownButton>
+                      )}
+                    </div>
+                  </Tooltip>
+                ) : null}
               </Nav.Link>
+
               <Dropdown className="profilebtn-dropdown">
                 <Dropdown.Toggle className="dropdown-toggle">
                   <img
