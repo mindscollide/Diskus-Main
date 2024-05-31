@@ -80,7 +80,7 @@
   background: #ebeeff !important;
   color: #6172d6 !important;
   width: 100% !important;
- font-weight: 600;
+  font-weight: 600;
   font-size: 16px !important;
   border-top-left-radius: 4px !important;
   border-top-right-radius: 4px !important;
@@ -119,7 +119,7 @@ body[dir="rtl"] .Archived-Status-Committee-Group {
 }
 
 .Status-Committee-Group {
-  padding-top: 10px !important;
+  /* padding-top: 10px !important; */
   font-weight: 600;
 }
 
