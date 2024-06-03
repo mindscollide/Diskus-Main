@@ -621,21 +621,21 @@ const MeetingDetails = ({
         },
       };
       console.log(data, "newArrnewArrnewArrnewArr");
-      // dispatch(
-      //   SaveMeetingDetialsNewApiFunction(
-      //     navigate,
-      //     t,
-      //     data,
-      //     setSceduleMeeting,
-      //     setorganizers,
-      //     setmeetingDetails,
-      //     2,
-      //     setCurrentMeetingID,
-      //     currentMeeting,
-      //     meetingDetails,
-      //     setDataroomMapFolderId
-      //   )
-      // );
+      dispatch(
+        SaveMeetingDetialsNewApiFunction(
+          navigate,
+          t,
+          data,
+          setSceduleMeeting,
+          setorganizers,
+          setmeetingDetails,
+          2,
+          setCurrentMeetingID,
+          currentMeeting,
+          meetingDetails,
+          setDataroomMapFolderId
+        )
+      );
       localStorage.setItem("MeetingTitle", meetingDetails.MeetingTitle);
     } else {
       seterror(true);
