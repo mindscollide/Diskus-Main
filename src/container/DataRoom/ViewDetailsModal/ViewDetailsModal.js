@@ -82,8 +82,6 @@ const ViewDetailsModal = ({
     dispatch(
       getDataAnalyticsApi(navigate, t, Data, setActivityState, setDetailsState)
     );
-    // setActivityState(true);
-    // setDetailsState(false);
   };
 
   const handleClose = () => {
