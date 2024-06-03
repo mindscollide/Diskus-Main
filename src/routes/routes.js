@@ -273,7 +273,6 @@ export const router = createHashRouter(
             element={
               <RouteWrapperUser name="polling">
                 <Polling />
-                <Polling />
               </RouteWrapperUser>
             }
           />
