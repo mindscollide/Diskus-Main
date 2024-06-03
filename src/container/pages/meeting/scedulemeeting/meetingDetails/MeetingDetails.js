@@ -411,21 +411,13 @@ const MeetingDetails = ({
       let newDate = new Date(date);
       let DateDate = new DateObject(date).format("YYYYMMDD");
       const updatedRows = [...rows];
-      if (
-        index > 0 &&
-        Number(DateDate) < Number(updatedRows[index - 1].selectedOption)
-      ) {
-        setOpen({
-          flag: true,
-          message: t("Selected-date-should-not-be-less-than-the-previous-one"),
-        });
-        return;
-      } else {
-        updatedRows[index].selectedOption = DateDate;
-        updatedRows[index].dateForView = newDate;
-        setRows(updatedRows);
-      }
-    } catch {}
+
+      updatedRows[index].selectedOption = DateDate;
+      updatedRows[index].dateForView = newDate;
+      setRows(updatedRows);
+    } catch (error) {
+      console.log(error, "errorerrorerror");
+    }
   };
 
   const addRow = () => {
@@ -588,6 +580,8 @@ const MeetingDetails = ({
       }
     });
 
+    console.log(newArr, "newArrnewArrnewArrnewArr");
+
     if (
       meetingDetails.MeetingTitle !== "" &&
       meetingDetails.MeetingType !== 0 &&
@@ -626,22 +620,22 @@ const MeetingDetails = ({
             publishedFlag !== null && publishedFlag === true ? 1 : 11,
         },
       };
-
-      dispatch(
-        SaveMeetingDetialsNewApiFunction(
-          navigate,
-          t,
-          data,
-          setSceduleMeeting,
-          setorganizers,
-          setmeetingDetails,
-          2,
-          setCurrentMeetingID,
-          currentMeeting,
-          meetingDetails,
-          setDataroomMapFolderId
-        )
-      );
+      console.log(data, "newArrnewArrnewArrnewArr");
+      // dispatch(
+      //   SaveMeetingDetialsNewApiFunction(
+      //     navigate,
+      //     t,
+      //     data,
+      //     setSceduleMeeting,
+      //     setorganizers,
+      //     setmeetingDetails,
+      //     2,
+      //     setCurrentMeetingID,
+      //     currentMeeting,
+      //     meetingDetails,
+      //     setDataroomMapFolderId
+      //   )
+      // );
       localStorage.setItem("MeetingTitle", meetingDetails.MeetingTitle);
     } else {
       seterror(true);
