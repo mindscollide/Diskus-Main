@@ -153,6 +153,7 @@ body[dir="rtl"] .Card_border2 {
   background: #fff !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
+  font-weight: 600;
   border: 1px solid #e1e1e1 !important;
 }
 
@@ -165,6 +166,7 @@ body[dir="rtl"] .Card_border2 {
   background: #fff !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
+  font-weight: 600;
   border: 1px solid #e1e1e1 !important;
 }
 
@@ -174,6 +176,7 @@ body[dir="rtl"] .Card_border2 {
   background: #6172d6 !important;
   color: #fff !important;
   border-radius: 4px !important;
+  font-weight: 600;
   border: none !important;
 }
 
@@ -184,6 +187,8 @@ body[dir="rtl"] .Card_border2 {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #6172d6 !important;
+  font-weight: 600;
+
   color: #fff !important;
   border-radius: 4px !important;
   border: none !important;

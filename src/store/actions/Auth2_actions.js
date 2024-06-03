@@ -623,6 +623,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_10:
           if (response.data.responseResult.hasAdminRights) {
+            mqttConnection(response.data.responseResult.authToken.userID);
+
             dispatch(
               enterPasswordSuccess(
                 response.data.responseResult,
@@ -632,7 +634,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
             navigate("/Admin/ManageUsers");
             clearLocalStorageAtloginresponce(dispatch, 1, navigate);
           } else if (response.data.responseResult.hasUserRights) {
+            mqttConnection(response.data.responseResult.authToken.userID);
             if (response.data.responseResult.authToken.isFirstLogIn) {
+         
+
               if (RSVP !== undefined && RSVP !== null) {
                 navigate("/DisKus/Meeting/Useravailabilityformeeting");
               } else if (
@@ -648,6 +653,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 navigate("/onboard");
               }
             } else {
+
               if (RSVP !== undefined && RSVP !== null) {
                 navigate("/DisKus/Meeting/Useravailabilityformeeting");
               } else if (
@@ -682,6 +688,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 t("Password-verified-admin")
               )
             );
+            mqttConnection(response.data.responseResult.authToken.userID);
+
             clearLocalStorageAtloginresponce(dispatch, 1, navigate);
           } else {
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
@@ -691,6 +699,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_12:
           if (response.data.responseResult.hasUserRights) {
+            mqttConnection(response.data.responseResult.authToken.userID);
+
             if (response.data.responseResult.authToken.isFirstLogIn) {
               if (RSVP !== undefined && RSVP !== null) {
                 navigate("/DisKus/Meeting/Useravailabilityformeeting");
