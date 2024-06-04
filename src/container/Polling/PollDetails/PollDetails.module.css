@@ -127,6 +127,8 @@ body[dir="rtl"] .Card_border2 {
   color: #5a5a5a !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
+  font-weight: 600;
+
 }
 
 .Class_Close:hover,

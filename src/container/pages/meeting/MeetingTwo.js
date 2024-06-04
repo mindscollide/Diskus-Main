@@ -1548,7 +1548,19 @@ const NewMeeting = () => {
         setMinutesAgo(searchMeetings.meetingStartedMinuteAgo);
         if (Object.keys(searchMeetings.meetings).length > 0) {
           // });
-          setRow(searchMeetings.meetings);
+          // Create a deep copy of the meetings array
+          let copyMeetingData = searchMeetings.meetings.map((meeting) => ({
+            ...meeting,
+            meetingAgenda: meeting.meetingAgenda.filter(
+              (agenda) => agenda.objMeetingAgenda.canView
+            ),
+          }));
+          copyMeetingData.forEach((data) => {
+            data.meetingAgenda = data.meetingAgenda.filter((agenda) => {
+              return agenda.objMeetingAgenda.canView === true;
+            });
+          });
+          setRow(copyMeetingData);
           // let newRowData = [];
           // searchMeetings.meetings.map((data, index) => {
           //   try {

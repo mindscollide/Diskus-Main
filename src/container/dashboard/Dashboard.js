@@ -203,6 +203,7 @@ const Dashboard = () => {
   // const [socket, setSocket] = useState(Helper.socket);
 
   const navigate = useNavigate();
+  const [checkInternet, setCheckInternet] = useState(navigator);
   let createrID = localStorage.getItem("userID");
   let currentOrganization = localStorage.getItem("organizationID");
   let currentUserName = localStorage.getItem("name");
@@ -254,28 +255,16 @@ const Dashboard = () => {
   const isInternetDisconnectModalVisible = useSelector(
     (state) => state.UserManagementModals.internetDisconnectModal
   );
-
+  console.log(checkInternet.onLine, "checkInternet");
   useEffect(() => {
-    const handleOnline = () => {
+    console.log(checkInternet.onLine, "checkInternet");
+
+    if (checkInternet.onLine) {
       dispatch(InsternetDisconnectModal(false));
-    };
-
-    const handleOffline = () => {
-      dispatch(InsternetDisconnectModal(true));
-    };
-
-    window.addEventListener("online", handleOnline);
-    window.addEventListener("offline", handleOffline);
-
-    if (!navigator.onLine) {
+    } else {
       dispatch(InsternetDisconnectModal(true));
     }
-
-    return () => {
-      window.removeEventListener("online", handleOnline);
-      window.removeEventListener("offline", handleOffline);
-    };
-  }, [dispatch]);
+  }, [checkInternet.onLine]);
 
   const onMessageArrived = (msg) => {
     var min = 10000;
@@ -860,7 +849,23 @@ const Dashboard = () => {
               dispatch(userLogOutApiFunc(navigate, t));
             }
           }, 4000);
-        } else if (
+         } else if(data.payload.message.toLowerCase() === "USER_DELETED".toLowerCase()) {
+          setNotification({
+            notificationShow: true,
+            message: changeMQTTJSONOne(
+              t("USER_DELETED"),
+              "[organizationName]",
+              data.payload.organizationName
+            ),
+          });
+          setNotificationID(id);
+          setTimeout(() => {
+            if (data.payload.isLoggedOut === true) {
+              //Apply Logout API here
+              dispatch(userLogOutApiFunc(navigate, t));
+            }
+          }, 4000);
+         } else if (
           data.payload.message.toLowerCase() ===
           "ORGANIZATION_SUBSCRIPTION_CANCELLED".toLowerCase()
         ) {
