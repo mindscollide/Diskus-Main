@@ -76,11 +76,14 @@ import PakageDetailsUMUpgrade from "../container/pages/UserMangement/AdminUserMa
 import PaymentProcess from "../container/pages/UserMangement/PaymentProcess/PaymentProcess";
 import { getLocalStorageItemNonActiveCheck } from "../commen/functions/utils";
 import PaymentTest from "../container/pages/UserMangement/PaymentTestPage/PaymentTest";
+import ReviewSignature from "../container/DataRoom/SignatureApproval/ReviewAndSign/ReviewSignature";
+import PendingApproval from "../container/MinutesNewFlow/pendingApprovals/PendingApprovals";
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
+
       {/* for all login Routes  */}
       <Route path="/" element={<UserManagementProcess />} />
 
