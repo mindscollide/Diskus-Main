@@ -15,6 +15,7 @@ import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_
 import Helper from "../../../../../commen/functions/history_logout";
 import { mqttConnection } from "../../../../../commen/functions/mqttconnection";
 import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
+import { LoginFlowRoutes } from "../../../../../store/actions/UserManagementActions";
 const VerificationCodeThree = () => {
   const { t, i18n } = useTranslation();
   const { Authreducer, LanguageReducer } = useSelector((state) => state);
@@ -61,7 +62,7 @@ const VerificationCodeThree = () => {
     localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60
   );
   console.log(minutes, seconds, "datadatadatadatadata");
-  let currentDevice = JSON.parse(localStorage.getItem("currentDevice"));
+  let currentDevice = JSON.parse(localStorage.getItem("selectDevice"));
   const [device, setDevice] = useState({
     DeviceName: currentDevice?.DeviceName,
     UserDeviceID: currentDevice?.UserDeviceID,
@@ -105,10 +106,10 @@ const VerificationCodeThree = () => {
       localStorage.setItem("TowApproval", true);
 
       if (roleID === 1 || roleID === 2) {
-        navigate("/Diskus/Admin/");
+        navigate("/Admin/");
       } else {
         console.log("message arrived");
-        if (isFirstLogin != undefined) {
+        if (isFirstLogin !== null && isFirstLogin !== undefined) {
           if (isFirstLogin === true) {
             navigate("/onboard");
           } else {
@@ -130,7 +131,9 @@ const VerificationCodeThree = () => {
       }
     } else {
       localStorage.setItem("TowApproval", false);
-      navigate("/SigninDenied/");
+      console.log("TowApproval");
+      dispatch(LoginFlowRoutes(7));
+      // navigate("/SigninDenied/");
     }
   };
 
@@ -200,6 +203,11 @@ const VerificationCodeThree = () => {
       }
     });
   }, []);
+
+  const handleGoback = () => {
+    localStorage.setItem("LoginFlowPageRoute", 15);
+    dispatch(LoginFlowRoutes(15));
+  };
   return (
     <>
       {/* <Row>
@@ -251,6 +259,7 @@ const VerificationCodeThree = () => {
                     <img
                       draggable="false"
                       src={img1}
+                      alt=""
                       width="220px"
                       height="69px"
                       // width="229.58px"
@@ -335,19 +344,9 @@ const VerificationCodeThree = () => {
                     lg={12}
                     className="forogt_email_link_for_openrealmextra"
                   >
-                    <Link
-                      to={
-                        parseInt(GobackSelection) === 1
-                          ? "/twofac"
-                          : parseInt(GobackSelection) === 2
-                          ? "/sendmailwithdevice"
-                          : parseInt(GobackSelection) === 3
-                          ? "/twofacmultidevice"
-                          : "/twofac"
-                      }
-                    >
+                    <span className="cursor-pointer" onClick={handleGoback}>
                       {t("Go-back")}
-                    </Link>
+                    </span>
                   </Col>
                 </Row>
               </Col>

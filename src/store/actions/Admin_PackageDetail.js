@@ -67,7 +67,7 @@ const getSubscribeOrganizationPackage = (navigate, t) => {
               dispatch(
                 packageDetailSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -277,7 +277,7 @@ const getSubscriptionUpgradeAmountInfoApi = (
                 "PaymentAmount",
                 response.data.responseResult.totalBill
               );
-              navigate("/Diskus/Admin/paymentform");
+              navigate("/Admin/paymentform");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -387,7 +387,7 @@ const getSubscriptionUpgradePaymentCompleteApi = (navigate, t) => {
                   t("Payment-complete-successfully")
                 )
               );
-              navigate("/Diskus/Admin/PackageDetail");
+              navigate("/Admin/PackageDetail");
               localStorage.removeItem("PaymentAmount");
               localStorage.removeItem("TenureOfSuscriptionID");
               localStorage.removeItem("PackageIDforPayment");

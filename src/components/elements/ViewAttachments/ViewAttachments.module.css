@@ -15,8 +15,9 @@ body[dir="rtl"] .View_attachment_heading {
 }
 
 .Scroller_ViewAttachments {
-  height: 54vh !important;
+  max-height: 50vh !important;
   overflow-x: hidden !important;
+  min-height: 50vh;
 }
 
 .Scroller_ViewAttachments::-webkit-scrollbar {

@@ -35,6 +35,7 @@ const getAllLanguages = (navigate, t) => {
   //   localStorage.getItem("token") !== null
   //     ? JSON.parse(localStorage.getItem("token"))
   //     : "";
+  let currentUserID = Number(localStorage.getItem("userID"));
   return (dispatch) => {
     dispatch(getAllLanguagesInitial());
     let form = new FormData();
@@ -63,7 +64,7 @@ const getAllLanguages = (navigate, t) => {
               await dispatch(
                 getAllLanguagesSuccess(
                   response.data.responseResult.systemSupportedLanguages,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -200,11 +201,12 @@ const getSelectedLanguageInitial = () => {
   };
 };
 
-const getSelectedLanguageSuccess = (response, message) => {
+const getSelectedLanguageSuccess = (response, message, loader) => {
   return {
     type: actions.GET_SELECTED_LANGUAGE_SUCCESS,
     response: response,
     message: message,
+    loader: loader,
   };
 };
 
@@ -215,8 +217,10 @@ const getSelectedLanguageFail = (message) => {
   };
 };
 
-const getSelectedLanguage = (data, navigate, t) => {
+const getSelectedLanguage = (data, navigate, t, flag, loader) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  let organzataionID = localStorage.getItem("OrganizationID");
+  console.log(organzataionID, "organzataionIDorganzataionID");
   return (dispatch) => {
     dispatch(getSelectedLanguageInitial());
     let form = new FormData();
@@ -233,7 +237,7 @@ const getSelectedLanguage = (data, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getSelectedLanguage(data, navigate, t));
+          dispatch(getSelectedLanguage(data, navigate, t, flag, loader));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -246,7 +250,7 @@ const getSelectedLanguage = (data, navigate, t) => {
               await dispatch(
                 getSelectedLanguageSuccess(
                   response.data.responseResult.userSelectedLanguage,
-                  t("Record-found")
+                  ""
                 )
               );
               if (

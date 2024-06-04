@@ -4,7 +4,6 @@ import searchicon from "../../../assets/images/searchicon.svg";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 
 import ClipIcon from "../../../assets/images/ClipIcon.png";
-import VideoIcon from "../../../assets/images/Video-Icon.png";
 import {
   GetAllUsers,
   GetAllUsersGroupsRoomsList,
@@ -35,7 +34,6 @@ import NoMeetingsIcon from "../../../assets/images/No-Meetings.png";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import { useTranslation } from "react-i18next";
 import { Tooltip } from "antd";
-import { truncateString } from "../../../commen/functions/regex";
 import {
   Button,
   Table,
@@ -44,7 +42,6 @@ import {
   Notification,
 } from "../../../components/elements";
 import { Paper } from "@material-ui/core";
-import CancelButtonModal from "./closeMeetingTab/CancelModal";
 import { Col, Dropdown, Row } from "react-bootstrap";
 import { ChevronDown, Plus } from "react-bootstrap-icons";
 import gregorian from "react-date-object/calendars/gregorian";
@@ -79,10 +76,13 @@ import {
   pollsGlobalFlag,
   attendanceGlobalFlag,
   uploadGlobalFlag,
-  FetchMeetingURLClipboard,
   GetAllMeetingTypesNewFunction,
   JoinCurrentMeeting,
-  LeaveCurrentMeeting,
+  validateStringEmailApi,
+  meetingParticipantAdded,
+  meetingParticipantRemoved,
+  boardDeckModal,
+  boardDeckShareModal,
 } from "../../../store/actions/NewMeetingActions";
 import { mqttCurrentMeetingEnded } from "../../../store/actions/GetMeetingUserId";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
@@ -100,11 +100,7 @@ import {
   utcConvertintoGMT,
   getCurrentDateTimeUTC,
 } from "../../../commen/functions/date_formater";
-import {
-  getCurrentDate,
-  getEndTimeWitlCeilFunction,
-  getStartTimeWithCeilFunction,
-} from "../../../commen/functions/time_formatter";
+
 import { StatusValue } from "./statusJson";
 import ModalMeeting from "../../modalmeeting/ModalMeeting";
 import ModalUpdate from "../../modalUpdate/ModalUpdate";
@@ -118,6 +114,11 @@ import {
   clearResponseMessage,
 } from "../../../store/actions/MeetingOrganizers_action";
 import ProposedNewMeeting from "./scedulemeeting/ProposedNewMeeting/ProposedNewMeeting";
+import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
+import { mqttMeetingData } from "../../../hooks/meetingResponse/response";
+import BoardDeckModal from "../../BoardDeck/BoardDeckModal/BoardDeckModal";
+import ShareModalBoarddeck from "../../BoardDeck/ShareModalBoardDeck/ShareModalBoarddeck";
+import BoardDeckSendEmail from "../../BoardDeck/BoardDeckSendEmail/BoardDeckSendEmail";
 
 const NewMeeting = () => {
   const { t } = useTranslation();
@@ -144,11 +145,10 @@ const NewMeeting = () => {
     (state) => state.MeetingOrganizersReducer.ResponseMessage
   );
 
-  let currentUserID = Number(localStorage.getItem("userID"));
-
-  let currentOrganization = Number(localStorage.getItem("organizationID"));
-
   let currentLanguage = localStorage.getItem("i18nextLng");
+  let AgCont = localStorage.getItem("AgCont");
+  let AdOrg = localStorage.getItem("AdOrg");
+  // let AdCont
   //Current User ID
   let currentUserId = localStorage.getItem("userID");
   //Current Organization
@@ -165,9 +165,6 @@ const NewMeeting = () => {
   let minutes = now.getUTCMinutes().toString().padStart(2, "0");
   let seconds = now.getUTCSeconds().toString().padStart(2, "0");
   let currentUTCDateTime = `${year}${month}${day}${hours}${minutes}${seconds}`;
-  const getStartTime = getStartTimeWithCeilFunction();
-  const getEndTime = getEndTimeWitlCeilFunction();
-  const getCurrentDateforMeeting = getCurrentDate();
   const [quickMeeting, setQuickMeeting] = useState(false);
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
   const [proposedNewMeeting, setProposedNewMeeting] = useState(false);
@@ -209,7 +206,6 @@ const NewMeeting = () => {
     useState(false);
   const [viewAdvanceMeetingModal, setViewAdvanceMeetingModal] = useState(false);
   const [advanceMeetingModalID, setAdvanceMeetingModalID] = useState(null);
-  const [responseDate, setResponseDate] = useState("");
   const [responseByDate, setResponseByDate] = useState("");
 
   const [editorRole, setEdiorRole] = useState({
@@ -370,6 +366,68 @@ const NewMeeting = () => {
       dispatch(proposeNewMeetingPageFlag(false));
     }
   }, [location.state]);
+
+  useEffect(() => {
+    if (AgCont !== null) {
+      // Usage example:
+      validateStringEmailApi(AgCont, navigate, t, 1, dispatch)
+        .then(async (result) => {
+          console.log("Result:", result);
+          // Handle the result here
+
+          await setAdvanceMeetingModalID(Number(result.meetingID));
+          await setViewAdvanceMeetingModalUnpublish(true);
+          await dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+          setEdiorRole({
+            ...editorRole,
+            isPrimaryOrganizer: false,
+            role:
+              Number(result.attendeeId) === 2
+                ? "Participant"
+                : Number(result.attendeeId) === 4
+                ? "Agenda Contributor"
+                : "Organizer",
+            status: Number(result.meetingStatusId),
+          });
+          localStorage.removeItem("AgCont");
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          // Handle errors here
+        });
+      console.log(AgCont, "AgContAgContAgContAgCont");
+    }
+  }, [AgCont]);
+
+  useEffect(() => {
+    if (AdOrg !== null) {
+      validateStringEmailApi(AgCont, navigate, t, 2, dispatch)
+        .then(async (result) => {
+          console.log("Result:", result);
+          // Handle the result here
+
+          await setAdvanceMeetingModalID(Number(result.meetingID));
+          await setViewAdvanceMeetingModalUnpublish(true);
+          await dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+          setEdiorRole({
+            ...editorRole,
+            isPrimaryOrganizer: false,
+            role:
+              Number(result.attendeeId) === 2
+                ? "Participant"
+                : Number(result.attendeeId) === 4
+                ? "Agenda Contributor"
+                : "Organizer",
+            status: Number(result.meetingStatusId),
+          });
+          localStorage.removeItem("AdOrg");
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          // Handle errors here
+        });
+    }
+  }, [AdOrg]);
 
   //  Call all search meetings api
   useEffect(() => {
@@ -579,15 +637,21 @@ const NewMeeting = () => {
           t
         )
       );
-      let allChatMessages =
-        talkStateData.AllUserChats.AllUserChatsData.allMessages;
-      const foundRecord = allChatMessages.find(
-        (item) => item.id === data.talkGroupID
-      );
-      if (foundRecord) {
-        dispatch(activeChat(foundRecord));
+      let allChatMessages = talkStateData.AllUserChats.AllUserChatsData;
+      console.log("allChatMessagesallChatMessages", allChatMessages);
+      if (
+        allChatMessages !== null &&
+        allChatMessages !== undefined &&
+        allChatMessages.length !== 0
+      ) {
+        const foundRecord = allChatMessages.allMessages.find(
+          (item) => item.id === data.talkGroupID
+        );
+        if (foundRecord) {
+          dispatch(activeChat(foundRecord));
+        }
+        localStorage.setItem("activeOtoChatID", data.talkGroupID);
       }
-      localStorage.setItem("activeOtoChatID", data.talkGroupID);
     }
   };
 
@@ -598,7 +662,7 @@ const NewMeeting = () => {
   const eventClickHandler = () => {};
 
   //Published Meeting Page
-  const handlePublishedMeeting = () => {
+  const handlePublishedMeeting = async () => {
     let searchData = {
       Date: "",
       Title: "",
@@ -608,6 +672,7 @@ const NewMeeting = () => {
       Length: 50,
       PublishedMeetings: true,
     };
+    await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.setItem("MeetingCurrentView", 1);
     localStorage.setItem("MeetingPageRows", 50);
@@ -615,7 +680,7 @@ const NewMeeting = () => {
   };
 
   //UnPublished Meeting Page
-  const handleUnPublishedMeeting = () => {
+  const handleUnPublishedMeeting = async () => {
     let searchData = {
       Date: "",
       Title: "",
@@ -625,6 +690,7 @@ const NewMeeting = () => {
       Length: 50,
       PublishedMeetings: false,
     };
+    await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.setItem("MeetingCurrentView", 2);
     localStorage.setItem("MeetingPageRows", 50);
@@ -734,12 +800,7 @@ const NewMeeting = () => {
     }
   };
 
-  const handleEditMeeting = async (
-    id,
-    isQuick,
-    isAgendaContributor,
-    record
-  ) => {
+  const handleEditMeeting = async (id, isQuick, role, record) => {
     let Data = { MeetingID: Number(id) };
 
     if (isQuick) {
@@ -755,36 +816,71 @@ const NewMeeting = () => {
         )
       );
     } else if (isQuick === false) {
-      let Data = {
-        MeetingID: Number(id),
-      };
-      await dispatch(
-        GetAllMeetingDetailsApiFunc(
-          navigate,
-          t,
-          Data,
-          true,
-          setCurrentMeetingID,
-          setSceduleMeeting,
-          setDataroomMapFolderId,
-          0,
-          1
-        )
-      );
-      dispatch(scheduleMeetingPageFlag(true));
-      dispatch(viewMeetingFlag(false));
-      dispatch(meetingDetailsGlobalFlag(true));
-      dispatch(organizersGlobalFlag(false));
-      dispatch(agendaContributorsGlobalFlag(false));
-      dispatch(participantsGlobalFlag(false));
-      dispatch(agendaGlobalFlag(false));
-      dispatch(meetingMaterialGlobalFlag(false));
-      dispatch(minutesGlobalFlag(false));
-      dispatch(proposedMeetingDatesGlobalFlag(false));
-      dispatch(actionsGlobalFlag(false));
-      dispatch(pollsGlobalFlag(false));
-      dispatch(attendanceGlobalFlag(false));
-      dispatch(uploadGlobalFlag(false));
+      if (role === "Agenda Contributor") {
+        dispatch(scheduleMeetingPageFlag(true));
+        dispatch(viewMeetingFlag(false));
+        dispatch(meetingDetailsGlobalFlag(false));
+        dispatch(organizersGlobalFlag(false));
+        dispatch(agendaContributorsGlobalFlag(false));
+        dispatch(participantsGlobalFlag(false));
+        dispatch(agendaGlobalFlag(true));
+        dispatch(meetingMaterialGlobalFlag(false));
+        dispatch(minutesGlobalFlag(false));
+        dispatch(proposedMeetingDatesGlobalFlag(false));
+        dispatch(actionsGlobalFlag(false));
+        dispatch(pollsGlobalFlag(false));
+        dispatch(attendanceGlobalFlag(false));
+        dispatch(uploadGlobalFlag(false));
+        let Data = {
+          MeetingID: Number(id),
+        };
+        await dispatch(
+          GetAllMeetingDetailsApiFunc(
+            navigate,
+            t,
+            Data,
+            true,
+            setCurrentMeetingID,
+            setSceduleMeeting,
+            setDataroomMapFolderId,
+            0,
+            1,
+            role
+          )
+        );
+      } else {
+        let Data = {
+          MeetingID: Number(id),
+        };
+        await dispatch(
+          GetAllMeetingDetailsApiFunc(
+            navigate,
+            t,
+            Data,
+            true,
+            setCurrentMeetingID,
+            setSceduleMeeting,
+            setDataroomMapFolderId,
+            0,
+            1,
+            role
+          )
+        );
+        dispatch(scheduleMeetingPageFlag(true));
+        dispatch(viewMeetingFlag(false));
+        dispatch(meetingDetailsGlobalFlag(true));
+        dispatch(organizersGlobalFlag(false));
+        dispatch(agendaContributorsGlobalFlag(false));
+        dispatch(participantsGlobalFlag(false));
+        dispatch(agendaGlobalFlag(false));
+        dispatch(meetingMaterialGlobalFlag(false));
+        dispatch(minutesGlobalFlag(false));
+        dispatch(proposedMeetingDatesGlobalFlag(false));
+        dispatch(actionsGlobalFlag(false));
+        dispatch(pollsGlobalFlag(false));
+        dispatch(attendanceGlobalFlag(false));
+        dispatch(uploadGlobalFlag(false));
+      }
     } else {
     }
   };
@@ -803,25 +899,8 @@ const NewMeeting = () => {
       dataIndex: "title",
       key: "title",
       ellipsis: true,
-
       width: "115px",
       render: (text, record) => {
-        const isParticipant = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.pK_MARID === 2
-        );
-        const isAgendaContributor = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.pK_MARID === 4
-        );
-        const isPrimaryOrganizer = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.isPrimaryOrganizer === true
-        );
-
         return (
           <span
             className={styles["meetingTitle"]}
@@ -833,19 +912,18 @@ const NewMeeting = () => {
               );
               setEdiorRole({
                 status: record.status,
-                role: isParticipant
+                role: record.isParticipant
                   ? "Participant"
-                  : isAgendaContributor
+                  : record.isAgendaContributor
                   ? "Agenda Contributor"
                   : "Organizer",
-                isPrimaryOrganizer: isPrimaryOrganizer,
+                isPrimaryOrganizer: record.isPrimaryOrganizer,
               });
               dispatch(viewMeetingFlag(true));
               // setIsOrganisers(isOrganiser);
             }}
           >
             {text}
-            {/* {truncateString(text, 35)} */}
           </span>
         );
       },
@@ -857,9 +935,9 @@ const NewMeeting = () => {
       title: t("Status"),
       dataIndex: "status",
       key: "status",
-      width: "50px",
+      width: "90px",
       ellipsis: true,
-
+      align: "center",
       filters: [
         {
           text: t("Active"),
@@ -901,38 +979,25 @@ const NewMeeting = () => {
       title: t("Organizer"),
       dataIndex: "meetingAttendees",
       key: "meetingAttendees",
-      width: "70px",
+      width: "110px",
       sorter: (a, b) => {
-        const primaryOrganizerA = a.meetingAttendees.find(
-          (item) => item.isPrimaryOrganizer === true
-        );
-        const primaryOrganizerB = b.meetingAttendees.find(
-          (item) => item.isPrimaryOrganizer === true
-        );
-        const nameA = primaryOrganizerA?.user?.name || "";
-        const nameB = primaryOrganizerB?.user?.name || "";
+        const nameA = a.userDetails?.name || "";
+        const nameB = b.userDetails?.name || "";
         return nameA.localeCompare(nameB);
       },
       render: (text, record) => {
-        const primaryOrganizer = record.meetingAttendees.find(
-          (item) => item.isPrimaryOrganizer === true
-        );
-        return (
-          <span className={styles["orgaizer_value"]}>
-            {primaryOrganizer?.user?.name}
-          </span>
-        );
+        return <span className={styles["orgaizer_value"]}>{record?.host}</span>;
       },
     },
     {
       title: t("Date-time"),
       dataIndex: "dateOfMeeting",
       key: "dateOfMeeting",
-      width: "115px",
+      width: "155px",
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           return (
-            <span>
+            <span className="text-truncate d-block">
               {newTimeFormaterAsPerUTCFullDate(
                 record.dateOfMeeting + record.meetingStartTime
               )}
@@ -984,11 +1049,6 @@ const NewMeeting = () => {
       key: "Chat",
       width: "36px",
       render: (text, record) => {
-        const isOrganiser = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.pK_MARID === 1
-        );
         return (
           <>
             <Row>
@@ -1073,7 +1133,7 @@ const NewMeeting = () => {
                   ></span>
                 )} */}
                 {record.status === "9" &&
-                  isOrganiser &&
+                  record.isOrganizer &&
                   record.isQuickMeeting === false && (
                     <Tooltip placement="topLeft" title={t("Attendance")}>
                       <img
@@ -1096,28 +1156,8 @@ const NewMeeting = () => {
     {
       dataIndex: "Join",
       key: "Join",
-      width: "55px",
+      width: "75px",
       render: (text, record) => {
-        const isParticipant = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.pK_MARID === 2
-        );
-        const isAgendaContributor = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.pK_MARID === 4
-        );
-        const isOrganiser = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.pK_MARID === 1
-        );
-        const isPrimaryOrganizer = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.isPrimaryOrganizer === true
-        );
         const startMeetingRequest = {
           MeetingID: Number(record.pK_MDID),
           StatusID: 10,
@@ -1148,8 +1188,8 @@ const NewMeeting = () => {
         const minutesDifference = Math.floor(timeDifference / (1000 * 60));
 
         if (Number(record.status) === 1) {
-          if (isParticipant) {
-          } else if (isAgendaContributor) {
+          if (record.isParticipant) {
+          } else if (record.isAgendaContributor) {
           } else {
             if (
               // startMeetingButton === true
@@ -1207,7 +1247,7 @@ const NewMeeting = () => {
                         setViewAdvanceMeetingModal,
                         setAdvanceMeetingModalID,
                         setViewAdvanceMeetingModal,
-                        isPrimaryOrganizer
+                        record.isPrimaryOrganizer
                       )
                     );
                     localStorage.setItem("currentMeetingID", record.pK_MDID);
@@ -1219,7 +1259,7 @@ const NewMeeting = () => {
                     setEdiorRole({
                       status: 10,
                       role: "Organizer",
-                      isPrimaryOrganizer: isPrimaryOrganizer,
+                      isPrimaryOrganizer: record.isPrimaryOrganizer,
                     });
                   }}
                 />
@@ -1227,7 +1267,7 @@ const NewMeeting = () => {
             }
           }
         } else if (Number(record.status) === 10) {
-          if (isParticipant) {
+          if (record.isParticipant) {
             return (
               <Button
                 text={t("Join-meeting")}
@@ -1248,7 +1288,7 @@ const NewMeeting = () => {
                 }}
               />
             );
-          } else if (isAgendaContributor) {
+          } else if (record.isAgendaContributor) {
             return (
               <Button
                 text={t("Join-meeting")}
@@ -1269,7 +1309,7 @@ const NewMeeting = () => {
                 }}
               />
             );
-          } else if (isOrganiser) {
+          } else if (record.isOrganizer) {
             return (
               <Button
                 text={t("Join-meeting")}
@@ -1284,7 +1324,7 @@ const NewMeeting = () => {
                   setEdiorRole({
                     status: record.status,
                     role: "Organizer",
-                    isPrimaryOrganizer: isPrimaryOrganizer,
+                    isPrimaryOrganizer: record.isPrimaryOrganizer,
                   });
                   dispatch(viewMeetingFlag(true));
                 }}
@@ -1292,10 +1332,14 @@ const NewMeeting = () => {
             );
           }
         } else if (Number(record.status) === 2) {
-          if (isOrganiser) {
-          } else if (isParticipant) {
+          if (record.isOrganizer) {
+          } else if (record.isParticipant) {
           }
         } else {
+          <Button
+            text={t("Board-deck")}
+            className={styles["BoardDeckButton"]}
+          />;
         }
       },
     },
@@ -1304,30 +1348,6 @@ const NewMeeting = () => {
       key: "Edit",
       width: "33px",
       render: (text, record) => {
-        const isParticipant = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.pK_MARID === 2
-        );
-
-        const isOrganiser = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.pK_MARID === 1
-        );
-
-        const isAgendaContributor = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.pK_MARID === 4
-        );
-
-        const isPrimaryOrganizer = record.meetingAttendees.some(
-          (attendee) =>
-            Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.isPrimaryOrganizer === true
-        );
-
         const isQuickMeeting = record.isQuickMeeting;
         if (
           record.status === "8" ||
@@ -1337,7 +1357,7 @@ const NewMeeting = () => {
           return null;
         } else {
           if (isQuickMeeting) {
-            if (isOrganiser) {
+            if (record.isOrganizer) {
               if (record.status !== "10") {
                 return (
                   <>
@@ -1360,7 +1380,7 @@ const NewMeeting = () => {
                               handleEditMeeting(
                                 record.pK_MDID,
                                 record.isQuickMeeting,
-                                isAgendaContributor,
+                                "Organizer",
                                 record
                               )
                             }
@@ -1373,8 +1393,8 @@ const NewMeeting = () => {
               }
             }
           } else {
-            if (isParticipant) {
-            } else if (isOrganiser) {
+            if (record.isParticipant) {
+            } else if (record.isOrganizer) {
               return (
                 <>
                   <Row>
@@ -1396,13 +1416,14 @@ const NewMeeting = () => {
                             handleEditMeeting(
                               record.pK_MDID,
                               record.isQuickMeeting,
-                              isAgendaContributor,
+                              // record.isAgendaContributor,
+                              "Organizer",
                               record
                             );
                             setEdiorRole({
                               status: record.status,
                               role: "Organizer",
-                              isPrimaryOrganizer: isPrimaryOrganizer,
+                              isPrimaryOrganizer: record.isPrimaryOrganizer,
                             });
                             setEditMeeting(true);
                             dispatch(viewMeetingFlag(false));
@@ -1413,7 +1434,7 @@ const NewMeeting = () => {
                   </Row>
                 </>
               );
-            } else if (isAgendaContributor) {
+            } else if (record.isAgendaContributor) {
               return (
                 <>
                   <Row>
@@ -1435,13 +1456,14 @@ const NewMeeting = () => {
                             handleEditMeeting(
                               record.pK_MDID,
                               record.isQuickMeeting,
-                              isAgendaContributor,
+                              // record.isAgendaContributor,
+                              "Agenda Contributor",
                               record
                             );
                             setEdiorRole({
                               status: record.status,
                               role: "Agenda Contributor",
-                              isPrimaryOrganizer: isPrimaryOrganizer,
+                              isPrimaryOrganizer: record.isPrimaryOrganizer,
                             });
                             setEditMeeting(true);
                             dispatch(viewMeetingFlag(false));
@@ -1499,6 +1521,12 @@ const NewMeeting = () => {
     }
   };
 
+  //Board Deck Onclick function
+
+  const boardDeckOnClick = () => {
+    dispatch(boardDeckModal(true));
+  };
+
   useEffect(() => {
     if (
       NewMeetingreducer.CalendarDashboardEventData !== null &&
@@ -1519,50 +1547,119 @@ const NewMeeting = () => {
         setTotalRecords(searchMeetings.totalRecords);
         setMinutesAgo(searchMeetings.meetingStartedMinuteAgo);
         if (Object.keys(searchMeetings.meetings).length > 0) {
-          let newRowData = [];
-          searchMeetings.meetings.map((data, index) => {
-            try {
-              newRowData.push({
-                dateOfMeeting: data.dateOfMeeting,
-                host: data.host,
-                isAttachment: data.isAttachment,
-                isChat: data.isChat,
-                isVideoCall: data.isVideoCall,
-                isQuickMeeting: data.isQuickMeeting,
-                meetingAgenda: data.meetingAgenda,
-                meetingAttendees: data.meetingAttendees,
-                meetingEndTime: data.meetingEndTime,
-                meetingStartTime: data.meetingStartTime,
-                meetingURL: data.meetingURL,
-                orignalProfilePictureName: data.orignalProfilePictureName,
-                pK_MDID: data.pK_MDID,
-                meetingPoll: {
-                  totalNoOfDirectors:
-                    data.proposedMeetingDetail.totalNoOfDirectors,
-                  totalNoOfDirectorsVoted:
-                    data.proposedMeetingDetail.totalNoOfDirectorsVoted,
-                },
-                responseDeadLine: data.responseDeadLine,
-                status: data.status,
-                title: data.title,
-                talkGroupID: data.talkGroupID,
-                key: index,
-                // meetingType: data.meetingTypeID,
-                meetingType:
-                  data.meetingTypeID === 1 && data.isQuickMeeting === true
-                    ? 0
-                    : data.meetingTypeID,
-              });
-            } catch {}
+          // });
+          // Create a deep copy of the meetings array
+          let copyMeetingData = searchMeetings.meetings.map((meeting) => ({
+            ...meeting,
+            meetingAgenda: meeting.meetingAgenda.filter(
+              (agenda) => agenda.objMeetingAgenda.canView
+            ),
+          }));
+          copyMeetingData.forEach((data) => {
+            data.meetingAgenda = data.meetingAgenda.filter((agenda) => {
+              return agenda.objMeetingAgenda.canView === true;
+            });
           });
-          setRow(newRowData);
+          setRow(copyMeetingData);
+          // let newRowData = [];
+          // searchMeetings.meetings.map((data, index) => {
+          //   try {
+          //     newRowData.push({
+          //       dateOfMeeting: data.dateOfMeeting,
+          //       host: data.host,
+          //       isAttachment: data.isAttachment,
+          //       isChat: data.isChat,
+          //       isVideoCall: data.isVideoCall,
+          //       isQuickMeeting: data.isQuickMeeting,
+          //       meetingAgenda: data.meetingAgenda,
+          //       meetingAttendees: data.meetingAttendees,
+          //       meetingEndTime: data.meetingEndTime,
+          //       meetingStartTime: data.meetingStartTime,
+          //       meetingURL: data.meetingURL,
+          //       orignalProfilePictureName: data.orignalProfilePictureName,
+          //       pK_MDID: data.pK_MDID,
+          //       meetingPoll: {
+          //         totalNoOfDirectors:
+          //           data.proposedMeetingDetail.totalNoOfDirectors,
+          //         totalNoOfDirectorsVoted:
+          //           data.proposedMeetingDetail.totalNoOfDirectorsVoted,
+          //       },
+          //       responseDeadLine: data.responseDeadLine,
+          //       status: data.status,
+          //       title: data.title,
+          //       talkGroupID: data.talkGroupID,
+          //       key: index,
+          //       // meetingType: data.meetingTypeID,
+          //       meetingType:
+          //         data.meetingTypeID === 1 && data.isQuickMeeting === true
+          //           ? 0
+          //           : data.meetingTypeID,
+          //     });
+          //   } catch {}
+          // });
+          // setRow(newRowData);
         }
       } else {
         setRow([]);
       }
     } catch {}
   }, [searchMeetings]);
+  console.log(rows, "rowsrowsrowsrowsrowsrows");
 
+  useEffect(() => {
+    if (NewMeetingreducer.mqttMeetingPrAdded !== null) {
+      console.log(
+        NewMeetingreducer.mqttMeetingPrAdded,
+        "mqttMeetingPrAddedmqttMeetingPrAdded"
+      );
+      let meetingData = NewMeetingreducer.mqttMeetingPrAdded;
+      let newData = {
+        dateOfMeeting: meetingData?.dateOfMeeting,
+        host: meetingData?.host,
+        isAttachment: false,
+        isChat: false,
+        isVideoCall: false,
+        isQuickMeeting: meetingData?.isQuickMeeting,
+        meetingAgenda: [],
+        isOrganizer: meetingData?.attendeeRoleID === 1 ? true : false,
+        isAgendaContributor: meetingData?.attendeeRoleID === 4 ? true : false,
+        isParticipant: meetingData?.attendeeRoleID === 2 ? true : false,
+        talkGroupID: 0,
+        meetingType: meetingData?.meetingTypeID,
+        meetingEndTime: meetingData?.meetingEndTime,
+        meetingStartTime: meetingData?.meetingStartTime,
+        pK_MDID: meetingData?.meetingID,
+        meetingPoll: {
+          totalNoOfDirectors: 0,
+          totalNoOfDirectorsVoted: 0,
+        },
+        responseDeadLine: "",
+        status: String(meetingData?.status),
+        title: meetingData?.title,
+        key: 0,
+        isPrimaryOrganizer: meetingData?.isPrimaryOrganizer,
+        userDetails: null,
+      };
+      setRow([newData, ...rows]);
+      dispatch(meetingParticipantAdded(null));
+    }
+    if (NewMeetingreducer.mqtMeetingPrRemoved !== null) {
+      try {
+        let meetingID = NewMeetingreducer.mqtMeetingPrRemoved.meetingID;
+        setRow((isRowData) => {
+          return isRowData.filter((newData, index) => {
+            return Number(newData.pK_MDID) !== Number(meetingID);
+          });
+        });
+        dispatch(meetingParticipantRemoved(null));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [
+    NewMeetingreducer.mqttMeetingPrAdded,
+    NewMeetingreducer.mqtMeetingPrRemoved,
+  ]);
   useEffect(() => {
     try {
       if (
@@ -1627,40 +1724,29 @@ const NewMeeting = () => {
       NewMeetingreducer.meetingStatusPublishedMqttData !== null &&
       NewMeetingreducer.meetingStatusPublishedMqttData !== undefined
     ) {
-      let meetingData = NewMeetingreducer.meetingStatusPublishedMqttData;
-      console.log(
-        { meetingData, rows },
-        "indexToUpdateindexToUpdateindexToUpdate"
-      );
-      try {
-        const indexToUpdate = rows.findIndex(
-          (obj) => Number(obj.pK_MDID) === Number(meetingData.pK_MDID)
-        );
-        console.log(
-          { indexToUpdate },
-          "indexToUpdateindexToUpdateindexToUpdate"
-        );
-        if (indexToUpdate !== -1) {
-          console.log(
-            { meetingData, rows },
-            "indexToUpdateindexToUpdateindexToUpdate"
+      const callMQTT = async () => {
+        let meetingData = NewMeetingreducer.meetingStatusPublishedMqttData;
+        try {
+          const indexToUpdate = rows.findIndex(
+            (obj) => Number(obj.pK_MDID) === Number(meetingData.pK_MDID)
           );
-          let updatedRows = [...rows];
-          updatedRows[indexToUpdate] = meetingData;
-          setRow(updatedRows);
-        } else {
-          console.log(
-            { meetingData, rows },
-            "indexToUpdateindexToUpdateindexToUpdate"
-          );
-          setRow([...rows, meetingData]);
+          let newMeetingData = await mqttMeetingData(meetingData, 1);
+
+          if (indexToUpdate !== -1) {
+            let updatedRows = [...rows];
+            updatedRows[indexToUpdate] = newMeetingData;
+            setRow(updatedRows);
+          } else {
+            setRow([newMeetingData, ...rows]);
+          }
+        } catch (error) {
+          console.log(error, "Meeting Created and Published");
         }
-      } catch (error) {
-        console.log(error, "Meeting Created and Published");
-      }
+      };
+
+      callMQTT();
     }
   }, [NewMeetingreducer.meetingStatusPublishedMqttData]);
-
   useEffect(() => {
     if (
       meetingIdReducer.MeetingStatusSocket !== null &&
@@ -1781,8 +1867,34 @@ const NewMeeting = () => {
       meetingIdReducer.allMeetingsSocketData !== null &&
       meetingIdReducer.allMeetingsSocketData !== undefined
     ) {
-      let meetingID = meetingIdReducer.allMeetingsSocketData.pK_MDID;
-      let meetingData = meetingIdReducer.allMeetingsSocketData;
+      try {
+        const updateMeeting = async () => {
+          let meetingID = meetingIdReducer.allMeetingsSocketData.pK_MDID;
+          let meetingData = meetingIdReducer.allMeetingsSocketData;
+          let newMeetingData = await mqttMeetingData(meetingData, 1);
+          setRow((rowsData) => {
+            return rowsData.map((item) => {
+              if (item.pK_MDID === meetingID) {
+                return newMeetingData;
+              } else {
+                return item; // Return the original item if the condition is not met
+              }
+            });
+          });
+        };
+        updateMeeting();
+      } catch (error) {
+        console.log(error, "error");
+      }
+    }
+  }, [meetingIdReducer.allMeetingsSocketData]);
+  useEffect(() => {
+    if (
+      meetingIdReducer.CommitteeMeetingMQTT !== null &&
+      meetingIdReducer.CommitteeMeetingMQTT !== undefined
+    ) {
+      let meetingID = meetingIdReducer.CommitteeMeetingMQTT.meeting.pK_MDID;
+      let meetingData = meetingIdReducer.CommitteeMeetingMQTT.meeting;
       setRow((rowsData) => {
         return rowsData.map((item) => {
           if (item.pK_MDID === meetingID) {
@@ -1793,12 +1905,30 @@ const NewMeeting = () => {
         });
       });
     }
-  }, [meetingIdReducer.allMeetingsSocketData]);
+  }, [meetingIdReducer.CommitteeMeetingMQTT]);
+  useEffect(() => {
+    if (
+      meetingIdReducer.GroupMeetingMQTT !== null &&
+      meetingIdReducer.GroupMeetingMQTT !== undefined
+    ) {
+      let meetingID = meetingIdReducer.GroupMeetingMQTT.meeting.pK_MDID;
+      let meetingData = meetingIdReducer.GroupMeetingMQTT.meeting;
+      setRow((rowsData) => {
+        return rowsData.map((item) => {
+          if (item.pK_MDID === meetingID) {
+            return meetingData;
+          } else {
+            return item; // Return the original item if the condition is not met
+          }
+        });
+      });
+    }
+  }, [meetingIdReducer.GroupMeetingMQTT]);
   useEffect(() => {
     if (
       ResponseMessages !== "" &&
       ResponseMessages !== undefined &&
-      ResponseMessages !== t("Record-found") &&
+      ResponseMessages !== "" &&
       ResponseMessages !== t("No-records-found") &&
       ResponseMessages !== t("No-record-found")
     ) {
@@ -1816,7 +1946,7 @@ const NewMeeting = () => {
       ResponseMessage !== "" &&
       ResponseMessage !== t("No-record-found") &&
       ResponseMessage !== t("No-records-found") &&
-      ResponseMessage !== t("Record-found") &&
+      ResponseMessage !== "" &&
       ResponseMessage !== t("List-updated-successfully") &&
       ResponseMessage !== t("No-data-available") &&
       ResponseMessage !== t("Successful") &&
@@ -1993,423 +2123,460 @@ const NewMeeting = () => {
   console.log("NewMeetingReducerNewMeetingReducer", NewMeetingreducer);
 
   return (
-    <section className={styles["NewMeeting_container"]}>
-      {endForAllMeeting && <NewEndLeaveMeeting />}
-      {endMeetingModal && <NewEndMeetingModal />}
-      {quickMeeting && (
-        <ModalMeeting
-          setShow={setQuickMeeting}
-          show={quickMeeting}
-          // this is check from where its called 4 is from Meeting
-          checkFlag={4}
+    <>
+      <section className={styles["NewMeeting_container"]}>
+        {endForAllMeeting && <NewEndLeaveMeeting />}
+        {endMeetingModal && <NewEndMeetingModal />}
+        {quickMeeting && (
+          <ModalMeeting
+            setShow={setQuickMeeting}
+            show={quickMeeting}
+            // this is check from where its called 4 is from Meeting
+            checkFlag={4}
+          />
+        )}
+        {viewFlag ? (
+          <ModalView viewFlag={viewFlag} setViewFlag={setViewFlag} />
+        ) : null}
+        {editFlag ? (
+          <ModalUpdate
+            editFlag={editFlag}
+            setEditFlag={setEditFlag}
+            // this is check from where its called 4 is from Meeting
+            checkFlag={4}
+          />
+        ) : null}
+        <Notification
+          message={open.message}
+          open={open.open}
+          setOpen={setOpen}
         />
-      )}
-      {viewFlag ? (
-        <ModalView viewFlag={viewFlag} setViewFlag={setViewFlag} />
-      ) : null}
-      {editFlag ? (
-        <ModalUpdate
-          editFlag={editFlag}
-          setEditFlag={setEditFlag}
-          // this is check from where its called 4 is from Meeting
-          checkFlag={4}
-        />
-      ) : null}
-      <Notification message={open.message} open={open.open} setOpen={setOpen} />
-      {sceduleMeeting && NewMeetingreducer.scheduleMeetingPageFlag === true ? (
-        <SceduleMeeting
-          setSceduleMeeting={setSceduleMeeting}
-          setCurrentMeetingID={setCurrentMeetingID}
-          currentMeeting={currentMeetingID}
-          editorRole={editorRole}
-          setEdiorRole={setEdiorRole}
-          setEditMeeting={setEditMeeting}
-          isEditMeeting={isEditMeeting}
-          setDataroomMapFolderId={setDataroomMapFolderId}
-          dataroomMapFolderId={dataroomMapFolderId}
-        />
-      ) : viewProposeDatePoll &&
-        NewMeetingreducer.viewProposeDateMeetingPageFlag === true ? (
-        <ViewParticipantsDates
-          setViewProposeDatePoll={setViewProposeDatePoll}
-          responseByDate={responseByDate}
-          setCurrentMeetingID={setCurrentMeetingID}
-          setSceduleMeeting={setViewProposeDatePoll}
-          setDataroomMapFolderId={setDataroomMapFolderId}
-        />
-      ) : viewAdvanceMeetingModal &&
-        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ? (
-        <ViewMeetingModal
-          advanceMeetingModalID={advanceMeetingModalID}
-          setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
-          setAdvanceMeetingModalID={setAdvanceMeetingModalID}
-          unPublish={false}
-          editorRole={editorRole}
-          setEdiorRole={setEdiorRole}
-          dataroomMapFolderId={dataroomMapFolderId}
-          setDataroomMapFolderId={setDataroomMapFolderId}
-          setCurrentMeetingID={setCurrentMeetingID}
-        />
-      ) : viewAdvanceMeetingModalUnpublish &&
-        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ? (
-        <ViewMeetingModal
-          advanceMeetingModalID={advanceMeetingModalID}
-          setViewAdvanceMeetingModal={setViewAdvanceMeetingModalUnpublish}
-          setAdvanceMeetingModalID={setAdvanceMeetingModalID}
-          unPublish={true}
-          editorRole={editorRole}
-          setEdiorRole={setEdiorRole}
-          dataroomMapFolderId={dataroomMapFolderId}
-          setDataroomMapFolderId={setDataroomMapFolderId}
-        />
-      ) : viewProposeOrganizerPoll &&
-        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ? (
-        <OrganizerViewModal
-          setViewProposeOrganizerPoll={setViewProposeOrganizerPoll}
-          currentMeeting={currentMeetingID}
-        />
-      ) : proposedNewMeeting ? (
-        <ProposedNewMeeting
-          setProposedNewMeeting={setProposedNewMeeting}
-          setCurrentMeetingID={setCurrentMeetingID}
-          currentMeeting={currentMeetingID}
-          editorRole={editorRole}
-          setEdiorRole={setEdiorRole}
-          setEditMeeting={setEditMeeting}
-          isEditMeeting={isEditMeeting}
-          setDataroomMapFolderId={setDataroomMapFolderId}
-          dataroomMapFolderId={dataroomMapFolderId}
-        />
-      ) : (
-        <>
-          <Row className="mt-2">
-            <Col
-              sm={12}
-              md={8}
-              lg={8}
-              className="d-flex gap-3 align-items-center"
-            >
-              <span className={styles["NewMeetinHeading"]}>
-                {t("Meetings")}
-              </span>
-              <Row>
-                <Col lg={12} md={12} sm={12}>
-                  <Dropdown
-                    className="SceduleMeetingButton"
-                    onClick={eventClickHandler}
-                  >
-                    <Dropdown.Toggle title={t("Create")}>
+        {sceduleMeeting &&
+        NewMeetingreducer.scheduleMeetingPageFlag === true ? (
+          <SceduleMeeting
+            setSceduleMeeting={setSceduleMeeting}
+            setCurrentMeetingID={setCurrentMeetingID}
+            currentMeeting={currentMeetingID}
+            editorRole={editorRole}
+            setEdiorRole={setEdiorRole}
+            setEditMeeting={setEditMeeting}
+            isEditMeeting={isEditMeeting}
+            setDataroomMapFolderId={setDataroomMapFolderId}
+            dataroomMapFolderId={dataroomMapFolderId}
+          />
+        ) : viewProposeDatePoll &&
+          NewMeetingreducer.viewProposeDateMeetingPageFlag === true ? (
+          <ViewParticipantsDates
+            setViewProposeDatePoll={setViewProposeDatePoll}
+            responseByDate={responseByDate}
+            setCurrentMeetingID={setCurrentMeetingID}
+            setSceduleMeeting={setViewProposeDatePoll}
+            setDataroomMapFolderId={setDataroomMapFolderId}
+          />
+        ) : viewAdvanceMeetingModal &&
+          NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ? (
+          <ViewMeetingModal
+            advanceMeetingModalID={advanceMeetingModalID}
+            setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+            setAdvanceMeetingModalID={setAdvanceMeetingModalID}
+            unPublish={false}
+            editorRole={editorRole}
+            setEdiorRole={setEdiorRole}
+            dataroomMapFolderId={dataroomMapFolderId}
+            setDataroomMapFolderId={setDataroomMapFolderId}
+            setCurrentMeetingID={setCurrentMeetingID}
+          />
+        ) : viewAdvanceMeetingModalUnpublish &&
+          NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ? (
+          <ViewMeetingModal
+            advanceMeetingModalID={advanceMeetingModalID}
+            setViewAdvanceMeetingModal={setViewAdvanceMeetingModalUnpublish}
+            setAdvanceMeetingModalID={setAdvanceMeetingModalID}
+            unPublish={true}
+            editorRole={editorRole}
+            setEdiorRole={setEdiorRole}
+            dataroomMapFolderId={dataroomMapFolderId}
+            setDataroomMapFolderId={setDataroomMapFolderId}
+          />
+        ) : viewProposeOrganizerPoll &&
+          NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ? (
+          <OrganizerViewModal
+            setViewProposeOrganizerPoll={setViewProposeOrganizerPoll}
+            currentMeeting={currentMeetingID}
+          />
+        ) : proposedNewMeeting ? (
+          <ProposedNewMeeting
+            setProposedNewMeeting={setProposedNewMeeting}
+            setCurrentMeetingID={setCurrentMeetingID}
+            currentMeeting={currentMeetingID}
+            editorRole={editorRole}
+            setEdiorRole={setEdiorRole}
+            setEditMeeting={setEditMeeting}
+            isEditMeeting={isEditMeeting}
+            setDataroomMapFolderId={setDataroomMapFolderId}
+            dataroomMapFolderId={dataroomMapFolderId}
+          />
+        ) : (
+          <>
+            <Row className="mt-2">
+              <Col
+                sm={12}
+                md={8}
+                lg={8}
+                className="d-flex gap-3 align-items-center"
+              >
+                <span className={styles["NewMeetinHeading"]}>
+                  {t("Meetings")}
+                </span>
+                <Row>
+                  <Col lg={12} md={12} sm={12}>
+                    <Dropdown
+                      className="SceduleMeetingButton"
+                      onClick={eventClickHandler}
+                    >
+                      <Dropdown.Toggle title={t("Create")}>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className={styles["schedule_button"]}
+                          >
+                            <Plus width={20} height={20} fontWeight={800} />
+                            <span> {t("Schedule-a-meeting")}</span>
+                          </Col>
+                        </Row>
+                      </Dropdown.Toggle>
+
+                      <Dropdown.Menu>
+                        {checkFeatureIDAvailability(1) ? (
+                          <Dropdown.Item
+                            className="dropdown-item"
+                            onClick={CreateQuickMeeting}
+                          >
+                            {t("Quick-meeting")}
+                          </Dropdown.Item>
+                        ) : null}
+
+                        {checkFeatureIDAvailability(9) ? (
+                          <Dropdown.Item
+                            className="dropdown-item"
+                            onClick={openSceduleMeetingPage}
+                          >
+                            {t("Advance-meeting")}
+                          </Dropdown.Item>
+                        ) : null}
+
+                        {/* Proposed New Meeting */}
+                        {checkFeatureIDAvailability(12) ? (
+                          <>
+                            <Dropdown.Item
+                              className="dropdown-item"
+                              onClick={openProposedNewMeetingPage}
+                            >
+                              {t("Propose-new-meeting")}
+                            </Dropdown.Item>
+                          </>
+                        ) : null}
+
+                        {/* BoardDeck For Time Being */}
+                        {/* <Dropdown.Item
+                          className="dropdown-item"
+                          onClick={boardDeckOnClick}
+                        >
+                          {t("Board-deck")}
+                        </Dropdown.Item> */}
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </Col>
+                </Row>
+              </Col>
+              <Col
+                sm={12}
+                md={4}
+                lg={4}
+                className="d-flex justify-content-end align-items-center"
+              >
+                <span className="position-relative">
+                  <TextField
+                    width={"502px"}
+                    placeholder={t("Search")}
+                    applyClass={"meetingSearch"}
+                    name={"SearchVal"}
+                    labelClass="d-none"
+                    value={searchText}
+                    change={handleSearchChange}
+                    onKeyDown={handleKeyPress}
+                    inputicon={
                       <Row>
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className={styles["schedule_button"]}
+                          className="d-flex gap-2 align-items-center"
                         >
-                          <Plus width={20} height={20} fontWeight={800} />
-                          <span> {t("Schedule-a-meeting")}</span>
-                        </Col>
-                      </Row>
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu>
-                      <Dropdown.Item
-                        className="dropdown-item"
-                        onClick={CreateQuickMeeting}
-                      >
-                        {t("Quick-meeting")}
-                      </Dropdown.Item>
-
-                      <Dropdown.Item
-                        className="dropdown-item"
-                        onClick={openSceduleMeetingPage}
-                      >
-                        {t("Advance-meeting")}
-                      </Dropdown.Item>
-                      {/* Proposed New Meeting */}
-
-                      <Dropdown.Item
-                        className="dropdown-item"
-                        onClick={openProposedNewMeetingPage}
-                      >
-                        {t("Propose-new-meeting")}
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </Col>
-              </Row>
-            </Col>
-            <Col
-              sm={12}
-              md={4}
-              lg={4}
-              className="d-flex justify-content-end align-items-center"
-            >
-              <span className="position-relative">
-                <TextField
-                  width={"502px"}
-                  placeholder={t("Search")}
-                  applyClass={"meetingSearch"}
-                  name={"SearchVal"}
-                  labelClass="d-none"
-                  value={searchText}
-                  change={handleSearchChange}
-                  onKeyDown={handleKeyPress}
-                  inputicon={
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex gap-2 align-items-center"
-                      >
-                        {entereventIcon === true ? (
-                          <img
-                            src={BlackCrossIcon}
-                            className="cursor-pointer"
-                            onClick={handleClearSearch}
-                            alt=""
-                            draggable="false"
-                          />
-                        ) : null}
-                        <Tooltip
-                          placement="bottomLeft"
-                          title={t("Search-filters")}
-                        >
-                          <img
-                            src={searchicon}
-                            className={styles["Search_Bar_icon_class"]}
-                            onClick={HandleShowSearch} // Add click functionality here
-                            alt=""
-                            draggable="false"
-                          />
-                        </Tooltip>
-                      </Col>
-                    </Row>
-                  }
-                  iconClassName={styles["polling_searchinput"]}
-                />
-                {searchMeeting ? (
-                  <>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className={styles["Search-Box_meeting"]}
-                      >
-                        <Row className="mt-2">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-end"
-                          >
+                          {entereventIcon === true ? (
                             <img
                               src={BlackCrossIcon}
-                              className={styles["Cross_Icon_Styling"]}
-                              width="16px"
-                              height="16px"
-                              onClick={HandleCloseSearchModalMeeting}
+                              className="cursor-pointer"
+                              onClick={handleClearSearch}
                               alt=""
                               draggable="false"
                             />
-                          </Col>
-                        </Row>
-                        <Row className="mt-4">
-                          <Col lg={12} md={12} sm={12}>
-                            <TextField
-                              placeholder={t("Meeting-title")}
-                              applyClass={"meetinInnerSearch"}
-                              labelClass="d-none"
-                              name="MeetingTitle"
-                              value={searchFields.MeetingTitle}
-                              change={searchMeetingChangeHandler}
-                            />
-                          </Col>
-                        </Row>
-                        <Row className="mt-3">
-                          <Col lg={6} md={6} sm={12}>
-                            <DatePicker
-                              value={searchFields.DateView}
-                              format={"DD/MM/YYYY"}
-                              placeholder="DD/MM/YYYY"
-                              render={
-                                <InputIcon
-                                  placeholder="DD/MM/YYYY"
-                                  className="datepicker_input"
-                                />
-                              }
-                              editable={false}
-                              className="datePickerTodoCreate2"
-                              onOpenPickNewDate={false}
-                              inputMode=""
-                              calendar={calendarValue}
-                              locale={localValue}
-                              ref={calendRef}
-                              onFocusedDateChange={meetingDateChangeHandler}
-                            />
-                          </Col>
-                          <Col lg={6} md={6} sm={12}>
-                            <TextField
-                              placeholder={t("Organizer-name")}
-                              labelClass="d-none"
-                              name="OrganizerName"
-                              applyClass={"meetinInnerSearch"}
-                              value={searchFields.OrganizerName}
-                              change={searchMeetingChangeHandler}
-                            />
-                          </Col>
-                        </Row>
-                        <Row className="mt-4">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-end gap-2"
+                          ) : null}
+                          <Tooltip
+                            placement="bottomLeft"
+                            title={t("Search-filters")}
                           >
-                            <Button
-                              text={t("Reset")}
-                              className={styles["ResetButtonMeeting"]}
-                              onClick={handleReset}
+                            <img
+                              src={searchicon}
+                              className={styles["Search_Bar_icon_class"]}
+                              onClick={HandleShowSearch} // Add click functionality here
+                              alt=""
+                              draggable="false"
                             />
-                            <Button
-                              text={t("Search")}
-                              className={styles["SearchButtonMeetings"]}
-                              onClick={handleSearch}
-                            />
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
-                  </>
-                ) : null}
-              </span>
-            </Col>
-          </Row>
-          <Row className="mt-2">
-            <Col lg={12} md={12} sm={12}>
-              <Paper className={styles["PaperStylesMeetingTwoPage"]}>
-                <Row>
-                  <Col lg={12} md={12} sm={12} className="d-flex gap-2">
-                    <Button
-                      text={t("Published-meeting")}
-                      className={
-                        Number(currentView) === 1
-                          ? styles["publishedMeetingButton-active"]
-                          : styles["publishedMeetingButton"]
-                      }
-                      onClick={handlePublishedMeeting}
-                    />
-                    <Button
-                      text={t("Unpublished-proposed-meetings")}
-                      className={
-                        Number(currentView) === 2
-                          ? styles["UnpublishedMeetingButton-active"]
-                          : styles["UnpublishedMeetingButton"]
-                      }
-                      onClick={handleUnPublishedMeeting}
-                    />
-                  </Col>
-                </Row>
-                {Number(currentView) === 2 ? (
-                  <UnpublishedProposedMeeting
-                    viewProposeDatePoll={viewProposeDatePoll}
-                    setViewProposeDatePoll={setViewProposeDatePoll}
-                    setViewProposeOrganizerPoll={setViewProposeOrganizerPoll}
-                    setAdvanceMeetingModalID={setAdvanceMeetingModalID}
-                    setViewAdvanceMeetingModalUnpublish={
-                      setViewAdvanceMeetingModalUnpublish
+                          </Tooltip>
+                        </Col>
+                      </Row>
                     }
-                    setResponseByDate={setResponseByDate}
-                    setSceduleMeeting={setSceduleMeeting}
-                    setEdiorRole={setEdiorRole}
-                    setEditMeeting={setEditMeeting}
-                    setCurrentMeetingID={setCurrentMeetingID}
-                    currentMeeting={currentMeetingID}
-                    editorRole={editorRole}
-                    setDataroomMapFolderId={setDataroomMapFolderId}
+                    iconClassName={styles["polling_searchinput"]}
                   />
-                ) : Number(currentView) === 1 ? (
-                  <Row className="mt-2">
-                    <Col lg={12} md={12} sm={12}>
-                      <>
-                        {defaultFiltersValues.length > 0 ? (
-                          <Table
-                            column={MeetingColoumns}
-                            scroll={{ y: "54vh", x: false }}
-                            pagination={false}
-                            className="newMeetingTable"
-                            rows={rows}
-                            locale={{
-                              emptyText: emptyText(), // Set your custom empty text here
-                            }}
-                            expandable={{
-                              expandedRowRender: (record) => {
-                                return record.meetingAgenda.map((data) => (
-                                  <p className={styles["meeting-expanded-row"]}>
-                                    {data.objMeetingAgenda.title}
-                                  </p>
-                                ));
-                              },
-                              rowExpandable: (record) =>
-                                record.meetingAgenda !== null &&
-                                record.meetingAgenda.length > 0
-                                  ? true
-                                  : false,
-                            }}
-                          />
-                        ) : null}
-                      </>
+                  {searchMeeting ? (
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className={styles["Search-Box_meeting"]}
+                        >
+                          <Row className="mt-2">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="d-flex justify-content-end"
+                            >
+                              <img
+                                src={BlackCrossIcon}
+                                className={styles["Cross_Icon_Styling"]}
+                                width="16px"
+                                height="16px"
+                                onClick={HandleCloseSearchModalMeeting}
+                                alt=""
+                                draggable="false"
+                              />
+                            </Col>
+                          </Row>
+                          <Row className="mt-4">
+                            <Col lg={12} md={12} sm={12}>
+                              <TextField
+                                placeholder={t("Meeting-title")}
+                                applyClass={"meetinInnerSearch"}
+                                labelClass="d-none"
+                                name="MeetingTitle"
+                                value={searchFields.MeetingTitle}
+                                change={searchMeetingChangeHandler}
+                              />
+                            </Col>
+                          </Row>
+                          <Row className="mt-3">
+                            <Col lg={6} md={6} sm={12}>
+                              <DatePicker
+                                value={searchFields.DateView}
+                                format={"DD/MM/YYYY"}
+                                placeholder="DD/MM/YYYY"
+                                render={
+                                  <InputIcon
+                                    placeholder="DD/MM/YYYY"
+                                    className="datepicker_input"
+                                  />
+                                }
+                                editable={false}
+                                className="datePickerTodoCreate2"
+                                onOpenPickNewDate={false}
+                                inputMode=""
+                                calendar={calendarValue}
+                                locale={localValue}
+                                ref={calendRef}
+                                onFocusedDateChange={meetingDateChangeHandler}
+                              />
+                            </Col>
+                            <Col lg={6} md={6} sm={12}>
+                              <TextField
+                                placeholder={t("Organizer-name")}
+                                labelClass="d-none"
+                                name="OrganizerName"
+                                applyClass={"meetinInnerSearch"}
+                                value={searchFields.OrganizerName}
+                                change={searchMeetingChangeHandler}
+                              />
+                            </Col>
+                          </Row>
+                          <Row className="mt-4">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="d-flex justify-content-end gap-2"
+                            >
+                              <Button
+                                text={t("Reset")}
+                                className={styles["ResetButtonMeeting"]}
+                                onClick={handleReset}
+                              />
+                              <Button
+                                text={t("Search")}
+                                className={styles["SearchButtonMeetings"]}
+                                onClick={handleSearch}
+                              />
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                    </>
+                  ) : null}
+                </span>
+              </Col>
+            </Row>
+            <Row className="mt-2">
+              <Col lg={12} md={12} sm={12}>
+                <Paper className={styles["PaperStylesMeetingTwoPage"]}>
+                  <Row>
+                    <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                      <Button
+                        text={t("Published-meeting")}
+                        className={
+                          Number(currentView) === 1
+                            ? styles["publishedMeetingButton-active"]
+                            : styles["publishedMeetingButton"]
+                        }
+                        onClick={handlePublishedMeeting}
+                      />
+                      <Button
+                        text={t("Unpublished-proposed-meetings")}
+                        className={
+                          Number(currentView) === 2
+                            ? styles["UnpublishedMeetingButton-active"]
+                            : styles["UnpublishedMeetingButton"]
+                        }
+                        onClick={handleUnPublishedMeeting}
+                      />
                     </Col>
                   </Row>
-                ) : null}
-                {rows.length > 0 ? (
-                  <>
-                    <Row className="mt-5">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex justify-content-center "
-                      >
-                        <Row className={styles["PaginationStyle-Committee"]}>
-                          <Col
-                            className={"pagination-groups-table"}
-                            sm={12}
-                            md={12}
-                            lg={12}
-                          >
-                            <CustomPagination
-                              current={
-                                meetingPageCurrent !== null &&
-                                meetingPageCurrent !== undefined
-                                  ? meetingPageCurrent
-                                  : 1
-                              }
-                              pageSize={
-                                meetingpageRow !== null &&
-                                meetingpageRow !== undefined
-                                  ? meetingpageRow
-                                  : 50
-                              }
-                              onChange={handelChangePagination}
-                              total={totalRecords}
-                              showSizer={true}
-                              pageSizeOptionsValues={["30", "50", "100", "200"]}
+                  {Number(currentView) === 2 ? (
+                    <UnpublishedProposedMeeting
+                      viewProposeDatePoll={viewProposeDatePoll}
+                      setViewProposeDatePoll={setViewProposeDatePoll}
+                      setViewProposeOrganizerPoll={setViewProposeOrganizerPoll}
+                      setAdvanceMeetingModalID={setAdvanceMeetingModalID}
+                      setViewAdvanceMeetingModalUnpublish={
+                        setViewAdvanceMeetingModalUnpublish
+                      }
+                      setResponseByDate={setResponseByDate}
+                      setSceduleMeeting={setSceduleMeeting}
+                      setEdiorRole={setEdiorRole}
+                      setEditMeeting={setEditMeeting}
+                      setCurrentMeetingID={setCurrentMeetingID}
+                      currentMeeting={currentMeetingID}
+                      editorRole={editorRole}
+                      setDataroomMapFolderId={setDataroomMapFolderId}
+                    />
+                  ) : Number(currentView) === 1 ? (
+                    <Row className="mt-2">
+                      <Col lg={12} md={12} sm={12}>
+                        <>
+                          {defaultFiltersValues.length > 0 ? (
+                            <Table
+                              column={MeetingColoumns}
+                              scroll={{ y: "54vh", x: false }}
+                              pagination={false}
+                              className="newMeetingTable"
+                              rows={rows}
+                              locale={{
+                                emptyText: emptyText(), // Set your custom empty text here
+                              }}
+                              expandable={{
+                                expandedRowRender: (record) => {
+                                  return (
+                                    record.meetingAgenda.length > 0 &&
+                                    record.meetingAgenda.map((data) => (
+                                      <p
+                                        className={
+                                          styles["meeting-expanded-row"]
+                                        }
+                                      >
+                                        {data.objMeetingAgenda.title}
+                                      </p>
+                                    ))
+                                  );
+                                },
+                                rowExpandable: (record) =>
+                                  record.meetingAgenda.length > 0
+                                    ? true
+                                    : false,
+                              }}
                             />
-                          </Col>
-                        </Row>
+                          ) : null}
+                        </>
                       </Col>
                     </Row>
-                  </>
-                ) : null}
-              </Paper>
-            </Col>
-          </Row>
-        </>
-      )}
-    </section>
+                  ) : null}
+                  {rows.length > 0 ? (
+                    <>
+                      <Row className="mt-5">
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex justify-content-center "
+                        >
+                          <Row className={styles["PaginationStyle-Committee"]}>
+                            <Col
+                              className={"pagination-groups-table"}
+                              sm={12}
+                              md={12}
+                              lg={12}
+                            >
+                              <CustomPagination
+                                current={
+                                  meetingPageCurrent !== null &&
+                                  meetingPageCurrent !== undefined
+                                    ? meetingPageCurrent
+                                    : 1
+                                }
+                                pageSize={
+                                  meetingpageRow !== null &&
+                                  meetingpageRow !== undefined
+                                    ? meetingpageRow
+                                    : 50
+                                }
+                                onChange={handelChangePagination}
+                                total={totalRecords}
+                                showSizer={true}
+                                pageSizeOptionsValues={[
+                                  "30",
+                                  "50",
+                                  "100",
+                                  "200",
+                                ]}
+                              />
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                    </>
+                  ) : null}
+                </Paper>
+              </Col>
+            </Row>
+          </>
+        )}
+      </section>
+      {NewMeetingreducer.boardDeckModalData && <BoardDeckModal />}
+      {NewMeetingreducer.boarddeckShareModal && <ShareModalBoarddeck />}
+      {NewMeetingreducer.boardDeckEmailModal && <BoardDeckSendEmail />}
+    </>
   );
 };
 

@@ -30,6 +30,7 @@ import { _justShowDateformatBilling } from "../../../commen/functions/date_forma
 import {
   createPollGroupsMQTT,
   deleteGroupPollApi,
+  deletePollsMQTT,
   getPollByPollIdforGroups,
   getPollsByGroupMainApi,
   getPollsByPollIdApi,
@@ -106,6 +107,56 @@ const GroupViewPolls = ({ groupStatus }) => {
       console.log(error);
     }
   }, [PollsReducer.newPollGroups]);
+
+  useEffect(() => {
+    try {
+      if (
+        PollsReducer.pollingSocket &&
+        Object.keys(PollsReducer.pollingSocket).length > 0
+      ) {
+        const { pollingSocket } = PollsReducer;
+        const { polls } = pollingSocket;
+
+        let updatedRows = [...pollsRows];
+
+        const findIndex = updatedRows.findIndex(
+          (rowData) => rowData?.pollID === polls?.pollID
+        );
+
+        if (findIndex !== -1) {
+          if (Number(polls.pollStatus.pollStatusId) === 4) {
+            updatedRows.splice(findIndex, 1); // Remove the poll
+          } else if (Number(polls.pollStatus.pollStatusId) === 3) {
+            updatedRows[findIndex] = polls; // Update the existing poll
+          } else if (Number(polls.pollStatus.pollStatusId) === 2) {
+            updatedRows[findIndex] = polls; // Update the existing poll
+          }
+        }
+
+        setPollsRows(updatedRows);
+      }
+    } catch (error) {
+      console.log(error, "errorerror");
+    }
+  }, [PollsReducer.pollingSocket]);
+  
+  useEffect(() => {
+    try {
+      if (PollsReducer.newPollDelete !== null) {
+        const polls = PollsReducer.newPollDelete;
+
+        setPollsRows((pollingDataDelete) => {
+          return pollingDataDelete.filter(
+            (newData2, index) =>
+              Number(newData2.pollID) !== Number(polls?.pollID)
+          );
+        });
+        dispatch(deletePollsMQTT(null));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [PollsReducer.newPollDelete]);
 
   const handleEditBtn = (record) => {
     let data = {
@@ -310,7 +361,7 @@ const GroupViewPolls = ({ groupStatus }) => {
               return (
                 <Button
                   className={styles["Not_Vote_Button_Polls"]}
-                  text={t("Vote")}
+                  buttonValue={t("Vote")}
                   onClick={
                     () => handleClickVoteCast(record)
                     // navigate("/DisKus/polling", {

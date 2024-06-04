@@ -87,7 +87,7 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
         PK_FileID: fileID.pK_FileID,
       })),
     };
-    await dispatch(saveCommitteeDocumentsApi(navigate, t, newData));
+    await dispatch(saveCommitteeDocumentsApi(navigate, t, newData, 1));
   };
   const handleRemoveFile = (data) => {
     try {
@@ -788,23 +788,13 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
                 </Dragger>
               </Col>
             </Row>
-            <Row className="mt-4">
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                style={{
-                  height: "375px",
-                  overflow: "hidden auto",
-                }}
-              >
-                <section className={styles["files_View"]}>
-                  {fileAttachments.length > 0
-                    ? fileAttachments.map((data, index) => {
-                        let fileExt = data.DisplayAttachmentName.split(".")[1];
-
-                        return (
-                          <>
+            <section className={styles["files_View"]}>
+              <Row >
+                {fileAttachments.length > 0
+                  ? fileAttachments.map((data, index) => {
+                      return (
+                        <>
+                          <Col lg={4} md={4} sm={4}>
                             <AttachmentViewer
                               handleClickRemove={() => handleRemoveFile(data)}
                               name={data.DisplayAttachmentName}
@@ -812,10 +802,12 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
                               handleClickDownload={() =>
                                 handleClickDownloadDoc(data)
                               }
+                              fk_UID={data.fk_UserID}
                               id={data.pK_FileID}
                               data={data}
                             />
-                            {/* <Col lg={4} md={4} sm={4}>
+                          </Col>
+                          {/* <Col lg={4} md={4} sm={4}>
                             <section
                               className={styles["Outer_Box"]}
                               onClick={() => handleDoubleCLickFile(data)}
@@ -876,13 +868,12 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
                               </section>
                             </section>
                           </Col> */}
-                          </>
-                        );
-                      })
-                    : null}
-                </section>
-              </Col>
-            </Row>
+                        </>
+                      );
+                    })
+                  : null}
+              </Row>
+            </section>
           </Col>
         </Row>
         <Row className="mt-3">
@@ -898,7 +889,7 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
               onClick={closebtn}
             />
             <Button
-              className={styles["Close-ViewCommittee-btn"]}
+              className={styles["Save-ViewCommittee-btn"]}
               text={t("Save")}
               onClick={handleSave}
             />

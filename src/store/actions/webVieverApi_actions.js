@@ -77,7 +77,7 @@ const getAnnotationsOfToDoAttachement = (navigate, t, data) => {
 
               dispatch(
                 GetAnnotationsOfToDoAttachementSuccess(
-                  t("Record-found"),
+                  "",
                   xfdfData,
                   attachmentBlob
                 )

@@ -14,6 +14,7 @@ import PowerPointIcon from "../../../assets/images/AttachmentIcons/ppt.svg";
 import { Row } from "react-bootstrap";
 import { Col } from "rsuite";
 import styles from "../DataRoom.module.css";
+import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 
 export const OptionsDocument2 = (t) => [
   {
@@ -450,16 +451,26 @@ export const optionsforFile = (t) => [
   { label: t("Analytics"), value: 7 },
 ];
 // Options for Signature Flow
-export const optionsforPDFandSignatureFlow = (t) => [
-  { label: t("Open"), value: 1 },
-  { label: t("Share"), value: 2 },
-  { label: t("Rename"), value: 3 },
-  { label: t("View-detail"), value: 4 },
-  { label: t("Download"), value: 5 },
-  { label: t("Delete"), value: 6 },
-  { label: t("Analytics"), value: 7 },
-  { label: t("Signaure"), value: 8 },
-];
+export const optionsforPDFandSignatureFlow = (t) => {
+  const options = [
+    { label: t("Open"), value: 1 },
+    { label: t("Share"), value: 2 },
+    { label: t("Rename"), value: 3 },
+    { label: t("View-detail"), value: 4 },
+    { label: t("Download"), value: 5 },
+    { label: t("Delete"), value: 6 },
+    { label: t("Analytics"), value: 7 },
+  ];
+
+  if (
+    checkFeatureIDAvailability(19) ||
+    checkFeatureIDAvailability(21)
+  ) {
+    options.push({ label: t("Signature"), value: 8 });
+  }
+
+  return options;
+};
 
 // Viewer Options and Permission Id is 01
 export const optionsforFileViewer = (t) => [
@@ -590,15 +601,25 @@ export const optionMyDocumentsTab = (t) => [
   { label: t("Analytics"), value: 7 },
 ];
 
-export const optionMyDocumentsTabForSignature = (t) => [
-  { label: t("Open"), value: 1 },
-  { label: t("Share"), value: 2 },
-  { label: t("Rename"), value: 3 },
-  { label: t("View-detail"), value: 4 },
-  { label: t("Download"), value: 5 },
-  { label: t("Remove"), value: 6 },
-  { label: t("Analytics"), value: 7 },
-  { label: t("Signaure"), value: 8 },
-];
+export const optionMyDocumentsTabForSignature = (t) => {
+  const options = [
+    { label: t("Open"), value: 1 },
+    { label: t("Share"), value: 2 },
+    { label: t("Rename"), value: 3 },
+    { label: t("View-detail"), value: 4 },
+    { label: t("Download"), value: 5 },
+    { label: t("Remove"), value: 6 },
+    { label: t("Analytics"), value: 7 },
+  ];
+
+  if (
+    checkFeatureIDAvailability(19) ||
+    checkFeatureIDAvailability(21)
+  ) {
+    options.push({ label: t("Signature"), value: 8 });
+  }
+
+  return options;
+};
 
 // Permission ID 1 = Viewer , 2 = Editor, 3 = Not share , 4 =

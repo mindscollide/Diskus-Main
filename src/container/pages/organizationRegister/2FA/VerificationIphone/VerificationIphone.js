@@ -23,6 +23,7 @@ import LanguageChangeIcon from "../../../../../assets/images/newElements/Languag
 import { mqttConnection } from "../../../../../commen/functions/mqttconnection";
 import Helper from "../../../../../commen/functions/history_logout";
 import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
+import { LoginFlowRoutes } from "../../../../../store/actions/UserManagementActions";
 
 const VerificationIphone = () => {
   const navigate = useNavigate();
@@ -84,7 +85,7 @@ const VerificationIphone = () => {
         UserDeviceID: selectDevice.UserDeviceID,
         DeviceRegistrationToken: selectDevice.DeviceRegistrationToken,
       };
-      localStorage.setItem("currentDevice", JSON.stringify(data));
+      localStorage.setItem("selectDevice", JSON.stringify(data));
       let Data = {
         UserID: JSON.parse(UserID),
         Device: "BROWSER",
@@ -113,17 +114,22 @@ const VerificationIphone = () => {
       );
     }
   };
+
+  let devicesi = localStorage.getItem("currentDevice");
+  console.log(devicesi, "devicesidevicesidevicesi");
+
   useEffect(() => {
-    if (location.state !== null) {
-      console.log(location, "location");
-      let devices = location.state.currentDevice;
-      let currentDevices = [];
-      devices.map((data, index) => {
-        currentDevices.push(data);
-      });
-      setDevices(currentDevices);
+    try {
+      let parsedDevices = JSON.parse(devicesi);
+      console.log(parsedDevices, "Parsed Devices");
+      setDevices(parsedDevices);
+      console.log(devices, "Devices State after set");
+    } catch (e) {
+      console.error("Failed to parse devices from localStorage", e);
     }
-  }, [location.state]);
+  }, []);
+
+  console.log(devices, "consoleconsole");
 
   let newClient = Helper.socket;
   useEffect(() => {
@@ -133,6 +139,12 @@ const VerificationIphone = () => {
       mqttConnection(userID);
     }
   }, [Helper.socket]);
+
+  //handle Go back Functionality
+  const handleGoback = () => {
+    localStorage.setItem("LoginFlowPageRoute", 13);
+    dispatch(LoginFlowRoutes(13));
+  };
 
   return (
     <>
@@ -209,8 +221,9 @@ const VerificationIphone = () => {
                   </Row>
 
                   <Row className="Scroll_bar_For_devices mt-3">
-                    {devices !== null && devices.length > 0
+                    {devices.length > 0
                       ? devices.map((data, index) => {
+                          console.log(data, "lengthlengthlength");
                           return (
                             <Col sm={12} lg={12} md={12} className="mx-2">
                               <Row key={index} className="my-2">
@@ -274,7 +287,9 @@ const VerificationIphone = () => {
                 </Form>
                 <Row className="mt-1">
                   <Col sm={12} md={12} lg={12} className="forogt_email_link">
-                    <Link to="/twofacmultidevice">{t("Go-back")}</Link>
+                    <span className="cursor-pointer" onClick={handleGoback}>
+                      {t("Go-back")}
+                    </span>
                   </Col>
                 </Row>
               </Col>

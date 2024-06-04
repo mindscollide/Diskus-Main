@@ -6,7 +6,7 @@ const PrivateNonActive = () => {
   let RoleID = localStorage.getItem("roleID");
   const token = JSON.parse(localStorage.getItem("token"));
   const [currentUser, setCurrentUser] = useState(
-    RoleID === "3" && (Blur != undefined || Blur != null) ? true : null
+    (RoleID === "3" || RoleID === "4") && (Blur != undefined || Blur != null) ? true : null
   );
   let TwoFA = JSON.parse(localStorage.getItem("2fa"));
   let TowApproval = JSON.parse(localStorage.getItem("TowApproval"));

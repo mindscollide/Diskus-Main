@@ -556,7 +556,7 @@ const Organizers = ({
       MeetingOrganizersReducer.ResponseMessage !== "" ||
       MeetingOrganizersReducer.ResponseMessage !== t("No-record-found") ||
       MeetingOrganizersReducer.ResponseMessage !== t("No-records-found") ||
-      MeetingOrganizersReducer.ResponseMessage !== t("Record-found")
+      MeetingOrganizersReducer.ResponseMessage !== ""
     ) {
       setOpen({
         ...open,

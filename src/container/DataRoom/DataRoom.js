@@ -118,6 +118,8 @@ import FileDetailsModal from "./FileDetailsModal/FileDetailsModal";
 import copyToClipboard from "../../hooks/useClipBoard";
 import { createWorkflowApi } from "../../store/actions/workflow_actions";
 import ApprovalSend from "./SignatureApproval/ApprovalSend/ApprovalSend";
+import { checkFeatureIDAvailability } from "../../commen/functions/utils";
+
 const DataRoom = () => {
   const currentUrl = window.location.href;
   let DataRoomString = localStorage.getItem("DataRoomEmail");
@@ -605,14 +607,18 @@ const DataRoom = () => {
 
   const fileOptionsSelect = (data, record, pdfDataJson) => {
     if (data.value === 1) {
-      // Open on Apryse
-      let ext = record.name.split(".").pop();
-      if (ext === "pdf") {
-        window.open(
-          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
-          "_blank",
-          "noopener noreferrer"
-        );
+      if (checkFeatureIDAvailability(20)) {
+        // Open on Apryse
+        let ext = record.name.split(".").pop();
+        if (ext === "pdf") {
+          window.open(
+            `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+              pdfDataJson
+            )}`,
+            "_blank",
+            "noopener noreferrer"
+          );
+        }
       }
     } else if (data.value === 2) {
       // Share File Modal
@@ -718,120 +724,6 @@ const DataRoom = () => {
   };
   //
 
-  const dataroomOptionsHandler = (data, record, pdfDataJson) => {
-    if (data.value === 1) {
-      // Open File
-      // Open on Apryse
-      let ext = record.name.split(".").pop();
-      if (ext === "pdf") {
-        window.open(
-          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
-          "_blank",
-          "noopener noreferrer"
-        );
-      }
-    } else if (data.value === 2) {
-      // Share File or Folder
-      if (record.isFolder) {
-        showShareFolderModal(record.id, record.name);
-      } else {
-        // Share File Modal
-        showShareFileModal(record.id, record.name);
-      }
-    } else if (data.value === 3) {
-      // Rename file or folder
-      if (record.isFolder) {
-        setShowreanmemodal(true);
-        setRenameFolderData(record);
-      } else {
-        // Rename File
-        setShowRenameFile(true);
-        setRenameFileData(record);
-      }
-    } else if (data.value === 4) {
-      // get File and Folder Details
-      if (record.isFolder) {
-        let Data = {
-          ID: record.id,
-          isFolder: true,
-        };
-        dispatch(getFilesandFolderDetailsApi(navigate, t, Data, setDetailView));
-      } else {
-        let Data = {
-          ID: record.id,
-          isFolder: false,
-        };
-        dispatch(getFilesandFolderDetailsApi(navigate, t, Data, setDetailView));
-      }
-    } else if (data.value === 5) {
-      // Download File and Foler
-      if (record.isFolder === true) {
-        let data = {
-          FolderID: Number(record.id),
-        };
-        dispatch(DataRoomDownloadFolderApiFunc(navigate, data, t, record.name));
-      } else {
-        let data = {
-          FileID: Number(record.id),
-        };
-        dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, record.name));
-      }
-    } else if (data.value === 6) {
-      // Delete File and Folder
-      if (record.isFolder) {
-        dispatch(deleteFolder(navigate, record.id, t));
-      } else {
-        dispatch(deleteFileDataroom(navigate, record.id, t));
-      }
-      // Delete File
-    } else if (data.value === 7) {
-      // Get Anayltics  for the document
-      let Data = {
-        FileID: Number(record.id),
-      };
-      dispatch(
-        getDataAnalyticsCountApi(
-          navigate,
-          t,
-          Data,
-          record,
-          setFileDataforAnalyticsCount
-        )
-      );
-    } else if (data.value === 8) {
-      // Create Signature Flow
-      let dataRoomData = {
-        FileID: Number(record.id),
-      };
-      dispatch(createWorkflowApi(dataRoomData, navigate, t, pdfDataJson));
-    }
-  };
-  const folderOptionsSelect = (data, record) => {
-    if (data.value === 2) {
-      setShowreanmemodal(true);
-      setRenameFolderData(record);
-    } else if (data.value === 1) {
-      showShareFolderModal(record.id, record.name);
-    } else if (data.value === 5) {
-    } else if (data.value === 3) {
-      // Detail View Folder
-      // setDetailView(true);
-    } else if (data.value === 6) {
-      let Data = {
-        FileID: Number(record.id),
-      };
-      dispatch(
-        getDataAnalyticsCountApi(
-          navigate,
-          t,
-          Data,
-          record,
-          setFileDataforAnalyticsCount
-        )
-      );
-    }
-  };
-
   const handleSortChange = (pagination, filters, sorter) => {
     if (sorter.field === "sharedDate") {
       if (sorter.order === "ascend") {
@@ -849,6 +741,10 @@ const DataRoom = () => {
   };
 
   const handleSortMyDocuments = (pagination, filters, sorter) => {
+    console.log(
+      { filters, sorter },
+      "handleSortMyDocumentshandleSortMyDocuments"
+    );
     if (sorter.field === "name") {
       if (sorter.order === "ascend") {
         dispatch(
@@ -905,6 +801,29 @@ const DataRoom = () => {
     }
 
     if (sorter.field === "owner") {
+      if (sorter.order === "descend" || sorter.order === undefined) {
+        dispatch(
+          getDocumentsAndFolderApi(
+            navigate,
+            Number(currentView),
+            t,
+            1,
+            Number(2),
+            true
+          )
+        );
+      } else if (sorter.order === "ascend") {
+        dispatch(
+          getDocumentsAndFolderApi(
+            navigate,
+            Number(currentView),
+            t,
+            1,
+            Number(2),
+            false
+          )
+        );
+      }
     }
     setFilteredInfo(filters);
     setSortedInfo(sorter);
@@ -1632,12 +1551,13 @@ const DataRoom = () => {
 
   const handleLinkClick = (e, data) => {
     e.preventDefault();
-
-    window.open(
-      `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(data)}`,
-      "_blank",
-      "noopener noreferrer"
-    );
+    if (checkFeatureIDAvailability(20)) {
+      window.open(
+        `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(data)}`,
+        "_blank",
+        "noopener noreferrer"
+      );
+    }
   };
 
   const MyDocumentsColumns = [
@@ -1801,6 +1721,7 @@ const DataRoom = () => {
       key: "owner",
       width: "90px",
       sortDirections: ["ascend", "descend"],
+      sorter: true,
       sortOrder: sortedInfo.columnKey === "owner" && sortedInfo.order,
       render: (text, record) => {
         return <span className={styles["ownerName"]}>{text}</span>;
@@ -3243,7 +3164,7 @@ const DataRoom = () => {
       DataRoomReducer.ResponseMessage !==
         t("No-folder-exist-against-this-name") &&
       DataRoomReducer.ResponseMessage !== t("No-duplicate-found") &&
-      DataRoomReducer.ResponseMessage !== t("Record-found") &&
+      DataRoomReducer.ResponseMessage !== "" &&
       DataRoomReducer.ResponseMessage !== t("Document-uploaded-successfully") &&
       DataRoomReducer.ResponseMessage !== t("Files-saved-successfully")
     ) {

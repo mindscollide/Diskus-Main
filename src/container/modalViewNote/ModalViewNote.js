@@ -5,6 +5,7 @@ import {
   Modal,
   Notification,
   EmployeeCard,
+  AttachmentViewer,
 } from "../../components/elements";
 import { PlusSquareFill, Star } from "react-bootstrap-icons";
 import StarIcon from "../../assets/images/Star.svg";
@@ -99,7 +100,16 @@ const ModalViewNote = ({
     }
     setViewNotes(false);
   };
-
+  const handleViewIcon = (data, ext) => {
+    let fileExtension = ["pdf", "doc", "docx", "xls", "xlsx"].includes(ext);
+    if (fileExtension) {
+      window.open(
+        `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(data)}`,
+        "_blank",
+        "noopener noreferrer"
+      );
+    }
+  };
   return (
     <>
       <Container>
@@ -117,209 +127,116 @@ const ModalViewNote = ({
           size={isUpdateNote === true ? "md" : "md"}
           ModalBody={
             <>
-              <Container>
-                <Row className="d-flex align-items-center">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    xs={12}
-                    className="d-flex  gap-2 align-items-center"
+              <Row className="d-flex align-items-center">
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  xs={12}
+                  className="d-flex  gap-2 align-items-center"
+                >
+                  <p className={styles["Viewnote-heading"]}>{t("View-note")}</p>
+                  {notesData.isStarred ? (
+                    <img
+                      draggable="false"
+                      src={hollowstar}
+                      width={17}
+                      height={17}
+                      className={styles["star-addnote"]}
+                    />
+                  ) : (
+                    <img
+                      draggable="false"
+                      className={styles["star-addnote"]}
+                      width={17}
+                      height={17}
+                      src={StarIcon}
+                    />
+                  )}
+                </Col>
+              </Row>
+
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  xs={12}
+                  className="d-flex justify-content-start"
+                >
+                  <p className={styles["date-updatenote"]}>
+                    {t("Last-modified-On")}:{" "}
+                    {_justShowDateformat(notesData.date + notesData.time)} |{" "}
+                    {newTimeFormaterAsPerUTC(notesData.date + notesData.time)}
+                  </p>
+                </Col>
+              </Row>
+
+              <Row className="my-2">
+                <Col lg={12} md={12} sm={12} xs={12}>
+                  <p className={styles["modal-View-title"]}>
+                    {notesData.title}
+                  </p>
+                </Col>
+              </Row>
+
+              <Row>
+                <Col lg={12} md={12} sm={12} xs={12}>
+                  <p
+                    className={styles["modal-view-discription"]}
+                    dangerouslySetInnerHTML={{
+                      __html: notesData.description,
+                    }}
                   >
-                    <p className={styles["Viewnote-heading"]}>
-                      {t("View-note")}
-                    </p>
-                    {notesData.isStarred ? (
-                      <img
-                        draggable="false"
-                        src={hollowstar}
-                        width={17}
-                        height={17}
-                        className={styles["star-addnote"]}
-                      />
-                    ) : (
-                      <img
-                        draggable="false"
-                        className={styles["star-addnote"]}
-                        width={17}
-                        height={17}
-                        src={StarIcon}
-                      />
-                    )}
-                  </Col>
-                </Row>
+                    {/* {notesData.description} */}
+                  </p>
+                </Col>
+              </Row>
 
-                <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <p className={styles["date-updatenote"]}>
-                      {t("Last-modified-On")}:{" "}
-                      {_justShowDateformat(notesData.date + notesData.time)} |{" "}
-                      {newTimeFormaterAsPerUTC(notesData.date + notesData.time)}
-                    </p>
-                  </Col>
-                </Row>
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  xs={12}
+                  className="d-flex justify-content-start"
+                >
+                  <p className={styles["modal-update-attachment-heading"]}>
+                    {t("Attachments")}
+                  </p>
+                </Col>
+              </Row>
+              <section className={styles["NotesViewAttachment"]}>
+              <Row>
+                {notesData.notesAttachments.length > 0
+                  ? notesData.notesAttachments.map((data, index) => {
+                      console.log("tasksAttachments", data);
+                      let ext = data.displayAttachmentName.split(".").pop();
 
-                <Row className="my-2">
-                  <Col lg={12} md={12} sm={12} xs={12}>
-                    <p className={styles["modal-View-title"]}>
-                      {notesData.title}
-                    </p>
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col lg={12} md={12} sm={12} xs={12}>
-                    <p
-                      className={styles["modal-view-discription"]}
-                      dangerouslySetInnerHTML={{
-                        __html: notesData.description,
-                      }}
-                    >
-                      {/* {notesData.description} */}
-                    </p>
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <p className={styles["modal-update-attachment-heading"]}>
-                      {t("Attachments")}
-                    </p>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col
-                    sm={12}
-                    lg={12}
-                    md={12}
-                    className="todoModalCreateModal mt-2"
-                  >
-                    {notesData.notesAttachments.length > 0
-                      ? notesData.notesAttachments.map((data, index) => {
-                          console.log("tasksAttachments", data);
-                          var ext = data.displayAttachmentName.split(".").pop();
-
-                          const first =
-                            data.displayAttachmentName.split(" ")[0];
-                          const pdfData = {
-                            taskId: data.fK_NotesID,
-                            attachmentID: data.pK_NAID,
-                            fileName: data.displayAttachmentName,
-                            commingFrom: 2,
-                          };
-                          const pdfDataJson = JSON.stringify(pdfData);
-                          return (
-                            <Col
-                              sm={12}
-                              lg={2}
-                              md={2}
-                              className={
-                                styles["modaltodolist-attachment-icon"]
-                              }
-                            >
-                              {ext === "doc" ? (
-                                <FileIcon
-                                  extension={"docx"}
-                                  size={78}
-                                  type={"document"}
-                                  labelColor={"rgba(44, 88, 152)"}
-                                />
-                              ) : ext === "docx" ? (
-                                <FileIcon
-                                  extension={"docx"}
-                                  size={78}
-                                  type={"font"}
-                                  labelColor={"rgba(44, 88, 152)"}
-                                />
-                              ) : ext === "xls" ? (
-                                <FileIcon
-                                  extension={"xls"}
-                                  type={"spreadsheet"}
-                                  size={78}
-                                  labelColor={"rgba(16, 121, 63)"}
-                                />
-                              ) : ext === "xlsx" ? (
-                                <FileIcon
-                                  extension={"xls"}
-                                  type={"spreadsheet"}
-                                  size={78}
-                                  labelColor={"rgba(16, 121, 63)"}
-                                />
-                              ) : ext === "pdf" ? (
-                                <Link
-                                  to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
-                                    pdfDataJson
-                                  )}`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                >
-                                  <FileIcon
-                                    extension={"pdf"}
-                                    size={78}
-                                    {...defaultStyles.pdf}
-                                  />
-                                </Link>
-                              ) : ext === "png" ? (
-                                <FileIcon
-                                  extension={"png"}
-                                  size={78}
-                                  type={"image"}
-                                  labelColor={"rgba(102, 102, 224)"}
-                                />
-                              ) : ext === "txt" ? (
-                                <FileIcon
-                                  extension={"txt"}
-                                  size={78}
-                                  type={"document"}
-                                  labelColor={"rgba(52, 120, 199)"}
-                                />
-                              ) : ext === "jpg" ? (
-                                <FileIcon
-                                  extension={"jpg"}
-                                  size={78}
-                                  type={"image"}
-                                  labelColor={"rgba(102, 102, 224)"}
-                                />
-                              ) : ext === "jpeg" ? (
-                                <FileIcon
-                                  extension={"jpeg"}
-                                  size={78}
-                                  type={"image"}
-                                  labelColor={"rgba(102, 102, 224)"}
-                                />
-                              ) : ext === "gif" ? (
-                                <FileIcon
-                                  extension={"gif"}
-                                  size={78}
-                                  {...defaultStyles.gif}
-                                />
-                              ) : null}
-
-                              <p
-                                className="modaltodolist-attachment-text"
-                                title={data.displayAttachmentName}
-                              >
-                                {first}
-                              </p>
-                            </Col>
-                          );
-                        })
-                      : null}
-                  </Col>
-                </Row>
-              </Container>
+                      const first = data.displayAttachmentName.split(" ")[0];
+                      const pdfData = {
+                        taskId: data.fK_NotesID,
+                        attachmentID: data.pK_NAID,
+                        fileName: data.displayAttachmentName,
+                        commingFrom: 2,
+                      };
+                      const pdfDataJson = JSON.stringify(pdfData);
+                      return (
+                        <Col sm={4} lg={4} md={4}>
+                          <AttachmentViewer
+                            data={data}
+                            // handleEyeIcon={() =>
+                            //   handleViewIcon(pdfDataJson, ext)
+                            // }
+                            id={0}
+                            name={data.displayAttachmentName}
+                          />
+                        </Col>
+                      );
+                    })
+                  : null}
+              </Row>
+              </section>
             </>
           }
           ModalFooter={

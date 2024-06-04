@@ -5,6 +5,8 @@ import { UserLogout } from "../../commen/apis/Api_config";
 import { authenticationApi } from "../../commen/apis/Api_ends_points";
 import axios from "axios";
 import { RefreshToken } from "./Auth_action";
+import { showUpgradeNowModal } from "./UserMangementModalActions";
+import { LoginFlowRoutes } from "./UserManagementActions";
 
 const logoutChannel = new BroadcastChannel("logout");
 
@@ -55,29 +57,35 @@ const userLogOutApiFunc = (navigate, t) => {
                 .toLowerCase()
                 .includes("ERM_AuthService_AuthManager_LogOut_01".toLowerCase())
             ) {
-              dispatch(userlogOutSuccess(t("Successful")));
-              signOut();
-              navigate("/");
+              await dispatch(userlogOutSuccess(t("Successful")));
+              signOut(dispatch);
+              dispatch(showUpgradeNowModal(false));
+              // navigate("/");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes("ERM_AuthService_AuthManager_LogOut_02".toLowerCase())
             ) {
               dispatch(userlogOutFailed(t("Invalid Token")));
+              dispatch(showUpgradeNowModal(true));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes("ERM_AuthService_AuthManager_LogOut_03".toLowerCase())
             ) {
               dispatch(userlogOutFailed(t("Something-went-wrong")));
+              dispatch(showUpgradeNowModal(true));
             } else {
               dispatch(userlogOutFailed(t("Something-went-wrong")));
+              dispatch(showUpgradeNowModal(true));
             }
           } else {
             dispatch(userlogOutFailed(t("Something-went-wrong")));
+            dispatch(showUpgradeNowModal(true));
           }
         } else {
           dispatch(userlogOutFailed(t("Something-went-wrong")));
+          dispatch(showUpgradeNowModal(true));
         }
       })
       .catch((response) => {
@@ -86,7 +94,7 @@ const userLogOutApiFunc = (navigate, t) => {
   };
 };
 
-const signOut = (navigate, message) => {
+const signOut = (navigate, message, dispatch) => {
   logoutChannel.postMessage("Logout");
   // if (Helper.socket != null) {
   //   Helper.socket.disconnect(true);
@@ -103,8 +111,9 @@ const signOut = (navigate, message) => {
     let RememberPasswordLocalValue = localStorage.getItem(
       "rememberPasswordValue"
     );
+    
     localStorage.clear();
-    if (reLang != undefined && reLang != null) {
+    if (reLang !== undefined && reLang != null) {
       localStorage.setItem("i18nextLng", reLang);
     }
     localStorage.setItem("remeberPassword", RememberPasswordLocal);
@@ -113,8 +122,9 @@ const signOut = (navigate, message) => {
     localStorage.setItem("rememberEmailValue", RememberEmailLocalValue);
   } else if (RememberEmailLocal === true) {
     let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
+    
     localStorage.clear();
-    if (reLang != undefined && reLang != null) {
+    if (reLang !== undefined && reLang != null) {
       localStorage.setItem("i18nextLng", reLang);
     }
     localStorage.setItem("rememberEmail", RememberEmailLocal);
@@ -123,15 +133,17 @@ const signOut = (navigate, message) => {
     let RememberPasswordLocalValue = localStorage.getItem(
       "rememberPasswordValue"
     );
+    
     localStorage.clear();
-    if (reLang != undefined && reLang != null) {
+    if (reLang !== undefined && reLang != null) {
       localStorage.setItem("i18nextLng", reLang);
     }
     localStorage.setItem("remeberPassword", RememberPasswordLocal);
     localStorage.setItem("rememberPasswordValue", RememberPasswordLocalValue);
   } else {
+    
     localStorage.clear();
-    if (reLang != undefined && reLang != null) {
+    if (reLang !== undefined && reLang != null) {
       localStorage.setItem("i18nextLng", reLang);
     }
     localStorage.setItem("rememberEmail", false);
@@ -139,6 +151,8 @@ const signOut = (navigate, message) => {
     localStorage.setItem("remeberPassword", false);
     localStorage.setItem("rememberPasswordValue", "");
   }
+  localStorage.setItem("LoginFlowPageRoute", 1);
+  dispatch(LoginFlowRoutes(1));
   // navigate("/");
 
   if (message != "") {

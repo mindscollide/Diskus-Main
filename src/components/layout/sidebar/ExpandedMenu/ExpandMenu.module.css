@@ -1,0 +1,62 @@
+.iconGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  background: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.iconItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: #333;
+  text-decoration: none;
+}
+.iconItem:hover {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border-radius: 4px;
+  color: #fff;
+}
+.iconItem_active {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border-radius: 4px;
+  color: #fff;
+}
+
+.iconItem_active img {
+  height: 25px;
+  margin-bottom: 5px;
+  filter: brightness(0) invert(1);
+}
+
+.iconItem img {
+  height: 25px;
+  margin-bottom: 5px;
+}
+.iconItem:hover img {
+  height: 25px;
+  margin-bottom: 5px;
+  filter: brightness(0) invert(1);
+}
+.iconItem_active p {
+  margin: 0;
+  font-size: 8px;
+  font-weight: 600;
+  color: #fff !important;
+}
+
+.iconItem p {
+  margin: 0;
+  font-size: 8px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.iconItem:hover {
+  text-decoration: none;
+  color: #fff;
+}

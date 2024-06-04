@@ -250,6 +250,11 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       setTaskAssignedTo(0);
       setParticipantRoleName("Regular");
       setTaskAssignedToInput("");
+      setPresenterValue({
+        label: "",
+        value: 0,
+        name: "",
+      });
     } else if (taskAssignedTo !== 0) {
       var foundIndex = meetingAttendees.findIndex(
         (x) => x.FK_UID === taskAssignedTo
@@ -287,6 +292,11 @@ const CreateCommittee = ({ setCreategrouppage }) => {
           setTaskAssignedTo(0);
           setParticipantRoleName("Regular");
           setTaskAssignedToInput("");
+          setPresenterValue({
+            label: "",
+            value: 0,
+            name: "",
+          });
         } else {
           setOpen({
             flag: true,
@@ -297,6 +307,11 @@ const CreateCommittee = ({ setCreategrouppage }) => {
           setTaskAssignedTo(0);
           setParticipantRoleName("Regular");
           setTaskAssignedToInput("");
+          setPresenterValue({
+            label: "",
+            value: 0,
+            name: "",
+          });
         }
       } else {
         setOpen({
@@ -325,6 +340,11 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         });
         setAttendees([]);
         setParticipantRoleName("Regular");
+        setPresenterValue({
+          label: "",
+          value: 0,
+          name: "",
+        });
       } else {
         if (participantOptionsWithID !== undefined) {
           attendees.forEach((dataID, index) => {
@@ -351,6 +371,11 @@ const CreateCommittee = ({ setCreategrouppage }) => {
             setTaskAssignedTo(0);
             setParticipantRoleName("Regular");
             setTaskAssignedToInput("");
+            setPresenterValue({
+              label: "",
+              value: 0,
+              name: "",
+            });
           });
         } else {
           setOpen({
@@ -368,6 +393,11 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       setTaskAssignedTo(0);
       setParticipantRoleName("Regular");
       setTaskAssignedToInput("");
+      setPresenterValue({
+        label: "",
+        value: 0,
+        name: "",
+      });
     }
   };
 
@@ -1653,21 +1683,13 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                           </span>
                         </Col>
                       </Row>
-                      <Row className="mt-1">
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          style={{
-                            height: "175px",
-                            overflow: "hidden auto",
-                          }}
-                        >
-                          <section className={styles["files_View"]}>
-                            {fileAttachments.length > 0
-                              ? fileAttachments.map((data, index) => {
-                                  return (
-                                    <>
+                      <section className={styles["files_View"]}>
+                        <Row className="mt-1">
+                          {fileAttachments.length > 0
+                            ? fileAttachments.map((data, index) => {
+                                return (
+                                  <>
+                                    <Col lg={4} md={4} sm={4}>
                                       <AttachmentViewer
                                         handleClickRemove={() =>
                                           handleRemoveFile(data)
@@ -1675,146 +1697,15 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                         name={data.DisplayAttachmentName}
                                         id={data.pK_FileID}
                                         data={data}
+                                        fk_UID={creatorID}
                                       />
-                                    </>
-                                  );
-                                })
-                              : null}
-                          </section>
-                        </Col>
-                        {/* <Col lg={1} md={1} sm={1} className="mt-4">
-                          {fileAttachments.length > 2 ? (
-                            <>
-                              <Button
-                                icon={
-                                  <img
-                                    src={Leftploygon}
-                                    width="20px"
-                                    height="15px"
-                                    draggable="false"
-                                  />
-                                }
-                                onClick={SlideLeft}
-                                className={styles["Leftpolygon"]}
-                              />
-                            </>
-                          ) : null}
-                        </Col>
-                        <Col lg={10} md={10} sm={10}>
-                          <Row>
-                            <Col
-                              lg={12}
-                              md={12}
-                              sm={12}
-                              className="ScrolllerFiles_Committees"
-                              id="Slider"
-                            >
-                              {fileAttachments.length > 0
-                                ? fileAttachments.map((data, index) => {
-                                    return (
-                                      <>
-                                        <Col
-                                          lg={4}
-                                          md={4}
-                                          sm={12}
-                                          className="position-relative gap-2"
-                                        >
-                                          <span
-                                            className={
-                                              styles["Crossicon_Class"]
-                                            }
-                                          >
-                                            <img
-                                              src={CrossIcon}
-                                              height="12.68px"
-                                              width="12.68px"
-                                              onClick={() =>
-                                                handleRemoveFile(data)
-                                              }
-                                            />
-                                          </span>
-                                          <section
-                                            className={styles["Outer_Box"]}
-                                          >
-                                            <Row>
-                                              <Col lg={12} md={12} sm={12}>
-                                                <img
-                                                  src={file_image}
-                                                  width={"100%"}
-                                                  alt=""
-                                                  draggable="false"
-                                                />
-                                              </Col>
-                                            </Row>
-
-                                            <section
-                                              className={
-                                                styles["backGround_name_Icon"]
-                                              }
-                                            >
-                                              <Row className="mb-2">
-                                                <Col
-                                                  lg={12}
-                                                  md={12}
-                                                  sm={12}
-                                                  className={
-                                                    styles["IconTextClass"]
-                                                  }
-                                                >
-                                                  <img
-                                                    src={getIconSource(
-                                                      getFileExtension(
-                                                        data.DisplayAttachmentName
-                                                      )
-                                                    )}
-                                                    alt=""
-                                                    height="10px"
-                                                    width="10px"
-                                                    className={
-                                                      styles["IconPDF"]
-                                                    }
-                                                  />
-                                                  <span
-                                                    className={
-                                                      styles["FileName"]
-                                                    }
-                                                    title={
-                                                      data.DisplayAttachmentName
-                                                    }
-                                                  >
-                                                    {data.DisplayAttachmentName}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                            </section>
-                                          </section>
-                                        </Col>
-                                      </>
-                                    );
-                                  })
-                                : null}
-                            </Col>
-                          </Row>
-                        </Col>
-                        <Col lg={1} md={1} sm={1} className="mt-4">
-                          {fileAttachments.length > 2 ? (
-                            <>
-                              <Button
-                                icon={
-                                  <img
-                                    src={Rightploygon}
-                                    width="20px"
-                                    height="15px"
-                                    draggable="false"
-                                  />
-                                }
-                                onClick={Slideright}
-                                className={styles["Leftpolygon"]}
-                              />
-                            </>
-                          ) : null}
-                        </Col> */}
-                      </Row>
+                                    </Col>
+                                  </>
+                                );
+                              })
+                            : null}
+                        </Row>
+                      </section>
                       <Row className="mt-2">
                         <Col lg={12} md={12} sm={12}>
                           <Dragger

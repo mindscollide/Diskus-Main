@@ -38,7 +38,7 @@ import { async } from "q";
 const Organization = () => {
   //for translation
   const { settingReducer, LanguageReducer } = useSelector((state) => state);
-
+  const { UserProfileData } = settingReducer;
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -96,7 +96,9 @@ const Organization = () => {
   const [signUpCodeToken, setSignUpCodeToken] = useState("");
 
   useEffect(() => {
-    dispatch(getUserSetting(navigate, t));
+    if (UserProfileData === undefined || UserProfileData === null) {
+      dispatch(getUserSetting(navigate, t, false));
+    }
   }, []);
 
   const handleGoogleLoginSuccess = (response) => {
@@ -529,7 +531,7 @@ const Organization = () => {
   useEffect(() => {
     if (
       settingReducer.UpdateUserSettingResponseMessage !== "" &&
-      settingReducer.UpdateUserSettingResponseMessage !== t("Record-found")
+      settingReducer.UpdateUserSettingResponseMessage !== ""
     ) {
       setOpen({
         flag: true,

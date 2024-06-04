@@ -69,7 +69,7 @@ const getUserNotificationSetting = (navigate, userSettingData, t) => {
                 response.data.responseResult
               )
             );
-            await dispatch(getUserSetting(JSON.parse(currentUserID)));
+            await dispatch(getUserSetting(JSON.parse(currentUserID), false));
           } else {
             dispatch(updateusernotificationfail());
           }

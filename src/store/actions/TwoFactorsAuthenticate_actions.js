@@ -7,7 +7,8 @@ import {
   verifyTwoFacOTP,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
-
+import { LoginFlowRoutes } from "./UserManagementActions";
+import { clearLocalStorageAtloginresponce } from "../../commen/functions/utils";
 const TwoFaAuthenticateInit = () => {
   return {
     type: actions.CHECKINGAUTHENTICATEAFA_INIT,
@@ -112,9 +113,13 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
                 )
               );
               if (response.data.responseResult.userDevices.length === 1) {
-                navigate("/sendmailwithdevice");
+                // navigate("/sendmailwithdevice");
+                //localStorage.setItem("LoginFlowPageRoute", 8);
+                dispatch(LoginFlowRoutes(8));
               } else {
-                navigate("/twofacmultidevice");
+                // navigate("/twofacmultidevice");
+                //localStorage.setItem("LoginFlowPageRoute", 13);
+                dispatch(LoginFlowRoutes(13));
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -129,7 +134,9 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
                   t("User-doesnt-have-saved-devices")
                 )
               );
-              navigate("/twofac");
+              //localStorage.setItem("LoginFlowPageRoute", 4);
+              dispatch(LoginFlowRoutes(4));
+              // navigate("/twofac");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -173,7 +180,8 @@ const sendTwoFacOtpFail = (message) => {
   };
 };
 
-const sendTwoFacAction = (t, navigate, Data, selectDevice) => {
+// t, navigate, Data, selectDevice, setCurrentStep; Previous Props
+const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(sendTwoFacOtpInit());
@@ -191,7 +199,7 @@ const sendTwoFacAction = (t, navigate, Data, selectDevice) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(sendTwoFacAction(t, navigate, Data, selectDevice));
+          dispatch(sendTwoFacAction(t, navigate, Data, setSeconds, setMinutes));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -237,7 +245,9 @@ const sendTwoFacAction = (t, navigate, Data, selectDevice) => {
                   t("Otp-code-sent-via-email-sms-and-devices")
                 )
               );
-              navigate("/2FAverificationotp");
+              //localStorage.setItem("LoginFlowPageRoute", 6);
+              dispatch(LoginFlowRoutes(6));
+              // navigate("/2FAverificationotp");
               localStorage.setItem("seconds", 60);
               localStorage.setItem("minutes", 4);
             } else if (
@@ -253,7 +263,10 @@ const sendTwoFacAction = (t, navigate, Data, selectDevice) => {
                   t("Otp-code-sent-via-sms-and-devices")
                 )
               );
-              navigate("/2FAverificationotp");
+
+              //localStorage.setItem("LoginFlowPageRoute", 6);
+              dispatch(LoginFlowRoutes(6));
+              // navigate("/2FAverificationotp");
               localStorage.setItem("seconds", 60);
               localStorage.setItem("minutes", 4);
             } else if (
@@ -269,7 +282,9 @@ const sendTwoFacAction = (t, navigate, Data, selectDevice) => {
                   t("Otp-code-sent-via-email-and-devices")
                 )
               );
-              navigate("/2FAverificationotp");
+              //localStorage.setItem("LoginFlowPageRoute", 6);
+              dispatch(LoginFlowRoutes(6));
+              // navigate("/2FAverificationotp");
               localStorage.setItem("seconds", 60);
               localStorage.setItem("minutes", 4);
             } else if (
@@ -287,7 +302,9 @@ const sendTwoFacAction = (t, navigate, Data, selectDevice) => {
                   t("Otp-code-sent-via-email-and-sms")
                 )
               );
-              navigate("/2FAverificationotp");
+              //localStorage.setItem("LoginFlowPageRoute", 6);
+              dispatch(LoginFlowRoutes(6));
+              // navigate("/2FAverificationotp");
               localStorage.setItem("seconds", 60);
               localStorage.setItem("minutes", 4);
               localStorage.setItem("value", 2);
@@ -306,7 +323,8 @@ const sendTwoFacAction = (t, navigate, Data, selectDevice) => {
                   t("Otp-code-sent-via-devices")
                 )
               );
-              navigate("/2FAverificationdevieotp");
+              // navigate("/2FAverificationdevieotp");
+              dispatch(LoginFlowRoutes(14));
               localStorage.setItem("seconds", 60);
               localStorage.setItem("minutes", 4);
             } else if (
@@ -324,7 +342,10 @@ const sendTwoFacAction = (t, navigate, Data, selectDevice) => {
                   t("Otp-code-sent-via-sms")
                 )
               );
-              navigate("/2FAverificationotp");
+
+              //localStorage.setItem("LoginFlowPageRoute", 6);
+              dispatch(LoginFlowRoutes(6));
+              // navigate("/2FAverificationotp");
               localStorage.setItem("seconds", 60);
               localStorage.setItem("minutes", 4);
               localStorage.setItem("value", 0);
@@ -341,7 +362,10 @@ const sendTwoFacAction = (t, navigate, Data, selectDevice) => {
                   t("Otp-code-sent-via-email")
                 )
               );
-              navigate("/2FAverificationotp");
+
+              //localStorage.setItem("LoginFlowPageRoute", 6);
+              dispatch(LoginFlowRoutes(6));
+              // navigate("/2FAverificationotp");
               localStorage.setItem("seconds", 60);
               localStorage.setItem("minutes", 4);
               localStorage.setItem("value", 1);
@@ -431,7 +455,9 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
                   t("Otp-code-sent-via-email-sms-and-devices")
                 )
               );
-              navigate("/2FAverificationotp");
+              //localStorage.setItem("LoginFlowPageRoute", 6);
+              dispatch(LoginFlowRoutes(6));
+              // navigate("/2FAverificationotp");
               return setSeconds(60), setMinutes(4);
             } else if (
               response.data.responseResult.responseMessage
@@ -446,7 +472,9 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
                   t("Otp-code-sent-via-sms-and-devices")
                 )
               );
-              navigate("/2FAverificationotp");
+              //localStorage.setItem("LoginFlowPageRoute", 6);
+              dispatch(LoginFlowRoutes(6));
+              // navigate("/2FAverificationotp");
               return setSeconds(60), setMinutes(4);
             } else if (
               response.data.responseResult.responseMessage
@@ -461,7 +489,9 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
                   t("Otp-code-sent-via-email-and-devices")
                 )
               );
-              navigate("/2FAverificationotp");
+              //localStorage.setItem("LoginFlowPageRoute", 6);
+              dispatch(LoginFlowRoutes(6));
+              // navigate("/2FAverificationotp");
               return setSeconds(60), setMinutes(4);
             } else if (
               response.data.responseResult.responseMessage
@@ -478,7 +508,9 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
                   t("Otp-code-sent-via-email-and-sms")
                 )
               );
-              navigate("/2FAverificationotp", { state: { value: 2 } });
+              //localStorage.setItem("LoginFlowPageRoute", 6);
+              dispatch(LoginFlowRoutes(6));
+              // navigate("/2FAverificationotp", { state: { value: 2 } });
               return setSeconds(60), setMinutes(4);
             } else if (
               response.data.responseResult.responseMessage
@@ -512,7 +544,9 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
                   t("Otp-code-sent-via-sms")
                 )
               );
-              navigate("/2FAverificationotp", { state: { value: 0 } });
+              //localStorage.setItem("LoginFlowPageRoute", 6);
+              dispatch(LoginFlowRoutes(6));
+              // navigate("/2FAverificationotp", { state: { value: 0 } });
               return setSeconds(60), setMinutes(4);
             } else if (
               response.data.responseResult.responseMessage
@@ -527,7 +561,9 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
                   t("Otp-code-sent-via-email")
                 )
               );
-              navigate("/2FAverificationotp", { state: { value: 1 } });
+              //localStorage.setItem("LoginFlowPageRoute", 6);
+              dispatch(LoginFlowRoutes(6));
+              // navigate("/2FAverificationotp", { state: { value: 1 } });
               return setSeconds(60), setMinutes(4);
             } else if (
               response.data.responseResult.responseMessage
@@ -599,6 +635,10 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
                   "ERM_AuthService_AuthManager_Verify2FAOTP_01".toLowerCase()
                 )
             ) {
+              let RSVP = localStorage.getItem("RSVP");
+              let dataroomValue = localStorage.getItem("DataRoomEmail");
+              let AgCont = localStorage.getItem("AgCont");
+              let AdOrg = localStorage.getItem("AdOrg");
               dispatch(
                 verifyOtpFacSuccess(
                   response.data.responseResult,
@@ -606,29 +646,112 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
                 )
               );
               localStorage.setItem("TowApproval", true);
-              if (JSON.parse(localStorage.getItem("roleID")) === 1) {
-                navigate("/Diskus/Admin/");
-              } else if (JSON.parse(localStorage.getItem("roleID")) === 2) {
-                navigate("/Diskus/Admin/");
-              } else if (JSON.parse(localStorage.getItem("roleID")) === 3) {
-                if (JSON.parse(localStorage.getItem("isFirstLogin"))) {
-                  navigate("/onboard");
-                } else {
-                  let RSVP = localStorage.getItem("RSVP");
-                  let dataroomValue = localStorage.getItem("DataRoomEmail");
+              console.log("TowApproval");
+              let hasAdminRights = localStorage.getItem("hasAdminRights");
+              let hasUserRights = localStorage.getItem("hasUserRights");
+              let isFirstLogin = localStorage.getItem("isFirstLogin");
 
-                  if (RSVP !== undefined && RSVP !== null) {
+              clearLocalStorageAtloginresponce(dispatch, 1, navigate);
+              if (isFirstLogin === "true") {
+                if (RSVP !== undefined && RSVP !== null) {
+                  if (hasUserRights === "true") {
                     navigate("/DisKus/Meeting/Useravailabilityformeeting");
-                  } else if (
-                    dataroomValue !== null &&
-                    dataroomValue !== undefined
-                  ) {
+                  } else if (hasAdminRights === "true") {
+                    navigate("/Admin/ManageUsers");
+                  }
+                } else if (
+                  dataroomValue !== null &&
+                  dataroomValue !== undefined
+                ) {
+                  if (hasUserRights === "true") {
                     navigate("/Diskus/dataroom");
-                  } else {
+                  } else if (hasAdminRights === "true") {
+                    navigate("/Admin/ManageUsers");
+                  }
+                } else if (AgCont !== null) {
+                  navigate("/DisKus/Meeting");
+                } else if (AdOrg !== null) {
+                  navigate("/DisKus/Meeting");
+                } else if (hasAdminRights === "true") {
+                  navigate("/Admin/ManageUsers");
+                } else if (hasUserRights === "true") {
+                  navigate("/onboard/");
+                }
+              } else {
+                if (RSVP !== undefined && RSVP !== null) {
+                  if (hasUserRights === "true") {
+                    navigate("/DisKus/Meeting/Useravailabilityformeeting");
+                  } else if (hasAdminRights === "true") {
+                    navigate("/Admin/ManageUsers");
+                  }
+                } else if (
+                  dataroomValue !== null &&
+                  dataroomValue !== undefined
+                ) {
+                  if (hasUserRights === "true") {
+                    navigate("/Diskus/dataroom");
+                  } else if (hasAdminRights === "true") {
+                    navigate("/Admin/ManageUsers");
+                  }
+                } else if (AgCont !== null) {
+                  navigate("/DisKus/Meeting");
+                } else if (AdOrg !== null) {
+                  navigate("/DisKus/Meeting");
+                } else {
+                  if (hasUserRights === "true") {
                     navigate("/Diskus/");
+                  } else if (hasAdminRights === "true") {
+                    navigate("/Admin/ManageUsers");
                   }
                 }
               }
+              console.log(
+                Boolean(hasUserRights),
+                Boolean(hasAdminRights),
+                Boolean(isFirstLogin),
+                "PrivateRoutesPrivateRoutesPrivateRoutes"
+              );
+              // if (RSVP !== undefined && RSVP !== null) {
+              //   navigate("/DisKus/Meeting/Useravailabilityformeeting");
+              // } else if (
+              //   dataroomValue !== null &&
+              //   dataroomValue !== undefined
+              // ) {
+              //   navigate("/Diskus/dataroom");
+              // } else {
+              //   navigate("/Diskus/");
+              // }
+              //  else {
+              //     dispatch(
+              //       verifyOtpFacFail(t("User-not-authorised-contact-admin"))
+              //     );
+              //     clearLocalStorageAtloginresponce(dispatch, 2, navigate);
+              //     console.log("TowApproval");
+              //   }
+
+              // if (JSON.parse(localStorage.getItem("roleID")) === 1) {
+              //   navigate("/Admin/");
+              // } else if (JSON.parse(localStorage.getItem("roleID")) === 2) {
+              //   navigate("/Admin/");
+              // } else if (JSON.parse(localStorage.getItem("roleID")) === 3) {
+              //   if (JSON.parse(localStorage.getItem("isFirstLogin"))) {
+              //     navigate("/onboard");
+              //   } else {
+              //     let RSVP = localStorage.getItem("RSVP");
+              //     let dataroomValue = localStorage.getItem("DataRoomEmail");
+
+              //     if (RSVP !== undefined && RSVP !== null) {
+              //       navigate("/DisKus/Meeting/Useravailabilityformeeting");
+              //     } else if (
+              //       dataroomValue !== null &&
+              //       dataroomValue !== undefined
+              //     ) {
+              //       navigate("/Diskus/dataroom");
+              //     } else {
+              //       navigate("/Diskus/");
+              //     }
+              //   }
+              // }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -685,6 +808,7 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
       .catch((response) => {
         dispatch(verifyOtpFacFail(t("Something-went-wrong")));
         localStorage.setItem("TowApproval", false);
+        console.log("TowApproval");
       });
   };
 };

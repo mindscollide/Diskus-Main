@@ -9,78 +9,34 @@ import {
   getFileExtension,
   getIconSource,
 } from "../../../../../DataRoom/SearchFunctionality/option";
+import { AttachmentViewer } from "../../../../../../components/elements";
 const FilesMappingAgendaWiseMinutes = ({
   showMoreIndex,
   Itemsdata,
   showMore,
   detailIndex,
 }) => {
+  console.log(Itemsdata, "ItemsdataItemsdataItemsdataItemsdata");
   return (
-    <section>
+    <>
       {showMoreIndex === detailIndex && showMore === true ? (
-        <>
+        <section className={styles["viewAgendaWiseFiles"]}>
           <Row>
-            <Col lg={12} md={12} sm={12} className={styles["DocsScroller"]}>
-              <Row className="mt-3">
-                {Itemsdata.minutesAttachmets.map((filesname, index) => {
-                  return filesname.files.map((fileData, index) => {
-                    console.log(fileData, "fileDatafileDatafileData");
-                    return (
-                      <>
-                        <Col
-                          lg={3}
-                          md={3}
-                          sm={12}
-                          className="position-relative gap-2"
-                        >
-                          <section className={styles["Outer_Box"]}>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <img
-                                  src={file_image}
-                                  width={"100%"}
-                                  alt=""
-                                  draggable="false"
-                                />
-                              </Col>
-                            </Row>
-
-                            <section className={styles["backGround_name_Icon"]}>
-                              <Row className="mb-2">
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className={styles["IconTextClass"]}
-                                >
-                                  <img
-                                    src={getIconSource(
-                                      getFileExtension(fileData.displayFileName)
-                                    )}
-                                    height="10px"
-                                    alt=""
-                                    width="10px"
-                                    className={styles["IconPDF"]}
-                                  />
-                                  <span className={styles["FileName"]}>
-                                    {fileData.displayFileName}
-                                  </span>
-                                </Col>
-                              </Row>
-                            </section>
-                          </section>
-                        </Col>
-                      </>
-                    );
-                  });
-                })}
-                <Col lg={12} md={12} sm={12}></Col>
-              </Row>
-            </Col>
+            {Itemsdata.minutesAttachmets.map((filesname, parentIndex) => {
+              return filesname.files.map((data, index) => (
+                <Col lg={4} md={4} sm={4} key={`${parentIndex}-${index}`}>
+                  <AttachmentViewer
+                    data={data}
+                    id={0}
+                    name={data.displayFileName}
+                  />
+                </Col>
+              ));
+            })}
           </Row>
-        </>
+        </section>
       ) : null}
-    </section>
+    </>
   );
 };
 

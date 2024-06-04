@@ -673,7 +673,7 @@ const AgendaContributers = ({
   //Initiate the Add Flow with Empty stae
 
   const handleInitiatewithEmptyState = () => {
-    if (Number(editorRole.status) === 1) {
+    if (Number(editorRole.status) === 10) {
     } else {
       setIsEditFlag(0);
       dispatch(showAddAgendaContributor(true));
@@ -949,7 +949,7 @@ const AgendaContributers = ({
                             draggable={false}
                             src={emptyContributorState}
                             className={
-                              Number(editorRole.status) === 1
+                              Number(editorRole.status) === 10
                                 ? ""
                                 : "cursor-pointer"
                             }

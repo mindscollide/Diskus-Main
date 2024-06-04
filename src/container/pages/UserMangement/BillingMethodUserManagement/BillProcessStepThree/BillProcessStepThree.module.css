@@ -1,0 +1,126 @@
+.outerBoxForBilling {
+  width: 100% !important;
+  min-height: 40vh !important;
+  padding: 30px 40px !important;
+  height: auto !important;
+  background: #fff !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.ChargesPerLicesense {
+  font-size: 20px !important;
+  color: #5a5a5a !important;
+  font-weight: 700 !important;
+}
+
+body[dir="rtl"] .ChargesPerLicesense {
+  font-weight: 700 !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.TableheadingTotal {
+  font-size: 20px !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .TableheadingTotal {
+  font-weight: 600 !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.Tableheading {
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .Tableheading {
+  font-weight: 600 !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.OuterBoxExpiryNotification {
+  background: #f6f9fc !important;
+  height: auto;
+  padding: 20px 15px !important;
+  width: 100% !important;
+  min-height: 20vh !important;
+  margin-top: 99px !important;
+}
+
+.dateStyles {
+  font-size: 20px !important;
+  color: #5a5a5a !important;
+  font-weight: 700 !important;
+}
+
+body[dir="rtl"] .dateStyles {
+  font-weight: 700 !important;
+}
+
+.AlertHeading {
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .AlertHeading {
+  font-weight: 600 !important;
+}
+
+.ChangePakageDetailsButton {
+  padding: 12px 30px !important;
+  width: 100% !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+}
+
+.ChangePakageDetailsButton:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  width: 100% !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+}
+
+body[dir="rtl"] .ChangePakageDetailsButton {
+  font-weight: 600 !important;
+}
+
+.errorMessage {
+  margin: 4px;
+  height: 7px;
+  color: #f16b6b;
+  visibility: visible !important;
+}
+
+body[dir="rtl"] .errorMessage {
+  font-weight: 400 !important;
+}
+
+.errorMessage_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 7px;
+  color: #f16b6b !important;
+}
+
+body[dir="rtl"] .errorMessage_hidden {
+  font-weight: 400 !important;
+}
+
+.sectionstyles {
+  width: 100% !important;
+}

@@ -12,6 +12,11 @@
     var(--bs-accordion-border-color) !important;
 } */
 
+.ABC {
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+}
+
 .ABC .accordion-item .accordion-header .accordion-button:not(.collapsed) {
   border-bottom: none !important;
   box-shadow: none !important;
@@ -33,4 +38,23 @@
   max-width: 99% !important;
   margin-left: 20px !important;
   margin-top: 40px !important;
+}
+
+.FaqsQuestionsStyles {
+  font-size: 20px !important;
+  white-space: nowrap !important;
+  color: #6172d6 !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .FaqsQuestionsStyles {
+  font-weight: 600 !important;
+}
+
+.accordion-button::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='18' viewBox='0 0 32 18' fill='none'%3E%3Cpath d='M2.14258 2.07422L15.8613 15.793L29.5801 2.07422' stroke='%236172D6' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+.accordion-button:not(.collapsed)::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='18' viewBox='0 0 32 18' fill='none'%3E%3Cpath d='M2.14258 2.07422L15.8613 15.793L29.5801 2.07422' stroke='%236172D6' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E");
 }

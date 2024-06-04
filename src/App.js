@@ -1,9 +1,7 @@
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense } from "react";
 import "./App.css";
 import "./fr.css";
 import "./ar.css";
-import { logoutAllTabs } from "./store/actions/Auth_Sign_Out";
-import moment from "moment";
 import "./assets/font-icons/font-icons.css";
 import "@fontsource/montserrat"; // Defaults to weight 400
 import "@fontsource/montserrat/100.css";
@@ -23,12 +21,21 @@ import "@fontsource/ibm-plex-sans-arabic/400.css";
 import "@fontsource/ibm-plex-sans-arabic/500.css";
 import "@fontsource/ibm-plex-sans-arabic/600.css";
 import "@fontsource/ibm-plex-sans-arabic/700.css";
+import OpenPaymentForm from "./container/pages/UserMangement/ModalsUserManagement/OpenPaymentForm/OpenPaymentForm";
+import { Loader } from "./components/elements";
+import { router } from "./routes/routes";
+import { RouterProvider } from "react-router-dom";
 
 const App = () => {
-  useEffect(() => {
-    logoutAllTabs();
-  }, []);
-  moment.tz.setDefault("America/New_York");
+  return (
+    <Suspense fallback={<Loader />}>
+      {/* Define your routes here */}
+      <RouterProvider router={router} />
+
+      {/* Calling a component or modal in which Iframe calling through their SourceLink  */}
+      <OpenPaymentForm />
+    </Suspense>
+  );
 };
 
 export default App;

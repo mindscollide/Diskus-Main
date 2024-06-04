@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./videoCallHeader.css";
 import { Button } from "./../../../../elements";
+import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
 import { Tooltip } from "antd";
 import ExpandIcon from "./../../talk-Video/video-images/Expand.svg";
 import MinimizeIcon from "./../../talk-Video/video-images/Minimize.svg";
@@ -48,7 +49,7 @@ const VideoCallNormalHeader = ({
   );
 
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
-  let organizationName = localStorage.getItem("OrganizatioName");
+  let organizationName = localStorage.getItem("organizatioName");
   let currentUserName = localStorage.getItem("name");
   let callerName = localStorage.getItem("callerName");
   let initiateVideoCallFlag = JSON.parse(
@@ -339,7 +340,7 @@ const VideoCallNormalHeader = ({
     // videoFeatureReducer.LeaveCallModalFlag,
   ]);
 
-  console.log("Video Feature Reducer", videoFeatureReducer)
+  console.log("Video Feature Reducer", videoFeatureReducer);
 
   return (
     <>
@@ -493,21 +494,23 @@ const VideoCallNormalHeader = ({
                 )}
               </div>
             ) : null}
-            <div className="screenShare-Toggle flipHorizontal">
-              <Tooltip placement="topRight" title={t("Screen-share")}>
-                <img
-                  className={
-                    videoFeatureReducer.LeaveCallModalFlag === true
-                      ? "grayScaleImage"
-                      : "cursor-pointer"
-                  }
-                  onClick={screenShareButton}
-                  src={NonActiveScreenShare}
-                  alt=""
-                />
-              </Tooltip>
-            </div>
-            {currentCallType === 1 ? (
+            {checkFeatureIDAvailability(5) ? (
+              <div className="screenShare-Toggle flipHorizontal">
+                <Tooltip placement="topRight" title={t("Screen-share")}>
+                  <img
+                    className={
+                      videoFeatureReducer.LeaveCallModalFlag === true
+                        ? "grayScaleImage"
+                        : "cursor-pointer"
+                    }
+                    onClick={screenShareButton}
+                    src={NonActiveScreenShare}
+                    alt=""
+                  />
+                </Tooltip>
+              </div>
+            ) : null}
+            {currentCallType === 1 && checkFeatureIDAvailability(3) ? (
               <div className="screenShare-Toggle flipHorizontal">
                 <Tooltip placement="topRight" title={t("Chat")}>
                   <img

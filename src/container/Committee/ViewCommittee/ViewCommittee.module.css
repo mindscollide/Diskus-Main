@@ -131,11 +131,11 @@ body[dir="rtl"] .members-ViewCommittee-group-page {
 .Close-ViewCommittee-btn {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  background: #6172d6 !important;
-  color: #fff !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
   font-weight: 600;
   border-radius: 4px !important;
-  border: none !important;
+  border: 1px solid #e1e1e1 !important;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -145,22 +145,44 @@ body[dir="rtl"] .Close-ViewCommittee-btn {
   font-weight: 600;
 }
 
-.Close-ViewCommittee-btn:hover,
-.Close-ViewCommittee-btn:active,
-.Close-ViewCommittee-btn:focus,
-.Close-ViewCommittee-btn:focus-visible {
+.Close-ViewCommittee-btn:is(:hover, :active, :focus, :focus-visible) {
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-weight: 600;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.Save-ViewCommittee-btn {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
   font-weight: 600;
   border-radius: 4px !important;
-  border: none !important;
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+.Save-ViewCommittee-btn:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 600;
+  border-radius: 4px !important;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .ant-upload-text {
   font-size: 12px !important;
   color: #5a5a5a !important;
@@ -220,7 +242,9 @@ body[dir="rtl"] .ant-upload-text {
   right: -4px !important;
 }
 .files_View {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  min-height: 43vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 20px;
+  max-height: 43vh;
 }

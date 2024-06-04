@@ -13,6 +13,7 @@ import {
   Modal,
   EmployeeCard,
   Notification,
+  AttachmentViewer,
 } from "./../../components/elements";
 
 import { Row, Col, Container } from "react-bootstrap";
@@ -1322,140 +1323,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                                     <p className=" agendaTitle">
                                       {data.ObjMeetingAgenda.Title}
                                     </p>
-
-                                    <div className="file-uploaded-section">
-                                      {data.MeetingAgendaAttachments.length > 0
-                                        ? data.MeetingAgendaAttachments.map(
-                                            (
-                                              MeetingAgendaAttachmentsData,
-                                              index
-                                            ) => {
-                                              var ext =
-                                                MeetingAgendaAttachmentsData.DisplayAttachmentName.split(
-                                                  "."
-                                                ).pop();
-                                              const first =
-                                                MeetingAgendaAttachmentsData.DisplayAttachmentName.split(
-                                                  " "
-                                                )[0];
-                                              return (
-                                                <Col
-                                                  sm={12}
-                                                  lg={3}
-                                                  md={3}
-                                                  className="meeting-view-file-icon"
-                                                  onClick={(e) =>
-                                                    downloadClick(
-                                                      e,
-                                                      MeetingAgendaAttachmentsData
-                                                    )
-                                                  }
-                                                >
-                                                  {ext === "doc" ? (
-                                                    <FileIcon
-                                                      extension={"docx"}
-                                                      size={78}
-                                                      type={"document"}
-                                                      labelColor={
-                                                        "rgba(44, 88, 152)"
-                                                      }
-                                                    />
-                                                  ) : ext === "docx" ? (
-                                                    <FileIcon
-                                                      extension={"docx"}
-                                                      size={78}
-                                                      type={"font"}
-                                                      labelColor={
-                                                        "rgba(44, 88, 152)"
-                                                      }
-                                                    />
-                                                  ) : ext === "xls" ? (
-                                                    <FileIcon
-                                                      extension={"xls"}
-                                                      type={"spreadsheet"}
-                                                      size={78}
-                                                      labelColor={
-                                                        "rgba(16, 121, 63)"
-                                                      }
-                                                    />
-                                                  ) : ext === "xlsx" ? (
-                                                    <FileIcon
-                                                      extension={"xls"}
-                                                      type={"spreadsheet"}
-                                                      size={78}
-                                                      labelColor={
-                                                        "rgba(16, 121, 63)"
-                                                      }
-                                                    />
-                                                  ) : ext === "pdf" ? (
-                                                    <FileIcon
-                                                      extension={"pdf"}
-                                                      size={78}
-                                                      {...defaultStyles.pdf}
-                                                    />
-                                                  ) : ext === "png" ? (
-                                                    <FileIcon
-                                                      extension={"png"}
-                                                      size={78}
-                                                      type={"image"}
-                                                      labelColor={
-                                                        "rgba(102, 102, 224)"
-                                                      }
-                                                    />
-                                                  ) : ext === "txt" ? (
-                                                    <FileIcon
-                                                      extension={"txt"}
-                                                      size={78}
-                                                      type={"document"}
-                                                      labelColor={
-                                                        "rgba(52, 120, 199)"
-                                                      }
-                                                    />
-                                                  ) : ext === "jpg" ? (
-                                                    <FileIcon
-                                                      extension={"jpg"}
-                                                      size={78}
-                                                      type={"image"}
-                                                      labelColor={
-                                                        "rgba(102, 102, 224)"
-                                                      }
-                                                    />
-                                                  ) : ext === "jpeg" ? (
-                                                    <FileIcon
-                                                      extension={"jpeg"}
-                                                      size={78}
-                                                      type={"image"}
-                                                      labelColor={
-                                                        "rgba(102, 102, 224)"
-                                                      }
-                                                    />
-                                                  ) : ext === "gif" ? (
-                                                    <FileIcon
-                                                      extension={"gif"}
-                                                      size={78}
-                                                      {...defaultStyles.gif}
-                                                    />
-                                                  ) : (
-                                                    <FileIcon
-                                                      extension={ext}
-                                                      size={78}
-                                                      {...defaultStyles.ext}
-                                                    />
-                                                  )}
-                                                  <p
-                                                    className="fileUploadLabel"
-                                                    title={
-                                                      MeetingAgendaAttachmentsData.DisplayAttachmentName
-                                                    }
-                                                  >
-                                                    {first}
-                                                  </p>
-                                                </Col>
-                                              );
-                                            }
-                                          )
-                                        : null}
-                                    </div>
                                   </Col>
                                   {data.ObjMeetingAgenda.PresenterName !==
                                     "" && (
@@ -1475,12 +1342,38 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                                         type="text"
                                         label={t("Presented-by")}
                                       />
-                                      <p className="url">
+                                      <p className="url m-0 p-0">
                                         {data.ObjMeetingAgenda.URLs}
                                       </p>
                                     </Col>
                                   )}
                                 </Row>
+                                <div className="meetingView_documents">
+                                  <Row>
+                                    {data.MeetingAgendaAttachments.length > 0
+                                      ? data.MeetingAgendaAttachments.map(
+                                          (
+                                            MeetingAgendaAttachmentsData,
+                                            index
+                                          ) => {
+                                            return (
+                                              <Col sm={4} md={4} lg={4}>
+                                                <AttachmentViewer
+                                                  id={0}
+                                                  data={
+                                                    MeetingAgendaAttachmentsData
+                                                  }
+                                                  name={
+                                                    MeetingAgendaAttachmentsData.DisplayAttachmentName
+                                                  }
+                                                />
+                                              </Col>
+                                            );
+                                          }
+                                        )
+                                      : null}
+                                  </Row>
+                                </div>
                               </>
                             </div>
                           );
@@ -1625,31 +1518,15 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
               ) : isAttachments ? (
                 <>
                   <Row className="data-room-file-upload-section mt-4">
-                    {/* <div className="data-room-file-upload-section"> */}
-                    {/* <Col lg={12} md={12} sm={12}> */}
                     {attachmentsList.length > 0
                       ? attachmentsList.map((data, index) => {
-                          var ext = data.DisplayAttachmentName.split(".").pop();
-                          const first =
-                            data.DisplayAttachmentName.split(" ")[0];
                           return (
-                            <Col
-                              sm={6}
-                              lg={3}
-                              md={3}
-                              className="meeting-view-dataroom-attachment"
-                              onClick={(e) => downloadClick(e, data)}
-                            >
-                              <FileIcon
-                                extension={ext}
-                                {...defaultStyles.ext}
+                            <Col sm={4} lg={4} md={4}>
+                              <AttachmentViewer
+                                id={0}
+                                data={data}
+                                name={data.DisplayAttachmentName}
                               />
-                              <p
-                                className="fileUploadLabel"
-                                title={data.DisplayAttachmentName}
-                              >
-                                {first}
-                              </p>
                             </Col>
                           );
                         })

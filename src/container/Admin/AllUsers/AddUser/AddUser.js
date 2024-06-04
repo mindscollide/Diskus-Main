@@ -51,7 +51,6 @@ import {
 } from "../../../../store/actions/Admin_AddUser";
 import { GetOrganizationByID } from "../../../../store/actions/RolesList";
 import { cleareMessage } from "../../../../store/actions/Admin_AddUser";
-import { getPackageExpiryDetail } from "../../../../store/actions/GetPackageExpirtyDetails";
 import { checkEmailExsist } from "../../../../store/actions/Admin_Organization";
 
 const AddUser = ({ show, setShow, ModalTitle }) => {
@@ -256,7 +255,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         setAddUserSection({
           ...addUserSection,
           Email: {
-            value: value.trimStart(),
+            value: value.trim(),
             errorMessage: "",
             errorStatus: false,
           },
@@ -595,7 +594,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     if (
       adminReducer.UpdateOrganizationMessageResponseMessage !== "" &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
-        t("Record-found") &&
+        "" &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
         t(
           "User-created-successfully-and-the-otp-has-been-generated-please-verify-you-email"
@@ -624,7 +623,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     } else if (
       adminReducer.AllOrganizationResponseMessage !== "" &&
       adminReducer.AllOrganizationResponseMessage !== t("Data-available") &&
-      adminReducer.AllOrganizationResponseMessage !== t("Record-found") &&
+      adminReducer.AllOrganizationResponseMessage !== "" &&
       adminReducer.AllOrganizationResponseMessage !==
         t(
           "User-created-successfully-and-the-otp-has-been-generated-please-verify-you-email"
@@ -655,7 +654,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       adminReducer.DeleteOrganizationMessageResponseMessage !== "" &&
       adminReducer.DeleteOrganizationMessageResponseMessage !== null &&
       adminReducer.DeleteOrganizationMessageResponseMessage !==
-        t("Record-found") &&
+        "" &&
       adminReducer.DeleteOrganizationMessageResponseMessage !==
         t(
           "User-created-successfully-and-the-otp-has-been-generated-please-verify-you-email"
@@ -684,7 +683,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       dispatch(cleareMessage());
     } else if (
       adminReducer.ResponseMessage !== "" &&
-      adminReducer.ResponseMessage !== t("Record-found") &&
+      adminReducer.ResponseMessage !== "" &&
       adminReducer.ResponseMessage !== t("Data-available") &&
       adminReducer.ResponseMessage !==
         t(
@@ -1046,7 +1045,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   }, [dataa]);
 
   useEffect(() => {
-    let OrganizationName = localStorage.getItem("OrganizatioName");
+    let OrganizationName = localStorage.getItem("organizatioName");
     if (
       OrganizationName !== "" &&
       OrganizationName !== null &&

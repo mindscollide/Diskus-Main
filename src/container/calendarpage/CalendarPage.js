@@ -42,6 +42,7 @@ import { HideNotificationMeetings } from "../../store/actions/GetMeetingUserId";
 import { clearResponce } from "../../store/actions/ToDoList_action";
 import { useNavigate } from "react-router-dom";
 import MeetingViewModalCalendar from "../modalView/ModalView";
+import { checkFeatureIDAvailability } from "../../commen/functions/utils";
 
 const CalendarPage = () => {
   //For Localization
@@ -137,9 +138,9 @@ const CalendarPage = () => {
 
       setStartDataUpdate(newDateFormaterAsPerUTC(startDate));
       setEndDataUpdate(newDateFormaterAsPerUTC(endDate));
+      await dispatch(getCalendarDataResponse(navigate, t, calendarData));
 
       await dispatch(getEventsTypes(navigate, t));
-      await dispatch(getCalendarDataResponse(navigate, t, calendarData, true));
     } catch (error) {
       console.error("An error occurred:", error);
     }
@@ -592,7 +593,7 @@ const CalendarPage = () => {
       adminReducer.UpdateOrganizationMessageResponseMessage != "" &&
       adminReducer.UpdateOrganizationMessageResponseMessage !=
         t("No-records-found") &&
-      adminReducer.UpdateOrganizationMessageResponseMessage != t("Record-found")
+      adminReducer.UpdateOrganizationMessageResponseMessage != ""
     ) {
       setOpenNotification({
         ...openNotification,
@@ -611,7 +612,7 @@ const CalendarPage = () => {
       adminReducer.DeleteOrganizationMessageResponseMessage != "" &&
       adminReducer.DeleteOrganizationMessageResponseMessage !=
         t("No-records-found") &&
-      adminReducer.DeleteOrganizationMessageResponseMessage != t("Record-found")
+      adminReducer.DeleteOrganizationMessageResponseMessage != ""
     ) {
       setOpenNotification({
         ...openNotification,
@@ -630,7 +631,7 @@ const CalendarPage = () => {
     } else if (
       adminReducer.AllOrganizationResponseMessage != "" &&
       adminReducer.AllOrganizationResponseMessage != t("No-records-found") &&
-      adminReducer.AllOrganizationResponseMessage != t("Record-found")
+      adminReducer.AllOrganizationResponseMessage != ""
     ) {
       setOpenNotification({
         ...openNotification,
@@ -649,7 +650,7 @@ const CalendarPage = () => {
     } else if (
       adminReducer.ResponseMessage != "" &&
       adminReducer.ResponseMessage != t("No-records-found") &&
-      adminReducer.ResponseMessage != t("Record-found")
+      adminReducer.ResponseMessage != ""
     ) {
       setOpenNotification({
         ...openNotification,
@@ -678,7 +679,7 @@ const CalendarPage = () => {
   useEffect(() => {
     if (
       meetingIdReducer.ResponseMessage != "" &&
-      meetingIdReducer.ResponseMessage != t("Record-found") &&
+      meetingIdReducer.ResponseMessage != "" &&
       meetingIdReducer.ResponseMessage != t("No-records-found")
     ) {
       setOpenNotification({
@@ -697,7 +698,7 @@ const CalendarPage = () => {
       dispatch(HideNotificationMeetings());
     } else if (
       assignees.ResponseMessage != "" &&
-      assignees.ResponseMessage != t("Record-found") &&
+      assignees.ResponseMessage != "" &&
       assignees.ResponseMessage != t("No-records-found")
     ) {
       setOpenNotification({
@@ -724,7 +725,7 @@ const CalendarPage = () => {
     if (
       toDoListReducer.ResponseMessage != "" &&
       toDoListReducer.ResponseMessage != undefined &&
-      toDoListReducer.ResponseMessage != t("Record-found") &&
+      toDoListReducer.ResponseMessage != "" &&
       toDoListReducer.ResponseMessage != t("No-records-found")
     ) {
       setOpenNotification({
@@ -743,7 +744,7 @@ const CalendarPage = () => {
       dispatch(clearResponce());
     } else if (
       assignees.ResponseMessage != "" &&
-      assignees.ResponseMessage != t("Record-found") &&
+      assignees.ResponseMessage != "" &&
       assignees.ResponseMessage != t("No-records-found")
     ) {
       setOpenNotification({
@@ -770,7 +771,7 @@ const CalendarPage = () => {
     if (
       getTodosStatus.ResponseMessage != "" &&
       getTodosStatus.ResponseMessage != undefined &&
-      getTodosStatus.ResponseMessage != t("Record-found") &&
+      getTodosStatus.ResponseMessage != "" &&
       getTodosStatus.ResponseMessage != t("No-records-found")
     ) {
       setOpenNotification({
@@ -790,7 +791,7 @@ const CalendarPage = () => {
     } else if (
       getTodosStatus.UpdateTodoStatusMessage != "" &&
       getTodosStatus.UpdateTodoStatusMessage != undefined &&
-      getTodosStatus.UpdateTodoStatusMessage != t("Record-found") &&
+      getTodosStatus.UpdateTodoStatusMessage != "" &&
       getTodosStatus.UpdateTodoStatusMessage != t("No-records-found")
     ) {
       setOpenNotification({
@@ -810,7 +811,7 @@ const CalendarPage = () => {
     } else if (
       getTodosStatus.UpdateTodoStatus != "" &&
       getTodosStatus.UpdateTodoStatus != undefined &&
-      getTodosStatus.UpdateTodoStatus != t("Record-found") &&
+      getTodosStatus.UpdateTodoStatus != "" &&
       getTodosStatus.UpdateTodoStatus != t("No-records-found")
     ) {
       setOpenNotification({
@@ -888,18 +889,26 @@ const CalendarPage = () => {
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu>
-                    <Dropdown.Item
-                      className="dropdown-item"
-                      onClick={handleCreateMeeting}
-                    >
-                      {t("Schedule-a-meeting")}
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      className="dropdown-item"
-                      onClick={handleCreateTodo}
-                    >
-                      {t("Create-a-to-do-list")}
-                    </Dropdown.Item>
+                    {checkFeatureIDAvailability(1) ? (
+                      <>
+                        <Dropdown.Item
+                          className="dropdown-item"
+                          onClick={handleCreateMeeting}
+                        >
+                          {t("Schedule-a-meeting")}
+                        </Dropdown.Item>
+                      </>
+                    ) : null}
+                    {checkFeatureIDAvailability(14) ? (
+                      <>
+                        <Dropdown.Item
+                          className="dropdown-item"
+                          onClick={handleCreateTodo}
+                        >
+                          {t("Create-a-to-do-list")}
+                        </Dropdown.Item>
+                      </>
+                    ) : null}
                   </Dropdown.Menu>
                 </Dropdown>
               </Col>

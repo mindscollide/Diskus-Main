@@ -75,7 +75,7 @@ const getTodoStatus = (navigate, t) => {
               await dispatch(
                 getTodoStatusSuccess(
                   response.data.responseResult.taskStatuses,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (

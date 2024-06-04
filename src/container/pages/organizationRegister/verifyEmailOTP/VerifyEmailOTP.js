@@ -110,7 +110,7 @@ const VerifyEmailOTP = () => {
   const sendRequestResend = () => {
     // setMinutes(4);
     // setSeconds(60);
-    let nEmail = localStorage.getItem("UserEmail");
+    let nEmail = localStorage.getItem("userEmail");
     let data = {
       Email: nEmail,
     };

@@ -26,6 +26,7 @@ import {
   EmployeeCard,
   Notification,
   InputSearchFilter,
+  AttachmentViewer,
 } from "./../../components/elements";
 import { useTranslation } from "react-i18next";
 import { Row, Col, Container } from "react-bootstrap";
@@ -34,6 +35,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   ScheduleNewMeeting,
   GetAllReminders,
+  allAssignessList,
 } from "../../store/actions/Get_List_Of_Assignees";
 import ErrorBar from "./../../container/authentication/sign_up/errorbar/ErrorBar";
 import {
@@ -1123,11 +1125,15 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       dispatch(ResetAllFilesUpload());
     };
   }, []);
+  const callApi = async () => {
+    await dispatch(allAssignessList(navigate, t));
+    dispatch(GetAllReminders(navigate, t));
+  };
   // for list of all assignees
   useEffect(() => {
     try {
       if (show) {
-        dispatch(GetAllReminders(navigate, t));
+        callApi();
       } else {
         setModalField(false);
         setShow(false);
@@ -2190,89 +2196,16 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                               data.DisplayAttachmentName !== undefined &&
                               data.DisplayAttachmentName.split(" ")[0];
                             return (
-                              <Col
-                                sm={12}
-                                lg={3}
-                                md={3}
-                                className="file-icon-modalmeeting"
-                              >
-                                {ext === "doc" ? (
-                                  <FileIcon
-                                    extension={"docx"}
-                                    size={78}
-                                    labelColor={"rgba(16, 121, 63)"}
-                                  />
-                                ) : ext === "xlsx" ? (
-                                  <FileIcon
-                                    extension={"xls"}
-                                    type={"spreadsheet"}
-                                    size={78}
-                                    labelColor={"rgba(16, 121, 63)"}
-                                  />
-                                ) : ext === "pdf" ? (
-                                  <FileIcon
-                                    extension={"pdf"}
-                                    size={78}
-                                    {...defaultStyles.pdf}
-                                  />
-                                ) : ext === "png" ? (
-                                  <FileIcon
-                                    extension={"png"}
-                                    size={78}
-                                    type={"image"}
-                                    labelColor={"rgba(102, 102, 224)"}
-                                  />
-                                ) : ext === "txt" ? (
-                                  <FileIcon
-                                    extension={"txt"}
-                                    size={78}
-                                    type={"document"}
-                                    labelColor={"rgba(52, 120, 199)"}
-                                  />
-                                ) : ext === "jpg" ? (
-                                  <FileIcon
-                                    extension={"jpg"}
-                                    size={78}
-                                    type={"image"}
-                                    labelColor={"rgba(102, 102, 224)"}
-                                  />
-                                ) : ext === "jpeg" ? (
-                                  <FileIcon
-                                    extension={"jpeg"}
-                                    size={78}
-                                    type={"image"}
-                                    labelColor={"rgba(102, 102, 224)"}
-                                  />
-                                ) : ext === "gif" ? (
-                                  <FileIcon
-                                    extension={"gif"}
-                                    size={78}
-                                    {...defaultStyles.gif}
-                                  />
-                                ) : (
-                                  <FileIcon
-                                    extension={ext}
-                                    size={78}
-                                    {...defaultStyles.ext}
-                                  />
-                                )}
-                                <span className="deleteBtn">
-                                  <img
-                                    src={deleteButtonCreateMeeting}
-                                    width={15}
-                                    height={15}
-                                    alt=""
-                                    onClick={() =>
-                                      deleteFilefromAttachments(data, index)
-                                    }
-                                  />
-                                </span>
-                                <p
-                                  className="file-icon-modalmeeting-p"
-                                  title={data.DisplayAttachmentName}
-                                >
-                                  {first}
-                                </p>
+                              <Col sm={4} md={4} lg={4}>
+                                <AttachmentViewer
+                                  data={data}
+                                  handleClickRemove={() =>
+                                    deleteFilefromAttachments(data, index)
+                                  }
+                                  fk_UID={Number(createrID)}
+                                  id={0}
+                                  name={data.DisplayAttachmentName}
+                                />
                               </Col>
                             );
                           })
@@ -2366,109 +2299,16 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                                                   " "
                                                 )[0];
                                               return (
-                                                <Col
-                                                  sm={12}
-                                                  lg={3}
-                                                  md={3}
-                                                  className="file-icon-modalmeeting"
-                                                >
-                                                  {ext === "doc" ? (
-                                                    <FileIcon
-                                                      extension={"docx"}
-                                                      size={78}
-                                                      type={"document"}
-                                                      labelColor={
-                                                        "rgba(44, 88, 152)"
-                                                      }
-                                                    />
-                                                  ) : ext === "docx" ? (
-                                                    <FileIcon
-                                                      extension={"docx"}
-                                                      size={78}
-                                                      type={"font"}
-                                                      labelColor={
-                                                        "rgba(44, 88, 152)"
-                                                      }
-                                                    />
-                                                  ) : ext === "xls" ? (
-                                                    <FileIcon
-                                                      extension={"xls"}
-                                                      type={"spreadsheet"}
-                                                      size={78}
-                                                      labelColor={
-                                                        "rgba(16, 121, 63)"
-                                                      }
-                                                    />
-                                                  ) : ext === "xlsx" ? (
-                                                    <FileIcon
-                                                      extension={"xls"}
-                                                      type={"spreadsheet"}
-                                                      size={78}
-                                                      labelColor={
-                                                        "rgba(16, 121, 63)"
-                                                      }
-                                                    />
-                                                  ) : ext === "pdf" ? (
-                                                    <FileIcon
-                                                      extension={"pdf"}
-                                                      size={78}
-                                                      {...defaultStyles.pdf}
-                                                    />
-                                                  ) : ext === "png" ? (
-                                                    <FileIcon
-                                                      extension={"png"}
-                                                      size={78}
-                                                      type={"image"}
-                                                      labelColor={
-                                                        "rgba(102, 102, 224)"
-                                                      }
-                                                    />
-                                                  ) : ext === "txt" ? (
-                                                    <FileIcon
-                                                      extension={"txt"}
-                                                      size={78}
-                                                      type={"document"}
-                                                      labelColor={
-                                                        "rgba(52, 120, 199)"
-                                                      }
-                                                    />
-                                                  ) : ext === "jpg" ? (
-                                                    <FileIcon
-                                                      extension={"jpg"}
-                                                      size={78}
-                                                      type={"image"}
-                                                      labelColor={
-                                                        "rgba(102, 102, 224)"
-                                                      }
-                                                    />
-                                                  ) : ext === "jpeg" ? (
-                                                    <FileIcon
-                                                      extension={"jpeg"}
-                                                      size={78}
-                                                      type={"image"}
-                                                      labelColor={
-                                                        "rgba(102, 102, 224)"
-                                                      }
-                                                    />
-                                                  ) : ext === "gif" ? (
-                                                    <FileIcon
-                                                      extension={"gif"}
-                                                      size={78}
-                                                      {...defaultStyles.gif}
-                                                    />
-                                                  ) : (
-                                                    <FileIcon
-                                                      extension={ext}
-                                                      size={78}
-                                                      {...defaultStyles.ext}
-                                                    />
-                                                  )}
-                                                  <p
-                                                    className="file-icon-modalmeeting-p"
-                                                    title={first}
-                                                  >
-                                                    {first}
-                                                  </p>
+                                                <Col sm={4} lg={4} md={4}>
+                                                  <AttachmentViewer
+                                                    data={
+                                                      MeetingAgendaAttachmentsData
+                                                    }
+                                                    id={0}
+                                                    name={
+                                                      MeetingAgendaAttachmentsData.DisplayAttachmentName
+                                                    }
+                                                  />
                                                 </Col>
                                               );
                                             }

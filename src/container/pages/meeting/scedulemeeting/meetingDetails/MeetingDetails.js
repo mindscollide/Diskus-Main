@@ -148,8 +148,8 @@ const MeetingDetails = ({
     Description: "",
     Link: "",
     ReminderFrequency: {
-      value: 4,
-      label: t("1-hour-before"),
+      value: 0,
+      label: "",
     },
     ReminderFrequencyTwo: {
       value: 0,
@@ -411,21 +411,13 @@ const MeetingDetails = ({
       let newDate = new Date(date);
       let DateDate = new DateObject(date).format("YYYYMMDD");
       const updatedRows = [...rows];
-      if (
-        index > 0 &&
-        Number(DateDate) < Number(updatedRows[index - 1].selectedOption)
-      ) {
-        setOpen({
-          flag: true,
-          message: t("Selected-date-should-not-be-less-than-the-previous-one"),
-        });
-        return;
-      } else {
-        updatedRows[index].selectedOption = DateDate;
-        updatedRows[index].dateForView = newDate;
-        setRows(updatedRows);
-      }
-    } catch {}
+
+      updatedRows[index].selectedOption = DateDate;
+      updatedRows[index].dateForView = newDate;
+      setRows(updatedRows);
+    } catch (error) {
+      console.log(error, "errorerrorerror");
+    }
   };
 
   const addRow = () => {
@@ -588,6 +580,8 @@ const MeetingDetails = ({
       }
     });
 
+    console.log(newArr, "newArrnewArrnewArrnewArr");
+
     if (
       meetingDetails.MeetingTitle !== "" &&
       meetingDetails.MeetingType !== 0 &&
@@ -626,7 +620,7 @@ const MeetingDetails = ({
             publishedFlag !== null && publishedFlag === true ? 1 : 11,
         },
       };
-
+      console.log(data, "newArrnewArrnewArrnewArr");
       dispatch(
         SaveMeetingDetialsNewApiFunction(
           navigate,
@@ -909,7 +903,16 @@ const MeetingDetails = ({
         getAllReminderFrequency.meetingReminders !== undefined
       ) {
         let Newdata = [];
-        getAllReminderFrequency.meetingReminders.map((data, index) => {
+        getAllReminderFrequency.meetingReminders.forEach((data, index) => {
+          if (Number(data.pK_MRID) === 2) {
+            setMeetingDetails({
+              ...meetingDetails,
+              ReminderFrequency: {
+                label: data.description,
+                value: data.pK_MRID,
+              },
+            });
+          }
           Newdata.push({
             value: data.pK_MRID,
             label: data.description,
@@ -958,7 +961,7 @@ const MeetingDetails = ({
   useEffect(() => {
     if (
       ResponseMessage !== "" &&
-      ResponseMessage !== t("Record-found") &&
+      ResponseMessage !== "" &&
       ResponseMessage !== t("No-record-found") &&
       ResponseMessage !== t("No-records-found") &&
       ResponseMessage !== undefined &&
@@ -1119,73 +1122,6 @@ const MeetingDetails = ({
 
     return true; // If no differences were found, the arrays are considered equal
   }
-
-  const handleUpdateNext = () => {
-    //Function For Next Checks ValidationS
-    try {
-      let MeetingData = getAllMeetingDetails.advanceMeetingDetails;
-
-      let newArr = [];
-      rows.forEach((data, index) => {
-        newArr.push({
-          MeetingDate: data.selectedOption,
-          StartTime: data.startDate,
-          EndTime: data.endDate,
-        });
-      });
-
-      // Sorting the newArr array
-      newArr.sort((a, b) => {
-        if (a.MeetingDate !== b.MeetingDate) {
-          return a.MeetingDate.localeCompare(b.MeetingDate);
-        } else if (a.StartTime !== b.StartTime) {
-          return a.StartTime.localeCompare(b.StartTime);
-        } else {
-          return a.EndTime.localeCompare(b.EndTime);
-        }
-      });
-
-      let newReminderData = [];
-      if (meetingDetails.ReminderFrequency.value !== 0) {
-        newReminderData.push(meetingDetails.ReminderFrequency.value);
-      }
-      if (meetingDetails.ReminderFrequencyTwo.value !== 0) {
-        newReminderData.push(meetingDetails.ReminderFrequencyTwo.value);
-      }
-      if (meetingDetails.ReminderFrequencyThree.value !== 0) {
-        newReminderData.push(meetingDetails.ReminderFrequencyThree.value);
-      }
-      if (
-        MeetingData.meetingTitle === meetingDetails.MeetingTitle &&
-        MeetingData.meetingType.pK_MTID ===
-          meetingDetails.MeetingType.PK_MTID &&
-        MeetingData.location === meetingDetails.Location &&
-        MeetingData.description === meetingDetails.Description &&
-        MeetingData.isTalkGroup === meetingDetails.groupChat &&
-        MeetingData.videoCallURl === meetingDetails.Link &&
-        compareMeetings(MeetingData.meetingDates, newArr) &&
-        comparePKMRID(MeetingData.meetingReminders, newReminderData) &&
-        MeetingData.notes === meetingDetails.Notes &&
-        MeetingData.allowRSVP === meetingDetails.AllowRSPV &&
-        MeetingData.notifyAdminOnRSVP ===
-          meetingDetails.NotifyMeetingOrganizer &&
-        MeetingData.meetingRecurrance.recurranceID ===
-          meetingDetails.RecurringOptions.value &&
-        MeetingData.meetingRecurrance.recurranceID ===
-          meetingDetails.RecurringOptions.value &&
-        MeetingData.isVideo === meetingDetails.IsVideoCall
-      ) {
-        setmeetingDetails(false);
-        setorganizers(true);
-      } else {
-        dispatch(ShowNextConfirmationModal(true));
-      }
-    } catch (error) {}
-
-    // dispatch(ShowNextConfirmationModal(true));
-    // setmeetingDetails(false);
-    // setorganizers(true);
-  };
 
   useEffect(() => {
     dispatch(getAgendaAndVotingInfo_success([], ""));
@@ -1694,18 +1630,7 @@ const MeetingDetails = ({
                       value: meetingDetails.ReminderFrequency.value,
                       label: meetingDetails.ReminderFrequency.label,
                     }}
-                    isDisabled={
-                      (Number(editorRole?.status) === 9 ||
-                        Number(editorRole?.status) === 8 ||
-                        Number(editorRole?.status) === 10) &&
-                      editorRole?.role === "Organizer" &&
-                      isEditMeeting === true
-                        ? true
-                        : editorRole?.role === "Agenda Contributor" &&
-                          isEditMeeting === true
-                        ? true
-                        : false
-                    }
+                    isDisabled={true}
                     isSearchable={false}
                   />
                 </Col>

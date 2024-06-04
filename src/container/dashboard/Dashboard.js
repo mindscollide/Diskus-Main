@@ -3,7 +3,13 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Sidebar, Talk } from "../../components/layout";
 import CancelButtonModal from "../pages/meeting/closeMeetingTab/CancelModal";
-import { Loader, LoaderPanel, Notification } from "../../components/elements";
+import {
+  Button,
+  Loader,
+  LoaderPanel,
+  Modal,
+  Notification,
+} from "../../components/elements";
 import Header2 from "../../components/layout/header2/Header2";
 import { ConfigProvider, Layout } from "antd";
 import ar_EG from "antd/es/locale/ar_EG";
@@ -62,6 +68,8 @@ import {
 } from "../../store/actions/VideoMain_actions";
 import Helper from "../../commen/functions/history_logout";
 import IconMetroAttachment from "../../assets/images/newElements/Icon metro-attachment.svg";
+import VerificationFailedIcon from "../../assets/images/failed.png";
+
 // import io from "socket.io-client";
 import {
   createTaskCommitteeMQTT,
@@ -79,6 +87,8 @@ import {
   meetingAgendaContributorRemoved,
   meetingOrganizerAdded,
   meetingOrganizerRemoved,
+  meetingParticipantRemoved,
+  meetingParticipantAdded,
 } from "../../store/actions/NewMeetingActions";
 import {
   meetingAgendaStartedMQTT,
@@ -107,6 +117,7 @@ import {
   createPollCommitteesMQTT,
   createPollGroupsMQTT,
   createPollMeetingMQTT,
+  deletePollsMQTT,
   notifyPollingSocket,
 } from "../../store/actions/Polls_actions";
 import {
@@ -128,9 +139,18 @@ import {
   updateMicrosftEventMQTT,
 } from "../../store/actions/GetDataForCalendar";
 import { userLogOutApiFunc } from "../../store/actions/Auth_Sign_Out";
+import {
+  checkFeatureIDAvailability,
+  getLocalStorageItemNonActiveCheck,
+} from "../../commen/functions/utils";
+import { Col, Row } from "react-bootstrap";
+import InternetConnectivityModal from "../pages/UserMangement/ModalsUserManagement/InternetConnectivityModal/InternetConnectivityModal";
+import { InsternetDisconnectModal } from "../../store/actions/UserMangementModalActions";
 
 const Dashboard = () => {
   const location = useLocation();
+  const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
+
   const {
     talkStateData,
     videoFeatureReducer,
@@ -171,10 +191,19 @@ const Dashboard = () => {
     DataRoomReducer,
     DataRoomFileAndFoldersDetailsReducer,
     SignatureWorkFlowReducer,
+    UserMangementReducer,
+    UserManagementModals,
   } = useSelector((state) => state);
+
+  console.log(
+    UserManagementModals,
+    "UserManagementModalsUserManagementModalsUserManagementModalsz"
+  );
+
   // const [socket, setSocket] = useState(Helper.socket);
 
   const navigate = useNavigate();
+  const [checkInternet, setCheckInternet] = useState(navigator);
   let createrID = localStorage.getItem("userID");
   let currentOrganization = localStorage.getItem("organizationID");
   let currentUserName = localStorage.getItem("name");
@@ -214,14 +243,29 @@ const Dashboard = () => {
       message: "",
     });
   };
-  // if (!navigator.onLine) {
-  //   setOpen({
-  //     ...open,
-  //     flag: true,
-  //     message: "No internet connection. Please check your connection.",
-  //   });
-  //   alert("No internet connection. Please check your connection.");
-  // }
+
+  const closeModal = () => {
+    localStorage.removeItem("packageFeatureIDs");
+    localStorage.removeItem("LocalUserRoutes");
+    localStorage.removeItem("VERIFICATION");
+
+    dispatch(userLogOutApiFunc(navigate, t));
+  };
+
+  const isInternetDisconnectModalVisible = useSelector(
+    (state) => state.UserManagementModals.internetDisconnectModal
+  );
+  console.log(checkInternet.onLine, "checkInternet");
+  useEffect(() => {
+    console.log(checkInternet.onLine, "checkInternet");
+
+    if (checkInternet.onLine) {
+      dispatch(InsternetDisconnectModal(false));
+    } else {
+      dispatch(InsternetDisconnectModal(true));
+    }
+  }, [checkInternet.onLine]);
+
   const onMessageArrived = (msg) => {
     var min = 10000;
     var max = 90000;
@@ -233,125 +277,9 @@ const Dashboard = () => {
     );
     try {
       if (data.action?.toLowerCase() === "Meeting".toLowerCase()) {
-        if (data.action && data.payload && data.message !== null) {
-          if (
-            data.message?.toLowerCase() ===
-            "NEW_MEETING_AGENDA_CONTRIBUTOR_ADDED".toLowerCase()
-          ) {
-            // if (data.viewable) {
-            //   setNotification({
-            //     ...notification,
-            //     notificationShow: true,
-            //     message: changeMQTTJSONOne(
-            //       t("NEW_MEETING_CREATION"),
-            //       "[Place holder]",
-            //       data.payload.meetingTitle.substring(0, 100)
-            //     ),
-            //   });
-            // }
+        // if (data.action && data.payload ) {
 
-            dispatch(meetingAgendaContributorAdded(data.payload));
-            setNotificationID(id);
-          } else if (
-            data.message
-              ?.toLowerCase()
-              .includes("NEW_MEETING_AGENDA_CONTRIBUTOR_DELETED".toLowerCase())
-          ) {
-            if (data.viewable) {
-              setNotification({
-                ...notification,
-                notificationShow: true,
-                message: changeMQTTJSONOne(
-                  t("NEW_MEETING_CREATION"),
-                  "[Place holder]",
-                  data.payload.meetingTitle.substring(0, 100)
-                ),
-              });
-            }
-
-            dispatch(meetingAgendaContributorRemoved(data.payload));
-            setNotificationID(id);
-          } else if (
-            data.message
-              ?.toLowerCase()
-              .includes("NEW_MEETING_ORGANIZER_ADDED".toLowerCase())
-          ) {
-            if (data.viewable) {
-              setNotification({
-                ...notification,
-                notificationShow: true,
-                message: changeMQTTJSONOne(
-                  t("NEW_MEETING_CREATION"),
-                  "[Place holder]",
-                  data.payload.meetingTitle.substring(0, 100)
-                ),
-              });
-            }
-            dispatch(meetingOrganizerAdded(data.payload));
-            setNotificationID(id);
-          } else if (
-            data.message
-              ?.toLowerCase()
-              .includes("MEETING_ORGANIZER_DELETED".toLowerCase())
-          ) {
-            if (data.viewable) {
-              setNotification({
-                ...notification,
-                notificationShow: true,
-                message: changeMQTTJSONOne(
-                  t("NEW_MEETING_CREATION"),
-                  "[Place holder]",
-                  data.payload.meetingTitle.substring(0, 100)
-                ),
-              });
-            }
-            dispatch(meetingOrganizerRemoved(data.payload));
-            setNotificationID(id);
-          } else if (
-            data.message?.toLowerCase() ===
-            "MeetingNotConductedNotification".toLowerCase()
-          ) {
-            try {
-              console.log(
-                "MeetingNotConductedNotificationMeetingNotConductedNotification"
-              );
-              dispatch(meetingNotConductedMQTT(data.payload));
-              console.log(
-                "MeetingNotConductedNotificationMeetingNotConductedNotification"
-              );
-              if (data.viewable) {
-                setNotification({
-                  ...notification,
-                  notificationShow: true,
-                  message: changeMQTTJSONOne(
-                    t("MEETING_STATUS_EDITED_NOTCONDUCTED"),
-                    "[Meeting Title]",
-                    data.payload.meetingTitle.substring(0, 100)
-                  ),
-                });
-              }
-            } catch (error) {}
-          } else if (
-            data.message?.toLowerCase() ===
-            "MeetingReminderNotification".toLowerCase()
-          ) {
-            dispatch(meetingNotConductedMQTT(data.payload));
-
-            if (data.viewable) {
-              setNotification({
-                ...notification,
-                notificationShow: true,
-                message: changeMQTTJSONOne(
-                  t("MeetingReminderNotification"),
-                  "[Meeting Title]",
-                  data.payload.meetingTitle.substring(0, 100)
-                ),
-              });
-            }
-            setNotificationID(id);
-          }
-        }
-        if (data.action && data.payload && data.payload.message) {
+        if (data.action && data.payload) {
           if (
             data?.payload?.message.toLowerCase() ===
             "NEW_MEETING_CREATION".toLowerCase()
@@ -576,6 +504,162 @@ const Dashboard = () => {
                 ),
               });
             }
+          } else if (
+            data.payload.message?.toLowerCase() ===
+            "NEW_MEETING_AGENDA_CONTRIBUTOR_ADDED".toLowerCase()
+          ) {
+            // if (data.viewable) {
+            //   setNotification({
+            //     ...notification,
+            //     notificationShow: true,
+            //     message: changeMQTTJSONOne(
+            //       t("NEW_MEETING_CREATION"),
+            //       "[Place holder]",
+            //       data.payload.meetingTitle.substring(0, 100)
+            //     ),
+            //   });
+            // }
+
+            dispatch(meetingAgendaContributorAdded(data.payload));
+            setNotificationID(id);
+          } else if (
+            data.payload.message
+              ?.toLowerCase()
+              .includes("NEW_MEETING_AGENDA_CONTRIBUTOR_DELETED".toLowerCase())
+          ) {
+            if (data.viewable) {
+              setNotification({
+                ...notification,
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("NEW_MEETING_CREATION"),
+                  "[Place holder]",
+                  data.payload.meetingTitle.substring(0, 100)
+                ),
+              });
+            }
+
+            dispatch(meetingAgendaContributorRemoved(data.payload));
+            setNotificationID(id);
+          } else if (
+            data.payload.message
+              ?.toLowerCase()
+              .includes("NEW_MEETING_ORGANIZER_ADDED".toLowerCase())
+          ) {
+            if (data.viewable) {
+              setNotification({
+                ...notification,
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("NEW_MEETING_CREATION"),
+                  "[Place holder]",
+                  data.payload.title.substring(0, 100)
+                ),
+              });
+            }
+            dispatch(meetingOrganizerAdded(data.payload));
+            setNotificationID(id);
+          } else if (
+            data.payload.message
+              ?.toLowerCase()
+              .includes("MEETING_ORGANIZER_DELETED".toLowerCase())
+          ) {
+            if (data.viewable) {
+              setNotification({
+                ...notification,
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("NEW_MEETING_CREATION"),
+                  "[Place holder]",
+                  data.payload.title.substring(0, 100)
+                ),
+              });
+            }
+            dispatch(meetingOrganizerRemoved(data.payload));
+            setNotificationID(id);
+          } else if (
+            data.payload.message?.toLowerCase() ===
+            "MeetingNotConductedNotification".toLowerCase()
+          ) {
+            try {
+              console.log(
+                "MeetingNotConductedNotificationMeetingNotConductedNotification"
+              );
+              dispatch(meetingNotConductedMQTT(data.payload));
+              console.log(
+                "MeetingNotConductedNotificationMeetingNotConductedNotification"
+              );
+              if (data.viewable) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("MEETING_STATUS_EDITED_NOTCONDUCTED"),
+                    "[Meeting Title]",
+                    data.payload.meetingTitle.substring(0, 100)
+                  ),
+                });
+              }
+            } catch (error) {}
+          } else if (
+            data.payload.message?.toLowerCase() ===
+            "MeetingReminderNotification".toLowerCase()
+          ) {
+            dispatch(meetingNotConductedMQTT(data.payload));
+
+            if (data.viewable) {
+              setNotification({
+                ...notification,
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("MeetingReminderNotification"),
+                  "[Meeting Title]",
+                  data.payload.meetingTitle.substring(0, 100)
+                ),
+              });
+            }
+            setNotificationID(id);
+          } else if (
+            data.payload.message.toLowerCase() ===
+            "MEETING_PARTICIPANT_DELETED".toLowerCase()
+          ) {
+            dispatch(meetingParticipantRemoved(data.payload));
+
+            if (data.viewable) {
+              // setNotification({
+              //   ...notification,
+              //   notificationShow: true,
+              //   message: changeMQTTJSONOne(
+              //     t("MeetingReminderNotification"),
+              //     "[Meeting Title]",
+              //     data.payload.meetingTitle.substring(0, 100)
+              //   ),
+              // });
+            }
+            setNotificationID(id);
+          } else if (
+            data.payload.message.toLowerCase() ===
+            "NEW_MEETING_PARTICIPANT_ADDED".toLowerCase()
+          ) {
+            if (
+              Number(data.payload.status) !== 11 &&
+              Number(data.payload.status) !== 12
+            ) {
+              dispatch(meetingParticipantAdded(data.payload));
+              setNotificationID(id);
+
+              if (data.viewable) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("MeetingReminderNotification"),
+                    "[Meeting Title]",
+                    data.payload.title.substring(0, 100)
+                  ),
+                });
+              }
+            }
           }
         }
       }
@@ -748,37 +832,7 @@ const Dashboard = () => {
       }
       if (data.action.toLowerCase() === "Notification".toLowerCase()) {
         if (
-          data.payload.message.toLowerCase() ===
-          "USER_STATUS_EDITED".toLowerCase()
-        ) {
-          setNotification({
-            notificationShow: true,
-            message: changeMQTTJSONOne(
-              t("USER_STATUS_EDITED"),
-              "[organizationName]",
-              data.payload.organizationName
-            ),
-          });
-          setNotificationID(id);
-          setTimeout(() => {
-            navigate("/");
-          }, 4000);
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "USER_STATUS_ENABLED".toLowerCase()
-        ) {
-          setNotification({
-            notificationShow: true,
-            message: changeMQTTJSONOne(
-              t("USER_STATUS_ENABLED"),
-              "[organizationName]",
-              data.payload.organizationName
-            ),
-          });
-          setNotificationID(id);
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "USER_ROLE_EDITED".toLowerCase()
+          data.payload.message.toLowerCase() === "USER_EDITED".toLowerCase()
         ) {
           setNotification({
             notificationShow: true,
@@ -790,9 +844,28 @@ const Dashboard = () => {
           });
           setNotificationID(id);
           setTimeout(() => {
-            navigate("/");
+            if (data.payload.isLoggedOut === true) {
+              //Apply Logout API here
+              dispatch(userLogOutApiFunc(navigate, t));
+            }
           }, 4000);
-        } else if (
+         } else if(data.payload.message.toLowerCase() === "USER_DELETED".toLowerCase()) {
+          setNotification({
+            notificationShow: true,
+            message: changeMQTTJSONOne(
+              t("USER_DELETED"),
+              "[organizationName]",
+              data.payload.organizationName
+            ),
+          });
+          setNotificationID(id);
+          setTimeout(() => {
+            if (data.payload.isLoggedOut === true) {
+              //Apply Logout API here
+              dispatch(userLogOutApiFunc(navigate, t));
+            }
+          }, 4000);
+         } else if (
           data.payload.message.toLowerCase() ===
           "ORGANIZATION_SUBSCRIPTION_CANCELLED".toLowerCase()
         ) {
@@ -1139,7 +1212,10 @@ const Dashboard = () => {
           setNotificationID(id);
         }
       }
-      if (data.action.toLowerCase() === "TALK".toLowerCase()) {
+      if (
+        data.action.toLowerCase() === "TALK".toLowerCase() &&
+        checkFeatureIDAvailability(3)
+      ) {
         if (
           data.payload.message.toLowerCase() ===
           "NEW_ONE_TO_ONE_MESSAGE".toLowerCase()
@@ -1375,7 +1451,7 @@ const Dashboard = () => {
               ),
             });
           }
-          dispatch(notifyPollingSocket(data.payload.polls));
+          dispatch(notifyPollingSocket(data.payload));
           setNotificationID(id);
         } else if (
           data.payload.message.toLowerCase() === "POLL_EXPIRED".toLowerCase()
@@ -1397,25 +1473,29 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "PUBLISHED_POLL_DELETED".toLowerCase()
         ) {
-          if (data.viewable) {
-            setNotification({
-              ...notification,
-              notificationShow: true,
-              message: changeMQTTJSONOne(
-                t("PUBLISHED_POLL_DELETED"),
-                "[Poll Title]",
-                data.payload.pollTitle
-              ),
-            });
-          }
-          dispatch(notifyPollingSocket(data.payload.polls));
+          dispatch(deletePollsMQTT(data.payload.polls));
           setNotificationID(id);
+          try {
+            if (data.viewable) {
+              setNotification({
+                ...notification,
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("PUBLISHED_POLL_DELETED"),
+                  "[Poll Title]",
+                  data.payload.pollTitle
+                ),
+              });
+            }
+          } catch {}
         } else if (
           data.payload.message
             .toLowerCase()
             .includes("NEW_POLL_PUBLISHED_GROUP".toLowerCase())
         ) {
           dispatch(createPollGroupsMQTT(data.payload));
+          setNotificationID(id);
+
           if (data.viewable) {
             setNotification({
               ...notification,
@@ -1433,6 +1513,8 @@ const Dashboard = () => {
             .includes("NEW_POLL_PUBLISHED_COMMITTEE".toLowerCase())
         ) {
           dispatch(createPollCommitteesMQTT(data.payload));
+          setNotificationID(id);
+
           if (data.viewable) {
             setNotification({
               ...notification,
@@ -1450,6 +1532,7 @@ const Dashboard = () => {
             .includes("NEW_POLL_PUBLISHED_MEETING".toLowerCase())
         ) {
           dispatch(createPollMeetingMQTT(data.payload));
+          setNotificationID(id);
 
           if (data.viewable) {
             setNotification({
@@ -1463,6 +1546,25 @@ const Dashboard = () => {
             });
           }
         }
+        // else if (
+        //   data.payload.message.toLowerCase() ===
+        //   "PUBLISHED_POLL_DELETED".toLowerCase()
+        // ) {
+        //   dispatch(deletePollsMQTT(data.payload));
+        //   setNotificationID(id);
+
+        //   if (data.viewable) {
+        //     setNotification({
+        //       ...notification,
+        //       notificationShow: true,
+        //       message: changeMQTTJSONOne(
+        //         t("PUBLISHED_POLL_DELETED"),
+        //         "[Poll Title]",
+        //         data.payload.pollTitle
+        //       ),
+        //     });
+        //   }
+        // }
       }
       if (data.action.toLowerCase() === "Resolution".toLowerCase()) {
         if (
@@ -1515,7 +1617,10 @@ const Dashboard = () => {
           dispatch(resolutionMQTTClosed(data.payload.model));
         }
       }
-      if (data.action.toLowerCase() === "Video".toLowerCase()) {
+      if (
+        data.action.toLowerCase() === "Video".toLowerCase() &&
+        checkFeatureIDAvailability(4)
+      ) {
         if (
           data.payload.message.toLowerCase() ===
           "NEW_VIDEO_CALL_INITIATED".toLowerCase()
@@ -2183,7 +2288,7 @@ const Dashboard = () => {
                 <Outlet />
               </div>
               <div className="talk_features_home">
-                {activateBlur ? null : <Talk />}
+                {activateBlur ? null : roleRoute ? null : <Talk />}
               </div>
             </Content>
           </Layout>
@@ -2206,16 +2311,18 @@ const Dashboard = () => {
               chatMessageClass="chat-messenger-head-video"
             />
           ) : null}
+          {/* <Modal show={true} size="md" setShow={true} /> */}
           {videoFeatureReducer.NormalizeVideoFlag === true ||
           videoFeatureReducer.MinimizeVideoFlag === true ||
           videoFeatureReducer.MaximizeVideoFlag === true ? (
             <VideoCallScreen />
           ) : null}
-
           {!navigator.onLine ? (
             <React.Fragment>
               {/* Display alert when offline */}
-              {console.log("No internet connection. Please check your connection.")}
+              {console.log(
+                "No internet connection. Please check your connection."
+              )}
             </React.Fragment>
           ) : // Check for loading states to determine whether to display loader
           NewMeetingreducer.Loading ||
@@ -2255,89 +2362,81 @@ const Dashboard = () => {
             OrganizationBillingReducer.Loading ||
             DataRoomReducer.Loading ||
             DataRoomFileAndFoldersDetailsReducer.Loading ||
-            SignatureWorkFlowReducer.Loading ? (
+            SignatureWorkFlowReducer.Loading ||
+            UserMangementReducer.Loading ? (
             <Loader />
           ) : null}
-
+          {/* Disconnectivity Modal  */}
+          {isInternetDisconnectModalVisible && <InternetConnectivityModal />}
           <Notification
             setOpen={setOpen}
             open={open.flag}
             message={open.message}
           />
           {cancelModalMeetingDetails && <CancelButtonModal />}
-        </Layout>
-        {/* <Layout>
-          <Sidebar />
-          {location.pathname === "/DisKus/videochat" ? null : <Header2 />}
-          <Layout className="positionRelative">
-            <NotificationBar
-              iconName={
-                <img src={IconMetroAttachment} alt="" draggable="false" />
+          {roleRoute && (
+            <Modal
+              show={roleRoute}
+              setShow={() => {
+                setActivateBlur();
+              }}
+              ButtonTitle={"Block"}
+              centered
+              size={"md"}
+              modalHeaderClassName="d-none"
+              ModalBody={
+                <>
+                  <>
+                    <Row className="mb-1">
+                      <Col lg={12} md={12} xs={12} sm={12}>
+                        <Row>
+                          <Col className="d-flex justify-content-center">
+                            <img
+                              src={VerificationFailedIcon}
+                              width={60}
+                              className={"allowModalIcon"}
+                              alt=""
+                              draggable="false"
+                            />
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col className="text-center mt-4">
+                            <label className={"allow-limit-modal-p"}>
+                              {t(
+                                "The-organization-subscription-is-not-active-please-contact-your-admin"
+                              )}
+                            </label>
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                  </>
+                </>
               }
-              notificationMessage={notification.message}
-              notificationState={notification.notificationShow}
-              setNotification={setNotification}
-              handleClose={closeNotification}
-              id={notificationID}
+              ModalFooter={
+                <>
+                  <Col sm={12} md={12} lg={12}>
+                    <Row className="mb-3">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex justify-content-center"
+                      >
+                        <Button
+                          className={"Ok-Successfull-btn"}
+                          text={t("Ok")}
+                          onClick={closeModal}
+                        />
+                      </Col>
+                    </Row>
+                  </Col>
+                </>
+              }
             />
-            <Outlet />
-            {videoFeatureReducer.IncomingVideoCallFlag === true ? (
-              <VideoMaxIncoming />
-            ) : null}
-            {videoFeatureReducer.VideoChatMessagesFlag === true ? (
-              <TalkChat2
-                chatParentHead="chat-messenger-head-video"
-                chatMessageClass="chat-messenger-head-video"
-              />
-            ) : null}
-            {videoFeatureReducer.NormalizeVideoFlag === true ||
-            videoFeatureReducer.MinimizeVideoFlag === true ||
-            videoFeatureReducer.MaximizeVideoFlag === true ? (
-              <VideoCallScreen />
-            ) : null}
-            {activateBlur ? null : <Talk />}
-
-            {NewMeetingreducer.Loading ||
-            assignees.Loading ||
-            MeetingOrganizersReducer.LoadingMeetingOrganizer ||
-            MeetingOrganizersReducer.Loading ||
-            PollsReducer.Loading ||
-            CommitteeReducer.Loading ||
-            toDoListReducer.Loading ||
-            todoStatus.Loading ||
-            getTodosStatus.Loading ||
-            MeetingAgendaReducer.Loading ||
-            actionMeetingReducer.Loading ||
-            AgendaWiseAgendaListReducer.loading ||
-            downloadReducer.Loading ||
-            attendanceMeetingReducer.Loading ||
-            webViewer.Loading ||
-            LanguageReducer.Loading ||
-            uploadReducer.Loading ||
-            settingReducer.Loading ||
-            fAQsReducer.Loading ||
-            meetingIdReducer.Loading ||
-            calendarReducer.Loading ||
-            OnBoardModal.Loading ||
-            postAssigneeComments.Loading ||
-            VideoChatReducer.Loading ||
-            minuteofMeetingReducer.Loading ||
-            countryNamesReducer.Loading ||
-            GetSubscriptionPackage.Loading ||
-            Authreducer.Loading ||
-            roleListReducer.Loading ||
-            NotesReducer.Loading ||
-            GroupsReducer.Loading ||
-            GroupsReducer.getAllLoading ||
-            ResolutionReducer.Loading ||
-            RealtimeNotification.Loading ||
-            OrganizationBillingReducer.Loading ||
-            DataRoomReducer.Loading ||
-            DataRoomFileAndFoldersDetailsReducer.Loading ? (
-              <Loader />
-            ) : null}
-          </Layout>
-        </Layout> */}
+          )}
+        </Layout>
       </ConfigProvider>
     </>
   );

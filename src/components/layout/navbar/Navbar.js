@@ -7,12 +7,20 @@ import "./../../../i18n";
 import { useTranslation } from "react-i18next";
 
 import "./Navbar.css";
+import {
+  checkFeatureIDAvailability,
+  getLocalStorageItemNonActiveCheck,
+} from "../../../commen/functions/utils";
 
 const NavbarAdmin = () => {
   const location = useLocation();
   const [activateBlur, setActivateBlur] = useState(false);
 
   let Blur = localStorage.getItem("blur");
+  const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
+  const TrialExpireSelectPac = getLocalStorageItemNonActiveCheck(
+    "TrialExpireSelectPac"
+  );
 
   useEffect(() => {
     if (Blur != undefined) {
@@ -45,7 +53,7 @@ const NavbarAdmin = () => {
                       <Nav className=" me-auto d-flex justify-content-evenly w-100 py-1">
                         <NavDropdown
                           disabled={true}
-                          title={t("User")}
+                          title={t("Manage-users")}
                           id="collasible-nav-dropdown"
                           className="DiskusAdminNavBar"
                           // as={Link}
@@ -69,7 +77,7 @@ const NavbarAdmin = () => {
                           </NavDropdown.Item>
                           <NavDropdown.Item
                             as={Link}
-                            to="EditUser"
+                            to="ManageUsers"
                             eventKey="link-8"
                             className="text-black border-none"
                           >
@@ -101,28 +109,12 @@ const NavbarAdmin = () => {
                         >
                           <NavDropdown.Item
                             as={Link}
-                            to="Organization"
+                            to="OrganizationlevelConfigUM"
                             eventKey="link-8"
                             className="text-black border-none "
                           >
                             {t("Organization-level-configurations")}
                           </NavDropdown.Item>
-                          <NavDropdown.Item
-                            as={Link}
-                            to="setting"
-                            eventKey="link-8"
-                            className="text-black border-none "
-                          >
-                            {t("User-level-configurations")}
-                          </NavDropdown.Item>
-                          {/* <NavDropdown.Item
-                            as={Link}
-                            to="setting"
-                            eventKey="link-8"
-                            className="text-black border-none "
-                          >
-                            {t("Organization-user-level-configurations")}
-                          </NavDropdown.Item> */}
                         </NavDropdown>
 
                         <NavDropdown
@@ -133,7 +125,8 @@ const NavbarAdmin = () => {
                         >
                           <NavDropdown.Item
                             as={Link}
-                            to="PackageDetail"
+                            // to="PackageDetail"
+                            to="PackageDetailsUserManagement"
                             eventKey="link-8"
                             className="text-black border-none  bg-white"
                           >
@@ -142,7 +135,8 @@ const NavbarAdmin = () => {
 
                           <NavDropdown.Item
                             as={Link}
-                            to="CancelSub"
+                            // to="CancelSub"
+                            to="CancelSubscriptionUserManagement"
                             eventKey="link-8"
                             className="text-black border-none "
                           >
@@ -204,163 +198,170 @@ const NavbarAdmin = () => {
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                       <Nav className="me-auto d-flex justify-content-evenly w-100 py-1">
-                        <NavDropdown
-                          title={t("User")}
-                          id="collasible-nav-dropdown"
-                          className="DiskusAdminNavBar"
-                          // as={Link}
-                          // to="AllUserPage"
-                        >
-                          <NavDropdown.Item
-                            as={Link}
-                            to="AllUserPage"
-                            eventKey="link-7"
-                            className="text-black border-none"
-                          >
-                            {t("All-user")}
-                          </NavDropdown.Item>
-                          <NavDropdown.Item
-                            as={Link}
-                            to="AddUser"
-                            eventKey="link-7"
-                            className="text-black border-none"
-                          >
-                            {t("Add-user")}
-                          </NavDropdown.Item>
-                          <NavDropdown.Item
-                            as={Link}
-                            to="EditUser"
-                            eventKey="link-8"
-                            className="text-black border-none"
-                          >
-                            {t("Edit-user")}
-                          </NavDropdown.Item>
-                        </NavDropdown>
-
-                        <NavDropdown
-                          title={t("Meetings")}
-                          id="collasible-nav-dropdown"
-                          className="DiskusAdminNavBar"
-                        >
-                          <NavDropdown.Item
-                            as={Link}
-                            to="AllMeeting"
-                            eventKey="link-8"
-                            className="text-black border-none"
-                          >
-                            {t("All-meeting")}
-                          </NavDropdown.Item>
-                        </NavDropdown>
-
-                        <NavDropdown
-                          title={t("Configurations")}
-                          id="collasible-nav-dropdown"
-                          className="DiskusAdminNavBar"
-                        >
-                          <NavDropdown.Item
-                            as={Link}
-                            to="Organization"
-                            eventKey="link-8"
-                            className="text-black border-none "
-                          >
-                            {t("Organization-level-configurations")}
-                          </NavDropdown.Item>
-                          <NavDropdown.Item
-                            as={Link}
-                            to="setting"
-                            eventKey="link-8"
-                            className="text-black border-none "
-                          >
-                            {t("User-level-configurations")}
-                          </NavDropdown.Item>
-                          {/* <NavDropdown.Item
-                            as={Link}
-                            to="setting"
-                            eventKey="link-8"
-                            className="text-black border-none "
-                          >
-                            {t("Organization-user-level-configurations")}
-                          </NavDropdown.Item> */}
-                        </NavDropdown>
-
-                        <NavDropdown
-                          title={t("Subscriptions")}
-                          id="collasible-nav-dropdown"
-                          className="DiskusAdminNavBar"
-                        >
-                          <NavDropdown.Item
-                            as={Link}
-                            to="PackageDetail"
-                            eventKey="link-8"
-                            className="text-black border-none  bg-white"
-                          >
-                            {t("Package-detail")}
-                          </NavDropdown.Item>
-
-                          <NavDropdown.Item
-                            as={Link}
-                            to="CancelSub"
-                            eventKey="link-8"
-                            className="text-black border-none "
-                          >
-                            {t("Cancel-subscriptions")}
-                          </NavDropdown.Item>
-                          <NavDropdown.Item
-                            as={Link}
-                            to="deleteorganization"
-                            eventKey="link-8"
-                            className="text-black border-none "
-                          >
-                            {t("Delete Organization")}
-                          </NavDropdown.Item>
-                        </NavDropdown>
-
-                        <NavDropdown
-                          title={t("Billing-information")}
-                          id="collasible-nav-dropdown"
-                          className="DiskusAdminNavBar"
-                        >
-                          <NavDropdown.Item
-                            as={Link}
-                            to="Summary"
-                            eventKey="link-8"
-                            className="text-black border-none "
-                          >
-                            {t("Summary")}
-                          </NavDropdown.Item>
-
-                          <NavDropdown.Item
+                        {roleRoute ? (
+                          <Nav.Link
                             as={Link}
                             to="PayOutstanding"
-                            eventKey="link-8"
-                            className="text-black border-none "
+                            id="collasible-nav-dropdown"
+                            className="DiskusAdminNavBar nav-link"
                           >
                             {t("Pay-outstanding")}
-                          </NavDropdown.Item>
+                          </Nav.Link>
+                        ) : TrialExpireSelectPac ? (
+                          <Nav.Link
+                            as={Link}
+                            to="PakageDetailsUserManagement"
+                            id="collasible-nav-dropdown"
+                            className="DiskusAdminNavBar nav-link"
+                          >
+                            {t("Billing-subscription")}
+                          </Nav.Link>
+                        ) : (
+                          <>
+                            <Nav.Link
+                              as={Link}
+                              to="ManageUsers"
+                              className="DiskusAdminNavBar"
+                              id="collasible-nav-dropdown"
+                            >
+                              {t("Manage-users")}
+                            </Nav.Link>
 
-                          <NavDropdown.Item
+                            {/* Meeting Drop down Comment */}
+                            <NavDropdown
+                              title={t("Configurations")}
+                              id="collasible-nav-dropdown"
+                              className="DiskusAdminNavBar"
+                            >
+                              {checkFeatureIDAvailability(36) ? (
+                                <NavDropdown.Item
+                                  as={Link}
+                                  to="OrganizationlevelConfigUM"
+                                  eventKey="link-8"
+                                  className="text-black border-none "
+                                >
+                                  {t("Organization-level-configurations")}
+                                </NavDropdown.Item>
+                              ) : null}
+                            </NavDropdown>
+                            {JSON.parse(localStorage.getItem("isTrial")) ? (
+                              <>
+                                {" "}
+                                {checkFeatureIDAvailability(28) ? (
+                                  <Nav.Link
+                                    as={Link}
+                                    to="PakageDetailsUserManagement"
+                                    id="collasible-nav-dropdown"
+                                    className="DiskusAdminNavBar nav-link"
+                                  >
+                                    {t("Billing-subscription")}
+                                  </Nav.Link>
+                                ) : null}
+                                {/* <Nav.Link
+                            title={t("Billing-Subscription")}
+                            id="collasible-nav-dropdown"
+                            className="DiskusAdminNavBar"
                             as={Link}
-                            eventKey="link-8"
-                            className="text-black border-none"
-                            to="PaymentHistory"
-                          >
-                            {t("Invoice-&-payment-history")}
-                          </NavDropdown.Item>
-                        </NavDropdown>
-                        <NavDropdown
-                          title={t("Reports")}
-                          id="collasible-nav-dropdown"
-                          className="DiskusAdminNavBar"
-                        >
-                          <NavDropdown.Item
-                            as={Link}
-                            to="loginreport"
-                            eventKey="link-8"
-                            className="text-black border-none "
-                          >
-                            {t("User-login-history")}
-                          </NavDropdown.Item>
-                        </NavDropdown>
+                            // to="PackageDetail"
+                            to="PackageDetailsUserManagement"
+                          /> */}
+                              </>
+                            ) : (
+                              <>
+                                {" "}
+                                <NavDropdown
+                                  title={t("Subscriptions")}
+                                  id="collasible-nav-dropdown"
+                                  className="DiskusAdminNavBar"
+                                >
+                                  <NavDropdown.Item
+                                    as={Link}
+                                    // to="PackageDetail"
+                                    to="PackageDetailsUserManagement"
+                                    eventKey="link-8"
+                                    className="text-black border-none  bg-white"
+                                  >
+                                    {t("Package-detail")}
+                                  </NavDropdown.Item>
+                                  {checkFeatureIDAvailability(29) ? (
+                                    <NavDropdown.Item
+                                      as={Link}
+                                      to="CancelSubscriptionUserManagement"
+                                      eventKey="link-8"
+                                      className="text-black border-none "
+                                    >
+                                      {t("Cancel-subscriptions")}
+                                    </NavDropdown.Item>
+                                  ) : null}
+
+                                  {checkFeatureIDAvailability(30) ? (
+                                    <NavDropdown.Item
+                                      as={Link}
+                                      to="deleteorganizationUserMangement"
+                                      eventKey="link-8"
+                                      className="text-black border-none "
+                                    >
+                                      {t("Delete Organization")}
+                                    </NavDropdown.Item>
+                                  ) : null}
+                                </NavDropdown>
+                                <NavDropdown
+                                  title={t("Billing-information")}
+                                  id="collasible-nav-dropdown"
+                                  className="DiskusAdminNavBar"
+                                >
+                                  {checkFeatureIDAvailability(34) ? (
+                                    <NavDropdown.Item
+                                      as={Link}
+                                      to="Summary"
+                                      eventKey="link-8"
+                                      className="text-black border-none "
+                                    >
+                                      {t("Summary")}
+                                    </NavDropdown.Item>
+                                  ) : null}
+
+                                  {checkFeatureIDAvailability(33) ? (
+                                    <NavDropdown.Item
+                                      as={Link}
+                                      to="PayOutstanding"
+                                      eventKey="link-8"
+                                      className="text-black border-none "
+                                    >
+                                      {t("Pay-outstanding")}
+                                    </NavDropdown.Item>
+                                  ) : null}
+
+                                  <NavDropdown.Item
+                                    as={Link}
+                                    eventKey="link-8"
+                                    className="text-black border-none"
+                                    to="PaymentHistory"
+                                  >
+                                    {t("Invoice-&-payment-history")}
+                                  </NavDropdown.Item>
+                                </NavDropdown>
+                              </>
+                            )}
+
+                            <NavDropdown
+                              title={t("Reports")}
+                              id="collasible-nav-dropdown"
+                              className="DiskusAdminNavBar"
+                            >
+                              {checkFeatureIDAvailability(35) ? (
+                                <NavDropdown.Item
+                                  as={Link}
+                                  to="loginreport"
+                                  eventKey="link-8"
+                                  className="text-black border-none "
+                                >
+                                  {t("User-login-history")}
+                                </NavDropdown.Item>
+                              ) : null}
+                            </NavDropdown>
+                          </>
+                        )}
                       </Nav>
                     </Navbar.Collapse>
                   </Container>

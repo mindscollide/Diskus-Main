@@ -45,3 +45,48 @@ a.icon-active-sidebar_expand.nav-link:hover span {
 .pollsHeading {
   margin-top: 1px !important;
 }
+/* a.icon_expand.nav-link:hover */
+/* New Style for Expand Menu Icons and tagline */
+
+.expandSideIcon_tagline {
+  font-size: 0.5rem;
+  color: #5a5a5a;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: 0.3s ease-in-out;
+}
+.expandSideIcon_tagline:hover {
+  font-size: 0.5rem;
+  color: #fff;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.expandSideBarIcons_active_tagline {
+  color: #fff !important;
+}
+.expandSideBarIcons_active {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border-radius: 4px;
+  color: #fff;
+}
+.expandSideIcon {
+  transition: 0.3s ease-in-out;
+}
+.expandSideIcon:hover {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border-radius: 4px;
+  color: #fff;
+  transition: 0.3s ease-in-out;
+}
+.expandSideBarIcons_active div img {
+  filter: brightness(0) invert(1);
+}
+.expandSideIcon:hover div img {
+  filter: brightness(0) invert(1);
+}
+.expandSideBarIcons_active div span {
+  color: #fff;
+}
+.expandSideIcon:hover div span {
+  color: #fff;
+}

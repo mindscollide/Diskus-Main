@@ -39,6 +39,8 @@ import {
   DeleteMultipleMessages,
   activeChat,
   OTOMessageSendSuccess,
+  getImageData,
+  DownloadTalkFile,
 } from "../../../../../../store/actions/Talk_action";
 import {
   normalizeVideoPanelFlag,
@@ -51,6 +53,7 @@ import {
   groupCallRecipients,
   callRequestReceivedMQTT,
 } from "../../../../../../store/actions/VideoMain_actions";
+import { checkFeatureIDAvailability } from "../../../../../../commen/functions/utils";
 import {
   resetCloseChatFlags,
   retryFlagState,
@@ -70,13 +73,15 @@ import {
   InputDatePicker,
   Button,
   NotificationBar,
+  Modal,
 } from "../../../../../elements";
 import SecurityIcon from "../../../../../../assets/images/Security-Icon.png";
+import CrossIcon from "../../../../../../assets/images/Cross_Icon.png";
 import DoubleTickIcon from "../../../../../../assets/images/DoubleTick-Icon.png";
 import DoubleTickDeliveredIcon from "../../../../../../assets/images/DoubleTickDelivered-Icon.png";
 import SingleTickIcon from "../../../../../../assets/images/SingleTick-Icon.png";
 import TimerIcon from "../../../../../../assets/images/Timer-Icon.png";
-import CrossIcon from "../../../../../../assets/images/Cross-Icon.png";
+import CrossIconn from "../../../../../../assets/images/Cross_Icon.png";
 import SecurityIconMessasgeBox from "../../../../../../assets/images/SecurityIcon-MessasgeBox.png";
 import MenuIcon from "../../../../../../assets/images/Menu-Chat-Icon.png";
 import VideoCallIcon from "../../../../../../assets/images/VideoCall-Icon.png";
@@ -279,6 +284,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   const [showEditShoutField, setShowEditShoutField] = useState(false);
 
   const [showChatSearch, setShowChatSearch] = useState(false);
+
+  const [showImageModal, setShowImageModal] = useState(false);
 
   const [searchChatWord, setSearchChatWord] = useState("");
 
@@ -694,10 +701,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
         }
       }
     } catch {}
-  };
-
-  const activateChatMenu = () => {
-    setChatMenuActive(!chatMenuActive);
   };
 
   const modalHandlerSave = async (data) => {
@@ -1527,6 +1530,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
             broadcastName: messagesData.broadcastName,
             messageCount: messagesData.messageCount,
             attachmentLocation: messagesData.attachmentLocation,
+            base64Image: messagesData.base64Image,
+            attachmentId: messagesData.attachmentId,
             sourceMessageBody: messagesData.sourceMessageBody,
             sourceMessageId: messagesData.sourceMessageId,
           });
@@ -1626,6 +1631,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
             broadcastName: messagesData.broadcastName,
             messageCount: messagesData.messageCount,
             attachmentLocation: messagesData.attachmentLocation,
+            base64Image: messagesData.base64Image,
+            attachmentId: messagesData.attachmentId,
             sourceMessageBody: messagesData.sourceMessageBody,
             sourceMessageId: messagesData.sourceMessageId,
           });
@@ -1916,6 +1923,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
           fileName: "",
           messageCount: 0,
           attachmentLocation: "",
+          base64Image: "",
+          attachmentId: 0,
           uid: uniqueId,
           blockCount: 0,
           sourceMessageBody: "",
@@ -1943,6 +1952,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
           fileName: "",
           messageCount: 0,
           attachmentLocation: "",
+          base64Image: "",
+          attachmentId: 0,
           uid: uniqueId,
           blockCount: 0,
           sourceMessageBody: "",
@@ -1965,6 +1976,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
           receivedDate: "",
           seenDate: "",
           attachmentLocation: messageSendData.AttachmentLocation,
+          base64Image: "",
+          attachmentId: 0,
           senderID: parseInt(messageSendData.SenderID),
           admin: talkStateData.ActiveChatData.admin,
         };
@@ -2055,6 +2068,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
           currDate: "",
           messageCount: 0,
           attachmentLocation: "",
+          base64Image: "",
+          attachmentId: 0,
           uid: uniqueId,
           sourceMessageBody: "",
           sourceMessageId: 0,
@@ -2075,6 +2090,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
           receivedDate: "",
           seenDate: "",
           attachmentLocation: messageSendData.AttachmentLocation,
+          base64Image: "",
+          attachmentId: 0,
           senderID: parseInt(messageSendData.SenderID),
           admin: talkStateData.ActiveChatData.admin,
         };
@@ -2119,6 +2136,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
         let newMessageBroadcast = {
           attachmentLocation: "",
+          base64Image: "",
+          attachmentId: 0,
           blockCount: 0,
           broadcastName: talkStateData.ActiveChatData.fullName,
           currDate: currentDateTimeUtc,
@@ -2156,6 +2175,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
           receivedDate: "",
           seenDate: "",
           attachmentLocation: messageSendData.AttachmentLocation,
+          base64Image: "",
+          attachmentId: 0,
           senderID: parseInt(messageSendData.SenderID),
           admin: talkStateData.ActiveChatData.admin,
         };
@@ -2261,6 +2282,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
         }
         let insertMqttOtoMessageData = {
           attachmentLocation: mqttResponseSingleMessage.attachmentLocation,
+          base64Image: mqttResponseSingleMessage.base64Image,
+          attachmentId: mqttResponseSingleMessage.attachmentId,
           blockCount: 0,
           broadcastName: mqttResponseSingleMessage.broadcastName,
           currDate: mqttResponseSingleMessage.currDate,
@@ -2325,6 +2348,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
         }
         let insertMqttOtoMessageData = {
           attachmentLocation: mqttResponseSingleMessage.attachmentLocation,
+          base64Image: mqttResponseSingleMessage.base64Image,
+          attachmentId: mqttResponseSingleMessage.attachmentId,
           blockCount: 0,
           broadcastName: mqttResponseSingleMessage.broadcastName,
           currDate: mqttResponseSingleMessage.currDate,
@@ -2418,6 +2443,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
             frMessages: frMessages,
             messageCount: 0,
             attachmentLocation: mqttInsertGroupMessageData.attachmentLocation,
+            base64Image: mqttInsertGroupMessageData.base64Image,
+            attachmentId: mqttInsertGroupMessageData.attachmentId,
             uid: mqttInsertGroupMessageData.uid,
             isRetry: false,
             sourceMessageBody: mqttInsertGroupMessageData.sourceMessageBody,
@@ -2465,6 +2492,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
             frMessages: frMessages,
             messageCount: 0,
             attachmentLocation: mqttInsertGroupMessageData.attachmentLocation,
+            base64Image: mqttInsertGroupMessageData.base64Image,
+            attachmentId: mqttInsertGroupMessageData.attachmentId,
             uid: mqttInsertGroupMessageData.uid,
             sourceMessageBody: mqttInsertGroupMessageData.sourceMessageBody,
             isRetry: false,
@@ -2512,6 +2541,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
             frMessages: frMessages,
             messageCount: 0,
             attachmentLocation: mqttInsertGroupMessageData.attachmentLocation,
+            base64Image: mqttInsertGroupMessageData.base64Image,
+            attachmentId: mqttInsertGroupMessageData.attachmentId,
             uid: mqttInsertGroupMessageData.uid,
             sourceMessageBody: mqttInsertGroupMessageData.sourceMessageBody,
             isRetry: false,
@@ -2554,6 +2585,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
             receivedDate: "",
             seenDate: "",
             attachmentLocation: mqttInsertGroupMessageData.attachmentLocation,
+            base64Image: "",
+            attachmentId: 0,
             senderID: parseInt(messageSendData.SenderID),
             admin: mqttInsertGroupMessageData.admin,
             uid: mqttInsertGroupMessageData.uid,
@@ -2605,13 +2638,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
   const handleOutsideClick = (event) => {
     if (
-      chatMenuRef.current &&
-      !chatMenuRef.current.contains(event.target) &&
-      chatMenuActive
-    ) {
-      setChatMenuActive(false);
-    }
-    if (
       emojiMenuRef.current &&
       !emojiMenuRef.current.contains(event.target) &&
       emojiActive
@@ -2632,7 +2658,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     return () => {
       document.removeEventListener("click", handleOutsideClick);
     };
-  }, [chatMenuActive, emojiActive, uploadOptions]);
+  }, [emojiActive, uploadOptions]);
 
   useEffect(() => {
     if (inputRef.current) {
@@ -3196,6 +3222,28 @@ const ChatMainBody = ({ chatMessageClass }) => {
     }
   };
 
+  const imageClickFunction = (messageData) => {
+    dispatch(getImageData(messageData));
+    setShowImageModal(true);
+  };
+
+  const closeImageModal = () => {
+    dispatch(getImageData(null));
+    setShowImageModal(false);
+  };
+
+  const DownloadFileFunction = (data, ext) => {
+    console.log("DataDataData", data);
+    let Data = {
+      TalkRequest: {
+        AttachmentId: data.attachmentId,
+      },
+    };
+    dispatch(DownloadTalkFile(navigate, Data, ext, data.fileName, t));
+  };
+
+  console.log("talkStateDatatalkStateData", talkStateData);
+
   return (
     <>
       <div className="positionRelative">
@@ -3262,138 +3310,130 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       </div>
                     </Col>
                     <Col lg={1} md={1} sm={12}>
-                      {" "}
-                      <div
-                        className="chat-box-icons cursor-pointer positionRelative"
-                        onClick={activateChatMenu}
-                        ref={chatMenuRef}
-                      >
-                        <img draggable="false" src={MenuIcon} alt="" />
-                        {chatMenuActive && (
-                          <div className="dropdown-menus-chat">
-                            {talkStateData.ActiveChatData.messageType ===
-                              "O" && (
-                              <>
-                                <span
-                                  onClick={() =>
-                                    modalHandlerSave(
-                                      talkStateData.ActiveChatData
-                                    )
-                                  }
-                                >
-                                  {t("Save")}
-                                </span>
-                                <span
-                                  onClick={() =>
-                                    modalHandlerPrint(
-                                      talkStateData.ActiveChatData
-                                    )
-                                  }
-                                >
-                                  {t("Print")}
-                                </span>
-                                <span
-                                  style={{ borderBottom: "none" }}
-                                  onClick={() =>
-                                    modalHandlerEmail(
-                                      talkStateData.ActiveChatData
-                                    )
-                                  }
-                                >
-                                  {t("Email")}
-                                </span>
-                              </>
-                            )}
-                            {talkStateData.ActiveChatData.messageType ===
-                              "G" && (
-                              <>
-                                <span
-                                  onClick={() =>
-                                    modalHandlerSave(
-                                      talkStateData.ActiveChatData
-                                    )
-                                  }
-                                >
-                                  {t("Save")}
-                                </span>
-                                <span
-                                  onClick={() =>
-                                    modalHandlerPrint(
-                                      talkStateData.ActiveChatData
-                                    )
-                                  }
-                                >
-                                  {t("Print")}
-                                </span>
-                                <span
-                                  onClick={() =>
-                                    modalHandlerEmail(
-                                      talkStateData.ActiveChatData
-                                    )
-                                  }
-                                >
-                                  {t("Email")}
-                                </span>
-                                <span onClick={modalHandlerGroupInfo}>
-                                  {t("Group-Info")}
-                                </span>
-                                <span onClick={deleteMultipleMessages}>
-                                  {t("Delete-messages")}
-                                </span>
-                                <span onClick={() => setLeave(true)}>
-                                  {t("Leave-Group")}
-                                </span>
-                                <span
-                                  style={{ borderBottom: "none" }}
-                                  onClick={modalHandlerGroupEdit}
-                                >
-                                  {t("Edit-Info")}
-                                </span>
-                              </>
-                            )}
-                            {talkStateData.ActiveChatData.messageType ===
-                              "B" && (
-                              <>
-                                <span
-                                  onClick={() =>
-                                    modalHandlerSave(
-                                      talkStateData.ActiveChatData
-                                    )
-                                  }
-                                >
-                                  {t("Save")}
-                                </span>
-                                <span
-                                  onClick={() =>
-                                    modalHandlerPrint(
-                                      talkStateData.ActiveChatData
-                                    )
-                                  }
-                                >
-                                  {t("Print")}
-                                </span>
-                                <span
-                                  onClick={() =>
-                                    modalHandlerEmail(
-                                      talkStateData.ActiveChatData
-                                    )
-                                  }
-                                >
-                                  {t("Email")}
-                                </span>
-                                <span onClick={deleteShoutFunction}>
-                                  {t("Delete-Shout")}
-                                </span>
-                                <span onClick={editShoutFunction}>
-                                  {t("Edit-Shout")}
-                                </span>
-                              </>
-                            )}
-                          </div>
-                        )}
-                      </div>
+                      <Dropdown className="chat-box-icons cursor-pointer positionRelative">
+                        <Dropdown.Toggle
+                          // as="div"
+                          className="talk-dropdown-toggle"
+                          id="dropdown-basic"
+                        >
+                          <img draggable="false" src={MenuIcon} alt="" />
+                        </Dropdown.Toggle>
+
+                        <Dropdown.Menu>
+                          {talkStateData.ActiveChatData.messageType === "O" && (
+                            <>
+                              <Dropdown.Item
+                                onClick={() =>
+                                  modalHandlerSave(talkStateData.ActiveChatData)
+                                }
+                              >
+                                {t("Save")}
+                              </Dropdown.Item>
+                              <Dropdown.Item
+                                onClick={() =>
+                                  modalHandlerPrint(
+                                    talkStateData.ActiveChatData
+                                  )
+                                }
+                              >
+                                {t("Print")}
+                              </Dropdown.Item>
+                              <Dropdown.Item
+                                style={{ borderBottom: "none" }}
+                                onClick={() =>
+                                  modalHandlerEmail(
+                                    talkStateData.ActiveChatData
+                                  )
+                                }
+                              >
+                                {t("Email")}
+                              </Dropdown.Item>
+                            </>
+                          )}
+                          {talkStateData.ActiveChatData.messageType === "G" && (
+                            <>
+                              <Dropdown.Item
+                                onClick={() =>
+                                  modalHandlerSave(talkStateData.ActiveChatData)
+                                }
+                              >
+                                {t("Save")}
+                              </Dropdown.Item>
+                              <Dropdown.Item
+                                onClick={() =>
+                                  modalHandlerPrint(
+                                    talkStateData.ActiveChatData
+                                  )
+                                }
+                              >
+                                {t("Print")}
+                              </Dropdown.Item>
+                              <Dropdown.Item
+                                onClick={() =>
+                                  modalHandlerEmail(
+                                    talkStateData.ActiveChatData
+                                  )
+                                }
+                              >
+                                {t("Email")}
+                              </Dropdown.Item>
+                              <Dropdown.Item onClick={modalHandlerGroupInfo}>
+                                {t("Group-Info")}
+                              </Dropdown.Item>
+                              <Dropdown.Item onClick={deleteMultipleMessages}>
+                                {t("Delete-messages")}
+                              </Dropdown.Item>
+                              <Dropdown.Item onClick={() => setLeave(true)}>
+                                {t("Leave-Group")}
+                              </Dropdown.Item>
+                              <Dropdown.Item
+                                style={{ borderBottom: "none" }}
+                                onClick={modalHandlerGroupEdit}
+                              >
+                                {t("Edit-Info")}
+                              </Dropdown.Item>
+                            </>
+                          )}
+                          {talkStateData.ActiveChatData.messageType === "B" && (
+                            <>
+                              <Dropdown.Item
+                                onClick={() =>
+                                  modalHandlerSave(talkStateData.ActiveChatData)
+                                }
+                              >
+                                {t("Save")}
+                              </Dropdown.Item>
+                              <Dropdown.Item
+                                onClick={() =>
+                                  modalHandlerPrint(
+                                    talkStateData.ActiveChatData
+                                  )
+                                }
+                              >
+                                {t("Print")}
+                              </Dropdown.Item>
+                              <Dropdown.Item
+                                onClick={() =>
+                                  modalHandlerEmail(
+                                    talkStateData.ActiveChatData
+                                  )
+                                }
+                              >
+                                {t("Email")}
+                              </Dropdown.Item>
+                              <Dropdown.Item onClick={deleteShoutFunction}>
+                                {t("Delete-Shout")}
+                              </Dropdown.Item>
+                              <Dropdown.Item onClick={editShoutFunction}>
+                                {t("Edit-Shout")}
+                              </Dropdown.Item>
+                            </>
+                          )}
+                        </Dropdown.Menu>
+                      </Dropdown>
                     </Col>
-                    {activeCall === false ? (
+                    {activeCall === false &&
+                    checkFeatureIDAvailability(5) ? (
                       <Col lg={1} md={1} sm={12}>
                         <div className="chat-box-icons">
                           <img
@@ -3629,24 +3669,33 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 ext === "PNG" ||
                                                 ext === "jpeg" ||
                                                 ext === "JPEG") ? (
-                                                <div className="image-thumbnail-chat">
-                                                  <a
+                                                <div
+                                                  className="image-thumbnail-chat"
+                                                  onClick={() =>
+                                                    imageClickFunction(
+                                                      messageData
+                                                    )
+                                                  }
+                                                >
+                                                  {/* <a
                                                     href={
                                                       filesUrlTalk +
                                                       messageData.attachmentLocation
                                                     }
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                  >
-                                                    <img
-                                                      draggable="false"
-                                                      src={
-                                                        filesUrlTalk +
-                                                        messageData.attachmentLocation
-                                                      }
-                                                      alt=""
-                                                    />
-                                                  </a>
+                                                  > */}
+                                                  <img
+                                                    draggable="false"
+                                                    // src={
+                                                    //   filesUrlTalk +
+                                                    //   messageData.attachmentLocation
+                                                    // }
+                                                    src={`data:image/jpeg;base64,${messageData.base64Image}`}
+                                                    alt=""
+                                                    className="cursor-pointer"
+                                                  />
+                                                  {/* </a> */}
                                                 </div>
                                               ) : messageData.attachmentLocation !==
                                                   "" &&
@@ -3657,7 +3706,15 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   ext === "pdf" ||
                                                   ext === "txt" ||
                                                   ext === "gif") ? (
-                                                <div className="file-uploaded-chat">
+                                                <div
+                                                  className="file-uploaded-chat cursor-pointer"
+                                                  onClick={() =>
+                                                    DownloadFileFunction(
+                                                      messageData,
+                                                      ext
+                                                    )
+                                                  }
+                                                >
                                                   <img
                                                     draggable="false"
                                                     src={DocumentIcon}
@@ -3672,20 +3729,20 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                       )
                                                       .replace(/^\d+_/, "")}
                                                   </span>
-                                                  <a
+                                                  {/* <a
                                                     href={
                                                       filesUrlTalk +
                                                       messageData.attachmentLocation
                                                     }
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                  >
-                                                    <img
-                                                      draggable="false"
-                                                      src={DownloadIcon}
-                                                      alt=""
-                                                    />
-                                                  </a>
+                                                  > */}
+                                                  <img
+                                                    draggable="false"
+                                                    src={DownloadIcon}
+                                                    alt=""
+                                                  />
+                                                  {/* </a> */}
                                                 </div>
                                               ) : null}
                                               <span className="direct-chat-body color-5a5a5a">
@@ -3703,24 +3760,33 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 ext === "PNG" ||
                                                 ext === "jpeg" ||
                                                 ext === "JPEG") ? (
-                                                <div className="image-thumbnail-chat">
-                                                  <a
+                                                <div
+                                                  onClick={() =>
+                                                    imageClickFunction(
+                                                      messageData
+                                                    )
+                                                  }
+                                                  className="image-thumbnail-chat"
+                                                >
+                                                  {/* <a
                                                     href={
                                                       filesUrlTalk +
                                                       messageData.attachmentLocation
                                                     }
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                  >
-                                                    <img
-                                                      draggable="false"
-                                                      src={
-                                                        filesUrlTalk +
-                                                        messageData.attachmentLocation
-                                                      }
-                                                      alt=""
-                                                    />
-                                                  </a>
+                                                  > */}
+                                                  <img
+                                                    draggable="false"
+                                                    // src={
+                                                    //   filesUrlTalk +
+                                                    //   messageData.attachmentLocation
+                                                    // }
+                                                    src={`data:image/jpeg;base64,${messageData.base64Image}`}
+                                                    alt=""
+                                                    className="cursor-pointer"
+                                                  />
+                                                  {/* </a> */}
                                                 </div>
                                               ) : messageData.attachmentLocation !==
                                                   "" &&
@@ -3731,7 +3797,15 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   ext === "pdf" ||
                                                   ext === "txt" ||
                                                   ext === "gif") ? (
-                                                <div className="file-uploaded-chat">
+                                                <div
+                                                  className="file-uploaded-chat cursor-pointer"
+                                                  onClick={() =>
+                                                    DownloadFileFunction(
+                                                      messageData,
+                                                      ext
+                                                    )
+                                                  }
+                                                >
                                                   <img
                                                     draggable="false"
                                                     src={DocumentIcon}
@@ -3746,20 +3820,20 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                       )
                                                       .replace(/^\d+_/, "")}
                                                   </span>
-                                                  <a
+                                                  {/* <a
                                                     href={
                                                       filesUrlTalk +
                                                       messageData.attachmentLocation
                                                     }
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                  >
-                                                    <img
-                                                      draggable="false"
-                                                      src={DownloadIcon}
-                                                      alt=""
-                                                    />
-                                                  </a>
+                                                  > */}
+                                                  <img
+                                                    draggable="false"
+                                                    src={DownloadIcon}
+                                                    alt=""
+                                                  />
+                                                  {/* </a> */}
                                                 </div>
                                               ) : (
                                                 <div className="replied-message-send">
@@ -4049,24 +4123,33 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               ext === "PNG" ||
                                               ext === "jpeg" ||
                                               ext === "JPEG") ? (
-                                              <div className="image-thumbnail-chat">
-                                                <a
+                                              <div
+                                                onClick={() =>
+                                                  imageClickFunction(
+                                                    messageData
+                                                  )
+                                                }
+                                                className="image-thumbnail-chat"
+                                              >
+                                                {/* <a
                                                   href={
                                                     filesUrlTalk +
                                                     messageData.attachmentLocation
                                                   }
                                                   target="_blank"
                                                   rel="noopener noreferrer"
-                                                >
-                                                  <img
-                                                    draggable="false"
-                                                    src={
-                                                      filesUrlTalk +
-                                                      messageData.attachmentLocation
-                                                    }
-                                                    alt=""
-                                                  />
-                                                </a>
+                                                > */}
+                                                <img
+                                                  draggable="false"
+                                                  // src={
+                                                  //   filesUrlTalk +
+                                                  //   messageData.attachmentLocation
+                                                  // }
+                                                  src={`data:image/jpeg;base64,${messageData.base64Image}`}
+                                                  alt=""
+                                                  className="cursor-pointer"
+                                                />
+                                                {/* </a> */}
                                               </div>
                                             ) : messageData.attachmentLocation !==
                                                 "" &&
@@ -4077,7 +4160,15 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 ext === "pdf" ||
                                                 ext === "txt" ||
                                                 ext === "gif") ? (
-                                              <div className="file-uploaded-chat received">
+                                              <div
+                                                className="file-uploaded-chat received cursor-pointer"
+                                                onClick={() =>
+                                                  DownloadFileFunction(
+                                                    messageData,
+                                                    ext
+                                                  )
+                                                }
+                                              >
                                                 <img
                                                   draggable="false"
                                                   src={DocumentIcon}
@@ -4092,20 +4183,20 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     )
                                                     .replace(/^\d+_/, "")}
                                                 </span>
-                                                <a
+                                                {/* <a
                                                   href={
                                                     filesUrlTalk +
                                                     messageData.attachmentLocation
                                                   }
                                                   target="_blank"
                                                   rel="noopener noreferrer"
-                                                >
-                                                  <img
-                                                    draggable="false"
-                                                    src={DownloadIcon}
-                                                    alt=""
-                                                  />
-                                                </a>
+                                                > */}
+                                                <img
+                                                  draggable="false"
+                                                  src={DownloadIcon}
+                                                  alt=""
+                                                />
+                                                {/* </a> */}
                                               </div>
                                             ) : null}
                                             <span className="direct-chat-body color-white">
@@ -4292,24 +4383,20 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               ext === "PNG" ||
                                               ext === "jpeg" ||
                                               ext === "JPEG") ? (
-                                              <div className="image-thumbnail-chat">
-                                                <a
-                                                  href={
-                                                    filesUrlTalk +
-                                                    messageData.attachmentLocation
-                                                  }
-                                                  target="_blank"
-                                                  rel="noopener noreferrer"
-                                                >
-                                                  <img
-                                                    draggable="false"
-                                                    src={
-                                                      filesUrlTalk +
-                                                      messageData.attachmentLocation
-                                                    }
-                                                    alt=""
-                                                  />
-                                                </a>
+                                              <div
+                                                onClick={() =>
+                                                  imageClickFunction(
+                                                    messageData
+                                                  )
+                                                }
+                                                className="image-thumbnail-chat"
+                                              >
+                                                <img
+                                                  draggable="false"
+                                                  src={`data:image/jpeg;base64,${messageData.base64Image}`}
+                                                  alt=""
+                                                  className="cursor-pointer"
+                                                />
                                               </div>
                                             ) : messageData.attachmentLocation !==
                                                 "" &&
@@ -4320,7 +4407,15 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 ext === "pdf" ||
                                                 ext === "txt" ||
                                                 ext === "gif") ? (
-                                              <div className="file-uploaded-chat">
+                                              <div
+                                                className="file-uploaded-chat cursor-pointer"
+                                                onClick={() =>
+                                                  DownloadFileFunction(
+                                                    messageData,
+                                                    ext
+                                                  )
+                                                }
+                                              >
                                                 <img
                                                   draggable="false"
                                                   src={DocumentIcon}
@@ -4335,20 +4430,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     )
                                                     .replace(/^\d+_/, "")}
                                                 </span>
-                                                <a
-                                                  href={
-                                                    filesUrlTalk +
-                                                    messageData.attachmentLocation
-                                                  }
-                                                  target="_blank"
-                                                  rel="noopener noreferrer"
-                                                >
-                                                  <img
-                                                    draggable="false"
-                                                    src={DownloadIcon}
-                                                    alt=""
-                                                  />
-                                                </a>
+                                                <img
+                                                  draggable="false"
+                                                  src={DownloadIcon}
+                                                  alt=""
+                                                />
                                               </div>
                                             ) : null}
                                             <span className="direct-chat-body color-5a5a5a">
@@ -4588,6 +4674,71 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                             <span className="direct-chat-body color-white">
                                               {messageData.messageBody}
                                             </span>
+                                            {messageData.attachmentLocation !==
+                                              "" &&
+                                            (ext === "jpg" ||
+                                              ext === "JPG" ||
+                                              ext === "png" ||
+                                              ext === "PNG" ||
+                                              ext === "jpeg" ||
+                                              ext === "JPEG") ? (
+                                              <div
+                                                onClick={() =>
+                                                  imageClickFunction(
+                                                    messageData
+                                                  )
+                                                }
+                                                className="image-thumbnail-chat"
+                                              >
+                                                <img
+                                                  draggable="false"
+                                                  src={`data:image/jpeg;base64,${messageData.base64Image}`}
+                                                  alt=""
+                                                  className="cursor-pointer"
+                                                />
+                                              </div>
+                                            ) : messageData.attachmentLocation !==
+                                                "" &&
+                                              (ext === "doc" ||
+                                                ext === "docx" ||
+                                                ext === "xls" ||
+                                                ext === "xlsx" ||
+                                                ext === "pdf" ||
+                                                ext === "txt" ||
+                                                ext === "gif") ? (
+                                              <div
+                                                className="file-uploaded-chat cursor-pointer"
+                                                onClick={() =>
+                                                  DownloadFileFunction(
+                                                    messageData,
+                                                    ext
+                                                  )
+                                                }
+                                              >
+                                                <img
+                                                  draggable="false"
+                                                  src={DocumentIcon}
+                                                  alt=""
+                                                />
+                                                <span className="attached-file">
+                                                  {messageData.attachmentLocation
+                                                    .substring(
+                                                      messageData.attachmentLocation.lastIndexOf(
+                                                        "/"
+                                                      ) + 1
+                                                    )
+                                                    .replace(/^\d+_/, "")}
+                                                </span>
+                                                <img
+                                                  draggable="false"
+                                                  src={DownloadIcon}
+                                                  alt=""
+                                                />
+                                              </div>
+                                            ) : null}
+                                            {/* <span className="direct-chat-body color-5a5a5a">
+                                              {messageData.messageBody}
+                                            </span> */}
                                           </>
                                         ) : (
                                           <>
@@ -4771,24 +4922,33 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 ext === "PNG" ||
                                                 ext === "jpeg" ||
                                                 ext === "JPEG") ? (
-                                                <div className="image-thumbnail-chat">
-                                                  <a
+                                                <div
+                                                  onClick={() =>
+                                                    imageClickFunction(
+                                                      messageData
+                                                    )
+                                                  }
+                                                  className="image-thumbnail-chat"
+                                                >
+                                                  {/* <a
                                                     href={
                                                       filesUrlTalk +
                                                       messageData.attachmentLocation
                                                     }
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                  >
-                                                    <img
-                                                      draggable="false"
-                                                      src={
-                                                        filesUrlTalk +
-                                                        messageData.attachmentLocation
-                                                      }
-                                                      alt=""
-                                                    />
-                                                  </a>
+                                                  > */}
+                                                  <img
+                                                    draggable="false"
+                                                    // src={
+                                                    //   filesUrlTalk +
+                                                    //   messageData.attachmentLocation
+                                                    // }
+                                                    src={`data:image/jpeg;base64,${messageData.base64Image}`}
+                                                    alt=""
+                                                    className="cursor-pointer"
+                                                  />
+                                                  {/* </a> */}
                                                 </div>
                                               ) : messageData.attachmentLocation !==
                                                   "" &&
@@ -4799,7 +4959,15 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   ext === "pdf" ||
                                                   ext === "txt" ||
                                                   ext === "gif") ? (
-                                                <div className="file-uploaded-chat">
+                                                <div
+                                                  className="file-uploaded-chat cursor-pointer"
+                                                  onClick={() =>
+                                                    DownloadFileFunction(
+                                                      messageData,
+                                                      ext
+                                                    )
+                                                  }
+                                                >
                                                   <img
                                                     draggable="false"
                                                     src={DocumentIcon}
@@ -4814,20 +4982,20 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                       )
                                                       .replace(/^\d+_/, "")}
                                                   </span>
-                                                  <a
+                                                  {/* <a
                                                     href={
                                                       filesUrlTalk +
                                                       messageData.attachmentLocation
                                                     }
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                  >
-                                                    <img
-                                                      draggable="false"
-                                                      src={DownloadIcon}
-                                                      alt=""
-                                                    />
-                                                  </a>
+                                                  > */}
+                                                  <img
+                                                    draggable="false"
+                                                    src={DownloadIcon}
+                                                    alt=""
+                                                  />
+                                                  {/* </a> */}
                                                 </div>
                                               ) : null}
                                               <span className="direct-chat-body color-5a5a5a">
@@ -6267,6 +6435,34 @@ const ChatMainBody = ({ chatMessageClass }) => {
         setNotification={setNotification}
         handleClose={closeNotification}
         id={notificationID}
+      />
+
+      <Modal
+        show={showImageModal}
+        size="lg"
+        modalHeaderClassName="image-modal"
+        setShow={setShowImageModal}
+        onHide={() => dispatch(getImageData(null), setShowImageModal(false))}
+        ModalTitle={
+          <Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="position-relative"
+              onClick={closeImageModal}
+            >
+              <img className={"image-close"} src={CrossIconn} alt="" />
+            </Col>
+          </Row>
+        }
+        ModalBody={
+          <img
+            className="w-100"
+            src={`data:image/jpeg;base64,${talkStateData?.imageData?.base64Image}`}
+            alt=""
+          />
+        }
       />
     </>
   );

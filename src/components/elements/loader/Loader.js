@@ -49,7 +49,7 @@ const Loader = () => {
         setRandomIndex(messages[0]);
       } else if (location.pathname === "/DisKus/meeting") {
         setRandomIndex(messages[1]);
-      } else if (location.pathname === "/Diskus/Admin/AllMeeting") {
+      } else if (location.pathname === "/Admin/AllMeeting") {
         setRandomIndex(messages[1]);
       } else if (location.pathname === "/DisKus/calendar") {
         setRandomIndex(messages[2]);
@@ -65,9 +65,9 @@ const Loader = () => {
         setRandomIndex(messages[10]);
       } else if (location.pathname === "/DisKus/setting") {
         setRandomIndex(messages[12]);
-      } else if (location.pathname === "/Diskus/Admin/Organization") {
+      } else if (location.pathname === "/Admin/Organization") {
         setRandomIndex(messages[12]);
-      } else if (location.pathname === "/Diskus/Admin/setting") {
+      } else if (location.pathname === "/Admin/setting") {
         setRandomIndex(messages[12]);
       } else if (location.pathname === "/DisKus/faq's") {
         setRandomIndex(messages[8]);
@@ -75,29 +75,29 @@ const Loader = () => {
         setRandomIndex(messages[4]);
       } else if (location.pathname === "/DisKus/polling") {
         setRandomIndex(messages[6]);
-      } else if (location.pathname === "/Diskus/Admin/") {
+      } else if (location.pathname === "/Admin/") {
         setRandomIndex(messages[13]);
-      } else if (location.pathname === "/Diskus/Admin/Summary") {
+      } else if (location.pathname === "/Admin/Summary") {
         setRandomIndex(messages[13]);
-      } else if (location.pathname === "/Diskus/Admin/AddUser") {
+      } else if (location.pathname === "/Admin/AddUser") {
         setRandomIndex(messages[14]);
-      } else if (location.pathname === "/Diskus/Admin/EditUser") {
+      } else if (location.pathname === "/Admin/EditUser") {
         setRandomIndex(messages[15]);
-      } else if (location.pathname === "/Diskus/Admin/AllUserPage") {
+      } else if (location.pathname === "/Admin/AllUserPage") {
         setRandomIndex(messages[15]);
       } else if (location.pathname === "/packageselection") {
         setRandomIndex(messages[15]);
       } else if (location.pathname === "/paymentForm") {
         setRandomIndex(messages[17]);
-      } else if (location.pathname === "/Diskus/Admin/PackageDetail") {
+      } else if (location.pathname === "/Admin/PackageDetail") {
         setRandomIndex(messages[17]);
-      } else if (location.pathname === "/Diskus/Admin/UpgradePackage") {
+      } else if (location.pathname === "/Admin/UpgradePackage") {
         setRandomIndex(messages[17]);
-      } else if (location.pathname === "/Diskus/Admin/UpgradePackageDetail") {
+      } else if (location.pathname === "/Admin/UpgradePackageDetail") {
         setRandomIndex(messages[17]);
-      } else if (location.pathname === "/Diskus/Admin/paymentform") {
+      } else if (location.pathname === "/Admin/paymentform") {
         setRandomIndex(messages[17]);
-      } else if (location.pathname === "/Diskus/Admin/CancelSub") {
+      } else if (location.pathname === "/Admin/CancelSub") {
         setRandomIndex(messages[17]);
       } else if (downloadMessageIndex === 1) {
         setRandomIndex(messages[18]);

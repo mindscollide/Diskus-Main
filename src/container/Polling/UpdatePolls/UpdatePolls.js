@@ -1043,7 +1043,12 @@ const UpdatePolls = () => {
                                   <Row>
                                     <Col lg={11} md={11} sm={12}>
                                       <Row className={styles["Card_border2"]}>
-                                        <Col sm={12} md={10} lg={10}>
+                                        <Col
+                                          sm={12}
+                                          md={10}
+                                          lg={10}
+                                          className="d-flex align-items-center"
+                                        >
                                           <img
                                             src={`data:image/jpeg;base64,${data?.profilePicture?.displayProfilePictureName}`}
                                             width="33px"

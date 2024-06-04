@@ -1,0 +1,263 @@
+.searchbar-textfield {
+  padding: 0 0px 0px 0px;
+  position: relative !important;
+  margin-top: 6px;
+}
+
+.Edit-Main-Heading {
+  font-size: 30px !important;
+  color: #6172d6 !important;
+  font-weight: 700 !important;
+}
+
+body[dir="rtl"] .Edit-Main-Heading {
+  font-weight: 600 !important;
+}
+
+.tablecolumnrow {
+  margin-top: 15px !important;
+  position: relative !important;
+  overflow: auto !important;
+  padding: 20px !important;
+  background: #fff !important;
+  border-radius: 4px;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.AddUsersButton {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+}
+
+.AddUsersButton:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+}
+
+body[dir="rtl"] .AddUsersButton {
+  font-weight: 600 !important;
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
+.SearchIconClass {
+  display: inline-block;
+  position: absolute !important;
+  right: 0 !important;
+  width: auto;
+  top: 5px;
+  margin-right: 25px;
+}
+
+body[dir="rtl"] .SearchIconClass {
+  position: absolute !important;
+  right: 88% !important;
+  cursor: pointer !important;
+}
+
+.Search_Bar_icon_class {
+  cursor: pointer;
+}
+
+.RedSrtip {
+  width: 100% !important;
+  background: #ffe8e8 !important;
+  padding: 8px 12px !important;
+  border-radius: 4px !important;
+  align-items: center !important;
+}
+
+.RedStripContent {
+  font-weight: 700 !important;
+  font-size: 12px !important;
+  color: #f16b6b !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+body[dir="rtl"] .RedStripContent {
+  font-weight: 700 !important;
+}
+
+.NameStylesTable {
+  font-weight: 700 !important;
+  font-size: 12px !important;
+  color: #505050 !important;
+}
+
+body[dir="rtl"] .NameStylesTable {
+  font-weight: 700 !important;
+}
+
+.DesignationStyles {
+  font-weight: 400 !important;
+  font-size: 12px !important;
+  color: #505050 !important;
+}
+
+body[dir="rtl"] .DesignationStyles {
+  font-weight: 400 !important;
+}
+
+.SearchBoxManageUsers {
+  width: 100% !important;
+  height: auto !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  position: absolute !important;
+  background: #fff !important;
+  right: 0 !important;
+  min-height: 242px !important;
+  z-index: 1 !important;
+}
+
+.NameCreateAddtional {
+  font-weight: 600 !important;
+  font-style: normal;
+  color: #6172d6 !important;
+  font-size: 10px;
+  line-height: 12px;
+}
+
+body[dir="rtl"] .NameCreateAddtional {
+  font-weight: 600 !important;
+}
+
+.AdminAlsoClass {
+  font-weight: 500 !important;
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  margin-top: 3px !important;
+}
+
+body[dir="rtl"] .AdminAlsoClass {
+  font-weight: 500 !important;
+}
+
+.ResetButtonSearchBox {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+}
+
+.ResetButtonSearchBox:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+}
+
+body[dir="rtl"] .ResetButtonSearchBox {
+  font-weight: 600 !important;
+}
+
+.SearchButtonSearchBox {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+}
+
+.SearchButtonSearchBox:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+}
+
+body[dir="rtl"] .SearchButtonSearchBox {
+  font-weight: 600 !important;
+}
+
+.fadeIn {
+  opacity: 1;
+  display: block;
+  transition: opacity 5s ease-in-out;
+}
+
+.fadeOut {
+  opacity: 0;
+  display: none;
+  transition: opacity 5s ease-in-out;
+}
+
+.SearchablesItems {
+  padding: 5px 20px !important;
+  border-radius: 4px !important;
+  background: #6172d6;
+  display: flex;
+  text-align: center !important;
+  gap: 35px !important;
+}
+
+.CrossIcon_Class {
+  cursor: pointer !important;
+}
+
+.Searches {
+  font-size: 12px !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+}
+
+body[dir="rtl"] .Searches {
+  font-weight: 700 !important;
+}
+
+.polling_searchinput {
+  display: inline-block;
+  position: absolute !important;
+  right: 0 !important;
+  width: auto;
+  top: 5px;
+  margin-right: 25px;
+}
+
+body[dir="rtl"] .polling_searchinput {
+  position: absolute !important;
+  right: 88% !important;
+  cursor: pointer !important;
+}
+
+.errorMessage {
+  margin: 4px;
+  height: 0px;
+  color: #f16b6b;
+  visibility: visible !important;
+}
+
+body[dir="rtl"] .errorMessage {
+  font-weight: 400 !important;
+}
+
+.errorMessage_hidden {
+  visibility: hidden;
+  margin: 0;
+  /* height: 7px; */
+}
+
+body[dir="rtl"] .errorMessage_hidden {
+  font-weight: 400 !important;
+}

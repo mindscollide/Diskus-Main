@@ -23,6 +23,7 @@ import {
   updateOrganizationLevelSetting,
 } from "../../../store/actions/OrganizationSettings";
 import getTimeZone from "../../../store/actions/GetTimeZone";
+import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 const OrganizationLevelSetting = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -956,237 +957,270 @@ const OrganizationLevelSetting = () => {
           >
             <Row className="mt-3">
               <Col lg={3} md={3} sm={3}>
-                <div onClick={openSecurityTab} className="cursor-pointer">
-                  <Row className="mt-3">
-                    <Col
-                      lg={2}
-                      md={2}
-                      sm={12}
-                      className="d-flex align-items-center"
-                    >
-                      <img
-                        draggable="false"
-                        src={SecurityIcon}
-                        width="25.51px"
-                        height="30.69px"
-                      />
-                    </Col>
-                    <Col lg={10} md={10} sm={12}>
-                      <span
-                        className={
-                          securitystate
-                            ? styles["Options_headings_active"]
-                            : styles["Options_headings"]
-                        }
+                {checkFeatureIDAvailability(36) && (
+                  <>
+                    {" "}
+                    <div onClick={openSecurityTab} className="cursor-pointer">
+                      <Row className="mt-3">
+                        <Col
+                          lg={2}
+                          md={2}
+                          sm={12}
+                          className="d-flex align-items-center"
+                        >
+                          <img
+                            draggable="false"
+                            src={SecurityIcon}
+                            width="25.51px"
+                            height="30.69px"
+                          />
+                        </Col>
+                        <Col lg={10} md={10} sm={12}>
+                          <span
+                            className={
+                              securitystate
+                                ? styles["Options_headings_active"]
+                                : styles["Options_headings"]
+                            }
+                          >
+                            {t("Security-settings")}
+                          </span>
+                        </Col>
+                      </Row>
+                    </div>
+                    <hr />
+                  </>
+                )}
+                {checkFeatureIDAvailability(37) && (
+                  <>
+                    {" "}
+                    <div onClick={opentodo} className="cursor-pointer">
+                      <Row className="mt-3">
+                        <Col
+                          lg={2}
+                          md={2}
+                          sm={12}
+                          className="d-flex align-items-center"
+                        >
+                          <img
+                            draggable="false"
+                            src={TodoIcon}
+                            width="30px"
+                            height="30px"
+                          />
+                        </Col>
+                        <Col lg={10} md={10} sm={12}>
+                          <span
+                            className={
+                              todo
+                                ? styles["Options_headings_active"]
+                                : styles["Options_headings"]
+                            }
+                          >
+                            {t("Tasks")}
+                          </span>
+                        </Col>
+                      </Row>
+                    </div>
+                    <hr />{" "}
+                  </>
+                )}
+                {checkFeatureIDAvailability(38) && (
+                  <>
+                    <div onClick={openMeetingTab} className="cursor-pointer">
+                      <Row className="mt-3">
+                        <Col
+                          lg={2}
+                          md={2}
+                          sm={12}
+                          className="d-flex align-items-center"
+                        >
+                          <img
+                            draggable="false"
+                            src={MeetingIcon}
+                            width="35.79px"
+                            height="27.3px"
+                          />
+                        </Col>
+                        <Col lg={10} md={10} ms={12}>
+                          <span
+                            className={
+                              meetingsState
+                                ? styles["Options_headings_active"]
+                                : styles["Options_headings"]
+                            }
+                          >
+                            {t("Meetings")}
+                          </span>
+                        </Col>
+                      </Row>
+                    </div>
+                    <hr />
+                  </>
+                )}
+                {checkFeatureIDAvailability(39) && (
+                  <>
+                    <div className="cursor-pointer" onClick={openCalenderTab}>
+                      <Row className="mt-3">
+                        <Col
+                          lg={2}
+                          md={2}
+                          sm={12}
+                          className="d-flex align-items-center"
+                        >
+                          <img
+                            draggable="false"
+                            src={Calender}
+                            width="28.47px"
+                            height="28.47px"
+                          />
+                        </Col>
+                        <Col lg={10} md={10} ms={12}>
+                          <span
+                            className={
+                              calender
+                                ? styles["Options_headings_active"]
+                                : styles["Options_headings"]
+                            }
+                          >
+                            {t("Calender")}
+                          </span>
+                        </Col>
+                      </Row>
+                    </div>
+                    <hr />
+                  </>
+                )}
+                {checkFeatureIDAvailability(40) && (
+                  <>
+                    <div onClick={openCommitteTab} className="cursor-pointer">
+                      <Row className="mt-3">
+                        <Col
+                          lg={2}
+                          md={2}
+                          sm={12}
+                          className="d-flex align-items-center"
+                        >
+                          <img
+                            draggable="false"
+                            src={Committee}
+                            width="35.8px"
+                            height="34.63px"
+                          />
+                        </Col>
+                        <Col lg={10} md={10} ms={12}>
+                          <span
+                            className={
+                              committee
+                                ? styles["Options_headings_active"]
+                                : styles["Options_headings"]
+                            }
+                          >
+                            {t("Committees")}
+                          </span>
+                        </Col>
+                      </Row>
+                    </div>
+                    <hr />
+                  </>
+                )}
+                {checkFeatureIDAvailability(41) && (
+                  <>
+                    <div onClick={openGroupTab} className="cursor-pointer">
+                      <Row className="mt-3">
+                        <Col
+                          lg={2}
+                          md={2}
+                          sm={12}
+                          className="d-flex align-items-center"
+                        >
+                          <img
+                            draggable="false"
+                            src={GroupIcon}
+                            width="29px"
+                            height="26.04px"
+                          />
+                        </Col>
+                        <Col lg={10} md={10} ms={12}>
+                          <span
+                            className={
+                              group
+                                ? styles["Options_headings_active"]
+                                : styles["Options_headings"]
+                            }
+                          >
+                            {t("Groups")}
+                          </span>
+                        </Col>
+                      </Row>
+                    </div>
+                    <hr />
+                  </>
+                )}
+                {checkFeatureIDAvailability(42) && (
+                  <>
+                    {" "}
+                    <div onClick={openResolutionTab} className="cursor-pointer">
+                      <Row className="mt-3">
+                        <Col
+                          lg={2}
+                          md={2}
+                          sm={12}
+                          className="d-flex align-items-center"
+                        >
+                          <img
+                            draggable="false"
+                            src={ResolutionIcon}
+                            width="30px"
+                            height="31.18px"
+                          />
+                        </Col>
+                        <Col lg={10} md={10} ms={12}>
+                          <span
+                            className={
+                              resolution
+                                ? styles["Options_headings_active"]
+                                : styles["Options_headings"]
+                            }
+                          >
+                            {t("Resolutions")}
+                          </span>
+                        </Col>
+                      </Row>
+                    </div>
+                    <hr />
+                  </>
+                )}
+                {checkFeatureIDAvailability(43) && (
+                  <div onClick={openPollsTab} className="cursor-pointer">
+                    <Row className="mt-3">
+                      <Col
+                        lg={2}
+                        md={2}
+                        sm={12}
+                        className="d-flex align-items-center"
                       >
-                        {t("Security-settings")}
-                      </span>
-                    </Col>
-                  </Row>
-                </div>
-                <hr />
-                <div onClick={opentodo} className="cursor-pointer">
-                  <Row className="mt-3">
-                    <Col
-                      lg={2}
-                      md={2}
-                      sm={12}
-                      className="d-flex align-items-center"
-                    >
-                      <img
-                        draggable="false"
-                        src={TodoIcon}
-                        width="30px"
-                        height="30px"
-                      />
-                    </Col>
-                    <Col lg={10} md={10} sm={12}>
-                      <span
-                        className={
-                          todo
-                            ? styles["Options_headings_active"]
-                            : styles["Options_headings"]
-                        }
-                      >
-                        {t("Todo")}
-                      </span>
-                    </Col>
-                  </Row>
-                </div>
-                <hr />
-                <div onClick={openMeetingTab} className="cursor-pointer">
-                  <Row className="mt-3">
-                    <Col
-                      lg={2}
-                      md={2}
-                      sm={12}
-                      className="d-flex align-items-center"
-                    >
-                      <img
-                        draggable="false"
-                        src={MeetingIcon}
-                        width="35.79px"
-                        height="27.3px"
-                      />
-                    </Col>
-                    <Col lg={10} md={10} ms={12}>
-                      <span
-                        className={
-                          meetingsState
-                            ? styles["Options_headings_active"]
-                            : styles["Options_headings"]
-                        }
-                      >
-                        {t("Meetings")}
-                      </span>
-                    </Col>
-                  </Row>
-                </div>
-                <hr />
-                <div className="cursor-pointer" onClick={openCalenderTab}>
-                  <Row className="mt-3">
-                    <Col
-                      lg={2}
-                      md={2}
-                      sm={12}
-                      className="d-flex align-items-center"
-                    >
-                      <img
-                        draggable="false"
-                        src={Calender}
-                        width="28.47px"
-                        height="28.47px"
-                      />
-                    </Col>
-                    <Col lg={10} md={10} ms={12}>
-                      <span
-                        className={
-                          calender
-                            ? styles["Options_headings_active"]
-                            : styles["Options_headings"]
-                        }
-                      >
-                        {t("Calender")}
-                      </span>
-                    </Col>
-                  </Row>
-                </div>
-                <hr />
-                <div onClick={openCommitteTab} className="cursor-pointer">
-                  <Row className="mt-3">
-                    <Col
-                      lg={2}
-                      md={2}
-                      sm={12}
-                      className="d-flex align-items-center"
-                    >
-                      <img
-                        draggable="false"
-                        src={Committee}
-                        width="35.8px"
-                        height="34.63px"
-                      />
-                    </Col>
-                    <Col lg={10} md={10} ms={12}>
-                      <span
-                        className={
-                          committee
-                            ? styles["Options_headings_active"]
-                            : styles["Options_headings"]
-                        }
-                      >
-                        {t("Committees")}
-                      </span>
-                    </Col>
-                  </Row>
-                </div>
-                <hr />
-                <div onClick={openGroupTab} className="cursor-pointer">
-                  <Row className="mt-3">
-                    <Col
-                      lg={2}
-                      md={2}
-                      sm={12}
-                      className="d-flex align-items-center"
-                    >
-                      <img
-                        draggable="false"
-                        src={GroupIcon}
-                        width="29px"
-                        height="26.04px"
-                      />
-                    </Col>
-                    <Col lg={10} md={10} ms={12}>
-                      <span
-                        className={
-                          group
-                            ? styles["Options_headings_active"]
-                            : styles["Options_headings"]
-                        }
-                      >
-                        {t("Groups")}
-                      </span>
-                    </Col>
-                  </Row>
-                </div>
-                <hr />
-                <div onClick={openResolutionTab} className="cursor-pointer">
-                  <Row className="mt-3">
-                    <Col
-                      lg={2}
-                      md={2}
-                      sm={12}
-                      className="d-flex align-items-center"
-                    >
-                      <img
-                        draggable="false"
-                        src={ResolutionIcon}
-                        width="30px"
-                        height="31.18px"
-                      />
-                    </Col>
-                    <Col lg={10} md={10} ms={12}>
-                      <span
-                        className={
-                          resolution
-                            ? styles["Options_headings_active"]
-                            : styles["Options_headings"]
-                        }
-                      >
-                        {t("Resolutions")}
-                      </span>
-                    </Col>
-                  </Row>
-                </div>
-                <hr />
-                <div onClick={openPollsTab} className="cursor-pointer">
-                  <Row className="mt-3">
-                    <Col
-                      lg={2}
-                      md={2}
-                      sm={12}
-                      className="d-flex align-items-center"
-                    >
-                      <img
-                        draggable="false"
-                        src={pollsIcon}
-                        width="33.52px"
-                        height="34.59px"
-                      />
-                    </Col>
-                    <Col lg={10} md={10} ms={12}>
-                      <span
-                        className={
-                          polls
-                            ? styles["Options_headings_active"]
-                            : styles["Options_headings"]
-                        }
-                      >
-                        {t("Polls")}
-                      </span>
-                    </Col>
-                  </Row>
-                </div>
+                        <img
+                          draggable="false"
+                          src={pollsIcon}
+                          width="33.52px"
+                          height="34.59px"
+                        />
+                      </Col>
+                      <Col lg={10} md={10} ms={12}>
+                        <span
+                          className={
+                            polls
+                              ? styles["Options_headings_active"]
+                              : styles["Options_headings"]
+                          }
+                        >
+                          {t("Polls")}
+                        </span>
+                      </Col>
+                    </Row>
+                  </div>
+                )}
               </Col>
               <Col
                 lg={1}
@@ -1206,7 +1240,7 @@ const OrganizationLevelSetting = () => {
                 sm={4}
                 className="m-0 p-0 justify-content-start"
               >
-                {securitystate ? (
+                {securitystate && checkFeatureIDAvailability(36) ? (
                   <>
                     <Row className="mt-3">
                       <Col lg={12} md={12} sm={12}>
@@ -1222,7 +1256,7 @@ const OrganizationLevelSetting = () => {
                     </Row>
                   </>
                 ) : null}
-                {todo ? (
+                {todo && checkFeatureIDAvailability(37) ? (
                   <>
                     <Row className="mt-3">
                       <Col lg={12} md={12} sm={12}>
@@ -1366,7 +1400,7 @@ const OrganizationLevelSetting = () => {
                     </Row>
                   </>
                 ) : null}
-                {meetingsState ? (
+                {meetingsState && checkFeatureIDAvailability(38) ? (
                   <>
                     <Row className="mt-3">
                       <Col lg={12} md={12} sm={12}>
@@ -1470,7 +1504,7 @@ const OrganizationLevelSetting = () => {
                     </Row>
                   </>
                 ) : null}
-                {calender ? (
+                {calender && checkFeatureIDAvailability(39) ? (
                   <>
                     <Row className="mt-3">
                       <Col lg={12} md={12} sm={12}>
@@ -1500,7 +1534,7 @@ const OrganizationLevelSetting = () => {
                     </Row>
                   </>
                 ) : null}
-                {committee ? (
+                {committee && checkFeatureIDAvailability(40) ? (
                   <>
                     <Row>
                       <Col
@@ -1685,7 +1719,7 @@ const OrganizationLevelSetting = () => {
                     </Row>
                   </>
                 ) : null}
-                {group ? (
+                {group && checkFeatureIDAvailability(41) ? (
                   <>
                     <Row>
                       <Col
@@ -1862,7 +1896,7 @@ const OrganizationLevelSetting = () => {
                     </Row>
                   </>
                 ) : null}
-                {resolution ? (
+                {resolution && checkFeatureIDAvailability(42) ? (
                   <>
                     <Row className="mt-4">
                       <Col lg={12} md={12} sm={12}>
@@ -1964,7 +1998,7 @@ const OrganizationLevelSetting = () => {
                     </Row>
                   </>
                 ) : null}
-                {polls ? (
+                {polls && checkFeatureIDAvailability(43) ? (
                   <>
                     <Row className="mt-4">
                       <Col lg={12} md={12} sm={12}>
@@ -2106,7 +2140,7 @@ const OrganizationLevelSetting = () => {
                 />
               </Col>
               <Col lg={3} md={3} sm={3} className="m-0 p-0">
-                {calender ? (
+                {calender && checkFeatureIDAvailability(39) ? (
                   <>
                     <Row className="mt-3">
                       <Col
@@ -2138,7 +2172,7 @@ const OrganizationLevelSetting = () => {
                     </Row>
                   </>
                 ) : null}
-                {securitystate ? (
+                {securitystate && checkFeatureIDAvailability(36) ? (
                   <>
                     <Row className="mt-3">
                       <Col
@@ -2210,7 +2244,7 @@ const OrganizationLevelSetting = () => {
                     </Row>
                   </>
                 ) : null}
-                {resolution ? (
+                {resolution && checkFeatureIDAvailability(42) ? (
                   <>
                     <Row className="mt-3">
                       <Col
@@ -2231,7 +2265,7 @@ const OrganizationLevelSetting = () => {
                     </Row>
                   </>
                 ) : null}
-                {meetingsState ? (
+                {meetingsState && checkFeatureIDAvailability(38) ? (
                   <>
                     <Row className="mt-3">
                       <Col
@@ -2261,7 +2295,12 @@ const OrganizationLevelSetting = () => {
           </Col>
         </Row>
         <Row>
-          <Col lg={12} md={12} sm={12} className="d-flex justify-content-end mb-2">
+          <Col
+            lg={12}
+            md={12}
+            sm={12}
+            className="d-flex justify-content-end mb-2"
+          >
             <Button
               text={t("Update")}
               className={styles["New_settings_Update_Button"]}

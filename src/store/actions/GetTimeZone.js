@@ -55,7 +55,7 @@ const getTimeZone = (navigate, t) => {
               dispatch(
                 timeZoneSuccess(
                   response.data.responseResult.timeZones,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
