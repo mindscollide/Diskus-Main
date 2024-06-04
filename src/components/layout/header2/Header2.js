@@ -748,41 +748,6 @@ const Header2 = () => {
                           }
                           onClick={dropDownMenuFunction}
                         >
-                          {t("Recently-added-files")}
-                        </Dropdown.Item>
-                        <Dropdown.Item
-                          className="d-flex title-className"
-                          // onClick={RecentFilesTab}
-                        >
-                          <Nav.Link
-                            as={Link}
-                            to={
-                              (NewMeetingreducer.scheduleMeetingPageFlag ===
-                                true ||
-                                NewMeetingreducer.viewProposeDateMeetingPageFlag ===
-                                  true ||
-                                NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
-                                  true ||
-                                NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
-                                  true ||
-                                NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
-                                  true ||
-                                NewMeetingreducer.proposeNewMeetingPageFlag ===
-                                  true) &&
-                              NewMeetingreducer.viewMeetingFlag === false
-                                ? "/DisKus/Meeting"
-                                : "/DisKus/Minutes"
-                            }
-                            onClick={handleMeetingPendingApprovals}
-                            className="pendingApprovalsNav"
-                          >
-                            {t("Pending-approvals")}
-                          </Nav.Link>
-                        </Dropdown.Item>
-                      </DropdownButton>
-                    )}
-                  </div>
-                </Tooltip>
                           {checkFeatureIDAvailability(1) ? (
                             <>
                               <Dropdown.Item

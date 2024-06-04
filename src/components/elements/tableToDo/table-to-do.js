@@ -16,7 +16,7 @@ const CustomTableToDo = ({
   rowSelection,
   onRow,
   sortDirections,
-  prefClassName
+  prefClassName,
   rowHoverBg,
 }) => {
   const { Text } = Typography;
