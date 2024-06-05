@@ -642,7 +642,19 @@ const UnpublishedProposedMeeting = ({
           searchMeetings.meetings !== undefined &&
           searchMeetings.meetings.length > 0
         ) {
-          let copyMeetingData = [...searchMeetings.meetings];
+          // Create a deep copy of the meetings array
+          let copyMeetingData = searchMeetings.meetings.map((meeting) => ({
+            ...meeting,
+            meetingAgenda: meeting.meetingAgenda.filter(
+              (agenda) => agenda.objMeetingAgenda.canView
+            ),
+          }));
+          copyMeetingData.forEach((data) => {
+            data.meetingAgenda = data.meetingAgenda.filter((agenda) => {
+              return agenda.objMeetingAgenda.canView === true;
+            });
+          });
+
           if (checkFeatureIDAvailability(12)) {
             setRow(copyMeetingData);
           } else {

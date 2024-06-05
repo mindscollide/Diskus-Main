@@ -66,15 +66,33 @@ const BillProcessStepThree = () => {
         UserMangementReducer.getAllSelectedPakagesData !== null &&
         UserMangementReducer.getAllSelectedPakagesData !== undefined
       ) {
-        setGetAllPakagesData(
+    
+        if (
           UserMangementReducer.getAllSelectedPakagesData
             .organizationSubscription.organizationSelectedPackages
-        );
-
-        setExpiryDate(
+            !== null &&
           UserMangementReducer.getAllSelectedPakagesData
-            .organizationSubscription.subscriptionExpiryDate
-        );
+            .organizationSubscription.organizationSelectedPackages
+            !==
+            undefined &&
+          UserMangementReducer.getAllSelectedPakagesData
+            .organizationSubscription.organizationSelectedPackages
+            .length > 0
+        ) {
+          setGetAllPakagesData(
+            UserMangementReducer.getAllSelectedPakagesData
+              .organizationSubscription.organizationSelectedPackages
+          );
+        }
+        if (
+          UserMangementReducer.getAllSelectedPakagesData
+            .organizationSubscription.subscriptionExpiryDate !== null
+        ) {
+          setExpiryDate(
+            UserMangementReducer.getAllSelectedPakagesData
+              .organizationSubscription.subscriptionExpiryDate
+          );
+        }
       }
     } catch (error) {
       console.log(error);

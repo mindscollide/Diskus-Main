@@ -1966,6 +1966,7 @@
   "Organization-is-currently-locked-please-contact-the-global-Admin-for-further-assistance": "Organization is currently locked. Please contact the Global Admin for further assistance.",
   "You-have-not-been-assigned-any-license-please-contact-the-admin-for-further-assistance": "You have not been assigned any license. Please contact the admin for further assistance.",
   "Information-saved": "Information saved",
+  "Send-for-approval": "Send for approval",
   "Leave-a-comment": "Leave a comment",
   "Write-a-reason": "Write a reason",
   "Hide-comment": "Hide Comment",
@@ -1985,10 +1986,13 @@
   "Signed": "Signed",
   "Declined": "Declined",
   "Add-reviewers": "Add Reviewers",
+  "File-name": "File Name",
+  "Signatories": "Signatories",
+  "Sent-on": "Sent On",
+  "Date-and-time": "Date and Time",
   "Country-selection-is-required": "Country selection is required",
   "Trial-requested-successfully": "Trial Requested Successfully",
   "User-is-not-an-admin-user": "User is not an admin user",
-  "Error-inserting-trial-request": "Error inserting trial request",
   "Trial-requested-successfully-and-auto-extended": "Trial Requested Successfully and Auto Extended",
   "Request-already-exists": "request already exists",
   "Trial-extension-already-given": "trial extension already given",
@@ -2016,5 +2020,8 @@
   "Agenda-without-attachments": "Agenda without Attachments",
   "Board-deck-IT": "Board deck - IT Departmental Meeting",
   "Please-enter-designation": "Please Enter Designation",
-  "Email-sent-successfully": "Email sent successfully"
+  "Email-sent-successfully": "Email sent successfully",
+  "You-are-offline": "You are offline",
+  "Changes-made-now-will-not-be-saved": "Changes made now will not be saved",
+  "USER_DELETED": "Your account status in [organizationName] has been changed"
 }

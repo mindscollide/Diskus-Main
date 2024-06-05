@@ -15,6 +15,7 @@ import DescendIcon from "./../Images/SorterIconDescend.png";
 import AscendIcon from "./../Images/SorterIconAscend.png";
 import ArrowDownIcon from "./../Images/Arrow-down.png";
 import ArrowUpIcon from "./../Images/Arrow-up.png";
+import ReviewSignature from "../../DataRoom/SignatureApproval/ReviewAndSign/ReviewSignature";
 
 // Functional component for pending approvals section
 const PendingApproval = () => {
@@ -390,7 +391,9 @@ const PendingApproval = () => {
                 </Col>
               </Row>{" "}
             </>
-          ) : null}
+          ) : (
+            <ReviewSignature />
+          )}
         </Container>
       </Paper>
     </section>

@@ -623,15 +623,22 @@ const enterPasswordvalidation = (value, navigate, t) => {
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_10:
           if (response.data.responseResult.hasAdminRights) {
+            mqttConnection(response.data.responseResult.authToken.userID);
+
             dispatch(
               enterPasswordSuccess(
                 response.data.responseResult,
                 t("Password-verified-admin-user")
               )
             );
-            navigate("/Admin/ManageUsers");
+            if (response.data.responseResult.authToken.isFirstLogIn) {
+              navigate("/Admin/ManageUsers");
+            } else {
+              navigate("/Diskus");
+            }
             clearLocalStorageAtloginresponce(dispatch, 1, navigate);
           } else if (response.data.responseResult.hasUserRights) {
+            mqttConnection(response.data.responseResult.authToken.userID);
             if (response.data.responseResult.authToken.isFirstLogIn) {
               if (RSVP !== undefined && RSVP !== null) {
                 navigate("/DisKus/Meeting/Useravailabilityformeeting");
@@ -671,11 +678,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_11:
           if (response.data.responseResult.hasAdminRights) {
-            if (response.data.responseResult.authToken.isFirstLogIn) {
-              navigate("/Admin/ManageUsers");
-            } else {
-              navigate("/Admin/ManageUsers");
-            }
+            mqttConnection(response.data.responseResult.authToken.userID);
+            navigate("/Admin/ManageUsers");
             dispatch(
               enterPasswordSuccess(
                 response.data.responseResult,
@@ -691,6 +695,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_12:
           if (response.data.responseResult.hasUserRights) {
+            mqttConnection(response.data.responseResult.authToken.userID);
+
             if (response.data.responseResult.authToken.isFirstLogIn) {
               if (RSVP !== undefined && RSVP !== null) {
                 navigate("/DisKus/Meeting/Useravailabilityformeeting");
@@ -738,37 +744,6 @@ const enterPasswordvalidation = (value, navigate, t) => {
           // route to onboard
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_17:
-          //yeah pay outstanding per lai jai ga
-          // if (response.data.responseResult.hasAdminRights) {
-          //   clearLocalStorageAtloginresponce(dispatch,1, navigate);
-          //   localStorage.removeItem("LocalUserRoutes");
-          //   localStorage.setItem("VERIFICATION", true);
-          //   packageFeatureIDs = [33];
-          //   localStorage.setItem(
-          //     "packageFeatureIDs",
-          //     JSON.stringify(packageFeatureIDs)
-          //   );
-          //   localStorage.setItem(
-          //     "LocalAdminRoutes",
-          //     JSON.stringify([
-          //       { id: 33, name: "PayOutstanding" },
-          //       { id: 200, name: "Admin" },
-          //     ])
-          //   );
-          //   navigate("/Admin/PayOutstanding");
-          //   dispatch(
-          //     enterPasswordSuccess(
-          //       response.data.responseResult,
-          //       t("Password-verified-and-subscription-not-active")
-          //     )
-          //   );
-          // } else {
-          //   clearLocalStorageAtloginresponce(dispatch,2, navigate);
-          //  dispatch(LoginFlowRoutes(1));
-          //   localStorage.removeItem("LocalUserRoutes");
-          //   localStorage.setItem("VERIFICATION", false);
-          //   dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
-          // }
           if (response.data.responseResult.hasAdminRights) {
             if (checkFeatureIDAvailability(33)) {
               packageFeatureIDs = [203, 28, 29, 30, 34, 218];

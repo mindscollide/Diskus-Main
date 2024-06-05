@@ -12,9 +12,6 @@ import {
   NotFound,
   OnBoard,
   TodoList,
-  AddUser,
-  AllUserPage,
-  EditUser,
   Invoice,
   PaymentHistory,
   PayOutstanding,
@@ -40,8 +37,6 @@ import {
   TwoFactor,
   TwoFacSendEmail,
   VerificationIphone,
-  VerificationCodeThree,
-  SigninDenied,
   ForgotPasswordVerification,
   UpdatePasswordSuccessfully,
   Committee,
@@ -58,10 +53,7 @@ import {
 } from "../container";
 
 import DocumentViewer from "../components/elements/webviewer/DocumentViewer";
-import PrivateNonActive from "./PrivateNonActive";
 import PrivateAdminRoute from "./privateadmin_routes";
-import PrivateAdminRouteNonActive from "./privateadminNonactive_routes";
-import PrivateParAdminRouteNonActive from "./PrivateParAdminRouteNonActive";
 import PrivateRoutes from "./private_routes";
 import Reports from "../container/Admin/Reports/Reports";
 import SignatureViewer from "../components/elements/signaturewebviewer/signatureviewer";
@@ -87,10 +79,10 @@ import PakageDetailsUMUpgrade from "../container/pages/UserMangement/AdminUserMa
 import PaymentProcess from "../container/pages/UserMangement/PaymentProcess/PaymentProcess";
 import { getLocalStorageItemNonActiveCheck } from "../commen/functions/utils";
 import PaymentTest from "../container/pages/UserMangement/PaymentTestPage/PaymentTest";
+import ReviewSignature from "../container/DataRoom/SignatureApproval/ReviewAndSign/ReviewSignature";
+import PendingApproval from "../container/MinutesNewFlow/pendingApprovals/PendingApprovals";
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
-{
-  /* <Route path="Minutes" element={<MinutesFlow />} /> */
-}
+
 
 export const router = createHashRouter(
   createRoutesFromElements(
@@ -108,8 +100,7 @@ export const router = createHashRouter(
         element={<PakageDetailsUserManagement />}
       />
       <Route path="/signuporganization" element={<Signup />} />
-      {/* <Route path="/" element={<ValidateEmail />} /> */}
-      {/* <Route path="/forgotpasssowrd" element={<ForgotPassword />} /> */}
+
       <Route
         path="/forgotpasswordVerification"
         element={<ForgotPasswordVerification />}
@@ -130,15 +121,8 @@ export const router = createHashRouter(
       />
       {/* Two Fac Routes */}
       <Route path="/twofac" element={<TwoFactor />} />
-      {/* <Route path="/sendmailwithdevice" element={<SendEmailRealmeXtra />} /> */}
       <Route path="/twofacmultidevice" element={<TwoFacSendEmail />} />
       <Route path="/selectfrommultidevices" element={<VerificationIphone />} />
-      {/* <Route path="/2FAverificationotp" element={<VerificationCodeOne />} /> */}
-      {/* <Route
-        path="/2FAverificationdevieotp"
-        element={<VerificationCodeThree />}
-      /> */}
-      {/* <Route path="/SigninDenied" element={<SigninDenied />} /> */}
       <Route path="/404" element={<NotFound />} />
       <Route path="*" element={<NotFound />} />
       {/* ============================================================ */}
@@ -174,6 +158,14 @@ export const router = createHashRouter(
             element={
               <RouteWrapperUser name="home">
                 <Home />
+              </RouteWrapperUser>
+            }
+          />
+        <Route
+            path="Minutes"
+            element={
+              <RouteWrapperUser name="Minutes">
+                <MinutesFlow />
               </RouteWrapperUser>
             }
           />
@@ -304,7 +296,6 @@ export const router = createHashRouter(
             element={
               <RouteWrapperUser name="polling">
                 <Polling />
-                {/* <Polling /> */}
               </RouteWrapperUser>
             }
           />

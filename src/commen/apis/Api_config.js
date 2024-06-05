@@ -1585,7 +1585,12 @@ const changeSelectedSubscription = {
 const CancelTrailandUpdageOrganiztionRM = {
   RequestMethod: "ServiceManager.CancelTrialAndUpgradeOrganizationSubscription",
 };
+
+const GetAllSignatureFlowDocumentsForCreatorRM = {
+  RequestMethod: "ServiceManager.GetAllSignatureFlowDocumentsForCreator",
+};
 export {
+  GetAllSignatureFlowDocumentsForCreatorRM,
   ValidateEmailRelatedStringPolls,
   ValidateEmailRelatedString,
   revokeMicrosoftToken,
@@ -2005,5 +2010,5 @@ export {
   paymentStatus,
   downloadAttachmentTalk,
   changeSelectedSubscription,
-  CancelTrailandUpdageOrganiztionRM
+  CancelTrailandUpdageOrganiztionRM,
 };

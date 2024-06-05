@@ -8,6 +8,7 @@ import {
   saveSignatureDocumentRM,
   getAnnotationOfDataroomAttachment,
   addAnnotationOnDataroomAttachment,
+  GetAllSignatureFlowDocumentsForCreatorRM,
 } from "../../commen/apis/Api_config";
 import { workflowApi, dataRoomApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
@@ -1109,7 +1110,115 @@ const sendDocumentIdApi = (Data, navigate, t) => {
     };
   });
 };
+
+const getAllSignaturesDocumentsforCreator_init = () => {
+  return {
+    type: actions.GETALLSIGNATUREFLOWDOCUMENTSFORCREATOR_INIT,
+  };
+};
+const getAllSignaturesDocumentsforCreator_success = (response, message) => {
+  return {
+    type: actions.GETALLSIGNATUREFLOWDOCUMENTSFORCREATOR_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const getAllSignaturesDocumentsforCreator_fail = (message) => {
+  return {
+    type: actions.GETALLSIGNATUREFLOWDOCUMENTSFORCREATOR_ISFAIL,
+    message: message,
+  };
+};
+const getAllSignaturesDocumentsforCreatorApi = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getAllSignaturesDocumentsforCreator_init());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      GetAllSignatureFlowDocumentsForCreatorRM.RequestMethod
+    );
+    form.append("RequestData", JSON.stringify(Data));
+
+    axios({
+      method: "post",
+      url: workflowApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetAllSignatureFlowDocumentsForCreator_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllSignaturesDocumentsforCreator_success(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetAllSignatureFlowDocumentsForCreator_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllSignaturesDocumentsforCreator_fail(t("No-data-available"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetAllSignatureFlowDocumentsForCreator_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllSignaturesDocumentsforCreator_fail(
+                  t("Something-went-wrong")
+                )
+              );
+            } else {
+              dispatch(
+                getAllSignaturesDocumentsforCreator_fail(
+                  t("Something-went-wrong")
+                )
+              );
+            }
+          } else {
+            dispatch(
+              getAllSignaturesDocumentsforCreator_fail(
+                t("Something-went-wrong")
+              )
+            );
+          }
+        } else {
+          dispatch(
+            getAllSignaturesDocumentsforCreator_fail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          getAllSignaturesDocumentsforCreator_fail(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
 export {
+  getAllSignaturesDocumentsforCreatorApi,
   createWorkflowApi,
   saveWorkflowApi,
   getWorkFlowByWorkFlowIdwApi,
