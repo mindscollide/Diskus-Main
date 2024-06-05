@@ -116,7 +116,11 @@ import {
 } from "../../store/actions/DataRoom2_actions";
 import FileDetailsModal from "./FileDetailsModal/FileDetailsModal";
 import copyToClipboard from "../../hooks/useClipBoard";
-import { createWorkflowApi } from "../../store/actions/workflow_actions";
+import {
+  createWorkflowApi,
+  getAllSignaturesDocumentsforCreatorApi,
+} from "../../store/actions/workflow_actions";
+import ApprovalSend from "./SignatureApproval/ApprovalSend/ApprovalSend";
 import { checkFeatureIDAvailability } from "../../commen/functions/utils";
 
 const DataRoom = () => {
@@ -136,7 +140,7 @@ const DataRoom = () => {
   const [optionsFileisShown, setOptionsFileisShown] = useState(false);
   const [optionsFolderisShown, setOptionsFolderisShown] = useState(false);
   const [dataRoomString, setDataRoomString] = useState("");
-  const { uploadReducer, DataRoomReducer, LanguageReducer } = useSelector(
+  const { uploadReducer, DataRoomReducer, LanguageReducer, SignatureWorkFlowReducer } = useSelector(
     (state) => state
   );
   const searchBarRef = useRef();
@@ -327,6 +331,7 @@ const DataRoom = () => {
           OrganizationID: Number(organizationID),
         };
         dispatch(getRecentDocumentsApi(navigate, t, Data));
+      } else if (currentView === 5) {
       } else {
         dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 1));
         localStorage.removeItem("folderID");
@@ -467,11 +472,74 @@ const DataRoom = () => {
       copyToClipboard(DataRoomReducer.getCreateFolderLink);
     }
   }, [DataRoomReducer.getCreateFolderLink]);
+
   useEffect(() => {
     if (!isOnline) {
       // CanceUpload();
     }
   }, [isOnline]);
+
+  useEffect(() => {
+    if(SignatureWorkFlowReducer.getAllSignatureDocumentsforCreator === null) {}
+    let signatureFlowDocumentsForCreator = [
+      {
+        workFlowID: 25,
+        workFlowStatusID: 4,
+        fileID: 7495,
+        fileName: "calendar qs.pdf",
+        numberOfSignatories: 0,
+        sentOn: "-",
+        status: "Draft",
+      },
+      {
+        workFlowID: 24,
+        workFlowStatusID: 1,
+        fileID: 7494,
+        fileName: "calendar qs.pdf",
+        numberOfSignatories: 2,
+        sentOn: "-",
+        status: "Pending Signature",
+      },
+      {
+        workFlowID: 23,
+        workFlowStatusID: 4,
+        fileID: 7492,
+        fileName: "CALENDAR API OBSERVATIONS.pdf",
+        numberOfSignatories: 0,
+        sentOn: "-",
+        status: "Draft",
+      },
+      {
+        workFlowID: 22,
+        workFlowStatusID: 4,
+        fileID: 7490,
+        fileName: "AXIS NOTIFICATION MECHANISM CHANGES.pdf",
+        numberOfSignatories: 0,
+        sentOn: "-",
+        status: "Draft",
+      },
+      {
+        workFlowID: 21,
+        workFlowStatusID: 4,
+        fileID: 7489,
+        fileName: "AXIS NOTIFICATION MECHANISM CHANGES.pdf",
+        numberOfSignatories: 0,
+        sentOn: "-",
+        status: "Draft",
+      },
+      {
+        workFlowID: 20,
+        workFlowStatusID: 4,
+        fileID: 7487,
+        fileName: "AXIS NOTIFICATION MECHANISM CHANGES.pdf",
+        numberOfSignatories: 0,
+        sentOn: "-",
+        status: "Draft",
+      },
+    ];
+    
+    // SignatureWorkFlowReducer
+  }, [SignatureWorkFlowReducer.getAllSignatureDocumentsforCreator])
 
   const ClosingNotificationRenameFolder = () => {
     setShowrenamenotification(false);
@@ -523,7 +591,20 @@ const DataRoom = () => {
     setListviewactive(true);
     setGridbtnactive(false);
   };
+  const SendForApprovalButton = async () => {
+    setSRowsData(0);
 
+    localStorage.setItem("setTableView", 5);
+    let Data = { pageNo: 1, pageSize: 10 };
+    await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
+    //  localStorage.set
+    setGetAllData([]);
+    setSharedwithmebtn(true);
+    localStorage.removeItem("folderID");
+    if (searchoptions) {
+      setSearchoptions(false);
+    }
+  };
   const SharewithmeButonShow = async () => {
     setSRowsData(0);
 
@@ -3342,11 +3423,11 @@ const DataRoom = () => {
                 </Dropdown>
               </Col>
 
-              <Col sm={1} md={1} lg={1}></Col>
+              <Col sm={12} md={1} lg={1}></Col>
               <Col
                 lg={6}
                 md={6}
-                sm={6}
+                sm={12}
                 className="d-flex position-relative Inputfield_for_data_room justify-content-end "
               >
                 <SearchBarComponent
@@ -3462,6 +3543,17 @@ const DataRoom = () => {
                             // onClick={showCancellUploadModal}
                             onClick={SharewithmeButonShow}
                           />
+                          <Button
+                            text={t("Send-for-approval")}
+                            className={
+                              currentView === 5
+                                ? `${styles["Send_for_approval_btn_active"]}`
+                                : `${styles["Send_for_approval_btn"]}`
+                            }
+                            // onClick={showCancellUploadModal}
+                            onClick={SendForApprovalButton}
+                          />
+                          {/* ApprovalSend */}
                           <Button
                             text={t("Recently-added")}
                             className={
@@ -3682,6 +3774,8 @@ const DataRoom = () => {
                             </Col>
                           </Row>
                         </>
+                      ) : currentView === 5 ? (
+                        <ApprovalSend />
                       ) : (
                         <>
                           <Row className="mt-3">
