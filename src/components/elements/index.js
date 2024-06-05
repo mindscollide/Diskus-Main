@@ -49,7 +49,11 @@ import UploadProgressBar from "./upload_progressbar/Upload_Progressbar";
 import CustomRadio2 from "./radio/Radio2";
 import AddtionalUserCard from "./AddtionalUsersCard/AddtionalUsersCard";
 import AttachmentViewer from "./fileAttachment/attachment";
+import ProgressLine from "./progressBarPending/ProgressBarPending";
+import SelectComment from "./select-comment/SelectComment";
+
 export {
+  SelectComment,
   AttachmentViewer,
   CustomOnboardModal,
   // UploadButton,
@@ -102,5 +106,6 @@ export {
   CustomRadio2,
   LoaderPanel,
   LoaderPanelVideoScreen,
+  ProgressLine,
   AddtionalUserCard,
 };

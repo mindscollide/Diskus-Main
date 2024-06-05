@@ -61,6 +61,8 @@ const ManageUsers = () => {
 
   const [deleteModalData, setDeleteModalData] = useState(null);
 
+  const [totalUserCount, setTotalUserCount] = useState(0);
+
   const [enterpressed, setEnterpressed] = useState(false);
 
   const [flagForStopRerendring, setFlagForStopRerendring] = useState(false);
@@ -116,11 +118,23 @@ const ManageUsers = () => {
   //AllOrganizationsUsers Api Data
   useEffect(() => {
     const Users = UserMangementReducer.allOrganizationUsersData;
+
+    console.log(Users, "UsersUsersUsers");
     if (
       Users &&
       Users.organizationUsers &&
       Users.organizationUsers.length > 0
     ) {
+      let UserCount = 0;
+      const userStats =
+        UserMangementReducer.allOrganizationUsersData.selectedPackageDetails;
+
+      userStats.forEach((data) => {
+        console.log(data, "UserCountUserCount");
+        UserCount += data.headCount - data.packageAllotedUsers;
+      });
+
+      setTotalUserCount(UserCount);
       setManageUserGrid(
         UserMangementReducer.allOrganizationUsersData.organizationUsers
       );
@@ -128,6 +142,8 @@ const ManageUsers = () => {
       setManageUserGrid([]);
     }
   }, [UserMangementReducer.allOrganizationUsersData]);
+
+  console.log(totalUserCount, "totalUserCounttotalUserCount");
 
   //Table Columns All Users
   const ManageUsersColumn = [
@@ -575,7 +591,7 @@ const ManageUsers = () => {
           <label className={styles["Edit-Main-Heading"]}>
             {t("Manage-user")}
           </label>
-          {checkFeatureIDAvailability(26) ? (
+          {checkFeatureIDAvailability(26) && totalUserCount > 0 ? (
             <Button
               text={t("Add-users")}
               icon={<Plus width={20} height={20} fontWeight={800} />}
@@ -655,7 +671,7 @@ const ManageUsers = () => {
                       >
                         <img
                           src={BlackCrossIcon}
-                          alt=""
+                          alt="Cross Icon"
                           className="cursor-pointer"
                           onClick={handleCrossSearchBox}
                         />
@@ -725,7 +741,6 @@ const ManageUsers = () => {
                           >
                             <Checkbox
                               classNameCheckBoxP="m-0 p-0"
-                              classNameDiv=""
                               checked={searchDetails.searchIsAdmin}
                               onChange={handleSearchIsAdmin}
                             />
@@ -767,7 +782,7 @@ const ManageUsers = () => {
                     </span>
                     <img
                       src={whiteCrossIcon}
-                      alt=""
+                      alt="White Cross"
                       className={styles["CrossIcon_Class"]}
                       width={13}
                       onClick={() => handleRemoveSearchSnippet("Name")}
@@ -781,7 +796,7 @@ const ManageUsers = () => {
                     </span>
                     <img
                       src={whiteCrossIcon}
-                      alt=""
+                      alt="White Cross"
                       className={styles["CrossIcon_Class"]}
                       width={13}
                       onClick={() => handleRemoveSearchSnippet("Email")}
@@ -816,7 +831,7 @@ const ManageUsers = () => {
                 >
                   <img
                     src={BlackCrossIcon}
-                    alt=""
+                    alt="Black Cross"
                     className="cursor-pointer"
                     width={13}
                     onClick={handleTrialAlertRemove}

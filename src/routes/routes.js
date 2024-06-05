@@ -49,6 +49,7 @@ import {
   OrganizationLevelSetting,
   EmptyState,
   RSVP,
+  MinutesFlow,
 } from "../container";
 
 import DocumentViewer from "../components/elements/webviewer/DocumentViewer";
@@ -75,6 +76,8 @@ import PakageDetailsUMUpgrade from "../container/pages/UserMangement/AdminUserMa
 import PaymentProcess from "../container/pages/UserMangement/PaymentProcess/PaymentProcess";
 import { getLocalStorageItemNonActiveCheck } from "../commen/functions/utils";
 import PaymentTest from "../container/pages/UserMangement/PaymentTestPage/PaymentTest";
+import ReviewSignature from "../container/DataRoom/SignatureApproval/ReviewAndSign/ReviewSignature";
+import PendingApproval from "../container/MinutesNewFlow/pendingApprovals/PendingApprovals";
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
 export const router = createHashRouter(
@@ -135,6 +138,14 @@ export const router = createHashRouter(
             element={
               <RouteWrapperUser name="home">
                 <Home />
+              </RouteWrapperUser>
+            }
+          />
+        <Route
+            path="Minutes"
+            element={
+              <RouteWrapperUser name="Minutes">
+                <MinutesFlow />
               </RouteWrapperUser>
             }
           />

@@ -19,8 +19,8 @@ import { Check2 } from "react-bootstrap-icons";
 import {
   AddOrganizationsUserApi,
   GetOrganizationSelectedPackagesByOrganizationIDApi,
+  getOrganizationPackageUserStatsAPI,
 } from "../../../../../store/actions/UserManagementActions";
-import { Numeral } from "numeral";
 const AddUsers = () => {
   const { t } = useTranslation();
 
@@ -31,6 +31,10 @@ const AddUsers = () => {
   const { UserMangementReducer } = useSelector((state) => state);
 
   let organizationID = localStorage.getItem("organizationID");
+  let organizationNames = localStorage.getItem("organizatioName");
+
+  // get IsTrial from LocalStorage
+  let isFreeTrial = localStorage.getItem("isTrial");
 
   const { adminReducer } = useSelector((state) => state);
 
@@ -40,6 +44,7 @@ const AddUsers = () => {
   const [companyEmailValidateError, setCompanyEmailValidateError] =
     useState("");
   const [companyEmailValidate, setCompanyEmailValidate] = useState(false);
+  const [totalUserCount, setTotalUserCount] = useState(0);
   const [addUserFreeTrial, setAddUserFreeTrial] = useState({
     Name: {
       value: "",
@@ -63,8 +68,17 @@ const AddUsers = () => {
 
   // before my changes there's an request data going init this API
   //Calling GetOrganizationSelectedPackagesByOrganizationID
+
   useEffect(() => {
     dispatch(GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t));
+    dispatch(getOrganizationPackageUserStatsAPI(navigate, t));
+
+    if (!isFreeTrial) {
+      dispatch(GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t));
+    } else {
+      console.log("FreeTrial");
+    }
+
     return () => {
       setAddUserFreeTrial({
         Name: {
@@ -88,6 +102,31 @@ const AddUsers = () => {
       });
     };
   }, []);
+
+  //User Stats Data
+  useEffect(() => {
+    try {
+      if (
+        UserMangementReducer.getOrganizationUserStatsGraph &&
+        Object.keys(UserMangementReducer.getOrganizationUserStatsGraph).length >
+          0
+      ) {
+        let UserCount = 0;
+        const userStats =
+          UserMangementReducer.getOrganizationUserStatsGraph
+            .selectedPackageDetails;
+
+        userStats.forEach((data) => {
+          console.log(data, "UserCountUserCount");
+          UserCount += data.headCount - data.packageAllotedUsers;
+        });
+
+        setTotalUserCount(UserCount);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [UserMangementReducer.getOrganizationUserStatsGraph]);
 
   //Data from  GetOrganizationSelectedPackagesByOrganizationID
   useEffect(() => {
@@ -359,7 +398,7 @@ const AddUsers = () => {
               <span className={styles["NameCreateAddtional"]}>
                 {t("Organization")}
               </span>
-              <span className={styles["NameClass"]}>Waqas Associates</span>
+              <span className={styles["NameClass"]}>{organizationNames}</span>
             </Col>
           </Row>
           <Row className="mt-3">
@@ -494,12 +533,15 @@ const AddUsers = () => {
             className={styles["AddUserCancelButton"]}
             onClick={handleCancelButton}
           />
-
-          <Button
-            text={t("Create")}
-            className={styles["AddUserCreateButton"]}
-            onClick={handleAddUsers}
-          />
+          {totalUserCount === 0 ? null : (
+            <>
+              <Button
+                text={t("Create")}
+                className={styles["AddUserCreateButton"]}
+                onClick={handleAddUsers}
+              />
+            </>
+          )}
         </Col>
       </Row>
       {UserMangementReducer.Loading ? <Loader /> : null}

@@ -849,7 +849,9 @@ const Dashboard = () => {
               dispatch(userLogOutApiFunc(navigate, t));
             }
           }, 4000);
-         } else if(data.payload.message.toLowerCase() === "USER_DELETED".toLowerCase()) {
+        } else if (
+          data.payload.message.toLowerCase() === "USER_DELETED".toLowerCase()
+        ) {
           setNotification({
             notificationShow: true,
             message: changeMQTTJSONOne(
@@ -865,7 +867,7 @@ const Dashboard = () => {
               dispatch(userLogOutApiFunc(navigate, t));
             }
           }, 4000);
-         } else if (
+        } else if (
           data.payload.message.toLowerCase() ===
           "ORGANIZATION_SUBSCRIPTION_CANCELLED".toLowerCase()
         ) {
@@ -1208,6 +1210,8 @@ const Dashboard = () => {
               // message: `Group ${data.payload.groupTitle} in which you are a member has been set as In-Active`,
             });
           }
+          console.log("CheckCheckCheck", data.payload.message);
+          console.log("CheckCheckCheck", data.payload);
           dispatch(realtimeGroupStatusResponse(data.payload));
           setNotificationID(id);
         }

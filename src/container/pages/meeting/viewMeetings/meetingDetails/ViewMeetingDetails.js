@@ -83,6 +83,7 @@ const ViewMeetingDetails = ({
   setAgenda,
   setEdiorRole,
   setDataroomMapFolderId,
+  setMeetingMaterial,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -245,8 +246,13 @@ const ViewMeetingDetails = ({
   }, []);
 
   const handleUpdateNext = () => {
-    setmeetingDetails(false);
-    setorganizers(true);
+    if (editorRole.role === "Participant") {
+      setmeetingDetails(false);
+      setMeetingMaterial(true);
+    } else {
+      setmeetingDetails(false);
+      setorganizers(true);
+    }
   };
 
   const handleEndDateChange = (index, date) => {

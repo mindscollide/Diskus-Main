@@ -1,0 +1,60 @@
+/* Status Values */
+p.DraftStatus {
+  margin: 0 !important;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #a2a2a2;
+}
+
+p.pendingStatus {
+  color: #d8a709;
+  margin: 0 !important;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+p.SignedStatus {
+  color: #55ce5c;
+  margin: 0 !important;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+p.DeclineStatus {
+  color: #f16b6b;
+  margin: 0 !important;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+.signatories_vale {
+  color: #6172d6;
+  font-weight: 600;
+  text-decoration: underline;
+  font-size: 12px;
+  cursor: pointer;
+}
+.date_vale {
+  color: #5a5a5a;
+  font-size: 12px;
+  font-weight: 600;
+}
+.Sort_icon_descend {
+  user-select: none;
+}
+.Sort_icon_ascend {
+  user-select: none;
+}
+.fileName_Approvals {
+  font-weight: 600;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
