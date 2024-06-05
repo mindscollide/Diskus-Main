@@ -1210,6 +1210,8 @@ const Dashboard = () => {
               // message: `Group ${data.payload.groupTitle} in which you are a member has been set as In-Active`,
             });
           }
+          console.log("CheckCheckCheck", data.payload.message);
+          console.log("CheckCheckCheck", data.payload);
           dispatch(realtimeGroupStatusResponse(data.payload));
           setNotificationID(id);
         }

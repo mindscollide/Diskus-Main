@@ -33,6 +33,7 @@ import {
   resultResolutionFlag,
   voteResolutionFlag,
   viewAttachmentFlag,
+  resolutionMQTTCreate,
 } from "../../store/actions/Resolution_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { Spin, Tooltip } from "antd";
@@ -1077,53 +1078,48 @@ const Resolution = () => {
           (data, index) =>
             data.resolutionID === getData.resolution.pK_ResolutionID
         );
-        if (resolutionView === 2) {
-          if (buttonTab === 3 || buttonTab === 1) {
-            let findVoterisValid =
-              getData?.voters.filter((obj) => obj.fK_UID === Number(userID)) ||
-              getData?.nonVoters.filter((obj) => obj.fK_UID === Number(userID));
+        if (resolutionView === 2 && (buttonTab === 1 || buttonTab === 3)) {
+          // Check if the user is a valid voter or non-voter
+          const findVoterisValid =
+            getData?.voters.find((obj) => obj.fK_UID === Number(userID)) ||
+            getData?.nonVoters.find((obj) => obj.fK_UID === Number(userID));
+          console.log(
+            findIndexModerator,
+            findVoterisValid,
+            getData,
+            "findIndexModeratorfindIndexModerator"
+          );
+          if (findVoterisValid) {
+            const voterResolution = {
+              attachments: getData.attachments,
+              decision: getData.resolution.resolutionDecision,
+              decisionDate: getData.resolution.decisionAnnouncementDateTime,
+              fK_VotingStatus_ID: findVoterisValid.fK_VotingStatus_ID,
+              isAlreadyVoted: findVoterisValid.isAlreadyVoted,
+              isAttachmentAvailable: getData.resolution.isAttachmentAvailable,
+              isVoter: findVoterisValid.isVoter === true ? 1 : 0,
+              resolutionID: getData.resolution.pK_ResolutionID,
+              resolutionStatusID: getData.resolution.fK_ResolutionStatusID,
+              resolutionTitle: getData.resolution.title,
+              voterID: findVoterisValid.pK_RV_ID,
+              votingDeadline: getData.resolution.votingDeadline,
+              votingMethod: getData.resolution.votingMethod,
+              votingStatus: findVoterisValid.status,
+            };
+
             if (findIndexModerator === -1) {
-              let voterResolution = {
-                attachments: getData.attachments,
-                decision: getData.resolution.resolutionDecision,
-                decisionDate: getData.resolution.decisionAnnouncementDateTime,
-                fK_VotingStatus_ID: findVoterisValid[0].fK_VotingStatus_ID,
-                isAlreadyVoted: findVoterisValid[0].isAlreadyVoted,
-                isAttachmentAvailable: getData.isAttachmentAvailable,
-                isVoter: findVoterisValid[0].isVoter,
-                resolutionID: getData.resolution.pK_ResolutionID,
-                resolutionStatusID: getData.resolution.fK_ResolutionStatusID,
-                resolutionTitle: getData.resolution.title,
-                voterID: findVoterisValid[0].pK_RV_ID,
-                votingDeadline: getData.resolution.votingDeadline,
-                votingMethod: getData.resolution.votingMethod,
-                votingStatus: findVoterisValid[0].status,
-              };
-              setSearchVoter([voterResolution, ...isSearchVoter]);
+              setSearchVoter((prev) => [voterResolution, ...prev]);
             } else {
-              let voterResolution = {
-                attachments: getData.attachments,
-                decision: getData.resolution.resolutionDecision,
-                decisionDate: getData.resolution.decisionAnnouncementDateTime,
-                fK_VotingStatus_ID: findVoterisValid[0].fK_VotingStatus_ID,
-                isAlreadyVoted: findVoterisValid[0].isAlreadyVoted,
-                isAttachmentAvailable: getData.isAttachmentAvailable,
-                isVoter: findVoterisValid[0].isVoter,
-                resolutionID: getData.resolution.pK_ResolutionID,
-                resolutionStatusID: getData.resolution.fK_ResolutionStatusID,
-                resolutionTitle: getData.resolution.title,
-                voterID: findVoterisValid[0].pK_RV_ID,
-                votingDeadline: getData.resolution.votingDeadline,
-                votingMethod: getData.resolution.votingMethod,
-                votingStatus: findVoterisValid[0].status,
-              };
-              let copyData = [...isSearchVoter];
-              copyData.splice(findIndexModerator, 1, voterResolution);
-              setSearchVoter(copyData);
+              setSearchVoter((prev) => {
+                const copyData = [...prev];
+                copyData.splice(findIndexModerator, 1, voterResolution);
+                return copyData;
+              });
             }
           }
         }
       } catch {}
+      dispatch(resolutionMQTTCreate(null));
     }
   }, [ResolutionReducer.mqttResolutionCreated]);
 
@@ -1211,6 +1207,7 @@ const Resolution = () => {
     ResolutionReducer.voteResolutionFlag,
     "ResolutionReducerResolutionReducer"
   );
+  console.log(isSearchVoter, "isSearchVoterisSearchVoter");
   return (
     <>
       <section className={styles["resolution_container"]}>
