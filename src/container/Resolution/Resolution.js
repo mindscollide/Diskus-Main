@@ -14,14 +14,14 @@ import thumbsup from "../../assets/images/thumbsup.svg";
 import thumbsdown from "../../assets/images/thumbsdown.svg";
 import AbstainvoterIcon from "../../assets/images/resolutions/Abstainvoter_icon.svg";
 import { useTranslation } from "react-i18next";
-import ScheduleNewResolution from "../../components/elements/ScheduleNewResolution/ScheduleNewResolution";
-import ViewResolution from "../../components/elements/ViewResolution/ViewResolution";
-import ResultResolution from "../../components/elements/ResultsPageResoution/ResultResolution";
+import ScheduleNewResolution from "./ScheduleNewResolution/ScheduleNewResolution";
+import ViewResolution from "./ViewResolution/ViewResolution";
+import ResultResolution from "./ResultsPageResoution/ResultResolution";
 import VotingPage from "../VotingPage/VotingPage";
-import ModalResolutionUpdated from "../ModalResolutionUpdated/ModalResolutionUpdated";
-import ViewAttachments from "../../components/elements/ViewAttachments/ViewAttachments";
+import ModalResolutionUpdated from "./ModalResolutionUpdated/ModalResolutionUpdated";
+import ViewAttachments from "./ViewAttachments/ViewAttachments";
 import Cross from "../../assets/images/Cross-Chat-Icon.png";
-import EditResolution from "../../components/elements/EditResolution/EditResolution";
+import EditResolution from "./EditResolution/EditResolution";
 import {
   clearResponseMessage,
   getResolutionbyResolutionID,
@@ -48,14 +48,13 @@ import AttachmentIcon from "../../assets/images/resolutions/Attachment_Resolutio
 import EmptyResolution from "../../assets/images/resolutions/Empty_Resolution.svg";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
-import ModalCancellResolution2 from "../ModalCancellResolution2/ModalCancellResolution";
+import ModalCancellResolution2 from "./ModalCancellResolution2/ModalCancellResolution";
 import CrossResolution from "../../assets/images/resolutions/cross_icon_resolution.svg";
 import { updateResolutionModal } from "../../store/actions/Resolution_actions";
 import { viewResolutionModal } from "../../store/actions/Resolution_actions";
 import { validateInput } from "../../commen/functions/regex";
 
 import gregorian from "react-date-object/calendars/gregorian";
-import arabic from "react-date-object/calendars/arabic";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import DatePicker, { DateObject } from "react-multi-date-picker";

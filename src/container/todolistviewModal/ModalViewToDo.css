@@ -150,6 +150,7 @@ p.todoModalFileAttach {
   max-height: 75vh !important;
   padding: 0px 30px !important;
   overflow-y: auto;
+  margin-right: 10px;
 }
 
 .modalTodoViewBody::-webkit-scrollbar {
