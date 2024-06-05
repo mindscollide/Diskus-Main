@@ -116,7 +116,10 @@ import {
 } from "../../store/actions/DataRoom2_actions";
 import FileDetailsModal from "./FileDetailsModal/FileDetailsModal";
 import copyToClipboard from "../../hooks/useClipBoard";
-import { createWorkflowApi } from "../../store/actions/workflow_actions";
+import {
+  createWorkflowApi,
+  getAllSignaturesDocumentsforCreatorApi,
+} from "../../store/actions/workflow_actions";
 import ApprovalSend from "./SignatureApproval/ApprovalSend/ApprovalSend";
 import { checkFeatureIDAvailability } from "../../commen/functions/utils";
 
@@ -137,7 +140,7 @@ const DataRoom = () => {
   const [optionsFileisShown, setOptionsFileisShown] = useState(false);
   const [optionsFolderisShown, setOptionsFolderisShown] = useState(false);
   const [dataRoomString, setDataRoomString] = useState("");
-  const { uploadReducer, DataRoomReducer, LanguageReducer } = useSelector(
+  const { uploadReducer, DataRoomReducer, LanguageReducer, SignatureWorkFlowReducer } = useSelector(
     (state) => state
   );
   const searchBarRef = useRef();
@@ -469,11 +472,74 @@ const DataRoom = () => {
       copyToClipboard(DataRoomReducer.getCreateFolderLink);
     }
   }, [DataRoomReducer.getCreateFolderLink]);
+
   useEffect(() => {
     if (!isOnline) {
       // CanceUpload();
     }
   }, [isOnline]);
+
+  useEffect(() => {
+    if(SignatureWorkFlowReducer.getAllSignatureDocumentsforCreator === null) {}
+    let signatureFlowDocumentsForCreator = [
+      {
+        workFlowID: 25,
+        workFlowStatusID: 4,
+        fileID: 7495,
+        fileName: "calendar qs.pdf",
+        numberOfSignatories: 0,
+        sentOn: "-",
+        status: "Draft",
+      },
+      {
+        workFlowID: 24,
+        workFlowStatusID: 1,
+        fileID: 7494,
+        fileName: "calendar qs.pdf",
+        numberOfSignatories: 2,
+        sentOn: "-",
+        status: "Pending Signature",
+      },
+      {
+        workFlowID: 23,
+        workFlowStatusID: 4,
+        fileID: 7492,
+        fileName: "CALENDAR API OBSERVATIONS.pdf",
+        numberOfSignatories: 0,
+        sentOn: "-",
+        status: "Draft",
+      },
+      {
+        workFlowID: 22,
+        workFlowStatusID: 4,
+        fileID: 7490,
+        fileName: "AXIS NOTIFICATION MECHANISM CHANGES.pdf",
+        numberOfSignatories: 0,
+        sentOn: "-",
+        status: "Draft",
+      },
+      {
+        workFlowID: 21,
+        workFlowStatusID: 4,
+        fileID: 7489,
+        fileName: "AXIS NOTIFICATION MECHANISM CHANGES.pdf",
+        numberOfSignatories: 0,
+        sentOn: "-",
+        status: "Draft",
+      },
+      {
+        workFlowID: 20,
+        workFlowStatusID: 4,
+        fileID: 7487,
+        fileName: "AXIS NOTIFICATION MECHANISM CHANGES.pdf",
+        numberOfSignatories: 0,
+        sentOn: "-",
+        status: "Draft",
+      },
+    ];
+    
+    // SignatureWorkFlowReducer
+  }, [SignatureWorkFlowReducer.getAllSignatureDocumentsforCreator])
 
   const ClosingNotificationRenameFolder = () => {
     setShowrenamenotification(false);
@@ -529,6 +595,8 @@ const DataRoom = () => {
     setSRowsData(0);
 
     localStorage.setItem("setTableView", 5);
+    let Data = { pageNo: 1, pageSize: 10 };
+    await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
     //  localStorage.set
     setGetAllData([]);
     setSharedwithmebtn(true);

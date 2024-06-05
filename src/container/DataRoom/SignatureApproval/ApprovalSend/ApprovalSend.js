@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ApprovalSend.module.css";
 import { ChevronDown } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
@@ -11,27 +11,35 @@ import {
   getFileExtension,
   getIconSource,
 } from "../../SearchFunctionality/option";
+import { useSelector } from "react-redux";
 
 const ApprovalSend = () => {
   const { t } = useTranslation();
-
+  const SignatureWorkFlowReducer = useSelector(
+    (state) => state.SignatureWorkFlowReducer
+  );
+  const currentView = JSON.parse(localStorage.getItem("setTableView"));
+  const [signatureListVal, setSignatureListVal] = useState(0);
+  const [approvalsData, setApprovalsData] = useState([]);
+  console.log(approvalsData, "approvalsDataapprovalsDataapprovalsData");
   const [signatoriesList, setSignatoriesList] = useState(false);
   // Columns configuration for the table displaying pending approval data
   const pendingApprovalColumns = [
     {
       // Column for file name
       title: t("File-name"),
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "fileName",
+      key: "fileName",
       className: "nameParticipant",
       align: "left",
       ellipsis: true,
+      width: 200,
       sortDirections: ["ascend", "descend"],
       sortOrder: "ascend",
       sorter: (a, b) => b.name - a.name, // Custom sorter function for sorting by name
       render: (text, record) => {
         return (
-          <span className="d-flex gap-2 align-items-center">
+          <span className="d-flex gap-2 align-items-center ">
             <img src={getIconSource(getFileExtension(text))} />
             <p className={styles["fileName_Approvals"]}>{text}</p>
           </span>
@@ -41,26 +49,41 @@ const ApprovalSend = () => {
     {
       // Column for signatories
       title: t("Signatories"),
-      dataIndex: "signatories",
-      key: "signatories",
+      dataIndex: "numberOfSignatories",
+      key: "numberOfSignatories",
       className: "signatories",
       ellipsis: true,
       sortOrder: "ascend",
+      width: 150,
+      align: "center",
       sortDirections: ["ascend", "descend"],
       sorter: (a, b) => b.name - a.name,
-      render: (text, record) => (
-        <span
-          onClick={() => setSignatoriesList(true)}
-          className={styles["signatories_vale"]}
-        >{` ${text} Signatories`}</span>
-      ),
+      render: (text, record) => {
+        console.log(
+          text,
+          record,
+          "numberOfSignatoriesnumberOfSignatoriesnumberOfSignatories"
+        );
+        return (
+          <span
+            // onClick={() => setSignatoriesList(true)}
+            onClick={() =>
+              handleClickSignatoriesList(record.numberOfSignatories)
+            }
+            className={styles["signatories_vale"]}
+          >{` ${text} Signatories`}</span>
+        );
+      },
     },
     {
       // Column for sent-on date
       title: t("Sent-on"),
-      dataIndex: "sendDate",
-      key: "sendDate",
+      dataIndex: "sentOn",
+      key: "sentOn",
       className: "leaveTimeParticipant",
+
+      width: 100,
+
       ellipsis: true,
       render: (text, record) => (
         <span className={styles["date_vale"]}>{text}</span>
@@ -72,15 +95,17 @@ const ApprovalSend = () => {
       dataIndex: "status",
       key: "status",
       align: "center",
+      width: 150,
+
       className: "statusParticipant",
       filters: [
         // Filter options
         { text: t("Draft"), value: "Draft" },
-        { text: t("Pending-Signature"), value: "Pending" },
+        { text: t("Pending-Signature"), value: "Pending Signature" },
         { text: t("Signed"), value: "Signed" },
         { text: t("Declined"), value: "Decline" },
       ],
-      defaultFilteredValue: ["Draft", "Pending", "Signed", "Decline"],
+      defaultFilteredValue: ["Draft", "Pending Signature", "Signed", "Decline"],
       onFilter: (value, record) => record.status === value, // Filter function
       filterIcon: () => (
         <ChevronDown className="filter-chevron-icon-todolist" />
@@ -92,7 +117,7 @@ const ApprovalSend = () => {
             className={
               text === "Draft"
                 ? styles["DraftStatus"]
-                : text === "Pending"
+                : text === "Pending Signature"
                 ? styles["pendingStatus"]
                 : text === "Signed"
                 ? styles["SignedStatus"]
@@ -105,6 +130,11 @@ const ApprovalSend = () => {
       },
     },
   ];
+
+  const handleClickSignatoriesList = (value) => {
+    setSignatureListVal(value);
+    setSignatoriesList(true);
+  };
 
   // Data for rows of the pending approval table
   const rowsPendingApproval = [
@@ -152,6 +182,71 @@ const ApprovalSend = () => {
     },
     // Add more data as needed
   ];
+  useEffect(() => {
+    // if (SignatureWorkFlowReducer.getAllSignatureDocumentsforCreator === null) {
+    // }
+    if (currentView === 5) {
+      let signatureFlowDocumentsForCreator = [
+        {
+          workFlowID: 25,
+          workFlowStatusID: 4,
+          fileID: 7495,
+          fileName: "calendar qs.pdf",
+          numberOfSignatories: 4,
+          sentOn: "-",
+          status: "Draft",
+        },
+        {
+          workFlowID: 24,
+          workFlowStatusID: 1,
+          fileID: 7494,
+          fileName: "calendar qs.pdf",
+          numberOfSignatories: 8,
+          sentOn: "-",
+          status: "Pending Signature",
+        },
+        {
+          workFlowID: 23,
+          workFlowStatusID: 4,
+          fileID: 7492,
+          fileName: "CALENDAR API OBSERVATIONS.pdf",
+          numberOfSignatories: 2,
+          sentOn: "-",
+          status: "Draft",
+        },
+        {
+          workFlowID: 22,
+          workFlowStatusID: 4,
+          fileID: 7490,
+          fileName: "AXIS NOTIFICATION MECHANISM CHANGES.pdf",
+          numberOfSignatories: 12,
+          sentOn: "-",
+          status: "Draft",
+        },
+        {
+          workFlowID: 21,
+          workFlowStatusID: 4,
+          fileID: 7489,
+          fileName: "AXIS NOTIFICATION MECHANISM CHANGES.pdf",
+          numberOfSignatories: 9,
+          sentOn: "-",
+          status: "Draft",
+        },
+        {
+          workFlowID: 20,
+          workFlowStatusID: 4,
+          fileID: 7487,
+          fileName: "AXIS NOTIFICATION MECHANISM CHANGES.pdf",
+          numberOfSignatories: 3,
+          sentOn: "-",
+          status: "Draft",
+        },
+      ];
+      setApprovalsData(signatureFlowDocumentsForCreator);
+    }
+
+    // SignatureWorkFlowReducer
+  }, [SignatureWorkFlowReducer.getAllSignatureDocumentsforCreator]);
   return (
     <>
       {" "}
@@ -162,24 +257,25 @@ const ApprovalSend = () => {
             column={pendingApprovalColumns}
             className={"ApprovalsTable"}
             // prefClassName="ApprovalSending"
-            rows={rowsPendingApproval}
+            rows={approvalsData}
             // scroll={scroll}
             pagination={false}
             scroll={
-              rowsPendingApproval.length > 10
+              approvalsData.length > 10
                 ? { y: 385, x: "max-content" }
                 : undefined
             }
             id={(record, index) =>
-              index === rowsPendingApproval.length - 1 ? "last-row-class" : ""
+              index === approvalsData.length - 1 ? "last-row-class" : ""
             }
           />
         </Col>
       </Row>
       {signatoriesList && (
         <SignatoriesListModal
-          signatoriesList={signatoriesList}
+          signatories_List={signatoriesList}
           setSignatoriesList={setSignatoriesList}
+          signatureListVal={signatureListVal}
         />
       )}
     </>

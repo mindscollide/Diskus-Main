@@ -7749,3 +7749,9 @@ body[dir="rtl"]
 }
 
 /* Responsiveness CancelSubscription Ends*/
+.ant-table-thead th {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* display: block; */
+}

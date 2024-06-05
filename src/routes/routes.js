@@ -83,7 +83,6 @@ const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
-
       {/* for all login Routes  */}
       <Route path="/" element={<UserManagementProcess />} />
 
@@ -147,6 +146,14 @@ export const router = createHashRouter(
             element={
               <RouteWrapperUser name="home">
                 <Home />
+              </RouteWrapperUser>
+            }
+          />
+        <Route
+            path="Minutes"
+            element={
+              <RouteWrapperUser name="Minutes">
+                <MinutesFlow />
               </RouteWrapperUser>
             }
           />
