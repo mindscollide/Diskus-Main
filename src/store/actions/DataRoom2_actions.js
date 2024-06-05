@@ -264,6 +264,9 @@ const getDataAnalyticsApi = (
                 "DataRoom_DataRoomManager_GetDataAnalytics_02".toLowerCase()
               )
           ) {
+            setActivityState(false);
+            setDetailsState(true);
+
             dispatch(getDataAnalytics_Fail(t("No-data-available")));
           } else if (
             response.data.responseResult.responseMessage

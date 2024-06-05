@@ -214,6 +214,7 @@ export async function handleLoginResponse(response) {
           { name: "faq's", id: 104 },
           { name: "setting", id: 105 },
           { name: "onboard", id: 106 },
+          { name: "Minutes", id: 115 },
         ]
       : [];
     let LocalAdminRoutes = response.hasAdminRights
@@ -244,7 +245,8 @@ export async function handleLoginResponse(response) {
           { name: "resolution", id: 18 },
           { name: "signatureviewer", id: 19 },
           { name: "documentViewer", id: 20 },
-          { name: "Payment", id: 109 }
+          { name: "Payment", id: 109 },
+          { name: "Minutes", id: 115 }
         );
       }
       if (response.hasAdminRights) {

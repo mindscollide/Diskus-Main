@@ -32,12 +32,14 @@ a.icon-active-sidebar_expand.nav-link.active {
 
 a.m-0.p-0.icon-active-sidebar_expand.nav-link span {
   color: #fff !important;
+  font-weight: 600;
+  font-family: 'Montserrat';
 }
 
 a.icon-active-sidebar_expand.nav-link:hover span {
   color: #505050 !important;
   font-weight: 600;
-  font-family: "Montserrat";
+  font-family: 'Montserrat';
 }
 
 .pollsHeading {

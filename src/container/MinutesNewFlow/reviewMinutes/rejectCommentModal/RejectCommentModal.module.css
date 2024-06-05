@@ -1,0 +1,48 @@
+p.RejectCommentTitle {
+  margin: 0;
+  font-weight: 600;
+  font-size: 20px;
+  color: #6172d6;
+}
+
+.Reject_Comment_Modal,
+.Reject_Comment_Modal:is(:hover, :active, :focus, :focus-visible, :target) {
+  background: #f16b6b !important;
+  border-radius: 4px !important;
+  width: 101px !important;
+  height: 39px !important;
+  border-color: #f16b6b !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+}
+
+img.image-close {
+  position: absolute;
+  right: 10px;
+  top: 0px;
+  cursor: pointer;
+}
+
+body[dir="rtl"] img.image-close {
+  position: absolute;
+  right: auto;
+  top: 0px;
+  cursor: pointer;
+  left: 10px;
+}
+
+textarea.textField-RejectComment {
+  height: 156px !important;
+  border-radius: 4px !important;
+  border-color: #e1e1e1 !important;
+  margin-bottom: 15px !important;
+  font-weight: 600 !important;
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+}
+
+textarea.textField-RejectComment::placeholder {
+  color: #a2a2a2 !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}

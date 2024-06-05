@@ -21,7 +21,6 @@ import {
   GetOrganizationSelectedPackagesByOrganizationIDApi,
   getOrganizationPackageUserStatsAPI,
 } from "../../../../../store/actions/UserManagementActions";
-import { Numeral } from "numeral";
 const AddUsers = () => {
   const { t } = useTranslation();
 
@@ -32,6 +31,10 @@ const AddUsers = () => {
   const { UserMangementReducer } = useSelector((state) => state);
 
   let organizationID = localStorage.getItem("organizationID");
+  let organizationNames = localStorage.getItem("organizatioName");
+
+  // get IsTrial from LocalStorage
+  let isFreeTrial = localStorage.getItem("isTrial");
 
   const { adminReducer } = useSelector((state) => state);
 
@@ -69,6 +72,12 @@ const AddUsers = () => {
   useEffect(() => {
     dispatch(GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t));
     dispatch(getOrganizationPackageUserStatsAPI(navigate, t));
+
+    if (!isFreeTrial) {
+      dispatch(GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t));
+    } else {
+      console.log("FreeTrial");
+    }
 
     return () => {
       setAddUserFreeTrial({
@@ -389,7 +398,7 @@ const AddUsers = () => {
               <span className={styles["NameCreateAddtional"]}>
                 {t("Organization")}
               </span>
-              <span className={styles["NameClass"]}>Waqas Associates</span>
+              <span className={styles["NameClass"]}>{organizationNames}</span>
             </Col>
           </Row>
           <Row className="mt-3">

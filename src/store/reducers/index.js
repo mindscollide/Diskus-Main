@@ -17,6 +17,7 @@ export { default as GetSubscriptionPackages } from "./GetSubscriptionPackages_re
 export { default as LanguageReducer } from "./Language_reducer";
 export { default as MeetingOrganizersReducer } from "./MeetingOrganizers_reducer";
 export { default as MeetingAgendaReducer } from "./MeetingAgenda_reducer";
+export { default as MinutesReducer } from "./Minutes_reducer";
 // Auth 2 Reducer
 export { default as AuthReducer } from "./Auth2_reducer";
 export { default as RoleListReducer } from "./Role_List_reducers";

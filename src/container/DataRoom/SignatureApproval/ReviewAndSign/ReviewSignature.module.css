@@ -1,0 +1,97 @@
+.progressWrapper {
+  margin-top: 15px;
+  width: 100%;
+  height: 89px;
+  background: #ffffff;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
+  border-radius: 14px;
+  padding: 25px;
+  margin-bottom: 25px;
+}
+span.line {
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
+  display: block;
+  height: 70px;
+  width: 3px;
+  margin-top: -15px;
+}
+
+.progress-value-wrapper-signed {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -15px;
+}
+
+.progress-value-wrapper-pending {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -15px;
+}
+
+.progress-value-wrapper-decline {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -15px;
+}
+
+.progress-value-wrapper-signed span {
+  color: #55ce5c;
+}
+
+.progress-value-wrapper-pending span {
+  color: #d8a709;
+}
+
+.progress-value-wrapper-decline span {
+  color: #f16b6b;
+}
+
+span.numeric-value {
+  /* font-family: "MontserratSemiBold"; */
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 49px;
+}
+
+span.value {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  text-transform: uppercase;
+}
+
+p.pendingStatus {
+  margin: 0 !important;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase !important;
+  color: #d8a709;
+}
+
+p.signedStatus {
+  margin: 0 !important;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #55ce5c;
+}
+
+p.declineStatus {
+  margin: 0 !important;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #f16b6b;
+}

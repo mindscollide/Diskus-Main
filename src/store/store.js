@@ -26,6 +26,7 @@ import {
   OrganizationBillingReducer,
   MeetingOrganizersReducer,
   MeetingAgendaReducer,
+  MinutesReducer,
   DataRoomReducer,
   PollsReducer,
   NewMeetingReducer,
@@ -101,6 +102,7 @@ const AppReducer = combineReducers({
   DataRoomFileAndFoldersDetailsReducer: DataRoomFileAndFoldersDetailsReducer,
   UserReportReducer: UserReportReducer,
   SignatureWorkFlowReducer: SignatureWorkFlowReducer,
+  MinutesReducer: MinutesReducer,
   UserManagementModals: UserManagementModals,
   UserMangementReducer: UserMangementReducer,
 });
