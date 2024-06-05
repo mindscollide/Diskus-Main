@@ -465,6 +465,7 @@ const ViewMeetingModal = ({
               {meetingDetails && (
                 <ViewMeetingDetails
                   setorganizers={setorganizers}
+                  setMeetingMaterial={setMeetingMaterial}
                   setmeetingDetails={setmeetingDetails}
                   advanceMeetingModalID={advanceMeetingModalID}
                   setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
