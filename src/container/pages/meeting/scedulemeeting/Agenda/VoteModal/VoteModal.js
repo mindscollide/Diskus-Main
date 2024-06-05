@@ -933,7 +933,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                             </Col>
                           </Row>
                         </Col>
-                        <Col lg={10} md={10} sm={10} key={Math.random()}>
+                        <Col lg={10} md={10} sm={10}>
                           <Row>
                             <Col
                               lg={12}
@@ -955,6 +955,9 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                                               "NewMeetingFileds_withIcon"
                                             }
                                             width={"145px"}
+                                            change={(e) =>
+                                              handleChangeVotingAnswer(e, index)
+                                            }
                                             value={data.votingAnswer}
                                             name={"OptionsAdded"}
                                             iconClassName={
