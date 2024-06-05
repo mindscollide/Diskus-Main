@@ -2,23 +2,18 @@ import React from "react";
 import styles from "./RequestExtentionModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { showRequestExtentionModal } from "../../../../../store/actions/UserMangementModalActions";
 import { Col, Row } from "react-bootstrap";
 import crossicon from "../../../../../assets/images/BlackCrossIconModals.svg";
 import { Button, Modal } from "../../../../../components/elements";
-import { requestOrganizationExtendApi } from "../../../../../store/actions/UserManagementActions";
-const RequestExtensionModal = ({ setTrailExpiry }) => {
+const RequestExtensionModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-
   const { UserManagementModals } = useSelector((state) => state);
 
   const yesBtnFunctionality = () => {
     dispatch(showRequestExtentionModal(false));
-    setTrailExpiry(true);
   };
 
   const handleCrossIcon = () => {

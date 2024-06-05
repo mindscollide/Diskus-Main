@@ -12,6 +12,7 @@ const initialState = {
   sendDocumentResponse: null,
   getDataroomAnnotation: null,
   addAnnotationFilesAttachment: null,
+  getAllSignatureDocumentsforCreator: null,
 };
 
 const SignatureWorkflowReducer = (state = initialState, action) => {
@@ -216,6 +217,28 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         addAnnotationFilesAttachment: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETALLSIGNATUREFLOWDOCUMENTSFORCREATOR_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETALLSIGNATUREFLOWDOCUMENTSFORCREATOR_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getAllSignatureDocumentsforCreator: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETALLSIGNATUREFLOWDOCUMENTSFORCREATOR_ISFAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getAllSignatureDocumentsforCreator: null,
         ResponseMessage: action.message,
       };
     }

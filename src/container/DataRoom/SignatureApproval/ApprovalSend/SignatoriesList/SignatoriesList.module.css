@@ -1,0 +1,17 @@
+.Signatories_heading {
+  font-size: 20px;
+  font-weight: 600;
+  color: #6172d6;
+}
+.signatoriesUsers {
+  max-height: 65vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.signatoriesname_value {
+  font-size: 12px;
+  font-weight: 600;
+}
+.signatories_modal_header {
+  height: 20px;
+}

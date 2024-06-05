@@ -33,15 +33,7 @@ import UserProfile from "../../../container/authentication/User_Profile/UserProf
 import LanguageSelector from "../../elements/languageSelector/Language-selector";
 import ModalMeeting from "../../../container/modalmeeting/ModalMeeting";
 import { Button, Modal, UploadTextField, Loader } from "../../elements";
-import {
-  getRecentDocumentsApi,
-  uploadDocumentFromDashboard,
-} from "../../../store/actions/DataRoom_actions";
 import UpgradeNowModal from "../../../container/pages/UserMangement/ModalsUserManagement/UpgradeNowModal/UpgradeNowModal.js";
-import {
-  showRequestExtentionModal,
-  showUpgradeNowModal,
-} from "../../../store/actions/UserMangementModalActions.js";
 import RequestExtensionModal from "../../../container/pages/UserMangement/ModalsUserManagement/RequestExtentionModal/RequestExtensionModal.js";
 import { getCurrentDateTimeUTC } from "../../../commen/functions/date_formater.js";
 import {
@@ -66,20 +58,16 @@ const Header2 = () => {
   //for dropdown
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [activateBlur, setActivateBlur] = useState(false);
-  //Trail Expiry States
-  const [trailExpiry, setTrailExpiry] = useState(false);
-  let userID = localStorage.getItem("userID");
-  let organizationID = localStorage.getItem("organizationID");
   // for userProfile
   const [userProfileModal, setUserProfileModal] = useState(false);
   //for userprofile edit modal
   const [editFlag, setEditFlag] = useState(false);
   let Blur = localStorage.getItem("blur");
-  let isTrial = JSON.parse(localStorage.getItem("isTrial"));
   const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
   const TrialExpireSelectPac = getLocalStorageItemNonActiveCheck(
     "TrialExpireSelectPac"
   );
+  const hasAdminRights = JSON.parse(localStorage.getItem("hasAdminRights"));
   const cancelSub = getLocalStorageItemNonActiveCheck("cancelSub");
 
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -117,7 +105,6 @@ const Header2 = () => {
   }, []);
 
   useEffect(() => {
-    console.log("UserProfileDataUserProfileData", UserProfileData);
     if (UserProfileData !== undefined && UserProfileData !== null) {
       setCurrentUserName(UserProfileData?.userName);
       setCurrentUserProfilePic(
@@ -136,7 +123,6 @@ const Header2 = () => {
 
   // userProfile handler
   const modalUserProfileHandler = (e) => {
-    // setUserProfileModal(true);
     let userID = localStorage.getItem("userID");
     let OrganizationID = localStorage.getItem("organizationID");
     dispatch(
@@ -169,11 +155,9 @@ const Header2 = () => {
   };
 
   const openMeetingModal = () => {
-    console.log("openMeetingModal");
     setCreateMeetingModal(true);
   };
   const handleUploadFile = async ({ file }) => {
-    console.log(file, "handleUploadFilehandleUploadFile");
     navigate("/Diskus/dataroom", { state: file });
   };
 
@@ -258,6 +242,40 @@ const Header2 = () => {
       ) {
         dispatch(showCancelModalmeetingDeitals(true));
         localStorage.setItem("navigateLocation", "setting");
+      } else {
+        dispatch(showCancelModalmeetingDeitals(false));
+        dispatch(scheduleMeetingPageFlag(false));
+        dispatch(viewProposeDateMeetingPageFlag(false));
+        dispatch(viewAdvanceMeetingPublishPageFlag(false));
+        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+        dispatch(viewProposeOrganizerMeetingPageFlag(false));
+        dispatch(proposeNewMeetingPageFlag(false));
+        dispatch(viewMeetingFlag(false));
+        let Data = {
+          FK_MDID: currentMeeting,
+          DateTime: getCurrentDateTimeUTC(),
+        };
+        if (CurrentMeetingStatus === 10) {
+          dispatch(LeaveCurrentMeeting(navigate, t, Data));
+          dispatch(currentMeetingStatus(0));
+        }
+      }
+    }
+  };
+
+  const handleMeetingPendingApprovals = () => {
+    if (location.pathname.includes("/Admin") === false) {
+      if (
+        (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+          NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+          NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+          NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+          NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+          NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+        NewMeetingreducer.viewMeetingFlag === false
+      ) {
+        dispatch(showCancelModalmeetingDeitals(true));
+        localStorage.setItem("navigateLocation", "pendingApprovals");
       } else {
         dispatch(showCancelModalmeetingDeitals(false));
         dispatch(scheduleMeetingPageFlag(false));
@@ -461,7 +479,7 @@ const Header2 = () => {
                   </Dropdown.Menu>
                 ) : (
                   <Dropdown.Menu className="Profile_dropdown_menu">
-                    {JSON.parse(localStorage.getItem("hasAdminRights")) && (
+                    {hasAdminRights && (
                       <Dropdown.Item className={currentLanguage}>
                         <Nav.Link className="d-flex text-black FontClass">
                           {t("Organization-admin")}
@@ -637,7 +655,7 @@ const Header2 = () => {
               />
             </Navbar.Brand>
             <Row>
-              {!TrialExpireSelectPac ? (
+              {!TrialExpireSelectPac && hasAdminRights ? (
                 <Col lg={12} md={12} sm={12} className="UpgradeButtonsClass">
                   {JSON.parse(localStorage.getItem("isTrial")) && (
                     <>
@@ -891,7 +909,7 @@ const Header2 = () => {
                       </Dropdown.Item>
                     ) : (
                       <>
-                        {JSON.parse(localStorage.getItem("hasAdminRights")) && (
+                        {hasAdminRights && (
                           <Dropdown.Item
                             className={currentLanguage}
                             onClick={openAdminTab}
@@ -1110,9 +1128,7 @@ const Header2 = () => {
       )}
       {UserManagementModals.UpgradeNowModal && <UpgradeNowModal />}
       {Authreducer.Loading ? <Loader /> : null}
-      {UserManagementModals.requestExtentionModal && (
-        <RequestExtensionModal setTrailExpiry={setTrailExpiry} />
-      )}
+      {UserManagementModals.requestExtentionModal && <RequestExtensionModal />}
     </>
   );
 };

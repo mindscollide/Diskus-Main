@@ -12,6 +12,8 @@ const TextArea = ({
   timeValue,
   timeClass,
   formClassPosition,
+  placeholder,
+  onChange,
 }) => {
   return (
     <Form className={formClassPosition}>
@@ -24,6 +26,8 @@ const TextArea = ({
         className={className}
         disabled={disable}
         value={value}
+        placeholder={placeholder}
+        onChange={onChange} // Pass onChange prop
       />
     </Form>
   );
