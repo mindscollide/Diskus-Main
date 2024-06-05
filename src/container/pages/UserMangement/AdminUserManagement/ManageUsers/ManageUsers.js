@@ -655,7 +655,7 @@ const ManageUsers = () => {
                       >
                         <img
                           src={BlackCrossIcon}
-                          alt=""
+                          alt="Cross Icon"
                           className="cursor-pointer"
                           onClick={handleCrossSearchBox}
                         />
@@ -725,7 +725,6 @@ const ManageUsers = () => {
                           >
                             <Checkbox
                               classNameCheckBoxP="m-0 p-0"
-                              classNameDiv=""
                               checked={searchDetails.searchIsAdmin}
                               onChange={handleSearchIsAdmin}
                             />
@@ -767,7 +766,7 @@ const ManageUsers = () => {
                     </span>
                     <img
                       src={whiteCrossIcon}
-                      alt=""
+                      alt="White Cross"
                       className={styles["CrossIcon_Class"]}
                       width={13}
                       onClick={() => handleRemoveSearchSnippet("Name")}
@@ -781,7 +780,7 @@ const ManageUsers = () => {
                     </span>
                     <img
                       src={whiteCrossIcon}
-                      alt=""
+                      alt="White Cross"
                       className={styles["CrossIcon_Class"]}
                       width={13}
                       onClick={() => handleRemoveSearchSnippet("Email")}
@@ -816,7 +815,7 @@ const ManageUsers = () => {
                 >
                   <img
                     src={BlackCrossIcon}
-                    alt=""
+                    alt="Black Cross"
                     className="cursor-pointer"
                     width={13}
                     onClick={handleTrialAlertRemove}
