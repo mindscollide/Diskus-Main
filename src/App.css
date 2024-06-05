@@ -7469,14 +7469,189 @@ tr.ant-table-row.ant-table-row-level-0.UpgradePakageDetails:last-child:hover {
   border: none !important;
 }
 
+a.pendingApprovalsNav.nav-link {
+  padding: 0 !important;
+  color: #505050 !important;
+}
+
+.PendingApprovalsTable .ant-table-thead > tr * {
+  font-weight: 700 !important;
+  border-bottom: 1px solid #5a5a5a !important;
+  padding-bottom: 5px !important;
+  font-size: 16px !important;
+  color: #5f78d6 !important;
+}
+
+
+.PendingApprovalsTable {
+  margin-bottom: 50px;
+  overflow-y: auto;
+}
+
+.PendingApprovalsTable
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell {
+  padding: 7px 16px !important;
+  border-bottom: 1px solid #e1e1e1 !important;
+  color: #5a5a5a !important;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px !important;
+}
+
+.PendingApprovalsTable
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell:nth-child(1) {
+  border-top: none !important;
+  border-radius: 0 !important;
+  border-left: 0 !important;
+  border-right: none !important;
+  font-weight: 700;
+  font-size: 12px !important;
+  line-height: 15px;
+  color: #6172d6 !important;
+}
+
+body[dir="rtl"]
+  .PendingApprovalsTable
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell:nth-child(1) {
+  border-top: none !important;
+  border-radius: 0 !important;
+  border-left: 0 !important;
+  border-right: none !important;
+}
+
+.PendingApprovalsTable
+  .ant-select-item.ant-select-item-option.ant-select-item-option-selected {
+  background-color: #e9e9e9 !important;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.PendingApprovalsTable .ant-table-tbody > tr > td {
+  border-bottom: none !important;
+}
+
+th.ant-table-cell.statusParticipant .ant-table-filter-column {
+  border: none !important;
+  padding-bottom: 0 !important;
+}
+
+th.ant-table-cell.statusParticipant span.ant-table-column-title {
+  border-bottom: none !important;
+  padding-bottom: 0 !important;
+}
+
+th.ant-table-cell.statusParticipant
+  span.ant-dropdown-trigger.ant-table-filter-trigger {
+  border-bottom: none !important;
+}
+
+th.ant-table-cell.statusParticipant
+  svg.bi.bi-chevron-down.filter-chevron-icon-todolist {
+  border-bottom: none !important;
+  padding-bottom: 0 !important;
+}
+
+.PendingApprovalsTable
+  tr.ant-table-row.ant-table-row-level-0.last-row-class
+  td.ant-table-cell {
+  border-bottom: none !important;
+}
 .ant-table-thead > tr > th {
   font-weight: 600 !important;
+}
+
+.mx-50 {
+  margin-left: 50px !important;
+  margin-right: 50px !important;
+}
+
+.mxl-50 {
+  margin-left: 50px !important;
+}
+
+.mxr-50 {
+  margin-right: 50px !important;
+}
+
+.fade.DeleteCommentModal.modal.show
+  .modal-dialog.modal-md.modal-dialog-centered {
+  width: 405px !important;
+  justify-content: center !important;
+  max-width: 405px !important;
+  min-width: 405px !important;
 }
 
 .d-block.loader-zindex .videoCallScreen {
   z-index: 99999999999 !important;
 }
 
+.ApprovalsTable .ant-table-thead > tr * {
+  font-weight: 700 !important;
+  /* border-bottom: 1px solid #5a5a5a !important; */
+  /* padding-bottom: 5px !important; */
+  font-size: 16px !important;
+  color: #5f78d6 !important;
+  padding: 2px 8px;
+}
+
+
+.ApprovalsTable {
+  margin-bottom: 50px;
+  overflow-y: auto;
+}
+
+.ApprovalsTable
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell {
+  padding: 10px 16px !important;
+  border-bottom: 1px solid #e1e1e1 !important;
+  color: #5a5a5a !important;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px !important;
+}
+
+.ApprovalsTable
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell:nth-child(1) {
+  border-top: none !important;
+  border-radius: 0 !important;
+  border-left: 0 !important;
+  border-right: none !important;
+  font-weight: 700;
+  font-size: 12px !important;
+  line-height: 15px;
+  color: #6172d6 !important;
+}
+
+body[dir="rtl"]
+  .ApprovalsTable
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell:nth-child(1) {
+  border-top: none !important;
+  border-radius: 0 !important;
+  border-left: 0 !important;
+  border-right: none !important;
+}
+
+.ApprovalsTable
+  .ant-select-item.ant-select-item-option.ant-select-item-option-selected {
+  background-color: #e9e9e9 !important;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.ApprovalsTable .ant-table-tbody > tr > td {
+  border-bottom: none !important;
+}
+.ApprovalsTable
+  tr.ant-table-row.ant-table-row-level-0.last-row-class
+  td.ant-table-cell {
+  border-bottom: none !important;
+}
 /* BoardDeck Css */
 
 .ant-radio-group.ant-radio-group-outline.BoarddeckSelection
@@ -7574,3 +7749,9 @@ tr.ant-table-row.ant-table-row-level-0.UpgradePakageDetails:last-child:hover {
 }
 
 /* Responsiveness CancelSubscription Ends*/
+.ant-table-thead th {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* display: block; */
+}

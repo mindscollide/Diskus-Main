@@ -263,6 +263,40 @@ const Header2 = () => {
     }
   };
 
+  const handleMeetingPendingApprovals = () => {
+    if (location.pathname.includes("/Admin") === false) {
+      if (
+        (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+          NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+          NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+          NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+          NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+          NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+        NewMeetingreducer.viewMeetingFlag === false
+      ) {
+        dispatch(showCancelModalmeetingDeitals(true));
+        localStorage.setItem("navigateLocation", "pendingApprovals");
+      } else {
+        dispatch(showCancelModalmeetingDeitals(false));
+        dispatch(scheduleMeetingPageFlag(false));
+        dispatch(viewProposeDateMeetingPageFlag(false));
+        dispatch(viewAdvanceMeetingPublishPageFlag(false));
+        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+        dispatch(viewProposeOrganizerMeetingPageFlag(false));
+        dispatch(proposeNewMeetingPageFlag(false));
+        dispatch(viewMeetingFlag(false));
+        let Data = {
+          FK_MDID: currentMeeting,
+          DateTime: getCurrentDateTimeUTC(),
+        };
+        if (CurrentMeetingStatus === 10) {
+          dispatch(LeaveCurrentMeeting(navigate, t, Data));
+          dispatch(currentMeetingStatus(0));
+        }
+      }
+    }
+  };
+
   const handleMeetingSidebarFAQ = () => {
     if (location.pathname.includes("/Admin") === false) {
       if (
