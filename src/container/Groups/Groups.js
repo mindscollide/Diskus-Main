@@ -112,23 +112,41 @@ const Groups = () => {
           setgroupsData(newArr);
           dispatch(realtimeGroupStatusResponse(null));
         }
-      } else {
-        let findGroupIndex = groupsData.findIndex(
-          (data, index) =>
-            data.groupID === GroupsReducer.realtimeGroupStatus.groupID
-        );
-        if (findGroupIndex !== -1) {
-          let newArr = groupsData.map((data, index) => {
-            if (findGroupIndex === index) {
-              let newData = {
-                ...data,
-                groupStatusID: GroupsReducer.realtimeGroupStatus.groupStatusID,
-              };
-              return newData;
-            }
-            return data;
-          });
-          setgroupsData(newArr);
+      } else if (status === 1 || status === 3) {
+        if (
+          GroupsReducer.ArcheivedGroups !== null &&
+          GroupsReducer.ArcheivedGroups.groups.length > 0
+        ) {
+          let findisExist = GroupsReducer.ArcheivedGroups.groups.findIndex(
+            (data, index) =>
+              Number(data.groupID) ===
+              Number(GroupsReducer.realtimeGroupStatus.groupID)
+          );
+          if (findisExist !== -1) {
+            let findGroupData =
+              GroupsReducer.ArcheivedGroups.groups[findisExist];
+            let modifiedData = { ...findGroupData, groupStatusID: status };
+            setgroupsData([modifiedData, ...groupsData]);
+          }
+        } else {
+          let findGroupIndex = groupsData.findIndex(
+            (data, index) =>
+              data.groupID === GroupsReducer.realtimeGroupStatus.groupID
+          );
+          if (findGroupIndex !== -1) {
+            let newArr = groupsData.map((data, index) => {
+              if (findGroupIndex === index) {
+                let newData = {
+                  ...data,
+                  groupStatusID:
+                    GroupsReducer.realtimeGroupStatus.groupStatusID,
+                };
+                return newData;
+              }
+              return data;
+            });
+            setgroupsData(newArr);
+          }
         }
       }
     }
