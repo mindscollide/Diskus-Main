@@ -82,6 +82,7 @@ const Actions = ({
   const [createaTask, setCreateaTask] = useState(false);
   const [totalRecords, setTotalRecords] = useState(0);
   const [removeTodo, setRemoveTodo] = useState(0);
+  const [statusValues, setStatusValues] = useState([]);
 
   // Rows for table rendering in Action
   const [statusOptions, setStatusOptions] = useState([]);
@@ -147,18 +148,21 @@ const Actions = ({
   useEffect(() => {
     let optionsArr = [];
     let newOptionsFilter = [];
+    let newArrStatus = [""];
     if (todoStatus.Response !== null && todoStatus.Response !== "") {
       todoStatus.Response.map((data, index) => {
         optionsArr.push({
           id: data.pK_TSID,
           status: data.status,
         });
+        newArrStatus.push(data.status);
         newOptionsFilter.push({
           key: data.pK_TSID,
           label: data.status,
         });
       });
     }
+    setStatusValues(newArrStatus);
     setStatusOptions(optionsArr);
   }, [todoStatus]);
 
@@ -171,6 +175,22 @@ const Actions = ({
           setActionsRows((rowsData) => {
             return rowsData.filter((newData, index) => {
               return newData.pK_TID !== payloadData.todoid;
+            });
+          });
+        } else {
+          setActionsRows((rowsData) => {
+            return rowsData.map((newData, index) => {
+              if (newData.pK_TID === payloadData.todoid) {
+                const newObj = {
+                  ...newData,
+                  status: {
+                    pK_TSID: payloadData.todoStatusID,
+                    status: statusValues[payloadData.todoStatusID],
+                  },
+                };
+                return newObj;
+              }
+              return newData;
             });
           });
         }
