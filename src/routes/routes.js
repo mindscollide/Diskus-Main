@@ -26,17 +26,17 @@ import {
   PackageUpgradeDetail,
   PackageUpgradeSelect,
   PasswordUpdateMessage,
-  CreatePassword,
-  PackageSelection,
-  PaymentForm,
-  PackageSelected,
-  Signup,
-  VerifyEmailOTP,
+  // CreatePassword,
+  // PackageSelection,
+  // PaymentForm,
+  // PackageSelected,
+  // Signup,
+  // VerifyEmailOTP,
   Notes,
   CalendarPage,
-  TwoFactor,
-  TwoFacSendEmail,
-  VerificationIphone,
+  // TwoFactor,
+  // TwoFacSendEmail,
+  // VerificationIphone,
   ForgotPasswordVerification,
   UpdatePasswordSuccessfully,
   Committee,
@@ -90,23 +90,18 @@ export const router = createHashRouter(
       <Route path="/Signup" element={<SignupProcessUserManagement />} />
 
       {/* ============================================================ */}
-      <Route path="/packageselection" element={<PackageSelection />} />
       <Route
         path="/PakageDetailsUserManagement"
         element={<PakageDetailsUserManagement />}
       />
-      <Route path="/signuporganization" element={<Signup />} />
+      {/* <Route path="/signuporganization" element={<Signup />} /> */}
 
       <Route
         path="/forgotpasswordVerification"
         element={<ForgotPasswordVerification />}
       />
       <Route path="/updatepassword" element={<UpdatePasswordSuccessfully />} />
-      {/* <Route path="/enterPassword" element={<EnterPassword />} /> */}
-      <Route path="/createpasswordorganization" element={<CreatePassword />} />
-      <Route path="/verifyEmailOTP" element={<VerifyEmailOTP />} />
-      <Route path="/selectedpackage" element={<PackageSelected />} />
-      <Route path="/paymentForm" element={<PaymentForm />} />
+
       <Route
         path="/PaymentFormUserManagement"
         element={<BillingMethodUsermanagement />}
@@ -115,10 +110,7 @@ export const router = createHashRouter(
         path="/updatePasswordSuccess"
         element={<PasswordUpdateMessage />}
       />
-      {/* Two Fac Routes */}
-      <Route path="/twofac" element={<TwoFactor />} />
-      <Route path="/twofacmultidevice" element={<TwoFacSendEmail />} />
-      <Route path="/selectfrommultidevices" element={<VerificationIphone />} />
+
       <Route path="/404" element={<NotFound />} />
       <Route path="*" element={<NotFound />} />
       {/* ============================================================ */}

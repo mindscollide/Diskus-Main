@@ -4,14 +4,11 @@ import { Spin, Tooltip } from "antd";
 import { Container, Row, Col } from "react-bootstrap";
 import TodoMessageIcon1 from "../../../assets/images/DashboardNewTodo.svg";
 import noTask from "../../../assets/images/DashBoardTask.svg";
-import NoRecentActivity from "../../../assets/images/No-Recent-Activity.png";
 import IconAttachment from "../../../assets/images/AttachmentNotes.svg";
 import PlusButton from "../../../assets/images/PlusButton.svg";
 import styles from "../../EventsModal/EventModal.module.css";
 import StarIcon from "../../../assets/images/Star.svg";
 import hollowstar from "../../../assets/images/Hollowstar.svg";
-import NotesMainEmpty from "../../../assets/images/Notes_Dashboard.svg";
-// import TalkIcon from "../../../assets/images/newElemnts/Diskus_TalkIcon.svg";
 import {
   CustomTableToDoDashboard,
   CustomTextProgressbar,
@@ -20,15 +17,11 @@ import {
   Notification,
   Modal,
   Button,
-  Loader,
 } from "../../../components/elements";
 import moment from "moment";
 import gregorian from "react-date-object/calendars/gregorian";
-import arabic from "react-date-object/calendars/arabic";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
-// import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
-
 import {
   getCalendarDataInit,
   getCalendarDataResponse,
@@ -37,7 +30,6 @@ import {
 import { useTranslation } from "react-i18next";
 import { Calendar, DateObject } from "react-multi-date-picker";
 import ModalMeeting from "../../modalmeeting/ModalMeeting";
-import { Mailbox } from "react-bootstrap-icons";
 import {
   newTimeFormaterAsPerUTCFullDate,
   _justShowDateformat,
@@ -45,9 +37,7 @@ import {
   forRecentActivity,
   startDateTimeMeetingCalendar,
   newDateFormaterAsPerUTC,
-  forSetstartDateTimeMeetingCalendar,
   forHomeCalendar,
-  utcConvertintoGMT,
 } from "../../../commen/functions/date_formater";
 import TimeAgo from "timeago-react";
 import {
@@ -56,7 +46,6 @@ import {
   GetWeeklyToDoCount,
   HideNotificationTodo,
   SetSpinnersTrue,
-  toDoListLoaderStart,
   ViewToDoList,
 } from "../../../store/actions/ToDoList_action";
 import { HideNotificationAuth } from "../../../store/actions/Auth_action";
@@ -67,7 +56,6 @@ import {
   SetSpinnerTrue,
   getMeetingStatusfromSocket,
   mqttCurrentMeetingEnded,
-  setMQTTRequestUpcomingEvents,
 } from "../../../store/actions/GetMeetingUserId";
 import "./dashboard-module.css";
 import {
@@ -79,7 +67,7 @@ import {
   cleareAssigneesState,
   HideNotification,
 } from "../../../store/actions/Get_List_Of_Assignees";
-import { Navigate, useLoaderData, useNavigate } from "react-router-dom";
+import {  useLoaderData, useNavigate } from "react-router-dom";
 import { cleareMessage, setLoader } from "../../../store/actions/Auth2_actions";
 import VerificationFailedIcon from "./../../../assets/images/failed.png";
 import {
@@ -88,19 +76,16 @@ import {
   GetNotesById_Init,
   getNotes_Init,
 } from "../../../store/actions/Notes_actions";
-import ModalAddNote from "../../modalAddNote/ModalAddNote";
-import ModalUpdateNote from "../../modalUpdateNote/ModalUpdateNote";
+import ModalAddNote from "../../notes/modalAddNote/ModalAddNote";
 import { getUserSetting } from "../../../store/actions/GetUserSetting";
 import EventsModal from "../../EventsModal/EventsModal";
-import ModalViewNote from "../../modalViewNote/ModalViewNote";
+import ModalViewNote from "../../notes/modalViewNote/ModalViewNote";
 import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
 import {
   dashboardCalendarEvent,
-  meetingStatusPublishedMqtt,
 } from "../../../store/actions/NewMeetingActions";
 import ModalToDoList from "../../todolistModal/ModalToDoList";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
-// import Todolis from "../../modalView/ModalView";
 
 const Home = () => {
   const dCheck = useLoaderData();
