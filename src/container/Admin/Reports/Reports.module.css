@@ -112,6 +112,10 @@ body[dir="rtl"] .NameStylesTable {
   font-weight: 400 !important;
   font-size: 12px !important;
   color: #505050 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
 }
 
 body[dir="rtl"] .DesignationStyles {

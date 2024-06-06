@@ -271,12 +271,15 @@ const Reports = () => {
       setIsScroll(true);
       let Data = {
         OrganizationID: Number(OrganizationID),
-        Username: "",
-        UserEmail: "",
-        IpAddress: "",
-        DeviceID: "",
-        DateLogin: "",
-        DateLogOut: "",
+        Username: userLoginHistorySearch.userName,
+        UserEmail: userLoginHistorySearch.userEmail,
+        IpAddress: userLoginHistorySearch.IpAddress,
+        DeviceID:
+          userLoginHistorySearch.InterFaceType.value === 0
+            ? ""
+            : userLoginHistorySearch.InterFaceType.value,
+        DateLogin: userLoginHistorySearch.DateTo,
+        DateLogOut: userLoginHistorySearch.DateFrom,
         sRow: Number(isRowsData),
         Length: 10,
       };
@@ -529,8 +532,8 @@ const Reports = () => {
         localStorage.getItem("organizationID") !== null
           ? Number(localStorage.getItem("organizationID"))
           : 0,
-      Username: "",
-      UserEmail: "",
+      Username: userLoginHistorySearch.userName,
+      UserEmail: userLoginHistorySearch.userEmail,
       IpAddress: "",
       DeviceID: "",
       DateLogin: "",
