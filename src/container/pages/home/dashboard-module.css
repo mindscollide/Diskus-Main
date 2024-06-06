@@ -660,7 +660,7 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
   border-top-right-radius: 5px !important;
   border-bottom-right-radius: 5px !important;
   font-size: calc(16px - 20%) !important;
-  font-weight: 400;
+  font-weight: 600;
   color: "#505050";
 }
 

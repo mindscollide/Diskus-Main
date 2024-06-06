@@ -135,26 +135,44 @@ const Committee = () => {
           setGetCommitteeData(newData);
           dispatch(realtimeCommitteeStatusResponse(null));
         }
-      } else {
-        let findINdexCommitteeStatus = getcommitteedata.findIndex(
-          (data, index) =>
-            data.committeeID ===
-            CommitteeReducer.realtimeCommitteeStatus.commmitteeID
-        );
-        if (findINdexCommitteeStatus !== -1) {
-          let newArr = getcommitteedata.map((committeeCard, index) => {
-            if (findINdexCommitteeStatus === index) {
-              let newData = {
-                ...committeeCard,
-                committeeStatusID:
-                  CommitteeReducer.realtimeCommitteeStatus.committeeStatusID,
-              };
-              return newData;
-            }
-            return committeeCard;
-          });
-          setGetCommitteeData(newArr);
-          dispatch(realtimeCommitteeStatusResponse(null));
+      } else if (status === 1 || status === 3) {
+        if (
+          CommitteeReducer.ArcheivedCommittees !== null &&
+          CommitteeReducer.ArcheivedCommittees.committees.length > 0
+        ) {
+          let findisExist =
+            CommitteeReducer.ArcheivedCommittees.committees.findIndex(
+              (data, index) =>
+                Number(data.groupID) ===
+                Number(CommitteeReducer.realtimeCommitteeStatus.commmitteeID)
+            );
+          if (findisExist !== -1) {
+            let findGroupData =
+              CommitteeReducer.ArcheivedCommittees.committees[findisExist];
+            let modifiedData = { ...findGroupData, groupStatusID: status };
+            setGetCommitteeData([modifiedData, ...getcommitteedata]);
+          }
+        } else {
+          let findINdexCommitteeStatus = getcommitteedata.findIndex(
+            (data, index) =>
+              data.committeeID ===
+              CommitteeReducer.realtimeCommitteeStatus.commmitteeID
+          );
+          if (findINdexCommitteeStatus !== -1) {
+            let newArr = getcommitteedata.map((committeeCard, index) => {
+              if (findINdexCommitteeStatus === index) {
+                let newData = {
+                  ...committeeCard,
+                  committeeStatusID:
+                    CommitteeReducer.realtimeCommitteeStatus.committeeStatusID,
+                };
+                return newData;
+              }
+              return committeeCard;
+            });
+            setGetCommitteeData(newArr);
+            dispatch(realtimeCommitteeStatusResponse(null));
+          }
         }
       }
     }
@@ -179,7 +197,7 @@ const Committee = () => {
       dispatch(realtimeCommitteeResponse(null));
     }
   }, [CommitteeReducer.realtimeCommitteeCreateResponse]);
-  
+
   useEffect(() => {
     try {
       if (CommitteeReducer.removeCommitteeMember !== null) {
