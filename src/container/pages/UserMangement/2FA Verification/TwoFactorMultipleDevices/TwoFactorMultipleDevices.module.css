@@ -174,9 +174,9 @@ body[dir="rtl"] .languageIcon_twofacmultidevice {
 }
 
 .MultiFac_Auth_Icon {
-  position: absolute;
-  right: -205px;
-  bottom: -205px;
+  position: fixed;
+  right: -115px;
+  bottom: -175px;
   transform: rotate(45deg);
 }
 body[dir="rtl"] .MultiFac_Auth_Icon {
@@ -208,4 +208,23 @@ body[dir="rtl"] .languageSelector {
   margin-right: 0 !important;
   display: flex;
   justify-content: flex-end;
+}
+
+.phone-image {
+  position: absolute;
+  top: 130px;
+  right: -120px;
+  z-index: 1;
+  user-select: none;
+  width: 23.125rem;
+}
+
+body[dir="rtl"] .phone-image {
+  position: absolute;
+  top: 19%;
+  right: 290px;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

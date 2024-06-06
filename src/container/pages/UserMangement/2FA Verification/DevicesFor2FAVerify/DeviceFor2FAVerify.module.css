@@ -88,10 +88,39 @@ body[dir="rtl"] .VerifyHeading_sendmailwithdevice {
   font-size: calc(35px - 10%) !important;
 }
 .Auth_Icon1SendEmailRealme {
+  position: fixed;
+  right: -315px;
+  bottom: -360px;
+  transform: rotate(285deg);
+  overflow: hidden !important;
+  width: 50rem;
+}
+
+body[dir="rtl"] .Auth_Icon1SendEmailRealme {
   position: absolute;
-  left: 24%;
-  top: 15%;
-  z-index: 9;
+  left: -266px !important;
+  bottom: -300px;
+  right: 50px;
+  transform: rotate(34deg);
+}
+
+.phone-image {
+  position: absolute;
+  top: 130px;
+  right: -200px;
+  z-index: 1;
+  user-select: none;
+  width: 27.125rem;
+}
+
+body[dir="rtl"] .phone-image {
+  position: absolute;
+  top: 19%;
+  right: 222px;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .circle-imageSendEmailRealme {
@@ -189,4 +218,32 @@ body[dir="rtl"] .languageIcon_sendmailwithdevice {
   top: 37px;
   width: 25px;
   height: 25px;
+}
+
+.auth_container {
+  position: relative;
+}
+
+.auth_container.container-fluid {
+  overflow: hidden;
+}
+
+.languageSelector {
+  position: absolute;
+  right: 100px;
+  z-index: 99999 !important;
+  margin-top: 50px;
+  margin-right: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+body[dir="rtl"] .languageSelector {
+  position: absolute;
+  right: -100px;
+  z-index: 99999 !important;
+  margin-top: 50px;
+  margin-right: 0 !important;
+  display: flex;
+  justify-content: flex-end;
 }

@@ -253,3 +253,38 @@ body[dir="rtl"] .languageSelector {
   display: flex;
   justify-content: flex-end;
 }
+
+.phone-image {
+  position: absolute;
+  top: 130px;
+  right: -200px;
+  z-index: 1;
+  user-select: none;
+  width: 30.125rem;
+}
+body[dir="rtl"] .phone-image {
+  position: absolute;
+  top: 19%;
+  right: 222px;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Auth_Icon {
+  position: fixed;
+  right: -315px;
+  bottom: -360px;
+  transform: rotate(28deg);
+  overflow: hidden !important;
+  width: 50rem;
+}
+
+body[dir="rtl"] .Auth_Icon {
+  position: absolute;
+  left: -290px !important;
+  bottom: -270px;
+  right: 50px;
+  transform: rotate(20deg);
+}

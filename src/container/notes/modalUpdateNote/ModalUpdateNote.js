@@ -722,6 +722,9 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                                   data.DisplayAttachmentName.split(" ")[0];
                                 return (
                                   <AttachmentViewer
+                                    handleClickRemove={() =>
+                                      deleteFilefromAttachments(data, index)
+                                    }
                                     data={data}
                                     name={data.DisplayAttachmentName}
                                     id={0}
