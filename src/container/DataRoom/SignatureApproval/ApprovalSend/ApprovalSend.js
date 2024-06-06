@@ -4,6 +4,7 @@ import { ChevronDown } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
 import { TableToDo } from "../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
+import DeleteIcon from "../../../../assets/images/delete_dataroom.png";
 import SorterIconAscend from "../../../../assets/images/approval_sorter_icon_ascend.svg";
 import SorterIconDescend from "../../../../assets/images/approval_sorter_icon_descend.svg";
 import SignatoriesListModal from "./SignatoriesList/SignatoriesListModal";
@@ -127,6 +128,18 @@ const ApprovalSend = () => {
             {text}
           </p>
         );
+      },
+    },
+    {
+      // Column for status
+      title: "",
+      dataIndex: "delete",
+      key: "delete",
+      align: "center",
+      width: 50,
+      render: (text, record) => {
+        // Render status text with appropriate styles
+        return <img src={DeleteIcon} />;
       },
     },
   ];
