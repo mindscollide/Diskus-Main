@@ -322,7 +322,7 @@ const VerificationEmailAndNumber = () => {
                 <Row>
                   <Col className="text-left d-flex justify-content-start align-items-center gap-2">
                     <Button
-                      className="resendCode_btn"
+                      className={styles["resendCode_btn"]}
                       disableBtn={seconds > 0 || minutes > 0}
                       text={t("Resend-code-in")}
                       onClick={resendOtpHandleClick}
@@ -388,8 +388,8 @@ const VerificationEmailAndNumber = () => {
                   draggable="false"
                   src={img2}
                   alt="auth_icon"
-                  width="380px"
-                  className="phone-image"
+                  // width="380px"
+                  className={styles["phone-image"]}
                 />
               </Col>
               <Col sm={12} md={6} lg={6} className="position-relative vh-100">
@@ -397,8 +397,8 @@ const VerificationEmailAndNumber = () => {
                   draggable="false"
                   src={DiskusAuthPageLogo}
                   alt="auth_icon"
-                  width="600px"
-                  className="Auth_Icon"
+                  // width="600px"
+                  className={styles["Auth_Icon"]}
                 />
               </Col>
             </Row>

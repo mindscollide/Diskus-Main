@@ -144,8 +144,8 @@ const TapOptions = () => {
                 draggable="false"
                 src={img9}
                 alt="auth_icon"
-                className="phone-image"
-                width="320px"
+                className={styles["phone-image"]}
+                // width="320px"
                 height="417px"
               />
             </Col>
@@ -154,8 +154,8 @@ const TapOptions = () => {
                 draggable="false"
                 src={DiskusAuthPageLogo}
                 alt="auth_icon"
-                width="600px"
-                className="Verification_Code_Three_Auth_Icon"
+                // width="600px"
+                className={styles["Verification_Code_Three_Auth_Icon"]}
               />
             </Col>
           </Row>
