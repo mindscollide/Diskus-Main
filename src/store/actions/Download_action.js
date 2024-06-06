@@ -11,6 +11,7 @@ import {
 import {
   downloadDocument,
   downloadAttendanceReport,
+  LoginHistoryReportExporttoExcel,
 } from "../../commen/apis/Api_config";
 import Helper from "../../commen/functions/history_logout";
 
@@ -89,7 +90,6 @@ const DownloadFile = (navigate, data, t) => {
     contentType = "image/jpeg";
   } else if (ext === "jpeg") {
     contentType = "image/jpeg";
-  } else {
   }
   return (dispatch) => {
     dispatch(DownloadLoaderStart());
@@ -175,4 +175,71 @@ const downloadAttendanceReportApi = (navigate, t, downloadData) => {
   };
 };
 
-export { DownloadFile, downloadAttendanceReportApi };
+const downlooadUserloginHistory_init = () => {
+  return {
+    type: actions.EXPORT_USERLOGINHISTORY_INIT,
+  };
+};
+const downlooadUserloginHistory_success = (response, message) => {
+  return {
+    type: actions.EXPORT_USERLOGINHISTORY_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const downlooadUserloginHistory_fail = (message) => {
+  return {
+    type: actions.EXPORT_USERLOGINHISTORY_FAIL,
+    message: message,
+  };
+};
+const downlooadUserloginHistoryApi = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let form = new FormData();
+  form.append("RequestMethod", LoginHistoryReportExporttoExcel.RequestMethod);
+  form.append("RequestData", JSON.stringify(Data));
+  return async (dispatch) => {
+    await dispatch(downlooadUserloginHistory_init());
+    axios({
+      method: "post",
+      url: reportDownload,
+      data: form,
+      headers: {
+        _token: token,
+        "Content-Disposition": "attachment; filename=template.xlsx",
+        "Content-Type":
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      },
+      responseType: "arraybuffer",
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(downlooadUserloginHistoryApi(navigate, t, Data));
+        } else if (response.status === 200) {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "user-loing-history.xlsx");
+          document.body.appendChild(link);
+          link.click();
+          dispatch(
+            downlooadUserloginHistory_success(
+              response.data.responseResult,
+              t("Download-successffuly")
+            )
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(downlooadUserloginHistory_fail(response));
+      });
+  };
+};
+
+export {
+  DownloadFile,
+  downloadAttendanceReportApi,
+  downlooadUserloginHistoryApi,
+};

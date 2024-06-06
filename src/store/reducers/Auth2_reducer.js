@@ -31,6 +31,7 @@ const initialState = {
   paymentCompleteResponse: null,
   UpdateProfilePicture: null,
   logoutUser: null,
+  getInvoiceHTML: null,
 };
 
 const AuthReducer = (state = initialState, action) => {
@@ -488,6 +489,28 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         logoutUser: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETINVOICEHTMLBYORGANIZATION_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETINVOICEHTMLBYORGANIZATION_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getInvoiceHTML: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETINVOICEHTMLBYORGANIZATION_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getInvoiceHTML: null,
         ResponseMessage: action.message,
       };
     }
