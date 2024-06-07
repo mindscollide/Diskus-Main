@@ -77,13 +77,6 @@ const FileUploadToDo = (navigate, data, t, newfile) => {
                   "Settings_SettingsServiceManager_UploadDocument_01".toLowerCase()
                 )
             ) {
-              await dispatch(
-                uploadDocumentSuccess(
-                  response.data.responseResult,
-                  t("valid-data"),
-                  false
-                )
-              );
               console.log(newfile, "PromisePromisePromise");
               if (newfile) {
                 let dataResultdisplayFileName =
@@ -100,6 +93,13 @@ const FileUploadToDo = (navigate, data, t, newfile) => {
                 };
                 await newfile.push(dataresponce);
               }
+              await dispatch(
+                uploadDocumentSuccess(
+                  response.data.responseResult,
+                  t("valid-data"),
+                  false
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

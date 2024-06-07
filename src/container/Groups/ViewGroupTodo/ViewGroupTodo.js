@@ -61,6 +61,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
   const [show, setShow] = useState(false);
   const [updateFlagToDo, setUpdateFlagToDo] = useState(false);
   const [viewFlagToDo, setViewFlagToDo] = useState(false);
+  const [statusValues, setStatusValues] = useState([]);
 
   const [todoViewModal, setTodoViewModal] = useState(false);
   const [modalsflag, setModalsflag] = useState(false);
@@ -103,6 +104,22 @@ const CreateTodoCommittee = ({ groupStatus }) => {
           setRowToDo((rowsData) => {
             return rowsData.filter((newData, index) => {
               return newData.pK_TID !== payloadData.todoid;
+            });
+          });
+        } else {
+          setRowToDo((rowsData) => {
+            return rowsData.map((newData, index) => {
+              if (newData.pK_TID === payloadData.todoid) {
+                const newObj = {
+                  ...newData,
+                  status: {
+                    pK_TSID: payloadData.todoStatusID,
+                    status: statusValues[payloadData.todoStatusID],
+                  },
+                };
+                return newObj;
+              }
+              return newData;
             });
           });
         }
@@ -153,18 +170,24 @@ const CreateTodoCommittee = ({ groupStatus }) => {
   useEffect(() => {
     let optionsArr = [];
     let newOptionsFilter = [];
+    let newArrStatus = [""];
+
     if (todoStatus.Response !== null && todoStatus.Response !== "") {
       todoStatus.Response.map((data, index) => {
         optionsArr.push({
           id: data.pK_TSID,
           status: data.status,
         });
+        newArrStatus.push(data.status);
+
         newOptionsFilter.push({
           key: data.pK_TSID,
           label: data.status,
         });
       });
     }
+    setStatusValues(newArrStatus);
+
     setStatusOptions(optionsArr);
     setTableFilterOptions(newOptionsFilter);
   }, [todoStatus]);

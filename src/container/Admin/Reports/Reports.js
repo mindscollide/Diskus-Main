@@ -30,6 +30,7 @@ import { validateEmailEnglishAndArabicFormat } from "../../../commen/functions/v
 import { newTimeFormaterForImportMeetingAgenda } from "../../../commen/functions/date_formater";
 import { getTimeDifference } from "../../../commen/functions/time_formatter";
 import moment from "moment";
+import { downlooadUserloginHistoryApi } from "../../../store/actions/Download_action";
 
 const Reports = () => {
   const { t } = useTranslation();
@@ -270,12 +271,15 @@ const Reports = () => {
       setIsScroll(true);
       let Data = {
         OrganizationID: Number(OrganizationID),
-        Username: "",
-        UserEmail: "",
-        IpAddress: "",
-        DeviceID: "",
-        DateLogin: "",
-        DateLogOut: "",
+        Username: userLoginHistorySearch.userName,
+        UserEmail: userLoginHistorySearch.userEmail,
+        IpAddress: userLoginHistorySearch.IpAddress,
+        DeviceID:
+          userLoginHistorySearch.InterFaceType.value === 0
+            ? ""
+            : userLoginHistorySearch.InterFaceType.value,
+        DateLogin: userLoginHistorySearch.DateTo,
+        DateLogOut: userLoginHistorySearch.DateFrom,
         sRow: Number(isRowsData),
         Length: 10,
       };
@@ -522,6 +526,22 @@ const Reports = () => {
     dispatch(userLoginHistory_Api(navigate, t, Data, true));
   };
 
+  const handleClickExportExcel = () => {
+    let Data = {
+      OrganizationID:
+        localStorage.getItem("organizationID") !== null
+          ? Number(localStorage.getItem("organizationID"))
+          : 0,
+      Username: userLoginHistorySearch.userName,
+      UserEmail: userLoginHistorySearch.userEmail,
+      IpAddress: "",
+      DeviceID: "",
+      DateLogin: "",
+      DateLogOut: "",
+    };
+    dispatch(downlooadUserloginHistoryApi(navigate, t, Data));
+  };
+
   return (
     <Fragment>
       <Container>
@@ -539,7 +559,10 @@ const Reports = () => {
                 lg={4}
                 className="d-flex justify-content-end align-items-center gap-4"
               >
-                <span className={styles["export-to-excel-btn"]}>
+                <span
+                  className={styles["export-to-excel-btn"]}
+                  onClick={handleClickExportExcel}
+                >
                   <img src={XLSIcon} alt="" /> {t("Export-to-excel")}
                 </span>
               </Col>

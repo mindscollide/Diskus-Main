@@ -1589,7 +1589,16 @@ const CancelTrailandUpdageOrganiztionRM = {
 const GetAllSignatureFlowDocumentsForCreatorRM = {
   RequestMethod: "ServiceManager.GetAllSignatureFlowDocumentsForCreator",
 };
+
+const GetInvoiceHTMLByOrganizatonID = {
+  RequestMethod: "ServiceManager.GetInvoiceHtmlByOrganizationID",
+};
+const LoginHistoryReportExporttoExcel = {
+  RequestMethod: "ServiceManager.LoginHistoryReport",
+};
 export {
+  LoginHistoryReportExporttoExcel,
+  GetInvoiceHTMLByOrganizatonID,
   GetAllSignatureFlowDocumentsForCreatorRM,
   ValidateEmailRelatedStringPolls,
   ValidateEmailRelatedString,

@@ -16,6 +16,7 @@ import {
   _justShowDateformatBilling,
 } from "../../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
+import { getInvocieHTMLApi } from "../../../../store/actions/Auth2_actions";
 
 const PayOutstanding = () => {
   const { OrganizationBillingReducer, LanguageReducer } = useSelector(
@@ -32,8 +33,9 @@ const PayOutstanding = () => {
     InvoiceAmount: 0,
     LateCharges: 0,
     BalanceDue: 0,
+    InvoiceID: 0,
   });
-
+  console.log(payOutStanding, "payOutStandingpayOutStandingpayOutStanding");
   useEffect(() => {
     if (OrganizationBillingReducer.getPayoutStanding !== null) {
       let payOutStandingData = OrganizationBillingReducer.getPayoutStanding;
@@ -49,12 +51,13 @@ const PayOutstanding = () => {
             : 0,
         LateCharges:
           Number(payOutStandingData.lateFeeCharged) !== 0
-            ? payOutStandingData.invoiceAmount
+            ? payOutStandingData.lateFeeCharged
             : 0,
         BalanceDue:
           Number(payOutStandingData.balanceDue) !== 0
             ? payOutStandingData.balanceDue
             : 0,
+        InvoiceID: payOutStandingData.pK_OrganizationInvoiceID,
       });
     } else {
       setPayOutStanding({
@@ -64,6 +67,7 @@ const PayOutstanding = () => {
         InvoiceAmount: 0,
         LateCharges: 0,
         BalanceDue: 0,
+        InvoiceID: 0,
       });
     }
   }, [OrganizationBillingReducer.getPayoutStanding]);
@@ -87,6 +91,21 @@ const PayOutstanding = () => {
     //   OrderDescription: "An Order On Diskus",
     // };
     // dispatch(paymentInitiateMainApi(navigate, t, newData));
+  };
+
+  const handleViewInvoice = () => {
+    let Data = {
+      OrganizationID:
+        localStorage.getItem("organizationID") !== null
+          ? Number(localStorage.getItem("organizationID"))
+          : 0,
+      InvoiceID: Number(payOutStanding.InvoiceID),
+      SubscriptionID:
+        localStorage.getItem("organizationSubscriptionID") !== null
+          ? Number(localStorage.getItem("organizationSubscriptionID"))
+          : 0,
+    };
+    dispatch(getInvocieHTMLApi(navigate, t, Data));
   };
 
   return (
@@ -206,6 +225,7 @@ const PayOutstanding = () => {
                   <Button
                     text={t("View-invoice-detail")}
                     className={styles["viewInvocieButton"]}
+                    onClick={handleViewInvoice}
                   />
                 </Col>
                 <Col sm={12} md={6} lg={6} className="mt-2 pe-0">

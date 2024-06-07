@@ -1,5 +1,6 @@
 import {
   authenticationApi,
+  getAdminURLs,
   userLogOutAuthURL,
 } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
@@ -16,6 +17,7 @@ import {
   OrganizationPackageReselection,
   passswordUpdationOnForgetPassword,
   UserLogout,
+  GetInvoiceHTMLByOrganizatonID,
 } from "../../commen/apis/Api_config";
 import { getPackageExpiryDetail } from "./GetPackageExpirtyDetails";
 import { RefreshToken } from "./Auth_action";
@@ -3331,6 +3333,91 @@ const updatePasswordAction = (value, navigate, t) => {
   };
 };
 
+const getInvoiceHTML_Init = () => {
+  return {
+    type: actions.GETINVOICEHTMLBYORGANIZATION_INIT,
+  };
+};
+const getInvoiceHTML_Success = (response, message) => {
+  return {
+    type: actions.GETINVOICEHTMLBYORGANIZATION_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const getInvoiceHTML_Fail = (message) => {
+  return {
+    type: actions.GETINVOICEHTMLBYORGANIZATION_FAIL,
+    message: message,
+  };
+};
+
+const getInvocieHTMLApi = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(getInvoiceHTML_Init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", GetInvoiceHTMLByOrganizatonID.RequestMethod);
+    axios({
+      method: "post",
+      url: getAdminURLs,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getInvocieHTMLApi(navigate, t, Data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_GetInvoiceHtmlByOrganizationID_01"
+                )
+            ) {
+              dispatch(
+                getInvoiceHTML_Success(
+                  response.data.responseResult,
+                  t("Successfull")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_GetInvoiceHtmlByOrganizationID_02"
+                )
+            ) {
+              dispatch(getInvoiceHTML_Fail(t("Not-created")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_GetInvoiceHtmlByOrganizationID_03"
+                )
+            ) {
+              dispatch(getInvoiceHTML_Fail(t("Something-went-wrong")));
+            } else {
+              dispatch(getInvoiceHTML_Fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(getInvoiceHTML_Fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(getInvoiceHTML_Fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(getInvoiceHTML_Fail(t("Something-went-wrong")));
+      });
+  };
+};
 const setClient = (response) => {
   return {
     type: actions.SET_MQTT_CLIENT,
@@ -3339,6 +3426,7 @@ const setClient = (response) => {
 };
 
 export {
+  getInvocieHTMLApi,
   setClient,
   setLoader,
   createOrganization,

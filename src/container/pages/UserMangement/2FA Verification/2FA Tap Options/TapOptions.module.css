@@ -360,16 +360,18 @@ body[dir="rtl"] .deviceName {
 }
 
 .Verification_Code_Three_Auth_Icon {
-  position: absolute;
-  right: -250px;
-  bottom: -205px;
-  transform: rotate(280deg);
+  position: fixed;
+  right: -315px;
+  bottom: -360px;
+  transform: rotate(285deg);
+  overflow: hidden !important;
+  width: 50rem;
 }
 
 body[dir="rtl"] .Verification_Code_Three_Auth_Icon {
   position: absolute;
   right: 100px;
-  bottom: -205px;
+  bottom: -270px;
   transform: rotate(135deg);
 }
 
@@ -391,4 +393,23 @@ body[dir="rtl"] .languageSelector {
   margin-right: 0 !important;
   display: flex;
   justify-content: flex-end;
+}
+
+.phone-image {
+  position: absolute;
+  top: 130px;
+  right: -170px;
+  z-index: 1;
+  user-select: none;
+  width: 21.125rem;
+}
+
+body[dir="rtl"] .phone-image {
+  position: absolute;
+  top: 19%;
+  right: 350px;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

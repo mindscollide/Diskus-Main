@@ -607,7 +607,7 @@ const EditOrganizationsUserApi = (navigate, t, data, flag) => {
                 )
             ) {
               dispatch(
-                editOrganizationUsersSuccess(
+                editOrganizationUsersFail(
                   t(
                     "The-user-has-been-edited-but-selected-package-limit-exceeded"
                   )
@@ -2192,7 +2192,10 @@ const changeSelectPacakgeApi = (navigate, t, data, changePacakgeFlag) => {
                 )
             ) {
               dispatch(changeSelectPacakge_Success(t("Successfully"), ""));
-              localStorage.setItem("organizationSubscriptionID", Number(response.data.responseResult.subscriptionID))
+              localStorage.setItem(
+                "organizationSubscriptionID",
+                Number(response.data.responseResult.subscriptionID)
+              );
               if (changePacakgeFlag) {
                 localStorage.setItem("SignupFlowPageRoute", 5);
                 dispatch(signUpFlowRoutes(5));
@@ -2245,8 +2248,7 @@ const changeSelectPacakgeApi = (navigate, t, data, changePacakgeFlag) => {
   };
 };
 
-
-// 
+//
 //Payment Status Api
 const cancelisTrailandSubscription_Init = () => {
   return {
@@ -2274,7 +2276,10 @@ const cancelisTrailandSubscriptionApi = (navigate, t, data) => {
   return (dispatch) => {
     dispatch(cancelisTrailandSubscription_Init());
     let form = new FormData();
-    form.append("RequestMethod", CancelTrailandUpdageOrganiztionRM.RequestMethod);
+    form.append(
+      "RequestMethod",
+      CancelTrailandUpdageOrganiztionRM.RequestMethod
+    );
     form.append("RequestData", JSON.stringify(data));
     axios({
       method: "post",
@@ -2287,9 +2292,7 @@ const cancelisTrailandSubscriptionApi = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            cancelisTrailandSubscriptionApi(navigate, t, data)
-          );
+          dispatch(cancelisTrailandSubscriptionApi(navigate, t, data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2299,12 +2302,17 @@ const cancelisTrailandSubscriptionApi = (navigate, t, data) => {
                   "Admin_AdminServiceManager_CancelTrialAndUpgradeOrganizationSubscription_01".toLowerCase()
                 )
             ) {
-              dispatch(cancelisTrailandSubscription_Success(t("Successfully"), ""));
-              localStorage.setItem("organizationSubscriptionID", Number(response.data.responseResult.subscriptionID))
+              dispatch(
+                cancelisTrailandSubscription_Success(t("Successfully"), "")
+              );
+              localStorage.setItem(
+                "organizationSubscriptionID",
+                Number(response.data.responseResult.subscriptionID)
+              );
               navigate("/Admin/PaymentFormUserManagement");
               // localStorage.setItem("organizationSubscriptionID", Number(response.data.responseResult.subscriptionID))
               // if (changePacakgeFlag) {
-              
+
               //   localStorage.setItem("SignupFlowPageRoute", 5);
               //   dispatch(signUpFlowRoutes(5));
               //   localStorage.removeItem("changePacakgeFlag");
@@ -2341,17 +2349,25 @@ const cancelisTrailandSubscriptionApi = (navigate, t, data) => {
                   "Admin_AdminServiceManager_CancelTrialAndUpgradeOrganizationSubscription_04".toLowerCase()
                 )
             ) {
-              dispatch(cancelisTrailandSubscription_Failed(t("Something-went-wrong")));
+              dispatch(
+                cancelisTrailandSubscription_Failed(t("Something-went-wrong"))
+              );
             }
           } else {
-            dispatch(cancelisTrailandSubscription_Failed(t("Something-went-wrong")));
+            dispatch(
+              cancelisTrailandSubscription_Failed(t("Something-went-wrong"))
+            );
           }
         } else {
-          dispatch(cancelisTrailandSubscription_Failed(t("Something-went-wrong")));
+          dispatch(
+            cancelisTrailandSubscription_Failed(t("Something-went-wrong"))
+          );
         }
       })
       .catch((response) => {
-        dispatch(cancelisTrailandSubscription_Failed(t("Something-went-wrong")));
+        dispatch(
+          cancelisTrailandSubscription_Failed(t("Something-went-wrong"))
+        );
       });
   };
 };
@@ -2380,5 +2396,5 @@ export {
   // paymentUpgradeDetailMainApi
   requestOrganizationExtendApi,
   paymentStatusApi,
-  cancelisTrailandSubscriptionApi
+  cancelisTrailandSubscriptionApi,
 };

@@ -35,8 +35,7 @@ import TalkNew from "./talk-chat/Talk-New";
 import TalkVideo from "./talk-Video/TalkVideo";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import ModalAddNote from "../../../container/modalAddNote/ModalAddNote";
-import { openAddNotesModal } from "../../../store/actions/Notes_actions";
+import ModalAddNote from "../../../container/notes/modalAddNote/ModalAddNote";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 
 const Talk = () => {
@@ -73,8 +72,8 @@ const Talk = () => {
   const videoIconClick = () => {
     if (videoFeatureReducer.VideoChatPanel === false) {
       dispatch(videoChatPanel(true));
-      dispatch(contactVideoFlag(true));
-      dispatch(recentVideoFlag(false));
+      dispatch(contactVideoFlag(false));
+      dispatch(recentVideoFlag(true));
       setActiveVideoIcon(true);
       dispatch(activeChatBoxGS(false));
       dispatch(globalChatsSearchFlag(false));

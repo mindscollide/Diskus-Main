@@ -6,7 +6,7 @@ import styles from "./EmployeeinfoCard.module.css";
 
 const EmployeeinfoCard = ({
   Employeename,
-  Employeeemail,
+  Employeeemail,   
   Icon,
   EmployeePic,
 }) => {

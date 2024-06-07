@@ -37,7 +37,12 @@ const AdminHome = () => {
   const state = useSelector((state) => state);
   // settingReducer.Loading;
   const location = useLocation();
-  const { GetSubscriptionPackage, settingReducer, UserReportReducer } = state;
+  const {
+    GetSubscriptionPackage,
+    settingReducer,
+    UserReportReducer,
+    downloadReducer,
+  } = state;
   const [currentLanguge, setCurrentLanguage] = useState("en");
   const [flagForStopRerendring, setFlagForStopRerendring] = useState(false);
   const { t } = useTranslation();
@@ -151,7 +156,7 @@ const AdminHome = () => {
 
   useEffect(() => {
     console.log("Connected to MQTT broker onConnectionLost useEffect");
-    if(!flagForStopRerendring){
+    if (!flagForStopRerendring) {
       if (Helper.socket === null) {
         let userID = localStorage.getItem("userID");
         mqttConnection(userID);
@@ -162,9 +167,8 @@ const AdminHome = () => {
         // newClient.disconnectedPublishing = true; // Enable disconnected publishing
         newClient.onMessageArrived = onMessageArrived;
       }
-      setFlagForStopRerendring(true)
+      setFlagForStopRerendring(true);
     }
-   
   }, [flagForStopRerendring]);
 
   // useEffect(() => {
@@ -215,10 +219,10 @@ const AdminHome = () => {
           id={notificationID}
         />
         <Outlet />
-        {TrialExpireSelectPac && (
-          <UpgradeNowModal />
-          )}
-        {settingReducer.Loading || UserReportReducer.Loading ? (
+        {TrialExpireSelectPac && <UpgradeNowModal />}
+        {settingReducer.Loading ||
+        UserReportReducer.Loading ||
+        downloadReducer.Loading ? (
           <Loader />
         ) : null}
       </ConfigProvider>

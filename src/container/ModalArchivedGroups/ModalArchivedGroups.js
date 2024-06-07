@@ -69,6 +69,13 @@ const ModalArchivedCommittee = ({
           });
           setGroupsArheivedData(copygroupData);
         }
+      } else if (status === 3 || status === 1) {
+        setGroupsArheivedData((archGroupData) => {
+          return archGroupData.filter(
+            (groupData, index) =>
+              groupData.groupID !== GroupsReducer.realtimeGroupStatus.groupID
+          );
+        });
       }
     }
   }, [GroupsReducer.realtimeGroupStatus]);

@@ -36,9 +36,8 @@ const SignInUserManagement = () => {
 
   const emailRef = useRef();
 
-  const { Authreducer, adminReducer, LanguageReducer } = useSelector(
-    (state) => state
-  );
+  const { Authreducer, adminReducer, LanguageReducer, UserMangementReducer } =
+    useSelector((state) => state);
   const currentUrl = window.location.href;
   const urlParams = new URLSearchParams(window.location.search);
   const code = urlParams.get("code");
@@ -490,7 +489,9 @@ const SignInUserManagement = () => {
           </>
         )}
       </Container>
-      {getpayemntString && getpayemntString !== "" && <Loader />}
+      {getpayemntString && getpayemntString !== "" && UserMangementReducer && (
+        <Loader />
+      )}
     </>
   );
 };

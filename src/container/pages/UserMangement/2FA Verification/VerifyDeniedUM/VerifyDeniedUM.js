@@ -119,7 +119,7 @@ const VerifyDeniedUM = () => {
                   draggable="false"
                   src={img9}
                   alt="auth_icon"
-                  className="phone-image"
+                  className={styles["phone-image"]}
                   width="320px"
                   height="417px"
                 />
@@ -129,8 +129,8 @@ const VerifyDeniedUM = () => {
                   draggable="false"
                   src={DiskusAuthPageLogo}
                   alt="auth_icon"
-                  width="600px"
-                  className="denied_signIn_Auth_Icon"
+                  // width="600px"
+                  className={styles["denied_signIn_Auth_Icon"]}
                 />
               </Col>
             </Row>

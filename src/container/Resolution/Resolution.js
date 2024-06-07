@@ -14,14 +14,14 @@ import thumbsup from "../../assets/images/thumbsup.svg";
 import thumbsdown from "../../assets/images/thumbsdown.svg";
 import AbstainvoterIcon from "../../assets/images/resolutions/Abstainvoter_icon.svg";
 import { useTranslation } from "react-i18next";
-import ScheduleNewResolution from "../../components/elements/ScheduleNewResolution/ScheduleNewResolution";
-import ViewResolution from "../../components/elements/ViewResolution/ViewResolution";
-import ResultResolution from "../../components/elements/ResultsPageResoution/ResultResolution";
+import ScheduleNewResolution from "./ScheduleNewResolution/ScheduleNewResolution";
+import ViewResolution from "./ViewResolution/ViewResolution";
+import ResultResolution from "./ResultsPageResoution/ResultResolution";
 import VotingPage from "../VotingPage/VotingPage";
-import ModalResolutionUpdated from "../ModalResolutionUpdated/ModalResolutionUpdated";
-import ViewAttachments from "../../components/elements/ViewAttachments/ViewAttachments";
+import ModalResolutionUpdated from "./ModalResolutionUpdated/ModalResolutionUpdated";
+import ViewAttachments from "./ViewAttachments/ViewAttachments";
 import Cross from "../../assets/images/Cross-Chat-Icon.png";
-import EditResolution from "../../components/elements/EditResolution/EditResolution";
+import EditResolution from "./EditResolution/EditResolution";
 import {
   clearResponseMessage,
   getResolutionbyResolutionID,
@@ -33,6 +33,7 @@ import {
   resultResolutionFlag,
   voteResolutionFlag,
   viewAttachmentFlag,
+  resolutionMQTTCreate,
 } from "../../store/actions/Resolution_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { Spin, Tooltip } from "antd";
@@ -48,14 +49,13 @@ import AttachmentIcon from "../../assets/images/resolutions/Attachment_Resolutio
 import EmptyResolution from "../../assets/images/resolutions/Empty_Resolution.svg";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
-import ModalCancellResolution2 from "../ModalCancellResolution2/ModalCancellResolution";
+import ModalCancellResolution2 from "./ModalCancellResolution2/ModalCancellResolution";
 import CrossResolution from "../../assets/images/resolutions/cross_icon_resolution.svg";
 import { updateResolutionModal } from "../../store/actions/Resolution_actions";
 import { viewResolutionModal } from "../../store/actions/Resolution_actions";
 import { validateInput } from "../../commen/functions/regex";
 
 import gregorian from "react-date-object/calendars/gregorian";
-import arabic from "react-date-object/calendars/arabic";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import DatePicker, { DateObject } from "react-multi-date-picker";
@@ -1077,53 +1077,48 @@ const Resolution = () => {
           (data, index) =>
             data.resolutionID === getData.resolution.pK_ResolutionID
         );
-        if (resolutionView === 2) {
-          if (buttonTab === 3 || buttonTab === 1) {
-            let findVoterisValid =
-              getData?.voters.filter((obj) => obj.fK_UID === Number(userID)) ||
-              getData?.nonVoters.filter((obj) => obj.fK_UID === Number(userID));
+        if (resolutionView === 2 && (buttonTab === 1 || buttonTab === 3)) {
+          // Check if the user is a valid voter or non-voter
+          const findVoterisValid =
+            getData?.voters.find((obj) => obj.fK_UID === Number(userID)) ||
+            getData?.nonVoters.find((obj) => obj.fK_UID === Number(userID));
+          console.log(
+            findIndexModerator,
+            findVoterisValid,
+            getData,
+            "findIndexModeratorfindIndexModerator"
+          );
+          if (findVoterisValid) {
+            const voterResolution = {
+              attachments: getData.attachments,
+              decision: getData.resolution.resolutionDecision,
+              decisionDate: getData.resolution.decisionAnnouncementDateTime,
+              fK_VotingStatus_ID: findVoterisValid.fK_VotingStatus_ID,
+              isAlreadyVoted: findVoterisValid.isAlreadyVoted,
+              isAttachmentAvailable: getData.resolution.isAttachmentAvailable,
+              isVoter: findVoterisValid.isVoter === true ? 1 : 0,
+              resolutionID: getData.resolution.pK_ResolutionID,
+              resolutionStatusID: getData.resolution.fK_ResolutionStatusID,
+              resolutionTitle: getData.resolution.title,
+              voterID: findVoterisValid.pK_RV_ID,
+              votingDeadline: getData.resolution.votingDeadline,
+              votingMethod: getData.resolution.votingMethod,
+              votingStatus: findVoterisValid.status,
+            };
+
             if (findIndexModerator === -1) {
-              let voterResolution = {
-                attachments: getData.attachments,
-                decision: getData.resolution.resolutionDecision,
-                decisionDate: getData.resolution.decisionAnnouncementDateTime,
-                fK_VotingStatus_ID: findVoterisValid[0].fK_VotingStatus_ID,
-                isAlreadyVoted: findVoterisValid[0].isAlreadyVoted,
-                isAttachmentAvailable: getData.isAttachmentAvailable,
-                isVoter: findVoterisValid[0].isVoter,
-                resolutionID: getData.resolution.pK_ResolutionID,
-                resolutionStatusID: getData.resolution.fK_ResolutionStatusID,
-                resolutionTitle: getData.resolution.title,
-                voterID: findVoterisValid[0].pK_RV_ID,
-                votingDeadline: getData.resolution.votingDeadline,
-                votingMethod: getData.resolution.votingMethod,
-                votingStatus: findVoterisValid[0].status,
-              };
-              setSearchVoter([voterResolution, ...isSearchVoter]);
+              setSearchVoter((prev) => [voterResolution, ...prev]);
             } else {
-              let voterResolution = {
-                attachments: getData.attachments,
-                decision: getData.resolution.resolutionDecision,
-                decisionDate: getData.resolution.decisionAnnouncementDateTime,
-                fK_VotingStatus_ID: findVoterisValid[0].fK_VotingStatus_ID,
-                isAlreadyVoted: findVoterisValid[0].isAlreadyVoted,
-                isAttachmentAvailable: getData.isAttachmentAvailable,
-                isVoter: findVoterisValid[0].isVoter,
-                resolutionID: getData.resolution.pK_ResolutionID,
-                resolutionStatusID: getData.resolution.fK_ResolutionStatusID,
-                resolutionTitle: getData.resolution.title,
-                voterID: findVoterisValid[0].pK_RV_ID,
-                votingDeadline: getData.resolution.votingDeadline,
-                votingMethod: getData.resolution.votingMethod,
-                votingStatus: findVoterisValid[0].status,
-              };
-              let copyData = [...isSearchVoter];
-              copyData.splice(findIndexModerator, 1, voterResolution);
-              setSearchVoter(copyData);
+              setSearchVoter((prev) => {
+                const copyData = [...prev];
+                copyData.splice(findIndexModerator, 1, voterResolution);
+                return copyData;
+              });
             }
           }
         }
       } catch {}
+      dispatch(resolutionMQTTCreate(null));
     }
   }, [ResolutionReducer.mqttResolutionCreated]);
 
@@ -1211,6 +1206,7 @@ const Resolution = () => {
     ResolutionReducer.voteResolutionFlag,
     "ResolutionReducerResolutionReducer"
   );
+  console.log(isSearchVoter, "isSearchVoterisSearchVoter");
   return (
     <>
       <section className={styles["resolution_container"]}>

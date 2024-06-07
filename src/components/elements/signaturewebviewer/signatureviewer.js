@@ -84,6 +84,7 @@ const SignatureViewer = () => {
     creatorID: "",
     isCreator: 0,
   });
+  console.log(pdfResponceData, "pdfResponceDatapdfResponceData")
   // { userID: "user1", xml: [] }
   const [userAnnotations, setUserAnnotations] = useState([]);
   const [deletedDataTem, setTeletedDataTem] = useState([]);
@@ -822,16 +823,17 @@ const SignatureViewer = () => {
           header.push({
             type: "customElement",
             render: () => {
-              const textBoxButton = document.createElement("button");
-              textBoxButton.textContent = "Send";
-              textBoxButton.style.background = "#6172d6";
-              textBoxButton.style.color = "#fff";
-              textBoxButton.style.borderRadius = "4px";
-              textBoxButton.style.cursor = "pointer";
-              textBoxButton.style.margin = "10px 0 10px 10px";
-              textBoxButton.style.border = "1px solid #6172d6";
-              textBoxButton.onclick = handleClickPublishBtn;
-              return textBoxButton;
+              const publishBtn = document.createElement("button");
+              publishBtn.textContent = "Send";
+              publishBtn.style.background = "#6172d6";
+              publishBtn.style.color = "#fff";
+              publishBtn.style.borderRadius = "4px";
+              publishBtn.style.cursor = "pointer";
+              publishBtn.style.padding = "8px 30px";
+              publishBtn.style.margin = "10px 0 10px 10px";
+              publishBtn.style.border = "1px solid #6172d6";
+              publishBtn.onclick = handleClickPublishBtn;
+              return publishBtn;
             },
           });
         });

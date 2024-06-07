@@ -1,0 +1,108 @@
+.documnetviewer {
+    width: 91vw;
+    margin: 0 auto;
+    height: 91vh;
+    /* display: flex; */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .webviewer {
+    height: 87vh;
+  }
+  .Signers_modal_body {
+    padding: 5px 20px;
+  }
+  .Signers_modal_header {
+    height: 0px;
+  }
+  .Signers_heading {
+    color: #6172d6;
+    font-size: 1.25rem;
+  font-weight: 600;
+  }
+  .Signers_tagLine {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #5a5a5a !important;
+  }
+  
+  .inputlabel_style {
+    color: #6172d6 !important;
+    font-size: 0.625rem !important;
+    font-weight: 600;
+  }
+  .addOther_field {
+    color: #5a5a5a !important;
+    padding: 12px 10px !important;
+    display: flex !important;
+    width: 100% !important;
+    background: #fff !important;
+    font-weight: 500;
+  
+    justify-content: center !important;
+    align-items: center !important;
+    border: 1px dashed #ccc !important;
+    border-radius: 4px;
+    margin: 5px 0;
+    cursor: pointer;
+    outline: none !important;
+    gap: 5px;
+  }
+  .signersList {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  .CancelBtn {
+    color: #5a5a5a !important;
+    background-color: #fff !important;
+    border: 1px solid #e1e1e1 !important;
+    padding: 8px 30px !important;
+    border-radius: 4px !important;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .Add {
+    background: #6172d6 !important;
+    color: #fff !important;
+    border-radius: 4px !important;
+    font-size: 0.75rem;
+  
+    padding: 8px 30px !important;
+    font-weight: 600;
+  }
+  /* .CancelSignature_Btn {
+    color: #5a5a5a !important;
+    background-color: #fff !important;
+    border: 1px solid #e1e1e1 !important;
+    padding: 8px 30px !important;
+  }
+  .SaveSignature_Btn {
+    color: #5a5a5a !important;
+    background-color: #fff !important;
+    border: 1px solid #e1e1e1 !important;
+    padding: 8px 30px !important;
+    border-radius: 4px !important;
+  } */
+  .SendSignature_Btn {
+    background: #6172d6 !important;
+    color: #fff !important;
+    border-radius: 4px !important;
+    padding: 8px 30px !important;
+  }
+  
+  .MainHeader {
+    padding: 10px 0 !important;
+  }
+  .App .buttons_tab button {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+  }
+  .delete_icon_signatureFlow {
+    opacity: 50% !important;
+  }
+  
