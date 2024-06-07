@@ -211,10 +211,7 @@ const ReviewSignature = () => {
     if (getAllPendingForApprovalStats !== null) {
       try {
         let { data } = getAllPendingForApprovalStats;
-        console.log(
-          data,
-          "getAllPendingForApprovalStatsgetAllPendingForApprovalStats"
-        );
+   
         setApprovalStats(data);
       } catch {}
     }

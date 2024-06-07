@@ -170,21 +170,20 @@ const AdminHome = () => {
   };
 
   useEffect(() => {
-    console.log("Connected to MQTT broker onConnectionLost useEffect");
-    if (!flagForStopRerendring) {
-      if (Helper.socket === null) {
-        let userID = localStorage.getItem("userID");
-        mqttConnection(userID);
-      }
-      if (newClient != null) {
-        // newClient.onConnected = onConnected; // Callback when connected
-        newClient.onConnectionLost = onConnectionLost; // Callback when lost connection
-        // newClient.disconnectedPublishing = true; // Enable disconnected publishing
-        newClient.onMessageArrived = onMessageArrived;
-      }
-      setFlagForStopRerendring(true);
+    // if (!flagForStopRerendring) {
+    if (Helper.socket === null) {
+      let userID = localStorage.getItem("userID");
+      mqttConnection(userID);
     }
-  }, [flagForStopRerendring]);
+    if (newClient != null) {
+      // newClient.onConnected = onConnected; // Callback when connected
+      newClient.onConnectionLost = onConnectionLost; // Callback when lost connection
+      // newClient.disconnectedPublishing = true; // Enable disconnected publishing
+      newClient.onMessageArrived = onMessageArrived;
+    }
+    // setFlagForStopRerendring(true);
+    // }
+  }, [newClient]);
 
   // useEffect(() => {
   //   mqttConnection();
