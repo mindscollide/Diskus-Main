@@ -94,6 +94,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     let searchIndex = tasksAttachments.TasksAttachments;
     setFileForSend((prev) => {
       return prev.filter((fileData, index) => {
+        console.log(index, "fileDatafileData");
         return fileData.name !== data.DisplayAttachmentName;
       });
     });
@@ -192,49 +193,6 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
 
   // for save button hit
 
-  const notesSaveHandler = async () => {
-    try {
-      if (addNoteFields.Title.value !== "") {
-        setIsAddNote(false);
-        setIsCreateNote(true);
-      } else {
-        setAddNoteFields({
-          ...addNoteFields,
-          Title: {
-            value: addNoteFields.Title.value,
-            errorMessage:
-              addNoteFields.Title.value === ""
-                ? t("Title-is-required")
-                : addNoteFields.Title.errorMessage,
-            errorStatus:
-              addNoteFields.Title.value === ""
-                ? true
-                : addNoteFields.Title.errorStatus,
-          },
-
-          Description: {
-            value: addNoteFields.Description.value,
-            errorMessage: "",
-            errorStatus: false,
-          },
-        });
-        setIsCreateNote(false);
-        // setOpen({
-        //   ...open,
-        //   open: true,
-        //   message: t("Field-should-not-be-empty"),
-        // })
-        // setTimeout(() => {
-        //   setOpen({
-        //     ...open,
-        //     open: false,
-        //     message: "",
-        //   })
-        // }, 3000)
-      }
-    } catch (error) {}
-  };
-
   //Upload File Handler
   const uploadFilesToDo = (data) => {
     console.log(data, "uploadFilesToDouploadFilesToDo");
@@ -292,7 +250,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           DisplayAttachmentName: fileData.name,
           OriginalAttachmentName: fileData.name,
           fileSize: fileData.size,
-          userID : Number(createrID)
+          userID: Number(createrID),
         };
         setTasksAttachments((prevAttachments) => ({
           ...prevAttachments,
@@ -344,7 +302,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           await dispatch(FileUploadToDo(navigate, newData, t, newfile));
         });
         await Promise.all(uploadPromises);
-        // await dispatch(uploaddocumentloader(false));
+        await dispatch(uploaddocumentloader(false));
         newfile.forEach((attachmentData, index) => {
           newData.push({
             DisplayAttachmentName: attachmentData.DisplayAttachmentName,
@@ -397,18 +355,6 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           errorStatus: false,
         },
       });
-      // setOpen({
-      //   ...open,
-      //   open: true,
-      //   message: t("Field-should-not-be-empty"),
-      // });
-      // setTimeout(() => {
-      //   setOpen({
-      //     ...open,
-      //     open: false,
-      //     message: "",
-      //   });
-      // }, 3000);
     }
   };
 
@@ -653,118 +599,6 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                                             id={0}
                                             fk_UID={data.userID}
                                           />
-                                          // <Col
-                                          //   sm={12}
-                                          //   lg={2}
-                                          //   md={2}
-                                          //   className="modaltodolist-attachment-icon"
-                                          // >
-                                          //   {ext === "doc" ? (
-                                          //     <FileIcon
-                                          //       extension={"docx"}
-                                          //       size={78}
-                                          //       type={"document"}
-                                          //       labelColor={"rgba(44, 88, 152)"}
-                                          //     />
-                                          //   ) : ext === "docx" ? (
-                                          //     <FileIcon
-                                          //       extension={"docx"}
-                                          //       size={78}
-                                          //       type={"font"}
-                                          //       labelColor={"rgba(44, 88, 152)"}
-                                          //     />
-                                          //   ) : ext === "xls" ? (
-                                          //     <FileIcon
-                                          //       extension={"xls"}
-                                          //       type={"spreadsheet"}
-                                          //       size={78}
-                                          //       labelColor={"rgba(16, 121, 63)"}
-                                          //     />
-                                          //   ) : ext === "xlsx" ? (
-                                          //     <FileIcon
-                                          //       extension={"xls"}
-                                          //       type={"spreadsheet"}
-                                          //       size={78}
-                                          //       labelColor={"rgba(16, 121, 63)"}
-                                          //     />
-                                          //   ) : ext === "pdf" ? (
-                                          //     <FileIcon
-                                          //       extension={"pdf"}
-                                          //       size={78}
-                                          //       {...defaultStyles.pdf}
-                                          //     />
-                                          //   ) : ext === "png" ? (
-                                          //     <FileIcon
-                                          //       extension={"png"}
-                                          //       size={78}
-                                          //       type={"image"}
-                                          //       labelColor={
-                                          //         "rgba(102, 102, 224)"
-                                          //       }
-                                          //     />
-                                          //   ) : ext === "txt" ? (
-                                          //     <FileIcon
-                                          //       extension={"txt"}
-                                          //       size={78}
-                                          //       type={"document"}
-                                          //       labelColor={
-                                          //         "rgba(52, 120, 199)"
-                                          //       }
-                                          //     />
-                                          //   ) : ext === "jpg" ? (
-                                          //     <FileIcon
-                                          //       extension={"jpg"}
-                                          //       size={78}
-                                          //       type={"image"}
-                                          //       labelColor={
-                                          //         "rgba(102, 102, 224)"
-                                          //       }
-                                          //     />
-                                          //   ) : ext === "jpeg" ? (
-                                          //     <FileIcon
-                                          //       extension={"jpeg"}
-                                          //       size={78}
-                                          //       type={"image"}
-                                          //       labelColor={
-                                          //         "rgba(102, 102, 224)"
-                                          //       }
-                                          //     />
-                                          //   ) : ext === "gif" ? (
-                                          //     <FileIcon
-                                          //       extension={"gif"}
-                                          //       size={78}
-                                          //       {...defaultStyles.gif}
-                                          //     />
-                                          //   ) : (
-                                          //     <FileIcon
-                                          //       extension={ext}
-                                          //       size={78}
-                                          //       {...defaultStyles.ext}
-                                          //     />
-                                          //   )}
-
-                                          //   <span className="deleteBtn">
-                                          //     <img
-                                          //       draggable="false"
-                                          //       src={deleteButtonCreateMeeting}
-                                          //       width={15}
-                                          //       height={15}
-                                          //       alt=""
-                                          //       onClick={() =>
-                                          //         deleteFilefromAttachments(
-                                          //           data,
-                                          //           index
-                                          //         )
-                                          //       }
-                                          //     />
-                                          //   </span>
-                                          //   <p
-                                          //     className="modaltodolist-attachment-text"
-                                          //     title={data.DisplayAttachmentName}
-                                          //   >
-                                          //     {first}
-                                          //   </p>
-                                          // </Col>
                                         );
                                       }
                                     )
