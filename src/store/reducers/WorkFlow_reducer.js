@@ -13,6 +13,8 @@ const initialState = {
   getDataroomAnnotation: null,
   addAnnotationFilesAttachment: null,
   getAllSignatureDocumentsforCreator: null,
+  getAllPendingForApprovalStats: null,
+  listOfPendingForApprovalSignatures: null,
 };
 
 const SignatureWorkflowReducer = (state = initialState, action) => {
@@ -79,7 +81,6 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
-
     case actions.GETWORKFLOWBYFILEID_FAIL: {
       return {
         ...state,
@@ -239,6 +240,51 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         getAllSignatureDocumentsforCreator: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETALLPENDINGAPPROVALSIGNATURES_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETALLPENDINGAPPROVALSIGNATURES_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        listOfPendingForApprovalSignatures: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETALLPENDINGAPPROVALSIGNATURES_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        listOfPendingForApprovalSignatures: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GETALLPENDINGAPPROVALSTATS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETALLPENDINGAPPROVALSTATS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getAllPendingForApprovalStats: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETALLPENDINGAPPROVALSTATS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getAllPendingForApprovalStats: null,
         ResponseMessage: action.message,
       };
     }

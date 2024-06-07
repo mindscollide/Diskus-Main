@@ -9,6 +9,8 @@ import {
   getAnnotationOfDataroomAttachment,
   addAnnotationOnDataroomAttachment,
   GetAllSignatureFlowDocumentsForCreatorRM,
+  GetAllPendingForApprovalStatsRM,
+  ListOfPendingForApprovalSignaturesRM,
 } from "../../commen/apis/Api_config";
 import { workflowApi, dataRoomApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
@@ -1217,7 +1219,205 @@ const getAllSignaturesDocumentsforCreatorApi = (navigate, t, Data) => {
   };
 };
 
+const getAllPendingApprovalsStats_init = () => {
+  return {
+    type: actions.GETALLPENDINGAPPROVALSTATS_INIT,
+  };
+};
+const getAllPendingApprovalsStats_success = (response, message) => {
+  return {
+    type: actions.GETALLPENDINGAPPROVALSTATS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getAllPendingApprovalsStats_fail = (message) => {
+  return {
+    type: actions.GETALLPENDINGAPPROVALSTATS_FAIL,
+    message: message,
+  };
+};
+
+const getAllPendingApprovalsStatsApi = (navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getAllPendingApprovalsStats_init());
+    let form = new FormData();
+    form.append("RequestMethod", GetAllPendingForApprovalStatsRM.RequestMethod);
+
+    axios({
+      method: "post",
+      url: workflowApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getAllPendingApprovalsStatsApi(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetAllPendingForApprovalStats_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllPendingApprovalsStats_success(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetAllPendingForApprovalStats_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllPendingApprovalsStats_fail(t("No-data-available"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetAllPendingForApprovalStats_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllPendingApprovalsStats_fail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                getAllPendingApprovalsStats_fail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              getAllPendingApprovalsStats_fail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(getAllPendingApprovalsStats_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(getAllPendingApprovalsStats_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const getAllPendingApprovalsSignatures_init = () => {
+  return {
+    type: actions.GETALLPENDINGAPPROVALSIGNATURES_INIT,
+  };
+};
+const getAllPendingApprovalsSignatures_success = (response, message) => {
+  return {
+    type: actions.GETALLPENDINGAPPROVALSIGNATURES_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getAllPendingApprovalsSignatures_fail = (message) => {
+  return {
+    type: actions.GETALLPENDINGAPPROVALSIGNATURES_FAIL,
+    message: message,
+  };
+};
+
+const getAllPendingApprovalsSignaturesApi = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getAllPendingApprovalsSignatures_init());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      ListOfPendingForApprovalSignaturesRM.RequestMethod
+    );
+    form.append("RequestData", JSON.stringify(Data));
+
+    axios({
+      method: "post",
+      url: workflowApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_ListOfPendingForApprovalSignatures_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllPendingApprovalsSignatures_success(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_ListOfPendingForApprovalSignatures_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllPendingApprovalsSignatures_fail(t("No-data-available"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_ListOfPendingForApprovalSignatures_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllPendingApprovalsSignatures_fail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                getAllPendingApprovalsSignatures_fail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              getAllPendingApprovalsSignatures_fail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            getAllPendingApprovalsSignatures_fail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          getAllPendingApprovalsSignatures_fail(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
 export {
+  getAllPendingApprovalsStatsApi,
+  getAllPendingApprovalsSignaturesApi,
   getAllSignaturesDocumentsforCreatorApi,
   createWorkflowApi,
   saveWorkflowApi,

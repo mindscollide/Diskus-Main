@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import styles from "./ReviewSignature.module.css";
 import { useTranslation } from "react-i18next";
@@ -14,9 +14,26 @@ import {
   getFileExtension,
   getIconSource,
 } from "../../SearchFunctionality/option";
+import { useNavigate } from "react-router-dom";
+import {
+  getAllPendingApprovalsSignaturesApi,
+  getAllPendingApprovalsStatsApi,
+} from "../../../../store/actions/workflow_actions";
+import { useSelector } from "react-redux";
 const ReviewSignature = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const { getAllPendingForApprovalStats, listOfPendingForApprovalSignatures } =
+    useSelector((state) => state.SignatureWorkFlowReducer);
+  const navigate = useNavigate();
+  const [approvalStats, setApprovalStats] = useState({
+    declined: 0,
+    declinedPercentage: 0,
+    pending: 0,
+    pendingPercentage: 0,
+    signed: 0,
+    signedPercentage: 0,
+  });
 
   //Getting current Language
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -183,6 +200,27 @@ const ReviewSignature = () => {
     },
     // Add more data as needed
   ];
+
+  useEffect(() => {
+    dispatch(getAllPendingApprovalsStatsApi(navigate, t));
+    let Data = { pageNo: 1, pageSize: 10 };
+    dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
+  }, []);
+
+  useEffect(() => {
+    if (getAllPendingForApprovalStats !== null) {
+      try {
+        let { data } = getAllPendingForApprovalStats;
+        console.log(
+          data,
+          "getAllPendingForApprovalStatsgetAllPendingForApprovalStats"
+        );
+        setApprovalStats(data);
+      } catch {}
+    }
+  }, [getAllPendingForApprovalStats]);
+
+  const formatValue = (value) => (value < 9 ? `0${value}` : value);
   return (
     <>
       <Row>
@@ -190,42 +228,48 @@ const ReviewSignature = () => {
           <div className={styles["progressWrapper"]}>
             <Row>
               <Col lg={6} md={6} sm={12}>
-                <div className="d-flex positionRelative">
+                <div className="d-flex  position-relative">
                   {/* Progress bars with different colors and percentages */}
                   <ProgressBar
-                    width={"100"}
+                    width={approvalStats.signedPercentage}
                     color="#F16B6B"
                     indexValue="0"
-                    percentageValue={"60%"}
+                    percentageValue={`${approvalStats.signedPercentage}%`}
                   />
                   <ProgressBar
-                    width={30}
+                    width={approvalStats.pendingPercentage}
                     color="#FFC300"
                     indexValue="1"
-                    percentageValue={"30%"}
+                    percentageValue={`${approvalStats.pendingPercentage}%`}
                   />
                   <ProgressBar
-                    width={10}
+                    width={approvalStats.declinedPercentage}
                     color="#55CE5C"
                     indexValue="2"
-                    percentageValue={"10%"}
+                    percentageValue={`${approvalStats.declinedPercentage}%`}
                   />
                 </div>
               </Col>
               <Col lg={6} md={6} sm={12} className="d-flex">
                 <span className={styles["line"]} />
                 <div className={styles["progress-value-wrapper-signed"]}>
-                  <span className={styles["numeric-value"]}>03</span>
+                  <span className={styles["numeric-value"]}>
+                    {formatValue(approvalStats.signed)}
+                  </span>
                   <span className={styles["value"]}>Signed</span>
                 </div>
                 <span className={styles["line"]} />
                 <div className={styles["progress-value-wrapper-pending"]}>
-                  <span className={styles["numeric-value"]}>03</span>
+                  <span className={styles["numeric-value"]}>
+                    {formatValue(approvalStats.pending)}
+                  </span>
                   <span className={styles["value"]}>Pending</span>
                 </div>
                 <span className={styles["line"]} />
                 <div className={styles["progress-value-wrapper-decline"]}>
-                  <span className={styles["numeric-value"]}>02</span>
+                  <span className={styles["numeric-value"]}>
+                    {formatValue(approvalStats.declined)}
+                  </span>
                   <span className={styles["value"]}>Decline</span>
                 </div>
               </Col>
