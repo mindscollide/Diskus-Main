@@ -17,14 +17,14 @@ const VideoPanelHeader = () => {
 
   // Chat Filter Options
   const chatFilterOptions = [
-    { className: "talk-video-filter", label: "Contact", value: 1 },
     { className: "talk-video-filter", label: "Recent", value: 2 },
+    { className: "talk-video-filter", label: "Contact", value: 1 },
   ];
 
   //Chat Filter State
   const [chatFilter, setChatFilter] = useState({
-    value: 1,
-    label: "Contact",
+    value: 2,
+    label: "Recent",
   });
 
   // for   select Chat Filter Name
