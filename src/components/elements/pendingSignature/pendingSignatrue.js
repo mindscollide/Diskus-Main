@@ -16,7 +16,7 @@ import {
   saveWorkflowApi,
 } from "../../../store/actions/workflow_actions";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
-const SignatureViewer = () => {
+const PendingSignature = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -1377,4 +1377,4 @@ const SignatureViewer = () => {
   );
 };
 
-export default SignatureViewer;
+export default PendingSignature;
