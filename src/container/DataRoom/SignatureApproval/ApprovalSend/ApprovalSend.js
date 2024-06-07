@@ -40,7 +40,10 @@ const ApprovalSend = () => {
       sorter: (a, b) => b.name - a.name, // Custom sorter function for sorting by name
       render: (text, record) => {
         return (
-          <span className="d-flex gap-2 align-items-center ">
+          <span
+            className="d-flex gap-2 align-items-center cursor-pointer"
+            onClick={() => handleClickOpenDoc(record)}
+          >
             <img src={getIconSource(getFileExtension(text))} />
             <p className={styles["fileName_Approvals"]}>{text}</p>
           </span>
@@ -149,116 +152,34 @@ const ApprovalSend = () => {
     setSignatoriesList(true);
   };
 
-  // Data for rows of the pending approval table
-  const rowsPendingApproval = [
-    {
-      key: "1",
-      name: "abc.pdf",
-      signatories: 10,
-      status: "Draft",
-      sendDate: "11-01-2024 | 05:00 PM",
-    },
-    {
-      key: "2",
-      name: "casdasd.pdf",
-      signatories: 9,
-      status: "Pending",
-      sendDate: "11-01-2024 | 05:00 PM",
-    },
-    {
-      key: "3",
-      name: "bcdasdasd.pdf",
-      signatories: 20,
-      status: "Decline",
-      sendDate: "11-01-2024 | 05:00 PM",
-    },
-    {
-      key: "4",
-      name: "ddd123123123.pdf",
-      signatories: 4,
-      status: "Signed",
-      sendDate: "11-01-2024 | 04:30 PM",
-    },
-    {
-      key: "5",
-      name: "abcdsffg.pdf",
-      signatories: 8,
-      status: "Decline",
-      sendDate: "11-01-2024 | 05:15 PM",
-    },
-    {
-      key: "6",
-      name: "abcasdADAdas.pdf",
-      signatories: 16,
-      status: "Signed",
-      sendDate: "11-01-2024 | 05:45 PM",
-    },
-    // Add more data as needed
-  ];
-  useEffect(() => {
-    // if (SignatureWorkFlowReducer.getAllSignatureDocumentsforCreator === null) {
-    // }
-    if (currentView === 5) {
-      let signatureFlowDocumentsForCreator = [
-        {
-          workFlowID: 25,
-          workFlowStatusID: 4,
-          fileID: 7495,
-          fileName: "calendar qs.pdf",
-          numberOfSignatories: 4,
-          sentOn: "-",
-          status: "Draft",
-        },
-        {
-          workFlowID: 24,
-          workFlowStatusID: 1,
-          fileID: 7494,
-          fileName: "calendar qs.pdf",
-          numberOfSignatories: 8,
-          sentOn: "-",
-          status: "Pending Signature",
-        },
-        {
-          workFlowID: 23,
-          workFlowStatusID: 4,
-          fileID: 7492,
-          fileName: "CALENDAR API OBSERVATIONS.pdf",
-          numberOfSignatories: 2,
-          sentOn: "-",
-          status: "Draft",
-        },
-        {
-          workFlowID: 22,
-          workFlowStatusID: 4,
-          fileID: 7490,
-          fileName: "AXIS NOTIFICATION MECHANISM CHANGES.pdf",
-          numberOfSignatories: 12,
-          sentOn: "-",
-          status: "Draft",
-        },
-        {
-          workFlowID: 21,
-          workFlowStatusID: 4,
-          fileID: 7489,
-          fileName: "AXIS NOTIFICATION MECHANISM CHANGES.pdf",
-          numberOfSignatories: 9,
-          sentOn: "-",
-          status: "Draft",
-        },
-        {
-          workFlowID: 20,
-          workFlowStatusID: 4,
-          fileID: 7487,
-          fileName: "AXIS NOTIFICATION MECHANISM CHANGES.pdf",
-          numberOfSignatories: 3,
-          sentOn: "-",
-          status: "Draft",
-        },
-      ];
-      setApprovalsData(signatureFlowDocumentsForCreator);
+  const handleClickOpenDoc = (record) => {
+    if (record.status.toLowerCase() === "Draft".toLowerCase()) {
+      let reponseData = JSON.stringify(record.fileID);
+      window.open(
+        `/#/DisKus/signatureviewer?documentID=${encodeURIComponent(
+          reponseData
+        )}`,
+        "_blank",
+        "noopener noreferrer"
+      );
     }
+  };
 
-    // SignatureWorkFlowReducer
+  useEffect(() => {
+    if (SignatureWorkFlowReducer.getAllSignatureDocumentsforCreator !== null) {
+      try {
+        let { signatureFlowDocumentsForCreator } =
+          SignatureWorkFlowReducer.getAllSignatureDocumentsforCreator;
+        if (
+          Array.isArray(signatureFlowDocumentsForCreator) &&
+          signatureFlowDocumentsForCreator.length > 0
+        ) {
+          setApprovalsData(signatureFlowDocumentsForCreator);
+        }
+      } catch (error) {
+        console.log("Something Went Wrong", error);
+      }
+    }
   }, [SignatureWorkFlowReducer.getAllSignatureDocumentsforCreator]);
   return (
     <>
