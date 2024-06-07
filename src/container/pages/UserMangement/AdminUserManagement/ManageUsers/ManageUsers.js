@@ -30,6 +30,7 @@ import SuccessfullyUpdateModal from "../../ModalsUserManagement/SuccessFullyUpda
 import {
   AllOrganizationsUsersApi,
   clearMessegesUserManagement,
+  getOrganizationPackageUserStatsAPI,
 } from "../../../../../store/actions/UserManagementActions";
 import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
 import { validateEmailEnglishAndArabicFormat } from "../../../../../commen/functions/validations";
@@ -97,6 +98,7 @@ const ManageUsers = () => {
           RequestingUserID: Number(userID),
         };
         dispatch(AllOrganizationsUsersApi(navigate, t, data));
+        dispatch(getOrganizationPackageUserStatsAPI(navigate, t));
       } catch {}
       setFlagForStopRerendring(true);
     }
@@ -115,26 +117,30 @@ const ManageUsers = () => {
     };
   }, [flagForStopRerendring]);
 
+  useEffect(() => {
+    if (
+      UserMangementReducer.getOrganizationUserStatsGraph !== null &&
+      UserMangementReducer.getOrganizationUserStatsGraph.selectedPackageDetails
+        .length > 0
+    ) {
+      let UserCount = 0;
+      UserMangementReducer.getOrganizationUserStatsGraph.selectedPackageDetails.forEach(
+        (data) => {
+          UserCount += data.headCount - data.packageAllotedUsers;
+        }
+      );
+      setTotalUserCount(UserCount);
+    }
+  }, [UserMangementReducer.getOrganizationUserStatsGraph]);
+
   //AllOrganizationsUsers Api Data
   useEffect(() => {
     const Users = UserMangementReducer.allOrganizationUsersData;
-
-    console.log(Users, "UsersUsersUsers");
     if (
       Users &&
       Users.organizationUsers &&
       Users.organizationUsers.length > 0
     ) {
-      let UserCount = 0;
-      const userStats =
-        UserMangementReducer.allOrganizationUsersData.selectedPackageDetails;
-
-      userStats.forEach((data) => {
-        console.log(data, "UserCountUserCount");
-        UserCount += data.headCount - data.packageAllotedUsers;
-      });
-
-      setTotalUserCount(UserCount);
       setManageUserGrid(
         UserMangementReducer.allOrganizationUsersData.organizationUsers
       );

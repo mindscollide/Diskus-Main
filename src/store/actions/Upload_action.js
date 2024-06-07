@@ -97,7 +97,7 @@ const FileUploadToDo = (navigate, data, t, newfile) => {
                 uploadDocumentSuccess(
                   response.data.responseResult,
                   t("valid-data"),
-                  false
+                  true
                 )
               );
             } else if (
