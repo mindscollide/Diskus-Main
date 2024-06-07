@@ -273,8 +273,8 @@ const TwoFactorVerifyUM = () => {
                   draggable="false"
                   src={img2}
                   alt="auth_icon"
-                  width="380px"
-                  className="phone-image user-select-none"
+                  // width="380px"
+                  className={styles["phone-image"]}
                 />
               </Col>
               <Col sm={12} md={6} lg={6} className="position-relative vh-100">
@@ -282,8 +282,8 @@ const TwoFactorVerifyUM = () => {
                   draggable="false"
                   src={img3}
                   alt="auth_icon"
-                  width="600px"
-                  className="Auth_Icon"
+                  // width="600px"
+                  className={styles["Auth_Icon"]}
                 />
               </Col>
             </Row>

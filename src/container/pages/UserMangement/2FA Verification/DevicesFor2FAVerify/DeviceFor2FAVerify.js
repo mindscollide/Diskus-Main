@@ -124,7 +124,7 @@ const DeviceFor2FAVerify = () => {
 
   const handleGoBack = () => {
     localStorage.setItem("LoginFlowPageRoute", 1);
-   dispatch(LoginFlowRoutes(1));
+    dispatch(LoginFlowRoutes(1));
   };
 
   useEffect(() => {
@@ -178,9 +178,9 @@ const DeviceFor2FAVerify = () => {
 
   return (
     <>
-      <Container fluid className="auth_container">
+      <Container fluid className={styles["auth_container"]}>
         <Row className="position-relative">
-          <Col className="languageSelector">
+          <Col className={styles["languageSelector"]}>
             <LanguageSelector />
           </Col>
         </Row>
@@ -350,7 +350,9 @@ const DeviceFor2FAVerify = () => {
                         <Col sm={12} lg={12} md={12}>
                           <Button
                             text={t("Send-code")}
-                            className="Next_button_EmailVerifySendEmailRealme"
+                            className={
+                              styles["Next_button_EmailVerifySendEmailRealme"]
+                            }
                             onClick={onClickRealmeXtra}
                             disableBtn={
                               xtrazoom || codeemail || codesms ? false : true
@@ -376,8 +378,8 @@ const DeviceFor2FAVerify = () => {
                   draggable="false"
                   src={img2}
                   alt="auth_icon"
-                  width="380px"
-                  className="phone-image"
+                  // width="380px"
+                  className={styles["phone-image"]}
                 />
               </Col>
               <Col sm={12} md={6} lg={6} className="position-relative vh-100">
@@ -385,8 +387,8 @@ const DeviceFor2FAVerify = () => {
                   draggable="false"
                   src={DiskusAuthPageLogo}
                   alt="auth_icon"
-                  width="600px"
-                  className="Auth_Icon"
+                  // width="600px"
+                  className={styles["Auth_Icon1SendEmailRealme"]}
                 />
               </Col>
             </Row>

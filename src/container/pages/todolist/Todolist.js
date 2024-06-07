@@ -587,12 +587,6 @@ const TodoList = () => {
         UserID: parseInt(createrID),
       };
       dispatch(SearchTodoListApi(navigate, newData, 1, 50, t));
-      setSearchData({
-        Date: "",
-        Title: "",
-        AssignedToName: "",
-        UserID: parseInt(createrID),
-      });
     }
   };
 

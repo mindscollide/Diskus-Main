@@ -638,7 +638,7 @@ const ViewDetailsModal = ({
                         sm={12}
                         className={styles["Scroller"]}
                       >
-                        {getDataAnalyticsDetails?.today?.length > 0 && (
+                        {documentActivityDetails?.today?.length > 0 && (
                           <Row>
                             <Col lg={12} md={12} sm={12}>
                               <span className={styles["Today_heading"]}>
@@ -648,18 +648,23 @@ const ViewDetailsModal = ({
                           </Row>
                         )}
 
-                        {getDataAnalyticsDetails?.today?.length > 0 &&
-                          getDataAnalyticsDetails?.today.map(
+                        {documentActivityDetails?.today?.length > 0 &&
+                          documentActivityDetails?.today.map(
                             (todayData, index) => {
+                              console.log(
+                                todayData,
+                                "todayDatatodayDatatodayData"
+                              );
+                              // src={`data:image/jpeg;base64,${todayData.base64ImgOwner}`}
                               return (
                                 <>
                                   <Row className="mt-2">
                                     <Col lg={1} md={1} sm={1}>
                                       <img
-                                        src={profilepic}
+                                        src={`data:image/jpeg;base64,${todayData.base64ImgOwner}`}
                                         alt=""
-                                        height="30.25px"
-                                        width="30.25px"
+                                        height="30px"
+                                        width="30px"
                                         className={styles["profileClass"]}
                                       />
                                     </Col>
@@ -938,7 +943,7 @@ const ViewDetailsModal = ({
                           )}
 
                         {/* Yesterday */}
-                        {getDataAnalyticsDetails?.yesterday?.length > 0 && (
+                        {documentActivityDetails?.yesterday?.length > 0 && (
                           <Row>
                             <Col lg={12} md={12} sm={12}>
                               <span className={styles["Today_heading"]}>
@@ -948,18 +953,18 @@ const ViewDetailsModal = ({
                           </Row>
                         )}
 
-                        {getDataAnalyticsDetails?.yesterday?.length > 0 &&
-                          getDataAnalyticsDetails?.yesterday.map(
+                        {documentActivityDetails?.yesterday?.length > 0 &&
+                          documentActivityDetails?.yesterday.map(
                             (YesterDayData, index) => {
                               return (
                                 <>
                                   <Row className="mt-2">
                                     <Col lg={1} md={1} sm={1}>
                                       <img
-                                        src={profilepic}
+                                        src={`data:image/jpeg;base64,${YesterDayData.base64ImgOwner}`}
                                         alt=""
-                                        height="30.25px"
-                                        width="30.25px"
+                                        height="30px"
+                                        width="30px"
                                         className={styles["profileClass"]}
                                       />
                                     </Col>
@@ -1206,7 +1211,7 @@ const ViewDetailsModal = ({
                           )}
 
                         {/* this Week */}
-                        {getDataAnalyticsDetails?.thisWeek?.length > 0 && (
+                        {documentActivityDetails?.thisWeek?.length > 0 && (
                           <Row>
                             <Col lg={12} md={12} sm={12}>
                               <span className={styles["Today_heading"]}>
@@ -1216,18 +1221,18 @@ const ViewDetailsModal = ({
                           </Row>
                         )}
 
-                        {getDataAnalyticsDetails?.thisWeek?.length > 0 &&
-                          getDataAnalyticsDetails?.thisWeek.map(
+                        {documentActivityDetails?.thisWeek?.length > 0 &&
+                          documentActivityDetails?.thisWeek.map(
                             (thisweekData, index) => {
                               return (
                                 <>
                                   <Row className="mt-2">
                                     <Col lg={1} md={1} sm={1}>
                                       <img
-                                        src={profilepic}
+                                        src={`data:image/jpeg;base64,${thisweekData.base64ImgOwner}`}
                                         alt=""
-                                        height="30.25px"
-                                        width="30.25px"
+                                        height="30px"
+                                        width="30px"
                                         className={styles["profileClass"]}
                                       />
                                     </Col>
@@ -1477,7 +1482,7 @@ const ViewDetailsModal = ({
                           )}
 
                         {/* This Month */}
-                        {getDataAnalyticsDetails?.thisMonth?.length > 0 && (
+                        {documentActivityDetails?.thisMonth?.length > 0 && (
                           <Row>
                             <Col lg={12} md={12} sm={12}>
                               <span className={styles["Today_heading"]}>
@@ -1487,8 +1492,8 @@ const ViewDetailsModal = ({
                           </Row>
                         )}
 
-                        {getDataAnalyticsDetails?.thisMonth?.length > 0 &&
-                          getDataAnalyticsDetails?.thisMonth.map(
+                        {documentActivityDetails?.thisMonth?.length > 0 &&
+                          documentActivityDetails?.thisMonth.map(
                             (thisMonthData, index) => {
                               return (
                                 <>
@@ -1745,7 +1750,7 @@ const ViewDetailsModal = ({
                           )}
 
                         {/* Pervious Month */}
-                        {getDataAnalyticsDetails?.previousMonth?.length > 0 && (
+                        {documentActivityDetails?.previousMonth?.length > 0 && (
                           <Row>
                             <Col lg={12} md={12} sm={12}>
                               <span className={styles["Today_heading"]}>
@@ -1755,18 +1760,18 @@ const ViewDetailsModal = ({
                           </Row>
                         )}
 
-                        {getDataAnalyticsDetails?.previousMonth?.length > 0 &&
-                          getDataAnalyticsDetails?.previousMonth.map(
+                        {documentActivityDetails?.previousMonth?.length > 0 &&
+                          documentActivityDetails?.previousMonth.map(
                             (previousMonthData, index) => {
                               return (
                                 <>
                                   <Row className="mt-2">
                                     <Col lg={1} md={1} sm={1}>
                                       <img
-                                        src={profilepic}
+                                        src={`data:image/jpeg;base64,${previousMonthData.base64ImgOwner}`}
                                         alt=""
-                                        height="30.25px"
-                                        width="30.25px"
+                                        height="30px"
+                                        width="30px"
                                         className={styles["profileClass"]}
                                       />
                                     </Col>
