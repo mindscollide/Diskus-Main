@@ -47,7 +47,7 @@ const userLogOutApiFunc = (navigate, t) => {
       },
     })
       .then(async (response) => {
-        if (response.data.responseCode === 417) {
+        if (response.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(userLogOutApiFunc(navigate, t));
         } else if (response.data.responseCode === 200) {
