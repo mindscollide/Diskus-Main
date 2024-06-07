@@ -140,9 +140,12 @@ const DataRoom = () => {
   const [optionsFileisShown, setOptionsFileisShown] = useState(false);
   const [optionsFolderisShown, setOptionsFolderisShown] = useState(false);
   const [dataRoomString, setDataRoomString] = useState("");
-  const { uploadReducer, DataRoomReducer, LanguageReducer, SignatureWorkFlowReducer } = useSelector(
-    (state) => state
-  );
+  const {
+    uploadReducer,
+    DataRoomReducer,
+    LanguageReducer,
+    SignatureWorkFlowReducer,
+  } = useSelector((state) => state);
   const searchBarRef = useRef();
   const threedotFile = useRef();
   const threedotFolder = useRef();
@@ -480,7 +483,8 @@ const DataRoom = () => {
   }, [isOnline]);
 
   useEffect(() => {
-    if(SignatureWorkFlowReducer.getAllSignatureDocumentsforCreator === null) {}
+    if (SignatureWorkFlowReducer.getAllSignatureDocumentsforCreator === null) {
+    }
     let signatureFlowDocumentsForCreator = [
       {
         workFlowID: 25,
@@ -537,9 +541,9 @@ const DataRoom = () => {
         status: "Draft",
       },
     ];
-    
+
     // SignatureWorkFlowReducer
-  }, [SignatureWorkFlowReducer.getAllSignatureDocumentsforCreator])
+  }, [SignatureWorkFlowReducer.getAllSignatureDocumentsforCreator]);
 
   const ClosingNotificationRenameFolder = () => {
     setShowrenamenotification(false);
@@ -3447,50 +3451,52 @@ const DataRoom = () => {
                 sm={12}
                 className="d-flex justify-content-center"
               >
-                <span className={styles["lsit_grid_buttons"]}>
-                  <Button
-                    icon={
-                      <Tooltip placement="bottomLeft" title={t("Grid-view")}>
-                        <img
-                          src={
-                            gridbtnactive ? Grid_Selected : Grid_Not_Selected
-                          }
-                          height="25.27px"
-                          width="25.27px"
-                          alt=""
-                          className={styles["grid_view_Icon"]}
-                        />
-                      </Tooltip>
-                    }
-                    className={
-                      gridbtnactive
-                        ? `${styles["grid_view_btn_active"]}`
-                        : `${styles["grid_view_btn"]}`
-                    }
-                    onClick={handleGridView}
-                  />
-                  <Button
-                    icon={
-                      <Tooltip placement="bottomLeft" title={t("List-view")}>
-                        <img
-                          src={
-                            listviewactive ? List_Selected : List_Not_selected
-                          }
-                          height="25.27px"
-                          width="25.27px"
-                          alt=""
-                          className={styles["list_view_Icon"]}
-                        />
-                      </Tooltip>
-                    }
-                    className={
-                      listviewactive
-                        ? `${styles["List_view_btn_active"]}`
-                        : `${styles["List_view_btn"]}`
-                    }
-                    onClick={handlelistview}
-                  />
-                </span>
+                {currentView !== 5 && (
+                  <span className={styles["lsit_grid_buttons"]}>
+                    <Button
+                      icon={
+                        <Tooltip placement="bottomLeft" title={t("Grid-view")}>
+                          <img
+                            src={
+                              gridbtnactive ? Grid_Selected : Grid_Not_Selected
+                            }
+                            height="25.27px"
+                            width="25.27px"
+                            alt=""
+                            className={styles["grid_view_Icon"]}
+                          />
+                        </Tooltip>
+                      }
+                      className={
+                        gridbtnactive
+                          ? `${styles["grid_view_btn_active"]}`
+                          : `${styles["grid_view_btn"]}`
+                      }
+                      onClick={handleGridView}
+                    />
+                    <Button
+                      icon={
+                        <Tooltip placement="bottomLeft" title={t("List-view")}>
+                          <img
+                            src={
+                              listviewactive ? List_Selected : List_Not_selected
+                            }
+                            height="25.27px"
+                            width="25.27px"
+                            alt=""
+                            className={styles["list_view_Icon"]}
+                          />
+                        </Tooltip>
+                      }
+                      className={
+                        listviewactive
+                          ? `${styles["List_view_btn_active"]}`
+                          : `${styles["List_view_btn"]}`
+                      }
+                      onClick={handlelistview}
+                    />
+                  </span>
+                )}
               </Col>
             </Row>
             <Row className="mt-4">
@@ -3543,16 +3549,20 @@ const DataRoom = () => {
                             // onClick={showCancellUploadModal}
                             onClick={SharewithmeButonShow}
                           />
-                          <Button
-                            text={t("Send-for-approval")}
-                            className={
-                              currentView === 5
-                                ? `${styles["Send_for_approval_btn_active"]}`
-                                : `${styles["Send_for_approval_btn"]}`
-                            }
-                            // onClick={showCancellUploadModal}
-                            onClick={SendForApprovalButton}
-                          />
+                          {checkFeatureIDAvailability(19) ||
+                          checkFeatureIDAvailability(21) ? (
+                            <Button
+                              text={t("Send-for-approval")}
+                              className={
+                                currentView === 5
+                                  ? `${styles["Send_for_approval_btn_active"]}`
+                                  : `${styles["Send_for_approval_btn"]}`
+                              }
+                              // onClick={showCancellUploadModal}
+                              onClick={SendForApprovalButton}
+                            />
+                          ) : null}
+
                           {/* ApprovalSend */}
                           <Button
                             text={t("Recently-added")}

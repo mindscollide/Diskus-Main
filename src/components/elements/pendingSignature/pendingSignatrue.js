@@ -1,25 +1,11 @@
 import React, { useRef, useEffect, useState } from "react";
 import WebViewer from "@pdftron/webviewer";
-import "./signaturewebviewer.css";
+import "./pendingSignature.css";
 import PlusSignSignatureFlow from "../../../assets/images/plus-sign-signatureflow.svg";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import DragIcon from "../../../assets/images/DragIcon_SignatureFlow.png";
-import {
-  ClearMessageAnnotations,
-  GetAnnotationsOfToDoAttachementMessageCleare,
-  addAnnotationsOnDataroomAttachement,
-  addAnnotationsOnNotesAttachement,
-  addAnnotationsOnResolutionAttachement,
-  addAnnotationsOnToDoAttachement,
-  getAnnotationsOfDataroomAttachement,
-  getAnnotationsOfNotesAttachement,
-  getAnnotationsOfResolutionAttachement,
-  getAnnotationsOfToDoAttachement,
-  setUserAnnotation,
-} from "../../../store/actions/webVieverApi_actions";
-
 import { useTranslation } from "react-i18next";
 import { Notification, Loader, Modal, Button, TextField } from "../index";
 import { Col, Row } from "react-bootstrap";
@@ -84,7 +70,7 @@ const SignatureViewer = () => {
     creatorID: "",
     isCreator: 0,
   });
-  console.log(pdfResponceData, "pdfResponceDatapdfResponceData")
+  console.log(pdfResponceData, "pdfResponceDatapdfResponceData");
   // { userID: "user1", xml: [] }
   const [userAnnotations, setUserAnnotations] = useState([]);
   const [deletedDataTem, setTeletedDataTem] = useState([]);
@@ -1172,29 +1158,6 @@ const SignatureViewer = () => {
     }
   };
   // === End === //
-
-  // === this is for Response Message===//
-  useEffect(() => {
-    if (
-      webViewer.ResponseMessage !== "" &&
-      webViewer.ResponseMessage !== undefined
-    ) {
-      setOpen({
-        ...open,
-        message: webViewer.ResponseMessage,
-        open: true,
-      });
-      setTimeout(() => {
-        dispatch(ClearMessageAnnotations());
-        setOpen({
-          ...open,
-          message: "",
-          open: false,
-        });
-      }, 4000);
-    }
-  }, [webViewer.ResponseMessage]);
-  // === End ===//
 
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;

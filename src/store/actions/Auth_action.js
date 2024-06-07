@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { authenticationRefreshToken } from "../../commen/apis/Api_config";
 import { authenticationApi } from "../../commen/apis/Api_ends_points";
-import { signOut } from "./Auth_Sign_Out";
+import { signOut, userLogOutApiFunc } from "./Auth_Sign_Out";
 
 // Refresh Token
 const refreshtokenFail = (message) => {
@@ -48,10 +48,11 @@ const RefreshToken = (navigate, t) => {
               "authenticationApiauthenticationApiauthenticationApi"
             );
             let message2 = t("Your-session-has-expired-please-login-again");
+            // await dispatch(signOut(navigate, message2, dispatch));
+            await dispatch(refreshtokenFail(message2));
+            dispatch(userLogOutApiFunc(navigate, t));
 
-            await dispatch(signOut(navigate, message2));
-            // await dispatch(refreshtokenFail(message2));
-            navigate("/");
+            // navigate("/");
           } else {
             await dispatch(
               refreshtokenSuccess(

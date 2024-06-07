@@ -58,7 +58,7 @@ const userLogOutApiFunc = (navigate, t) => {
                 .includes("ERM_AuthService_AuthManager_LogOut_01".toLowerCase())
             ) {
               await dispatch(userlogOutSuccess(t("Successful")));
-              signOut(dispatch);
+              signOut(navigate, "", dispatch);
               dispatch(showUpgradeNowModal(false));
               // navigate("/");
             } else if (
@@ -111,7 +111,7 @@ const signOut = (navigate, message, dispatch) => {
     let RememberPasswordLocalValue = localStorage.getItem(
       "rememberPasswordValue"
     );
-    
+
     localStorage.clear();
     if (reLang !== undefined && reLang != null) {
       localStorage.setItem("i18nextLng", reLang);
@@ -122,7 +122,7 @@ const signOut = (navigate, message, dispatch) => {
     localStorage.setItem("rememberEmailValue", RememberEmailLocalValue);
   } else if (RememberEmailLocal === true) {
     let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
-    
+
     localStorage.clear();
     if (reLang !== undefined && reLang != null) {
       localStorage.setItem("i18nextLng", reLang);
@@ -133,7 +133,7 @@ const signOut = (navigate, message, dispatch) => {
     let RememberPasswordLocalValue = localStorage.getItem(
       "rememberPasswordValue"
     );
-    
+
     localStorage.clear();
     if (reLang !== undefined && reLang != null) {
       localStorage.setItem("i18nextLng", reLang);
@@ -141,7 +141,6 @@ const signOut = (navigate, message, dispatch) => {
     localStorage.setItem("remeberPassword", RememberPasswordLocal);
     localStorage.setItem("rememberPasswordValue", RememberPasswordLocalValue);
   } else {
-    
     localStorage.clear();
     if (reLang !== undefined && reLang != null) {
       localStorage.setItem("i18nextLng", reLang);

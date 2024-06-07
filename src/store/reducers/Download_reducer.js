@@ -6,6 +6,7 @@ const initialState = {
   Fail: false,
   ResponseMessage: "",
   downloadDocumentsList: [],
+  userLoginHistoryDownload: null,
 };
 
 const downloadReducer = (state = initialState, action) => {
@@ -48,7 +49,28 @@ const downloadReducer = (state = initialState, action) => {
 
     case actions.DOWNLOAD_ATTENDANCE_REPORT_INIT:
       return { ...state, Loading: true };
-
+    case actions.EXPORT_USERLOGINHISTORY_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.EXPORT_USERLOGINHISTORY_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        userLoginHistoryDownload: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.EXPORT_USERLOGINHISTORY_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        userLoginHistoryDownload: null,
+        ResponseMessage: action.message,
+      };
+    }
     default:
       return { ...state };
   }

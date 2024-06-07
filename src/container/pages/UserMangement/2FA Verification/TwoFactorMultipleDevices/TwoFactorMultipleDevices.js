@@ -427,8 +427,8 @@ const TwoFactorMultipleDevices = () => {
                   draggable="false"
                   src={img2}
                   alt="auth_icon"
-                  width="380px"
-                  className="phone-image"
+                  // width="380px"
+                  className={styles["phone-image"]}
                 />
               </Col>
               <Col sm={12} md={6} lg={6} className="position-relative vh-100">

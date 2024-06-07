@@ -1214,25 +1214,41 @@ body[dir="rtl"] .dataroom_searchinput2 {
 }
 
 .DataRoom_DropDown button {
-  width: 137px;
-  height: 39px;
-  font-weight: 600;
+  width: 137px !important;
+  height: 39px !important;
+  font-weight: 600 !important;
   color: #fff !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-  display: flex;
-  justify-content: center;
+  display: flex !important;
+  justify-content: center !important;
+  border: none !important;
+}
+.DataRoom_DropDown button:hover {
   border: none !important;
 }
 
 /* .DataRoom_DropDown .dropdown-toggle.btn.btn-primary {
   border: none !important;
 } */
+.dropdown_menu_dataroom {
+  min-width: auto;
+}
 .dropdown_menu_dataroom .dropdown-menu a.dropdown-item.dropdown-item {
   line-height: 36px;
 }
 .DataRoom_DropDown .dropdown-menu.show {
   padding: 0 !important;
-  min-width: 100%;
+  min-width: 100% !important;
+  padding: 0 10px !important;
+  margin: 0 !important;
+  transform: translate(0px, 45px);
+  border-width: 0px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+}
+.DataRoom_DropDown .dropdown-menu {
+  padding: 0 !important;
+  min-width: 100% !important;
   padding: 0 10px !important;
   margin: 0 !important;
   transform: translate(0px, 45px);

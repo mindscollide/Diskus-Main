@@ -55,19 +55,20 @@ body[dir="rtl"] .Next_button_EmailVerifyForTwoFac button:disabled {
 
 .phone-image {
   position: absolute;
-  top: 19%;
-  right: -170px;
+  top: 130px;
+  right: -200px;
   z-index: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  user-select: none;
+  width: 27.125rem;
 }
 
 .Auth_Icon {
-  position: absolute;
-  right: -205px;
-  bottom: -205px;
-  transform: rotate(264deg);
+  position: fixed;
+  right: -315px;
+  bottom: -360px;
+  transform: rotate(285deg);
+  overflow: hidden !important;
+  width: 50rem;
 }
 
 body[dir="rtl"] .Auth_Icon {
@@ -77,7 +78,7 @@ body[dir="rtl"] .Auth_Icon {
 body[dir="rtl"] .phone-image {
   position: absolute;
   top: 19%;
-  right: 222px;
+  right: 255px;
   z-index: 1;
   display: flex;
   justify-content: center;
@@ -87,7 +88,7 @@ body[dir="rtl"] .phone-image {
 body[dir="rtl"] .Auth_Icon {
   position: absolute;
   left: -290px !important;
-  bottom: -190px;
+  bottom: -270px;
   right: 50px;
   transform: rotate(22deg);
 }

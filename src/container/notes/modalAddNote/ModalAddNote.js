@@ -344,7 +344,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           await dispatch(FileUploadToDo(navigate, newData, t, newfile));
         });
         await Promise.all(uploadPromises);
-        await dispatch(uploaddocumentloader(false));
+        // await dispatch(uploaddocumentloader(false));
         newfile.forEach((attachmentData, index) => {
           newData.push({
             DisplayAttachmentName: attachmentData.DisplayAttachmentName,
