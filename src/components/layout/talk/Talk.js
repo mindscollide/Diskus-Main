@@ -72,8 +72,8 @@ const Talk = () => {
   const videoIconClick = () => {
     if (videoFeatureReducer.VideoChatPanel === false) {
       dispatch(videoChatPanel(true));
-      dispatch(contactVideoFlag(true));
-      dispatch(recentVideoFlag(false));
+      dispatch(contactVideoFlag(false));
+      dispatch(recentVideoFlag(true));
       setActiveVideoIcon(true);
       dispatch(activeChatBoxGS(false));
       dispatch(globalChatsSearchFlag(false));
