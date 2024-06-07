@@ -8,6 +8,19 @@ import {
   GetAllUserChats,
 } from "../../../store/actions/Talk_action";
 import {
+  showCancelModalmeetingDeitals,
+  scheduleMeetingPageFlag,
+  viewProposeDateMeetingPageFlag,
+  viewAdvanceMeetingPublishPageFlag,
+  viewAdvanceMeetingUnpublishPageFlag,
+  viewProposeOrganizerMeetingPageFlag,
+  proposeNewMeetingPageFlag,
+  viewMeetingFlag,
+  uploadGlobalFlag,
+  LeaveCurrentMeeting,
+  currentMeetingStatus,
+} from "../../../store/actions/NewMeetingActions";
+import {
   recentChatFlag,
   headerShowHideStatus,
   footerShowHideStatus,
@@ -28,6 +41,8 @@ import {
   contactVideoFlag,
   videoChatSearchFlag,
 } from "../../../store/actions/VideoFeature_actions";
+import { getCurrentDateTimeUTC } from "../../../commen/functions/date_formater.js";
+import PendingApprovalIcon from "../../../assets/images/Pending-approval.png";
 import { useDispatch, useSelector } from "react-redux";
 import { Tooltip } from "antd";
 import TalkChat from "./talk-chat/Talk-Chat";
@@ -50,6 +65,7 @@ const Talk = () => {
     videoFeatureReducer,
     VideoMainReducer,
     talkFeatureStates,
+    NewMeetingreducer,
   } = useSelector((state) => state);
 
   let activeCall = JSON.parse(localStorage.getItem("activeCall"));
@@ -87,6 +103,49 @@ const Talk = () => {
       dispatch(globalChatsSearchFlag(false));
       dispatch(videoChatSearchFlag(false));
     }
+  };
+
+  let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
+
+  const CurrentMeetingStatus = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingStatus
+  );
+
+  const handleMeetingPendingApprovals = () => {
+    if (
+      (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+        NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+        NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+      NewMeetingreducer.viewMeetingFlag === false
+    ) {
+      dispatch(showCancelModalmeetingDeitals(true));
+      localStorage.setItem("navigateLocation", "pendingApprovals");
+      console.log("This Check");
+    } else {
+      navigate("/DisKus/Minutes");
+      dispatch(showCancelModalmeetingDeitals(false));
+      dispatch(scheduleMeetingPageFlag(false));
+      dispatch(viewProposeDateMeetingPageFlag(false));
+      dispatch(viewAdvanceMeetingPublishPageFlag(false));
+      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+      dispatch(viewProposeOrganizerMeetingPageFlag(false));
+      dispatch(proposeNewMeetingPageFlag(false));
+      dispatch(viewMeetingFlag(false));
+      console.log("This Check");
+      let Data = {
+        FK_MDID: currentMeeting,
+        DateTime: getCurrentDateTimeUTC(),
+      };
+      if (CurrentMeetingStatus === 10) {
+        dispatch(LeaveCurrentMeeting(navigate, t, Data));
+        dispatch(currentMeetingStatus(0));
+        console.log("This Check");
+      }
+    }
+    console.log("This Check");
   };
 
   const showsubTalkIcons = () => {
@@ -296,6 +355,25 @@ const Talk = () => {
         ) : null}
 
         <div className={subIcons ? "talk-nav-icons" : "border-0"}>
+          {/* {checkFeatureIDAvailability(4) ? ( */}
+          <Tooltip placement="leftTop" title={t("Pending-approvals")}>
+            <div
+              className={subIcons ? "talk_subIcon" : "talk_subIcon_hidden"}
+              onClick={handleMeetingPendingApprovals}
+            >
+              {/* <span className="talk-count"></span> */}
+              {/* <span className={missedCallCount === 0 ? "" : "talk-count"}>
+                  {missedCallCount === 0 ? "" : missedCallCount}
+                </span> */}
+              <img
+                className="hover-effect-image"
+                src={PendingApprovalIcon}
+                alt=""
+                width={34}
+              />
+            </div>
+          </Tooltip>
+          {/* ) : null} */}
           {checkFeatureIDAvailability(6) ? (
             <Tooltip placement="leftTop" title={t("Add-a-note")}>
               <div
@@ -417,7 +495,6 @@ const Talk = () => {
               </div>
             </Tooltip>
           ) : null}
-
           {checkFeatureIDAvailability(3) ? (
             <Tooltip placement="leftTop" title={t("Chat")}>
               <div

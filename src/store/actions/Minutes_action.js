@@ -44,6 +44,13 @@ const deleteCommentMeetingModal = (response) => {
   };
 };
 
+const pendingApprovalGraph = (response) => {
+  return {
+    type: actions.PENDING_APPROVAL_GRAPH_DATA,
+    response: response,
+  };
+};
+
 export {
   pendingApprovalPage,
   reviewMinutesPage,
@@ -51,4 +58,5 @@ export {
   editCommentModal,
   deleteCommentModal,
   deleteCommentMeetingModal,
+  pendingApprovalGraph,
 };

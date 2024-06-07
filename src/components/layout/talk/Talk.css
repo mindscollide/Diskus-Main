@@ -196,3 +196,7 @@ body[dir="rtl"] .talk-count {
   font-size: 9px;
   right: 3px;
 }
+
+img.hover-effect-image:hover {
+  filter: brightness(0) invert(1);
+}

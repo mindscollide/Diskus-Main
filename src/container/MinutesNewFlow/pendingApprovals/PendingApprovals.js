@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Row, Col, Container } from "react-bootstrap";
 import { useTranslation } from "react-i18next"; // Importing translation hook
 import { utcConvertintoGMT } from "../../../commen/functions/date_formater";
@@ -15,6 +16,7 @@ import DescendIcon from "./../Images/SorterIconDescend.png";
 import AscendIcon from "./../Images/SorterIconAscend.png";
 import ArrowDownIcon from "./../Images/Arrow-down.png";
 import ArrowUpIcon from "./../Images/Arrow-up.png";
+import NoApprovals from "./../Images/No-Approvals.png";
 import ReviewSignature from "../../DataRoom/SignatureApproval/ReviewAndSign/ReviewSignature";
 
 // Functional component for pending approvals section
@@ -22,6 +24,8 @@ const PendingApproval = () => {
   const { t } = useTranslation(); // Translation hook
   const dispatch = useDispatch(); // Redux hook
   const navigate = useNavigate(); // Navigation hook
+
+  const { MinutesReducer } = useSelector((state) => state);
 
   //Getting current Language
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -227,52 +231,68 @@ const PendingApproval = () => {
     },
   ];
 
+  const [rowsPendingApproval, setRowsPendingApproval] = useState([]);
+
   // Data for rows of the pending approval table
-  const rowsPendingApproval = [
-    {
-      key: "1",
-      name: "Board Member Executive Meeting from Boss's and hahahahahaha",
-      userEmail: "john.doe@example.com",
-      status: "Pending",
-      leaveTime: "11-01-2024 | 05:00 PM",
-    },
-    {
-      key: "1",
-      name: "IT Departmental Meeting",
-      userEmail: "john.doe@example.com",
-      status: "Pending",
-      leaveTime: "11-01-2024 | 05:00 PM",
-    },
-    {
-      key: "1",
-      name: "John Doe",
-      userEmail: "john.doe@example.com",
-      status: "Reviewed",
-      leaveTime: "11-01-2024 | 05:00 PM",
-    },
-    {
-      key: "2",
-      name: "Stock and Shareholders Meeting",
-      userEmail: "jane.smith@example.com",
-      status: "Expired",
-      leaveTime: "11-01-2024 | 04:30 PM",
-    },
-    {
-      key: "3",
-      name: "Board Member Executive Meeting from Boss's",
-      userEmail: "michael.johnson@example.com",
-      status: "Expired",
-      leaveTime: "11-01-2024 | 05:15 PM",
-    },
-    {
-      key: "4",
-      name: "Board Member Executive Meeting from Boss's",
-      userEmail: "emily.brown@example.com",
-      status: "Reviewed",
-      leaveTime: "11-01-2024 | 05:45 PM",
-    },
-    // Add more data as needed
-  ];
+  // const rowsPendingApproval = [
+  //   {
+  //     key: "1",
+  //     name: "Board Member Executive Meeting from Boss's and hahahahahaha",
+  //     userEmail: "john.doe@example.com",
+  //     status: "Pending",
+  //     leaveTime: "11-01-2024 | 05:00 PM",
+  //   },
+  //   {
+  //     key: "2",
+  //     name: "IT Departmental Meeting",
+  //     userEmail: "john.doe@example.com",
+  //     status: "Pending",
+  //     leaveTime: "11-01-2024 | 05:00 PM",
+  //   },
+  //   {
+  //     key: "3",
+  //     name: "John Doe",
+  //     userEmail: "john.doe@example.com",
+  //     status: "Reviewed",
+  //     leaveTime: "11-01-2024 | 05:00 PM",
+  //   },
+  //   {
+  //     key: "4",
+  //     name: "Stock and Shareholders Meeting",
+  //     userEmail: "jane.smith@example.com",
+  //     status: "Expired",
+  //     leaveTime: "11-01-2024 | 04:30 PM",
+  //   },
+  //   {
+  //     key: "5",
+  //     name: "Board Member Executive Meeting from Boss's",
+  //     userEmail: "michael.johnson@example.com",
+  //     status: "Expired",
+  //     leaveTime: "11-01-2024 | 05:15 PM",
+  //   },
+  //   {
+  //     key: "6",
+  //     name: "Board Member Executive Meeting from Boss's",
+  //     userEmail: "emily.brown@example.com",
+  //     status: "Reviewed",
+  //     leaveTime: "11-01-2024 | 05:45 PM",
+  //   },
+  //   // // Add more data as needed
+  // ];
+
+  useEffect(() => {
+    if (
+      MinutesReducer.pendingApprovalTableReducerData !== null &&
+      MinutesReducer.pendingApprovalTableReducerData !== undefined &&
+      MinutesReducer.pendingApprovalTableReducerData.length !== 0
+    ) {
+      setRowsPendingApproval(MinutesReducer.pendingApprovalTableReducerData);
+    } else {
+      setRowsPendingApproval([]);
+    }
+  }, [MinutesReducer.pendingApprovalTableReducerData]);
+
+  console.log("MinutesReducerMinutesReducer", MinutesReducer);
 
   return (
     <section className={styles["pendingApprovalContainer"]}>
@@ -320,76 +340,106 @@ const PendingApproval = () => {
               {" "}
               <Row>
                 <Col>
-                  <div className={styles["progressWrapper"]}>
-                    <Row>
-                      <Col lg={6} md={6} sm={12}>
-                        <div className="d-flex positionRelative">
-                          {/* Progress bars with different colors and percentages */}
-                          <ProgressBar
-                            width={100}
-                            color="#F16B6B"
-                            indexValue="0"
-                            percentageValue={"60%"}
+                  {rowsPendingApproval.length > 0 ? (
+                    <>
+                      <div className={styles["progressWrapper"]}>
+                        <Row>
+                          <Col lg={6} md={6} sm={12}>
+                            <div className="d-flex positionRelative">
+                              {/* Progress bars with different colors and percentages */}
+                              <ProgressBar
+                                width={100}
+                                color="#F16B6B"
+                                indexValue="0"
+                                percentageValue={"60%"}
+                              />
+                              <ProgressBar
+                                width={30}
+                                color="#ffc300"
+                                indexValue="1"
+                                percentageValue={"30%"}
+                              />
+                              <ProgressBar
+                                width={10}
+                                color="#6172D6"
+                                indexValue="2"
+                                percentageValue={"10%"}
+                              />
+                            </div>
+                          </Col>
+                          <Col lg={6} md={6} sm={12} className="d-flex">
+                            <span className={styles["line"]} />
+                            <div
+                              className={
+                                styles["progress-value-wrapper-purple"]
+                              }
+                            >
+                              <span className={styles["numeric-value"]}>
+                                03
+                              </span>
+                              <span className={styles["value"]}>Reviewed</span>
+                            </div>
+                            <span className={styles["line"]} />
+                            <div
+                              className={
+                                styles["progress-value-wrapper-yellow"]
+                              }
+                            >
+                              <span className={styles["numeric-value"]}>
+                                03
+                              </span>
+                              <span className={styles["value"]}>Pending</span>
+                            </div>
+                            <span className={styles["line"]} />
+                            <div
+                              className={styles["progress-value-wrapper-red"]}
+                            >
+                              <span className={styles["numeric-value"]}>
+                                02
+                              </span>
+                              <span className={styles["value"]}>Expired</span>
+                            </div>
+                          </Col>
+                        </Row>
+                      </div>
+                      <Row>
+                        <Col>
+                          <TableToDo
+                            sortDirections={["descend", "ascend"]}
+                            column={pendingApprovalColumns}
+                            className={"PendingApprovalsTable"}
+                            rows={rowsPendingApproval}
+                            // scroll={scroll}
+                            pagination={false}
+                            scroll={
+                              rowsPendingApproval.length > 10
+                                ? { y: 385 }
+                                : undefined
+                            }
+                            id={(record, index) =>
+                              index === rowsPendingApproval.length - 1
+                                ? "last-row-class"
+                                : ""
+                            }
                           />
-                          <ProgressBar
-                            width={30}
-                            color="#ffc300"
-                            indexValue="1"
-                            percentageValue={"30%"}
-                          />
-                          <ProgressBar
-                            width={10}
-                            color="#6172D6"
-                            indexValue="2"
-                            percentageValue={"10%"}
-                          />
-                        </div>
-                      </Col>
-                      <Col lg={6} md={6} sm={12} className="d-flex">
-                        <span className={styles["line"]} />
-                        <div
-                          className={styles["progress-value-wrapper-purple"]}
-                        >
-                          <span className={styles["numeric-value"]}>03</span>
-                          <span className={styles["value"]}>Reviewed</span>
-                        </div>
-                        <span className={styles["line"]} />
-                        <div
-                          className={styles["progress-value-wrapper-yellow"]}
-                        >
-                          <span className={styles["numeric-value"]}>03</span>
-                          <span className={styles["value"]}>Pending</span>
-                        </div>
-                        <span className={styles["line"]} />
-                        <div className={styles["progress-value-wrapper-red"]}>
-                          <span className={styles["numeric-value"]}>02</span>
-                          <span className={styles["value"]}>Expired</span>
-                        </div>
-                      </Col>
-                    </Row>
-                  </div>
+                        </Col>
+                      </Row>
+                    </>
+                  ) : (
+                    <section
+                      className={`${styles["emptyScreen-height"]} d-flex flex-column align-items-center justify-content-center`}
+                    >
+                      <img src={NoApprovals} alt="" />
+                      <span className={styles["No-Approvals"]}>
+                        {t("Approvals")}
+                      </span>
+                      <span className={styles["No-Approvals-Text"]}>
+                        {t("No-pending-approvals-at-the-moment")}
+                      </span>
+                    </section>
+                  )}
                 </Col>
               </Row>
-              <Row>
-                <Col>
-                  <TableToDo
-                    sortDirections={["descend", "ascend"]}
-                    column={pendingApprovalColumns}
-                    className={"PendingApprovalsTable"}
-                    rows={rowsPendingApproval}
-                    // scroll={scroll}
-                    pagination={false}
-                    scroll={
-                      rowsPendingApproval.length > 10 ? { y: 385 } : undefined
-                    }
-                    id={(record, index) =>
-                      index === rowsPendingApproval.length - 1
-                        ? "last-row-class"
-                        : ""
-                    }
-                  />
-                </Col>
-              </Row>{" "}
             </>
           ) : (
             <ReviewSignature />
