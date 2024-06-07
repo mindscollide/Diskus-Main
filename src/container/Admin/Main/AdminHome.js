@@ -148,6 +148,21 @@ const AdminHome = () => {
         }, 4000);
       }
     }
+    if (data.action.toLowerCase() === "Login".toLowerCase()) {
+      if (data.message.toLowerCase() === "USER_LOGIN_ACTIVITY".toLowerCase()) {
+        let getToken =
+          localStorage.getItem("token") !== null &&
+          localStorage.getItem("token");
+        console.log(
+          getToken,
+          data.payload.authToken.token,
+          "USER_LOGIN_ACTIVITYUSER_LOGIN_ACTIVITY"
+        );
+        if (getToken !== data?.payload?.authToken?.token) {
+          dispatch(userLogOutApiFunc(navigate, t));
+        }
+      }
+    }
   };
   const onConnectionLost = () => {
     console.log("Connected to MQTT broker onConnectionLost");
