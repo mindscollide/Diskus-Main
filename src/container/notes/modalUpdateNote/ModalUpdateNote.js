@@ -129,12 +129,12 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
     let searchIndex = [...tasksAttachments.TasksAttachments];
     let removeFilefromAttachments = attachments.findIndex(
       (attacData, index) =>
-        data.displayAttachmentName === attacData.displayAttachmentName
+        data.DisplayAttachmentName === attacData.DisplayAttachmentName
     );
     let copyattachments = [...attachments];
     let fileSizefound = fileSize - data.fileSize;
     let fileForSendingIndex = fileForSend.findIndex(
-      (newData, index) => newData.name === data.displayAttachmentName
+      (newData, index) => newData.name === data.DisplayAttachmentName
     );
     copyattachments.splice(removeFilefromAttachments, 1);
     searchIndex.splice(index, 1);
