@@ -7768,3 +7768,8 @@ th.ant-table-cell.statusParticipant
     /* display: block; */
   }
 }
+
+th.ant-table-cell.leaveTimeParticipant.ant-table-cell-ellipsis.ant-table-column-has-sorters {
+  display: flex !important;
+  margin-top: 1px !important;
+}

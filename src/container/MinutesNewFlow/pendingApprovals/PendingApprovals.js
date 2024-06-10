@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Row, Col, Container } from "react-bootstrap";
 import { useTranslation } from "react-i18next"; // Importing translation hook
-import { utcConvertintoGMT } from "../../../commen/functions/date_formater";
+import {
+  utcConvertintoGMT,
+  newDateFormatterForMinutesPendingApproval,
+} from "../../../commen/functions/date_formater";
 import styles from "./PendingApprovals.module.css"; // Importing CSS module
 import {
   pendingApprovalPage,
@@ -165,7 +168,7 @@ const PendingApproval = () => {
       title: (
         <>
           <span>
-            {t("Submission-date-and-time")}{" "}
+            {t("Submission-date")}{" "}
             {sortOrderLeaveDateTime === "descend" ? (
               <img src={ArrowDownIcon} alt="" />
             ) : (
@@ -177,7 +180,7 @@ const PendingApproval = () => {
       dataIndex: "leaveTime",
       key: "leaveTime",
       className: "leaveTimeParticipant",
-      width: "180px",
+      width: "140px",
       ellipsis: true,
       sorter: (a, b) =>
         utcConvertintoGMT(a.leaveTime) - utcConvertintoGMT(b.leaveTime),
@@ -193,7 +196,7 @@ const PendingApproval = () => {
       }),
       render: (text, record) => (
         <p className={record.status === "Expired" ? "opacity-25 m-0" : "m-0"}>
-          {text}
+          {newDateFormatterForMinutesPendingApproval(text)}
         </p>
       ),
       // render: (text, record) => convertAndFormatDateTimeGMT(text),
