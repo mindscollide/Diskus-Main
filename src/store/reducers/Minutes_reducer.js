@@ -68,6 +68,123 @@ const initialState = {
       leaveTime: "20240908034555",
     },
   ],
+  minutesDataAgendaWise: [
+    {
+      title: "Introduction",
+      description:
+        "Design phase completed, moving to development, discussed resource reallocation to address delays and decided unknown unknown printer took a galley of type a printer took a galley of type a to hold daily check-ins for quicker progress Design phase completed, moving to development, discussed resource reallocation to address delays and decided unknown unknown printer took a galley of type a printer took a galley of type a to hold daily check-ins for quicker progress Design phase completed, moving to development, discussed resource reallocation to address delays and decided unknown unknown printer took a galley of type a printer took a galley of type a to update.",
+      attachments: [
+        {
+          name: "Dummy File.pdf",
+        },
+        {
+          name: "Dummy File 2.pdf",
+        },
+        {
+          name: "Dummy File 3.pdf",
+        },
+      ],
+      uploader: {
+        name: "Alex Rodriguez",
+        avatar: "DefaultAvatar",
+        uploaded_time: "4:00pm",
+        uploaded_date: "18th May, 2024",
+      },
+      minuteID: 24,
+      subMinutes: [
+        {
+          title: "CEO Speech",
+          description:
+            "Design phase completed, moving to development, discussed resource reallocation to address delays and decided unknown unknown printer took a galley of type a printer took a galley of type a to hold daily check-ins for quicker progress Design phase completed, moving to development, discussed resource reallocation to address delays and decided unknown unknown printer took a galley of type a printer took a galley of type a to hold daily check-ins for quicker progress Design phase completed, moving to development, discussed resource reallocation to address delays and decided unknown unknown printer took a galley of type a printer took a galley of type a to update.",
+          attachments: [],
+          minuteID: 25,
+          uploader: {
+            name: "Alex Rodriguez",
+            avatar: "DefaultAvatar",
+            uploaded_time: "4:00pm",
+            uploaded_date: "18th May, 2024",
+          },
+        },
+      ],
+    },
+    {
+      title: "Introduction 2",
+      description:
+        "2222 Design phase completed, moving to development, discussed resource reallocation to address delays and decided unknown unknown printer took a galley of type a printer took a galley of type a to hold daily check-ins for quicker progress Design phase completed, moving to development, discussed resource reallocation to address delays and decided unknown unknown printer took a galley of type a printer took a galley of type a to hold daily check-ins for quicker progress Design phase completed, moving to development, discussed resource reallocation to address delays and decided unknown unknown printer took a galley of type a printer took a galley of type a to update.",
+      attachments: [],
+      uploader: {
+        name: "Alex Rodriguez",
+        avatar: "DefaultAvatar",
+        uploaded_time: "4:00pm",
+        uploaded_date: "18th May, 2024",
+      },
+      minuteID: 26,
+      subMinutes: [],
+    },
+  ],
+  allMinutesAG: {
+    agendaWise: [
+      {
+        title: "Introduction",
+        items: [
+          {
+            id: 1,
+            description:
+              "A welcome and brief overview of the meeting's agenda were provided.",
+          },
+          {
+            id: 2,
+            description:
+              "Discussion ensued regarding any challenges faced and Greetings were extended to all participants, emphasizing the importance of the agenda and the collective commitment.",
+          },
+          {
+            id: 3,
+            description:
+              "Task updates: Design phase completed, moving to development, discussed resource reallocation to address delays and decided unknown unknown printer took a galley of type a to hold daily check-ins for quicker progress. Design phase completed, moving to development, discussed resource reallocation to address delays and decided unknown unknown printer took a galley of type a to hold daily check-ins for quicker progress. Design phase completed, moving to development, discussed resource reallocation to address delays and decided unknown unknown printer took a galley of type a to hold daily check-ins for quicker progress. Design phase completed, moving to development, discussed resource reallocation to address delays and decided unknown unknown printer took a galley of type a to hold daily check-ins for quicker progress.",
+            attachments: ["Annual Report.pdf", "Annual Report.pdf"],
+          },
+        ],
+      },
+      {
+        title: "1.1. A brief overview of the main subject or theme",
+        items: [
+          {
+            id: 4,
+            description:
+              "A welcome and brief overview of the meeting's agenda were provided.",
+          },
+          {
+            id: 5,
+            description:
+              "Discussion ensued regarding any challenges faced and Greetings were extended to all participants, emphasizing the importance of the agenda and the collective commitment.",
+          },
+          {
+            id: 6,
+            description:
+              "Discussion ensued regarding any challenges faced and Greetings were extended to all participants, emphasizing the importance of the agenda and the collective commitment.",
+          },
+        ],
+      },
+    ],
+    general: [
+      {
+        id: 7,
+        description:
+          "A welcome and brief overview of the meeting's agenda were provided.",
+      },
+      {
+        id: 8,
+        description:
+          "Discussion ensued regarding any challenges faced and Greetings were extended to all participants, emphasizing the importance of the agenda and the collective commitment.",
+      },
+      {
+        id: 9,
+        description:
+          "Task updates: Design phase completed, moving to development, discussed resource reallocation to address delays and decided unknown unknown printer took a galley of type a to hold daily check-ins for quicker progress. Design phase completed, moving to development, discussed resource reallocation to address delays and decided unknown unknown printer took a galley of type a to hold daily check-ins for quicker progress. Design phase completed, moving to development, discussed resource reallocation to address delays and decided unknown unknown printer took a galley of type a to hold daily check-ins for quicker progress. Design phase completed, moving to development, discussed resource reallocation to address delays and decided unknown unknown printer took a galley of type a to hold daily check-ins for quicker progress.",
+        attachments: ["Annual Report.pdf", "Annual Report.pdf"],
+      },
+    ],
+  },
 };
 
 const MinutesReducer = (state = initialState, action) => {

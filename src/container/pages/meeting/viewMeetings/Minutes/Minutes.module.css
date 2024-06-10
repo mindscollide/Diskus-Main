@@ -528,9 +528,9 @@ p.Attachments {
   margin: 0;
   font-size: 20px;
   font-weight: 700;
-  margin-bottom: -15px;
   color: #6172D6 !important;
 }
+
 .viewMinutesAttachments {
   max-height: 110px;
   min-height: 110px;

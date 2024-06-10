@@ -49,7 +49,6 @@ const AgendaWise = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   let folderID = localStorage.getItem("folderDataRoomMeeting");
-  const Delta = Quill.import("delta");
 
   const [open, setOpen] = useState({
     flag: false,
@@ -141,43 +140,43 @@ const AgendaWise = ({
   }, [AgendaWiseAgendaListReducer.AllAgendas]);
 
   // Combined Data for both Documents and Minutes Agenda Wise
-  useEffect(() => {
-    try {
-      if (
-        NewMeetingreducer.agendaWiseMinutesReducer !== null &&
-        NewMeetingreducer.agendaWiseMinutesReducer &&
-        NewMeetingreducer.getallDocumentsForAgendaWiseMinutes !== null &&
-        NewMeetingreducer.getallDocumentsForAgendaWiseMinutes !== undefined
-      ) {
-        const minutesData =
-          NewMeetingreducer.agendaWiseMinutesReducer.agendaWiseMinutes;
-        const documentsData =
-          NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data;
-        setOrganizerID(NewMeetingreducer.agendaWiseMinutesReducer.organizerID);
-        const combinedData = minutesData.map((item1) => {
-          const matchingItem = documentsData.find(
-            (item2) => item2.pK_MeetingAgendaMinutesID === item1.minuteID
-          );
-          if (matchingItem) {
-            return {
-              ...item1,
-              minutesAttachmets: matchingItem.files,
-            };
-          }
-          return item1;
-        });
-        setMessages(combinedData);
-      } else {
-        setMessages([]);
-      }
-    } catch (error) {
-      // Handle any errors here
-      console.error(error);
-    }
-  }, [
-    NewMeetingreducer.agendaWiseMinutesReducer,
-    NewMeetingreducer.getallDocumentsForAgendaWiseMinutes,
-  ]);
+  // useEffect(() => {
+  //   try {
+  //     if (
+  //       NewMeetingreducer.agendaWiseMinutesReducer !== null &&
+  //       NewMeetingreducer.agendaWiseMinutesReducer &&
+  //       NewMeetingreducer.getallDocumentsForAgendaWiseMinutes !== null &&
+  //       NewMeetingreducer.getallDocumentsForAgendaWiseMinutes !== undefined
+  //     ) {
+  //       const minutesData =
+  //         NewMeetingreducer.agendaWiseMinutesReducer.agendaWiseMinutes;
+  //       const documentsData =
+  //         NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data;
+  //       setOrganizerID(NewMeetingreducer.agendaWiseMinutesReducer.organizerID);
+  //       const combinedData = minutesData.map((item1) => {
+  //         const matchingItem = documentsData.find(
+  //           (item2) => item2.pK_MeetingAgendaMinutesID === item1.minuteID
+  //         );
+  //         if (matchingItem) {
+  //           return {
+  //             ...item1,
+  //             minutesAttachmets: matchingItem.files,
+  //           };
+  //         }
+  //         return item1;
+  //       });
+  //       setMessages(combinedData);
+  //     } else {
+  //       setMessages([]);
+  //     }
+  //   } catch (error) {
+  //     // Handle any errors here
+  //     console.error(error);
+  //   }
+  // }, [
+  //   NewMeetingreducer.agendaWiseMinutesReducer,
+  //   NewMeetingreducer.getallDocumentsForAgendaWiseMinutes,
+  // ]);
 
   let userID = localStorage.getItem("userID");
   var Size = Quill.import("attributors/style/size");
@@ -629,12 +628,37 @@ const AgendaWise = ({
 
   // NEW WORK OWAIS!!!!!!!!! ->>>> cxxx|::::::::::::::>
 
-  const [accordianOpen, setAccordianOpen] = useState(false);
+  const [minutesData, setMinutesData] = useState([]);
 
-  const accordianClick = () => {
-    setAccordianOpen(!accordianOpen);
-    console.log("accordianValue", accordianOpen);
+  const [openIndices, setOpenIndices] = useState([]);
+
+  const accordianClick = (data, id, index) => {
+    setOpenIndices((prevIndices) =>
+      prevIndices.includes(index)
+        ? prevIndices.filter((i) => i !== index)
+        : [...prevIndices, index]
+    );
+    console.log("openIndices", openIndices);
   };
+
+  useEffect(() => {
+    if (
+      MinutesReducer.minutesDataAgendaWise !== undefined &&
+      MinutesReducer.minutesDataAgendaWise !== null &&
+      MinutesReducer.minutesDataAgendaWise.length !== 0
+    ) {
+      setMinutesData(MinutesReducer.minutesDataAgendaWise);
+    } else {
+      setMinutesData([]);
+    }
+    return () => {
+      setMinutesData([]);
+    };
+  }, [MinutesReducer.minutesDataAgendaWise]);
+
+  console.log("MinutesReducerMinutesReducer", MinutesReducer);
+
+  console.log("minutesDataminutesData", minutesData);
 
   return (
     <section className={styles["agenda-wise-minutes"]}>
@@ -791,660 +815,252 @@ const AgendaWise = ({
       ) : null}
 
       {/* Mapping of The Create Minutes */}
-      <Row className="mt-2">
-        <Col lg={12} md={12} sm={12} className={styles["ScrollerMinutes"]}>
-          <>
-            <div>
-              <Row>
-                <Col lg={12} md={12} sm={12} className="mt-2">
-                  <div
-                    onClick={() => accordianClick()}
-                    className={
-                      accordianOpen
-                        ? styles["agenda-wrapper-closed"]
-                        : styles["agenda-wrapper-open"]
-                    }
-                  >
-                    <p className={styles["agenda-title"]}>1. Introduction</p>
-                    <span>
-                      <img
-                        className={styles["Attachment"]}
-                        alt=""
-                        src={AttachmentIcon}
-                      />
-                      <img
-                        alt=""
-                        src={ArrowDown}
-                        className={
-                          accordianOpen
-                            ? styles["Arrow"]
-                            : styles["Arrow_Expanded"]
-                        }
-                      />
-                    </span>
-                  </div>
-                </Col>
-              </Row>
-              {accordianOpen ? (
-                <>
+      {minutesData.map((data, index) => {
+        const isOpen = openIndices.includes(index);
+        return (
+          <Row className="mt-2">
+            <Col lg={12} md={12} sm={12} className={styles["ScrollerMinutes"]}>
+              <>
+                <div>
                   <Row>
-                    <Col lg={12} md={12} sm={12} className="position-relative">
-                      <div className={styles["uploaded-details"]}>
-                        <Row className={styles["inherit-height"]}>
-                          <Col lg={9} md={9} sm={12}>
-                            <p className={styles["minutes-text"]}>
-                              Task updates: Design phase completed, moving to
-                              development, discussed resource reallocation to
-                              address delays and decided unknown unknown printer
-                              took a galley of type a printer took a galley of
-                              type a to hold daily check-ins for quicker
-                              progress Design phase completed, moving to
-                              development, discussed resource reallocation to
-                              address delays and decided unknown unknown printer
-                              took a galley of type a printer took a galley of
-                              type a to hold daily check-ins for quicker
-                              progress Design phase completed, moving to
-                              development, discussed resource reallocation to
-                              address delays and decided unknown unknown printer
-                              took a galley of type a printer took a galley of
-                              type a to update.
-                            </p>
-                            <Row>
-                              <Col lg={3} md={3} sm={12}>
-                                <AttachmentViewer
-                                  // handleClickDownload={() => downloadDocument(filesData)}
-                                  // data={filesData}
-                                  name={"Dummy File.pdf"}
-                                  // id={0}
-                                  // handleEyeIcon={() =>
-                                  //   pdfData([], getFileExtension("Dummy File"))
-                                  // }
-                                />
-                              </Col>
-                              <Col lg={3} md={3} sm={12}>
-                                <AttachmentViewer
-                                  // handleClickDownload={() => downloadDocument(filesData)}
-                                  // data={filesData}
-                                  name={"Dummy File 2.pdf"}
-                                  // id={0}
-                                  // handleEyeIcon={() =>
-                                  //   pdfData([], getFileExtension("Dummy File"))
-                                  // }
-                                />
-                              </Col>
-                              <Col lg={3} md={3} sm={12}>
-                                <AttachmentViewer
-                                  // handleClickDownload={() => downloadDocument(filesData)}
-                                  // data={filesData}
-                                  name={"Dummy File 3.pdf"}
-                                  // id={0}
-                                  // handleEyeIcon={() =>
-                                  //   pdfData([], getFileExtension("Dummy File"))
-                                  // }
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                          <Col
-                            lg={3}
-                            md={3}
-                            sm={12}
-                            className="position-relative"
-                          >
-                            <Row className="m-0">
-                              <Col lg={9} md={9} sm={12} className="p-0">
-                                <span className={styles["bar-line"]}></span>
-                                <p className={styles["uploadedbyuser"]}>
-                                  Uploaded By
+                    <Col lg={12} md={12} sm={12} className="mt-2">
+                      <div
+                        onClick={() =>
+                          accordianClick(data, data.minuteID, index)
+                        }
+                        className={
+                          isOpen
+                            ? styles["agenda-wrapper-closed"]
+                            : styles["agenda-wrapper-open"]
+                        }
+                      >
+                        <p className={styles["agenda-title"]}>
+                          {index + 1 + "." + " " + data.title}
+                        </p>
+                        <span>
+                          {data.attachments.length > 0 ? (
+                            <img
+                              className={styles["Attachment"]}
+                              alt=""
+                              src={AttachmentIcon}
+                            />
+                          ) : null}
+                          <img
+                            alt=""
+                            src={ArrowDown}
+                            className={
+                              isOpen
+                                ? styles["Arrow"]
+                                : styles["Arrow_Expanded"]
+                            }
+                          />
+                        </span>
+                      </div>
+                    </Col>
+                  </Row>
+                  {isOpen ? (
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="position-relative"
+                        >
+                          <div className={styles["uploaded-details"]}>
+                            <Row className={styles["inherit-height"]}>
+                              <Col lg={9} md={9} sm={12}>
+                                <p className={styles["minutes-text"]}>
+                                  {data.description}
                                 </p>
-                                <div className={styles["gap-ti"]}>
-                                  <img
-                                    src={DefaultAvatar}
-                                    className={styles["Image"]}
-                                    alt=""
-                                    draggable={false}
-                                  />
-                                  <p className={styles["agendaCreater"]}>
-                                    Alex Rodriguez
-                                  </p>
-                                </div>
+                                {data.attachments.length > 0 ? (
+                                  <Row>
+                                    {data.attachments.map((fileData, index) => (
+                                      <Col lg={3} md={3} sm={12}>
+                                        <AttachmentViewer
+                                          name={fileData.name}
+                                        />
+                                      </Col>
+                                    ))}
+                                  </Row>
+                                ) : null}
                               </Col>
                               <Col
                                 lg={3}
                                 md={3}
                                 sm={12}
-                                className="d-grid justify-content-end p-0"
+                                className="position-relative"
                               >
-                                <img src={EditIcon} alt="" />
+                                <Row className="m-0">
+                                  <Col lg={9} md={9} sm={12} className="p-0">
+                                    <span className={styles["bar-line"]}></span>
+                                    <p className={styles["uploadedbyuser"]}>
+                                      Uploaded By
+                                    </p>
+                                    <div className={styles["gap-ti"]}>
+                                      <img
+                                        src={DefaultAvatar}
+                                        className={styles["Image"]}
+                                        alt=""
+                                        draggable={false}
+                                      />
+                                      <p className={styles["agendaCreater"]}>
+                                        {data.uploader.name}
+                                      </p>
+                                    </div>
+                                  </Col>
+                                  <Col
+                                    lg={3}
+                                    md={3}
+                                    sm={12}
+                                    className="d-grid justify-content-end p-0"
+                                  >
+                                    <img src={EditIcon} alt="" />
+                                  </Col>
+                                </Row>
+                                <Row>
+                                  <Col lg={12} md={12} sm={12}>
+                                    <p className={styles["time-uploader"]}>
+                                      {data.uploader.uploaded_time + ","}
+                                    </p>
+                                    <p className={styles["date-uploader"]}>
+                                      {data.uploader.uploaded_date}
+                                    </p>
+                                  </Col>
+                                </Row>
                               </Col>
                             </Row>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <p className={styles["time-uploader"]}>
-                                  4:00pm,
-                                </p>
-                                <p className={styles["date-uploader"]}>
-                                  18th May, 2024
-                                </p>
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                      </div>
-                      <img
-                        className={styles["delete-icon"]}
-                        src={DeleteIcon}
-                        alt=""
-                        onClick={() =>
-                          dispatch(deleteCommentMeetingModal(true))
-                        }
-                      />
-                    </Col>
-                  </Row>
-                  <Row className="mx-50">
-                    <Col lg={12} md={12} sm={12}>
-                      <p className={styles["Parent-title-heading"]}>
-                        2.1 CEO Speech
-                      </p>
-                    </Col>
-                  </Row>
-
-                  <Row className="mxl-50">
-                    <Col lg={12} md={12} sm={12} className="position-relative">
-                      <div className={styles["version-control-wrapper"]}>
-                        <span></span>
-                      </div>
-                      <div className={styles["uploaded-details"]}>
-                        <Row className={styles["inherit-height"]}>
-                          <Col lg={9} md={9} sm={12}>
-                            <p className={styles["minutes-text"]}>
-                              Task updates: Design phase completed, moving to
-                              development, discussed resource reallocation to
-                              address delays and decided unknown unknown printer
-                              took a galley of type a printer took a galley of
-                              type a to hold daily check-ins for quicker
-                              progress Design phase completed, moving to
-                              development, discussed resource reallocation to
-                              address delays and decided unknown unknown printer
-                              took a galley of type a printer took a galley of
-                              type a to hold daily check-ins for quicker
-                              progress Design phase completed, moving to
-                              development, discussed resource reallocation to
-                              address delays and decided unknown unknown printer
-                              took a galley of type a printer took a galley of
-                              type a to update.
-                            </p>
-                          </Col>
-                          <Col
-                            lg={3}
-                            md={3}
-                            sm={12}
-                            className="position-relative"
-                          >
-                            <Row className="m-0">
-                              <Col lg={6} md={6} sm={12} className="p-0">
-                                <span className={styles["bar-line"]}></span>
-                                <p className={styles["uploadedbyuser"]}>
-                                  Uploaded By
-                                </p>
-                                <div className={styles["gap-ti"]}>
-                                  <img
-                                    src={DefaultAvatar}
-                                    className={styles["Image"]}
-                                    alt=""
-                                    draggable={false}
-                                  />
-                                  <p className={styles["agendaCreater"]}>
-                                    Alex Rodriguez
-                                  </p>
-                                </div>
-                              </Col>
-                              <Col
-                                lg={6}
-                                md={6}
-                                sm={12}
-                                className="d-grid justify-content-end p-0"
-                              ></Col>
-                            </Row>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <p className={styles["time-uploader"]}>
-                                  4:00pm,
-                                </p>
-                                <p className={styles["date-uploader"]}>
-                                  18th May, 2024
-                                </p>
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                      </div>
-                      <img
-                        className={styles["delete-icon"]}
-                        src={DeleteIcon}
-                        alt=""
-                        onClick={() =>
-                          dispatch(deleteCommentMeetingModal(true))
-                        }
-                      />
-                    </Col>
-                  </Row>
-                </>
-              ) : null}
-            </div>
-          </>
-        </Col>
-      </Row>
-
-      <Row>
-        <Col lg={12} md={12} sm={12} className={styles["ScrollerMinutes"]}>
-          <>
-            <div>
-              <Row>
-                <Col lg={12} md={12} sm={12} className="mt-2">
-                  <div
-                    onClick={() => accordianClick()}
-                    className={
-                      accordianOpen
-                        ? styles["agenda-wrapper-closed"]
-                        : styles["agenda-wrapper-open"]
-                    }
-                  >
-                    <p className={styles["agenda-title"]}>1. Introduction</p>
-                    <span>
-                      <img
-                        alt=""
-                        src={ArrowDown}
-                        className={
-                          accordianOpen
-                            ? styles["Arrow"]
-                            : styles["Arrow_Expanded"]
-                        }
-                      />
-                    </span>
-                  </div>
-                </Col>
-              </Row>
-              {accordianOpen ? (
-                <>
-                  <Row>
-                    <Col lg={12} md={12} sm={12} className="position-relative">
-                      <div className={styles["uploaded-details"]}>
-                        <Row className={styles["inherit-height"]}>
-                          <Col lg={9} md={9} sm={12}>
-                            <p className={styles["minutes-text"]}>
-                              Task updates: Design phase completed, moving to
-                              development, discussed resource reallocation to
-                              address delays and decided unknown unknown printer
-                              took a galley of type a printer took a galley of
-                              type a to hold daily check-ins for quicker
-                              progress Design phase completed, moving to
-                              development, discussed resource reallocation to
-                              address delays and decided unknown unknown printer
-                              took a galley of type a printer took a galley of
-                              type a to hold daily check-ins for quicker
-                              progress Design phase completed, moving to
-                              development, discussed resource reallocation to
-                              address delays and decided unknown unknown printer
-                              took a galley of type a printer took a galley of
-                              type a to update.
-                            </p>
-                          </Col>
-                          <Col
-                            lg={3}
-                            md={3}
-                            sm={12}
-                            className="position-relative"
-                          >
-                            <Row className="m-0">
-                              <Col lg={9} md={9} sm={12} className="p-0">
-                                <span className={styles["bar-line"]}></span>
-                                <p className={styles["uploadedbyuser"]}>
-                                  Uploaded By
-                                </p>
-                                <div className={styles["gap-ti"]}>
-                                  <img
-                                    src={DefaultAvatar}
-                                    className={styles["Image"]}
-                                    alt=""
-                                    draggable={false}
-                                  />
-                                  <p className={styles["agendaCreater"]}>
-                                    Alex Rodriguez
-                                  </p>
-                                </div>
-                              </Col>
-                              <Col
-                                lg={3}
-                                md={3}
-                                sm={12}
-                                className="d-grid justify-content-end p-0"
+                          </div>
+                          <img
+                            className={styles["delete-icon"]}
+                            src={DeleteIcon}
+                            alt=""
+                            onClick={() =>
+                              dispatch(deleteCommentMeetingModal(true))
+                            }
+                          />
+                        </Col>
+                      </Row>
+                      {data.subMinutes.map((subMinuteData, subMinuteIndex) => (
+                        <div>
+                          <Row className="mx-50">
+                            <Col lg={12} md={12} sm={12}>
+                              <p className={styles["Parent-title-heading"]}>
+                                {index +
+                                  1 +
+                                  "." +
+                                  subMinuteIndex +
+                                  1 +
+                                  " " +
+                                  subMinuteData.title}
+                              </p>
+                            </Col>
+                          </Row>
+                          <Row className="mxl-50">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="position-relative"
+                            >
+                              <div
+                                className={styles["version-control-wrapper"]}
                               >
-                                <img src={EditIcon} alt="" />
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <p className={styles["time-uploader"]}>
-                                  4:00pm,
-                                </p>
-                                <p className={styles["date-uploader"]}>
-                                  18th May, 2024
-                                </p>
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                      </div>
-                      <img
-                        className={styles["delete-icon"]}
-                        src={DeleteIcon}
-                        alt=""
-                        onClick={() =>
-                          dispatch(deleteCommentMeetingModal(true))
-                        }
-                      />
-                    </Col>
-                  </Row>
-                  <Row className="mx-50">
-                    <Col lg={12} md={12} sm={12}>
-                      <p className={styles["Parent-title-heading"]}>
-                        2.1 CEO Speech
-                      </p>
-                    </Col>
-                  </Row>
-
-                  <Row className="mxl-50">
-                    <Col lg={12} md={12} sm={12} className="position-relative">
-                      <div className={styles["version-control-wrapper"]}>
-                        <span></span>
-                      </div>
-                      <div className={styles["uploaded-details"]}>
-                        <Row className={styles["inherit-height"]}>
-                          <Col lg={9} md={9} sm={12}>
-                            <p className={styles["minutes-text"]}>
-                              Task updates: Design phase completed, moving to
-                              development, discussed resource reallocation to
-                              address delays and decided unknown unknown printer
-                              took a galley of type a printer took a galley of
-                              type a to hold daily check-ins for quicker
-                              progress Design phase completed, moving to
-                              development, discussed resource reallocation to
-                              address delays and decided unknown unknown printer
-                              took a galley of type a printer took a galley of
-                              type a to hold daily check-ins for quicker
-                              progress Design phase completed, moving to
-                              development, discussed resource reallocation to
-                              address delays and decided unknown unknown printer
-                              took a galley of type a printer took a galley of
-                              type a to update.
-                            </p>
-                          </Col>
-                          <Col
-                            lg={3}
-                            md={3}
-                            sm={12}
-                            className="position-relative"
-                          >
-                            <Row className="m-0">
-                              <Col lg={6} md={6} sm={12} className="p-0">
-                                <span className={styles["bar-line"]}></span>
-                                <p className={styles["uploadedbyuser"]}>
-                                  Uploaded By
-                                </p>
-                                <div className={styles["gap-ti"]}>
-                                  <img
-                                    src={DefaultAvatar}
-                                    className={styles["Image"]}
-                                    alt=""
-                                    draggable={false}
-                                  />
-                                  <p className={styles["agendaCreater"]}>
-                                    Alex Rodriguez
-                                  </p>
-                                </div>
-                              </Col>
-                              <Col
-                                lg={6}
-                                md={6}
-                                sm={12}
-                                className="d-grid justify-content-end p-0"
-                              ></Col>
-                            </Row>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <p className={styles["time-uploader"]}>
-                                  4:00pm,
-                                </p>
-                                <p className={styles["date-uploader"]}>
-                                  18th May, 2024
-                                </p>
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                      </div>
-                      <img
-                        className={styles["delete-icon"]}
-                        src={DeleteIcon}
-                        alt=""
-                        onClick={() =>
-                          dispatch(deleteCommentMeetingModal(true))
-                        }
-                      />
-                    </Col>
-                  </Row>
-                </>
-              ) : null}
-            </div>
-          </>
-        </Col>
-      </Row>
-
-      <Row>
-        <Col lg={12} md={12} sm={12} className={styles["ScrollerMinutes"]}>
-          <>
-            <div>
-              <Row>
-                <Col lg={12} md={12} sm={12} className="mt-2">
-                  <div
-                    onClick={() => accordianClick()}
-                    className={
-                      accordianOpen
-                        ? styles["agenda-wrapper-closed"]
-                        : styles["agenda-wrapper-open"]
-                    }
-                  >
-                    <p className={styles["agenda-title"]}>1. Introduction</p>
-                    <span>
-                      <img
-                        alt=""
-                        src={ArrowDown}
-                        className={
-                          accordianOpen
-                            ? styles["Arrow"]
-                            : styles["Arrow_Expanded"]
-                        }
-                      />
-                    </span>
-                  </div>
-                </Col>
-              </Row>
-              {accordianOpen ? (
-                <>
-                  <Row>
-                    <Col lg={12} md={12} sm={12} className="position-relative">
-                      <div className={styles["uploaded-details"]}>
-                        <Row className={styles["inherit-height"]}>
-                          <Col lg={9} md={9} sm={12}>
-                            <p className={styles["minutes-text"]}>
-                              Task updates: Design phase completed, moving to
-                              development, discussed resource reallocation to
-                              address delays and decided unknown unknown printer
-                              took a galley of type a printer took a galley of
-                              type a to hold daily check-ins for quicker
-                              progress Design phase completed, moving to
-                              development, discussed resource reallocation to
-                              address delays and decided unknown unknown printer
-                              took a galley of type a printer took a galley of
-                              type a to hold daily check-ins for quicker
-                              progress Design phase completed, moving to
-                              development, discussed resource reallocation to
-                              address delays and decided unknown unknown printer
-                              took a galley of type a printer took a galley of
-                              type a to update.
-                            </p>
-                          </Col>
-                          <Col
-                            lg={3}
-                            md={3}
-                            sm={12}
-                            className="position-relative"
-                          >
-                            <Row className="m-0">
-                              <Col lg={9} md={9} sm={12} className="p-0">
-                                <span className={styles["bar-line"]}></span>
-                                <p className={styles["uploadedbyuser"]}>
-                                  Uploaded By
-                                </p>
-                                <div className={styles["gap-ti"]}>
-                                  <img
-                                    src={DefaultAvatar}
-                                    className={styles["Image"]}
-                                    alt=""
-                                    draggable={false}
-                                  />
-                                  <p className={styles["agendaCreater"]}>
-                                    Alex Rodriguez
-                                  </p>
-                                </div>
-                              </Col>
-                              <Col
-                                lg={3}
-                                md={3}
-                                sm={12}
-                                className="d-grid justify-content-end p-0"
-                              >
-                                <img src={EditIcon} alt="" />
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <p className={styles["time-uploader"]}>
-                                  4:00pm,
-                                </p>
-                                <p className={styles["date-uploader"]}>
-                                  18th May, 2024
-                                </p>
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                      </div>
-                      <img
-                        className={styles["delete-icon"]}
-                        src={DeleteIcon}
-                        alt=""
-                        onClick={() =>
-                          dispatch(deleteCommentMeetingModal(true))
-                        }
-                      />
-                    </Col>
-                  </Row>
-                  <Row className="mx-50">
-                    <Col lg={12} md={12} sm={12}>
-                      <p className={styles["Parent-title-heading"]}>
-                        2.1 CEO Speech
-                      </p>
-                    </Col>
-                  </Row>
-
-                  <Row className="mxl-50">
-                    <Col lg={12} md={12} sm={12} className="position-relative">
-                      <div className={styles["version-control-wrapper"]}>
-                        <span></span>
-                      </div>
-                      <div className={styles["uploaded-details"]}>
-                        <Row className={styles["inherit-height"]}>
-                          <Col lg={9} md={9} sm={12}>
-                            <p className={styles["minutes-text"]}>
-                              Task updates: Design phase completed, moving to
-                              development, discussed resource reallocation to
-                              address delays and decided unknown unknown printer
-                              took a galley of type a printer took a galley of
-                              type a to hold daily check-ins for quicker
-                              progress Design phase completed, moving to
-                              development, discussed resource reallocation to
-                              address delays and decided unknown unknown printer
-                              took a galley of type a printer took a galley of
-                              type a to hold daily check-ins for quicker
-                              progress Design phase completed, moving to
-                              development, discussed resource reallocation to
-                              address delays and decided unknown unknown printer
-                              took a galley of type a printer took a galley of
-                              type a to update.
-                            </p>
-                          </Col>
-                          <Col
-                            lg={3}
-                            md={3}
-                            sm={12}
-                            className="position-relative"
-                          >
-                            <Row className="m-0">
-                              <Col lg={6} md={6} sm={12} className="p-0">
-                                <span className={styles["bar-line"]}></span>
-                                <p className={styles["uploadedbyuser"]}>
-                                  Uploaded By
-                                </p>
-                                <div className={styles["gap-ti"]}>
-                                  <img
-                                    src={DefaultAvatar}
-                                    className={styles["Image"]}
-                                    alt=""
-                                    draggable={false}
-                                  />
-                                  <p className={styles["agendaCreater"]}>
-                                    Alex Rodriguez
-                                  </p>
-                                </div>
-                              </Col>
-                              <Col
-                                lg={6}
-                                md={6}
-                                sm={12}
-                                className="d-grid justify-content-end p-0"
-                              ></Col>
-                            </Row>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <p className={styles["time-uploader"]}>
-                                  4:00pm,
-                                </p>
-                                <p className={styles["date-uploader"]}>
-                                  18th May, 2024
-                                </p>
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                      </div>
-                      <img
-                        className={styles["delete-icon"]}
-                        src={DeleteIcon}
-                        alt=""
-                        onClick={() =>
-                          dispatch(deleteCommentMeetingModal(true))
-                        }
-                      />
-                    </Col>
-                  </Row>
-                </>
-              ) : null}
-            </div>
-          </>
-        </Col>
-      </Row>
+                                <span></span>
+                              </div>
+                              <div className={styles["uploaded-details"]}>
+                                <Row className={styles["inherit-height"]}>
+                                  <Col lg={9} md={9} sm={12}>
+                                    <p className={styles["minutes-text"]}>
+                                      {subMinuteData.description}
+                                    </p>
+                                    {subMinuteData.attachments.length > 0 ? (
+                                      <Row>
+                                        {subMinuteData.attachments.map(
+                                          (subFileData, subFileIndex) => (
+                                            <Col lg={3} md={3} sm={12}>
+                                              <AttachmentViewer
+                                                name={subFileData.name}
+                                              />
+                                            </Col>
+                                          )
+                                        )}
+                                      </Row>
+                                    ) : null}
+                                  </Col>
+                                  <Col
+                                    lg={3}
+                                    md={3}
+                                    sm={12}
+                                    className="position-relative"
+                                  >
+                                    <Row className="m-0">
+                                      <Col
+                                        lg={6}
+                                        md={6}
+                                        sm={12}
+                                        className="p-0"
+                                      >
+                                        <span
+                                          className={styles["bar-line"]}
+                                        ></span>
+                                        <p className={styles["uploadedbyuser"]}>
+                                          Uploaded By
+                                        </p>
+                                        <div className={styles["gap-ti"]}>
+                                          <img
+                                            src={DefaultAvatar}
+                                            className={styles["Image"]}
+                                            alt=""
+                                            draggable={false}
+                                          />
+                                          <p
+                                            className={styles["agendaCreater"]}
+                                          >
+                                            {subMinuteData.uploader.name}
+                                          </p>
+                                        </div>
+                                      </Col>
+                                      <Col
+                                        lg={6}
+                                        md={6}
+                                        sm={12}
+                                        className="d-grid justify-content-end p-0"
+                                      ></Col>
+                                    </Row>
+                                    <Row>
+                                      <Col lg={12} md={12} sm={12}>
+                                        <p className={styles["time-uploader"]}>
+                                          {data.uploader.uploaded_time + ","}
+                                        </p>
+                                        <p className={styles["date-uploader"]}>
+                                          {data.uploader.uploaded_date}
+                                        </p>
+                                      </Col>
+                                    </Row>
+                                  </Col>
+                                </Row>
+                              </div>
+                              <img
+                                className={styles["delete-icon"]}
+                                src={DeleteIcon}
+                                alt=""
+                                onClick={() =>
+                                  dispatch(deleteCommentMeetingModal(true))
+                                }
+                              />
+                            </Col>
+                          </Row>
+                        </div>
+                      ))}
+                    </>
+                  ) : null}
+                </div>
+              </>
+            </Col>
+          </Row>
+        );
+      })}
 
       {MinutesReducer.deleteMeetingCommentModal ? <DeleteCommentModal /> : null}
 

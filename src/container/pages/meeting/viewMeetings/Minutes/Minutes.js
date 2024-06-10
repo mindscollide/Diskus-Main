@@ -45,6 +45,7 @@ import {
   getFileExtension,
   getIconSource,
 } from "../../../../DataRoom/SearchFunctionality/option";
+import AddReviewers from "./AddReviewersModal/AddReviewers";
 // import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 
 const Minutes = ({
@@ -92,7 +93,6 @@ const Minutes = ({
   const [messages, setMessages] = useState([]);
   const [agenda, setAgenda] = useState(false);
   const [organizerID, setOrganizerID] = useState(0);
-  const [prevFlag, setprevFlag] = useState(6);
   const [fileAttachments, setFileAttachments] = useState([]);
   const [expanded, setExpanded] = useState(false);
   const [isEdit, setisEdit] = useState(false);
@@ -313,17 +313,6 @@ const Minutes = ({
   };
   // Initialize previousFileList to an empty array
   let previousFileList = [];
-
-  //Sliders For Attachments
-  const SlideLeft = () => {
-    var Slider = document.getElementById("Slider");
-    Slider.scrollLeft = Slider.scrollLeft - 300;
-  };
-
-  const Slideright = () => {
-    var Slider = document.getElementById("Slider");
-    Slider.scrollLeft = Slider.scrollLeft + 300;
-  };
 
   //Edit Button Function
   const handleEditFunc = async (data) => {
@@ -622,74 +611,6 @@ const Minutes = ({
     }
   };
 
-  const handleUNsaveChangesModal = () => {
-    // dispatch(showUnsaveMinutesFileUpload(true));
-    let userID = localStorage.getItem("userID");
-    let meetingpageRow = localStorage.getItem("MeetingPageRows");
-    let meetingPageCurrent = parseInt(
-      localStorage.getItem("MeetingPageCurrent")
-    );
-    let currentView = localStorage.getItem("MeetingCurrentView");
-    if (agenda) {
-      if (
-        addAgendaWiseFields.Description.value.trimStart() !== "" ||
-        addAgendaWiseFiles.length !== 0 ||
-        agendaOptionvalue.value !== 0
-      ) {
-        dispatch(showUnsaveMinutesFileUpload(true));
-        setUseCase(3);
-      } else {
-        setFileAttachments([]);
-        setMinutes(false);
-        setViewAdvanceMeetingModal(false);
-        dispatch(viewAdvanceMeetingPublishPageFlag(false));
-        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-
-        dispatch(showUnsaveMinutesFileUpload(false));
-        let searchData = {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(userID),
-          PageNumber:
-            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-          Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-          PublishedMeetings:
-            currentView && Number(currentView) === 1 ? true : false,
-        };
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
-      }
-    } else if (general) {
-      if (
-        addNoteFields.Description.value.trimStart() !== "" ||
-        fileAttachments.length !== 0
-      ) {
-        dispatch(showUnsaveMinutesFileUpload(true));
-        setUseCase(3);
-      } else {
-        setFileAttachments([]);
-        setMinutes(false);
-        setViewAdvanceMeetingModal(false);
-        dispatch(viewAdvanceMeetingPublishPageFlag(false));
-        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-
-        dispatch(showUnsaveMinutesFileUpload(false));
-        let searchData = {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(userID),
-          PageNumber:
-            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-          Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-          PublishedMeetings:
-            currentView && Number(currentView) === 1 ? true : false,
-        };
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
-      }
-    }
-  };
-
   //Invite To Collaborate
 
   const handleInvitetoCollaborateView = () => {
@@ -699,33 +620,6 @@ const Minutes = ({
     dispatch(InviteToCollaborateMinutesApiFunc(navigate, Data, t));
   };
 
-  const handlePreviousButton = () => {
-    if (agenda) {
-      if (
-        addAgendaWiseFields.Description.value.trimStart() !== "" ||
-        addAgendaWiseFiles.length !== 0 ||
-        agendaOptionvalue.value !== 0
-      ) {
-        dispatch(showUnsaveMinutesFileUpload(true));
-        setUseCase(1);
-      } else {
-        setMinutes(false);
-        setMeetingMaterial(true);
-      }
-    } else if (general) {
-      if (
-        addNoteFields.Description.value.trimStart() !== "" ||
-        fileAttachments.length !== 0
-      ) {
-        dispatch(showUnsaveMinutesFileUpload(true));
-        setUseCase(1);
-      } else {
-        setMinutes(false);
-        setMeetingMaterial(true);
-      }
-    }
-    // dispatch(showPreviousConfirmationModal(true));
-  };
   const handleNextButton = () => {
     if (agenda) {
       if (
@@ -751,7 +645,6 @@ const Minutes = ({
         setMinutes(false);
       }
     }
-    // dispatch(showPreviousConfirmationModal(true));
   };
 
   useEffect(() => {
@@ -782,6 +675,14 @@ const Minutes = ({
     }
   }, [ResponseMessage]);
 
+  // OWAIS WORK cxx|:::::::>
+
+  const [addReviewers, setAddReviewers] = useState(false);
+
+  const addReviewersModal = () => {
+    setAddReviewers(true);
+  };
+
   return (
     <section>
       <Row className="mt-3">
@@ -809,7 +710,7 @@ const Minutes = ({
           <Button
             text={t("Add-reviewers")}
             className={styles["Add_Reviewers"]}
-            // onClick={handleResetBtnFunc}
+            onClick={addReviewersModal}
           />
         </Col>
       </Row>
@@ -1282,13 +1183,12 @@ const Minutes = ({
         />
       )}
 
-      {/* {ShowPreviousModal && (
-        <PreviousModal
-          setMinutes={setMinutes}
-          setMeetingMaterial={setMeetingMaterial}
-          prevFlag={prevFlag}
+      {addReviewers ? (
+        <AddReviewers
+          addReviewers={addReviewers}
+          setAddReviewers={setAddReviewers}
         />
-      )} */}
+      ) : null}
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </section>
   );

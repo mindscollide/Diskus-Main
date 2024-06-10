@@ -2025,5 +2025,7 @@
   "Changes-made-now-will-not-be-saved": "Changes made now will not be saved",
   "USER_DELETED": "Your account status in [organizationName] has been changed",
   "Add-Signaturies": "Add Signatories",
-  "No-pending-approvals-at-the-moment": "No pending approvals at the moment"
+  "No-pending-approvals-at-the-moment": "No pending approvals at the moment",
+  "Select-all-minutes": "Select All Minutes",
+  "View-details": "View Details"
 }
