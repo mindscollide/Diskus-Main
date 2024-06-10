@@ -7482,7 +7482,6 @@ a.pendingApprovalsNav.nav-link {
   color: #5f78d6 !important;
 }
 
-
 .PendingApprovalsTable {
   margin-bottom: 50px;
   overflow-y: auto;
@@ -7597,15 +7596,12 @@ th.ant-table-cell.statusParticipant
   padding: 2px 8px;
 }
 
-
 .ApprovalsTable {
   margin-bottom: 50px;
   overflow-y: auto;
 }
 
-.ApprovalsTable
-  tr.ant-table-row.ant-table-row-level-0
-  td.ant-table-cell {
+.ApprovalsTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell {
   padding: 10px 16px !important;
   border-bottom: 1px solid #e1e1e1 !important;
   color: #5a5a5a !important;
@@ -7754,4 +7750,117 @@ body[dir="rtl"]
   overflow: hidden;
   text-overflow: ellipsis;
   /* display: block; */
+}
+
+/* SubscriptionExpiry Table Styles */
+
+tr.ant-table-row.ant-table-row-level-0.SubscriptionExpiry {
+  border-radius: 4px !important;
+  background: #fff !important;
+}
+
+tr.ant-table-row.ant-table-row-level-0.SubscriptionExpiry:last-child {
+  outline: none !important;
+  background: #6172d6 !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
+
+tr.ant-table-row.ant-table-row-level-0.SubscriptionExpiry:last-child:hover {
+  outline: none !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  border: none !important;
+}
+
+.ant-table-tbody > tr.SubscriptionExpiry:last-child.ant-table-row:hover > td,
+.ant-table-tbody
+  > tr.SubscriptionExpiry:last-child
+  > td.ant-table-cell-row-hover {
+  background: transparent !important;
+}
+
+.ant-table-tbody > tr.SubscriptionExpiry > td {
+  border-bottom: none !important;
+}
+
+.ant-table-wrapper.SubscriptionExpiryTableStyles
+  .ant-table
+  .ant-table-container
+  .ant-table-content
+  thead.ant-table-thead {
+  background: none !important;
+}
+
+.ant-table-wrapper.SubscriptionExpiryTableStyles .ant-table {
+  background: none !important;
+}
+
+.SubscriptionExpiryTableStyles .ant-table table {
+  border-spacing: 0px 10px !important;
+  table-layout: inherit !important;
+  background: transparent !important;
+}
+
+.SubscriptionExpiryTableStyles .ant-table table .ant-table-thead > tr > th {
+  background: transparent !important;
+  border-bottom: none !important;
+}
+
+body[dir="rtl"] .ant-table-wrapper.SubscriptionExpiryTableStyles {
+  padding-left: 10px;
+  padding-right: 0px;
+}
+
+.SubscriptionExpiryTableStyles::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2 !important;
+}
+
+.SubscriptionExpiryTableStyles::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.SubscriptionExpiryTableStyles {
+  overflow-y: auto !important;
+}
+
+.SubscriptionExpiryTableStyles
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell {
+  padding: 10px 10px !important;
+  border-top: 1px solid #e1e1e1 !important;
+  border-bottom: 1px solid #e1e1e1 !important;
+  color: #505050 !important;
+}
+
+.SubscriptionExpiryTableStyles
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell:nth-child(1) {
+  border-left: 1px solid #e1e1e1 !important;
+  border-top-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
+}
+
+.SubscriptionExpiryTableStyles
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell:last-child {
+  border-right: 1px solid #e1e1e1 !important;
+  border-top-right-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
+}
+
+body[dir="rtl"]
+  .SubscriptionExpiryTableStyles
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell:nth-child(1) {
+  border-right: 1px solid #e1e1e1 !important;
+  border-top-right-radius: 4px !important;
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 4px !important;
+  border-left: 0px !important;
 }

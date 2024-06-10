@@ -1,15 +1,450 @@
 {
-  "UserDataList": [
-    {
-      "UserName": "Syed Ali Raza",
-      "OrganizationName": "",
-      "Designation": "Solution Architect ",
-      "MobileNumber": "",
-      "UserEmail": "syedAliRaza@yopmail.com",
-      "OrganizationID": 473,
-      "RoleID": 3,
-      "FK_NumberWorldCountryID": 153,
-      "PackageID": 4
-    }
-  ]
+  "responseMessage": "Success",
+  "responseCode": 200,
+  "responseType": "ServiceManager.GetAllMeetingRecordBoardDecks",
+  "responseResult": {
+    "data": {
+      "meetingDetails": {
+        "meetingID": 3499,
+        "meetingTitle": "Advance Test Meeting ",
+        "description": "description for meeting ",
+        "meetingDates": [
+          {
+            "meetingDate": "20240606",
+            "startTime": "083900",
+            "endTime": "100000"
+          }
+        ],
+        "calendarEventID": 2607,
+        "meetingReminders": null,
+        "meetingStatus": {
+          "pK_MSID": 9,
+          "status": "9",
+          "description": null,
+          "creationDate": null,
+          "creationTime": null
+        },
+        "meetingType": {
+          "pK_MTID": 48,
+          "type": "Committee Meeting",
+          "description": null,
+          "creationDate": null,
+          "creationTime": null
+        },
+        "notes": "notes for meeting ",
+        "videoCallURl": "4461",
+        "location": "karachi ",
+        "isQuickMeeting": false,
+        "creatorID": 954,
+        "allowRSVP": true,
+        "notifyAdminOnRSVP": true,
+        "isTalkGroup": false,
+        "isVideo": true,
+        "wasMeetingPublished": false,
+        "meetingRecurrance": {
+          "recurranceID": 1,
+          "recurrance": "Non-Recurring"
+        },
+        "talkGroupID": 0
+      },
+      "organizers": null,
+      "agendaContributors": null,
+      "participants": null,
+      "minutes": null,
+      "attendance": null,
+      "parentAgendas": [
+        {
+          "id": "3740",
+          "title": "Agenda Main One",
+          "description": "Description for agenda One ",
+          "presenterID": 960,
+          "presenterName": "Ali Raza M",
+          "startDate": "090000",
+          "endDate": "100000",
+          "selectedRadio": 1,
+          "urlFieldMain": "",
+          "requestContributorURl": 0,
+          "mainNote": "",
+          "isLocked": false,
+          "agendaVotingID": 52,
+          "voteOwner": {
+            "userid": 954,
+            "currentVotingClosed": true
+          },
+          "isAttachment": true,
+          "userID": 960,
+          "canEdit": true,
+          "canView": true,
+          "contributor": {
+            "contributorName": "",
+            "orignalProfilePictureName": "",
+            "displayProfilePictureName": ""
+          },
+          "userProfilePicture": {
+            "userID": 960,
+            "orignalProfilePictureName": "20231006054356685.jpg",
+            "displayProfilePictureName": "bohemian-man-with-his-arms-crossed.jpg"
+          },
+          "files": [
+            {
+              "agendaAttachmentsID": 4130,
+              "displayAttachmentName": "featurewise_ids.pdf",
+              "originalAttachmentName": "3006",
+              "fK_MAID": 3740,
+              "fK_UID": 0
+            }
+          ],
+          "agendaVoters": [
+            {
+              "userID": 1002,
+              "userName": "Test User Diskus",
+              "emailAddress": "testuserdiskus@yopmail.com",
+              "participantTitle": "Title Participant "
+            }
+          ],
+          "subAgenda": [
+            {
+              "subAgendaID": "3741",
+              "subTitle": "Agenda Main One SubAgenda",
+              "description": "Decription for subAgenda One ",
+              "presenterID": 960,
+              "presenterName": "Ali Raza M",
+              "startDate": "090000",
+              "endDate": "100000",
+              "subSelectRadio": 1,
+              "subAgendaUrlFieldRadio": "",
+              "subAgendarequestContributorUrl": 0,
+              "subAgendarequestContributorEnterNotes": "",
+              "isLocked": false,
+              "agendaVotingID": 0,
+              "voteOwner": {
+                "userid": 0,
+                "currentVotingClosed": false
+              },
+              "isAttachment": true,
+              "userID": 960,
+              "canEdit": true,
+              "canView": true,
+              "userProfilePicture": {
+                "userID": 960,
+                "orignalProfilePictureName": "20231006054356685.jpg",
+                "displayProfilePictureName": "bohemian-man-with-his-arms-crossed.jpg"
+              },
+              "agendaVoters": [],
+              "subfiles": [
+                {
+                  "agendaAttachmentsID": 4131,
+                  "displayAttachmentName": "SQA Assignment One (2).docx",
+                  "originalAttachmentName": "3005",
+                  "fK_MAID": 3741,
+                  "fK_UID": 954
+                }
+              ],
+              "contributor": {
+                "contributorName": "",
+                "orignalProfilePictureName": "",
+                "displayProfilePictureName": ""
+              },
+              "parentAgendaID": "3740"
+            },
+            {
+              "subAgendaID": "3742",
+              "subTitle": "Subagenda Second ",
+              "description": "",
+              "presenterID": 960,
+              "presenterName": "Ali Raza M",
+              "startDate": "090000",
+              "endDate": "100000",
+              "subSelectRadio": 1,
+              "subAgendaUrlFieldRadio": "",
+              "subAgendarequestContributorUrl": 0,
+              "subAgendarequestContributorEnterNotes": "",
+              "isLocked": false,
+              "agendaVotingID": 0,
+              "voteOwner": {
+                "userid": 0,
+                "currentVotingClosed": false
+              },
+              "isAttachment": true,
+              "userID": 960,
+              "canEdit": true,
+              "canView": true,
+              "userProfilePicture": {
+                "userID": 960,
+                "orignalProfilePictureName": "20231006054356685.jpg",
+                "displayProfilePictureName": "bohemian-man-with-his-arms-crossed.jpg"
+              },
+              "agendaVoters": [],
+              "subfiles": [
+                {
+                  "agendaAttachmentsID": 4132,
+                  "displayAttachmentName": "SQA Assignment One (2).docx",
+                  "originalAttachmentName": "3005",
+                  "fK_MAID": 3742,
+                  "fK_UID": 954
+                }
+              ],
+              "contributor": {
+                "contributorName": "",
+                "orignalProfilePictureName": "",
+                "displayProfilePictureName": ""
+              },
+              "parentAgendaID": "3740"
+            }
+          ]
+        },
+        {
+          "id": "3740",
+          "title": "Agenda Main One",
+          "description": "Description for agenda One ",
+          "presenterID": 960,
+          "presenterName": "Ali Raza M",
+          "startDate": "090000",
+          "endDate": "100000",
+          "selectedRadio": 1,
+          "urlFieldMain": "",
+          "requestContributorURl": 0,
+          "mainNote": "",
+          "isLocked": false,
+          "agendaVotingID": 52,
+          "voteOwner": {
+            "userid": 954,
+            "currentVotingClosed": true
+          },
+          "isAttachment": true,
+          "userID": 960,
+          "canEdit": true,
+          "canView": true,
+          "contributor": {
+            "contributorName": "",
+            "orignalProfilePictureName": "",
+            "displayProfilePictureName": ""
+          },
+          "userProfilePicture": {
+            "userID": 960,
+            "orignalProfilePictureName": "20231006054356685.jpg",
+            "displayProfilePictureName": "bohemian-man-with-his-arms-crossed.jpg"
+          },
+          "files": [
+            {
+              "agendaAttachmentsID": 4130,
+              "displayAttachmentName": "featurewise_ids.pdf",
+              "originalAttachmentName": "3006",
+              "fK_MAID": 3740,
+              "fK_UID": 0
+            }
+          ],
+          "agendaVoters": [
+            {
+              "userID": 1002,
+              "userName": "Test User Diskus",
+              "emailAddress": "testuserdiskus@yopmail.com",
+              "participantTitle": "Title Participant "
+            }
+          ],
+          "subAgenda": [
+            {
+              "subAgendaID": "3741",
+              "subTitle": "Agenda Main One SubAgenda",
+              "description": "Decription for subAgenda One ",
+              "presenterID": 960,
+              "presenterName": "Ali Raza M",
+              "startDate": "090000",
+              "endDate": "100000",
+              "subSelectRadio": 1,
+              "subAgendaUrlFieldRadio": "",
+              "subAgendarequestContributorUrl": 0,
+              "subAgendarequestContributorEnterNotes": "",
+              "isLocked": false,
+              "agendaVotingID": 0,
+              "voteOwner": {
+                "userid": 0,
+                "currentVotingClosed": false
+              },
+              "isAttachment": true,
+              "userID": 960,
+              "canEdit": true,
+              "canView": true,
+              "userProfilePicture": {
+                "userID": 960,
+                "orignalProfilePictureName": "20231006054356685.jpg",
+                "displayProfilePictureName": "bohemian-man-with-his-arms-crossed.jpg"
+              },
+              "agendaVoters": [],
+              "subfiles": [
+                {
+                  "agendaAttachmentsID": 4131,
+                  "displayAttachmentName": "SQA Assignment One (2).docx",
+                  "originalAttachmentName": "3005",
+                  "fK_MAID": 3741,
+                  "fK_UID": 954
+                }
+              ],
+              "contributor": {
+                "contributorName": "",
+                "orignalProfilePictureName": "",
+                "displayProfilePictureName": ""
+              },
+              "parentAgendaID": "3740"
+            },
+            {
+              "subAgendaID": "3742",
+              "subTitle": "Subagenda Second ",
+              "description": "",
+              "presenterID": 960,
+              "presenterName": "Ali Raza M",
+              "startDate": "090000",
+              "endDate": "100000",
+              "subSelectRadio": 1,
+              "subAgendaUrlFieldRadio": "",
+              "subAgendarequestContributorUrl": 0,
+              "subAgendarequestContributorEnterNotes": "",
+              "isLocked": false,
+              "agendaVotingID": 0,
+              "voteOwner": {
+                "userid": 0,
+                "currentVotingClosed": false
+              },
+              "isAttachment": true,
+              "userID": 960,
+              "canEdit": true,
+              "canView": true,
+              "userProfilePicture": {
+                "userID": 960,
+                "orignalProfilePictureName": "20231006054356685.jpg",
+                "displayProfilePictureName": "bohemian-man-with-his-arms-crossed.jpg"
+              },
+              "agendaVoters": [],
+              "subfiles": [
+                {
+                  "agendaAttachmentsID": 4132,
+                  "displayAttachmentName": "SQA Assignment One (2).docx",
+                  "originalAttachmentName": "3005",
+                  "fK_MAID": 3742,
+                  "fK_UID": 954
+                }
+              ],
+              "contributor": {
+                "contributorName": "",
+                "orignalProfilePictureName": "",
+                "displayProfilePictureName": ""
+              },
+              "parentAgendaID": "3740"
+            }
+          ]
+        },
+        {
+          "id": "3743",
+          "title": "Second Main agenda ",
+          "description": "description for main Second Agenda ",
+          "presenterID": 960,
+          "presenterName": "Ali Raza M",
+          "startDate": "090000",
+          "endDate": "100000",
+          "selectedRadio": 1,
+          "urlFieldMain": "",
+          "requestContributorURl": 0,
+          "mainNote": "",
+          "isLocked": false,
+          "agendaVotingID": 53,
+          "voteOwner": {
+            "userid": 954,
+            "currentVotingClosed": true
+          },
+          "isAttachment": true,
+          "userID": 960,
+          "canEdit": true,
+          "canView": true,
+          "contributor": {
+            "contributorName": "",
+            "orignalProfilePictureName": "",
+            "displayProfilePictureName": ""
+          },
+          "userProfilePicture": {
+            "userID": 960,
+            "orignalProfilePictureName": "20231006054356685.jpg",
+            "displayProfilePictureName": "bohemian-man-with-his-arms-crossed.jpg"
+          },
+          "files": [
+            {
+              "agendaAttachmentsID": 4133,
+              "displayAttachmentName": "SQA Assignment One (2).docx",
+              "originalAttachmentName": "3005",
+              "fK_MAID": 3743,
+              "fK_UID": 0
+            }
+          ],
+          "agendaVoters": [
+            {
+              "userID": 957,
+              "userName": "Ali Raza",
+              "emailAddress": "aliraza2@yopmail.com",
+              "participantTitle": "Second Participant title "
+            },
+            {
+              "userID": 1002,
+              "userName": "Test User Diskus",
+              "emailAddress": "testuserdiskus@yopmail.com",
+              "participantTitle": "Title Participant "
+            }
+          ],
+          "subAgenda": [
+            {
+              "subAgendaID": "3744",
+              "subTitle": "Second main subagenda ",
+              "description": "second Desfrtion ",
+              "presenterID": 960,
+              "presenterName": "Ali Raza M",
+              "startDate": "090000",
+              "endDate": "100000",
+              "subSelectRadio": 1,
+              "subAgendaUrlFieldRadio": "",
+              "subAgendarequestContributorUrl": 0,
+              "subAgendarequestContributorEnterNotes": "",
+              "isLocked": false,
+              "agendaVotingID": 0,
+              "voteOwner": {
+                "userid": 0,
+                "currentVotingClosed": false
+              },
+              "isAttachment": true,
+              "userID": 960,
+              "canEdit": true,
+              "canView": true,
+              "userProfilePicture": {
+                "userID": 960,
+                "orignalProfilePictureName": "20231006054356685.jpg",
+                "displayProfilePictureName": "bohemian-man-with-his-arms-crossed.jpg"
+              },
+              "agendaVoters": [],
+              "subfiles": [
+                {
+                  "agendaAttachmentsID": 4134,
+                  "displayAttachmentName": "3403 - BoardDeckFile.pdf",
+                  "originalAttachmentName": "3002",
+                  "fK_MAID": 3744,
+                  "fK_UID": 954
+                }
+              ],
+              "contributor": {
+                "contributorName": "",
+                "orignalProfilePictureName": "",
+                "displayProfilePictureName": ""
+              },
+              "parentAgendaID": "3743"
+            }
+          ]
+        }
+      ],
+      "childAgendas": null,
+      "meetingPolls": null,
+      "meetingTask": null,
+      "agendaWiseMinutes": null,
+      "pollsAnswers": null,
+      "particpantsPoll": null,
+      "partipantAnswers": null
+    },
+    "responseMessage": "Meeting_MeetingServiceManager_GetAllMeetingRecordBoardDecks_01",
+    "isExecuted": true
+  }
 }

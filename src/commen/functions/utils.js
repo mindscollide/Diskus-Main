@@ -83,6 +83,7 @@ export function updateAdminRoutes(adminFeatures, LocalAdminRoutes) {
     { id: 27, name: "ManageUsers" },
     { id: 31, name: "ManageUsers" },
     { id: 28, name: "PackageDetailsUserManagement" },
+    { id: 288, name: "subscriptionDetailsUserManagement" },
     { id: 28, name: "PakageDetailsUserManagement" },
     { id: 29, name: "CancelSubscriptionUserManagement" },
     { id: 30, name: "deleteorganizationUserMangement" },
@@ -228,6 +229,7 @@ export async function handleLoginResponse(response) {
           { name: "PaymentHistory", id: 218 },
           { name: "changePassword", id: 220 },
           { name: "PaymentFormUserManagement", id: 222 },
+          { name: "subscriptionDetailsUserManagement", id: 288 },
         ]
       : [];
     if (response.isTrial) {
@@ -257,7 +259,8 @@ export async function handleLoginResponse(response) {
           { name: "CustomerInformation", id: 208 },
           { name: "AddUsers", id: 26 },
           { name: "loginreport", id: 35 },
-          { name: "PaymentFormUserManagement", id: 209 }
+          { name: "PaymentFormUserManagement", id: 209 },
+          { name: "subscriptionDetailsUserManagement", id: 288 }
         );
       }
     } else {
