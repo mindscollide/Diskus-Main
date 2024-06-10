@@ -157,9 +157,9 @@ body[dir="rtl"] .subcriptionvalue_2 {
   width: 100% !important;
   font-size: 12px !important;
   border-radius: 4px !important;
-  border: 1px solid #e1e1e1 !important;
+  border: 1px solid #f16b6b !important;
   background: #fff !important;
-  color: #5a5a5a !important;
+  color: #f16b6b !important;
   font-weight: 600 !important;
 }
 
@@ -168,9 +168,9 @@ body[dir="rtl"] .subcriptionvalue_2 {
   width: 100% !important;
   font-size: 12px !important;
   border-radius: 4px !important;
-  border: 1px solid #e1e1e1 !important;
+  border: 1px solid #f16b6b !important;
   background: #fff !important;
-  color: #5a5a5a !important;
+  color: #f16b6b !important;
   font-weight: 600 !important;
 }
 
@@ -202,4 +202,44 @@ body[dir="rtl"] .CancelNowClassstyles {
 
 body[dir="rtl"] .ConfirmSubsStyles {
   font-weight: 600 !important;
+}
+
+.single-cell-table {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #6172d6;
+  border-radius: 4px;
+}
+
+.single-cell-table th:first-child {
+  border-top-left-radius: 4px;
+}
+.single-cell-table th:last-child {
+  border-top-right-radius: 4px;
+}
+.single-cell-table td:first-child {
+  border-bottom-left-radius: 4px;
+}
+.single-cell-table td:last-child {
+  border-bottom-right-radius: 4px;
+}
+
+.single-cell-table th,
+.single-cell-table td {
+  border: 1px solid #6172d6;
+  padding: 8px;
+  text-align: center;
+}
+.single-cell-table th {
+  background-color: #fff;
+  color: #6172d6;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+}
+
+.single-cell-table td {
+  background-color: #fff;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
 }

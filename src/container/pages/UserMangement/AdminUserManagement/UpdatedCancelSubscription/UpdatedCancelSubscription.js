@@ -9,6 +9,10 @@ const UpdatedCancelSubscription = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
+  const handleCancelSubscriptionOption = () => {
+    navigate("/Admin/CancelSubscriptionUserManagement");
+  };
+
   const CancelSubscriptionDetails = [
     {
       title: (
@@ -189,7 +193,7 @@ const UpdatedCancelSubscription = () => {
           <Button
             text={t("Cancel-subscription")}
             className={styles["DowngradeButton_styles"]}
-            // onClick={handleDowngradeOption}
+            onClick={handleCancelSubscriptionOption}
           />
         </>
       ),
