@@ -303,7 +303,8 @@ const NavbarAdmin = () => {
                                   {checkFeatureIDAvailability(29) ? (
                                     <NavDropdown.Item
                                       as={Link}
-                                      to="CancelSubscriptionUserManagement"
+                                      // to="CancelSubscriptionUserManagement"
+                                      to="updatedCancelSubscription"
                                       eventKey="link-8"
                                       className="text-black border-none "
                                     >

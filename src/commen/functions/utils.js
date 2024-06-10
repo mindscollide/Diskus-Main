@@ -100,6 +100,7 @@ export function updateAdminRoutes(adminFeatures, LocalAdminRoutes) {
     { id: 43, name: "OrganizationlevelConfigUM" },
     { id: 45, name: "subscriptionDetailsUserManagement" },
     { id: 45, name: "downgradeSubscription" },
+    { id: 46, name: "updatedCancelSubscription" },
 
     // not in use
     // { id: 19, name: "Invoice" },
@@ -232,6 +233,7 @@ export async function handleLoginResponse(response) {
           { name: "PaymentFormUserManagement", id: 222 },
           { name: "subscriptionDetailsUserManagement", id: 288 },
           { name: "downgradeSubscription", id: 289 },
+          { name: "updatedCancelSubscription", id: 290 },
         ]
       : [];
     if (response.isTrial) {
