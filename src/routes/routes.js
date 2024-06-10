@@ -79,6 +79,7 @@ import PaymentTest from "../container/pages/UserMangement/PaymentTestPage/Paymen
 import ReviewSignature from "../container/DataRoom/SignatureApproval/ReviewAndSign/ReviewSignature";
 import PendingApproval from "../container/MinutesNewFlow/pendingApprovals/PendingApprovals";
 import SubscriptionDetailsUserManagement from "../container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/SubscriptionDetailsUserManagement";
+import DowngradeSubscription from "../container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/DowngradeSubscription/DowngradeSubscription";
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
 export const router = createHashRouter(
@@ -480,6 +481,14 @@ export const router = createHashRouter(
             element={
               <RouteWrapperAdmin name="subscriptionDetailsUserManagement">
                 <SubscriptionDetailsUserManagement />
+              </RouteWrapperAdmin>
+            }
+          />
+          <Route
+            path="downgradeSubscription"
+            element={
+              <RouteWrapperAdmin name="downgradeSubscription">
+                <DowngradeSubscription />
               </RouteWrapperAdmin>
             }
           />

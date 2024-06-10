@@ -2072,5 +2072,16 @@
   "Add-Signaturies": "Add Signatories",
   "Create-new-subscription": "Create New Subscription",
   "Subscription-Date": "Subscription Date",
-  "Subscription-number": "Subscription Number"
+  "Subscription-number": "Subscription Number",
+  "Expiry-Date": "Expiry Date",
+  "Total-charges": "Total Charges",
+  "in-US$": "in US$",
+  "Your-current-wallet-balance-is": "Your Current Wallet Balance is: ",
+  "Downgraded-this-subscription": "Downgrade This Subscription",
+  "Lisence-uS$": "License US$",
+  "Lisence": "Lisence",
+  "Not-utilzed": "not utilzed",
+  "To-reduce": "to reduce",
+  "To-wallet-us$": "to Wallet US$",
+  "Downgrade-now": "Downgrade Now"
 }

@@ -4,10 +4,16 @@ import { Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Button, TableToDo } from "../../../../../components/elements";
 import { Plus } from "react-bootstrap-icons";
+import { useNavigate } from "react-router-dom";
 const SubscriptionDetailsUserManagement = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
-  const ColumnsPakageSelection = [
+  const handleDowngradeOption = () => {
+    navigate("/Admin/downgradeSubscription");
+  };
+
+  const SubscriptionDetails = [
     {
       title: (
         <span className="pakageselectionSpanUsermanagement">
@@ -187,6 +193,7 @@ const SubscriptionDetailsUserManagement = () => {
           <Button
             text={"Downgrade"}
             className={styles["DowngradeButton_styles"]}
+            onClick={handleDowngradeOption}
           />
         </>
       ),
@@ -222,6 +229,7 @@ const SubscriptionDetailsUserManagement = () => {
     ),
     DowngradeSubscription: "",
   };
+
   return (
     <Container>
       <Row className="mt-4">
@@ -245,13 +253,14 @@ const SubscriptionDetailsUserManagement = () => {
       <Row className="mt-3">
         <Col lg={12} md={12} sm={12} xs={12}>
           <TableToDo
-            column={ColumnsPakageSelection}
+            column={SubscriptionDetails}
             className={"SubscriptionExpiryTableStyles"}
             rows={[...Data, defaultRow]}
             pagination={false}
             footer={false}
             scroll={{
               x: "hidden",
+              y: "60vh",
             }}
             id="SubscriptionExpiry"
             rowHoverBg="none"
