@@ -1590,13 +1590,21 @@ const GetAllSignatureFlowDocumentsForCreatorRM = {
   RequestMethod: "ServiceManager.GetAllSignatureFlowDocumentsForCreator",
 };
 
+const ListOfPendingForApprovalSignaturesRM = {
+  RequestMethod: "ServiceManager.ListOfPendingForApprovalSignatures",
+};
 const GetInvoiceHTMLByOrganizatonID = {
   RequestMethod: "ServiceManager.GetInvoiceHtmlByOrganizationID",
 };
 const LoginHistoryReportExporttoExcel = {
   RequestMethod: "ServiceManager.LoginHistoryReport",
 };
+const GetAllPendingForApprovalStatsRM = {
+  RequestMethod: "ServiceManager.GetAllPendingForApprovalStats",
+};
 export {
+  GetAllPendingForApprovalStatsRM,
+  ListOfPendingForApprovalSignaturesRM,
   LoginHistoryReportExporttoExcel,
   GetInvoiceHTMLByOrganizatonID,
   GetAllSignatureFlowDocumentsForCreatorRM,
