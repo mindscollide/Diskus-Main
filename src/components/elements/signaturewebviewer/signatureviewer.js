@@ -55,7 +55,7 @@ const SignatureViewer = () => {
   const [lastParticipants, setLastParticipants] = useState([]);
   const [FieldsData, setFieldsData] = useState([]);
   const [openAddParticipentModal, setOpenAddParticipentModal] = useState(false);
-  const [selectedUser, setSelectedUser] = useState("");
+  const [selectedUser, setSelectedUser] = useState(0);
   const [signers, setSigners] = useState({
     Name: "",
     EmailAddress: "",
@@ -84,7 +84,7 @@ const SignatureViewer = () => {
     creatorID: "",
     isCreator: 0,
   });
-  console.log(pdfResponceData, "pdfResponceDatapdfResponceData")
+  console.log(pdfResponceData, "pdfResponceDatapdfResponceData");
   // { userID: "user1", xml: [] }
   const [userAnnotations, setUserAnnotations] = useState([]);
   const [deletedDataTem, setTeletedDataTem] = useState([]);
@@ -93,7 +93,11 @@ const SignatureViewer = () => {
   const userAnnotationsRef = useRef(userAnnotations);
   const pdfResponceDataRef = useRef(pdfResponceData.xfdfData);
   const participantsRef = useRef(participants);
-
+  console.log(
+    selectedUserRef,
+    participantsRef,
+    "selectedUserRefselectedUserRef"
+  );
   // ===== this use for current state update get =====//
   useEffect(() => {
     selectedUserRef.current = selectedUser;
@@ -472,7 +476,8 @@ const SignatureViewer = () => {
 
         //======================================== for cutome side bar =====================================//
         const handleChangeUser = (event) => {
-          setSelectedUser(event.target.value);
+          setSelectedUser(Number(event.target.value));
+          // selectedUserRef.current = Number(event.target.value);
         };
 
         const openCustomModal = () => {
@@ -678,8 +683,6 @@ const SignatureViewer = () => {
                     padding: "12px 5px",
                     margin: "8px 0",
                   }}
-                  id="select-country"
-                  data-live-search="true"
                   onChange={handleChangeUser}
                 >
                   {participantsRef.current.map((userData, index) => {
