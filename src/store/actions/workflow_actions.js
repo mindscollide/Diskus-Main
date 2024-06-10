@@ -628,6 +628,7 @@ const saveSignatureDocumentApi = (Data, navigate, t) => {
                   t("Signature-file-created-and-added-to-dataroom")
                 )
               );
+              window.close()
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1415,7 +1416,14 @@ const getAllPendingApprovalsSignaturesApi = (navigate, t, Data) => {
   };
 };
 
+const clearWorkFlowResponseMessage =() => {
+  return {
+    type: actions.CLEAR_RESPONSEMESSAGE_WORKFLOWREDUCER
+  }
+}
+
 export {
+  clearWorkFlowResponseMessage,
   getAllPendingApprovalsStatsApi,
   getAllPendingApprovalsSignaturesApi,
   getAllSignaturesDocumentsforCreatorApi,

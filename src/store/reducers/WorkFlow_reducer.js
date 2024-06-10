@@ -288,6 +288,12 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
+    case actions.CLEAR_RESPONSEMESSAGE_WORKFLOWREDUCER: {
+      return {
+        ...state,
+        ResponseMessage: ""
+      }
+    }
     default:
       return { ...state };
   }

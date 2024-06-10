@@ -26,6 +26,7 @@ import { Col, Row } from "react-bootstrap";
 import DeleteIcon from "../../../assets/images/Icon material-delete.svg";
 import Select from "react-select";
 import {
+  clearWorkFlowResponseMessage,
   getWorkFlowByWorkFlowIdwApi,
   saveWorkflowApi,
 } from "../../../store/actions/workflow_actions";
@@ -41,6 +42,7 @@ const SignatureViewer = () => {
     saveWorkFlowResponse,
     getWorkfFlowByFileId,
     Loading,
+    ResponseMessage,
     getDataroomAnnotation,
   } = useSelector((state) => state.SignatureWorkFlowReducer);
   // Parse the URL parameters to get the data
@@ -55,7 +57,7 @@ const SignatureViewer = () => {
   const [lastParticipants, setLastParticipants] = useState([]);
   const [FieldsData, setFieldsData] = useState([]);
   const [openAddParticipentModal, setOpenAddParticipentModal] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(0);
+  const [selectedUser, setSelectedUser] = useState(null);
   const [signers, setSigners] = useState({
     Name: "",
     EmailAddress: "",
@@ -99,6 +101,7 @@ const SignatureViewer = () => {
     "selectedUserRefselectedUserRef"
   );
   // ===== this use for current state update get =====//
+  // Ensure the ref stays in sync with the state
   useEffect(() => {
     selectedUserRef.current = selectedUser;
   }, [selectedUser]);
@@ -476,10 +479,10 @@ const SignatureViewer = () => {
 
         //======================================== for cutome side bar =====================================//
         const handleChangeUser = (event) => {
-          setSelectedUser(Number(event.target.value));
-          // selectedUserRef.current = Number(event.target.value);
+          const newSelectedUser = Number(event.target.value);
+          setSelectedUser(newSelectedUser);
+          selectedUserRef.current = newSelectedUser; // Update the ref
         };
-
         const openCustomModal = () => {
           setOpenAddParticipentModal(true); // Open the custom modal
         };
@@ -1178,17 +1181,14 @@ const SignatureViewer = () => {
 
   // === this is for Response Message===//
   useEffect(() => {
-    if (
-      webViewer.ResponseMessage !== "" &&
-      webViewer.ResponseMessage !== undefined
-    ) {
+    if (ResponseMessage !== "" && ResponseMessage !== undefined) {
       setOpen({
         ...open,
-        message: webViewer.ResponseMessage,
+        message: ResponseMessage,
         open: true,
       });
       setTimeout(() => {
-        dispatch(ClearMessageAnnotations());
+        dispatch(clearWorkFlowResponseMessage());
         setOpen({
           ...open,
           message: "",
@@ -1196,7 +1196,7 @@ const SignatureViewer = () => {
         });
       }, 4000);
     }
-  }, [webViewer.ResponseMessage]);
+  }, [ResponseMessage]);
   // === End ===//
 
   const handleOnDragEnd = (result) => {

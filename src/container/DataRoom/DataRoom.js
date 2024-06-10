@@ -335,6 +335,14 @@ const DataRoom = () => {
         };
         dispatch(getRecentDocumentsApi(navigate, t, Data));
       } else if (currentView === 5) {
+        let Data = { pageNo: 1, pageSize: 10 };
+        dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
+        setGetAllData([]);
+        setSharedwithmebtn(true);
+        localStorage.removeItem("folderID");
+        if (searchoptions) {
+          setSearchoptions(false);
+        }
       } else {
         dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 1));
         localStorage.removeItem("folderID");
@@ -481,69 +489,6 @@ const DataRoom = () => {
       // CanceUpload();
     }
   }, [isOnline]);
-
-  useEffect(() => {
-    if (SignatureWorkFlowReducer.getAllSignatureDocumentsforCreator === null) {
-    }
-    let signatureFlowDocumentsForCreator = [
-      {
-        workFlowID: 25,
-        workFlowStatusID: 4,
-        fileID: 7495,
-        fileName: "calendar qs.pdf",
-        numberOfSignatories: 0,
-        sentOn: "-",
-        status: "Draft",
-      },
-      {
-        workFlowID: 24,
-        workFlowStatusID: 1,
-        fileID: 7494,
-        fileName: "calendar qs.pdf",
-        numberOfSignatories: 2,
-        sentOn: "-",
-        status: "Pending Signature",
-      },
-      {
-        workFlowID: 23,
-        workFlowStatusID: 4,
-        fileID: 7492,
-        fileName: "CALENDAR API OBSERVATIONS.pdf",
-        numberOfSignatories: 0,
-        sentOn: "-",
-        status: "Draft",
-      },
-      {
-        workFlowID: 22,
-        workFlowStatusID: 4,
-        fileID: 7490,
-        fileName: "AXIS NOTIFICATION MECHANISM CHANGES.pdf",
-        numberOfSignatories: 0,
-        sentOn: "-",
-        status: "Draft",
-      },
-      {
-        workFlowID: 21,
-        workFlowStatusID: 4,
-        fileID: 7489,
-        fileName: "AXIS NOTIFICATION MECHANISM CHANGES.pdf",
-        numberOfSignatories: 0,
-        sentOn: "-",
-        status: "Draft",
-      },
-      {
-        workFlowID: 20,
-        workFlowStatusID: 4,
-        fileID: 7487,
-        fileName: "AXIS NOTIFICATION MECHANISM CHANGES.pdf",
-        numberOfSignatories: 0,
-        sentOn: "-",
-        status: "Draft",
-      },
-    ];
-
-    // SignatureWorkFlowReducer
-  }, [SignatureWorkFlowReducer.getAllSignatureDocumentsforCreator]);
 
   const ClosingNotificationRenameFolder = () => {
     setShowrenamenotification(false);
