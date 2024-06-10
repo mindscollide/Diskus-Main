@@ -17,6 +17,7 @@ import {
 } from "../../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
 import { getInvocieHTMLApi } from "../../../../store/actions/Auth2_actions";
+import InvoiceHtml from "./InvoiceHtml/InvoiceHtml";
 
 const PayOutstanding = () => {
   const { OrganizationBillingReducer, LanguageReducer } = useSelector(
@@ -35,6 +36,7 @@ const PayOutstanding = () => {
     BalanceDue: 0,
     InvoiceID: 0,
   });
+  const [invoiceModal, setInvoiceModal] = useState(false);
   console.log(payOutStanding, "payOutStandingpayOutStandingpayOutStanding");
   useEffect(() => {
     if (OrganizationBillingReducer.getPayoutStanding !== null) {
@@ -105,7 +107,7 @@ const PayOutstanding = () => {
           ? Number(localStorage.getItem("organizationSubscriptionID"))
           : 0,
     };
-    dispatch(getInvocieHTMLApi(navigate, t, Data));
+    dispatch(getInvocieHTMLApi(navigate, t, Data, setInvoiceModal));
   };
 
   return (
@@ -288,6 +290,10 @@ const PayOutstanding = () => {
           </Col>
         </Row>
       </Container>
+      <InvoiceHtml
+        InvoiceModal={invoiceModal}
+        setInvoiceModal={setInvoiceModal}
+      />
       {OrganizationBillingReducer.Loading || LanguageReducer.Loading ? (
         <Loader />
       ) : null}
