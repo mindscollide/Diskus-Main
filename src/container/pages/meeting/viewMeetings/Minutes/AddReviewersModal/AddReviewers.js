@@ -9,6 +9,7 @@ import {
   Checkbox,
   AttachmentViewer,
 } from "./../../../../../../components/elements";
+import AttachmentIcon from "./../../../../../../assets/images/AttachmentIcon.png";
 import { useTranslation } from "react-i18next";
 
 const AddReviewers = ({ addReviewers, setAddReviewers }) => {
@@ -142,7 +143,7 @@ const AddReviewers = ({ addReviewers, setAddReviewers }) => {
                   <>
                     <div className={styles["minuteWrapper"]}>
                       <Row>
-                        <Col className="pr-0" lg={11} md={11} sm={12}>
+                        <Col className="pr-0" lg={10} md={10} sm={12}>
                           <p
                             ref={textRef}
                             className={
@@ -160,7 +161,7 @@ const AddReviewers = ({ addReviewers, setAddReviewers }) => {
                             to hold daily check-ins for quicker progress
                           </p>
                         </Col>
-                        <Col className="d-flex pr-0" lg={1} md={1} sm={12}>
+                        <Col className="d-flex justify-content-end align-items-end gap-2">
                           {isTruncated ? (
                             <>
                               <span
@@ -195,7 +196,7 @@ const AddReviewers = ({ addReviewers, setAddReviewers }) => {
                   <>
                     <div className={styles["minuteWrapper"]}>
                       <Row>
-                        <Col className="pr-0" lg={11} md={11} sm={12}>
+                        <Col className="pr-0" lg={10} md={10} sm={12}>
                           <p
                             ref={textRef}
                             className={
@@ -224,7 +225,12 @@ const AddReviewers = ({ addReviewers, setAddReviewers }) => {
                             </Row>
                           )}
                         </Col>
-                        <Col className="d-flex pr-0" lg={1} md={1} sm={12}>
+                        <Col
+                          className="d-flex justify-content-end align-items-end gap-2"
+                          lg={2}
+                          md={2}
+                          sm={12}
+                        >
                           {isTruncated ? (
                             <>
                               <span
@@ -233,14 +239,28 @@ const AddReviewers = ({ addReviewers, setAddReviewers }) => {
                               >
                                 {t("View-details")}
                               </span>
+                              <img
+                                width={17}
+                                height={16}
+                                src={AttachmentIcon}
+                                alt=""
+                              />
                             </>
                           ) : (
-                            <span
-                              onClick={showHideDetails}
-                              className={styles["view-details"]}
-                            >
-                              {t("Hide-details")}
-                            </span>
+                            <>
+                              <span
+                                onClick={showHideDetails}
+                                className={styles["view-details"]}
+                              >
+                                {t("Hide-details")}
+                              </span>
+                              <img
+                                src={AttachmentIcon}
+                                width={17}
+                                height={16}
+                                alt=""
+                              />
+                            </>
                           )}
                         </Col>
                       </Row>
@@ -260,7 +280,7 @@ const AddReviewers = ({ addReviewers, setAddReviewers }) => {
             <Col lg={12} md={12} sm={12}>
               <Checkbox
                 label2Class={styles["agenda-title"]}
-                label2="1.1. A brief overview of the main subject or theme."
+                label2="1. A brief overview of the main subject or theme."
                 className="SearchCheckbox "
                 name="IsChat"
                 checked={checkAllMinutes}
@@ -288,7 +308,7 @@ const AddReviewers = ({ addReviewers, setAddReviewers }) => {
                   <>
                     <div className={styles["minuteWrapper"]}>
                       <Row>
-                        <Col className="pr-0" lg={11} md={11} sm={12}>
+                        <Col className="pr-0" lg={10} md={10} sm={12}>
                           <p
                             ref={textRef}
                             className={
@@ -306,7 +326,7 @@ const AddReviewers = ({ addReviewers, setAddReviewers }) => {
                             to hold daily check-ins for quicker progress
                           </p>
                         </Col>
-                        <Col className="d-flex pr-0" lg={1} md={1} sm={12}>
+                        <Col className="d-flex justify-content-end align-items-end gap-2">
                           {isTruncated ? (
                             <>
                               <span
@@ -341,7 +361,7 @@ const AddReviewers = ({ addReviewers, setAddReviewers }) => {
                   <>
                     <div className={styles["minuteWrapper"]}>
                       <Row>
-                        <Col className="pr-0" lg={11} md={11} sm={12}>
+                        <Col className="pr-0" lg={10} md={10} sm={12}>
                           <p
                             ref={textRef}
                             className={
@@ -370,7 +390,12 @@ const AddReviewers = ({ addReviewers, setAddReviewers }) => {
                             </Row>
                           )}
                         </Col>
-                        <Col className="d-flex pr-0" lg={1} md={1} sm={12}>
+                        <Col
+                          className="d-flex justify-content-end align-items-end gap-2"
+                          lg={2}
+                          md={2}
+                          sm={12}
+                        >
                           {isTruncated ? (
                             <>
                               <span
@@ -379,14 +404,28 @@ const AddReviewers = ({ addReviewers, setAddReviewers }) => {
                               >
                                 {t("View-details")}
                               </span>
+                              <img
+                                width={17}
+                                height={16}
+                                src={AttachmentIcon}
+                                alt=""
+                              />
                             </>
                           ) : (
-                            <span
-                              onClick={showHideDetails}
-                              className={styles["view-details"]}
-                            >
-                              {t("Hide-details")}
-                            </span>
+                            <>
+                              <span
+                                onClick={showHideDetails}
+                                className={styles["view-details"]}
+                              >
+                                {t("Hide-details")}
+                              </span>
+                              <img
+                                src={AttachmentIcon}
+                                width={17}
+                                height={16}
+                                alt=""
+                              />
+                            </>
                           )}
                         </Col>
                       </Row>
@@ -434,7 +473,7 @@ const AddReviewers = ({ addReviewers, setAddReviewers }) => {
                   <>
                     <div className={styles["minuteWrapper"]}>
                       <Row>
-                        <Col className="pr-0" lg={11} md={11} sm={12}>
+                        <Col className="pr-0" lg={10} md={10} sm={12}>
                           <p
                             ref={textRef}
                             className={
@@ -452,7 +491,7 @@ const AddReviewers = ({ addReviewers, setAddReviewers }) => {
                             to hold daily check-ins for quicker progress
                           </p>
                         </Col>
-                        <Col className="d-flex pr-0" lg={1} md={1} sm={12}>
+                        <Col className="d-flex justify-content-end align-items-end gap-2">
                           {isTruncated ? (
                             <>
                               <span
@@ -487,7 +526,7 @@ const AddReviewers = ({ addReviewers, setAddReviewers }) => {
                   <>
                     <div className={styles["minuteWrapper"]}>
                       <Row>
-                        <Col className="pr-0" lg={11} md={11} sm={12}>
+                        <Col className="pr-0" lg={10} md={10} sm={12}>
                           <p
                             ref={textRef}
                             className={
@@ -516,7 +555,12 @@ const AddReviewers = ({ addReviewers, setAddReviewers }) => {
                             </Row>
                           )}
                         </Col>
-                        <Col className="d-flex pr-0" lg={1} md={1} sm={12}>
+                        <Col
+                          className="d-flex justify-content-end align-items-end gap-2"
+                          lg={2}
+                          md={2}
+                          sm={12}
+                        >
                           {isTruncated ? (
                             <>
                               <span
@@ -525,14 +569,28 @@ const AddReviewers = ({ addReviewers, setAddReviewers }) => {
                               >
                                 {t("View-details")}
                               </span>
+                              <img
+                                width={17}
+                                height={16}
+                                src={AttachmentIcon}
+                                alt=""
+                              />
                             </>
                           ) : (
-                            <span
-                              onClick={showHideDetails}
-                              className={styles["view-details"]}
-                            >
-                              {t("Hide-details")}
-                            </span>
+                            <>
+                              <span
+                                onClick={showHideDetails}
+                                className={styles["view-details"]}
+                              >
+                                {t("Hide-details")}
+                              </span>
+                              <img
+                                src={AttachmentIcon}
+                                width={17}
+                                height={16}
+                                alt=""
+                              />
+                            </>
                           )}
                         </Col>
                       </Row>
