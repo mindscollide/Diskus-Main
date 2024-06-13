@@ -279,6 +279,7 @@ const PakageDetailsUserManagement = () => {
                       ? t("Upgrade-now")
                       : t("Pay-now")
                   }
+                  disableBtn={row.Numberoflicenses > 0 ? false : true}
                   className={styles["PayNowButtons"]}
                   onClick={() => handlePayNowClick(2)}
                 />
@@ -653,7 +654,7 @@ const PakageDetailsUserManagement = () => {
             className={"Billing_TablePakageSelection"}
             rows={[...tableData, totalRow, defaultRowWithButtons]}
             pagination={false}
-            id="saif"
+            id="PakageDetailsTable"
             rowHoverBg="none"
           />
         </Col>
