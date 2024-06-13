@@ -7808,3 +7808,11 @@ th.ant-table-cell.leaveTimeParticipant.ant-table-cell-ellipsis.ant-table-column-
   background: #a2a2a2 !important;
   margin-left: -15px !important;
 }
+
+.mt-16p {
+  margin-top: 16px !important;
+}
+
+.mt-16n {
+  margin-top: -16px !important;
+}
