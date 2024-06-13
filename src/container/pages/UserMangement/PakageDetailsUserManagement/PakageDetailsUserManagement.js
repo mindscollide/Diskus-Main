@@ -266,7 +266,7 @@ const PakageDetailsUserManagement = () => {
         console.log(row, "Monthlycharges");
         const monthlyCharges =
           row.price && row.licenseCount ? row.price * row.licenseCount : 0;
-        console.log(monthlyCharges, "licenseCount");
+        console.log(monthlyCharges, "monthlyChargesmonthlyCharges");
         if (row.shouldDisplayTextField) {
           return (
             <>
@@ -281,6 +281,7 @@ const PakageDetailsUserManagement = () => {
                   }
                   className={styles["PayNowButtons"]}
                   onClick={() => handlePayNowClick(2)}
+                  disableBtn={!row.licenseCount}
                 />
               </span>
             </>
@@ -320,6 +321,7 @@ const PakageDetailsUserManagement = () => {
       render: (text, row) => {
         const quarterlyCharges =
           row.price && row.licenseCount ? row.price * row.licenseCount * 3 : 0;
+        console.log(quarterlyCharges, "quarterlyChargesquarterlyCharges");
         if (row.shouldDisplayTextField) {
           return (
             <>
@@ -334,6 +336,7 @@ const PakageDetailsUserManagement = () => {
                   }
                   className={styles["PayNowButtons"]}
                   onClick={() => handlePayNowClick(3)}
+                  disableBtn={!row.licenseCount}
                 />
               </span>
             </>
@@ -371,6 +374,7 @@ const PakageDetailsUserManagement = () => {
       render: (text, row) => {
         const YearlyCharges =
           row.price && row.licenseCount ? row.price * row.licenseCount * 12 : 0;
+        console.log(YearlyCharges, "YearlyChargesYearlyCharges");
         if (row.shouldDisplayTextField) {
           return (
             <>
@@ -385,6 +389,7 @@ const PakageDetailsUserManagement = () => {
                   }
                   className={styles["PayNowButtons"]}
                   onClick={() => handlePayNowClick(1)}
+                  disableBtn={!row.licenseCount}
                 />
               </span>
             </>
