@@ -125,63 +125,106 @@ const initialState = {
   allMinutesAG: {
     agendaWise: [
       {
-        title: "Introduction",
+        title: "Agenda Item 1",
+        id: 81,
         items: [
           {
             id: 1,
             description:
-              "A welcome and brief overview of the meeting's agenda were provided.",
+              "Introduction to the first agenda item. Introduction to the first agenda item. Introduction to the first agenda item. Introduction to the first agenda item. Introduction to the first agenda item. Introduction to the first agenda item. Introduction to the first agenda item. Introduction to the first agenda item. Introduction to the first agenda item. ",
+            attachments: [],
           },
           {
             id: 2,
             description:
-              "Discussion ensued regarding any challenges faced and Greetings were extended to all participants, emphasizing the importance of the agenda and the collective commitment.",
+              "Discussion on the challenges faced and greetings to participants.",
+            attachments: [],
           },
           {
             id: 3,
             description:
-              "Task updates: Design phase completed, moving to development, discussed resource reallocation to address delays and decided unknown unknown printer took a galley of type a to hold daily check-ins for quicker progress. Design phase completed, moving to development, discussed resource reallocation to address delays and decided unknown unknown printer took a galley of type a to hold daily check-ins for quicker progress. Design phase completed, moving to development, discussed resource reallocation to address delays and decided unknown unknown printer took a galley of type a to hold daily check-ins for quicker progress. Design phase completed, moving to development, discussed resource reallocation to address delays and decided unknown unknown printer took a galley of type a to hold daily check-ins for quicker progress.",
-            attachments: ["Annual Report.pdf", "Annual Report.pdf"],
+              "Updates on tasks and decisions made regarding project progress and delays.",
+            attachments: [
+              { fileName: "Annual Report 1.pdf" },
+              { fileName: "Annual Report 2.pdf" },
+            ],
+          },
+        ],
+        subItems: [
+          {
+            title: "Sub Item 1.1: Overview",
+            id: 82,
+
+            items: [
+              {
+                id: 4,
+                description: "Summary of the sub-item's main points.",
+                attachments: [],
+              },
+              {
+                id: 5,
+                description: "Further discussion on challenges and greetings.",
+                attachments: [],
+              },
+              {
+                id: 6,
+                description:
+                  "Additional points discussed with relevant attachments.",
+                attachments: [
+                  { fileName: "Annual Report 1.pdf" },
+                  { fileName: "Annual Report 2.pdf" },
+                ],
+              },
+            ],
           },
         ],
       },
       {
-        title: "1.1. A brief overview of the main subject or theme",
+        title: "Agenda Item 2",
+        id: 83,
+
         items: [
           {
-            id: 4,
-            description:
-              "A welcome and brief overview of the meeting's agenda were provided.",
+            id: 7,
+            description: "Introduction to the second agenda item.",
+            attachments: [],
           },
           {
-            id: 5,
-            description:
-              "Discussion ensued regarding any challenges faced and Greetings were extended to all participants, emphasizing the importance of the agenda and the collective commitment.",
+            id: 8,
+            description: "Discussion on further challenges and greetings.",
+            attachments: [],
           },
           {
-            id: 6,
-            description:
-              "Discussion ensued regarding any challenges faced and Greetings were extended to all participants, emphasizing the importance of the agenda and the collective commitment.",
+            id: 9,
+            description: "Continued updates on tasks and project decisions.",
+            attachments: [
+              { fileName: "Annual Report 1.pdf" },
+              { fileName: "Annual Report 2.pdf" },
+            ],
           },
         ],
+        subItems: [],
       },
     ],
     general: [
+     
       {
-        id: 7,
-        description:
-          "A welcome and brief overview of the meeting's agenda were provided.",
+        id: 10,
+        description: "General introduction to the meeting.",
+        attachments: [],
       },
       {
-        id: 8,
-        description:
-          "Discussion ensued regarding any challenges faced and Greetings were extended to all participants, emphasizing the importance of the agenda and the collective commitment.",
+        id: 11,
+        description: "General discussion on meeting challenges and greetings.",
+        attachments: [],
       },
       {
-        id: 9,
-        description:
-          "Task updates: Design phase completed, moving to development, discussed resource reallocation to address delays and decided unknown unknown printer took a galley of type a to hold daily check-ins for quicker progress. Design phase completed, moving to development, discussed resource reallocation to address delays and decided unknown unknown printer took a galley of type a to hold daily check-ins for quicker progress. Design phase completed, moving to development, discussed resource reallocation to address delays and decided unknown unknown printer took a galley of type a to hold daily check-ins for quicker progress. Design phase completed, moving to development, discussed resource reallocation to address delays and decided unknown unknown printer took a galley of type a to hold daily check-ins for quicker progress.",
-        attachments: ["Annual Report.pdf", "Annual Report.pdf"],
+        id: 12,
+        description: "General updates on tasks and decisions made.",
+        attachments: [
+          { fileName: "Annual Report 1.pdf" },
+          { fileName: "Annual Report 2.pdf" },
+        ],
       },
     ],
   },
