@@ -93,7 +93,7 @@ const ReviewSignature = () => {
           }
         >
           <img
-            src={UserImage}
+             src={`data:image/jpeg;base64,${record.creatorImg}`}
             width={22}
             height={22}
             className="rounded-circle "

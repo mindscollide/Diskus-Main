@@ -18,16 +18,21 @@ import {
 import { useSelector } from "react-redux";
 import { Spin } from "antd";
 import { SignatureandPendingApprovalDateTIme } from "../../../../commen/functions/date_formater";
+import { getAllSignaturesDocumentsforCreatorApi } from "../../../../store/actions/workflow_actions";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const ApprovalSend = () => {
   const { t } = useTranslation();
   const SignatureWorkFlowReducer = useSelector(
     (state) => state.SignatureWorkFlowReducer
   );
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const currentView = JSON.parse(localStorage.getItem("setTableView"));
   const [signatureListVal, setSignatureListVal] = useState(0);
   const [approvalsData, setApprovalsData] = useState([]);
-  const [rowsDataLength, setDataLength] = useState(0);
+  const [rowsDataLength, setDataLength] = useState(1);
   const [totalRecords, setTotalRecords] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
   const [signatoriesList, setSignatoriesList] = useState(false);
@@ -202,19 +207,28 @@ const ApprovalSend = () => {
             }
 
             setDataLength(
-              (prev) => prev + signatureFlowDocumentsForCreator.length
+              (prev) => prev + 1
             );
           } else {
             setApprovalsData(signatureFlowDocumentsForCreator);
             if (totalCount !== undefined) {
               setTotalRecords(totalCount);
             }
-            setDataLength(signatureFlowDocumentsForCreator.length);
+            setDataLength(
+              (prev) => prev + 1
+            );
           }
         }
       } catch (error) {
         console.log("Something Went Wrong", error);
+        setApprovalsData([]);
+        setTotalRecords(0);
+        setDataLength(0);
+        setIsScrolling(false);
       }
+    } else {
+      setIsScrolling(false);
+
     }
   }, [SignatureWorkFlowReducer.getAllSignatureDocumentsforCreator]);
 
@@ -227,9 +241,12 @@ const ApprovalSend = () => {
     />
   );
 
-  const handleScroll = () => {
+  const handleScroll = async () => {
     if (rowsDataLength <= totalRecords) {
       setIsScrolling(true);
+      let Data = { pageNo: Number(rowsDataLength), pageSize: 10 };
+      console.log(Data, "handleScrollhandleScrollhandleScroll")
+      await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
     }
   };
   return (
@@ -247,7 +264,8 @@ const ApprovalSend = () => {
             height={"55vh"}
             endMessage=""
             loader={
-              approvalsData.length <= totalRecords && (
+              approvalsData.length <= totalRecords &&
+              isScrolling && (
                 <>
                   <Row>
                     <Col
