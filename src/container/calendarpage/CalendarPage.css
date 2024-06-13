@@ -577,6 +577,9 @@ body[dir="rtl"] .SceduleMeetingButton .dropdown-menu.show .dropdown-item {
 .SceduleMeetingButton .dropdown-menu.show .dropdown-item:nth-child(2) {
   border-bottom: 1px solid #e1e1e1;
 }
+.SceduleMeetingButton .dropdown-menu.show .dropdown-item:nth-child(3) {
+  border-bottom: 1px solid #e1e1e1;
+}
 
 .SceduleMeetingButton .dropdown-menu.show .dropdown-item:hover {
   background: none !important;
