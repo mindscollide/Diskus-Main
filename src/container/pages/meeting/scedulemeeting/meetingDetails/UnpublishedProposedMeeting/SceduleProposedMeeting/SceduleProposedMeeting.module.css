@@ -91,7 +91,7 @@
 
 .Date-Object-Detail {
   width: 200px;
-  padding: 4px 12px;
+  padding: 4px 11px;
   font-size: 16px !important;
   border: 3px solid #f1f1f1;
   border-radius: 4px !important;
@@ -106,7 +106,7 @@
   width: 200px;
   background: #ffffff !important;
   color: #ffffff !important;
-  padding: 4px 16px;
+  padding: 4px 11px;
   font-size: 17px !important;
   font-weight: 600 !important;
   border: 3px solid #6172d6;
