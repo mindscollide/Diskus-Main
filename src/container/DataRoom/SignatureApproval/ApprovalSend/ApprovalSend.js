@@ -5,6 +5,9 @@ import { useTranslation } from "react-i18next";
 import { TableToDo } from "../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import DeleteIcon from "../../../../assets/images/delete_dataroom.png";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { LoadingOutlined } from "@ant-design/icons";
+
 import SorterIconAscend from "../../../../assets/images/approval_sorter_icon_ascend.svg";
 import SorterIconDescend from "../../../../assets/images/approval_sorter_icon_descend.svg";
 import SignatoriesListModal from "./SignatoriesList/SignatoriesListModal";
@@ -13,6 +16,8 @@ import {
   getIconSource,
 } from "../../SearchFunctionality/option";
 import { useSelector } from "react-redux";
+import { Spin } from "antd";
+import { SignatureandPendingApprovalDateTIme } from "../../../../commen/functions/date_formater";
 
 const ApprovalSend = () => {
   const { t } = useTranslation();
@@ -22,8 +27,11 @@ const ApprovalSend = () => {
   const currentView = JSON.parse(localStorage.getItem("setTableView"));
   const [signatureListVal, setSignatureListVal] = useState(0);
   const [approvalsData, setApprovalsData] = useState([]);
-  console.log(approvalsData, "approvalsDataapprovalsDataapprovalsData");
+  const [rowsDataLength, setDataLength] = useState(0);
+  const [totalRecords, setTotalRecords] = useState(0);
+  const [isScrolling, setIsScrolling] = useState(false);
   const [signatoriesList, setSignatoriesList] = useState(false);
+
   // Columns configuration for the table displaying pending approval data
   const pendingApprovalColumns = [
     {
@@ -89,9 +97,17 @@ const ApprovalSend = () => {
       width: 100,
 
       ellipsis: true,
-      render: (text, record) => (
-        <span className={styles["date_vale"]}>{text}</span>
-      ),
+      render: (text, record) => {
+        if (text === "-") {
+          return <span className={styles["date_vale"]}>{text}</span>;
+        } else {
+          return (
+            <span className={styles["date_vale"]}>
+              {SignatureandPendingApprovalDateTIme(text)}
+            </span>
+          );
+        }
+      },
     },
     {
       // Column for status
@@ -142,7 +158,9 @@ const ApprovalSend = () => {
       width: 50,
       render: (text, record) => {
         // Render status text with appropriate styles
-        return <img src={DeleteIcon} />;
+        if (record.status === "Draft") {
+          return <img src={DeleteIcon} />;
+        }
       },
     },
   ];
@@ -168,42 +186,97 @@ const ApprovalSend = () => {
   useEffect(() => {
     if (SignatureWorkFlowReducer.getAllSignatureDocumentsforCreator !== null) {
       try {
-        let { signatureFlowDocumentsForCreator } =
+        let { signatureFlowDocumentsForCreator, totalCount } =
           SignatureWorkFlowReducer.getAllSignatureDocumentsforCreator;
         if (
           Array.isArray(signatureFlowDocumentsForCreator) &&
           signatureFlowDocumentsForCreator.length > 0
         ) {
-          setApprovalsData(signatureFlowDocumentsForCreator);
+          if (isScrolling) {
+            setApprovalsData([
+              ...signatureFlowDocumentsForCreator,
+              ...approvalsData,
+            ]);
+            if (totalCount !== undefined) {
+              setTotalRecords(totalCount);
+            }
+
+            setDataLength(
+              (prev) => prev + signatureFlowDocumentsForCreator.length
+            );
+          } else {
+            setApprovalsData(signatureFlowDocumentsForCreator);
+            if (totalCount !== undefined) {
+              setTotalRecords(totalCount);
+            }
+            setDataLength(signatureFlowDocumentsForCreator.length);
+          }
         }
       } catch (error) {
         console.log("Something Went Wrong", error);
       }
     }
   }, [SignatureWorkFlowReducer.getAllSignatureDocumentsforCreator]);
-  
+
+  const antIcon = (
+    <LoadingOutlined
+      style={{
+        fontSize: 36,
+      }}
+      spin
+    />
+  );
+
+  const handleScroll = () => {
+    if (rowsDataLength <= totalRecords) {
+      setIsScrolling(true);
+    }
+  };
   return (
     <>
       {" "}
       <Row className="mb-2">
         <Col sm={12} md={12} lg={12} className="mt-3">
-          <TableToDo
-            sortDirections={["descend", "ascend"]}
-            column={pendingApprovalColumns}
-            className={"ApprovalsTable"}
-            // prefClassName="ApprovalSending"
-            rows={approvalsData}
-            // scroll={scroll}
-            pagination={false}
-            scroll={
-              approvalsData.length > 5
-                ? { y: 385, x: "max-content" }
-                : undefined
+          <InfiniteScroll
+            dataLength={approvalsData.length}
+            next={handleScroll}
+            style={{
+              overflowX: "hidden",
+            }}
+            hasMore={approvalsData.length === totalRecords ? false : true}
+            height={"55vh"}
+            endMessage=""
+            loader={
+              approvalsData.length <= totalRecords && (
+                <>
+                  <Row>
+                    <Col
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className="d-flex justify-content-center mt-2"
+                    >
+                      <Spin indicator={antIcon} />
+                    </Col>
+                  </Row>
+                </>
+              )
             }
-            id={(record, index) =>
-              index === approvalsData.length - 1 ? "last-row-class" : ""
-            }
-          />
+            scrollableTarget="scrollableDiv"
+          >
+            <TableToDo
+              sortDirections={["descend", "ascend"]}
+              column={pendingApprovalColumns}
+              className={"ApprovalsTable"}
+              // prefClassName="ApprovalSending"
+              rows={approvalsData}
+              // scroll={scroll}
+              pagination={false}
+              id={(record, index) =>
+                index === approvalsData.length - 1 ? "last-row-class" : ""
+              }
+            />
+          </InfiniteScroll>
         </Col>
       </Row>
       {signatoriesList && (

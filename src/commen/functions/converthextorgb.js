@@ -24,3 +24,20 @@ export const rgbToHex = (r, g, b) => {
   // Combine the hex strings for the final hex color code
   return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 };
+
+// This will return the color of the currently selected user
+export const getActorColorByUserID =(userID, userAnnotationsRef) => {
+  console.log(`Searching for userID: ${userID}`, userAnnotationsRef);
+
+  for (let i = 0; i < userAnnotationsRef.current.length; i++) {
+    if (userAnnotationsRef.current[i].userID === userID) {
+      const actorColorHex = userAnnotationsRef.current[i].actorColor;
+      const actorColorRgb = hexToRgb(actorColorHex);
+      console.log(`Found color for userID ${userID}: ${actorColorHex} -> RGB: ${actorColorRgb.r}, ${actorColorRgb.g}, ${actorColorRgb.b}`);
+      return actorColorRgb;
+    }
+  }
+  
+  console.log(`userID ${userID} not found.`);
+  return null; // Return null if userID is not found
+}

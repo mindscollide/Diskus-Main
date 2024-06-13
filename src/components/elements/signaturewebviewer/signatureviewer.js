@@ -543,6 +543,7 @@ const SignatureViewer = () => {
         };
 
         const handleClickSaveBtn = async () => {
+          // status of 1 for save button
           const doc = documentViewer.getDocument();
           const data = await doc.getFileData({}); // No xfdfString for annotations
           const arr = new Uint8Array(data);
@@ -641,12 +642,54 @@ const SignatureViewer = () => {
               1,
               newData,
               addAnnoatationofFilesAttachment,
-              saveSignatureDocument
+              saveSignatureDocument,
+              1
             )
           );
         };
 
-        const handleClickPublishBtn = () => {
+        const handleClickPublishBtn = async () => {
+          // status of 1 for save button
+          const doc = documentViewer.getDocument();
+          const data = await doc.getFileData({}); // No xfdfString for annotations
+          const arr = new Uint8Array(data);
+          const blob = new Blob([arr], { type: "application/pdf" });
+          let getBase64 = await generateBase64FromBlob(blob)
+            .then(async (base64String) => {
+              return base64String;
+              // Here you can use the base64String as needed
+            })
+            .catch((error) => {
+              return null;
+            });
+
+          // this one sent do save signature document
+          const xfdfString = await annotationManager.exportAnnotations(); // this doc send to add annotationfilesofattachment
+          const parser = new DOMParser();
+          const mainXmlDoc = parser.parseFromString(xfdfString, "text/xml");
+          function existsInMainXML(name, type, mainXmlDoc) {
+            const elements = mainXmlDoc.querySelectorAll(
+              `${type}[name="${name}"]`
+            );
+            return elements.length > 0;
+          }
+
+          let covert = userAnnotationsRef.current.map((user) => {
+            let filteredXml = user.xml.filter((item) => {
+              const ffieldDoc = parser.parseFromString(item.ffield, "text/xml");
+              const widgetDoc = parser.parseFromString(item.widget, "text/xml");
+              const ffieldName = ffieldDoc.documentElement.getAttribute("name");
+              const widgetName = widgetDoc.documentElement.getAttribute("name");
+
+              return (
+                existsInMainXML(ffieldName, "ffield", mainXmlDoc) &&
+                existsInMainXML(widgetName, "widget", mainXmlDoc)
+              );
+            });
+
+            return { ...user, xml: filteredXml };
+          });
+          // for Save workFlow Api
           let saveWorkFlowData = {
             PK_WorkFlow_ID: pdfResponceData.workFlowID,
             WorkFlowTitle: pdfResponceData.title,
@@ -657,19 +700,67 @@ const SignatureViewer = () => {
                 ? ""
                 : pdfResponceData.deadlineDatetime,
             CreatorID: pdfResponceData.creatorID,
-            ListOfActionAbleBundle: signerData.map((sendData, index) => {
-              return {
-                ID: `BundleID_# ${index + 1}`,
-                Title: "",
-                BundleDeadline: "",
-                ListOfUsers: [sendData.userID],
-                Entity: {
-                  EntityID: pdfResponceData.documentID,
-                  EntityTypeID: 1,
-                },
-              };
-            }),
+            ListOfActionAbleBundle: signerDataRef.current.map(
+              (sendData, index) => {
+                return {
+                  ID: `BundleID_# ${index + 1}`,
+                  Title: "",
+                  BundleDeadline: "",
+                  ListOfUsers: [sendData.userID],
+                  Entity: {
+                    EntityID: pdfResponceData.documentID,
+                    EntityTypeID: 1,
+                  },
+                };
+              }
+            ),
           };
+
+          let convertData = [];
+          covert.forEach((data) => {
+            const xmlListStrings = data.xml.map((xmlObj) =>
+              JSON.stringify(xmlObj)
+            );
+            convertData.push({
+              ActorID: data.actorID,
+              xmlList: xmlListStrings,
+            });
+          });
+
+          console.log("saveWorkFlowData", convertData);
+          // save signature document api
+          let saveSignatureDocument = {
+            FileID: Number(docWorkflowID),
+            base64File: getBase64,
+          };
+          // add annotation  of files attachment api
+          let addAnnoatationofFilesAttachment = {
+            FileID: Number(docWorkflowID),
+            AnnotationString: xfdfString,
+          };
+          // send document api data
+          let sendDocumentData = {
+            PK_WorkFlow_ID: pdfResponceData.workFlowID,
+            FinalDocumentName: pdfResponceData.title,
+            Message: "",
+            ListOfViewers: [],
+          };
+
+          let newData = { ActorsFieldValuesList: convertData };
+          dispatch(
+            saveWorkflowApi(
+              saveWorkFlowData,
+              navigate,
+              t,
+              setOpenAddParticipentModal,
+              1,
+              newData,
+              addAnnoatationofFilesAttachment,
+              saveSignatureDocument,
+              2,
+              sendDocumentData
+            )
+          );
         };
 
         // Create a render function for the custom panel

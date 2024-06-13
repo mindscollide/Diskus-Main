@@ -20,6 +20,7 @@ import {
   getAllPendingApprovalsStatsApi,
 } from "../../../../store/actions/workflow_actions";
 import { useSelector } from "react-redux";
+import { SignatureandPendingApprovalDateTIme } from "../../../../commen/functions/date_formater";
 const ReviewSignature = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -34,7 +35,7 @@ const ReviewSignature = () => {
     signed: 0,
     signedPercentage: 0,
   });
-
+  const [reviewSignature, setReviewSignature] = useState([]);
   //Getting current Language
   let currentLanguage = localStorage.getItem("i18nextLng");
 
@@ -66,24 +67,13 @@ const ReviewSignature = () => {
   const pendingApprovalColumns = [
     {
       title: t("Document-name"),
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "fileName",
+      key: "fileName",
       className: "nameParticipant",
       width: "300px",
       ellipsis: true,
       render: (text, record) => (
-        <p
-          //   onClick={() => {
-          //     dispatch(reviewMinutesPage(true));
-          //     dispatch(pendingApprovalPage(false));
-          //   }}
-          //   className={
-          //     record.status === "Expired"
-          //       ? "cursor-pointer opacity-25 m-0 text-truncate"
-          //       : "cursor-pointer m-0 text-truncate"
-          //   }
-          className="cursor-pointer m-0 text-truncate d-flex gap-2 align-items-center"
-        >
+        <p className="cursor-pointer m-0 text-truncate d-flex gap-2 align-items-center">
           <img src={getIconSource(getFileExtension(text))} />
           <span>{text}</span>
         </p>
@@ -91,8 +81,8 @@ const ReviewSignature = () => {
     },
     {
       title: t("Requested-by"),
-      dataIndex: "RequestedUser",
-      key: "RequestedUser",
+      dataIndex: "creatorName",
+      key: "creatorName",
       className: "emailParticipant",
       width: "180px",
       ellipsis: true,
@@ -114,12 +104,14 @@ const ReviewSignature = () => {
     },
     {
       title: t("Date-and-time"),
-      dataIndex: "dateTime",
-      key: "dateTime",
+      dataIndex: "createdOn",
+      key: "createdOn",
       className: "leaveTimeParticipant",
       width: "180px",
       ellipsis: true,
-      render: (text, record) => <p className={"m-0"}>{text}</p>,
+      render: (text, record) => (
+        <p className={"m-0"}>{SignatureandPendingApprovalDateTIme(text)}</p>
+      ),
       // render: (text, record) => convertAndFormatDateTimeGMT(text),
     },
     {
@@ -211,11 +203,22 @@ const ReviewSignature = () => {
     if (getAllPendingForApprovalStats !== null) {
       try {
         let { data } = getAllPendingForApprovalStats;
-   
+
         setApprovalStats(data);
       } catch {}
     }
   }, [getAllPendingForApprovalStats]);
+
+  useEffect(() => {
+    if (listOfPendingForApprovalSignatures !== null) {
+      try {
+        let { pendingApprovals } = listOfPendingForApprovalSignatures;
+        if (Array.isArray(pendingApprovals) && pendingApprovals.length > 0) {
+          setReviewSignature(pendingApprovals);
+        }
+      } catch (error) {}
+    }
+  }, [listOfPendingForApprovalSignatures]);
 
   const formatValue = (value) => (value < 9 ? `0${value}` : value);
   return (
@@ -280,7 +283,7 @@ const ReviewSignature = () => {
             sortDirections={["descend", "ascend"]}
             column={pendingApprovalColumns}
             className={"PendingApprovalsTable"}
-            rows={rowsPendingApproval}
+            rows={reviewSignature}
             // scroll={scroll}
             pagination={false}
             scroll={rowsPendingApproval.length > 10 ? { y: 385 } : undefined}
