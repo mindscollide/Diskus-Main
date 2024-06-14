@@ -2018,5 +2018,7 @@
   "You-are-offline": "You are offline",
   "Changes-made-now-will-not-be-saved": "Changes made now will not be saved",
   "USER_DELETED": "Your account status in [organizationName] has been changed",
-  "Add-Signaturies": "Add Signatories"
+  "Add-Signaturies": "Add Signatories",
+  "Are-you-sure-you-want-to-delete-the-file": "Are you sure you want to delete the file",
+  "Are-you-sure-you-want-to-delete-the-folder": "Are you sure you want to delete the folder"
 }

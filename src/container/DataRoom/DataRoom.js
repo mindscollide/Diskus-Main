@@ -122,6 +122,8 @@ import {
 } from "../../store/actions/workflow_actions";
 import ApprovalSend from "./SignatureApproval/ApprovalSend/ApprovalSend";
 import { checkFeatureIDAvailability } from "../../commen/functions/utils";
+import ModalDeleteFile from "./ModalDeleteFile/ModalDeleteFile";
+import ModalDeleteFolder from "./ModalDeleteFolder/ModalDeleteFolder";
 
 const DataRoom = () => {
   const currentUrl = window.location.href;
@@ -198,6 +200,13 @@ const DataRoom = () => {
   // we are setting search tab for all view in different tab
   const [searchTabOpen, setSearchTabOpen] = useState(false);
   // this is canseling modal of uploadin and stop uploading
+
+  const [isFileDelete, setIsFileDelete] = useState(false);
+  const [isFolderDelete, setIsFolderDelete] = useState(false);
+
+  const [isFileDeleteId, setIsFileDeleteId] = useState(0);
+  const [isFolderDeleteId, setIsFolderDeleteId] = useState(0);
+
   const [canselingDetaUplodingForFOlder, setCanselingDetaUplodingForFOlder] =
     useState(false);
   const antIcon = (
@@ -482,69 +491,6 @@ const DataRoom = () => {
     }
   }, [isOnline]);
 
-  useEffect(() => {
-    if (SignatureWorkFlowReducer.getAllSignatureDocumentsforCreator === null) {
-    }
-    let signatureFlowDocumentsForCreator = [
-      {
-        workFlowID: 25,
-        workFlowStatusID: 4,
-        fileID: 7495,
-        fileName: "calendar qs.pdf",
-        numberOfSignatories: 0,
-        sentOn: "-",
-        status: "Draft",
-      },
-      {
-        workFlowID: 24,
-        workFlowStatusID: 1,
-        fileID: 7494,
-        fileName: "calendar qs.pdf",
-        numberOfSignatories: 2,
-        sentOn: "-",
-        status: "Pending Signature",
-      },
-      {
-        workFlowID: 23,
-        workFlowStatusID: 4,
-        fileID: 7492,
-        fileName: "CALENDAR API OBSERVATIONS.pdf",
-        numberOfSignatories: 0,
-        sentOn: "-",
-        status: "Draft",
-      },
-      {
-        workFlowID: 22,
-        workFlowStatusID: 4,
-        fileID: 7490,
-        fileName: "AXIS NOTIFICATION MECHANISM CHANGES.pdf",
-        numberOfSignatories: 0,
-        sentOn: "-",
-        status: "Draft",
-      },
-      {
-        workFlowID: 21,
-        workFlowStatusID: 4,
-        fileID: 7489,
-        fileName: "AXIS NOTIFICATION MECHANISM CHANGES.pdf",
-        numberOfSignatories: 0,
-        sentOn: "-",
-        status: "Draft",
-      },
-      {
-        workFlowID: 20,
-        workFlowStatusID: 4,
-        fileID: 7487,
-        fileName: "AXIS NOTIFICATION MECHANISM CHANGES.pdf",
-        numberOfSignatories: 0,
-        sentOn: "-",
-        status: "Draft",
-      },
-    ];
-
-    // SignatureWorkFlowReducer
-  }, [SignatureWorkFlowReducer.getAllSignatureDocumentsforCreator]);
-
   const ClosingNotificationRenameFolder = () => {
     setShowrenamenotification(false);
   };
@@ -739,9 +685,14 @@ const DataRoom = () => {
     } else if (data.value === 6) {
       // Delete File and Folder
       if (record.isFolder) {
-        dispatch(deleteFolder(navigate, record.id, t));
+        setIsFolderDeleteId(record.id);
+        setIsFolderDelete(true);
+        // dispatch(deleteFolder(navigate, record.id, t));
       } else {
-        dispatch(deleteFileDataroom(navigate, record.id, t));
+        setIsFileDeleteId(record.id);
+        setIsFileDelete(true);
+
+        // dispatch(deleteFileDataroom(navigate, record.id, t));
       }
       // Delete File
     } else if (data.value === 7) {
@@ -880,7 +831,7 @@ const DataRoom = () => {
             Number(currentView),
             t,
             1,
-            Number(2),
+            Number(5),
             true
           )
         );
@@ -891,7 +842,7 @@ const DataRoom = () => {
             Number(currentView),
             t,
             1,
-            Number(2),
+            Number(5),
             false
           )
         );
@@ -2189,11 +2140,15 @@ const DataRoom = () => {
                           className={styles["delete__Icon_img_hover"]}
                           onClick={() => {
                             if (record.isFolder) {
-                              dispatch(deleteFolder(navigate, record.id, t));
+                              setIsFolderDeleteId(record.id);
+                              setIsFolderDelete(true);
+
+                              // dispatch(deleteFolder(navigate, record.id, t));
                             } else {
-                              dispatch(
-                                deleteFileDataroom(navigate, record.id, t)
-                              );
+                              setIsFileDeleteId(record.id);
+                              setIsFileDelete(true);
+
+                              // dispatch(deleteFileDataroom(navigate, record.id, t));
                             }
                           }}
                         />
@@ -2205,12 +2160,22 @@ const DataRoom = () => {
                           className={styles["delete__Icon_img"]}
                           onClick={() => {
                             if (record.isFolder) {
-                              dispatch(deleteFolder(navigate, record.id, t));
+                              setIsFolderDeleteId(record.id);
+                              setIsFolderDelete(true);
+                              // dispatch(deleteFolder(navigate, record.id, t));
                             } else {
-                              dispatch(
-                                deleteFileDataroom(navigate, record.id, t)
-                              );
+                              setIsFileDeleteId(record.id);
+                              setIsFileDelete(true);
+
+                              // dispatch(deleteFileDataroom(navigate, record.id, t));
                             }
+                            // if (record.isFolder) {
+                            //   dispatch(deleteFolder(navigate, record.id, t));
+                            // } else {
+                            //   dispatch(
+                            //     deleteFileDataroom(navigate, record.id, t)
+                            //   );
+                            // }
                           }}
                         />
                       </span>
@@ -3307,8 +3272,20 @@ const DataRoom = () => {
     DataRoomFileAndFoldersDetailsResponseMessage,
   ]);
 
-  //Scroller For table
-  const scrollConfig = { x: true };
+  const handleClickDeleteFolder = () => {
+    dispatch(deleteFolder(navigate, Number(isFolderDeleteId), t,setIsFolderDelete));
+  };
+  const handleCancelDeleteFolder = () => {
+    setIsFolderDeleteId(0);
+    setIsFolderDelete(false);
+  };
+  const handleCancelDeleteFile = () => {
+    setIsFileDeleteId(0);
+    setIsFileDelete(false);
+  };
+  const handleClickDeleteFile = () => {
+    dispatch(deleteFileDataroom(navigate, Number(isFileDeleteId), t,setIsFileDelete));
+  };
   return (
     <>
       <div className={styles["DataRoom_container"]}>
@@ -4083,6 +4060,22 @@ const DataRoom = () => {
       {DataRoomReducer.fileDetials && (
         <FileDetailsModal
           fileDataforAnalyticsCount={fileDataforAnalyticsCount}
+        />
+      )}
+      {isFileDelete && (
+        <ModalDeleteFile
+          fileDelete={isFileDelete}
+          setFileDeleted={setIsFileDelete}
+          handleClickDeleteFileFunc={handleClickDeleteFile}
+          handleCancelFileDelete={handleCancelDeleteFile}
+        />
+      )}
+      {isFolderDelete && (
+        <ModalDeleteFolder
+          isDeleteFolder={isFolderDelete}
+          setIsDeleteFolder={setIsFolderDelete}
+          handleClickDeleteFolderFunc={handleClickDeleteFolder}
+          handleCancelFoldereDelete={handleCancelDeleteFolder}
         />
       )}
       <Notification open={open.open} message={open.message} setOpen={setOpen} />
