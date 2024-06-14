@@ -3353,7 +3353,7 @@ const getInvoiceHTML_Fail = (message) => {
   };
 };
 
-const getInvocieHTMLApi = (navigate, t, Data) => {
+const getInvocieHTMLApi = (navigate, t, Data, setInvoiceModal) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
@@ -3372,16 +3372,21 @@ const getInvocieHTMLApi = (navigate, t, Data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getInvocieHTMLApi(navigate, t, Data));
+          dispatch(getInvocieHTMLApi(navigate, t, Data, setInvoiceModal));
         } else if (response.data.responseCode === 200) {
+
           if (response.data.responseResult.isExecuted === true) {
+        
+
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_GetInvoiceHtmlByOrganizationID_01"
+                  "Admin_AdminServiceManager_GetInvoiceHtmlByOrganizationID_01".toLowerCase()
                 )
             ) {
+
+              setInvoiceModal(true);
               dispatch(
                 getInvoiceHTML_Success(
                   response.data.responseResult,
@@ -3392,7 +3397,7 @@ const getInvocieHTMLApi = (navigate, t, Data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_GetInvoiceHtmlByOrganizationID_02"
+                  "Admin_AdminServiceManager_GetInvoiceHtmlByOrganizationID_02".toLowerCase()
                 )
             ) {
               dispatch(getInvoiceHTML_Fail(t("Not-created")));
@@ -3400,7 +3405,7 @@ const getInvocieHTMLApi = (navigate, t, Data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_GetInvoiceHtmlByOrganizationID_03"
+                  "Admin_AdminServiceManager_GetInvoiceHtmlByOrganizationID_03".toLowerCase()
                 )
             ) {
               dispatch(getInvoiceHTML_Fail(t("Something-went-wrong")));

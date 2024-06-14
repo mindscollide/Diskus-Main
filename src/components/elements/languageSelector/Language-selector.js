@@ -202,7 +202,7 @@ const LanguageSelector = () => {
         {currentLanguage === "en"
           ? t("EN")
           : currentLanguage === "ar"
-          ? t("AR")
+          ? t("Arabic")
           : t("EN")}
         {languageDropdown ? (
           <img
