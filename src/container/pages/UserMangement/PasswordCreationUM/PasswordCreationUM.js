@@ -169,45 +169,46 @@ const PasswordCreationUM = () => {
   };
 
   //RemeberPassword Checker
-  const rememberPasswordCheck = () => {
-    SetRememberPassword(!remeberPassword);
-    if (!remeberPassword === true) {
-      localStorage.setItem("remeberPassword", true);
-      let newPassword = encryptPassword(passwordDetails.password);
-      localStorage.setItem("rememberPasswordValue", newPassword);
-    } else {
-      localStorage.setItem("remeberPassword", false);
-      localStorage.setItem("rememberPasswordValue", "");
-    }
-  };
+  // const rememberPasswordCheck = () => {
+  //   SetRememberPassword(!remeberPassword);
+  //   if (!remeberPassword === true) {
+  //     localStorage.setItem("remeberPassword", true);
+  //     let newPassword = encryptPassword(passwordDetails.password);
+  //     localStorage.setItem("rememberPasswordValue", newPassword);
+  //   } else {
+  //     localStorage.setItem("remeberPassword", false);
+  //     localStorage.setItem("rememberPasswordValue", "");
+  //   }
+  // };
 
   //Remember Password
-  useEffect(() => {
-    let RememberPasswordLocal = JSON.parse(
-      localStorage.getItem("remeberPassword")
-    );
-    console.log("createpasswordorganization", RememberPasswordLocal);
-    console.log("createpasswordorganization", RememberPasswordLocal === true);
-    if (RememberPasswordLocal === true) {
-      let RememberPasswordLocalValue = localStorage.getItem(
-        "rememberPasswordValue"
-      );
-      console.log("createpasswordorganization", RememberPasswordLocalValue);
+  // commented instructed by sir Sumair
+  // useEffect(() => {
+  //   let RememberPasswordLocal = JSON.parse(
+  //     localStorage.getItem("remeberPassword")
+  //   );
+  //   console.log("createpasswordorganization", RememberPasswordLocal);
+  //   console.log("createpasswordorganization", RememberPasswordLocal === true);
+  //   if (RememberPasswordLocal === true) {
+  //     let RememberPasswordLocalValue = localStorage.getItem(
+  //       "rememberPasswordValue"
+  //     );
+  //     console.log("createpasswordorganization", RememberPasswordLocalValue);
 
-      SetRememberPassword(RememberPasswordLocal);
-      let newPasswordDecript = decryptPassword(RememberPasswordLocalValue);
-      setPasswordDetails({
-        ...passwordDetails,
-        // ["ConfirmPassword "]: newPasswordDecript,
-        ["Password"]: newPasswordDecript,
-      });
-      // setPassword(newPasswordDecript);
-    } else {
-      localStorage.setItem("remeberPassword", false);
-      localStorage.setItem("rememberPasswordValue", "");
-    }
-    passwordRef.current.focus();
-  }, []);
+  //     SetRememberPassword(RememberPasswordLocal);
+  //     let newPasswordDecript = decryptPassword(RememberPasswordLocalValue);
+  //     setPasswordDetails({
+  //       ...passwordDetails,
+  //       // ["ConfirmPassword "]: newPasswordDecript,
+  //       ["Password"]: newPasswordDecript,
+  //     });
+  //     // setPassword(newPasswordDecript);
+  //   } else {
+  //     localStorage.setItem("remeberPassword", false);
+  //     localStorage.setItem("rememberPasswordValue", "");
+  //   }
+  //   passwordRef.current.focus();
+  // }, []);
 
   const goBackButton = () => {
     localStorage.removeItem("SignupFlowPageRoute");
@@ -324,7 +325,7 @@ const PasswordCreationUM = () => {
                     </Col>
                   </Row>
 
-                  <Row className="mb-3">
+                  {/* <Row className="mb-3">
                     <Col sm={12} md={12} lg={12} className="d-flex gap-2">
                       <Checkbox
                         classNameDiv=""
@@ -337,7 +338,7 @@ const PasswordCreationUM = () => {
                         {t("Remember-password")}
                       </span>
                     </Col>
-                  </Row>
+                  </Row> */}
                   <Row className="mb-4">
                     <Col
                       sm={12}

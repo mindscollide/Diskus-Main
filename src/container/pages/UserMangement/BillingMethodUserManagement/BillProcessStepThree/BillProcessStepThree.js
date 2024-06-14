@@ -32,6 +32,7 @@ const BillProcessStepThree = () => {
   //States
   const [getAllPakagesData, setGetAllPakagesData] = useState([]);
   const [expiryDate, setExpiryDate] = useState(null);
+  const [tenureID, setTenureID] = useState(0);
 
   //UseEffect For Get All Organziation Selected Pakages
 
@@ -66,19 +67,24 @@ const BillProcessStepThree = () => {
         UserMangementReducer.getAllSelectedPakagesData !== null &&
         UserMangementReducer.getAllSelectedPakagesData !== undefined
       ) {
-    
         if (
           UserMangementReducer.getAllSelectedPakagesData
-            .organizationSubscription.organizationSelectedPackages
-            !== null &&
+            .organizationSubscription.organizationSelectedPackages !== null &&
           UserMangementReducer.getAllSelectedPakagesData
-            .organizationSubscription.organizationSelectedPackages
-            !==
+            .organizationSubscription.organizationSelectedPackages !==
             undefined &&
           UserMangementReducer.getAllSelectedPakagesData
-            .organizationSubscription.organizationSelectedPackages
-            .length > 0
+            .organizationSubscription.organizationSelectedPackages.length > 0
         ) {
+          console.log(
+            UserMangementReducer.getAllSelectedPakagesData
+              .organizationSubscription.fK_TenureOfSubscriptionID,
+            "setGetAllPakagesData"
+          );
+          setTenureID(
+            UserMangementReducer.getAllSelectedPakagesData
+              .organizationSubscription.fK_TenureOfSubscriptionID
+          );
           setGetAllPakagesData(
             UserMangementReducer.getAllSelectedPakagesData
               .organizationSubscription.organizationSelectedPackages
@@ -161,7 +167,10 @@ const BillProcessStepThree = () => {
         );
       },
     },
-    {
+  ];
+
+  if (tenureID === 1) {
+    ColumnsPakageSelection.push({
       title: (
         <span className="pakageselectionSpanUsermanagement">
           {t("Yearly-charges-in")}
@@ -190,9 +199,68 @@ const BillProcessStepThree = () => {
           );
         }
       },
-    },
-  ];
-
+    });
+  } else if (tenureID === 2) {
+    ColumnsPakageSelection.push({
+      title: (
+        <span className="pakageselectionSpanUsermanagement">
+          {t("Monthly-charges-in")}
+        </span>
+      ),
+      dataIndex: "Monthlycharges",
+      key: "Monthlycharges",
+      align: "center",
+      ellipses: true,
+      width: 100,
+      render: (text, record) => {
+        if (record.name === "Total") {
+          // For the total row, directly use the calculated value
+          return (
+            <span className={styles["ChargesPerLicesense"]}>
+              {record.Monthlycharges.toLocaleString()}
+            </span>
+          );
+        } else {
+          // For regular rows, calculate the yearly charges
+          const MonthlyCharge = record.price * record.headCount || 0;
+          return (
+            <span className={styles["ChargesPerLicesense"]}>
+              {MonthlyCharge.toLocaleString()}
+            </span>
+          );
+        }
+      },
+    });
+  } else if (tenureID === 3) {
+    ColumnsPakageSelection.push({
+      title: (
+        <span className="pakageselectionSpanUsermanagement">
+          {t("Quaterly-charges-in")}
+        </span>
+      ),
+      dataIndex: "Quaterlycharges",
+      key: "Quaterlycharges",
+      align: "center",
+      ellipses: true,
+      width: 100,
+      render: (text, record) => {
+        if (record.name === "Total") {
+          return (
+            <span className={styles["ChargesPerLicesense"]}>
+              {record.Quaterlycharges.toLocaleString()}
+            </span>
+          );
+        } else {
+          const QuaterlyCharge = (record.price * record.headCount || 0) * 3;
+          return (
+            <span className={styles["ChargesPerLicesense"]}>
+              {QuaterlyCharge.toLocaleString()}
+            </span>
+          );
+        }
+      },
+    });
+  }
   const calculateTotals = (data) => {
     try {
       const totalLicenses = data.reduce(
@@ -204,11 +272,23 @@ const BillProcessStepThree = () => {
         (acc, cur) => acc + (Number(cur.price * cur.headCount) * 12 || 0),
         0
       );
+
+      const totalQuaterlyCharges = data.reduce(
+        (acc, cur) => acc + (Number(cur.price * cur.headCount) * 3 || 0),
+        0
+      );
+
+      const totalMontlyCharges = data.reduce(
+        (acc, cur) => acc + (Number(cur.price * cur.headCount) * 3 || 0),
+        0
+      );
       // Return an object with the totals that can be used as a row in your table.
       return {
         name: "Total",
         headCount: totalLicenses,
-        Yearlycharges: totalYearlyCharges, // Format to string with thousand separators.
+        Yearlycharges: totalYearlyCharges,
+        Quaterlycharges: totalQuaterlyCharges,
+        Monthlycharges: totalMontlyCharges,
       };
     } catch (error) {
       console.log(error, "errorerrorerror");
