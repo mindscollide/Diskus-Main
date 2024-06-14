@@ -241,7 +241,7 @@ const CreateToDoList = (navigate, object, t, setCreateTaskID, value) => {
                 )
             ) {
               await dispatch(ShowNotification(""));
-              await dispatch(SetLoaderFalse());
+              // await dispatch(SetLoaderFalse());
 
               setCreateTaskID(Number(response.data.responseResult.tid));
               console.log(object, "objectobjectobjectobject");
