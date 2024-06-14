@@ -32,7 +32,8 @@ const ApprovalSend = () => {
   const currentView = JSON.parse(localStorage.getItem("setTableView"));
   const [signatureListVal, setSignatureListVal] = useState(0);
   const [approvalsData, setApprovalsData] = useState([]);
-  const [rowsDataLength, setDataLength] = useState(1);
+  const [rowsDataLength, setDataLength] = useState(0);
+  const [pageNo, setPageNo] = useState(0);
   const [totalRecords, setTotalRecords] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
   const [signatoriesList, setSignatoriesList] = useState(false);
@@ -188,6 +189,11 @@ const ApprovalSend = () => {
     }
   };
 
+  console.log(
+    { isScrolling, approvalsData, pageNo, totalRecords, rowsDataLength },
+    "CheckingScrolling"
+  );
+
   useEffect(() => {
     if (SignatureWorkFlowReducer.getAllSignatureDocumentsforCreator !== null) {
       try {
@@ -205,17 +211,18 @@ const ApprovalSend = () => {
             if (totalCount !== undefined) {
               setTotalRecords(totalCount);
             }
-
+            setPageNo((prev) => prev + 1);
             setDataLength(
-              (prev) => prev + 1
+              (prev) => prev + signatureFlowDocumentsForCreator.length
             );
           } else {
             setApprovalsData(signatureFlowDocumentsForCreator);
             if (totalCount !== undefined) {
               setTotalRecords(totalCount);
             }
+            setPageNo(2);
             setDataLength(
-              (prev) => prev + 1
+              (prev) => prev + signatureFlowDocumentsForCreator.length
             );
           }
         }
@@ -223,12 +230,13 @@ const ApprovalSend = () => {
         console.log("Something Went Wrong", error);
         setApprovalsData([]);
         setTotalRecords(0);
+        setPageNo(1);
+
         setDataLength(0);
         setIsScrolling(false);
       }
     } else {
       setIsScrolling(false);
-
     }
   }, [SignatureWorkFlowReducer.getAllSignatureDocumentsforCreator]);
 
@@ -244,9 +252,9 @@ const ApprovalSend = () => {
   const handleScroll = async () => {
     if (rowsDataLength <= totalRecords) {
       setIsScrolling(true);
-      let Data = { pageNo: Number(rowsDataLength), pageSize: 10 };
-      console.log(Data, "handleScrollhandleScrollhandleScroll")
-      await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
+      let Data = { pageNo: Number(pageNo), pageSize: 10 };
+      console.log(Data, "handleScrollhandleScrollhandleScroll");
+      await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data, ));
     }
   };
   return (
