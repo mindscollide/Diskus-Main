@@ -1829,6 +1829,8 @@
   "Charges-per-license-US$": "Charges per license US$",
   "Number-of-licenses": "Number of licenses",
   "Yearly-charges-in": "Yearly Charges in US$",
+  "Monthly-charges-in": "Monthly Charges in US$",
+  "Quaterly-charges-in": "Quaterly Charges in US$",
   "Your-subscription-will-expire-on": "Your subscription will expire on",
   "Change-pakage-details": "Change pakage details",
   "Card-expiration-date": "Card expiration date",
@@ -2010,5 +2012,8 @@
   "You-are-offline": "You are offline",
   "Changes-made-now-will-not-be-saved": "Changes made now will not be saved",
   "USER_DELETED": "Your account status in [organizationName] has been changed",
-  "Add-Signaturies": "Add Signatories"
+  "Add-Signaturies": "Add Signatories",
+  "Address": "Address",
+  "Organization-is-inactive": "Organization is inactive",
+  "Users-can-be-created-in-trial-version": "users can be created in trial version"
 }

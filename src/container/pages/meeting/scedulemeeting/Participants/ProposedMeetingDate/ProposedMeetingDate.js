@@ -494,6 +494,17 @@ const ProposedMeetingDate = ({
         proposedDateID: data.proposedDateID,
       });
     });
+
+    let sortedDates = newArr.sort((a, b) => {
+      if (a.ProposedDate !== b.ProposedDate) {
+        return a.ProposedDate.localeCompare(b.ProposedDate);
+      } else if (a.StartTime !== b.StartTime) {
+        return a.StartTime.localeCompare(b.StartTime);
+      } else {
+        return a.EndTime.localeCompare(b.EndTime);
+      }
+    });
+    console.log(sortedDates, "newDatenewDatenewDatenewDate");
     if (sendResponseVal !== "") {
       let Data = {
         MeetingID: currentMeeting,

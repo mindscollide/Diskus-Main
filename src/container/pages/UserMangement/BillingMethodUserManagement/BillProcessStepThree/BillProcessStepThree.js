@@ -11,6 +11,10 @@ import {
 } from "../../../../../store/actions/UserManagementActions";
 import { useNavigate } from "react-router-dom";
 import { convertUTCDateToLocalDate } from "../../../../../commen/functions/date_formater";
+import {
+  calculateTotals,
+  calculateTotalsBillingStepper,
+} from "../../../../../commen/functions/TableDataCalculation";
 const BillProcessStepThree = () => {
   const { t } = useTranslation();
 
@@ -32,6 +36,7 @@ const BillProcessStepThree = () => {
   //States
   const [getAllPakagesData, setGetAllPakagesData] = useState([]);
   const [expiryDate, setExpiryDate] = useState(null);
+  const [tenureID, setTenureID] = useState(0);
 
   //UseEffect For Get All Organziation Selected Pakages
 
@@ -75,6 +80,15 @@ const BillProcessStepThree = () => {
           UserMangementReducer.getAllSelectedPakagesData
             .organizationSubscription.organizationSelectedPackages.length > 0
         ) {
+          console.log(
+            UserMangementReducer.getAllSelectedPakagesData
+              .organizationSubscription.fK_TenureOfSubscriptionID,
+            "setGetAllPakagesData"
+          );
+          setTenureID(
+            UserMangementReducer.getAllSelectedPakagesData
+              .organizationSubscription.fK_TenureOfSubscriptionID
+          );
           setGetAllPakagesData(
             UserMangementReducer.getAllSelectedPakagesData
               .organizationSubscription.organizationSelectedPackages
@@ -108,11 +122,17 @@ const BillProcessStepThree = () => {
       ellipses: true,
       align: "center",
       render: (text, record) => {
-        return (
-          <>
-            <span className={styles["Tableheading"]}>{record.name}</span>
-          </>
-        );
+        const { name } = calculateTotalsBillingStepper(getAllPakagesData);
+
+        if (record.isTotalRow) {
+          return <span className={styles["ChargesPerLicesense"]}>{name}</span>;
+        } else {
+          return (
+            <>
+              <span className={styles["Tableheading"]}>{record.name}</span>;
+            </>
+          );
+        }
       },
     },
     {
@@ -157,7 +177,11 @@ const BillProcessStepThree = () => {
         );
       },
     },
-    {
+  ];
+
+  //Columns Rendering on the tenureID
+  if (tenureID === 1) {
+    ColumnsPakageSelection.push({
       title: (
         <span className="pakageselectionSpanUsermanagement">
           {t("Yearly-charges-in")}
@@ -169,11 +193,13 @@ const BillProcessStepThree = () => {
       ellipses: true,
       width: 100,
       render: (text, record) => {
-        if (record.name === "Total") {
+        const { Yearlycharges } =
+          calculateTotalsBillingStepper(getAllPakagesData);
+        if (record.isTotalRow) {
           // For the total row, directly use the calculated value
           return (
             <span className={styles["ChargesPerLicesense"]}>
-              {record.Yearlycharges.toLocaleString()}
+              {Yearlycharges}
             </span>
           );
         } else {
@@ -186,32 +212,75 @@ const BillProcessStepThree = () => {
           );
         }
       },
-    },
-  ];
+    });
+  } else if (tenureID === 2) {
+    ColumnsPakageSelection.push({
+      title: (
+        <span className="pakageselectionSpanUsermanagement">
+          {t("Monthly-charges-in")}
+        </span>
+      ),
+      dataIndex: "Monthlycharges",
+      key: "Monthlycharges",
+      align: "center",
+      ellipses: true,
+      width: 100,
+      render: (text, record) => {
+        const { Monthlycharges } =
+          calculateTotalsBillingStepper(getAllPakagesData);
+        if (record.isTotalRow) {
+          return (
+            <span className={styles["ChargesPerLicesense"]}>
+              {Monthlycharges}
+            </span>
+          );
+        } else {
+          // For regular rows, calculate the yearly charges
+          const MonthlyCharge = record.price * record.headCount || 0;
+          return (
+            <span className={styles["ChargesPerLicesense"]}>
+              {MonthlyCharge.toLocaleString()}
+            </span>
+          );
+        }
+      },
+    });
+  } else if (tenureID === 3) {
+    ColumnsPakageSelection.push({
+      title: (
+        <span className="pakageselectionSpanUsermanagement">
+          {t("Quaterly-charges-in")}
+        </span>
+      ),
+      dataIndex: "Quaterlycharges",
+      key: "Quaterlycharges",
+      align: "center",
+      ellipses: true,
+      width: 100,
+      render: (text, record) => {
+        const { Quaterlycharges } =
+          calculateTotalsBillingStepper(getAllPakagesData);
+        if (record.isTotalRow) {
+          return (
+            <span className={styles["ChargesPerLicesense"]}>
+              {Quaterlycharges}
+            </span>
+          );
+        } else {
+          const QuaterlyCharge = (record.price * record.headCount || 0) * 3;
+          return (
+            <span className={styles["ChargesPerLicesense"]}>
+              {QuaterlyCharge.toLocaleString()}
+            </span>
+          );
+        }
+      },
+    });
+  }
 
-  const calculateTotals = (data) => {
-    try {
-      const totalLicenses = data.reduce(
-        (acc, cur) => acc + (Number(cur.headCount) || 0),
-        0
-      );
-
-      const totalYearlyCharges = data.reduce(
-        (acc, cur) => acc + (Number(cur.price * cur.headCount) * 12 || 0),
-        0
-      );
-      // Return an object with the totals that can be used as a row in your table.
-      return {
-        name: "Total",
-        headCount: totalLicenses,
-        Yearlycharges: totalYearlyCharges, // Format to string with thousand separators.
-      };
-    } catch (error) {
-      console.log(error, "errorerrorerror");
-    }
+  const showTotalValues = {
+    isTotalRow: true,
   };
-
-  const totalRow = calculateTotals(getAllPakagesData);
 
   const handleChangePackageSelected = () => {
     localStorage.setItem("changePacakgeFlag", true);
@@ -235,7 +304,7 @@ const BillProcessStepThree = () => {
                 <TableToDo
                   column={ColumnsPakageSelection}
                   className={"Billing_TablePakageSelection"}
-                  rows={[...getAllPakagesData, totalRow]}
+                  rows={[...getAllPakagesData, showTotalValues]}
                   pagination={false}
                   id="PakageDetails"
                   scroll={{ x: "max-content" }}
