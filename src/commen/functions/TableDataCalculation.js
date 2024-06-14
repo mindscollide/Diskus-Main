@@ -12,21 +12,15 @@ export const calculateTotals = (data) => {
     return total + monthlyCharge;
   }, 0);
 
-  console.log(totalMonthlyCharges, "totalMonthlyCharges");
-
   const totalQuarterlyCharges = data.reduce((total, row) => {
     const quarterlyCharge = row.price * (Number(row.licenseCount) || 0) * 3; // Multiply by 3 for quarterly
     return total + quarterlyCharge;
   }, 0);
 
-  console.log(totalQuarterlyCharges, "totalMonthlyCharges");
-
   const totalYearlyCharges = data.reduce((total, row) => {
     const yearlyCharge = row.price * (Number(row.licenseCount) || 0) * 12; // Multiply by 12 for yearly
     return total + yearlyCharge;
   }, 0);
-
-  console.log(totalYearlyCharges, "totalMonthlyCharges");
 
   // Return an object with the totals that can be used as a row in your table.
   return {
