@@ -659,7 +659,7 @@ const PakageDetailsUMUpgrade = () => {
             className={"Billing_TablePakageSelection"}
             rows={[...tableData, totalRow, defaultRowWithButtons]}
             pagination={false}
-            id="saif"
+            id="PakageDetailsTable"
             rowHoverBg="none"
           />
         </Col>

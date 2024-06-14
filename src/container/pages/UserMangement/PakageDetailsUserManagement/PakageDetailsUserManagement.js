@@ -23,6 +23,8 @@ import {
   signUpFlowRoutes,
   signupFlowRoutes,
 } from "../../../../store/actions/UserManagementActions";
+import { Table } from "antd";
+import { calculateTotals } from "../../../../commen/functions/TableDataCalculation";
 
 const PakageDetailsUserManagement = () => {
   const navigate = useNavigate();
@@ -42,6 +44,7 @@ const PakageDetailsUserManagement = () => {
 
   //States
   const [tableData, setTableData] = useState([]);
+  console.log(tableData, "tableDatatableData");
   const [lisence, setlisence] = useState({
     TotalLisence: "",
   });
@@ -150,6 +153,10 @@ const PakageDetailsUserManagement = () => {
     document.body.dir = currentLangObj.dir || "ltr";
   }, [currentLangObj, t]);
 
+  const [ismonthly, setIsmonthly] = useState(false);
+  const [isquaterly, setIsquaterly] = useState(false);
+  const [isyearly, setIsyearly] = useState(false);
+
   const ColumnsPakageSelection = [
     {
       title: (
@@ -162,11 +169,17 @@ const PakageDetailsUserManagement = () => {
       key: "name",
       align: "center",
       render: (text, response) => {
-        return (
-          <>
-            <span className={styles["Tableheading"]}>{response.name}</span>
-          </>
-        );
+        const { name } = calculateTotals(tableData);
+
+        if (response.isTotalRow) {
+          return <span className={styles["ChargesPerLicesense"]}>{name}</span>;
+        } else {
+          return (
+            <>
+              <span className={styles["Tableheading"]}>{response.name}</span>
+            </>
+          );
+        }
       },
     },
     {
@@ -209,13 +222,15 @@ const PakageDetailsUserManagement = () => {
       key: "Numberoflicenses",
       align: "center",
       render: (text, row) => {
+        const { Numberoflicenses } = calculateTotals(tableData);
+
         if (row.shouldDisplayTextField) {
           return;
         } else {
           if (row.isTotalRow) {
             return (
               <span className={styles["ChargesPerLicesense"]}>
-                {row.Numberoflicenses}
+                {Numberoflicenses}
               </span>
             );
           } else {
@@ -258,12 +273,13 @@ const PakageDetailsUserManagement = () => {
           </span>
         </span>
       ),
-      dataIndex: "price",
-      key: "price",
+      dataIndex: "MonthCharges",
+      key: "MonthCharges",
       width: 100,
       align: "center",
       render: (text, row) => {
-        console.log(row, "Monthlycharges");
+        const { MonthCharges } = calculateTotals(tableData);
+        console.log(MonthCharges, "pricepricepriceprice");
         const monthlyCharges =
           row.price && row.licenseCount ? row.price * row.licenseCount : 0;
         console.log(monthlyCharges, "licenseCount");
@@ -279,6 +295,7 @@ const PakageDetailsUserManagement = () => {
                       ? t("Upgrade-now")
                       : t("Pay-now")
                   }
+                  disableBtn={MonthCharges === 0 ? true : false}
                   className={styles["PayNowButtons"]}
                   onClick={() => handlePayNowClick(2)}
                 />
@@ -288,7 +305,9 @@ const PakageDetailsUserManagement = () => {
         } else {
           if (row.isTotalRow) {
             return (
-              <span className={styles["ChargesPerLicesense"]}>{text}</span>
+              <span className={styles["ChargesPerLicesense"]}>
+                {MonthCharges}
+              </span>
             );
           } else {
             return (
@@ -318,6 +337,8 @@ const PakageDetailsUserManagement = () => {
       align: "center",
       width: 100,
       render: (text, row) => {
+        const { Quarterlycharges } = calculateTotals(tableData);
+
         const quarterlyCharges =
           row.price && row.licenseCount ? row.price * row.licenseCount * 3 : 0;
         if (row.shouldDisplayTextField) {
@@ -332,6 +353,7 @@ const PakageDetailsUserManagement = () => {
                       ? t("Upgrade-now")
                       : t("Pay-now")
                   }
+                  disableBtn={Quarterlycharges === 0 ? true : false}
                   className={styles["PayNowButtons"]}
                   onClick={() => handlePayNowClick(3)}
                 />
@@ -341,7 +363,9 @@ const PakageDetailsUserManagement = () => {
         } else {
           if (row.isTotalRow) {
             return (
-              <span className={styles["ChargesPerLicesense"]}>{text}</span>
+              <span className={styles["ChargesPerLicesense"]}>
+                {Quarterlycharges}
+              </span>
             );
           } else {
             return (
@@ -369,6 +393,8 @@ const PakageDetailsUserManagement = () => {
       align: "center",
       width: 100,
       render: (text, row) => {
+        const { YearlychargesTotal } = calculateTotals(tableData);
+
         const YearlyCharges =
           row.price && row.licenseCount ? row.price * row.licenseCount * 12 : 0;
         if (row.shouldDisplayTextField) {
@@ -384,6 +410,7 @@ const PakageDetailsUserManagement = () => {
                       : t("Pay-now")
                   }
                   className={styles["PayNowButtons"]}
+                  disableBtn={YearlychargesTotal === 0 ? true : false}
                   onClick={() => handlePayNowClick(1)}
                 />
               </span>
@@ -392,7 +419,9 @@ const PakageDetailsUserManagement = () => {
         } else {
           if (row.isTotalRow) {
             return (
-              <span className={styles["ChargesPerLicesense"]}>{text}</span>
+              <span className={styles["ChargesPerLicesense"]}>
+                {YearlychargesTotal}
+              </span>
             );
           } else {
             return (
@@ -465,43 +494,7 @@ const PakageDetailsUserManagement = () => {
     shouldDisplayTextField: true,
   };
 
-  //Calculating the totals
-  const calculateTotals = (data) => {
-    console.log(data, "datadatadatadata");
-    const totalLicenses = data.reduce(
-      (total, row) => total + (Number(row.licenseCount) || 0),
-      0
-    );
-
-    // Calculate total monthly charges
-    const totalMonthlyCharges = data.reduce((total, row) => {
-      const monthlyCharge = row.price * (Number(row.licenseCount) || 0);
-      return total + monthlyCharge;
-    }, 0);
-
-    const totalQuarterlyCharges = data.reduce((total, row) => {
-      const quarterlyCharge = row.price * (Number(row.licenseCount) || 0) * 3; // Multiply by 3 for quarterly
-      return total + quarterlyCharge;
-    }, 0);
-
-    const totalYearlyCharges = data.reduce((total, row) => {
-      const yearlyCharge = row.price * (Number(row.licenseCount) || 0) * 12; // Multiply by 12 for yearly
-      return total + yearlyCharge;
-    }, 0);
-
-    // Return an object with the totals that can be used as a row in your table.
-    return {
-      name: "Total",
-      Numberoflicenses: totalLicenses,
-      price: totalMonthlyCharges,
-      Quarterlycharges: totalQuarterlyCharges,
-      YearlychargesTotal: totalYearlyCharges,
-    };
-  };
-
-  //Total row Flag
-  const totalRow = {
-    ...calculateTotals(tableData),
+  const showTotalValues = {
     isTotalRow: true,
   };
 
@@ -513,8 +506,14 @@ const PakageDetailsUserManagement = () => {
     navigate("/");
   };
 
-  const GoBackCheck = localStorage.getItem("SignupFlowPageRoute");
+  const { Numberoflicenses, price, Quarterlycharges, YearlychargesTotal } =
+    calculateTotals(tableData);
 
+  console.log(
+    { Numberoflicenses, price, Quarterlycharges, YearlychargesTotal },
+    "calculateTotalscalculateTotals"
+  );
+  // const isLastRow = {true}
   return (
     <Container>
       <Row className="position-relative">
@@ -651,9 +650,9 @@ const PakageDetailsUserManagement = () => {
           <TableToDo
             column={ColumnsPakageSelection}
             className={"Billing_TablePakageSelection"}
-            rows={[...tableData, totalRow, defaultRowWithButtons]}
+            rows={[...tableData, showTotalValues, defaultRowWithButtons]}
             pagination={false}
-            id="saif"
+            id="PakageDetailsTable"
             rowHoverBg="none"
           />
         </Col>
