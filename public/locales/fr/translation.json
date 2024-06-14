@@ -2014,5 +2014,6 @@
   "USER_DELETED": "Your account status in [organizationName] has been changed",
   "Add-Signaturies": "Add Signatories",
   "Address": "Address",
-  "Organization-is-inactive": "Organization is inactive"
+  "Organization-is-inactive": "Organization is inactive",
+  "Users-can-be-created-in-trial-version": "users can be created in trial version"
 }
