@@ -608,7 +608,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
           dispatch(
             enterPasswordSuccess(
               response.data.responseResult,
-              t("Password-verified-and-user-is-new-and-2FA-is-enabled")
+              ""
+              // t("Password-verified-and-user-is-new-and-2FA-is-enabled")
             )
           );
           localStorage.setItem("2fa", true);
@@ -621,7 +622,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               navigate
             )
           );
-          clearLocalStorageAtloginresponce(dispatch, 3, navigate);
+          // clearLocalStorageAtloginresponce(dispatch, 3, navigate);
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_10:
           if (response.data.responseResult.hasAdminRights) {

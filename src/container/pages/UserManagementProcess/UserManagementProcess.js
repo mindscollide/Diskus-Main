@@ -70,8 +70,8 @@ const UserManagementProcess = () => {
 
   useEffect(() => {
     if (
-      Authreducer.EmailValidationResponseMessage !== "" &&
-      Authreducer.EmailValidationResponseMessage !==
+      Authreducer.EmailValidationResponseMessage != "" &&
+      Authreducer.EmailValidationResponseMessage !=
         t("Users-password-is-created")
     ) {
       setOpen({
@@ -89,10 +89,10 @@ const UserManagementProcess = () => {
 
       dispatch(cleareMessage());
     } else if (
-      Authreducer.EnterPasswordResponseMessage !== "" &&
-      Authreducer.EnterPasswordResponseMessage !== t("2fa-enabled") &&
-      Authreducer.EnterPasswordResponseMessage !== undefined &&
-      Authreducer.EnterPasswordResponseMessage !==
+      Authreducer.EnterPasswordResponseMessage != "" &&
+      Authreducer.EnterPasswordResponseMessage != t("2fa-enabled") &&
+      Authreducer.EnterPasswordResponseMessage != undefined &&
+      Authreducer.EnterPasswordResponseMessage !=
         t("The-user-is-not-an-admin-user")
     ) {
       setOpen({
@@ -172,13 +172,22 @@ const UserManagementProcess = () => {
     }
   }, [Helper.socket]);
 
+  // console.log(Authreducer, "AuthreducerAuthreducerAuthreducer");
   //USer Password Verification After forget password
   useEffect(() => {
-    if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
+    if (
+      Authreducer?.VerifyOTPEmailResponseMessage !== "" &&
+      Authreducer?.VerifyOTPEmailResponseMessage !== undefined
+    ) {
+      console.log(
+        Authreducer.VerifyOTPEmailResponseMessage,
+        "AuthreducerAuthreducerAuthreducer"
+      );
+
       setOpen({
         ...open,
         open: true,
-        message: Authreducer.VerifyOTPEmailResponseMessage,
+        message: Authreducer?.VerifyOTPEmailResponseMessage,
       });
       setTimeout(() => {
         setOpen({
@@ -192,14 +201,22 @@ const UserManagementProcess = () => {
     } else {
       dispatch(cleareMessage());
     }
-  }, [Authreducer.VerifyOTPEmailResponseMessage]);
+  }, [Authreducer?.VerifyOTPEmailResponseMessage]);
 
   useEffect(() => {
-    if (Authreducer.AuthenticateAFAResponseMessage !== "") {
+    if (
+      Authreducer?.AuthenticateAFAResponseMessage != "" &&
+      Authreducer?.AuthenticateAFAResponseMessage != undefined
+    ) {
+      console.log(
+        Authreducer.AuthenticateAFAResponseMessage,
+        "AuthreducerAuthreducerAuthreducer"
+      );
+
       setOpen({
         ...open,
         open: true,
-        message: Authreducer.AuthenticateAFAResponseMessage,
+        message: Authreducer?.AuthenticateAFAResponseMessage,
       });
       setTimeout(() => {
         setOpen({
@@ -213,7 +230,7 @@ const UserManagementProcess = () => {
     } else {
       dispatch(cleareMessage());
     }
-  }, [Authreducer.AuthenticateAFAResponseMessage]);
+  }, [Authreducer?.AuthenticateAFAResponseMessage]);
 
   let componentToRender;
 
