@@ -535,13 +535,13 @@ const enterPasswordvalidation = (value, navigate, t) => {
         return;
       }
       await handleLoginResponse(response.data.responseResult);
-      await dispatch(
-        getPackageExpiryDetail(
-          navigate,
-          response.data.responseResult.organizationID,
-          t
-        )
-      );
+      // await dispatch(
+      //   getPackageExpiryDetail(
+      //     navigate,
+      //     response.data.responseResult.organizationID,
+      //     t
+      //   )
+      // );
       let packageFeatureIDs = [];
       switch (responseMessage.toLowerCase()) {
         case USERPASSWORDVERIFICATION.VERIFICATION_01:

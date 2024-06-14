@@ -45,6 +45,8 @@ const ManageUsers = () => {
 
   let userID = localStorage.getItem("userID");
 
+  let FreeTrial = localStorage.getItem("isTrial");
+
   const { UserMangementReducer, UserManagementModals } = useSelector(
     (state) => state
   );

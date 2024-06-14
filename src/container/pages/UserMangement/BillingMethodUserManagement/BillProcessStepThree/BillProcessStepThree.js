@@ -19,7 +19,7 @@ const BillProcessStepThree = () => {
   const navigate = useNavigate();
 
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const SignupPage = localStorage.getItem("SignupFlowPageRoute", 5);
+  const SignupPage = localStorage.getItem("SignupFlowPageRoute");
 
   const { UserMangementReducer, LanguageReducer } = useSelector(
     (state) => state
@@ -37,7 +37,7 @@ const BillProcessStepThree = () => {
 
   useEffect(() => {
     try {
-      if (SignupPage) {
+      if (SignupPage === 5) {
         let data = {
           OrganizationName: organizationName,
           OrganizationSubscriptionID: Number(organizationSubscriptionID),
@@ -66,18 +66,14 @@ const BillProcessStepThree = () => {
         UserMangementReducer.getAllSelectedPakagesData !== null &&
         UserMangementReducer.getAllSelectedPakagesData !== undefined
       ) {
-    
         if (
           UserMangementReducer.getAllSelectedPakagesData
-            .organizationSubscription.organizationSelectedPackages
-            !== null &&
+            .organizationSubscription.organizationSelectedPackages !== null &&
           UserMangementReducer.getAllSelectedPakagesData
-            .organizationSubscription.organizationSelectedPackages
-            !==
+            .organizationSubscription.organizationSelectedPackages !==
             undefined &&
           UserMangementReducer.getAllSelectedPakagesData
-            .organizationSubscription.organizationSelectedPackages
-            .length > 0
+            .organizationSubscription.organizationSelectedPackages.length > 0
         ) {
           setGetAllPakagesData(
             UserMangementReducer.getAllSelectedPakagesData

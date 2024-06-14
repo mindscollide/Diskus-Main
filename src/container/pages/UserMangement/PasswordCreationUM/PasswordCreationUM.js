@@ -220,7 +220,7 @@ const PasswordCreationUM = () => {
     <>
       <Container fluid>
         <Row className="position-relative">
-          <Col className="languageSelector">
+          <Col className={styles["languageSelector"]}>
             <LanguageSelector />
           </Col>
         </Row>
