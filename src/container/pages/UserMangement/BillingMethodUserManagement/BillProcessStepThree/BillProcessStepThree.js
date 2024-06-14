@@ -179,6 +179,7 @@ const BillProcessStepThree = () => {
     },
   ];
 
+  //Columns Rendering on the tenureID
   if (tenureID === 1) {
     ColumnsPakageSelection.push({
       title: (
