@@ -4162,6 +4162,7 @@ select {
 .MuiAlert-message {
   padding: 3px 0 !important;
   font-size: 13px;
+  font-family: 'Montserrat' !important;
 }
 
 svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeInherit {
