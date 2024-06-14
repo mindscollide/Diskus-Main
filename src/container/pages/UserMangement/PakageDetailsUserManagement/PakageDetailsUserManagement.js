@@ -153,10 +153,6 @@ const PakageDetailsUserManagement = () => {
     document.body.dir = currentLangObj.dir || "ltr";
   }, [currentLangObj, t]);
 
-  const [ismonthly, setIsmonthly] = useState(false);
-  const [isquaterly, setIsquaterly] = useState(false);
-  const [isyearly, setIsyearly] = useState(false);
-
   const ColumnsPakageSelection = [
     {
       title: (
