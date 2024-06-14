@@ -7,6 +7,8 @@ const InvoiceHtml = ({ response, InvoiceModal, setInvoiceModal }) => {
   const { getInvoiceHTML } = useSelector((state) => state.Authreducer);
   console.log(getInvoiceHTML, "getInvoiceHTMLgetInvoiceHTMLgetInvoiceHTML");
   const [invoiceHtml, setInvoiceHtml] = useState(null);
+  console.log(invoiceHtml, "getInvoiceHTMLgetInvoiceHTMLgetInvoiceHTML");
+
   useEffect(() => {
     if (getInvoiceHTML !== null) {
       let { htmlString } = getInvoiceHTML;

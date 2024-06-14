@@ -21,6 +21,11 @@ import {
   viewAdvanceMeetingUnpublishPageFlag,
   viewProposeOrganizerMeetingPageFlag,
   proposeNewMeetingPageFlag,
+  meetingOrganizerRemoved,
+  meetingOrganizerAdded,
+  meetingAgendaContributorRemoved,
+  meetingAgendaContributorAdded,
+  viewMeetingFlag,
 } from "../../../../store/actions/NewMeetingActions";
 import Participants from "./Participants/Participants";
 import Agenda from "./Agenda/Agenda";
@@ -79,7 +84,7 @@ const ViewMeetingModal = ({
 
   const dispatch = useDispatch();
 
-  const { meetingIdReducer } = useSelector((state) => state);
+  const { meetingIdReducer, NewMeetingreducer } = useSelector((state) => state);
 
   console.log(
     meetingIdReducer.meetingDetails,
@@ -235,6 +240,67 @@ const ViewMeetingModal = ({
     setmeetingDetails(false);
     setPolls(false);
   };
+  useEffect(() => {
+    if (
+      NewMeetingreducer.mqttMeetingAcRemoved !== null &&
+      NewMeetingreducer.mqttMeetingAcRemoved !== undefined
+    ) {
+      try {
+        setEdiorRole({ status: null, role: null });
+        setViewAdvanceMeetingModal(false);
+        dispatch(viewAdvanceMeetingPublishPageFlag(false));
+        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+        // setCurrentMeetingID(0);
+        setAdvanceMeetingModalID(null);
+        setDataroomMapFolderId(0);
+        let searchData = {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber:
+            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+          Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+          PublishedMeetings:
+            currentView && Number(currentView) === 1 ? true : false,
+        };
+        dispatch(searchNewUserMeeting(navigate, searchData, t));
+      } catch (error) {
+        console.error(error, "error");
+      }
+    }
+  }, [NewMeetingreducer.mqttMeetingAcRemoved]);
+
+  useEffect(() => {
+    if (
+      NewMeetingreducer.mqttMeetingOrgRemoved !== null &&
+      NewMeetingreducer.mqttMeetingOrgRemoved !== undefined
+    ) {
+      try {
+        setEdiorRole({ status: null, role: null });
+        setViewAdvanceMeetingModal(false);
+        dispatch(viewAdvanceMeetingPublishPageFlag(false));
+        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+        // setCurrentMeetingID(0);
+        setAdvanceMeetingModalID(null);
+        setDataroomMapFolderId(0);
+        let searchData = {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber:
+            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+          Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+          PublishedMeetings:
+            currentView && Number(currentView) === 1 ? true : false,
+        };
+        dispatch(searchNewUserMeeting(navigate, searchData, t));
+      } catch (error) {
+        console.error(error, "error");
+      }
+    }
+  }, [NewMeetingreducer.mqttMeetingOrgRemoved]);
 
   useEffect(() => {
     if (
