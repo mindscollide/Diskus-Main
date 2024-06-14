@@ -11,6 +11,10 @@ import {
 } from "../../../../../store/actions/UserManagementActions";
 import { useNavigate } from "react-router-dom";
 import { convertUTCDateToLocalDate } from "../../../../../commen/functions/date_formater";
+import {
+  calculateTotals,
+  calculateTotalsBillingStepper,
+} from "../../../../../commen/functions/TableDataCalculation";
 const BillProcessStepThree = () => {
   const { t } = useTranslation();
 
@@ -118,11 +122,17 @@ const BillProcessStepThree = () => {
       ellipses: true,
       align: "center",
       render: (text, record) => {
-        return (
-          <>
-            <span className={styles["Tableheading"]}>{record.name}</span>
-          </>
-        );
+        const { name } = calculateTotalsBillingStepper(getAllPakagesData);
+
+        if (record.isTotalRow) {
+          return <span className={styles["ChargesPerLicesense"]}>{name}</span>;
+        } else {
+          return (
+            <>
+              <span className={styles["Tableheading"]}>{record.name}</span>;
+            </>
+          );
+        }
       },
     },
     {
@@ -169,6 +179,7 @@ const BillProcessStepThree = () => {
     },
   ];
 
+  //Columns Rendering on the tenureID
   if (tenureID === 1) {
     ColumnsPakageSelection.push({
       title: (
@@ -182,11 +193,13 @@ const BillProcessStepThree = () => {
       ellipses: true,
       width: 100,
       render: (text, record) => {
-        if (record.name === "Total") {
+        const { Yearlycharges } =
+          calculateTotalsBillingStepper(getAllPakagesData);
+        if (record.isTotalRow) {
           // For the total row, directly use the calculated value
           return (
             <span className={styles["ChargesPerLicesense"]}>
-              {record.Yearlycharges.toLocaleString()}
+              {Yearlycharges}
             </span>
           );
         } else {
@@ -213,11 +226,12 @@ const BillProcessStepThree = () => {
       ellipses: true,
       width: 100,
       render: (text, record) => {
-        if (record.name === "Total") {
-          // For the total row, directly use the calculated value
+        const { Monthlycharges } =
+          calculateTotalsBillingStepper(getAllPakagesData);
+        if (record.isTotalRow) {
           return (
             <span className={styles["ChargesPerLicesense"]}>
-              {record.Monthlycharges.toLocaleString()}
+              {Monthlycharges}
             </span>
           );
         } else {
@@ -244,10 +258,12 @@ const BillProcessStepThree = () => {
       ellipses: true,
       width: 100,
       render: (text, record) => {
-        if (record.name === "Total") {
+        const { Quaterlycharges } =
+          calculateTotalsBillingStepper(getAllPakagesData);
+        if (record.isTotalRow) {
           return (
             <span className={styles["ChargesPerLicesense"]}>
-              {record.Quaterlycharges.toLocaleString()}
+              {Quaterlycharges}
             </span>
           );
         } else {
@@ -261,41 +277,10 @@ const BillProcessStepThree = () => {
       },
     });
   }
-  const calculateTotals = (data) => {
-    try {
-      const totalLicenses = data.reduce(
-        (acc, cur) => acc + (Number(cur.headCount) || 0),
-        0
-      );
 
-      const totalYearlyCharges = data.reduce(
-        (acc, cur) => acc + (Number(cur.price * cur.headCount) * 12 || 0),
-        0
-      );
-
-      const totalQuaterlyCharges = data.reduce(
-        (acc, cur) => acc + (Number(cur.price * cur.headCount) * 3 || 0),
-        0
-      );
-
-      const totalMontlyCharges = data.reduce(
-        (acc, cur) => acc + (Number(cur.price * cur.headCount) * 3 || 0),
-        0
-      );
-      // Return an object with the totals that can be used as a row in your table.
-      return {
-        name: "Total",
-        headCount: totalLicenses,
-        Yearlycharges: totalYearlyCharges,
-        Quaterlycharges: totalQuaterlyCharges,
-        Monthlycharges: totalMontlyCharges,
-      };
-    } catch (error) {
-      console.log(error, "errorerrorerror");
-    }
+  const showTotalValues = {
+    isTotalRow: true,
   };
-
-  const totalRow = calculateTotals(getAllPakagesData);
 
   const handleChangePackageSelected = () => {
     localStorage.setItem("changePacakgeFlag", true);
@@ -319,7 +304,7 @@ const BillProcessStepThree = () => {
                 <TableToDo
                   column={ColumnsPakageSelection}
                   className={"Billing_TablePakageSelection"}
-                  rows={[...getAllPakagesData, totalRow]}
+                  rows={[...getAllPakagesData, showTotalValues]}
                   pagination={false}
                   id="PakageDetails"
                   scroll={{ x: "max-content" }}
