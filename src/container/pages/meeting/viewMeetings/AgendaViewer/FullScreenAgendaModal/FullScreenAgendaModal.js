@@ -253,7 +253,7 @@ const FullScreenAgendaModal = ({
             >
               <p className={styles["FileModalTitle"]}>{t("Agenda-viewer")}</p>
 
-              <Tooltip placement="topRight" title={t("unExpand")}>
+              <Tooltip placement="topRight" title={t("Collapse")}>
                 <div
                   className={styles["box-agendas"]}
                   onClick={() => setFullScreenView(false)}
