@@ -17,6 +17,7 @@ import {
 } from "../../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
 import { getInvocieHTMLApi } from "../../../../store/actions/Auth2_actions";
+import InvoiceHtml from "./InvoiceHtml/InvoiceHtml";
 
 const PayOutstanding = () => {
   const { OrganizationBillingReducer, LanguageReducer } = useSelector(
@@ -35,6 +36,7 @@ const PayOutstanding = () => {
     BalanceDue: 0,
     InvoiceID: 0,
   });
+  const [invoiceModal, setInvoiceModal] = useState(false);
   console.log(payOutStanding, "payOutStandingpayOutStandingpayOutStanding");
   useEffect(() => {
     if (OrganizationBillingReducer.getPayoutStanding !== null) {
@@ -105,7 +107,7 @@ const PayOutstanding = () => {
           ? Number(localStorage.getItem("organizationSubscriptionID"))
           : 0,
     };
-    dispatch(getInvocieHTMLApi(navigate, t, Data));
+    dispatch(getInvocieHTMLApi(navigate, t, Data, setInvoiceModal));
   };
 
   return (
@@ -214,8 +216,15 @@ const PayOutstanding = () => {
                 <Col sm={12} md={12} lg={12} className="mt-3 p-0">
                   <Button
                     text={t("Pay-invoice-now")}
-                    className={styles["PayInvoiceButton"]}
+                    className={
+                      Number(payOutStanding.InvoiceID) === 0
+                        ? styles["PayInvoiceButton_disabled"]
+                        : styles["PayInvoiceButton"]
+                    }
                     onClick={hadlePayInvoiceButton}
+                    disableBtn={
+                      Number(payOutStanding.InvoiceID) === 0 ? true : false
+                    }
                   />
                 </Col>
               </Row>
@@ -224,7 +233,11 @@ const PayOutstanding = () => {
                 <Col sm={12} md={6} lg={6} className="mt-2 ps-0">
                   <Button
                     text={t("View-invoice-detail")}
-                    className={styles["viewInvocieButton"]}
+                    className={
+                      Number(payOutStanding.InvoiceID) === 0
+                        ? styles["viewInvocieButton_disabled"]
+                        : styles["viewInvocieButton"]
+                    }
                     onClick={handleViewInvoice}
                   />
                 </Col>
@@ -288,6 +301,10 @@ const PayOutstanding = () => {
           </Col>
         </Row>
       </Container>
+      <InvoiceHtml
+        InvoiceModal={invoiceModal}
+        setInvoiceModal={setInvoiceModal}
+      />
       {OrganizationBillingReducer.Loading || LanguageReducer.Loading ? (
         <Loader />
       ) : null}

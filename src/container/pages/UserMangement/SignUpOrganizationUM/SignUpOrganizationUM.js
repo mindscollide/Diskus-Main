@@ -953,12 +953,12 @@ const SignUpOrganizationUM = () => {
                     <Col sm={12} md={12} lg={12}>
                       <Row>
                         <span className={styles["Heading"]}>
-                          {t("Address-1")}
+                          {t("Address")}
                         </span>
                       </Row>
                       <TextField
                         labelClass="d-none"
-                        placeholder={t("Address-1")}
+                        placeholder={t("Address")}
                         maxLength={100}
                         change={signupValuesChangeHandler}
                         value={signUpDetails.Address1.value || ""}

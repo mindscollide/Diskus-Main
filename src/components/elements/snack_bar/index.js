@@ -11,7 +11,16 @@ const Message = {
 };
 
 function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
+  return (
+    <MuiAlert
+      style={{
+        fontFamily: "Montserrat",
+      }}
+      elevation={6}
+      variant="filled"
+      {...props}
+    />
+  );
 }
 const Notification = ({ setOpen, open, message }) => {
   const classes = useStyles();
@@ -23,7 +32,7 @@ const Notification = ({ setOpen, open, message }) => {
     }
     // setOpen(!open);
     setOpen({
-      flag: false,
+      flag: true,
       message: "",
     });
   };
@@ -32,9 +41,10 @@ const Notification = ({ setOpen, open, message }) => {
       {message !== "" ? (
         <div className={classes.root}>
           <Snackbar
+            className="snackbarText"
             autoHideDuration={3000}
             anchorOrigin={{ vertical, horizontal }}
-            open={open}
+            open={true}
             onClose={handleClose}
             message={message}
             key={vertical + horizontal}
