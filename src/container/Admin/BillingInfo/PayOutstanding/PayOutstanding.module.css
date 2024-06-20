@@ -54,6 +54,37 @@ body[dir="rtl"] .PayInvoiceButton {
   font-weight: 500 !important;
   font-size: 12px !important;
 }
+.PayInvoiceButton_disabled {
+  filter: grayscale(0.5) invert(1) !important;
+  width: 100%;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.5s;
+  padding: 5px 10px;
+  font-weight: 500 !important;
+  background: none;
+  text-align: center;
+  font-size: 12px !important;
+}
+.viewInvocieButton_disabled {
+  background: none;
+  border: 1px solid #e1e1e1;
+  color: #5a5a5a !important;
+  width: 100%;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.5s;
+  padding: 5px 10px;
+  font-weight: 500 !important;
+  font-size: 12px !important;
+  cursor: default;
+  user-select: none;
+  pointer-events: none;
+}
 
 body[dir="rtl"] .viewInvocieButton {
   font-weight: 500 !important;

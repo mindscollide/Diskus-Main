@@ -5,7 +5,12 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
-import { Button, TextField } from "../../../../../../components/elements";
+import {
+  AttachmentViewer,
+  Button,
+  Notification,
+  TextField,
+} from "../../../../../../components/elements";
 import Select from "react-select";
 import { Upload } from "antd";
 import DrapDropIcon from "../../../../../../assets/images/DrapDropIcon.svg";
@@ -29,7 +34,10 @@ import { GetAdvanceMeetingAgendabyMeetingID } from "../../../../../../store/acti
 import GroupIcon from "../../../../../../assets/images/groupdropdown.svg";
 import ViewActions from "../ViewActions/ViewActions";
 import { convertGMTDateintoUTC } from "../../../../../../commen/functions/date_formater";
-import { CreateToDoList } from "../../../../../../store/actions/ToDoList_action";
+import {
+  CreateToDoList,
+  saveFilesTaskApi,
+} from "../../../../../../store/actions/ToDoList_action";
 import {
   getFileExtension,
   getIconSource,
@@ -70,6 +78,15 @@ const CreateTask = ({
     name: "",
   });
   const [taskMemberSelect, setTaskMemberSelect] = useState([]);
+
+  const [fileSize, setFileSize] = useState(0);
+  const [fileForSend, setFileForSend] = useState([]);
+
+  //Notification State
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+  });
 
   // Select for select Agenda
   const [selectAgenda, setSelectAgenda] = useState([]);
@@ -387,23 +404,97 @@ const CreateTask = ({
 
   const props = {
     name: "file",
-    // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
     multiple: true,
     showUploadList: false,
     onChange(data) {
-      const { status } = data.file;
-      setTaskAttachments([...taskAttachments, data.file.originFileObj]);
+      const { fileList } = data;
+      console.log(fileList, "fileListfileListfileList");
+      // Check if the fileList is the same as the previous one
+      if (JSON.stringify(fileList) === JSON.stringify(previousFileList)) {
+        return; // Skip processing if it's the same fileList
+      }
+
+      let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
+      let flag = false;
+      let sizezero = true;
+      let size = true;
+
+      if (taskAttachments.length > 9) {
+        setOpen({
+          flag: true,
+          message: t("Not-allowed-more-than-10-files"),
+        });
+        return;
+      }
+
+      fileList.forEach((fileData, index) => {
+        if (fileData.size > 10485760) {
+          size = false;
+        } else if (fileData.size === 0) {
+          sizezero = false;
+        }
+
+        let fileExists = taskAttachments.some(
+          (oldFileData) => oldFileData.DisplayAttachmentName === fileData.name
+        );
+
+        if (!size) {
+          setTimeout(() => {
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-greater-then-zero"),
+            });
+          }, 3000);
+        } else if (!sizezero) {
+          setTimeout(() => {
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-zero"),
+            });
+          }, 3000);
+        } else if (fileExists) {
+          setTimeout(() => {
+            setOpen({
+              flag: true,
+              message: t("File-already-exists"),
+            });
+          }, 3000);
+        } else {
+          let file = {
+            DisplayAttachmentName: fileData.name,
+            OriginalAttachmentName: fileData.name,
+            fileSize: fileData.originFileObj.size,
+          };
+          setTaskAttachments((prevAttachments) => [...prevAttachments, file]);
+          fileSizeArr += fileData.originFileObj.size;
+          setFileForSend((prevFiles) => [...prevFiles, fileData.originFileObj]);
+          setFileSize(fileSizeArr);
+        }
+      });
+
+      // Update previousFileList to current fileList
+      previousFileList = fileList;
     },
-    onDrop(e) {
-      console.log("Dropped files", e.dataTransfer.files);
-    },
+    onDrop(e) {},
     customRequest() {},
   };
 
-  const removeFileFunction = (index) => {
-    const updateFile = [...taskAttachments];
-    updateFile.splice(index, 1);
-    setTaskAttachments(updateFile);
+  // Initialize previousFileList to an empty array
+  let previousFileList = [];
+ 
+  const removeFileFunction = (fileData) => {
+    setFileForSend((preFileforSend) =>
+      preFileforSend.filter(
+        (filesendData, index) =>
+          filesendData.name !== fileData.DisplayAttachmentName
+      )
+    );
+    setTaskAttachments((fileTaskAttachment) =>
+      fileTaskAttachment.filter(
+        (prevFiles, index) =>
+          prevFiles.DisplayAttachmentName !== fileData.DisplayAttachmentName
+      )
+    );
   };
 
   const HandleChange = (e, index) => {
@@ -441,7 +532,9 @@ const CreateTask = ({
   // for upload Action
   const documentsUploadCall = async (dataroomMapFolderId) => {
     let newFolder = [];
-    const uploadPromises = taskAttachments.map(async (newData) => {
+    let newSaveFiles = [];
+    // if(fileForSend)
+    const uploadPromises = fileForSend.map(async (newData) => {
       await dispatch(
         uploadActionMeetingApi(
           navigate,
@@ -454,13 +547,30 @@ const CreateTask = ({
     });
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
-    let newAttachmentData = newFolder.map((data, index) => {
+    await dispatch(
+      saveFilesTaskApi(
+        navigate,
+        t,
+        newFolder,
+        dataroomMapFolderId,
+        newSaveFiles
+      )
+    );
+    console.log(
+      { uploadPromises, newFolder, newSaveFiles },
+      "uploadPromisesuploadPromisesuploadPromises"
+    );
+    let newAttachmentData = newSaveFiles.map((data, index) => {
       return {
         DisplayAttachmentName: data.DisplayAttachmentName,
         OriginalAttachmentName: data.pK_FileID.toString(),
         FK_TID: Number(createTaskID),
       };
     });
+    console.log(
+      { newAttachmentData },
+      "uploadPromisesuploadPromisesuploadPromises"
+    );
 
     let Data = {
       TaskCreatorID: Number(creatorID),
@@ -468,6 +578,8 @@ const CreateTask = ({
       TaskID: Number(createTaskID),
       TasksAttachments: newAttachmentData,
     };
+    console.log({ Data }, "uploadPromisesuploadPromisesuploadPromises");
+
     let newData = {
       TaskID: Number(createTaskID),
       MeetingID: Number(currentMeeting),
@@ -476,6 +588,8 @@ const CreateTask = ({
           ? createTaskDetails.AgendaID.toString()
           : "-1",
     };
+    console.log({ newData }, "uploadPromisesuploadPromisesuploadPromises");
+
     await dispatch(
       saveTaskDocumentsAndAssigneesApi(
         navigate,
@@ -768,6 +882,7 @@ const CreateTask = ({
                   <Col lg={12} md={12} sm={12}>
                     <Dragger
                       {...props}
+                      fileList={[]}
                       className={
                         styles["dragdrop_attachment_create_resolution"]
                       }
@@ -781,16 +896,17 @@ const CreateTask = ({
                                   console.log(data, "datadatadata");
                                   return (
                                     <>
-                                      <Col
-                                        lg={3}
-                                        md={3}
-                                        sm={3}
-                                        className="mt-2"
-                                      >
-                                        <section
-                                          className={styles["box_For_File"]}
-                                        >
-                                          <Row>
+                                      <Col lg={2} md={2} sm={2}>
+                                        <AttachmentViewer
+                                          name={data.DisplayAttachmentName}
+                                          fk_UID={creatorID}
+                                          data={data}
+                                          id={0}
+                                          handleClickRemove={() =>
+                                            removeFileFunction(data)
+                                          }
+                                        />
+                                        {/* <Row>
                                             <Col lg={10} md={10} sm={10}>
                                               <Row className="mt-2">
                                                 <Col
@@ -804,7 +920,7 @@ const CreateTask = ({
                                                     draggable={false}
                                                     src={getIconSource(
                                                       getFileExtension(
-                                                        data.name
+                                                        data.DisplayAttachmentName
                                                       )
                                                     )}
                                                     height="31.57px"
@@ -814,9 +930,11 @@ const CreateTask = ({
                                                     className={
                                                       styles["FileName"]
                                                     }
-                                                    title={data.name}
+                                                    title={
+                                                      data.DisplayAttachmentName
+                                                    }
                                                   >
-                                                    {data.name}
+                                                    {data.DisplayAttachmentName}
                                                   </span>
                                                 </Col>
                                               </Row>
@@ -842,8 +960,7 @@ const CreateTask = ({
                                                 }}
                                               />
                                             </Col>
-                                          </Row>
-                                        </section>
+                                          </Row> */}
                                       </Col>
                                     </>
                                   );
@@ -975,6 +1092,7 @@ const CreateTask = ({
           </section>
         </>
       )}
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );
 };

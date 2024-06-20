@@ -305,10 +305,13 @@ body[dir="rtl"] .updateNotes_titleInput {
   display: block;
 }
 .signatureflow_input {
-  width: 100%;
+  width: 100% !important;
   height: 39px;
   font-weight: 500;
   color: #5a5a5a;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .signatureflow_input::placeholder {
   color: #a2a2a2 !important;

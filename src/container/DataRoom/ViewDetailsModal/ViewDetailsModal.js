@@ -67,7 +67,7 @@ const ViewDetailsModal = ({
   });
   const [documentActivityDetails, setDocumentActivityDetails] = useState(null);
   console.log(
-    documentActivityDetails,
+    documentDetails,
     "documentActivityDetailsdocumentActivityDetailsdocumentActivityDetails"
   );
   const handleDetialsButton = () => {
@@ -144,6 +144,7 @@ const ViewDetailsModal = ({
     try {
       if (DatafileandFolderDetails !== null) {
         setDocumentDetails({
+          ...documentDetails,
           sharedUsers: DatafileandFolderDetails.sharedUsers,
           ownerDetails: {
             id:
@@ -276,12 +277,13 @@ const ViewDetailsModal = ({
                             ></span>
                           </Col>
                           <Col lg={10} md={10} sm={10} className="d-flex gap-2">
-                            {documentDetails.generalAccess === 1 ? (
+                            {Number(documentDetails.generalAccess) === 1 ? (
                               <>
                                 {" "}
                                 {documentDetails?.sharedUsers.length > 0 &&
                                   documentDetails?.sharedUsers.map(
                                     (data, index) => {
+                                      console.log(data, "datadatadata");
                                       return (
                                         <img
                                           src={`data:image/jpeg;base64,${data.base64Img}`}
@@ -303,7 +305,7 @@ const ViewDetailsModal = ({
                                     }
                                   )}
                               </>
-                            ) : documentDetails.generalAccess === 2 ? (
+                            ) : Number(documentDetails.generalAccess)  === 2 ? (
                               <>
                                 {/* <Tooltip title="Hello"> */}
                                 <span className={styles["icon_outer_circle"]}>
@@ -320,7 +322,7 @@ const ViewDetailsModal = ({
                                 </span>
                                 {/* </Tooltip> */}
                               </>
-                            ) : documentDetails.generalAccess === 3 ? (
+                            ) : Number(documentDetails.generalAccess)  === 3 ? (
                               <>
                                 <span className={styles["icon_outer_circle"]}>
                                   {/* <Tooltip title="Hello"> */}
