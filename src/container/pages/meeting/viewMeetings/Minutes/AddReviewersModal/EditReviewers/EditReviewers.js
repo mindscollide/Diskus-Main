@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import styles from "./SelectReviewers.module.css";
+import styles from "./EditReviewers.module.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Container, Col, Row } from "react-bootstrap";
@@ -12,9 +12,7 @@ import TickIcon from "./../../../../../../../assets/images/Tick-Icon.png";
 import { useTranslation } from "react-i18next";
 import { GetAllAssigneesToDoList } from "../../../../../../../store/actions/ToDoList_action";
 
-const SelectReviewers = ({
-  selectMinutes,
-  setSelectMinutes,
+const EditReviewers = ({
   selectReviewers,
   setSelectReviewers,
   sendReviewers,
@@ -409,4 +407,4 @@ const SelectReviewers = ({
   );
 };
 
-export default SelectReviewers;
+export default EditReviewers;

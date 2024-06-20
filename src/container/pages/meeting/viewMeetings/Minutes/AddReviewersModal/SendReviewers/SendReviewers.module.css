@@ -14,7 +14,6 @@ p.SelectAll {
 
 .agendaTitleCheckbox {
   margin-bottom: 15px;
-  margin-right: 15px;
 }
 
 .agenda-title {
@@ -41,7 +40,6 @@ p.add-reviewers {
 
 .minuteParentLabel {
   flex: auto;
-  margin-right: 50px !important;
   margin-bottom: 0 !important;
   display: block;
   overflow: hidden;
@@ -126,3 +124,35 @@ img.image-style {
   background: #a2a2a2 !important;
   margin-left: -15px !important;
 }
+
+.selectAllMinutesCheckbox {
+  display: flex;
+  gap: 15px;
+  justify-content: end;
+  align-items: center;
+  vertical-align: middle;
+}
+
+span.reviewer-count {
+  position: absolute;
+  width: 19px;
+  height: 19px;
+  background: linear-gradient(270deg, #4adede -6.12%, #6172d6 100.01%);
+  border-radius: 100%;
+  top: -7px;
+  right: -7px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.agendaTitleCheckboxGeneral {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 15px;
+    vertical-align: middle;
+  }

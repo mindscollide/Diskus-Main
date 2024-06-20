@@ -12,7 +12,14 @@ import {
 import AttachmentIcon from "./../../../../../../../assets/images/AttachmentIcon.png";
 import { useTranslation } from "react-i18next";
 
-const SelectMinutes = ({ selectMinutes, setSelectMinutes }) => {
+const SelectMinutes = ({
+  selectMinutes,
+  setSelectMinutes,
+  selectReviewers,
+  setSelectReviewers,
+  sendReviewers,
+  setSendReviewers,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
