@@ -21,6 +21,10 @@ const SendReviewers = ({
   setSelectReviewers,
   sendReviewers,
   setSendReviewers,
+  editReviewer,
+  setEditReviewer,
+  minuteToEdit,
+  setMinuteToEdit,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -96,6 +100,14 @@ const SendReviewers = ({
       setAllReviewers([]);
     };
   }, [toDoListReducer.AllAssigneesData]);
+
+  const editMinuteFunction = (record) => {
+    setSelectMinutes(false);
+    setSelectReviewers(false);
+    setSendReviewers(false);
+    setEditReviewer(true);
+    setMinuteToEdit(record);
+  };
 
   console.log("allReviewersallReviewers", allReviewers);
 
@@ -252,9 +264,12 @@ const SendReviewers = ({
                                     alt=""
                                   />
                                   <img
+                                    onClick={() =>
+                                      editMinuteFunction(agendaMinuteData)
+                                    }
                                     height={32}
                                     width={32}
-                                    // className={styles["image-style"]}
+                                    className={"cursor-pointer"}
                                     src={EditMinute}
                                     alt=""
                                   />
@@ -428,8 +443,11 @@ const SendReviewers = ({
                                               <img
                                                 height={32}
                                                 width={32}
-                                                // className={styles["image-style"]}
+                                                className={"cursor-pointer"}
                                                 src={EditMinute}
+                                                onClick={() =>
+                                                  editMinuteFunction(subItem)
+                                                }
                                                 alt=""
                                               />
                                             </div>

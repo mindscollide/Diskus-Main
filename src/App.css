@@ -7204,6 +7204,10 @@ span.billing-contactActive {
   font-size: 16px !important;
 }
 
+.no-padding-top {
+  padding-top: 0 !important;
+}
+
 span.billing-address {
   color: #5a5a5a !important;
   font-weight: 600 !important;

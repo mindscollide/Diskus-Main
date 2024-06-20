@@ -19,6 +19,8 @@ const SelectMinutes = ({
   setSelectReviewers,
   sendReviewers,
   setSendReviewers,
+  editReviewer,
+  setEditReviewer
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();

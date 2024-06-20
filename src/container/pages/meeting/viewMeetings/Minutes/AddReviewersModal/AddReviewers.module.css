@@ -45,3 +45,11 @@
   color: #fff !important;
   background: #5f78d6 !important;
 }
+
+.label-datePicker {
+  position: absolute;
+  top: -25px;
+  font-weight: 600;
+  font-size: 10px;
+  color: #5a5a5a;
+}
