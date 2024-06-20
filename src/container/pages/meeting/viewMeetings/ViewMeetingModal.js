@@ -468,23 +468,23 @@ const ViewMeetingModal = ({
                     )}
                     {checkFeatureIDAvailability(14) ? (
                       <>
-                        {editorRole.role === "Participant" ? null : (
-                          <Button
-                            text={t("Task")}
-                            className={
-                              actionsPage === true
-                                ? styles["Schedule_meetings_options_active"]
-                                : styles["Schedule_meetings_options"]
-                            }
-                            onClick={showActions}
-                            disableBtn={
-                              Number(editorRole.status) === 10 ||
-                              Number(editorRole.status) === 9
-                                ? false
-                                : true
-                            }
-                          />
-                        )}
+                        {/* {editorRole.role === "Participant" ? null : ( */}
+                        <Button
+                          text={t("Task")}
+                          className={
+                            actionsPage === true
+                              ? styles["Schedule_meetings_options_active"]
+                              : styles["Schedule_meetings_options"]
+                          }
+                          onClick={showActions}
+                          disableBtn={
+                            Number(editorRole.status) === 10 ||
+                            Number(editorRole.status) === 9
+                              ? false
+                              : true
+                          }
+                        />
+                        {/* )} */}
                       </>
                     ) : null}
                     {checkFeatureIDAvailability(15) ? (
