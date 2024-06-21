@@ -705,7 +705,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
               message: t("File-size-is-0mb"),
             });
           } else {
-            dispatch(FileUploadToDo(navigate, uploadedFile, t));
+            dispatch(FileUploadToDo(navigate, uploadedFile, t, 2));
             fileSizeArr = uploadedFile.size + fileSize;
             setFileSize(fileSizeArr);
           }
@@ -734,7 +734,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
               message: t("File-size-is-0mb"),
             });
           } else {
-            dispatch(FileUploadToDo(navigate, uploadedFile, t));
+            dispatch(FileUploadToDo(navigate, uploadedFile, t, 2));
             fileSizeArr = uploadedFile.size + fileSize;
             setFileSize(fileSizeArr);
           }

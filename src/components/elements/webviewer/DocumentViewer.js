@@ -231,6 +231,7 @@ const DocumentViewer = () => {
               "signatureToolGroupButton",
               "viewControlsOverlay",
               "contextMenuPopup",
+              "signatureFieldToolGroupButton"
             ]);
           } else if (Number(isPermission) === 1) {
             console.log(isPermission, "isPermissionisPermissionisPermission");
