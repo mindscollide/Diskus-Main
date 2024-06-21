@@ -270,6 +270,10 @@ aside.ant-layout-sider.ant-layout-sider-dark {
   padding: 12px !important;
 }
 
+.AgendaPermissionModalHide {
+  display: none !important;
+}
+
 .SidebarSection {
   display: flex !important;
   justify-content: space-between;

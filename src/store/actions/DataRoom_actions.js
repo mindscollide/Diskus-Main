@@ -1327,7 +1327,7 @@ const deleteFileDataroom_fail = (message) => {
 };
 
 // Delete file API
-const deleteFileDataroom = (navigate, id, t, setSorted) => {
+const deleteFileDataroom = (navigate, id, t, setIsFileDelete) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentView = localStorage.getItem("setTableView");
   let folderId = localStorage.getItem("folderID");
@@ -1352,7 +1352,7 @@ const deleteFileDataroom = (navigate, id, t, setSorted) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(deleteFileDataroom(navigate, id, t));
+          dispatch(deleteFileDataroom(navigate, id, t, setIsFileDelete));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1379,6 +1379,7 @@ const deleteFileDataroom = (navigate, id, t, setSorted) => {
                   );
                 }
               }
+              setIsFileDelete(false);
               dispatch(
                 deleteFileDataroom_success(
                   response.data.responseResult,
@@ -1705,7 +1706,7 @@ const deleteFolder_fail = (message) => {
   };
 };
 
-const deleteFolder = (navigate, id, t, setSorted) => {
+const deleteFolder = (navigate, id, t, setIsFolderDelete) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentView = localStorage.getItem("setTableView");
   let createrID = localStorage.getItem("userID");
@@ -1731,7 +1732,7 @@ const deleteFolder = (navigate, id, t, setSorted) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(deleteFolder(navigate, id, t));
+          dispatch(deleteFolder(navigate, id, t, setIsFolderDelete));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1758,6 +1759,7 @@ const deleteFolder = (navigate, id, t, setSorted) => {
                   );
                 }
               }
+              setIsFolderDelete(false);
               dispatch(
                 deleteFolder_success(
                   response.data.responseResult,
@@ -2374,10 +2376,7 @@ const getRecentDocumentsApi = (navigate, t, data) => {
                 )
             ) {
               dispatch(
-                recentDocuments_success(
-                  response.data.responseResult,
-                  ""
-                )
+                recentDocuments_success(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -2459,10 +2458,7 @@ const getSharedFileUsersApi = (navigate, data, t, setShareFileModal) => {
               "DataRoom_DataRoomManager_GetUsersAgainstSharedFile_01".toLowerCase()
             ) {
               dispatch(
-                getSharedFileUser_success(
-                  response.data.responseResult,
-                  ""
-                )
+                getSharedFileUser_success(response.data.responseResult, "")
               );
               setShareFileModal(true);
               // dispatch();
@@ -2545,10 +2541,7 @@ const getSharedFolderUsersApi = (navigate, data, t, setSharefoldermodal) => {
               "DataRoom_DataRoomManager_GetUsersAgainstSharedFolder_01".toLowerCase()
             ) {
               dispatch(
-                getSharedFolderUser_success(
-                  response.data.responseResult,
-                  ""
-                )
+                getSharedFolderUser_success(response.data.responseResult, "")
               );
               setSharefoldermodal(true);
             } else if (

@@ -46,7 +46,7 @@ const uploaddocumentloader = (payload) => {
   };
 };
 //File Upload
-const FileUploadToDo = (navigate, data, t, newfile) => {
+const FileUploadToDo = (navigate, data, t, newfile, route) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   let form = new FormData();
@@ -67,7 +67,7 @@ const FileUploadToDo = (navigate, data, t, newfile) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(FileUploadToDo(navigate, data, t, newfile));
+          dispatch(FileUploadToDo(navigate, data, t, newfile, route));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -93,11 +93,13 @@ const FileUploadToDo = (navigate, data, t, newfile) => {
                 };
                 await newfile.push(dataresponce);
               }
+              let loaderVal = route === 1 || route === 2 ? false : true;
+
               await dispatch(
                 uploadDocumentSuccess(
                   response.data.responseResult,
                   t("valid-data"),
-                  true
+                  loaderVal
                 )
               );
             } else if (

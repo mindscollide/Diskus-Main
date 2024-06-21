@@ -580,8 +580,6 @@ const MeetingDetails = ({
       }
     });
 
-    console.log(newArr, "newArrnewArrnewArrnewArr");
-
     if (
       meetingDetails.MeetingTitle !== "" &&
       meetingDetails.MeetingType !== 0 &&
@@ -647,6 +645,8 @@ const MeetingDetails = ({
     // setSaveMeeting(!saveMeeting);
     let newArr = [];
     let newReminderData = [];
+
+    // Push reminder frequencies if they are not zero
     if (meetingDetails.ReminderFrequency.value !== 0) {
       newReminderData.push(meetingDetails.ReminderFrequency.value);
     }
@@ -656,32 +656,49 @@ const MeetingDetails = ({
     if (meetingDetails.ReminderFrequencyThree.value !== 0) {
       newReminderData.push(meetingDetails.ReminderFrequencyThree.value);
     }
-    rows.forEach((data, index) => {
+
+    // Process each row to construct the newArr
+    rows.forEach((data) => {
+      const convertedStartDate = createConvert(
+        data.selectedOption + data.startDate
+      );
+      const convertedEndDate = createConvert(
+        data.selectedOption + data.endDate
+      );
+
       newArr.push({
-        MeetingDate: createConvert(data.selectedOption + data.startDate).slice(
-          0,
-          8
-        ),
-        StartTime: createConvert(data.selectedOption + data.startDate).slice(
-          8,
-          14
-        ),
-        EndTime: createConvert(data.selectedOption + data.endDate).slice(8, 14),
-        // EndTime: data.endDate,
+        MeetingDate: convertedStartDate.slice(0, 8), // YYYYMMDD
+        StartTime: convertedStartDate.slice(8, 14), // HHmmss
+        EndTime: convertedEndDate.slice(8, 14), // HHmmss
       });
     });
+
+    // Sorting the newArr array based on MeetingDate, StartTime, and EndTime
+    newArr.sort((a, b) => {
+      const dateComparison = a.MeetingDate.localeCompare(b.MeetingDate);
+      if (dateComparison !== 0) {
+        return dateComparison;
+      }
+
+      const startTimeComparison = a.StartTime.localeCompare(b.StartTime);
+      if (startTimeComparison !== 0) {
+        return startTimeComparison;
+      }
+
+      return a.EndTime.localeCompare(b.EndTime);
+    });
+
     let recurringMeetingID =
       meetingDetails.RecurringOptions.value !== 0
         ? meetingDetails.RecurringOptions.value
         : 1;
+
+    // Check conditions and proceed if valid
     if (
       meetingDetails.MeetingTitle !== "" &&
       meetingDetails.MeetingType !== 0 &&
-      // meetingDetails.Description !== "" &&
       areAllValuesNotEmpty(newArr) &&
       newReminderData.length > 0
-      // &&
-      // meetingDetails.Notes !== ""
     ) {
       let organizationID = JSON.parse(localStorage.getItem("organizationID"));
       let data = {
@@ -703,7 +720,6 @@ const MeetingDetails = ({
           ReucurringMeetingID: recurringMeetingID,
           VideoURL: meetingDetails.Link,
           MeetingStatusID: 11,
-          // IsComingFromApi: true,
         },
       };
       dispatch(
@@ -721,6 +737,7 @@ const MeetingDetails = ({
           setDataroomMapFolderId
         )
       );
+      console.log("newArrnewArrnewArrnewArr", data);
     } else {
       seterror(true);
     }

@@ -131,7 +131,8 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
               await dispatch(
                 TwoFaAuthenticateSuccess(
                   response.data.responseResult,
-                  t("User-doesnt-have-saved-devices")
+                  ""
+                  // t("User-doesnt-have-saved-devices")
                 )
               );
               //localStorage.setItem("LoginFlowPageRoute", 4);

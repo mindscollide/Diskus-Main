@@ -578,21 +578,6 @@ const EditResolution = ({ setCancelresolution }) => {
   const handleCirculateResolution = async () => {
     if (fileForSend.length > 0) {
       setsendStatus(2);
-      // let newfiles = [...tasksAttachments];
-      // let tasksAttachmentsData = [];
-      // const uploadPromises = fileForSend.map((newData) => {
-      //   // Return the promise from FileUploadToDo
-      //   return dispatch(FileUploadToDo(navigate, newData, t, newfiles));
-      // });
-
-      // // Wait for all uploadPromises to resolve
-      // await Promise.all(uploadPromises);
-      // newfiles.map((attachmentData, index) => {
-      //   tasksAttachmentsData.push({
-      //     DisplayAttachmentName: attachmentData.DisplayAttachmentName,
-      //     OriginalAttachmentName: attachmentData.OriginalAttachmentName,
-      //   });
-      // });
       let Data = {
         ResolutionModel: {
           FK_ResolutionStatusID: editResolutionData.FK_ResolutionStatusID,
@@ -659,21 +644,6 @@ const EditResolution = ({ setCancelresolution }) => {
   const handleUpdateResolution = async () => {
     if (fileForSend.length > 0) {
       setsendStatus(1);
-      // let newfiles = [...tasksAttachments];
-      // let tasksAttachmentsData = [];
-      // const uploadPromises = fileForSend.map((newData) => {
-      //   // Return the promise from FileUploadToDo
-      //   return dispatch(FileUploadToDo(navigate, newData, t, newfiles));
-      // });
-
-      // // Wait for all uploadPromises to resolve
-      // await Promise.all(uploadPromises);
-      // newfiles.map((attachmentData, index) => {
-      //   tasksAttachmentsData.push({
-      //     DisplayAttachmentName: attachmentData.DisplayAttachmentName,
-      //     OriginalAttachmentName: attachmentData.OriginalAttachmentName,
-      //   });
-      // });
       let Data = {
         ResolutionModel: {
           FK_ResolutionStatusID: editResolutionData.FK_ResolutionStatusID,

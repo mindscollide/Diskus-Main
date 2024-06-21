@@ -18,6 +18,7 @@ const CustomTableToDo = ({
   sortDirections,
   prefClassName,
   rowHoverBg,
+  summary,
 }) => {
   const { Text } = Typography;
 

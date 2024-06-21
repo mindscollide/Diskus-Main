@@ -45,6 +45,8 @@ const ManageUsers = () => {
 
   let userID = localStorage.getItem("userID");
 
+  let FreeTrial = localStorage.getItem("isTrial");
+
   const { UserMangementReducer, UserManagementModals } = useSelector(
     (state) => state
   );
@@ -67,6 +69,8 @@ const ManageUsers = () => {
   const [enterpressed, setEnterpressed] = useState(false);
 
   const [flagForStopRerendring, setFlagForStopRerendring] = useState(false);
+
+  const [headCount, setHeadCount] = useState(0);
 
   const [manangeUserSearch, setManangeUserSearch] = useState({
     searchValue: "",
@@ -135,21 +139,28 @@ const ManageUsers = () => {
 
   //AllOrganizationsUsers Api Data
   useEffect(() => {
-    const Users = UserMangementReducer.allOrganizationUsersData;
-    if (
-      Users &&
-      Users.organizationUsers &&
-      Users.organizationUsers.length > 0
-    ) {
-      setManageUserGrid(
-        UserMangementReducer.allOrganizationUsersData.organizationUsers
-      );
-    } else {
-      setManageUserGrid([]);
+    try {
+      const Users = UserMangementReducer.allOrganizationUsersData;
+      Users.selectedPackageDetails.map((data, index) => {
+        console.log(data.headCount, "datadatadata");
+        setHeadCount(data.headCount);
+      });
+
+      if (
+        Users &&
+        Users.organizationUsers &&
+        Users.organizationUsers.length > 0
+      ) {
+        setManageUserGrid(
+          UserMangementReducer.allOrganizationUsersData.organizationUsers
+        );
+      } else {
+        setManageUserGrid([]);
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
   }, [UserMangementReducer.allOrganizationUsersData]);
-
-  console.log(totalUserCount, "totalUserCounttotalUserCount");
 
   //Table Columns All Users
   const ManageUsersColumn = [
@@ -825,7 +836,9 @@ const ManageUsers = () => {
               <Row>
                 <Col lg={11} md={11} sm={12} xs={12}>
                   <span className={styles["RedStripContent"]}>
-                    {t("Maximum-20-users-can-be-created-in-trial-version")}
+                    {t("Maximum")}&nbsp;
+                    <span>{headCount}</span>&nbsp;
+                    <span>{t("Users-can-be-created-in-trial-version")}</span>
                   </span>
                 </Col>
                 <Col
