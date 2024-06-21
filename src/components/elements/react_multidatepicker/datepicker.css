@@ -64,3 +64,7 @@
   height: 39px !important;
   cursor: pointer;
 }
+
+.datepicker_input_minute:is(:hover, :focus, :focus-visible, :visited) {
+  outline: none !important;
+}
