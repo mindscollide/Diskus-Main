@@ -37,6 +37,7 @@ import MenuIcon from "./../Images/MenuIcon.png";
 import DeleteIcon from "./../Images/DeleteIcon.png";
 import { deleteCommentMeetingModal } from "../../../../../../store/actions/Minutes_action";
 import VersionHistory from "./VersionHistoryModal/VersionHistory";
+import RevisionHistory from "./RevisionHistoryModal/RevisionHistory";
 
 const AgendaWise = ({
   advanceMeetingModalID,
@@ -632,6 +633,7 @@ const AgendaWise = ({
   // NEW WORK OWAIS!!!!!!!!! ->>>> cxxx|::::::::::::::>
 
   const [showVersionHistory, setShowVersionHistory] = useState(false);
+  const [showRevisionHistory, setShowRevisionHistory] = useState(false);
 
   const [minutesData, setMinutesData] = useState([]);
 
@@ -1338,7 +1340,11 @@ const AgendaWise = ({
                                                 } ${"opacity-0 pe-none"}`
                                           }
                                         >
-                                          <span>
+                                          <span
+                                            onClick={() =>
+                                              setShowRevisionHistory(true)
+                                            }
+                                          >
                                             {t("Revisions")}
                                             <p className="m-0"> 3 </p>
                                           </span>
@@ -1497,6 +1503,13 @@ const AgendaWise = ({
         <VersionHistory
           showVersionHistory={showVersionHistory}
           setShowVersionHistory={setShowVersionHistory}
+        />
+      ) : null}
+
+      {showRevisionHistory ? (
+        <RevisionHistory
+          showRevisionHistory={showRevisionHistory}
+          setShowRevisionHistory={setShowRevisionHistory}
         />
       ) : null}
 

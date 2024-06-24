@@ -2088,5 +2088,6 @@
   "Organization-is-inactive": "Organization is inactive",
   "Users-can-be-created-in-trial-version": "users can be created in trial version",
   "Select-all-reviewers": "Select All Reviewers",
-  "Please-add-deadline": "Please add deadline"
+  "Please-add-deadline": "Please add deadline",
+  "Any-unsaved-changes-will-be-lost-continue": "Any unsaved changes will be lost. Continue?"
 }
