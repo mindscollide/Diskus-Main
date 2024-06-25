@@ -18,6 +18,8 @@ const ConfirmationEditData = ({
   setEditMinute,
   confirmationEdit,
   setConfirmationEdit,
+  resendMinuteForReview,
+  setResendMinuteForReview,
 }) => {
   const { t } = useTranslation(); // Translation hook
 
@@ -46,6 +48,7 @@ const ConfirmationEditData = ({
             onClick={() => {
               setEditMinute(true);
               setConfirmationEdit(false);
+              setResendMinuteForReview(false);
             }}
           />
           {/* Button for canceling deletion */}
@@ -54,6 +57,7 @@ const ConfirmationEditData = ({
             onClick={() => {
               setEditMinute(false);
               setConfirmationEdit(false);
+              setResendMinuteForReview(false);
             }}
             className={styles["No_Modal"]} // CSS class for "No" button
           />

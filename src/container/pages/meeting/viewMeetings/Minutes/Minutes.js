@@ -20,7 +20,6 @@ import pdfIcon from "../../../../../assets/images/pdf_icon.svg";
 import CrossIcon from "../../../../../assets/images/CrossIcon.svg";
 import Rightploygon from "../../../../../assets/images/Polygon right.svg";
 import RedCroseeIcon from "../../../../../assets/images/CrossIcon.svg";
-import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import {
   ADDGeneralMinutesApiFunc,
   CleareMessegeNewMeeting,
@@ -46,7 +45,10 @@ import {
   getIconSource,
 } from "../../../../DataRoom/SearchFunctionality/option";
 import AddReviewers from "./AddReviewersModal/AddReviewers";
-// import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
+import AttachmentIcon from "./Images/Attachment-Icon.png";
+import ArrowDown from "./Images/Arrow-Down.png";
+import DefaultAvatar from "./Images/avatar.png";
+import EditIcon from "./Images/Edit-Icon.png";
 
 const Minutes = ({
   setMinutes,
@@ -66,6 +68,9 @@ const Minutes = ({
   let currentLanguage = localStorage.getItem("i18nextLng");
   const editorRef = useRef(null);
   const { Dragger } = Upload;
+
+  const { MinutesReducer } = useSelector((state) => state);
+
   const generalMinutes = useSelector(
     (state) => state.NewMeetingreducer.generalMinutes
   );
@@ -677,375 +682,700 @@ const Minutes = ({
 
   // OWAIS WORK cxx|:::::::>
 
+  const [minutesData, setMinutesData] = useState([]);
+
+  const [openIndices, setOpenIndices] = useState([]);
+
   const [addReviewers, setAddReviewers] = useState(false);
+
+  const [showPublishMinutes, setShowPublishMinutes] = useState(false);
 
   const addReviewersModal = () => {
     setAddReviewers(true);
   };
 
-  return (
-    <section>
-      <Row className="mt-3">
-        <Col lg={6} md={6} sm={12} className="d-flex gap-2">
-          <Button
-            text={t("General")}
-            className={
-              general
-                ? styles["Button_General"]
-                : styles["Button_General_nonActive"]
-            }
-            onClick={handleGeneralButtonClick}
-          />
-          <Button
-            text={t("Agenda-wise")}
-            className={
-              agenda
-                ? styles["Button_Agenda"]
-                : styles["Button_Agenda_nonActive"]
-            }
-            onClick={handleAgendaWiseClick}
-          />
-        </Col>
-        <Col lg={6} md={6} sm={12} className="d-flex justify-content-end">
-          <Button
-            text={t("Add-reviewers")}
-            className={styles["Add_Reviewers"]}
-            onClick={addReviewersModal}
-          />
-        </Col>
-      </Row>
-      <Row>
-        <Col lg={6} md={6} sm={12}></Col>
-        <Col lg={6} md={6} sm={12}>
-          <p className={styles["Attachments"]}>{t("Attachments")}</p>
-        </Col>
-      </Row>
-      {agenda ? (
-        <AgendaWise
-          advanceMeetingModalID={advanceMeetingModalID}
-          editorRole={editorRole}
-          agendaOptionvalue={agendaOptionvalue}
-          setAgendaOptionValue={setAgendaOptionValue}
-          addNoteFields={addAgendaWiseFields}
-          setAddNoteFields={setAgendaWiseFields}
-          fileAttachments={addAgendaWiseFiles}
-          setFileAttachments={setaddAgendaWiseFiles}
-        />
-      ) : general ? (
-        <>
-          {Number(editorRole.status) === 1 ||
-          Number(editorRole.status) === 11 ||
-          Number(editorRole.status) === 12 ? null : (editorRole.role ===
-              "Organizer" &&
-              Number(editorRole.status) === 9) ||
-            (Number(editorRole.status) === 10 &&
-              editorRole.role === "Organizer") ? (
-            <>
-              <Row className="mt-4">
-                <Col lg={6} md={6} sm={6}>
-                  <Row className={styles["Add-note-QuillRow"]}>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      xs={12}
-                      className={styles["Arabic_font_Applied"]}
-                    >
-                      <ReactQuill
-                        ref={editorRef}
-                        theme="snow"
-                        value={addNoteFields.Description.value || ""}
-                        placeholder={t("Minutes-details")}
-                        onChange={onTextChange}
-                        modules={modules}
-                        className={styles["quill-height-addNote"]}
-                        style={{
-                          direction: currentLanguage === "ar" ? "rtl" : "ltr",
-                        }}
-                      />
-                    </Col>
-                  </Row>
-                  <Row className="mt-5">
-                    <Col>
-                      <p
-                        className={
-                          addNoteFields.Description.errorStatus &&
-                          addNoteFields.Description.value === ""
-                            ? ` ${styles["errorNotesMessage"]} `
-                            : `${styles["errorNotesMessage_hidden"]}`
-                        }
-                      >
-                        {addNoteFields.Description.errorMessage}
-                      </p>
-                    </Col>
-                  </Row>
-                  {/* Button For Saving the The Minutes  */}
-                  <Row className="mt-0">
-                    <Col
-                      lg={12}
-                      md={6}
-                      sm={12}
-                      className="d-flex gap-2 justify-content-end"
-                    >
-                      <Button
-                        text={t("Reset")}
-                        className={styles["Reset_Button"]}
-                        onClick={handleResetBtnFunc}
-                      />
-                      {isEdit === true ? (
-                        <>
-                          <Button
-                            text={t("Update")}
-                            className={styles["Button_Save"]}
-                            onClick={handleUpdateFunc}
-                          />
-                        </>
-                      ) : (
-                        <>
-                          <Button
-                            text={t("Save")}
-                            className={styles["Button_Save"]}
-                            onClick={handleAddClick}
-                          />
-                        </>
-                      )}
-                    </Col>
-                  </Row>
-                </Col>
-                <Col lg={6} md={6} sm={6}>
-                  <section className={styles["viewMinutesAttachments"]}>
-                    {fileAttachments.length > 0 ? (
-                      <>
-                        <Row>
-                          {fileAttachments.length > 0
-                            ? fileAttachments.map((data, index) => {
-                                console.log(
-                                  fileAttachments,
-                                  "fileAttachmentsfileAttachments"
-                                );
-                                return (
-                                  <>
-                                    <Col lg={4} md={4} sm={4}>
-                                      <AttachmentViewer
-                                        fk_UID={userID}
-                                        handleClickRemove={() =>
-                                          handleRemoveFile(data)
-                                        }
-                                        data={fileAttachments}
-                                        id={0}
-                                        name={data.DisplayAttachmentName}
-                                      />
-                                    </Col>
-                                  </>
-                                );
-                              })
-                            : null}
-                        </Row>
-                      </>
-                    ) : null}
-                  </section>
+  const accordianClick = (data, id, index) => {
+    setOpenIndices((prevIndices) =>
+      prevIndices.includes(index)
+        ? prevIndices.filter((i) => i !== index)
+        : [...prevIndices, index]
+    );
+    console.log("openIndices", openIndices);
+  };
 
-                  <Row className="mt-2">
-                    <Col lg={12} md={12} sm={12}>
-                      <Dragger
-                        fileList={[]}
-                        {...props}
-                        className={
-                          styles["dragdrop_attachment_create_resolution"]
-                        }
-                      >
-                        <p className="ant-upload-drag-icon">
-                          <span className={styles["create_resolution_dragger"]}>
-                            <img
-                              src={featherupload}
-                              width="18.87px"
-                              height="18.87px"
-                              draggable="false"
-                              alt=""
-                            />
-                          </span>
-                        </p>
-                        <p className={styles["ant-upload-text"]}>
-                          {t("Drag-&-drop-or")}
-                          <span className={styles["Choose_file_style"]}>
-                            {t("Choose-file")}
-                          </span>{" "}
-                          <span className={styles["here_text"]}>
-                            {t("Here")}
-                          </span>
-                        </p>
-                      </Dragger>
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
-            </>
-          ) : null}
-          {/* Mapping of The Create Minutes */}
+  useEffect(() => {
+    if (
+      MinutesReducer.minutesDataAgendaWise !== undefined &&
+      MinutesReducer.minutesDataAgendaWise !== null &&
+      MinutesReducer.minutesDataAgendaWise.length !== 0
+    ) {
+      setMinutesData(MinutesReducer.minutesDataAgendaWise);
+    } else {
+      setMinutesData([]);
+    }
+    return () => {
+      setMinutesData([]);
+    };
+  }, [MinutesReducer.minutesDataAgendaWise]);
+
+  return showPublishMinutes ? (
+    <>
+      {minutesData.map((data, index) => {
+        const isOpen = openIndices.includes(index);
+        return (
           <Row className="mt-2">
             <Col lg={12} md={12} sm={12} className={styles["ScrollerMinutes"]}>
-              {messages.length > 0
-                ? messages.map((data, index) => {
-                    console.log("className", data);
-                    return (
-                      <>
-                        <section className={styles["Sizing_Saved_Minutes"]}>
-                          <Row className="mt-3">
+              <>
+                <div>
+                  <Row>
+                    <Col lg={12} md={12} sm={12} className="mt-2">
+                      <div
+                        onClick={() =>
+                          accordianClick(data, data.minuteID, index)
+                        }
+                        className={
+                          isOpen
+                            ? styles["agenda-wrapper-closed"]
+                            : styles["agenda-wrapper-open"]
+                        }
+                      >
+                        <p className={styles["agenda-title"]}>
+                          {index + 1 + "." + " " + data.title}
+                        </p>
+                        <span>
+                          {data.attachments.length > 0 ? (
+                            <img
+                              className={styles["Attachment"]}
+                              alt=""
+                              src={AttachmentIcon}
+                            />
+                          ) : null}
+                          <img
+                            alt=""
+                            src={ArrowDown}
+                            className={
+                              isOpen
+                                ? styles["Arrow"]
+                                : styles["Arrow_Expanded"]
+                            }
+                          />
+                        </span>
+                      </div>
+                    </Col>
+                  </Row>
+                  {isOpen ? (
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="position-relative"
+                        >
+                          <div className={styles["uploaded-details"]}>
+                            <Row className={styles["inherit-height"]}>
+                              <Col lg={10} md={10} sm={12}>
+                                <p className={styles["minutes-text"]}>
+                                  {data.description}
+                                </p>
+                                {data.attachments.length > 0 ? (
+                                  <Row>
+                                    {data.attachments.map((fileData, index) => (
+                                      <Col lg={3} md={3} sm={12}>
+                                        <AttachmentViewer
+                                          name={fileData.name}
+                                        />
+                                      </Col>
+                                    ))}
+                                  </Row>
+                                ) : null}
+                              </Col>
+                              <Col
+                                lg={2}
+                                md={2}
+                                sm={12}
+                                className="position-relative p-0"
+                              >
+                                <Row className="m-0">
+                                  <Col lg={12} md={12} sm={12} className="p-0">
+                                    <span className={styles["bar-line"]}></span>
+                                    <p
+                                      className={`${styles["uploadedbyuser"]} m-0`}
+                                    >
+                                      Uploaded By
+                                    </p>
+                                    <div className={styles["gap-ti"]}>
+                                      <img
+                                        src={DefaultAvatar}
+                                        className={styles["Image"]}
+                                        alt=""
+                                        draggable={false}
+                                      />
+                                      <p className={styles["agendaCreater"]}>
+                                        {data.uploader.name}
+                                      </p>
+                                    </div>
+                                    <p
+                                      className={`${styles["uploadedbyuser"]} mt-3`}
+                                    >
+                                      Uploaded By
+                                    </p>
+                                    <div className={styles["gap-ti"]}>
+                                      <img
+                                        src={DefaultAvatar}
+                                        className={styles["Image"]}
+                                        alt=""
+                                        draggable={false}
+                                      />
+                                      <img
+                                        src={DefaultAvatar}
+                                        className={styles["Image"]}
+                                        alt=""
+                                        draggable={false}
+                                      />{" "}
+                                      <img
+                                        src={DefaultAvatar}
+                                        className={styles["Image"]}
+                                        alt=""
+                                        draggable={false}
+                                      />
+                                      <img
+                                        src={DefaultAvatar}
+                                        className={styles["Image"]}
+                                        alt=""
+                                        draggable={false}
+                                      />
+                                      <span
+                                        className={styles["reviewer-count"]}
+                                      >
+                                        +9
+                                      </span>
+                                    </div>
+                                  </Col>
+                                </Row>
+                              </Col>
+                            </Row>
+                          </div>
+                        </Col>
+                      </Row>
+                      {data.subMinutes.map((subMinuteData, subMinuteIndex) => (
+                        <div>
+                          <Row className="mx-50">
+                            <Col lg={12} md={12} sm={12}>
+                              <p className={styles["Parent-title-heading"]}>
+                                {index +
+                                  1 +
+                                  "." +
+                                  subMinuteIndex +
+                                  1 +
+                                  " " +
+                                  subMinuteData.title}
+                              </p>
+                            </Col>
+                          </Row>
+                          <Row className="mxl-50">
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className={styles["Box_Minutes"]}
+                              className="position-relative"
                             >
-                              <Row>
-                                <Col lg={8} md={8} sm={8}>
-                                  <Row className="mt-3">
-                                    <Col lg={12} md={12} sm={12}>
-                                      <span className={styles["Title_File"]}>
-                                        {expanded ? (
-                                          <>
+                              <div
+                                className={styles["version-control-wrapper"]}
+                              >
+                                <span></span>
+                              </div>
+                              <div className={styles["uploaded-details"]}>
+                                <Row className={styles["inherit-height"]}>
+                                  <Col lg={10} md={10} sm={12}>
+                                    <p className={styles["minutes-text"]}>
+                                      {subMinuteData.description}
+                                    </p>
+                                    {subMinuteData.attachments.length > 0 ? (
+                                      <Row>
+                                        {subMinuteData.attachments.map(
+                                          (subFileData, subFileIndex) => (
+                                            <Col lg={3} md={3} sm={12}>
+                                              <AttachmentViewer
+                                                name={subFileData.name}
+                                              />
+                                            </Col>
+                                          )
+                                        )}
+                                      </Row>
+                                    ) : null}
+                                  </Col>
+                                  <Col
+                                    lg={2}
+                                    md={2}
+                                    sm={12}
+                                    className="position-relative"
+                                  >
+                                    <Row className="m-0">
+                                      <Col
+                                        lg={12}
+                                        md={12}
+                                        sm={12}
+                                        className="p-0"
+                                      >
+                                        <span
+                                          className={styles["bar-line"]}
+                                        ></span>
+                                        <p
+                                          className={`${styles["uploadedbyuser"]} m-0`}
+                                        >
+                                          Uploaded By
+                                        </p>
+                                        <div className={styles["gap-ti"]}>
+                                          <img
+                                            src={DefaultAvatar}
+                                            className={styles["Image"]}
+                                            alt=""
+                                            draggable={false}
+                                          />
+                                          <p
+                                            className={styles["agendaCreater"]}
+                                          >
+                                            {data.uploader.name}
+                                          </p>
+                                        </div>
+                                        <p
+                                          className={`${styles["uploadedbyuser"]} mt-3`}
+                                        >
+                                          Uploaded By
+                                        </p>
+                                        <div className={styles["gap-ti"]}>
+                                          <img
+                                            src={DefaultAvatar}
+                                            className={styles["Image"]}
+                                            alt=""
+                                            draggable={false}
+                                          />
+                                          <img
+                                            src={DefaultAvatar}
+                                            className={styles["Image"]}
+                                            alt=""
+                                            draggable={false}
+                                          />{" "}
+                                          <img
+                                            src={DefaultAvatar}
+                                            className={styles["Image"]}
+                                            alt=""
+                                            draggable={false}
+                                          />
+                                          <img
+                                            src={DefaultAvatar}
+                                            className={styles["Image"]}
+                                            alt=""
+                                            draggable={false}
+                                          />
+                                          <span
+                                            className={styles["reviewer-count"]}
+                                          >
+                                            +9
+                                          </span>
+                                        </div>
+                                      </Col>
+                                    </Row>
+                                  </Col>
+                                </Row>
+                              </div>
+                            </Col>
+                          </Row>
+                        </div>
+                      ))}
+                    </>
+                  ) : null}
+                </div>
+              </>
+            </Col>
+          </Row>
+        );
+      })}
+    </>
+  ) : (
+    <>
+      <section>
+        <Row className="mt-3">
+          <Col lg={6} md={6} sm={12} className="d-flex gap-2">
+            <Button
+              text={t("General")}
+              className={
+                general
+                  ? styles["Button_General"]
+                  : styles["Button_General_nonActive"]
+              }
+              onClick={handleGeneralButtonClick}
+            />
+            <Button
+              text={t("Agenda-wise")}
+              className={
+                agenda
+                  ? styles["Button_Agenda"]
+                  : styles["Button_Agenda_nonActive"]
+              }
+              onClick={handleAgendaWiseClick}
+            />
+          </Col>
+          <Col lg={6} md={6} sm={12} className="d-flex justify-content-end">
+            <Button
+              text={t("Publish-minutes")}
+              className={styles["PublishMinutes"]}
+              onClick={() => setShowPublishMinutes(true)}
+            />
+            <Button
+              text={t("Add-reviewers")}
+              className={styles["Add_Reviewers"]}
+              onClick={addReviewersModal}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col lg={6} md={6} sm={12}></Col>
+          <Col lg={6} md={6} sm={12}>
+            <p className={styles["Attachments"]}>{t("Attachments")}</p>
+          </Col>
+        </Row>
+        {agenda ? (
+          <AgendaWise
+            advanceMeetingModalID={advanceMeetingModalID}
+            editorRole={editorRole}
+            agendaOptionvalue={agendaOptionvalue}
+            setAgendaOptionValue={setAgendaOptionValue}
+            addNoteFields={addAgendaWiseFields}
+            setAddNoteFields={setAgendaWiseFields}
+            fileAttachments={addAgendaWiseFiles}
+            setFileAttachments={setaddAgendaWiseFiles}
+          />
+        ) : general ? (
+          <>
+            {Number(editorRole.status) === 1 ||
+            Number(editorRole.status) === 11 ||
+            Number(editorRole.status) === 12 ? null : (editorRole.role ===
+                "Organizer" &&
+                Number(editorRole.status) === 9) ||
+              (Number(editorRole.status) === 10 &&
+                editorRole.role === "Organizer") ? (
+              <>
+                <Row className="mt-4">
+                  <Col lg={6} md={6} sm={6}>
+                    <Row className={styles["Add-note-QuillRow"]}>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        xs={12}
+                        className={styles["Arabic_font_Applied"]}
+                      >
+                        <ReactQuill
+                          ref={editorRef}
+                          theme="snow"
+                          value={addNoteFields.Description.value || ""}
+                          placeholder={t("Minutes-details")}
+                          onChange={onTextChange}
+                          modules={modules}
+                          className={styles["quill-height-addNote"]}
+                          style={{
+                            direction: currentLanguage === "ar" ? "rtl" : "ltr",
+                          }}
+                        />
+                      </Col>
+                    </Row>
+                    <Row className="mt-5">
+                      <Col>
+                        <p
+                          className={
+                            addNoteFields.Description.errorStatus &&
+                            addNoteFields.Description.value === ""
+                              ? ` ${styles["errorNotesMessage"]} `
+                              : `${styles["errorNotesMessage_hidden"]}`
+                          }
+                        >
+                          {addNoteFields.Description.errorMessage}
+                        </p>
+                      </Col>
+                    </Row>
+                    {/* Button For Saving the The Minutes  */}
+                    <Row className="mt-0">
+                      <Col
+                        lg={12}
+                        md={6}
+                        sm={12}
+                        className="d-flex gap-2 justify-content-end"
+                      >
+                        <Button
+                          text={t("Reset")}
+                          className={styles["Reset_Button"]}
+                          onClick={handleResetBtnFunc}
+                        />
+                        {isEdit === true ? (
+                          <>
+                            <Button
+                              text={t("Update")}
+                              className={styles["Button_Save"]}
+                              onClick={handleUpdateFunc}
+                            />
+                          </>
+                        ) : (
+                          <>
+                            <Button
+                              text={t("Save")}
+                              className={styles["Button_Save"]}
+                              onClick={handleAddClick}
+                            />
+                          </>
+                        )}
+                      </Col>
+                    </Row>
+                  </Col>
+                  <Col lg={6} md={6} sm={6}>
+                    <section className={styles["viewMinutesAttachments"]}>
+                      {fileAttachments.length > 0 ? (
+                        <>
+                          <Row>
+                            {fileAttachments.length > 0
+                              ? fileAttachments.map((data, index) => {
+                                  console.log(
+                                    fileAttachments,
+                                    "fileAttachmentsfileAttachments"
+                                  );
+                                  return (
+                                    <>
+                                      <Col lg={4} md={4} sm={4}>
+                                        <AttachmentViewer
+                                          fk_UID={userID}
+                                          handleClickRemove={() =>
+                                            handleRemoveFile(data)
+                                          }
+                                          data={fileAttachments}
+                                          id={0}
+                                          name={data.DisplayAttachmentName}
+                                        />
+                                      </Col>
+                                    </>
+                                  );
+                                })
+                              : null}
+                          </Row>
+                        </>
+                      ) : null}
+                    </section>
+
+                    <Row className="mt-2">
+                      <Col lg={12} md={12} sm={12}>
+                        <Dragger
+                          fileList={[]}
+                          {...props}
+                          className={
+                            styles["dragdrop_attachment_create_resolution"]
+                          }
+                        >
+                          <p className="ant-upload-drag-icon">
+                            <span
+                              className={styles["create_resolution_dragger"]}
+                            >
+                              <img
+                                src={featherupload}
+                                width="18.87px"
+                                height="18.87px"
+                                draggable="false"
+                                alt=""
+                              />
+                            </span>
+                          </p>
+                          <p className={styles["ant-upload-text"]}>
+                            {t("Drag-&-drop-or")}
+                            <span className={styles["Choose_file_style"]}>
+                              {t("Choose-file")}
+                            </span>{" "}
+                            <span className={styles["here_text"]}>
+                              {t("Here")}
+                            </span>
+                          </p>
+                        </Dragger>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+              </>
+            ) : null}
+            {/* Mapping of The Create Minutes */}
+            <Row className="mt-2">
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className={styles["ScrollerMinutes"]}
+              >
+                {messages.length > 0
+                  ? messages.map((data, index) => {
+                      console.log("className", data);
+                      return (
+                        <>
+                          <section className={styles["Sizing_Saved_Minutes"]}>
+                            <Row className="mt-3">
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className={styles["Box_Minutes"]}
+                              >
+                                <Row>
+                                  <Col lg={8} md={8} sm={8}>
+                                    <Row className="mt-3">
+                                      <Col lg={12} md={12} sm={12}>
+                                        <span className={styles["Title_File"]}>
+                                          {expanded ? (
+                                            <>
+                                              <span
+                                                dangerouslySetInnerHTML={{
+                                                  __html:
+                                                    data.minutesDetails.substring(
+                                                      0,
+                                                      120
+                                                    ),
+                                                }}
+                                              ></span>
+                                              ...
+                                            </>
+                                          ) : (
                                             <span
                                               dangerouslySetInnerHTML={{
-                                                __html:
-                                                  data.minutesDetails.substring(
-                                                    0,
-                                                    120
-                                                  ),
+                                                __html: data.minutesDetails,
                                               }}
                                             ></span>
-                                            ...
-                                          </>
-                                        ) : (
-                                          <span
-                                            dangerouslySetInnerHTML={{
-                                              __html: data.minutesDetails,
-                                            }}
-                                          ></span>
-                                        )}
+                                          )}
 
-                                        <span
-                                          className={styles["Show_more_Styles"]}
-                                          onClick={toggleExpansion}
-                                        >
-                                          {expanded &&
-                                          data.minutesDetails.substring(0, 120)
-                                            ? t("See-more")
-                                            : ""}
-                                        </span>
-                                      </span>
-                                    </Col>
-                                  </Row>
-                                  <Row>
-                                    <Col lg={12} md={12} sm={12}>
-                                      <span
-                                        className={
-                                          styles["Date_Minutes_And_time"]
-                                        }
-                                      >
-                                        {newTimeFormaterAsPerUTCFullDate(
-                                          data.lastUpdatedDate +
-                                            data.lastUpdatedTime
-                                        )}
-                                      </span>
-                                    </Col>
-                                  </Row>
-                                </Col>
-                                <Col lg={4} md={4} sm={4} className="mt-4">
-                                  <Row className="d-flex justify-content-end">
-                                    <Col lg={2} md={2} sm={2}>
-                                      <img
-                                        draggable={false}
-                                        src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
-                                        height="39px"
-                                        width="39px"
-                                        className={styles["Profile_minutes"]}
-                                        alt=""
-                                      />
-                                    </Col>
-                                    <Col
-                                      lg={6}
-                                      md={6}
-                                      sm={6}
-                                      className={styles["Line_heigh"]}
-                                    >
-                                      <Row>
-                                        <Col lg={12} md={12} sm={12}>
                                           <span
                                             className={
-                                              styles["Uploaded_heading"]
+                                              styles["Show_more_Styles"]
                                             }
+                                            onClick={toggleExpansion}
                                           >
-                                            {t("Uploaded-by")}
+                                            {expanded &&
+                                            data.minutesDetails.substring(
+                                              0,
+                                              120
+                                            )
+                                              ? t("See-more")
+                                              : ""}
                                           </span>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col lg={12} md={12} sm={12}>
-                                          <span className={styles["Name"]}>
-                                            {data.userName}
-                                          </span>
-                                        </Col>
-                                      </Row>
-                                    </Col>
-                                    <Col
-                                      lg={3}
-                                      md={3}
-                                      sm={3}
-                                      className="d-flex justify-content-start align-items-center"
-                                    >
-                                      {Number(editorRole.status) === 1 ||
-                                      Number(editorRole.status) === 11 ||
-                                      Number(editorRole.status) ===
-                                        12 ? null : (editorRole.role ===
-                                          "Organizer" &&
-                                          Number(editorRole.status) === 9) ||
-                                        (Number(editorRole.status) === 10 &&
-                                          editorRole.role === "Organizer") ? (
+                                        </span>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col lg={12} md={12} sm={12}>
+                                        <span
+                                          className={
+                                            styles["Date_Minutes_And_time"]
+                                          }
+                                        >
+                                          {newTimeFormaterAsPerUTCFullDate(
+                                            data.lastUpdatedDate +
+                                              data.lastUpdatedTime
+                                          )}
+                                        </span>
+                                      </Col>
+                                    </Row>
+                                  </Col>
+                                  <Col lg={4} md={4} sm={4} className="mt-4">
+                                    <Row className="d-flex justify-content-end">
+                                      <Col lg={2} md={2} sm={2}>
                                         <img
                                           draggable={false}
-                                          src={EditIcon}
-                                          height="21.55px"
-                                          width="21.55px"
-                                          className="cursor-pointer"
-                                          onClick={() => handleEditFunc(data)}
+                                          src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
+                                          height="39px"
+                                          width="39px"
+                                          className={styles["Profile_minutes"]}
                                           alt=""
                                         />
-                                      ) : null}
-                                    </Col>
-                                  </Row>
-                                </Col>
-                              </Row>
-                              <Row className="mt-2">
-                                <Col lg={12} md={12} sm={12}>
-                                  <span
-                                    className={styles["Show_more"]}
-                                    onClick={() => handleshowMore(index)}
-                                  >
-                                    {generalShowMore === index
-                                      ? t("Hide-details")
-                                      : t("Show-more")}
-                                  </span>
-                                </Col>
-                              </Row>
-                              {generalShowMore === index &&
-                              showMore === true ? (
-                                <>
-                                  <Row>
-                                    {data.minutesAttachmets.map(
-                                      (filesname, index) => {
-                                        console.log(
-                                          filesname,
-                                          "filesnamefilesname"
-                                        );
-                                        return (
-                                          <>
-                                            <Col lg={3} md={3} sm={3}>
-                                              <AttachmentViewer
-                                                name={filesname.displayFileName}
-                                                data={filesname}
-                                                id={0}
-                                              />
-                                              {/* <section
+                                      </Col>
+                                      <Col
+                                        lg={6}
+                                        md={6}
+                                        sm={6}
+                                        className={styles["Line_heigh"]}
+                                      >
+                                        <Row>
+                                          <Col lg={12} md={12} sm={12}>
+                                            <span
+                                              className={
+                                                styles["Uploaded_heading"]
+                                              }
+                                            >
+                                              {t("Uploaded-by")}
+                                            </span>
+                                          </Col>
+                                        </Row>
+                                        <Row>
+                                          <Col lg={12} md={12} sm={12}>
+                                            <span className={styles["Name"]}>
+                                              {data.userName}
+                                            </span>
+                                          </Col>
+                                        </Row>
+                                      </Col>
+                                      <Col
+                                        lg={3}
+                                        md={3}
+                                        sm={3}
+                                        className="d-flex justify-content-start align-items-center"
+                                      >
+                                        {Number(editorRole.status) === 1 ||
+                                        Number(editorRole.status) === 11 ||
+                                        Number(editorRole.status) ===
+                                          12 ? null : (editorRole.role ===
+                                            "Organizer" &&
+                                            Number(editorRole.status) === 9) ||
+                                          (Number(editorRole.status) === 10 &&
+                                            editorRole.role === "Organizer") ? (
+                                          <img
+                                            draggable={false}
+                                            src={EditIcon}
+                                            height="21.55px"
+                                            width="21.55px"
+                                            className="cursor-pointer"
+                                            onClick={() => handleEditFunc(data)}
+                                            alt=""
+                                          />
+                                        ) : null}
+                                      </Col>
+                                    </Row>
+                                  </Col>
+                                </Row>
+                                <Row className="mt-2">
+                                  <Col lg={12} md={12} sm={12}>
+                                    <span
+                                      className={styles["Show_more"]}
+                                      onClick={() => handleshowMore(index)}
+                                    >
+                                      {generalShowMore === index
+                                        ? t("Hide-details")
+                                        : t("Show-more")}
+                                    </span>
+                                  </Col>
+                                </Row>
+                                {generalShowMore === index &&
+                                showMore === true ? (
+                                  <>
+                                    <Row>
+                                      {data.minutesAttachmets.map(
+                                        (filesname, index) => {
+                                          console.log(
+                                            filesname,
+                                            "filesnamefilesname"
+                                          );
+                                          return (
+                                            <>
+                                              <Col lg={3} md={3} sm={3}>
+                                                <AttachmentViewer
+                                                  name={
+                                                    filesname.displayFileName
+                                                  }
+                                                  data={filesname}
+                                                  id={0}
+                                                />
+                                                {/* <section
                                                 className={styles["Outer_Box"]}
                                               >
                                                 <Row>
@@ -1101,96 +1431,104 @@ const Minutes = ({
                                                   </Row>
                                                 </section>
                                               </section> */}
-                                            </Col>
-                                          </>
-                                        );
-                                      }
-                                    )}
-                                  </Row>
-                                </>
-                              ) : null}
-                              {Number(editorRole.status) === 1 ||
-                              Number(editorRole.status) === 11 ||
-                              Number(editorRole.status) ===
-                                12 ? null : (editorRole.role === "Organizer" &&
-                                  Number(editorRole.status) === 9) ||
-                                (Number(editorRole.status) === 10 &&
-                                  editorRole.role === "Organizer") ||
-                                userID === organizerID ? (
-                                <img
-                                  draggable={false}
-                                  src={RedCroseeIcon}
-                                  height="20.76px"
-                                  width="20.76px"
-                                  className={styles["RedCrossClass"]}
-                                  onClick={() => handleRemovingTheMinutes(data)}
-                                  alt=""
-                                />
-                              ) : null}
-                            </Col>
-                          </Row>
-                        </section>
-                      </>
-                    );
-                  })
-                : null}
-            </Col>
-          </Row>
-        </>
-      ) : null}
-      <Row className="mt-5">
-        <Col
-          lg={12}
-          md={12}
-          sm={12}
-          className="d-flex justify-content-end gap-2"
-        >
-          {/* <Button
+                                              </Col>
+                                            </>
+                                          );
+                                        }
+                                      )}
+                                    </Row>
+                                  </>
+                                ) : null}
+                                {Number(editorRole.status) === 1 ||
+                                Number(editorRole.status) === 11 ||
+                                Number(editorRole.status) ===
+                                  12 ? null : (editorRole.role ===
+                                    "Organizer" &&
+                                    Number(editorRole.status) === 9) ||
+                                  (Number(editorRole.status) === 10 &&
+                                    editorRole.role === "Organizer") ||
+                                  userID === organizerID ? (
+                                  <img
+                                    draggable={false}
+                                    src={RedCroseeIcon}
+                                    height="20.76px"
+                                    width="20.76px"
+                                    className={styles["RedCrossClass"]}
+                                    onClick={() =>
+                                      handleRemovingTheMinutes(data)
+                                    }
+                                    alt=""
+                                  />
+                                ) : null}
+                              </Col>
+                            </Row>
+                          </section>
+                        </>
+                      );
+                    })
+                  : null}
+              </Col>
+            </Row>
+          </>
+        ) : null}
+        <Row className="mt-5">
+          <Col
+            lg={12}
+            md={12}
+            sm={12}
+            className="d-flex justify-content-end gap-2"
+          >
+            {/* <Button
             text={t("Cancel")}
             className={styles["Cancel_button_Minutes"]}
             onClick={handleUNsaveChangesModal}
           /> */}
 
-          {editorRole.isPrimaryOrganizer === true ? (
-            <Button
-              text={t("Invite-to-collaborate")}
-              className={styles["Invite_Button"]}
-              onClick={handleInvitetoCollaborateView}
-            />
-          ) : null}
+            {editorRole.isPrimaryOrganizer === true ? (
+              <Button
+                text={t("Invite-to-collaborate")}
+                className={styles["Invite_Button"]}
+                onClick={handleInvitetoCollaborateView}
+              />
+            ) : null}
 
-          {/* <Button
+            {/* <Button
             text={t("Previous")}
             className={styles["Previous_Button"]}
             onClick={handlePreviousButton}
           /> */}
-          <Button
-            text={t("Next")}
-            onClick={handleNextButton}
-            className={styles["Button_Next"]}
+            <Button
+              text={t("Next")}
+              onClick={handleNextButton}
+              className={styles["Button_Next"]}
+            />
+          </Col>
+        </Row>
+
+        {unsaveFileUploadMinutes && (
+          <UnsavedMinutes
+            setMinutes={setMinutes}
+            setSceduleMeeting={setViewAdvanceMeetingModal}
+            setFileAttachments={setFileAttachments}
+            useCase={useCase}
+            setactionsPage={setactionsPage}
+            setMeetingMaterial={setMeetingMaterial}
           />
-        </Col>
-      </Row>
+        )}
 
-      {unsaveFileUploadMinutes && (
-        <UnsavedMinutes
-          setMinutes={setMinutes}
-          setSceduleMeeting={setViewAdvanceMeetingModal}
-          setFileAttachments={setFileAttachments}
-          useCase={useCase}
-          setactionsPage={setactionsPage}
-          setMeetingMaterial={setMeetingMaterial}
+        {addReviewers ? (
+          <AddReviewers
+            addReviewers={addReviewers}
+            setAddReviewers={setAddReviewers}
+          />
+        ) : null}
+        <Notification
+          setOpen={setOpen}
+          open={open.flag}
+          message={open.message}
         />
-      )}
-
-      {addReviewers ? (
-        <AddReviewers
-          addReviewers={addReviewers}
-          setAddReviewers={setAddReviewers}
-        />
-      ) : null}
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
-    </section>
+      </section>
+    </>
   );
 };
 

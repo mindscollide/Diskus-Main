@@ -18,6 +18,8 @@ const EditCommentModal = ({
   setEditMinute,
   confirmationEdit,
   setConfirmationEdit,
+  resendMinuteForReview,
+  setResendMinuteForReview,
 }) => {
   const { t } = useTranslation(); // Translation hook
 
@@ -30,6 +32,11 @@ const EditCommentModal = ({
     } else {
       setConfirmationEdit(false);
     }
+  };
+
+  const resendMinuteReview = () => {
+    setEditMinute(false);
+    setResendMinuteForReview(true);
   };
 
   return (
@@ -72,6 +79,7 @@ const EditCommentModal = ({
           <Button
             text={t("Resend")} // Translation for button text
             className={styles["Resend_Button"]} // CSS class for button
+            onClick={resendMinuteReview}
           />
         </Col>
       </Row>

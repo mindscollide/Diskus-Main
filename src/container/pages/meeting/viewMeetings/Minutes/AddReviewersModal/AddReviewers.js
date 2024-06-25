@@ -71,9 +71,9 @@ const AddReviewers = ({ addReviewers, setAddReviewers }) => {
   };
 
   //DatePicker Stuff
-  const toDoDateHandler = (date, format = "YYYYMMDD") => {
-    let toDoDateValueFormat = new DateObject(date).format("DD MMMM YYYY");
-    setMinuteDate(toDoDateValueFormat);
+  const minuteDateHandler = (date, format = "YYYYMMDD") => {
+    let minuteDateValueFormat = new DateObject(date).format("DD MMMM YYYY");
+    setMinuteDate(minuteDateValueFormat);
     if (calendRef.current.isOpen) {
       calendRef.current.closeCalendar();
     }
@@ -230,7 +230,7 @@ const AddReviewers = ({ addReviewers, setAddReviewers }) => {
                   {t("Deadline")} <span className="text-danger">*</span>
                 </label>
                 <DatePicker
-                  onFocusedDateChange={toDoDateHandler}
+                  onFocusedDateChange={minuteDateHandler}
                   format={"DD MMMM YYYY"}
                   value={minuteDate}
                   minDate={moment().toDate()}

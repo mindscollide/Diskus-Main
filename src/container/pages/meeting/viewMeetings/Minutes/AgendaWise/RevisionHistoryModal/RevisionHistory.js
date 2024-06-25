@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import DefaultAvatar from "./../../../../../../MinutesNewFlow/Images/avatar.png";
 import EditCommentModal from "./EditCommentModal/EditComment";
 import ConfirmationEditData from "./ConfirmationEdit/ConfirmationEdit";
+import ResendMinuteReviewModal from "./ResendForReview/ResendReview";
 
 const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
   const { t } = useTranslation();
@@ -47,18 +48,28 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
           ? () => {
               setEditMinute(false);
               setConfirmationEdit(true);
+              setResendMinuteForReview(false);
             }
           : confirmationEdit
           ? () => {
               setEditMinute(true);
               setConfirmationEdit(false);
+              setResendMinuteForReview(false);
             }
           : () => setShowRevisionHistory(false)
       }
       show={true}
-      className={editMinute || confirmationEdit ? "" : "FullScreenModal"}
-      fullscreen={editMinute || confirmationEdit ? false : true}
-      size={editMinute ? "md" : confirmationEdit ? "md" : "lg"}
+      className={
+        editMinute || confirmationEdit || resendMinuteForReview
+          ? ""
+          : "FullScreenModal"
+      }
+      fullscreen={
+        editMinute || confirmationEdit || resendMinuteForReview ? false : true
+      }
+      size={
+        editMinute || confirmationEdit || resendMinuteForReview ? "md" : "lg"
+      }
       ModalBody={
         editMinute ? (
           <EditCommentModal
@@ -75,6 +86,17 @@ const RevisionHistory = ({ showRevisionHistory, setShowRevisionHistory }) => {
             setEditMinute={setEditMinute}
             confirmationEdit={confirmationEdit}
             setConfirmationEdit={setConfirmationEdit}
+            resendMinuteForReview={resendMinuteForReview}
+            setResendMinuteForReview={setResendMinuteForReview}
+          />
+        ) : resendMinuteForReview ? (
+          <ResendMinuteReviewModal
+            editMinute={editMinute}
+            setEditMinute={setEditMinute}
+            confirmationEdit={confirmationEdit}
+            setConfirmationEdit={setConfirmationEdit}
+            resendMinuteForReview={resendMinuteForReview}
+            setResendMinuteForReview={setResendMinuteForReview}
           />
         ) : (
           <>

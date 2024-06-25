@@ -7845,4 +7845,10 @@ th.ant-table-cell.leaveTimeParticipant.ant-table-cell-ellipsis.ant-table-column-
   /* display: block; */
 }
 
+.datepickerlength .rmdp-container {
+  width: 96%;
+}
 
+.datepickerlength .rmdp-container svg {
+  color: #f16b6b !important;
+}

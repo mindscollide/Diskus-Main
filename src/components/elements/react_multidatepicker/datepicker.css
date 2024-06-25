@@ -68,3 +68,21 @@
 .datepicker_input_minute:is(:hover, :focus, :focus-visible, :visited) {
   outline: none !important;
 }
+
+.datepicker_input_minute_sendreview {
+  padding: 0px 10px !important;
+  border-radius: 4px !important;
+  border: 1px solid #f16b6b;
+  height: 39px !important;
+  cursor: pointer;
+  width: 100%;
+  color: #f16b6b !important;
+}
+
+.datepicker_input_minute_sendreview:is(:hover, :focus, :focus-visible, :visited) {
+  outline: none !important;
+}
+
+.datepicker_input_minute_sendreview::placeholder {
+  color: #f16b6b !important;
+}
