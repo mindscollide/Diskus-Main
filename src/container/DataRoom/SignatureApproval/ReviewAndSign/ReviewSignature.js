@@ -63,6 +63,20 @@ const ReviewSignature = () => {
     return <span style={barStyle}>{percentageValue}</span>; // Display progress bar with percentage
   };
 
+  const handleClickOpenSigatureDoc = (record) => {
+    console.log(record, "signeddocumentsigneddocument");
+    if (Number(record.workFlowStatusID) === 1) {
+      let reponseData = JSON.stringify(record.fileID);
+      window.open(
+        `/#/DisKus/signeddocument?documentID=${encodeURIComponent(
+          reponseData
+        )}`,
+        "_blank",
+        "noopener noreferrer"
+      );
+    }
+  };
+
   // Columns configuration for the table displaying pending approval data
   const pendingApprovalColumns = [
     {
@@ -73,7 +87,10 @@ const ReviewSignature = () => {
       width: "300px",
       ellipsis: true,
       render: (text, record) => (
-        <p className="cursor-pointer m-0 text-truncate d-flex gap-2 align-items-center">
+        <p
+          className="cursor-pointer m-0 text-truncate d-flex gap-2 align-items-center"
+          onClick={() => handleClickOpenSigatureDoc(record)}
+        >
           <img src={getIconSource(getFileExtension(text))} />
           <span>{text}</span>
         </p>
@@ -93,7 +110,7 @@ const ReviewSignature = () => {
           }
         >
           <img
-             src={`data:image/jpeg;base64,${record.creatorImg}`}
+            src={`data:image/jpeg;base64,${record.creatorImg}`}
             width={22}
             height={22}
             className="rounded-circle "

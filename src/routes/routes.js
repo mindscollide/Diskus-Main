@@ -57,6 +57,7 @@ import PrivateAdminRoute from "./privateadmin_routes";
 import PrivateRoutes from "./private_routes";
 import Reports from "../container/Admin/Reports/Reports";
 import SignatureViewer from "../components/elements/signaturewebviewer/signatureviewer";
+import PendingSignature from '../components/elements/pendingSignature/pendingSignatrue'
 import ManageUsers from "../container/pages/UserMangement/AdminUserManagement/ManageUsers/ManageUsers";
 import AddUsers from "../container/pages/UserMangement/AdminUserManagement/AddUsers/AddUsers";
 import OrganizationLevelConfigUM from "../container/pages/UserMangement/OrganziationLevelConfigUM/OrganizationLevelConfigUM";
@@ -170,6 +171,14 @@ export const router = createHashRouter(
             element={
               <RouteWrapperUser name="signatureviewer">
                 <SignatureViewer />
+              </RouteWrapperUser>
+            }
+          />
+            <Route
+            path="signeddocument"
+            element={
+              <RouteWrapperUser name="signatureviewer">
+                <PendingSignature />
               </RouteWrapperUser>
             }
           />

@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
 import "./App.css";
 import "./fr.css";
 import "./ar.css";
@@ -22,19 +22,28 @@ import "@fontsource/ibm-plex-sans-arabic/500.css";
 import "@fontsource/ibm-plex-sans-arabic/600.css";
 import "@fontsource/ibm-plex-sans-arabic/700.css";
 import OpenPaymentForm from "./container/pages/UserMangement/ModalsUserManagement/OpenPaymentForm/OpenPaymentForm";
-import { Loader } from "./components/elements";
+import { Loader, Notification } from "./components/elements";
 import { router } from "./routes/routes";
 import { RouterProvider } from "react-router-dom";
+import { useSelector } from "react-redux";
+import ResponseMessagesCom from "./hooks/responseMessages/ResponseMessagesCom";
 
 const App = () => {
-  return (
-    <Suspense fallback={<Loader />}>
-      {/* Define your routes here */}
-      <RouterProvider router={router} />
+  // const state = useSelector((state) => state);
+  // useEffect(() => {} ,[])
+  // console.log(state, "stateAppComponent");
 
-      {/* Calling a component or modal in which Iframe calling through their SourceLink  */}
-      <OpenPaymentForm />
-    </Suspense>
+  return (
+    <>
+      <Suspense fallback={<Loader />}>
+        {/* Define your routes here */}
+        <RouterProvider router={router} />
+
+        {/* Calling a component or modal in which Iframe calling through their SourceLink  */}
+        <OpenPaymentForm />
+      </Suspense>
+      {/* <Notification /> */}
+    </>
   );
 };
 

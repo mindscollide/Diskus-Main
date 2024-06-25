@@ -177,10 +177,18 @@ const ApprovalSend = () => {
   };
 
   const handleClickOpenDoc = (record) => {
-    if (record.status.toLowerCase() === "Draft".toLowerCase()) {
-      let reponseData = JSON.stringify(record.fileID);
+    let reponseData = JSON.stringify(record.fileID);
+    if (Number(record.status) === 4) {
       window.open(
         `/#/DisKus/signatureviewer?documentID=${encodeURIComponent(
+          reponseData
+        )}`,
+        "_blank",
+        "noopener noreferrer"
+      );
+    } else {
+      window.open(
+        `/#/DisKus/signeddocument?documentID=${encodeURIComponent(
           reponseData
         )}`,
         "_blank",
@@ -220,7 +228,7 @@ const ApprovalSend = () => {
             if (totalCount !== undefined) {
               setTotalRecords(totalCount);
             }
-            setPageNo(2);
+            setPageNo(1);
             setDataLength(
               (prev) => prev + signatureFlowDocumentsForCreator.length
             );
@@ -248,13 +256,24 @@ const ApprovalSend = () => {
       spin
     />
   );
-
+  console.log(
+    rowsDataLength <= totalRecords,
+    rowsDataLength,
+    totalRecords,
+    "handleScrollhandleScroll"
+  );
   const handleScroll = async () => {
+    console.log(
+      rowsDataLength <= totalRecords,
+      rowsDataLength,
+      totalRecords,
+      "handleScrollhandleScroll"
+    );
     if (rowsDataLength <= totalRecords) {
       setIsScrolling(true);
       let Data = { pageNo: Number(pageNo), pageSize: 10 };
       console.log(Data, "handleScrollhandleScrollhandleScroll");
-      await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data, ));
+      await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
     }
   };
   return (

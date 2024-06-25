@@ -1,6 +1,6 @@
 export const hexToRgb = (hex) => {
   // Remove the leading # if present
-  if (hex.startsWith('#')) {
+  if (hex.startsWith("#")) {
     hex = hex.substring(1);
   }
 
@@ -8,7 +8,7 @@ export const hexToRgb = (hex) => {
   const r = parseInt(hex.substring(0, 2), 16);
   const g = parseInt(hex.substring(2, 2), 16);
   const b = parseInt(hex.substring(4, 2), 16);
-
+  console.log({ r, g, b }, "hexToRgbhexToRgbhexToRgb");
   return { r, g, b };
 };
 
@@ -26,18 +26,20 @@ export const rgbToHex = (r, g, b) => {
 };
 
 // This will return the color of the currently selected user
-export const getActorColorByUserID =(userID, userAnnotationsRef) => {
+export const getActorColorByUserID = (userID, userAnnotationsRef) => {
   console.log(`Searching for userID: ${userID}`, userAnnotationsRef);
 
   for (let i = 0; i < userAnnotationsRef.current.length; i++) {
     if (userAnnotationsRef.current[i].userID === userID) {
       const actorColorHex = userAnnotationsRef.current[i].actorColor;
       const actorColorRgb = hexToRgb(actorColorHex);
-      console.log(`Found color for userID ${userID}: ${actorColorHex} -> RGB: ${actorColorRgb.r}, ${actorColorRgb.g}, ${actorColorRgb.b}`);
+      console.log(
+        `Found color for userID ${userID}: ${actorColorHex} -> RGB: ${actorColorRgb.r}, ${actorColorRgb.g}, ${actorColorRgb.b}`
+      );
       return actorColorRgb;
     }
   }
-  
+
   console.log(`userID ${userID} not found.`);
   return null; // Return null if userID is not found
-}
+};
