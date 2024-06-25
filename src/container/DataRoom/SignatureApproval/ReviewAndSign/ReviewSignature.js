@@ -9,23 +9,30 @@ import {
   reviewMinutesPage,
 } from "../../../../store/actions/Minutes_action";
 import { ChevronDown } from "react-bootstrap-icons";
-import { TableToDo } from "../../../../components/elements";
+import { Notification, TableToDo } from "../../../../components/elements";
 import {
   getFileExtension,
   getIconSource,
 } from "../../SearchFunctionality/option";
 import { useNavigate } from "react-router-dom";
 import {
+  clearWorkFlowResponseMessage,
+  getAllPendingApprovalStatusApi,
   getAllPendingApprovalsSignaturesApi,
   getAllPendingApprovalsStatsApi,
 } from "../../../../store/actions/workflow_actions";
 import { useSelector } from "react-redux";
 import { SignatureandPendingApprovalDateTIme } from "../../../../commen/functions/date_formater";
+import { set } from "lodash";
 const ReviewSignature = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { getAllPendingForApprovalStats, listOfPendingForApprovalSignatures } =
-    useSelector((state) => state.SignatureWorkFlowReducer);
+  const {
+    getAllPendingForApprovalStats,
+    listOfPendingForApprovalSignatures,
+    getAllPendingApprovalStatuses,
+    ResponseMessage,
+  } = useSelector((state) => state.SignatureWorkFlowReducer);
   const navigate = useNavigate();
   const [approvalStats, setApprovalStats] = useState({
     declined: 0,
@@ -38,7 +45,13 @@ const ReviewSignature = () => {
   const [reviewSignature, setReviewSignature] = useState([]);
   //Getting current Language
   let currentLanguage = localStorage.getItem("i18nextLng");
-
+  const [isOpen, setIsOpen] = useState({
+    open: true,
+    message: "",
+  });
+  const [reviewAndSignatureStatus, setReviewAndSignatureStatus] = useState([]);
+  const [defaultreviewAndSignatureStatus, setDefaultReviewAndSignatureStatus] =
+    useState([]);
   // ProgressBar component for visualizing progress
   const ProgressBar = ({ width, color, indexValue, percentageValue }) => {
     const barStyle = {
@@ -138,28 +151,34 @@ const ReviewSignature = () => {
       align: "center",
       className: "statusParticipant",
       width: "150px",
-      filters: [
-        { text: t("Pending"), value: "Pending" },
-        { text: t("Signed"), value: "Signed" },
-        { text: t("Decline"), value: "Decline" },
-      ],
-      onFilter: (value, record) => record.status === value,
+      filters: reviewAndSignatureStatus,
+      defaultFilteredValue: defaultreviewAndSignatureStatus || [],
+      filterResetToDefaultFilteredValue: true,
+      // filters: [
+      //   { text: t("Pending"), value: "Pending" },
+      //   { text: t("Signed"), value: "Signed" },
+      //   { text: t("Decline"), value: "Decline" },
+      // ],
+      onFilter: (value, record) => record.workFlowStatusID === value,
       filterIcon: () => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
-      render: (text, record) => (
-        <p
-          className={
-            text === "Pending"
-              ? styles["pendingStatus"]
-              : text === "Signed"
-              ? styles["signedStatus"]
-              : styles["declineStatus"]
-          }
-        >
-          {text}
-        </p>
-      ),
+      render: (text, record) => {
+        console.log(record, "recordrecordrecord");
+        return (
+          <p
+            className={
+              text === "Pending"
+                ? styles["pendingStatus"]
+                : text === "Signed"
+                ? styles["signedStatus"]
+                : styles["declineStatus"]
+            }
+          >
+            {text}
+          </p>
+        );
+      },
     },
   ];
 
@@ -210,11 +229,46 @@ const ReviewSignature = () => {
     // Add more data as needed
   ];
 
-  useEffect(() => {
-    dispatch(getAllPendingApprovalsStatsApi(navigate, t));
+  const callingApi = async () => {
+    await dispatch(getAllPendingApprovalStatusApi(navigate, t));
+    await dispatch(getAllPendingApprovalsStatsApi(navigate, t));
     let Data = { pageNo: 1, pageSize: 10 };
     dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
+  };
+  useEffect(() => {
+    callingApi();
   }, []);
+
+  useEffect(() => {
+    if (
+      getAllPendingApprovalStatuses !== null &&
+      getAllPendingApprovalStatuses !== undefined
+    ) {
+      try {
+        const { statusList } = getAllPendingApprovalStatuses;
+        let statusValues = [];
+        let defaultStatus = [];
+        if (statusList.length > 0) {
+          statusList.forEach((statusData, index) => {
+            statusValues.push({
+              text: statusData.statusName,
+              value: statusData.statusID,
+            });
+            defaultStatus.push(statusData.statusID);
+          });
+          setReviewAndSignatureStatus(statusValues);
+          setDefaultReviewAndSignatureStatus(defaultStatus);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [getAllPendingApprovalStatuses]);
+
+  console.log(
+    { reviewAndSignatureStatus, defaultreviewAndSignatureStatus },
+    "reviewAndSignatureStatusreviewAndSignatureStatusreviewAndSignatureStatus"
+  );
 
   useEffect(() => {
     if (getAllPendingForApprovalStats !== null) {
@@ -236,6 +290,30 @@ const ReviewSignature = () => {
       } catch (error) {}
     }
   }, [listOfPendingForApprovalSignatures]);
+
+  useEffect(() => {
+    if (
+      ResponseMessage !== "" &&
+      ResponseMessage !== null &&
+      ResponseMessage !== undefined
+    ) {
+      setIsOpen({
+        message: ResponseMessage,
+        open: true,
+      });
+      setTimeout(() => {
+        setIsOpen({
+          message: "",
+          open: false,
+        });
+      }, 4000);
+      dispatch(clearWorkFlowResponseMessage());
+      console.log(
+        ResponseMessage,
+        "ResponseMessageResponseMessageResponseMessage"
+      );
+    }
+  }, [ResponseMessage]);
 
   const formatValue = (value) => (value < 9 ? `0${value}` : value);
   return (
@@ -310,6 +388,11 @@ const ReviewSignature = () => {
           />
         </Col>
       </Row>{" "}
+      <Notification
+        open={isOpen.open}
+        message={isOpen.message}
+        setOpen={setIsOpen}
+      />
     </>
   );
 };

@@ -15,6 +15,7 @@ const initialState = {
   getAllSignatureDocumentsforCreator: null,
   getAllPendingForApprovalStats: null,
   listOfPendingForApprovalSignatures: null,
+  getAllPendingApprovalStatuses: null,
 };
 
 const SignatureWorkflowReducer = (state = initialState, action) => {
@@ -288,12 +289,35 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
+    case actions.GETPENDINGAPPROVALSTATUSFORSIGNATUREFLOW_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETPENDINGAPPROVALSTATUSFORSIGNATUREFLOW_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getAllPendingApprovalStatuses: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETPENDINGAPPROVALSTATUSFORSIGNATUREFLOW_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getAllPendingApprovalStatuses: null,
+        ResponseMessage: action.message,
+      };
+    }
     case actions.CLEAR_RESPONSEMESSAGE_WORKFLOWREDUCER: {
       return {
         ...state,
-        ResponseMessage: ""
-      }
+        ResponseMessage: "",
+      };
     }
+
     default:
       return { ...state };
   }

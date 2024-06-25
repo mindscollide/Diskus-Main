@@ -18,7 +18,10 @@ import {
 import { useSelector } from "react-redux";
 import { Spin } from "antd";
 import { SignatureandPendingApprovalDateTIme } from "../../../../commen/functions/date_formater";
-import { getAllSignaturesDocumentsforCreatorApi } from "../../../../store/actions/workflow_actions";
+import {
+  getAllPendingApprovalStatusApi,
+  getAllSignaturesDocumentsforCreatorApi,
+} from "../../../../store/actions/workflow_actions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -29,7 +32,6 @@ const ApprovalSend = () => {
   );
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const currentView = JSON.parse(localStorage.getItem("setTableView"));
   const [signatureListVal, setSignatureListVal] = useState(0);
   const [approvalsData, setApprovalsData] = useState([]);
   const [rowsDataLength, setDataLength] = useState(0);
@@ -201,6 +203,7 @@ const ApprovalSend = () => {
     { isScrolling, approvalsData, pageNo, totalRecords, rowsDataLength },
     "CheckingScrolling"
   );
+
 
   useEffect(() => {
     if (SignatureWorkFlowReducer.getAllSignatureDocumentsforCreator !== null) {

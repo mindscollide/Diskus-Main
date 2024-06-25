@@ -6,9 +6,10 @@ export const hexToRgb = (hex) => {
 
   // Parse the hex color into RGB components
   const r = parseInt(hex.substring(0, 2), 16);
-  const g = parseInt(hex.substring(2, 2), 16);
-  const b = parseInt(hex.substring(4, 2), 16);
-  console.log({ r, g, b }, "hexToRgbhexToRgbhexToRgb");
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+
+  console.log({ r, g, b }, "hexToRgb");
   return { r, g, b };
 };
 

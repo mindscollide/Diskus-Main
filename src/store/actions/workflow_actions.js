@@ -11,6 +11,7 @@ import {
   GetAllSignatureFlowDocumentsForCreatorRM,
   GetAllPendingForApprovalStatsRM,
   ListOfPendingForApprovalSignaturesRM,
+  GetPendingApprovalStatusforSignatureFlowRM,
 } from "../../commen/apis/Api_config";
 import { workflowApi, dataRoomApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
@@ -1457,6 +1458,103 @@ const getAllPendingApprovalsSignaturesApi = (navigate, t, Data) => {
   };
 };
 
+const getAllPendingApprovalStatus_init = () => {
+  return {
+    type: actions.GETPENDINGAPPROVALSTATUSFORSIGNATUREFLOW_INIT,
+  };
+};
+
+const getAllPendingApprovalStatus_success = (response, message) => {
+  return {
+    type: actions.GETPENDINGAPPROVALSTATUSFORSIGNATUREFLOW_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getAllPendingApprovalStatus_fail = (message) => {
+  return {
+    type: actions.GETPENDINGAPPROVALSTATUSFORSIGNATUREFLOW_FAIL,
+    message: message,
+  };
+};
+
+const getAllPendingApprovalStatusApi = (navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getAllPendingApprovalStatus_init());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      GetPendingApprovalStatusforSignatureFlowRM.RequestMethod
+    );
+    // form.append("RequestData", JSON.stringify(Data));
+
+    axios({
+      method: "post",
+      url: workflowApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getAllPendingApprovalStatusApi(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetPendingApprovalStatusesForSignatureFlow_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllPendingApprovalStatus_success(
+                  response.data.responseResult,
+                  ""
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetPendingApprovalStatusesForSignatureFlow_02".toLowerCase()
+                )
+            ) {
+              dispatch(getAllPendingApprovalStatus_fail(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetPendingApprovalStatusesForSignatureFlow_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllPendingApprovalStatus_fail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                getAllPendingApprovalStatus_fail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              getAllPendingApprovalStatus_fail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(getAllPendingApprovalStatus_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(getAllPendingApprovalStatus_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
 const clearWorkFlowResponseMessage = () => {
   return {
     type: actions.CLEAR_RESPONSEMESSAGE_WORKFLOWREDUCER,
@@ -1464,6 +1562,7 @@ const clearWorkFlowResponseMessage = () => {
 };
 
 export {
+  getAllPendingApprovalStatusApi,
   clearWorkFlowResponseMessage,
   getAllPendingApprovalsStatsApi,
   getAllPendingApprovalsSignaturesApi,
