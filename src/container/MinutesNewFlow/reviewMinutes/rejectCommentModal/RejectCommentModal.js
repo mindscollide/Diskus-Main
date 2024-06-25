@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Modal,
   Button,
@@ -6,24 +6,54 @@ import {
   SelectComment,
 } from "../../../../components/elements"; // Importing necessary components
 import styles from "./RejectCommentModal.module.css"; // Importing CSS module for styling
+import { useNavigate } from "react-router-dom";
 import { rejectCommentModal } from "../../../../store/actions/Minutes_action"; // Importing action creator
 import { useTranslation } from "react-i18next"; // Importing translation hook
 import { useDispatch, useSelector } from "react-redux"; // Importing Redux hooks
 import { Col, Row } from "react-bootstrap"; // Importing Bootstrap components
 import CrossIcon from "./../../Images/Cross_Icon.png"; // Importing cross icon image
+import { ListOfDefaultRejectionComments } from "../../../../store/actions/Minutes_action";
 
 // RejectCommentModal component definition
 const RejectCommentModal = () => {
   const { t } = useTranslation(); // Initializing translation function
 
+  const { MinutesReducer } = useSelector((state) => state);
+
   const dispatch = useDispatch(); // Initializing dispatch function from Redux
 
+  const navigate = useNavigate();
+
   const [commentText, setCommentText] = useState(""); // State for comment text
+
+  const [commentsList, setCommentsList] = useState(null);
 
   // Function to handle selection of predefined comments
   const handleCommentSelect = (selectedText) => {
     setCommentText((prevText) => prevText + selectedText + " ");
   };
+
+  useEffect(() => {
+    dispatch(ListOfDefaultRejectionComments(navigate, t));
+  }, []);
+
+  useEffect(() => {
+    if (
+      MinutesReducer.ListOfDefaultRejectionCommentsData !== undefined &&
+      MinutesReducer.ListOfDefaultRejectionCommentsData !== null
+    ) {
+      setCommentsList(
+        MinutesReducer.ListOfDefaultRejectionCommentsData.defaultCommentsList
+      );
+    } else {
+      setCommentsList(null);
+    }
+    return () => {
+      setCommentsList(null);
+    };
+  }, [MinutesReducer.ListOfDefaultRejectionCommentsData]);
+
+  console.log("commentsListcommentsList", commentsList);
 
   return (
     <section>
@@ -38,7 +68,8 @@ const RejectCommentModal = () => {
           dispatch(rejectCommentModal(false)); // Dispatching action to hide modal
         }}
         size={"md"} // Size of the modal
-        ModalTitle={ // JSX for modal title
+        ModalTitle={
+          // JSX for modal title
           <>
             <Row>
               <Col lg={12} md={12} sm={12} className="position-relative">
@@ -55,7 +86,8 @@ const RejectCommentModal = () => {
             </Row>
           </>
         }
-        ModalBody={ // JSX for modal body
+        ModalBody={
+          // JSX for modal body
           <>
             <TextArea
               name="textField-RejectComment"
@@ -68,27 +100,19 @@ const RejectCommentModal = () => {
               timeClass={"d-none"} // Custom CSS class for time (hidden)
             />
             {/* Predefined comment options */}
-            <SelectComment
-              text="Incomplete information"
-              onClick={() => handleCommentSelect("Incomplete information")}
-            />
-            <SelectComment
-              text="Requires further details"
-              onClick={() => handleCommentSelect("Requires further details")}
-            />
-            <SelectComment
-              text="Lack of clarity"
-              onClick={() => handleCommentSelect("Lack of clarity")}
-            />
-            <SelectComment
-              text="Please provide all required details"
-              onClick={() =>
-                handleCommentSelect("Please provide all required details")
-              }
-            />
+            {commentsList !== null && commentsList !== undefined
+              ? commentsList.map((item) => (
+                  <SelectComment
+                    key={item.id}
+                    text={item.comment}
+                    onClick={() => handleCommentSelect(item.comment)}
+                  />
+                ))
+              : null}
           </>
         }
-        ModalFooter={ // JSX for modal footer
+        ModalFooter={
+          // JSX for modal footer
           <>
             <Row className="mt-4">
               <Col

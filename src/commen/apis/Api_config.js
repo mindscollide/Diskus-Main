@@ -1602,6 +1602,19 @@ const LoginHistoryReportExporttoExcel = {
 const GetAllPendingForApprovalStatsRM = {
   RequestMethod: "ServiceManager.GetAllPendingForApprovalStats",
 };
+
+const listOfDefaultRejectionComments = {
+  RequestMethod: "ServiceManager.ListOfDefaultRejectionComments",
+};
+
+const pendingApprovalsCount = {
+  RequestMethod: "ServiceManager.PendingApprovalsCount",
+};
+
+const getMinuteReviewStatsForOrganizerByMeetingId = {
+  RequestMethod: "ServiceManager.GetMinuteReviewStatsForOrganizerByMeetingId",
+};
+
 export {
   GetAllPendingForApprovalStatsRM,
   ListOfPendingForApprovalSignaturesRM,
@@ -2028,4 +2041,7 @@ export {
   downloadAttachmentTalk,
   changeSelectedSubscription,
   CancelTrailandUpdageOrganiztionRM,
+  listOfDefaultRejectionComments,
+  pendingApprovalsCount,
+  getMinuteReviewStatsForOrganizerByMeetingId,
 };

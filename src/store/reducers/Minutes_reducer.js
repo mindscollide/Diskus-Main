@@ -207,7 +207,6 @@ const initialState = {
       },
     ],
     general: [
-     
       {
         id: 10,
         description: "General introduction to the meeting.",
@@ -228,6 +227,9 @@ const initialState = {
       },
     ],
   },
+  ListOfDefaultRejectionCommentsData: null,
+  PendingApprovalCountData: 0,
+  GetMinuteReviewStatsForOrganizerByMeetingIdData: null,
 };
 
 const MinutesReducer = (state = initialState, action) => {
@@ -278,6 +280,75 @@ const MinutesReducer = (state = initialState, action) => {
       return {
         ...state,
         deleteMeetingCommentModal: action.response,
+      };
+    }
+
+    case actions.GET_LISTOFDEFAULTREJECTIONCOMMENTS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GET_LISTOFDEFAULTREJECTIONCOMMENTS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        ListOfDefaultRejectionCommentsData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GET_LISTOFDEFAULTREJECTIONCOMMENTS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        ListOfDefaultRejectionCommentsData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_PENDINGAPPROVALSCOUNT_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GET_PENDINGAPPROVALSCOUNT_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        PendingApprovalCountData: action.response.pendingApprovalsCount,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GET_PENDINGAPPROVALSCOUNT_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        PendingApprovalCountData: 0,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_MINUTEREVIEWSTATSFORORGANIZERBYMEETINGID_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GET_MINUTEREVIEWSTATSFORORGANIZERBYMEETINGID_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        GetMinuteReviewStatsForOrganizerByMeetingIdData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GET_MINUTEREVIEWSTATSFORORGANIZERBYMEETINGID_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        GetMinuteReviewStatsForOrganizerByMeetingIdData: null,
+        ResponseMessage: action.message,
       };
     }
 

@@ -43,6 +43,7 @@ import {
 } from "../../../store/actions/VideoFeature_actions";
 import { getCurrentDateTimeUTC } from "../../../commen/functions/date_formater.js";
 import PendingApprovalIcon from "../../../assets/images/Pending-approval.png";
+import PendingApprovalWhiteIcon from "../../../assets/images/Pending-Approval-White.png";
 import { useDispatch, useSelector } from "react-redux";
 import { Tooltip } from "antd";
 import TalkChat from "./talk-chat/Talk-Chat";
@@ -59,6 +60,7 @@ const Talk = () => {
   const { NotesReducer } = useSelector((state) => state);
   const navigate = useNavigate();
   const [notesModal, setNotesModal] = useState(false);
+
   //Getting api result from the reducer
   const {
     talkStateData,
@@ -66,6 +68,7 @@ const Talk = () => {
     VideoMainReducer,
     talkFeatureStates,
     NewMeetingreducer,
+    MinutesReducer,
   } = useSelector((state) => state);
 
   let activeCall = JSON.parse(localStorage.getItem("activeCall"));
@@ -219,6 +222,8 @@ const Talk = () => {
 
   const [missedCallCount, setMissedCallCount] = useState(0);
 
+  const [pendingApprovalCount, setPendingApprovalCount] = useState(0);
+
   //Setting state data of global response all chat to chatdata
   useEffect(() => {
     if (
@@ -269,6 +274,17 @@ const Talk = () => {
       );
     }
   }, [VideoMainReducer?.MissedCallCountData?.missedCallCount]);
+
+  useEffect(() => {
+    if (
+      MinutesReducer.PendingApprovalCountData !== null &&
+      MinutesReducer.PendingApprovalCountData !== undefined
+    ) {
+      setPendingApprovalCount(MinutesReducer.PendingApprovalCountData);
+    } else {
+      setPendingApprovalCount(0);
+    }
+  }, [MinutesReducer.PendingApprovalCountData]);
 
   //MQTT Unread Message Count
   useEffect(() => {
@@ -362,9 +378,10 @@ const Talk = () => {
               onClick={handleMeetingPendingApprovals}
             >
               {/* <span className="talk-count"></span> */}
-              {/* <span className={missedCallCount === 0 ? "" : "talk-count"}>
-                  {missedCallCount === 0 ? "" : missedCallCount}
-                </span> */}
+              {/* <span className={"talk-count"}> */}
+              <span className={pendingApprovalCount === 0 ? "" : "talk-count"}>
+                {pendingApprovalCount === 0 ? "" : pendingApprovalCount}
+              </span>
               <img
                 className="hover-effect-image"
                 src={PendingApprovalIcon}

@@ -69,7 +69,7 @@ import {
 import Helper from "../../commen/functions/history_logout";
 import IconMetroAttachment from "../../assets/images/newElements/Icon metro-attachment.svg";
 import VerificationFailedIcon from "../../assets/images/failed.png";
-
+import { GetPendingApprovalsCount } from "../../store/actions/Minutes_action";
 // import io from "socket.io-client";
 import {
   createTaskCommitteeMQTT,
@@ -2220,12 +2220,14 @@ const Dashboard = () => {
       window.removeEventListener("offline", handleOffline);
     };
   }, []);
- 
+
   localStorage.setItem("MqttConnectionState", isOnline);
 
   useEffect(() => {
     dispatch(GetAllUserChats(navigate, createrID, currentOrganization, t));
     dispatch(GetUserMissedCallCount(navigate, t));
+    //Owais Pending APproval Count
+    dispatch(GetPendingApprovalsCount(navigate, t));
     localStorage.setItem("activeOtoChatID", 0);
   }, []);
 
