@@ -1606,7 +1606,12 @@ const GetAllPendingForApprovalStatsRM = {
 const GetPendingApprovalStatusforSignatureFlowRM = {
   RequestMethod: "ServiceManager.GetPendingApprovalStatusesForSignatureFlow",
 };
+
+const DeclineReasonRM = {
+  RequestMethod: "ServiceManager.DeclineReason",
+};
 export {
+  DeclineReasonRM,
   GetPendingApprovalStatusforSignatureFlowRM,
   GetAllPendingForApprovalStatsRM,
   ListOfPendingForApprovalSignaturesRM,

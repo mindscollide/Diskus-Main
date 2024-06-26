@@ -230,7 +230,8 @@ const ReviewSignature = () => {
   ];
 
   const callingApi = async () => {
-    await dispatch(getAllPendingApprovalStatusApi(navigate, t));
+    let newData = { IsCreator: false };
+    await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData));
     await dispatch(getAllPendingApprovalsStatsApi(navigate, t));
     let Data = { pageNo: 1, pageSize: 10 };
     dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));

@@ -56,8 +56,8 @@ import DocumentViewer from "../components/elements/webviewer/DocumentViewer";
 import PrivateAdminRoute from "./privateadmin_routes";
 import PrivateRoutes from "./private_routes";
 import Reports from "../container/Admin/Reports/Reports";
-import SignatureViewer from "../components/elements/signaturewebviewer/signatureviewer";
-import PendingSignature from '../components/elements/pendingSignature/pendingSignatrue'
+import SignatureViewer from "../container/DataRoom/SignatureFlow/signaturewebviewer/signatureviewer";
+import PendingSignature from '../container/DataRoom/SignatureFlow/pendingSignature/pendingSignatrue'
 import ManageUsers from "../container/pages/UserMangement/AdminUserManagement/ManageUsers/ManageUsers";
 import AddUsers from "../container/pages/UserMangement/AdminUserManagement/AddUsers/AddUsers";
 import OrganizationLevelConfigUM from "../container/pages/UserMangement/OrganziationLevelConfigUM/OrganizationLevelConfigUM";

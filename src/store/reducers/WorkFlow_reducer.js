@@ -16,6 +16,7 @@ const initialState = {
   getAllPendingForApprovalStats: null,
   listOfPendingForApprovalSignatures: null,
   getAllPendingApprovalStatuses: null,
+  declineReason: null,
 };
 
 const SignatureWorkflowReducer = (state = initialState, action) => {
@@ -308,6 +309,28 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         getAllPendingApprovalStatuses: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.DECLINE_REASON_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.DECLINE_REASON_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        declineReason: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.DECLINE_REASON_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        declineReason: null,
         ResponseMessage: action.message,
       };
     }

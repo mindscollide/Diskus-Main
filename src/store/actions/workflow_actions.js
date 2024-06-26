@@ -12,6 +12,7 @@ import {
   GetAllPendingForApprovalStatsRM,
   ListOfPendingForApprovalSignaturesRM,
   GetPendingApprovalStatusforSignatureFlowRM,
+  DeclineReason,
 } from "../../commen/apis/Api_config";
 import { workflowApi, dataRoomApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
@@ -1479,7 +1480,7 @@ const getAllPendingApprovalStatus_fail = (message) => {
   };
 };
 
-const getAllPendingApprovalStatusApi = (navigate, t) => {
+const getAllPendingApprovalStatusApi = (navigate, t, Data) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getAllPendingApprovalStatus_init());
@@ -1488,7 +1489,7 @@ const getAllPendingApprovalStatusApi = (navigate, t) => {
       "RequestMethod",
       GetPendingApprovalStatusforSignatureFlowRM.RequestMethod
     );
-    // form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestData", JSON.stringify(Data));
 
     axios({
       method: "post",
@@ -1501,7 +1502,7 @@ const getAllPendingApprovalStatusApi = (navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getAllPendingApprovalStatusApi(navigate, t));
+          dispatch(getAllPendingApprovalStatusApi(navigate, t, Data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1554,6 +1555,107 @@ const getAllPendingApprovalStatusApi = (navigate, t) => {
       });
   };
 };
+const declineReason_init = () => {
+  return {
+    type: actions.DECLINE_REASON_INIT,
+  };
+};
+const declineReason_success = (response, message) => {
+  return {
+    type: actions.DECLINE_REASON_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const declineReason_fail = (message) => {
+  return {
+    type: actions.DECLINE_REASON_FAIL,
+    message: message,
+  };
+};
+
+const declineReasonApi = (
+  navigate,
+  t,
+  Data,
+  setReasonModal,
+  setDeclineConfirmationModal
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(declineReason_init());
+    let form = new FormData();
+    form.append("RequestMethod", DeclineReason.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+
+    axios({
+      method: "post",
+      url: workflowApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            declineReasonApi(
+              navigate,
+              t,
+              Data,
+              setReasonModal,
+              setDeclineConfirmationModal
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_DeclineReason_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                declineReason_success(
+                  response.data.responseResult,
+                  t("Saved-successfully")
+                )
+              );
+              setReasonModal(false);
+              setDeclineConfirmationModal(true);
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_DeclineReason_02".toLowerCase()
+                )
+            ) {
+              dispatch(declineReason_fail("Failure-to-save"));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_DeclineReason_03".toLowerCase()
+                )
+            ) {
+              dispatch(declineReason_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(declineReason_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(declineReason_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(declineReason_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(declineReason_fail(t("Something-went-wrong")));
+      });
+  };
+};
 
 const clearWorkFlowResponseMessage = () => {
   return {
@@ -1576,4 +1678,5 @@ export {
   sendDocumentIdApi,
   getAnnoationSignatrueFlow,
   addAnnoationSignatrueFlow,
+  declineReasonApi,
 };

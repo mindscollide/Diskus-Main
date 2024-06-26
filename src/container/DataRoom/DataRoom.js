@@ -118,6 +118,7 @@ import FileDetailsModal from "./FileDetailsModal/FileDetailsModal";
 import copyToClipboard from "../../hooks/useClipBoard";
 import {
   createWorkflowApi,
+  getAllPendingApprovalStatusApi,
   getAllSignaturesDocumentsforCreatorApi,
 } from "../../store/actions/workflow_actions";
 import ApprovalSend from "./SignatureApproval/ApprovalSend/ApprovalSend";
@@ -553,6 +554,9 @@ const DataRoom = () => {
     setSRowsData(0);
 
     localStorage.setItem("setTableView", 5);
+    // getAllPendingApprovalStatusApi
+    let newData = { IsCreator: true };
+    dispatch(getAllPendingApprovalStatusApi(navigate, t, newData));
     let Data = { pageNo: 1, pageSize: 10 };
     await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
     //  localStorage.set
@@ -3281,7 +3285,9 @@ const DataRoom = () => {
   ]);
 
   const handleClickDeleteFolder = () => {
-    dispatch(deleteFolder(navigate, Number(isFolderDeleteId), t,setIsFolderDelete));
+    dispatch(
+      deleteFolder(navigate, Number(isFolderDeleteId), t, setIsFolderDelete)
+    );
   };
   const handleCancelDeleteFolder = () => {
     setIsFolderDeleteId(0);
@@ -3292,7 +3298,9 @@ const DataRoom = () => {
     setIsFileDelete(false);
   };
   const handleClickDeleteFile = () => {
-    dispatch(deleteFileDataroom(navigate, Number(isFileDeleteId), t,setIsFileDelete));
+    dispatch(
+      deleteFileDataroom(navigate, Number(isFileDeleteId), t, setIsFileDelete)
+    );
   };
   return (
     <>
