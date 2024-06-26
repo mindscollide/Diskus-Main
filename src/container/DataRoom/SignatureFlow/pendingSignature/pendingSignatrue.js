@@ -55,7 +55,7 @@ const SignatureViewer = () => {
   const [openAddParticipentModal, setOpenAddParticipentModal] = useState(false);
   const [reasonModal, setReasonModal] = useState(false);
   const [declineConfirmationModal, setDeclineConfirmationModal] =
-    useState(true);
+    useState(false);
   const [declineReasonMessage, setDeclineReasonMessage] = useState("");
   const [declineErrorMessage, setDeclineErrorMessage] = useState(false);
   const [selectedUser, setSelectedUser] = useState("");

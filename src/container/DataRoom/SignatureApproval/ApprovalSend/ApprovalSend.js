@@ -7,7 +7,7 @@ import { Col, Row } from "react-bootstrap";
 import DeleteIcon from "../../../../assets/images/delete_dataroom.png";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { LoadingOutlined } from "@ant-design/icons";
-
+import EmtpyImage from "../../../../assets/images/SendApproval_emptyIcon.png";
 import SorterIconAscend from "../../../../assets/images/approval_sorter_icon_ascend.svg";
 import SorterIconDescend from "../../../../assets/images/approval_sorter_icon_descend.svg";
 import SignatoriesListModal from "./SignatoriesList/SignatoriesListModal";
@@ -39,6 +39,10 @@ const ApprovalSend = () => {
   const [totalRecords, setTotalRecords] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
   const [signatoriesList, setSignatoriesList] = useState(false);
+
+  const [reviewAndSignatureStatus, setReviewAndSignatureStatus] = useState([]);
+  const [defaultreviewAndSignatureStatus, setDefaultReviewAndSignatureStatus] =
+    useState([]);
 
   // Columns configuration for the table displaying pending approval data
   const pendingApprovalColumns = [
@@ -126,33 +130,26 @@ const ApprovalSend = () => {
       width: 150,
 
       className: "statusParticipant",
-      filters: [
-        // Filter options
-        { text: t("Draft"), value: "Draft" },
-        { text: t("Pending-Signature"), value: "Pending Signature" },
-        { text: t("Signed"), value: "Signed" },
-        { text: t("Declined"), value: "Decline" },
-      ],
-      defaultFilteredValue: ["Draft", "Pending Signature", "Signed", "Decline"],
-      onFilter: (value, record) => record.status === value, // Filter function
+      filters: reviewAndSignatureStatus,
+      onFilter: (value, record) => Number(record.workFlowStatusID) === value,
       filterIcon: () => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
       render: (text, record) => {
-        // Render status text with appropriate styles
+        const { workFlowStatusID, status } = record;
         return (
           <p
             className={
-              text === "Draft"
-                ? styles["DraftStatus"]
-                : text === "Pending Signature"
+              workFlowStatusID === 1
                 ? styles["pendingStatus"]
-                : text === "Signed"
-                ? styles["SignedStatus"]
-                : styles["DeclineStatus"]
+                : workFlowStatusID === 2
+                ? styles["signedStatus"]
+                : workFlowStatusID === 3
+                ? styles["declineStatus"]
+                : styles["draftStatus"]
             }
           >
-            {text}
+            {status}
           </p>
         );
       },
@@ -204,7 +201,6 @@ const ApprovalSend = () => {
     "CheckingScrolling"
   );
 
-
   useEffect(() => {
     if (SignatureWorkFlowReducer.getAllSignatureDocumentsforCreator !== null) {
       try {
@@ -251,6 +247,33 @@ const ApprovalSend = () => {
     }
   }, [SignatureWorkFlowReducer.getAllSignatureDocumentsforCreator]);
 
+  useEffect(() => {
+    if (
+      SignatureWorkFlowReducer.getAllPendingApprovalStatuses !== null &&
+      SignatureWorkFlowReducer.getAllPendingApprovalStatuses !== undefined
+    ) {
+      try {
+        const { statusList } =
+          SignatureWorkFlowReducer.getAllPendingApprovalStatuses;
+        let statusValues = [];
+        let defaultStatus = [];
+        if (statusList.length > 0) {
+          statusList.forEach((statusData, index) => {
+            statusValues.push({
+              text: statusData.statusName,
+              value: Number(statusData.statusID),
+            });
+            defaultStatus.push(Number(statusData.statusID));
+          });
+          setReviewAndSignatureStatus(statusValues);
+          setDefaultReviewAndSignatureStatus(defaultStatus);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [SignatureWorkFlowReducer.getAllPendingApprovalStatuses]);
+
   const antIcon = (
     <LoadingOutlined
       style={{
@@ -283,49 +306,68 @@ const ApprovalSend = () => {
     <>
       {" "}
       <Row className="mb-2">
-        <Col sm={12} md={12} lg={12} className="mt-3">
-          <InfiniteScroll
-            dataLength={approvalsData.length}
-            next={handleScroll}
-            style={{
-              overflowX: "hidden",
-            }}
-            hasMore={approvalsData.length === totalRecords ? false : true}
-            height={"55vh"}
-            endMessage=""
-            loader={
-              approvalsData.length <= totalRecords &&
-              isScrolling && (
-                <>
-                  <Row>
-                    <Col
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      className="d-flex justify-content-center mt-2"
-                    >
-                      <Spin indicator={antIcon} />
-                    </Col>
-                  </Row>
-                </>
-              )
-            }
-            scrollableTarget="scrollableDiv"
-          >
-            <TableToDo
-              sortDirections={["descend", "ascend"]}
-              column={pendingApprovalColumns}
-              className={"ApprovalsTable"}
-              // prefClassName="ApprovalSending"
-              rows={approvalsData}
-              // scroll={scroll}
-              pagination={false}
-              id={(record, index) =>
-                index === approvalsData.length - 1 ? "last-row-class" : ""
+        {approvalsData.length > 100 ? (
+          <Col sm={12} md={12} lg={12} className="mt-3">
+            <InfiniteScroll
+              dataLength={approvalsData.length}
+              next={handleScroll}
+              style={{
+                overflowX: "hidden",
+              }}
+              hasMore={approvalsData.length === totalRecords ? false : true}
+              height={"55vh"}
+              endMessage=""
+              loader={
+                approvalsData.length <= totalRecords &&
+                isScrolling && (
+                  <>
+                    <Row>
+                      <Col
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        className="d-flex justify-content-center mt-2"
+                      >
+                        <Spin indicator={antIcon} />
+                      </Col>
+                    </Row>
+                  </>
+                )
               }
-            />
-          </InfiniteScroll>
-        </Col>
+              scrollableTarget="scrollableDiv"
+            >
+              <TableToDo
+                sortDirections={["descend", "ascend"]}
+                column={pendingApprovalColumns}
+                className={"ApprovalsTable"}
+                // prefClassName="ApprovalSending"
+                rows={approvalsData}
+                // scroll={scroll}
+                pagination={false}
+                showHeader={true}
+                id={(record, index) =>
+                  index === approvalsData.length - 1 ? "last-row-class" : ""
+                }
+              />
+            </InfiniteScroll>
+          </Col>
+        ) : (
+          <Col
+            sm={12}
+            md={12}
+            lg={12}
+            className="d-flex justify-content-center align-items-center"
+          >
+            <section className={styles["ApprovalSend_emptyContainer"]}>
+              <img className="d-flex justify-content-center" src={EmtpyImage} />
+              <span className={styles["emptyState_title"]}>Submit Document for Approval</span>
+              <span className={styles["emptyState_tagline"]}>
+                Ready to send a document for approval? This tab awaits your next
+                submission!
+              </span>
+            </section>
+          </Col>
+        )}
       </Row>
       {signatoriesList && (
         <SignatoriesListModal

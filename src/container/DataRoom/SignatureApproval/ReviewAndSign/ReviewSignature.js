@@ -152,81 +152,34 @@ const ReviewSignature = () => {
       className: "statusParticipant",
       width: "150px",
       filters: reviewAndSignatureStatus,
-      defaultFilteredValue: defaultreviewAndSignatureStatus || [],
-      filterResetToDefaultFilteredValue: true,
       // filters: [
       //   { text: t("Pending"), value: "Pending" },
       //   { text: t("Signed"), value: "Signed" },
       //   { text: t("Decline"), value: "Decline" },
       // ],
-      onFilter: (value, record) => record.workFlowStatusID === value,
+      onFilter: (value, record) => Number(record.workFlowStatusID) === value,
       filterIcon: () => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
       render: (text, record) => {
-        console.log(record, "recordrecordrecord");
+        const { workFlowStatusID, status } = record;
         return (
           <p
             className={
-              text === "Pending"
+              workFlowStatusID === 1
                 ? styles["pendingStatus"]
-                : text === "Signed"
+                : workFlowStatusID === 2
                 ? styles["signedStatus"]
-                : styles["declineStatus"]
+                : workFlowStatusID === 3
+                ? styles["declineStatus"]
+                : styles["draftStatus"]
             }
           >
-            {text}
+            {status}
           </p>
         );
       },
     },
-  ];
-
-  // Data for rows of the pending approval table
-  const rowsPendingApproval = [
-    {
-      key: "1",
-      name: "TestDocument123123123.pdf",
-      RequestedUser: "john",
-      status: "Pending",
-      dateTime: "11-01-2024 | 05:00 PM",
-    },
-    {
-      key: "2",
-      name: "TestDocument1215345342234.pdf",
-      RequestedUser: "john",
-      status: "Decline",
-      dateTime: "11-01-2024 | 05:00 PM",
-    },
-    {
-      key: "3",
-      name: "TestDocument12234234234.pdf",
-      RequestedUser: "john",
-      status: "Signed",
-      dateTime: "11-01-2024 | 05:00 PM",
-    },
-    {
-      key: "3",
-      name: "TestDocument11231232.pdf",
-      RequestedUser: "janem",
-      status: "Signed",
-      dateTime: "11-01-2024 | 04:30 PM",
-    },
-    {
-      key: "4",
-      name: "TestDocument11231232.pdf",
-      RequestedUser: "michael",
-      status: "Signed",
-      dateTime: "11-01-2024 | 05:15 PM",
-    },
-    {
-      key: "5",
-      name: "TestDocument12123123.pdf",
-      RequestedUser: "emily",
-      status: "Decline",
-      dateTime: "11-01-2024 | 05:45 PM",
-    },
-    // Add more data as needed
   ];
 
   const callingApi = async () => {
@@ -253,9 +206,9 @@ const ReviewSignature = () => {
           statusList.forEach((statusData, index) => {
             statusValues.push({
               text: statusData.statusName,
-              value: statusData.statusID,
+              value: Number(statusData.statusID),
             });
-            defaultStatus.push(statusData.statusID);
+            defaultStatus.push(Number(statusData.statusID));
           });
           setReviewAndSignatureStatus(statusValues);
           setDefaultReviewAndSignatureStatus(defaultStatus);
@@ -375,18 +328,20 @@ const ReviewSignature = () => {
       </Row>
       <Row>
         <Col>
-          <TableToDo
-            sortDirections={["descend", "ascend"]}
-            column={pendingApprovalColumns}
-            className={"PendingApprovalsTable"}
-            rows={reviewSignature}
-            // scroll={scroll}
-            pagination={false}
-            scroll={rowsPendingApproval.length > 10 ? { y: 385 } : undefined}
-            id={(record, index) =>
-              index === rowsPendingApproval.length - 1 ? "last-row-class" : ""
-            }
-          />
+          {reviewAndSignatureStatus.length > 0 && (
+            <TableToDo
+              sortDirections={["descend", "ascend"]}
+              column={pendingApprovalColumns}
+              className={"PendingApprovalsTable"}
+              rows={reviewSignature}
+              // scroll={scroll}
+              pagination={false}
+              scroll={reviewSignature.length > 10 ? { y: 385 } : undefined}
+              id={(record, index) =>
+                index === reviewSignature.length - 1 ? "last-row-class" : ""
+              }
+            />
+          )}
         </Col>
       </Row>{" "}
       <Notification

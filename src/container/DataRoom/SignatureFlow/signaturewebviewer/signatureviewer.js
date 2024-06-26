@@ -21,7 +21,14 @@ import {
 } from "../../../../store/actions/webVieverApi_actions";
 
 import { useTranslation } from "react-i18next";
-import { Notification, Loader, Modal, Button, TextField } from "../../../../components/elements/index";
+import {
+  Notification,
+  Loader,
+  Modal,
+  Button,
+  TextField,
+  Checkbox,
+} from "../../../../components/elements/index";
 import { Col, Row } from "react-bootstrap";
 import DeleteIcon from "../../../../assets/images/Icon material-delete.svg";
 import Select from "react-select";
@@ -58,6 +65,7 @@ const SignatureViewer = () => {
   const [FieldsData, setFieldsData] = useState([]);
   const [openAddParticipentModal, setOpenAddParticipentModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [orderCheckBox, setOrderCheckbox] = useState(false);
   const [signers, setSigners] = useState({
     Name: "",
     EmailAddress: "",
@@ -1071,7 +1079,7 @@ const SignatureViewer = () => {
 
           try {
             annotations.forEach((annotation) => {
-              console.log(annotation, "annotationannotationannotation")
+              console.log(annotation, "annotationannotationannotation");
               if (annotation.Subject === "Signature") {
                 annotation.NoResize = true;
                 annotation.NoMove = true;
@@ -1483,10 +1491,23 @@ const SignatureViewer = () => {
           <>
             <Row>
               <Col
-                sm={12}
-                md={12}
-                lg={12}
-                className="d-flex justify-content-end gap-2"
+                sm={6}
+                md={6}
+                lg={6}
+                className="d-flex justify-content-start px-0"
+              >
+                <Checkbox
+                  label2={t("Set-signer-order")}
+                  checked={orderCheckBox}
+                  onChange={(event) => setOrderCheckbox(event.target.checked)}
+                  classNameDiv={"d-flex gap-2"}
+                />
+              </Col>
+              <Col
+                sm={6}
+                md={6}
+                lg={6}
+                className="d-flex justify-content-end gap-2 px-0"
               >
                 <Button
                   className={"CancelBtn"}
